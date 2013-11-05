@@ -1,0 +1,13 @@
+//
+//  LTKit.m
+//  LTKit
+//
+//  Created by Yaron Inger on 5/11/13.
+//  Copyright (c) 2013 Lightricks. All rights reserved.
+//
+
+#import "LTKit.h"
+
+@implementation LTKit
+
+@end
