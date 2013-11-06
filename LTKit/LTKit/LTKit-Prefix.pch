@@ -1,0 +1,18 @@
+// Copyright (c) 2013 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+#ifdef __OBJC__
+  #import <Foundation/Foundation.h>
+  #import <QuartzCore/QuartzCore.h>
+  #import <UIKit/UIKit.h>
+
+  #import "LTLogger.h"
+#endif
+
+#ifdef __cplusplus
+  // Ignore CvForestTree::train and CvBoostTree::train warnings.
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Woverloaded-virtual"
+  #include <opencv2/opencv.hpp>
+  #pragma clang diagnostic pop
+#endif
