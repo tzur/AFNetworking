@@ -6,13 +6,18 @@
   #import <QuartzCore/QuartzCore.h>
   #import <UIKit/UIKit.h>
 
+  #import "LTAssert.h"
+  #import "LTGLUtils.h"
   #import "LTLogger.h"
 #endif
 
 #ifdef __cplusplus
+  #import <vector>
+  #import <memory>
+
   // Ignore CvForestTree::train and CvBoostTree::train warnings.
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Woverloaded-virtual"
-  #include <opencv2/opencv.hpp>
+  #import <opencv2/opencv.hpp>
   #pragma clang diagnostic pop
 #endif
