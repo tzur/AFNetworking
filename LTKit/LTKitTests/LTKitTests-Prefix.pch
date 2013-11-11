@@ -1,0 +1,21 @@
+// Copyright (c) 2013 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+#import "LTKit-Prefix.pch"
+
+#define EXP_SHORTHAND
+#define HC_SHORTHAND
+#define MOCKITO_SHORTHAND
+
+#import <OCHamcrest/OCHamcrest.h>
+#import <OCMockitoIOS/OCMockitoIOS.h>
+#import <XCTest/XCTest.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import "Expecta.h"
+  #import "Specta.h"
+#ifdef __cplusplus
+}
+#endif
