@@ -10,6 +10,7 @@ typedef NS_ENUM(NSUInteger, LTShaderType) {
 };
 
 /// @class LTShader
+///
 /// Represents an OpenGL shader. The shader is a part of a program, which usually consists of a
 /// vertex shader and a fragment shader. See the Program class for more information.
 @interface LTShader : NSObject

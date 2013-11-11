@@ -2,6 +2,7 @@
 // Created by Yaron Inger.
 
 /// @class LTProgram
+///
 /// Object for representing a GLSL program. The program is composed of a vertex and a fragment
 /// shader and may include uniforms (variables that are global for the entire drawing of an object)
 /// and attributes (variables that are set for each vertex).

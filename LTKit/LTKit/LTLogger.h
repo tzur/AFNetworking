@@ -150,6 +150,8 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
 
 @end
 
+/// @class LTLogger
+///
 /// Global logger for LT projects. This logger supports multiple logging levels, as well as multiple
 /// output targets for logging.  Call this class directly only for configuration, but use the
 /// logging macros for the logging itself.
