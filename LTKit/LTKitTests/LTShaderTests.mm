@@ -9,7 +9,9 @@
 #import <OCMockitoIOS/OCMockitoIOS.h>
 #import <XCTest/XCTest.h>
 
-#import "Expecta.h"
+extern "C" {
+  #import "Expecta.h"
+}
 #import "LTGLException.h"
 
 static NSString * const kBasicVertexSource = @"void main() { gl_Position = vec4(0.0); }";
