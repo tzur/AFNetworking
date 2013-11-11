@@ -10,7 +10,6 @@
 NSString * const kLTShaderCreationFailedException = @"Shader Creation Failed Exception";
 NSString * const kLTShaderCompilationFailedException = @"Shader Compilation Failed Exception";
 NSString * const kLTProgramCreationFailedException = @"Program Creation Failed Exception";
-NSString * const kLTProgramUniformNotFoundException = @"Program Uniform Not Found Exception";
 NSString * const kLTProgramLinkFailedException = @"Program Link Failed Exception";
 
 #pragma mark -

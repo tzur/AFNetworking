@@ -8,7 +8,6 @@
 extern NSString * const kLTShaderCreationFailedException;
 extern NSString * const kLTShaderCompilationFailedException;
 extern NSString * const kLTProgramCreationFailedException;
-extern NSString * const kLTProgramUniformNotFoundException;
 extern NSString * const kLTProgramLinkFailedException;
 
 #pragma mark -
