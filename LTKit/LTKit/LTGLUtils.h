@@ -31,6 +31,3 @@ inline BOOL LTGLCheck(NSString *message) {
 #else
 #define LTGLCheckExprDbg(expression, message) (expression)
 #endif
-
-/// Executes the given expression and logs an error if an OpenGL error is present.
-#define LTGLCheckExpr(expression, message) ((expression) && (LTGLCheck(message)))
