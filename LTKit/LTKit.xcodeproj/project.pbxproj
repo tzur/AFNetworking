@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
+		8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
+		8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
+		8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
+		8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
+		8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5818329538000845BA /* CoreMedia.framework */; };
+		8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */; };
 		8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
 		8B3DEBED18296B6100EA0C1A /* LTKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
@@ -17,6 +24,8 @@
 		8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
 		8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
+		8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */; };
+		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.m */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -128,6 +137,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8B3C0A46183294DF000845BA /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/images/opencv/opencv2.framework; sourceTree = "<group>"; };
+		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		8B3C0A531832950F000845BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8B3C0A5818329538000845BA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8B3DEBE418296B6100EA0C1A /* libLTKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B3DEBE718296B6100EA0C1A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -142,6 +156,9 @@
 		8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3DEC1818296DE500EA0C1A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8B7DC39B18328063008D004B /* LTBoundaryCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoundaryCondition.h; sourceTree = "<group>"; };
+		8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryCondition.mm; sourceTree = "<group>"; };
+		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA3E11A182A437300FDD95A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -168,6 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */,
 				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
 				8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */,
@@ -180,16 +198,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */,
-				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
+				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
+				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
+				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
+				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
+				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
 				8BA3E138182A48AF00FDD95A /* OCMockitoIOS.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
-				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 				8BA3E136182A48AA00FDD95A /* OCHamcrestIOS.framework in Frameworks */,
+				8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */,
+				8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */,
+				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
+				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +242,11 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
+				8B3C0A5818329538000845BA /* CoreMedia.framework */,
+				8B3C0A531832950F000845BA /* AVFoundation.framework */,
+				8B3C0A5118329505000845BA /* CoreVideo.framework */,
+				8B3C0A46183294DF000845BA /* opencv2.framework */,
 				8BA3E11A182A437300FDD95A /* OpenGLES.framework */,
 				8B3DEC1818296DE500EA0C1A /* UIKit.framework */,
 				8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */,
@@ -233,6 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
+				8B7DC39B18328063008D004B /* LTBoundaryCondition.h */,
+				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
 				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
@@ -281,6 +312,7 @@
 		8B85C796182A2EC3004C352E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.m */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
@@ -491,6 +523,7 @@
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
+				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 			);
@@ -502,6 +535,7 @@
 			files = (
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
+				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -628,7 +662,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/LTKit.dst;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKit/LTKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
@@ -641,7 +674,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/LTKit.dst;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKit/LTKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
@@ -657,8 +689,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/Yaron/Development/LTKit/third_party/testing/OCHamcrest,
-					/Users/Yaron/Development/LTKit/third_party/testing/OCMockito,
+					"$(SRCROOT)/../third_party/testing/OCHamcrest",
+					"$(SRCROOT)/../third_party/testing/OCMockito",
+					"$(SRCROOT)/../third_party/images/opencv",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
@@ -684,8 +717,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/Yaron/Development/LTKit/third_party/testing/OCHamcrest,
-					/Users/Yaron/Development/LTKit/third_party/testing/OCMockito,
+					"$(SRCROOT)/../third_party/testing/OCHamcrest",
+					"$(SRCROOT)/../third_party/testing/OCMockito",
+					"$(SRCROOT)/../third_party/images/opencv",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
