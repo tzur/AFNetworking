@@ -10,12 +10,15 @@
 ///
 /// @return NO if OpenGL is currently reporting an error.
 inline BOOL LTGLCheck(NSString *message) {
+  BOOL errorFound = NO;
   GLenum error;
+
   while ((error = glGetError()) != GL_NO_ERROR) {
+    errorFound = YES;
     LogError(@"[OpenGL Error: %d]: %@", error, message);
-    return NO;
   }
-  return YES;
+  
+  return !errorFound;
 }
 
 #ifdef DEBUG
