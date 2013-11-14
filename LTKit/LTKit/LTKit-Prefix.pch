@@ -10,13 +10,11 @@
   #import "LTAssert.h"
   #import "LTGLUtils.h"
   #import "LTLogger.h"
+  #import "LTTypedefs.h"
   #import "NSValue+GLKitExtensions.h"
 #endif
 
 #ifdef __cplusplus
-  #import <vector>
-  #import <memory>
-
   // Ignore CvForestTree::train and CvBoostTree::train warnings.
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Woverloaded-virtual"

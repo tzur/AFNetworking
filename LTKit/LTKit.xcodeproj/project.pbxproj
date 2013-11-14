@@ -161,6 +161,7 @@
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
+		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E11A182A437300FDD95A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrestIOS.framework; path = ../../third_party/testing/OCHamcrest/OCHamcrestIOS.framework; sourceTree = "<group>"; };
 		8BA3E137182A48AF00FDD95A /* OCMockitoIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMockitoIOS.framework; path = ../../third_party/testing/OCMockito/OCMockitoIOS.framework; sourceTree = "<group>"; };
@@ -283,6 +284,7 @@
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
 				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
+				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
 			);
