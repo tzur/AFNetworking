@@ -227,6 +227,12 @@
   self.bounded = NO;
 }
 
+- (void)bindAndExecute:(LTVoidBlock)block {
+  [self bind];
+  if (block) block();
+  [self unbind];
+}
+
 #pragma mark -
 #pragma mark Uniforms and attributes
 #pragma mark -

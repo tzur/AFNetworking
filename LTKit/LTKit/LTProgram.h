@@ -29,6 +29,10 @@
 /// instead. If the program is not bound, nothing will happen.
 - (void)unbind;
 
+/// Executes the given block while the program is bounded to the active context. This will
+/// automatically \c bind and \c unbind the program before and after the block, accordingly.
+- (void)bindAndExecute:(LTVoidBlock)block;
+
 /// Returns true if the program is valid. See \c glValidateProgram for more information on when
 /// programs are valid or not.
 - (BOOL)isProgramValid;
