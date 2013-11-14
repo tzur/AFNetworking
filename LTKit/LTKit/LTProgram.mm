@@ -52,8 +52,8 @@
 @property (nonatomic) GLint previousProgram;
 
 /// Maps uniforms and attributes to their index.
-@property (strong, nonatomic) NSMutableDictionary *uniforms;
-@property (strong, nonatomic) NSMutableDictionary *attributes;
+@property (strong, nonatomic) NSDictionary *uniforms;
+@property (strong, nonatomic) NSDictionary *attributes;
 
 @end
 
@@ -105,26 +105,26 @@
   [self linkProgram];
   
   // Get uniforms data. This can be done only after linking.
-  GLint uniformCount;
+  GLint uniformCount, maxUniformNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_UNIFORMS, &uniformCount);
-  GLint maxUniformNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxUniformNameLength);
+  NSMutableDictionary *uniforms = [NSMutableDictionary dictionary];
   for (GLint i = 0; i < uniformCount; ++i) {
     LTProgramObject *object = [self uniformObjectForIndex:i maxNameLength:maxUniformNameLength];
-    self.uniforms[object.name] = object;
+    uniforms[object.name] = object;
   }
+  self.uniforms = [uniforms copy];
   
   // Get attributes data and apply attribute locations. This can be done only after linking.
-  GLint attributeCount;
+  GLint attributeCount, maxAttributeNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_ATTRIBUTES, &attributeCount);
-  GLint maxAttributeNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeNameLength);
+  NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
   for (GLint i = 0; i < attributeCount; ++i) {
     LTProgramObject *object = [self attributeObjectForIndex:i maxNameLength:maxAttributeNameLength];
-    self.attributes[object.name] = object;
-    glBindAttribLocation(self.name, object.index,
-                         [object.name cStringUsingEncoding:NSUTF8StringEncoding]);
+    attributes[object.name] = object;
   }
+  self.attributes = [attributes copy];
   
   // Link again to apply attribute locations.
   [self linkProgram];
@@ -195,12 +195,19 @@
 - (LTProgramObject *)attributeObjectForIndex:(GLuint)index maxNameLength:(GLint)maxLength {
   GLint size;
   GLenum type;
-  
+
   std::unique_ptr<GLchar[]> name(new GLchar[maxLength]);
   LTGLCheckExprDbg(glGetActiveAttrib(self.name, index, maxLength, NULL, &size, &type, name.get()),
                    @"Error retrieving active attribute info");
   
-  return [[LTProgramObject alloc] initWithIndex:index
+  int attribLocation = glGetAttribLocation(self.name, name.get());
+  if (attribLocation == -1) {
+    // This should technically never happen, since we get the attribute name directly from OpenGL.
+    [self teardown];
+    LTAssert(NO, @"Failed to retrieve attribute location for \"%s\"", name.get());
+  }
+  
+  return [[LTProgramObject alloc] initWithIndex:attribLocation
                                            name:[NSString stringWithUTF8String:name.get()]
                                            size:size type:type];;
 }
