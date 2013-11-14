@@ -27,6 +27,7 @@
 		8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */; };
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.m */; };
+		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
 		8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA3E11A182A437300FDD95A /* OpenGLES.framework */; };
@@ -35,7 +36,10 @@
 		8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E13A182A602F00FDD95A /* LTProgram.mm */; };
 		8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E13D182A606600FDD95A /* LTShader.mm */; };
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
-		8BA3E144182A848300FDD95A /* LTProgramSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.m */; };
+		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
+		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
+		8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */; };
+		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA66F4182FB5E2003FCB65 /* LTGLException.m */; };
 		8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta-iOS.a */; };
 		8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */; };
@@ -161,6 +165,8 @@
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
+		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
+		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
 		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E11A182A437300FDD95A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrestIOS.framework; path = ../../third_party/testing/OCHamcrest/OCHamcrestIOS.framework; sourceTree = "<group>"; };
@@ -172,7 +178,12 @@
 		8BA3E13F182A68FC00FDD95A /* LTAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAssert.h; sourceTree = "<group>"; };
 		8BA3E140182A707200FDD95A /* LTGLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGLUtils.h; sourceTree = "<group>"; };
 		8BA3E141182A773300FDD95A /* LTShaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShaderSpec.mm; sourceTree = "<group>"; };
-		8BA3E143182A848300FDD95A /* LTProgramSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTProgramSpec.m; sourceTree = "<group>"; };
+		8BA3E143182A848300FDD95A /* LTProgramSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramSpec.mm; sourceTree = "<group>"; };
+		8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLTexture.h; sourceTree = "<group>"; };
+		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
+		8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureSpec.mm; sourceTree = "<group>"; };
+		8BBE8941183503CD006C58AA /* LTTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTestUtils.h; sourceTree = "<group>"; };
+		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
 		8BCA66F3182FB5E2003FCB65 /* LTGLException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLException.h; sourceTree = "<group>"; };
 		8BCA66F4182FB5E2003FCB65 /* LTGLException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLException.m; sourceTree = "<group>"; };
 		8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
@@ -267,6 +278,10 @@
 				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
 				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
+				8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */,
+				8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */,
+				8BA11ADF1831555100A5001D /* LTTexture.h */,
+				8BA11AE01831555100A5001D /* LTTexture.mm */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
 				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
@@ -279,11 +294,11 @@
 		8B3DEBEA18296B6100EA0C1A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
+				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
 				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
 				8B3DEC1018296D2200EA0C1A /* LTLogger.m */,
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
-				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
-				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
@@ -295,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				8B85C796182A2EC3004C352E /* Tests */,
+				8BBE8940183503AB006C58AA /* Test Utils */,
 				8B85C79A182A31C8004C352E /* Libraries */,
 				8B3DEBFE18296B6100EA0C1A /* Supporting Files */,
 			);
@@ -315,8 +331,9 @@
 			isa = PBXGroup;
 			children = (
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
-				8BA3E143182A848300FDD95A /* LTProgramSpec.m */,
+				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
+				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 			);
 			name = Tests;
@@ -339,6 +356,15 @@
 				8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8BBE8940183503AB006C58AA /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8BBE8941183503CD006C58AA /* LTTestUtils.h */,
+				8BBE8942183506E4006C58AA /* LTTestUtils.mm */,
+			);
+			name = "Test Utils";
 			sourceTree = "<group>";
 		};
 		8BCA6722182FD8D3003FCB65 /* Products */ = {
@@ -526,6 +552,8 @@
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
+				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
+				8BA11AE11831555100A5001D /* LTTexture.mm in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 			);
@@ -538,7 +566,9 @@
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
-				8BA3E144182A848300FDD95A /* LTProgramSpec.m in Sources */,
+				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
+				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
+				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,8 +9,14 @@
 
 NSString * const kLTShaderCreationFailedException = @"Shader Creation Failed Exception";
 NSString * const kLTShaderCompilationFailedException = @"Shader Compilation Failed Exception";
+
 NSString * const kLTProgramCreationFailedException = @"Program Creation Failed Exception";
 NSString * const kLTProgramLinkFailedException = @"Program Link Failed Exception";
+
+NSString * const kLTTextureInvalidNumberOfChannelsException =
+    @"Texture Invalid Number Of Channels Exception";
+NSString * const kLTTextureInvalidDepthException = @"Texture Invalid Depth Exception";
+NSString * const kLTTextureCreationFailedException = @"Texture Creation Failed Exception";
 
 #pragma mark -
 #pragma mark LTGLException

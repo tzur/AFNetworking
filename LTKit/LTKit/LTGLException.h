@@ -5,10 +5,18 @@
 #pragma mark Exception names
 #pragma mark -
 
+// LTShader.
 extern NSString * const kLTShaderCreationFailedException;
 extern NSString * const kLTShaderCompilationFailedException;
+
+// LTProgram.
 extern NSString * const kLTProgramCreationFailedException;
 extern NSString * const kLTProgramLinkFailedException;
+
+// LTTexture.
+extern NSString * const kLTTextureInvalidNumberOfChannelsException;
+extern NSString * const kLTTextureInvalidDepthException;
+extern NSString * const kLTTextureCreationFailedException;
 
 #pragma mark -
 #pragma mark LTGLException
