@@ -94,9 +94,7 @@
   
   // Create program.
   self.name = glCreateProgram();
-  if (!LTGLCheck(@"Program creation failed")) {
-    [LTGLException raise:kLTProgramCreationFailedException format:@"Error creating program"];
-  }
+  LTGLCheck(@"Program creation failed");
   
   // Attach vertex and fragment shaders to program.
   [vertex bindToProgram:self];
@@ -177,8 +175,8 @@
   GLenum type;
   
   std::unique_ptr<GLchar[]> name(new GLchar[maxLength]);
-  LTGLCheckExprDbg(glGetActiveUniform(self.name, index, maxLength, NULL, &size, &type, name.get()),
-                   @"Error retrieving active uniform info");
+  glGetActiveUniform(self.name, index, maxLength, NULL, &size, &type, name.get());
+  LTGLCheckDbg(@"Error retrieving active uniform info");
   
   int uniformLocation = glGetUniformLocation(self.name, name.get());
   if (uniformLocation == -1) {
@@ -197,8 +195,8 @@
   GLenum type;
 
   std::unique_ptr<GLchar[]> name(new GLchar[maxLength]);
-  LTGLCheckExprDbg(glGetActiveAttrib(self.name, index, maxLength, NULL, &size, &type, name.get()),
-                   @"Error retrieving active attribute info");
+  glGetActiveAttrib(self.name, index, maxLength, NULL, &size, &type, name.get());
+  LTGLCheckDbg(@"Error retrieving active attribute info");
   
   int attribLocation = glGetAttribLocation(self.name, name.get());
   if (attribLocation == -1) {

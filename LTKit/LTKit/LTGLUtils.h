@@ -3,34 +3,36 @@
 
 #import "LTLogger.h"
 
+#import "LTGLException.h"
+
 /// Checks if OpenGL is currently reporting an error. If errors are present, they are all popped and
 /// logged as an error.
 ///
-/// @param message the message to print if an error is present.
+/// @param format the message format to raise if an error is present.
 ///
 /// @return NO if OpenGL is currently reporting an error.
-inline BOOL LTGLCheck(NSString *message) {
-  BOOL errorFound = NO;
+inline void LTGLCheck(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+inline void LTGLCheck(NSString *format, ...) {
   GLenum error;
+  NSMutableArray *errors = [NSMutableArray array];
 
   while ((error = glGetError()) != GL_NO_ERROR) {
-    errorFound = YES;
-    LogError(@"[OpenGL Error: %d]: %@", error, message);
+    [errors addObject:@(error)];
   }
   
-  return !errorFound;
+  if (errors.count) {
+    va_list args;
+    va_start(args, format);
+    [LTGLException raiseWithGLErrors:errors format:format args:args];
+    va_end(args);
+  }
 }
 
+/// Debug macro for checking GL errors and reporting them. This is useful to avoid calling \c
+/// glGetError() in production code, but maintain flexibility when debugging.
 #ifdef DEBUG
-/// Executes the given expression and aborts the program if an OpenGL error is present. In non-debug
-/// builds, the expression is executed but no \c abort() is made.
-#define LTGLCheckExprDbg(expression, message) \
-  do { \
-    (expression); \
-    if (!LTGLCheck(message)) { \
-      abort(); \
-    } \
-  } while (0)
+#define LTGLCheckDbg(format, ...) LTGLCheck(format, ##__VA_ARGS__)
 #else
-#define LTGLCheckExprDbg(expression, message) (expression)
+#define LTGLCheckDbg(format, ...)
 #endif

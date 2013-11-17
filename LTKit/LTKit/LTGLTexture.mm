@@ -34,9 +34,7 @@
   }
 
   glGenTextures(1, &_name);
-  if (!LTGLCheck(@"Failed generating texture")) {
-    [LTGLException raise:kLTTextureCreationFailedException format:@"Failed generating texture"];
-  }
+  LTGLCheck(@"Failed generating texture");
 
   [self bindAndExecute:^{
     [self setMinFilterInterpolation:self.minFilterInterpolation];
@@ -74,9 +72,7 @@
     // glReadPixels.
     GLuint framebuffer;
     glGenFramebuffers(1, &framebuffer);
-    if (!LTGLCheck(@"Error while creating framebuffer")) {
-      return;
-    }
+    LTGLCheck(@"Error while creating framebuffer");
 
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, self.name, 0);

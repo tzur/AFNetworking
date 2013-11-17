@@ -34,7 +34,9 @@
 
 - (void)dealloc {
   [self unbind];
-  LTGLCheckExprDbg(glDeleteShader(_name), @"Error deleting shader");
+
+  glDeleteShader(_name);
+  LTGLCheck(@"Error deleting shader");
 }
 
 #pragma mark -
@@ -43,10 +45,7 @@
 
 - (void)compileSource:(NSString *)source {
   self.name = glCreateShader(self.type);
-  if (!LTGLCheck(@"Shader creation failed")) {
-    [LTGLException raise:kLTShaderCreationFailedException
-                  format:@"Failed creating shader object"];
-  }
+  LTGLCheck(@"Shader creation failed");
   
   const char *cSource = [source cStringUsingEncoding:NSUTF8StringEncoding];
   glShaderSource(self.name, 1, &cSource, NULL);

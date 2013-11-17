@@ -5,6 +5,9 @@
 #pragma mark Exception names
 #pragma mark -
 
+// OpenGL.
+extern NSString * const kLTOpenGLRuntimeErrorException;
+
 // LTShader.
 extern NSString * const kLTShaderCreationFailedException;
 extern NSString * const kLTShaderCompilationFailedException;
@@ -25,8 +28,25 @@ extern NSString * const kLTTextureCreationFailedException;
 /// Exception class for OpenGL errors.
 @interface LTGLException : NSException
 
-/// Raises \c LTGLException with the causing glError and a format string.
-+ (void)raise:(NSString *)name GLError:(GLuint)glError
-       format:(NSString *)format, ... NS_FORMAT_FUNCTION(3,4);
+/// Raises \c LTGLException with \c kLTOpenGLRuntimeErrorException.
+///
+/// @param glError the causing glError.
+/// @param format the exception format string.
++ (void)raiseWithGLError:(GLenum)glError
+                  format:(NSString *)format, ... NS_FORMAT_FUNCTION(2, 3);
+
+/// Raises \c LTGLException with \c kLTOpenGLRuntimeErrorException.
+///
+/// @param glErrors an array of the causing glError(s) \c GLenum values.
+/// @param format the exception format string.
++ (void)raiseWithGLErrors:(NSArray *)glError
+                   format:(NSString *)format, ... NS_FORMAT_FUNCTION(2, 3);
+
+/// Raises \c LTGLException with \c kLTOpenGLRuntimeErrorException.
+///
+/// @param glErrors an array of the causing glError(s) \c GLenum values.
+/// @param format the exception format string.
++ (void)raiseWithGLErrors:(NSArray *)glErrors
+                   format:(NSString *)format args:(va_list)args NS_FORMAT_FUNCTION(2, 0);
 
 @end
