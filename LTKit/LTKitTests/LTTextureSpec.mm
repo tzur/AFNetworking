@@ -191,6 +191,18 @@ context(@"binding and unbinding", ^{
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
     expect(currentTexture).to.equal(0);
   });
+
+  it(@"should bind and unbind from the same texture unit", ^{
+    glActiveTexture(GL_TEXTURE0);
+    [texture bind];
+    glActiveTexture(GL_TEXTURE1);
+    [texture unbind];
+
+    glActiveTexture(GL_TEXTURE0);
+    GLint currentTexture;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+    expect(currentTexture).to.equal(0);
+  });
 });
 
 context(@"loading data from texture", ^{

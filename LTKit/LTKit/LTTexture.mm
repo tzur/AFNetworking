@@ -39,6 +39,9 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 /// Set to the previously bounded texture, or \c 0 if the texture is not bounded.
 @property (nonatomic) GLint previousTexture;
 
+/// The active texture unit while binding the texture.
+@property (nonatomic) GLint boundedTextureUnit;
+
 /// YES if the texture is currently bounded.
 @property (nonatomic) BOOL bounded;
 
@@ -110,7 +113,8 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   if (self.bounded) {
     return;
   }
-  
+
+  glGetIntegerv(GL_ACTIVE_TEXTURE, &_boundedTextureUnit);
   glGetIntegerv(GL_TEXTURE_BINDING_2D, &_previousTexture);
   glBindTexture(GL_TEXTURE_2D, self.name);
   
@@ -121,8 +125,18 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   if (!self.bounded) {
     return;
   }
-  
+
+  GLint activeTextureUnit;
+  glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTextureUnit);
+
+  // Make sure we switch to the active texture unit at the time of binding.
+  if (activeTextureUnit != _boundedTextureUnit) {
+    glActiveTexture(self.boundedTextureUnit);
+  }
   glBindTexture(GL_TEXTURE_2D, self.previousTexture);
+  if (activeTextureUnit != _boundedTextureUnit) {
+    glActiveTexture(activeTextureUnit);
+  }
   
   self.previousTexture = 0;
   self.bounded = NO;
