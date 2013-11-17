@@ -15,7 +15,7 @@ static LTTexturePrecision LTPrecisionFromMat(const cv::Mat &image) {
     case CV_32F:
       return LTTexturePrecisionFloat;
     default:
-      [LTGLException raise:kLTTextureInvalidDepthException
+      [LTGLException raise:kLTTextureUnsupportedFormatException
                     format:@"Invalid depth in given image: %d", image.depth()];
       __builtin_unreachable();
   }
@@ -28,7 +28,7 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
     case 4:
       return LTTextureChannelsRGBA;
     default:
-      [LTGLException raise:kLTTextureInvalidNumberOfChannelsException
+      [LTGLException raise:kLTTextureUnsupportedFormatException
                     format:@"Invalid number of channels in given image: %d", image.channels()];
       __builtin_unreachable();
   }
@@ -181,7 +181,8 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
       return {{value(0), value(1), value(2), value(3)}};
     }
     default:
-      LTAssert(NO, @"Unsupported matrix type: %d", image.type());
+      [LTGLException raise:kLTTextureUnsupportedFormatException
+                    format:@"Unsupported matrix type: %d", image.type()];
       __builtin_unreachable();
   }
 }

@@ -87,7 +87,7 @@ context(@"init with an image", ^{
 
     expect(^{
       __unused LTTexture *texture = [[LTGLTexture alloc] initWithImage:image];
-    }).to.raise(kLTTextureInvalidDepthException);
+    }).to.raise(kLTTextureUnsupportedFormatException);
   });
 
   it(@"should not load invalid image channel count", ^{
@@ -96,7 +96,7 @@ context(@"init with an image", ^{
 
     expect(^{
       __unused LTTexture *texture = [[LTGLTexture alloc] initWithImage:image];
-    }).to.raise(kLTTextureInvalidNumberOfChannelsException);
+    }).to.raise(kLTTextureUnsupportedFormatException);
   });
 });
 
