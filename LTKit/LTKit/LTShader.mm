@@ -36,7 +36,7 @@
   [self unbind];
 
   glDeleteShader(_name);
-  LTGLCheck(@"Error deleting shader");
+  LTGLCheckDbg(@"Error deleting shader");
 }
 
 #pragma mark -

@@ -153,7 +153,7 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   return nil;
 }
 
-- (void)cloneTo:(LTTexture *)texture {
+- (void)cloneTo:(LTTexture __unused *)texture {
   // TODO: (yaron) use FBO to clone the texture.
 }
 

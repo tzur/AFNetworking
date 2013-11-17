@@ -79,6 +79,7 @@
 - (void)teardown {
   [self unbind];
   glDeleteProgram(self.name);
+  LTGLCheckDbg(@"Error deleting program");
 }
 
 #pragma mark -
