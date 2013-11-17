@@ -48,6 +48,9 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
 
+/// OpenGL identifier of the texture.
+@property (readwrite, nonatomic) GLuint name;
+
 @end
 
 @implementation LTTexture
@@ -79,6 +82,10 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
     [self load:image];
   }
   return self;
+}
+
+- (void)dealloc {
+  [self destroy];
 }
 
 - (void)load:(const cv::Mat __unused &)image {
