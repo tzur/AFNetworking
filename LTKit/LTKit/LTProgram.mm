@@ -380,6 +380,7 @@
     }
     default:
       LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, name);
+      return nil;
   }
 }
 

@@ -5,8 +5,11 @@
 
 // Borrowed from http://www.mikeash.com/pyblog/friday-qa-2013-05-03-proper-use-of-asserts.html
 
-/// Asserts that the given expression is true. If not, an error is logged and the program is
-/// aborted.
+/// Asserts that the given expression is true. On debug, this behaves similar to \c NSAssert. On
+/// release, if the condition is false, an error is logged and the program is aborted.
+#ifdef DEBUG
+#define LTAssert(expression, ...) NSAssert(expression, __VA_ARGS__)
+#else
 #define LTAssert(expression, ...) \
   do { \
     if (!(expression)) { \
@@ -18,3 +21,4 @@
       abort(); \
     } \
   } while(0)
+#endif
