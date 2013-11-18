@@ -54,8 +54,8 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 #pragma mark Initializers
 #pragma mark -
 
-/// Creates an empty texture on the GPU.  Throws \c LTGLException if texture creation failed.
-/// TODO:(yaron) specify what kind of exception will be thrown.
+/// Creates an empty texture on the GPU.  Throws \c LTGLException with \c
+/// kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
 /// @param size size of the texture.
 /// @param precision precision of the texture.
@@ -73,9 +73,8 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
           channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
-/// image, and loads the \c image to the texture. Throws \c LTGLException if the texture cannot be
-/// created or if image loading has failed.
-/// TODO:(yaron) specify what kind of exception will be thrown.
+/// image, and loads the \c image to the texture. Throws \c LTGLException with \c
+/// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
 - (id)initWithImage:(const cv::Mat &)image;
 
 #pragma mark -
@@ -84,8 +83,7 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 
 /// Loads a given image to the texture by replacing the current content of the texture. The size
 /// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
-/// they don't match, an \c LTGLException will be thrown.
-/// TODO:(yaron) specify what kind of exception will be thrown.
+/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
 - (void)load:(const cv::Mat &)image;
 
 /// Creates the texture in the active OpenGL context. If the texture is already allocated, this
@@ -146,16 +144,12 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 /// luminance, the single channel will be placed in the first vector element, while the others will
 /// be set to \c 0.
 ///
-/// TODO: (yaron) add a way to define the boundary condition via the interface.
-///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
 - (GLKVector4)pixelValue:(CGPoint)location;
 
 /// Returns pixel values at the given locations, with symmetric boundary condition. The returned
 /// value is a vector of RBGA values of the texture pixels at the given locations.
-///
-/// TODO: (yaron) add a way to define the boundary condition via the interface.
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
