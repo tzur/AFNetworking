@@ -5,20 +5,6 @@
 
 #import "LTGLException.h"
 
-//typedef struct _MyFloats {
-//  float a;
-//  float b;
-//} MyFloats;
-//
-//typedef struct _MyStruct {
-//  GLKVector2 a;
-//  GLKVector2 b;
-//} MyStruct;
-//
-//(_GLKVector2={?=ff}{?=ff}[2f])
-//{_MyFloats=ff}
-//{_MyStruct=(_GLKVector2={?=ff}{?=ff}[2f])(_GLKVector2={?=ff}{?=ff}[2f])}
-
 @interface LTArrayBuffer ()
 
 @property (readwrite, nonatomic) GLuint name;

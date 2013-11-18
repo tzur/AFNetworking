@@ -24,7 +24,9 @@ typedef NS_ENUM(NSUInteger, LTBufferArrayUsage) {
 /// A class representing a GPU array buffer. There are two supported buffer types: array buffer,
 /// which is a generic buffer for vertex attribute data such as position, color and normals, and an
 /// element buffer, which is a buffer that holds vertex indices, useful for faster drawing of
-/// complex geometry.
+/// complex geometry.  The user of this class is responsible for managing the CPU copy of the data,
+/// together with the data types this buffer holds. For an external viewer, \c LTArrayBuffer holds
+/// a buffer of bytes with no meaningful structure or types.
 @interface LTArrayBuffer : NSObject
 
 /// Initiailizes a new OpenGL buffer with a given type and buffer usage hint. The buffer will not
