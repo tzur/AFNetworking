@@ -140,6 +140,10 @@ context(@"binding and unbinding", ^{
                                        channels:LTTextureChannelsRGBA allocateMemory:NO];
   });
 
+  afterEach(^{
+    texture = nil;
+  });
+
   it(@"should bind to texture", ^{
     [texture bind];
 
@@ -218,6 +222,10 @@ context(@"loading data from texture", ^{
     }
 
     texture = [[LTGLTexture alloc] initWithImage:image];
+  });
+
+  afterEach(^{
+    texture = nil;
   });
 
   it(@"should read entire texture to image", ^{

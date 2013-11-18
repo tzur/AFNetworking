@@ -44,7 +44,11 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 ///
 /// @note The currently supported \c cv::Mat types are \c CV_32F (grayscale), \c CV32F_C4 (four
 /// channel float), CV_16C4 (four channel half-float) and \c CV_8UC4 (RGBA).
-@interface LTTexture : NSObject
+@interface LTTexture : NSObject {
+  // This is required to prevent redeclaring \c name in subclasses.
+  @protected
+  GLuint _name;
+}
 
 #pragma mark -
 #pragma mark Initializers

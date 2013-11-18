@@ -13,16 +13,7 @@
 
 @end
 
-@interface LTGLTexture ()
-
-/// GL identifier of the texture.
-@property (readwrite, nonatomic) GLuint name;
-
-@end
-
 @implementation LTGLTexture
-
-@synthesize name = _name;
 
 - (void)load:(const cv::Mat &)image {
   [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
@@ -54,6 +45,7 @@
   [self unbind];
 
   glDeleteTextures(1, &_name);
+  LTGLCheckDbg(@"Error deleting texture");
   _name = 0;
 }
 
@@ -80,6 +72,7 @@
     if (status != GL_FRAMEBUFFER_COMPLETE) {
       LogError(@"Failed to make complete framebuffer object, reason: %x, glError: %d",
                status, glGetError());
+      glDeleteFramebuffers(1, &framebuffer);
       return;
     }
 
