@@ -20,6 +20,10 @@ extern NSString * const kLTProgramLinkFailedException;
 extern NSString * const kLTTextureUnsupportedFormatException;
 extern NSString * const kLTTextureCreationFailedException;
 
+// LTBuffer.
+extern NSString * const kLTArrayBufferMappingFailedException;
+extern NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException;
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -

@@ -19,6 +19,10 @@ NSString * const kLTTextureUnsupportedFormatException =
     @"Texture Unsupported Format Exception";
 NSString * const kLTTextureCreationFailedException = @"Texture Creation Failed Exception";
 
+NSString * const kLTArrayBufferMappingFailedException = @"Array Buffer Mapping Failed Exception";
+NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException =
+    @"Array Buffer Disallows Static Buffer Update Exception";
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -
