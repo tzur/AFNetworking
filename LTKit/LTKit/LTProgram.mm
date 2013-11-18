@@ -51,9 +51,13 @@
 /// Set to the previously bounded program, or \c 0 if program is not bounded.
 @property (nonatomic) GLint previousProgram;
 
-/// Maps uniforms and attributes to their index.
-@property (strong, nonatomic) NSDictionary *uniforms;
-@property (strong, nonatomic) NSDictionary *attributes;
+/// Maps uniforms and attributes to their \c LTProgramObject.
+@property (strong, nonatomic) NSDictionary *uniformToObject;
+@property (strong, nonatomic) NSDictionary *attributeToObject;
+
+/// All uniforms and attributes names.
+@property (readwrite, nonatomic) NSSet *uniforms;
+@property (readwrite, nonatomic) NSSet *attributes;
 
 @end
 
@@ -65,8 +69,8 @@
 
 - (id)initWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource {
   if (self = [super init]) {
-    self.attributes = [NSMutableDictionary dictionary];
-    self.uniforms = [NSMutableDictionary dictionary];
+    self.attributeToObject = [NSMutableDictionary dictionary];
+    self.uniformToObject = [NSMutableDictionary dictionary];
     [self loadWithVertexSource:vertexSource fragmentSource:fragmentSource];
   }
   return self;
@@ -112,7 +116,7 @@
     LTProgramObject *object = [self uniformObjectForIndex:i maxNameLength:maxUniformNameLength];
     uniforms[object.name] = object;
   }
-  self.uniforms = [uniforms copy];
+  self.uniformToObject = [uniforms copy];
   
   // Get attributes data and apply attribute locations. This can be done only after linking.
   GLint attributeCount, maxAttributeNameLength;
@@ -123,7 +127,7 @@
     LTProgramObject *object = [self attributeObjectForIndex:i maxNameLength:maxAttributeNameLength];
     attributes[object.name] = object;
   }
-  self.attributes = [attributes copy];
+  self.attributeToObject = [attributes copy];
   
   // Link again to apply attribute locations.
   [self linkProgram];
@@ -244,23 +248,23 @@
 #pragma mark -
 
 - (GLuint)uniformForName:(NSString *)name {
-  return [self.uniforms[name] index];
+  return [self.uniformToObject[name] index];
 }
 
 - (GLuint)attributeForName:(NSString *)name {
-  return [self.attributes[name] index];
+  return [self.attributeToObject[name] index];
 }
 
 - (BOOL)containsUniform:(NSString *)name {
-  return (self.uniforms[name] != nil);
+  return (self.uniformToObject[name] != nil);
 }
 
 - (BOOL)containsAttribute:(NSString *)name {
-  return (self.attributes[name] != nil);
+  return (self.attributeToObject[name] != nil);
 }
 
 - (void)setUniform:(NSString *)name withValue:(id)value {
-  LTProgramObject *object = self.uniforms[name];
+  LTProgramObject *object = self.uniformToObject[name];
 
   if (object.size != 1) {
     LTAssert(NO, @"Object '%@' is of an array type, which is currently not supported", name);
@@ -331,7 +335,7 @@
 }
 
 - (id)uniformValue:(NSString *)name {
-  LTProgramObject *object = self.uniforms[name];
+  LTProgramObject *object = self.uniformToObject[name];
   
   if (object.size != 1) {
     LTAssert(NO, @"Object '%@' is of an array type, which is currently not supported", name);
@@ -389,9 +393,9 @@
 #pragma mark -
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
-  if (self.uniforms[key]) {
+  if (self.uniformToObject[key]) {
     [self setUniform:key withValue:obj];
-  } else if (self.attributes[key]) {
+  } else if (self.attributeToObject[key]) {
     // TODO:(yaron) add attribute set logic here.
   } else {
     LTAssert(NO, @"Given name '%@' is not a uniform nor attribute in this program", key);
@@ -399,14 +403,30 @@
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
-  if (self.uniforms[key]) {
+  if (self.uniformToObject[key]) {
     return [self uniformValue:key];
-  } else if (self.attributes[key]) {
+  } else if (self.attributeToObject[key]) {
     // TODO:(yaron) add attribute get logic here.
   } else {
     LTAssert(NO, @"Given name '%@' is not a uniform nor attribute in this program", key);
   }
   return nil;
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (void)setUniformToObject:(NSDictionary *)uniformToObject {
+  _uniformToObject = uniformToObject;
+
+  self.uniforms = [NSSet setWithArray:uniformToObject.allKeys];
+}
+
+- (void)setAttributeToObject:(NSDictionary *)attributeToObject {
+  _attributeToObject = attributeToObject;
+
+  self.attributes = [NSSet setWithArray:attributeToObject.allKeys];
 }
 
 @end

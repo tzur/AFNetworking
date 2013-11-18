@@ -78,6 +78,12 @@
 /// Subscript getter to the uniform and attribute values.
 - (id)objectForKeyedSubscript:(NSString *)key;
 
+/// Names of all uniforms of the program.
+@property (readonly, nonatomic) NSSet *uniforms;
+
+/// Names of all attributes of the program.
+@property (readonly, nonatomic) NSSet *attributes;
+
 /// OpenGL name of the program.
 @property (readonly, nonatomic) GLuint name;
 

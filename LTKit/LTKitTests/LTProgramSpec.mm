@@ -153,6 +153,14 @@ context(@"uniforms and attributes presence", ^{
   it(@"should not contain invalid uniform", ^{
     expect([program containsUniform:@"myUniformFoo"]).to.equal(NO);
   });
+
+  it(@"should contain exact set of attributes", ^{
+    expect(program.attributes).to.equal([NSSet setWithArray:@[@"myAttr"]]);
+  });
+
+  it(@"should contain exact set of uniforms", ^{
+    expect(program.uniforms).to.equal([NSSet setWithArray:@[@"myUniform"]]);
+  });
 });
 
 context(@"binding and unbinding", ^{
