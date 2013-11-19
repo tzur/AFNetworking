@@ -39,6 +39,8 @@
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
 		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
 		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
+		8BB47158183B5FBA00CA1681 /* LTGPUStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */; };
+		8BB4715B183B63D000CA1681 /* LTGPUStructsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */; };
 		8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */; };
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BBE89511838CA2C006C58AA /* LTBufferArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89501838CA2C006C58AA /* LTBufferArray.mm */; };
@@ -56,6 +58,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTKit;
+		};
+		8BB4714D183B534000CA1681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		8BB4714F183B534000CA1681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		8BB47151183B534000CA1681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		8BB47153183B534000CA1681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
 		};
 		8BCA6724182FD8E6003FCB65 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -184,6 +214,12 @@
 		8BA3E143182A848300FDD95A /* LTProgramSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramSpec.mm; sourceTree = "<group>"; };
 		8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLTexture.h; sourceTree = "<group>"; };
 		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
+		8BB47146183B534000CA1681 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/utils/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMetaMacros.h; sourceTree = "<group>"; };
+		8BB47156183B5FBA00CA1681 /* LTGPUStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUStructs.h; sourceTree = "<group>"; };
+		8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructs.m; sourceTree = "<group>"; };
+		8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUStructsMacros.h; sourceTree = "<group>"; };
+		8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructsSpec.m; sourceTree = "<group>"; };
 		8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureSpec.mm; sourceTree = "<group>"; };
 		8BBE8941183503CD006C58AA /* LTTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTestUtils.h; sourceTree = "<group>"; };
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
@@ -281,6 +317,11 @@
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 				8B7DC39B18328063008D004B /* LTBoundaryCondition.h */,
 				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
+				8BBE894F1838CA2C006C58AA /* LTBufferArray.h */,
+				8BBE89501838CA2C006C58AA /* LTBufferArray.mm */,
+				8BB47156183B5FBA00CA1681 /* LTGPUStructs.h */,
+				8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */,
+				8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
 				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
 				8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */,
@@ -291,8 +332,7 @@
 				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
-				8BBE894F1838CA2C006C58AA /* LTBufferArray.h */,
-				8BBE89501838CA2C006C58AA /* LTBufferArray.mm */,
+				8BB47145183B533500CA1681 /* Libraries */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 			);
 			path = LTKit;
@@ -305,8 +345,9 @@
 				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
 				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
 				8B3DEC1018296D2200EA0C1A /* LTLogger.m */,
-				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
+				8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
+				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
 			);
@@ -339,6 +380,7 @@
 			children = (
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
 				8B3B31D7183905C200FEA96F /* LTBufferArraySpec.mm */,
+				8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
 				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
@@ -364,6 +406,25 @@
 				8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8BB47145183B533500CA1681 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				8BB47146183B534000CA1681 /* extobjc.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8BB47147183B534000CA1681 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BB4714E183B534000CA1681 /* libextobjc_OSX.a */,
+				8BB47150183B534000CA1681 /* libextobjc_iOS.a */,
+				8BB47152183B534000CA1681 /* Logic Tests.octest */,
+				8BB47154183B534000CA1681 /* iOS Tests.octest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8BBE8940183503AB006C58AA /* Test Utils */ = {
@@ -462,6 +523,10 @@
 					ProjectRef = 8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */;
 				},
 				{
+					ProductGroup = 8BB47147183B534000CA1681 /* Products */;
+					ProjectRef = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
+				},
+				{
 					ProductGroup = 8BCA673A18310DA8003FCB65 /* Products */;
 					ProjectRef = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
 				},
@@ -475,6 +540,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8BB4714E183B534000CA1681 /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = 8BB4714D183B534000CA1681 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB47150183B534000CA1681 /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = 8BB4714F183B534000CA1681 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB47152183B534000CA1681 /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = 8BB47151183B534000CA1681 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB47154183B534000CA1681 /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = 8BB47153183B534000CA1681 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8BCA672C182FD8EA003FCB65 /* libExpecta.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -556,6 +649,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB47158183B5FBA00CA1681 /* LTGPUStructs.m in Sources */,
+				8BB47141183A470400CA1681 /* LTVertexArray.m in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
@@ -576,6 +671,7 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTBufferArraySpec.mm in Sources */,
+				8BB4715B183B63D000CA1681 /* LTGPUStructsSpec.m in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
@@ -647,6 +743,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -689,6 +789,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = (
 					"-Wall",
