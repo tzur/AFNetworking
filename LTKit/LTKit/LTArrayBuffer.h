@@ -2,21 +2,21 @@
 // Created by Yaron Inger.
 
 // Type of buffer to create.
-typedef NS_ENUM(NSUInteger, LTBufferArrayType) {
+typedef NS_ENUM(NSUInteger, LTArrayBufferType) {
   /// Generic buffer that can hold vertex attributes.
-  LTBufferArrayTypeGeneric = GL_ARRAY_BUFFER,
+  LTArrayBufferTypeGeneric = GL_ARRAY_BUFFER,
   /// Buffer that holds indices of vertices, mostly used in complex geometry.
-  LTBufferArrayTypeElement = GL_ELEMENT_ARRAY_BUFFER
+  LTArrayBufferTypeElement = GL_ELEMENT_ARRAY_BUFFER
 };
 
 /// Usage hint for the buffer.
-typedef NS_ENUM(NSUInteger, LTBufferArrayUsage) {
+typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
   /// Buffer is rendered many times, and its contents are specified once and never change.
-  LTBufferArrayUsageStaticDraw = GL_STATIC_DRAW,
+  LTArrayBufferUsageStaticDraw = GL_STATIC_DRAW,
   /// Buffer is rendered many times, and its contents change during the rendering loop.
-  LTBufferArrayUsageDynamicDraw = GL_DYNAMIC_DRAW,
+  LTArrayBufferUsageDynamicDraw = GL_DYNAMIC_DRAW,
   /// Buffer is rendered a small number of times and then discarded.
-  LTBufferArrayUsageStreamDraw = GL_STREAM_DRAW
+  LTArrayBufferUsageStreamDraw = GL_STREAM_DRAW
 };
 
 /// @class LTArrayBuffer
@@ -31,15 +31,15 @@ typedef NS_ENUM(NSUInteger, LTBufferArrayUsage) {
 
 /// Initiailizes a new OpenGL buffer with a given type and buffer usage hint. The buffer will not
 /// occupy memory on the GPU until the initial \c updateWithData: is called.
-- (id)initWithType:(LTBufferArrayType)type usage:(LTBufferArrayUsage)usage;
+- (id)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage;
 
 /// Updates the buffer with the given data. If the size of the data is different than current size
 /// of the buffer, the buffer will be re-allocated.
 ///
-/// @note buffers of type \c LTBufferArrayUsageStaticDraw should only be initialized once. Trying to
+/// @note buffers of type \c LTArrayBufferUsageStaticDraw should only be initialized once. Trying to
 /// update will yield an \c LTGLException with \c
 /// kLTArrayBufferDisallowsStaticBufferUpdateException. For a buffer than can be updated
-/// continuously, use \c LTBufferArrayUsageDynamicDraw or \c LTBufferArrayUsageStreamDraw.
+/// continuously, use \c LTArrayBufferUsageDynamicDraw or \c LTArrayBufferUsageStreamDraw.
 - (void)setData:(NSData *)data;
 
 /// Retrieves the buffer data back to the CPU. This triggers a GPU -> CPU copy.
@@ -63,10 +63,10 @@ typedef NS_ENUM(NSUInteger, LTBufferArrayUsage) {
 - (void)bindAndExecute:(LTVoidBlock)block;
 
 /// OpenGL usage type of the buffer.
-@property (readonly, nonatomic) LTBufferArrayUsage usage;
+@property (readonly, nonatomic) LTArrayBufferUsage usage;
 
 /// Type of the buffer array.
-@property (readonly, nonatomic) LTBufferArrayType type;
+@property (readonly, nonatomic) LTArrayBufferType type;
 
 /// OpenGL name of the buffer.
 @property (readonly, nonatomic) GLuint name;

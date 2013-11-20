@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTBufferArray.h"
+#import "LTArrayBuffer.h"
 
 #import "LTGLException.h"
 
@@ -10,10 +10,10 @@
 @property (readwrite, nonatomic) GLuint name;
 
 /// OpenGL usage type of the buffer.
-@property (readwrite, nonatomic) LTBufferArrayUsage usage;
+@property (readwrite, nonatomic) LTArrayBufferUsage usage;
 
 /// Type of the buffer array.
-@property (readwrite, nonatomic) LTBufferArrayType type;
+@property (readwrite, nonatomic) LTArrayBufferType type;
 
 /// Current size of the buffer.
 @property (readwrite, nonatomic) NSUInteger size;
@@ -32,7 +32,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithType:(LTBufferArrayType)type usage:(LTBufferArrayUsage)usage {
+- (id)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage {
   if (self = [super init]) {
     LTAssert(usage == GL_STATIC_DRAW || usage == GL_STREAM_DRAW || usage == GL_DYNAMIC_DRAW,
              @"Usage is not one of {GL_STATIC_DRAW, GL_STREAM_DRAW, GL_DYNAMIC_DRAW}");
@@ -63,7 +63,7 @@
 
   [self bindAndExecute:^{
     switch (self.usage) {
-      case LTBufferArrayUsageStaticDraw:
+      case LTArrayBufferUsageStaticDraw:
         // Static buffers allow only initial update.
         if (self.size) {
           [LTGLException raise:kLTArrayBufferDisallowsStaticBufferUpdateException
@@ -71,7 +71,7 @@
         };
         [self createBufferWithBufferData:data];
         break;
-      case LTBufferArrayUsageDynamicDraw:
+      case LTArrayBufferUsageDynamicDraw:
         // Dynamic buffers updates buffer if the data has the same size, and creates a new one for
         // different size.
         if (self.size != data.length) {
@@ -81,7 +81,7 @@
           [self updateBufferWithMapping:data];
         }
         break;
-      case LTBufferArrayUsageStreamDraw:
+      case LTArrayBufferUsageStreamDraw:
         // Stream buffers creates a new buffer for each update.
         [self createBufferWithSize:data.length];
         [self updateBufferWithMapping:data];
@@ -168,10 +168,10 @@
   }
 
   switch (self.type) {
-    case LTBufferArrayTypeGeneric:
+    case LTArrayBufferTypeGeneric:
       glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &_previousBuffer);
       break;
-    case LTBufferArrayTypeElement:
+    case LTArrayBufferTypeElement:
       glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &_previousBuffer);
       break;
   }

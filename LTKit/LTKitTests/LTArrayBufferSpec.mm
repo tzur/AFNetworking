@@ -1,9 +1,9 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTBufferArray.h"
+#import "LTArrayBuffer.h"
 
-SpecBegin(LTBufferArray)
+SpecBegin(LTArrayBuffer)
 
 beforeEach(^{
   EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -50,11 +50,11 @@ sharedExamplesFor(@"array buffer that modifies its contents", ^(NSDictionary *di
 });
 
 it(@"should set properties after initialization", ^{
-  LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeElement
-                                                        usage:LTBufferArrayUsageStaticDraw];
+  LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                        usage:LTArrayBufferUsageStaticDraw];
 
-  expect(buffer.type).to.equal(LTBufferArrayTypeElement);
-  expect(buffer.usage).to.equal(LTBufferArrayUsageStaticDraw);
+  expect(buffer.type).to.equal(LTArrayBufferTypeElement);
+  expect(buffer.usage).to.equal(LTArrayBufferUsageStaticDraw);
   expect(buffer.size).to.equal(0);
 });
 
@@ -63,8 +63,8 @@ context(@"binding", ^{
 
   context(@"element array", ^{
     beforeEach(^{
-      buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeElement
-                                             usage:LTBufferArrayUsageStaticDraw];
+      buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                             usage:LTArrayBufferUsageStaticDraw];
     });
 
     afterEach(^{
@@ -93,8 +93,8 @@ context(@"binding", ^{
 
   context(@"generic array", ^{
     beforeEach(^{
-      buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeGeneric
-                                             usage:LTBufferArrayUsageStaticDraw];
+      buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                             usage:LTArrayBufferUsageStaticDraw];
     });
 
     afterEach(^{
@@ -122,8 +122,8 @@ context(@"binding", ^{
   });
 
   it(@"should conform binding scope of bindAndExecute", ^{
-    LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeGeneric
-                                                          usage:LTBufferArrayUsageStaticDraw];
+    LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                          usage:LTArrayBufferUsageStaticDraw];
 
     __block GLint boundedBuffer;
     [buffer bindAndExecute:^{
@@ -150,8 +150,8 @@ context(@"binding", ^{
     context(@"generic array", ^{
       context(@"static buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeGeneric
-                                                 usage:LTBufferArrayUsageStaticDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageStaticDraw];
         });
 
         afterEach(^{
@@ -173,8 +173,8 @@ context(@"binding", ^{
 
       context(@"dynamic buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeGeneric
-                                                 usage:LTBufferArrayUsageDynamicDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageDynamicDraw];
         });
 
         afterEach(^{
@@ -193,8 +193,8 @@ context(@"binding", ^{
 
       context(@"stream buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeGeneric
-                                                 usage:LTBufferArrayUsageStreamDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageStreamDraw];
         });
 
         afterEach(^{
@@ -215,8 +215,8 @@ context(@"binding", ^{
     context(@"element array", ^{
       context(@"static buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeElement
-                                                 usage:LTBufferArrayUsageStaticDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageStaticDraw];
         });
 
         afterEach(^{
@@ -238,8 +238,8 @@ context(@"binding", ^{
 
       context(@"dynamic buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeElement
-                                                 usage:LTBufferArrayUsageDynamicDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageDynamicDraw];
         });
 
         afterEach(^{
@@ -258,8 +258,8 @@ context(@"binding", ^{
 
       context(@"stream buffer", ^{
         beforeEach(^{
-          buffer = [[LTArrayBuffer alloc] initWithType:LTBufferArrayTypeElement
-                                                 usage:LTBufferArrayUsageStreamDraw];
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageStreamDraw];
         });
 
         afterEach(^{
