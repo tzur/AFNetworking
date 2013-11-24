@@ -15,10 +15,10 @@
 
 - (id)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size type:(GLenum)type;
 
-@property (nonatomic) GLuint index;
+@property (readonly, nonatomic) GLuint index;
 @property (strong, nonatomic) NSString *name;
-@property (nonatomic) GLint size;
-@property (nonatomic) GLenum type;
+@property (readonly, nonatomic) GLint size;
+@property (readonly, nonatomic) GLenum type;
 
 @end
 
@@ -26,10 +26,10 @@
 
 - (id)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size type:(GLenum)type {
   if (self = [super init]) {
-    self.index = index;
-    self.name = name;
-    self.size = size;
-    self.type = type;
+    _index = index;
+    _name = name;
+    _size = size;
+    _type = type;
   }
   return self;
 }
