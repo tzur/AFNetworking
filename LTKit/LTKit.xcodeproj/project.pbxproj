@@ -39,8 +39,8 @@
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
 		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
 		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
-		8BB47158183B5FBA00CA1681 /* LTGPUStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */; };
-		8BB4715B183B63D000CA1681 /* LTGPUStructsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */; };
+		8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */; };
+		8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */; };
 		8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */; };
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */; };
@@ -216,10 +216,10 @@
 		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
 		8BB47146183B534000CA1681 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/utils/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMetaMacros.h; sourceTree = "<group>"; };
-		8BB47156183B5FBA00CA1681 /* LTGPUStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUStructs.h; sourceTree = "<group>"; };
-		8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructs.m; sourceTree = "<group>"; };
+		8BB47156183B5FBA00CA1681 /* LTGPUStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUStruct.h; sourceTree = "<group>"; };
+		8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStruct.m; sourceTree = "<group>"; };
 		8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUStructsMacros.h; sourceTree = "<group>"; };
-		8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructsSpec.m; sourceTree = "<group>"; };
+		8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructSpec.m; sourceTree = "<group>"; };
 		8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureSpec.mm; sourceTree = "<group>"; };
 		8BBE8941183503CD006C58AA /* LTTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTestUtils.h; sourceTree = "<group>"; };
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
@@ -319,8 +319,8 @@
 				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
 				8BBE894F1838CA2C006C58AA /* LTArrayBuffer.h */,
 				8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */,
-				8BB47156183B5FBA00CA1681 /* LTGPUStructs.h */,
-				8BB47157183B5FBA00CA1681 /* LTGPUStructs.m */,
+				8BB47156183B5FBA00CA1681 /* LTGPUStruct.h */,
+				8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */,
 				8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
 				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
@@ -380,7 +380,7 @@
 			children = (
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
 				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
-				8BB4715A183B63D000CA1681 /* LTGPUStructsSpec.m */,
+				8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
 				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
@@ -649,8 +649,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BB47158183B5FBA00CA1681 /* LTGPUStructs.m in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.m in Sources */,
+				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
@@ -671,7 +671,7 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
-				8BB4715B183B63D000CA1681 /* LTGPUStructsSpec.m in Sources */,
+				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
