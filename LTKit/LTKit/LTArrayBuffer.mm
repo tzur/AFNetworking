@@ -47,6 +47,7 @@
 }
 
 - (void)dealloc {
+  [self unbind];
   glDeleteBuffers(1, &_name);
   LTGLCheckDbg(@"Failed to delete buffer: %d", _name);
 }
