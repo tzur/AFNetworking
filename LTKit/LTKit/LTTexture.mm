@@ -137,11 +137,11 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTextureUnit);
 
   // Make sure we switch to the active texture unit at the time of binding.
-  if (activeTextureUnit != _boundedTextureUnit) {
+  if (activeTextureUnit != self.boundedTextureUnit) {
     glActiveTexture(self.boundedTextureUnit);
   }
   glBindTexture(GL_TEXTURE_2D, self.previousTexture);
-  if (activeTextureUnit != _boundedTextureUnit) {
+  if (activeTextureUnit != self.boundedTextureUnit) {
     glActiveTexture(activeTextureUnit);
   }
   
