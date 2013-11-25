@@ -129,8 +129,8 @@ context(@"compiling shaders", ^{
     
     expect(^{
       __unused LTProgram *program =
-      [[LTProgram alloc] initWithVertexSource:vertexSource
-                               fragmentSource:fragmentSource];
+          [[LTProgram alloc] initWithVertexSource:vertexSource
+                                   fragmentSource:fragmentSource];
     }).to.raise(kLTProgramLinkFailedException);
   });
 });
