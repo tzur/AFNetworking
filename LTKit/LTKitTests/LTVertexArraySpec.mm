@@ -42,8 +42,8 @@ static LTVertexArray *LTVertexArrayWithTwoStructs() {
   LTVertexArrayElement *singleFieldElement = LTArrayElementForSingleFieldsStruct();
   LTVertexArrayElement *multipleFieldsElement = LTArrayElementForMultipleFieldsStruct();
 
-  NSSet *attributes = [[NSSet setWithArray:singleFieldElement.attributeToField.allKeys]
-                       setByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
+  NSArray *attributes = [singleFieldElement.attributeToField.allKeys
+      arrayByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
 
   LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
   [vertexArray addElement:singleFieldElement];
@@ -147,7 +147,7 @@ afterEach(^{
 
 it(@"should fail initializing with empty attribute", ^{
   expect(^{
-    __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:[NSSet set]];
+    __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[]];
   }).to.raise(NSInternalInconsistencyException);
 });
 
@@ -155,7 +155,7 @@ context(@"binding", ^{
   __block LTVertexArray *vertexArray;
 
   beforeEach(^{
-    vertexArray = [[LTVertexArray alloc] initWithAttributes:[NSSet setWithArray:@[@"foo"]]];
+    vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"foo"]];
   });
 
   afterEach(^{
@@ -195,16 +195,14 @@ context(@"binding", ^{
 
 context(@"adding elements", ^{
   it(@"should be initially incomplete", ^{
-    NSSet *attributes = [NSSet setWithArray:@[@"dummy"]];
-    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
-    expect(vertexArray.isComplete).toNot.beTruthy();
+    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"dummy"]];
+    expect(vertexArray.complete).toNot.beTruthy();
   });
 
   it(@"should fail when adding an existing struct", ^{
     LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-    NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
-
-    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
+    LTVertexArray *vertexArray = [[LTVertexArray alloc]
+                                  initWithAttributes:element.attributeToField.allKeys];
     [vertexArray addElement:element];
 
     expect(^{
@@ -214,9 +212,7 @@ context(@"adding elements", ^{
 
   it(@"should fail when adding element with unknown attribute", ^{
     LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-    NSSet *attributes = [NSSet setWithArray:@[@"dummy"]];
-
-    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
+    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"dummy"]];
 
     expect(^{
       [vertexArray addElement:element];
@@ -230,9 +226,7 @@ context(@"retrieving elements", ^{
 
   beforeEach(^{
     element = LTArrayElementForSingleFieldsStruct();
-    NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
-
-    vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
+    vertexArray = [[LTVertexArray alloc] initWithAttributes:element.attributeToField.allKeys];
     [vertexArray addElement:element];
   });
 
@@ -245,29 +239,31 @@ context(@"retrieving elements", ^{
     expect([vertexArray elementForStructName:@"Foo"]).to.beNil();
     expect(vertexArray[@"Foo"]).to.beNil();
   });
+
+  it(@"should retrieve element list", ^{
+    expect(vertexArray.elements).to.equal(@[vertexArray[@"SingleFieldStruct"]]);
+  });
 });
 
 context(@"one struct single field", ^{
   it(@"should become complete", ^{
     LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-    NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
-
-    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
+    LTVertexArray *vertexArray = [[LTVertexArray alloc]
+                                  initWithAttributes:element.attributeToField.allKeys];
     [vertexArray addElement:element];
 
-    expect(vertexArray.isComplete).to.beTruthy();
+    expect(vertexArray.complete).to.beTruthy();
   });
 });
 
 context(@"one struct multiple fields", ^{
   it(@"should become complete", ^{
     LTVertexArrayElement *element = LTArrayElementForMultipleFieldsStruct();
-    NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
-
-    LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
+    LTVertexArray *vertexArray = [[LTVertexArray alloc]
+                                  initWithAttributes:element.attributeToField.allKeys];
     [vertexArray addElement:element];
 
-    expect(vertexArray.isComplete).to.beTruthy();
+    expect(vertexArray.complete).to.beTruthy();
   });
 });
 
@@ -280,21 +276,21 @@ context(@"multiple structs multiple fields", ^{
     singleFieldElement = LTArrayElementForSingleFieldsStruct();
     multipleFieldsElement = LTArrayElementForMultipleFieldsStruct();
 
-    NSSet *attributes =
-        [[NSSet setWithArray:singleFieldElement.attributeToField.allKeys]
-         setByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
+    NSArray *attributes =
+        [singleFieldElement.attributeToField.allKeys
+         arrayByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
     vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
   });
 
   it(@"should not become complete when adding single element", ^{
     [vertexArray addElement:singleFieldElement];
-    expect(vertexArray.isComplete).toNot.beTruthy();
+    expect(vertexArray.complete).toNot.beTruthy();
   });
 
   it(@"should become complete after adding all elements", ^{
     [vertexArray addElement:singleFieldElement];
     [vertexArray addElement:multipleFieldsElement];
-    expect(vertexArray.isComplete).to.beTruthy();
+    expect(vertexArray.complete).to.beTruthy();
   });
 });
 
@@ -354,9 +350,13 @@ context(@"element count", ^{
 
 context(@"vertex attrib configuration", ^{
   const NSUInteger kElementCount = 4;
+  NSDictionary * const kAttributeToIndex = @{
+    @"position": @(0),
+    @"texcoord": @(1),
+    @"intensity": @(2)
+  };
 
   __block LTVertexArray *vertexArray;
-  __block LTProgram *program;
 
   beforeEach(^{
     vertexArray = LTVertexArrayWithTwoStructs();
@@ -369,13 +369,7 @@ context(@"vertex attrib configuration", ^{
         [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
     [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
 
-    NSString *vertexSource = @"attribute highp vec2 position; "
-        "attribute highp vec2 texcoord; "
-        "attribute highp vec4 intensity; "
-        "void main() { position; texcoord; intensity; gl_Position = vec4(0.0); }";
-    NSString *fragmentSource = @"void main() { gl_FragColor = vec4(0.0); }";
-
-    program = [[LTProgram alloc] initWithVertexSource:vertexSource fragmentSource:fragmentSource];
+    [vertexArray attachAttributesToIndices:kAttributeToIndex];
   });
 
   afterEach(^{
@@ -383,13 +377,11 @@ context(@"vertex attrib configuration", ^{
   });
 
   it(@"should enable all shader attributes", ^{
-    [vertexArray attachToProgram:program];
-
     [vertexArray bindAndExecute:^{
-      for (NSString *attribute in program.attributes) {
+      for (NSString *attribute in kAttributeToIndex) {
         GLint vertexAttribArrayEnabled = 0;
-        glGetVertexAttribiv([program attributeForName:attribute], GL_VERTEX_ATTRIB_ARRAY_ENABLED,
-                            &vertexAttribArrayEnabled);
+        glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                            GL_VERTEX_ATTRIB_ARRAY_ENABLED, &vertexAttribArrayEnabled);
 
         expect(vertexAttribArrayEnabled).toNot.equal(0);
       }
@@ -397,39 +389,33 @@ context(@"vertex attrib configuration", ^{
   });
 
   it(@"should set correct element size", ^{
-    [vertexArray attachToProgram:program];
-
     LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
       ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
        GLint arraySize = 0;
-       glGetVertexAttribiv([program attributeForName:attribute], GL_VERTEX_ATTRIB_ARRAY_SIZE,
-                           &arraySize);
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_SIZE, &arraySize);
 
        expect(arraySize).to.equal(field.componentCount);
     });
   });
 
   it(@"should set correct type", ^{
-    [vertexArray attachToProgram:program];
-
     LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
       ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
        GLint arrayStride = 0;
-       glGetVertexAttribiv([program attributeForName:attribute], GL_VERTEX_ATTRIB_ARRAY_TYPE,
-                           &arrayStride);
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_TYPE, &arrayStride);
 
        expect(arrayStride).to.equal(field.componentType);
     });
   });
 
   it(@"should set correct stride", ^{
-    [vertexArray attachToProgram:program];
-
     LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
       ^(NSString *attribute, LTGPUStruct *gpuStruct, LTGPUStructField *) {
        GLint arrayStride = 0;
-       glGetVertexAttribiv([program attributeForName:attribute], GL_VERTEX_ATTRIB_ARRAY_STRIDE,
-                           &arrayStride);
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_STRIDE, &arrayStride);
 
        expect(arrayStride).to.equal(gpuStruct.size);
     });
@@ -439,8 +425,8 @@ context(@"vertex attrib configuration", ^{
     LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
       ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *) {
        GLint arrayNormalize = 0;
-       glGetVertexAttribiv([program attributeForName:attribute], GL_VERTEX_ATTRIB_ARRAY_NORMALIZED,
-                           &arrayNormalize);
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_NORMALIZED, &arrayNormalize);
 
        expect(arrayNormalize).to.equal(GL_FALSE);
     });

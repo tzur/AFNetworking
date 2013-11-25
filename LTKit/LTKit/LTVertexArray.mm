@@ -65,7 +65,7 @@
 @property (strong, nonatomic) NSSet *unattachedAttributes;
 
 /// Maps struct name to an \c LTVertexArrayElement.
-@property (strong, nonatomic) NSMutableDictionary *elements;
+@property (strong, nonatomic) NSMutableDictionary *structNameToElement;
 
 /// Set to the previously bounded vertex array, or \c 0 if the vertex array is not bounded.
 @property (nonatomic) GLint previousVertexArray;
@@ -84,13 +84,13 @@
 #pragma mark Initialization and destruction
 #pragma mark -
 
-- (id)initWithAttributes:(NSSet *)attributes {
+- (id)initWithAttributes:(NSArray *)attributes {
   if (self = [super init]) {
     LTAssert(attributes.count, @"Given attributes set must contain at least one attribute");
     
-    self.attributes = attributes;
+    self.attributes = [NSSet setWithArray:attributes];
     self.unattachedAttributes = self.attributes;
-    self.elements = [NSMutableDictionary dictionary];
+    self.structNameToElement = [NSMutableDictionary dictionary];
 
     glGenVertexArraysOES(1, &_name);
     LTGLCheck(@"Failed generating vertex array");
@@ -109,15 +109,15 @@
 #pragma mark -
 
 - (void)addElement:(LTVertexArrayElement *)element {
-  LTAssert(!self.elements[element.gpuStruct.name], @"Given struct name '%@' already added to this "
-           "vertex array", element.gpuStruct.name);
+  LTAssert(!self.structNameToElement[element.gpuStruct.name], @"Given struct name '%@' already "
+           "added to this vertex array", element.gpuStruct.name);
 
   NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
   LTAssert([attributes isSubsetOfSet:self.unattachedAttributes],
            @"Given attributes are not a subset of the unattached array attributes (%@ vs. %@)",
            attributes, self.unattachedAttributes);
 
-  self.elements[element.gpuStruct.name] = element;
+  self.structNameToElement[element.gpuStruct.name] = element;
 
   // Remove given attributes from the set of the unattached attributes.
   NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *attribute,
@@ -128,7 +128,7 @@
 }
 
 - (LTVertexArrayElement *)elementForStructName:(NSString *)name {
-  return self.elements[name];
+  return self.structNameToElement[name];
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
@@ -167,18 +167,19 @@
   [self unbind];
 }
 
-- (void)attachToProgram:(LTProgram *)program {
-  LTAssert(self.isComplete, @"Vertex array must be complete before attaching a program");
-  LTAssert([program.attributes isEqualToSet:self.attributes], @"Program contains different set of "
-           "attibutes than the ones specified in this vertex array (%@ vs %@)", program.attributes,
-           self.attributes);
+- (void)attachAttributesToIndices:(NSDictionary *)attributeToIndex {
+  LTAssert(self.complete, @"Vertex array must be complete before attaching a program");
+
+  NSSet *attributes = [NSSet setWithArray:[attributeToIndex allKeys]];
+  LTAssert([attributes isEqualToSet:self.attributes],
+           @"Program contains different set of attibutes than the ones specified in the vertex "
+           "array (%@ vs %@)", attributes, self.attributes);
 
   [self bindAndExecute:^{
-    for (NSString *structName in self.elements) {
-      LTVertexArrayElement *element = self.elements[structName];
+    for (LTVertexArrayElement *element in self.elements) {
       [element.arrayBuffer bindAndExecute:^{
         for (NSString *attribute in element.attributeToField) {
-          GLuint index = [program attributeForName:attribute];
+          GLuint index = [attributeToIndex[attribute] unsignedIntValue];
           glEnableVertexAttribArray(index);
 
           // Struct with single element is always tightly packed.
@@ -187,20 +188,20 @@
           LTGPUStructField *field = element.attributeToField[attribute];
           glVertexAttribPointer(index, field.componentCount,
                                 field.componentType, GL_FALSE, stride, NULL);
-          LTGLCheck(@"Error while setting vertex attrib pointer");
+          LTGLCheckDbg(@"Error while setting vertex attrib pointer");
         }
       }];
     }
   }];
 
-  LTGLCheck(@"Error while binding vertex array to attributes");
+  LTGLCheckDbg(@"Error while binding vertex array to attributes");
 }
 
 - (GLsizei)count {
   NSUInteger elementCount = 0;
 
-  for (NSString *structName in self.elements) {
-    LTVertexArrayElement *element = self.elements[structName];
+  for (NSString *structName in self.structNameToElement) {
+    LTVertexArrayElement *element = self.structNameToElement[structName];
 
     LTAssert(element.arrayBuffer.size % element.gpuStruct.size == 0,
              @"Array buffer size includes a fractional struct (buffer size: %d, struct size: %lu",
@@ -218,8 +219,12 @@
   return elementCount;
 }
 
-- (BOOL)isComplete {
+- (BOOL)complete {
   return !self.unattachedAttributes.count;
+}
+
+- (NSArray *)elements {
+  return [self.structNameToElement allValues];
 }
 
 @end

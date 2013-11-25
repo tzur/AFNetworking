@@ -54,9 +54,10 @@
 /// buffer arrays to program attributes are contained in this class.
 @interface LTVertexArray : NSObject
 
-/// Initializes a vertex array with a set of attributes. The set should contain at least one
-/// attribute. Before drawing, all the given attributes must be defined using \c addElement:.
-- (id)initWithAttributes:(NSSet *)attributes;
+/// Initializes a vertex array with a set of attributes. The array should contain at least one
+/// attribute. Duplicate attributes will be ignored. Before drawing, all the given attributes must
+/// be defined using \c addElement:.
+- (id)initWithAttributes:(NSArray *)attributes;
 
 /// Adds the given \c LTVertexArrayElement as an element in this vertex array. The element must
 /// contain a GPU struct that don't exist in this vertex array, and attributes that are defined in
@@ -85,10 +86,10 @@
 /// automatically \c bind and \c unbind the vertex array before and after the block, accordingly.
 - (void)bindAndExecute:(LTVoidBlock)block;
 
-/// Attaches the receiver to the program by binding the vertex array elements to their corresponding
-/// given program attributes. The attached program must have the same set of attributes as the
-/// receiver, and the receiver must be complete (see \c isComplete) before attaching.
-- (void)attachToProgram:(LTProgram *)program;
+/// Attaches the receiver to concrete vertex attribute indices, using the given attribute to index
+/// mapping. The given \c attributeToIndex dictionary must have the same set of attributes as the
+/// receiver, and the receiver must be complete (see \c complete) before attaching.
+- (void)attachAttributesToIndices:(NSDictionary *)attributeToIndex;
 
 /// Retrieves number of vertices defined by this vertex array.
 ///
@@ -101,6 +102,12 @@
 
 /// Returns \c YES if the added elements contains a complete representation of this vertex array's
 /// attributes.
-@property (readonly, nonatomic) BOOL isComplete;
+@property (readonly, nonatomic) BOOL complete;
+
+/// Returns all \c LTVertexArrayElement objects in this vertex array.
+@property (readonly, nonatomic) NSArray *elements;
+
+/// Vertex attributes that are being used in this vertex array.
+@property (readonly, nonatomic) NSSet *attributes;
 
 @end
