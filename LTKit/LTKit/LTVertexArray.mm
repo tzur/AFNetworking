@@ -162,9 +162,13 @@
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  [self bind];
-  if (block) block();
-  [self unbind];
+  if (self.bounded) {
+    block();
+  } else {
+    [self bind];
+    if (block) block();
+    [self unbind];
+  }
 }
 
 - (void)attachAttributesToIndices:(NSDictionary *)attributeToIndex {

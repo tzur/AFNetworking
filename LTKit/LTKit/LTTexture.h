@@ -99,13 +99,13 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 /// method has no effect.
 - (void)destroy;
 
-/// Stores the texture's data in the given \rect to the given \image. The image will be created with
-/// the same precision and size of the given \rect, if needed. The rect must be contained in the
-/// texture's rect (0, 0, size.width, size.height).
+/// Stores the texture's data in the given \c rect to the given \c image. The image will be created
+/// with the same precision and size of the given \c rect, if needed. The rect must be contained in
+/// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
-/// Loads data from the given \image to texture at the given \rect. The image must have the same
-/// precision as the texture's and the same size as the given \rect. The rect must be contained in
+/// Loads data from the given \c image to texture at the given \c rect. The image must have the same
+/// precision as the texture's and the same size as the given \c rect. The rect must be contained in
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image;
 
@@ -122,8 +122,11 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 /// instead. If the texture is not bounded, nothing will happen.
 - (void)unbind;
 
-/// Executes the given block while the texture is bounded to the active context. This will
-/// automatically \c bind and \c unbind the texture before and after the block, accordingly.
+/// Executes the given block while the receiver is bounded to the active context. If the receiver is
+/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
+/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
+/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
+/// context.
 - (void)bindAndExecute:(LTVoidBlock)block;
 
 /// Clones the texture. This creates a new texture with the same content, but with a different

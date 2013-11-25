@@ -82,8 +82,11 @@
 /// instead. If the vertex array is not bounded, nothing will happen.
 - (void)unbind;
 
-/// Executes the given block while the vertex array is bounded to the active context. This will
-/// automatically \c bind and \c unbind the vertex array before and after the block, accordingly.
+/// Executes the given block while the receiver is bounded to the active context. If the receiver is
+/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
+/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
+/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
+/// context.
 - (void)bindAndExecute:(LTVoidBlock)block;
 
 /// Attaches the receiver to concrete vertex attribute indices, using the given attribute to index

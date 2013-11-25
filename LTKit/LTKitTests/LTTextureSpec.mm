@@ -196,6 +196,18 @@ context(@"binding and unbinding", ^{
     expect(currentTexture).to.equal(0);
   });
 
+  it(@"should support recursive binding", ^{
+    __block GLint currentTexture;
+
+    [texture bindAndExecute:^{
+      [texture bindAndExecute:^{
+      }];
+
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(texture.name);
+    }];
+  });
+
   it(@"should bind and unbind from the same texture unit", ^{
     glActiveTexture(GL_TEXTURE0);
     [texture bind];
