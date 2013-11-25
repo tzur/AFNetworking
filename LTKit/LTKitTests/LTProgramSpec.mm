@@ -24,9 +24,11 @@ static NSString * const kUniformTypesVertexSource =
   "uniform highp mat2 uMat2; "
   "uniform highp mat3 uMat3; "
   "uniform highp mat4 uMat4; "
+  "uniform highp sampler2D uSampler; "
   "void main() { "
   "  uInt; "
   "  uFloat; "
+  "  texture2D(uSampler, vec2(0.0)); "
   "  uVec2; "
   "  uVec3; "
   "  uVec4; "
@@ -78,15 +80,18 @@ context(@"getting and setting uniforms and attributes", ^{
     
     program[@"uInt"] = intValue;
     program[@"uFloat"] = floatValue;
+    program[@"uSampler"] = intValue;
     program[@"uVec2"] = vec2;
     program[@"uVec3"] = vec3;
     program[@"uVec4"] = vec4;
     program[@"uMat2"] = mat2;
     program[@"uMat3"] = mat3;
     program[@"uMat4"] = mat4;
+    program[@"uSampler"] = intValue;
     
     expect(program[@"uInt"]).to.equal(intValue);
     expect(program[@"uFloat"]).to.equal(floatValue);
+    expect(program[@"uSampler"]).to.equal(intValue);
     expect([program[@"uVec2"] isEqualToValue:vec2]).to.beTruthy();
     expect([program[@"uVec3"] isEqualToValue:vec3]).to.beTruthy();
     expect([program[@"uVec4"] isEqualToValue:vec4]).to.beTruthy();

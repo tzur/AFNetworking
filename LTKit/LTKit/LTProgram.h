@@ -59,7 +59,7 @@
 /// the type of the uniform is \c int or \c float), or an \c NSValue (for vector and matrix types).
 - (id)uniformValue:(NSString *)name;
 
-/// Subscript setter to uniform and attribute values.
+/// Subscript setter to uniform values.
 ///
 /// Examples of use:
 /// @code
@@ -75,7 +75,7 @@
 /// @param key name of the uniform or arrtibute to set.
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
 
-/// Subscript getter to the uniform and attribute values.
+/// Subscript getter to the uniform value keyed by its name.
 - (id)objectForKeyedSubscript:(NSString *)key;
 
 /// Names of all uniforms of the program.

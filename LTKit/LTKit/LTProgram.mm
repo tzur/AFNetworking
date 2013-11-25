@@ -273,7 +273,8 @@
   [self bind];
   
   switch (object.type) {
-    case GL_INT: {
+    case GL_INT:
+    case GL_SAMPLER_2D: {
       if (![value isKindOfClass:[NSNumber class]]) {
         LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
       }
@@ -342,7 +343,8 @@
   }
 
   switch (object.type) {
-    case GL_INT: {
+    case GL_INT:
+    case GL_SAMPLER_2D: {
       GLint value;
       glGetUniformiv(self.name, object.index, &value);
       return @(value);
@@ -395,21 +397,17 @@
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
   if (self.uniformToObject[key]) {
     [self setUniform:key withValue:obj];
-  } else if (self.attributeToObject[key]) {
-    // TODO:(yaron) add attribute set logic here.
   } else {
-    LTAssert(NO, @"Given name '%@' is not a uniform nor attribute in this program", key);
+    LTAssert(NO, @"Given name '%@' is not a valid uniform in this program", key);
   }
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
   if (self.uniformToObject[key]) {
     return [self uniformValue:key];
-  } else if (self.attributeToObject[key]) {
-    // TODO:(yaron) add attribute get logic here.
-  } else {
-    LTAssert(NO, @"Given name '%@' is not a uniform nor attribute in this program", key);
   }
+
+  LTAssert(NO, @"Given name '%@' is not a valid uniform in this program", key);
   return nil;
 }
 
