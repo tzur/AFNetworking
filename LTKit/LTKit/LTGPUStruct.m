@@ -51,9 +51,9 @@
 + (GLint)componentCountForFieldType:(NSString *)type size:(size_t)size {
   switch ([[self class] componentTypeForFieldType:type]) {
     case GL_FLOAT:
-      return size / sizeof(GLfloat);
+      return (GLint)(size / sizeof(GLfloat));
     case GL_UNSIGNED_SHORT:
-      return size / sizeof(GLushort);
+      return (GLint)(size / sizeof(GLushort));
   }
 
   [NSException raise:NSInternalInconsistencyException

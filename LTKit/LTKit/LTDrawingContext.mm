@@ -74,7 +74,7 @@
     }
   }];
 
-  LTGLCheckDbg(@"Error while drawing with mode %d", mode);
+  LTGLCheckDbg(@"Error while drawing with mode %lu", (unsigned long)mode);
 }
 
 - (void)attachProgram:(LTProgram *)program toVertexArray:(LTVertexArray *)vertexArray {

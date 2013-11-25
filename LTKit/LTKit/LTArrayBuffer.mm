@@ -126,13 +126,13 @@
 
 - (void)createBufferWithSize:(GLsizeiptr)size {
   glBufferData(self.type, size, NULL, self.usage);
-  LTGLCheckDbg(@"Error creating buffer with length: %d", self.size);
+  LTGLCheckDbg(@"Error creating buffer with length: %lu", (unsigned long)self.size);
   self.size = size;
 }
 
 - (void)createBufferWithBufferData:(NSData *)data {
   glBufferData(self.type, data.length, data.bytes, self.usage);
-  LTGLCheckDbg(@"Error creating buffer with data length: %d", data.length);
+  LTGLCheckDbg(@"Error creating buffer with data length: %lu", (unsigned long)data.length);
   self.size = data.length;
 }
 

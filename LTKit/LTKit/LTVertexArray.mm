@@ -183,7 +183,8 @@
           glEnableVertexAttribArray(index);
 
           // Struct with single element is always tightly packed.
-          GLsizei stride = element.gpuStruct.fields.count == 1 ? 0 : element.gpuStruct.size;
+          GLsizei stride = (GLsizei)(element.gpuStruct.fields.count == 1
+                                     ? 0 : element.gpuStruct.size);
 
           LTGPUStructField *field = element.attributeToField[attribute];
           glVertexAttribPointer(index, field.componentCount,
@@ -198,16 +199,16 @@
 }
 
 - (GLsizei)count {
-  NSUInteger elementCount = 0;
+  GLsizei elementCount = 0;
 
   for (NSString *structName in self.structNameToElement) {
     LTVertexArrayElement *element = self.structNameToElement[structName];
 
     LTAssert(element.arrayBuffer.size % element.gpuStruct.size == 0,
-             @"Array buffer size includes a fractional struct (buffer size: %d, struct size: %lu",
-             element.arrayBuffer.size, element.gpuStruct.size);
+             @"Array buffer size includes a fractional struct (buffer size: %lu, struct size: %lu",
+             (unsigned long)element.arrayBuffer.size, element.gpuStruct.size);
 
-    NSUInteger thisElementCount = element.arrayBuffer.size / element.gpuStruct.size;
+    GLsizei thisElementCount = (GLsizei)(element.arrayBuffer.size / element.gpuStruct.size);
     if (!elementCount) {
       elementCount = thisElementCount;
     }
