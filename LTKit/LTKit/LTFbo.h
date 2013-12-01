@@ -40,6 +40,10 @@
 
 @end
 
+#pragma mark -
+#pragma mark For testing
+#pragma mark -
+
 @interface LTFbo (ForTesting)
 
 /// Designated initializer: create an FBO with a target texture (without clearing it in the
