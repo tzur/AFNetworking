@@ -22,11 +22,17 @@ typedef NS_ENUM(NSUInteger, LTShaderType) {
 /// or \c kLTShaderCompilationFailedException if the shader failed to compile.
 - (id)initWithType:(LTShaderType)type andSource:(NSString *)source;
 
-/// Binds the shader to the given program name. If shader is already bounded, the call is ignored.
-- (void)bindToProgram:(LTProgram *)program;
+/// Attaches the shader to the given program name. If shader is already attached to a program, the
+/// call is ignored.
+- (void)attachToProgram:(LTProgram *)program;
 
-/// Unbinds the shader from the bounded program. If the shader is not bounded, the call is ignored.
-- (void)unbind;
+/// Detaches the shader from the attached program. If the shader is not bounded, the call is
+/// ignored.
+- (void)detach;
+
+/// Attaches to the given program, executes the block and detaches afterwards. Making recursive
+/// calls to \c attachToProgram:andExecute: is possible without loss of context.
+- (void)attachToProgram:(LTProgram *)program andExecute:(LTVoidBlock)block;
 
 /// Type of the shader.
 @property (readonly, nonatomic) LTShaderType type;

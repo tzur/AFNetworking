@@ -33,7 +33,7 @@
 }
 
 - (void)dealloc {
-  [self unbind];
+  [self detach];
 
   glDeleteShader(_name);
   LTGLCheckDbg(@"Error deleting shader");
@@ -72,22 +72,33 @@
 }
 
 #pragma mark -
-#pragma mark Binding
+#pragma mark Attaching
 #pragma mark -
 
-- (void)bindToProgram:(LTProgram *)program {
+- (void)attachToProgram:(LTProgram *)program {
   if (self.boundProgram) {
     return;
   }
   glAttachShader(program.name, self.name);
+  self.boundProgram = program;
 }
 
-- (void)unbind {
+- (void)detach {
   if (!self.boundProgram) {
     return;
   }
   glDetachShader(self.boundProgram.name, self.name);
   self.boundProgram = nil;
+}
+
+- (void)attachToProgram:(LTProgram *)program andExecute:(LTVoidBlock)block {
+  if (self.boundProgram) {
+    if (block) block();
+  } else {
+    [self attachToProgram:program];
+    if (block) block();
+    [self detach];
+  }
 }
 
 @end
