@@ -3,116 +3,174 @@
 
 #import "LTFbo.h"
 
+#import "LTDevice.h"
+
 @interface LTFbo ()
 
-// Texture assocaited with the fbo.
+/// Texture associated with the FBO.
 @property (strong, nonatomic) LTTexture *texture;
-// Framebuffer identifier.
+
+/// Framebuffer identifier.
 @property (nonatomic) GLuint framebuffer;
-// Framebuffer to bind when the fbo unbinds.
-@property (nonatomic) GLint framebufferToRebind;
-// Viewport to restore when the fbo unbinds.
-@property (nonatomic) CGRect viewportToRestore;
-// Is currently bound. Used to enforce proper bind->unbind calls.
-@property (nonatomic) BOOL currentlyBound;
+
+/// Set to the previously bounded framebuffer, or \c 0 if the framebuffer is not bounded.
+@property (nonatomic) GLint previousFramebuffer;
+
+/// Viewport to restore when the current framebuffer unbinds.
+@property (nonatomic) CGRect previousViewport;
+
+/// YES if the program is currently bounded.
+@property (nonatomic) BOOL bounded;
 
 @end
 
 @implementation LTFbo
-
-static const GLint NO_FRAMEBUFFER = -1;
 
 #pragma mark -
 #pragma mark Initialization and Setup
 #pragma mark -
 
 - (id)initWithTexture:(LTTexture *)texture {
+  return [self initWithTexture:texture device:[LTDevice currentDevice]];
+}
+
+- (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
   if (self = [super init]) {
-    // Set the default properties, and try to setup the framebuffer. Return nil in case the
-    // framebuffer setup failed.
-    self.framebufferToRebind = NO_FRAMEBUFFER;
-    self.viewportToRestore = CGRectNull;
-    self.texture = texture;
-    if (![self setupFramebuffer]) {
-      return nil;
+    NSParameterAssert(texture);
+
+    if (!texture.name) {
+      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's name is 0"];
     }
+    if (CGSizeEqualToSize(texture.size, CGSizeZero)) {
+      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's size is (0, 0)"];
+    }
+
+    [self verifyTextureAsRenderTarget:texture withDevice:device];
+
+    self.previousViewport = CGRectNull;
+    self.texture = texture;
+
+    [self createFramebuffer];
   }
   return self;
 }
 
 - (void)dealloc {
-  
+  if (self.framebuffer) {
+    [self bindAndExecute:^{
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+    }];
+    glDeleteFramebuffers(1, &_framebuffer);
+  }
+  LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
 }
 
-- (BOOL)setupFramebuffer {
-  return NO;
+- (void)verifyTextureAsRenderTarget:(LTTexture *)texture withDevice:(LTDevice *)device {
+  switch (texture.precision) {
+    case LTTexturePrecisionByte:
+      // Rendering to byte precision is possible by OpenGL ES 2.0 spec.
+      break;
+    case LTTexturePrecisionHalfFloat:
+      if (!device.canRenderToHalfFloatTextures) {
+        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a "
+         "half-float precision, which is unsupported as a render target on this device"];
+      }
+      break;
+    case LTTexturePrecisionFloat:
+      if (!device.canRenderToFloatTextures) {
+        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a float "
+         "precision, which is unsupported as a render target on this device"];
+      }
+      break;
+  }
+}
+
+- (void)createFramebuffer {
+  glGenFramebuffers(1, &_framebuffer);
+  LTGLCheck(@"Framebuffer creation failed");
+
+  [self bindAndExecute:^{
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                           self.texture.name, 0);
+    LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.texture);
+
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE) {
+      [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
+       "(status: 0x%x, framebuffer: %d texture: %@)", status, self.framebuffer, self.texture];
+    }
+
+    LTGLCheck(@"Error while creating framebuffer");
+  }];
 }
 
 #pragma mark -
-#pragma mark Bind/Unbind
+#pragma mark Binding
 #pragma mark -
 
 - (void)bind {
-  [self bind:YES];
-}
-
-- (void)bind:(BOOL)saveCurrentState {
-  NSAssert(!self.currentlyBound, @"Tried to bind fbo while it is already bound");
-  
-  // Store the previous framebuffer and viewport, if necessary.
-  if (saveCurrentState) {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_framebufferToRebind);
-    GLint viewport[4];
-    glGetIntegerv(GL_VIEWPORT, viewport);
-    self.viewportToRestore = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
+  if (self.bounded) {
+    return;
   }
   
-  // Bind to offscreen framebuffer and set the viewport according to its size.
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_previousFramebuffer);
+  GLint viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  self.previousViewport = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
+
   glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
   glViewport(0, 0, self.texture.size.width, self.texture.size.height);
-  self.currentlyBound = YES;
+  self.bounded = YES;
 }
 
 - (void)unbind {
-  [self unbindToAnotherFbo:nil];
-}
-
-- (void)unbindToAnotherFbo:(LTFbo *)fbo {
-  NSAssert(self.currentlyBound, @"Tried to unbind fbo while it is not currently bound");
-  
-  // If another fbo is given, bind to it instead of unbinding, but configure its previous
-  // framebuffer and viewport so it'll bind to the current fbo's previous framebuffer and restore
-  // its previous viewport when it unbinds.
-  if (fbo) {
-    fbo.framebufferToRebind = self.framebufferToRebind;
-    fbo.viewportToRestore = self.viewportToRestore;
-    [fbo bind:NO];
-  } else {
-    // Otherwise, Bind to the saved framebuffer, and restore the saved viewport.
-    if (self.framebufferToRebind != NO_FRAMEBUFFER) {
-      glBindFramebuffer(GL_FRAMEBUFFER, self.framebufferToRebind);
-    }
-    if (!CGRectIsNull(self.viewportToRestore)) {
-      glViewport(self.viewportToRestore.origin.x, self.viewportToRestore.origin.y,
-                 self.viewportToRestore.size.width, self.viewportToRestore.size.height);
-    }
+  if (!self.bounded) {
+    return;
   }
-  
-  self.currentlyBound = false;
-  self.framebufferToRebind = NO_FRAMEBUFFER;
-  self.viewportToRestore = CGRectNull;
+
+  glBindFramebuffer(GL_FRAMEBUFFER, self.previousFramebuffer);
+  if (!CGRectIsNull(self.previousViewport)) {
+    glViewport(self.previousViewport.origin.x, self.previousViewport.origin.y,
+               self.previousViewport.size.width, self.previousViewport.size.height);
+  }
+
+  self.previousFramebuffer = 0;
+  self.previousViewport = CGRectNull;
+  self.bounded = NO;
+}
+
+- (void)bindAndExecute:(LTVoidBlock)block {
+  if (self.bounded) {
+    block();
+  } else {
+    [self bind];
+    if (block) block();
+    [self unbind];
+  }
 }
 
 #pragma mark -
-#pragma mark Utility
+#pragma mark Operations
 #pragma mark -
+
+- (void)clearWithColor:(GLKVector4)color {
+  GLKVector4 previousClearColor;
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, previousClearColor.v);
+
+  glClearColor(color.r, color.g, color.b, color.a);
+  [self bindAndExecute:^{
+    glClear(GL_COLOR_BUFFER_BIT);
+  }];
+  glClearColor(previousClearColor.r, previousClearColor.g, previousClearColor.b,
+               previousClearColor.a);
+}
 
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
 - (GLuint)name {
-  return self.texture.name;
+  return self.framebuffer;
 }
 
 - (CGSize)size {

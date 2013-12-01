@@ -3,8 +3,10 @@
 
 #import "LTFbo.h"
 
+#import "LTDevice.h"
 #import "LTGLTexture.h"
 #import "LTGLException.h"
+#import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 
 SpecBegin(LTFbo)
@@ -18,43 +20,123 @@ afterEach(^{
   [EAGLContext setCurrentContext:nil];
 });
 
-context(@"init with texture", ^{
+context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
-    LTTexture *texture = [LTGLTexture alloc] initWithSize:<#(CGSize)#> precision:<#(LTTexturePrecision)#> channels:<#(LTTextureChannels)#> allocateMemory:<#(BOOL)#>
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+
+    expect(fbo.name).toNot.equal(0);
   });
   
-  it(@"should init with half-float RGBA texture on capable devies", ^{
-    
+  it(@"should init with half-float RGBA texture on capable devices", ^{
+    LTDevice *device = mock([LTDevice class]);
+    [given(device.canRenderToHalfFloatTextures) willReturnBool:YES];
+
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionHalfFloat
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+
+    expect(fbo.name).toNot.equal(0);
   });
   
-  it(@"should not init with half-float RGBA texture on incapable devies", ^{
-    
+  it(@"should raise with half-float RGBA texture on incapable devices", ^{
+    LTDevice *device = mock([LTDevice class]);
+    [given(device.canRenderToHalfFloatTextures) willReturnBool:NO];
+
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionHalfFloat
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+
+    expect(^{
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+    }).to.raise(kLTFboInvalidTextureException);
   });
   
-  it(@"should not init with float RGBA texture on incapable devies", ^{
-    
+  it(@"should init with float RGBA texture on capable devices", ^{
+    LTDevice *device = mock([LTDevice class]);
+    [given(device.canRenderToFloatTextures) willReturnBool:YES];
+
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionFloat
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+
+    // Simulator doesn't support rendering to a colorbuffer, so no real initialization can happen.
+    expect(^{
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+    }).toNot.raise(kLTFboInvalidTextureException);
   });
-  
-  it(@"should not init with non-RGBA texture", ^{
-    
+
+  it(@"should raise with float RGBA texture on incapable devices", ^{
+    LTDevice *device = mock([LTDevice class]);
+    [given(device.canRenderToFloatTextures) willReturnBool:NO];
+
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionFloat
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+
+    expect(^{
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+    }).to.raise(kLTFboInvalidTextureException);
   });
-  
+
   it(@"should not init with zero-size texture", ^{
-    
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeZero
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+
+    expect(^{
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    }).to.raise(kLTFboInvalidTextureException);
   });
-  
-  pending(@"should init with LTCachedTexture");
 });
 
-context(@"binding/unbinding", ^{
-  it(@"should bind to openGL", ^{
-    
+context(@"clearing", ^{
+  it(@"should clear texture with color", ^{
+    GLKVector4 value = GLKVector4Make(0.5, 0.25, 0.75, 1.0);
+    CGSize size = CGSizeMake(10, 10);
+    cv::Mat expected(size.height, size.width, CV_8UC4);
+    expected = cv::Scalar(value.r, value.g, value.b, value.a) * 255.0;
+
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:size
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    [fbo clearWithColor:value];
+
+    cv::Mat image = [texture image];
+
+    expect(LTCompareMat(image, expected)).to.beTruthy();
   });
-  it(@"should unbind to previous", ^{
-    
+});
+
+context(@"binding", ^{
+  __block LTFbo *fbo;
+
+  beforeEach(^{
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+    fbo = [[LTFbo alloc] initWithTexture:texture];
   });
-  it(@"should unbind to another fbo", ^{
-    
+
+  afterEach(^{
+    fbo = nil;
+  });
+
+  itShouldBehaveLike(kLTResourceExamples, ^{
+    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:fbo],
+             kLTResourceExamplesOpenGLParameterName: @GL_FRAMEBUFFER_BINDING};
   });
 });
 
