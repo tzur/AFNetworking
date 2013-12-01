@@ -102,12 +102,18 @@
   LTGLCheck(@"Program creation failed");
   
   // Attach vertex and fragment shaders to program.
-  [vertex bindToProgram:self];
-  [fragment bindToProgram:self];
+  [vertex attachToProgram:self andExecute:^{
+    [fragment attachToProgram:self andExecute:^{
+      [self linkProgram];
+    }];
+  }];
   
-  [self linkProgram];
-  
-  // Get uniforms data. This can be done only after linking.
+  // Get uniforms and attributes data. This can be done only after linking.
+  [self extractUniformsFromProgram];
+  [self extractAttributesFromProgram];
+}
+
+- (void)extractUniformsFromProgram {
   GLint uniformCount, maxUniformNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_UNIFORMS, &uniformCount);
   glGetProgramiv(self.name, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxUniformNameLength);
@@ -117,8 +123,9 @@
     uniforms[object.name] = object;
   }
   self.uniformToObject = [uniforms copy];
-  
-  // Get attributes data and apply attribute locations. This can be done only after linking.
+}
+
+- (void)extractAttributesFromProgram {
   GLint attributeCount, maxAttributeNameLength;
   glGetProgramiv(self.name, GL_ACTIVE_ATTRIBUTES, &attributeCount);
   glGetProgramiv(self.name, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttributeNameLength);
@@ -128,9 +135,6 @@
     attributes[object.name] = object;
   }
   self.attributeToObject = [attributes copy];
-  
-  // Link again to apply attribute locations.
-  [self linkProgram];
 }
 
 - (void)linkProgram {
@@ -142,7 +146,7 @@
   if (logLength > 0) {
     std::unique_ptr<GLchar[]> log(new GLchar[logLength]);
     glGetProgramInfoLog(_name, logLength, NULL, log.get());
-    [LTGLException raise:kLTProgramLinkFailedException format:@"Shader link failed: %s", log.get()];
+    LogWarning(@"Shader compilation info log: %s", log.get());
   }
 #endif
   

@@ -48,10 +48,10 @@
 /// supplied in the initializer. Otherwise, the result is undefined.
 - (GLuint)attributeForName:(NSString *)name;
 
-/// Returns yes iff the shader contains a uniform variable with the given name.
+/// Returns yes iff the program contains a uniform variable with the given name.
 - (BOOL)containsUniform:(NSString *)name;
 
-/// Returns yes iff the shader contains an attribute variable with the given name.
+/// Returns yes iff the program contains an attribute variable with the given name.
 - (BOOL)containsAttribute:(NSString *)name;
 
 /// Sets a uniform's value. The value can be either an \c NSNumber (if the type of the uniform is
@@ -66,11 +66,11 @@
 ///
 /// Examples of use:
 /// @code
-/// LTShader *myShader = ...;
-/// myShader[@"myUniform"] = @(5);  // Same as glUniform1f().
+/// LTProgram *prog = ...;
+/// prog[@"myUniform"] = @(5);  // Same as glUniform1f().
 ///
 /// GLKVector3 vec = GLKVector3Make(1.f, 2.f, 3.f);
-/// myShader[@"myUniform"] = [NSValue valueWithGLKVector3:vec];  // Same as glUniform3f().
+/// prog[@"myUniform"] = [NSValue valueWithGLKVector3:vec];  // Same as glUniform3f().
 /// @endcode
 ///
 /// @param obj value to set. The type of \c obj must be either an \c NSNumber or
