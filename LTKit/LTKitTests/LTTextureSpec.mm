@@ -4,6 +4,7 @@
 #import "LTGLTexture.h"
 
 #import "LTGLException.h"
+#import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 
 // LTTexture spec is tested by the concrete class LTGLTexture.
@@ -121,7 +122,7 @@ context(@"properties", ^{
   });
 });
 
-context(@"binding and unbinding", ^{
+context(@"binding", ^{
   __block LTTexture *texture;
 
   beforeEach(^{
@@ -133,68 +134,9 @@ context(@"binding and unbinding", ^{
     texture = nil;
   });
 
-  it(@"should bind to texture", ^{
-    [texture bind];
-
-    GLint currentTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-
-    expect(currentTexture).to.equal(texture.name);
-  });
-
-  it(@"should cause no effect on second bind", ^{
-    [texture bind];
-    [texture bind];
-
-    GLint currentTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-
-    expect(currentTexture).to.equal(texture.name);
-  });
-
-  it(@"should unbind from texture", ^{
-    [texture bind];
-    [texture unbind];
-
-    GLint currentTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-
-    expect(currentTexture).to.equal(0);
-  });
-
-  it(@"should cause no effect on second unbind", ^{
-    [texture bind];
-    [texture unbind];
-    [texture unbind];
-
-    GLint currentTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-
-    expect(currentTexture).to.equal(0);
-  });
-
-  it(@"should bind and unbind", ^{
-    __block GLint currentTexture;
-
-    [texture bindAndExecute:^{
-      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-      expect(currentTexture).to.equal(texture.name);
-    }];
-
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-    expect(currentTexture).to.equal(0);
-  });
-
-  it(@"should support recursive binding", ^{
-    __block GLint currentTexture;
-
-    [texture bindAndExecute:^{
-      [texture bindAndExecute:^{
-      }];
-
-      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-      expect(currentTexture).to.equal(texture.name);
-    }];
+  itShouldBehaveLike(kLTResourceExamples, ^{
+    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
+             kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D};
   });
 
   it(@"should bind and unbind from the same texture unit", ^{

@@ -3,6 +3,8 @@
 
 #import "LTArrayBuffer.h"
 
+#import "LTGPUResourceExamples.h"
+
 SpecBegin(LTArrayBuffer)
 
 beforeEach(^{
@@ -71,23 +73,9 @@ context(@"binding", ^{
       buffer = nil;
     });
 
-    it(@"should bind", ^{
-      [buffer bind];
-
-      GLint boundedBuffer;
-      glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &boundedBuffer);
-
-      expect(boundedBuffer).to.equal(buffer.name);
-    });
-
-    it(@"should unbind", ^{
-      [buffer bind];
-      [buffer unbind];
-
-      GLint boundedBuffer;
-      glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &boundedBuffer);
-
-      expect(boundedBuffer).to.equal(0);
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+               kLTResourceExamplesOpenGLParameterName: @GL_ELEMENT_ARRAY_BUFFER_BINDING};
     });
   });
 
@@ -101,23 +89,9 @@ context(@"binding", ^{
       buffer = nil;
     });
 
-    it(@"should bind", ^{
-      [buffer bind];
-
-      GLint boundedBuffer;
-      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundedBuffer);
-
-      expect(boundedBuffer).to.equal(buffer.name);
-    });
-
-    it(@"should unbind", ^{
-      [buffer bind];
-      [buffer unbind];
-
-      GLint boundedBuffer;
-      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundedBuffer);
-
-      expect(boundedBuffer).to.equal(0);
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+               kLTResourceExamplesOpenGLParameterName: @GL_ARRAY_BUFFER_BINDING};
     });
   });
 

@@ -4,6 +4,7 @@
 #import "LTProgram.h"
 
 #import "LTGLException.h"
+#import "LTGPUResourceExamples.h"
 
 static NSString * const kBasicVertexSource = @"void main() { gl_Position = vec4(0.0); }";
 static NSString * const kBasicFragmentSource = @"void main() { gl_FragColor = vec4(0.0); }";
@@ -168,31 +169,22 @@ context(@"uniforms and attributes presence", ^{
   });
 });
 
-context(@"binding and unbinding", ^{
+context(@"binding", ^{
   __block LTProgram *program = nil;
 
   beforeEach(^{
     program = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
                                        fragmentSource:kComplexFragmentSource];
   });
-  
-  it(@"should bind to OpenGL", ^{
-    [program bind];
-    
-    GLint currentProgram;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    
-    expect(currentProgram).toNot.equal(0);
+
+  afterEach(^{
+    program = nil;
   });
-  
-  it(@"should unbind from OpenGL", ^{
-    [program bind];
-    [program unbind];
-    
-    GLint currentProgram;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    
-    expect(currentProgram).to.equal(0);
+
+  itShouldBehaveLike(kLTResourceExamples, ^{
+    NSLog(@"generating dict");
+    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:program],
+             kLTResourceExamplesOpenGLParameterName: @GL_CURRENT_PROGRAM};
   });
 });
 

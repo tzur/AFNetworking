@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTGPUResource.h"
+
 // Type of buffer to create.
 typedef NS_ENUM(NSUInteger, LTArrayBufferType) {
   /// Generic buffer that can hold vertex attributes.
@@ -27,7 +29,7 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
 /// complex geometry.  The user of this class is responsible for managing the CPU copy of the data,
 /// together with the data types this buffer holds. For an external viewer, \c LTArrayBuffer holds
 /// a buffer of bytes with no meaningful structure or types.
-@interface LTArrayBuffer : NSObject
+@interface LTArrayBuffer : NSObject <LTGPUResource>
 
 /// Initiailizes a new OpenGL buffer with a given type and buffer usage hint. The buffer will not
 /// occupy memory on the GPU until the initial \c updateWithData: is called.
@@ -49,30 +51,11 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
 /// GPU.
 - (NSData *)data;
 
-/// Binds the active context to the buffer. If the buffer is already bounded, nothing will happen.
-/// Once \c bind() is called, you must call the matching \c unbind() when the resource is no longer
-/// needed bound.
-- (void)bind;
-
-/// Unbinds the buffer from the current active OpenGL context and binds the previous program
-/// instead. If the buffer is not bounded, nothing will happen.
-- (void)unbind;
-
-/// Executes the given block while the receiver is bounded to the active context. If the receiver is
-/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
-/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
-/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
-/// context.
-- (void)bindAndExecute:(LTVoidBlock)block;
-
 /// OpenGL usage type of the buffer.
 @property (readonly, nonatomic) LTArrayBufferUsage usage;
 
 /// Type of the buffer array.
 @property (readonly, nonatomic) LTArrayBufferType type;
-
-/// OpenGL name of the buffer.
-@property (readonly, nonatomic) GLuint name;
 
 /// Size of the buffer, in bytes.
 @property (readonly, nonatomic) NSUInteger size;
