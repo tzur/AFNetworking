@@ -10,6 +10,7 @@
 		288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB3F718351FFE00A11FA4 /* LTFbo.mm */; };
 		288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4021835203300A11FA4 /* LTFboSpec.mm */; };
 		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
+		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */; };
 		8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */; };
 		8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
@@ -186,6 +187,7 @@
 		288AB4021835203300A11FA4 /* LTFboSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboSpec.mm; sourceTree = "<group>"; };
 		288AB4041835320200A11FA4 /* LTDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDevice.h; sourceTree = "<group>"; };
 		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
+		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUResourceExamples.mm; sourceTree = "<group>"; };
 		8B3667F0184757E5002A1833 /* LTGPUResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResource.h; sourceTree = "<group>"; };
 		8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResourceExamples.h; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
+				8B19620A184B31790065A057 /* LTDeviceSpec.mm */,
 				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
 				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
@@ -715,6 +718,7 @@
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
+				8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
