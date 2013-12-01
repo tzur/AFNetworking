@@ -26,8 +26,6 @@ typedef NS_ENUM(GLenum, LTTextureWrap) {
 
 /// Number of channels stored in the texture.
 typedef NS_ENUM(NSUInteger, LTTextureChannels) {
-  /// Luminance (single channel).
-  LTTextureChannelsLuminance = 1,
   /// RGBA (four channels).
   LTTextureChannelsRGBA = 4,
 };

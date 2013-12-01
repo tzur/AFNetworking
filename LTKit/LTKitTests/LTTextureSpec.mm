@@ -59,17 +59,6 @@ context(@"init with an image", ^{
     expect(texture.channels).to.equal(LTTextureChannelsRGBA);
   });
 
-  it(@"should load float intensity image", ^{
-    CGSize size = CGSizeMake(42, 67);
-    cv::Mat image(size.height, size.width, CV_32F);
-
-    LTTexture *texture = [[LTGLTexture alloc] initWithImage:image];
-
-    expect(texture.size).to.equal(size);
-    expect(texture.precision).to.equal(LTTexturePrecisionFloat);
-    expect(texture.channels).to.equal(LTTextureChannelsLuminance);
-  });
-
   it(@"should load half-float RGBA image", ^{
     CGSize size = CGSizeMake(42, 67);
     cv::Mat image(size.height, size.width, CV_16UC4);

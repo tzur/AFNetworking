@@ -23,8 +23,6 @@ static LTTexturePrecision LTPrecisionFromMat(const cv::Mat &image) {
 
 static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   switch (image.channels()) {
-    case 1:
-      return LTTextureChannelsLuminance;
     case 4:
       return LTTextureChannelsRGBA;
     default:
@@ -297,16 +295,6 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 
 - (int)matType {
   switch (self.channels) {
-    case LTTextureChannelsLuminance:
-      switch (self.precision) {
-        case LTTexturePrecisionByte:
-          return CV_8U;
-        case LTTexturePrecisionHalfFloat:
-          return CV_16U;
-        case LTTexturePrecisionFloat:
-          return CV_32F;
-      }
-      break;
     case LTTextureChannelsRGBA:
       switch (self.precision) {
         case LTTexturePrecisionByte:
