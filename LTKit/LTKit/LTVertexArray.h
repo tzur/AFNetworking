@@ -3,6 +3,8 @@
 
 #import "metamacros.h"
 
+#import "LTGPUResource.h"
+
 @class LTArrayBuffer;
 @class LTGPUStruct;
 @class LTProgram;
@@ -52,7 +54,7 @@
 /// \c LTVertexArrayElements, enabling the use of multiple \c LTGPUStruct objects in a single vertex
 /// array. This makes program binding easy, since all the vertex attribute data required to map
 /// buffer arrays to program attributes are contained in this class.
-@interface LTVertexArray : NSObject
+@interface LTVertexArray : NSObject <LTGPUResource>
 
 /// Initializes a vertex array with a set of attributes. The array should contain at least one
 /// attribute. Duplicate attributes will be ignored. Before drawing, all the given attributes must
@@ -73,22 +75,6 @@
 /// @see elementForStructName: for more information.
 - (id)objectForKeyedSubscript:(NSString *)key;
 
-/// Binds the active context to the vertex array. If the vertex array is already bounded, nothing
-/// will happen. Once \c bind() is called, you must call the matching \c unbind() when the resource
-/// is no longer needed for rendering.
-- (void)bind;
-
-/// Unbinds the vertex array from the current active OpenGL context and binds the previous program
-/// instead. If the vertex array is not bounded, nothing will happen.
-- (void)unbind;
-
-/// Executes the given block while the receiver is bounded to the active context. If the receiver is
-/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
-/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
-/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
-/// context.
-- (void)bindAndExecute:(LTVoidBlock)block;
-
 /// Attaches the receiver to concrete vertex attribute indices, using the given attribute to index
 /// mapping. The given \c attributeToIndex dictionary must have the same set of attributes as the
 /// receiver, and the receiver must be complete (see \c complete) before attaching.
@@ -99,9 +85,6 @@
 /// @note this method verifies that the element count in each attached \c LTArrayBuffer is equal,
 /// and that each buffer size is an integer multiplication of it's corresponding struct size.
 - (GLsizei)count;
-
-/// OpenGL name of the vertex array.
-@property (readonly, nonatomic) GLuint name;
 
 /// Returns \c YES if the added elements contains a complete representation of this vertex array's
 /// attributes.

@@ -4,6 +4,7 @@
 #import "LTVertexArray.h"
 
 #import "LTArrayBuffer.h"
+#import "LTGPUResourceExamples.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
 
@@ -162,34 +163,9 @@ context(@"binding", ^{
     vertexArray = nil;
   });
 
-  it(@"should bind", ^{
-    [vertexArray bind];
-
-    GLint boundedArray;
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &boundedArray);
-
-    expect(boundedArray).to.equal(vertexArray.name);
-  });
-
-  it(@"should unbind", ^{
-    [vertexArray bind];
-    [vertexArray unbind];
-
-    GLint boundedArray;
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &boundedArray);
-
-    expect(boundedArray).to.equal(0);
-  });
-
-  it(@"should conform binding scope of bindAndExecute", ^{
-    __block GLint boundedArray;
-    [vertexArray bindAndExecute:^{
-      glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &boundedArray);
-      expect(boundedArray).to.equal(vertexArray.name);
-    }];
-
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &boundedArray);
-    expect(boundedArray).to.equal(0);
+  itShouldBehaveLike(kLTResourceExamples, ^{
+    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
+             kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING_OES};
   });
 });
 

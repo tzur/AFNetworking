@@ -24,6 +24,10 @@ extern NSString * const kLTTextureCreationFailedException;
 extern NSString * const kLTArrayBufferMappingFailedException;
 extern NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException;
 
+// LTFbo.
+extern NSString * const kLTFboInvalidTextureException;
+extern NSString * const kLTFboCreationFailedException;
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -

@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTGPUResource.h"
+
 /// Precision of each channel of the texture on the GPU.
 typedef NS_ENUM(GLenum, LTTexturePrecision) {
   LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
@@ -42,7 +44,7 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 ///
 /// @note The currently supported \c cv::Mat types are \c CV_32F (grayscale), \c CV32F_C4 (four
 /// channel float), CV_16C4 (four channel half-float) and \c CV_8UC4 (RGBA).
-@interface LTTexture : NSObject {
+@interface LTTexture : NSObject <LTGPUResource> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
   GLuint _name;
@@ -111,22 +113,6 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 #pragma mark LTTexture implemented methods
 #pragma mark -
 
-/// Binds the active context to the texture. If the texture is already bounded, nothing will happen.
-/// Once \c bind() is called, you must call the matching \c unbind() when the resource is no longer
-/// needed for rendering.
-- (void)bind;
-
-/// Unbinds the texture from the current active OpenGL context and binds the previous program
-/// instead. If the texture is not bounded, nothing will happen.
-- (void)unbind;
-
-/// Executes the given block while the receiver is bounded to the active context. If the receiver is
-/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
-/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
-/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
-/// context.
-- (void)bindAndExecute:(LTVoidBlock)block;
-
 /// Clones the texture. This creates a new texture with the same content, but with a different
 /// OpenGL name. The cloning process tries to preserve the precision of the texture, according to
 /// device limitations. This means that the cloned texture can be of lower precision than the
@@ -175,9 +161,6 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 
 /// Size of the texture.
 @property (readonly, nonatomic) CGSize size;
-
-/// OpenGL identifier of the texture.
-@property (readonly, nonatomic) GLuint name;
 
 /// Precision of the texture.
 @property (readonly, nonatomic) LTTexturePrecision precision;

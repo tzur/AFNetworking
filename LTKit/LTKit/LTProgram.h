@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTGPUResource.h"
+
 /// @class LTProgram
 ///
 /// Object for representing a GLSL program. The program is composed of a vertex and a fragment
@@ -8,7 +10,7 @@
 /// and attributes (variables that are set for each vertex).
 /// This class takes care of loading the shaders from a string, compiling and linking them, and
 /// getting/setting the uniforms and attributes indices to set their values.
-@interface LTProgram : NSObject
+@interface LTProgram : NSObject <LTGPUResource>
 
 /// Initializes an OpenGL program. Once a shader is loaded, attribute and uniforms information will
 /// be retrieved.
@@ -19,22 +21,6 @@
 /// @param vertexSource GLSL source of the vertex shader.
 /// @param fragmentSource GLSL source of the fragment shader.
 - (id)initWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource;
-
-/// Binds the program to the current active OpenGL context. If the shader is already bound, nothing
-/// will happen. Once \c bind() is called, you must call the matching \c unbind() when the resource
-/// is no longer needed for rendering.
-- (void)bind;
-
-/// Unbinds the program from the current active OpenGL context and binds the previous program
-/// instead. If the program is not bound, nothing will happen.
-- (void)unbind;
-
-/// Executes the given block while the receiver is bounded to the active context. If the receiver is
-/// not already bounded, this will automatically \c bind and \c unbind the receiver before and after
-/// the block, accordingly. If the receiver is bounded, the block will execute, but no binding and
-/// unbinding will be executed, making recursive calls to \bindAndExecute: possible without loss of
-/// context.
-- (void)bindAndExecute:(LTVoidBlock)block;
 
 /// Returns true if the program is valid. See \c glValidateProgram for more information on when
 /// programs are valid or not.
@@ -86,8 +72,5 @@
 
 /// Names of all attributes of the program.
 @property (readonly, nonatomic) NSSet *attributes;
-
-/// OpenGL name of the program.
-@property (readonly, nonatomic) GLuint name;
 
 @end
