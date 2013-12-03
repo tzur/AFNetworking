@@ -28,6 +28,10 @@ extern NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException;
 extern NSString * const kLTFboInvalidTextureException;
 extern NSString * const kLTFboCreationFailedException;
 
+// LTGPUQueue.
+extern NSString * const kLTGPUQueueContextCreationFailedException;
+extern NSString * const kLTGPUQueueContextSetFailedException;
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -
@@ -55,5 +59,28 @@ extern NSString * const kLTFboCreationFailedException;
 /// @param format the exception format string.
 + (void)raiseWithGLErrors:(NSArray *)glErrors
                    format:(NSString *)format args:(va_list)args NS_FORMAT_FUNCTION(2, 0);
+
+@end
+
+#pragma mark -
+#pragma mark NSError+LTGLException
+#pragma mark -
+
+/// Error domain when translating from \c LTGLException.
+extern NSString * const kNSErrorLTGLExceptionDomain;
+
+/// Code for \c NSError that was translated from \c LTGLException;
+extern const NSInteger kNSErrorLTGLExceptionCode;
+
+/// Error user info key which includes the name of the \c LTGLException.
+extern NSString * const kNSErrorLTGLExceptionNameKey;
+
+/// Error user info key which includes the reason of the \c LTGLException.
+extern NSString * const kNSErrorLTGLExceptionReasonKey;
+
+@interface NSError (LTGLException)
+
+/// Builds an \c NSError which corresponds to the exception name and reason.
++ (NSError *)errorWithLTGLException:(LTGLException *)exception;
 
 @end

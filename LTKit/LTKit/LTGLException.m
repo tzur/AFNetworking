@@ -26,6 +26,10 @@ NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException =
 NSString * const kLTFboInvalidTextureException = @"Fbo Invalid Texture Exception";
 NSString * const kLTFboCreationFailedException = @"Fbo Creation Failed Exception";
 
+NSString * const kLTGPUQueueContextCreationFailedException =
+    @"GPU Queue Context Creation Failed Exception";
+NSString * const kLTGPUQueueContextSetFailedException = @"GPU Queue Context Set Failed Exception";
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -
@@ -55,6 +59,28 @@ NSString * const kLTFboCreationFailedException = @"Fbo Creation Failed Exception
   [NSException raise:kLTOpenGLRuntimeErrorException
               format:[NSString stringWithFormat:@"[OpenGL Error %@] %@", errorString, format]
            arguments:args];
+}
+
+@end
+
+#pragma mark -
+#pragma mark NSError+LTGLException
+#pragma mark -
+
+NSString * const kNSErrorLTGLExceptionDomain = @"com.lightricks.LTKit.LTGLExceptionErrorDomain";
+
+const NSInteger kNSErrorLTGLExceptionCode = 0;
+
+NSString * const kNSErrorLTGLExceptionNameKey = @"Exception Name";
+NSString * const kNSErrorLTGLExceptionReasonKey = @"Exception Reason";
+
+@implementation NSError (LTGLException)
+
++ (NSError *)errorWithLTGLException:(LTGLException *)exception {
+  return [NSError errorWithDomain:kNSErrorLTGLExceptionDomain
+                             code:kNSErrorLTGLExceptionCode
+                         userInfo:@{kNSErrorLTGLExceptionNameKey: exception.name,
+                                    kNSErrorLTGLExceptionReasonKey: exception.reason}];
 }
 
 @end
