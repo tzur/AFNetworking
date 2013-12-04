@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTFbo.h"
 #import "LTGLException.h"
 
 @interface LTTexture ()
@@ -57,31 +58,12 @@
 
   image->create(rect.size.height, rect.size.width, self.matType);
 
-  [self bindAndExecute:^{
-    // TODO: (yaron) replace this with FBO class once we have it.
-
-    // Create a framebuffer and attach it to the texture. This is the only way to read texture using
-    // glReadPixels.
-    GLuint framebuffer;
-    glGenFramebuffers(1, &framebuffer);
-    LTGLCheck(@"Error while creating framebuffer");
-
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, self.name, 0);
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (status != GL_FRAMEBUFFER_COMPLETE) {
-      LogError(@"Failed to make complete framebuffer object, reason: %x, glError: %d",
-               status, glGetError());
-      glDeleteFramebuffers(1, &framebuffer);
-      return;
-    }
-
+  // \c glReadPixels requires framebuffer object that is bound to the texture that is being read.
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
+  [fbo bindAndExecute:^{
     // Read pixels into the mutable data, according to the texture precision.
     glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, GL_RGBA,
                  self.precision, image->data);
-
-    // Destroy framebuffer.
-    glDeleteFramebuffers(1, &framebuffer);
   }];
 }
 
