@@ -12,6 +12,9 @@
 /// Targets for logging.
 @property (strong, nonatomic) NSMutableSet *targets;
 
+/// Lock for ensuring thread-safety when logging from multiple threads.
+@property (strong, nonatomic) NSLock *lock;
+
 @end
 
 @implementation LTLogger
@@ -23,6 +26,7 @@
 - (id)init {
   if (self = [super init]) {
     self.targets = [NSMutableSet set];
+    self.lock = [[NSLock alloc] init];
   }
   return self;
 }
@@ -86,6 +90,9 @@
   
 	MATCH_TYPE_AND_FORMAT_STRING(void *, @"(void *)%p");
   
+#undef MATCH_TYPE_AND_HANDLER
+#undef MATCH_TYPE_AND_FORMAT_STRING
+  
 	return nil;
 }
 
@@ -146,9 +153,11 @@ static NSString *stringFromNSDecimalWithCurrentLocal(NSDecimal value) {
   NSString *logString = [[NSString alloc] initWithFormat:format arguments:argList];
   
   // Write to targets.
+  [self.lock lock];
   for (id<LTLoggerTarget> target in self.targets) {
     [target outputString:logString];
   }
+  [self.lock unlock];
 }
 
 - (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
