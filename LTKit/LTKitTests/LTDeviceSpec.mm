@@ -151,8 +151,32 @@ context(@"platform info", ^{
     expect(device.deviceTypeString).to.equal(@"LTDeviceTypeIPad1G");
   });
 
-  pending(@"should return correct screen type", ^{
-    // TODO: (yaron) return a struct from UIScreen.bounds when OCMockito will support it.
+  it(@"should return 4 inch screen given correct size", ^{
+    UIScreen *screen = mock([UIScreen class]);
+    
+    CGRect bounds = CGRectMake(0, 0, 320, 568);
+    [given(screen.bounds) willReturnStruct:&bounds objCType:@encode(typeof(CGRect))];
+    
+    LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
+                                                 UIScreen:screen
+                                             platformName:nil
+                                               mainBundle:[NSBundle mainBundle]];
+    
+    expect(device.has4InchScreen).to.beTruthy();
+  });
+  
+  it(@"should return non 4 inch screen given correct size", ^{
+    UIScreen *screen = mock([UIScreen class]);
+    
+    CGRect bounds = CGRectMake(0, 0, 320, 460);
+    [given(screen.bounds) willReturnStruct:&bounds objCType:@encode(typeof(CGRect))];
+    
+    LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
+                                                 UIScreen:screen
+                                             platformName:nil
+                                               mainBundle:[NSBundle mainBundle]];
+    
+    expect(device.has4InchScreen).to.beFalsy();
   });
 });
 
