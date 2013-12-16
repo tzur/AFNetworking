@@ -13,6 +13,9 @@ cv::Rect LTCVRectWithCGRect(CGRect rect);
 /// Converts a \c cv::Vec4b to \c GLKVector4.
 GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value);
 
+/// Converts a \c GLKVector4 to \c cv::Vec4b.
+cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
+
 /// Comparator for \c GLKVector4.
 inline BOOL operator==(const GLKVector4& lhs, const GLKVector4& rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));

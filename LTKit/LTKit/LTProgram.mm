@@ -278,69 +278,67 @@
     LTAssert(NO, @"Object '%@' is of an array type, which is currently not supported", name);
   }
   
-  [self bind];
-  
-  switch (object.type) {
-    case GL_INT:
-    case GL_SAMPLER_2D: {
-      if (![value isKindOfClass:[NSNumber class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      glUniform1i(object.index, [value intValue]);
-    } break;
-    case GL_FLOAT: {
-      if (![value isKindOfClass:[NSNumber class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      glUniform1f(object.index, [value floatValue]);
-    } break;
-    case GL_FLOAT_VEC2: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKVector2 vector = [value GLKVector2Value];
-      glUniform2fv(object.index, 1, vector.v);
-    } break;
-    case GL_FLOAT_VEC3: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKVector3 vector = [value GLKVector3Value];
-      glUniform3fv(object.index, 1, vector.v);
-    } break;
-    case GL_FLOAT_VEC4: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKVector4 vector = [value GLKVector4Value];
-      glUniform4fv(object.index, 1, vector.v);
-    } break;
-    case GL_FLOAT_MAT2: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKMatrix2 matrix = [value GLKMatrix2Value];
-      glUniformMatrix2fv(object.index, 1, GL_FALSE, matrix.m);
-    } break;
-    case GL_FLOAT_MAT3: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKMatrix3 matrix = [value GLKMatrix3Value];
-      glUniformMatrix3fv(object.index, 1, GL_FALSE, matrix.m);
-    } break;
-    case GL_FLOAT_MAT4: {
-      if (![value isKindOfClass:[NSValue class]]) {
-        LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-      }
-      GLKMatrix4 matrix = [value GLKMatrix4Value];
-      glUniformMatrix4fv(object.index, 1, GL_FALSE, matrix.m);
-    } break;
-    default:
-      LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, name);
-  }
-  
-  [self unbind];
+  [self bindAndExecute:^{
+    switch (object.type) {
+      case GL_INT:
+      case GL_SAMPLER_2D: {
+        if (![value isKindOfClass:[NSNumber class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        glUniform1i(object.index, [value intValue]);
+      } break;
+      case GL_FLOAT: {
+        if (![value isKindOfClass:[NSNumber class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        glUniform1f(object.index, [value floatValue]);
+      } break;
+      case GL_FLOAT_VEC2: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKVector2 vector = [value GLKVector2Value];
+        glUniform2fv(object.index, 1, vector.v);
+      } break;
+      case GL_FLOAT_VEC3: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKVector3 vector = [value GLKVector3Value];
+        glUniform3fv(object.index, 1, vector.v);
+      } break;
+      case GL_FLOAT_VEC4: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKVector4 vector = [value GLKVector4Value];
+        glUniform4fv(object.index, 1, vector.v);
+      } break;
+      case GL_FLOAT_MAT2: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKMatrix2 matrix = [value GLKMatrix2Value];
+        glUniformMatrix2fv(object.index, 1, GL_FALSE, matrix.m);
+      } break;
+      case GL_FLOAT_MAT3: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKMatrix3 matrix = [value GLKMatrix3Value];
+        glUniformMatrix3fv(object.index, 1, GL_FALSE, matrix.m);
+      } break;
+      case GL_FLOAT_MAT4: {
+        if (![value isKindOfClass:[NSValue class]]) {
+          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
+        }
+        GLKMatrix4 matrix = [value GLKMatrix4Value];
+        glUniformMatrix4fv(object.index, 1, GL_FALSE, matrix.m);
+      } break;
+      default:
+        LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, name);
+    }
+  }];
 }
 
 - (id)uniformValue:(NSString *)name {

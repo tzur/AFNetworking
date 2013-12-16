@@ -9,8 +9,13 @@
 /// release, if the condition is false, an error is logged and the program is aborted.
 #ifdef DEBUG
 #define LTAssert(expression, ...) NSAssert(expression, __VA_ARGS__)
+#define LTCAssert(expression, ...) NSCAssert(expression, __VA_ARGS__)
 #else
-#define LTAssert(expression, ...) \
+#define LTAssert(expression, ...) _LTAssert(expression, __VA_ARGS__)
+#define LTCAssert(expression, ...) _LTAssert(expression, __VA_ARGS__)
+#endif
+
+#define _LTAssert(expression, ...) \
   do { \
     if (!(expression)) { \
       NSString *__LTAssert_message = \
@@ -21,4 +26,3 @@
       abort(); \
     } \
   } while(0)
-#endif
