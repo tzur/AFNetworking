@@ -50,6 +50,10 @@ GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value) {
   return result;
 }
 
+cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value) {
+  return cv::Vec4b(value.x * UCHAR_MAX, value.y * UCHAR_MAX,
+                   value.z * UCHAR_MAX, value.w * UCHAR_MAX);
+}
 
 #pragma mark -
 #pragma mark Implementation
