@@ -207,7 +207,7 @@ context(@"custom uniforms", ^{
     program = nil;
   });
 
-  fit(@"should draw given color to target", ^{
+  it(@"should draw given color to target", ^{
     GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
     rectDrawer[@"outputColor"] = [NSValue valueWithGLKVector4:outputColor];
 

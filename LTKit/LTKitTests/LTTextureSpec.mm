@@ -211,7 +211,7 @@ context(@"texture with data", ^{
   });
 
   context(@"cloning", ^{
-    it(@"should clone itself to a new texture", ^{
+    xit(@"should clone itself to a new texture", ^{
       LTTexture *cloned = [texture clone];
 
       cv::Mat read = [cloned image];
