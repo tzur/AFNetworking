@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) LTProgram *program;
 @property (strong, nonatomic) LTVertexArray *vertexArray;
-@property (strong, nonatomic) NSDictionary *uniformToTexture;
+@property (strong, nonatomic) NSMutableDictionary *uniformToTexture;
 
 @end
 
@@ -37,7 +37,7 @@
 
     self.program = program;
     self.vertexArray = vertexArray;
-    self.uniformToTexture = uniformToTexture;
+    self.uniformToTexture = [[NSMutableDictionary alloc] initWithDictionary:uniformToTexture];
   }
   return self;
 }
@@ -75,6 +75,14 @@
   }];
 
   LTGLCheckDbg(@"Error while drawing with mode %lu", (unsigned long)mode);
+}
+
+- (void)attachUniform:(NSString *)uniform toTexture:(LTTexture *)texture {
+  NSParameterAssert(texture);
+  LTAssert([self.program.uniforms containsObject:uniform], @"Given uniform '%@' is not one of the "
+           "program's uniforms: %@", uniform, self.program.uniforms);
+
+  self.uniformToTexture[uniform] = texture;
 }
 
 - (void)attachProgram:(LTProgram *)program toVertexArray:(LTVertexArray *)vertexArray {

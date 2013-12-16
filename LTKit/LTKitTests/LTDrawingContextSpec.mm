@@ -3,6 +3,7 @@
 
 #import "LTDrawingContext.h"
 
+#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTVertexArray.h"
 
@@ -24,19 +25,47 @@ context(@"binding program and vertex array", ^{
     [verify(vertexArray) attachAttributesToIndices:@{@"a": @0, @"b": @1}];
   });
 
-  it(@"should raise when uniforms is not a subset of program uniforms", ^{
-    LTProgram *program = mock([LTProgram class]);
-    LTVertexArray *vertexArray = mock([LTVertexArray class]);
+  context(@"uniform to texture mapping", ^{
+    __block LTProgram *program;
+    __block LTVertexArray *vertexArray;
 
-    [given([program uniforms]) willReturn:[NSSet setWithArray:@[@"a", @"b"]]];
+    beforeEach(^{
+      program = mock([LTProgram class]);
+      vertexArray = mock([LTVertexArray class]);
 
-    NSDictionary *uniformMap = @{@"a": [NSNull null], @"c": [NSNull null]};
+      [given([program uniforms]) willReturn:[NSSet setWithArray:@[@"a", @"b"]]];
+    });
 
-    expect(^{
-      __unused LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
-                                                                         vertexArray:vertexArray
-                                                                    uniformToTexture:uniformMap];
-    }).to.raise(NSInternalInconsistencyException);
+    it(@"should raise when uniforms is not a subset of program uniforms", ^{
+      NSDictionary *uniformMap = @{@"a": [NSNull null], @"c": [NSNull null]};
+
+      expect(^{
+        __unused LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                           vertexArray:vertexArray
+                                                                      uniformToTexture:uniformMap];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+
+    it(@"should raise when attaching a uniform which does not exist in program", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        LTGLTexture *texture = mock([LTGLTexture class]);
+        [context attachUniform:@"z" toTexture:texture];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+
+    it(@"should raise when attaching a nil texture", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        [context attachUniform:@"a" toTexture:nil];
+      }).to.raise(NSInternalInconsistencyException);
+    });
   });
 });
 
