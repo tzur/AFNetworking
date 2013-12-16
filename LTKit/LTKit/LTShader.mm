@@ -58,8 +58,8 @@
     std::unique_ptr<GLchar[]> log(new GLchar[logLength]);
     glGetShaderInfoLog(self.name, logLength, NULL, log.get());
     [LTGLException raise:kLTShaderCompilationFailedException
-                  format:@"Failed compiling shader: type: %d, source: %@", (int)self.type,
-     source];
+                  format:@"Failed compiling shader: log: %s, type: %d, source: %@",
+                         log.get(), (int)self.type, source];
   }
 #endif
   
