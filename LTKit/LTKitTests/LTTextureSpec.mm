@@ -152,7 +152,7 @@ context(@"binding", ^{
   });
 });
 
-context(@"loading data from texture", ^{
+context(@"texture with data", ^{
   __block LTTexture *texture;
   __block cv::Mat image;
 
@@ -171,48 +171,55 @@ context(@"loading data from texture", ^{
     texture = nil;
   });
 
-  it(@"should read entire texture to image", ^{
-    cv::Mat read = [texture image];
+  context(@"loading data from texture", ^{
+    it(@"should read entire texture to image", ^{
+      cv::Mat read = [texture image];
 
-    expect(LTCompareMat(image, read)).to.beTruthy();
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
+
+    it(@"should read part of texture to image", ^{
+      CGRect rect = CGRectMake(2, 2, 10, 15);
+
+      cv::Mat read = [texture imageWithRect:rect];
+
+      expect(read.cols).to.equal(rect.size.width);
+      expect(read.rows).to.equal(rect.size.height);
+      expect(LTCompareMat(image(LTCVRectWithCGRect(rect)), read)).to.beTruthy();
+    });
+
+    it(@"should return a correct pixel value", ^{
+      CGPoint point = CGPointMake(1, 7);
+
+      GLKVector4 actual = [texture pixelValue:point];
+      GLKVector4 expected = LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x));
+
+      expect(expected).to.equal(actual);
+    });
+
+    it(@"should return correct pixel values", ^{
+      CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
+
+      GLKVector4s actual = [texture pixelValues:points];
+      GLKVector4s expected;
+      for (const CGPoint &point : points) {
+        expected.push_back(LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x)));
+      }
+
+      expect(expected == actual).to.equal(YES);
+    });
   });
 
-  it(@"should read part of texture to image", ^{
-    CGRect rect = CGRectMake(2, 2, 10, 15);
+  context(@"cloning", ^{
+    it(@"should clone itself to a new texture", ^{
+      LTTexture *cloned = [texture clone];
 
-    cv::Mat read = [texture imageWithRect:rect];
+      cv::Mat read = [cloned image];
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
 
-    expect(read.cols).to.equal(rect.size.width);
-    expect(read.rows).to.equal(rect.size.height);
-    expect(LTCompareMat(image(LTCVRectWithCGRect(rect)), read)).to.beTruthy();
+    pending(@"should clone itself to an existing texture");
   });
-
-  it(@"should return a correct pixel value", ^{
-    CGPoint point = CGPointMake(1, 7);
-
-    GLKVector4 actual = [texture pixelValue:point];
-    GLKVector4 expected = LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x));
-
-    expect(expected).to.equal(actual);
-  });
-
-  it(@"should return correct pixel values", ^{
-    CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
-
-    GLKVector4s actual = [texture pixelValues:points];
-    GLKVector4s expected;
-    for (const CGPoint &point : points) {
-      expected.push_back(LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x)));
-    }
-
-    expect(expected == actual).to.equal(YES);
-  });
-});
-
-context(@"cloning", ^{
-  pending(@"should clone itself to a new texture");
-
-  pending(@"should clone itself to an existing texture");
 });
 
 SpecEnd
