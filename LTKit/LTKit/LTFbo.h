@@ -35,6 +35,14 @@
 /// Fills the texture bounded to this FBO with the given color.
 - (void)clearWithColor:(GLKVector4)color;
 
+/// Returns the best supported target texture precision for the given source precision. For example,
+/// on some devices it's possible to create float or half-float textures using the \c
+/// texture_float and \c texture_half_float extensions, but the \c color_buffer_float and \c
+/// color_buffer_half_float extensions may be absent, limiting the possibility to render with the
+/// same precision. This method will return the best precision supported on this device that also
+/// best matches the given source precision.
++ (LTTexturePrecision)bestTargetPrecisionForSourcePrecision:(LTTexturePrecision)precision;
+
 /// Size of the texture associated with this framebuffer.
 @property (readonly, nonatomic) CGSize size;
 
