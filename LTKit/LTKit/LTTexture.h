@@ -109,22 +109,25 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image;
 
-#pragma mark -
-#pragma mark LTTexture implemented methods
-#pragma mark -
-
 /// Clones the texture. This creates a new texture with the same content, but with a different
 /// OpenGL name. The cloning process tries to preserve the precision of the texture, according to
 /// device limitations. This means that the cloned texture can be of lower precision than the
 /// original. Float precision textures will always be converted to half-float (if supported by
 /// device) or regular precision. Half-float precision textures will be converted to unsigned byte
 /// precision if no support for half-float color buffers is available.
+///
+/// TODO:(yaron) the final precision is controlled by LTFbo, and as discussed with Amit, shouldn't
+/// change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
 /// Clones the texture into the given texture. If the target texture is of different size, the
-/// texture will be resized to fit exactly into the target texture. This means that if the aspect
-/// ratio is different the cloned texture will be distorted.
+/// texture will be resized to fit exactly into the target texture, so if the aspect ratios of the
+/// textures are different, the cloned texture will be non-uniformly scaled.
 - (void)cloneTo:(LTTexture *)texture;
+
+#pragma mark -
+#pragma mark LTTexture implemented methods
+#pragma mark -
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type

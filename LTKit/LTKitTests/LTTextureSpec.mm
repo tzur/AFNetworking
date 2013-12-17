@@ -9,6 +9,10 @@
 
 // LTTexture spec is tested by the concrete class LTGLTexture.
 
+// TODO: (yaron) refactor LTTexture to test the abstract functionality in a different spec. This
+// is probably possible only by refactoring the LTTexture abstract class to the strategy pattern:
+// http://stackoverflow.com/questions/243274/best-practice-with-unit-testing-abstract-classes
+
 SpecBegin(LTTexture)
 
 beforeEach(^{
@@ -211,14 +215,26 @@ context(@"texture with data", ^{
   });
 
   context(@"cloning", ^{
-    xit(@"should clone itself to a new texture", ^{
+    it(@"should clone itself to a new texture", ^{
       LTTexture *cloned = [texture clone];
+
+      expect(cloned.name).toNot.equal(texture.name);
 
       cv::Mat read = [cloned image];
       expect(LTCompareMat(image, read)).to.beTruthy();
     });
 
-    pending(@"should clone itself to an existing texture");
+    it(@"should clone itself to an existing texture", ^{
+      LTTexture *cloned = [[LTGLTexture alloc] initWithSize:texture.size
+                                                  precision:texture.precision
+                                                   channels:texture.channels
+                                             allocateMemory:YES];
+
+      [texture cloneTo:cloned];
+
+      cv::Mat read = [cloned image];
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
   });
 });
 

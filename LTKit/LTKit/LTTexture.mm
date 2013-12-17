@@ -110,6 +110,16 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
            "by subclasses");
 }
 
+- (LTTexture *)clone {
+  LTAssert(NO, @"-[LTTexture clone] is an abstract method that should be overridden by subclasses");
+  __builtin_unreachable();
+}
+
+- (void)cloneTo:(LTTexture __unused *)texture {
+  LTAssert(NO, @"-[LTTexture cloneTo:] is an abstract method that should be overridden by "
+           "subclasses");
+}
+
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
@@ -155,15 +165,6 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
     if (block) block();
     [self unbind];
   }
-}
-
-- (LTTexture *)clone {
-  // TODO: (yaron) use FBO to clone the texture.
-  return nil;
-}
-
-- (void)cloneTo:(LTTexture __unused *)texture {
-  // TODO: (yaron) use FBO to clone the texture.
 }
 
 - (GLKVector4)pixelValue:(CGPoint)location {
