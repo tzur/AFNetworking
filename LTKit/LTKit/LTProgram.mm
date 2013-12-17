@@ -45,10 +45,10 @@
 /// OpenGL name of the program.
 @property (readwrite, nonatomic) GLuint name;
 
-/// YES if the program is currently bounded.
-@property (nonatomic) BOOL bounded;
+/// YES if the program is currently bound.
+@property (nonatomic) BOOL bound;
 
-/// Set to the previously bounded program, or \c 0 if program is not bounded.
+/// Set to the previously bound program, or \c 0 if program is not bound.
 @property (nonatomic) GLint previousProgram;
 
 /// Maps uniforms and attributes to their \c LTProgramObject.
@@ -224,25 +224,25 @@
 #pragma mark -
 
 - (void)bind {
-  if (self.bounded) {
+  if (self.bound) {
     return;
   }
   glGetIntegerv(GL_CURRENT_PROGRAM, &_previousProgram);
   glUseProgram(self.name);
-  self.bounded = YES;
+  self.bound = YES;
 }
 
 - (void)unbind {
-  if (!self.bounded) {
+  if (!self.bound) {
     return;
   }
   glUseProgram(self.previousProgram);
   self.previousProgram = 0;
-  self.bounded = NO;
+  self.bound = NO;
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  if (self.bounded) {
+  if (self.bound) {
     block();
   } else {
     [self bind];

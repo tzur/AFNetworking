@@ -34,14 +34,14 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 
 @interface LTTexture ()
 
-/// Set to the previously bounded texture, or \c 0 if the texture is not bounded.
+/// Set to the previously bound texture, or \c 0 if the texture is not bound.
 @property (nonatomic) GLint previousTexture;
 
 /// The active texture unit while binding the texture.
-@property (nonatomic) GLint boundedTextureUnit;
+@property (nonatomic) GLint boundTextureUnit;
 
-/// YES if the texture is currently bounded.
-@property (nonatomic) BOOL bounded;
+/// YES if the texture is currently bound.
+@property (nonatomic) BOOL bound;
 
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
@@ -125,19 +125,19 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 #pragma mark -
 
 - (void)bind {
-  if (self.bounded) {
+  if (self.bound) {
     return;
   }
 
-  glGetIntegerv(GL_ACTIVE_TEXTURE, &_boundedTextureUnit);
+  glGetIntegerv(GL_ACTIVE_TEXTURE, &_boundTextureUnit);
   glGetIntegerv(GL_TEXTURE_BINDING_2D, &_previousTexture);
   glBindTexture(GL_TEXTURE_2D, self.name);
   
-  self.bounded = YES;
+  self.bound = YES;
 }
 
 - (void)unbind {
-  if (!self.bounded) {
+  if (!self.bound) {
     return;
   }
 
@@ -145,20 +145,20 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTextureUnit);
 
   // Make sure we switch to the active texture unit at the time of binding.
-  if (activeTextureUnit != self.boundedTextureUnit) {
-    glActiveTexture(self.boundedTextureUnit);
+  if (activeTextureUnit != self.boundTextureUnit) {
+    glActiveTexture(self.boundTextureUnit);
   }
   glBindTexture(GL_TEXTURE_2D, self.previousTexture);
-  if (activeTextureUnit != self.boundedTextureUnit) {
+  if (activeTextureUnit != self.boundTextureUnit) {
     glActiveTexture(activeTextureUnit);
   }
   
   self.previousTexture = 0;
-  self.bounded = NO;
+  self.bound = NO;
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  if (self.bounded) {
+  if (self.bound) {
     block();
   } else {
     [self bind];

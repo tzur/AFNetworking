@@ -7,5 +7,5 @@ extern NSString * const kLTResourceExamples;
 /// The resource subject under test as an \c NSValue. Must implement the LTGPUResource protocol.
 extern NSString * const kLTResourceExamplesSUTValue;
 
-/// \c GLenum value of the OpenGL parameter name to query the bounded resource.
+/// \c GLenum value of the OpenGL parameter name to query the bound resource.
 extern NSString * const kLTResourceExamplesOpenGLParameterName;

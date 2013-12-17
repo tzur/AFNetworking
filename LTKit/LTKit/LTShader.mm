@@ -13,7 +13,7 @@
 /// Name of the shader.
 @property (readwrite, nonatomic) GLuint name;
 
-/// The bound program or nil if not bounded.
+/// The bound program or nil if not bound.
 @property (strong, nonatomic) LTProgram *boundProgram;
 
 @end

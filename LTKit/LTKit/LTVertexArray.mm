@@ -67,11 +67,11 @@
 /// Maps struct name to an \c LTVertexArrayElement.
 @property (strong, nonatomic) NSMutableDictionary *structNameToElement;
 
-/// Set to the previously bounded vertex array, or \c 0 if the vertex array is not bounded.
+/// Set to the previously bound vertex array, or \c 0 if the vertex array is not bound.
 @property (nonatomic) GLint previousVertexArray;
 
-/// YES if the texture is currently bounded.
-@property (nonatomic) BOOL bounded;
+/// YES if the texture is currently bound.
+@property (nonatomic) BOOL bound;
 
 /// OpenGL name of the vertex array.
 @property (readwrite, nonatomic) GLuint name;
@@ -140,29 +140,29 @@
 #pragma mark -
 
 - (void)bind {
-  if (self.bounded) {
+  if (self.bound) {
     return;
   }
 
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &_previousVertexArray);
   glBindVertexArrayOES(self.name);
 
-  self.bounded = YES;
+  self.bound = YES;
 }
 
 - (void)unbind {
-  if (!self.bounded) {
+  if (!self.bound) {
     return;
   }
 
   glBindVertexArrayOES(self.previousVertexArray);
   self.previousVertexArray = 0;
 
-  self.bounded = NO;
+  self.bound = NO;
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  if (self.bounded) {
+  if (self.bound) {
     block();
   } else {
     [self bind];

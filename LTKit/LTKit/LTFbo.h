@@ -25,14 +25,14 @@
 /// Binds the framebuffer. Everything that will be drawn between this call and the call to unbind
 /// will be saved to the texture. The previously bound framebuffer and viewport will be
 /// saved, so they can be restored when unbind is called. Consecutive calls to \c bind while the
-/// receiver is already bounded will have no effect.
+/// receiver is already bound will have no effect.
 - (void)bind;
 
-/// Unbinds the framebuffer. Consecutive calls to \c bind while the receiver is already bounded will
+/// Unbinds the framebuffer. Consecutive calls to \c bind while the receiver is already bound will
 /// have no effect.
 - (void)unbind;
 
-/// Fills the texture bounded to this FBO with the given color.
+/// Fills the texture bound to this FBO with the given color.
 - (void)clearWithColor:(GLKVector4)color;
 
 /// Returns the best supported target texture precision for the given source precision. For example,

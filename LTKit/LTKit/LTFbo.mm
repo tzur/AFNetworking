@@ -13,14 +13,14 @@
 /// Framebuffer identifier.
 @property (nonatomic) GLuint framebuffer;
 
-/// Set to the previously bounded framebuffer, or \c 0 if the framebuffer is not bounded.
+/// Set to the previously bound framebuffer, or \c 0 if the framebuffer is not bound.
 @property (nonatomic) GLint previousFramebuffer;
 
 /// Viewport to restore when the current framebuffer unbinds.
 @property (nonatomic) CGRect previousViewport;
 
-/// YES if the program is currently bounded.
-@property (nonatomic) BOOL bounded;
+/// YES if the program is currently bound.
+@property (nonatomic) BOOL bound;
 
 @end
 
@@ -109,7 +109,7 @@
 #pragma mark -
 
 - (void)bind {
-  if (self.bounded) {
+  if (self.bound) {
     return;
   }
   
@@ -120,11 +120,11 @@
 
   glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
   glViewport(0, 0, self.texture.size.width, self.texture.size.height);
-  self.bounded = YES;
+  self.bound = YES;
 }
 
 - (void)unbind {
-  if (!self.bounded) {
+  if (!self.bound) {
     return;
   }
 
@@ -136,11 +136,11 @@
 
   self.previousFramebuffer = 0;
   self.previousViewport = CGRectNull;
-  self.bounded = NO;
+  self.bound = NO;
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  if (self.bounded) {
+  if (self.bound) {
     block();
   } else {
     [self bind];

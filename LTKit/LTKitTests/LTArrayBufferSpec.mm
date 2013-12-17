@@ -99,14 +99,14 @@ context(@"binding", ^{
     LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
                                                           usage:LTArrayBufferUsageStaticDraw];
 
-    __block GLint boundedBuffer;
+    __block GLint boundBuffer;
     [buffer bindAndExecute:^{
-      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundedBuffer);
-      expect(boundedBuffer).to.equal(buffer.name);
+      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
+      expect(boundBuffer).to.equal(buffer.name);
     }];
 
-    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundedBuffer);
-    expect(boundedBuffer).to.equal(0);
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
+    expect(boundBuffer).to.equal(0);
   });
 
   context(@"updating data", ^{

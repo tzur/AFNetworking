@@ -26,8 +26,7 @@ typedef NS_ENUM(NSUInteger, LTShaderType) {
 /// call is ignored.
 - (void)attachToProgram:(LTProgram *)program;
 
-/// Detaches the shader from the attached program. If the shader is not bounded, the call is
-/// ignored.
+/// Detaches the shader from the attached program. If the shader is not bound, the call is ignored.
 - (void)detach;
 
 /// Attaches to the given program, executes the block and detaches afterwards. Making recursive

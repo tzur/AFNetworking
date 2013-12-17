@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
      uniformToTexture:(NSDictionary *)uniformToTexture;
 
 /// Executes the \c program which uses the data in the \c vertexArray, together with the given
-/// textures to draw to the bounded framebuffer.
+/// textures to draw to the bound framebuffer.
 - (void)drawWithMode:(LTDrawingContextDrawMode)mode;
 
 /// Attaches the given uniform name to the given texture, which will be strongly held by the

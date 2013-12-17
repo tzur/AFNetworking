@@ -25,7 +25,7 @@
 ///
 /// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
 ///
-/// @note this method assumes that a framebuffer/renderbuffer is already bounded for drawing.
+/// @note this method assumes that a framebuffer/renderbuffer is already bound for drawing.
 - (void)drawRect:(CGRect)targetRect inFrameBufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect;
 
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c

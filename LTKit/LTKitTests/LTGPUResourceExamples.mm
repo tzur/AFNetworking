@@ -27,30 +27,30 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
   it(@"should bind to texture", ^{
     [resource bind];
 
-    GLint currentBoundedObject;
-    glGetIntegerv(parameter, &currentBoundedObject);
+    GLint currentBoundObject;
+    glGetIntegerv(parameter, &currentBoundObject);
 
-    expect(currentBoundedObject).to.equal(resource.name);
+    expect(currentBoundObject).to.equal(resource.name);
   });
 
   it(@"should cause no effect on second bind", ^{
     [resource bind];
     [resource bind];
 
-    GLint currentBoundedObject;
-    glGetIntegerv(parameter, &currentBoundedObject);
+    GLint currentBoundObject;
+    glGetIntegerv(parameter, &currentBoundObject);
 
-    expect(currentBoundedObject).to.equal(resource.name);
+    expect(currentBoundObject).to.equal(resource.name);
   });
 
   it(@"should unbind from texture", ^{
     [resource bind];
     [resource unbind];
 
-    GLint currentBoundedObject;
-    glGetIntegerv(parameter, &currentBoundedObject);
+    GLint currentBoundObject;
+    glGetIntegerv(parameter, &currentBoundObject);
 
-    expect(currentBoundedObject).to.equal(0);
+    expect(currentBoundObject).to.equal(0);
   });
 
   it(@"should cause no effect on second unbind", ^{
@@ -58,33 +58,33 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
     [resource unbind];
     [resource unbind];
 
-    GLint currentBoundedObject;
-    glGetIntegerv(parameter, &currentBoundedObject);
+    GLint currentBoundObject;
+    glGetIntegerv(parameter, &currentBoundObject);
 
-    expect(currentBoundedObject).to.equal(0);
+    expect(currentBoundObject).to.equal(0);
   });
 
   it(@"should bind and unbind", ^{
-    __block GLint currentBoundedObject;
+    __block GLint currentBoundObject;
 
     [resource bindAndExecute:^{
-      glGetIntegerv(parameter, &currentBoundedObject);
-      expect(currentBoundedObject).to.equal(resource.name);
+      glGetIntegerv(parameter, &currentBoundObject);
+      expect(currentBoundObject).to.equal(resource.name);
     }];
 
-    glGetIntegerv(parameter, &currentBoundedObject);
-    expect(currentBoundedObject).to.equal(0);
+    glGetIntegerv(parameter, &currentBoundObject);
+    expect(currentBoundObject).to.equal(0);
   });
 
   it(@"should support recursive binding", ^{
-    __block GLint currentBoundedObject;
+    __block GLint currentBoundObject;
 
     [resource bindAndExecute:^{
       [resource bindAndExecute:^{
       }];
 
-      glGetIntegerv(parameter, &currentBoundedObject);
-      expect(currentBoundedObject).to.equal(resource.name);
+      glGetIntegerv(parameter, &currentBoundObject);
+      expect(currentBoundObject).to.equal(resource.name);
     }];
   });
 });

@@ -18,10 +18,10 @@
 /// Current size of the buffer.
 @property (readwrite, nonatomic) NSUInteger size;
 
-/// YES if the buffer is currently bounded.
-@property (nonatomic) BOOL bounded;
+/// YES if the buffer is currently bound.
+@property (nonatomic) BOOL bound;
 
-/// Set to the previously bounded buffer, or \c 0 if the buffer is not bounded.
+/// Set to the previously bound buffer, or \c 0 if the buffer is not bound.
 @property (nonatomic) GLint previousBuffer;
 
 @end
@@ -164,7 +164,7 @@
 #pragma mark -
 
 - (void)bind {
-  if (self.bounded) {
+  if (self.bound) {
     return;
   }
 
@@ -178,22 +178,22 @@
   }
   glBindBuffer(self.type, self.name);
 
-  self.bounded = YES;
+  self.bound = YES;
 }
 
 - (void)unbind {
-  if (!self.bounded) {
+  if (!self.bound) {
     return;
   }
 
   glBindBuffer(self.type, _previousBuffer);
 
   self.previousBuffer = 0;
-  self.bounded = NO;
+  self.bound = NO;
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
-  if (self.bounded) {
+  if (self.bound) {
     block();
   } else {
     [self bind];
