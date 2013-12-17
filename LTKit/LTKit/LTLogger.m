@@ -97,7 +97,7 @@
 }
 
 + (BOOL)isCharArray:(const char *)typeCode {
-  NSParameterAssert(typeCode);
+  LTParameterAssert(typeCode);
   
   size_t length = strlen(typeCode);
   if (length <= 2) {

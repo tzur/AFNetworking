@@ -75,7 +75,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *name) {
 }
 
 static UIImage *LTMatToUIImage(const cv::Mat &mat) {
-  LTCAssert(mat.type() == CV_8UC4, @"Unsupported mat type");
+  LTAssert(mat.type() == CV_8UC4, @"Unsupported mat type");
 
   const size_t kBitsPerComponent = 8;
   const size_t kBitsPerPixel = 32;

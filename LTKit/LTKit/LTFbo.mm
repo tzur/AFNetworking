@@ -36,7 +36,7 @@
 
 - (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
   if (self = [super init]) {
-    NSParameterAssert(texture);
+    LTParameterAssert(texture);
 
     if (!texture.name) {
       [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's name is 0"];

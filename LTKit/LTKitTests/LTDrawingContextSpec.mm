@@ -64,7 +64,7 @@ context(@"binding program and vertex array", ^{
 
       expect(^{
         [context attachUniform:@"a" toTexture:nil];
-      }).to.raise(NSInternalInconsistencyException);
+      }).to.raise(NSInvalidArgumentException);
     });
   });
 });

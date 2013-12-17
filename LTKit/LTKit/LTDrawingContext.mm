@@ -26,8 +26,8 @@
 - (id)initWithProgram:(LTProgram *)program vertexArray:(LTVertexArray *)vertexArray
      uniformToTexture:(NSDictionary *)uniformToTexture {
   if (self = [super init]) {
-    NSParameterAssert(program);
-    NSParameterAssert(vertexArray);
+    LTParameterAssert(program);
+    LTParameterAssert(vertexArray);
     LTAssert(!uniformToTexture ||
              [[NSSet setWithArray:uniformToTexture.allKeys] isSubsetOfSet:program.uniforms],
              @"At least one uniform does not exist in the given program (given uniforms: %@, "
@@ -78,7 +78,7 @@
 }
 
 - (void)attachUniform:(NSString *)uniform toTexture:(LTTexture *)texture {
-  NSParameterAssert(texture);
+  LTParameterAssert(texture);
   LTAssert([self.program.uniforms containsObject:uniform], @"Given uniform '%@' is not one of the "
            "program's uniforms: %@", uniform, self.program.uniforms);
 

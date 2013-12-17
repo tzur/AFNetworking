@@ -95,7 +95,7 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 
 - (void)runAsync:(LTVoidBlock)block completion:(LTCompletionBlock)completion
          failure:(LTGPUQueueFailureBlock)failure {
-  NSParameterAssert(block);
+  LTParameterAssert(block);
 
   @synchronized(self) {
     if (dispatch_get_specific(kLTGPULowPriorityQueueKey)) {
@@ -153,7 +153,7 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 #pragma mark -
 
 - (BOOL)runSyncIfNotPaused:(LTVoidBlock)block failure:(LTGPUQueueFailureBlock)failure {
-  NSParameterAssert(block);
+  LTParameterAssert(block);
 
   @synchronized(self) {
     if (self.isPaused) {
