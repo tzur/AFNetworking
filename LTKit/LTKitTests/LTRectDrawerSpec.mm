@@ -46,6 +46,21 @@ static NSString * const kFragmentSource =
     "  gl_FragColor = color;"
     "}";
 
+static NSString * const kMissingVertexSource =
+    @"uniform highp mat4 modelview;"
+    "uniform highp mat4 projection;"
+    ""
+    "attribute highp vec4 position;"
+    "attribute highp vec3 texcoord;"
+    ""
+    "varying highp vec2 vTexcoord;"
+    ""
+    "void main() {"
+    "  vec4 newpos = vec4(position.xy, 0.0, 1.0);"
+    "  vTexcoord = texcoord.xy;"
+    "  gl_Position = projection * modelview * newpos;"
+    "}";
+
 static NSString * const kFragmentWithUniformSource =
     @"uniform sampler2D sourceTexture;"
     "uniform highp vec4 outputColor;"
@@ -93,7 +108,15 @@ context(@"initialization", ^{
     }).toNot.raise(NSInternalInconsistencyException);
   });
 
-  pending(@"should not initialize with invalid program");
+  it(@"should not initialize with program with missing uniforms", ^{
+    LTProgram *program = [[LTProgram alloc] initWithVertexSource:kMissingVertexSource
+                                                  fragmentSource:kFragmentSource];
+
+    expect(^{
+      __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
+                                                                  sourceTexture:texture];
+    }).to.raise(NSInternalInconsistencyException);
+  });
 });
 
 context(@"drawing", ^{
