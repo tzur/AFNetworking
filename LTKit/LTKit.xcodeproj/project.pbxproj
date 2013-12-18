@@ -35,6 +35,9 @@
 		8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */; };
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.m */; };
+		8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50E91861AA8900821829 /* LTShaderStorage.m */; };
+		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
+		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -64,6 +67,57 @@
 		8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA674118310F92003FCB65 /* libSpecta-iOS.a */; };
 		8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBF518296B6100EA0C1A /* XCTest.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		8B8E50EB1861BD2900821829 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.vsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+			);
+			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+		};
+		8B8E50EE1861CCEC00821829 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+			);
+			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+		};
+		8B8E50F21861CE7600821829 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+			);
+			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+		};
+		8B8E50F31861CE7700821829 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.vsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+			);
+			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		8B3DEBFA18296B6100EA0C1A /* PBXContainerItemProxy */ = {
@@ -224,6 +278,10 @@
 		8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryCondition.mm; sourceTree = "<group>"; };
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
+		8B8E50E81861AA8900821829 /* LTShaderStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShaderStorage.h; sourceTree = "<group>"; };
+		8B8E50E91861AA8900821829 /* LTShaderStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTShaderStorage.m; sourceTree = "<group>"; };
+		8B8E50F01861CE1800821829 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Resources/Shader.vsh; sourceTree = "<group>"; };
+		8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTShaderStorageSpec.m; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -377,6 +435,8 @@
 				8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
+				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
+				8B8E50E91861AA8900821829 /* LTShaderStorage.m */,
 				8BA11ADF1831555100A5001D /* LTTexture.h */,
 				8BA11AE01831555100A5001D /* LTTexture.mm */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
@@ -412,6 +472,7 @@
 			children = (
 				8B85C796182A2EC3004C352E /* Tests */,
 				8BBE8940183503AB006C58AA /* Test Utils */,
+				8B8E50EF1861CDF900821829 /* Resources */,
 				8B85C79A182A31C8004C352E /* Libraries */,
 				8B3DEBFE18296B6100EA0C1A /* Supporting Files */,
 			);
@@ -443,6 +504,7 @@
 				8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */,
 				8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
+				8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */,
 				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
 				8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
@@ -467,6 +529,14 @@
 				8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8B8E50EF1861CDF900821829 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8B8E50F01861CE1800821829 /* Shader.vsh */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		8BB47145183B533500CA1681 /* Libraries */ = {
@@ -532,6 +602,8 @@
 				8B3DEBE218296B6100EA0C1A /* CopyFiles */,
 			);
 			buildRules = (
+				8B8E50EB1861BD2900821829 /* PBXBuildRule */,
+				8B8E50EE1861CCEC00821829 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -549,6 +621,8 @@
 				8B3DEBF218296B6100EA0C1A /* Resources */,
 			);
 			buildRules = (
+				8B8E50F31861CE7700821829 /* PBXBuildRule */,
+				8B8E50F21861CE7600821829 /* PBXBuildRule */,
 			);
 			dependencies = (
 				8BCA6725182FD8E6003FCB65 /* PBXTargetDependency */,
@@ -711,6 +785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
+				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
@@ -733,6 +808,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B8E50F11861CE1800821829 /* Shader.vsh in Sources */,
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
@@ -744,6 +820,7 @@
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
+				8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */,
 				8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
@@ -805,6 +882,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"LTKIT_SHADER_ENCRYPTION_KEY=\"@\\\"$LTKIT_SHADER_ENCRYPTION_KEY\\\"\"",
 					"LOGGING=1",
 					"DEBUG=1",
 					"$(inherited)",
@@ -821,6 +899,7 @@
 					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -867,6 +946,7 @@
 					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
 				OTHER_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -904,7 +984,6 @@
 		8B3DEC0B18296B6100EA0C1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -932,7 +1011,6 @@
 		8B3DEC0C18296B6100EA0C1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
