@@ -192,7 +192,7 @@
 
           LTGPUStructField *field = element.attributeToField[attribute];
           glVertexAttribPointer(index, field.componentCount,
-                                field.componentType, GL_FALSE, stride, NULL);
+                                field.componentType, GL_FALSE, stride, (GLvoid *)field.offset);
           LTGLCheckDbg(@"Error while setting vertex attrib pointer");
         }
       }];
