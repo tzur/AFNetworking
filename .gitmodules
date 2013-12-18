@@ -1,6 +1,6 @@
 [submodule "third_party/testing/Expecta"]
 	path = third_party/testing/Expecta
-	url = https://github.com/specta/expecta.git
+	url = https://github.com/Lightricks/expecta.git
 [submodule "third_party/testing/Specta"]
 	path = third_party/testing/Specta
 	url = https://github.com/specta/specta.git
