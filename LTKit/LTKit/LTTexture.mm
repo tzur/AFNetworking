@@ -73,10 +73,10 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 }
 
 - (id)initWithImage:(const cv::Mat &)image {
-  if ([self initWithSize:CGSizeMake(image.cols, image.rows)
-               precision:LTPrecisionFromMat(image)
-                channels:LTChannelsFromMat(image)
-          allocateMemory:NO]) {
+  if (self = [self initWithSize:CGSizeMake(image.cols, image.rows)
+                      precision:LTPrecisionFromMat(image)
+                       channels:LTChannelsFromMat(image)
+                 allocateMemory:NO]) {
     [self load:image];
   }
   return self;
