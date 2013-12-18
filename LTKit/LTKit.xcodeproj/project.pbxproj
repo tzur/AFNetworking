@@ -411,38 +411,9 @@
 			isa = PBXGroup;
 			children = (
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
-				8BBE894F1838CA2C006C58AA /* LTArrayBuffer.h */,
-				8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */,
-				8B7DC39B18328063008D004B /* LTBoundaryCondition.h */,
-				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
-				8BB47134183A438300CA1681 /* LTDrawingContext.h */,
-				8BB47135183A438300CA1681 /* LTDrawingContext.mm */,
-				288AB4041835320200A11FA4 /* LTDevice.h */,
-				288AB4051835320200A11FA4 /* LTDevice.mm */,
-				8B3667F0184757E5002A1833 /* LTGPUResource.h */,
-				8BB47156183B5FBA00CA1681 /* LTGPUStruct.h */,
-				8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */,
-				8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */,
-				8B19621B184B6DA40065A057 /* LTGPUQueue.h */,
-				8B19621C184B6DA40065A057 /* LTGPUQueue.m */,
-				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
-				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
-				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
-				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
-				8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */,
-				8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */,
-				8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */,
-				8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */,
-				8BA3E13C182A606600FDD95A /* LTShader.h */,
-				8BA3E13D182A606600FDD95A /* LTShader.mm */,
-				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
-				8B8E50E91861AA8900821829 /* LTShaderStorage.m */,
-				8BA11ADF1831555100A5001D /* LTTexture.h */,
-				8BA11AE01831555100A5001D /* LTTexture.mm */,
-				8BA3E139182A602F00FDD95A /* LTProgram.h */,
-				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
-				8BB4713F183A470400CA1681 /* LTVertexArray.h */,
-				8BB47140183A470400CA1681 /* LTVertexArray.mm */,
+				8B8E50FC1861EB1F00821829 /* Base */,
+				8B8E50F81861EA7D00821829 /* GPU */,
+				8B8E50FB1861EB0F00821829 /* Signal Processing */,
 				8BB47145183B533500CA1681 /* Libraries */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 			);
@@ -492,21 +463,9 @@
 		8B85C796182A2EC3004C352E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
-				8B19620A184B31790065A057 /* LTDeviceSpec.mm */,
-				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
-				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
-				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
-				8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */,
-				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
-				8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */,
-				8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */,
-				8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */,
-				8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */,
-				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
-				8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */,
-				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
-				8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */,
+				8B8E50FD1861EB4000821829 /* Base */,
+				8B8E50FE1861EB4600821829 /* GPU */,
+				8B8E51021861EB6D00821829 /* Signal Processing */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 			);
 			name = Tests;
@@ -537,6 +496,127 @@
 				8B8E50F01861CE1800821829 /* Shader.vsh */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		8B8E50F81861EA7D00821829 /* GPU */ = {
+			isa = PBXGroup;
+			children = (
+				8B8E50FA1861EADF00821829 /* Base */,
+				8B8E50F91861EA8A00821829 /* Drawers */,
+			);
+			name = GPU;
+			sourceTree = "<group>";
+		};
+		8B8E50F91861EA8A00821829 /* Drawers */ = {
+			isa = PBXGroup;
+			children = (
+				8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */,
+				8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */,
+			);
+			name = Drawers;
+			sourceTree = "<group>";
+		};
+		8B8E50FA1861EADF00821829 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				8BBE894F1838CA2C006C58AA /* LTArrayBuffer.h */,
+				8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */,
+				8BB47134183A438300CA1681 /* LTDrawingContext.h */,
+				8BB47135183A438300CA1681 /* LTDrawingContext.mm */,
+				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
+				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
+				8B3667F0184757E5002A1833 /* LTGPUResource.h */,
+				8BB47156183B5FBA00CA1681 /* LTGPUStruct.h */,
+				8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */,
+				8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */,
+				8B19621B184B6DA40065A057 /* LTGPUQueue.h */,
+				8B19621C184B6DA40065A057 /* LTGPUQueue.m */,
+				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
+				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
+				8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */,
+				8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */,
+				8BA3E13C182A606600FDD95A /* LTShader.h */,
+				8BA3E13D182A606600FDD95A /* LTShader.mm */,
+				8BA11ADF1831555100A5001D /* LTTexture.h */,
+				8BA11AE01831555100A5001D /* LTTexture.mm */,
+				8BA3E139182A602F00FDD95A /* LTProgram.h */,
+				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
+				8BB4713F183A470400CA1681 /* LTVertexArray.h */,
+				8BB47140183A470400CA1681 /* LTVertexArray.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		8B8E50FB1861EB0F00821829 /* Signal Processing */ = {
+			isa = PBXGroup;
+			children = (
+				8B7DC39B18328063008D004B /* LTBoundaryCondition.h */,
+				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
+			);
+			name = "Signal Processing";
+			sourceTree = "<group>";
+		};
+		8B8E50FC1861EB1F00821829 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				288AB4041835320200A11FA4 /* LTDevice.h */,
+				288AB4051835320200A11FA4 /* LTDevice.mm */,
+				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
+				8B8E50E91861AA8900821829 /* LTShaderStorage.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		8B8E50FD1861EB4000821829 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				8B19620A184B31790065A057 /* LTDeviceSpec.mm */,
+				8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		8B8E50FE1861EB4600821829 /* GPU */ = {
+			isa = PBXGroup;
+			children = (
+				8B8E50FF1861EB4D00821829 /* Base */,
+				8B8E51011861EB5C00821829 /* Drawers */,
+			);
+			name = GPU;
+			sourceTree = "<group>";
+		};
+		8B8E50FF1861EB4D00821829 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
+				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
+				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
+				8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */,
+				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
+				8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */,
+				8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */,
+				8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */,
+				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
+				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
+				8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		8B8E51011861EB5C00821829 /* Drawers */ = {
+			isa = PBXGroup;
+			children = (
+				8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */,
+			);
+			name = Drawers;
+			sourceTree = "<group>";
+		};
+		8B8E51021861EB6D00821829 /* Signal Processing */ = {
+			isa = PBXGroup;
+			children = (
+				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
+			);
+			name = "Signal Processing";
 			sourceTree = "<group>";
 		};
 		8BB47145183B533500CA1681 /* Libraries */ = {
