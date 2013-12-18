@@ -91,7 +91,8 @@ LTGPUStructMake(LTRectDrawerVertex,
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
                                                              usage:LTArrayBufferUsageStaticDraw];
   [arrayBuffer setData:[NSData dataWithBytesNoCopy:&vertexData[0]
-                                            length:vertexData.size() * sizeof(LTRectDrawerVertex)]];
+                                            length:vertexData.size() * sizeof(LTRectDrawerVertex)
+                                      freeWhenDone:NO]];
 
   return arrayBuffer;
 }
