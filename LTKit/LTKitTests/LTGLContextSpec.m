@@ -5,27 +5,6 @@
 
 SpecBegin(LTGLContext)
 
-context(@"initialization", ^{
-  it(@"should initialize with no context", ^{
-    LTGLContext *context = [[LTGLContext alloc] init];
-
-    expect(context.context).toNot.beNil();
-  });
-
-  it(@"should initialize with a given context", ^{
-    EAGLContext *eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    LTGLContext *context = [[LTGLContext alloc] initWithContext:eaglContext];
-
-    expect(context.context).to.equal(eaglContext);
-  });
-
-  it(@"should set context as current context", ^{
-    LTGLContext *context = [[LTGLContext alloc] init];
-
-    expect(context.context).to.equal([EAGLContext currentContext]);
-  });
-});
-
 sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
   LTGLContext *context = data[@"context"];
 
@@ -45,11 +24,66 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
   expect(context.ditheringEnabled).to.beTruthy();
 });
 
+context(@"initialization", ^{
+  it(@"should initialize with no context", ^{
+    LTGLContext *context = [[LTGLContext alloc] init];
+
+    expect(context.context).toNot.beNil();
+  });
+});
+
+context(@"setting context", ^{
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
+  });
+
+  it(@"should set context with valid context", ^{
+    LTGLContext *context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+
+    expect([LTGLContext currentContext]).to.equal(context);
+  });
+
+  it(@"should clear context with nil context", ^{
+    LTGLContext *context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+    [LTGLContext setCurrentContext:nil];
+
+    expect([LTGLContext currentContext]).to.equal(nil);
+  });
+
+  it(@"should not allow changing properties while context is not set", ^{
+    LTGLContext *context = [[LTGLContext alloc] init];
+
+    expect(^{
+      context.blendEnabled = YES;
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+  it(@"should not allow execution while context is not set", ^{
+    LTGLContext *context = [[LTGLContext alloc] init];
+
+    expect(^{
+      [context executeAndPreserveState:^{
+        context.blendEnabled = YES;
+      }];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+  // TODO: (yaron) decide if we want this capability.
+  pending(@"should not allow context switch while executing");
+});
+
 context(@"context values", ^{
   __block LTGLContext *context;
 
   beforeEach(^{
     context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+  });
+
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
   });
 
   it(@"should have default opengl values", ^{
@@ -159,6 +193,11 @@ context(@"execution", ^{
 
   beforeEach(^{
     context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+  });
+
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
   });
 
   // State preserving.
