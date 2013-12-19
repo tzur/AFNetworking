@@ -8,7 +8,7 @@
 /// Class for efficiently drawing grids (when the maximal size of grid is known).
 @interface LTGridDrawer : NSObject
 
-/// Initializes the grid drawer for a grid with the given size.
+/// Initializes the grid drawer for a grid with the given number of cells in each dimension.
 - (id)initWithSize:(CGSize)size;
 
 /// Draws the subgrid \c region into the given framebuffer. The region is defined in the grid's
@@ -20,13 +20,15 @@
 /// @note this method assumes that a framebuffer/renderbuffer is alraedy bound for drawing.
 - (void)drawSubGridInRegion:(CGRect)region inFrameBufferWithSize:(CGSize)size;
 
-/// Base color of the grid, rgba or grayscale with premultiplied alpha.
-@property (strong, nonatomic) UIColor *color;
+/// Base color of the grid, rgba with premultiplied alpha. Default is white (1,1,1,1).
+@property (nonatomic) GLKVector4 color;
 
 /// Opacity of the grid. This stacks together (multiply) with the alpha channel of the color.
+/// Default is 1.
 @property (nonatomic) CGFloat opacity;
 
-// Width of the grid lines, in pixels.
+/// Width, in pixels, of the border of each grid cell. This corresponds to half the width of the
+/// grid lines, as each line consists of the two borders of neighboring cells. Default is 1.
 @property (nonatomic) NSUInteger width;
 
 @end

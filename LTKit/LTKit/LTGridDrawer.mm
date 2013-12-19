@@ -10,28 +10,14 @@
 #import "LTGPUStruct.h"
 #import "LTLogger.h"
 #import "LTProgram.h"
+#import "LTShaderStorage+LTGridDrawerVsh.h"
+#import "LTShaderStorage+LTGridDrawerFsh.h"
 #import "LTVertexArray.h"
 
-// Shaders used for drawing the pixel grid.
-static NSString * const kVertexShaderSource =
-    @"uniform highp mat4 modelview;"
-     "uniform highp mat4 projection;"
-     "uniform highp vec2 pixelSize;"
-     "uniform highp float width;"
-     "attribute highp vec4 position;"
-     "attribute highp vec2 offset;"
-     "void main() {"
-        "highp vec4 new_position = position - vec4(offset, 0.0, 0.0);"
-        "new_position = projection * modelview * new_position;"
-        "new_position.xy += (offset * pixelSize * width * new_position.w);"
-        "gl_Position = new_position;"
-     "}";
-static NSString * const kFragmentShaderSource =
-    @"uniform mediump vec4 color;"
-     "void main() {gl_FragColor = color;}";
-
 /// Holds the position of each grid line vertex.
-LTGPUStructMake(LTGridDrawerVertex, GLKVector2, position, GLKVector2, offset);
+LTGPUStructMake(LTGridDrawerVertex,
+                GLKVector2, position,
+                GLKVector2, offset);
 
 @interface LTGridDrawer ()
 
@@ -49,7 +35,7 @@ LTGPUStructMake(LTGridDrawerVertex, GLKVector2, position, GLKVector2, offset);
 @implementation LTGridDrawer
 
 // Default grid drawer color.
-static UIColor * const kDefaultColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+static const GLKVector4 kDefaultColor = GLKVector4Make(1, 1, 1, 1);
 // Default grid drawer opacity.
 static const CGFloat kDefaultOpacity = 1.0;
 // Default width of the grid.
@@ -76,8 +62,8 @@ static const CGFloat kDefaultWidth = 1.0;
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:kVertexShaderSource
-                                  fragmentSource:kFragmentShaderSource];
+  return [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTGridDrawerVsh]
+                                  fragmentSource:[LTShaderStorage LTGridDrawerFsh]];
 }
 
 - (LTDrawingContext *)createDrawingContext {
@@ -106,18 +92,29 @@ static const CGFloat kDefaultWidth = 1.0;
 }
 
 - (LTArrayBuffer *)createArrayBuffer {
-  // Create the vertices for the grid lines according to the grid size.
-  // Ideally, we would use two degenerate triangles for each grid line, and the vertex shader would
-  // update their values according to the offset, pixel size, and width to create a rectangle with
-  // the desired width.
-  // However, since openGL automatically discards degenerate triangles a hack was necessary, adding
-  // the offset to the position as well, with the vertex shader subtracting it before applying the
-  // modelview and projection transformations.
+  std::vector<LTGridDrawerVertex> vLines = [self verticesForVerticalGridLines];
+  std::vector<LTGridDrawerVertex> hLines = [self verticesForHorizontalGridLines];
+  vLines.insert(vLines.cend(), hLines.cbegin(), hLines.cend());
+  LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                             usage:LTArrayBufferUsageStaticDraw];
+  [arrayBuffer setData:[NSData dataWithBytesNoCopy:&vLines[0]
+                                            length:vLines.size() * sizeof(LTGridDrawerVertex)
+                                      freeWhenDone:NO]];
+  return arrayBuffer;
+}
+
+/// Creates the vertices for the vertical grid lines according to the grid size.
+/// Ideally, we would use two degenerate triangles for each grid line, and the vertex shader would
+/// update their values according to the offset, pixel size, and width to create a rectangle with
+/// the desired width.
+/// However, since openGL automatically discards degenerate triangles a hack was necessary, adding
+/// the offset to the position as well, with the vertex shader subtracting it before applying the
+/// modelview and projection transformations.
+- (std::vector<LTGridDrawerVertex>) verticesForVerticalGridLines {
   std::vector<LTGridDrawerVertex> vertexData;
-  CGFloat jump = 1.0;
+  CGFloat gridSpacing = 1.0;
   GLfloat height = self.size.height;
-  GLfloat width = self.size.width;
-  for (GLfloat x = 0; x <= self.size.width; x += jump) {
+  for (GLfloat x = 0; x <= self.size.width; x += gridSpacing) {
     LTGridDrawerVertex topLeft = {.position = {{x - 1, 0}}, .offset = {{-1, 0}}};
     LTGridDrawerVertex topRight = {.position = {{x + 1, 0}}, .offset = {{1, 0}}};
     LTGridDrawerVertex bottomLeft = {.position = {{x - 1, height}}, .offset = {{-1, 0}}};
@@ -129,7 +126,16 @@ static const CGFloat kDefaultWidth = 1.0;
     vertexData.push_back(bottomRight);
     vertexData.push_back(bottomLeft);
   }
-  for (GLfloat y = 0; y <= self.size.height; y += jump) {
+  return vertexData;
+}
+
+/// Creates the vertices for the horizontal grid lines according to the grid size. See comment above
+/// (\c verticesForVerticalGridLines) for more details.
+- (std::vector<LTGridDrawerVertex>) verticesForHorizontalGridLines {
+  std::vector<LTGridDrawerVertex> vertexData;
+  CGFloat gridSpacing = 1.0;
+  GLfloat width = self.size.width;
+  for (GLfloat y = 0; y <= self.size.height; y += gridSpacing) {
     LTGridDrawerVertex topLeft = {.position = {{0, y - 1}}, .offset = {{0, -1}}};
     LTGridDrawerVertex topRight = {.position = {{width, y - 1}}, .offset = {{0, -1}}};
     LTGridDrawerVertex bottomLeft = {.position = {{0, y + 1}}, .offset = {{0, 1}}};
@@ -141,13 +147,7 @@ static const CGFloat kDefaultWidth = 1.0;
     vertexData.push_back(bottomRight);
     vertexData.push_back(bottomLeft);
   }
-  
-  LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                             usage:LTArrayBufferUsageStaticDraw];
-  [arrayBuffer setData:[NSData dataWithBytesNoCopy:&vertexData[0]
-                                            length:vertexData.size() * sizeof(LTGridDrawerVertex)
-                                      freeWhenDone:NO]];
-  return arrayBuffer;
+  return vertexData;
 }
 
 #pragma mark -
@@ -162,20 +162,16 @@ static const CGFloat kDefaultWidth = 1.0;
 
 - (void)drawSubGridInRegion:(CGRect)region inFrameBufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0.0, size.width, 0.0, size.height, -1.0, 1.0);
-
-  // Calculate the modelview matrix according to the desired region and framebuffer size.
-  CGFloat scaleX = size.width / region.size.width;
-  CGFloat scaleY = size.height / region.size.height;
-  GLKMatrix4 modelview = GLKMatrix4MakeScale(scaleX, scaleY, 1.0);
-  modelview = GLKMatrix4Translate(modelview, -region.origin.x, -region.origin.y, 0.0);
+  GLKMatrix4 modelview = [self modelviewForGridRegion:region targetSize:size];
   
   self.program[@"width"] = @(self.width);
+  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
   self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
   self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
   self.program[@"pixelSize"] =
       [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
-  [self updateProgramColor];
 
+  // TODO:(amit) update to LTGLContext when ready.
   glEnable(GL_BLEND);
   glBlendEquation(GL_FUNC_ADD);
   glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
@@ -183,26 +179,12 @@ static const CGFloat kDefaultWidth = 1.0;
   glDisable(GL_BLEND);
 }
 
-#pragma mark -
-#pragma mark Utility
-#pragma mark -
-
-/// Updates the shader's color uniform according to the grid's color and opacity.
-- (void)updateProgramColor {
-  CGFloat r,g,b,a;
-  GLKVector4 color;
-  if ([self.color getRed:&r green:&g blue:&b alpha:&a]) {
-    color = GLKVector4Make(r, g, b, a);
-  } else if ([self.color getWhite:&r alpha:&a]) {
-    color = GLKVector4Make(r, r, r, a);
-  } else {
-    LogError(@"Could not set grid color, invalid color: %@", self.color);
-    return;
-  }
-  
-  // Premultiply the opacity, and set the uniform.
-  self.program[@"color"] =
-      [NSValue valueWithGLKVector4:GLKVector4MultiplyScalar(color, self.opacity)];
+/// Returns the modelview matrix according to the desired region and target framebuffer size.
+- (GLKMatrix4)modelviewForGridRegion:(CGRect)region targetSize:(CGSize)targetSize {
+  CGFloat scaleX = targetSize.width / region.size.width;
+  CGFloat scaleY = targetSize.height / region.size.height;
+  GLKMatrix4 modelview = GLKMatrix4MakeScale(scaleX, scaleY, 1.0);
+  return GLKMatrix4Translate(modelview, -region.origin.x, -region.origin.y, 0.0);
 }
 
 #pragma mark -
