@@ -1,8 +1,6 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "metamacros.h"
-
 #import "LTGPUResource.h"
 
 @class LTArrayBuffer;
