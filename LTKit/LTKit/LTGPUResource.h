@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTTypedefs.h"
+
 @protocol LTGPUResource <NSObject>
 
 /// Binds the active context to the resource. If the texture is already bound, nothing will

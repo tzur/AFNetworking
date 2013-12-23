@@ -986,7 +986,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
@@ -1033,7 +1033,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";

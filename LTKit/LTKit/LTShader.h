@@ -2,6 +2,7 @@
 // Created by Yaron Inger.
 
 #import "LTProgram.h"
+#import "LTTypedefs.h"
 
 /// Type of shaders.
 typedef NS_ENUM(NSUInteger, LTShaderType) {

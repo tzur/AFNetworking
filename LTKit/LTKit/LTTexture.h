@@ -32,6 +32,10 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
   LTTextureChannelsRGBA = 4,
 };
 
+namespace cv {
+  class Mat;
+}
+
 /// @class LTTexture
 ///
 /// An abstract class representing a GPU-based texture. This class supports the texture CPU-GPU
