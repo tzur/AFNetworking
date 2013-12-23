@@ -34,19 +34,19 @@ typedef NS_ENUM(GLint, LTGLStateBlendEquation) {
 /// specific to a single geometry or program, such as blending, depth test, face culling and more.
 @interface LTGLContext : NSObject
 
-/// Initializes the context with a new underlying \c EAGLContext and sets it as the current context.
-- (instancetype)init;
+/// Returns the current rendering context for the calling thread.
++ (LTGLContext *)currentContext;
 
-/// Designated initializer: initiailizes the context with an existing OpenGL context and sets it as
-/// the current context.
-- (instancetype)initWithContext:(EAGLContext *)context;
+/// Makes the specified context the current rendering context for the calling thread. If the given
+/// \c context is \c nil, the rendering context will be unbound from any context.
++ (void)setCurrentContext:(LTGLContext *)context;
+
+/// Initializes a context with a new \c EAGLContext.
+- (instancetype)init;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveState:(LTVoidBlock)execute;
-
-/// Sets the current context as the active context for the calling thread.
-- (void)setAsCurrentContext;
 
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;

@@ -3,6 +3,7 @@
 
 #import "LTGPUQueue.h"
 
+#import "LTGLContext.h"
 #import "LTGLException.h"
 
 @interface LTGPUQueue ()
@@ -17,7 +18,7 @@
 @property (strong, nonatomic) dispatch_group_t group;
 
 /// OpenGL context that is used on given blocks.
-@property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) LTGLContext *context;
 
 /// \c YES if the queue is currently paused.
 @property (readwrite, atomic) BOOL isPaused;
@@ -73,7 +74,7 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 }
 
 - (void)createOpenGLContext {
-  self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  self.context = [[LTGLContext alloc] init];
   if (!self.context) {
     [LTGLException raise:kLTGPUQueueContextCreationFailedException
                   format:@"Failed creating OpenGL ES context"];
@@ -81,11 +82,8 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 }
 
 - (void)useContext {
-  if ([EAGLContext currentContext] != self.context) {
-    if (![EAGLContext setCurrentContext:self.context]) {
-      [LTGLException raise:kLTGPUQueueContextSetFailedException
-                    format:@"Failed to set context to current thread"];
-    }
+  if ([LTGLContext currentContext] != self.context) {
+    [LTGLContext setCurrentContext:self.context];
   }
 }
 

@@ -1,6 +1,9 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <GLKit/GLKMath.h>
+#import <opencv2/core/core.hpp>
+
 /// Protocol for 1D and 2D boundary condition. Implementors of this protocol define the strategy to
 /// be used for computations where a signal is expanded over its boundaries. Such computations
 /// include filtering with a kernel and sampling.

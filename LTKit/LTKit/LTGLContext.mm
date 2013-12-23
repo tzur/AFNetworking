@@ -5,6 +5,10 @@
 
 #import <stack>
 
+/// Thread-specific \c LTGLContext accessor key.
+static NSString * const kCurrentContextKey = @"com.lightricks.LTKit.LTGLContext";
+
+/// POD for holding all context values.
 typedef struct {
   LTGLStateBlendFunc blendFuncSourceRGB;
   LTGLStateBlendFunc blendFuncDestinationRGB;
@@ -42,18 +46,50 @@ typedef struct {
 #pragma mark -
 
 - (instancetype)init {
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  LTAssert(context, @"EAGLContext creation failed");
-  return [self initWithContext:context];
-}
-
-- (instancetype)initWithContext:(EAGLContext *)context {
   if (self = [super init]) {
-    self.context = context;
-    [self setAsCurrentContext];
-    [self fetchState];
+    self.context = [self createEAGLContext];
   }
   return self;
+}
+
+- (EAGLContext *)createEAGLContext {
+  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  LTAssert(context, @"EAGLContext creation failed");
+  return context;
+}
+
+#pragma mark -
+#pragma mark Current context
+#pragma mark -
+
++ (LTGLContext *)currentContext {
+  return [[NSThread currentThread] threadDictionary][kCurrentContextKey];
+}
+
++ (void)setCurrentContext:(LTGLContext *)context {
+  if (context) {
+    [[self class] setContextForCurrentThread:context];
+  } else {
+    [[self class] clearContextFromCurrentThread];
+  }
+}
+
++ (void)setContextForCurrentThread:(LTGLContext *)context {
+  [[NSThread currentThread] threadDictionary][kCurrentContextKey] = context;
+
+  BOOL contextSet = [EAGLContext setCurrentContext:context.context];
+  LTAssert(contextSet, @"Failed to set context as current context");
+
+  [context fetchState];
+}
+
++ (void)clearContextFromCurrentThread {
+  [[[NSThread currentThread] threadDictionary] removeObjectForKey:kCurrentContextKey];
+  [EAGLContext setCurrentContext:nil];
+}
+
+- (BOOL)isSetAsCurrentContext {
+  return [[self class] currentContext] == self;
 }
 
 #pragma mark -
@@ -80,12 +116,12 @@ typedef struct {
 }
 
 - (void)fetchFlagsState {
-  self.blendEnabled = glIsEnabled(GL_BLEND);
-  self.faceCullingEnabled = glIsEnabled(GL_CULL_FACE);
-  self.depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
-  self.scissorTestEnabled = glIsEnabled(GL_SCISSOR_TEST);
-  self.stencilTestEnabled = glIsEnabled(GL_STENCIL_TEST);
-  self.ditheringEnabled = glIsEnabled(GL_DITHER);
+  _blendEnabled = glIsEnabled(GL_BLEND);
+  _faceCullingEnabled = glIsEnabled(GL_CULL_FACE);
+  _depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
+  _scissorTestEnabled = glIsEnabled(GL_SCISSOR_TEST);
+  _stencilTestEnabled = glIsEnabled(GL_STENCIL_TEST);
+  _ditheringEnabled = glIsEnabled(GL_DITHER);
 }
 
 #pragma mark -
@@ -100,7 +136,7 @@ typedef struct {
     .blendFuncDestinationAlpha = self.blendFuncDestinationAlpha,
 
     .blendEquationRGB = self.blendEquationRGB,
-    .blendEquationAlpha =self.blendEquationAlpha,
+    .blendEquationAlpha = self.blendEquationAlpha,
 
     .blendEnabled = self.blendEnabled,
     .faceCullingEnabled = self.faceCullingEnabled,
@@ -133,22 +169,13 @@ typedef struct {
 #pragma mark -
 
 - (void)executeAndPreserveState:(LTVoidBlock)execute {
-  if (!execute) {
-    return;
-  }
+  LTParameterAssert(execute);
+  [self assertContextIsCurrentContext];
 
   self.contextStack.emplace([self valuesForCurrentState]);
   execute();
   [self setCurrentStateFromValues:self.contextStack.top()];
   self.contextStack.pop();
-}
-
-#pragma mark -
-#pragma mark EAGLContext
-#pragma mark -
-
-- (void)setAsCurrentContext {
-  [EAGLContext setCurrentContext:self.context];
 }
 
 #pragma mark -
@@ -252,20 +279,28 @@ typedef struct {
 }
 
 - (void)updateBlendFunc {
+  [self assertContextIsCurrentContext];
   glBlendFuncSeparate(self.blendFuncSourceRGB, self.blendFuncDestinationRGB,
                       self.blendFuncSourceAlpha, self.blendFuncDestinationAlpha);
 }
 
 - (void)updateBlendEquation {
+  [self assertContextIsCurrentContext];
   glBlendEquationSeparate(self.blendEquationRGB, self.blendEquationAlpha);
 }
 
 - (void)updateCapability:(GLenum)capability withValue:(BOOL)value {
+  [self assertContextIsCurrentContext];
   if (value) {
     glEnable(capability);
   } else {
     glDisable(capability);
   }
+}
+
+- (void)assertContextIsCurrentContext {
+  LTAssert([self isSetAsCurrentContext],
+           @"Trying to modify context while not set as current context");
 }
 
 @end
