@@ -42,6 +42,12 @@ typedef struct {
   LTGLContextBlendEquation equationAlpha;
 } LTGLContextBlendEquationArgs;
 
+/// OpenGL default blend function.
+extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault;
+
+/// OpenGL default blend equation.
+extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
+
 /// @class LTGLContext
 ///
 /// Wrapper class for \c EAGLContext, supplying abilities to set OpenGL capabilities which are not

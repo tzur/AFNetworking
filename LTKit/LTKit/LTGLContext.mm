@@ -5,6 +5,20 @@
 
 #import <stack>
 
+/// OpenGL default blend function.
+LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
+  .sourceRGB = LTGLContextBlendFuncOne,
+  .destinationRGB = LTGLContextBlendFuncZero,
+  .sourceAlpha = LTGLContextBlendFuncOne,
+  .destinationAlpha = LTGLContextBlendFuncZero
+};
+
+/// OpenGL default blend equation.
+LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault = {
+  .equationRGB = LTGLContextBlendEquationAdd,
+  .equationAlpha = LTGLContextBlendEquationAdd
+};
+
 /// Thread-specific \c LTGLContext accessor key.
 static NSString * const kCurrentContextKey = @"com.lightricks.LTKit.LTGLContext";
 
