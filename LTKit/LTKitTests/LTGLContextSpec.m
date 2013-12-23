@@ -8,13 +8,15 @@ SpecBegin(LTGLContext)
 sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
   LTGLContext *context = data[@"context"];
 
-  expect(context.blendFuncSourceRGB).to.equal(GL_ONE);
-  expect(context.blendFuncDestinationRGB).to.equal(GL_ZERO);
-  expect(context.blendFuncSourceAlpha).to.equal(GL_ONE);
-  expect(context.blendFuncDestinationAlpha).to.equal(GL_ZERO);
+  LTGLContextBlendFuncArgs blendFunc = context.blendFunc;
+  expect(blendFunc.sourceRGB).to.equal(GL_ONE);
+  expect(blendFunc.destinationRGB).to.equal(GL_ZERO);
+  expect(blendFunc.sourceAlpha).to.equal(GL_ONE);
+  expect(blendFunc.destinationAlpha).to.equal(GL_ZERO);
 
-  expect(context.blendEquationRGB).to.equal(GL_FUNC_ADD);
-  expect(context.blendEquationAlpha).to.equal(GL_FUNC_ADD);
+  LTGLContextBlendEquationArgs blendEquation = context.blendEquation;
+  expect(blendEquation.equationRGB).to.equal(GL_FUNC_ADD);
+  expect(blendEquation.equationAlpha).to.equal(GL_FUNC_ADD);
 
   expect(context.blendEnabled).to.beFalsy();
   expect(context.faceCullingEnabled).to.beFalsy();
@@ -86,37 +88,24 @@ context(@"context values", ^{
     [LTGLContext setCurrentContext:nil];
   });
 
-  it(@"should have default opengl values", ^{
-    expect(context.blendFuncSourceRGB).to.equal(GL_ONE);
-    expect(context.blendFuncDestinationRGB).to.equal(GL_ZERO);
-    expect(context.blendFuncSourceAlpha).to.equal(GL_ONE);
-    expect(context.blendFuncDestinationAlpha).to.equal(GL_ZERO);
-
-    expect(context.blendEquationRGB).to.equal(GL_FUNC_ADD);
-    expect(context.blendEquationAlpha).to.equal(GL_FUNC_ADD);
-
-    expect(context.blendEnabled).to.beFalsy();
-    expect(context.faceCullingEnabled).to.beFalsy();
-    expect(context.depthTestEnabled).to.beFalsy();
-    expect(context.scissorTestEnabled).to.beFalsy();
-    expect(context.stencilTestEnabled).to.beFalsy();
-    expect(context.ditheringEnabled).to.beTruthy();
-  });
-
   itShouldBehaveLike(@"having default opengl values", ^{
     return @{@"context": context};
   });
 
   it(@"should set blend functions", ^{
-    context.blendFuncSourceRGB = LTGLStateBlendFuncOneMinusDstAlpha;
-    context.blendFuncDestinationRGB = LTGLStateBlendFuncOneMinusDstAlpha;
-    context.blendFuncSourceAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
-    context.blendFuncDestinationAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
+    LTGLContextBlendFuncArgs expected = {
+      LTGLContextBlendFuncOneMinusDstAlpha,
+      LTGLContextBlendFuncOneMinusDstAlpha,
+      LTGLContextBlendFuncOneMinusDstAlpha,
+      LTGLContextBlendFuncOneMinusDstAlpha
+    };
+    context.blendFunc = expected;
 
-    expect(context.blendFuncSourceRGB).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(context.blendFuncDestinationRGB).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(context.blendFuncSourceAlpha).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(context.blendFuncDestinationAlpha).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
+    LTGLContextBlendFuncArgs actual = context.blendFunc;
+    expect(actual.sourceRGB).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(actual.destinationRGB).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(actual.sourceAlpha).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(actual.destinationAlpha).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
 
     GLint blendFuncSourceRGB, blendFuncDestinationRGB;
     GLint blendFuncSourceAlpha, blendFuncDestinationAlpha;
@@ -126,23 +115,30 @@ context(@"context values", ^{
     glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendFuncSourceAlpha);
     glGetIntegerv(GL_BLEND_DST_ALPHA, &blendFuncDestinationAlpha);
 
-    expect(blendFuncSourceRGB).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(blendFuncDestinationRGB).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(blendFuncSourceAlpha).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
-    expect(blendFuncDestinationAlpha).to.equal(LTGLStateBlendFuncOneMinusDstAlpha);
+    expect(blendFuncSourceRGB).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(blendFuncDestinationRGB).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(blendFuncSourceAlpha).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
+    expect(blendFuncDestinationAlpha).to.equal(LTGLContextBlendFuncOneMinusDstAlpha);
   });
 
   it(@"should set blend equations", ^{
-    context.blendEquationRGB = LTGLStateBlendEquationReverseSubtract;
-    context.blendEquationAlpha = LTGLStateBlendEquationReverseSubtract;
+    LTGLContextBlendEquationArgs expected = {
+      LTGLContextBlendEquationReverseSubtract,
+      LTGLContextBlendEquationReverseSubtract
+    };
+    context.blendEquation = expected;
+
+    LTGLContextBlendEquationArgs actual = context.blendEquation;
+    expect(actual.equationRGB).to.equal(LTGLContextBlendEquationReverseSubtract);
+    expect(actual.equationAlpha).to.equal(LTGLContextBlendEquationReverseSubtract);
 
     GLint blendEquationRGB, blendEquationAlpha;
 
     glGetIntegerv(GL_BLEND_EQUATION_RGB, &blendEquationRGB);
     glGetIntegerv(GL_BLEND_EQUATION_ALPHA, &blendEquationAlpha);
 
-    expect(blendEquationRGB).to.equal(LTGLStateBlendEquationReverseSubtract);
-    expect(blendEquationAlpha).to.equal(LTGLStateBlendEquationReverseSubtract);
+    expect(blendEquationRGB).to.equal(LTGLContextBlendEquationReverseSubtract);
+    expect(blendEquationAlpha).to.equal(LTGLContextBlendEquationReverseSubtract);
   });
 
   it(@"should set blending", ^{
@@ -203,13 +199,19 @@ context(@"execution", ^{
   // State preserving.
   itShouldBehaveLike(@"having default opengl values", ^{
     [context executeAndPreserveState:^{
-      context.blendFuncSourceRGB = LTGLStateBlendFuncOneMinusDstAlpha;
-      context.blendFuncDestinationRGB = LTGLStateBlendFuncOneMinusDstAlpha;
-      context.blendFuncSourceAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
-      context.blendFuncDestinationAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
+      LTGLContextBlendFuncArgs blendFunc = {
+        LTGLContextBlendFuncOneMinusDstAlpha,
+        LTGLContextBlendFuncOneMinusDstAlpha,
+        LTGLContextBlendFuncOneMinusDstAlpha,
+        LTGLContextBlendFuncOneMinusDstAlpha
+      };
+      context.blendFunc = blendFunc;
 
-      context.blendEquationRGB = LTGLStateBlendEquationReverseSubtract;
-      context.blendEquationAlpha = LTGLStateBlendEquationReverseSubtract;
+      LTGLContextBlendEquationArgs blendEquation = {
+        LTGLContextBlendEquationReverseSubtract,
+        LTGLContextBlendEquationReverseSubtract
+      };
+      context.blendEquation = blendEquation;
 
       context.blendEnabled = !context.blendEnabled;
       context.faceCullingEnabled = !context.faceCullingEnabled;
