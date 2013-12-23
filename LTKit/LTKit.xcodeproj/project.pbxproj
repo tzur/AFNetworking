@@ -40,6 +40,8 @@
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
 		8B8E51051861F54600821829 /* LTGLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51041861F54600821829 /* LTGLContext.mm */; };
 		8B8E510E1863216E00821829 /* LTGLContextSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E510D1863216E00821829 /* LTGLContextSpec.m */; };
+		8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */; };
+		8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -287,6 +289,8 @@
 		8B8E51031861F54600821829 /* LTGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLContext.h; sourceTree = "<group>"; };
 		8B8E51041861F54600821829 /* LTGLContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLContext.mm; sourceTree = "<group>"; };
 		8B8E510D1863216E00821829 /* LTGLContextSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLContextSpec.m; sourceTree = "<group>"; };
+		8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.fsh; sourceTree = "<group>"; };
+		8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.vsh; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -524,6 +528,7 @@
 		8B8E50FA1861EADF00821829 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				8B98516A186884CB00D680D0 /* Shaders */,
 				8BBE894F1838CA2C006C58AA /* LTArrayBuffer.h */,
 				8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */,
 				8BB47134183A438300CA1681 /* LTDrawingContext.h */,
@@ -625,6 +630,15 @@
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
 			);
 			name = "Signal Processing";
+			sourceTree = "<group>";
+		};
+		8B98516A186884CB00D680D0 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */,
+				8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 		8BB47145183B533500CA1681 /* Libraries */ = {
@@ -873,9 +887,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
+				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
 				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
+				8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
