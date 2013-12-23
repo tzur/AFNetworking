@@ -6,6 +6,7 @@
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTLogger.h"
@@ -172,11 +173,17 @@ static const CGFloat kDefaultWidth = 1.0;
       [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
 
   // TODO:(amit) update to LTGLContext when ready.
-  glEnable(GL_BLEND);
-  glBlendEquation(GL_FUNC_ADD);
-  glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
-  glDisable(GL_BLEND);
+  LTGLContext *context = [LTGLContext currentContext];
+  [context executeAndPreserveState:^{
+    context.blendEnabled = YES;
+    context.blendEquationAlpha = LTGLStateBlendEquationAdd;
+    context.blendEquationRGB = LTGLStateBlendEquationAdd;
+    context.blendFuncSourceRGB = LTGLStateBlendFuncOne;
+    context.blendFuncDestinationRGB = LTGLStateBlendFuncOneMinusSrcAlpha;
+    context.blendFuncSourceAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
+    context.blendFuncDestinationAlpha = LTGLStateBlendFuncOne;
+    [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
+  }];
 }
 
 /// Returns the modelview matrix according to the desired region and target framebuffer size.
