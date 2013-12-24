@@ -176,12 +176,8 @@ static const CGFloat kDefaultWidth = 1.0;
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.blendEnabled = YES;
-    context.blendEquationAlpha = LTGLStateBlendEquationAdd;
-    context.blendEquationRGB = LTGLStateBlendEquationAdd;
-    context.blendFuncSourceRGB = LTGLStateBlendFuncOne;
-    context.blendFuncDestinationRGB = LTGLStateBlendFuncOneMinusSrcAlpha;
-    context.blendFuncSourceAlpha = LTGLStateBlendFuncOneMinusDstAlpha;
-    context.blendFuncDestinationAlpha = LTGLStateBlendFuncOne;
+    context.blendEquation = kLTGLContextBlendEquationDefault;
+    context.blendFunc = kLTGLContextBlendFuncNormal;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
   }];
 }
