@@ -5,18 +5,27 @@
 
 #import <stack>
 
+/// OpenGL default blend function.
+LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
+  .sourceRGB = LTGLContextBlendFuncOne,
+  .destinationRGB = LTGLContextBlendFuncZero,
+  .sourceAlpha = LTGLContextBlendFuncOne,
+  .destinationAlpha = LTGLContextBlendFuncZero
+};
+
+/// OpenGL default blend equation.
+LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault = {
+  .equationRGB = LTGLContextBlendEquationAdd,
+  .equationAlpha = LTGLContextBlendEquationAdd
+};
+
 /// Thread-specific \c LTGLContext accessor key.
 static NSString * const kCurrentContextKey = @"com.lightricks.LTKit.LTGLContext";
 
 /// POD for holding all context values.
 typedef struct {
-  LTGLStateBlendFunc blendFuncSourceRGB;
-  LTGLStateBlendFunc blendFuncDestinationRGB;
-  LTGLStateBlendFunc blendFuncSourceAlpha;
-  LTGLStateBlendFunc blendFuncDestinationAlpha;
-
-  LTGLStateBlendEquation blendEquationRGB;
-  LTGLStateBlendEquation blendEquationAlpha;
+  LTGLContextBlendFuncArgs blendFunc;
+  LTGLContextBlendEquationArgs blendEquation;
 
   BOOL blendEnabled;
   BOOL faceCullingEnabled;
@@ -104,15 +113,15 @@ typedef struct {
 }
 
 - (void)fetchBlendFuncState {
-  glGetIntegerv(GL_BLEND_SRC_RGB, (GLint *)&_blendFuncSourceRGB);
-  glGetIntegerv(GL_BLEND_DST_RGB, (GLint *)&_blendFuncDestinationRGB);
-  glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint *)&_blendFuncSourceAlpha);
-  glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint *)&_blendFuncDestinationAlpha);
+  glGetIntegerv(GL_BLEND_SRC_RGB, (GLint *)&_blendFunc.sourceRGB);
+  glGetIntegerv(GL_BLEND_DST_RGB, (GLint *)&_blendFunc.destinationRGB);
+  glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint *)&_blendFunc.sourceAlpha);
+  glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint *)&_blendFunc.destinationAlpha);
 }
 
 - (void)fetchBlendEquationState {
-  glGetIntegerv(GL_BLEND_EQUATION_RGB, (GLint *)&_blendEquationRGB);
-  glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (GLint *)&_blendEquationAlpha);
+  glGetIntegerv(GL_BLEND_EQUATION_RGB, (GLint *)&_blendEquation.equationRGB);
+  glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (GLint *)&_blendEquation.equationAlpha);
 }
 
 - (void)fetchFlagsState {
@@ -130,14 +139,8 @@ typedef struct {
 
 - (LTGLContextValues)valuesForCurrentState {
   return {
-    .blendFuncSourceRGB = self.blendFuncSourceRGB,
-    .blendFuncDestinationRGB = self.blendFuncDestinationRGB,
-    .blendFuncSourceAlpha = self.blendFuncSourceAlpha,
-    .blendFuncDestinationAlpha = self.blendFuncDestinationAlpha,
-
-    .blendEquationRGB = self.blendEquationRGB,
-    .blendEquationAlpha = self.blendEquationAlpha,
-
+    .blendFunc = self.blendFunc,
+    .blendEquation = self.blendEquation,
     .blendEnabled = self.blendEnabled,
     .faceCullingEnabled = self.faceCullingEnabled,
     .depthTestEnabled = self.depthTestEnabled,
@@ -148,14 +151,8 @@ typedef struct {
 }
 
 - (void)setCurrentStateFromValues:(LTGLContextValues)values {
-  self.blendFuncSourceRGB = values.blendFuncSourceRGB;
-  self.blendFuncDestinationRGB = values.blendFuncDestinationRGB;
-  self.blendFuncSourceAlpha = values.blendFuncSourceAlpha;
-  self.blendFuncDestinationAlpha = values.blendFuncDestinationAlpha;
-
-  self.blendEquationRGB = values.blendEquationRGB;
-  self.blendEquationAlpha = values.blendEquationAlpha;
-
+  self.blendFunc = values.blendFunc;
+  self.blendEquation = values.blendEquation;
   self.blendEnabled = values.blendEnabled;
   self.faceCullingEnabled = values.faceCullingEnabled;
   self.depthTestEnabled = values.depthTestEnabled;
@@ -182,51 +179,23 @@ typedef struct {
 #pragma mark Context properties
 #pragma mark -
 
-- (void)setBlendFuncSourceRGB:(LTGLStateBlendFunc)blendFuncSourceRGB {
-  if (_blendFuncSourceRGB == blendFuncSourceRGB) {
+- (void)setBlendFunc:(LTGLContextBlendFuncArgs)blendFunc {
+  if (_blendFunc.sourceRGB == blendFunc.sourceRGB &&
+      _blendFunc.sourceAlpha == blendFunc.sourceAlpha &&
+      _blendFunc.destinationRGB == blendFunc.destinationRGB &&
+      _blendFunc.destinationAlpha == blendFunc.destinationAlpha) {
     return;
   }
-  _blendFuncSourceRGB = blendFuncSourceRGB;
+  _blendFunc = blendFunc;
   [self updateBlendFunc];
 }
 
-- (void)setBlendFuncDestinationRGB:(LTGLStateBlendFunc)blendFuncDestinationRGB {
-  if (_blendFuncDestinationRGB == blendFuncDestinationRGB) {
+- (void)setBlendEquation:(LTGLContextBlendEquationArgs)blendEquation {
+  if (_blendEquation.equationRGB == blendEquation.equationRGB &&
+      _blendEquation.equationAlpha == blendEquation.equationAlpha) {
     return;
   }
-  _blendFuncDestinationRGB = blendFuncDestinationRGB;
-  [self updateBlendFunc];
-}
-
-- (void)setBlendFuncSourceAlpha:(LTGLStateBlendFunc)blendFuncSourceAlpha {
-  if (_blendFuncSourceAlpha == blendFuncSourceAlpha) {
-    return;
-  }
-  _blendFuncSourceAlpha = blendFuncSourceAlpha;
-  [self updateBlendFunc];
-}
-
-- (void)setBlendFuncDestinationAlpha:(LTGLStateBlendFunc)blendFuncDestinationAlpha {
-  if (_blendFuncDestinationAlpha == blendFuncDestinationAlpha) {
-    return;
-  }
-  _blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-  [self updateBlendFunc];
-}
-
-- (void)setBlendEquationRGB:(LTGLStateBlendEquation)blendEquationRGB {
-  if (_blendEquationRGB == blendEquationRGB) {
-    return;
-  }
-  _blendEquationRGB = blendEquationRGB;
-  [self updateBlendEquation];
-}
-
-- (void)setBlendEquationAlpha:(LTGLStateBlendEquation)blendEquationAlpha {
-  if (_blendEquationAlpha == blendEquationAlpha) {
-    return;
-  }
-  _blendEquationAlpha = blendEquationAlpha;
+  _blendEquation = blendEquation;
   [self updateBlendEquation];
 }
 
@@ -280,13 +249,13 @@ typedef struct {
 
 - (void)updateBlendFunc {
   [self assertContextIsCurrentContext];
-  glBlendFuncSeparate(self.blendFuncSourceRGB, self.blendFuncDestinationRGB,
-                      self.blendFuncSourceAlpha, self.blendFuncDestinationAlpha);
+  glBlendFuncSeparate(_blendFunc.sourceRGB, _blendFunc.destinationRGB,
+                      _blendFunc.sourceAlpha, _blendFunc.destinationAlpha);
 }
 
 - (void)updateBlendEquation {
   [self assertContextIsCurrentContext];
-  glBlendEquationSeparate(self.blendEquationRGB, self.blendEquationAlpha);
+  glBlendEquationSeparate(_blendEquation.equationRGB, _blendEquation.equationAlpha);
 }
 
 - (void)updateCapability:(GLenum)capability withValue:(BOOL)value {

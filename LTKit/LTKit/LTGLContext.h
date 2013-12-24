@@ -2,31 +2,51 @@
 // Created by Yaron Inger.
 
 /// Supported blending functions.
-typedef NS_ENUM(GLenum, LTGLStateBlendFunc) {
-  LTGLStateBlendFuncZero = GL_ZERO,
-  LTGLStateBlendFuncOne = GL_ONE,
+typedef NS_ENUM(GLenum, LTGLContextBlendFunc) {
+  LTGLContextBlendFuncZero = GL_ZERO,
+  LTGLContextBlendFuncOne = GL_ONE,
 
-  LTGLStateBlendFuncSrcColor = GL_SRC_COLOR,
-  LTGLStateBlendFuncOneMinusSrcColor = GL_ONE_MINUS_SRC_COLOR,
-  LTGLStateBlendFuncDstColor = GL_DST_COLOR,
-  LTGLStateBlendFuncOneMinusDstColor = GL_ONE_MINUS_DST_COLOR,
+  LTGLContextBlendFuncSrcColor = GL_SRC_COLOR,
+  LTGLContextBlendFuncOneMinusSrcColor = GL_ONE_MINUS_SRC_COLOR,
+  LTGLContextBlendFuncDstColor = GL_DST_COLOR,
+  LTGLContextBlendFuncOneMinusDstColor = GL_ONE_MINUS_DST_COLOR,
 
-  LTGLStateBlendFuncSrcAlpha = GL_SRC_ALPHA,
-  LTGLStateBlendFuncOneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,
-  LTGLStateBlendFuncDstAlpha = GL_DST_ALPHA,
-  LTGLStateBlendFuncOneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,
+  LTGLContextBlendFuncSrcAlpha = GL_SRC_ALPHA,
+  LTGLContextBlendFuncOneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,
+  LTGLContextBlendFuncDstAlpha = GL_DST_ALPHA,
+  LTGLContextBlendFuncOneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,
 
-  LTGLStateBlendFuncAlphaSaturate = GL_SRC_ALPHA_SATURATE
+  LTGLContextBlendFuncAlphaSaturate = GL_SRC_ALPHA_SATURATE
 };
 
 /// Supported blending equations.
-typedef NS_ENUM(GLint, LTGLStateBlendEquation) {
-  LTGLStateBlendEquationAdd = GL_FUNC_ADD,
-  LTGLStateBlendEquationSubtract = GL_FUNC_SUBTRACT,
-  LTGLStateBlendEquationReverseSubtract = GL_FUNC_REVERSE_SUBTRACT,
-  LTGLStateBlendEquationMin = GL_MIN_EXT,
-  LTGLStateBlendEquationMax = GL_MAX_EXT
+typedef NS_ENUM(GLint, LTGLContextBlendEquation) {
+  LTGLContextBlendEquationAdd = GL_FUNC_ADD,
+  LTGLContextBlendEquationSubtract = GL_FUNC_SUBTRACT,
+  LTGLContextBlendEquationReverseSubtract = GL_FUNC_REVERSE_SUBTRACT,
+  LTGLContextBlendEquationMin = GL_MIN_EXT,
+  LTGLContextBlendEquationMax = GL_MAX_EXT
 };
+
+/// Set of arguments for setting the blend function.
+typedef struct {
+  LTGLContextBlendFunc sourceRGB;
+  LTGLContextBlendFunc sourceAlpha;
+  LTGLContextBlendFunc destinationRGB;
+  LTGLContextBlendFunc destinationAlpha;
+} LTGLContextBlendFuncArgs;
+
+/// Set of arguments for setting the blend equation.
+typedef struct {
+  LTGLContextBlendEquation equationRGB;
+  LTGLContextBlendEquation equationAlpha;
+} LTGLContextBlendEquationArgs;
+
+/// OpenGL default blend function.
+extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault;
+
+/// OpenGL default blend equation.
+extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// @class LTGLContext
 ///
@@ -51,23 +71,11 @@ typedef NS_ENUM(GLint, LTGLStateBlendEquation) {
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;
 
-/// Source RGB blend function.
-@property (nonatomic) LTGLStateBlendFunc blendFuncSourceRGB;
+/// Blend function.
+@property (nonatomic) LTGLContextBlendFuncArgs blendFunc;
 
-/// Destination RGB blend function.
-@property (nonatomic) LTGLStateBlendFunc blendFuncDestinationRGB;
-
-/// Source alpha blend function.
-@property (nonatomic) LTGLStateBlendFunc blendFuncSourceAlpha;
-
-/// Destination alpha blend function.
-@property (nonatomic) LTGLStateBlendFunc blendFuncDestinationAlpha;
-
-/// Equation used for the RGB term.
-@property (nonatomic) LTGLStateBlendEquation blendEquationRGB;
-
-/// Equation used for the alpha term.
-@property (nonatomic) LTGLStateBlendEquation blendEquationAlpha;
+/// Blend equation.
+@property (nonatomic) LTGLContextBlendEquationArgs blendEquation;
 
 /// \c YES if blending is enabled.
 @property (nonatomic) BOOL blendEnabled;

@@ -7,6 +7,8 @@
 #import "LTGLException.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
+#import "LTShaderStorage+LTPassthroughShaderFsh.h"
+#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 
 @interface LTTexture ()
 
@@ -107,36 +109,10 @@
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
-  // TODO: (yaron) move this to shader files.
-
-  static NSString * const kVertexSource =
-    @"uniform highp mat4 modelview;"
-    "uniform highp mat4 projection;"
-    "uniform highp mat3 texture;"
-    ""
-    "attribute highp vec4 position;"
-    "attribute highp vec3 texcoord;"
-    ""
-    "varying highp vec2 vTexcoord;"
-    ""
-    "void main() {"
-    "  vTexcoord = (texture * vec3(texcoord.xy, 1.0)).xy;"
-    "  gl_Position = projection * modelview * position;"
-    "}";
-
-  static NSString * const kFragmentSource =
-    @"uniform sampler2D sourceTexture;"
-    ""
-    "varying highp vec2 vTexcoord;"
-    ""
-    "void main() {"
-    "  gl_FragColor = texture2D(sourceTexture, vTexcoord);"
-    "}";
-
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:kVertexSource
-                                                fragmentSource:kFragmentSource];
-  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
-                                                     sourceTexture:self];
+  LTProgram *program = [[LTProgram alloc]
+                        initWithVertexSource:[LTShaderStorage LTPassthroughShaderVsh]
+                        fragmentSource:[LTShaderStorage LTPassthroughShaderFsh]];
+  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
   CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
   [rectDrawer drawRect:rect inFrameBuffer:fbo fromRect:rect];
