@@ -115,7 +115,7 @@
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
   CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
-  [rectDrawer drawRect:rect inFrameBuffer:fbo fromRect:rect];
+  [rectDrawer drawRect:rect inFramebuffer:fbo fromRect:rect];
 }
 
 @end
