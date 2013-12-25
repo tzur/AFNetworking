@@ -146,27 +146,27 @@ context(@"drawing", ^{
 
   context(@"framebuffer", ^{
     it(@"should draw to to target texture of the same size", ^{
-      [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFrameBuffer:fbo
+      [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                   fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
 
-      expect(LTCompareMat(image, output.image)).to.beTruthy();
+      expect(LTCompareMat(output.image, image)).to.beTruthy();
     });
 
     it(@"should draw subrect of input to entire output", ^{
-      [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFrameBuffer:fbo
+      [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                   fromRect:CGRectMake(inputSize.width / 2, 0,
                                       inputSize.width / 2, inputSize.height / 2)];
 
       cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
       expected.setTo(image.at<cv::Vec4b>(0, inputSize.width / 2));
-      expect(LTCompareMat(output.image, expected)).to.beTruthy();
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
 
     it(@"should draw all input to subrect of output", ^{
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
       [rectDrawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                       inputSize.width / 2, inputSize.height / 2)
-             inFrameBuffer:fbo
+             inFramebuffer:fbo
                   fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
 
       // Actual image should be a resized version at (0, w/2). Prepare the resized version and put
@@ -180,27 +180,97 @@ context(@"drawing", ^{
       cv::Rect roi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
       resized.copyTo(expected(roi));
 
-      expect(LTCompareMat(output.image, expected)).to.beTruthy();
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
 
     it(@"should draw subrect of input to subrect of output", ^{
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
       [rectDrawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                       inputSize.width / 2, inputSize.height / 2)
-             inFrameBuffer:fbo
+             inFramebuffer:fbo
                   fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
+      // nice test!
     });
   });
 
-  context(@"anonymous target", ^{
-    it(@"should draw to rect", ^{
+  context(@"screen framebuffer", ^{
+    it(@"should draw to to target texture of the same size", ^{
       [fbo bindAndExecute:^{
         [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
-       inFrameBufferWithSize:fbo.size
+ inScreenFramebufferWithSize:fbo.size
                     fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-
-        expect(LTCompareMat(image, output.image)).to.beTruthy();
       }];
+      
+      cv::Mat expected(image.rows, image.cols, CV_8UC4);
+      cv::flip(image, expected, 0);
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
+    });
+    
+    it(@"should draw subrect of input to entire output", ^{
+      const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                        inputSize.width / 2, inputSize.height / 2);
+      [fbo bindAndExecute:^{
+        [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
+ inScreenFramebufferWithSize:fbo.size
+                    fromRect:subrect];
+      }];
+
+      // Actual image should be a resized version of the subimage at the given range, flipped across
+      // the x-axis.
+      cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
+      cv::Mat subimage = image(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                        subrect.size.width, subrect.size.height));
+      cv::resize(subimage, expected,
+                 cv::Size(expected.cols, expected.rows), 0, 0, cv::INTER_NEAREST);
+      cv::flip(expected, expected, 0);
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
+    });
+    
+    it(@"should draw all input to subrect of output", ^{
+      const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                        inputSize.width / 2, inputSize.height / 2);
+      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+      [fbo bindAndExecute:^{
+        [rectDrawer drawRect:subrect
+ inScreenFramebufferWithSize:fbo.size
+                    fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
+      }];
+      
+      // Actual image should be a resized version positioned at the given subrect.
+      cv::Mat resized;
+      cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_NEAREST);
+      cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
+      expected.setTo(cv::Vec4b(0, 0, 0, 255));
+      resized.copyTo(expected(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                       subrect.size.width, subrect.size.height)));
+      cv::flip(expected, expected, 0);
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
+    });
+    
+    it(@"should draw subrect of input to subrect of output", ^{
+      const CGRect inRect = CGRectMake(6 * inputSize.width / 16, 7 * inputSize.height / 16,
+                                        inputSize.width / 4, inputSize.height / 4);
+      const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                        inputSize.width / 2, inputSize.height / 2);
+      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+      [fbo bindAndExecute:^{
+        [rectDrawer drawRect:outRect inScreenFramebufferWithSize:fbo.size fromRect:inRect];
+      }];
+      
+      // Actual image should be a resized version of the subimage at inputSubrect positioned at the
+      // given outputSubrect.
+      cv::Mat resized;
+      cv::Mat subimage = image(cv::Rect(inRect.origin.x, inRect.origin.y,
+                                        inRect.size.width, inRect.size.height));
+      cv::resize(subimage, resized,
+                 cv::Size(outRect.size.width, outRect.size.height), 0, 0, cv::INTER_NEAREST);
+      
+      cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
+      expected.setTo(cv::Vec4b(0, 0, 0, 255));
+      resized.copyTo(expected(cv::Rect(outRect.origin.x, outRect.origin.y,
+                                       outRect.size.width, outRect.size.height)));
+      cv::flip(expected, expected, 0);
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
   });
 });
@@ -234,7 +304,7 @@ context(@"custom uniforms", ^{
     GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
     rectDrawer[@"outputColor"] = [NSValue valueWithGLKVector4:outputColor];
 
-    [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFrameBuffer:fbo
+    [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                 fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
 
     cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);

@@ -5,7 +5,7 @@
 
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
-BOOL LTCompareMat(const cv::Mat &a, const cv::Mat &b);
+BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual);
 
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);

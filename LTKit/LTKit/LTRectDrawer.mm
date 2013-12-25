@@ -101,29 +101,37 @@ LTGPUStructMake(LTRectDrawerVertex,
 #pragma mark Drawing
 #pragma mark -
 
-- (void)drawRect:(CGRect)targetRect inFrameBuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
   [fbo bindAndExecute:^{
-    [self drawRect:targetRect inFrameBufferWithSize:fbo.size fromRect:sourceRect];
+    GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, fbo.size.width, 0, fbo.size.height, -1, 1);
+    self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+    [self drawRect:targetRect fromRect:sourceRect];
   }];
 }
 
-- (void)drawRect:(CGRect)targetRect inFrameBufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width,
-                                              0, size.height,
-                                              -1, 1);
+- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
+        fromRect:(CGRect)sourceRect {
+  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
   self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+  [self drawRect:targetRect fromRect:sourceRect];
+}
 
+- (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
   GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
   self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
 
-  CGRect normalizedRect = CGRectMake(sourceRect.origin.x / self.texture.size.width,
-                                     sourceRect.origin.y / self.texture.size.height,
-                                     sourceRect.size.width / self.texture.size.width,
-                                     sourceRect.size.height / self.texture.size.height);
-  GLKMatrix3 texture = [self matrix3ForRect:normalizedRect];
+  GLKMatrix3 texture = [self matrix3ForTextureRect:sourceRect];
   self.program[@"texture"] = [NSValue valueWithGLKMatrix3:texture];
 
   [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
+}
+
+- (GLKMatrix3)matrix3ForTextureRect:(CGRect)rect {
+  CGRect normalizedRect = CGRectMake(rect.origin.x / self.texture.size.width,
+                                     rect.origin.y / self.texture.size.height,
+                                     rect.size.width / self.texture.size.width,
+                                     rect.size.height / self.texture.size.height);
+  return [self matrix3ForRect:normalizedRect];
 }
 
 - (GLKMatrix3)matrix3ForRect:(CGRect)rect {

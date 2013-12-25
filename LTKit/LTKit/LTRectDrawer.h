@@ -17,16 +17,20 @@
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in the given
 /// framebuffer. The rects are defined in the source and target coordinate systems accordingly, in
 /// pixels.
-- (void)drawRect:(CGRect)targetRect inFrameBuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
 
-/// Draws the \c sourceRect region in the source texture into the \c targetRect region in a
+/// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen
 /// framebuffer with the given size. The rects are defined in the source and target coordinate
 /// systems accordingly, in pixels.
 ///
 /// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
 ///
-/// @note this method assumes that a framebuffer/renderbuffer is already bound for drawing.
-- (void)drawRect:(CGRect)targetRect inFrameBufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect;
+/// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
+/// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
+/// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
+/// bottom left pixel.
+- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
+        fromRect:(CGRect)sourceRect;
 
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c
 /// modelview, \c texture}.
