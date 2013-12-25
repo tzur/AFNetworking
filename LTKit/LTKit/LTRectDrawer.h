@@ -26,6 +26,9 @@
 /// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
 ///
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
+/// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
+/// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
+/// bottom left pixel.
 - (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
         fromRect:(CGRect)sourceRect;
 

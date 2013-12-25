@@ -218,8 +218,8 @@ context(@"drawing", ^{
       // Actual image should be a resized version of the subimage at the given range, flipped across
       // the x-axis.
       cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
-      cv::Mat subimage = image(cv::Range(subrect.origin.y, subrect.origin.y + subrect.size.height),
-                               cv::Range(subrect.origin.x, subrect.origin.x + subrect.size.width));
+      cv::Mat subimage = image(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                        subrect.size.width, subrect.size.height));
       cv::resize(subimage, expected,
                  cv::Size(expected.cols, expected.rows), 0, 0, cv::INTER_NEAREST);
       cv::flip(expected, expected, 0);
@@ -241,8 +241,8 @@ context(@"drawing", ^{
       cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_NEAREST);
       cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
       expected.setTo(cv::Vec4b(0, 0, 0, 255));
-      resized.copyTo(expected(cv::Range(subrect.origin.y, subrect.origin.y + subrect.size.height),
-                              cv::Range(subrect.origin.x, subrect.origin.x + subrect.size.width)));
+      resized.copyTo(expected(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                       subrect.size.width, subrect.size.height)));
       cv::flip(expected, expected, 0);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -260,15 +260,15 @@ context(@"drawing", ^{
       // Actual image should be a resized version of the subimage at inputSubrect positioned at the
       // given outputSubrect.
       cv::Mat resized;
-      cv::Mat subimage = image(cv::Range(inRect.origin.y, inRect.origin.y + inRect.size.height),
-                               cv::Range(inRect.origin.x, inRect.origin.x + inRect.size.width));
+      cv::Mat subimage = image(cv::Rect(inRect.origin.x, inRect.origin.y,
+                                        inRect.size.width, inRect.size.height));
       cv::resize(subimage, resized,
                  cv::Size(outRect.size.width, outRect.size.height), 0, 0, cv::INTER_NEAREST);
       
       cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
       expected.setTo(cv::Vec4b(0, 0, 0, 255));
-      resized.copyTo(expected(cv::Range(outRect.origin.y, outRect.origin.y + outRect.size.height),
-                              cv::Range(outRect.origin.x, outRect.origin.x + outRect.size.width)));
+      resized.copyTo(expected(cv::Rect(outRect.origin.x, outRect.origin.y,
+                                       outRect.size.width, outRect.size.height)));
       cv::flip(expected, expected, 0);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
