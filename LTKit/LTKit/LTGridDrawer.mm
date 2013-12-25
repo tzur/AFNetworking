@@ -9,7 +9,6 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
-#import "LTLogger.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTGridDrawerVsh.h"
 #import "LTShaderStorage+LTGridDrawerFsh.h"
@@ -172,7 +171,6 @@ static const CGFloat kDefaultWidth = 1.0;
   self.program[@"pixelSize"] =
       [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
 
-  // TODO:(amit) update to LTGLContext when ready.
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.blendEnabled = YES;

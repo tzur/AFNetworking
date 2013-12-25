@@ -4,13 +4,14 @@
 #import "LTGridDrawer.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
 
 /// Blending should match photoshop's "normal" blend mode, assuming input is premultiplied:
 /// C_out = C_new + (1-A_new)*C_old;
 /// A_out = A_old + (1-A_old)*A_new;
-static cv::Vec4b blend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
+static cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
   static const CGFloat inv = 1.0 / UCHAR_MAX;
   cv::Vec4b blended;
   cv::Vec4b blendedAlpha;
@@ -22,10 +23,10 @@ static cv::Vec4b blend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
 
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
 /// blending the corners if necessary.
-static void blendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::Vec4b &color,
-                        BOOL doubleBlendCorners = YES) {
+static void LTBlendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::Vec4b &color,
+                          BOOL doubleBlendCorners = YES) {
   // Replace the mat borders with the blend of the base color and the given color.
-  cv::Vec4b blended = blend(baseColor, color);
+  cv::Vec4b blended = LTBlend(baseColor, color);
   mat = baseColor;
   mat.row(0) = blended;
   mat.row(mat.rows - 1) = blended;
@@ -34,7 +35,7 @@ static void blendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::Vec
 
   // Replace the corners with double blending, if necessary.
   if (doubleBlendCorners) {
-    cv::Vec4b blended2 = blend(blended, color);
+    cv::Vec4b blended2 = LTBlend(blended, color);
     mat(0,0) = blended2;
     mat(0, mat.cols - 1) = blended2;
     mat(mat.rows - 1, 0) = blended2;
@@ -45,14 +46,15 @@ static void blendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::Vec
 SpecBegin(LTGridDrawerSpec)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
-  glEnable(GL_CULL_FACE);
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
+  
+  // Make sure that everything is properly drawn when face culling is enabled.
+  context.faceCullingEnabled = YES;
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
-  glDisable(GL_CULL_FACE);
+  [LTGLContext setCurrentContext:nil];
 });
 
 context(@"initialization", ^{
@@ -201,7 +203,7 @@ context(@"drawing", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.color = LTCVVec4bToGLKVector4(rgba);
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
-      blendBorder(expected, kGray, rgba);
+      LTBlendBorder(expected, kGray, rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
 
@@ -210,7 +212,7 @@ context(@"drawing", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.opacity = kOpacity;
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
-      blendBorder(expected, kGray, kOpacity * kWhite);
+      LTBlendBorder(expected, kGray, kOpacity * kWhite);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
 
@@ -221,7 +223,7 @@ context(@"drawing", ^{
       gridDrawer.color = LTCVVec4bToGLKVector4(rgba);
       gridDrawer.opacity = kOpacity;
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
-      blendBorder(expected, kGray, kOpacity * rgba);
+      LTBlendBorder(expected, kGray, kOpacity * rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
     
