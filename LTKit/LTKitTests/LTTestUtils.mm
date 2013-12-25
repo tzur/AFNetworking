@@ -9,7 +9,6 @@ static NSString * const kMatOutputBasedir = @"/tmp/";
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
 static void LTWriteMat(const cv::Mat &mat, NSString *name);
-static UIImage *LTMatToUIImage(const cv::Mat &mat);
 
 #pragma mark -
 #pragma mark Public methods
@@ -65,58 +64,10 @@ static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
 }
 
 static void LTWriteMat(const cv::Mat &mat, NSString *name) {
-  UIImage *image = LTMatToUIImage(mat);
-
   NSString *filename = [NSString stringWithFormat:@"%@-%@.png",
                         [SPTCurrentTestCase description], name];
   NSString *path = [kMatOutputBasedir stringByAppendingPathComponent:filename];
-
-  [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
-}
-
-static UIImage *LTMatToUIImage(const cv::Mat &mat) {
-  LTAssert(mat.type() == CV_8UC4, @"Unsupported mat type");
-
-  const size_t kBitsPerComponent = 8;
-  const size_t kBitsPerPixel = 32;
-  const CGBitmapInfo kBitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
-
-  size_t bufferLength = mat.total() * mat.elemSize();
-  size_t bytesPerRow = mat.elemSize() * mat.cols;
-  
-  CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, mat.data, bufferLength, NULL);
-
-  CGImageRef imageRef = CGImageCreate(mat.cols,
-                                      mat.rows,
-                                      kBitsPerComponent,
-                                      kBitsPerPixel,
-                                      bytesPerRow,
-                                      colorSpaceRef,
-                                      kBitmapInfo,
-                                      provider,
-                                      NULL,
-                                      YES,
-                                      kCGRenderingIntentDefault);
-
-  CGContextRef context = CGBitmapContextCreate(NULL,
-                                               mat.cols,
-                                               mat.rows,
-                                               kBitsPerComponent,
-                                               bytesPerRow,
-                                               colorSpaceRef,
-                                               kBitmapInfo);
-
-  CGContextDrawImage(context, CGRectMake(0, 0, mat.cols, mat.rows), imageRef);
-
-  CGImageRef cgImage = CGBitmapContextCreateImage(context);
-  UIImage *image = [UIImage imageWithCGImage:cgImage scale:1.0
-                                 orientation:UIImageOrientationUp];
-
-  CGContextRelease(context);
-  CGImageRelease(imageRef);
-  CGDataProviderRelease(provider);
-  CGColorSpaceRelease(colorSpaceRef);
-
-	return image;
+  cv::Mat bgrMat;
+  cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
+  cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
 }

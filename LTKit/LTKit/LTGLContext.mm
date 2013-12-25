@@ -13,7 +13,15 @@ LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
   .destinationAlpha = LTGLContextBlendFuncZero
 };
 
-/// OpenGL default blend equation.
+/// Blend function similar to Photoshop's "Normal" blend.
+LTGLContextBlendFuncArgs kLTGLContextBlendFuncNormal = {
+  .sourceRGB = LTGLContextBlendFuncOne,
+  .destinationRGB = LTGLContextBlendFuncOneMinusSrcAlpha,
+  .sourceAlpha = LTGLContextBlendFuncOneMinusDstAlpha,
+  .destinationAlpha = LTGLContextBlendFuncOne
+};
+
+/// OpenGL default blend equation (Additive).
 LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault = {
   .equationRGB = LTGLContextBlendEquationAdd,
   .equationAlpha = LTGLContextBlendEquationAdd

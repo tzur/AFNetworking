@@ -45,7 +45,10 @@ typedef struct {
 /// OpenGL default blend function.
 extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault;
 
-/// OpenGL default blend equation.
+/// Blend function similar to Photoshop's "Normal" blend.
+extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncNormal;
+
+/// OpenGL default blend equation (Additive).
 extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// @class LTGLContext
