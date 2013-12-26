@@ -1,0 +1,40 @@
+// Copyright (c) 2013 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+namespace cv {
+  class Mat;
+}
+
+/// @class LTImage
+///
+/// Represents a CPU-based image. This class makes it easier to load an image to an accessible
+/// bitmap, and export them back to disk  or to parallel \c UIKit objects.
+@interface LTImage : NSObject
+
+/// Initializes the image with a given \c UIImage object. If the image has an orientation different
+/// than \c UIImageOrientationPortrait, the image will be rotated to have this orientation.
+- (instancetype)initWithImage:(UIImage *)image;
+
+/// Designated initializer: initializes with a given \c cv::Mat object. If \c copy is \c YES, the
+/// \c mat will be duplicated.
+- (instancetype)initWithMat:(const cv::Mat &)mat copy:(BOOL)copy;
+
+/// Returns a \c UIImage representation of the current image with a scale of 1 pixel per point.
+///
+/// @note This is a memory intensive operation, as it requires creation of a new UIImage with the
+/// contents of the current image.
+- (UIImage *)UIImage;
+
+/// Returns a \c UIImage representation of the current image with the given scale factor.
+///
+/// @note This is a memory intensive operation, as it requires creation of a new UIImage with the
+/// contents of the current image.
+- (UIImage *)UIImageWithScale:(CGFloat)scale;
+
+/// Size of the image.
+@property (readonly, nonatomic) CGSize size;
+
+/// Image contents.
+@property (readonly, nonatomic) const cv::Mat &mat;
+
+@end
