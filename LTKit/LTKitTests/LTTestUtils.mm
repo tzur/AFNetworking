@@ -7,9 +7,24 @@
 
 static NSString * const kMatOutputBasedir = @"/tmp/";
 
+#pragma mark -
+#pragma mark Forward declarations
+#pragma mark -
+
+template <typename T>
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual);
+
+template <typename T>
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+                                    const std::true_type &isFundamental);
+
+template <typename T>
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+                                    const std::false_type &isFundamental);
+
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
 static void LTWriteMat(const cv::Mat &mat, NSString *name);
-static UIImage *LTMatToUIImage(const cv::Mat &mat);
+static NSString *LTMatPathForName(NSString *name);
 
 #pragma mark -
 #pragma mark Public methods
@@ -18,24 +33,18 @@ static UIImage *LTMatToUIImage(const cv::Mat &mat);
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
   if (expected.size != actual.size || expected.depth() != actual.depth() ||
       expected.channels() != actual.channels()) {
+    LTWriteMatrices(expected, actual);
     return NO;
   }
 
-  // TODO: (yaron) make this work with other types too.
-
-  for (int y = 0; y < expected.rows; ++y) {
-    for (int x = 0; x < expected.cols; ++x) {
-      cv::Vec4b va = expected.at<cv::Vec4b>(y, x);
-      cv::Vec4b vb = actual.at<cv::Vec4b>(y, x);
-
-      if (memcmp(va.val, vb.val, sizeof(va.val))) {
-        LTWriteMatrices(expected, actual);
-        return NO;
-      }
-    }
+  switch (expected.type()) {
+    case CV_8UC1:
+      return LTCompareMatCells<uchar>(expected, actual);
+    case CV_8UC4:
+      return LTCompareMatCells<cv::Vec4b>(expected, actual);
+    default:
+      LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
-
-  return YES;
 }
 
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
@@ -55,68 +64,81 @@ cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value) {
                    value.z * UCHAR_MAX, value.w * UCHAR_MAX);
 }
 
+UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
+  NSString *path = LTPathForResource(classInBundle, name);
+  UIImage *image = [UIImage imageWithContentsOfFile:path];
+  LTAssert(image, @"Image cannot be loaded");
+
+  return image;
+}
+
+NSString *LTPathForResource(Class classInBundle, NSString *name) {
+  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
+
+  NSString *resource = [name stringByDeletingPathExtension];
+  NSString *type = [name pathExtension];
+
+  NSString *path = [bundle pathForResource:resource ofType:type];
+  LTAssert(path, @"Given image filename doesn't exist in the test bundle");
+
+  return path;
+}
+
 #pragma mark -
 #pragma mark Implementation
 #pragma mark -
 
-static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
-  LTWriteMat(expected, @"expected");
-  LTWriteMat(actual, @"actual");
+template <typename T>
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual) {
+  for (int y = 0; y < expected.rows; ++y) {
+    for (int x = 0; x < expected.cols; ++x) {
+      T va = expected.at<T>(y, x);
+      T vb = actual.at<T>(y, x);
+
+      if (!LTCompareMatCell(va, vb, std::is_fundamental<T>())) {
+        LTWriteMatrices(expected, actual);
+        return NO;
+      }
+    }
+  }
+
+  return YES;
 }
 
-static void LTWriteMat(const cv::Mat &mat, NSString *name) {
-  UIImage *image = LTMatToUIImage(mat);
+template <typename T>
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+                                    const std::true_type __unused &isFundamental) {
+  return expected == actual;
+}
 
+template <typename T>
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+                                    const std::false_type __unused &isFundamental) {
+  return !memcmp(expected.val, actual.val, sizeof(expected.val));
+}
+
+static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
+  LTWriteMat(expected, LTMatPathForName(@"expected"));
+  LTWriteMat(actual, LTMatPathForName(@"actual"));
+}
+
+static NSString *LTMatPathForName(NSString *name) {
   NSString *filename = [NSString stringWithFormat:@"%@-%@.png",
                         [SPTCurrentTestCase description], name];
-  NSString *path = [kMatOutputBasedir stringByAppendingPathComponent:filename];
-
-  [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+  return [kMatOutputBasedir stringByAppendingPathComponent:filename];
 }
 
-static UIImage *LTMatToUIImage(const cv::Mat &mat) {
-  LTAssert(mat.type() == CV_8UC4, @"Unsupported mat type");
-
-  const size_t kBitsPerComponent = 8;
-  const size_t kBitsPerPixel = 32;
-  const CGBitmapInfo kBitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
-
-  size_t bufferLength = mat.total() * mat.elemSize();
-  size_t bytesPerRow = mat.elemSize() * mat.cols;
-  
-  CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, mat.data, bufferLength, NULL);
-
-  CGImageRef imageRef = CGImageCreate(mat.cols,
-                                      mat.rows,
-                                      kBitsPerComponent,
-                                      kBitsPerPixel,
-                                      bytesPerRow,
-                                      colorSpaceRef,
-                                      kBitmapInfo,
-                                      provider,
-                                      NULL,
-                                      YES,
-                                      kCGRenderingIntentDefault);
-
-  CGContextRef context = CGBitmapContextCreate(NULL,
-                                               mat.cols,
-                                               mat.rows,
-                                               kBitsPerComponent,
-                                               bytesPerRow,
-                                               colorSpaceRef,
-                                               kBitmapInfo);
-
-  CGContextDrawImage(context, CGRectMake(0, 0, mat.cols, mat.rows), imageRef);
-
-  CGImageRef cgImage = CGBitmapContextCreateImage(context);
-  UIImage *image = [UIImage imageWithCGImage:cgImage scale:1.0
-                                 orientation:UIImageOrientationUp];
-
-  CGContextRelease(context);
-  CGImageRelease(imageRef);
-  CGDataProviderRelease(provider);
-  CGColorSpaceRelease(colorSpaceRef);
-
-	return image;
+static void LTWriteMat(const cv::Mat &mat, NSString *path) {
+  switch (mat.type()) {
+    case CV_8UC4: {
+      cv::Mat bgrMat;
+      cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+    } break;
+    case CV_8UC1:
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
+      break;
+    default:
+      LTAssert(NO, @"Unsupported mat type given: %d", mat.type());
+  }
 }

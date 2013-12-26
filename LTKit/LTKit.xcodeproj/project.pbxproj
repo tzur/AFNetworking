@@ -42,6 +42,8 @@
 		8B8E510E1863216E00821829 /* LTGLContextSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E510D1863216E00821829 /* LTGLContextSpec.m */; };
 		8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */; };
 		8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */; };
+		8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9851801868A4CF00D680D0 /* LTImage.mm */; };
+		8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -53,7 +55,21 @@
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
 		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
 		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
+		8BA8C6841869782200E6F486 /* Gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C6831869782200E6F486 /* Gray.jpg */; };
+		8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
+		8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
+		8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C68A18699EB100E6F486 /* BlueTransparent.png */; };
+		8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */; };
 		8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */; };
+		8BAB99C91869DBF600D79554 /* White.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99C81869DBF600D79554 /* White.jpg */; };
+		8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D61869F73400D79554 /* QuadDown.jpg */; };
+		8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */; };
+		8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D81869F73400D79554 /* QuadLeft.jpg */; };
+		8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D91869F73400D79554 /* QuadLeftMirrored.jpg */; };
+		8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99DA1869F73400D79554 /* QuadRight.jpg */; };
+		8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99DB1869F73400D79554 /* QuadRightMirrored.jpg */; };
+		8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99DC1869F73400D79554 /* QuadUp.jpg */; };
+		8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99DD1869F73400D79554 /* QuadUpMirrored.jpg */; };
 		8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
 		8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */; };
 		8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */; };
@@ -291,6 +307,9 @@
 		8B8E510D1863216E00821829 /* LTGLContextSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLContextSpec.m; sourceTree = "<group>"; };
 		8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.fsh; sourceTree = "<group>"; };
 		8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.vsh; sourceTree = "<group>"; };
+		8B98517F1868A4CF00D680D0 /* LTImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImage.h; sourceTree = "<group>"; };
+		8B9851801868A4CF00D680D0 /* LTImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImage.mm; sourceTree = "<group>"; };
+		8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageSpec.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -308,7 +327,20 @@
 		8BA3E143182A848300FDD95A /* LTProgramSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramSpec.mm; sourceTree = "<group>"; };
 		8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLTexture.h; sourceTree = "<group>"; };
 		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
+		8BA8C6831869782200E6F486 /* Gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Gray.jpg; path = Resources/Gray.jpg; sourceTree = "<group>"; };
+		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		8BA8C68A18699EB100E6F486 /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparent.png; path = Resources/BlueTransparent.png; sourceTree = "<group>"; };
+		8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparentPremultiplied.png; path = Resources/BlueTransparentPremultiplied.png; sourceTree = "<group>"; };
 		8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDrawingContextSpec.mm; sourceTree = "<group>"; };
+		8BAB99C81869DBF600D79554 /* White.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = White.jpg; path = Resources/White.jpg; sourceTree = "<group>"; };
+		8BAB99D61869F73400D79554 /* QuadDown.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDown.jpg; path = Resources/QuadDown.jpg; sourceTree = "<group>"; };
+		8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDownMirrored.jpg; path = Resources/QuadDownMirrored.jpg; sourceTree = "<group>"; };
+		8BAB99D81869F73400D79554 /* QuadLeft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadLeft.jpg; path = Resources/QuadLeft.jpg; sourceTree = "<group>"; };
+		8BAB99D91869F73400D79554 /* QuadLeftMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadLeftMirrored.jpg; path = Resources/QuadLeftMirrored.jpg; sourceTree = "<group>"; };
+		8BAB99DA1869F73400D79554 /* QuadRight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadRight.jpg; path = Resources/QuadRight.jpg; sourceTree = "<group>"; };
+		8BAB99DB1869F73400D79554 /* QuadRightMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadRightMirrored.jpg; path = Resources/QuadRightMirrored.jpg; sourceTree = "<group>"; };
+		8BAB99DC1869F73400D79554 /* QuadUp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadUp.jpg; path = Resources/QuadUp.jpg; sourceTree = "<group>"; };
+		8BAB99DD1869F73400D79554 /* QuadUpMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadUpMirrored.jpg; path = Resources/QuadUpMirrored.jpg; sourceTree = "<group>"; };
 		8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRectDrawer.h; sourceTree = "<group>"; };
 		8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRectDrawer.mm; sourceTree = "<group>"; };
 		8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRectDrawerSpec.mm; sourceTree = "<group>"; };
@@ -342,6 +374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */,
 				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
@@ -355,6 +388,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
@@ -400,6 +434,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
 				8B3C0A5818329538000845BA /* CoreMedia.framework */,
 				8B3C0A531832950F000845BA /* AVFoundation.framework */,
@@ -421,6 +456,7 @@
 			children = (
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 				8B8E50FC1861EB1F00821829 /* Base */,
+				8B9851721868A4B200D680D0 /* Images */,
 				8B8E50F81861EA7D00821829 /* GPU */,
 				8B8E50FB1861EB0F00821829 /* Signal Processing */,
 				8BB47145183B533500CA1681 /* Libraries */,
@@ -473,6 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8E50FD1861EB4000821829 /* Base */,
+				8B9C4FD61868BE8600AA8BF6 /* Images */,
 				8B8E50FE1861EB4600821829 /* GPU */,
 				8B8E51021861EB6D00821829 /* Signal Processing */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
@@ -502,6 +539,18 @@
 		8B8E50EF1861CDF900821829 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8BA8C68A18699EB100E6F486 /* BlueTransparent.png */,
+				8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */,
+				8BA8C6831869782200E6F486 /* Gray.jpg */,
+				8BAB99D61869F73400D79554 /* QuadDown.jpg */,
+				8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */,
+				8BAB99D81869F73400D79554 /* QuadLeft.jpg */,
+				8BAB99D91869F73400D79554 /* QuadLeftMirrored.jpg */,
+				8BAB99DA1869F73400D79554 /* QuadRight.jpg */,
+				8BAB99DB1869F73400D79554 /* QuadRightMirrored.jpg */,
+				8BAB99DC1869F73400D79554 /* QuadUp.jpg */,
+				8BAB99DD1869F73400D79554 /* QuadUpMirrored.jpg */,
+				8BAB99C81869DBF600D79554 /* White.jpg */,
 				8B8E50F01861CE1800821829 /* Shader.vsh */,
 			);
 			name = Resources;
@@ -639,6 +688,23 @@
 				8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */,
 			);
 			name = Shaders;
+			sourceTree = "<group>";
+		};
+		8B9851721868A4B200D680D0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8B98517F1868A4CF00D680D0 /* LTImage.h */,
+				8B9851801868A4CF00D680D0 /* LTImage.mm */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		8B9C4FD61868BE8600AA8BF6 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		8BB47145183B533500CA1681 /* Libraries */ = {
@@ -875,7 +941,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
+				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
+				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
+				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
+				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
+				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
+				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
+				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
+				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
+				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
+				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
+				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,6 +973,7 @@
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
+				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
@@ -931,6 +1010,7 @@
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
+				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
