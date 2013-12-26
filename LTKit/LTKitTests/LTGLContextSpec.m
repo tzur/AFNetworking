@@ -6,24 +6,26 @@
 SpecBegin(LTGLContext)
 
 sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
-  LTGLContext *context = data[@"context"];
+  it(@"should have default opengl values", ^{
+    LTGLContext *context = data[@"context"];
 
-  LTGLContextBlendFuncArgs blendFunc = context.blendFunc;
-  expect(blendFunc.sourceRGB).to.equal(GL_ONE);
-  expect(blendFunc.destinationRGB).to.equal(GL_ZERO);
-  expect(blendFunc.sourceAlpha).to.equal(GL_ONE);
-  expect(blendFunc.destinationAlpha).to.equal(GL_ZERO);
+    LTGLContextBlendFuncArgs blendFunc = context.blendFunc;
+    expect(blendFunc.sourceRGB).to.equal(GL_ONE);
+    expect(blendFunc.destinationRGB).to.equal(GL_ZERO);
+    expect(blendFunc.sourceAlpha).to.equal(GL_ONE);
+    expect(blendFunc.destinationAlpha).to.equal(GL_ZERO);
 
-  LTGLContextBlendEquationArgs blendEquation = context.blendEquation;
-  expect(blendEquation.equationRGB).to.equal(GL_FUNC_ADD);
-  expect(blendEquation.equationAlpha).to.equal(GL_FUNC_ADD);
+    LTGLContextBlendEquationArgs blendEquation = context.blendEquation;
+    expect(blendEquation.equationRGB).to.equal(GL_FUNC_ADD);
+    expect(blendEquation.equationAlpha).to.equal(GL_FUNC_ADD);
 
-  expect(context.blendEnabled).to.beFalsy();
-  expect(context.faceCullingEnabled).to.beFalsy();
-  expect(context.depthTestEnabled).to.beFalsy();
-  expect(context.scissorTestEnabled).to.beFalsy();
-  expect(context.stencilTestEnabled).to.beFalsy();
-  expect(context.ditheringEnabled).to.beTruthy();
+    expect(context.blendEnabled).to.beFalsy();
+    expect(context.faceCullingEnabled).to.beFalsy();
+    expect(context.depthTestEnabled).to.beFalsy();
+    expect(context.scissorTestEnabled).to.beFalsy();
+    expect(context.stencilTestEnabled).to.beFalsy();
+    expect(context.ditheringEnabled).to.beTruthy();
+  });
 });
 
 context(@"initialization", ^{
