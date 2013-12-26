@@ -20,6 +20,7 @@
 #pragma mark -
 
 - (instancetype)initWithImage:(UIImage *)image {
+  LTParameterAssert(image);
   cv::Mat mat = [self loadImageToMat:image];
   return [self initWithMat:mat copy:NO];
 }
@@ -135,7 +136,7 @@
 
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
-  CGColorSpaceRef colorSpace = [self colorSpaceForNumberOfChannels:self.mat.channels()];
+  CGColorSpaceRef colorSpace = [self createColorSpaceForImage];
   CGBitmapInfo bitmapInfo = [self bitmapFlagsForColorSpace:colorSpace];
   CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
 
@@ -154,14 +155,27 @@
   return image;
 }
 
-- (CGColorSpaceRef)colorSpaceForNumberOfChannels:(int)channels {
+- (CGColorSpaceRef)createColorSpaceForImage {
+  switch (self.depth) {
+    case LTImageDepthGrayscale:
+      return CGColorSpaceCreateDeviceGray();
+    case LTImageDepthRGBA:
+      return CGColorSpaceCreateDeviceRGB();
+  }
+}
+
+#pragma mark -
+#pragma mark Image properties
+#pragma mark -
+
+- (LTImageDepth)depth {
   switch (self.mat.channels()) {
     case 1:
-      return CGColorSpaceCreateDeviceGray();
+      return LTImageDepthGrayscale;
     case 4:
-      return CGColorSpaceCreateDeviceRGB();
+      return LTImageDepthRGBA;
     default:
-      LTAssert(NO, @"Unsupported number of channels: %d", channels);
+      LTAssert(NO, @"Invalid number of image channels: %d", self.mat.channels());
   }
 }
 

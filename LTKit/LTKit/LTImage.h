@@ -5,14 +5,23 @@ namespace cv {
   class Mat;
 }
 
+/// Possible depth for \c LTImage.
+typedef NS_ENUM(NSUInteger, LTImageDepth) {
+  LTImageDepthGrayscale,
+  LTImageDepthRGBA
+};
+
 /// @class LTImage
 ///
 /// Represents a CPU-based image. This class makes it easier to load an image to an accessible
 /// bitmap, and export them back to disk  or to parallel \c UIKit objects.
+///
+/// All images are represented in premultiplied alpha, if an alpha channel exists.
 @interface LTImage : NSObject
 
 /// Initializes the image with a given \c UIImage object. If the image has an orientation different
-/// than \c UIImageOrientationPortrait, the image will be rotated to have this orientation.
+/// than \c UIImageOrientationPortrait, the image will be rotated to have this orientation. The
+/// given \c image cannot be \c nil.
 - (instancetype)initWithImage:(UIImage *)image;
 
 /// Designated initializer: initializes with a given \c cv::Mat object. If \c copy is \c YES, the
@@ -36,5 +45,8 @@ namespace cv {
 
 /// Image contents.
 @property (readonly, nonatomic) const cv::Mat &mat;
+
+/// Depth of the image.
+@property (readonly, nonatomic) LTImageDepth depth;
 
 @end

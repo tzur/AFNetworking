@@ -104,6 +104,29 @@ context(@"loading images", ^{
   });
 });
 
+context(@"image properties", ^{
+  it(@"should have correct size", ^{
+    UIImage *jpeg = LTLoadImageWithName([self class], @"White.jpg");
+    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
+
+    expect(image.size).to.equal(jpeg.size);
+  });
+
+  it(@"should have correct depth for rgba images", ^{
+    UIImage *jpeg = LTLoadImageWithName([self class], @"White.jpg");
+    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
+
+    expect(image.depth).to.equal(LTImageDepthRGBA);
+  });
+
+  it(@"should have correct depth for grayscale images", ^{
+    UIImage *jpeg = LTLoadImageWithName([self class], @"Gray.jpg");
+    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
+
+    expect(image.depth).to.equal(LTImageDepthGrayscale);
+  });
+});
+
 context(@"uiimage conversion", ^{
   __block LTImage *expected;
 
