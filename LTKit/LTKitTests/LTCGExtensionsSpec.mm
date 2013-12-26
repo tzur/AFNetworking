@@ -1,0 +1,153 @@
+// Copyright (c) 2013 Lightricks. All rights reserved.
+// Created by Amit Goldstein.
+
+#import "LTCGExtensions.h"
+
+#include <tgmath.h>
+
+SpecBegin(LTCGExtensions)
+
+context(@"null values", ^{
+  it(@"should identify null point", ^{
+    expect(CGPointIsNull(CGPointNull)).to.beTruthy();
+    expect(CGPointIsNull(CGPointZero)).to.beFalsy();
+    expect(CGPointIsNull(CGPointMake(INFINITY, INFINITY))).to.beFalsy();
+  });
+  
+  it(@"null point should not be equal to any point (including other null point)", ^{
+    expect(CGPointEqualToPoint(CGPointNull, CGPointNull)).to.beFalsy();
+    expect(CGPointEqualToPoint(CGPointNull, CGPointZero)).to.beFalsy();
+    expect(CGPointEqualToPoint(CGPointNull, CGPointMake(1, 1))).to.beFalsy();
+  });
+  
+  it(@"should identify null size", ^{
+    expect(CGSizeIsNull(CGSizeNull)).to.beTruthy();
+    expect(CGSizeIsNull(CGSizeZero)).to.beFalsy();
+    expect(CGSizeIsNull(CGSizeMake(INFINITY, INFINITY))).to.beFalsy();
+  });
+  
+  it(@"null size should not be equal to any size (including other null size)", ^{
+    expect(CGSizeEqualToSize(CGSizeNull, CGSizeNull)).to.beFalsy();
+    expect(CGSizeEqualToSize(CGSizeNull, CGSizeZero)).to.beFalsy();
+    expect(CGSizeEqualToSize(CGSizeNull, CGSizeMake(1, 1))).to.beFalsy();
+  });
+});
+
+context(@"cgpoint operations", ^{
+  it(@"comparison", ^{
+    expect(CGPointMake(1, 2) == CGPointMake(1, 2)).to.beTruthy();
+    expect(CGPointMake(1, 2) != CGPointMake(1, 2)).to.beFalsy();
+    expect(CGPointMake(1, 2) == CGPointMake(2, 1)).to.beFalsy();
+    expect(CGPointMake(1, 2) != CGPointMake(2, 1)).to.beTruthy();
+    expect(CGPointMake(INFINITY, INFINITY) == CGPointMake(INFINITY, INFINITY)).to.beTruthy();
+    expect(CGPointMake(INFINITY, INFINITY) != CGPointMake(INFINITY, INFINITY)).to.beFalsy();
+    expect(CGPointMake(NAN, NAN) == CGPointMake(NAN, NAN)).to.beFalsy();
+    expect(CGPointMake(NAN, NAN) != CGPointMake(NAN, NAN)).to.beTruthy();
+  });
+  
+  it(@"arithmetic", ^{
+    expect(CGPointMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGPointMake(4, 6));
+    expect(CGPointMake(3, 4) - CGSizeMake(1, 2)).to.equal(CGPointMake(2, 2));
+    expect(CGPointMake(3, 4) - CGPointMake(1, 2)).to.equal(CGSizeMake(2, 2));
+    expect(CGPointMake(1, 2) * 2).to.equal(CGPointMake(2, 4));
+    expect(0.5 * CGPointMake(1, 2)).to.equal(CGPointMake(0.5, 1));
+    expect(CGPointMake(1, 2) / 0.5).to.equal(CGPointMake(2, 4));
+  });
+});
+
+context(@"cgsize operations", ^{
+  it(@"comparison", ^{
+    expect(CGSizeMake(1, 2) == CGSizeMake(1, 2)).to.beTruthy();
+    expect(CGSizeMake(1, 2) != CGSizeMake(1, 2)).to.beFalsy();
+    expect(CGSizeMake(1, 2) == CGSizeMake(2, 1)).to.beFalsy();
+    expect(CGSizeMake(1, 2) != CGSizeMake(2, 1)).to.beTruthy();
+    expect(CGSizeMake(INFINITY, INFINITY) == CGSizeMake(INFINITY, INFINITY)).to.beTruthy();
+    expect(CGSizeMake(INFINITY, INFINITY) != CGSizeMake(INFINITY, INFINITY)).to.beFalsy();
+    expect(CGSizeMake(NAN, NAN) == CGSizeMake(NAN, NAN)).to.beFalsy();
+    expect(CGSizeMake(NAN, NAN) != CGSizeMake(NAN, NAN)).to.beTruthy();
+  });
+  
+  it(@"arithmetic", ^{
+    expect(CGSizeMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGSizeMake(4, 6));
+    expect(CGSizeMake(3, 4) - CGSizeMake(1, 2)).to.equal(CGSizeMake(2, 2));
+    expect(CGSizeMake(1, 2) * 2).to.equal(CGSizeMake(2, 4));
+    expect(0.5 * CGSizeMake(1, 2)).to.equal(CGSizeMake(0.5, 1));
+    expect(CGSizeMake(1, 2) / 0.5).to.equal(CGSizeMake(2, 4));
+  });
+});
+
+context(@"cgrect operations", ^{
+  it(@"comparison", ^{
+    expect(CGRectMake(1, 2, 3, 4) == CGRectMake(1, 2, 3, 4)).to.beTruthy();
+    expect(CGRectMake(1, 2, 3, 4) != CGRectMake(1, 2, 3, 4)).to.beFalsy();
+    expect(CGRectMake(1, 2, 3, 4) == CGRectMake(1, 2, 4, 3)).to.beFalsy();
+    expect(CGRectMake(1, 2, 3, 4) != CGRectMake(1, 2, 4, 3)).to.beTruthy();
+    expect(CGRectMake(1, 2, 3, 4) == CGRectMake(2, 1, 3, 4)).to.beFalsy();
+    expect(CGRectMake(1, 2, 3, 4) != CGRectMake(2, 1, 3, 4)).to.beTruthy();
+    expect(CGRectNull == CGRectNull).to.beTruthy();
+    expect(CGRectNull != CGRectNull).to.beFalsy();
+  });
+
+  it(@"construction", ^{
+    expect(CGRectFromEdges(1, 2, 3, 4)).to.equal(CGRectMake(1, 2, 2, 2));
+    expect(CGRectFromEdges(3, 4, 1, 2)).to.equal(CGRectMake(3, 4, -2, -2));
+    expect(CGRectFromPoints(CGPointMake(1, 2), CGPointMake(3, 4))).to.equal(CGRectMake(1, 2, 2, 2));
+    expect(CGRectFromPoints(CGPointMake(3, 4),
+                            CGPointMake(1, 2))).to.equal(CGRectMake(3, 4, -2, -2));
+    expect(CGRectFromOriginAndSize(CGPointMake(1, 2),
+                                   CGSizeMake(3, 4))).to.equal(CGRectMake(1, 2, 3, 4));
+    expect(CGRectFromOriginAndSize(CGPointMake(1, 2),
+                                   CGSizeMake(-3, -4))).to.equal(CGRectMake(1, 2, -3, -4));
+    expect(CGRectCenteredAt(CGPointMake(3, 4),
+                            CGSizeMake(1, 2))).to.equal(CGRectMake(2.5, 3, 1, 2));
+    expect(CGRectCenteredAt(CGPointMake(3, 4),
+                            CGSizeMake(-1, -2))).to.equal(CGRectMake(3.5, 5, -1, -2));
+  });
+  
+  it(@"arithmetic", ^{
+    expect(CGRectMake(1, 2, 3, 4) * CGSizeMake(2, 0.5)).to.equal(CGRectMake(2, 1, 6, 2));
+    expect(CGRectMake(1, 2, 3, 4) / CGSizeMake(0.5, 2)).to.equal(CGRectMake(2, 1, 6, 2));
+    expect(CGRectCenter(CGRectMake(1, 2, 3, 4))).to.equal(CGPointMake(2.5, 4));
+  });
+});
+
+it(@"distance functions", ^{
+  expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));
+  expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));
+  expect(CGPointDistance(CGPointMake(1, 2), CGPointZero)).to.beCloseTo(sqrt(5));
+  expect(CGPointDistance(CGPointMake(1, 2), CGPointMake(-2, -2))).to.beCloseTo(5);
+  expect(CGPointDistanceSquared(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(5);
+  expect(CGPointDistanceSquared(CGPointMake(1, 2), CGPointZero)).to.beCloseTo(5);
+  expect(CGPointDistanceSquared(CGPointMake(1, 2), CGPointMake(-2, -2))).to.beCloseTo(25);
+});
+
+context(@"rounding cgstructs", ^{
+  it(@"rounding cgpoints", ^{
+    const CGPoint point = CGPointMake(0.4, 0.6);
+    expect(CGFloorPoint(point)).to.equal(CGPointMake(0, 0));
+    expect(CGCeilPoint(point)).to.equal(CGPointMake(1, 1));
+    expect(CGRoundPoint(point)).to.equal(CGPointMake(0, 1));
+    expect(CGFloorPoint(-1 * point)).to.equal(CGPointMake(-1, -1));
+    expect(CGCeilPoint(-1 * point)).to.equal(CGPointMake(0, 0));
+    expect(CGRoundPoint(-1 * point)).to.equal(CGPointMake(0, -1));
+  });
+  
+  it(@"rounding cgsizes", ^{
+    const CGSize size = CGSizeMake(0.4, 0.6);
+    expect(CGFloorSize(size)).to.equal(CGSizeMake(0, 0));
+    expect(CGCeilSize(size)).to.equal(CGSizeMake(1, 1));
+    expect(CGRoundSize(size)).to.equal(CGSizeMake(0, 1));
+    expect(CGFloorSize(-1 * size)).to.equal(CGSizeMake(-1, -1));
+    expect(CGCeilSize(-1 * size)).to.equal(CGSizeMake(0, 0));
+    expect(CGRoundSize(-1 * size)).to.equal(CGSizeMake(0, -1));
+  });
+  
+  it(@"rounding cgrects", ^{
+    const CGRect rect = CGRectFromEdges(0.4, 0.6, 2.6, 2.4);
+    expect(CGRoundRect(rect)).to.equal(CGRectFromEdges(0, 1, 3, 2));
+    expect(CGRoundRectInside(rect)).to.equal(CGRectFromEdges(1, 1, 2, 2));
+    expect(CGRoundRectOutside(rect)).to.equal(CGRectFromEdges(0, 0, 3, 3));
+  });
+});
+
+SpecEnd
