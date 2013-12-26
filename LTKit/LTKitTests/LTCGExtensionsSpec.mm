@@ -3,8 +3,6 @@
 
 #import "LTCGExtensions.h"
 
-#include <tgmath.h>
-
 SpecBegin(LTCGExtensions)
 
 context(@"null values", ^{
@@ -105,8 +103,6 @@ context(@"cgrect operations", ^{
   });
   
   it(@"arithmetic", ^{
-    expect(CGRectMake(1, 2, 3, 4) * CGSizeMake(2, 0.5)).to.equal(CGRectMake(2, 1, 6, 2));
-    expect(CGRectMake(1, 2, 3, 4) / CGSizeMake(0.5, 2)).to.equal(CGRectMake(2, 1, 6, 2));
     expect(CGRectCenter(CGRectMake(1, 2, 3, 4))).to.equal(CGPointMake(2.5, 4));
   });
 });
