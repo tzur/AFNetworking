@@ -156,21 +156,38 @@ static const CGFloat kDefaultWidth = 1.0;
 
 - (void)drawSubGridInRegion:(CGRect)region inFrameBuffer:(LTFbo *)fbo {
   [fbo bindAndExecute:^{
-    [self drawSubGridInRegion:region inFrameBufferWithSize:fbo.size];
+    GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, fbo.size.width, 0, fbo.size.height, -1, 1);
+    self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+    self.program[@"pixelSize"] =
+        [NSValue valueWithGLKVector2:GLKVector2Make(2 / fbo.size.width, 2 / fbo.size.height)];
+    [self drawSubGridInRegion:region inFramebufferWithSize:fbo.size];
   }];
 }
 
-- (void)drawSubGridInRegion:(CGRect)region inFrameBufferWithSize:(CGSize)size {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0.0, size.width, 0.0, size.height, -1.0, 1.0);
-  GLKMatrix4 modelview = [self modelviewForGridRegion:region targetSize:size];
-  
-  self.program[@"width"] = @(self.width);
-  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
-  self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
+- (void)drawSubGridInRegion:(CGRect)region inScreenFramebufferWithSize:(CGSize)size {
+  // Since we're using a flipped projection matrix, the original order of vertices will generate
+  // a back-faced polygon by default, as the test is performed on the projected coordinates.
+  // a pixel size with negative y value is used since these values are added to the projected
+  // coordinates inside the shader, and we would like to flip them to be consistent with the
+  // projection. This way, when we use clockwise front facing polygons mode while drawing, we get
+  // the desired results.
+  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
   self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
   self.program[@"pixelSize"] =
-      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
+      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, -2 / size.height)];
+  LTGLContext *context = [LTGLContext currentContext];
+  [context executeAndPreserveState:^{
+    context.clockwiseFrontFacingPolygons = YES;
+    [self drawSubGridInRegion:region inFramebufferWithSize:size];
+  }];
+}
 
+- (void)drawSubGridInRegion:(CGRect)region inFramebufferWithSize:(CGSize)size {
+  self.program[@"modelview"] =
+      [NSValue valueWithGLKMatrix4:[self modelviewForGridRegion:region targetSize:size]];
+  self.program[@"width"] = @(self.width);
+  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
+ 
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.blendEnabled = YES;

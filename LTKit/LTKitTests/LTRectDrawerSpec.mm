@@ -4,6 +4,7 @@
 #import "LTRectDrawer.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTTestUtils.h"
@@ -12,8 +13,11 @@
 SpecBegin(LTRectDrawer)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
+  
+  // Make sure that everything is properly drawn when face culling is enabled.
+  context.faceCullingEnabled = YES;
 });
 
 afterEach(^{

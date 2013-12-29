@@ -101,4 +101,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// \c YES if dithering is enabled.
 @property (nonatomic) BOOL ditheringEnabled;
 
+/// \c YES if a clockwise drawn polygon is front facing, \c NO if a counter-clockwise one is.
+@property (nonatomic) BOOL clockwiseFrontFacingPolygons;
+
 @end
