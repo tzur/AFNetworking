@@ -19,6 +19,9 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
     expect(blendEquation.equationRGB).to.equal(GL_FUNC_ADD);
     expect(blendEquation.equationAlpha).to.equal(GL_FUNC_ADD);
 
+    expect(context.scissorBox).to.equal(CGRectZero);
+    
+    expect(context.scissorTestEnabled).to.beFalsy();
     expect(context.blendEnabled).to.beFalsy();
     expect(context.faceCullingEnabled).to.beFalsy();
     expect(context.depthTestEnabled).to.beFalsy();
@@ -143,6 +146,19 @@ context(@"context values", ^{
     expect(blendEquationAlpha).to.equal(LTGLContextBlendEquationReverseSubtract);
   });
 
+  it (@"should set scissor box", ^{
+    const CGRect expected = CGRectMake(1, 2, 3, 4);
+    context.scissorBox = expected;
+    
+    CGRect actual = context.scissorBox;
+    expect(actual).to.equal(expected);
+    
+    GLint scissorBox[4];
+    glGetIntegerv(GL_SCISSOR_BOX, scissorBox);
+    CGRect scissorBoxRect = CGRectMake(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
+    expect(scissorBoxRect).to.equal(expected);
+  });
+  
   it(@"should set blending", ^{
     context.blendEnabled = YES;
 
@@ -215,6 +231,8 @@ context(@"execution", ^{
       };
       context.blendEquation = blendEquation;
 
+      context.scissorBox = CGRectMake(1, 2, 3, 4);
+      
       context.blendEnabled = !context.blendEnabled;
       context.faceCullingEnabled = !context.faceCullingEnabled;
       context.depthTestEnabled = !context.depthTestEnabled;
