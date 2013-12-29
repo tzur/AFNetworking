@@ -222,7 +222,7 @@ typedef struct {
 
 - (void)setScissorBox:(CGRect)scissorBox {
   scissorBox = CGRoundRect(scissorBox);
-  if (scissorBox == _scissorBox) {
+  if (_scissorBox == scissorBox) {
     return;
   }
   _scissorBox = scissorBox;

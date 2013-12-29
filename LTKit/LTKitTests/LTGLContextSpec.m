@@ -146,7 +146,7 @@ context(@"context values", ^{
     expect(blendEquationAlpha).to.equal(LTGLContextBlendEquationReverseSubtract);
   });
 
-  it (@"should set scissor box", ^{
+  it(@"should set scissor box", ^{
     const CGRect expected = CGRectMake(1, 2, 3, 4);
     context.scissorBox = expected;
     
