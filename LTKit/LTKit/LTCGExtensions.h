@@ -171,40 +171,44 @@ CG_INLINE CGFloat CGPointDistance(const CGPoint &a, const CGPoint &b) {
 #pragma mark Rounding CGStructs
 #pragma mark -
 
+namespace std {
+
 /// Floors the given CGPoint, coordinate-wise.
-CG_INLINE CGPoint CGFloorPoint(const CGPoint &point) {
-  return CGPointMake(std::floor(point.x), std::floor(point.y));
+CG_INLINE CGPoint floor(const CGPoint &point) {
+  return CGPointMake(floor(point.x), floor(point.y));
 }
 
 /// Ceils the given CGPoint, coordinate-wise.
-CG_INLINE CGPoint CGCeilPoint(const CGPoint &point) {
-  return CGPointMake(std::ceil(point.x), std::ceil(point.y));
+  CG_INLINE CGPoint ceil(const CGPoint &point) {
+  return CGPointMake(ceil(point.x), ceil(point.y));
 }
 
 /// Rounds the given CGPoint, coordinate-wise.
-CG_INLINE CGPoint CGRoundPoint(const CGPoint &point) {
-  return CGPointMake(std::round(point.x), std::round(point.y));
+  CG_INLINE CGPoint round(const CGPoint &point) {
+  return CGPointMake(round(point.x), round(point.y));
 }
 
 /// Floors the given CGSize, coordinate-wise.
-CG_INLINE CGSize CGFloorSize(const CGSize &size) {
-  return CGSizeMake(std::floor(size.width), std::floor(size.height));
+CG_INLINE CGSize floor(const CGSize &size) {
+  return CGSizeMake(floor(size.width), floor(size.height));
 }
 
 /// Ceils the given CGSize, coordinate-wise.
-CG_INLINE CGSize CGCeilSize(const CGSize &size) {
-  return CGSizeMake(std::ceil(size.width), std::ceil(size.height));
+CG_INLINE CGSize ceil(const CGSize &size) {
+  return CGSizeMake(ceil(size.width), ceil(size.height));
 }
 
 /// Rounds the given CGSize, coordinate-wise.
-CG_INLINE CGSize CGRoundSize(const CGSize &size) {
-  return CGSizeMake(std::round(size.width), std::round(size.height));
+CG_INLINE CGSize round(const CGSize &size) {
+  return CGSizeMake(round(size.width), round(size.height));
+}
+
 }
 
 /// Rounds the given CGRect, such that its corner coordinates are rounded to the nearest integer
 /// values (meaning that its size is rounded to an integer, but not necessarily the nearest one).
 CG_INLINE CGRect CGRoundRect(const CGRect &rect) {
-  return CGRectFromPoints(CGRoundPoint(rect.origin), CGRoundPoint(rect.origin + rect.size));
+  return CGRectFromPoints(std::round(rect.origin), std::round(rect.origin + rect.size));
 }
 
 /// Rounds the given CGRect, such that its corner coordinates are rounded to integer values while
@@ -212,7 +216,7 @@ CG_INLINE CGRect CGRoundRect(const CGRect &rect) {
 ///
 /// @note assumes non-negative origin and size.
 CG_INLINE CGRect CGRoundRectInside(const CGRect &rect) {
-  return CGRectFromPoints(CGCeilPoint(rect.origin), CGFloorPoint(rect.origin + rect.size));
+  return CGRectFromPoints(std::ceil(rect.origin), std::floor(rect.origin + rect.size));
 }
 
 /// Rounds the given CGRect, such that its corner coordinates are rounded to integer values while
@@ -220,7 +224,7 @@ CG_INLINE CGRect CGRoundRectInside(const CGRect &rect) {
 ///
 /// @note assumes non-negative origin and size.
 CG_INLINE CGRect CGRoundRectOutside(const CGRect &rect) {
-  return CGRectFromPoints(CGFloorPoint(rect.origin), CGCeilPoint(rect.origin + rect.size));
+  return CGRectFromPoints(std::floor(rect.origin), std::ceil(rect.origin + rect.size));
 }
 
 #endif

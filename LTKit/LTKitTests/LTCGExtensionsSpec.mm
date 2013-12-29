@@ -120,22 +120,22 @@ it(@"distance functions", ^{
 context(@"rounding cgstructs", ^{
   it(@"rounding cgpoints", ^{
     const CGPoint point = CGPointMake(0.4, 0.6);
-    expect(CGFloorPoint(point)).to.equal(CGPointMake(0, 0));
-    expect(CGCeilPoint(point)).to.equal(CGPointMake(1, 1));
-    expect(CGRoundPoint(point)).to.equal(CGPointMake(0, 1));
-    expect(CGFloorPoint(-1 * point)).to.equal(CGPointMake(-1, -1));
-    expect(CGCeilPoint(-1 * point)).to.equal(CGPointMake(0, 0));
-    expect(CGRoundPoint(-1 * point)).to.equal(CGPointMake(0, -1));
+    expect(std::floor(point)).to.equal(CGPointMake(0, 0));
+    expect(std::ceil(point)).to.equal(CGPointMake(1, 1));
+    expect(std::round(point)).to.equal(CGPointMake(0, 1));
+    expect(std::floor(-1 * point)).to.equal(CGPointMake(-1, -1));
+    expect(std::ceil(-1 * point)).to.equal(CGPointMake(0, 0));
+    expect(std::round(-1 * point)).to.equal(CGPointMake(0, -1));
   });
   
   it(@"rounding cgsizes", ^{
     const CGSize size = CGSizeMake(0.4, 0.6);
-    expect(CGFloorSize(size)).to.equal(CGSizeMake(0, 0));
-    expect(CGCeilSize(size)).to.equal(CGSizeMake(1, 1));
-    expect(CGRoundSize(size)).to.equal(CGSizeMake(0, 1));
-    expect(CGFloorSize(-1 * size)).to.equal(CGSizeMake(-1, -1));
-    expect(CGCeilSize(-1 * size)).to.equal(CGSizeMake(0, 0));
-    expect(CGRoundSize(-1 * size)).to.equal(CGSizeMake(0, -1));
+    expect(std::floor(size)).to.equal(CGSizeMake(0, 0));
+    expect(std::ceil(size)).to.equal(CGSizeMake(1, 1));
+    expect(std::round(size)).to.equal(CGSizeMake(0, 1));
+    expect(std::floor(-1 * size)).to.equal(CGSizeMake(-1, -1));
+    expect(std::ceil(-1 * size)).to.equal(CGSizeMake(0, 0));
+    expect(std::round(-1 * size)).to.equal(CGSizeMake(0, -1));
   });
   
   it(@"rounding cgrects", ^{
