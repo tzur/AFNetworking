@@ -5,6 +5,8 @@
 
 #import <stack>
 
+#import "LTCGExtensions.h"
+
 /// OpenGL default blend function.
 LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
   .sourceRGB = LTGLContextBlendFuncOne,
@@ -34,6 +36,8 @@ static NSString * const kCurrentContextKey = @"com.lightricks.LTKit.LTGLContext"
 typedef struct {
   LTGLContextBlendFuncArgs blendFunc;
   LTGLContextBlendEquationArgs blendEquation;
+
+  CGRect scissorBox;
 
   BOOL blendEnabled;
   BOOL faceCullingEnabled;
@@ -116,6 +120,7 @@ typedef struct {
 - (void)fetchState {
   [self fetchBlendFuncState];
   [self fetchBlendEquationState];
+  [self fetchScissorBoxState];
   [self fetchFlagsState];
   LTGLCheckDbg(@"Failed retrieving context state");
 }
@@ -130,6 +135,12 @@ typedef struct {
 - (void)fetchBlendEquationState {
   glGetIntegerv(GL_BLEND_EQUATION_RGB, (GLint *)&_blendEquation.equationRGB);
   glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (GLint *)&_blendEquation.equationAlpha);
+}
+
+- (void)fetchScissorBoxState {
+  GLint box[4];
+  glGetIntegerv(GL_SCISSOR_BOX, box);
+  self.scissorBox = CGRectMake(box[0], box[1], box[2], box[3]);
 }
 
 - (void)fetchFlagsState {
@@ -149,6 +160,7 @@ typedef struct {
   return {
     .blendFunc = self.blendFunc,
     .blendEquation = self.blendEquation,
+    .scissorBox = self.scissorBox,
     .blendEnabled = self.blendEnabled,
     .faceCullingEnabled = self.faceCullingEnabled,
     .depthTestEnabled = self.depthTestEnabled,
@@ -161,6 +173,7 @@ typedef struct {
 - (void)setCurrentStateFromValues:(LTGLContextValues)values {
   self.blendFunc = values.blendFunc;
   self.blendEquation = values.blendEquation;
+  self.scissorBox = values.scissorBox;
   self.blendEnabled = values.blendEnabled;
   self.faceCullingEnabled = values.faceCullingEnabled;
   self.depthTestEnabled = values.depthTestEnabled;
@@ -205,6 +218,15 @@ typedef struct {
   }
   _blendEquation = blendEquation;
   [self updateBlendEquation];
+}
+
+- (void)setScissorBox:(CGRect)scissorBox {
+  scissorBox = CGRoundRect(scissorBox);
+  if (_scissorBox == scissorBox) {
+    return;
+  }
+  _scissorBox = scissorBox;
+  [self updateScissorBox];
 }
 
 - (void)setBlendEnabled:(BOOL)blendEnabled {
@@ -264,6 +286,12 @@ typedef struct {
 - (void)updateBlendEquation {
   [self assertContextIsCurrentContext];
   glBlendEquationSeparate(_blendEquation.equationRGB, _blendEquation.equationAlpha);
+}
+
+- (void)updateScissorBox {
+  [self assertContextIsCurrentContext];
+  glScissor(self.scissorBox.origin.x, self.scissorBox.origin.y,
+            self.scissorBox.size.width, self.scissorBox.size.height);
 }
 
 - (void)updateCapability:(GLenum)capability withValue:(BOOL)value {

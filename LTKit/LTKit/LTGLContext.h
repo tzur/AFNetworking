@@ -80,6 +80,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Blend equation.
 @property (nonatomic) LTGLContextBlendEquationArgs blendEquation;
 
+/// Scissor box, in pixels. Non-integer values will be rounded to the nearest integer.
+@property (nonatomic) CGRect scissorBox;
+
 /// \c YES if blending is enabled.
 @property (nonatomic) BOOL blendEnabled;
 
