@@ -5,6 +5,7 @@
 
 #import "LTBoundaryCondition.h"
 #import "LTGLException.h"
+#import "LTImage.h"
 
 static LTTexturePrecision LTPrecisionFromMat(const cv::Mat &image) {
   switch (image.depth()) {
@@ -307,6 +308,14 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
       }
       break;
   }
+}
+
+#pragma mark -
+#pragma mark Debugging
+#pragma mark -
+
+- (id)debugQuickLookObject {
+  return [[[LTImage alloc] initWithMat:[self image] copy:NO] UIImage];
 }
 
 @end

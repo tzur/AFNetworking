@@ -179,4 +179,12 @@
   }
 }
 
+#pragma mark -
+#pragma mark Debugging
+#pragma mark -
+
+- (id)debugQuickLookObject {
+  return [self UIImage];
+}
+
 @end
