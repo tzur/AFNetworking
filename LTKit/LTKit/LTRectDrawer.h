@@ -32,6 +32,10 @@
 - (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
         fromRect:(CGRect)sourceRect;
 
+/// Sets the source texture to the given \c texture. If the texture is equal to the current
+/// configured texture, no action will be done.
+- (void)setSourceTexture:(LTTexture *)texture;
+
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c
 /// modelview, \c texture}.
 ///

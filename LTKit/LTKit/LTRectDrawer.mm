@@ -150,6 +150,15 @@ LTGPUStructMake(LTRectDrawerVertex,
 #pragma mark Uniforms
 #pragma mark -
 
+- (void)setSourceTexture:(LTTexture *)texture {
+  if ([self.texture isEqual:texture]) {
+    return;
+  }
+
+  self.texture = texture;
+  [self.context attachUniform:@"sourceTexture" toTexture:texture];
+}
+
 - (void)setUniform:(NSString *)name withValue:(id)value {
   LTAssert(![name isEqualToString:@"position"] &&
            ![name isEqualToString:@"texcoord"], @"Uniform name cannot be one of %@",

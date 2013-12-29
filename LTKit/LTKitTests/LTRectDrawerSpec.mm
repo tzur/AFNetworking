@@ -188,13 +188,21 @@ context(@"drawing", ^{
       [rectDrawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                       inputSize.width / 2, inputSize.height / 2)
              inFramebuffer:fbo
-                  fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-      // nice test!
+                  fromRect:CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2)];
+
+      cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
+      expected.setTo(cv::Vec4b(0, 0, 0, 255));
+
+      cv::Rect targetRoi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
+      cv::Rect sourceRoi(0, 0, inputSize.width / 2, inputSize.height / 2);
+      image(sourceRoi).copyTo(expected(targetRoi));
+
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
   });
 
   context(@"screen framebuffer", ^{
-    it(@"should draw to to target texture of the same size", ^{
+    it(@"should draw to target texture of the same size", ^{
       [fbo bindAndExecute:^{
         [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
  inScreenFramebufferWithSize:fbo.size
@@ -272,6 +280,21 @@ context(@"drawing", ^{
       cv::flip(expected, expected, 0);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
+  });
+
+  it(@"should switch source texture", ^{
+    cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
+    expected.setTo(cv::Vec4b(137, 137, 0, 255));
+
+    LTTexture *secondTexture = [[LTGLTexture alloc] initWithImage:expected];
+    [rectDrawer setSourceTexture:secondTexture];
+
+    CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
+    [fbo bindAndExecute:^{
+      [rectDrawer drawRect:rect inScreenFramebufferWithSize:fbo.size fromRect:rect];
+    }];
+
+    expect(LTCompareMat(expected, output.image)).to.beTruthy();
   });
 });
 
