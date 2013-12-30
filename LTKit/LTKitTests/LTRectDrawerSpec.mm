@@ -21,7 +21,7 @@ beforeEach(^{
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 static NSString * const kVertexSource =
