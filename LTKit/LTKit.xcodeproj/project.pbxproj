@@ -16,6 +16,8 @@
 		288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB3F718351FFE00A11FA4 /* LTFbo.mm */; };
 		288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4021835203300A11FA4 /* LTFboSpec.mm */; };
 		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
+		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
+		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -280,6 +282,9 @@
 		288AB4021835203300A11FA4 /* LTFboSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboSpec.mm; sourceTree = "<group>"; };
 		288AB4041835320200A11FA4 /* LTDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDevice.h; sourceTree = "<group>"; };
 		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
+		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
+		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
+		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -426,6 +431,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28ABDFF618715394005A5DEC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				28ABE003187153AD005A5DEC /* LTAnimation.h */,
+				28ABE004187153AD005A5DEC /* LTAnimation.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		28ABE00618715514005A5DEC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				28ABE00718715527005A5DEC /* LTAnimationSpec.mm */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		8B3DEBDB18296B6100EA0C1A = {
 			isa = PBXGroup;
 			children = (
@@ -475,6 +497,7 @@
 				8B8E50FB1861EB0F00821829 /* Signal Processing */,
 				8BB47145183B533500CA1681 /* Libraries */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
+				28ABDFF618715394005A5DEC /* UI */,
 			);
 			path = LTKit;
 			sourceTree = "<group>";
@@ -529,6 +552,7 @@
 				8B8E50FE1861EB4600821829 /* GPU */,
 				8B8E51021861EB6D00821829 /* Signal Processing */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
+				28ABE00618715514005A5DEC /* UI */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -992,6 +1016,7 @@
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
 				8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */,
+				28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
@@ -1039,6 +1064,7 @@
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
+				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
