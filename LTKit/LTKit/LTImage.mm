@@ -136,7 +136,7 @@
 
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
-  CGColorSpaceRef colorSpace = [self createColorSpaceForImage];
+  CGColorSpaceRef colorSpace = [self newColorSpaceForImage];
   CGBitmapInfo bitmapInfo = [self bitmapFlagsForColorSpace:colorSpace];
   CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
 
@@ -155,7 +155,7 @@
   return image;
 }
 
-- (CGColorSpaceRef)createColorSpaceForImage {
+- (CGColorSpaceRef)newColorSpaceForImage {
   switch (self.depth) {
     case LTImageDepthGrayscale:
       return CGColorSpaceCreateDeviceGray();
