@@ -160,7 +160,7 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 
 - (void)bindAndExecute:(LTVoidBlock)block {
   if (self.bound) {
-    block();
+    if (block) block();
   } else {
     [self bind];
     if (block) block();

@@ -163,7 +163,7 @@
 
 - (void)bindAndExecute:(LTVoidBlock)block {
   if (self.bound) {
-    block();
+    if (block) block();
   } else {
     [self bind];
     if (block) block();
