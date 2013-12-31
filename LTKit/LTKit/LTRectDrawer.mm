@@ -6,6 +6,7 @@
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
@@ -115,9 +116,16 @@ LTGPUStructMake(LTRectDrawerVertex,
 
 - (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
         fromRect:(CGRect)sourceRect {
+  // Since we're using a flipped projection matrix, the original order of vertices will generate
+  // a back-faced polygon by default, as the test is performed on the projected coordinates.
+  // therefore we use the clockwise front facing polygons mode while drawing.
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
   self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
-  [self drawRect:targetRect fromRect:sourceRect];
+  LTGLContext *context = [LTGLContext currentContext];
+  [context executeAndPreserveState:^{
+    context.clockwiseFrontFacingPolygons = YES;
+    [self drawRect:targetRect fromRect:sourceRect];
+  }];
 }
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {

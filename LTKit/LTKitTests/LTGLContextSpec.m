@@ -28,6 +28,7 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
     expect(context.scissorTestEnabled).to.beFalsy();
     expect(context.stencilTestEnabled).to.beFalsy();
     expect(context.ditheringEnabled).to.beTruthy();
+    expect(context.clockwiseFrontFacingPolygons).to.beFalsy();
   });
 });
 
@@ -200,6 +201,15 @@ context(@"context values", ^{
     expect(context.ditheringEnabled).to.beFalsy();
     expect(glIsEnabled(GL_DITHER)).to.beFalsy();
   });
+  
+  it(@"should set front facing polygon direction", ^{
+    context.clockwiseFrontFacingPolygons = YES;
+    
+    expect(context.clockwiseFrontFacingPolygons).to.beTruthy();
+    GLint frontFace;
+    glGetIntegerv(GL_FRONT_FACE, &frontFace);
+    expect(frontFace).to.equal(GL_CW);
+  });
 });
 
 context(@"execution", ^{
@@ -239,6 +249,7 @@ context(@"execution", ^{
       context.scissorTestEnabled = !context.scissorTestEnabled;
       context.stencilTestEnabled = !context.stencilTestEnabled;
       context.ditheringEnabled = !context.ditheringEnabled;
+      context.clockwiseFrontFacingPolygons = !context.clockwiseFrontFacingPolygons;
     }];
 
     return @{@"context": context};

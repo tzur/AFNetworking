@@ -24,6 +24,18 @@ afterEach(^{
   [EAGLContext setCurrentContext:nil];
 });
 
+sharedExamplesFor(@"having default property values", ^(NSDictionary *data) {
+  it(@"should have default property values", ^{
+    LTTexture *texture = data[@"texture"];
+    
+    expect(texture.usingAlphaChannel).to.equal(NO);
+    expect(texture.usingHighPrecisionByte).to.equal(NO);
+    expect(texture.wrap).to.equal(LTTextureWrapClamp);
+    expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
+    expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationLinear);
+  });
+});
+
 context(@"init without an image", ^{
   it(@"should create an unallocated texture with size", ^{
     CGSize size = CGSizeMake(42, 42);
@@ -38,17 +50,12 @@ context(@"init without an image", ^{
     expect(texture.channels).to.equal(channels);
   });
 
-  it(@"should have default property values", ^{
+  itShouldBehaveLike(@"having default property values", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionByte
                                                   channels:LTTextureChannelsRGBA
                                             allocateMemory:NO];
-
-    expect(texture.usingAlphaChannel).to.equal(NO);
-    expect(texture.usingHighPrecisionByte).to.equal(NO);
-    expect(texture.wrap).to.equal(LTTextureWrapClamp);
-    expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
-    expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationLinear);
+    return @{@"texture": texture};
   });
 });
 
@@ -126,7 +133,7 @@ context(@"properties", ^{
   });
 });
 
-context(@"binding", ^{
+context(@"binding and execution", ^{
   __block LTTexture *texture;
 
   beforeEach(^{
@@ -138,21 +145,61 @@ context(@"binding", ^{
     texture = nil;
   });
 
-  itShouldBehaveLike(kLTResourceExamples, ^{
-    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
-             kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D};
+  context(@"binding", ^{
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
+               kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D};
+    });
+    
+    it(@"should bind and unbind from the same texture unit", ^{
+      glActiveTexture(GL_TEXTURE0);
+      [texture bind];
+      glActiveTexture(GL_TEXTURE1);
+      [texture unbind];
+      
+      glActiveTexture(GL_TEXTURE0);
+      GLint currentTexture;
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(0);
+    });
+    
+    it(@"should bind and execute block", ^{
+      __block GLint currentTexture;
+      __block BOOL didExecute = NO;
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(0);
+      [texture bindAndExecute:^{
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+        expect(currentTexture).toNot.equal(0);
+        didExecute = YES;
+      }];
+      expect(didExecute).to.beTruthy();
+    });
   });
-
-  it(@"should bind and unbind from the same texture unit", ^{
-    glActiveTexture(GL_TEXTURE0);
-    [texture bind];
-    glActiveTexture(GL_TEXTURE1);
-    [texture unbind];
-
-    glActiveTexture(GL_TEXTURE0);
-    GLint currentTexture;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-    expect(currentTexture).to.equal(0);
+  
+  context(@"execution", ^{
+    it(@"should execute a block", ^{
+      __block BOOL didExecute = NO;
+      [texture executeAndPreserveParameters:^{
+        didExecute = YES;
+      }];
+      expect(didExecute).to.beTruthy();
+    });
+    
+    it(@"should raise exception when trying to execute a nil block", ^{
+      expect(^{
+        [texture executeAndPreserveParameters:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    itShouldBehaveLike(@"having default property values", ^{
+      [texture executeAndPreserveParameters:^{
+        texture.minFilterInterpolation = LTTextureInterpolationNearest;
+        texture.magFilterInterpolation = LTTextureInterpolationNearest;
+        texture.wrap = LTTextureWrapRepeat;
+      }];
+      return @{@"texture": texture};
+    });
   });
 });
 
