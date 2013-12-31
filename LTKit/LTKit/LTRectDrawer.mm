@@ -39,6 +39,10 @@ LTGPUStructMake(LTRectDrawerVertex,
 #pragma mark Initialization
 #pragma mark -
 
+- (id)initWithProgram:(LTProgram *)program {
+  return [self initWithProgram:program sourceTexture:nil];
+}
+
 - (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
   if (self = [super init]) {
     LTAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of the "
@@ -54,7 +58,7 @@ LTGPUStructMake(LTRectDrawerVertex,
 - (LTDrawingContext *)createDrawingContext {
   LTVertexArray *vertexArray = [self createVertexArray];
 
-  NSDictionary *uniformToTexture = @{@"sourceTexture": self.texture};
+  NSDictionary *uniformToTexture = self.texture ? @{@"sourceTexture": self.texture} : nil;
   LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
                                                             vertexArray:vertexArray
                                                        uniformToTexture:uniformToTexture];
@@ -117,6 +121,8 @@ LTGPUStructMake(LTRectDrawerVertex,
 }
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
+  LTAssert(self.texture, @"Source texture was not set prior to drawing");
+
   GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
   self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
 

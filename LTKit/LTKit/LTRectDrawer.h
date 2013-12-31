@@ -10,13 +10,21 @@
 /// processing operations.
 @interface LTRectDrawer : NSObject
 
-/// Initializes with the given program and source texture. The program must include the uniforms \c
-/// projection (projection matrix), \c modelview (modelview matrix) and \c texture (texture matrix).
+/// Initializes with the given program. The source texture must be set prior to drawing using the \c
+/// setSourceTexture: method. The program must include the uniforms \c projection (projection
+/// matrix), \c modelview (modelview matrix) and \c texture (texture matrix).
+- (id)initWithProgram:(LTProgram *)program;
+
+/// Designated initializer: initializes with the given program and source texture. The program must
+/// include the uniforms \c projection (projection matrix), \c modelview (modelview matrix) and \c
+/// texture (texture matrix).
 - (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture;
 
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in the given
 /// framebuffer. The rects are defined in the source and target coordinate systems accordingly, in
 /// pixels.
+///
+/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
 
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen
@@ -29,6 +37,8 @@
 /// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
 /// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
 /// bottom left pixel.
+///
+/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
 - (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
         fromRect:(CGRect)sourceRect;
 

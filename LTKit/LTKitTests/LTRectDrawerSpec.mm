@@ -105,7 +105,16 @@ context(@"initialization", ^{
     expect(^{
       __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
                                                                   sourceTexture:texture];
-    }).toNot.raise(NSInternalInconsistencyException);
+    }).toNot.raiseAny();
+  });
+
+  it(@"should initialize with valid program and no texture", ^{
+    LTProgram *program = [[LTProgram alloc] initWithVertexSource:kVertexSource
+                                                  fragmentSource:kFragmentSource];
+
+    expect(^{
+      __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program];
+    }).toNot.raiseAny();
   });
 
   it(@"should not initialize with program with missing uniforms", ^{
@@ -295,6 +304,37 @@ context(@"drawing", ^{
     }];
 
     expect(LTCompareMat(expected, output.image)).to.beTruthy();
+  });
+});
+
+context(@"fail drawing with no source texture", ^{
+  __block LTProgram *program;
+  __block LTRectDrawer *rectDrawer;
+
+  beforeEach(^{
+    program = [[LTProgram alloc] initWithVertexSource:kVertexSource
+                                       fragmentSource:kFragmentSource];
+    rectDrawer = [[LTRectDrawer alloc] initWithProgram:program];
+  });
+
+  it(@"should fail drawing on framebuffer", ^{
+    LTTexture *output = [[LTGLTexture alloc] initWithSize:inputSize
+                                                precision:LTTexturePrecisionByte
+                                                 channels:LTTextureChannelsRGBA
+                                           allocateMemory:YES];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+
+    CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
+    expect(^{
+      [rectDrawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+  it(@"should fail drawing on screen framebuffer", ^{
+    CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
+    expect(^{
+      [rectDrawer drawRect:rect inScreenFramebufferWithSize:rect.size fromRect:rect];
+    }).to.raise(NSInternalInconsistencyException);
   });
 });
 
