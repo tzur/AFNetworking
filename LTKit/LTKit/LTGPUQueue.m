@@ -87,6 +87,10 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
   }
 }
 
+- (void)clearContext {
+  [LTGLContext setCurrentContext:nil];
+}
+
 #pragma mark -
 #pragma mark Async dispatching
 #pragma mark -
@@ -123,6 +127,8 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
              exception.description);
     [self handleAsyncError:[NSError errorWithLTGLException:exception] failure:failure];
     return;
+  } @finally {
+    [self clearContext];
   }
 
   if (completion) {
@@ -192,6 +198,8 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
     LogError(@"Encountered LTGLException while running on the GPU Queue: %@",
              exception.description);
     *error = [NSError errorWithLTGLException:exception];
+  } @finally {
+    [self clearContext];
   }
 
   return !*error;
