@@ -186,6 +186,12 @@ context(@"binding and execution", ^{
       expect(didExecute).to.beTruthy();
     });
     
+    it(@"should raise exception when trying to execute a nil block", ^{
+      expect(^{
+        [texture executeAndPreserveParameters:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
     itShouldBehaveLike(@"having default property values", ^{
       [texture executeAndPreserveParameters:^{
         texture.minFilterInterpolation = LTTextureInterpolationNearest;
@@ -193,21 +199,6 @@ context(@"binding and execution", ^{
         texture.wrap = LTTextureWrapRepeat;
       }];
       return @{@"texture": texture};
-    });
-    
-    it(@"should execute a nil block", ^{
-      expect(^{
-        [texture bindAndExecute:nil];
-      }).toNot.raiseAny();
-    });
-    
-    // TODO: (amit)uncomment when pushed.
-    it(@"should execute a nil block when already bound", ^{
-      expect(^{
-        [texture bind];
-        [texture bindAndExecute:nil];
-        [texture unbind];
-      }).toNot.raiseAny();
     });
   });
 });

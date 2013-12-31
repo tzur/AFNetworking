@@ -140,11 +140,12 @@
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
+  LTParameterAssert(block);
   if (self.bound) {
     block();
   } else {
     [self bind];
-    if (block) block();
+    block();
     [self unbind];
   }
 }

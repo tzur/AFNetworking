@@ -87,6 +87,28 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
       expect(currentBoundObject).to.equal(resource.name);
     }];
   });
+
+  it(@"should execute a block", ^{
+    __block BOOL didExecute = NO;
+    [resource bindAndExecute:^{
+      didExecute = YES;
+    }];
+    expect(didExecute).to.beTruthy();
+  });
+  
+  it(@"should raise exception when trying to execute a nil block", ^{
+    expect(^{
+      [resource bindAndExecute:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should raise exception when trying to execute a nil block when already bound", ^{
+    expect(^{
+      [resource bind];
+      [resource bindAndExecute:nil];
+      [resource unbind];
+    }).to.raise(NSInvalidArgumentException);
+  });
 });
 
 SharedExampleGroupsEnd
