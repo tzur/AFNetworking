@@ -3,6 +3,13 @@
 
 #import "LTLogger.h"
 
+#define LTNoFormatWarningBegin \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Wformat-security\"") \
+
+#define LTNoFormatWarningEnd \
+  _Pragma("clang diagnostic pop")
+
 SpecBegin(LTLogger)
 
 __block LTLogger *logger = nil;
@@ -22,8 +29,10 @@ context(@"log contents", ^{
     NSString *message = @"Hey!";
     const char *file = "myFile.mm";
     int line = 1337;
-    
+
+LTNoFormatWarningBegin
     [logger logWithFormat:message file:file line:line logLevel:LTLogLevelDebug];
+LTNoFormatWarningEnd
     
     MKTArgumentCaptor *logged = [[MKTArgumentCaptor alloc] init];
     [verifyCount(mockTarget, times(1)) outputString:[logged capture]];
@@ -39,7 +48,9 @@ context(@"log levels", ^{
     logger.minimalLogLevel = LTLogLevelDebug;
 
     NSString *message = @"Hey!";
+LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
+LTNoFormatWarningEnd
 
     [verifyCount(mockTarget, times(1)) outputString:anything()];
   });
@@ -48,8 +59,10 @@ context(@"log levels", ^{
     logger.minimalLogLevel = LTLogLevelInfo;
 
     NSString *message = @"Hey!";
+LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
-    
+LTNoFormatWarningEnd
+
     [verifyCount(mockTarget, never()) outputString:nil];
   });
 });
