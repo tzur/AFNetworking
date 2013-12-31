@@ -186,7 +186,8 @@ context(@"drawing", ^{
     it(@"should draw on an anonymous target", ^{
       [fbo bindAndExecute:^{
         gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-        [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBufferWithSize:fbo.size];
+        [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1)
+            inScreenFramebufferWithSize:fbo.size];
       }];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });

@@ -156,23 +156,22 @@ static const CGFloat kDefaultWidth = 1.0;
 
 - (void)drawSubGridInRegion:(CGRect)region inFrameBuffer:(LTFbo *)fbo {
   [fbo bindAndExecute:^{
-    [self drawSubGridInRegion:region inFrameBufferWithSize:fbo.size];
+    [self setProjectionAndPixelSizeForFramebufferWithSize:fbo.size];
+    [self setUniformsForGridRegion:region framebufferSize:fbo.size];
+    [self drawWithClockwiseFrontFacingPolygons:NO];
   }];
 }
 
-- (void)drawSubGridInRegion:(CGRect)region inFrameBufferWithSize:(CGSize)size {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0.0, size.width, 0.0, size.height, -1.0, 1.0);
-  GLKMatrix4 modelview = [self modelviewForGridRegion:region targetSize:size];
-  
-  self.program[@"width"] = @(self.width);
-  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
-  self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
-  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
-  self.program[@"pixelSize"] =
-      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
+- (void)drawSubGridInRegion:(CGRect)region inScreenFramebufferWithSize:(CGSize)size {
+  [self setProjectionAndPixelSizeForScreenFramebufferWithSize:size];
+  [self setUniformsForGridRegion:region framebufferSize:size];
+  [self drawWithClockwiseFrontFacingPolygons:YES];
+}
 
+- (void)drawWithClockwiseFrontFacingPolygons:(BOOL)cwffPolygons {
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
+    context.clockwiseFrontFacingPolygons = cwffPolygons;
     context.blendEnabled = YES;
     context.blendEquation = kLTGLContextBlendEquationDefault;
     context.blendFunc = kLTGLContextBlendFuncNormal;
@@ -180,7 +179,33 @@ static const CGFloat kDefaultWidth = 1.0;
   }];
 }
 
-/// Returns the modelview matrix according to the desired region and target framebuffer size.
+- (void)setProjectionAndPixelSizeForFramebufferWithSize:(CGSize)size {
+  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
+  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+  self.program[@"pixelSize"] =
+      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
+}
+
+/// Since we're using a flipped projection matrix, the original order of vertices will generate a
+/// back-faced polygon by default, as the test is performed on the projected coordinates.
+/// a pixel size with negative y value is used since these values are added to the projected
+/// coordinates inside the shader, and we would like to flip them to be consistent with the
+/// projection. This way, when we use clockwise front facing polygons mode while drawing, we get
+/// the desired results.
+- (void)setProjectionAndPixelSizeForScreenFramebufferWithSize:(CGSize)size {
+  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
+  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+  self.program[@"pixelSize"] =
+      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, -2 / size.height)];
+}
+
+- (void)setUniformsForGridRegion:(CGRect)region framebufferSize:(CGSize)size {
+  self.program[@"modelview"] =
+      [NSValue valueWithGLKMatrix4:[self modelviewForGridRegion:region targetSize:size]];
+  self.program[@"width"] = @(self.width);
+  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
+}
+
 - (GLKMatrix4)modelviewForGridRegion:(CGRect)region targetSize:(CGSize)targetSize {
   CGFloat scaleX = targetSize.width / region.size.width;
   CGFloat scaleY = targetSize.height / region.size.height;

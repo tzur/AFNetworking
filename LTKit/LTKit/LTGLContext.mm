@@ -45,6 +45,7 @@ typedef struct {
   BOOL scissorTestEnabled;
   BOOL stencilTestEnabled;
   BOOL ditheringEnabled;
+  BOOL clockwiseFrontFacingPolygons;
 } LTGLContextValues;
 
 @interface LTGLContext () {
@@ -122,6 +123,7 @@ typedef struct {
   [self fetchBlendEquationState];
   [self fetchScissorBoxState];
   [self fetchFlagsState];
+  [self fetchFrontFaceState];
   LTGLCheckDbg(@"Failed retrieving context state");
 }
 
@@ -152,6 +154,12 @@ typedef struct {
   _ditheringEnabled = glIsEnabled(GL_DITHER);
 }
 
+- (void)fetchFrontFaceState {
+  GLint frontFace;
+  glGetIntegerv(GL_FRONT_FACE, &frontFace);
+  _clockwiseFrontFacingPolygons = (frontFace == GL_CW);
+}
+
 #pragma mark -
 #pragma mark Storing and fetching internal state
 #pragma mark -
@@ -166,7 +174,8 @@ typedef struct {
     .depthTestEnabled = self.depthTestEnabled,
     .scissorTestEnabled = self.scissorTestEnabled,
     .stencilTestEnabled = self.stencilTestEnabled,
-    .ditheringEnabled = self.ditheringEnabled
+    .ditheringEnabled = self.ditheringEnabled,
+    .clockwiseFrontFacingPolygons = self.clockwiseFrontFacingPolygons
   };
 }
 
@@ -180,6 +189,7 @@ typedef struct {
   self.scissorTestEnabled = values.scissorTestEnabled;
   self.stencilTestEnabled = values.stencilTestEnabled;
   self.ditheringEnabled = values.ditheringEnabled;
+  self.clockwiseFrontFacingPolygons = values.clockwiseFrontFacingPolygons;
 }
 
 #pragma mark -
@@ -277,6 +287,14 @@ typedef struct {
   [self updateCapability:GL_DITHER withValue:ditheringEnabled];
 }
 
+- (void)setClockwiseFrontFacingPolygons:(BOOL)clockwiseFrontFacingPolygons {
+  if (_clockwiseFrontFacingPolygons == clockwiseFrontFacingPolygons) {
+    return;
+  }
+  _clockwiseFrontFacingPolygons = clockwiseFrontFacingPolygons;
+  [self updateFrontFace];
+}
+
 - (void)updateBlendFunc {
   [self assertContextIsCurrentContext];
   glBlendFuncSeparate(_blendFunc.sourceRGB, _blendFunc.destinationRGB,
@@ -301,6 +319,11 @@ typedef struct {
   } else {
     glDisable(capability);
   }
+}
+
+- (void)updateFrontFace {
+  [self assertContextIsCurrentContext];
+  glFrontFace(self.clockwiseFrontFacingPolygons ? GL_CW : GL_CCW);
 }
 
 - (void)assertContextIsCurrentContext {
