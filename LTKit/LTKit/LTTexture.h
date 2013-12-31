@@ -162,6 +162,11 @@ namespace cv {
 /// depends on the texture's values.
 - (cv::Mat)image;
 
+/// Executes the given block while recording changes to the texture's openGL parameters (such as
+/// \c minFilterInterpolation, \c magFilterInterpolation, and \c wrap). Any change to the parameters
+/// inside this block will be recorded and reverted after the block completes executing.
+- (void)executeAndPreserveParameters:(LTVoidBlock)execute;
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -

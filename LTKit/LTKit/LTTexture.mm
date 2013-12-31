@@ -33,6 +33,25 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   }
 }
 
+#pragma mark -
+#pragma mark LTTextureParameters
+#pragma mark -
+
+@interface LTTextureParameters : NSObject
+
+@property (nonatomic) LTTextureInterpolation minFilterInterpolation;
+@property (nonatomic) LTTextureInterpolation magFilterInterpolation;
+@property (nonatomic) LTTextureWrap wrap;
+
+@end
+
+@implementation LTTextureParameters
+@end
+
+#pragma mark -
+#pragma mark LTTexture
+#pragma mark -
+
 @interface LTTexture ()
 
 /// Set to the previously bound texture, or \c 0 if the texture is not bound.
@@ -159,13 +178,21 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
+  LTParameterAssert(block);
   if (self.bound) {
-    if (block) block();
+    block();
   } else {
     [self bind];
-    if (block) block();
+    block();
     [self unbind];
   }
+}
+
+- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
+  LTParameterAssert(execute);
+  LTTextureParameters *parameters = [self currentParameters];
+  execute();
+  [self setCurrentParameters:parameters];
 }
 
 - (GLKVector4)pixelValue:(CGPoint)location {
@@ -230,6 +257,26 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
   
   return image;
+}
+
+#pragma mark -
+#pragma mark Storing and fetching internal parameters
+#pragma mark -
+
+- (LTTextureParameters *)currentParameters {
+  LTTextureParameters *parameters = [[LTTextureParameters alloc] init];
+  parameters.minFilterInterpolation = self.minFilterInterpolation;
+  parameters.magFilterInterpolation = self.magFilterInterpolation;
+  parameters.wrap = self.wrap;
+  return parameters;
+}
+
+- (void)setCurrentParameters:(LTTextureParameters *)parameters {
+  [self bindAndExecute:^{
+    self.minFilterInterpolation = parameters.minFilterInterpolation;
+    self.magFilterInterpolation = parameters.magFilterInterpolation;
+    self.wrap = parameters.wrap;
+  }];
 }
 
 #pragma mark -

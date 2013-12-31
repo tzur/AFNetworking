@@ -19,6 +19,8 @@
 /// the block, accordingly. If the receiver is bound, the block will execute, but no binding and
 /// unbinding will be executed. Making recursive calls to \c bindAndExecute: is possible without
 /// loss of context.
+///
+/// @param block The block to execute after binding the resource. This parameter cannot be nil.
 - (void)bindAndExecute:(LTVoidBlock)block;
 
 /// OpenGL name of the resource.
