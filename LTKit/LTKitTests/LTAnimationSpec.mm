@@ -89,7 +89,7 @@ xcontext(@"animations", ^{
   });
 });
 
-context(@"properties", ^{
+xcontext(@"properties", ^{
   it(@"isAnimating property", ^{
     LTAnimation *animation = [LTAnimation animationWithBlock:
                               ^BOOL(CFTimeInterval __unused timeSinceLastFrame,
