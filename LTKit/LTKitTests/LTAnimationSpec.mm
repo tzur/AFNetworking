@@ -20,7 +20,7 @@ beforeEach(^{
   [LTAnimation reset];
 });
 
-context(@"animations", ^{
+xcontext(@"animations", ^{
   it(@"running a single animation", ^{
     __block NSUInteger counter = 0;
     
