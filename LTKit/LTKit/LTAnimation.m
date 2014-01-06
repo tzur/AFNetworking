@@ -95,17 +95,19 @@ static LTAnimationManager *instance = nil;
 #pragma mark Class methods
 #pragma mark -
 
-+ (void)initialize {
-  if (!instance) {
-    instance = [[LTAnimationManager alloc] init];
-  }
-}
-
 + (instancetype)sharedInstance {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    instance = [[LTAnimationManager alloc] init];
+  });
+  
   return instance;
 }
 
 + (void)reset {
+  // Invalidate is called to make sure this happens before allocating a new manager (and a new
+  // display link), as the ARC might call the previous manager's dealloc later on (even if we set it
+  // to nil).
   [instance.displayLink invalidate];
   instance = [[LTAnimationManager alloc] init];
 }
