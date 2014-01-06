@@ -24,7 +24,7 @@
 
 @end
 
-@interface LTAnimation()
+@interface LTAnimation ()
 
 /// Last timestamp of rendered frame.
 @property (nonatomic) CFTimeInterval lastFrameTime;
@@ -117,7 +117,7 @@ static LTAnimationManager *instance = nil;
 - (instancetype)init {
   if (self = [super init]) {
     // Allocate the animations array, and the display link used to trigger the animations.
-    self.animations = [[NSMutableArray alloc] init];
+    self.animations = [NSMutableArray array];
     self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(animate:)];
     [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     self.displayLink.paused = YES;
@@ -135,7 +135,7 @@ static LTAnimationManager *instance = nil;
 
 - (void)animate:(CADisplayLink *)link {
   // Iterate over the current animations.
-  NSMutableArray *completed = [[NSMutableArray alloc] init];
+  NSMutableArray *completed = [NSMutableArray array];
   for (LTAnimation *animation in self.animations) {
     // Calculate and update the total animation time, and the time since the last frame.
     CFTimeInterval timeSinceLastFrame = 0;

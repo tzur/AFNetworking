@@ -9,7 +9,7 @@
 /// Prototype of an animation block. This block is responsible for drawing the next frame of the
 /// animation. Time since last frame and total animation time are given in seconds.
 ///
-/// @return whether the animation should continue after this frame.
+/// @return YES if the animation should continue after this frame.
 typedef BOOL (^LTAnimationBlock)(CFTimeInterval timeSinceLastFrame,
                                  CFTimeInterval totalAnimationTime);
 
@@ -24,5 +24,16 @@ typedef BOOL (^LTAnimationBlock)(CFTimeInterval timeSinceLastFrame,
 
 /// returns YES if the animation is currently running.
 @property (readonly, nonatomic) BOOL isAnimating;
+
+@end
+
+#pragma mark -
+#pragma mark For Testing
+#pragma mark -
+
+@interface LTAnimation (ForTesting)
+
+/// Stops all animations, and resets the animation manager class.
++ (void)reset;
 
 @end
