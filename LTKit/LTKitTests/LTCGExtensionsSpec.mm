@@ -71,6 +71,14 @@ context(@"cgsize operations", ^{
     expect(CGSizeMake(1, 2) * 2).to.equal(CGSizeMake(2, 4));
     expect(0.5 * CGSizeMake(1, 2)).to.equal(CGSizeMake(0.5, 1));
     expect(CGSizeMake(1, 2) / 0.5).to.equal(CGSizeMake(2, 4));
+    expect(CGSizeMake(3, 4) / CGSizeMake(2, 3)).to.equal(CGSizeMake(3 / 2.0, 4 / 3.0));
+  });
+  
+  it(@"min/max", ^{
+    expect(std::min(CGSizeMake(1, 2))).to.equal(1);
+    expect(std::min(CGSizeMake(2, 1))).to.equal(1);
+    expect(std::max(CGSizeMake(1, 2))).to.equal(2);
+    expect(std::max(CGSizeMake(2, 1))).to.equal(2);
   });
 });
 
