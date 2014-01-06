@@ -88,7 +88,7 @@ xcontext(@"animations", ^{
 xcontext(@"properties", ^{
   it(@"isAnimating property", ^{
     LTAnimation *animation = [LTAnimation animationWithBlock:
-                              ^BOOL(CFTimeInterval,CFTimeInterval totalAnimationTime) {
+                              ^BOOL(CFTimeInterval, CFTimeInterval totalAnimationTime) {
       return totalAnimationTime < 0.5 * kTimeout;
     }];
     expect(animation.isAnimating).to.beTruthy();
