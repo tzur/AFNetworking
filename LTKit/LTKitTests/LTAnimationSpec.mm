@@ -56,8 +56,7 @@ xcontext(@"animations", ^{
   
   it(@"stopping a running animation", ^{
     __block BOOL didExecute = NO;
-    LTAnimation *animation = [LTAnimation animationWithBlock:
-                              ^BOOL(CFTimeInterval, CFTimeInterval) {
+    LTAnimation *animation = [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
       didExecute = YES;
       return YES;
     }];
