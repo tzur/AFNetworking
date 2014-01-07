@@ -113,6 +113,25 @@ CG_INLINE CGSize operator/(const CGSize &lhs, const CGFloat &rhs) {
   return CGSizeMake(lhs.width / rhs, lhs.height / rhs);
 }
 
+/// Divide a CGSize by another CGSize, component-wise.
+CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
+  return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
+}
+
+namespace std {
+
+/// Returns the smaller component.
+CG_INLINE CGFloat min(const CGSize &size) {
+  return min(size.width, size.height);
+}
+
+/// Returns the bigger component.
+CG_INLINE CGFloat max(const CGSize &size) {
+  return max(size.width, size.height);
+}
+
+}
+
 #pragma mark -
 #pragma mark CGRect Operations
 #pragma mark -
