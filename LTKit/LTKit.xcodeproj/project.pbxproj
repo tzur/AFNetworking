@@ -21,7 +21,6 @@
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
-		8B34935C186C530E00FEDF8C /* LTImageBrightnessProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B34935B186C530E00FEDF8C /* LTImageBrightnessProcessorSpec.mm */; };
 		8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */; };
 		8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */; };
 		8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
@@ -1156,7 +1155,6 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
-				8B34935C186C530E00FEDF8C /* LTImageBrightnessProcessorSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
 				8B3F949418799CCE00FAA265 /* LTRectImageProcessorSpec.mm in Sources */,
