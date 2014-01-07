@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
+		282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF084187B030000904F07 /* LTViewPixelGrid.mm */; };
+		282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF08C187B031800904F07 /* UIColor+Vector.mm */; };
+		282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
@@ -290,6 +293,11 @@
 		2817821A187C2E7200548AE4 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		282CF083187B030000904F07 /* LTViewPixelGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTViewPixelGrid.h; sourceTree = "<group>"; };
+		282CF084187B030000904F07 /* LTViewPixelGrid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewPixelGrid.mm; sourceTree = "<group>"; };
+		282CF08B187B031800904F07 /* UIColor+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Vector.h"; sourceTree = "<group>"; };
+		282CF08C187B031800904F07 /* UIColor+Vector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Vector.mm"; sourceTree = "<group>"; };
+		282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewPixelGridSpec.mm; sourceTree = "<group>"; };
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
 		2836211F186C58DC00665ED9 /* LTCGExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTCGExtensions.m; sourceTree = "<group>"; };
 		2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGExtensionsSpec.mm; sourceTree = "<group>"; };
@@ -495,9 +503,27 @@
 			path = OCMock;
 			sourceTree = "<group>";
 		};
+		282CF070187B02E600904F07 /* LTView */ = {
+			isa = PBXGroup;
+			children = (
+				282CF083187B030000904F07 /* LTViewPixelGrid.h */,
+				282CF084187B030000904F07 /* LTViewPixelGrid.mm */,
+			);
+			name = LTView;
+			sourceTree = "<group>";
+		};
+		282CF08E187B033800904F07 /* LTView */ = {
+			isa = PBXGroup;
+			children = (
+				282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */,
+			);
+			name = LTView;
+			sourceTree = "<group>";
+		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				282CF070187B02E600904F07 /* LTView */,
 				28ABE003187153AD005A5DEC /* LTAnimation.h */,
 				28ABE004187153AD005A5DEC /* LTAnimation.m */,
 			);
@@ -507,6 +533,7 @@
 		28ABE00618715514005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				282CF08E187B033800904F07 /* LTView */,
 				28ABE00718715527005A5DEC /* LTAnimationSpec.mm */,
 			);
 			name = UI;
@@ -582,6 +609,8 @@
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
+				282CF08B187B031800904F07 /* UIColor+Vector.h */,
+				282CF08C187B031800904F07 /* UIColor+Vector.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1144,6 +1173,7 @@
 			files = (
 				8BF7EFBB18743EBE005695D0 /* LTImageProcessor.mm in Sources */,
 				8BFE1E1A18757547008035BF /* LTRectImageProcessor.mm in Sources */,
+				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
 				8BFE439D18759533008B699F /* LTImageProcessorOutput.m in Sources */,
 				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
@@ -1162,6 +1192,7 @@
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
+				282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */,
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
@@ -1185,6 +1216,7 @@
 				8B3F94A7187AEA0200FAA265 /* Passthrough.fsh in Sources */,
 				8B8E510E1863216E00821829 /* LTGLContextSpec.m in Sources */,
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
+				282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
@@ -1386,6 +1418,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../third_party/testing/Specta/src",
+					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1413,6 +1446,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../third_party/testing/Specta/src",
+					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
