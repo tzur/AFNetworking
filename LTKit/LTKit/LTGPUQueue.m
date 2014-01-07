@@ -92,6 +92,21 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 }
 
 #pragma mark -
+#pragma mark Singleton
+#pragma mark -
+
++ (instancetype)sharedQueue {
+  static LTGPUQueue *instance;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    instance = [[LTGPUQueue alloc] init];
+  });
+
+  return instance;
+}
+
+#pragma mark -
 #pragma mark Async dispatching
 #pragma mark -
 

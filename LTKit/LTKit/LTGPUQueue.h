@@ -17,6 +17,9 @@
 /// This class is thread-safe.
 @interface LTGPUQueue : NSObject
 
+/// Returns the shared, singleton GPU queue.
++ (instancetype)sharedQueue;
+
 #pragma mark -
 #pragma mark Block dispatching
 #pragma mark -
