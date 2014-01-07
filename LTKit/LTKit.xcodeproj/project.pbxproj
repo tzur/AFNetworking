@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
@@ -282,6 +283,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
+		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		28178219187C2E7200548AE4 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		2817821A187C2E7200548AE4 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
 		2836211F186C58DC00665ED9 /* LTCGExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTCGExtensions.m; sourceTree = "<group>"; };
 		2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGExtensionsSpec.mm; sourceTree = "<group>"; };
@@ -457,12 +465,36 @@
 				8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
+				2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28178214187C2E7200548AE4 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				28178215187C2E7200548AE4 /* libOCMock.a */,
+				28178216187C2E7200548AE4 /* OCMock */,
+			);
+			name = OCMock;
+			path = ../../third_party/testing/OCMock;
+			sourceTree = "<group>";
+		};
+		28178216187C2E7200548AE4 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */,
+				28178218187C2E7200548AE4 /* OCMArg.h */,
+				28178219187C2E7200548AE4 /* OCMConstraint.h */,
+				2817821A187C2E7200548AE4 /* OCMock.h */,
+				2817821B187C2E7200548AE4 /* OCMockObject.h */,
+				2817821C187C2E7200548AE4 /* OCMockRecorder.h */,
+			);
+			path = OCMock;
+			sourceTree = "<group>";
+		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,6 +665,7 @@
 			children = (
 				8BCA673918310DA8003FCB65 /* Specta.xcodeproj */,
 				8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */,
+				28178214187C2E7200548AE4 /* OCMock */,
 				8BA3E137182A48AF00FDD95A /* OCMockitoIOS.framework */,
 				8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */,
 			);
@@ -1355,6 +1388,10 @@
 					"$(SRCROOT)/../third_party/testing/Specta/src",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/testing/OCMock",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1378,6 +1415,10 @@
 					"$(SRCROOT)/../third_party/testing/Specta/src",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/testing/OCMock",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
