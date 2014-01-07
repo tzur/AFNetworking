@@ -46,6 +46,9 @@
 /// Size of the texture associated with this framebuffer.
 @property (readonly, nonatomic) CGSize size;
 
+/// Texture backed by this framebuffer.
+@property (readonly, nonatomic) LTTexture *texture;
+
 @end
 
 #pragma mark -
