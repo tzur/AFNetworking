@@ -20,10 +20,6 @@
 
 @implementation LTGLTexture
 
-- (void)load:(const cv::Mat &)image {
-  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
-}
-
 - (void)create:(BOOL)allocateMemory {
   if (self.name) {
     return;
@@ -56,9 +52,9 @@
 
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image {
   // Preconditions.
-  LTAssert([self inTextureRect:rect],
-           @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
-           rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  LTParameterAssert([self inTextureRect:rect],
+                    @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
+                    rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   image->create(rect.size.height, rect.size.width, self.matType);
 
@@ -71,14 +67,19 @@
   }];
 }
 
+- (void)load:(const cv::Mat &)image {
+  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
+}
+
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image {
   // Preconditions.
-  LTAssert([self inTextureRect:rect],
-           @"Rect for retrieving image from texture is out of bounds: (%g, %g, %g, %g)",
-           rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-  LTAssert(image.cols == rect.size.width && image.rows == rect.size.height,
-           @"Trying to load to rect with size (%g, %g) from a Mat with different size: (%d, %d)",
-           rect.size.width, rect.size.height, image.cols, image.rows);
+  LTParameterAssert([self inTextureRect:rect],
+                    @"Rect for retrieving image from texture is out of bounds: (%g, %g, %g, %g)",
+                    rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  LTParameterAssert(image.cols == rect.size.width && image.rows == rect.size.height,
+                    @"Trying to load to rect with size (%g, %g) from a Mat with different size: "
+                    "(%d, %d)", rect.size.width, rect.size.height, image.cols, image.rows);
+  // TODO: (yaron) add test for image type.
 
   [self bindAndExecute:^{
     // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.

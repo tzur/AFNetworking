@@ -71,6 +71,7 @@
     // Unbind in reverse order.
     for (NSInteger i = textureStack.count - 1; i >= 0; --i) {
       [textureStack[i] unbind];
+      [textureStack[i] updatedByGPU];
     }
   }];
 

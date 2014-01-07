@@ -32,6 +32,22 @@ typedef NS_ENUM(NSUInteger, LTTextureChannels) {
   LTTextureChannelsRGBA = 4,
 };
 
+/// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c
+/// kLTTextureUnsupportedFormatException if the precision is invalid or unsupported.
+LTTexturePrecision LTTexturePrecisionFromMatType(int type);
+
+/// Returns precision for a given \c cv::Mat, or throws an \c LTGLException with \c
+/// kLTTextureUnsupportedFormatException if the precision is invalid or unsupported.
+LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image);
+
+/// Returns number of channels for a given \c cv::Mat type, or throws an \c LTGLException with \c
+/// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
+LTTextureChannels LTTextureChannelsFromMatType(int type);
+
+/// Returns number of channels for a given \c cv::Mat, or throws an \c LTGLException with \c
+/// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
+LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image);
+
 namespace cv {
   class Mat;
 }
@@ -85,11 +101,6 @@ namespace cv {
 #pragma mark Abstract methods
 #pragma mark -
 
-/// Loads a given image to the texture by replacing the current content of the texture. The size
-/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
-/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
-- (void)load:(const cv::Mat &)image;
-
 /// Creates the texture in the active OpenGL context. If the texture is already allocated, this
 /// method has no effect.
 ///
@@ -107,6 +118,11 @@ namespace cv {
 /// with the same precision and size of the given \c rect, if needed. The rect must be contained in
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
+
+/// Loads a given image to the texture by replacing the current content of the texture. The size
+/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
+/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
+- (void)load:(const cv::Mat &)image;
 
 /// Loads data from the given \c image to texture at the given \c rect. The image must have the same
 /// precision as the texture's and the same size as the given \c rect. The rect must be contained in
@@ -132,6 +148,10 @@ namespace cv {
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+/// Called when the texture has been updated by the GPU. Users of this class must call this method
+/// to avoid possible synchronization issues.
+- (void)updatedByGPU;
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type
