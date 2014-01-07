@@ -7,6 +7,10 @@
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual);
 
+/// Returns \c YES if the given \c actual matrix cells are all equal to the given \c expected
+/// scalar.
+BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);
+
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
 
