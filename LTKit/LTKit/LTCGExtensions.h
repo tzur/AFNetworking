@@ -93,6 +93,16 @@ CG_INLINE CGSize operator+(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width + rhs.width, lhs.height + rhs.height);
 }
 
+/// Returns the size resulting from adding a scalar value.
+CG_INLINE CGSize operator+(const CGSize &lhs, const CGFloat &rhs) {
+  return CGSizeMake(lhs.width + rhs, lhs.height + rhs);
+}
+
+/// Returns the size resulting from adding a scalar value.
+CG_INLINE CGSize operator+(const CGFloat &lhs, const CGSize &rhs) {
+  return CGSizeMake(lhs + rhs.width, lhs + rhs.height);
+}
+
 /// Returns the size resulting from subtracting the right size from the left one.
 CG_INLINE CGSize operator-(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width - rhs.width, lhs.height - rhs.height);

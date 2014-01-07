@@ -67,6 +67,8 @@ context(@"cgsize operations", ^{
   
   it(@"arithmetic", ^{
     expect(CGSizeMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGSizeMake(4, 6));
+    expect(CGSizeMake(1, 2) + 1).to.equal(CGSizeMake(2, 3));
+    expect(1 + CGSizeMake(1, 2)).to.equal(CGSizeMake(2, 3));
     expect(CGSizeMake(3, 4) - CGSizeMake(1, 2)).to.equal(CGSizeMake(2, 2));
     expect(CGSizeMake(1, 2) * 2).to.equal(CGSizeMake(2, 4));
     expect(0.5 * CGSizeMake(1, 2)).to.equal(CGSizeMake(0.5, 1));
