@@ -11,7 +11,7 @@
 /// size is given in pixels.
 - (void)drawContentRegion:(CGRect)region toFramebufferWithSize:(CGSize)size;
 
-/// Color of the pixel grid (alpha is set according to the zoom scale level).
+/// Color of the pixel grid (alpha is set according to the zoom scale level). Default is 0.2 gray.
 @property (strong, nonatomic) UIColor *color;
 
 /// Alpha level of the pixel grid at the maximal zoom scale level, clamped to [0,1].

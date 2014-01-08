@@ -8,7 +8,7 @@
 
 @implementation UIColor (GLKVector)
 
-- (GLKVector4)glVector {
+- (GLKVector4)glkVector {
   CGFloat r, g, b, a;
   if ([self getRed:&r green:&g blue:&b alpha:&a]) {
     return GLKVector4Make(r, g, b, a);
@@ -20,8 +20,8 @@
 }
 
 - (cv::Vec4b)cvVector {
-  GLKVector4 glVector = self.glVector * UCHAR_MAX;
-  return cv::Vec4b(glVector.r, glVector.g, glVector.b, glVector.a);
+  GLKVector4 glkVector = self.glkVector * UCHAR_MAX;
+  return cv::Vec4b(glkVector.r, glkVector.g, glkVector.b, glkVector.a);
 }
 
 @end

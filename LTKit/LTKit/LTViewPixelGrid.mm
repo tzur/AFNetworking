@@ -43,7 +43,7 @@ static const CGFloat kDefaultMaxZoomScale = 5.0;
 
 - (LTGridDrawer *)createGridDrawerWithContentSize:(CGSize)size {
   LTGridDrawer *gridDrawer = [[LTGridDrawer alloc] initWithSize:size];
-  gridDrawer.color = self.color.glVector;
+  gridDrawer.color = self.color.glkVector;
   return gridDrawer;
 }
 
@@ -74,7 +74,7 @@ static const CGFloat kDefaultMaxZoomScale = 5.0;
 
 - (void)setColor:(UIColor *)color {
   _color = color;
-  self.gridDrawer.color = _color.glVector;
+  self.gridDrawer.color = _color.glkVector;
 }
 
 - (void)setMaxOpacity:(CGFloat)maxOpacity {
