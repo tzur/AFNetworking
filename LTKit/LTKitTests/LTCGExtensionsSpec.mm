@@ -31,6 +31,23 @@ context(@"null values", ^{
   });
 });
 
+context(@"float-double operations", ^{
+  it(@"min/max", ^{
+    float f1 = 1;
+    float f2 = 2;
+    double d1 = 1;
+    double d2 = 2;
+    expect(std::min(f1, d2)).to.equal(1);
+    expect(std::min(d2, f1)).to.equal(1);
+    expect(std::max(f1, d2)).to.equal(2);
+    expect(std::max(d2, f1)).to.equal(2);
+    expect(std::min(d1, f2)).to.equal(1);
+    expect(std::min(f2, d1)).to.equal(1);
+    expect(std::max(d1, f2)).to.equal(2);
+    expect(std::max(f2, d1)).to.equal(2);
+  });
+});
+
 context(@"cgpoint operations", ^{
   it(@"comparison", ^{
     expect(CGPointMake(1, 2) == CGPointMake(1, 2)).to.beTruthy();
