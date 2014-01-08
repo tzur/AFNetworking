@@ -15,6 +15,7 @@
   } else if ([self getWhite:&r alpha:&a]) {
     return GLKVector4Make(r, r, r, a);
   }
+  LTAssert(NO, @"Invalid color for conversion");
   return GLKVector4();
 }
 

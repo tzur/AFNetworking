@@ -31,6 +31,34 @@ CG_INLINE BOOL CGSizeIsNull(CGSize size) {
 #ifdef __cplusplus
 
 #pragma mark -
+#pragma mark float/double Operations
+#pragma mark -
+
+namespace std {
+
+/// Returns the smaller component.
+CG_INLINE float min(const float &a, const double &b) {
+  return a < b ? a : b;
+}
+
+/// Returns the smaller component.
+CG_INLINE float min(const double &a, const float &b) {
+  return a < b ? a : b;
+}
+  
+/// Returns the bigger component.
+CG_INLINE float max(const float &a, const double &b) {
+  return a > b ? a : b;
+}
+  
+/// Returns the bigger component.
+CG_INLINE float max(const double &a, const float &b) {
+  return a > b ? a : b;
+}
+  
+}
+
+#pragma mark -
 #pragma mark CGPoint Operations
 #pragma mark -
 

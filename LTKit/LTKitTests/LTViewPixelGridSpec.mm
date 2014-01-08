@@ -14,12 +14,12 @@
 SpecBegin(LTViewPixelGrid)
 
 beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
+  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  [EAGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [LTGLContext setCurrentContext:nil];
+  [EAGLContext setCurrentContext:nil];
 });
 
 const CGSize contentSize = CGSizeMake(256, 512);
@@ -82,7 +82,6 @@ context(@"drawing", ^{
   
   beforeEach(^{
     grid = [[LTViewPixelGrid alloc] initWithContentSize:contentSize];
-    //    drawer = mock([LTGridDrawer class]);
     realDrawer = grid.gridDrawer;
     mockDrawer = [OCMockObject partialMockForObject:realDrawer];
     grid.gridDrawer = mockDrawer;

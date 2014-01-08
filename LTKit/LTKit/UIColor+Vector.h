@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import <UIKit/UIKit.h>
+#import <UIKit/UIColor.h>
 
 @interface UIColor (GLKVector)
 
