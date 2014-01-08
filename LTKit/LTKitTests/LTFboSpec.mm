@@ -101,10 +101,10 @@ context(@"initialization", ^{
 
 context(@"clearing", ^{
   it(@"should clear texture with color", ^{
-    GLKVector4 value = GLKVector4Make(0.5, 0.25, 0.75, 1.0);
+    GLKVector4 value = GLKVector4Make(0.5, 0.25, 0.5, 1.0);
     CGSize size = CGSizeMake(10, 10);
     cv::Mat expected(size.height, size.width, CV_8UC4);
-    expected = cv::Scalar(value.r, value.g, value.b, value.a) * 255.0;
+    expected.setTo(cv::Vec4b(128, 64, 128, 255));
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:size
                                                  precision:LTTexturePrecisionByte
@@ -115,7 +115,7 @@ context(@"clearing", ^{
 
     cv::Mat image = [texture image];
 
-    expect(LTCompareMat(image, expected)).to.beTruthy();
+    expect(LTCompareMat(expected, image)).to.beTruthy();
   });
 });
 

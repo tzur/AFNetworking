@@ -3,6 +3,15 @@
 
 // This file contains various testing utilities for \c LTKit.
 
+/// Executes the given test if running on the simulator.
+void sit(NSString *name, id block);
+
+/// Executes the given test if running on the device.
+void dit(NSString *name, id block);
+
+/// Returns \c YES if currently running application tests (and not logic tests).
+BOOL LTRunningApplicationTests();
+
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual);

@@ -209,7 +209,7 @@ context(@"drawing", ^{
     });
 
     it(@"should draw with a custom opacity", ^{
-      const CGFloat kOpacity = 0.2;
+      const CGFloat kOpacity = 0.25;
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.opacity = kOpacity;
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
@@ -218,8 +218,8 @@ context(@"drawing", ^{
     });
 
     it(@"should draw with custom color and custom opacity", ^{
-      cv::Vec4b rgba(10, 20, 30, 80);
-      const CGFloat kOpacity = 0.7;
+      cv::Vec4b rgba(16, 32, 64, 128);
+      const CGFloat kOpacity = 0.5;
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.color = LTCVVec4bToGLKVector4(rgba);
       gridDrawer.opacity = kOpacity;

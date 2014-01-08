@@ -30,6 +30,23 @@ static NSString *LTMatPathForName(NSString *name);
 #pragma mark Public methods
 #pragma mark -
 
+void sit(NSString __unused *name, id __unused block) {
+#if TARGET_IPHONE_SIMULATOR
+  it(name, block);
+#endif
+}
+
+void dit(NSString __unused *name, id __unused block) {
+#if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
+  it(name, block);
+#endif
+}
+
+BOOL LTRunningApplicationTests() {
+  NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+  return environment[@"XCInjectBundle"] != nil;
+}
+
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
   if (expected.size != actual.size || expected.depth() != actual.depth() ||
       expected.channels() != actual.channels()) {

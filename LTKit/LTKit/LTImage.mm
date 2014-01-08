@@ -95,10 +95,10 @@
       CGContextRotateCTM(context, M_PI);
       break;
     case UIImageOrientationLeft:
-      CGContextRotateCTM(context, -M_PI_2);
+      CGContextRotateCTM(context, M_PI_2);
       break;
     case UIImageOrientationRight:
-      CGContextRotateCTM(context, M_PI_2);
+      CGContextRotateCTM(context, -M_PI_2);
       break;
     case UIImageOrientationUpMirrored:
       CGContextScaleCTM(context, -1, 1);
