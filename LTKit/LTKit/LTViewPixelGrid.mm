@@ -73,7 +73,7 @@ static const CGFloat kDefaultMaxZoomScale = 5.0;
 #pragma mark -
 
 - (void)setColor:(UIColor *)color {
-  _color = color;
+  _color = color ?: kDefaultColor;
   self.gridDrawer.color = _color.glkVector;
 }
 

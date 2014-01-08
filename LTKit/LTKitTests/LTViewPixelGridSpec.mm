@@ -69,8 +69,14 @@ context(@"properties", ^{
     expect(grid.color).notTo.equal([UIColor redColor]);
     grid.color = [UIColor redColor];
     expect(grid.color).to.equal([UIColor redColor]);
+  });
+  
+  it(@"should restore default color when setting it to nil", ^{
+    UIColor *defaultColor = grid.color;
+    grid.color = [UIColor blackColor];
+    expect(grid.color).to.equal([UIColor blackColor]);
     grid.color = nil;
-    expect(grid.color).to.beNil();
+    expect(grid.color).to.equal(defaultColor);
   });
 });
 
