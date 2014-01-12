@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-// This enum describes the possible states of navigation.
+/// This enum describes the possible states of navigation.
 typedef enum : NSUInteger {
   /// Scrolling, zooming, and double tap are all enabled.
   LTViewNavigationFull = 0,
@@ -13,5 +13,5 @@ typedef enum : NSUInteger {
   /// Only two finger gestures are enabled for zooming and scrolling, and double tap is disabled.
   LTViewNavigationTwoFingers,
   /// Scrolling, zooming and double tap are all disabled.
-  LTViewNavigationNone = 0,
+  LTViewNavigationNone,
 } LTViewNavigationMode;

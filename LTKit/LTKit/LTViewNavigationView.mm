@@ -72,8 +72,13 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     self.contentSize = contentSize;
     [self setDefaults];
     [self createScrollView];
+    [self createContentView];
     [self createDoubleTapRecognizer];
-    [self navigateToState:state];
+    if (state) {
+      [self navigateToState:state];
+    } else {
+      [self navigateToDefaultState];
+    }
   }
   return self;
 }
@@ -111,10 +116,10 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   
   // Add the scrollview to the current view.
   [self addSubview:self.scrollView];
-  
-  // Create a dummy view to be inside the scroll view. this is necessary for the zoom to work (this
-  // view will be returned by the viewForZoomingInScrollView delegate method). This view will be
-  // used to represent the content currently visible.
+}
+
+- (void)createContentView {
+  LTAssert(self.scrollView, @"Content view must be set after the scrollview is set.");
   CGRect contentBounds = CGRectFromOriginAndSize(CGPointZero, self.scrollView.contentSize);
   self.contentView = [[UIImageView alloc] initWithFrame:contentBounds];
   self.contentView.contentScaleFactor = self.contentScaleFactor;
@@ -127,22 +132,20 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)navigateToState:(LTViewNavigationState *)state {
-  // If we have a state that should override the default state, use it.
-  if (state) {
-    self.scrollView.zoomScale = state.zoomScale;
-    self.scrollView.contentOffset = state.contentOffset;
-    self.scrollView.contentInset = state.contentInset;
-    self.visibleContentRect = state.visibleContentRect;
-    if (state.animationActive) {
-      [self startAnimationIfNotRunning];
-    }
-  } else {
-    // Otherwise, set the current zoom scale to the minimum possible.
-    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
-    [self centerContentView];
-    self.visibleContentRect = [self visibleContentRectFromScrollView];
+  LTParameterAssert(state);
+  self.scrollView.zoomScale = state.zoomScale;
+  self.scrollView.contentOffset = state.contentOffset;
+  self.scrollView.contentInset = state.contentInset;
+  self.visibleContentRect = state.visibleContentRect;
+  if (state.animationActive) {
+    [self startAnimationIfNotRunning];
   }
-  
+}
+
+- (void)navigateToDefaultState {
+  self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
+  [self centerContentViewInScrollView];
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
 }
 
 /// Creates the double tap gesture recognizer for easy zoom in/out.
@@ -177,8 +180,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.maximumZoomScale = self.maxZoomScale;
 
   // Set minimal zoom scale by finding the dimension that can be minimally scaled.
-  CGSize ratio = self.scrollView.bounds.size / self.scrollView.contentSize;
-  CGFloat minimumZoomScale = fmin(ratio.width, ratio.height);
+  CGFloat minimumZoomScale = std::min(self.scrollView.bounds.size / self.scrollView.contentSize);
   
   // End case - if the minimal zoom scale is going to be larger than the maximal zoom scale, set the
   // maximal zoom scale to be the minimal one. This is relevant to small images and will prevent
@@ -197,10 +199,9 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center {
   CGRect zoomRect;
   
-  // The zoom rect is in the content view's coordinates.
-  // At a zoom scale of 1.0, it would be the size of the bounds.
-  // As the zoom scale decreases, so more content is visible, the size
-  // of the rect grows.
+  // The zoom rect is in the content view's coordinates. At a zoom scale of 1.0, it would be the
+  // size of the bounds. As the zoom scale decreases, so more content is visible, the size of the
+  // rect grows.
   zoomRect.size.height = self.scrollView.frame.size.height / scale;
   zoomRect.size.width = self.scrollView.frame.size.width / scale;
   
@@ -226,20 +227,18 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   }
   
   // Otherwise, create an animation for updating the LTView according to the scrollView's state.
-  __weak LTViewNavigationView *weakSelf = self;
-  self.animation = [LTAnimation animationWithBlock:
-                    ^BOOL(CFTimeInterval __unused timeSinceLastFrame,
-                          CFTimeInterval __unused totalAnimationTime) {
+  @weakify(self);
+  self.animation = [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
     // If the LTView was deallocated, the animation shouldn't continue.
-    __strong LTViewNavigationView *strongSelf = weakSelf;
-    if (!strongSelf) {
+    @strongify(self)
+    if (!self) {
       return NO;
     }
     
     // Update the current visible content rectangle.
-    [strongSelf centerContentView];
-    CGRect newVisibleContentRect = [strongSelf visibleContentRectFromLayers];
-    BOOL updated = !CGRectEqualToRect(newVisibleContentRect, strongSelf.visibleContentRect);
+    [self centerContentViewInScrollView];
+    CGRect newVisibleContentRect = [self visibleContentRectFromLayers];
+    BOOL updated = !CGRectEqualToRect(newVisibleContentRect, self.visibleContentRect);
     
     // Instead of updating the content rect here (which will lead to a setNeedsDisplay and in some
     // scenarios hogs the display link, causing the scrollview to get stuck), post a notification on
@@ -248,19 +247,17 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     // get stuck, it appears that this greatly reduces the chances of this happenning.
     if (updated) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kScrollAnimationNotification
-                                                          object:strongSelf];
+                                                          object:self];
     }
     
     // If the scroll view is still dragging / zooming / decelerating / animating, the animation
     // should continue.
-    if (strongSelf.scrollViewDragging || strongSelf.scrollViewZooming ||
-        strongSelf.scrollViewDecelerating) {
+    if (self.scrollViewDragging || self.scrollViewZooming || self.scrollViewDecelerating) {
       return YES;
     }
     
-    // Safety precautions, to make sure we don't stop while something is happening.
-    if (strongSelf.scrollView.decelerating || strongSelf.scrollView.dragging ||
-        strongSelf.scrollView.zooming) {
+    // Safety precautions, to make sure we don't stop while the scrollview is in motion.
+    if (self.scrollView.dragging || self.scrollView.zooming || self.scrollView.decelerating) {
       return YES;
     }
     
@@ -281,7 +278,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer __unused *)gestureRecognizer
        shouldReceiveTouch:(UITouch __unused *)touch {
-  return (gestureRecognizer == self.doubleTapRecognizer);
+  return gestureRecognizer == self.doubleTapRecognizer;
 }
 
 #pragma mark -
@@ -329,23 +326,27 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark Double Tap
 #pragma mark -
 
-// Handle double tap gesture: cycle between different zoom levels controlled by the doubleTapLevels
-// and doubleTapZoomFactor properties.
+static const CGFloat kInsignificantZoomDiff = 1e-4;
+
+/// Handle double tap gesture: cycle between different zoom levels controlled by the doubleTapLevels
+/// and doubleTapZoomFactor properties.
 - (void)handleDoubleTapGesture:(UITapGestureRecognizer *)gestureRecognizer {
-  // Check if the current zoom scale is at one of the double tap zoom levels.
-  // If we're at one of the double tap zoom levels, increase the level (cyclicly). Otherwise, level
-  // will be set to 0.
-  NSUInteger level = 0;
-  for (NSUInteger i = 0; i < self.doubleTapLevels; i++) {
-    if (ABS(self.scrollView.zoomScale - [self zoomScaleForLevel:i]) < 1e-4) {
-      level = (i + 1) % self.doubleTapLevels;
-    }
-  }
-  
-  // Zoom to a rect centered at the tap locaiton, with the zoom scale according to the level.
+  // Zoom to a rect centered at the tap location, with the zoom scale according to the level.
+  NSUInteger level = [self nextDoubleTapLevel];
   CGPoint tap = [gestureRecognizer locationInView:self.contentView];
   CGRect rect = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
   [self.scrollView zoomToRect:rect animated:YES];
+}
+
+/// Returns the next double tap zoom level if the current zoom scale is already one of the levels,
+/// or 0 otherwise.
+- (NSUInteger)nextDoubleTapLevel {
+  for (NSUInteger i = 0; i < self.doubleTapLevels; i++) {
+    if (std::abs(self.scrollView.zoomScale - [self zoomScaleForLevel:i]) < kInsignificantZoomDiff) {
+      return (i + 1) % self.doubleTapLevels;
+    }
+  }
+  return 0;
 }
 
 // Return the zoom scale for the given double tap level. The zoom scale in each level is the scale
@@ -384,6 +385,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
       self.scrollView.panGestureRecognizer.minimumNumberOfTouches = 2;
       self.scrollView.panGestureRecognizer.maximumNumberOfTouches = 2;
       break;
+    default:
+      break;
   }
   
   self.doubleTapRecognizer.enabled = (mode == LTViewNavigationFull);
@@ -406,21 +409,21 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark ContentView
 #pragma mark -
 
-// Change the contentView's frame so it will appear in the center of the scrollview.
-- (void)centerContentView {
-  CGPoint inset = CGPointZero;
+- (void)centerContentViewInScrollView {
+  UIOffset inset = UIOffsetZero;
   
   // Center horizontally.
   if (self.contentView.frame.size.width < self.scrollView.bounds.size.width) {
-    inset.x = (self.scrollView.bounds.size.width - self.contentView.frame.size.width) / 2;
+    inset.horizontal = (self.scrollView.bounds.size.width - self.contentView.frame.size.width) / 2;
   }
   
   // Center vertically.
   if (self.contentView.frame.size.height < self.scrollView.bounds.size.height) {
-    inset.y = (self.scrollView.bounds.size.height - self.contentView.frame.size.height) / 2;
+    inset.vertical = (self.scrollView.bounds.size.height - self.contentView.frame.size.height) / 2;
   }
   
-  self.scrollView.contentInset = UIEdgeInsetsMake(inset.y, inset.x, inset.y, inset.x);
+  self.scrollView.contentInset = UIEdgeInsetsMake(inset.vertical, inset.horizontal,
+                                                  inset.vertical, inset.horizontal);
 }
 
 #pragma mark -
@@ -454,25 +457,27 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark -
 
 - (void)setPadding:(CGFloat)padding {
-  if (padding != _padding) {
-    // In case we were at the minimal zoom level, we'll have to update the zoom to reflect the
-    // updated padding.
-    BOOL shouldUpdateZoom = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
-
-    // Update the padding, the scrollview's frame, and recalculate the zoom limits.
-    _padding = padding;
-    self.scrollView.frame = CGRectInset(self.bounds, _padding, _padding);
-   [self configureScrollViewZoomLimits];
-    
-    // Update the zoom scale if necessary.
-    if (shouldUpdateZoom) {
-      self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
-    }
-    
-    // Re-center the content view, and update the visible content rect.
-    [self centerContentView];
-    self.visibleContentRect = [self visibleContentRectFromScrollView];
+  if (padding == _padding) {
+    return;
   }
+  
+  // In case we were at the minimal zoom level, we'll have to update the zoom to reflect the
+  // updated padding.
+  BOOL shouldUpdateZoom = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
+  
+  // Update the padding, the scrollview's frame, and recalculate the zoom limits.
+  _padding = padding;
+  self.scrollView.frame = CGRectInset(self.bounds, _padding, _padding);
+  [self configureScrollViewZoomLimits];
+  
+  // Update the zoom scale if necessary.
+  if (shouldUpdateZoom) {
+    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
+  }
+  
+  // Re-center the content view, and update the visible content rect.
+  [self centerContentViewInScrollView];
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
 }
 
 #pragma mark -
@@ -481,8 +486,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (NSArray *)navigationGestureRecognizers {
   // Safely add the recognizers, as some of the gesture recognizers might not exist (for example,
-  // the pinchGesture might be nil if the image is too small as the minimalZoom and maximalZoom will
-  // be equal, invalidating the zoom functionality).
+  // the pinchGestureRecognizer might be nil if the image is too small as the minimalZoom and
+  // maximalZoom will be equal, invalidating the zoom functionality).
   NSMutableArray *recognizers = [NSMutableArray array];
   [self.scrollView.panGestureRecognizer addToArray:recognizers];
   [self.scrollView.pinchGestureRecognizer addToArray:recognizers];
@@ -510,7 +515,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.contentSize = contentSize / self.contentScaleFactor;
   self.contentView.frame = CGRectFromOriginAndSize(CGPointZero, self.scrollView.contentSize);
   [self configureScrollViewZoomLimits];
-  [self navigateToState:nil];
+  [self navigateToDefaultState];
 }
 
 - (CGFloat)zoomScale {
@@ -518,7 +523,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
-  _maxZoomScale = MAX(maxZoomScale, 0);
+  _maxZoomScale = MAX(0, maxZoomScale);
   [self configureScrollViewZoomLimits];
 }
 

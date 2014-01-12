@@ -13,11 +13,11 @@
 
 /// This class represents the LTViewNavigationView's state at a given time, and can be used to
 /// create additional views with the same zoom, offset, and visible rectangle as another LTView.
-@interface LTViewNavigationState : NSObject;
+@interface LTViewNavigationState : NSObject
 @end
 
-/// This class consists of a UIScrollView that contains a larger content view, and is used to
-/// simulate the navigation behavior of the scroll view for the \c LTView class.
+/// This class imitates a UIScrollView containing a larger content view, and is used to simulate the
+/// navigation behavior of the scroll view for the \c LTView class.
 /// The delegate of this class is updated on every update to the content rectangle currently visible
 /// through the scroll view.
 @interface LTViewNavigationView : UIView
@@ -32,16 +32,16 @@
 - (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
               state:(LTViewNavigationState *)state;
 
-/// The delegate will be updated whenever the visible content recangle is changed.
+/// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
 /// Returns an array of the gesture recognizers used for navgiation.
 @property (readonly, nonatomic) NSArray *navigationGestureRecognizers;
 
-/// The size (in pixels) of the content view.
+/// The size (in pixels) of the content.
 @property (nonatomic) CGSize contentSize;
 
-/// The space between the content image and the scrollview bounds.
+/// The distance between the content and the enclosing view.
 @property (nonatomic) CGFloat padding;
 
 /// The ratio of device screen pixels per content pixel at the maximal zoom level.
@@ -55,8 +55,7 @@
 // which will zoom out to the minimal zoom scale).
 @property (nonatomic) CGFloat doubleTapZoomFactor;
 
-/// Returns the current state of the LTViewNavigationView, which can be used to setup another view
-/// in the same offset, zoom, and visible content rectangle.
+/// Returns the current state of the LTViewNavigationView, see \c LTViewNavigationState.
 @property (readonly, nonatomic) LTViewNavigationState *state;
 
 /// Returns the current visible rectangle of the content in the navigation view.

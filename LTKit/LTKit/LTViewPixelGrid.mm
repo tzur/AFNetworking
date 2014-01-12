@@ -78,15 +78,15 @@ static const CGFloat kDefaultMaxZoomScale = 5.0;
 }
 
 - (void)setMaxOpacity:(CGFloat)maxOpacity {
-  _maxOpacity = std::min(std::max(maxOpacity, 0), 1);
+  _maxOpacity = MIN(MAX(maxOpacity, 0), 1);
 }
 
 - (void)setMinZoomScale:(CGFloat)minZoomScale {
-  _minZoomScale = std::max(0, minZoomScale);
+  _minZoomScale = MAX(0, minZoomScale);
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
-  _maxZoomScale = std::max(0, maxZoomScale);
+  _maxZoomScale = MAX(0, maxZoomScale);
 }
 
 @end

@@ -13,11 +13,11 @@
 
 @end
 
-
 SpecBegin(LTViewNavigationView)
 
-const CGSize kViewSize = CGSizeMake(100, 200);
-const CGSize kContentSize = CGSizeMake(600, 400);
+const CGFloat kScale = 100;
+const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
+const CGSize kContentSize = CGSizeMake(6, 4) * kScale;
 const CGRect kViewFrame = CGRectFromOriginAndSize(CGPointZero, kViewSize);
 
 context(@"initialization", ^{
@@ -29,7 +29,7 @@ context(@"initialization", ^{
   });
   
   it(@"should initialize with state", ^{
-    const CGRect targetRect = CGRectMake(100, 100, 100, 200);
+    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
     LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
                                                                  contentSize:kContentSize];
     [view zoomToRect:targetRect animated:NO];
@@ -91,7 +91,7 @@ context(@"properties", ^{
   });
   
   it(@"should update zoom scale when setting the maxZoomScale while already zoomed to the max", ^{
-    [view zoomToRect:CGRectMake(100, 100, 100, 100) animated:NO];
+    [view zoomToRect:CGRectMake(kScale, kScale, kScale, kScale) animated:NO];
     expect(view.zoomScale).to.beGreaterThan(view.scrollView.minimumZoomScale * 2);
     CGFloat oldZoomScale = view.zoomScale;
     view.maxZoomScale = oldZoomScale / 2;
@@ -151,12 +151,14 @@ context(@"delegate", ^{
   });
   
   if (LTRunningApplicationTests()) {
-    it(@"should not update the delegate on navigation with animation", ^{
+    xit(@"should not update the delegate on navigation with animation", ^{
       const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
-      [[[delegate expect] ignoringNonObjectArgs] didNavigateToRect:targetRect];
+      __block BOOL delegateUpdated = NO;
+      [[[[delegate stub] ignoringNonObjectArgs] andDo:^(NSInvocation *) {
+        delegateUpdated = YES;
+      }] didNavigateToRect:targetRect];
       [view zoomToRect:targetRect animated:YES];
-      [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-      [delegate verify];
+      expect(delegateUpdated).will.beTruthy();
     });
   }
 });
