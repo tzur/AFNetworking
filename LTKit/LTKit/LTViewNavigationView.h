@@ -32,6 +32,14 @@
 - (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
               state:(LTViewNavigationState *)state;
 
+// Notifies the view that it is about to be rotated to the given orientation due to an interface
+// orientation change.
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation;
+
+// Notifies the view that the rotation animation is about to start. This is called after the layout
+// has been updated to reflect the new orientation.
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation;
+
 /// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
@@ -42,7 +50,7 @@
 @property (nonatomic) CGSize contentSize;
 
 /// The distance between the content and the enclosing view.
-@property (nonatomic) CGFloat padding;
+@property (nonatomic) UIEdgeInsets contentInset;
 
 /// The ratio of device screen pixels per content pixel at the maximal zoom level.
 @property (nonatomic) CGFloat maxZoomScale;

@@ -54,7 +54,7 @@ context(@"properties", ^{
   });
   
   it(@"should have default values", ^{
-    expect(view.padding).to.equal(0);
+    expect(view.contentInset).to.equal(UIEdgeInsetsZero);
     expect(view.maxZoomScale).to.equal(CGFLOAT_MAX);
     expect(view.doubleTapLevels).to.equal(0);
     expect(view.doubleTapZoomFactor).to.equal(0);
@@ -73,10 +73,10 @@ context(@"properties", ^{
   });
   
   it(@"should set the padding", ^{
-    const CGFloat kPadding = 5;
+    const UIEdgeInsets kInsets = UIEdgeInsetsMake(5, 10, 15, 20);
     CGFloat oldZoomScale = view.zoomScale;
-    view.padding = kPadding;
-    expect(view.padding).to.equal(kPadding);
+    view.contentInset = kInsets;
+    expect(view.contentInset).to.equal(kInsets);
     expect(view.zoomScale).to.beLessThan(oldZoomScale);
   });
   

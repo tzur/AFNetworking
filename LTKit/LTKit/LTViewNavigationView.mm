@@ -28,26 +28,19 @@
 
 @interface LTViewNavigationView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
-/// Scroll view for scroll events and gestures.
 @property (strong, nonatomic) UIScrollView *scrollView;
-
-/// A content view that lies inside the scroll view, representing the content.
 @property (strong, nonatomic) UIImageView *contentView;
-
-/// Gesture recognizer responsible on the double tap zoom in/out gesture.
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
 
-/// Indicates whether the scrollview is currently dragging.
+@property (strong, nonatomic) LTAnimation *animation;
+
 @property (nonatomic) BOOL scrollViewDragging;
-
-/// Indicates whether the scrollview is currently zooming.
 @property (nonatomic) BOOL scrollViewZooming;
-
-/// Indicates whether the scrollview is currently decelerating.
 @property (nonatomic) BOOL scrollViewDecelerating;
 
-/// Animation for handling scrollview actions.
-@property (strong, nonatomic) LTAnimation *animation;
+@property (nonatomic) BOOL duringRotation;
+@property (nonatomic) CGPoint centerDuringRotation;
+@property (nonatomic) CGFloat zoomScaleDuringRotation;
 
 @end
 
@@ -92,15 +85,12 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (void)createScrollView {
   LTAssert(!self.scrollView, @"ScrollView must be set only once");
-  self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectInset(self.bounds,
-                                                                    self.padding, self.padding)];
+  self.scrollView = [[UIScrollView alloc]
+                     initWithFrame:UIEdgeInsetsInsetRect(self.bounds, self.contentInset)];
   self.scrollView.contentScaleFactor = self.contentScaleFactor;
   self.scrollView.contentSize = self.contentSize / self.contentScaleFactor;
-  // TODO:(amit) replace with autolayout.
   self.scrollView.autoresizingMask =
-      UIViewAutoresizingFlexibleBottomMargin  | UIViewAutoresizingFlexibleTopMargin   |
-      UIViewAutoresizingFlexibleLeftMargin    | UIViewAutoresizingFlexibleRightMargin |
-      UIViewAutoresizingFlexibleWidth         | UIViewAutoresizingFlexibleHeight;
+      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
   // Make the scrollview bounce even if the image fits the screen.
   self.scrollView.alwaysBounceHorizontal = YES;
@@ -377,9 +367,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   }
 }
 
-- (void)setMode:(LTViewNavigationMode)mode {
-  _mode = mode;
-  switch (mode) {
+- (void)configureNavigationGesturesForCurrentMode {
+  switch (self.mode) {
     case LTViewNavigationFull:
     case LTViewNavigationZoomAndScroll:
     case LTViewNavigationBounceToMinimalScale:
@@ -394,12 +383,16 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
       break;
   }
   
-  self.doubleTapRecognizer.enabled = (mode == LTViewNavigationFull);
-  self.scrollView.delaysContentTouches = (mode != LTViewNavigationNone);
-  self.scrollView.canCancelContentTouches = (mode != LTViewNavigationNone);
-  self.scrollView.panGestureRecognizer.enabled = (mode != LTViewNavigationNone);
-  self.scrollView.pinchGestureRecognizer.enabled = (mode != LTViewNavigationNone);
-  
+  self.doubleTapRecognizer.enabled = (self.mode == LTViewNavigationFull);
+  self.scrollView.delaysContentTouches = (self.mode != LTViewNavigationNone);
+  self.scrollView.canCancelContentTouches = (self.mode != LTViewNavigationNone);
+  self.scrollView.panGestureRecognizer.enabled = (self.mode != LTViewNavigationNone);
+  self.scrollView.pinchGestureRecognizer.enabled = (self.mode != LTViewNavigationNone);
+}
+
+- (void)setMode:(LTViewNavigationMode)mode {
+  _mode = mode;
+  [self configureNavigationGesturesForCurrentMode];
   [self bounceToMinimalZoomIfNecessary];
 }
 
@@ -408,6 +401,30 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   if (!animated) {
     self.visibleContentRect = [self visibleContentRectFromScrollView];
   }
+}
+
+#pragma mark -
+#pragma mark Rotation
+#pragma mark -
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation __unused)orientation {
+  // Save the current center of the visible rect (since we want to rotate around it), and the
+  // current zoom scale (since we want to try and preserve it, if possible).
+  self.centerDuringRotation = CGRectCenter(self.visibleContentRect);
+  self.zoomScaleDuringRotation = self.zoomScale;
+  self.duringRotation = YES;
+  
+  // Disable the navigation gestures, to cancel any active scrolling/zooming when the rotation
+  // begins.
+  self.scrollView.pinchGestureRecognizer.enabled = NO;
+  self.scrollView.panGestureRecognizer.enabled = NO;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation __unused)orientation {
+  self.centerDuringRotation = CGPointZero;
+  self.duringRotation = NO;
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  [self configureNavigationGesturesForCurrentMode];
 }
 
 #pragma mark -
@@ -461,8 +478,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark Padding
 #pragma mark -
 
-- (void)setPadding:(CGFloat)padding {
-  if (padding == _padding) {
+- (void)setContentInset:(UIEdgeInsets)contentInset {
+  if (UIEdgeInsetsEqualToEdgeInsets(contentInset, _contentInset)) {
     return;
   }
   
@@ -471,8 +488,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   BOOL shouldUpdateZoom = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
   
   // Update the padding, the scrollview's frame, and recalculate the zoom limits.
-  _padding = padding;
-  self.scrollView.frame = CGRectInset(self.bounds, _padding, _padding);
+  _contentInset = contentInset;
+  self.scrollView.frame = UIEdgeInsetsInsetRect(self.bounds, _contentInset);
   [self configureScrollViewZoomLimits];
   
   // Update the zoom scale if necessary.
@@ -483,6 +500,30 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   // Re-center the content view, and update the visible content rect.
   [self centerContentViewInScrollView];
   self.visibleContentRect = [self visibleContentRectFromScrollView];
+}
+
+- (void)setFrame:(CGRect)frame {
+  [super setFrame:frame];
+  
+  BOOL atMinimalScale = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
+  [self configureScrollViewZoomLimits];
+  if (atMinimalScale) {
+    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
+  }
+  
+  [self centerContentViewInScrollView];
+  if (self.duringRotation) {
+    [self updatedFrameDuringRotation];
+  } else {
+    self.visibleContentRect = [self visibleContentRectFromScrollView];
+  }
+}
+
+- (void)updatedFrameDuringRotation {
+  CGSize targetSize = self.scrollView.bounds.size / self.zoomScaleDuringRotation;
+  CGRect targetRect = CGRectCenteredAt(self.centerDuringRotation, targetSize);
+  [self.scrollView zoomToRect:targetRect animated:NO];
+  [self centerContentViewInScrollView];
 }
 
 #pragma mark -
@@ -524,12 +565,13 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (CGFloat)zoomScale {
-  return self.scrollView.zoomScale;
+  return std::min(self.bounds.size / self.visibleContentRect.size);
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
   _maxZoomScale = MAX(0, maxZoomScale);
   [self configureScrollViewZoomLimits];
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
 }
 
 - (void)setDoubleTapZoomFactor:(CGFloat)doubleTapZoomFactor {

@@ -15,6 +15,7 @@
 		282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
+		283F79CC1884248F00E2E910 /* LTViewNavigationViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283F79CB1884248F00E2E910 /* LTViewNavigationViewSpec.mm */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
@@ -24,7 +25,6 @@
 		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
-		28CEB848187C3CEF00985D8B /* LTViewNavigationViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28CEB847187C3CEF00985D8B /* LTViewNavigationViewSpec.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -309,6 +309,7 @@
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
 		2836211F186C58DC00665ED9 /* LTCGExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTCGExtensions.m; sourceTree = "<group>"; };
 		2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGExtensionsSpec.mm; sourceTree = "<group>"; };
+		283F79CB1884248F00E2E910 /* LTViewNavigationViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewNavigationViewSpec.mm; sourceTree = "<group>"; };
 		284791E61862E70200A70AF5 /* LTGridDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGridDrawer.h; sourceTree = "<group>"; };
 		284791E71862E70200A70AF5 /* LTGridDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawer.mm; sourceTree = "<group>"; };
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
@@ -322,7 +323,6 @@
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
-		28CEB847187C3CEF00985D8B /* LTViewNavigationViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewNavigationViewSpec.mm; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -527,8 +527,8 @@
 		282CF08E187B033800904F07 /* LTView */ = {
 			isa = PBXGroup;
 			children = (
+				283F79CB1884248F00E2E910 /* LTViewNavigationViewSpec.mm */,
 				282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */,
-				28CEB847187C3CEF00985D8B /* LTViewNavigationViewSpec.mm */,
 			);
 			name = LTView;
 			sourceTree = "<group>";
@@ -1248,7 +1248,7 @@
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
-				28CEB848187C3CEF00985D8B /* LTViewNavigationViewSpec.mm in Sources */,
+				283F79CC1884248F00E2E910 /* LTViewNavigationViewSpec.mm in Sources */,
 				8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */,
 				8BFE43A318759D48008B699F /* LTImageProcessorSpec.mm in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
