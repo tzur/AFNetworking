@@ -74,6 +74,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     [self createScrollView];
     [self createContentView];
     [self createDoubleTapRecognizer];
+    [self registerAnimationNotification];
     if (state) {
       [self navigateToState:state];
     } else {
@@ -124,11 +125,18 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.contentView = [[UIImageView alloc] initWithFrame:contentBounds];
   self.contentView.contentScaleFactor = self.contentScaleFactor;
   [self.scrollView addSubview:self.self.contentView];
-  
-  // Register the animation notification.
+}
+
+- (void)registerAnimationNotification {
+  [self unregisterAnimationNotification];
   [[NSNotificationCenter defaultCenter]
       addObserver:self selector:@selector(updateVisibleContentRectDuringAnimation)
              name:kScrollAnimationNotification object:self];
+}
+
+- (void)unregisterAnimationNotification {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kScrollAnimationNotification
+                                                object:self];
 }
 
 - (void)navigateToState:(LTViewNavigationState *)state {
@@ -161,9 +169,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kScrollAnimationNotification
-                                                object:self];
-  
+  [self unregisterAnimationNotification];
   [self.scrollView removeFromSuperview];
   [self.contentView removeFromSuperview];
 }
@@ -326,8 +332,6 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark Double Tap
 #pragma mark -
 
-static const CGFloat kInsignificantZoomDiff = 1e-4;
-
 /// Handle double tap gesture: cycle between different zoom levels controlled by the doubleTapLevels
 /// and doubleTapZoomFactor properties.
 - (void)handleDoubleTapGesture:(UITapGestureRecognizer *)gestureRecognizer {
@@ -341,6 +345,7 @@ static const CGFloat kInsignificantZoomDiff = 1e-4;
 /// Returns the next double tap zoom level if the current zoom scale is already one of the levels,
 /// or 0 otherwise.
 - (NSUInteger)nextDoubleTapLevel {
+  const CGFloat kInsignificantZoomDiff = 1e-4;
   for (NSUInteger i = 0; i < self.doubleTapLevels; i++) {
     if (std::abs(self.scrollView.zoomScale - [self zoomScaleForLevel:i]) < kInsignificantZoomDiff) {
       return (i + 1) % self.doubleTapLevels;
