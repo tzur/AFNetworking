@@ -11,7 +11,7 @@
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
 
-@interface LTMMTexture ()
+@interface LTTexture ()
 @property (nonatomic) BOOL needsSynchronizationBeforeHostAccess;
 @end
 
@@ -28,27 +28,94 @@ afterEach(^{
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTMMTexture class]});
 
-it(@"should read correct data after gpu draw", ^{
-  LTMMTexture *target = [[LTMMTexture alloc] initWithSize:CGSizeMake(2, 2)
-                                                precision:LTTexturePrecisionByte
-                                                 channels:LTTextureChannelsRGBA
-                                           allocateMemory:YES];
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
+__block LTMMTexture *target;
 
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
-                                                fragmentSource:[LTShaderStorage colorizeFsh]];
-  LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:target];
-  drawer[@"color"] = [NSValue valueWithGLKVector4:GLKVector4Make(1.0, 0.0, 0.0, 1.0)];
+beforeEach(^{
+  target = [[LTMMTexture alloc] initWithSize:CGSizeMake(2, 2)
+                                   precision:LTTexturePrecisionByte
+                                    channels:LTTextureChannelsRGBA
+                              allocateMemory:YES];
+});
 
-  CGRect rect = CGRectMake(0, 0, target.size.width, target.size.height);
-  [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+afterEach(^{
+  target = nil;
+});
 
-  expect(target.needsSynchronizationBeforeHostAccess).to.beTruthy();
+context(@"host memory mapped texture", ^{
+  __block LTFbo *fbo;
+  __block LTRectDrawer *drawer;
 
-  [target updateTexture:^(cv::Mat texture) {
-    expect(target.needsSynchronizationBeforeHostAccess).to.beFalsy();
-    expect(LTCompareMatWithValue(cv::Scalar(255, 0, 0, 255), texture)).to.beTruthy();
-  }];
+  beforeEach(^{
+    fbo = [[LTFbo alloc] initWithTexture:target];
+
+    LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
+                                                  fragmentSource:[LTShaderStorage colorizeFsh]];
+    drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:target];
+    drawer[@"color"] = [NSValue valueWithGLKVector4:GLKVector4Make(1.0, 0.0, 0.0, 1.0)];
+  });
+
+  afterEach(^{
+    fbo = nil;
+    drawer = nil;
+  });
+
+  it(@"should require synchronization after draw", ^{
+    CGRect rect = CGRectMake(0, 0, target.size.width, target.size.height);
+    [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+    expect(target.needsSynchronizationBeforeHostAccess).to.beTruthy();
+  });
+
+  it(@"should map image without creating a copy", ^{
+    [target mappedImage:^(cv::Mat, BOOL isCopy) {
+      expect(isCopy).to.beFalsy();
+    }];
+  });
+
+  it(@"should not require synchronization after mapping", ^{
+    [target mappedImage:^(cv::Mat, BOOL) {
+      expect(target.needsSynchronizationBeforeHostAccess).to.beFalsy();
+    }];
+  });
+
+  dit(@"should read correct data after gpu draw", ^{
+    CGRect rect = CGRectMake(0, 0, target.size.width, target.size.height);
+    [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+    [target mappedImage:^(cv::Mat mapped, BOOL) {
+      expect(LTCompareMatWithValue(cv::Scalar(255, 0, 0, 255), mapped)).to.beTruthy();
+    }];
+  });
+});
+
+context(@"synchronization", ^{
+  it(@"should not allow reading while writing", ^{
+    __block BOOL inRead = NO;
+
+    [target writeToTexture:^{
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [target readFromTexture:^{
+          inRead = YES;
+        }];
+      });
+      expect(inRead).to.beFalsy();
+    }];
+    expect(inRead).will.beTruthy();
+  });
+
+  it(@"should not allow writing while reading", ^{
+    __block BOOL inWrite = NO;
+
+    [target readFromTexture:^{
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [target writeToTexture:^{
+          inWrite = YES;
+        }];
+      });
+      expect(inWrite).to.beFalsy();
+    }];
+    expect(inWrite).will.beTruthy();
+  });
 });
 
 SpecEnd

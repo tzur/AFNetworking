@@ -4,9 +4,4 @@
 #import "LTTexture.h"
 
 @interface LTMMTexture : LTTexture
-
-typedef void (^LTTextureUpdateBlock)(cv::Mat texture);
-
-- (void)updateTexture:(LTTextureUpdateBlock)block;
-
 @end

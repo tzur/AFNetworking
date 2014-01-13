@@ -168,6 +168,22 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         expect(LTCompareMat(image, read)).to.beTruthy();
       });
     });
+
+    context(@"memory mapping texture", ^{
+      it(@"should map correct texture data", ^{
+        [texture mappedImage:^(cv::Mat mapped, BOOL) {
+          expect(LTCompareMat(image, mapped)).to.beTruthy();
+        }];
+      });
+
+      it(@"should reflect changes on texture", ^{
+        cv::Scalar value(0, 0, 255, 255);
+        [texture mappedImage:^(cv::Mat mapped, BOOL) {
+          mapped.setTo(value);
+        }];
+        expect(LTCompareMatWithValue(value, [texture image])).to.beTruthy();
+      });
+    });
   });
 });
 

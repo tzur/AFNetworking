@@ -107,7 +107,7 @@ LTGPUStructMake(LTRectDrawerVertex,
 #pragma mark -
 
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
-  [fbo bindAndExecute:^{
+  [fbo bindAndDraw:^{
     GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, fbo.size.width, 0, fbo.size.height, -1, 1);
     self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
     [self drawRect:targetRect fromRect:sourceRect];

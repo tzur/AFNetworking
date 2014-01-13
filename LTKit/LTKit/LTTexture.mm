@@ -71,9 +71,6 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 /// YES if the texture is currently bound.
 @property (nonatomic) BOOL bound;
 
-/// YES if a synchronization is required before accessing the texture via the host.
-@property (atomic) BOOL needsSynchronizationBeforeHostAccess;
-
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
 
@@ -151,9 +148,43 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
            "subclasses");
 }
 
+- (void)beginReadFromTexture {
+  LTAssert(NO, @"-[LTTexture beginReadFromTexture] is an abstract method that should be "
+           "overridden by subclasses");
+}
+
+- (void)endReadFromTexture {
+  LTAssert(NO, @"-[LTTexture endReadFromTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
+- (void)beginWriteToTexture {
+  LTAssert(NO, @"-[LTTexture beginWriteToTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
+- (void)endWriteToTexture {
+  LTAssert(NO, @"-[LTTexture endWriteToTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+- (void)readFromTexture:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginReadFromTexture];
+  block();
+  [self endReadFromTexture];
+}
+
+- (void)writeToTexture:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginWriteToTexture];
+  block();
+  [self endWriteToTexture];
+}
 
 - (void)bind {
   if (self.bound) {
@@ -199,15 +230,12 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   }
 }
 
-- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
-  LTParameterAssert(execute);
-  LTTextureParameters *parameters = [self currentParameters];
-  execute();
-  [self setCurrentParameters:parameters];
-}
+- (void)mappedImage:(LTTextureMappedBlock)block {
+  LTParameterAssert(block);
 
-- (void)updatedByGPU {
-  self.needsSynchronizationBeforeHostAccess = YES;
+  cv::Mat image([self image]);
+  block(image, YES);
+  [self load:image];
 }
 
 - (GLKVector4)pixelValue:(CGPoint)location {
@@ -275,6 +303,13 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
   
   return image;
+}
+
+- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
+  LTParameterAssert(execute);
+  LTTextureParameters *parameters = [self currentParameters];
+  execute();
+  [self setCurrentParameters:parameters];
 }
 
 #pragma mark -

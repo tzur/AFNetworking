@@ -80,9 +80,11 @@ namespace cv {
 /// @param size size of the texture.
 /// @param precision precision of the texture.
 /// @param channels number of channels of the texture.
-/// @param allocateMemory if set to \c YES, the texture's memory will be allocated on the GPU (but
-/// will not be initialized - see note). Otherwise, only a texture object will be created, and a
-/// call to \c load: or \c loadRect:fromImage: will be required to allocate memory on the device.
+/// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
+/// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
+/// Otherwise, the implementation will try to create a texture object only without allocating the
+/// memory, and a call to \c load: or \c loadRect:fromImage: will be required to allocate memory on
+/// the device.
 ///
 /// @note The texture memory is not allocated until a call to \c load: or \c loadRect: is made, and
 /// only the affected regions are set to be in a defined state. Calling \c storeRect:toImage: with
@@ -145,13 +147,70 @@ namespace cv {
 /// textures are different, the cloned texture will be non-uniformly scaled.
 - (void)cloneTo:(LTTexture *)texture;
 
+/// Marks a beginning of read operation from the texture.
+///
+/// @note prefers calls to \c readFromTexture: instead of calling \c beginReadFromTexture: and
+/// \c endReadFromTexture:.
+///
+/// @see \c readFromTexture: for more information.
+- (void)beginReadFromTexture;
+
+/// Marks an ending of read operation from the texture.
+///
+/// @note prefers calls to \c readFromTexture: instead of calling \c beginReadFromTexture: and
+/// \c endReadFromTexture:.
+///
+/// @see \c readFromTexture: for more information.
+- (void)endReadFromTexture;
+
+/// Marks a beginning of write operation to the texture.
+///
+/// @note prefers calls to \c writeToTexture: instead of calling \c beginWriteToTexture: and
+/// \c endWriteToTexture:.
+///
+/// @see \c writeToTexture: for more information.
+- (void)beginWriteToTexture;
+
+/// Marks an ending of write operation to the texture.
+///
+/// @note prefers calls to \c writeToTexture: instead of calling \c beginWriteToTexture: and
+/// \c endWriteToTexture:.
+///
+/// @see \c writeToTexture: for more information.
+- (void)endWriteToTexture;
+
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
 
-/// Called when the texture has been updated by the GPU. Users of this class must call this method
-/// to avoid possible synchronization issues.
-- (void)updatedByGPU;
+/// Executes the block which is marked as a block that reads from the texture, allowing the texture
+/// object to synchronize before and after the read.
+///
+/// @note all texture reads that are GPU based should be executed via this method, or be wrapped
+/// with \c beginReadFromTexture: and endReadFromTexture: calls.
+- (void)readFromTexture:(LTVoidBlock)block;
+
+/// Executes the block which is marked as a block that writes to the texture, allowing the texture
+/// object to synchronize before and after the read.
+///
+/// @note all texture writes that are GPU based should be executed via this method.
+- (void)writeToTexture:(LTVoidBlock)block;
+
+/// Block for transferring the texture contents and allow updates. If \c isCopy is \c YES, the given
+/// image is a copy of the texture and its reference can be stored outside the context of the block.
+/// Otherwise, the memory is directly mapped to the texture's memory and \c mapped should not be
+/// referenced outside this block (unless it is duplicated to a new \c cv::Mat).
+typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
+
+/// Calls the given \c block with an image with the texture's contents, which can be modified inside
+/// the block. When the method returns, the texture's contents will contain the updated image
+/// contents.
+///
+/// @note if \c isCopy is set to \c YES, updating the texture after executing \c block will require
+/// a buffer copy with the size of the texture.
+///
+/// @see LTTextureMappedBlock for more information about the \c block.
+- (void)mappedImage:(LTTextureMappedBlock)block;
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type

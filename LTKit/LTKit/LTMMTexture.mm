@@ -11,12 +11,17 @@
 - (GLKVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
 - (BOOL)inTextureRect:(CGRect)rect;
 
-@property (nonatomic) BOOL needsSynchronizationBeforeHostAccess;
 @property (readonly, nonatomic) int matType;
 
 @end
 
 @interface LTMMTexture ()
+
+/// If \c YES, synchronization is required before accessing texture data on the host.
+@property (atomic) BOOL needsSynchronizationBeforeHostAccess;
+
+/// Lock for texture read/write synchronization.
+@property (strong, nonatomic) NSRecursiveLock *lock;
 
 /// Reference to the pixel buffer that backs the texture.
 @property (nonatomic) CVPixelBufferRef pixelBufferRef;
@@ -129,9 +134,9 @@
                     @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
                     rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
-  [self updateTexture:^(cv::Mat texture) {
+  [self mappedImage:^(cv::Mat mapped, BOOL) {
     cv::Rect roi(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    texture(roi).copyTo(*image);
+    mapped(roi).copyTo(*image);
   }];
 }
 
@@ -152,11 +157,11 @@
     [self createTextureForMatType:image.type()];
   }
 
-  [self updateTexture:^(cv::Mat texture) {
-    LTParameterAssert(image.type() == texture.type(), @"Source image's type (%d) must match "
-                      "texture's type (%d)", image.type(), texture.type());
+  [self mappedImage:^(cv::Mat mapped, BOOL) {
+    LTParameterAssert(image.type() == mapped.type(), @"Source image's type (%d) must match "
+                      "mapped image's type (%d)", image.type(), mapped.type());
     cv::Rect roi(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    image.copyTo(texture(roi));
+    image.copyTo(mapped(roi));
   }];
 }
 
@@ -175,9 +180,26 @@
 }
 
 - (void)copyContentsToTexture:(LTMMTexture *)target {
-  [target updateTexture:^(cv::Mat texture) {
-    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&texture];
+  [target mappedImage:^(cv::Mat image, BOOL) {
+    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
   }];
+}
+
+- (void)beginReadFromTexture {
+  [self.lock lock];
+}
+
+- (void)endReadFromTexture {
+  [self.lock unlock];
+}
+
+- (void)beginWriteToTexture {
+  [self.lock lock];
+}
+
+- (void)endWriteToTexture {
+  self.needsSynchronizationBeforeHostAccess = YES;
+  [self.lock unlock];
 }
 
 #pragma mark -
@@ -187,7 +209,7 @@
 - (GLKVector4s)pixelValues:(const CGPoints &)locations {
   __block GLKVector4s values(locations.size());
 
-  [self updateTexture:^(cv::Mat texture) {
+  [self mappedImage:^(cv::Mat texture, BOOL) {
     for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
       // Use boundary conditions similar to Matlab's 'symmetric'.
       GLKVector2 location = [LTSymmetricBoundaryCondition
@@ -204,19 +226,38 @@
 }
 
 #pragma mark -
+#pragma mark Locking
+#pragma mark -
+
+- (NSRecursiveLock *)lock {
+  if (!_lock) {
+    _lock = [[NSRecursiveLock alloc] init];
+  }
+  return _lock;
+}
+
+- (void)lockTextureAndExecute:(LTVoidBlock)block {
+  @try {
+    [self.lock lock];
+    block();
+  } @finally {
+    [self.lock unlock];
+  }
+}
+
+#pragma mark -
 #pragma mark Memory mapping
 #pragma mark -
 
-- (void)updateTexture:(LTTextureUpdateBlock)block {
-  if (!block) {
-    return;
-  }
+- (void)mappedImage:(LTTextureMappedBlock)block {
+  LTParameterAssert(block);
 
   // TODO: (yaron) this can be synchronized on the texture only, but it's not an OpenGL object, so
   // explicit locking is required instead.
   @synchronized(self) {
     LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling updateTexture:");
 
+    // Make sure everything is written to the texture before reading back to CPU.
     if (self.needsSynchronizationBeforeHostAccess) {
       glFinish();
       self.needsSynchronizationBeforeHostAccess = NO;
@@ -226,25 +267,27 @@
       void *base = CVPixelBufferGetBaseAddress(self.pixelBufferRef);
       cv::Mat mat(self.size.height, self.size.width, self.matType, base,
                   CVPixelBufferGetBytesPerRow(self.pixelBufferRef));
-      block(mat);
+      block(mat, NO);
     }];
   }
 }
 
 - (void)executeWhileBufferIsLocked:(LTVoidBlock)block {
+  [self lockTextureAndExecute:^{
   CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
-  if (kCVReturnSuccess != lockResult) {
-    [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                  format:@"Failed locking base address of buffer with error %d", lockResult];
-  }
+    if (kCVReturnSuccess != lockResult) {
+      [LTGLException raise:kLTMMTextureBufferLockingFailedException
+                    format:@"Failed locking base address of buffer with error %d", lockResult];
+    }
 
-  if (block) block();
+    if (block) block();
 
-  CVReturn unlockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
-  if (kCVReturnSuccess != unlockResult) {
-    [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                  format:@"Failed unlocking base address of buffer with error %d", unlockResult];
-  }
+    CVReturn unlockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
+    if (kCVReturnSuccess != unlockResult) {
+      [LTGLException raise:kLTMMTextureBufferLockingFailedException
+                    format:@"Failed unlocking base address of buffer with error %d", unlockResult];
+    }
+  }];
 }
 
 #pragma mark -
