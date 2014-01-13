@@ -38,31 +38,31 @@ context(@"properties", ^{
   
   it(@"should set and clamp maxOpacity", ^{
     grid.maxOpacity = 0.1;
-    expect(grid.maxOpacity).to.equal(0.1);
+    expect(grid.maxOpacity).to.beCloseTo(0.1);
     grid.maxOpacity = 0.9;
-    expect(grid.maxOpacity).to.equal(0.9);
+    expect(grid.maxOpacity).to.beCloseTo(0.9);
     grid.maxOpacity = -0.1;
-    expect(grid.maxOpacity).to.equal(0);
+    expect(grid.maxOpacity).to.beCloseTo(0);
     grid.maxOpacity = 1.1;
-    expect(grid.maxOpacity).to.equal(1);
+    expect(grid.maxOpacity).to.beCloseTo(1);
   });
   
   it(@"should set and clamp minZoomScale", ^{
     grid.minZoomScale = 0.1;
-    expect(grid.minZoomScale).to.equal(0.1);
+    expect(grid.minZoomScale).to.beCloseTo(0.1);
     grid.minZoomScale = CGFLOAT_MAX;
-    expect(grid.minZoomScale).to.equal(CGFLOAT_MAX);
+    expect(grid.minZoomScale).to.beCloseTo(CGFLOAT_MAX);
     grid.minZoomScale = -0.1;
-    expect(grid.minZoomScale).to.equal(0);
+    expect(grid.minZoomScale).to.beCloseTo(0);
   });
   
   it(@"should set and clamp maxZoomScale", ^{
     grid.maxZoomScale = 0.1;
-    expect(grid.maxZoomScale).to.equal(0.1);
+    expect(grid.maxZoomScale).to.beCloseTo(0.1);
     grid.maxZoomScale = CGFLOAT_MAX;
-    expect(grid.maxZoomScale).to.equal(CGFLOAT_MAX);
+    expect(grid.maxZoomScale).to.beCloseTo(CGFLOAT_MAX);
     grid.maxZoomScale = -0.1;
-    expect(grid.maxZoomScale).to.equal(0);
+    expect(grid.maxZoomScale).to.beCloseTo(0);
   });
   
   it(@"should set color", ^{
