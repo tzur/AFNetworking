@@ -115,7 +115,7 @@ context(@"clearing", ^{
 
     cv::Mat image = [texture image];
 
-    expect(LTCompareMat(expected, image)).to.beTruthy();
+    expect(LTFuzzyCompareMat(expected, image)).to.beTruthy();
   });
 });
 

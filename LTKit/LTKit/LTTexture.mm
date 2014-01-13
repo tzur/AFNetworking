@@ -7,8 +7,8 @@
 #import "LTGLException.h"
 #import "LTImage.h"
 
-static LTTexturePrecision LTPrecisionFromMat(const cv::Mat &image) {
-  switch (image.depth()) {
+LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
+  switch (CV_MAT_DEPTH(type)) {
     case CV_8U:
       return LTTexturePrecisionByte;
     case CV_16U:
@@ -17,20 +17,28 @@ static LTTexturePrecision LTPrecisionFromMat(const cv::Mat &image) {
       return LTTexturePrecisionFloat;
     default:
       [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Invalid depth in given image: %d", image.depth()];
+                    format:@"Invalid depth: %d, type: %d", CV_MAT_DEPTH(type), type];
       __builtin_unreachable();
   }
 }
 
-static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
-  switch (image.channels()) {
+LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image) {
+  return LTTexturePrecisionFromMatType(image.type());
+}
+
+LTTextureChannels LTTextureChannelsFromMatType(int type) {
+  switch (CV_MAT_CN(type)) {
     case 4:
       return LTTextureChannelsRGBA;
     default:
       [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Invalid number of channels in given image: %d", image.channels()];
+                    format:@"Invalid number of channels: %d, type: %d", CV_MAT_CN(type), type];
       __builtin_unreachable();
   }
+}
+
+LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
+  return LTTextureChannelsFromMatType(image.type());
 }
 
 #pragma mark -
@@ -94,8 +102,8 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
 
 - (id)initWithImage:(const cv::Mat &)image {
   if (self = [self initWithSize:CGSizeMake(image.cols, image.rows)
-                      precision:LTPrecisionFromMat(image)
-                       channels:LTChannelsFromMat(image)
+                      precision:LTTexturePrecisionFromMat(image)
+                       channels:LTTextureChannelsFromMat(image)
                  allocateMemory:NO]) {
     [self load:image];
   }
@@ -140,9 +148,43 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
            "subclasses");
 }
 
+- (void)beginReadFromTexture {
+  LTAssert(NO, @"-[LTTexture beginReadFromTexture] is an abstract method that should be "
+           "overridden by subclasses");
+}
+
+- (void)endReadFromTexture {
+  LTAssert(NO, @"-[LTTexture endReadFromTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
+- (void)beginWriteToTexture {
+  LTAssert(NO, @"-[LTTexture beginWriteToTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
+- (void)endWriteToTexture {
+  LTAssert(NO, @"-[LTTexture endWriteToTexture] is an abstract method that should be overridden "
+           "by subclasses");
+}
+
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+- (void)readFromTexture:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginReadFromTexture];
+  block();
+  [self endReadFromTexture];
+}
+
+- (void)writeToTexture:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginWriteToTexture];
+  block();
+  [self endWriteToTexture];
+}
 
 - (void)bind {
   if (self.bound) {
@@ -188,34 +230,38 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   }
 }
 
-- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
-  LTParameterAssert(execute);
-  LTTextureParameters *parameters = [self currentParameters];
-  execute();
-  [self setCurrentParameters:parameters];
+- (void)mappedImage:(LTTextureMappedBlock)block {
+  LTParameterAssert(block);
+
+  cv::Mat image([self image]);
+  block(image, YES);
+  [self load:image];
 }
 
 - (GLKVector4)pixelValue:(CGPoint)location {
   cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
-  
+  return [self pixelValueFromImage:image location:{0, 0}];
+}
+
+- (GLKVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location {
   // Reading half-float is currently not supported.
   // TODO: (yaron) implement a half-float <--> float converter when needed.
-  
+
   switch (image.type()) {
     case CV_8U: {
-      uchar value = image.at<uchar>(0, 0);
+      uchar value = image.at<uchar>(location.y, location.x);
       return {{value / 255.f, 0.f, 0.f, 0.f}};
     }
     case CV_8UC4: {
-      cv::Vec4b value = image.at<cv::Vec4b>(0, 0);
+      cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
       return {{value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f}};
     }
     case CV_32F: {
-      float value = image.at<float>(0, 0);
+      float value = image.at<float>(location.y, location.x);
       return {{value, 0, 0, 0}};
     }
     case CV_32FC4: {
-      cv::Vec4f value = image.at<cv::Vec4f>(0, 0);
+      cv::Vec4f value = image.at<cv::Vec4f>(location.y, location.x);
       return {{value(0), value(1), value(2), value(3)}};
     }
     default:
@@ -233,7 +279,7 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
     // Use boundary conditions similar to Matlab's 'symmetric'.
     GLKVector2 location = [LTSymmetricBoundaryCondition
                            boundaryConditionForPoint:GLKVector2Make(locations[i].x, locations[i].y)
-                           withSignalSize:cv::Vec2i(self.size.width, self.size.height)];
+                           withSignalSize:cv::Size2i(self.size.width, self.size.height)];
     values[i] = [self pixelValue:CGPointMake(floorf(location.x), floorf(location.y))];
   }
 
@@ -257,6 +303,13 @@ static LTTextureChannels LTChannelsFromMat(const cv::Mat &image) {
   [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
   
   return image;
+}
+
+- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
+  LTParameterAssert(execute);
+  LTTextureParameters *parameters = [self currentParameters];
+  execute();
+  [self setCurrentParameters:parameters];
 }
 
 #pragma mark -

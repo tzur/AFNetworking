@@ -21,7 +21,7 @@
 /// Boundary condition for 2D signal. Since boundary condition is a strategy that is usually defined
 /// on 1D signals, this method can usually be implemented by applying the 1D boundary condition on
 /// both axes.
-+ (GLKVector2)boundaryConditionForPoint:(GLKVector2)point withSignalSize:(cv::Vec2i)size;
++ (GLKVector2)boundaryConditionForPoint:(GLKVector2)point withSignalSize:(cv::Size2i)size;
 
 @end
 

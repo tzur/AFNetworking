@@ -22,15 +22,17 @@
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (id)initWithTexture:(LTTexture *)texture;
 
-/// Binds the framebuffer. Everything that will be drawn between this call and the call to unbind
-/// will be saved to the texture. The previously bound framebuffer and viewport will be
-/// saved, so they can be restored when unbind is called. Consecutive calls to \c bind while the
-/// receiver is already bound will have no effect.
-- (void)bind;
-
-/// Unbinds the framebuffer. Consecutive calls to \c bind while the receiver is already bound will
-/// have no effect.
-- (void)unbind;
+/// Executes the given block while the receiver is bound to the active context, while locking the
+/// framebuffer's texture when the block is executed. If the receiver is not already bound, this will
+/// automatically \c bind and \c unbind the receiver before and after the block, accordingly. If the
+/// receiver is bound, the block will execute, but no binding and unbinding will be executed. Making
+/// recursive calls to \c bindAndDraw: is possible without loss of context.
+///
+/// @note use this method when drawing into the framebuffer's texture, instead of \c
+/// bindAndExecute:.
+///
+/// @param block The block to execute after binding the resource. This parameter cannot be nil.
+- (void)bindAndDraw:(LTVoidBlock)block;
 
 /// Fills the texture bound to this FBO with the given color.
 - (void)clearWithColor:(GLKVector4)color;

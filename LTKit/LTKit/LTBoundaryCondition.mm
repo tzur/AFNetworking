@@ -18,12 +18,12 @@
   }
 }
 
-+ (GLKVector2)boundaryConditionForPoint:(GLKVector2)point withSignalSize:(cv::Vec2i)size {
-  if (point.x < 0 || point.x >= size(0)) {
-    point.x = [self boundaryConditionForPosition:point.x withSignalLength:size(0)];
++ (GLKVector2)boundaryConditionForPoint:(GLKVector2)point withSignalSize:(cv::Size2i)size {
+  if (point.x < 0 || point.x >= size.width) {
+    point.x = [self boundaryConditionForPosition:point.x withSignalLength:size.width];
   }
-  if (point.y < 0 || point.y >= size(1)) {
-    point.y = [self boundaryConditionForPosition:point.y withSignalLength:size(1)];
+  if (point.y < 0 || point.y >= size.height) {
+    point.y = [self boundaryConditionForPosition:point.y withSignalLength:size.height];
   }
   return point;
 }

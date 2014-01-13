@@ -184,7 +184,7 @@ context(@"drawing", ^{
     });
     
     it(@"should draw on an anonymous target", ^{
-      [fbo bindAndExecute:^{
+      [fbo bindAndDraw:^{
         gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
         [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1)
             inScreenFramebufferWithSize:fbo.size];
