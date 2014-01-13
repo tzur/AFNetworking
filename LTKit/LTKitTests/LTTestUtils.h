@@ -16,6 +16,11 @@ BOOL LTRunningApplicationTests();
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual);
 
+/// Returns \c YES if the two given matrices are equal, up to epsilon, which is determined by the
+/// type of the matrix. Matrices are equal if their \c size, \c depth, \c channels and actual data
+/// are all equal.
+BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual);
+
 /// Returns \c YES if the given \c actual matrix cells are all equal to the given \c expected
 /// scalar.
 BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);

@@ -11,15 +11,17 @@ static NSString * const kMatOutputBasedir = @"/tmp/";
 #pragma mark Forward declarations
 #pragma mark -
 
-template <typename T>
-static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual);
+static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual);
 
 template <typename T>
-static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness);
+
+template <typename T>
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::true_type &isFundamental);
 
 template <typename T>
-static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::false_type &isFundamental);
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
@@ -48,17 +50,32 @@ BOOL LTRunningApplicationTests() {
 }
 
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
-  if (expected.size != actual.size || expected.depth() != actual.depth() ||
-      expected.channels() != actual.channels()) {
+  if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
     return NO;
   }
 
   switch (expected.type()) {
     case CV_8UC1:
-      return LTCompareMatCells<uchar>(expected, actual);
+      return LTCompareMatCells<uchar>(expected, actual, 0);
     case CV_8UC4:
-      return LTCompareMatCells<cv::Vec4b>(expected, actual);
+      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0));
+    default:
+      LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
+  }
+}
+
+BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
+  if (LTCompareMatMetadata(expected, actual)) {
+    LTWriteMatrices(expected, actual);
+    return NO;
+  }
+
+  switch (expected.type()) {
+    case CV_8UC1:
+      return LTCompareMatCells<uchar>(expected, actual, 1);
+    case CV_8UC4:
+      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(1, 1, 1, 1));
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
@@ -111,14 +128,19 @@ NSString *LTPathForResource(Class classInBundle, NSString *name) {
 #pragma mark Implementation
 #pragma mark -
 
+static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual) {
+  return expected.size != actual.size || expected.depth() != actual.depth() ||
+      expected.channels() != actual.channels();
+}
+
 template <typename T>
-static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual) {
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness) {
   for (int y = 0; y < expected.rows; ++y) {
     for (int x = 0; x < expected.cols; ++x) {
       T va = expected.at<T>(y, x);
       T vb = actual.at<T>(y, x);
 
-      if (!LTCompareMatCell(va, vb, std::is_fundamental<T>())) {
+      if (!LTCompareMatCell(va, vb, fuzziness, std::is_fundamental<T>())) {
         LTWriteMatrices(expected, actual);
         return NO;
       }
@@ -129,15 +151,21 @@ static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual) {
 }
 
 template <typename T>
-static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::true_type __unused &isFundamental) {
-  return expected == actual;
+  return expected == actual || std::abs(expected - actual) <= fuzziness;
 }
 
 template <typename T>
-static inline BOOL LTCompareMatCell(const T &expected, const T &actual,
+static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::false_type __unused &isFundamental) {
-  return !memcmp(expected.val, actual.val, sizeof(expected.val));
+  if (!memcmp(expected.val, actual.val, sizeof(expected.val))) {
+    return YES;
+  } else {
+    T diff;
+    cv::absdiff(expected, actual, diff);
+    return cv::norm(diff, cv::NORM_L1) < cv::norm(fuzziness, cv::NORM_L1);
+  }
 }
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
