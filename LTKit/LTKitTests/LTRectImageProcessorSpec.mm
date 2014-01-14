@@ -65,17 +65,21 @@ it(@"should initialize with a valid program", ^{
 });
 
 it(@"should configure rect drawer with model", ^{
-  LTRectDrawer *drawerMock = mock([LTRectDrawer class]);
-
-  LTRectImageProcessor *processor = [[LTTestRectImageProcessor alloc]
-                                     initWithRectDrawer:drawerMock
-                                     inputs:@[input]
-                                     outputs:@[output]];
+  id drawerMock = [OCMockObject mockForClass:[LTRectDrawer class]];
 
   static NSString * const kFirstKey = @"MyFirstKey";
   static NSString * const kFirstValue = @"MyFirstValue";
   static NSString * const kSecondKey = @"MySecondKey";
   static NSString * const kSecondValue = @"MySecondValue";
+
+  [[drawerMock expect] setSourceTexture:input];
+  [[drawerMock expect] setObject:kFirstValue forKeyedSubscript:kFirstKey];
+  [[drawerMock expect] setObject:kSecondValue forKeyedSubscript:kSecondKey];
+
+  LTRectImageProcessor *processor = [[LTTestRectImageProcessor alloc]
+                                     initWithRectDrawer:drawerMock
+                                     inputs:@[input]
+                                     outputs:@[output]];
 
   processor[kFirstKey] = kFirstValue;
   processor[kSecondKey] = kSecondValue;
@@ -84,9 +88,7 @@ it(@"should configure rect drawer with model", ^{
 
   expect(result.textures.count).to.equal(1);
 
-  [verifyCount(drawerMock, times(1)) setSourceTexture:input];
-  [verifyCount(drawerMock, times(1)) setObject:kFirstValue forKeyedSubscript:kFirstKey];
-  [verifyCount(drawerMock, times(1)) setObject:kSecondValue forKeyedSubscript:kSecondKey];
+  [drawerMock verify];
 });
 
 SpecEnd

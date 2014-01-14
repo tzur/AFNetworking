@@ -1,3 +1,0 @@
-target :ExampleTests, :exclusive => true do
-  pod 'OCHamcrest', '~> 3.0'
-end
