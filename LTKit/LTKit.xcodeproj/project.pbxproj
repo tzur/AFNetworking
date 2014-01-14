@@ -74,8 +74,6 @@
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
 		8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA3E11A182A437300FDD95A /* OpenGLES.framework */; };
-		8BA3E136182A48AA00FDD95A /* OCHamcrestIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */; };
-		8BA3E138182A48AF00FDD95A /* OCMockitoIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA3E137182A48AF00FDD95A /* OCMockitoIOS.framework */; };
 		8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E13A182A602F00FDD95A /* LTProgram.mm */; };
 		8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E13D182A606600FDD95A /* LTShader.mm */; };
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
@@ -389,8 +387,6 @@
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
 		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E11A182A437300FDD95A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrestIOS.framework; path = ../../third_party/testing/OCHamcrest/OCHamcrestIOS.framework; sourceTree = "<group>"; };
-		8BA3E137182A48AF00FDD95A /* OCMockitoIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMockitoIOS.framework; path = ../../third_party/testing/OCMockito/OCMockitoIOS.framework; sourceTree = "<group>"; };
 		8BA3E139182A602F00FDD95A /* LTProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProgram.h; sourceTree = "<group>"; };
 		8BA3E13A182A602F00FDD95A /* LTProgram.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgram.mm; sourceTree = "<group>"; };
 		8BA3E13C182A606600FDD95A /* LTShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShader.h; sourceTree = "<group>"; };
@@ -482,11 +478,9 @@
 				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
-				8BA3E138182A48AF00FDD95A /* OCMockitoIOS.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
-				8BA3E136182A48AA00FDD95A /* OCHamcrestIOS.framework in Frameworks */,
 				8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */,
 				8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
@@ -720,8 +714,6 @@
 				8BCA673918310DA8003FCB65 /* Specta.xcodeproj */,
 				8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */,
 				28178214187C2E7200548AE4 /* OCMock */,
-				8BA3E137182A48AF00FDD95A /* OCMockitoIOS.framework */,
-				8BA3E135182A48AA00FDD95A /* OCHamcrestIOS.framework */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1441,8 +1433,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(SRCROOT)/../third_party/testing/OCHamcrest",
-					"$(SRCROOT)/../third_party/testing/OCMockito",
 					"$(SRCROOT)/../third_party/images/opencv",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1474,8 +1464,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(SRCROOT)/../third_party/testing/OCHamcrest",
-					"$(SRCROOT)/../third_party/testing/OCMockito",
 					"$(SRCROOT)/../third_party/images/opencv",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
