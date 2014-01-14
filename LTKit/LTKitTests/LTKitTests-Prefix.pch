@@ -4,12 +4,8 @@
 #import "LTKit-Prefix.pch"
 
 #define EXP_SHORTHAND
-#define HC_SHORTHAND
-#define MOCKITO_SHORTHAND
 
-#import <OCHamcrest/OCHamcrest.h>
 #import <OCMock/OCMock.h>
-#import <OCMockitoIOS/OCMockitoIOS.h>
 #import <XCTest/XCTest.h>
 
 #ifdef __cplusplus

@@ -10,9 +10,8 @@ context(@"device idioms", ^{
     __block LTDevice *device;
 
     beforeEach(^{
-      UIDevice *uiDevice = mock([UIDevice class]);
-
-      [given(uiDevice.userInterfaceIdiom) willReturnInteger:UIUserInterfaceIdiomPad];
+      id uiDevice = [OCMockObject mockForClass:[UIDevice class]];
+      [[[uiDevice stub] andReturnValue:@(UIUserInterfaceIdiomPad)] userInterfaceIdiom];
 
       device = [[LTDevice alloc] initWithUIDevice:uiDevice
                                          UIScreen:[UIScreen mainScreen]
@@ -68,9 +67,8 @@ context(@"device idioms", ^{
     __block LTDevice *device;
 
     beforeEach(^{
-      UIDevice *uiDevice = mock([UIDevice class]);
-
-      [given(uiDevice.userInterfaceIdiom) willReturnInteger:UIUserInterfaceIdiomPhone];
+      id uiDevice = [OCMockObject mockForClass:[UIDevice class]];
+      [[[uiDevice stub] andReturnValue:@(UIUserInterfaceIdiomPhone)] userInterfaceIdiom];
 
       device = [[LTDevice alloc] initWithUIDevice:uiDevice
                                          UIScreen:[UIScreen mainScreen]
@@ -152,10 +150,10 @@ context(@"platform info", ^{
   });
 
   it(@"should return 4 inch screen given correct size", ^{
-    UIScreen *screen = mock([UIScreen class]);
+    id screen = [OCMockObject mockForClass:[UIScreen class]];
     
     CGRect bounds = CGRectMake(0, 0, 320, 568);
-    [given(screen.bounds) willReturnStruct:&bounds objCType:@encode(typeof(CGRect))];
+    [[[screen stub] andReturnValue:[NSValue valueWithCGRect:bounds]] bounds];
     
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:screen
@@ -166,11 +164,11 @@ context(@"platform info", ^{
   });
   
   it(@"should return non 4 inch screen given correct size", ^{
-    UIScreen *screen = mock([UIScreen class]);
-    
+    id screen = [OCMockObject mockForClass:[UIScreen class]];
+
     CGRect bounds = CGRectMake(0, 0, 320, 460);
-    [given(screen.bounds) willReturnStruct:&bounds objCType:@encode(typeof(CGRect))];
-    
+    [[[screen stub] andReturnValue:[NSValue valueWithCGRect:bounds]] bounds];
+
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:screen
                                              platformName:nil
@@ -182,9 +180,8 @@ context(@"platform info", ^{
 
 context(@"localization", ^{
   it(@"should return current app language", ^{
-    NSBundle *mainBundle = mock([NSBundle class]);
-
-    [given(mainBundle.preferredLocalizations) willReturn:@[@"en", @"fr-ca"]];
+    id mainBundle = [OCMockObject mockForClass:[NSBundle class]];
+    [[[mainBundle stub] andReturn:@[@"en", @"fr-ca"]] preferredLocalizations];
 
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:[UIScreen mainScreen]
