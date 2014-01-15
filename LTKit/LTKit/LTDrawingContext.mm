@@ -87,6 +87,11 @@
   self.uniformToTexture[uniform] = texture;
 }
 
+- (void)detachUniform:(NSString *)uniform {
+  LTParameterAssert(uniform);
+  [self.uniformToTexture removeObjectForKey:uniform];
+}
+
 - (void)attachProgram:(LTProgram *)program toVertexArray:(LTVertexArray *)vertexArray {
   NSMutableDictionary *attributeToIndex = [NSMutableDictionary dictionary];
   for (NSString *attribute in program.attributes) {

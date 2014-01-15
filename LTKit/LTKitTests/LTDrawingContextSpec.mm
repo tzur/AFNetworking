@@ -68,6 +68,16 @@ context(@"binding program and vertex array", ^{
         [context attachUniform:@"a" toTexture:nil];
       }).to.raise(NSInvalidArgumentException);
     });
+
+    it(@"should raise when detaching nil uniform", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        [context detachUniformFromTexture:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 });
 
