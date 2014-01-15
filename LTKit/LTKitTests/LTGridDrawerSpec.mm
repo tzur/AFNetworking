@@ -49,8 +49,12 @@ beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];
   [LTGLContext setCurrentContext:context];
   
-  // Make sure that everything is properly drawn when face culling is enabled.
+  // Make sure that everything is properly drawn when face culling is enabled, and with a normal
+  // blending mode.
   context.faceCullingEnabled = YES;
+  context.blendEnabled = YES;
+  context.blendEquation = kLTGLContextBlendEquationDefault;
+  context.blendFunc = kLTGLContextBlendFuncNormal;
 });
 
 afterEach(^{

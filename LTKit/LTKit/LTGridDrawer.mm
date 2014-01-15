@@ -172,9 +172,6 @@ static const CGFloat kDefaultWidth = 1.0;
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.clockwiseFrontFacingPolygons = cwffPolygons;
-    context.blendEnabled = YES;
-    context.blendEquation = kLTGLContextBlendEquationDefault;
-    context.blendFunc = kLTGLContextBlendFuncNormal;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
   }];
 }
