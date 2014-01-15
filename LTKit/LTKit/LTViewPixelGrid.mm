@@ -24,7 +24,7 @@ static const CGFloat kDefaultMinZoomScale = 5.0;
 static const CGFloat kDefaultMaxZoomScale = 5.0;
 
 /// Blend function used for drawing the LTView's pixel grid, keeping the target's alpha value.
-/// The sourceRGB factor is not FuncOne since we're expectinga  premultiplied result.
+/// The sourceRGB factor is not FuncOne since we're expecting a premultiplied result.
 static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
   .sourceRGB = LTGLContextBlendFuncDstAlpha,
   .destinationRGB = LTGLContextBlendFuncOneMinusSrcAlpha,
