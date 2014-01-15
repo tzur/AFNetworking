@@ -76,6 +76,18 @@ static NSString * const kFragmentWithUniformSource =
     "  gl_FragColor = outputColor;"
     "}";
 
+static NSString * const kFragmentWithTwoSamplersSource =
+    @"uniform sampler2D sourceTexture;"
+    "uniform sampler2D anotherTexture;"
+    ""
+    "varying highp vec2 vTexcoord;"
+    ""
+    "void main() {"
+    "  highp vec4 colorA = texture2D(sourceTexture, vTexcoord);"
+    "  highp vec4 colorB = texture2D(anotherTexture, vTexcoord);"
+    "  gl_FragColor = colorA - colorB;"
+    "}";
+
 __block LTTexture *texture;
 __block cv::Mat image;
 
@@ -109,15 +121,6 @@ context(@"initialization", ^{
     expect(^{
       __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
                                                                   sourceTexture:texture];
-    }).toNot.raiseAny();
-  });
-
-  it(@"should initialize with valid program and no texture", ^{
-    LTProgram *program = [[LTProgram alloc] initWithVertexSource:kVertexSource
-                                                  fragmentSource:kFragmentSource];
-
-    expect(^{
-      __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program];
     }).toNot.raiseAny();
   });
 
@@ -295,50 +298,88 @@ context(@"drawing", ^{
     });
   });
 
-  it(@"should switch source texture", ^{
-    cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
-    expected.setTo(cv::Vec4b(137, 137, 0, 255));
+  context(@"source texture switching", ^{
+    it(@"should switch source texture", ^{
+      cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
+      expected.setTo(cv::Vec4b(137, 137, 0, 255));
 
-    LTTexture *secondTexture = [[LTGLTexture alloc] initWithImage:expected];
-    [rectDrawer setSourceTexture:secondTexture];
+      LTTexture *secondTexture = [[LTGLTexture alloc] initWithImage:expected];
+      [rectDrawer setSourceTexture:secondTexture];
+
+      CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
+      [fbo bindAndDraw:^{
+        [rectDrawer drawRect:rect inScreenFramebufferWithSize:fbo.size fromRect:rect];
+      }];
+
+      expect(LTCompareMat(expected, output.image)).to.beTruthy();
+    });
+
+    it(@"should raise when switching to nil source texture", ^{
+      expect(^{
+        [rectDrawer setSourceTexture:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
+});
+
+context(@"multiple texture inputs", ^{
+  __block LTProgram *program;
+  __block LTRectDrawer *rectDrawer;
+  __block LTTexture *output;
+  __block LTFbo *fbo;
+
+  beforeEach(^{
+    program = [[LTProgram alloc] initWithVertexSource:kVertexSource
+                                       fragmentSource:kFragmentWithTwoSamplersSource];
+    rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
+
+    output = [[LTGLTexture alloc] initWithSize:inputSize
+                                     precision:LTTexturePrecisionByte
+                                      channels:LTTextureChannelsRGBA allocateMemory:YES];
+
+    fbo = [[LTFbo alloc] initWithTexture:output];
+  });
+
+  afterEach(^{
+    fbo = nil;
+    output = nil;
+    rectDrawer = nil;
+    program = nil;
+  });
+
+  it(@"should set valid texture with correct name", ^{
+    expect(^{
+      [rectDrawer setTexture:texture withName:@"anotherTexture"];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should raise when setting a nil texture", ^{
+    expect(^{
+      [rectDrawer setTexture:nil withName:@"anotherTexture"];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when setting a nil name", ^{
+    expect(^{
+      [rectDrawer setTexture:texture withName:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when setting a non existing name", ^{
+    expect(^{
+      [rectDrawer setTexture:texture withName:@"foo"];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+  it(@"should draw correctly", ^{
+    [rectDrawer setTexture:texture withName:@"anotherTexture"];
 
     CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
     [fbo bindAndDraw:^{
       [rectDrawer drawRect:rect inScreenFramebufferWithSize:fbo.size fromRect:rect];
     }];
 
-    expect(LTCompareMat(expected, output.image)).to.beTruthy();
-  });
-});
-
-context(@"fail drawing with no source texture", ^{
-  __block LTProgram *program;
-  __block LTRectDrawer *rectDrawer;
-
-  beforeEach(^{
-    program = [[LTProgram alloc] initWithVertexSource:kVertexSource
-                                       fragmentSource:kFragmentSource];
-    rectDrawer = [[LTRectDrawer alloc] initWithProgram:program];
-  });
-
-  it(@"should fail drawing on framebuffer", ^{
-    LTTexture *output = [[LTGLTexture alloc] initWithSize:inputSize
-                                                precision:LTTexturePrecisionByte
-                                                 channels:LTTextureChannelsRGBA
-                                           allocateMemory:YES];
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
-
-    CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
-    expect(^{
-      [rectDrawer drawRect:rect inFramebuffer:fbo fromRect:rect];
-    }).to.raise(NSInternalInconsistencyException);
-  });
-
-  it(@"should fail drawing on screen framebuffer", ^{
-    CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
-    expect(^{
-      [rectDrawer drawRect:rect inScreenFramebufferWithSize:rect.size fromRect:rect];
-    }).to.raise(NSInternalInconsistencyException);
+    expect(LTCompareMatWithValue(cv::Scalar(0, 0, 0, 0), [output image])).to.beTruthy();
   });
 });
 

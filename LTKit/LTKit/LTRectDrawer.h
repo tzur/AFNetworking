@@ -10,11 +10,6 @@
 /// processing operations.
 @interface LTRectDrawer : NSObject
 
-/// Initializes with the given program. The source texture must be set prior to drawing using the \c
-/// setSourceTexture: method. The program must include the uniforms \c projection (projection
-/// matrix), \c modelview (modelview matrix) and \c texture (texture matrix).
-- (id)initWithProgram:(LTProgram *)program;
-
 /// Designated initializer: initializes with the given program and source texture. The program must
 /// include the uniforms \c projection (projection matrix), \c modelview (modelview matrix) and \c
 /// texture (texture matrix).
@@ -43,8 +38,11 @@
         fromRect:(CGRect)sourceRect;
 
 /// Sets the source texture to the given \c texture. If the texture is equal to the current
-/// configured texture, no action will be done.
+/// configured texture, no action will be done. The given texture cannot be \c nil.
 - (void)setSourceTexture:(LTTexture *)texture;
+
+/// Sets additional \c texture with the given sampler \c name as an input source to the rect drawer.
+- (void)setTexture:(LTTexture *)texture withName:(NSString *)name;
 
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c
 /// modelview, \c texture}.

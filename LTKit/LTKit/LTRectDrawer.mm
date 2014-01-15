@@ -26,8 +26,8 @@ LTGPUStructMake(LTRectDrawerVertex,
 /// Context holding the geometry and program.
 @property (strong, nonatomic) LTDrawingContext *context;
 
-/// Source texture to draw from.
-@property (strong, nonatomic) LTTexture *texture;
+/// Mapping between uniform name and its attached texture.
+@property (strong, nonatomic) NSMutableDictionary *uniformToTexture;
 
 /// Set of mandatory uniforms that must exist in the given program.
 @property (readonly, nonatomic) NSSet *mandatoryUniforms;
@@ -35,6 +35,9 @@ LTGPUStructMake(LTRectDrawerVertex,
 @end
 
 @implementation LTRectDrawer
+
+/// Uniform name of the source texture, which must be contained in each rect drawer program.
+static NSString * const kSourceTextureUniform = @"sourceTexture";
 
 #pragma mark -
 #pragma mark Initialization
@@ -49,20 +52,27 @@ LTGPUStructMake(LTRectDrawerVertex,
     LTAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of the "
              "required uniforms %@ doesn't exist in the given program", self.mandatoryUniforms);
 
-    self.texture = texture;
+    self.uniformToTexture = [self createUniformToTextureWithTexture:texture];
     self.program = program;
     self.context = [self createDrawingContext];
   }
   return self;
 }
 
+- (NSMutableDictionary *)createUniformToTextureWithTexture:(LTTexture *)texture {
+  NSMutableDictionary *mapping = [NSMutableDictionary dictionary];
+  if (texture) {
+    mapping[kSourceTextureUniform] = texture;
+  }
+  return mapping;
+}
+
 - (LTDrawingContext *)createDrawingContext {
   LTVertexArray *vertexArray = [self createVertexArray];
 
-  NSDictionary *uniformToTexture = self.texture ? @{@"sourceTexture": self.texture} : nil;
   LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
                                                             vertexArray:vertexArray
-                                                       uniformToTexture:uniformToTexture];
+                                                       uniformToTexture:self.uniformToTexture];
   return context;
 }
 
@@ -129,7 +139,8 @@ LTGPUStructMake(LTRectDrawerVertex,
 }
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
-  LTAssert(self.texture, @"Source texture was not set prior to drawing");
+  LTAssert(self.uniformToTexture[kSourceTextureUniform],
+           @"Source texture was not set prior to drawing");
 
   GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
   self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
@@ -141,10 +152,11 @@ LTGPUStructMake(LTRectDrawerVertex,
 }
 
 - (GLKMatrix3)matrix3ForTextureRect:(CGRect)rect {
-  CGRect normalizedRect = CGRectMake(rect.origin.x / self.texture.size.width,
-                                     rect.origin.y / self.texture.size.height,
-                                     rect.size.width / self.texture.size.width,
-                                     rect.size.height / self.texture.size.height);
+  CGSize size = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+  CGRect normalizedRect = CGRectMake(rect.origin.x / size.width,
+                                     rect.origin.y / size.height,
+                                     rect.size.width / size.width,
+                                     rect.size.height / size.height);
   return [self matrix3ForRect:normalizedRect];
 }
 
@@ -165,12 +177,19 @@ LTGPUStructMake(LTRectDrawerVertex,
 #pragma mark -
 
 - (void)setSourceTexture:(LTTexture *)texture {
-  if ([self.texture isEqual:texture]) {
+  [self setTexture:texture withName:kSourceTextureUniform];
+}
+
+- (void)setTexture:(LTTexture *)texture withName:(NSString *)name {
+  LTParameterAssert(texture);
+  LTParameterAssert(name);
+
+  if ([self.uniformToTexture[name] isEqual:texture]) {
     return;
   }
-
-  self.texture = texture;
-  [self.context attachUniform:@"sourceTexture" toTexture:texture];
+  self.uniformToTexture[name] = texture;
+  
+  [self.context attachUniform:name toTexture:texture];
 }
 
 - (void)setUniform:(NSString *)name withValue:(id)value {
@@ -190,7 +209,7 @@ LTGPUStructMake(LTRectDrawerVertex,
 
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture"]];
+    uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture", @"sourceTexture"]];
   });
 
   return uniforms;
