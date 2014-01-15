@@ -3,6 +3,7 @@
 
 #import "LTViewPixelGrid.h"
 
+#import "LTGLContext.h"
 #import "LTCGExtensions.h"
 #import "LTGridDrawer.h"
 #import "UIColor+Vector.h"
@@ -21,6 +22,15 @@ static UIColor * const kDefaultColor = [UIColor colorWithRed:0.2 green:0.2 blue:
 static const CGFloat kDefaultMaxOpacity = 0.5;
 static const CGFloat kDefaultMinZoomScale = 5.0;
 static const CGFloat kDefaultMaxZoomScale = 5.0;
+
+/// Blend function used for drawing the LTView's pixel grid, keeping the target's alpha value.
+/// The sourceRGB factor is not FuncOne since we're expectinga  premultiplied result.
+static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
+  .sourceRGB = LTGLContextBlendFuncDstAlpha,
+  .destinationRGB = LTGLContextBlendFuncOneMinusSrcAlpha,
+  .sourceAlpha = LTGLContextBlendFuncZero,
+  .destinationAlpha = LTGLContextBlendFuncOne
+};
 
 #pragma mark -
 #pragma mark Initialization
@@ -54,7 +64,13 @@ static const CGFloat kDefaultMaxZoomScale = 5.0;
 - (void)drawContentRegion:(CGRect)region toFramebufferWithSize:(CGSize)size {
   self.gridDrawer.opacity = [self gridOpacityForZoomScale:std::min(size / region.size)];
   if (self.gridDrawer.opacity > 0) {
-    [self.gridDrawer drawSubGridInRegion:region inScreenFramebufferWithSize:size];
+    LTGLContext *context = [LTGLContext currentContext];
+    [context executeAndPreserveState:^{
+      context.blendEnabled = YES;
+      context.blendEquation = kLTGLContextBlendEquationDefault;
+      context.blendFunc = kLTGLContextBlendFuncGrid;
+      [self.gridDrawer drawSubGridInRegion:region inScreenFramebufferWithSize:size];
+    }];
   }
 }
 
