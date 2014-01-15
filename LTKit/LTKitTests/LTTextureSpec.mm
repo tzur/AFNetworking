@@ -101,6 +101,23 @@ context(@"binding and execution", ^{
       }];
       expect(didExecute).to.beTruthy();
     });
+
+    it(@"should bind to two texture units at the same time", ^{
+      glActiveTexture(GL_TEXTURE0);
+      [texture bind];
+      glActiveTexture(GL_TEXTURE1);
+      [texture bind];
+
+      GLint currentTexture;
+
+      glActiveTexture(GL_TEXTURE0);
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(texture.name);
+
+      glActiveTexture(GL_TEXTURE1);
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(texture.name);
+    });
   });
   
   context(@"execution", ^{
