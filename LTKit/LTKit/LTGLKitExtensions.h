@@ -38,7 +38,7 @@ GLK_INLINE GLKVector3 operator/(const GLKVector3 &lhs, const GLfloat &rhs) {
 }
 
 /// Divide a vector by a scalar value (element wise).
-inline GLKVector4 operator/(const GLKVector4 &lhs, const float &rhs)  {
+GLK_INLINE GLKVector4 operator/(const GLKVector4 &lhs, const float &rhs)  {
   return GLKVector4DivideScalar(lhs, rhs);
 }
 
@@ -52,10 +52,12 @@ namespace std {
   GLK_INLINE GLKVector2 floor(const GLKVector2 &vector) {
     return GLKVector2Make(floor(vector.x), floor(vector.y));
   }
+  
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector3 &v) {
     return v.x + v.y + v.z;
   }
+  
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector4 &v) {
     return v.x + v.y + v.z + v.w;
