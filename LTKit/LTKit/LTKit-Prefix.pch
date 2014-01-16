@@ -20,4 +20,5 @@
   #pragma clang diagnostic ignored "-Woverloaded-virtual"
   #import <opencv2/opencv.hpp>
   #pragma clang diagnostic pop
+  #import <extobjc/extobjc.h>
 #endif

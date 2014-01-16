@@ -150,6 +150,15 @@
   }
 }
 
+- (void)bindAndDraw:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self bindAndExecute:^{
+    [self.texture writeToTexture:^{
+      block();
+    }];
+  }];
+}
+
 #pragma mark -
 #pragma mark Operations
 #pragma mark -
@@ -159,7 +168,7 @@
   glGetFloatv(GL_COLOR_CLEAR_VALUE, previousClearColor.v);
 
   glClearColor(color.r, color.g, color.b, color.a);
-  [self bindAndExecute:^{
+  [self bindAndDraw:^{
     glClear(GL_COLOR_BUFFER_BIT);
   }];
   glClearColor(previousClearColor.r, previousClearColor.g, previousClearColor.b,

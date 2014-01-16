@@ -11,29 +11,31 @@ SpecBegin(LTDrawingContext)
 
 context(@"binding program and vertex array", ^{
   it(@"should provide correct attribute to index mapping", ^{
-    LTProgram *program = mock([LTProgram class]);
-    LTVertexArray *vertexArray = mock([LTVertexArray class]);
+    id program = [OCMockObject mockForClass:[LTProgram class]];
+    id vertexArray = [OCMockObject mockForClass:[LTVertexArray class]];
 
-    [given([program attributes]) willReturn:[NSSet setWithArray:@[@"a", @"b"]]];
-    [given([program attributeForName:@"a"]) willReturn:@0];
-    [given([program attributeForName:@"b"]) willReturn:@1];
+    [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] attributes];
+    [[[program stub] andReturnValue:@(0)] attributeForName:@"a"];
+    [[[program stub] andReturnValue:@(1)] attributeForName:@"b"];
+
+    [[vertexArray expect] attachAttributesToIndices:@{@"a": @0, @"b": @1}];
 
     __unused LTDrawingContext *drawingContext =
         [[LTDrawingContext alloc] initWithProgram:program vertexArray:vertexArray
                                  uniformToTexture:nil];
 
-    [verify(vertexArray) attachAttributesToIndices:@{@"a": @0, @"b": @1}];
+    [vertexArray verify];
   });
 
   context(@"uniform to texture mapping", ^{
-    __block LTProgram *program;
-    __block LTVertexArray *vertexArray;
+    __block id program;
+    __block id vertexArray;
 
     beforeEach(^{
-      program = mock([LTProgram class]);
-      vertexArray = mock([LTVertexArray class]);
+      program = [OCMockObject niceMockForClass:[LTProgram class]];
+      vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
 
-      [given([program uniforms]) willReturn:[NSSet setWithArray:@[@"a", @"b"]]];
+      [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] uniforms];
     });
 
     it(@"should raise when uniforms is not a subset of program uniforms", ^{
@@ -52,7 +54,7 @@ context(@"binding program and vertex array", ^{
                                                            uniformToTexture:nil];
 
       expect(^{
-        LTGLTexture *texture = mock([LTGLTexture class]);
+        id texture = [OCMockObject niceMockForClass:[LTGLTexture class]];
         [context attachUniform:@"z" toTexture:texture];
       }).to.raise(NSInternalInconsistencyException);
     });

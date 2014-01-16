@@ -20,10 +20,6 @@
 
 @implementation LTGLTexture
 
-- (void)load:(const cv::Mat &)image {
-  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
-}
-
 - (void)create:(BOOL)allocateMemory {
   if (self.name) {
     return;
@@ -38,8 +34,10 @@
     [self setWrap:self.wrap];
 
     if (allocateMemory) {
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.size.width, self.size.height, 0, GL_RGBA,
-                   self.precision, NULL);
+      [self writeToTexture:^{
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.size.width, self.size.height, 0, GL_RGBA,
+                     self.precision, NULL);
+      }];
     }
   }];
 
@@ -56,39 +54,48 @@
 
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image {
   // Preconditions.
-  LTAssert([self inTextureRect:rect],
-           @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
-           rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  LTParameterAssert([self inTextureRect:rect],
+                    @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
+                    rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   image->create(rect.size.height, rect.size.width, self.matType);
 
   // \c glReadPixels requires framebuffer object that is bound to the texture that is being read.
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
   [fbo bindAndExecute:^{
-    // Read pixels into the mutable data, according to the texture precision.
-    glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, GL_RGBA,
-                 self.precision, image->data);
+    [self readFromTexture:^{
+      // Read pixels into the mutable data, according to the texture precision.
+      glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, GL_RGBA,
+                   self.precision, image->data);
+    }];
   }];
+}
+
+- (void)load:(const cv::Mat &)image {
+  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
 }
 
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image {
   // Preconditions.
-  LTAssert([self inTextureRect:rect],
-           @"Rect for retrieving image from texture is out of bounds: (%g, %g, %g, %g)",
-           rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-  LTAssert(image.cols == rect.size.width && image.rows == rect.size.height,
-           @"Trying to load to rect with size (%g, %g) from a Mat with different size: (%d, %d)",
-           rect.size.width, rect.size.height, image.cols, image.rows);
+  LTParameterAssert([self inTextureRect:rect],
+                    @"Rect for retrieving image from texture is out of bounds: (%g, %g, %g, %g)",
+                    rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  LTParameterAssert(image.cols == rect.size.width && image.rows == rect.size.height,
+                    @"Trying to load to rect with size (%g, %g) from a Mat with different size: "
+                    "(%d, %d)", rect.size.width, rect.size.height, image.cols, image.rows);
+  // TODO: (yaron) add test for image type.
 
   [self bindAndExecute:^{
-    // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
-    if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.size.width, rect.size.height, 0, GL_RGBA,
-                   self.precision, image.data);
-    } else {
-      glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                      rect.size.width, rect.size.height, GL_RGBA, self.precision, image.data);
-    }
+    [self writeToTexture:^{
+      // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
+      if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.size.width, rect.size.height, 0, GL_RGBA,
+                     self.precision, image.data);
+      } else {
+        glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
+                        rect.size.width, rect.size.height, GL_RGBA, self.precision, image.data);
+      }
+    }];
   }];
 }
 
@@ -117,5 +124,12 @@
   CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
   [rectDrawer drawRect:rect inFramebuffer:fbo fromRect:rect];
 }
+
+// Assuming that OpenGL calls are synchronized (when used in a single-threaded environment), no
+// synchronization needs to be done.
+- (void)beginReadFromTexture {}
+- (void)endReadFromTexture {}
+- (void)beginWriteToTexture {}
+- (void)endWriteToTexture {}
 
 @end

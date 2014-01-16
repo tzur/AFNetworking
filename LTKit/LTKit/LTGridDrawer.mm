@@ -155,7 +155,7 @@ static const CGFloat kDefaultWidth = 1.0;
 #pragma mark -
 
 - (void)drawSubGridInRegion:(CGRect)region inFrameBuffer:(LTFbo *)fbo {
-  [fbo bindAndExecute:^{
+  [fbo bindAndDraw:^{
     [self setProjectionAndPixelSizeForFramebufferWithSize:fbo.size];
     [self setUniformsForGridRegion:region framebufferSize:fbo.size];
     [self drawWithClockwiseFrontFacingPolygons:NO];
@@ -172,9 +172,6 @@ static const CGFloat kDefaultWidth = 1.0;
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.clockwiseFrontFacingPolygons = cwffPolygons;
-    context.blendEnabled = YES;
-    context.blendEquation = kLTGLContextBlendEquationDefault;
-    context.blendFunc = kLTGLContextBlendFuncNormal;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
   }];
 }

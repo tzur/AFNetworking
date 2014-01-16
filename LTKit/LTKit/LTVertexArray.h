@@ -5,7 +5,6 @@
 
 @class LTArrayBuffer;
 @class LTGPUStruct;
-@class LTProgram;
 
 /// @class LTVertexArrayElement
 ///

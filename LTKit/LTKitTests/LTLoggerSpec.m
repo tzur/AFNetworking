@@ -13,11 +13,12 @@
 SpecBegin(LTLogger)
 
 __block LTLogger *logger = nil;
-__block id<LTLoggerTarget> mockTarget = nil;
+__block id mockTarget = nil;
 
 beforeEach(^{
   logger = [[LTLogger alloc] init];
-  mockTarget = mockProtocol(@protocol(LTLoggerTarget));
+
+  mockTarget = [OCMockObject mockForProtocol:@protocol(LTLoggerTarget)];
   
   [logger registerTarget:mockTarget];
 });
@@ -30,16 +31,17 @@ context(@"log contents", ^{
     const char *file = "myFile.mm";
     int line = 1337;
 
+    [[mockTarget expect] outputString:[OCMArg checkWithBlock:^BOOL(NSString *log) {
+      return [log rangeOfString:message].location != NSNotFound &&
+          [log rangeOfString:[NSString stringWithUTF8String:file]].location != NSNotFound &&
+          [log rangeOfString:[NSString stringWithFormat:@"%d", line]].location != NSNotFound;
+    }]];
+
 LTNoFormatWarningBegin
     [logger logWithFormat:message file:file line:line logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
-    
-    MKTArgumentCaptor *logged = [[MKTArgumentCaptor alloc] init];
-    [verifyCount(mockTarget, times(1)) outputString:[logged capture]];
-    
-    expect(logged.value).to.contain(message);
-    expect(logged.value).to.contain([NSString stringWithUTF8String:file]);
-    expect(logged.value).to.contain(([NSString stringWithFormat:@"%d", line]));
+
+    [mockTarget verify];
   });
 });
 
@@ -47,12 +49,14 @@ context(@"log levels", ^{
   it(@"should log minimal log level", ^{
     logger.minimalLogLevel = LTLogLevelDebug;
 
+    [[mockTarget expect] outputString:[OCMArg any]];
+
     NSString *message = @"Hey!";
 LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
 
-    [verifyCount(mockTarget, times(1)) outputString:anything()];
+    [mockTarget verify];
   });
 
   it(@"should not log below minimal log level", ^{
@@ -63,7 +67,7 @@ LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
 
-    [verifyCount(mockTarget, never()) outputString:nil];
+    [mockTarget verify];
   });
 });
 

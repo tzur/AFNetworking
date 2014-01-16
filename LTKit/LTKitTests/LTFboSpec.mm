@@ -32,8 +32,8 @@ context(@"initialization", ^{
   });
   
   it(@"should init with half-float RGBA texture on capable devices", ^{
-    LTDevice *device = mock([LTDevice class]);
-    [given(device.canRenderToHalfFloatTextures) willReturnBool:YES];
+    id device = [OCMockObject mockForClass:[LTDevice class]];
+    [[[device stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
@@ -45,8 +45,8 @@ context(@"initialization", ^{
   });
   
   it(@"should raise with half-float RGBA texture on incapable devices", ^{
-    LTDevice *device = mock([LTDevice class]);
-    [given(device.canRenderToHalfFloatTextures) willReturnBool:NO];
+    id device = [OCMockObject mockForClass:[LTDevice class]];
+    [[[device stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
@@ -59,8 +59,8 @@ context(@"initialization", ^{
   });
   
   it(@"should init with float RGBA texture on capable devices", ^{
-    LTDevice *device = mock([LTDevice class]);
-    [given(device.canRenderToFloatTextures) willReturnBool:YES];
+    id device = [OCMockObject mockForClass:[LTDevice class]];
+    [[[device stub] andReturnValue:@(YES)] canRenderToFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
@@ -74,8 +74,8 @@ context(@"initialization", ^{
   });
 
   it(@"should raise with float RGBA texture on incapable devices", ^{
-    LTDevice *device = mock([LTDevice class]);
-    [given(device.canRenderToFloatTextures) willReturnBool:NO];
+    id device = [OCMockObject mockForClass:[LTDevice class]];
+    [[[device stub] andReturnValue:@(NO)] canRenderToFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
@@ -115,7 +115,7 @@ context(@"clearing", ^{
 
     cv::Mat image = [texture image];
 
-    expect(LTCompareMat(expected, image)).to.beTruthy();
+    expect(LTFuzzyCompareMat(expected, image)).to.beTruthy();
   });
 });
 

@@ -216,7 +216,7 @@ context(@"drawing", ^{
 
   context(@"screen framebuffer", ^{
     it(@"should draw to target texture of the same size", ^{
-      [fbo bindAndExecute:^{
+      [fbo bindAndDraw:^{
         [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
  inScreenFramebufferWithSize:fbo.size
                     fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
@@ -230,7 +230,7 @@ context(@"drawing", ^{
     it(@"should draw subrect of input to entire output", ^{
       const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                         inputSize.width / 2, inputSize.height / 2);
-      [fbo bindAndExecute:^{
+      [fbo bindAndDraw:^{
         [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
  inScreenFramebufferWithSize:fbo.size
                     fromRect:subrect];
@@ -251,7 +251,7 @@ context(@"drawing", ^{
       const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                         inputSize.width / 2, inputSize.height / 2);
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-      [fbo bindAndExecute:^{
+      [fbo bindAndDraw:^{
         [rectDrawer drawRect:subrect
  inScreenFramebufferWithSize:fbo.size
                     fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
@@ -274,7 +274,7 @@ context(@"drawing", ^{
       const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                         inputSize.width / 2, inputSize.height / 2);
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-      [fbo bindAndExecute:^{
+      [fbo bindAndDraw:^{
         [rectDrawer drawRect:outRect inScreenFramebufferWithSize:fbo.size fromRect:inRect];
       }];
       
@@ -303,7 +303,7 @@ context(@"drawing", ^{
     [rectDrawer setSourceTexture:secondTexture];
 
     CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
-    [fbo bindAndExecute:^{
+    [fbo bindAndDraw:^{
       [rectDrawer drawRect:rect inScreenFramebufferWithSize:fbo.size fromRect:rect];
     }];
 
