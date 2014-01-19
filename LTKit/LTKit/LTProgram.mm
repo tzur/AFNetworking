@@ -415,7 +415,6 @@
   }
 
   LTAssert(NO, @"Given name '%@' is not a valid uniform in this program", key);
-  return nil;
 }
 
 #pragma mark -
