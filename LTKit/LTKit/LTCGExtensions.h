@@ -31,31 +31,17 @@ CG_INLINE BOOL CGSizeIsNull(CGSize size) {
 #ifdef __cplusplus
 
 #pragma mark -
-#pragma mark float/double Operations
+#pragma mark UIEdgeInsets Operations
 #pragma mark -
 
-namespace std {
-
-/// Returns the smaller component.
-CG_INLINE float min(const float &a, const double &b) {
-  return a < b ? a : b;
+/// Returns whether two points are equal.
+CG_INLINE BOOL operator==(const UIEdgeInsets &lhs, const UIEdgeInsets &rhs) {
+  return UIEdgeInsetsEqualToEdgeInsets(lhs, rhs);
 }
 
-/// Returns the smaller component.
-CG_INLINE float min(const double &a, const float &b) {
-  return a < b ? a : b;
-}
-  
-/// Returns the bigger component.
-CG_INLINE float max(const float &a, const double &b) {
-  return a > b ? a : b;
-}
-  
-/// Returns the bigger component.
-CG_INLINE float max(const double &a, const float &b) {
-  return a > b ? a : b;
-}
-  
+/// Returns whether two points are not equal.
+CG_INLINE BOOL operator!=(const UIEdgeInsets &lhs, const UIEdgeInsets &rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark -
@@ -182,6 +168,11 @@ CG_INLINE BOOL operator==(const CGRect &lhs, const CGRect &rhs) {
 /// Returns whether two rectangles are not equal in size or position.
 CG_INLINE BOOL operator!=(const CGRect &lhs, const CGRect &rhs) {
   return !(lhs == rhs);
+}
+
+/// Returns a CGRect with the zero origin and the given size.
+CG_INLINE CGRect CGRectFromSize(const CGSize &size) {
+  return {.origin = CGPointZero, .size = size};
 }
 
 /// Returns a CGRect with the given origin and size.

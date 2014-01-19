@@ -55,6 +55,7 @@ context(@"properties", ^{
   
   it(@"should have default values", ^{
     expect(view.contentInset).to.equal(UIEdgeInsetsZero);
+    expect(view.minZoomScaleFactor).to.equal(0);
     expect(view.maxZoomScale).to.equal(CGFLOAT_MAX);
     expect(view.doubleTapLevels).to.equal(0);
     expect(view.doubleTapZoomFactor).to.equal(0);
@@ -80,6 +81,14 @@ context(@"properties", ^{
     expect(view.zoomScale).to.beLessThan(oldZoomScale);
   });
   
+  it(@"should set the minZoomScaleFactor", ^{
+    const CGFloat kMinZoomScaleFactor = 0.5;
+    CGFloat oldMinimumZoomScale = view.scrollView.minimumZoomScale;
+    view.minZoomScaleFactor = kMinZoomScaleFactor;
+    expect(view.minZoomScaleFactor).to.equal(kMinZoomScaleFactor);
+    expect(view.scrollView.minimumZoomScale).to.equal(oldMinimumZoomScale * kMinZoomScaleFactor);
+  });
+  
   it(@"should set the maxZoomScale", ^{
     const CGFloat kMaxZoomScale = 10;
     expect(view.zoomScale).to.beLessThan(kMaxZoomScale);
@@ -87,6 +96,22 @@ context(@"properties", ^{
     CGFloat oldZoomScale = view.zoomScale;
     view.maxZoomScale = kMaxZoomScale;
     expect(view.maxZoomScale).to.equal(kMaxZoomScale);
+    expect(view.zoomScale).to.equal(oldZoomScale);
+  });
+
+  it(@"should only update zoom scale when setting the minZoomScaleFactor if fully zoomed out", ^{
+    const CGFloat kMinZoomScaleFactor = 0.5;
+    CGFloat oldZoomScale = view.zoomScale;
+    expect(view.zoomScale).to.equal(view.scrollView.minimumZoomScale);
+    view.minZoomScaleFactor = kMinZoomScaleFactor;
+    expect(view.minZoomScaleFactor).to.equal(kMinZoomScaleFactor);
+    expect(view.zoomScale).to.equal(oldZoomScale * 0.5);
+    
+    [view zoomToRect:CGRectMake(kScale, kScale, kScale, kScale) animated:NO];
+    expect(view.zoomScale).to.beGreaterThan(view.scrollView.minimumZoomScale);
+    oldZoomScale = view.zoomScale;
+    view.minZoomScaleFactor /= 2;
+    expect(view.minZoomScaleFactor).to.equal(kMinZoomScaleFactor / 2);
     expect(view.zoomScale).to.equal(oldZoomScale);
   });
   
