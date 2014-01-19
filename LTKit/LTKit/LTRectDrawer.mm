@@ -43,28 +43,36 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithProgram:(LTProgram *)program {
-  return [self initWithProgram:program sourceTexture:nil];
+- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
 }
 
-- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
+- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
+    auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   if (self = [super init]) {
-    LTAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of the "
-             "required uniforms %@ doesn't exist in the given program", self.mandatoryUniforms);
+    LTParameterAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of "
+                      "the required uniforms %@ doesn't exist in the given program",
+                      self.mandatoryUniforms);
+    LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
+                       isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
+                      "texture uniforms %@ doesn't exist in the given program",
+                      [uniformToAuxiliaryTexture allKeys]);
 
-    self.uniformToTexture = [self createUniformToTextureWithTexture:texture];
+    self.uniformToTexture = [NSMutableDictionary dictionary];
+    [self setSourceTexture:texture];
+    [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
+
     self.program = program;
     self.context = [self createDrawingContext];
   }
   return self;
 }
 
-- (NSMutableDictionary *)createUniformToTextureWithTexture:(LTTexture *)texture {
-  NSMutableDictionary *mapping = [NSMutableDictionary dictionary];
-  if (texture) {
-    mapping[kSourceTextureUniform] = texture;
-  }
-  return mapping;
+- (void)setAuxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
+  [uniformToAuxiliaryTexture
+   enumerateKeysAndObjectsUsingBlock:^(NSString *key, LTTexture *texture, BOOL *) {
+     [self setTexture:texture withName:key];
+   }];
 }
 
 - (LTDrawingContext *)createDrawingContext {
@@ -139,9 +147,6 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 }
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
-  LTAssert(self.uniformToTexture[kSourceTextureUniform],
-           @"Source texture was not set prior to drawing");
-
   GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
   self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
 
@@ -177,18 +182,22 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (void)setSourceTexture:(LTTexture *)texture {
+  LTParameterAssert(texture);
   [self setTexture:texture withName:kSourceTextureUniform];
 }
 
-- (void)setTexture:(LTTexture *)texture withName:(NSString *)name {
+- (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
   LTParameterAssert(texture);
-  LTParameterAssert(name);
+  LTParameterAssert(name && ![name isEqualToString:kSourceTextureUniform]);
+  [self setTexture:texture withName:name];
+}
 
+- (void)setTexture:(LTTexture *)texture withName:(NSString *)name {
   if ([self.uniformToTexture[name] isEqual:texture]) {
     return;
   }
   self.uniformToTexture[name] = texture;
-  
+
   [self.context attachUniform:name toTexture:texture];
 }
 
@@ -204,12 +213,21 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
   [self setUniform:key withValue:obj];
 }
 
+- (id)objectForKeyedSubscript:(NSString *)key {
+  return [self uniformForName:key];
+}
+
+- (id)uniformForName:(NSString *)name {
+  return self.program[name];
+}
+
 - (NSSet *)mandatoryUniforms {
   static NSSet *uniforms;
 
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture", @"sourceTexture"]];
+    uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture",
+                                     kSourceTextureUniform]];
   });
 
   return uniforms;

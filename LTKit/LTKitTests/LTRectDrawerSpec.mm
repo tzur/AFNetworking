@@ -76,16 +76,18 @@ static NSString * const kFragmentWithUniformSource =
     "  gl_FragColor = outputColor;"
     "}";
 
-static NSString * const kFragmentWithTwoSamplersSource =
+static NSString * const kFragmentWithThreeSamplersSource =
     @"uniform sampler2D sourceTexture;"
     "uniform sampler2D anotherTexture;"
+    "uniform sampler2D otherTexture;"
     ""
     "varying highp vec2 vTexcoord;"
     ""
     "void main() {"
     "  highp vec4 colorA = texture2D(sourceTexture, vTexcoord);"
     "  highp vec4 colorB = texture2D(anotherTexture, vTexcoord);"
-    "  gl_FragColor = colorA - colorB;"
+    "  highp vec4 colorC = texture2D(otherTexture, vTexcoord);"
+    "  gl_FragColor = vec4(colorA.xyz - colorB.xyz + colorC.xyz, 0.0);"
     "}";
 
 __block LTTexture *texture;
@@ -131,7 +133,7 @@ context(@"initialization", ^{
     expect(^{
       __unused LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
                                                                   sourceTexture:texture];
-    }).to.raise(NSInternalInconsistencyException);
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
@@ -322,20 +324,23 @@ context(@"drawing", ^{
   });
 });
 
-context(@"multiple texture inputs", ^{
+context(@"auxiliary texture inputs", ^{
   __block LTProgram *program;
   __block LTRectDrawer *rectDrawer;
+  __block LTTexture *clearTexture;
   __block LTTexture *output;
   __block LTFbo *fbo;
 
   beforeEach(^{
     program = [[LTProgram alloc] initWithVertexSource:kVertexSource
-                                       fragmentSource:kFragmentWithTwoSamplersSource];
-    rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
+                                       fragmentSource:kFragmentWithThreeSamplersSource];
+    rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture
+                                     auxiliaryTextures:@{@"otherTexture": texture}];
 
     output = [[LTGLTexture alloc] initWithSize:inputSize
                                      precision:LTTexturePrecisionByte
                                       channels:LTTextureChannelsRGBA allocateMemory:YES];
+    clearTexture = [[LTGLTexture alloc] initWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
 
     fbo = [[LTFbo alloc] initWithTexture:output];
   });
@@ -347,32 +352,46 @@ context(@"multiple texture inputs", ^{
     program = nil;
   });
 
+  it(@"should contain initial auxiliary texture", ^{
+    expect(^{
+      [rectDrawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
+
+      CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
+      [fbo bindAndDraw:^{
+        [rectDrawer drawRect:rect inScreenFramebufferWithSize:fbo.size fromRect:rect];
+      }];
+
+      expect(LTCompareMat([texture image], [output image])).to.beTruthy();
+    });
+  });
+
   it(@"should set valid texture with correct name", ^{
     expect(^{
-      [rectDrawer setTexture:texture withName:@"anotherTexture"];
+      [rectDrawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
     }).toNot.raiseAny();
   });
 
   it(@"should raise when setting a nil texture", ^{
     expect(^{
-      [rectDrawer setTexture:nil withName:@"anotherTexture"];
+      [rectDrawer setAuxiliaryTexture:nil withName:@"anotherTexture"];
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should raise when setting a nil name", ^{
     expect(^{
-      [rectDrawer setTexture:texture withName:nil];
+      [rectDrawer setAuxiliaryTexture:texture withName:nil];
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should raise when setting a non existing name", ^{
     expect(^{
-      [rectDrawer setTexture:texture withName:@"foo"];
+      [rectDrawer setAuxiliaryTexture:texture withName:@"foo"];
     }).to.raise(NSInternalInconsistencyException);
   });
 
-  it(@"should draw correctly", ^{
-    [rectDrawer setTexture:texture withName:@"anotherTexture"];
+  it(@"should draw multiple inputs correctly", ^{
+    [rectDrawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
+    [rectDrawer setAuxiliaryTexture:clearTexture withName:@"otherTexture"];
 
     CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
     [fbo bindAndDraw:^{
@@ -406,6 +425,14 @@ context(@"custom uniforms", ^{
     output = nil;
     rectDrawer = nil;
     program = nil;
+  });
+
+  it(@"should set and retrieve uniform", ^{
+    GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
+    NSValue *value = [NSValue valueWithGLKVector4:outputColor];
+    rectDrawer[@"outputColor"] = value;
+
+    expect(rectDrawer[@"outputColor"]).to.equal(value);
   });
 
   it(@"should draw given color to target", ^{
