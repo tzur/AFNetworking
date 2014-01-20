@@ -13,12 +13,18 @@
 
 @end
 
+static CGPoint contentCenter(LTViewNavigationView *view) {
+  CGRect contentFrame = [view.scrollView convertRect:view.contentView.frame toView:view];
+  return std::round(CGRectCenter(CGRectIntersection(contentFrame, view.bounds)));
+}
+
 SpecBegin(LTViewNavigationView)
 
 const CGFloat kScale = 100;
 const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
 const CGSize kContentSize = CGSizeMake(6, 4) * kScale;
 const CGRect kViewFrame = CGRectFromOriginAndSize(CGPointZero, kViewSize);
+const CGPoint kViewCenter = std::round(CGRectCenter(kViewFrame));
 
 context(@"initialization", ^{
   it(@"should initialize without state", ^{
@@ -26,6 +32,7 @@ context(@"initialization", ^{
                                                                  contentSize:kContentSize];
     expect(view.frame).to.equal(kViewFrame);
     expect(view.contentSize).to.equal(kContentSize);
+    expect(contentCenter(view)).to.equal(kViewCenter);
   });
   
   it(@"should initialize with state", ^{
@@ -106,6 +113,7 @@ context(@"properties", ^{
     view.minZoomScaleFactor = kMinZoomScaleFactor;
     expect(view.minZoomScaleFactor).to.equal(kMinZoomScaleFactor);
     expect(view.zoomScale).to.equal(oldZoomScale * 0.5);
+    expect(contentCenter(view)).to.equal(kViewCenter);
     
     [view zoomToRect:CGRectMake(kScale, kScale, kScale, kScale) animated:NO];
     expect(view.zoomScale).to.beGreaterThan(view.scrollView.minimumZoomScale);
@@ -113,15 +121,18 @@ context(@"properties", ^{
     view.minZoomScaleFactor /= 2;
     expect(view.minZoomScaleFactor).to.equal(kMinZoomScaleFactor / 2);
     expect(view.zoomScale).to.equal(oldZoomScale);
+    expect(contentCenter(view)).to.equal(kViewCenter);
   });
   
   it(@"should update zoom scale when setting the maxZoomScale while already zoomed to the max", ^{
     [view zoomToRect:CGRectMake(kScale, kScale, kScale, kScale) animated:NO];
     expect(view.zoomScale).to.beGreaterThan(view.scrollView.minimumZoomScale * 2);
+    expect(contentCenter(view)).to.equal(kViewCenter);
     CGFloat oldZoomScale = view.zoomScale;
     view.maxZoomScale = oldZoomScale / 2;
     expect(view.maxZoomScale).to.equal(oldZoomScale / 2);
     expect(view.zoomScale).to.beCloseTo(oldZoomScale / 2);
+    expect(contentCenter(view)).to.equal(kViewCenter);
   });
   
   it(@"should set the doubleTapLevels", ^{
