@@ -578,6 +578,7 @@
 				8B8E515E1868479100821829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B8E515F1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUserTests" */ = {
 			isa = XCConfigurationList;
@@ -586,6 +587,7 @@
 				8B8E51611868479100821829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

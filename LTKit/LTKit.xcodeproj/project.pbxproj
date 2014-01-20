@@ -9,8 +9,13 @@
 /* Begin PBXBuildFile section */
 		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
 		03BBB32C1887BB8C001E7703 /* LTColorGradientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */; };
-		03BBB362188BE6C1001E7703 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
-		03BBB363188BE6C1001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
+		03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB374188C0675001E7703 /* LTFractionalNoise.mm */; };
+		03BBB383188C0B98001E7703 /* LTFractionalNoiseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */; };
+		03BBB386188CF732001E7703 /* LTFractionalNoise.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */; };
+		03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */; };
+		03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
+		03BBB389188CFB60001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
+		03BBB395188D03CC001E7703 /* LTBicubicFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB394188D03CC001E7703 /* LTBicubicFilter.mm */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF082187B030000904F07 /* LTViewNavigationView.mm */; };
 		282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF084187B030000904F07 /* LTViewPixelGrid.mm */; };
@@ -300,6 +305,15 @@
 		03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradientSpec.mm; sourceTree = "<group>"; };
 		03BBB360188BE6C1001E7703 /* RedBlueGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBlueGradient.png; path = Resources/RedBlueGradient.png; sourceTree = "<group>"; };
 		03BBB361188BE6C1001E7703 /* RedGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedGradient.png; path = Resources/RedGradient.png; sourceTree = "<group>"; };
+		03BBB373188C0675001E7703 /* LTFractionalNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFractionalNoise.h; sourceTree = "<group>"; };
+		03BBB374188C0675001E7703 /* LTFractionalNoise.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFractionalNoise.mm; sourceTree = "<group>"; };
+		03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFractionalNoiseSpec.mm; sourceTree = "<group>"; };
+		03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.fsh; sourceTree = "<group>"; };
+		03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.vsh; sourceTree = "<group>"; };
+		03BBB393188D03CC001E7703 /* LTBicubicFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBicubicFilter.h; sourceTree = "<group>"; };
+		03BBB394188D03CC001E7703 /* LTBicubicFilter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBicubicFilter.mm; sourceTree = "<group>"; };
+		03BBB3A2188D065C001E7703 /* LTBicubicFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBicubicFilter.fsh; sourceTree = "<group>"; };
+		03BBB3A3188D065C001E7703 /* LTBicubicFilter.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBicubicFilter.vsh; sourceTree = "<group>"; };
 		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -506,6 +520,14 @@
 			children = (
 				03BBB31E1887B7CB001E7703 /* LTColorGradient.h */,
 				03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */,
+				03BBB373188C0675001E7703 /* LTFractionalNoise.h */,
+				03BBB374188C0675001E7703 /* LTFractionalNoise.mm */,
+				03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */,
+				03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */,
+				03BBB393188D03CC001E7703 /* LTBicubicFilter.h */,
+				03BBB394188D03CC001E7703 /* LTBicubicFilter.mm */,
+				03BBB3A2188D065C001E7703 /* LTBicubicFilter.fsh */,
+				03BBB3A3188D065C001E7703 /* LTBicubicFilter.vsh */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -513,6 +535,7 @@
 		03BBB3191887B7AB001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
 			);
 			name = Blocks;
@@ -1199,6 +1222,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
+				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
@@ -1222,6 +1247,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03BBB386188CF732001E7703 /* LTFractionalNoise.fsh in Sources */,
+				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
+				03BBB395188D03CC001E7703 /* LTBicubicFilter.mm in Sources */,
 				8BF7EFBB18743EBE005695D0 /* LTImageProcessor.mm in Sources */,
 				8BFE1E1A18757547008035BF /* LTRectImageProcessor.mm in Sources */,
 				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
@@ -1257,6 +1285,7 @@
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
 				288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */,
 				282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */,
+				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 			);
@@ -1274,6 +1303,7 @@
 				282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
 				8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */,
+				03BBB383188C0B98001E7703 /* LTFractionalNoiseSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
