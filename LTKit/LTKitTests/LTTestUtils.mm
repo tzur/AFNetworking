@@ -88,6 +88,12 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual) {
   return LTCompareMat(mat, actual);
 }
 
+BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual) {
+  cv::Mat mat(actual.rows, actual.cols, actual.type());
+  mat.setTo(expected);
+  return LTFuzzyCompareMat(mat, actual);
+}
+
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
   return cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }

@@ -25,6 +25,10 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual);
 /// scalar.
 BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);
 
+/// Returns \c YES if the given \c actual matrix cells are all equal, up to epsilon, which is
+/// determined by the type of the matrix, to the given \c expected scalar.
+BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);
+
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
 
