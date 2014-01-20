@@ -3,6 +3,7 @@
 
 #import "LTTestUtils.h"
 
+#import "LTImage.h"
 #import "SpectaUtility.h"
 
 static NSString * const kMatOutputBasedir = @"/tmp/";
@@ -26,7 +27,7 @@ static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T 
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
 static void LTWriteMat(const cv::Mat &mat, NSString *name);
-static NSString *LTMatPathForName(NSString *name);
+static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index);
 
 #pragma mark -
 #pragma mark Public methods
@@ -112,6 +113,11 @@ UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
   return image;
 }
 
+cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name) {
+  UIImage *image = LTLoadImageWithName(classInBundle, name);
+  return [[LTImage alloc] initWithImage:image].mat;
+}
+
 NSString *LTPathForResource(Class classInBundle, NSString *name) {
   NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
 
@@ -169,13 +175,20 @@ static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T 
 }
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
-  LTWriteMat(expected, LTMatPathForName(@"expected"));
-  LTWriteMat(actual, LTMatPathForName(@"actual"));
+  static NSMutableDictionary *testCaseCallCount = [NSMutableDictionary dictionary];
+
+  NSString *testCase = [SPTCurrentTestCase description];
+  testCaseCallCount[testCase] = @([testCaseCallCount[testCase] unsignedIntegerValue] + 1);
+  NSUInteger index = [testCaseCallCount[testCase] unsignedIntegerValue];
+
+  LTWriteMat(expected, LTMatPathForNameAndIndex(@"expected", index));
+  LTWriteMat(actual, LTMatPathForNameAndIndex(@"actual", index));
 }
 
-static NSString *LTMatPathForName(NSString *name) {
-  NSString *filename = [NSString stringWithFormat:@"%@-%@.png",
-                        [SPTCurrentTestCase description], name];
+static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
+  NSString *filename = [NSString stringWithFormat:@"%@-%lu-%@.png",
+                        [SPTCurrentTestCase description], (unsigned long)index, name];
+
   return [kMatOutputBasedir stringByAppendingPathComponent:filename];
 }
 

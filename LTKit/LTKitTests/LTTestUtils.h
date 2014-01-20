@@ -38,6 +38,10 @@ cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
 /// exception if the image cannot be found or loaded.
 UIImage *LTLoadImageWithName(Class classInBundle, NSString *name);
 
+/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
+/// class. Throws exception if the image cannot be found or loaded.
+cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
+
 /// Returns the path for a resource in the bundle defined by the given \c classInBundle which it
 /// contains. Raises an exception if the image cannot be loaded.
 NSString *LTPathForResource(Class classInBundle, NSString *name);
