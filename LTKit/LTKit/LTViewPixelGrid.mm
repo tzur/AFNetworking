@@ -81,7 +81,7 @@ static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
   
   CGFloat t = (zoomScale - self.minZoomScale);
   t /= (self.maxZoomScale - self.minZoomScale);
-  return std::min(1, t) * self.maxOpacity;
+  return MIN(1, t) * self.maxOpacity;
 }
 
 #pragma mark -

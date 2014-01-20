@@ -13,13 +13,28 @@
 
 @interface LTViewNavigationState ()
 @property (nonatomic) CGRect visibleContentRect;
-@property (nonatomic) CGPoint contentOffset;
-@property (nonatomic) UIEdgeInsets contentInset;
+@property (nonatomic) CGPoint scrollViewContentOffset;
+@property (nonatomic) UIEdgeInsets scrollViewContentInset;
+@property (nonatomic) UIEdgeInsets navigationViewContentInset;
 @property (nonatomic) CGFloat zoomScale;
 @property (nonatomic) BOOL animationActive;
 @end
 
 @implementation LTViewNavigationState
+
+- (BOOL)isEqual:(id)object {
+  if (![object isKindOfClass:[self class]]) {
+    return NO;
+  }
+  
+  return self.visibleContentRect == [object visibleContentRect] &&
+         self.scrollViewContentOffset == [object scrollViewContentOffset] &&
+         self.scrollViewContentInset == [object scrollViewContentInset] &&
+         self.navigationViewContentInset == [object navigationViewContentInset] &&
+         self.zoomScale == [object zoomScale] &&
+         self.animationActive == [object animationActive];
+}
+
 @end
 
 #pragma mark -
@@ -132,8 +147,9 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 - (void)navigateToState:(LTViewNavigationState *)state {
   LTParameterAssert(state);
   self.scrollView.zoomScale = state.zoomScale;
-  self.scrollView.contentOffset = state.contentOffset;
-  self.scrollView.contentInset = state.contentInset;
+  self.contentInset = state.navigationViewContentInset;
+  self.scrollView.contentOffset = state.scrollViewContentOffset;
+  self.scrollView.contentInset = state.scrollViewContentInset;
   self.visibleContentRect = state.visibleContentRect;
   if (state.animationActive) {
     [self startAnimationIfNotRunning];
@@ -171,23 +187,26 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 /// Congifures the scrollview's minimal and maximal zoom scale according to the bounds and content
 /// size.
 - (void)configureScrollViewZoomLimits {
-  CGFloat zoomScale = self.scrollView.zoomScale;
-  self.scrollView.zoomScale = 1;
-  self.scrollView.maximumZoomScale = self.maxZoomScale;
-
   // Set minimal zoom scale by finding the dimension that can be minimally scaled.
-  CGFloat minimumZoomScale = std::min(self.scrollView.bounds.size / self.scrollView.contentSize);
+  CGSize scrollViewSize = UIEdgeInsetsInsetRect(self.bounds, self.contentInset).size;
+  CGSize scrollViewContentSize = self.contentSize / self.contentScaleFactor;
+  CGFloat minimumZoomScale = std::min(scrollViewSize / scrollViewContentSize);
+
+  // Apply the minimal zoom scale factor, if valid.
+  if (self.minZoomScaleFactor > 0) {
+    minimumZoomScale *= self.minZoomScaleFactor;
+  }
   
   // End case - if the minimal zoom scale is going to be larger than the maximal zoom scale, set the
   // maximal zoom scale to be the minimal one. This is relevant to small images and will prevent
   // any zooming of the image.
-  if (minimumZoomScale > self.scrollView.maximumZoomScale) {
-    self.scrollView.maximumZoomScale = minimumZoomScale;
-  }
+  CGFloat maximumZoomScale = MAX(self.maxZoomScale, minimumZoomScale);
   
-  // Set the minimal zoom scale, and restore the previous zoom scale.
+  // Set the minimal zoom scale, and update the current scale to be in the new range.
   self.scrollView.minimumZoomScale = minimumZoomScale;
-  self.scrollView.zoomScale = zoomScale;
+  self.scrollView.maximumZoomScale = maximumZoomScale;
+  self.scrollView.zoomScale =
+      MIN(MAX(self.scrollView.zoomScale, minimumZoomScale), maximumZoomScale);
 }
 
 /// Borrowed from Apple's ScrollViewSuite:
@@ -397,8 +416,11 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)zoomToRect:(CGRect)rect animated:(BOOL)animated {
+  rect.origin = rect.origin / self.contentScaleFactor;
+  rect.size = rect.size / self.contentScaleFactor;
   [self.scrollView zoomToRect:rect animated:animated];
   if (!animated) {
+    [self centerContentViewInScrollView];
     self.visibleContentRect = [self visibleContentRectFromScrollView];
   }
 }
@@ -479,7 +501,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark -
 
 - (void)setContentInset:(UIEdgeInsets)contentInset {
-  if (UIEdgeInsetsEqualToEdgeInsets(contentInset, _contentInset)) {
+  if (contentInset == _contentInset) {
     return;
   }
   
@@ -545,8 +567,9 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   LTViewNavigationState *state = [[LTViewNavigationState alloc] init];
   state.visibleContentRect = self.visibleContentRect;
   state.zoomScale = self.scrollView.zoomScale;
-  state.contentOffset = self.scrollView.contentOffset;
-  state.contentInset = self.scrollView.contentInset;
+  state.scrollViewContentOffset = self.scrollView.contentOffset;
+  state.scrollViewContentInset = self.scrollView.contentInset;
+  state.navigationViewContentInset = self.contentInset;
   state.animationActive = (self.animation) ? (self.animation.isAnimating) : NO;
   return state;
 }
@@ -568,9 +591,24 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   return std::min(self.bounds.size / self.visibleContentRect.size);
 }
 
+- (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
+  _minZoomScaleFactor = MAX(0, minZoomScaleFactor);
+  BOOL atMinimalScale = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
+  [self configureScrollViewZoomLimits];
+  if (atMinimalScale) {
+    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
+    [self centerContentViewInScrollView];
+  }
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
+}
+
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
   _maxZoomScale = MAX(0, maxZoomScale);
+  CGFloat oldScale = self.scrollView.zoomScale;
   [self configureScrollViewZoomLimits];
+  if (self.scrollView.zoomScale != oldScale) {
+    [self centerContentViewInScrollView];
+  }
   self.visibleContentRect = [self visibleContentRectFromScrollView];
 }
 
