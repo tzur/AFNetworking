@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884B9188D992000AD338E /* Main-iPad.storyboard */; };
+		289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884BA188D992000AD338E /* Main-iPhone.storyboard */; };
 		8B8E512E1868479100821829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512D1868479100821829 /* Foundation.framework */; };
 		8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512F1868479100821829 /* CoreGraphics.framework */; };
 		8B8E51321868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
 		8B8E51381868479100821829 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51361868479100821829 /* InfoPlist.strings */; };
 		8B8E513A1868479100821829 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51391868479100821829 /* main.m */; };
 		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; };
-		8B8E51411868479100821829 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E513F1868479100821829 /* Main.storyboard */; };
 		8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
 		8B8E51461868479100821829 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51451868479100821829 /* Images.xcassets */; };
 		8B8E514D1868479100821829 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E514C1868479100821829 /* XCTest.framework */; };
@@ -62,6 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		289884B9188D992000AD338E /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
+		289884BA188D992000AD338E /* Main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPhone.storyboard"; sourceTree = "<group>"; };
 		8B8E512A1868479100821829 /* LTKitUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTKitUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -72,7 +75,6 @@
 		8B8E513B1868479100821829 /* LTKitUser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitUser-Prefix.pch"; sourceTree = "<group>"; };
 		8B8E513C1868479100821829 /* LTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAppDelegate.h; sourceTree = "<group>"; };
 		8B8E513D1868479100821829 /* LTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTAppDelegate.m; sourceTree = "<group>"; };
-		8B8E51401868479100821829 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B8E51421868479100821829 /* LTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTViewController.h; sourceTree = "<group>"; };
 		8B8E51431868479100821829 /* LTViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewController.mm; sourceTree = "<group>"; };
 		8B8E51451868479100821829 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -161,9 +163,10 @@
 		8B8E51331868479100821829 /* LTKitUser */ = {
 			isa = PBXGroup;
 			children = (
+				289884B9188D992000AD338E /* Main-iPad.storyboard */,
+				289884BA188D992000AD338E /* Main-iPhone.storyboard */,
 				8B8E513C1868479100821829 /* LTAppDelegate.h */,
 				8B8E513D1868479100821829 /* LTAppDelegate.m */,
-				8B8E513F1868479100821829 /* Main.storyboard */,
 				8B8E51421868479100821829 /* LTViewController.h */,
 				8B8E51431868479100821829 /* LTViewController.mm */,
 				8B8E51451868479100821829 /* Images.xcassets */,
@@ -319,9 +322,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */,
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
-				8B8E51411868479100821829 /* Main.storyboard in Resources */,
+				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,14 +380,6 @@
 				8B8E51371868479100821829 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		8B8E513F1868479100821829 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8B8E51401868479100821829 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		8B8E51551868479100821829 /* InfoPlist.strings */ = {
@@ -495,7 +491,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
 				INFOPLIST_FILE = "LTKitUser/LTKitUser-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -512,7 +510,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
 				INFOPLIST_FILE = "LTKitUser/LTKitUser-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -578,6 +578,7 @@
 				8B8E515E1868479100821829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B8E515F1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUserTests" */ = {
 			isa = XCConfigurationList;
@@ -586,6 +587,7 @@
 				8B8E51611868479100821829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
