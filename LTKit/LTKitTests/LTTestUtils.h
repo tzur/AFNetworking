@@ -16,14 +16,19 @@ BOOL LTRunningApplicationTests();
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual);
 
-/// Returns \c YES if the two given matrices are equal, up to epsilon, which is determined by the
-/// type of the matrix. Matrices are equal if their \c size, \c depth, \c channels and actual data
+/// Returns \c YES if the two given matrices are equal, up to the given \c range, which is set
+/// across all channels. Matrices are equal if their \c size, \c depth, \c channels and actual data
 /// are all equal.
-BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual);
+BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range = 1);
 
 /// Returns \c YES if the given \c actual matrix cells are all equal to the given \c expected
 /// scalar.
 BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);
+
+/// Returns \c YES if the given \c actual matrix cells are all equal, up to the given \c range, to
+/// the given \c expected scalar.
+BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
+                                double range = 1);
 
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
@@ -37,6 +42,10 @@ cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
 /// Loads an image with the given \c name from the bundle that contains the given class. Throws
 /// exception if the image cannot be found or loaded.
 UIImage *LTLoadImageWithName(Class classInBundle, NSString *name);
+
+/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
+/// class. Throws exception if the image cannot be found or loaded.
+cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
 
 /// Returns the path for a resource in the bundle defined by the given \c classInBundle which it
 /// contains. Raises an exception if the image cannot be loaded.

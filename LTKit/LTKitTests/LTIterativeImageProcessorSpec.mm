@@ -11,6 +11,25 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
 
+@interface LTIterativeImageProcessorStub : LTIterativeImageProcessor
+
+typedef void (^LTIterativeImageProcessorStubCallback)(NSUInteger iteration);
+
+/// Block which is called on each iteration.
+@property (copy, nonatomic) LTIterativeImageProcessorStubCallback callback;
+
+@end
+
+@implementation LTIterativeImageProcessorStub
+
+- (void)iterationStarted:(NSUInteger)iteration {
+  if (self.callback) {
+    self.callback(iteration);
+  }
+}
+
+@end
+
 SpecBegin(LTIterativeImageProcessor)
 
 beforeEach(^{
@@ -23,14 +42,19 @@ afterEach(^{
 });
 
 __block LTTexture *input;
+__block LTTexture *auxInput;
 __block LTTexture *output;
 __block LTProgram *program;
+__block NSDictionary *auxiliaryTextures;
 
 beforeEach(^{
   input = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                   precision:LTTexturePrecisionByte
                                    channels:LTTextureChannelsRGBA
                              allocateMemory:YES];
+
+  cv::Mat image = cv::Mat4b::zeros(1, 1);
+  auxInput = [[LTGLTexture alloc] initWithImage:image];
 
   output = [[LTGLTexture alloc] initWithSize:input.size
                                    precision:input.precision
@@ -40,6 +64,8 @@ beforeEach(^{
   program = [[LTProgram alloc]
              initWithVertexSource:[LTShaderStorage passthroughVsh]
              fragmentSource:[LTShaderStorage adderFsh]];
+
+  auxiliaryTextures = @{@"auxTexture": auxInput};
 });
 
 afterEach(^{
@@ -51,7 +77,7 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should initialize with single input and output", ^{
     LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                            initWithProgram:program inputs:@[input]
+                                            initWithProgram:program sourceTexture:input
                                             outputs:@[output]];
 
     expect(processor.iterationsPerOutput).to.equal(@[@1]);
@@ -59,13 +85,22 @@ context(@"initialization", ^{
 
   it(@"should initialize with single input and multiple outputs", ^{
     LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                            initWithProgram:program inputs:@[input]
+                                            initWithProgram:program sourceTexture:input
                                             outputs:@[output, output]];
 
     expect(processor.iterationsPerOutput).to.equal(@[@1, @1]);
   });
 
-  it(@"should not initialize with different outputs", ^{
+  it(@"should initialize with auxiliary textures", ^{
+    LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
+                                            initWithProgram:program sourceTexture:input
+                                            auxiliaryTextures:auxiliaryTextures
+                                            outputs:@[output]];
+
+    expect(processor.iterationsPerOutput).to.equal(@[@1]);
+  });
+
+  it(@"should not initialize with unsimilar outputs", ^{
     LTTexture *different = [[LTGLTexture alloc] initWithSize:input.size + 1
                                                    precision:input.precision
                                                     channels:input.channels
@@ -73,7 +108,7 @@ context(@"initialization", ^{
 
     expect((^{
       __unused LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                                       initWithProgram:program inputs:@[input]
+                                                       initWithProgram:program sourceTexture:input
                                                        outputs:@[output, different]];
     })).to.raise(NSInvalidArgumentException);
   });
@@ -83,7 +118,7 @@ context(@"iterations", ^{
   __block LTIterativeImageProcessor *processor;
 
   beforeEach(^{
-    processor = [[LTIterativeImageProcessor alloc] initWithProgram:program inputs:@[input]
+    processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
                                                            outputs:@[output, output]];
   });
 
@@ -119,16 +154,16 @@ context(@"iterations", ^{
 });
 
 context(@"iteration block", ^{
-  __block LTIterativeImageProcessor *processor;
+  __block LTIterativeImageProcessorStub *processor;
 
   beforeEach(^{
-    processor = [[LTIterativeImageProcessor alloc] initWithProgram:program inputs:@[input]
-                                                           outputs:@[output]];
+    processor = [[LTIterativeImageProcessorStub alloc] initWithProgram:program sourceTexture:input
+                                                               outputs:@[output]];
   });
 
   it(@"should call iteration block each iteration", ^{
     __block NSUInteger blockCallCount = 0;
-    processor.iterationStartedBlock = ^(NSUInteger iteration) {
+    processor.callback = ^(NSUInteger iteration) {
       expect(iteration).to.equal(blockCallCount);
       ++blockCallCount;
     };
@@ -156,7 +191,8 @@ context(@"processing", ^{
 
   context(@"single output", ^{
     beforeEach(^{
-      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program inputs:@[input]
+      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
+                                                   auxiliaryTextures:auxiliaryTextures
                                                              outputs:@[output]];
     });
 
@@ -220,7 +256,8 @@ context(@"processing", ^{
                                                           channels:input.channels
                                                     allocateMemory:YES];
 
-      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program inputs:@[input]
+      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
+                                                   auxiliaryTextures:@{@"auxTexture": auxInput}
                                                              outputs:@[output, anotherOutput]];
     });
 

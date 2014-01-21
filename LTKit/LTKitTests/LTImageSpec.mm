@@ -151,7 +151,7 @@ context(@"uiimage conversion", ^{
   });
 
   it(@"should convert to uiimage with retina scale", ^{
-    UIImage *actualImage = [expected UIImageWithScale:2];
+    UIImage *actualImage = [expected UIImageWithScale:2 copyData:YES];
     LTImage *actual = [[LTImage alloc] initWithImage:actualImage];
 
     expect(actualImage.scale).to.equal(2);

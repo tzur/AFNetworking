@@ -16,6 +16,21 @@
 #import <LTKit/LTDevice.h>
 #import <LTKit/LTShaderStorage.h>
 
+// Image Processing/Base.
+#import <LTKit/LTImageProcessor.h>
+#import <LTKit/LTImageProcessorOutput.h>
+#import <LTKit/LTIterativeImageProcessor.h>
+#import <LTKit/LTOneShotImageProcessor.h>
+
+// Image Processing/Boxes.
+#import <LTKit/LTBilateralFilterProcessor.h>
+
+// Image Processing/Utils.
+#import <LTKit/LTBoundaryCondition.h>
+
+// Images.
+#import <LTKit/LTImage.h>
+
 // GPU/Base.
 #import <LTKit/LTArrayBuffer.h>
 #import <LTKit/LTDrawingContext.h>
@@ -33,12 +48,6 @@
 
 // GPU/Drawers.
 #import <LTKit/LTRectDrawer.h>
-
-// Imaging.
-#import <LTKit/LTImage.h>
-
-// Signal Processing.
-#import <LTKit/LTBoundaryCondition.h>
 
 // UI
 #import <LTKit/LTView.h>
