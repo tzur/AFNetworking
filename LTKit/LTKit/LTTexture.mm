@@ -57,19 +57,30 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 @end
 
 #pragma mark -
+#pragma mark LTTextureBindState
+#pragma mark -
+
+@interface LTTextureBindState : NSObject
+
+/// The active texture unit while binding the texture.
+@property (nonatomic) GLint boundTextureUnit;
+
+/// Set to the previously bound texture, or \c 0 if the texture is not bound.
+@property (nonatomic) GLint previousTexture;
+
+@end
+
+@implementation LTTextureBindState
+@end
+
+#pragma mark -
 #pragma mark LTTexture
 #pragma mark -
 
 @interface LTTexture ()
 
-/// Set to the previously bound texture, or \c 0 if the texture is not bound.
-@property (nonatomic) GLint previousTexture;
-
-/// The active texture unit while binding the texture.
-@property (nonatomic) GLint boundTextureUnit;
-
-/// YES if the texture is currently bound.
-@property (nonatomic) BOOL bound;
+/// Stack which holds the bind state of the texture, for each active bind.
+@property (nonatomic) NSMutableArray *bindStateStack;
 
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
@@ -88,13 +99,12 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 - (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
           channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory {
   if (self = [super init]) {
-    _minFilterInterpolation = LTTextureInterpolationLinear;
-    _magFilterInterpolation = LTTextureInterpolationLinear;
-    _wrap = LTTextureWrapClamp;
     _precision = precision;
     _channels = channels;
     _size = size;
-    
+
+    self.bindStateStack = [[NSMutableArray alloc] init];
+    [self setDefaultValues];
     [self create:allocateMemory];
   }
   return self;
@@ -112,6 +122,12 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 
 - (void)dealloc {
   [self destroy];
+}
+
+- (void)setDefaultValues {
+  _minFilterInterpolation = LTTextureInterpolationLinear;
+  _magFilterInterpolation = LTTextureInterpolationLinear;
+  _wrap = LTTextureWrapClamp;
 }
 
 - (void)load:(const cv::Mat __unused &)image {
@@ -187,47 +203,68 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 }
 
 - (void)bind {
-  if (self.bound) {
+  LTTextureBindState *currentState = [self currentBindState];
+  if ([self alreadyBoundToTextureUnit:currentState.boundTextureUnit]) {
     return;
   }
 
-  glGetIntegerv(GL_ACTIVE_TEXTURE, &_boundTextureUnit);
-  glGetIntegerv(GL_TEXTURE_BINDING_2D, &_previousTexture);
-  glBindTexture(GL_TEXTURE_2D, self.name);
-  
-  self.bound = YES;
+  [self.bindStateStack addObject:currentState];
 }
 
 - (void)unbind {
-  if (!self.bound) {
+  if (!self.bindStateStack.count) {
     return;
   }
 
-  GLint activeTextureUnit;
-  glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTextureUnit);
+  LTTextureBindState *state = [self.bindStateStack lastObject];
+  [self.bindStateStack removeLastObject];
 
-  // Make sure we switch to the active texture unit at the time of binding.
-  if (activeTextureUnit != self.boundTextureUnit) {
-    glActiveTexture(self.boundTextureUnit);
-  }
-  glBindTexture(GL_TEXTURE_2D, self.previousTexture);
-  if (activeTextureUnit != self.boundTextureUnit) {
-    glActiveTexture(activeTextureUnit);
-  }
-  
-  self.previousTexture = 0;
-  self.bound = NO;
+  [self restoreBindState:state];
+}
+
+- (LTTextureBindState *)currentBindState {
+  LTTextureBindState *state = [[LTTextureBindState alloc] init];
+
+  GLint boundTextureUnit, previousTexture;
+  glGetIntegerv(GL_ACTIVE_TEXTURE, &boundTextureUnit);
+  glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
+  glBindTexture(GL_TEXTURE_2D, self.name);
+
+  state.boundTextureUnit = boundTextureUnit;
+  state.previousTexture = previousTexture;
+
+  return state;
+}
+
+- (void)restoreBindState:(LTTextureBindState *)state {
+  glActiveTexture(state.boundTextureUnit);
+  glBindTexture(GL_TEXTURE_2D, state.previousTexture);
 }
 
 - (void)bindAndExecute:(LTVoidBlock)block {
   LTParameterAssert(block);
-  if (self.bound) {
+  if ([self alreadyBoundToCurrentTextureUnit]) {
     block();
   } else {
     [self bind];
     block();
     [self unbind];
   }
+}
+
+- (BOOL)alreadyBoundToCurrentTextureUnit {
+  GLint boundTextureUnit;
+  glGetIntegerv(GL_ACTIVE_TEXTURE, &boundTextureUnit);
+  return [self alreadyBoundToTextureUnit:boundTextureUnit];
+}
+
+- (BOOL)alreadyBoundToTextureUnit:(GLint)textureUnit {
+  for (LTTextureBindState *state in self.bindStateStack) {
+    if (state.boundTextureUnit == textureUnit) {
+      return YES;
+    }
+  }
+  return NO;
 }
 
 - (void)mappedImage:(LTTextureMappedBlock)block {

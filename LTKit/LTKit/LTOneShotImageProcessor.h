@@ -6,10 +6,15 @@
 /// @class LTOneShotImageProcessor
 ///
 /// Processes a single image input with a single processing iteration, and returns a single output.
-@interface LTOneShotImageProcessor : LTIterativeImageProcessor
+@interface LTOneShotImageProcessor : LTGPUImageProcessor
 
-/// Generates a new output based on the current image processor inputs. This method blocks until a
-/// result is available.
-- (LTSingleTextureOutput *)process;
+/// Initializes with a program, a single input texture and a single output texture.
+- (instancetype)initWithProgram:(LTProgram *)program input:(LTTexture *)input
+                      andOutput:(LTTexture *)output;
+
+/// Initializes with a program, a source texture (which defines the coordinate system for
+/// processing), additional input auxiliary textures and an output texture.
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
+              auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output;
 
 @end
