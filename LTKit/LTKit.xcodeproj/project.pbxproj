@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */; };
+		03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */; };
+		03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */; };
+		03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */; };
+		03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF082187B030000904F07 /* LTViewNavigationView.mm */; };
 		282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF084187B030000904F07 /* LTViewPixelGrid.mm */; };
@@ -304,6 +309,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSeparableImageProcessor.h; sourceTree = "<group>"; };
+		03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessor.mm; sourceTree = "<group>"; };
+		03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoxFilterProcessor.h; sourceTree = "<group>"; };
+		03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoxFilterProcessor.mm; sourceTree = "<group>"; };
+		03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.fsh; sourceTree = "<group>"; };
+		03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.vsh; sourceTree = "<group>"; };
+		03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoxFilterProcessorSpec.mm; sourceTree = "<group>"; };
 		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -1016,6 +1028,12 @@
 				8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */,
 				8BD685E91885404600571E75 /* LTBilateralFilter.fsh */,
 				8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */,
+				03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */,
+				03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */,
+				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
+				03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */,
+				03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */,
+				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
 			);
 			name = Boxes;
 			sourceTree = "<group>";
@@ -1024,6 +1042,7 @@
 			isa = PBXGroup;
 			children = (
 				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
+				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 			);
 			name = Boxes;
 			sourceTree = "<group>";
@@ -1293,6 +1312,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
+				03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */,
 				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
 				8BFE439D18759533008B699F /* LTImageProcessorOutput.m in Sources */,
@@ -1313,6 +1334,7 @@
 				8BFE1E0818756A69008035BF /* LTOneShotImageProcessor.mm in Sources */,
 				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
+				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */,
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
@@ -1320,6 +1342,7 @@
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
+				03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */,
 				288AB4061835320200A11FA4 /* LTDevice.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
 				8BABFD69188C5A29004163DA /* LTNextIterationPlacement.mm in Sources */,
@@ -1378,6 +1401,7 @@
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
+				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 			);
