@@ -55,6 +55,11 @@
 /// The ratio of device screen pixels per content pixel at the maximal zoom level.
 @property (nonatomic) CGFloat maxZoomScale;
 
+/// The factor applied to the calculated minZoomScale (fits the image exactly inside the view).
+/// Setting this to values smaller than 1 will make the image smaller than the view when fully
+/// zoomed out, and vice versa. Default is 1.
+@property (nonatomic) CGFloat minZoomScaleFactor;
+
 // Number of different levels of zoom that the double tap switches between.
 @property (nonatomic) NSUInteger doubleTapLevels;
 

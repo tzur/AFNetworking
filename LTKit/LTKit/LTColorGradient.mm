@@ -8,6 +8,7 @@
 @implementation LTColorGradientControlPoint
 
 - (id)initWithPosition:(CGFloat)position color:(GLKVector3)color {
+  LTParameterAssert(position >= 0 && position <= 1, @"Position should be in [0-1] range");
   if (self = [super init]) {
     _position = position;
     _color = color;
@@ -19,7 +20,7 @@
 
 @interface LTColorGradient()
 
-// Array of control points.
+// Array of LTColorGradientControlPoints.
 @property (strong, nonatomic) NSArray *controlPoints;
 
 @end
@@ -29,8 +30,7 @@
 - (id)initWithControlPoints:(NSArray *)controlPoints {
   if (self = [super init]) {
     [self validateInputs:controlPoints];
-    // Prevent tampering with control points from the outside.
-    self.controlPoints = [NSArray arrayWithArray:controlPoints];
+    self.controlPoints = controlPoints;
   }
   return self;
 }
@@ -52,18 +52,20 @@
   }];
 }
 
-- (LTTexture *)toTexure:(NSUInteger)number {
-  LTParameterAssert(number >= 2, @"Number of bins in the texture should be larger than 2");
+- (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints {
+  LTParameterAssert(numberOfPoints >= 2, @"Number of bins in the texture should be larger than 2");
   
   // Initialize the interpolation edges.
-  CGFloat x0 = ((LTColorGradientControlPoint *)self.controlPoints[0]).position;
-  CGFloat x1 = ((LTColorGradientControlPoint *)self.controlPoints[1]).position;
-  GLKVector3 y0 = ((LTColorGradientControlPoint *)self.controlPoints[0]).color;
-  GLKVector3 y1 = ((LTColorGradientControlPoint *)self.controlPoints[1]).color;
+  LTColorGradientControlPoint *p0 = self.controlPoints[0];
+  LTColorGradientControlPoint *p1 = self.controlPoints[1];
+  CGFloat x0 = p0.position;
+  CGFloat x1 = p1.position;
+  GLKVector3 y0 = p0.color;
+  GLKVector3 y1 = p1.color;
   NSUInteger x1PositionIndex = 1;
-  cv::Mat4b mat(1, (uint)number);
-  for (uint i = 0; i < number; ++i) {
-    CGFloat normalizedIndex = ((CGFloat)i) / number;
+  cv::Mat4b mat(1, (int)numberOfPoints);
+  for (uint i = 0; i < numberOfPoints; ++i) {
+    CGFloat normalizedIndex = ((CGFloat)i) / numberOfPoints;
     // Update the interpolation edges, if necessary.
     if (normalizedIndex >= x1 && x1PositionIndex < self.controlPoints.count - 1) {
       x1PositionIndex++;
@@ -77,8 +79,7 @@
     mat(0, i) = cv::Vec4b(color.r, color.g, color.b, 255);
   }
   
-  LTTexture *texture = [[LTGLTexture alloc] initWithImage:mat];
-  return texture;
+  return [[LTGLTexture alloc] initWithImage:mat];
 }
 
 @end
