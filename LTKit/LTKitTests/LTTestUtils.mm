@@ -66,7 +66,7 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
   }
 }
 
-BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
+BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range) {
   if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
     return NO;
@@ -74,9 +74,9 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
 
   switch (expected.type()) {
     case CV_8UC1:
-      return LTCompareMatCells<uchar>(expected, actual, 1);
+      return LTCompareMatCells<uchar>(expected, actual, range);
     case CV_8UC4:
-      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(1, 1, 1, 1));
+      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range));
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
@@ -88,10 +88,10 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual) {
   return LTCompareMat(mat, actual);
 }
 
-BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual) {
+BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual, double range) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
   mat.setTo(expected);
-  return LTFuzzyCompareMat(mat, actual);
+  return LTFuzzyCompareMat(mat, actual, range);
 }
 
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
