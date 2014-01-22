@@ -40,6 +40,12 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
 /// given uniform and a texture exists, it will be overwritten.
 - (void)attachUniform:(NSString *)uniform toTexture:(LTTexture *)texture;
 
+/// Detaches the given uniform name from the texture, and releases it. If the given uniform name is
+/// not attached to any texture, no action is taken.
+///
+/// @param uniform uniform name, which cannot be \c nil.
+- (void)detachUniformFromTexture:(NSString *)uniform;
+
 /// Program to use in this execution context.
 @property (readonly, nonatomic) LTProgram *program;
 

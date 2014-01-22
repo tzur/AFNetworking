@@ -127,12 +127,11 @@
 #pragma mark -
 
 - (UIImage *)UIImage {
-  return [self UIImageWithScale:1];
+  return [self UIImageWithScale:1 copyData:YES];
 }
 
-- (UIImage *)UIImageWithScale:(CGFloat)scale {
-  NSData *data = [NSData dataWithBytesNoCopy:_mat.data length:_mat.total() * _mat.elemSize()
-                                freeWhenDone:NO];
+- (UIImage *)UIImageWithScale:(CGFloat)scale copyData:(BOOL)copyData {
+  NSData *data = [self dataFromMatWithCopying:copyData];
 
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
@@ -153,6 +152,15 @@
   CGColorSpaceRelease(colorSpace);
 
   return image;
+}
+
+- (NSData *)dataFromMatWithCopying:(BOOL)copyData {
+  NSUInteger length = _mat.total() * _mat.elemSize();
+  if (copyData) {
+    return [NSData dataWithBytes:_mat.data length:length];
+  } else {
+    return [NSData dataWithBytesNoCopy:_mat.data length:length freeWhenDone:NO];
+  }
 }
 
 - (CGColorSpaceRef)newColorSpaceForImage {

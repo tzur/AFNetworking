@@ -63,6 +63,8 @@
       self.program[uniform] = @(index);
 
       [textureStack addObject:texture];
+
+      ++index;
     }
 
     [self.vertexArray bindAndExecute:^{
@@ -85,6 +87,11 @@
            "program's uniforms: %@", uniform, self.program.uniforms);
 
   self.uniformToTexture[uniform] = texture;
+}
+
+- (void)detachUniformFromTexture:(NSString *)uniform {
+  LTParameterAssert(uniform);
+  [self.uniformToTexture removeObjectForKey:uniform];
 }
 
 - (void)attachProgram:(LTProgram *)program toVertexArray:(LTVertexArray *)vertexArray {

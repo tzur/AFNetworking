@@ -2,10 +2,14 @@
 // Created by Yaron Inger.
 
 uniform sampler2D sourceTexture;
+uniform sampler2D auxTexture;
 uniform highp float value;
 
 varying highp vec2 vTexcoord;
 
 void main() {
-  gl_FragColor = texture2D(sourceTexture, vTexcoord) + vec4(value, value, value, 0.0);
+  highp vec4 sourceColor = texture2D(sourceTexture, vTexcoord);
+  highp vec4 auxColor = texture2D(auxTexture, vTexcoord);
+
+  gl_FragColor = sourceColor + auxColor + vec4(value);
 }

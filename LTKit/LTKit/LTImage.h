@@ -36,9 +36,14 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
 
 /// Returns a \c UIImage representation of the current image with the given scale factor.
 ///
+/// @param scale the scale factor to create the image with.
+/// @param copyData if \c YES, the underlying image data will be duplicated. Otherwise, the image
+/// will be backed by this \c LTImage data, and will become invalid when this instance will be
+/// destroyed.
+///
 /// @note This is a memory intensive operation, as it requires creation of a new UIImage with the
 /// contents of the current image.
-- (UIImage *)UIImageWithScale:(CGFloat)scale;
+- (UIImage *)UIImageWithScale:(CGFloat)scale copyData:(BOOL)copyData;
 
 /// Size of the image.
 @property (readonly, nonatomic) CGSize size;

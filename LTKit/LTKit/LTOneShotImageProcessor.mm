@@ -4,20 +4,23 @@
 #import "LTOneShotImageProcessor.h"
 
 #import "LTFbo.h"
+#import "LTOneShotProcessingStrategy.h"
 #import "LTRectDrawer.h"
 
 @implementation LTOneShotImageProcessor
 
-- (instancetype)initWithProgram:(LTProgram *)program inputs:(NSArray *)inputs
-                        outputs:(NSArray *)outputs {
-  LTParameterAssert(inputs.count == 1 && outputs.count == 1,
-                    @"Inputs and outputs should contain a single texture");
-  return [super initWithProgram:program inputs:inputs outputs:outputs];
+- (instancetype)initWithProgram:(LTProgram *)program input:(LTTexture *)input
+                      andOutput:(LTTexture *)output {
+  return [self initWithProgram:program sourceTexture:input auxiliaryTextures:nil andOutput:output];
 }
 
-- (LTSingleTextureOutput *)process {
-  LTMultipleTextureOutput *output = [super process];
-  return [[LTSingleTextureOutput alloc] initWithTexture:[output.textures firstObject]];
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
+              auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output {
+  LTOneShotProcessingStrategy *strategy = [[LTOneShotProcessingStrategy alloc]
+                                           initWithInput:sourceTexture andOutput:output];
+  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
+                                                     sourceTexture:sourceTexture];
+  return [super initWithDrawer:rectDrawer strategy:strategy andAuxiliaryTextures:auxiliaryTextures];
 }
 
 @end
