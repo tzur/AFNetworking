@@ -10,7 +10,7 @@
 ///
 /// @param position position of the control point. Should be in [0-1] range.
 /// @param color color of the control point.
-- (id)initWithPosition:(CGFloat)position color:(GLKVector3)color;
+- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color;
 
 /// Position of the point.
 @property (readonly, nonatomic) CGFloat position;
@@ -28,7 +28,7 @@
 ///
 /// @param controlPoints control points that define intensity-to-color mapping. Should include at
 /// least two control points. Positions should be monotonically @a increasing.
-- (id)initWithControlPoints:(NSArray *)controlPoints;
+- (instancetype)initWithControlPoints:(NSArray *)controlPoints;
 
 /// Discretize [0-1] range, sample gradient values and write these values to texture.
 ///
@@ -37,7 +37,7 @@
 /// Using low number of sampling points can result in an inadequate representation of the gradient.
 ///
 /// @return texture that holds the sampled values.
-/// Size of the texture is [numberOfSamplingPoints x 1 x 3]
+/// Size of the texture is [numberOfPoints x 1 x 3]
 - (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints;
 
 @end
