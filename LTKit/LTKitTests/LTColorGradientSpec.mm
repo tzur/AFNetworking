@@ -5,6 +5,7 @@
 
 #import "LTImage.h"
 #import "LTTestUtils.h"
+#import "LTTexture.h"
 
 SpecBegin(LTColorGradient)
 
