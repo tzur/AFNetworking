@@ -72,8 +72,8 @@
   NSUInteger rightEdgeIndex = 1;
   cv::Mat4b mat(1, (int)numberOfPoints);
   
-  for (uint i = 0; i < numberOfPoints; ++i) {
-    CGFloat currentPosition = ((CGFloat)i) / numberOfPoints;
+  for (int col = 0; col < (int)numberOfPoints; ++col) {
+    CGFloat currentPosition = ((CGFloat)col) / numberOfPoints;
     // Update the interpolation edges, only if currentPosition is passed the right edge and there is
     // a control point on the right that can be used as a new edge.
     if (currentPosition >= p1.position && rightEdgeIndex < self.controlPoints.count - 1) {
@@ -83,7 +83,7 @@
     }
     // Interpolate/extrapolate the control points to get the in-between values.
     GLKVector3 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
-    mat(0, i) = cv::Vec4b(color.r, color.g, color.b, 255);
+    mat(0, col) = cv::Vec4b(color.r, color.g, color.b, 255);
   }
   
   return [[LTGLTexture alloc] initWithImage:mat];
