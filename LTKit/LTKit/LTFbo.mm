@@ -4,6 +4,7 @@
 #import "LTFbo.h"
 
 #import "LTDevice.h"
+#import "LTGLContext.h"
 
 @interface LTFbo ()
 
@@ -164,15 +165,9 @@
 #pragma mark -
 
 - (void)clearWithColor:(GLKVector4)color {
-  GLKVector4 previousClearColor;
-  glGetFloatv(GL_COLOR_CLEAR_VALUE, previousClearColor.v);
-
-  glClearColor(color.r, color.g, color.b, color.a);
   [self bindAndDraw:^{
-    glClear(GL_COLOR_BUFFER_BIT);
+    [[LTGLContext currentContext] clearWithColor:color];
   }];
-  glClearColor(previousClearColor.r, previousClearColor.g, previousClearColor.b,
-               previousClearColor.a);
 }
 
 #pragma mark -
