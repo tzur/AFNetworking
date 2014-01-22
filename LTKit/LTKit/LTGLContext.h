@@ -71,6 +71,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveState:(LTVoidBlock)execute;
 
+/// Fills the currently bound framebuffer with the given color.
+- (void)clearWithColor:(GLKVector4)color;
+
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;
 
