@@ -253,9 +253,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [LTGLContext setCurrentContext:self.context];
   
   [self updateContent];
-  GLKVector4 backgroundColor = self.backgroundColor.glkVector;
-  glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  [self.context clearWithColor:self.backgroundColor.glkVector];
   [self drawBackground];
   
   // Get the visible content rectangle, in pixels.
