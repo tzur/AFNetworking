@@ -7,7 +7,7 @@
 
 @implementation LTColorGradientControlPoint
 
-- (id)initWithPosition:(CGFloat)position color:(GLKVector3)color {
+- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color {
   LTParameterAssert(position >= 0 && position <= 1, @"Position should be in [0-1] range");
   if (self = [super init]) {
     _position = position;
@@ -27,7 +27,7 @@
 
 @implementation LTColorGradient
 
-- (id)initWithControlPoints:(NSArray *)controlPoints {
+- (instancetype)initWithControlPoints:(NSArray *)controlPoints {
   if (self = [super init]) {
     [self validateInputs:controlPoints];
     self.controlPoints = controlPoints;
@@ -52,31 +52,38 @@
   }];
 }
 
-- (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints {
-  LTParameterAssert(numberOfPoints >= 2, @"Number of bins in the texture should be larger than 2");
-  
-  // Initialize the interpolation edges.
-  LTColorGradientControlPoint *p0 = self.controlPoints[0];
-  LTColorGradientControlPoint *p1 = self.controlPoints[1];
+// Linearly interpolate/extrapolate two control points to get the values at position.
++ (GLKVector3)sampleWithPoint0:(LTColorGradientControlPoint *)p0
+                        point1:(LTColorGradientControlPoint *)p1 atPosition:(CGFloat)position {
   CGFloat x0 = p0.position;
   CGFloat x1 = p1.position;
   GLKVector3 y0 = p0.color;
   GLKVector3 y1 = p1.color;
-  NSUInteger x1PositionIndex = 1;
+  return std::round((y0 + (position - x0)/(x1 - x0) * (y1 - y0)) * 255.0);
+}
+
+- (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints {
+  LTParameterAssert(numberOfPoints >= 2, @"Number of bins in the texture should be larger than 2");
+  
+  // Initialize the interpolation edges with first two control points.
+  LTColorGradientControlPoint *p0 = self.controlPoints[0];
+  LTColorGradientControlPoint *p1 = self.controlPoints[1];
+  
+  NSUInteger rightEdgeIndex = 1;
   cv::Mat4b mat(1, (int)numberOfPoints);
-  for (uint i = 0; i < numberOfPoints; ++i) {
-    CGFloat normalizedIndex = ((CGFloat)i) / numberOfPoints;
-    // Update the interpolation edges, if necessary.
-    if (normalizedIndex >= x1 && x1PositionIndex < self.controlPoints.count - 1) {
-      x1PositionIndex++;
-      x0 = x1;
-      y0 = y1;
-      x1 = ((LTColorGradientControlPoint *)self.controlPoints[x1PositionIndex]).position;
-      y1 = ((LTColorGradientControlPoint *)self.controlPoints[x1PositionIndex]).color;
+  
+  for (int col = 0; col < (int)numberOfPoints; ++col) {
+    CGFloat currentPosition = ((CGFloat)col) / numberOfPoints;
+    // Update the interpolation edges, only if currentPosition is passed the right edge and there is
+    // a control point on the right that can be used as a new edge.
+    if (currentPosition >= p1.position && rightEdgeIndex < self.controlPoints.count - 1) {
+      rightEdgeIndex++;
+      p0 = p1;
+      p1 = self.controlPoints[rightEdgeIndex];
     }
     // Interpolate/extrapolate the control points to get the in-between values.
-    GLKVector3 color = std::round((y0 + (normalizedIndex - x0)/(x1 - x0) * (y1 - y0)) * 255.0);
-    mat(0, i) = cv::Vec4b(color.r, color.g, color.b, 255);
+    GLKVector3 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
+    mat(0, col) = cv::Vec4b(color.r, color.g, color.b, 255);
   }
   
   return [[LTGLTexture alloc] initWithImage:mat];

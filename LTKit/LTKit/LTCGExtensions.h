@@ -34,14 +34,29 @@ CG_INLINE BOOL CGSizeIsNull(CGSize size) {
 #pragma mark UIEdgeInsets Operations
 #pragma mark -
 
-/// Returns whether two points are equal.
+/// Returns whether two edge insets are equal.
 CG_INLINE BOOL operator==(const UIEdgeInsets &lhs, const UIEdgeInsets &rhs) {
   return UIEdgeInsetsEqualToEdgeInsets(lhs, rhs);
 }
 
-/// Returns whether two points are not equal.
+/// Returns whether two edge insets are not equal.
 CG_INLINE BOOL operator!=(const UIEdgeInsets &lhs, const UIEdgeInsets &rhs) {
   return !(lhs == rhs);
+}
+
+/// Multiply a UIEdgeInsets by a scalar value.
+CG_INLINE UIEdgeInsets operator*(const UIEdgeInsets &lhs, const CGFloat &rhs) {
+  return UIEdgeInsetsMake(lhs.top * rhs, lhs.left * rhs, lhs.bottom * rhs, lhs.right * rhs);
+}
+
+/// Multiply a UIEdgeInsets by a scalar value.
+CG_INLINE UIEdgeInsets operator*(const CGFloat &lhs, const UIEdgeInsets &rhs) {
+  return UIEdgeInsetsMake(rhs.top * lhs, rhs.left * lhs, rhs.bottom * lhs, rhs.right * lhs);
+}
+
+/// Divide a UIEdgeInsets by a scalar value.
+CG_INLINE UIEdgeInsets operator/(const UIEdgeInsets &lhs, const CGFloat &rhs) {
+  return UIEdgeInsetsMake(lhs.top / rhs, lhs.left / rhs, lhs.bottom / rhs, lhs.right / rhs);
 }
 
 #pragma mark -

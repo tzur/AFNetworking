@@ -10,13 +10,18 @@ SpecBegin(LTColorGradient)
 
 static const LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
     initWithPosition:0.0 color:GLKVector3Make(0.0, 0.0, 0.0)];
-static const LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc] initWithPosition:0.25 color:GLKVector3Make(0.25, 0.0, 0.0)];
+static const LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
+    initWithPosition:0.25 color:GLKVector3Make(0.25, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint2 = [[LTColorGradientControlPoint alloc]
     initWithPosition:0.5 color:GLKVector3Make(0.5, 0.0, 0.0)];
-static const LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc] initWithPosition:0.75 color:GLKVector3Make(0.75, 0.0, 0.0)];
-static const LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc] initWithPosition:1.0 color:GLKVector3Make(1.0, 0.0, 0.0)];
-static const LTColorGradientControlPoint *controlPoint5 = [[LTColorGradientControlPoint alloc] initWithPosition:0.75 color:GLKVector3Make(0.5, 0.0, 0.75)];
-static const LTColorGradientControlPoint *controlPoint6 = [[LTColorGradientControlPoint alloc] initWithPosition:1.0 color:GLKVector3Make(0.0, 0.0, 1.0)];
+static const LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc]
+    initWithPosition:0.75 color:GLKVector3Make(0.75, 0.0, 0.0)];
+static const LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
+    initWithPosition:1.0 color:GLKVector3Make(1.0, 0.0, 0.0)];
+static const LTColorGradientControlPoint *controlPoint5 = [[LTColorGradientControlPoint alloc]
+    initWithPosition:0.75 color:GLKVector3Make(0.5, 0.0, 0.75)];
+static const LTColorGradientControlPoint *controlPoint6 = [[LTColorGradientControlPoint alloc]
+    initWithPosition:1.0 color:GLKVector3Make(0.0, 0.0, 1.0)];
 
 NSArray *oneControlPoint = @[controlPoint0];
 NSArray *twoControlPoints = @[controlPoint0, controlPoint4];
@@ -34,7 +39,8 @@ context(@"LTColorGradientControlPoint intialization", ^{
           initWithPosition:2.0 color:GLKVector3Make(0.0, 0.0, 1.0)];
     }).to.raise(NSInvalidArgumentException);
   });
-  it(@"should not initialize on position whithin the range", ^{
+  
+  it(@"should not initialize on position within the range", ^{
     expect(^{
       __unused LTColorGradientControlPoint *controlPoint = [[LTColorGradientControlPoint alloc]
           initWithPosition:0.5 color:GLKVector3Make(0.0, 0.0, 1.0)];
@@ -94,7 +100,7 @@ context(@"writing gradient values to texture", ^{
     [EAGLContext setCurrentContext:nil];
   });
   
-  it(@"should be equal to pre-computed texture, first test", ^{
+  it(@"should be equal to pre-computed red gradient", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
     UIImage *png = LTLoadImageWithName([self class], @"RedGradient.png");
@@ -102,7 +108,7 @@ context(@"writing gradient values to texture", ^{
     expect(LTFuzzyCompareMat(texture.image, image.mat)).to.beTruthy();
   });
   
-  it(@"should be equal to pre-computed texture, second test", ^{
+  it(@"should be equal to pre-computed red/blue gradient", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
     UIImage *png = LTLoadImageWithName([self class], @"RedBlueGradient.png");

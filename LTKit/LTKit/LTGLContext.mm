@@ -206,6 +206,15 @@ typedef struct {
   self.contextStack.pop();
 }
 
+- (void)clearWithColor:(GLKVector4)color {
+  GLKVector4 previousColor;
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, previousColor.v);
+
+  glClearColor(color.r, color.g, color.b, color.a);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor(previousColor.r, previousColor.g, previousColor.b, previousColor.a);
+}
+
 #pragma mark -
 #pragma mark Context properties
 #pragma mark -

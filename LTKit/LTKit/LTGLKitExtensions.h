@@ -15,7 +15,7 @@ GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
 
 /// Returns whether two vectors are equal.
 GLK_INLINE BOOL operator==(const GLKVector4 &lhs, const GLKVector4 &rhs) {
-  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+  return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
 }
 
 /// Returns whether two vectors are not equal.
