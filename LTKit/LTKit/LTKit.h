@@ -49,5 +49,5 @@
 // GPU/Drawers.
 #import <LTKit/LTRectDrawer.h>
 
-// UI
+// UI.
 #import <LTKit/LTView.h>

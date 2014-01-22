@@ -15,7 +15,7 @@
 
 /// This method is called after the content is drawn on the \c LTView, and can be used for drawing
 /// overlays above the content. The given affine transform maps the content coordinates to the
-/// \c LTView's coordinates accordign to the current visible content rect.
+/// \c LTView's coordinates according to the current visible content rect.
 ///
 /// @note The viewport for this drawing is mapped to the view bounds.
 - (void)ltView:(LTView *)view drawOverlayAboveContentWithTransform:(CGAffineTransform)transform;
@@ -38,8 +38,8 @@
 /// framebuffer.
 /// @param screenFramebuffer indicates whether the target is a screen framebuffer.
 ///
-/// @return YES if the delegate drew the content texture, NO in case it didn't (and in this case,
-/// the \c LTView itself will draw the content using the regular drawing method).
+/// @return \c YES if the delegate drew the content texture, \c NO in case it didn't (and in this
+/// case, the \c LTView itself will draw the content using the regular drawing method).
 - (BOOL)ltView:(LTView *)view drawProcessedContent:(LTTexture *)contentTexture
                             withVisibleContentRect:(CGRect)visibleContentRect
                                onScreenFramebuffer:(BOOL)screenFramebuffer;

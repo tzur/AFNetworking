@@ -12,7 +12,6 @@
 #import "LTImage.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
-#import "LTTexture.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
@@ -100,8 +99,12 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
                    state:(LTViewNavigationState *)state {
   LTParameterAssert(context);
   LTParameterAssert(texture);
+  if (self.context) {
+    return;
+  }
   self.context = context;
   self.contentTexture = texture;
+  self.contentRectToUpdate = CGRectNull;
   [self createGlkView];
   [self createNavigationViewWithState:state];
   [self createContentFbo];
@@ -113,10 +116,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)createGlkView {
-  if (!self.context) {
-    [NSException raise:NSInternalInconsistencyException
-                format:@"Could not set up GLKView when LTGLContext is nil", nil];
-  }
+  LTAssert(self.context, @"Could not set up GLKView when LTGLContext is nil");
   
   // Remove previous subview, if allocated, and gesture recognizers assigned to it.
   [self.glkView removeFromSuperview];
@@ -135,12 +135,13 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.glkView.opaque = YES;
   
   self.glkView.autoresizingMask =
-    UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.glkView.multipleTouchEnabled = YES;
   [self addSubview:self.glkView];
 }
 
 - (void)createNavigationViewWithState:(LTViewNavigationState *)state {
+  [self.navigationView removeFromSuperview];
   self.navigationView = [[LTViewNavigationView alloc] initWithFrame:self.bounds
                                                         contentSize:self.contentTexture.size
                                                               state:state];
@@ -151,7 +152,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.navigationView.doubleTapZoomFactor = self.doubleTapZoomFactor;
   
   self.navigationView.autoresizingMask =
-    UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
   [self insertSubview:self.navigationView belowSubview:self.glkView];
   for (UIGestureRecognizer *recognizer in self.navigationView.navigationGestureRecognizers) {
@@ -199,15 +200,14 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)teardown {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kSetNeedsDisplayNotification
                                                 object:self];
-  
   self.pixelGrid = nil;
   self.checkerboardDrawer = nil;
   self.checkerboardTexture = nil;
   self.rectDrawer = nil;
   self.contentFbo = nil;
   self.contentTexture = nil;
-  self.glkView = nil;
   self.navigationView = nil;
+  self.glkView = nil;
   self.context = nil;
 }
 
@@ -283,7 +283,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   // We don't need the GLKView buffers for the next draw, so hint that they can be discarded.
   // (Since we clear the buffers at the beginning of each draw cycle).
-  const GLenum discards[]  = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
+  const GLenum discards[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
   glDiscardFramebufferEXT(GL_FRAMEBUFFER, 2, discards);
 }
 
@@ -392,7 +392,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   /// Blend function used for drawing the checkerboard visualizing the transparent content pixels.
   /// This uses the destination (the content that was already drawn) alpha for the blending factor,
   /// and the source alpha (expected to be 1) for the alpha result.
-  const LTGLContextBlendFuncArgs kLTGLContextBlendFuncChecker = {
+  static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncChecker = {
     .sourceRGB = LTGLContextBlendFuncOneMinusDstAlpha,
     .destinationRGB = LTGLContextBlendFuncOne,
     .sourceAlpha = LTGLContextBlendFuncOne,
@@ -474,11 +474,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
   
-  UIEdgeInsets insets = self.navigationView.contentInset;
-  insets.top *= self.contentScaleFactor;
-  insets.bottom *= self.contentScaleFactor;
-  insets.left *= self.contentScaleFactor;
-  insets.right *= self.contentScaleFactor;
+  UIEdgeInsets insets = self.navigationView.contentInset * self.contentScaleFactor;
   CGRect paddingBox = UIEdgeInsetsInsetRect(self.framebufferBounds, insets);
   CGRect box = CGRectIntersection(visibleBox, paddingBox);
   
@@ -524,7 +520,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     return;
   }
   
-  // TODO:(amit)implement when the appearnce is defined.
+  // TODO:(amit)implement when the appearance is defined.
   [self bringSubviewToFront:self.navigationView];
   self.glkView.hidden = YES;
 }
@@ -582,12 +578,14 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (LTImage *)snapshotView {
-  // TODO:(amit) test performance of this method.
-  UIGraphicsBeginImageContext(self.framebufferSize);
-  [self drawViewHierarchyInRect:self.framebufferBounds afterScreenUpdates:YES];
-  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return [[LTImage alloc] initWithImage:image];
+  // TODO:(amit)replace with LTMMTexture once factory is here.
+  LTGLTexture *texture = [[LTGLTexture alloc] initWithSize:self.framebufferSize
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA
+                                            allocateMemory:YES];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+  [self drawToFbo:fbo];
+  return [[LTImage alloc] initWithMat:[texture image] copy:NO];
 }
 
 #pragma mark -

@@ -10,39 +10,16 @@
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTestUtils.h"
-#import "LTTexture.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
 @interface LTView ()
+@property (strong, nonatomic) GLKView *glkView;
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 @end
-
-/// Blending should match photoshop's "normal" blend mode, assuming input is premultiplied:
-/// C_out = C_new + (1-A_new)*C_old;
-/// A_out = A_old + (1-A_old)*A_new;
-static cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
-  static const CGFloat inv = 1.0 / UCHAR_MAX;
-  cv::Vec4b blended;
-  cv::Vec4b blendedAlpha;
-  cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
-  cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
-  blended[3] = blendedAlpha[3];
-  return blended;
-}
-
-static cv::Rect CGRectToCvRect(CGRect rect) {
-  return cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-}
-
-void dispatch_test(dispatch_block_t block) {
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC),
-                 dispatch_get_main_queue(),
-                 block);
-}
 
 SpecBegin(LTView)
 
@@ -65,16 +42,16 @@ __block cv::Mat4b expectedOutput;
 __block cv::Mat4b resizedContent;
 __block cv::Rect contentAreaInOutput;
 
-const CGSize kViewSize = CGSizeMake(32, 64);
-const CGRect kViewFrame = CGRectFromSize(kViewSize);
-const CGSize kContentSize = CGSizeMake(256, 256);
-const CGRect kContentFrame = CGRectFromSize(kContentSize);
+static const CGSize kViewSize = CGSizeMake(32, 64);
+static const CGRect kViewFrame = CGRectFromSize(kViewSize);
+static const CGSize kContentSize = CGSizeMake(256, 256);
+static const CGRect kContentFrame = CGRectFromSize(kContentSize);
 
-const cv::Vec4b clear(0, 0, 0, 0);
-const cv::Vec4b red(255, 0, 0, 255);
-const cv::Vec4b green(0, 255, 0, 255);
-const cv::Vec4b blue(0, 0, 255, 255);
-const cv::Vec4b yellow(255, 255, 0, 255);
+static const cv::Vec4b clear(0, 0, 0, 0);
+static const cv::Vec4b red(255, 0, 0, 255);
+static const cv::Vec4b green(0, 255, 0, 255);
+static const cv::Vec4b blue(0, 0, 255, 255);
+static const cv::Vec4b yellow(255, 255, 0, 255);
 
 beforeEach(^{
   CGSize framebufferSize = kViewSize * [UIScreen mainScreen].scale;
@@ -103,9 +80,6 @@ afterEach(^{
   fbo = nil;
   outputTexture = nil;
   contentTexture = nil;
-  inputContent = cv::Mat4b();
-  resizedContent = cv::Mat4b();
-  expectedOutput = cv::Mat4b();
 });
 
 context(@"setup", ^{
@@ -133,6 +107,41 @@ context(@"setup", ^{
                           state:view.navigationState];
     expect(otherView.navigationView.visibleContentRect).
         to.equal(view.navigationView.visibleContentRect);
+  });
+
+  it(@"should teardown", ^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    expect(view.glkView).notTo.beNil();
+    [view teardown];
+    expect(view.glkView).to.beNil();
+  });
+  
+  it(@"should do nothing when setup is called twice", ^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    GLKView *glkView = view.glkView;
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    expect(view.glkView).to.beIdenticalTo(glkView);
+  });
+  
+  it(@"should do nothing when teardown is called twice", ^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view teardown];
+    [view teardown];
+    expect(view.glkView).to.beNil();
+  });
+  
+  it(@"should setup after a teardown", ^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    GLKView *glkView = view.glkView;
+    [view teardown];
+    expect(view.glkView).to.beNil();
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    expect(view.glkView).notTo.beNil();
+    expect(view.glkView).notTo.beIdenticalTo(glkView);
   });
 });
 
@@ -322,7 +331,7 @@ context(@"drawing", ^{
       view.navigationView = mock;
       view.pixelGrid = nil;
       
-      cv::resize(inputContent(CGRectToCvRect(targetInPixels)), expectedOutput,
+      cv::resize(inputContent(LTCVRectWithCGRect(targetInPixels)), expectedOutput,
                  cv::Size(expectedOutput.cols, expectedOutput.rows), 0, 0, expectedInterpolation);
       cv::flip(expectedOutput, expectedOutput, 0);
       

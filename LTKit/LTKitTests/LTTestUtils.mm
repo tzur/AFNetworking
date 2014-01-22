@@ -94,6 +94,16 @@ BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actua
   return LTFuzzyCompareMat(mat, actual, range);
 }
 
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
+  static const CGFloat inv = 1.0 / UCHAR_MAX;
+  cv::Vec4b blended;
+  cv::Vec4b blendedAlpha;
+  cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
+  cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
+  blended[3] = blendedAlpha[3];
+  return blended;
+}
+
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
   return cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }

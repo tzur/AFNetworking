@@ -30,6 +30,11 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual);
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
                                 double range = 1);
 
+/// Blending should match photoshop's "normal" blend mode, assuming input is premultiplied:
+/// C_out = C_new + (1-A_new)*C_old;
+/// A_out = A_old + (1-A_old)*A_new;
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor);
+
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
 
