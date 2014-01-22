@@ -38,6 +38,12 @@ context(@"uiedgeinsets operations", ^{
     expect(UIEdgeInsetsMake(1, 2, 3, 4) == UIEdgeInsetsMake(2, 1, 3, 4)).to.beFalsy();
     expect(UIEdgeInsetsMake(1, 2, 3, 4) != UIEdgeInsetsMake(1, 2, 4, 3)).to.beTruthy();
   });
+  
+  it(@"arithemtic", ^{
+    expect(UIEdgeInsetsMake(1, 2, 3, 4) * 2).to.equal(UIEdgeInsetsMake(2, 4, 6, 8));
+    expect(0.5 * UIEdgeInsetsMake(1, 2, 3, 4)).to.equal(UIEdgeInsetsMake(0.5, 1, 1.5, 2));
+    expect(UIEdgeInsetsMake(1, 2, 3, 4) / 0.5).to.equal(UIEdgeInsetsMake(2, 4, 6, 8));
+  });
 });
 
 context(@"cgpoint operations", ^{
