@@ -132,12 +132,6 @@ context(@"properties", ^{
     processor.rangeSigma = kRangeSigma;
     expect(processor.rangeSigma).to.equal(kRangeSigma);
   });
-
-  it(@"iterations per output", ^{
-    NSArray * const kIterationPerOutput = @[@1, @7];
-    processor.iterationsPerOutput = kIterationPerOutput;
-    expect(processor.iterationsPerOutput).to.equal(kIterationPerOutput);
-  });
 });
 
 SpecEnd

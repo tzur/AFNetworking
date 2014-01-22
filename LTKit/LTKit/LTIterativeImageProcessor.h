@@ -13,8 +13,8 @@
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
                         outputs:(NSArray *)outputs;
 
-/// Initializes with a program, a source texture, auxiliary textures to assist processing and an
-/// array of outputs.
+/// Designated initializer: initializes with a program, a source texture, auxiliary textures to
+/// assist processing and an array of outputs.
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures outputs:(NSArray *)outputs;
 
