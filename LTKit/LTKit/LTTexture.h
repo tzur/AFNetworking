@@ -99,6 +99,24 @@ namespace cv {
 /// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
 - (id)initWithImage:(const cv::Mat &)image;
 
+/// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
+/// memory. This is a convenience method which is similar to calling:
+///
+/// @code
+/// [initWithSize:size precision:LTTexturePrecisionByte
+///      channels:LTTextureChannelsRGBA allocateMemory:YES]
+/// @endcode
+- (id)initByteRGBAWithSize:(CGSize)size;
+
+/// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
+/// \c texture. This is a convenience method which is similar to calling:
+///
+/// @code
+/// [initWithSize:texture.size precision:texture.precision
+///      channels:texture.channels allocateMemory:YES]
+/// @endcode
+- (id)initWithPropertiesOf:(LTTexture *)texture;
+
 #pragma mark -
 #pragma mark Abstract methods
 #pragma mark -

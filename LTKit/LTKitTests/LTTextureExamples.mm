@@ -38,6 +38,25 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       expect(texture.channels).to.equal(channels);
     });
 
+    it(@"should create an RGBA8 texture", ^{
+      CGSize size = CGSizeMake(42, 42);
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initByteRGBAWithSize:size];
+
+      expect(texture.size).to.equal(size);
+      expect(texture.precision).to.equal(LTTexturePrecisionByte);
+      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
+    });
+
+    it(@"should create a texture with similar properties", ^{
+      CGSize size = CGSizeMake(42, 42);
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initByteRGBAWithSize:size];
+      LTTexture *similar = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
+
+      expect(similar.size).to.equal(texture.size);
+      expect(similar.precision).to.equal(texture.precision);
+      expect(similar.channels).to.equal(texture.channels);
+    });
+
     itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
                                                                  precision:LTTexturePrecisionByte
