@@ -16,17 +16,13 @@
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures outputs:(NSArray *)outputs {
-  [self verifyProgram:program];
+  LTParameterAssert([program containsUniform:@"texelOffset"]);
   if (self = [super initWithProgram:program sourceTexture:sourceTexture
                   auxiliaryTextures:auxiliaryTextures outputs:outputs]) {
     self.inputSize = sourceTexture.size;
     self.outputSize = [[outputs firstObject] size];
   }
   return self;
-}
-
-- (void)verifyProgram:(LTProgram *)program {
-  LTAssert([program containsUniform:@"texelOffset"]);
 }
 
 - (void)iterationStarted:(NSUInteger)iteration {

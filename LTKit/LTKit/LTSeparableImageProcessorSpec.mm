@@ -22,37 +22,66 @@ afterEach(^{
 });
 
 __block LTGLTexture *source;
-__block LTGLTexture *output;
+__block LTGLTexture *output0;
+__block LTGLTexture *output1;
+__block LTProgram *validProgram;
+__block LTProgram *invalidProgram;
 
 beforeEach(^{
   source = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                    precision:LTTexturePrecisionByte
                                     channels:LTTextureChannelsRGBA
                               allocateMemory:YES];
-  output = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                   precision:LTTexturePrecisionByte
-                                    channels:LTTextureChannelsRGBA
-                              allocateMemory:YES];
+  output0 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                    precision:LTTexturePrecisionByte
+                                     channels:LTTextureChannelsRGBA
+                               allocateMemory:YES];
+  
+  output1 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
+                                    precision:LTTexturePrecisionByte
+                                     channels:LTTextureChannelsRGBA
+                               allocateMemory:YES];
+  
+  validProgram = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage texelOffsetVsh]
+                                          fragmentSource:[LTShaderStorage texelOffsetFsh]];
+  invalidProgram = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
+                                            fragmentSource:[LTShaderStorage passthroughFsh]];
 });
 
 afterEach(^{
   source = nil;
-  output = nil;
+  output0 = nil;
+  output1 = nil;
+  validProgram = nil;
+  invalidProgram = nil;
 });
 
 context(@"initialization", ^{
   it(@"should not initialize on program that doesn't include texelOffset uniform", ^{
     expect(^{
-      LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh] fragmentSource:[LTShaderStorage passthroughFsh]];
-      __unused LTSeparableImageProcessor *processor = [[LTSeparableImageProcessor alloc] initWithProgram:program sourceTexture:source outputs:@[output]];
-    }).to.raise(NSInternalInconsistencyException);
+      __unused LTSeparableImageProcessor *processor =
+          [[LTSeparableImageProcessor alloc] initWithProgram:invalidProgram sourceTexture:source
+                                                     outputs:@[output0]];
+    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should initialize on correct program", ^{
     expect(^{
-      LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage texelOffsetVsh] fragmentSource:[LTShaderStorage texelOffsetFsh]];
-      __unused LTSeparableImageProcessor *processor = [[LTSeparableImageProcessor alloc] initWithProgram:program sourceTexture:source outputs:@[output]];
+      __unused LTSeparableImageProcessor *processor =
+          [[LTSeparableImageProcessor alloc] initWithProgram:validProgram sourceTexture:source
+                                                     outputs:@[output0]];
     }).toNot.raiseAny();
+  });
+});
+
+context(@"properties", ^{
+  fit(@"iterations per output", ^{
+    LTSeparableImageProcessor *processor =
+        [[LTSeparableImageProcessor alloc] initWithProgram:validProgram sourceTexture:source
+                                                   outputs:@[output0, output1]];
+    NSArray * const kIterationPerOutput = @[@1, @7];
+    processor.iterationsPerOutput = kIterationPerOutput;
+    expect(processor.iterationsPerOutput).to.equal(kIterationPerOutput);
   });
 });
 
