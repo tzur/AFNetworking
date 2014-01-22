@@ -4,6 +4,7 @@
 #import "LTFbo.h"
 
 #import "LTDevice.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
@@ -12,12 +13,12 @@
 SpecBegin(LTFbo)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 context(@"initialization", ^{

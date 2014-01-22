@@ -8,19 +8,6 @@
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
 
-/// Blending should match photoshop's "normal" blend mode, assuming input is premultiplied:
-/// C_out = C_new + (1-A_new)*C_old;
-/// A_out = A_old + (1-A_old)*A_new;
-static cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
-  static const CGFloat inv = 1.0 / UCHAR_MAX;
-  cv::Vec4b blended;
-  cv::Vec4b blendedAlpha;
-  cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
-  cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
-  blended[3] = blendedAlpha[3];
-  return blended;
-}
-
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
 /// blending the corners if necessary.
 static void LTBlendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::Vec4b &color,
