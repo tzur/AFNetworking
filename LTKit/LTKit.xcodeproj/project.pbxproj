@@ -67,7 +67,7 @@
 		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
 		8B8E51051861F54600821829 /* LTGLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51041861F54600821829 /* LTGLContext.mm */; };
-		8B8E510E1863216E00821829 /* LTGLContextSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E510D1863216E00821829 /* LTGLContextSpec.m */; };
+		8B8E510E1863216E00821829 /* LTGLContextSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E510D1863216E00821829 /* LTGLContextSpec.mm */; };
 		8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */; };
 		8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */; };
 		8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9851801868A4CF00D680D0 /* LTImage.mm */; };
@@ -397,7 +397,7 @@
 		8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTShaderStorageSpec.m; sourceTree = "<group>"; };
 		8B8E51031861F54600821829 /* LTGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLContext.h; sourceTree = "<group>"; };
 		8B8E51041861F54600821829 /* LTGLContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLContext.mm; sourceTree = "<group>"; };
-		8B8E510D1863216E00821829 /* LTGLContextSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLContextSpec.m; sourceTree = "<group>"; };
+		8B8E510D1863216E00821829 /* LTGLContextSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLContextSpec.mm; sourceTree = "<group>"; };
 		8B98516B186884F300D680D0 /* LTPassthroughShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.fsh; sourceTree = "<group>"; };
 		8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughShader.vsh; sourceTree = "<group>"; };
 		8B98517F1868A4CF00D680D0 /* LTImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImage.h; sourceTree = "<group>"; };
@@ -871,7 +871,7 @@
 				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
 				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
 				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
-				8B8E510D1863216E00821829 /* LTGLContextSpec.m */,
+				8B8E510D1863216E00821829 /* LTGLContextSpec.mm */,
 				8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */,
 				8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */,
 				8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */,
@@ -1361,7 +1361,7 @@
 				8B3F949E1879AEDE00FAA265 /* LTImageProcessorOutputSpec.mm in Sources */,
 				8B8E50F11861CE1800821829 /* Shader.vsh in Sources */,
 				8B3F94A7187AEA0200FAA265 /* Passthrough.fsh in Sources */,
-				8B8E510E1863216E00821829 /* LTGLContextSpec.m in Sources */,
+				8B8E510E1863216E00821829 /* LTGLContextSpec.mm in Sources */,
 				8BABFD73188D2177004163DA /* LTGPUImageProcessorSpec.mm in Sources */,
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
 				282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */,

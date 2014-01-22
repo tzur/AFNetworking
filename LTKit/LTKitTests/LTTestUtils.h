@@ -50,8 +50,3 @@ cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
 /// Returns the path for a resource in the bundle defined by the given \c classInBundle which it
 /// contains. Raises an exception if the image cannot be loaded.
 NSString *LTPathForResource(Class classInBundle, NSString *name);
-
-/// Comparator for \c GLKVector4.
-inline BOOL operator==(const GLKVector4& lhs, const GLKVector4& rhs) {
-  return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
-}

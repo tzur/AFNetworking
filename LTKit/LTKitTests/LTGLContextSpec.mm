@@ -3,6 +3,11 @@
 
 #import "LTGLContext.h"
 
+#import "LTFbo.h"
+#import "LTGLKitExtensions.h"
+#import "LTGLTexture.h"
+#import "LTTestUtils.h"
+
 SpecBegin(LTGLContext)
 
 sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
@@ -57,7 +62,7 @@ context(@"setting context", ^{
     [LTGLContext setCurrentContext:context];
     [LTGLContext setCurrentContext:nil];
 
-    expect([LTGLContext currentContext]).to.equal(nil);
+    expect([LTGLContext currentContext]).to.beNil;
   });
 
   it(@"should not allow changing properties while context is not set", ^{
@@ -268,6 +273,32 @@ context(@"execution", ^{
     }];
 
     expect(context.blendEnabled).to.beFalsy();
+  });
+  
+  it(@"should clear the color buffers", ^{
+    cv::Mat4b mat(10, 10);
+    cv::Vec4b red(255, 0, 0, 255);
+    cv::Vec4b blue(0, 0, 255, 255);
+    mat = red;
+    LTTexture *texture = [[LTGLTexture alloc] initWithImage:mat];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    [fbo bindAndDraw:^{
+      [[LTGLContext currentContext] clearWithColor:GLKVector4FromVec4b(blue)];
+    }];
+    
+    cv::Mat4b expected(mat.rows, mat.cols);
+    expected = blue;
+    expect(LTCompareMat(expected, [texture image])).to.beTruthy();
+  });
+  
+  it(@"should clear the color buffers leaving the clearColor unchanged", ^{
+    const GLKVector4 color1 = GLKVector4Make(1, 0, 0, 1);
+    const GLKVector4 color2 = GLKVector4Make(0, 1, 0, 1);
+    GLKVector4 clearColor;
+    glClearColor(color1.r, color1.g, color1.b, color1.a);
+    [[LTGLContext currentContext] clearWithColor:color2];
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.v);
+    expect(clearColor).to.equal(color1);
   });
 });
 

@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
@@ -33,12 +34,12 @@ typedef void (^LTIterativeImageProcessorStubCallback)(NSUInteger iteration);
 SpecBegin(LTIterativeImageProcessor)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 __block LTTexture *input;

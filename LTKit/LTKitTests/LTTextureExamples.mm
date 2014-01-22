@@ -3,6 +3,7 @@
 
 #import "LTTextureExamples.h"
 
+#import "LTGLKitExtensions.h"
 #import "LTTestUtils.h"
 #import "LTTexture.h"
 
