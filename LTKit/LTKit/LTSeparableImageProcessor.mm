@@ -14,14 +14,19 @@
 
 @implementation LTSeparableImageProcessor
 
-- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)input
-                        outputs:(NSArray *)outputs {
-  if (self = [super initWithProgram:program sourceTexture:input
-                  auxiliaryTextures:@{@"originalTexture": input} outputs:outputs]) {
-    self.inputSize = input.size;
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
+              auxiliaryTextures:(NSDictionary *)auxiliaryTextures outputs:(NSArray *)outputs {
+  [self verifyProgram:program];
+  if (self = [super initWithProgram:program sourceTexture:sourceTexture
+                  auxiliaryTextures:auxiliaryTextures outputs:outputs]) {
+    self.inputSize = sourceTexture.size;
     self.outputSize = [[outputs firstObject] size];
   }
   return self;
+}
+
+- (void)verifyProgram:(LTProgram *)program {
+  LTAssert([program containsUniform:@"texelOffset"]);
 }
 
 - (void)iterationStarted:(NSUInteger)iteration {
