@@ -36,7 +36,6 @@ beforeEach(^{
                                     precision:LTTexturePrecisionByte
                                      channels:LTTextureChannelsRGBA
                                allocateMemory:YES];
-  
   output1 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                     precision:LTTexturePrecisionByte
                                      channels:LTTextureChannelsRGBA
