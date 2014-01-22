@@ -75,7 +75,7 @@ context(@"initialization", ^{
 });
 
 context(@"properties", ^{
-  fit(@"iterations per output", ^{
+  it(@"iterations per output", ^{
     LTSeparableImageProcessor *processor =
         [[LTSeparableImageProcessor alloc] initWithProgram:validProgram sourceTexture:source
                                                    outputs:@[output0, output1]];
