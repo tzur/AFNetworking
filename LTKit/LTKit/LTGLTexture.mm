@@ -117,8 +117,8 @@
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
   LTProgram *program = [[LTProgram alloc]
-                        initWithVertexSource:[LTShaderStorage LTPassthroughShaderVsh]
-                        fragmentSource:[LTShaderStorage LTPassthroughShaderFsh]];
+                        initWithVertexSource:[LTPassthroughShaderVsh source]
+                        fragmentSource:[LTPassthroughShaderFsh source]];
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
   CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);

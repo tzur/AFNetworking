@@ -21,16 +21,16 @@
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTBilateralFilterVsh]
-                                  fragmentSource:[LTShaderStorage LTBilateralFilterFsh]];
+  return [[LTProgram alloc] initWithVertexSource:[LTBilateralFilterVsh source]
+                                  fragmentSource:[LTBilateralFilterFsh source]];
 }
 
 - (void)setRangeSigma:(float)rangeSigma {
-  self[@"rangeSigma"] = @(rangeSigma);
+  self[[LTBilateralFilterFsh rangeSigma]] = @(rangeSigma);
 }
 
 - (float)rangeSigma {
-  return [self[@"rangeSigma"] floatValue];
+  return [self[[LTBilateralFilterFsh rangeSigma]] floatValue];
 }
 
 @end
