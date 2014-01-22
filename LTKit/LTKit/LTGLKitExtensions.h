@@ -23,17 +23,48 @@ GLK_INLINE BOOL operator!=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return !(lhs == rhs);
 }
 
+/// Add two vectors.
+GLK_INLINE GLKVector3 operator+(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return GLKVector3Add(lhs, rhs);
+}
+
+/// Add two vectors.
+GLK_INLINE GLKVector4 operator+(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return GLKVector4Add(lhs, rhs);
+}
+
+/// Subtract two vectors.
+GLK_INLINE GLKVector3 operator-(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return GLKVector3Subtract(lhs, rhs);
+}
+
+/// Subtract two vectors.
+GLK_INLINE GLKVector4 operator-(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return GLKVector4Subtract(lhs, rhs);
+}
+
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const GLfloat &rhs) {
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
+  return GLKVector3MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
+  return GLKVector3MultiplyScalar(rhs, lhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
   return GLKVector4MultiplyScalar(lhs, rhs);
 }
+
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector4 operator*(const GLfloat &lhs, const GLKVector4 &rhs) {
+GLK_INLINE GLKVector4 operator*(const float &lhs, const GLKVector4 &rhs) {
   return GLKVector4MultiplyScalar(rhs, lhs);
 }
 
 /// Divide a vector by a scalar value (element wise).
-GLK_INLINE GLKVector3 operator/(const GLKVector3 &lhs, const GLfloat &rhs) {
+GLK_INLINE GLKVector3 operator/(const GLKVector3 &lhs, const float &rhs) {
   return GLKVector3DivideScalar(lhs, rhs);
 }
 
@@ -61,6 +92,16 @@ namespace std {
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector4 &v) {
     return v.x + v.y + v.z + v.w;
+  }
+  
+  /// Round the elements.
+  CG_INLINE GLKVector3 round(const GLKVector3 &v) {
+    return GLKVector3Make(round(v.x), round(v.y), round(v.z));
+  }
+  
+  /// Round the elements.
+  CG_INLINE GLKVector4 round(const GLKVector4 &v) {
+    return GLKVector4Make(round(v.x), round(v.y), round(v.z), round(v.w));
   }
 }
 
