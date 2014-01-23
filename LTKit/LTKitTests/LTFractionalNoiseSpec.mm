@@ -20,7 +20,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  output = [[LTGLTexture alloc] initWithSize:CGSizeMake(32, 32)
+  output = [[LTGLTexture alloc] initWithSize:CGSizeMake(4, 4)
                                    precision:LTTexturePrecisionByte
                                     channels:LTTextureChannelsRGBA
                               allocateMemory:YES];
@@ -52,22 +52,23 @@ context(@"processing", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on incorrect input", ^{
-    expect(^{
-      LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
-      noise.frequency = 2.0;
-    }).to.raise(NSInvalidArgumentException);
-  });
-  
-  fit(@"should create noise", ^{
+  it(@"should create noise", ^{
     LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
-    noise.amplitude = 0.25;
-    noise.frequency = 1.0;
+    noise.amplitude = 0.5;
+    noise.seed0 = 0.0;
+    noise.seed1 = 0.0;
+    noise.seed2 = 0.0;
     LTSingleTextureOutput *processed = [noise process];
-    LTTexture *tex = processed.texture;
-    tex;
-    noise.amplitude = 0.0;
-    expect(LTFuzzyCompareMat(tex.image, tex.image)).to.beTruthy();
+    
+    // Compare the output of the shader on the simulator on the day of its creation to the current
+    // result.
+    // Important: this test may break upon introducing new architectures, since the test is
+    // dependent on the round-off errors which may differ on a new architecture.
+    // If the test fails, human observer should verify that the noise produced by the round-off
+    // errors on the new architecture is visually appealing and then update the test by saving
+    // the result as a new gold standard on this architecture.
+    cv::Mat image = LTLoadMatWithName([self class], @"SimulatorFractionalNoise.png");
+    expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
   });
 });
 

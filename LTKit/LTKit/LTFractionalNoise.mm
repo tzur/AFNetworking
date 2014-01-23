@@ -14,23 +14,13 @@
   LTProgram *program =
     [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTFractionalNoiseVsh]
                              fragmentSource:[LTShaderStorage LTFractionalNoiseFsh]];
-  // TODO:(zeev) Hack - remove this hack once Yaron patches the processor to recieve nil as input.
-  LTTexture *input = [[LTGLTexture alloc] initWithSize:CGSizeMake(32, 32)
-                                             precision:LTTexturePrecisionByte
-                                              channels:LTTextureChannelsRGBA
-                                        allocateMemory:YES];
-  
-  if (self = [super initWithProgram:program inputs:@[input] outputs:@[output]]) {
-    // Default values correspond to pronounced, high-frequency noise.
-    self.frequency = 1.0;
+
+  if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:nil
+                          andOutput:output]) {
     self.amplitude = 1.0;
+    [self updateSeeds];
   }
   return self;
-}
-
-- (void)setFrequency:(CGFloat)frequency {
-  LTParameterAssert(frequency >= 0 && frequency <= 1, @"Frequency should be between 0 and 1");
-  _frequency = frequency;
 }
 
 - (void)setAmplitude:(CGFloat)amplitude {
@@ -39,13 +29,31 @@
   self[@"amplitude"] = @(amplitude);
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)setSeed0:(CGFloat)seed0 {
+  _seed0 = seed0;
+  self[@"seed0"] = @(seed0);
+}
+
+- (void)setSeed1:(CGFloat)seed1 {
+  _seed1 = seed1;
+  self[@"seed1"] = @(seed1);
+}
+
+- (void)setSeed2:(CGFloat)seed2 {
+  _seed2 = seed2;
+  self[@"seed2"] = @(seed2);
+}
+
+- (void)updateSeeds {
   // Update random seed values.
   // The drand48() returns non-negative, double-precision, floating-point values, uniformly
   // distributed over the interval [0.0 , 1.0].
   self[@"seed0"] = @(drand48());
   self[@"seed1"] = @(drand48());
   self[@"seed2"] = @(drand48());
+}
+
+- (id<LTImageProcessorOutput>)process {
   return [super process];
 }
 
