@@ -15,27 +15,12 @@ class Shader(object):
         self.__basename = os.path.basename(filename)
         self._contents = file(filename, "rb").read()
         self.__strip_comments()
-        self.__preprocess()
 
     def __strip_comments(self):
         """Removes comments, empty lines and trailing spaces in code."""
         code_without_comments = re.sub("//.*", "", self.contents)
         self.contents = "".join(
             [line.strip() for line in code_without_comments.split("\n") if len(line.strip())])
-
-    def __preprocess(self):
-        self.contents = re.sub("#import\\s+\"([\\w_]+\\.(?:fsh|vsh))\"",
-                               lambda x: self.__include_file(x),
-                               self.contents)
-
-    def __include_file(self, x):
-        filename = x.group(1)
-        file_to_include = os.path.join(self.__basedir, filename)
-        try:
-            return Shader(file_to_include).contents
-        except IOError, e:
-            print "error: cannot find #import-ed file \"%s\"." % file_to_include
-            raise ShaderParseException(e)
 
     @property
     def contents(self):
