@@ -120,6 +120,16 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   return self;
 }
 
+- (id)initByteRGBAWithSize:(CGSize)size {
+  return [self initWithSize:size precision:LTTexturePrecisionByte
+                   channels:LTTextureChannelsRGBA allocateMemory:YES];
+}
+
+- (id)initWithPropertiesOf:(LTTexture *)texture {
+  return [self initWithSize:texture.size precision:texture.precision
+                   channels:texture.channels allocateMemory:YES];
+}
+
 - (void)dealloc {
   [self destroy];
 }

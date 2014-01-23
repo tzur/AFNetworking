@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTTexture.h"
+@class LTTexture;
 
 /// Color gradient control point is a mapping of a single point in the intensity domain to color.
 @interface LTColorGradientControlPoint : NSObject
