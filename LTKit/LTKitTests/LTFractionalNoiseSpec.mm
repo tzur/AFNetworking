@@ -52,9 +52,9 @@ context(@"processing", ^{
   it(@"should create noise", ^{
     LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
     noise.amplitude = 0.5;
-    noise.seed0 = 0.0;
-    noise.seed1 = 0.0;
-    noise.seed2 = 0.0;
+    noise.horizontalSeed = 0.0;
+    noise.verticalSeed = 0.0;
+    noise.velocitySeed = 0.0;
     LTSingleTextureOutput *processed = [noise process];
     
     // Compare the output of the shader on the simulator on the day of its creation to the current

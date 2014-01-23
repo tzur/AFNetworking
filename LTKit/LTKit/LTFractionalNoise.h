@@ -8,9 +8,12 @@
 /// Creates high-frequency pseudo-noise by exploiting numerical issues of trigonometric functions.
 @interface LTFractionalNoise : LTOneShotImageProcessor
 
+/// Initializes a noise processor with an output texture. By default, the amplitude of the noise is
+/// 1.0.
 - (instancetype)initWithOutput:(LTTexture *)output;
 
-/// Update seeds in the shader a
+/// Update seeds in the shader, by setting a random value to each on of the seed properties:
+/// horizontalSeed, verticalSeed and velocitySeed.
 - (void)updateSeeds;
 
 /// Controls how strong the noise is. Should be grater than 0.
@@ -18,14 +21,15 @@
 
 /// Seed properties that determine the exact values of the noise. Can be used in order to re-create
 /// the same noise appearance consistently.
+
 /// Horizontal seed.
-@property (nonatomic) CGFloat seed0;
+@property (nonatomic) CGFloat horizontalSeed;
 
 /// Vertical seed.
-@property (nonatomic) CGFloat seed1;
+@property (nonatomic) CGFloat verticalSeed;
 
 /// Velocity seed.
-@property (nonatomic) CGFloat seed2;
+@property (nonatomic) CGFloat velocitySeed;
 
 @end
 

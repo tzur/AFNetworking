@@ -29,28 +29,28 @@
   self[@"amplitude"] = @(amplitude);
 }
 
-- (void)setSeed0:(CGFloat)seed0 {
-  _seed0 = seed0;
-  self[@"seed0"] = @(seed0);
+- (void)setHorizontalSeed:(CGFloat)horizontalSeed {
+  _horizontalSeed = horizontalSeed;
+  self[@"horizontalSeed"] = @(horizontalSeed);
 }
 
-- (void)setSeed1:(CGFloat)seed1 {
-  _seed1 = seed1;
-  self[@"seed1"] = @(seed1);
+- (void)setVerticalSeed:(CGFloat)verticalSeed {
+  _verticalSeed = verticalSeed;
+  self[@"verticalSeed"] = @(verticalSeed);
 }
 
-- (void)setSeed2:(CGFloat)seed2 {
-  _seed2 = seed2;
-  self[@"seed2"] = @(seed2);
+- (void)setVelocitySeed:(CGFloat)velocitySeed {
+  _velocitySeed = velocitySeed;
+  self[@"velocitySeed"] = @(velocitySeed);
 }
 
 - (void)updateSeeds {
   // Update random seed values.
   // The drand48() returns non-negative, double-precision, floating-point values, uniformly
   // distributed over the interval [0.0 , 1.0].
-  self[@"seed0"] = @(drand48());
-  self[@"seed1"] = @(drand48());
-  self[@"seed2"] = @(drand48());
+  self[@"horizontalSeed"] = @(drand48());
+  self[@"verticalSeed"] = @(drand48());
+  self[@"velocitySeed"] = @(drand48());
 }
 
 - (id<LTImageProcessorOutput>)process {
