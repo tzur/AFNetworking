@@ -20,10 +20,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  output = [[LTGLTexture alloc] initWithSize:CGSizeMake(4, 4)
-                                   precision:LTTexturePrecisionByte
-                                    channels:LTTextureChannelsRGBA
-                              allocateMemory:YES];
+  output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(4, 4)];
 });
 
 afterEach(^{

@@ -12,8 +12,8 @@
 
 - (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
-    [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTFractionalNoiseVsh]
-                             fragmentSource:[LTShaderStorage LTFractionalNoiseFsh]];
+    [[LTProgram alloc] initWithVertexSource:[LTFractionalNoiseVsh source]
+                             fragmentSource:[LTFractionalNoiseFsh source]];
 
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:nil
                           andOutput:output]) {
