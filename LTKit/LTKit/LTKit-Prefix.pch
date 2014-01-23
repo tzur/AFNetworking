@@ -12,15 +12,17 @@
   #import "LTLogger.h"
   #import "LTTypedefs.h"
   #import "NSValue+GLKitExtensions.h"
+
+  #import <extobjc/extobjc.h>
 #endif
 
 #ifdef __cplusplus
-  #import "LTEasyBoxing.h"
-
   // Ignore CvForestTree::train and CvBoostTree::train warnings.
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Woverloaded-virtual"
   #import <opencv2/opencv.hpp>
   #pragma clang diagnostic pop
-  #import <extobjc/extobjc.h>
+
+  #import "LTEasyBoxing.h"
+  #import "LTCVHalfFloatExtension.h"
 #endif
