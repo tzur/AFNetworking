@@ -429,7 +429,7 @@ context(@"custom uniforms", ^{
 
   it(@"should set and retrieve uniform", ^{
     GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
-    NSValue *value = [NSValue valueWithGLKVector4:outputColor];
+    NSValue *value = $(outputColor);
     rectDrawer[@"outputColor"] = value;
 
     expect(rectDrawer[@"outputColor"]).to.equal(value);
@@ -437,7 +437,7 @@ context(@"custom uniforms", ^{
 
   it(@"should draw given color to target", ^{
     GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
-    rectDrawer[@"outputColor"] = [NSValue valueWithGLKVector4:outputColor];
+    rectDrawer[@"outputColor"] = $(outputColor);
 
     [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                 fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];

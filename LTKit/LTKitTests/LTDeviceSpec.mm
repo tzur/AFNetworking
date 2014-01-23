@@ -153,7 +153,7 @@ context(@"platform info", ^{
     id screen = [OCMockObject mockForClass:[UIScreen class]];
     
     CGRect bounds = CGRectMake(0, 0, 320, 568);
-    [[[screen stub] andReturnValue:[NSValue valueWithCGRect:bounds]] bounds];
+    [[[screen stub] andReturnValue:$(bounds)] bounds];
     
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:screen
@@ -167,7 +167,7 @@ context(@"platform info", ^{
     id screen = [OCMockObject mockForClass:[UIScreen class]];
 
     CGRect bounds = CGRectMake(0, 0, 320, 460);
-    [[[screen stub] andReturnValue:[NSValue valueWithCGRect:bounds]] bounds];
+    [[[screen stub] andReturnValue:$(bounds)] bounds];
 
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:screen

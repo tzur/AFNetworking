@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03AD295B188FA97800516D14 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
-		03AD295C188FA97800516D14 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
-		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
-		03BBB32C1887BB8C001E7703 /* LTColorGradientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */; };
 		030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
@@ -19,6 +15,10 @@
 		03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */; };
 		03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */; };
 		03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */; };
+		03AD295B188FA97800516D14 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
+		03AD295C188FA97800516D14 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
+		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
+		03BBB32C1887BB8C001E7703 /* LTColorGradientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF085187B030000904F07 /* LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF07E187B030000904F07 /* LTView.mm */; };
@@ -84,6 +84,7 @@
 		8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */; };
 		8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9851801868A4CF00D680D0 /* LTImage.mm */; };
 		8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */; };
+		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -319,11 +320,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
-		03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradient.mm; sourceTree = "<group>"; };
-		03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradientSpec.mm; sourceTree = "<group>"; };
-		03BBB360188BE6C1001E7703 /* RedBlueGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBlueGradient.png; path = Resources/RedBlueGradient.png; sourceTree = "<group>"; };
-		03BBB361188BE6C1001E7703 /* RedGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedGradient.png; path = Resources/RedGradient.png; sourceTree = "<group>"; };
 		030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
@@ -334,6 +330,11 @@
 		03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.fsh; sourceTree = "<group>"; };
 		03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.vsh; sourceTree = "<group>"; };
 		03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoxFilterProcessorSpec.mm; sourceTree = "<group>"; };
+		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
+		03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradient.mm; sourceTree = "<group>"; };
+		03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradientSpec.mm; sourceTree = "<group>"; };
+		03BBB360188BE6C1001E7703 /* RedBlueGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBlueGradient.png; path = Resources/RedBlueGradient.png; sourceTree = "<group>"; };
+		03BBB361188BE6C1001E7703 /* RedGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedGradient.png; path = Resources/RedGradient.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
 		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -430,6 +431,8 @@
 		8B98517F1868A4CF00D680D0 /* LTImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImage.h; sourceTree = "<group>"; };
 		8B9851801868A4CF00D680D0 /* LTImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImage.mm; sourceTree = "<group>"; };
 		8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageSpec.mm; sourceTree = "<group>"; };
+		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
+		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -703,6 +706,7 @@
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
 				2836211E186C58DC00665ED9 /* LTCGExtensions.h */,
 				2836211F186C58DC00665ED9 /* LTCGExtensions.m */,
+				8B9D3FB718910941001A964D /* LTEasyBoxing.h */,
 				8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */,
 				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
 				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
@@ -799,6 +803,7 @@
 			isa = PBXGroup;
 			children = (
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
+				8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.m */,
 			);
 			name = "Supporting Files";
@@ -1468,6 +1473,7 @@
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
+				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

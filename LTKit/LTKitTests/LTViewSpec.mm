@@ -242,7 +242,7 @@ context(@"drawing", ^{
     CGRect bottomRightPixel = CGRectFromOriginAndSize(CGPointMake(contentSizeInPoints.width - 1,
                                                                   contentSizeInPoints.height - 1),
                                                       pixelSize);
-    [[[mock stub] andReturnValue:[NSValue valueWithCGRect:bottomRightPixel]] visibleContentRect];
+    [[[mock stub] andReturnValue:$(bottomRightPixel)] visibleContentRect];
     view.navigationView = mock;
     view.pixelGrid = nil;
     
@@ -327,7 +327,7 @@ context(@"drawing", ^{
       CGRect targetInPixels = CGRectCenteredAt(CGRectCenter(kContentFrame),
                                                kViewSize / zoomFactor * view.contentScaleFactor);
       
-      [[[mock stub] andReturnValue:[NSValue valueWithCGRect:targetInPoints]] visibleContentRect];
+      [[[mock stub] andReturnValue:$(targetInPoints)] visibleContentRect];
       view.navigationView = mock;
       view.pixelGrid = nil;
       
