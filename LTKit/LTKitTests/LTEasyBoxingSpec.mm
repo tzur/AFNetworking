@@ -75,7 +75,7 @@ context(@"wrapping", ^{
     NSValue *value = $(expected);
     GLKVector3 actual = [value GLKVector3Value];
 
-    expect(expected).to.equal(actual);
+    expect(GLKVector3AllEqualToVector3(expected, actual)).to.beTruthy();
   });
 
   it(@"should box GLKVector4", ^{
@@ -83,7 +83,7 @@ context(@"wrapping", ^{
     NSValue *value = $(expected);
     GLKVector4 actual = [value GLKVector4Value];
 
-    expect(expected).to.equal(actual);
+    expect(GLKVector4AllEqualToVector4(expected, actual)).to.beTruthy();
   });
 
   it(@"should box GLKMatrix2", ^{
