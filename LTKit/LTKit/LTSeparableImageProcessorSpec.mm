@@ -41,10 +41,10 @@ beforeEach(^{
                                      channels:LTTextureChannelsRGBA
                                allocateMemory:YES];
   
-  validProgram = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage texelOffsetVsh]
-                                          fragmentSource:[LTShaderStorage texelOffsetFsh]];
-  invalidProgram = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
-                                            fragmentSource:[LTShaderStorage passthroughFsh]];
+  validProgram = [[LTProgram alloc] initWithVertexSource:[TexelOffsetVsh source]
+                                          fragmentSource:[TexelOffsetFsh source]];
+  invalidProgram = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                            fragmentSource:[PassthroughFsh source]];
 });
 
 afterEach(^{

@@ -6,18 +6,19 @@
 SpecBegin(LTShaderStorage)
 
 it(@"should load shader contents with static call", ^{
-  NSString *shader = [LTShaderStorage shaderVsh];
+  NSString *shader = [ShaderVsh source];
 
   expect(shader).to.contain(@"main");
   expect(shader).to.contain(@"vec4");
   expect(shader).to.contain(@"gl_Position");
 });
 
-it(@"should load shader contents with dynamic lookup", ^{
-  NSString *staticShader = [LTShaderStorage shaderVsh];
-  NSString *dynamicShader = [LTShaderStorage shaderSourceWithName:@"shaderVsh"];
+it(@"should contain shader uniforms", ^{
+  expect([ShaderVsh value]).to.equal(@"value");
+});
 
-  expect(dynamicShader).to.equal(staticShader);
+it(@"should contain shader attributes", ^{
+  expect([ShaderVsh position]).to.equal(@"position");
 });
 
 SpecEnd
