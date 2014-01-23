@@ -58,9 +58,9 @@ context(@"getting and setting uniforms and attributes", ^{
     NSNumber *intValue = @(7);
     NSNumber *floatValue = @(1);
     
-    NSValue *vec2 = [NSValue valueWithGLKVector2:GLKVector2Make(1.f, 2.f)];
-    NSValue *vec3 = [NSValue valueWithGLKVector3:GLKVector3Make(1.f, 2.f, 3.f)];
-    NSValue *vec4 = [NSValue valueWithGLKVector4:GLKVector4Make(1.f, 2.f, 3.f, 4.f)];
+    NSValue *vec2 = $(GLKVector2Make(1.f, 2.f));
+    NSValue *vec3 = $(GLKVector3Make(1.f, 2.f, 3.f));
+    NSValue *vec4 = $(GLKVector4Make(1.f, 2.f, 3.f, 4.f));
     
     GLKMatrix2 m2;
     for (int i = 0; i < 4; ++i) {
@@ -75,9 +75,9 @@ context(@"getting and setting uniforms and attributes", ^{
       m4.m[i] = (float)i;
     }
     
-    NSValue *mat2 = [NSValue valueWithGLKMatrix2:m2];
-    NSValue *mat3 = [NSValue valueWithGLKMatrix3:m3];
-    NSValue *mat4 = [NSValue valueWithGLKMatrix4:m4];
+    NSValue *mat2 = $(m2);
+    NSValue *mat3 = $(m3);
+    NSValue *mat4 = $(m4);
     
     program[@"uInt"] = intValue;
     program[@"uFloat"] = floatValue;

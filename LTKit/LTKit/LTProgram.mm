@@ -364,32 +364,32 @@
     case GL_FLOAT_VEC2: {
       GLKVector2 value;
       glGetUniformfv(self.name, object.index, value.v);
-      return [NSValue valueWithGLKVector2:value];
+      return $(value);
     }
     case GL_FLOAT_VEC3: {
       GLKVector3 value;
       glGetUniformfv(self.name, object.index, value.v);
-      return [NSValue valueWithGLKVector3:value];
+      return $(value);
     }
     case GL_FLOAT_VEC4: {
       GLKVector4 value;
       glGetUniformfv(self.name, object.index, value.v);
-      return [NSValue valueWithGLKVector4:value];
+      return $(value);
     }
     case GL_FLOAT_MAT2: {
       GLKMatrix2 value;
       glGetUniformfv(self.name, object.index, value.m);
-      return [NSValue valueWithGLKMatrix2:value];
+      return $(value);
     }
     case GL_FLOAT_MAT3: {
       GLKMatrix3 value;
       glGetUniformfv(self.name, object.index, value.m);
-      return [NSValue valueWithGLKMatrix3:value];
+      return $(value);
     }
     case GL_FLOAT_MAT4: {
       GLKMatrix4 value;
       glGetUniformfv(self.name, object.index, value.m);
-      return [NSValue valueWithGLKMatrix4:value];
+      return $(value);
     }
     default:
       LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, name);

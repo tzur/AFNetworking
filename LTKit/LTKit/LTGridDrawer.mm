@@ -178,9 +178,8 @@ static const CGFloat kDefaultWidth = 1.0;
 
 - (void)setProjectionAndPixelSizeForFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
-  self.program[@"pixelSize"] =
-      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, 2 / size.height)];
+  self.program[@"projection"] = $(projection);
+  self.program[@"pixelSize"] = $(GLKVector2Make(2 / size.width, 2 / size.height));
 }
 
 /// Since we're using a flipped projection matrix, the original order of vertices will generate a
@@ -191,16 +190,14 @@ static const CGFloat kDefaultWidth = 1.0;
 /// the desired results.
 - (void)setProjectionAndPixelSizeForScreenFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
-  self.program[@"pixelSize"] =
-      [NSValue valueWithGLKVector2:GLKVector2Make(2 / size.width, -2 / size.height)];
+  self.program[@"projection"] = $(projection);
+  self.program[@"pixelSize"] = $(GLKVector2Make(2 / size.width, -2 / size.height));
 }
 
 - (void)setUniformsForGridRegion:(CGRect)region framebufferSize:(CGSize)size {
-  self.program[@"modelview"] =
-      [NSValue valueWithGLKMatrix4:[self modelviewForGridRegion:region targetSize:size]];
+  self.program[@"modelview"] = $([self modelviewForGridRegion:region targetSize:size]);
   self.program[@"width"] = @(self.width);
-  self.program[@"color"] = [NSValue valueWithGLKVector4:self.color * self.opacity];
+  self.program[@"color"] = $(self.color * self.opacity);
 }
 
 - (GLKMatrix4)modelviewForGridRegion:(CGRect)region targetSize:(CGSize)targetSize {

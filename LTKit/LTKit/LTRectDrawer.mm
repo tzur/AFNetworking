@@ -127,7 +127,7 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
   [fbo bindAndDraw:^{
     GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, fbo.size.width, 0, fbo.size.height, -1, 1);
-    self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+    self.program[@"projection"] = $(projection);
     [self drawRect:targetRect fromRect:sourceRect];
   }];
 }
@@ -138,7 +138,7 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
   // a back-faced polygon by default, as the test is performed on the projected coordinates.
   // therefore we use the clockwise front facing polygons mode while drawing.
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = [NSValue valueWithGLKMatrix4:projection];
+  self.program[@"projection"] = $(projection);
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.clockwiseFrontFacingPolygons = YES;
@@ -148,10 +148,10 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
   GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
-  self.program[@"modelview"] = [NSValue valueWithGLKMatrix4:modelview];
+  self.program[@"modelview"] = $(modelview);
 
   GLKMatrix3 texture = [self matrix3ForTextureRect:sourceRect];
-  self.program[@"texture"] = [NSValue valueWithGLKMatrix3:texture];
+  self.program[@"texture"] = $(texture);
 
   [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
 }
