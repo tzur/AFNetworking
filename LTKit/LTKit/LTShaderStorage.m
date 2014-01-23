@@ -31,20 +31,4 @@ static NSString * const kEncryptionKey = LTKIT_SHADER_ENCRYPTION_KEY;
   return [[NSString alloc] initWithData:decrypted encoding:NSUTF8StringEncoding];
 }
 
-+ (NSString *)shaderSourceWithName:(NSString *)name {
-  // Dynamically dispatch the appropriate class method.
-
-  SEL selector = NSSelectorFromString(name);
-  LTParameterAssert(selector && [[self class] respondsToSelector:selector],
-                    @"Given shader name is not present in the shader storage");
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-  id result = [[self class] performSelector:selector];
-#pragma clang diagnostic pop
-  LTAssert([result isKindOfClass:[NSString class]], @"Selector returned a non-NSString value");
-
-  return result;
-}
-
 @end

@@ -62,8 +62,8 @@ static const CGFloat kDefaultWidth = 1.0;
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTGridDrawerVsh]
-                                  fragmentSource:[LTShaderStorage LTGridDrawerFsh]];
+  return [[LTProgram alloc] initWithVertexSource:[LTGridDrawerVsh source]
+                                  fragmentSource:[LTGridDrawerFsh source]];
 }
 
 - (LTDrawingContext *)createDrawingContext {

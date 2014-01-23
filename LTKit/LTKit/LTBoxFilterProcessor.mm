@@ -15,8 +15,8 @@
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTShaderStorage LTBoxFilterVsh]
-                                  fragmentSource:[LTShaderStorage LTBoxFilterFsh]];
+  return [[LTProgram alloc] initWithVertexSource:[LTBoxFilterVsh source]
+                                  fragmentSource:[LTBoxFilterFsh source]];
 }
 
 @end

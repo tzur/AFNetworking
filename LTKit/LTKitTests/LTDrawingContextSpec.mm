@@ -116,11 +116,12 @@ context(@"texture binding while drawing", ^{
     textureA = [OCMockObject niceMockForClass:[LTTexture class]];
     textureB = [OCMockObject niceMockForClass:[LTTexture class]];
 
-    program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
-                                       fragmentSource:[LTShaderStorage twoInputTexturesFsh]];
+    program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                       fragmentSource:[TwoInputTexturesFsh source]];
     programMock = [OCMockObject partialMockForObject:program];
 
-    NSDictionary *uniformMap = @{@"textureA": textureA, @"textureB": textureB};
+    NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
+                                 [TwoInputTexturesFsh textureB]: textureB};
     context = [[LTDrawingContext alloc] initWithProgram:program
                                             vertexArray:vertexArray
                                        uniformToTexture:uniformMap];

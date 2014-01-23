@@ -48,10 +48,10 @@ context(@"host memory mapped texture", ^{
   beforeEach(^{
     fbo = [[LTFbo alloc] initWithTexture:target];
 
-    LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTShaderStorage passthroughVsh]
-                                                  fragmentSource:[LTShaderStorage colorizeFsh]];
+    LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                                  fragmentSource:[ColorizeFsh source]];
     drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:target];
-    drawer[@"color"] = [NSValue valueWithGLKVector4:GLKVector4Make(1.0, 0.0, 0.0, 1.0)];
+    drawer[[ColorizeFsh color]] = [NSValue valueWithGLKVector4:GLKVector4Make(1.0, 0.0, 0.0, 1.0)];
   });
 
   afterEach(^{

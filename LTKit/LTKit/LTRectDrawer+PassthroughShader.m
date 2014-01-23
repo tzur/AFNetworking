@@ -11,8 +11,8 @@
 
 - (instancetype)initWithSourceTexture:(LTTexture *)texture {
   return [self initWithProgram:[[LTProgram alloc]
-                                initWithVertexSource:[LTShaderStorage LTPassthroughShaderVsh]
-                                      fragmentSource:[LTShaderStorage LTPassthroughShaderFsh]]
+                                initWithVertexSource:[LTPassthroughShaderVsh source]
+                                      fragmentSource:[LTPassthroughShaderFsh source]]
                  sourceTexture:texture];
 }
 

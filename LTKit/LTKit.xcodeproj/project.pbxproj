@@ -157,7 +157,7 @@
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
 		};
 		8B8E50EE1861CCEC00821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -169,7 +169,7 @@
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
 		};
 		8B8E50F21861CE7600821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -181,7 +181,7 @@
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
 		};
 		8B8E50F31861CE7700821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -193,7 +193,7 @@
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
 				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/encryption/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
 		};
 /* End PBXBuildRule section */
 

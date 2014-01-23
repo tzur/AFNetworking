@@ -44,8 +44,8 @@ beforeEach(^{
                               allocateMemory:YES];
 
   program = [[LTProgram alloc]
-             initWithVertexSource:[LTShaderStorage passthroughVsh]
-             fragmentSource:[LTShaderStorage adderFsh]];
+             initWithVertexSource:[PassthroughVsh source]
+             fragmentSource:[AdderFsh source]];
 });
 
 afterEach(^{
