@@ -405,4 +405,8 @@ static NSDictionary * const kDeviceTypeToString = @{
   return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_float"];
 }
 
+- (BOOL)supportsRGTextures {
+  return [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
+}
+
 @end
