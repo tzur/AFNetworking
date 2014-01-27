@@ -3,7 +3,7 @@
 
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
-#import "LTGLTexture.h"
+#import "LTTexture+Factory.h"
 
 @implementation LTColorGradientControlPoint
 
@@ -86,7 +86,7 @@
     mat(0, col) = cv::Vec4b(color.r, color.g, color.b, 255);
   }
   
-  return [[LTGLTexture alloc] initWithImage:mat];
+  return [LTTexture textureWithImage:mat];
 }
 
 @end

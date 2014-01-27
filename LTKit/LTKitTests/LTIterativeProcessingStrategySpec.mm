@@ -3,7 +3,7 @@
 
 #import "LTIterativeProcessingStrategy.h"
 
-#import "LTGLTexture.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTIterativeProcessingStrategy)
 
@@ -23,9 +23,9 @@ __block LTTexture *outputB;
 beforeEach(^{
   cv::Mat image = cv::Mat4b::zeros(16, 16);
 
-  input = [[LTGLTexture alloc] initWithImage:image];
-  outputA = [[LTGLTexture alloc] initWithImage:image];
-  outputB = [[LTGLTexture alloc] initWithImage:image];
+  input = [LTTexture textureWithImage:image];
+  outputA = [LTTexture textureWithImage:image];
+  outputB = [LTTexture textureWithImage:image];
 });
 
 afterEach(^{

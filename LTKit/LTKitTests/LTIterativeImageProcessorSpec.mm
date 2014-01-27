@@ -6,11 +6,11 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
+#import "LTTexture+Factory.h"
 
 @interface LTIterativeImageProcessorStub : LTIterativeImageProcessor
 
@@ -49,18 +49,18 @@ __block LTProgram *program;
 __block NSDictionary *auxiliaryTextures;
 
 beforeEach(^{
-  input = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                  precision:LTTexturePrecisionByte
-                                   channels:LTTextureChannelsRGBA
-                             allocateMemory:YES];
+  input = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                           precision:LTTexturePrecisionByte
+                            channels:LTTextureChannelsRGBA
+                      allocateMemory:YES];
 
   cv::Mat image = cv::Mat4b::zeros(1, 1);
-  auxInput = [[LTGLTexture alloc] initWithImage:image];
+  auxInput = [LTTexture textureWithImage:image];
 
-  output = [[LTGLTexture alloc] initWithSize:input.size
-                                   precision:input.precision
-                                    channels:input.channels
-                              allocateMemory:YES];
+  output = [LTTexture textureWithSize:input.size
+                            precision:input.precision
+                             channels:input.channels
+                       allocateMemory:YES];
 
   program = [[LTProgram alloc]
              initWithVertexSource:[PassthroughVsh source]
@@ -71,8 +71,10 @@ beforeEach(^{
 
 afterEach(^{
   input = nil;
+  auxInput = nil;
   output = nil;
   program = nil;
+  auxiliaryTextures = nil;
 });
 
 context(@"initialization", ^{
@@ -102,10 +104,10 @@ context(@"initialization", ^{
   });
 
   it(@"should not initialize with unsimilar outputs", ^{
-    LTTexture *different = [[LTGLTexture alloc] initWithSize:input.size + 1
-                                                   precision:input.precision
-                                                    channels:input.channels
-                                              allocateMemory:YES];
+    LTTexture *different = [LTTexture textureWithSize:input.size + 1
+                                            precision:input.precision
+                                             channels:input.channels
+                                       allocateMemory:YES];
 
     expect((^{
       __unused LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
@@ -207,7 +209,7 @@ context(@"processing", ^{
       __block NSArray *iterations;
 
       beforeEach(^{
-        processor = data[@"processor"];
+        processor = [data[@"processor"] nonretainedObjectValue];
         value = [data[@"expected"] unsignedCharValue];
         iterations = data[@"iterations"];
       });
@@ -230,21 +232,21 @@ context(@"processing", ^{
 
     // Single iteration.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"expected": @64,
                @"iterations": @[@1]};
     });
 
     // Odd number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"expected": @192,
                @"iterations": @[@3]};
     });
 
     // Even number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"expected": @128,
                @"iterations": @[@2]};
     });
@@ -252,10 +254,10 @@ context(@"processing", ^{
 
   context(@"multiple outputs", ^{
     beforeEach(^{
-      LTTexture *anotherOutput = [[LTGLTexture alloc] initWithSize:input.size
-                                                         precision:input.precision
-                                                          channels:input.channels
-                                                    allocateMemory:YES];
+      LTTexture *anotherOutput = [LTTexture textureWithSize:input.size
+                                                  precision:input.precision
+                                                   channels:input.channels
+                                             allocateMemory:YES];
 
       processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
                                                    auxiliaryTextures:@{@"auxTexture": auxInput}
@@ -269,7 +271,7 @@ context(@"processing", ^{
       __block NSArray *iterations;
 
       beforeEach(^{
-        processor = data[@"processor"];
+        processor = [data[@"processor"] nonretainedObjectValue];
         firstValue = [data[@"firstExpected"] unsignedCharValue];
         secondValue = [data[@"secondExpected"] unsignedCharValue];
         iterations = data[@"iterations"];
@@ -297,7 +299,7 @@ context(@"processing", ^{
 
     // Similar number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"firstExpected": @64,
                @"secondExpected": @64,
                @"iterations": @[@1, @1]};
@@ -305,7 +307,7 @@ context(@"processing", ^{
 
     // Odd number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"firstExpected": @64,
                @"secondExpected": @192,
                @"iterations": @[@1, @3]};
@@ -313,7 +315,7 @@ context(@"processing", ^{
 
     // Even number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"firstExpected": @128,
                @"secondExpected": @255,
                @"iterations": @[@2, @4]};
@@ -321,7 +323,7 @@ context(@"processing", ^{
 
     // Even and odd number of iterations.
     itShouldBehaveLike(@"processing output correctly", ^{
-      return @{@"processor": processor,
+      return @{@"processor": [NSValue valueWithNonretainedObject:processor],
                @"firstExpected": @128,
                @"secondExpected": @192,
                @"iterations": @[@2, @3]};

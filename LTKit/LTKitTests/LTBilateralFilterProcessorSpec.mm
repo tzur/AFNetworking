@@ -3,9 +3,9 @@
 
 #import "LTBilateralFilterProcessor.h"
 
-#import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTTestUtils.h"
+#import "LTTexture+Factory.h"
 
 static const int kBilateralWindowSize = 3;
 
@@ -82,22 +82,22 @@ afterEach(^{
   [EAGLContext setCurrentContext:nil];
 });
 
-__block LTGLTexture *outputA;
-__block LTGLTexture *outputB;
+__block LTTexture *outputA;
+__block LTTexture *outputB;
 __block LTBilateralFilterProcessor *processor;
 
 beforeEach(^{
   cv::Mat image = LTLoadMatWithName([self class], @"Noise.png");
-  LTGLTexture *input = [[LTGLTexture alloc] initWithImage:image];
+  LTTexture *input = [LTTexture textureWithImage:image];
 
-  outputA = [[LTGLTexture alloc] initWithSize:input.size
-                                    precision:LTTexturePrecisionByte
-                                     channels:LTTextureChannelsRGBA
-                               allocateMemory:YES];
-  outputB = [[LTGLTexture alloc] initWithSize:input.size
-                                    precision:LTTexturePrecisionByte
-                                     channels:LTTextureChannelsRGBA
-                               allocateMemory:YES];
+  outputA = [LTTexture textureWithSize:input.size
+                             precision:LTTexturePrecisionByte
+                              channels:LTTextureChannelsRGBA
+                        allocateMemory:YES];
+  outputB = [LTTexture textureWithSize:input.size
+                             precision:LTTexturePrecisionByte
+                              channels:LTTextureChannelsRGBA
+                        allocateMemory:YES];
 
   processor = [[LTBilateralFilterProcessor alloc] initWithInput:input
                                                         outputs:@[outputA, outputB]];
