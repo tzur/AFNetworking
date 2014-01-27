@@ -57,12 +57,24 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       expect(similar.channels).to.equal(texture.channels);
     });
 
-    itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
-                                                                 precision:LTTexturePrecisionByte
-                                                                  channels:LTTextureChannelsRGBA
-                                                            allocateMemory:NO];
-      return @{kLTTextureDefaultValuesExamplesTexture: texture};
+    context(@"default values", ^{
+      __block LTTexture *texture;
+
+      beforeEach(^{
+        texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
+                                                        precision:LTTexturePrecisionByte
+                                                         channels:LTTextureChannelsRGBA
+                                                   allocateMemory:NO];
+      });
+
+      afterEach(^{
+        texture = nil;
+      });
+
+      itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
+        return @{kLTTextureDefaultValuesExamplesTexture:
+                   [NSValue valueWithNonretainedObject:texture]};
+      });
     });
   });
 
@@ -208,14 +220,41 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 });
 
 sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
-  it(@"should have default property values", ^{
-    LTTexture *texture = data[kLTTextureDefaultValuesExamplesTexture];
+  __block LTTexture *texture;
 
+  beforeEach(^{
+    texture = [data[kLTTextureDefaultValuesExamplesTexture] nonretainedObjectValue];
+  });
+
+  afterEach(^{
+    texture = nil;
+  });
+
+  it(@"should have default model property values", ^{
     expect(texture.usingAlphaChannel).to.equal(NO);
     expect(texture.usingHighPrecisionByte).to.equal(NO);
     expect(texture.wrap).to.equal(LTTextureWrapClamp);
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationLinear);
+  });
+
+  it(@"should have default opengl property values", ^{
+    __block GLint textureWrapS, textureWrapT;
+    __block GLint minFilterInterpolation, magFilterInterpolation;
+
+    [texture bindAndExecute:^{
+      glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &textureWrapS);
+      glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &textureWrapT);
+
+      glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &minFilterInterpolation);
+      glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &magFilterInterpolation);
+    }];
+
+    expect(textureWrapS).to.equal(texture.wrap);
+    expect(textureWrapT).to.equal(texture.wrap);
+
+    expect(minFilterInterpolation).to.equal(texture.minFilterInterpolation);
+    expect(magFilterInterpolation).to.equal(texture.magFilterInterpolation);
   });
 });
 

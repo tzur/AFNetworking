@@ -141,7 +141,8 @@ context(@"binding and execution", ^{
         texture.magFilterInterpolation = LTTextureInterpolationNearest;
         texture.wrap = LTTextureWrapRepeat;
       }];
-      return @{kLTTextureDefaultValuesExamplesTexture: texture};
+      return @{kLTTextureDefaultValuesExamplesTexture:
+                 [NSValue valueWithNonretainedObject:texture]};
     });
   });
 });
