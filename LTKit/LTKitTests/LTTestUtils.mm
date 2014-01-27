@@ -3,6 +3,7 @@
 
 #import "LTTestUtils.h"
 
+#import "LTCGExtensions.h"
 #import "LTImage.h"
 #import "SpectaUtility.h"
 
@@ -119,6 +120,14 @@ GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value) {
 cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value) {
   return cv::Vec4b(value.x * UCHAR_MAX, value.y * UCHAR_MAX,
                    value.z * UCHAR_MAX, value.w * UCHAR_MAX);
+}
+
+cv::Mat4b delta(CGSize size) {
+  cv::Mat4b delta(size.width, size.height);
+  delta = cv::Vec4b(0, 0, 0, 255);
+  CGSize middle = std::floor(size / 2);
+  delta(middle.width, middle.height) = cv::Vec4b(255, 255, 255, 255);
+  return delta;
 }
 
 UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {

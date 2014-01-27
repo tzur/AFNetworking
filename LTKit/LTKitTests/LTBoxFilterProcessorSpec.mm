@@ -22,16 +22,8 @@ __block LTGLTexture *output;
 __block LTBoxFilterProcessor *processor;
 
 beforeEach(^{
-  cv::Mat4b delta(7, 7);
-  delta = cv::Vec4b(0, 0, 0, 255);
-  delta(3, 3) = cv::Vec4b(255, 255, 255, 255);
-  
-  LTGLTexture *input = [[LTGLTexture alloc] initWithImage:delta];
-  
-  output = [[LTGLTexture alloc] initWithSize:input.size
-                                   precision:LTTexturePrecisionByte
-                                    channels:LTTextureChannelsRGBA
-                              allocateMemory:YES];
+  LTGLTexture *input = [[LTGLTexture alloc] initWithImage:delta(CGSizeMake(7, 7))];
+  output = [[LTGLTexture alloc] initByteRGBAWithSize:input.size];
   
   processor = [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[output]];
 });
