@@ -5,6 +5,15 @@
 
 SpecBegin(LTTextureFactory)
 
+beforeEach(^{
+  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  [EAGLContext setCurrentContext:context];
+});
+
+afterEach(^{
+  [EAGLContext setCurrentContext:nil];
+});
+
 /// Since the class is currently decided in compile time, only verify that the class methods are
 /// correctly called and that the returned object is indeed a texture class.
 
