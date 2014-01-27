@@ -29,15 +29,15 @@
   if (!iteration) {
     // Horizontal with source width.
     CGFloat width = self.inputSize.width;
-    self[@"texelOffset"] = [NSValue valueWithGLKVector2:GLKVector2Make(1.0 / width, 0)];
+    self[@"texelOffset"] = $(GLKVector2Make(1.0 / width, 0));
   } else if (iteration % 2) {
     // Vertical.
     CGFloat height = self.outputSize.height;
-    self[@"texelOffset"] = [NSValue valueWithGLKVector2:GLKVector2Make(0, 1.0 / height)];
+    self[@"texelOffset"] = $(GLKVector2Make(0, 1.0 / height));
   } else {
     // Horizontal.
     CGFloat width = self.outputSize.width;
-    self[@"texelOffset"] = [NSValue valueWithGLKVector2:GLKVector2Make(1.0 / width, 0)];
+    self[@"texelOffset"] = $(GLKVector2Make(1.0 / width, 0));
   }
 }
 

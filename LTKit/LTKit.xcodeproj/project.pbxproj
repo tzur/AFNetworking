@@ -91,6 +91,7 @@
 		8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B98516C186884F300D680D0 /* LTPassthroughShader.vsh */; };
 		8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9851801868A4CF00D680D0 /* LTImage.mm */; };
 		8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */; };
+		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -443,6 +444,8 @@
 		8B98517F1868A4CF00D680D0 /* LTImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImage.h; sourceTree = "<group>"; };
 		8B9851801868A4CF00D680D0 /* LTImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImage.mm; sourceTree = "<group>"; };
 		8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageSpec.mm; sourceTree = "<group>"; };
+		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
+		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -721,6 +724,7 @@
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
 				2836211E186C58DC00665ED9 /* LTCGExtensions.h */,
 				2836211F186C58DC00665ED9 /* LTCGExtensions.m */,
+				8B9D3FB718910941001A964D /* LTEasyBoxing.h */,
 				8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */,
 				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
 				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
@@ -818,6 +822,7 @@
 			isa = PBXGroup;
 			children = (
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
+				8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.m */,
 			);
 			name = "Supporting Files";
@@ -1494,6 +1499,7 @@
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
+				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
