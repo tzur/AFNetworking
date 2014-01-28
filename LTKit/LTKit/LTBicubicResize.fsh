@@ -25,11 +25,10 @@ highp vec4 cubic(highp float x) {
   highp float x3 = x2 * x;
   highp vec4 rhs = vec4(x3, x2, x, 1.0);
   // B-spline basis functions.
-  // Notice: column-major filling order.
-  const highp mat4 spline = mat4(-1.0,  3.0, -3.0, 1.0, // First column
-                                 3.0, -6.0,  3.0, 0.0,  // Second column
-                                 -3.0,  0.0,  3.0, 0.0, // Third column
-                                 1.0,  4.0,  1.0, 0.0); // Fourth colum
+  const highp mat4 spline = mat4(-1.0,  3.0, -3.0, 1.0,  // First column.
+                                  3.0, -6.0,  3.0, 0.0,  // Second column.
+                                 -3.0,  0.0,  3.0, 0.0,  // Third column.
+                                  1.0,  4.0,  1.0, 0.0); // Fourth columm.
   return spline * rhs / 6.0;
   
 
