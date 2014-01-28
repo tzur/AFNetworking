@@ -3,6 +3,7 @@
 
 #import "LTTestUtils.h"
 
+#import "LTDevice.h"
 #import "LTImage.h"
 #import "SpectaUtility.h"
 
@@ -132,6 +133,18 @@ UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
 cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name) {
   UIImage *image = LTLoadImageWithName(classInBundle, name);
   return [[LTImage alloc] initWithImage:image].mat;
+}
+
+cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
+                                 NSString *deviceName) {
+  cv::Mat mat;
+  if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
+      [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
+    mat = LTLoadMatWithName(classInBundle, simulatorName);
+  } else {
+    mat = LTLoadMatWithName(classInBundle, deviceName);
+  }
+  return mat;
 }
 
 NSString *LTPathForResource(Class classInBundle, NSString *name) {

@@ -3,7 +3,6 @@
 
 #import "LTFractionalNoise.h"
 
-#import "LTDevice.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
 
@@ -64,14 +63,7 @@ context(@"processing", ^{
     // If the test fails, human observer should verify that the noise produced by the round-off
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
-    cv::Mat image;
-    if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
-        [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
-      image = LTLoadMatWithName([self class], @"SimulatorFractionalNoise.png");
-    } else {
-      image = LTLoadMatWithName([self class], @"iPhone5FractionalNoise.png");
-    }
-    
+    cv::Mat image = LTLoadDeviceDependentMat([self class], @"SimulatorFractionalNoise.png", @"iPhone5FractionalNoise.png");
     expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
   });
 });

@@ -52,6 +52,12 @@ UIImage *LTLoadImageWithName(Class classInBundle, NSString *name);
 /// class. Throws exception if the image cannot be found or loaded.
 cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
 
+/// Loads an image to \c cv::Mat. The name of the image can differ between simulator and device.
+/// Loads from the bundle that contains the given class. Throws exception if the image cannot be
+/// found or loaded.
+cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
+                                 NSString *deviceName);
+
 /// Returns the path for a resource in the bundle defined by the given \c classInBundle which it
 /// contains. Raises an exception if the image cannot be loaded.
 NSString *LTPathForResource(Class classInBundle, NSString *name);
