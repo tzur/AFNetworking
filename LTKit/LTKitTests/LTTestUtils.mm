@@ -3,6 +3,8 @@
 
 #import "LTTestUtils.h"
 
+#import "LTCGExtensions.h"
+#import "LTDevice.h"
 #import "LTImage.h"
 #import "SpectaUtility.h"
 
@@ -121,6 +123,14 @@ cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value) {
                    value.z * UCHAR_MAX, value.w * UCHAR_MAX);
 }
 
+cv::Mat4b LTCreateDeltaMat(CGSize size) {
+  cv::Mat4b delta(size.width, size.height);
+  delta = cv::Vec4b(0, 0, 0, 255);
+  CGSize middle = std::floor(size / 2);
+  delta(middle.width, middle.height) = cv::Vec4b(255, 255, 255, 255);
+  return delta;
+}
+
 UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
   NSString *path = LTPathForResource(classInBundle, name);
   UIImage *image = [UIImage imageWithContentsOfFile:path];
@@ -132,6 +142,18 @@ UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
 cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name) {
   UIImage *image = LTLoadImageWithName(classInBundle, name);
   return [[LTImage alloc] initWithImage:image].mat;
+}
+
+cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
+                                 NSString *deviceName) {
+  cv::Mat mat;
+  if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
+      [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
+    mat = LTLoadMatWithName(classInBundle, simulatorName);
+  } else {
+    mat = LTLoadMatWithName(classInBundle, deviceName);
+  }
+  return mat;
 }
 
 NSString *LTPathForResource(Class classInBundle, NSString *name) {
