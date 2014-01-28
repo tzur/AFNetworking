@@ -46,9 +46,15 @@
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
 		2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921B186315D100A70AF5 /* LTGridDrawer.vsh */; };
+		284ED11818954E9B00414A8A /* LTLinearInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED11718954E9B00414A8A /* LTLinearInterpolationRoutine.mm */; };
+		284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12718954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm */; };
+		284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12B1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm */; };
+		284ED12E1895667500414A8A /* LTInterpolationRoutineExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */; };
+		284ED1301895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */; };
 		288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB3F718351FFE00A11FA4 /* LTFbo.mm */; };
 		288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4021835203300A11FA4 /* LTFboSpec.mm */; };
 		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
+		289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
@@ -393,11 +399,22 @@
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
 		2847921A186315D100A70AF5 /* LTGridDrawer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.fsh; sourceTree = "<group>"; };
 		2847921B186315D100A70AF5 /* LTGridDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.vsh; sourceTree = "<group>"; };
+		284ED11618954E9B00414A8A /* LTLinearInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLinearInterpolationRoutine.h; sourceTree = "<group>"; };
+		284ED11718954E9B00414A8A /* LTLinearInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLinearInterpolationRoutine.mm; sourceTree = "<group>"; };
+		284ED12618954ECB00414A8A /* LTCatmullRomInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCatmullRomInterpolationRoutine.h; sourceTree = "<group>"; };
+		284ED12718954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolationRoutine.mm; sourceTree = "<group>"; };
+		284ED12B1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLinearInterpolationRoutineSpec.mm; sourceTree = "<group>"; };
+		284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInterpolationRoutineExamples.mm; sourceTree = "<group>"; };
+		284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolationRoutineSpec.mm; sourceTree = "<group>"; };
+		284ED131189568AC00414A8A /* LTInterpolationRoutineExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolationRoutineExamples.h; sourceTree = "<group>"; };
 		288AB3F618351FFE00A11FA4 /* LTFbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTFbo.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		288AB3F718351FFE00A11FA4 /* LTFbo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTFbo.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		288AB4021835203300A11FA4 /* LTFboSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboSpec.mm; sourceTree = "<group>"; };
 		288AB4041835320200A11FA4 /* LTDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDevice.h; sourceTree = "<group>"; };
 		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
+		289A872E1895158500EB8E86 /* LTInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInterpolationRoutine.h; sourceTree = "<group>"; };
+		289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInterpolationRoutine.mm; sourceTree = "<group>"; };
+		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
@@ -661,6 +678,47 @@
 			name = LTView;
 			sourceTree = "<group>";
 		};
+		284ED12518954EA100414A8A /* LTInterpolationRoutines */ = {
+			isa = PBXGroup;
+			children = (
+				284ED12618954ECB00414A8A /* LTCatmullRomInterpolationRoutine.h */,
+				284ED12718954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm */,
+				28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */,
+				289A872E1895158500EB8E86 /* LTInterpolationRoutine.h */,
+				289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */,
+				284ED11618954E9B00414A8A /* LTLinearInterpolationRoutine.h */,
+				284ED11718954E9B00414A8A /* LTLinearInterpolationRoutine.mm */,
+			);
+			name = LTInterpolationRoutines;
+			sourceTree = "<group>";
+		};
+		284ED129189565E600414A8A /* Painting */ = {
+			isa = PBXGroup;
+			children = (
+				284ED12A189565F500414A8A /* LTInterpolationRoutines */,
+			);
+			name = Painting;
+			sourceTree = "<group>";
+		};
+		284ED12A189565F500414A8A /* LTInterpolationRoutines */ = {
+			isa = PBXGroup;
+			children = (
+				284ED12B1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm */,
+				284ED131189568AC00414A8A /* LTInterpolationRoutineExamples.h */,
+				284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */,
+				284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */,
+			);
+			name = LTInterpolationRoutines;
+			sourceTree = "<group>";
+		};
+		289884D7188E7EB100AD338E /* Painting */ = {
+			isa = PBXGroup;
+			children = (
+				284ED12518954EA100414A8A /* LTInterpolationRoutines */,
+			);
+			name = Painting;
+			sourceTree = "<group>";
+		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,6 +927,7 @@
 		8B8E50F81861EA7D00821829 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
+				289884D7188E7EB100AD338E /* Painting */,
 				8B8E50FA1861EADF00821829 /* Base */,
 				8B8E50F91861EA8A00821829 /* Drawers */,
 			);
@@ -952,6 +1011,7 @@
 		8B8E50FE1861EB4600821829 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
+				284ED129189565E600414A8A /* Painting */,
 				8B8E50FF1861EB4D00821829 /* Base */,
 				8B8E51011861EB5C00821829 /* Drawers */,
 			);
@@ -1431,6 +1491,7 @@
 				282CF085187B030000904F07 /* LTView.mm in Sources */,
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
 				8BFE439D18759533008B699F /* LTImageProcessorOutput.m in Sources */,
+				284ED11818954E9B00414A8A /* LTLinearInterpolationRoutine.mm in Sources */,
 				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
 				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */,
@@ -1459,9 +1520,11 @@
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
 				03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */,
 				288AB4061835320200A11FA4 /* LTDevice.mm in Sources */,
+				284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
 				8BABFD69188C5A29004163DA /* LTNextIterationPlacement.mm in Sources */,
 				8BA11AE11831555100A5001D /* LTTexture.mm in Sources */,
+				289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */,
 				8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
@@ -1487,8 +1550,10 @@
 				8B8E50F11861CE1800821829 /* Shader.vsh in Sources */,
 				8B3F94A7187AEA0200FAA265 /* Passthrough.fsh in Sources */,
 				8B8E510E1863216E00821829 /* LTGLContextSpec.mm in Sources */,
+				284ED12E1895667500414A8A /* LTInterpolationRoutineExamples.mm in Sources */,
 				8BABFD73188D2177004163DA /* LTGPUImageProcessorSpec.mm in Sources */,
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
+				284ED1301895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm in Sources */,
 				282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */,
 				0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */,
 				0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */,
@@ -1517,6 +1582,7 @@
 				8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
+				284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */,
 				03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
