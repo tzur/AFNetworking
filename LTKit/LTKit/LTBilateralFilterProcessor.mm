@@ -17,7 +17,9 @@
 @implementation LTBilateralFilterProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
-  return [super initWithProgram:[self createProgram] sourceTexture:input outputs:outputs];
+  return [super initWithProgram:[self createProgram] sourceTexture:input
+              auxiliaryTextures:@{[LTBilateralFilterFsh originalTexture]: input}
+                        outputs:outputs];
 }
 
 - (LTProgram *)createProgram {

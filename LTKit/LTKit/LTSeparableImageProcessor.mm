@@ -15,6 +15,12 @@
 @implementation LTSeparableImageProcessor
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
+                        outputs:(NSArray *)outputs {
+  return [self initWithProgram:program sourceTexture:sourceTexture
+             auxiliaryTextures:nil outputs:outputs];
+}
+
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures outputs:(NSArray *)outputs {
   LTParameterAssert([program containsUniform:@"texelOffset"]);
   if (self = [super initWithProgram:program sourceTexture:sourceTexture

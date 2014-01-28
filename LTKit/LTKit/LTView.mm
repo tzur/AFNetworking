@@ -8,10 +8,10 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
-#import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
+#import "LTTexture+Factory.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
@@ -177,7 +177,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   checkerboardMat(cv::Rect(0, 0, pixels, pixels)) = gray;
   checkerboardMat(cv::Rect(pixels, pixels, pixels, pixels)) = gray;
 
-  self.checkerboardTexture = [[LTGLTexture alloc] initWithImage:checkerboardMat];
+  self.checkerboardTexture = [LTTexture textureWithImage:checkerboardMat];
   self.checkerboardTexture.minFilterInterpolation = LTTextureInterpolationNearest;
   self.checkerboardTexture.magFilterInterpolation = LTTextureInterpolationNearest;
   self.checkerboardTexture.wrap = LTTextureWrapRepeat;
@@ -577,11 +577,13 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (LTImage *)snapshotView {
-  // TODO:(amit)replace with LTMMTexture once factory is here.
-  LTGLTexture *texture = [[LTGLTexture alloc] initWithSize:self.framebufferSize
-                                                 precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA
-                                            allocateMemory:YES];
+  // TODO: (yaron) this can be optimized by creating an LTMMTexture which is backed by a cv::Mat,
+  // so there will be no need to create two duplicate images in memory (one of a texture and one of
+  // LTImage).
+  LTTexture *texture = [LTTexture textureWithSize:self.framebufferSize
+                                        precision:LTTexturePrecisionByte
+                                         channels:LTTextureChannelsRGBA
+                                   allocateMemory:YES];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
   [self drawToFbo:fbo];
   return [[LTImage alloc] initWithMat:[texture image] copy:NO];

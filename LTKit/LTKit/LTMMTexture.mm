@@ -49,6 +49,11 @@
 - (void)createTextureForMatType:(int)type {
   [self createPixelBufferForMatType:type];
   [self allocateTexture];
+  [self bindAndExecute:^{
+    [self setMinFilterInterpolation:self.minFilterInterpolation];
+    [self setMagFilterInterpolation:self.magFilterInterpolation];
+    [self setWrap:self.wrap];
+  }];
 }
 
 - (void)createPixelBufferForMatType:(int)type {

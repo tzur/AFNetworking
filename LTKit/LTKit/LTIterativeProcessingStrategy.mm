@@ -4,7 +4,7 @@
 #import "LTIterativeProcessingStrategy.h"
 
 #import "LTFbo.h"
-#import "LTGLTexture.h"
+#import "LTTexture+Factory.h"
 
 @interface LTIterativeProcessingStrategy ()
 
@@ -191,11 +191,10 @@
 - (LTTexture *)intermediateTexture {
   if (!_intermediateTexture) {
     LTTexture *similar = [self.outputs lastObject];
-    // TODO:(yaron) use a factory instead of creating this texture directly.
-    _intermediateTexture = [[LTGLTexture alloc] initWithSize:similar.size
-                                                   precision:similar.precision
-                                                    channels:similar.channels
-                                              allocateMemory:YES];
+    _intermediateTexture = [LTTexture textureWithSize:similar.size
+                                            precision:similar.precision
+                                             channels:similar.channels
+                                       allocateMemory:YES];
   }
   return _intermediateTexture;
 }

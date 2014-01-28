@@ -288,7 +288,7 @@ context(@"execution", ^{
     
     cv::Mat4b expected(mat.rows, mat.cols);
     expected = blue;
-    expect(LTCompareMat(expected, [texture image])).to.beTruthy();
+    expect(LTFuzzyCompareMat(expected, [texture image])).to.beTruthy();
   });
   
   it(@"should clear the color buffers leaving the clearColor unchanged", ^{
