@@ -3,6 +3,7 @@
 
 #import "LTFractionalNoise.h"
 
+#import "LTDevice.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
 
@@ -57,14 +58,20 @@ context(@"processing", ^{
     noise.velocitySeed = 0.0;
     LTSingleTextureOutput *processed = [noise process];
     
-    // Compare the output of the shader on the simulator on the day of its creation to the current
-    // result.
+    // Compare current output of the shader with the result that passed human visual inspection.
     // Important: this test may break upon introducing new architectures, since the test is
     // dependent on the round-off errors which may differ on a new architecture.
     // If the test fails, human observer should verify that the noise produced by the round-off
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
-    cv::Mat image = LTLoadMatWithName([self class], @"SimulatorFractionalNoise.png");
+    cv::Mat image;
+    if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
+        [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
+      image = LTLoadMatWithName([self class], @"SimulatorFractionalNoise.png");
+    } else {
+      image = LTLoadMatWithName([self class], @"iPhone5FractionalNoise.png");
+    }
+    
     expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
   });
 });
