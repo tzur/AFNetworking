@@ -30,8 +30,6 @@ highp vec4 cubic(highp float x) {
                                  -3.0,  0.0,  3.0, 0.0,  // Third column.
                                   1.0,  4.0,  1.0, 0.0); // Fourth columm.
   return spline * rhs / 6.0;
-  
-
 }
 
 highp vec4 filter(sampler2D texture, highp vec2 texcoord, highp vec2 texscale) {
