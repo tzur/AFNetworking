@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolatedObject.h"
-
 /// Abstract interpolation routine class, used to interpolate objects conforming to the
 /// \c LTInterpolatedObject protocol according to key-frame objects given upon initialization.
 /// The "heavier" computation (calculating the polynomial coefficients) is performed on
@@ -11,6 +9,7 @@
 @interface LTInterpolationRoutine : NSObject
 
 /// Returns the expected number of key frames for the interpolation routine.
+///
 /// @note Subclasses must implement this method and return the number of keyframes necessary for the
 /// type of interpolation they implement.
 + (NSUInteger)expectedKeyFrames;
@@ -28,6 +27,7 @@
 /// Subclasses must implement this abstract method and calculate the coefficients according to the
 /// interpolation method they implement and the given key frames. The coefficients should be
 /// ordered from the highest power to the lowest.
+///
 /// @note it is safe to assume that \c keyFrames contains the expected number of objects, and that
 /// all of them are of the same type and conform to the \c LTInterpolatedObject protocol.
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames;

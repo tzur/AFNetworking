@@ -681,12 +681,12 @@
 			name = LTInterpolationRoutines;
 			sourceTree = "<group>";
 		};
-		284ED129189565E600414A8A /* LTPainter */ = {
+		284ED129189565E600414A8A /* Painting */ = {
 			isa = PBXGroup;
 			children = (
 				284ED12A189565F500414A8A /* LTInterpolationRoutines */,
 			);
-			name = LTPainter;
+			name = Painting;
 			sourceTree = "<group>";
 		};
 		284ED12A189565F500414A8A /* LTInterpolationRoutines */ = {
@@ -700,12 +700,12 @@
 			name = LTInterpolationRoutines;
 			sourceTree = "<group>";
 		};
-		289884D7188E7EB100AD338E /* LTPainter */ = {
+		289884D7188E7EB100AD338E /* Painting */ = {
 			isa = PBXGroup;
 			children = (
 				284ED12518954EA100414A8A /* LTInterpolationRoutines */,
 			);
-			name = LTPainter;
+			name = Painting;
 			sourceTree = "<group>";
 		};
 		28ABDFF618715394005A5DEC /* UI */ = {
@@ -913,7 +913,7 @@
 		8B8E50F81861EA7D00821829 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
-				289884D7188E7EB100AD338E /* LTPainter */,
+				289884D7188E7EB100AD338E /* Painting */,
 				8B8E50FA1861EADF00821829 /* Base */,
 				8B8E50F91861EA8A00821829 /* Drawers */,
 			);
@@ -997,7 +997,7 @@
 		8B8E50FE1861EB4600821829 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
-				284ED129189565E600414A8A /* LTPainter */,
+				284ED129189565E600414A8A /* Painting */,
 				8B8E50FF1861EB4D00821829 /* Base */,
 				8B8E51011861EB5C00821829 /* Drawers */,
 			);

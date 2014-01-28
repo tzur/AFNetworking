@@ -8,11 +8,11 @@
 @optional
 
 /// Initializes the object while setting the interpolated properties given as a dictionary mapping
-/// property names (\cNSString *) to values (\c NSNumber *).
+/// property names (\cNSString) to values (\c NSNumber).
 ///
 /// @note In case this method is not implemented, the standard initializer will be used and all the
-/// interpolated properties will be set after the initilization.
-- (id)initWithInterpolatedProperties:(NSDictionary *)properties;
+/// interpolated properties will be set after the initialization.
+- (instancetype)initWithInterpolatedProperties:(NSDictionary *)properties;
 
 @required
 

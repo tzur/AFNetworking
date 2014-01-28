@@ -24,7 +24,7 @@
 
 - (instancetype)initWithKeyFrames:(NSArray *)keyFrames {
   if (self = [super init]) {
-    [self validateKeyFrames:(NSArray *)keyFrames];
+    [self validateKeyFrames:keyFrames];
     self.keyFrames = [keyFrames copy];
     self.coefficients = [self calculateCoefficientsForKeyFrames:self.keyFrames];
   }

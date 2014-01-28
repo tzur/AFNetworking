@@ -6,5 +6,4 @@
 /// Implementation of a linear interpolation routine, accepting two keyframes and performing a
 /// linear interpolation between them.
 @interface LTLinearInterpolationRoutine : LTInterpolationRoutine
-
 @end

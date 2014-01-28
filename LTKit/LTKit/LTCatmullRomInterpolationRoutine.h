@@ -8,5 +8,4 @@
 /// constructed from all four (Such that the value at \c 0 is the second key frame, and the value at
 /// \c 1 is the third one.
 @interface LTCatmullRomInterpolationRoutine : LTInterpolationRoutine
-
 @end

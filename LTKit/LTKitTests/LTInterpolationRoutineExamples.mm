@@ -17,6 +17,12 @@ static NSArray *LTArrayWithInstancesOfObject(NSObject *object, NSUInteger numIns
   return array;
 }
 
+static BOOL LTEqualWhithin(double a, double b, double withinValue = FLT_EPSILON) {
+  double lowerBound = a - withinValue;
+  double upperBound = a + withinValue;
+  return (b >= lowerBound) && (b <= upperBound);
+}
+
 #pragma mark -
 #pragma mark InterpolatedObject
 #pragma mark -
@@ -56,10 +62,11 @@ static NSArray *LTArrayWithInstancesOfObject(NSObject *object, NSUInteger numIns
     return NO;
   }
   InterpolatedObject *other = object;
-  return self.propertyNotToInterpolate == other.propertyNotToInterpolate &&
-         self.floatToInterpolate == other.floatToInterpolate &&
-         self.doubleToInterpolate == other.doubleToInterpolate &&
-         self.pointToInterpolate == other.pointToInterpolate;
+  return LTEqualWhithin(self.propertyNotToInterpolate, other.propertyNotToInterpolate) &&
+         LTEqualWhithin(self.floatToInterpolate, other.floatToInterpolate) &&
+         LTEqualWhithin(self.doubleToInterpolate, other.doubleToInterpolate) &&
+         LTEqualWhithin(self.pointToInterpolate.x, other.pointToInterpolate.x) &&
+         LTEqualWhithin(self.pointToInterpolate.y, other.pointToInterpolate.y);
 }
 
 @end
