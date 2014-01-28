@@ -257,9 +257,7 @@
 - (void)mappedImage:(LTTextureMappedBlock)block {
   LTParameterAssert(block);
 
-  // TODO: (yaron) this can be synchronized on the texture only, but it's not an OpenGL object, so
-  // explicit locking is required instead.
-  @synchronized(self) {
+  [self lockTextureAndExecute:^{
     LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling updateTexture:");
 
     // Make sure everything is written to the texture before reading back to CPU.
@@ -268,31 +266,29 @@
       self.needsSynchronizationBeforeHostAccess = NO;
     }
 
-    [self executeWhileBufferIsLocked:^{
+    [self lockBufferAndExecute:^{
       void *base = CVPixelBufferGetBaseAddress(self.pixelBufferRef);
       cv::Mat mat(self.size.height, self.size.width, self.matType, base,
                   CVPixelBufferGetBytesPerRow(self.pixelBufferRef));
       block(mat, NO);
     }];
-  }
+  }];
 }
 
-- (void)executeWhileBufferIsLocked:(LTVoidBlock)block {
-  [self lockTextureAndExecute:^{
+- (void)lockBufferAndExecute:(LTVoidBlock)block {
   CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
-    if (kCVReturnSuccess != lockResult) {
-      [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                    format:@"Failed locking base address of buffer with error %d", lockResult];
-    }
+  if (kCVReturnSuccess != lockResult) {
+    [LTGLException raise:kLTMMTextureBufferLockingFailedException
+                  format:@"Failed locking base address of buffer with error %d", lockResult];
+  }
 
-    if (block) block();
+  if (block) block();
 
-    CVReturn unlockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
-    if (kCVReturnSuccess != unlockResult) {
-      [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                    format:@"Failed unlocking base address of buffer with error %d", unlockResult];
-    }
-  }];
+  CVReturn unlockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
+  if (kCVReturnSuccess != unlockResult) {
+    [LTGLException raise:kLTMMTextureBufferLockingFailedException
+                  format:@"Failed unlocking base address of buffer with error %d", unlockResult];
+  }
 }
 
 #pragma mark -
