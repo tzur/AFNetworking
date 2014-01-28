@@ -24,7 +24,7 @@ __block LTGLTexture *output;
 __block LTBicubicResizeProcessor *processor;
 
 beforeEach(^{
-  input = [[LTGLTexture alloc] initWithImage:delta(CGSizeMake(8, 8))];
+  input = [[LTGLTexture alloc] initWithImage:LTCreateDeltaMat(CGSizeMake(8, 8))];
   output = [[LTGLTexture alloc] initByteRGBAWithSize:input.size * 2.0];
   
   processor = [[LTBicubicResizeProcessor alloc] initWithInput:input output:output];

@@ -22,7 +22,7 @@ __block LTGLTexture *output;
 __block LTBoxFilterProcessor *processor;
 
 beforeEach(^{
-  LTGLTexture *input = [[LTGLTexture alloc] initWithImage:delta(CGSizeMake(7, 7))];
+  LTGLTexture *input = [[LTGLTexture alloc] initWithImage:LTCreateDeltaMat(CGSizeMake(7, 7))];
   output = [[LTGLTexture alloc] initByteRGBAWithSize:input.size];
   
   processor = [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[output]];

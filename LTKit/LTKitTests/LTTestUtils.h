@@ -44,8 +44,9 @@ GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value);
 /// Converts a \c GLKVector4 to \c cv::Vec4b.
 cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
 
-/// Returns delta function. Delta function has a spike in the middle and zeros everywhere else.
-cv::Mat4b delta(CGSize size);
+/// Returns a matrix of the given size containing a delta function. Delta function is a matrix with
+/// zeros everywhere, besides the center where it is one.
+cv::Mat4b LTCreateDeltaMat(CGSize size);
 
 /// Loads an image with the given \c name from the bundle that contains the given class. Throws
 /// exception if the image cannot be found or loaded.

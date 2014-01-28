@@ -4,8 +4,8 @@
 #import "LTBicubicResizeProcessor.h"
 
 #import "LTProgram.h"
+#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTBicubicResizeFsh.h"
-#import "LTShaderStorage+LTBicubicResizeVsh.h"
 #import "LTTexture.h"
 
 @implementation LTBicubicResizeProcessor
@@ -18,7 +18,7 @@
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBicubicResizeVsh source]
+  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                                   fragmentSource:[LTBicubicResizeFsh source]];
 }
 

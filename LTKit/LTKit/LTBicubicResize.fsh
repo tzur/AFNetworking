@@ -18,18 +18,21 @@ uniform highp vec2 texelOffset;
 
 varying highp vec2 vTexcoord;
 
-// Construct basis functions give the positoin of the sample on [0-1] interval.
+// Construct basis functions give the position of the sample on [0-1] interval.
 // Uniform Cubic B-Spline Curve: http://www2.cs.uregina.ca/~anima/408/Notes/Interpolation/UniformBSpline.htm
 highp vec4 cubic(highp float x) {
   highp float x2 = x * x;
   highp float x3 = x2 * x;
-  highp vec4 w;
-  // B-Spline basis functions.
-  w.x =     -x3 + 3.0*x2 - 3.0*x + 1.0;
-  w.y =  3.0*x3 - 6.0*x2         + 4.0;
-  w.z = -3.0*x3 + 3.0*x2 + 3.0*x + 1.0;
-  w.w =  x3;
-  return w / 6.0;
+  highp vec4 rhs = vec4(x3, x2, x, 1.0);
+  // B-spline basis functions.
+  // Notice: column-major filling order.
+  const highp mat4 spline = mat4(-1.0,  3.0, -3.0, 1.0, // First column
+                                 3.0, -6.0,  3.0, 0.0,  // Second column
+                                 -3.0,  0.0,  3.0, 0.0, // Third column
+                                 1.0,  4.0,  1.0, 0.0); // Fourth colum
+  return spline * rhs / 6.0;
+  
+
 }
 
 highp vec4 filter(sampler2D texture, highp vec2 texcoord, highp vec2 texscale) {
