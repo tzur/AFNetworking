@@ -51,7 +51,7 @@ context(@"processing", ^{
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
     cv::Mat image = LTLoadDeviceDependentMat([self class], @"SimulatorMultiscaleNoise.png",
-                                             @"iPhone5FractionalNoise.png");
+                                             @"iPhone5MultiscaleNoise.png");
     expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
   });
 });

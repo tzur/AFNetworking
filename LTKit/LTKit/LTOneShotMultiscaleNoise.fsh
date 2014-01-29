@@ -1,6 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
+// This shader creates a multiscale noise in one pass. In order to create lower-frequencies, it
+// samples nearby values of the sin function and uses a combination of bilinear interpolation and
+// smoother step function in order to conceal the resampling artifacts. For higher-frequencies,
+// further away positions are sampled.
+// Higher-frequencies also help to conceal the bilinear interpolation artifacts and reducing the
+// weight on higher-frequencies can reveal these artifacts.
+
 uniform sampler2D sourceTexture;
 
 // Fractional noise seed.

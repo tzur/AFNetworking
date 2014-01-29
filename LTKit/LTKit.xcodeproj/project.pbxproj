@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */; };
 		030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */; };
+		030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
 		03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */; };
@@ -345,6 +346,7 @@
 /* Begin PBXFileReference section */
 		030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SimulatorMultiscaleNoise.png; path = Resources/SimulatorMultiscaleNoise.png; sourceTree = "<group>"; };
+		030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5MultiscaleNoise.png; path = Resources/iPhone5MultiscaleNoise.png; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
 		03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSeparableImageProcessor.h; sourceTree = "<group>"; };
@@ -851,6 +853,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */,
 				030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */,
 				03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */,
 				03F99DB7189632B700B77136 /* DeltaBicubic.png */,
@@ -1483,6 +1486,7 @@
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
+				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,

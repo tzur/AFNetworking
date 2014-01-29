@@ -15,7 +15,7 @@
                           andOutput:output]) {
     self.seed = 0.0;
     self.density = 2.0;
-    self.directionality = output.size.width / output.size.height;
+    self[@"directionality"] = @(output.size.width / output.size.height);
   }
   return self;
 }
@@ -33,11 +33,6 @@
 - (void)setDensity:(CGFloat)density {
   _density = density;
   self[@"density"] = @(density);
-}
-
-- (void)setDirectionality:(CGFloat)directionality {
-  _directionality = directionality;
-  self[@"directionality"] = @(directionality);
 }
 
 @end
