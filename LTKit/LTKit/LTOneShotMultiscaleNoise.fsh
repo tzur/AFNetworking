@@ -41,7 +41,6 @@ highp float bilinearNoise(highp vec2 p){
 
 void main() {
   sourceTexture;
-  directionality;
   highp vec2 p = vTexcoord.xy * vec2(density * directionality, density);
   highp float f = 0.5 + 0.5 * bilinearNoise(p) + 0.25 * bilinearNoise(2.0 * p) +
                         0.125 * bilinearNoise(4.0 * p) + 0.0625 * bilinearNoise(8.0 * p) +
