@@ -20,7 +20,7 @@ class Shader(object):
         """Removes comments, empty lines and trailing spaces in code."""
         code_without_comments = re.sub("//.*", "", self.contents)
         self.contents = "".join(
-            [line.strip() for line in code_without_comments.split("\n") if len(line.strip())])
+            [line.strip() for line in code_without_comments.split("\n\n\n") if len(line.strip())])
 
     @property
     def contents(self):

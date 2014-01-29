@@ -5,36 +5,84 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>420BE012-6F71-4B13-BB88-29147C773387</string>
+	<string>8C097513-1417-42EA-9DC1-E7600B0F3C4C</string>
 	<key>IDESourceControlProjectName</key>
 	<string>LTKit</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>56E73E46-DE4E-4938-B5A0-1FEE0FD058CF</key>
-		<string>https://github.com/Lightricks/LTKit.git</string>
+		<key>033B602E-4873-40DD-A4C4-8A45F684835D</key>
+		<string>git://github.com/jspahrsummers/xcconfigs.git</string>
+		<key>360DC389-B804-4C42-B393-F500F258AAF6</key>
+		<string>https://github.com/specta/specta.git</string>
+		<key>3D3281DB-0973-4CDA-804C-EE93CF1FD666</key>
+		<string>https://github.com/Lightricks/expecta.git</string>
+		<key>9CE6B618-F28F-4F33-85B2-6651B4271426</key>
+		<string>https://github.com/ZeevFarbman/LTKit.git</string>
+		<key>FAD1E767-5A2A-4454-816F-EA5CE1330051</key>
+		<string>https://github.com/jspahrsummers/libextobjc.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>LTKit/LTKit.xcodeproj/project.xcworkspace</string>
+	<string>LTKit/LTKit.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>56E73E46-DE4E-4938-B5A0-1FEE0FD058CF</key>
-		<string>../../..</string>
+		<key>033B602E-4873-40DD-A4C4-8A45F684835D</key>
+		<string>../../third_party/utils/libextobjc/Configuration</string>
+		<key>360DC389-B804-4C42-B393-F500F258AAF6</key>
+		<string>../../third_party/testing/Specta</string>
+		<key>3D3281DB-0973-4CDA-804C-EE93CF1FD666</key>
+		<string>../../third_party/testing/Expecta</string>
+		<key>9CE6B618-F28F-4F33-85B2-6651B4271426</key>
+		<string>../..</string>
+		<key>FAD1E767-5A2A-4454-816F-EA5CE1330051</key>
+		<string>../../third_party/utils/libextobjc</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/Lightricks/LTKit.git</string>
+	<string>https://github.com/ZeevFarbman/LTKit.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>56E73E46-DE4E-4938-B5A0-1FEE0FD058CF</string>
+	<string>9CE6B618-F28F-4F33-85B2-6651B4271426</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>56E73E46-DE4E-4938-B5A0-1FEE0FD058CF</string>
+			<string>033B602E-4873-40DD-A4C4-8A45F684835D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Configuration</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3D3281DB-0973-4CDA-804C-EE93CF1FD666</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Expecta</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FAD1E767-5A2A-4454-816F-EA5CE1330051</string>
+			<key>IDESourceControlWCCName</key>
+			<string>libextobjc</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9CE6B618-F28F-4F33-85B2-6651B4271426</string>
 			<key>IDESourceControlWCCName</key>
 			<string>LTKit</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>360DC389-B804-4C42-B393-F500F258AAF6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Specta</string>
 		</dict>
 	</array>
 </dict>
