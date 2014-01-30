@@ -25,8 +25,6 @@ afterEach(^{
   [EAGLContext setCurrentContext:nil];
 });
 
-itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTGLTexture class]});
-
 context(@"properties", ^{
   it(@"will not set wrap to repeat on NPOT texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 3)
