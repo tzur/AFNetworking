@@ -124,7 +124,7 @@ cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value) {
 }
 
 cv::Mat4b LTCreateDeltaMat(CGSize size) {
-  cv::Mat4b delta(size.width, size.height);
+  cv::Mat4b delta(size.height, size.width); // rows, columns.
   delta = cv::Vec4b(0, 0, 0, 255);
   CGSize middle = std::floor(size / 2);
   delta(middle.width, middle.height) = cv::Vec4b(255, 255, 255, 255);
