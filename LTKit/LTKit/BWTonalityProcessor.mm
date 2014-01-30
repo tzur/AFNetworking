@@ -68,7 +68,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
     self.contrast = kContrastDefault;
     self.exposure = kExposureDefault;
     self.structure = kStructureDefault;
-    self.colorGradient = identityGradient;
+//    self.colorGradient = identityGradient;
   }
   return self;
 }
@@ -113,14 +113,13 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   self[@"structure"] = @(structure);
 }
 
-- (void)setColorGradient:(LTColorGradient *)colorGradient {
-  _colorGradient = colorGradient;
-  // Update color gradient texture in auxiliary textures.
-  NSMutableDictionary *auxiliaryTextures =
-      [NSMutableDictionary dictionaryWithDictionary:self.auxiliaryTextures];
-//  LTTexture *tex = [colorGradient textureWithSamplingPoints:256];
-//  auxiliaryTextures[[BWTonalityFsh colorGradient]] = [colorGradient textureWithSamplingPoints:256];
-  self.auxiliaryTextures = auxiliaryTextures;
-}
+//- (void)setColorGradient:(LTColorGradient *)colorGradient {
+//  _colorGradient = colorGradient;
+//  // Update color gradient texture in auxiliary textures.
+//  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures copy];
+////  LTTexture *tex = [colorGradient textureWithSamplingPoints:256];
+////  auxiliaryTextures[[BWTonalityFsh colorGradient]] = [colorGradient textureWithSamplingPoints:256];
+////  self.auxiliaryTextures = auxiliaryTextures;
+//}
 
 @end

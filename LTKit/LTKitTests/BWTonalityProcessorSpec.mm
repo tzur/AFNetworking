@@ -132,7 +132,7 @@ context(@"processing", ^{
 //    tone.brightness = 0.1;
 //    tone.contrast = 0.9;
 //    tone.colorFilter = GLKVector3Make(0.0, 1.0, 0.0);
-    tone.colorGradient = colorGradient;
+//    tone.colorGradient = colorGradient;
     LTSingleTextureOutput *processed = [tone process];
     
     // Important: this test depends on the performance of other classes and processors, thus is
