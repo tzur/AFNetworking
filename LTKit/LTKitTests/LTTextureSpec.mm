@@ -25,8 +25,6 @@ afterEach(^{
   [EAGLContext setCurrentContext:nil];
 });
 
-itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTGLTexture class]});
-
 context(@"properties", ^{
   it(@"will not set wrap to repeat on NPOT texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 3)
@@ -56,6 +54,15 @@ context(@"properties", ^{
 
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationNearest);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationNearest);
+  });
+
+  it(@"will set maximal mipmap level", ^{
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+    texture.maxMipmapLevel = 1000;
+
+    expect(texture.maxMipmapLevel).to.equal(1000);
   });
 });
 

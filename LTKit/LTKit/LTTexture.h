@@ -16,6 +16,14 @@ typedef NS_ENUM(GLenum, LTTextureInterpolation) {
   LTTextureInterpolationNearest = GL_NEAREST,
   /// Linear interpolation.
   LTTextureInterpolationLinear = GL_LINEAR,
+  /// Nearest neighbor interpolation with nearest neighbor across mipmap levels.
+  LTTextureInterpolationNearestMipmapNearest = GL_NEAREST_MIPMAP_NEAREST,
+  /// Nearest neighbor with nearest linear interpolation across mipmap levels.
+  LTTextureInterpolationNearestMipmapLinear = GL_NEAREST_MIPMAP_LINEAR,
+  /// Linear interpolation with nearest neighbor across mipmap levels.
+  LTTextureInterpolationLinearMipmapNearest = GL_LINEAR_MIPMAP_NEAREST,
+  /// Linear interpolation with linear interpolation across mipmap levels (trilinear filtering).
+  LTTextureInterpolationLinearMipmapLinear = GL_LINEAR_MIPMAP_LINEAR
 };
 
 /// Type of wraping used by the sampler for texture coodinates outside [0, 1].
@@ -139,11 +147,6 @@ namespace cv {
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
-/// Loads a given image to the texture by replacing the current content of the texture. The size
-/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
-/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
-- (void)load:(const cv::Mat &)image;
-
 /// Loads data from the given \c image to texture at the given \c rect. The image must have the same
 /// precision as the texture's and the same size as the given \c rect. The rect must be contained in
 /// the texture's rect (0, 0, size.width, size.height).
@@ -200,6 +203,11 @@ namespace cv {
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+/// Loads a given image to the texture by replacing the current content of the texture. The size
+/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
+/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
+- (void)load:(const cv::Mat &)image;
 
 /// Executes the block which is marked as a block that reads from the texture, allowing the texture
 /// object to synchronize before and after the read.
@@ -299,5 +307,9 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 /// to \c LTTextureWrapRepeat requires that the texture size will be a power of two. If this
 /// condition doesn't hold, the property will not change.
 @property (nonatomic) LTTextureWrap wrap;
+
+/// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
+/// value is \c 0.
+@property (nonatomic) GLint maxMipmapLevel;
 
 @end

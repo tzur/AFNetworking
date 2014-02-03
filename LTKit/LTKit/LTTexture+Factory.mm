@@ -41,4 +41,12 @@
   return [[[self textureClass] alloc] initWithPropertiesOf:texture];
 }
 
++ (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image {
+  return [[LTGLTexture alloc] initWithBaseLevelMipmapImage:image];
+}
+
++ (instancetype)textureWithMipmapImages:(const Matrices &)images {
+  return [[LTGLTexture alloc] initWithMipmapImages:images];
+}
+
 @end

@@ -10,15 +10,87 @@
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 
+/// Returns the \c CGSize of the given \c mat.
+CGSize LTCGSizeOfMat(const cv::Mat &mat) {
+  return CGSizeMake(mat.cols, mat.rows);
+}
+
 @interface LTTexture ()
 
 - (BOOL)inTextureRect:(CGRect)rect;
+- (BOOL)isPowerOfTwo:(CGSize)size;
 
 @property (readonly, nonatomic) int matType;
 
 @end
 
 @implementation LTGLTexture
+
+#pragma mark -
+#pragma mark Mipmaps
+#pragma mark -
+
+- (instancetype)initWithBaseLevelMipmapImage:(const cv::Mat &)image {
+  [self verifyMipmapImages:{image}];
+  if (self = [self initWithImage:image]) {
+    [self bindAndExecute:^{
+      glGenerateMipmap(GL_TEXTURE_2D);
+      self.maxMipmapLevel = log2(std::max(image.rows, image.cols));
+    }];
+  }
+  return self;
+}
+
+- (instancetype)initWithMipmapImages:(const Matrices &)images {
+  [self verifyMipmapImages:images];
+  if (self = [self initWithImage:images[0]]) {
+    [self addImagesToMipmap:images];
+  }
+  return self;
+}
+
+- (void)verifyMipmapImages:(const Matrices &)images {
+  LTParameterAssert(images.size(), @"Images vector must contain at least one image");
+
+  CGSize currentLevelSize = LTCGSizeOfMat(images[0]);
+  LTParameterAssert([self isPowerOfTwo:currentLevelSize], @"Base image must be a power of two");
+
+  for (Matrices::size_type i = 1; i < images.size(); ++i) {
+    LTParameterAssert(images[i].type() == images[0].type(), @"Image type for level %lu (%d) doesn't "
+                      "match base level type (%d)", i, images[i].type(), self.matType);
+
+    CGSize previousLevelSize = currentLevelSize;
+    currentLevelSize = LTCGSizeOfMat(images[i]);
+
+    LTParameterAssert(currentLevelSize.width * 2 == previousLevelSize.width &&
+                      currentLevelSize.height * 2 == previousLevelSize.height,
+                      @"Given image at level %lu doesn't has a size of (%g, %g), which is not a"
+                      "dyadic downsampling from its parent of size (%g, %g)", i,
+                      currentLevelSize.width, currentLevelSize.height, previousLevelSize.width,
+                      previousLevelSize.height);
+  }
+}
+
+- (void)addImagesToMipmap:(const Matrices &)images {
+  // The initial image has been already added.
+  [self bindAndExecute:^{
+    [self writeToTexture:^{
+      for (Matrices::size_type i = 1; i < images.size(); ++i) {
+        glTexImage2D(GL_TEXTURE_2D, i, GL_RGBA, images[i].cols, images[i].rows, 0, GL_RGBA,
+                     self.precision, images[i].data);
+      }
+    }];
+  }];
+
+  LTGLCheckDbg(@"Error loading texture mipmap levels");
+
+  // Allow rendering with incomplete mipmap levels.
+  self.maxMipmapLevel = images.size() - 1;
+}
+
+#pragma mark -
+#pragma mark LTTexture abstract methods implementation
+#pragma mark -
 
 - (void)create:(BOOL)allocateMemory {
   if (self.name) {
@@ -32,6 +104,7 @@
     [self setMinFilterInterpolation:self.minFilterInterpolation];
     [self setMagFilterInterpolation:self.magFilterInterpolation];
     [self setWrap:self.wrap];
+    [self setMaxMipmapLevel:self.maxMipmapLevel];
 
     if (allocateMemory) {
       [self writeToTexture:^{
@@ -69,10 +142,6 @@
                    self.precision, image->data);
     }];
   }];
-}
-
-- (void)load:(const cv::Mat &)image {
-  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
 }
 
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image {

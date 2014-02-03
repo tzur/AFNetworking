@@ -51,4 +51,29 @@
 /// @endcode
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture;
 
+/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
+/// image, and loads the \c image to the texture as the base level (0).
+/// The mipmap will be automatically generated based on the given \c image with number of levels
+/// equal to \c log2(MAX(image.size.width, image.size.height)).
+///
+/// Throws \c LTGLException with \c kLTOpenGLRuntimeErrorException if the texture cannot be created
+/// or if image loading has failed.
+///
+/// @param image base level mipmap image. Each dimension of the image must be a power of two.
++ (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image;
+
+/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
+/// images, and loads the \c images one by one to consecutive mipmap levels, starting from the base
+/// level 0.
+///
+/// @param images images to load to the mipmap. All images must have the same \c precision and \c
+/// channels. Let \c (w[0], h[0]) be the dimensions of the base level, and \c (w[i], h[i]) the
+/// dimensions of level \c i, then \c w[0] and \c h[0] must be a power of two, and the relation
+/// \c w[i] = w[i - 1] / 2 and \c h[i] = h[i - 1] / 2 must hold. The given images may not create a
+/// complete mipmap, hence the number of images can be lower or equal to \c log2(MAX(w[0], h[0])).
+///
+/// Throws \c LTGLException with \c kLTOpenGLRuntimeErrorException if the texture cannot be created
+/// or if image loading has failed.
++ (instancetype)textureWithMipmapImages:(const Matrices &)images;
+
 @end

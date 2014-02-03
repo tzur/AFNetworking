@@ -236,11 +236,13 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
     expect(texture.wrap).to.equal(LTTextureWrapClamp);
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationLinear);
+    expect(texture.maxMipmapLevel).to.equal(0);
   });
 
   it(@"should have default opengl property values", ^{
     __block GLint textureWrapS, textureWrapT;
     __block GLint minFilterInterpolation, magFilterInterpolation;
+    __block GLint maxMipmapLevels;
 
     [texture bindAndExecute:^{
       glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &textureWrapS);
@@ -248,6 +250,8 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
 
       glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &minFilterInterpolation);
       glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &magFilterInterpolation);
+
+      glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, &maxMipmapLevels);
     }];
 
     expect(textureWrapS).to.equal(texture.wrap);
@@ -255,6 +259,8 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
 
     expect(minFilterInterpolation).to.equal(texture.minFilterInterpolation);
     expect(magFilterInterpolation).to.equal(texture.magFilterInterpolation);
+
+    expect(maxMipmapLevels).to.equal(texture.maxMipmapLevel);
   });
 });
 
