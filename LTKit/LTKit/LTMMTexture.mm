@@ -53,6 +53,7 @@
     [self setMinFilterInterpolation:self.minFilterInterpolation];
     [self setMagFilterInterpolation:self.magFilterInterpolation];
     [self setWrap:self.wrap];
+    [self setMaxMipmapLevel:self.maxMipmapLevel];
   }];
 }
 

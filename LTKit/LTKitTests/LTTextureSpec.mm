@@ -55,6 +55,15 @@ context(@"properties", ^{
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationNearest);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationNearest);
   });
+
+  it(@"will set maximal mipmap level", ^{
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
+                                                 precision:LTTexturePrecisionByte
+                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+    texture.maxMipmapLevel = 1000;
+
+    expect(texture.maxMipmapLevel).to.equal(1000);
+  });
 });
 
 context(@"binding and execution", ^{

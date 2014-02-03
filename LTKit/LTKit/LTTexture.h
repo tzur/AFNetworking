@@ -16,6 +16,14 @@ typedef NS_ENUM(GLenum, LTTextureInterpolation) {
   LTTextureInterpolationNearest = GL_NEAREST,
   /// Linear interpolation.
   LTTextureInterpolationLinear = GL_LINEAR,
+  /// Nearest neighbor interpolation with nearest neighbor across mipmap levels.
+  LTTextureInterpolationNearestMipmapNearest = GL_NEAREST_MIPMAP_NEAREST,
+  /// Nearest neighbor with nearest linear interpolation across mipmap levels.
+  LTTextureInterpolationNearestMipmapLinear = GL_NEAREST_MIPMAP_LINEAR,
+  /// Linear interpolation with nearest neighbor across mipmap levels.
+  LTTextureInterpolationLinearMipmapNearest = GL_LINEAR_MIPMAP_NEAREST,
+  /// Linear interpolation with linear interpolation across mipmap levels (trilinear filtering).
+  LTTextureInterpolationLinearMipmapLinear = GL_LINEAR_MIPMAP_LINEAR
 };
 
 /// Type of wraping used by the sampler for texture coodinates outside [0, 1].
@@ -299,5 +307,9 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 /// to \c LTTextureWrapRepeat requires that the texture size will be a power of two. If this
 /// condition doesn't hold, the property will not change.
 @property (nonatomic) LTTextureWrap wrap;
+
+/// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
+/// value is \c 0.
+@property (nonatomic) GLint maxMipmapLevel;
 
 @end
