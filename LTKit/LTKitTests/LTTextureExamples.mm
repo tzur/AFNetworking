@@ -22,6 +22,117 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     textureClass = data[kLTTextureExamplesTextureClass];
   });
 
+  sharedExamplesFor(@"LTTexture precision and channels", ^(NSDictionary *data) {
+    __block LTTexturePrecision precision;
+    __block LTTextureChannels channels;
+    __block int matType;
+    __block cv::Mat image;
+
+    beforeAll(^{
+      precision = (LTTexturePrecision)[data[@"precision"] unsignedIntValue];
+      channels = (LTTextureChannels)[data[@"channels"] unsignedIntValue];
+      NSUInteger numChannels = LTNumberOfChannelsForChannels(channels);
+
+      switch (precision) {
+        case LTTexturePrecisionByte:
+          matType = (int)CV_MAKETYPE(CV_8U, numChannels);
+          break;
+        case LTTexturePrecisionHalfFloat:
+          matType = (int)CV_MAKETYPE(CV_16U, numChannels);
+          break;
+        case LTTexturePrecisionFloat:
+          matType = (int)CV_MAKETYPE(CV_32F, numChannels);
+          break;
+      }
+    });
+
+    it(@"should create texture", ^{
+      CGSize size = CGSizeMake(42, 42);
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
+                                                                 precision:precision
+                                                                  channels:channels
+                                                            allocateMemory:NO];
+
+      expect(texture.size).to.equal(size);
+      expect(texture.precision).to.equal(precision);
+      expect(texture.channels).to.equal(channels);
+    });
+
+    it(@"should load image from mat", ^{
+      CGSize size = CGSizeMake(42, 67);
+      cv::Mat image(size.height, size.width, matType);
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+
+      expect(texture.size).to.equal(size);
+      expect(texture.precision).to.equal(precision);
+      expect(texture.channels).to.equal(channels);
+    });
+  });
+
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"channels": @(LTTextureChannelsR)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"channels": @(LTTextureChannelsRG)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"channels": @(LTTextureChannelsRGBA)});
+
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"channels": @(LTTextureChannelsR)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"channels": @(LTTextureChannelsRG)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"channels": @(LTTextureChannelsRGBA)});
+
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"channels": @(LTTextureChannelsR)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"channels": @(LTTextureChannelsRG)});
+  itShouldBehaveLike(@"LTTexture precision and channels",
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"channels": @(LTTextureChannelsRGBA)});
+
+  context(@"red and rg textures", ^{
+    it(@"should read red channel data", ^{
+      cv::Mat1b image(16, 16);
+      image.setTo(128);
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      cv::Mat read = [texture image];
+
+      std::vector<cv::Mat> channels;
+      cv::split(read, channels);
+
+      expect(CV_MAT_DEPTH(read.type())).to.equal(CV_8U);
+      expect(LTCompareMat(image, channels[0])).to.beTruthy();
+    });
+
+    it(@"should read rg channel data", ^{
+      cv::Mat2b image(16, 16);
+      image.setTo(cv::Vec2b(128, 64));
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      cv::Mat read = [texture image];
+
+      std::vector<cv::Mat> channels;
+      cv::split(read, channels);
+
+      cv::Mat joined;
+      cv::merge(&channels[0], 2, joined);
+
+      expect(CV_MAT_DEPTH(read.type())).to.equal(CV_8U);
+      expect(LTCompareMat(image, joined)).to.beTruthy();
+    });
+  });
+
   context(@"init without an image", ^{
     it(@"should create an unallocated texture with size", ^{
       CGSize size = CGSizeMake(42, 42);
@@ -36,15 +147,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       expect(texture.size).to.equal(size);
       expect(texture.precision).to.equal(precision);
       expect(texture.channels).to.equal(channels);
-    });
-
-    it(@"should create an RGBA8 texture", ^{
-      CGSize size = CGSizeMake(42, 42);
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initByteRGBAWithSize:size];
-
-      expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionByte);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
     });
 
     it(@"should create a texture with similar properties", ^{
@@ -79,28 +181,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
   });
 
   context(@"init with an image", ^{
-    it(@"should load RGBA image", ^{
-      CGSize size = CGSizeMake(42, 67);
-      cv::Mat image(size.height, size.width, CV_8UC4);
-
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-
-      expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionByte);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
-    });
-
-    it(@"should load half-float RGBA image", ^{
-      CGSize size = CGSizeMake(42, 67);
-      cv::Mat image(size.height, size.width, CV_16UC4);
-
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-
-      expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionHalfFloat);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
-    });
-
     it(@"should not load invalid image depth", ^{
       CGSize size = CGSizeMake(42, 67);
       cv::Mat image(size.height, size.width, CV_64FC4);
@@ -122,13 +202,13 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
   context(@"texture with data", ^{
     __block LTTexture *texture;
-    __block cv::Mat image;
+    __block cv::Mat4b image;
 
     beforeEach(^{
-      image.create(48, 67, CV_8UC4);
+      image.create(48, 67);
       for (int y = 0; y < image.rows; ++y) {
         for (int x = 0; x < image.cols; ++x) {
-          image.at<cv::Vec4b>(y, x) = cv::Vec4b(x, y, 0, 255);
+          image(y, x) = cv::Vec4b(x, y, 0, 255);
         }
       }
 
@@ -160,7 +240,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         CGPoint point = CGPointMake(1, 7);
 
         GLKVector4 actual = [texture pixelValue:point];
-        GLKVector4 expected = LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x));
+        GLKVector4 expected = LTCVVec4bToGLKVector4(image(point.y, point.x));
 
         expect(expected).to.equal(actual);
       });
@@ -171,7 +251,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         GLKVector4s actual = [texture pixelValues:points];
         GLKVector4s expected;
         for (const CGPoint &point : points) {
-          expected.push_back(LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x)));
+          expected.push_back(LTCVVec4bToGLKVector4(image(point.y, point.x)));
         }
 
         expect(expected == actual).to.equal(YES);

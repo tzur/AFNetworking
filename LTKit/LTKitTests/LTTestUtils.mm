@@ -61,6 +61,8 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
   switch (expected.type()) {
     case CV_8UC1:
       return LTCompareMatCells<uchar>(expected, actual, 0);
+    case CV_8UC2:
+      return LTCompareMatCells<cv::Vec2b>(expected, actual, 0);
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0));
     default:
@@ -77,6 +79,8 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
   switch (expected.type()) {
     case CV_8UC1:
       return LTCompareMatCells<uchar>(expected, actual, range);
+    case CV_8UC2:
+      return LTCompareMatCells<cv::Vec2b>(expected, actual, cv::Vec2b(range, range));
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range));
     default:

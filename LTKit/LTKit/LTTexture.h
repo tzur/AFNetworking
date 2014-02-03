@@ -7,7 +7,7 @@
 typedef NS_ENUM(GLenum, LTTexturePrecision) {
   LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
   LTTexturePrecisionHalfFloat = GL_HALF_FLOAT_OES,
-  LTTexturePrecisionFloat = GL_FLOAT,
+  LTTexturePrecisionFloat = GL_FLOAT
 };
 
 /// Type of interpolation used by the sampler on the GPU.
@@ -31,13 +31,17 @@ typedef NS_ENUM(GLenum, LTTextureWrap) {
   /// Clamp texture coordinates.
   LTTextureWrapClamp = GL_CLAMP_TO_EDGE,
   /// Wrap texture coordinates cyclically.
-  LTTextureWrapRepeat = GL_REPEAT,
+  LTTextureWrapRepeat = GL_REPEAT
 };
 
 /// Number of channels stored in the texture.
 typedef NS_ENUM(NSUInteger, LTTextureChannels) {
-  /// RGBA (four channels).
-  LTTextureChannelsRGBA = 4,
+  /// Single channel.
+  LTTextureChannelsR = GL_RED_EXT,
+  /// Two channels.
+  LTTextureChannelsRG = GL_RG_EXT,
+  /// Four channels.
+  LTTextureChannelsRGBA = GL_RGBA
 };
 
 /// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c
@@ -55,6 +59,12 @@ LTTextureChannels LTTextureChannelsFromMatType(int type);
 /// Returns number of channels for a given \c cv::Mat, or throws an \c LTGLException with \c
 /// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
 LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image);
+
+/// Returns the number of channels for a given \c LTTextureChannels enum.
+int LTNumberOfChannelsForChannels(LTTextureChannels channels);
+
+/// Returns a \c cv::Mat type for given \c precision and \c channels.
+int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels);
 
 namespace cv {
   class Mat;
@@ -143,8 +153,10 @@ namespace cv {
 - (void)destroy;
 
 /// Stores the texture's data in the given \c rect to the given \c image. The image will be created
-/// with the same precision and size of the given \c rect, if needed. The rect must be contained in
-/// the texture's rect (0, 0, size.width, size.height).
+/// with the same precision and size of the given \c rect, but will always contain 4 channels. If
+/// the underlying texture has less than 4 channels, the alpha channel will contain the value \c 1,
+/// while the other non-defined color channels will contain the value \c 0. The given \c rect must
+/// be contained in the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
 /// Loads data from the given \c image to texture at the given \c rect. The image must have the same
@@ -263,8 +275,10 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 - (cv::Mat)imageWithRect:(CGRect)rect;
 
 /// Returns a \c Mat object from the texture. This is a heavy operation since it requires
-/// duplicating the texture to a new memory location. The matrix type, size and number of channels
-/// depends on the texture's values.
+/// duplicating the texture to a new memory location. The matrix type and size depends on the
+/// texture's values, but the matrix will always contain 4 channels.
+///
+/// @see storeRect:toImage: for more information.
 - (cv::Mat)image;
 
 /// Executes the given block while recording changes to the texture's openGL parameters (such as

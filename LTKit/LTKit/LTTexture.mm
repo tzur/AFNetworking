@@ -28,6 +28,10 @@ LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image) {
 
 LTTextureChannels LTTextureChannelsFromMatType(int type) {
   switch (CV_MAT_CN(type)) {
+    case 1:
+      return LTTextureChannelsR;
+    case 2:
+      return LTTextureChannelsRG;
     case 4:
       return LTTextureChannelsRGBA;
     default:
@@ -39,6 +43,29 @@ LTTextureChannels LTTextureChannelsFromMatType(int type) {
 
 LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   return LTTextureChannelsFromMatType(image.type());
+}
+
+int LTNumberOfChannelsForChannels(LTTextureChannels channels) {
+  switch (channels) {
+    case LTTextureChannelsR:
+      return 1;
+    case LTTextureChannelsRG:
+      return 2;
+    case LTTextureChannelsRGBA:
+      return 4;
+  }
+}
+
+int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels) {
+  int numChannels = LTNumberOfChannelsForChannels(channels);
+  switch (precision) {
+    case LTTexturePrecisionByte:
+      return CV_MAKETYPE(CV_8U, numChannels);
+    case LTTexturePrecisionHalfFloat:
+      return CV_MAKETYPE(CV_16U, numChannels);
+    case LTTexturePrecisionFloat:
+      return CV_MAKETYPE(CV_32F, numChannels);
+  }
 }
 
 #pragma mark -
@@ -350,7 +377,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   cv::Mat image(self.size.height, self.size.width, self.matType);
   
   [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
-  
+
   return image;
 }
 
@@ -469,18 +496,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 }
 
 - (int)matType {
-  switch (self.channels) {
-    case LTTextureChannelsRGBA:
-      switch (self.precision) {
-        case LTTexturePrecisionByte:
-          return CV_8UC4;
-        case LTTexturePrecisionHalfFloat:
-          return CV_16UC4;
-        case LTTexturePrecisionFloat:
-          return CV_32FC4;
-      }
-      break;
-  }
+  return LTMatTypeForPrecisionAndChannels(self.precision, self.channels);
 }
 
 #pragma mark -

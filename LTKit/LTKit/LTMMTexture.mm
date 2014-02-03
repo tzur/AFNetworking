@@ -76,9 +76,9 @@
                                                                  self.pixelBufferRef,
                                                                  NULL,
                                                                  GL_TEXTURE_2D,
-                                                                 GL_RGBA,
+                                                                 self.channels,
                                                                  self.size.width, self.size.height,
-                                                                 GL_RGBA,
+                                                                 self.channels,
                                                                  self.precision,
                                                                  0,
                                                                  &_textureRef);
@@ -90,6 +90,26 @@
 
 - (OSType)pixelFormatForMatType:(int)type {
   switch (LTTextureChannelsFromMatType(type)) {
+    case LTTextureChannelsR:
+      switch (LTTexturePrecisionFromMatType(type)) {
+        case LTTexturePrecisionByte:
+          return kCVPixelFormatType_OneComponent8;
+        case LTTexturePrecisionHalfFloat:
+          return kCVPixelFormatType_OneComponent16Half;
+        case LTTexturePrecisionFloat:
+          return kCVPixelFormatType_OneComponent32Float;
+      }
+      break;
+    case LTTextureChannelsRG:
+      switch (LTTexturePrecisionFromMatType(type)) {
+        case LTTexturePrecisionByte:
+          return kCVPixelFormatType_TwoComponent8;
+        case LTTexturePrecisionHalfFloat:
+          return kCVPixelFormatType_TwoComponent16Half;
+        case LTTexturePrecisionFloat:
+          return kCVPixelFormatType_TwoComponent32Float;
+      }
+      break;
     case LTTextureChannelsRGBA:
       switch (LTTexturePrecisionFromMatType(type)) {
         case LTTexturePrecisionByte:
@@ -99,6 +119,7 @@
         case LTTexturePrecisionFloat:
           return kCVPixelFormatType_128RGBAFloat;
       }
+      break;
   }
 }
 

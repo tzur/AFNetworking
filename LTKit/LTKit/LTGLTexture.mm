@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTProgram.h"
@@ -76,16 +77,16 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self bindAndExecute:^{
     [self writeToTexture:^{
       for (Matrices::size_type i = 1; i < images.size(); ++i) {
-        glTexImage2D(GL_TEXTURE_2D, i, GL_RGBA, images[i].cols, images[i].rows, 0, GL_RGBA,
-                     self.precision, images[i].data);
+        glTexImage2D(GL_TEXTURE_2D, (GLint)i, self.channels, images[i].cols, images[i].rows,
+                     0, self.channels, self.precision, images[i].data);
       }
     }];
   }];
 
-  LTGLCheckDbg(@"Error loading texture mipmap levels");
+  LTGLCheck(@"Error loading texture mipmap levels");
 
   // Allow rendering with incomplete mipmap levels.
-  self.maxMipmapLevel = images.size() - 1;
+  self.maxMipmapLevel = (GLint)(images.size() - 1);
 }
 
 #pragma mark -
@@ -108,8 +109,8 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
     if (allocateMemory) {
       [self writeToTexture:^{
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.size.width, self.size.height, 0, GL_RGBA,
-                     self.precision, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, self.channels, self.size.width, self.size.height, 0,
+                     self.channels, self.precision, NULL);
       }];
     }
   }];
@@ -131,17 +132,62 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                     @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
                     rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
-  image->create(rect.size.height, rect.size.width, self.matType);
-
   // \c glReadPixels requires framebuffer object that is bound to the texture that is being read.
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
   [fbo bindAndExecute:^{
+    image->create(rect.size.height, rect.size.width, [self matTypeForReading]);
     [self readFromTexture:^{
       // Read pixels into the mutable data, according to the texture precision.
-      glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, GL_RGBA,
-                   self.precision, image->data);
+      glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
+                   LTTextureChannelsFromMat(*image), LTTexturePrecisionFromMat(*image),
+                   image->data);
     }];
   }];
+}
+
+- (int)matTypeForReading {
+  return CV_MAKETYPE([self matDepthForReading], [self matChannelsForReading]);
+}
+
+- (int)matDepthForReading {
+  switch (self.precision) {
+    case LTTexturePrecisionByte:
+      // GL_UNSIGNED_BYTE is always supported for byte textures.
+      return CV_8U;
+    case LTTexturePrecisionHalfFloat:
+      // GL_HALF_FLOAT is only supported on device.
+      GLint type;
+      glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
+      if (type == GL_HALF_FLOAT_OES) {
+        return CV_16U;
+      } else {
+        return CV_32F;
+      }
+    case LTTexturePrecisionFloat:
+      // If reading is possible, then support for GL_FLOAT is guaranteed.
+      return CV_32F;
+  }
+}
+
+- (int)matChannelsForReading {
+  switch (self.channels) {
+    case LTTextureChannelsR:
+    case LTTextureChannelsRG:
+      // Try to get the minimal number of channels available.
+      GLint format;
+      glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
+      switch (format) {
+        case GL_RED_EXT:
+          return (self.channels == LTTextureChannelsR) ? 1 : 4;
+        case GL_RG_EXT:
+          return 2;
+        default:
+          return 4;
+      }
+    case LTTextureChannelsRGBA:
+      // Reading GL_RGBA is always supported, for all depths.
+      return 4;
+  }
 }
 
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image {
@@ -158,11 +204,14 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
     [self writeToTexture:^{
       // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
       if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.size.width, rect.size.height, 0, GL_RGBA,
-                     self.precision, image.data);
+        glTexImage2D(GL_TEXTURE_2D, 0, self.channels, rect.size.width, rect.size.height, 0,
+                     self.channels, self.precision, image.data);
       } else {
+        // TODO: (yaron) this may create another copy of the texture. This needs to be profiled and
+        // if suffers from performance impact, consider using glTexStorage.
         glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                        rect.size.width, rect.size.height, GL_RGBA, self.precision, image.data);
+                        rect.size.width, rect.size.height, self.channels, self.precision,
+                        image.data);
       }
     }];
   }];
