@@ -140,10 +140,6 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   _wrap = LTTextureWrapClamp;
 }
 
-- (void)load:(const cv::Mat __unused &)image {
-  LTAssert(NO, @"-[LTTexture load:] is an abstract method that should be overridden by subclasses");
-}
-
 - (void)create:(BOOL __unused)allocateMemory {
   LTAssert(NO, @"-[LTTexture create:] is an abstract method that should be overridden by "
            "subclasses");
@@ -197,6 +193,10 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+- (void)load:(const cv::Mat &)image {
+  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
+}
 
 - (void)readFromTexture:(LTVoidBlock)block {
   LTParameterAssert(block);

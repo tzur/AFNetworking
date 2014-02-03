@@ -139,11 +139,6 @@ namespace cv {
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
-/// Loads a given image to the texture by replacing the current content of the texture. The size
-/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
-/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
-- (void)load:(const cv::Mat &)image;
-
 /// Loads data from the given \c image to texture at the given \c rect. The image must have the same
 /// precision as the texture's and the same size as the given \c rect. The rect must be contained in
 /// the texture's rect (0, 0, size.width, size.height).
@@ -200,6 +195,11 @@ namespace cv {
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+/// Loads a given image to the texture by replacing the current content of the texture. The size
+/// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
+/// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
+- (void)load:(const cv::Mat &)image;
 
 /// Executes the block which is marked as a block that reads from the texture, allowing the texture
 /// object to synchronize before and after the read.
