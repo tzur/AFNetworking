@@ -13,6 +13,8 @@ NSString * const kLTTextureExamplesTextureClass = @"LTTextureExamplesTextureClas
 NSString * const kLTTextureDefaultValuesExamples = @"LTTextureDefaultValuesExamples";
 NSString * const kLTTextureDefaultValuesExamplesTexture = @"LTTextureDefaultValuesExamplesTexture";
 
+NSString * const kLTTexturePrecisionAndFormatExamples = @"LTTexturePrecisionAndFormatExamples";
+
 SharedExamplesBegin(LTTextureExamples)
 
 sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
@@ -58,42 +60,42 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     });
   });
 
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(@"LTTexture precision and format",
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatLuminance)});
 
