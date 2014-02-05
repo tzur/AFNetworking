@@ -51,16 +51,13 @@ __block NSDictionary *auxiliaryTextures;
 beforeEach(^{
   input = [LTTexture textureWithSize:CGSizeMake(1, 1)
                            precision:LTTexturePrecisionByte
-                            channels:LTTextureChannelsRGBA
+                              format:LTTextureFormatRGBA
                       allocateMemory:YES];
 
   cv::Mat image = cv::Mat4b::zeros(1, 1);
   auxInput = [LTTexture textureWithImage:image];
 
-  output = [LTTexture textureWithSize:input.size
-                            precision:input.precision
-                             channels:input.channels
-                       allocateMemory:YES];
+  output = [LTTexture textureWithPropertiesOf:input];
 
   program = [[LTProgram alloc]
              initWithVertexSource:[PassthroughVsh source]
@@ -106,7 +103,7 @@ context(@"initialization", ^{
   it(@"should not initialize with unsimilar outputs", ^{
     LTTexture *different = [LTTexture textureWithSize:input.size + 1
                                             precision:input.precision
-                                             channels:input.channels
+                                               format:input.format
                                        allocateMemory:YES];
 
     expect((^{
@@ -254,10 +251,7 @@ context(@"processing", ^{
 
   context(@"multiple outputs", ^{
     beforeEach(^{
-      LTTexture *anotherOutput = [LTTexture textureWithSize:input.size
-                                                  precision:input.precision
-                                                   channels:input.channels
-                                             allocateMemory:YES];
+      LTTexture *anotherOutput = [LTTexture textureWithPropertiesOf:input];
 
       processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
                                                    auxiliaryTextures:@{@"auxTexture": auxInput}

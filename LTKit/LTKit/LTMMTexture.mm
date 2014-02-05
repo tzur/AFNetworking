@@ -76,9 +76,9 @@
                                                                  self.pixelBufferRef,
                                                                  NULL,
                                                                  GL_TEXTURE_2D,
-                                                                 self.channels,
+                                                                 self.format,
                                                                  self.size.width, self.size.height,
-                                                                 self.channels,
+                                                                 self.format,
                                                                  self.precision,
                                                                  0,
                                                                  &_textureRef);
@@ -90,7 +90,7 @@
 
 - (OSType)pixelFormatForMatType:(int)type {
   switch (LTTextureChannelsFromMatType(type)) {
-    case LTTextureChannelsR:
+    case LTTextureChannelsOne:
       switch (LTTexturePrecisionFromMatType(type)) {
         case LTTexturePrecisionByte:
           return kCVPixelFormatType_OneComponent8;
@@ -100,7 +100,7 @@
           return kCVPixelFormatType_OneComponent32Float;
       }
       break;
-    case LTTextureChannelsRG:
+    case LTTextureChannelsTwo:
       switch (LTTexturePrecisionFromMatType(type)) {
         case LTTexturePrecisionByte:
           return kCVPixelFormatType_TwoComponent8;
@@ -110,7 +110,7 @@
           return kCVPixelFormatType_TwoComponent32Float;
       }
       break;
-    case LTTextureChannelsRGBA:
+    case LTTextureChannelsFour:
       switch (LTTexturePrecisionFromMatType(type)) {
         case LTTexturePrecisionByte:
           return kCVPixelFormatType_32BGRA;
@@ -174,6 +174,8 @@
   LTParameterAssert(image.cols == rect.size.width && image.rows == rect.size.height,
                     @"Trying to load to rect with size (%g, %g) from a Mat with different size: "
                     "(%d, %d)", rect.size.width, rect.size.height, image.cols, image.rows);
+  LTParameterAssert(image.type() == [self matType], @"Given image has different type than the "
+                    "type derived for this texture (%d vs. %d)", image.type(), [self matType]);
 
   if (!self.textureRef) {
     [self createTextureForMatType:image.type()];
@@ -189,7 +191,7 @@
 
 - (LTTexture *)clone {
   LTMMTexture *cloned = [[LTMMTexture alloc] initWithSize:self.size precision:self.precision
-                                                 channels:self.channels allocateMemory:YES];
+                                                   format:self.format allocateMemory:YES];
   [self copyContentsToTexture:cloned];
 
   return cloned;

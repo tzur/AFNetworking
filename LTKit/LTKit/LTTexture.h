@@ -37,11 +37,23 @@ typedef NS_ENUM(GLenum, LTTextureWrap) {
 /// Number of channels stored in the texture.
 typedef NS_ENUM(NSUInteger, LTTextureChannels) {
   /// Single channel.
-  LTTextureChannelsR = GL_RED_EXT,
+  LTTextureChannelsOne = 1,
   /// Two channels.
-  LTTextureChannelsRG = GL_RG_EXT,
+  LTTextureChannelsTwo = 2,
   /// Four channels.
-  LTTextureChannelsRGBA = GL_RGBA
+  LTTextureChannelsFour = 4
+};
+
+/// Format the texture is stored in the GPU.
+typedef NS_ENUM(GLenum, LTTextureFormat) {
+  /// Single, red channel only.
+  LTTextureFormatRed = GL_RED_EXT,
+  /// Dual red and green channels.
+  LTTextureFormatRG = GL_RG_EXT,
+  /// All four channels.
+  LTTextureFormatRGBA = GL_RGBA,
+  /// Single channel, but values are replicated across the RGB channels, and alpha is always 1.
+  LTTextureFormatLuminance = GL_LUMINANCE
 };
 
 /// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c
@@ -60,11 +72,20 @@ LTTextureChannels LTTextureChannelsFromMatType(int type);
 /// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
 LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image);
 
-/// Returns the number of channels for a given \c LTTextureChannels enum.
-int LTNumberOfChannelsForChannels(LTTextureChannels channels);
+/// Returns format for a given \c cv::Mat type.
+LTTextureFormat LTTextureFormatFromMatType(int type);
 
-/// Returns a \c cv::Mat type for given \c precision and \c channels.
+/// Returns format for a given \c cv::Mat.
+LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image);
+
+/// Returns a \c cv::Mat depth for the given \c precision.
+int LTMatDepthForPrecision(LTTexturePrecision precision);
+
+/// Returns a \c cv::Mat type for the given \c precision and \c channels.
 int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels);
+
+/// Returns a \c cv::Mat type for the given \c precision and \c format.
+int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat format);
 
 namespace cv {
   class Mat;
@@ -97,7 +118,8 @@ namespace cv {
 ///
 /// @param size size of the texture.
 /// @param precision precision of the texture.
-/// @param channels number of channels of the texture.
+/// @param format format the texture is stored in the GPU with. The format must be supported on the
+/// target platform, or an \c NSInvalidArguemntException will be thrown.
 /// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
 /// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
 /// Otherwise, the implementation will try to create a texture object only without allocating the
@@ -110,7 +132,7 @@ namespace cv {
 ///
 /// @note Designated initializer.
 - (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-          channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory;
+            format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
@@ -153,10 +175,8 @@ namespace cv {
 - (void)destroy;
 
 /// Stores the texture's data in the given \c rect to the given \c image. The image will be created
-/// with the same precision and size of the given \c rect, but will always contain 4 channels. If
-/// the underlying texture has less than 4 channels, the alpha channel will contain the value \c 1,
-/// while the other non-defined color channels will contain the value \c 0. The given \c rect must
-/// be contained in the texture's rect (0, 0, size.width, size.height).
+/// with the same precision and size of the given \c rect. The given \c rect must be contained in
+/// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
 /// Loads data from the given \c image to texture at the given \c rect. The image must have the same
@@ -296,9 +316,11 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 /// Precision of the texture.
 @property (readonly, nonatomic) LTTexturePrecision precision;
 
-// Number of channels of the texture.  Currently supported number is 1 (luminance only) and 4
-// (RGBA).
+/// Number of channels of the texture.
 @property (readonly, nonatomic) LTTextureChannels channels;
+
+/// Format the texture is stored with on the GPU.
+@property (readonly, nonatomic) LTTextureFormat format;
 
 /// Set to \c YES if the texture is using its alpha channel. This cannot be inferred from the
 /// texture data itself, and should be set to \c YES when needed. Setting this value to \c YES will

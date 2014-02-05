@@ -22,40 +22,28 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     textureClass = data[kLTTextureExamplesTextureClass];
   });
 
-  sharedExamplesFor(@"LTTexture precision and channels", ^(NSDictionary *data) {
+  sharedExamplesFor(@"LTTexture precision and format", ^(NSDictionary *data) {
     __block LTTexturePrecision precision;
-    __block LTTextureChannels channels;
+    __block LTTextureFormat format;
     __block int matType;
     __block cv::Mat image;
 
     beforeAll(^{
       precision = (LTTexturePrecision)[data[@"precision"] unsignedIntValue];
-      channels = (LTTextureChannels)[data[@"channels"] unsignedIntValue];
-      NSUInteger numChannels = LTNumberOfChannelsForChannels(channels);
-
-      switch (precision) {
-        case LTTexturePrecisionByte:
-          matType = (int)CV_MAKETYPE(CV_8U, numChannels);
-          break;
-        case LTTexturePrecisionHalfFloat:
-          matType = (int)CV_MAKETYPE(CV_16U, numChannels);
-          break;
-        case LTTexturePrecisionFloat:
-          matType = (int)CV_MAKETYPE(CV_32F, numChannels);
-          break;
-      }
+      format = (LTTextureFormat)[data[@"format"] unsignedIntValue];
+      matType = LTMatTypeForPrecisionAndFormat(precision, format);
     });
 
     it(@"should create texture", ^{
       CGSize size = CGSizeMake(42, 42);
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
                                                                  precision:precision
-                                                                  channels:channels
+                                                                    format:format
                                                             allocateMemory:NO];
 
       expect(texture.size).to.equal(size);
       expect(texture.precision).to.equal(precision);
-      expect(texture.channels).to.equal(channels);
+      expect(texture.format).to.equal(format);
     });
 
     it(@"should load image from mat", ^{
@@ -66,39 +54,48 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
       expect(texture.size).to.equal(size);
       expect(texture.precision).to.equal(precision);
-      expect(texture.channels).to.equal(channels);
+      expect(texture.channels).to.equal(image.channels());
     });
   });
 
-  itShouldBehaveLike(@"LTTexture precision and channels",
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionByte),
-                       @"channels": @(LTTextureChannelsR)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionByte),
-                       @"channels": @(LTTextureChannelsRG)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionByte),
-                       @"channels": @(LTTextureChannelsRGBA)});
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(@"LTTexture precision and format",
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(@"LTTexture precision and channels",
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"channels": @(LTTextureChannelsR)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"channels": @(LTTextureChannelsRG)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"channels": @(LTTextureChannelsRGBA)});
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(@"LTTexture precision and format",
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(@"LTTexture precision and channels",
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionFloat),
-                       @"channels": @(LTTextureChannelsR)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionFloat),
-                       @"channels": @(LTTextureChannelsRG)});
-  itShouldBehaveLike(@"LTTexture precision and channels",
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(@"LTTexture precision and format",
                      @{@"precision": @(LTTexturePrecisionFloat),
-                       @"channels": @(LTTextureChannelsRGBA)});
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(@"LTTexture precision and format",
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"format": @(LTTextureFormatLuminance)});
 
   context(@"red and rg textures", ^{
     it(@"should read red channel data", ^{
@@ -108,11 +105,8 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
       cv::Mat read = [texture image];
 
-      std::vector<cv::Mat> channels;
-      cv::split(read, channels);
-
-      expect(CV_MAT_DEPTH(read.type())).to.equal(CV_8U);
-      expect(LTCompareMat(image, channels[0])).to.beTruthy();
+      expect(read.type()).to.equal(CV_8U);
+      expect(LTCompareMat(image, read)).to.beTruthy();
     });
 
     it(@"should read rg channel data", ^{
@@ -122,14 +116,8 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
       cv::Mat read = [texture image];
 
-      std::vector<cv::Mat> channels;
-      cv::split(read, channels);
-
-      cv::Mat joined;
-      cv::merge(&channels[0], 2, joined);
-
-      expect(CV_MAT_DEPTH(read.type())).to.equal(CV_8U);
-      expect(LTCompareMat(image, joined)).to.beTruthy();
+      expect(read.type()).to.equal(CV_8UC2);
+      expect(LTCompareMat(image, read)).to.beTruthy();
     });
   });
 
@@ -137,16 +125,16 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     it(@"should create an unallocated texture with size", ^{
       CGSize size = CGSizeMake(42, 42);
       LTTexturePrecision precision = LTTexturePrecisionByte;
-      LTTextureChannels channels = LTTextureChannelsRGBA;
+      LTTextureFormat format = LTTextureFormatRGBA;
 
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
                                                                  precision:precision
-                                                                  channels:channels
+                                                                    format:format
                                                             allocateMemory:NO];
 
       expect(texture.size).to.equal(size);
       expect(texture.precision).to.equal(precision);
-      expect(texture.channels).to.equal(channels);
+      expect(texture.format).to.equal(format);
     });
 
     it(@"should create a texture with similar properties", ^{
@@ -165,7 +153,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       beforeEach(^{
         texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
                                                         precision:LTTexturePrecisionByte
-                                                         channels:LTTextureChannelsRGBA
+                                                           format:LTTextureFormatRGBA
                                                    allocateMemory:NO];
       });
 
@@ -269,10 +257,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       });
 
       it(@"should clone itself to an existing texture", ^{
-        LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithSize:texture.size
-                                                                  precision:texture.precision
-                                                                   channels:texture.channels
-                                                             allocateMemory:YES];
+        LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
         
         [texture cloneTo:cloned];
         

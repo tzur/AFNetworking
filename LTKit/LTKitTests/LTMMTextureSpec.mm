@@ -31,10 +31,7 @@ itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTMMTe
 __block LTMMTexture *target;
 
 beforeEach(^{
-  target = [[LTMMTexture alloc] initWithSize:CGSizeMake(2, 2)
-                                   precision:LTTexturePrecisionByte
-                                    channels:LTTextureChannelsRGBA
-                              allocateMemory:YES];
+  target = [[LTMMTexture alloc] initByteRGBAWithSize:CGSizeMake(2, 2)];
 });
 
 afterEach(^{

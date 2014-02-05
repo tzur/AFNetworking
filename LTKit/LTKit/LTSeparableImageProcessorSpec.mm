@@ -30,15 +30,15 @@ __block LTProgram *invalidProgram;
 beforeEach(^{
   source = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                    precision:LTTexturePrecisionByte
-                                    channels:LTTextureChannelsRGBA
+                                      format:LTTextureFormatRGBA
                               allocateMemory:YES];
   output0 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                     precision:LTTexturePrecisionByte
-                                     channels:LTTextureChannelsRGBA
+                                       format:LTTextureFormatRGBA
                                allocateMemory:YES];
   output1 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                     precision:LTTexturePrecisionByte
-                                     channels:LTTextureChannelsRGBA
+                                       format:LTTextureFormatRGBA
                                allocateMemory:YES];
   
   validProgram = [[LTProgram alloc] initWithVertexSource:[TexelOffsetVsh source]

@@ -90,14 +90,8 @@ beforeEach(^{
   cv::Mat image = LTLoadMatWithName([self class], @"Noise.png");
   LTTexture *input = [LTTexture textureWithImage:image];
 
-  outputA = [LTTexture textureWithSize:input.size
-                             precision:LTTexturePrecisionByte
-                              channels:LTTextureChannelsRGBA
-                        allocateMemory:YES];
-  outputB = [LTTexture textureWithSize:input.size
-                             precision:LTTexturePrecisionByte
-                              channels:LTTextureChannelsRGBA
-                        allocateMemory:YES];
+  outputA = [LTTexture textureWithPropertiesOf:input];
+  outputB = [LTTexture textureWithPropertiesOf:input];
 
   processor = [[LTBilateralFilterProcessor alloc] initWithInput:input
                                                         outputs:@[outputA, outputB]];
