@@ -65,6 +65,8 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
       return LTCompareMatCells<cv::Vec2b>(expected, actual, 0);
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0));
+    case CV_32FC4:
+      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(0, 0, 0, 0));
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
@@ -83,6 +85,9 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
       return LTCompareMatCells<cv::Vec2b>(expected, actual, cv::Vec2b(range, range));
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range));
+    case CV_32FC4:
+      range /= 255.0;
+      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(range, range, range, range));
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
@@ -236,14 +241,31 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
 
 static void LTWriteMat(const cv::Mat &mat, NSString *path) {
   switch (mat.type()) {
+    case CV_8UC1:
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
+      break;
+    case CV_8UC2: {
+      cv::Mat ones = cv::Mat::ones(mat.rows, mat.cols, CV_8U) * 255;
+      cv::Mat zeros = cv::Mat::zeros(mat.rows, mat.cols, CV_8U);
+      cv::Mat paddedMat(mat.rows, mat.cols, CV_8UC4);
+      const int fromTo[] = {0, 2, 1, 1, 2, 0, 3, 3};
+      Matrices inputs{mat, zeros, ones};
+      Matrices outputs{paddedMat};
+      cv::mixChannels(inputs, outputs, fromTo, 4);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], paddedMat);
+    } break;
     case CV_8UC4: {
       cv::Mat bgrMat;
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
-    case CV_8UC1:
-      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
-      break;
+    case CV_32FC4: {
+      cv::Mat converted;
+      mat.convertTo(converted, CV_8UC4, 255.0);
+      cv::Mat bgrMat;
+      cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+    } break;
     default:
       LTAssert(NO, @"Unsupported mat type given: %d", mat.type());
   }
