@@ -357,11 +357,20 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   return NO;
 }
 
-- (void)mappedImage:(LTTextureMappedBlock)block {
+- (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
   block(image, YES);
+}
+
+- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+  LTParameterAssert(block);
+
+  cv::Mat image([self image]);
+  block(&image, YES);
+
+  // User wrote data to image, so it must be uploaded back to the GPU.
   [self load:image];
 }
 

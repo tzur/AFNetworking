@@ -254,21 +254,37 @@ namespace cv {
 /// @note all texture writes that are GPU based should be executed via this method.
 - (void)writeToTexture:(LTVoidBlock)block;
 
+/// Block for transferring the texture contents while allowing read-only access. If \c isCopy is \c
+/// YES, the given image is a copy of the texture and its reference can be stored outside the context
+/// of the block. Otherwise, the memory is directly mapped to the texture's memory and \c mapped
+/// should not be referenced outside this block (unless it is duplicated to a new \c cv::Mat).
+typedef void (^LTTextureMappedReadBlock)(const cv::Mat &mapped, BOOL isCopy);
+
 /// Block for transferring the texture contents and allow updates. If \c isCopy is \c YES, the given
 /// image is a copy of the texture and its reference can be stored outside the context of the block.
 /// Otherwise, the memory is directly mapped to the texture's memory and \c mapped should not be
 /// referenced outside this block (unless it is duplicated to a new \c cv::Mat).
-typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
+typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
+
+/// Calls the given \c block with an image with the texture's contents. The contents of \mapped
+/// cannot be modified. This allows to incorporate optimizations such as using reader-lock and
+/// avoiding copy the buffer back to the GPU upon completion of this method.
+///
+/// @note if \c isCopy is set to \c YES, the \c mapped mat can be retained. Otherwise, no copies of
+/// it should be made outside the block.
+///
+/// @see LTTextureMappedReadBlock for more information about the \c block.
+- (void)mappedImageForReading:(LTTextureMappedReadBlock)block;
 
 /// Calls the given \c block with an image with the texture's contents, which can be modified inside
 /// the block. When the method returns, the texture's contents will contain the updated image
 /// contents.
 ///
-/// @note if \c isCopy is set to \c YES, updating the texture after executing \c block will require
-/// a buffer copy with the size of the texture.
+/// @note if \c isCopy is set to \c YES, the \c mapped mat can be retained. Otherwise, no copies of
+/// it should be made outside the block.
 ///
-/// @see LTTextureMappedBlock for more information about the \c block.
-- (void)mappedImage:(LTTextureMappedBlock)block;
+/// @see LTTextureMappedWriteBlock for more information about the \c block.
+- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block;
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type

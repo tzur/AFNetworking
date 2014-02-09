@@ -109,9 +109,9 @@
 		8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9851801868A4CF00D680D0 /* LTImage.mm */; };
 		8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */; };
 		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
+		8B9D3FE0189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FDF189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm */; };
 		8B9D3FE6189541F0001A964D /* LTTexture+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FE5189541F0001A964D /* LTTexture+Factory.mm */; };
 		8B9D3FF418954605001A964D /* LTTextureFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */; };
-		8B9D3FE0189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FDF189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm */; };
 		8BA11AE11831555100A5001D /* LTTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA11AE01831555100A5001D /* LTTexture.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
@@ -148,6 +148,8 @@
 		8BABFD8C188D4C15004163DA /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8B188D4C15004163DA /* Noise.png */; };
 		8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8D188D52B4004163DA /* NoiseGoldA.png */; };
 		8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8E188D52B4004163DA /* NoiseGoldB.png */; };
+		8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
+		8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
 		8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
 		8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */; };
 		8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */; };
@@ -499,12 +501,12 @@
 		8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageSpec.mm; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
-		8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Factory.h"; sourceTree = "<group>"; };
-		8B9D3FE5189541F0001A964D /* LTTexture+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+Factory.mm"; sourceTree = "<group>"; };
-		8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureFactorySpec.mm; sourceTree = "<group>"; };
 		8B9D3FD018912E74001A964D /* LTCVHalfFloatExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCVHalfFloatExtension.h; sourceTree = "<group>"; };
 		8B9D3FDE18913084001A964D /* half.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = half.hpp; path = ../../third_party/utils/half/half.hpp; sourceTree = "<group>"; };
 		8B9D3FDF189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVHalfFloatExtensionSpec.mm; sourceTree = "<group>"; };
+		8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Factory.h"; sourceTree = "<group>"; };
+		8B9D3FE5189541F0001A964D /* LTTexture+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+Factory.mm"; sourceTree = "<group>"; };
+		8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureFactorySpec.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
 		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 		8BABFD8B188D4C15004163DA /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise.png; path = Resources/Noise.png; sourceTree = "<group>"; };
 		8BABFD8D188D52B4004163DA /* NoiseGoldA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldA.png; path = Resources/NoiseGoldA.png; sourceTree = "<group>"; };
 		8BABFD8E188D52B4004163DA /* NoiseGoldB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldB.png; path = Resources/NoiseGoldB.png; sourceTree = "<group>"; };
+		8BAD630D18A3D70100482564 /* ValueSetter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ValueSetter.fsh; sourceTree = "<group>"; };
 		8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTRectDrawer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTRectDrawer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTRectDrawerSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -921,6 +924,7 @@
 				8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */,
 				0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */,
 				0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */,
+				8BAD630D18A3D70100482564 /* ValueSetter.fsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -1554,6 +1558,7 @@
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
+				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
@@ -1696,6 +1701,7 @@
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
+				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

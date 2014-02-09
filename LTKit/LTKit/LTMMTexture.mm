@@ -17,9 +17,6 @@
 
 @interface LTMMTexture ()
 
-/// If \c YES, synchronization is required before accessing texture data on the host.
-@property (atomic) BOOL needsSynchronizationBeforeHostAccess;
-
 /// Lock for texture read/write synchronization.
 @property (strong, nonatomic) NSRecursiveLock *lock;
 
@@ -29,8 +26,11 @@
 /// Reference to the texture object.
 @property (nonatomic) CVOpenGLESTextureRef textureRef;
 
-// Reference to the texture cache object.
+/// Reference to the texture cache object.
 @property (nonatomic) CVOpenGLESTextureCacheRef textureCacheRef;
+
+/// OpenGL sync object used for GPU/CPU synchronization.
+@property (nonatomic) GLsync syncObject;
 
 @end
 
@@ -139,19 +139,22 @@
 }
 
 - (void)destroy {
-  if (self.pixelBufferRef) {
-    CVPixelBufferRelease(self.pixelBufferRef);
-    self.pixelBufferRef = NULL;
-  }
-  if (self.textureRef) {
-    CFRelease(self.textureRef);
-    self.textureRef = NULL;
-  }
-  if (self.textureCacheRef) {
-    CVOpenGLESTextureCacheFlush(self.textureCacheRef, 0);
-    CFRelease(self.textureCacheRef);
-    self.textureCacheRef = NULL;
-  }
+  [self lockTextureAndExecute:^{
+    if (self.pixelBufferRef) {
+      CVPixelBufferRelease(self.pixelBufferRef);
+      self.pixelBufferRef = NULL;
+    }
+    if (self.textureRef) {
+      CFRelease(self.textureRef);
+      self.textureRef = NULL;
+    }
+    if (self.textureCacheRef) {
+      CVOpenGLESTextureCacheFlush(self.textureCacheRef, 0);
+      CFRelease(self.textureCacheRef);
+      self.textureCacheRef = NULL;
+    }
+    self.syncObject = nil;
+  }];
 }
 
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image {
@@ -160,7 +163,7 @@
                     @"Rect for retrieving matrix from texture is out of bounds: (%g, %g, %g, %g)",
                     rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
-  [self mappedImage:^(cv::Mat mapped, BOOL) {
+  [self mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     cv::Rect roi(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     mapped(roi).copyTo(*image);
   }];
@@ -181,11 +184,11 @@
     [self createTextureForMatType:image.type()];
   }
 
-  [self mappedImage:^(cv::Mat mapped, BOOL) {
-    LTParameterAssert(image.type() == mapped.type(), @"Source image's type (%d) must match "
-                      "mapped image's type (%d)", image.type(), mapped.type());
+  [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    LTParameterAssert(image.type() == mapped->type(), @"Source image's type (%d) must match "
+                      "mapped image's type (%d)", image.type(), mapped->type());
     cv::Rect roi(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    image.copyTo(mapped(roi));
+    image.copyTo((*mapped)(roi));
   }];
 }
 
@@ -204,8 +207,8 @@
 }
 
 - (void)copyContentsToTexture:(LTMMTexture *)target {
-  [target mappedImage:^(cv::Mat image, BOOL) {
-    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
+  [target mappedImageForWriting:^(cv::Mat *image, BOOL) {
+    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
   }];
 }
 
@@ -222,7 +225,9 @@
 }
 
 - (void)endWriteToTexture {
-  self.needsSynchronizationBeforeHostAccess = YES;
+  // Make \c self.syncObject a synchronization barrier that is right beyond the last drawing to this
+  // texture in the GPU queue.
+  self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
   [self.lock unlock];
 }
 
@@ -233,7 +238,7 @@
 - (GLKVector4s)pixelValues:(const CGPoints &)locations {
   __block GLKVector4s values(locations.size());
 
-  [self mappedImage:^(cv::Mat texture, BOOL) {
+  [self mappedImageForReading:^(const cv::Mat &texture, BOOL) {
     for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
       // Use boundary conditions similar to Matlab's 'symmetric'.
       GLKVector2 location = [LTSymmetricBoundaryCondition
@@ -273,29 +278,58 @@
 #pragma mark Memory mapping
 #pragma mark -
 
-- (void)mappedImage:(LTTextureMappedBlock)block {
+typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
+
+- (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
+  LTParameterAssert(block);
+
+  return [self mappedImageWithBlock:^(cv::Mat *mapped, BOOL isCopy) {
+    block(*mapped, isCopy);
+  }];
+}
+
+- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+  return [self mappedImageWithBlock:block];
+}
+
+- (void)mappedImageWithBlock:(LTTextureMappedBlock)block {
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
-    LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling updateTexture:");
+    LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling mappedImage:");
 
     // Make sure everything is written to the texture before reading back to CPU.
-    if (self.needsSynchronizationBeforeHostAccess) {
-      glFinish();
-      self.needsSynchronizationBeforeHostAccess = NO;
+    if (glIsSyncAPPLE(self.syncObject)) {
+      [self waitForGPU];
     }
 
     [self lockBufferAndExecute:^{
       void *base = CVPixelBufferGetBaseAddress(self.pixelBufferRef);
       cv::Mat mat(self.size.height, self.size.width, self.matType, base,
                   CVPixelBufferGetBytesPerRow(self.pixelBufferRef));
-      block(mat, NO);
+      block(&mat, NO);
     }];
   }];
 }
 
+- (void)waitForGPU {
+  GLint64 max_timeout;
+  glGetInteger64vAPPLE(GL_MAX_SERVER_WAIT_TIMEOUT_APPLE, &max_timeout);
+  GLenum waitResult = glClientWaitSyncAPPLE(self.syncObject,
+                                            GL_SYNC_FLUSH_COMMANDS_BIT_APPLE,
+                                            max_timeout);
+  self.syncObject = nil;
+
+  LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");
+  LTAssert(waitResult != GL_WAIT_FAILED_APPLE, @"Failed waiting on sync object");
+}
+
 - (void)lockBufferAndExecute:(LTVoidBlock)block {
-  CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
+  // Theoretically, this should be set to \c kCVPixelBufferLock_ReadOnly if \c a write lock is not
+  // required. However, it seems that this flag avoids the locked buffer from being updated with the
+  // latest data from the GPU.
+  const CVOptionFlags kOptions = 0;
+  CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, kOptions);
   if (kCVReturnSuccess != lockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed locking base address of buffer with error %d", lockResult];
@@ -303,11 +337,18 @@
 
   if (block) block();
 
-  CVReturn unlockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, 0);
+  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(self.pixelBufferRef, kOptions);
   if (kCVReturnSuccess != unlockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed unlocking base address of buffer with error %d", unlockResult];
   }
+}
+
+- (void)setSyncObject:(GLsync)syncObject {
+  if (glIsSyncAPPLE(_syncObject)) {
+    glDeleteSyncAPPLE(_syncObject);
+  }
+  _syncObject = syncObject;
 }
 
 #pragma mark -
