@@ -8,6 +8,8 @@
 #import "LTImage.h"
 #import "SpectaUtility.h"
 
+using half_float::half;
+
 static NSString * const kMatOutputBasedir = @"/tmp/";
 
 #pragma mark -
@@ -65,6 +67,13 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
       return LTCompareMatCells<cv::Vec2b>(expected, actual, 0);
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0));
+    case CV_16F:
+      return LTCompareMatCells<half>(expected, actual, half(0.f));
+    case CV_16FC2:
+      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(0.f), half(0.f)));
+    case CV_16FC4:
+      return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(0.f), half(0.f),
+                                                                        half(0.f), half(0.f)));
     case CV_32FC4:
       return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(0, 0, 0, 0));
     default:
@@ -78,6 +87,10 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
     return NO;
   }
 
+  if (expected.depth() == CV_32F || expected.depth() == CV_16F) {
+    range /= 255.0;
+  }
+
   switch (expected.type()) {
     case CV_8UC1:
       return LTCompareMatCells<uchar>(expected, actual, range);
@@ -85,8 +98,14 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
       return LTCompareMatCells<cv::Vec2b>(expected, actual, cv::Vec2b(range, range));
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range));
+    case CV_16FC1:
+      return LTCompareMatCells<half>(expected, actual, half(range));
+    case CV_16FC2:
+      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(range), half(range)));
+    case CV_16FC4:
+      return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(range), half(range),
+                                                                        half(range), half(range)));
     case CV_32FC4:
-      range /= 255.0;
       return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(range, range, range, range));
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
@@ -215,10 +234,21 @@ static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T 
   if (!memcmp(expected.val, actual.val, sizeof(expected.val))) {
     return YES;
   } else {
-    T diff;
-    cv::absdiff(expected, actual, diff);
-    return cv::norm(diff, cv::NORM_L1) < cv::norm(fuzziness, cv::NORM_L1);
+    for (int i = 0; i < cv::DataType<T>::channels; ++i) {
+      typename cv::DataType<T>::channel_type diff =
+          expected[i] > actual[i] ? expected[i] - actual[i] : actual[i] - expected[i];
+      if (diff > fuzziness[i]) {
+        return NO;
+      }
+    }
+    return YES;
   }
+}
+
+template <>
+inline BOOL LTCompareMatCell(const half &expected, const half &actual, const half &fuzziness,
+                                    const std::false_type __unused &isFundamental) {
+  return std::abs(expected - actual) <= fuzziness;
 }
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
