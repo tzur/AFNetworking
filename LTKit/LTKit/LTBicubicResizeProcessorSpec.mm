@@ -51,7 +51,7 @@ context(@"processing", ^{
     
     // Result of filtering 8x8 delta function.
     cv::Mat processedDelta = LTLoadMatWithName([self class], @"DeltaBicubic.png");
-    expect(LTFuzzyCompareMat(processedDelta, [output image])).to.beTruthy();
+    expect(LTFuzzyCompareMat(processedDelta, [output image], 2)).to.beTruthy();
   });
 });
 

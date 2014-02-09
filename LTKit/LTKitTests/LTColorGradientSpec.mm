@@ -3,7 +3,6 @@
 
 #import "LTColorGradient.h"
 
-#import "LTImage.h"
 #import "LTTestUtils.h"
 #import "LTTexture.h"
 
@@ -104,17 +103,17 @@ context(@"writing gradient values to texture", ^{
   it(@"should be equal to pre-computed red gradient", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
-    UIImage *png = LTLoadImageWithName([self class], @"RedGradient.png");
-    LTImage *image = [[LTImage alloc] initWithImage:png];
-    expect(LTFuzzyCompareMat(texture.image, image.mat)).to.beTruthy();
+
+    cv::Mat image = LTLoadMatWithName([self class], @"RedGradient.png");
+    expect(LTFuzzyCompareMat(texture.image, image)).to.beTruthy();
   });
   
   it(@"should be equal to pre-computed red/blue gradient", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
-    UIImage *png = LTLoadImageWithName([self class], @"RedBlueGradient.png");
-    LTImage *image = [[LTImage alloc] initWithImage:png];
-    expect(LTFuzzyCompareMat(texture.image, image.mat)).to.beTruthy();
+
+    cv::Mat image = LTLoadMatWithName([self class], @"RedBlueGradient.png");
+    expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
   });
 });
 
