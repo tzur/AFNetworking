@@ -6,25 +6,33 @@
 
 #ifdef __cplusplus
 
+#import <opencv2/core/core.hpp>
 #import <vector>
 
 #pragma mark -
 #pragma mark CoreGraphics
 #pragma mark -
 
-/// A collection of CGPoints.
+/// A collection of \c CGPoint.
 typedef std::vector<CGPoint> CGPoints;
 
 #pragma mark -
 #pragma mark GLKit
 #pragma mark -
 
-/// A collection of GLKVector2.
+/// A collection of \c GLKVector2.
 typedef std::vector<GLKVector2> GLKVector2s;
-/// A collection of GLKVector3.
+/// A collection of \c GLKVector3.
 typedef std::vector<GLKVector3> GLKVector3s;
-/// A collection of GLKVector4.
+/// A collection of \c GLKVector4.
 typedef std::vector<GLKVector4> GLKVector4s;
+
+#pragma mark -
+#pragma mark OpenCV
+#pragma mark -
+
+/// A collection of \c cv::Mat.
+typedef std::vector<cv::Mat> Matrices;
 
 #endif
 

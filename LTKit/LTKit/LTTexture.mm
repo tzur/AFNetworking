@@ -50,6 +50,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 @property (nonatomic) LTTextureInterpolation minFilterInterpolation;
 @property (nonatomic) LTTextureInterpolation magFilterInterpolation;
 @property (nonatomic) LTTextureWrap wrap;
+@property (nonatomic) GLint maxMipmapLevel;
 
 @end
 
@@ -138,10 +139,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   _minFilterInterpolation = LTTextureInterpolationLinear;
   _magFilterInterpolation = LTTextureInterpolationLinear;
   _wrap = LTTextureWrapClamp;
-}
-
-- (void)load:(const cv::Mat __unused &)image {
-  LTAssert(NO, @"-[LTTexture load:] is an abstract method that should be overridden by subclasses");
+  _maxMipmapLevel = 0;
 }
 
 - (void)create:(BOOL __unused)allocateMemory {
@@ -197,6 +195,10 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
+
+- (void)load:(const cv::Mat &)image {
+  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
+}
 
 - (void)readFromTexture:(LTVoidBlock)block {
   LTParameterAssert(block);
@@ -368,6 +370,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   parameters.minFilterInterpolation = self.minFilterInterpolation;
   parameters.magFilterInterpolation = self.magFilterInterpolation;
   parameters.wrap = self.wrap;
+  parameters.maxMipmapLevel = self.maxMipmapLevel;
   return parameters;
 }
 
@@ -376,6 +379,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
     self.minFilterInterpolation = parameters.minFilterInterpolation;
     self.magFilterInterpolation = parameters.magFilterInterpolation;
     self.wrap = parameters.wrap;
+    self.maxMipmapLevel = parameters.maxMipmapLevel;
   }];
 }
 
@@ -403,6 +407,12 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   if (!self.name) {
     return;
   }
+
+  if (!self.maxMipmapLevel) {
+    LTAssert(minFilterInterpolation == LTTextureInterpolationNearest ||
+             minFilterInterpolation == LTTextureInterpolationLinear,
+             @"Min filter interpolation for mipmaps is valid for mipmap textures only");
+  }
   
   [self bindAndExecute:^{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilterInterpolation);
@@ -415,7 +425,11 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   if (!self.name) {
     return;
   }
-  
+
+  LTAssert(magFilterInterpolation == LTTextureInterpolationNearest ||
+           magFilterInterpolation == LTTextureInterpolationLinear,
+           @"Mag filter interpolation must be nearest or linear only");
+
   [self bindAndExecute:^{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilterInterpolation);
   }];
@@ -440,6 +454,18 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   }];
   
   _wrap = wrap;
+}
+
+- (void)setMaxMipmapLevel:(GLint)maxMipmapLevel {
+  if (!self.name) {
+    return;
+  }
+
+  [self bindAndExecute:^{
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, maxMipmapLevel);
+  }];
+
+  _maxMipmapLevel = maxMipmapLevel;
 }
 
 - (int)matType {

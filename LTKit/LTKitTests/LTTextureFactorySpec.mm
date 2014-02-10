@@ -47,4 +47,17 @@ it(@"should initialize with properties of another texture", ^{
   expect(texture).to.beKindOf([LTTexture class]);
 });
 
+it(@"should initialize mipmap with base image", ^{
+  LTTexture *texture = [LTTexture textureWithBaseLevelMipmapImage:cv::Mat4b(1, 1)];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize mipmap with multiple images", ^{
+  Matrices images{cv::Mat4b(8, 8), cv::Mat4b(4, 4), cv::Mat4b(2, 2), cv::Mat4b(1, 1)};
+  LTTexture *texture = [LTTexture textureWithMipmapImages:images];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
 SpecEnd

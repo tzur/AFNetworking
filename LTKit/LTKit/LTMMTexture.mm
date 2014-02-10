@@ -53,6 +53,7 @@
     [self setMinFilterInterpolation:self.minFilterInterpolation];
     [self setMagFilterInterpolation:self.magFilterInterpolation];
     [self setWrap:self.wrap];
+    [self setMaxMipmapLevel:self.maxMipmapLevel];
   }];
 }
 
@@ -70,7 +71,6 @@
 }
 
 - (void)allocateTexture {
-  // TODO: (yaron) test performance on device for GL_BGRA and GL_RGBA.
   CVReturn result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                  self.textureCacheRef,
                                                                  self.pixelBufferRef,
@@ -143,10 +143,6 @@
     cv::Rect roi(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     mapped(roi).copyTo(*image);
   }];
-}
-
-- (void)load:(const cv::Mat &)image {
-  [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
 }
 
 - (void)loadRect:(CGRect)rect fromImage:(const cv::Mat &)image {
