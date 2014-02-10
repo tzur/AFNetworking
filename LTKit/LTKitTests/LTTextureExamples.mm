@@ -258,7 +258,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         expect(LTCompareMat(image, read)).to.beTruthy();
       });
 
-      it(@"should clone itself to an existing texture", ^{
+      dit(@"should clone itself to an existing texture", ^{
         LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
         
         [texture cloneTo:cloned];
