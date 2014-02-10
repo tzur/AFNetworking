@@ -4,7 +4,9 @@
 #import "LTMMTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTRectDrawer+PassthroughShader.h"
 
 @interface LTTexture ()
 
@@ -195,21 +197,20 @@
 - (LTTexture *)clone {
   LTMMTexture *cloned = [[LTMMTexture alloc] initWithSize:self.size precision:self.precision
                                                    format:self.format allocateMemory:YES];
-  [self copyContentsToTexture:cloned];
+  [cloned mappedImageForWriting:^(cv::Mat *image, BOOL) {
+    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
+  }];
 
   return cloned;
 }
 
 - (void)cloneTo:(LTTexture *)texture {
-  LTAssert([texture isKindOfClass:[LTMMTexture class]], @"At the moment, only cloning to "
-           "LTMMTexture is supported");
-  [self copyContentsToTexture:(LTMMTexture *)texture];
-}
+  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
 
-- (void)copyContentsToTexture:(LTMMTexture *)target {
-  [target mappedImageForWriting:^(cv::Mat *image, BOOL) {
-    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
-  }];
+  CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
+  CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
+  [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
 }
 
 - (void)beginReadFromTexture {

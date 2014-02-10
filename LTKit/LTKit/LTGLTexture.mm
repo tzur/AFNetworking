@@ -229,8 +229,9 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                         fragmentSource:[LTPassthroughShaderFsh source]];
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
-  CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
-  [rectDrawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+  CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
+  CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
+  [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
 }
 
 // Assuming that OpenGL calls are synchronized (when used in a single-threaded environment), no

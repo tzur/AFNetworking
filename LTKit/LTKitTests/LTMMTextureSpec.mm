@@ -217,6 +217,26 @@ context(@"cpu gpu memory synchronization", ^{
       }];
     }
   });
+
+  dit(@"should have fresh values on GPU after CPU rendering", ^{
+    CGSize size = CGSizeMake(16, 16);
+    LTMMTexture *source = [[LTMMTexture alloc] initByteRGBAWithSize:size];
+    LTGLTexture *target = [[LTGLTexture alloc] initByteRGBAWithSize:size];
+
+    float values[] = {0, 0.25, 0.5, 0.75, 1.0};
+
+    for (int i = 0; i < 5; ++i) {
+      __block float value = values[i];
+      [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        mapped->setTo(cv::Vec4b(value, value, value, value));
+      }];
+
+      [source cloneTo:target];
+
+      cv::Scalar scalar(value, value, value, value);
+      expect(LTFuzzyCompareMatWithValue(scalar, [target image])).to.beTruthy();
+    }
+  });
 });
 
 SpecEnd
