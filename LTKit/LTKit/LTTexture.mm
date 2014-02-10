@@ -4,6 +4,7 @@
 #import "LTTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTDevice.h"
 #import "LTGLException.h"
 #import "LTImage.h"
 
@@ -28,8 +29,39 @@ LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image) {
 
 LTTextureChannels LTTextureChannelsFromMatType(int type) {
   switch (CV_MAT_CN(type)) {
+    case 1:
+      return LTTextureChannelsOne;
+    case 2:
+      return LTTextureChannelsTwo;
     case 4:
-      return LTTextureChannelsRGBA;
+      return LTTextureChannelsFour;
+    default:
+      [LTGLException raise:kLTTextureUnsupportedFormatException
+                    format:@"Invalid number of channels: %d", CV_MAT_CN(type)];
+      __builtin_unreachable();
+  }
+}
+
+LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
+  return LTTextureChannelsFromMatType(image.type());
+}
+
+LTTextureFormat LTTextureFormatFromMatType(int type) {
+  switch (CV_MAT_CN(type)) {
+    case 1:
+      if ([LTDevice currentDevice].supportsRGTextures) {
+        return LTTextureFormatRed;
+      } else {
+        return LTTextureFormatLuminance;
+      }
+    case 2:
+      if ([LTDevice currentDevice].supportsRGTextures) {
+        return LTTextureFormatRG;
+      } else {
+        return LTTextureFormatRGBA;
+      }
+    case 4:
+      return LTTextureFormatRGBA;
     default:
       [LTGLException raise:kLTTextureUnsupportedFormatException
                     format:@"Invalid number of channels: %d, type: %d", CV_MAT_CN(type), type];
@@ -37,8 +69,39 @@ LTTextureChannels LTTextureChannelsFromMatType(int type) {
   }
 }
 
-LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
-  return LTTextureChannelsFromMatType(image.type());
+LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image) {
+  return LTTextureFormatFromMatType(image.type());
+}
+
+LTTextureChannels LTTextureChannelsFromFormat(LTTextureFormat format) {
+  switch (format) {
+    case LTTextureFormatRed:
+    case LTTextureFormatLuminance:
+      return LTTextureChannelsOne;
+    case LTTextureFormatRG:
+      return LTTextureChannelsTwo;
+    case LTTextureFormatRGBA:
+      return LTTextureChannelsFour;
+  }
+}
+
+int LTMatDepthForPrecision(LTTexturePrecision precision) {
+  switch (precision) {
+    case LTTexturePrecisionByte:
+      return CV_8U;
+    case LTTexturePrecisionHalfFloat:
+      return CV_16U;
+    case LTTexturePrecisionFloat:
+      return CV_32F;
+  }
+}
+
+int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels) {
+  return CV_MAKETYPE(LTMatDepthForPrecision(precision), (int)channels);
+}
+
+int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat format) {
+  return CV_MAKETYPE(LTMatDepthForPrecision(precision), (int)LTTextureChannelsFromFormat(format));
 }
 
 #pragma mark -
@@ -98,10 +161,14 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 #pragma mark -
 
 - (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-          channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory {
+            format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
   if (self = [super init]) {
+    LTParameterAssert([self formatSupported:format],
+                      @"Given texture format %d is not supported in this system", format);
+
     _precision = precision;
-    _channels = channels;
+    _format = format;
+    _channels = LTTextureChannelsFromFormat(format);
     _size = size;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
@@ -114,7 +181,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 - (id)initWithImage:(const cv::Mat &)image {
   if (self = [self initWithSize:CGSizeMake(image.cols, image.rows)
                       precision:LTTexturePrecisionFromMat(image)
-                       channels:LTTextureChannelsFromMat(image)
+                         format:LTTextureFormatFromMat(image)
                  allocateMemory:NO]) {
     [self load:image];
   }
@@ -123,16 +190,27 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 
 - (id)initByteRGBAWithSize:(CGSize)size {
   return [self initWithSize:size precision:LTTexturePrecisionByte
-                   channels:LTTextureChannelsRGBA allocateMemory:YES];
+                     format:LTTextureFormatRGBA allocateMemory:YES];
 }
 
 - (id)initWithPropertiesOf:(LTTexture *)texture {
   return [self initWithSize:texture.size precision:texture.precision
-                   channels:texture.channels allocateMemory:YES];
+                     format:texture.format allocateMemory:YES];
 }
 
 - (void)dealloc {
   [self destroy];
+}
+
+- (BOOL)formatSupported:(LTTextureFormat)format {
+  switch (format) {
+    case LTTextureFormatLuminance:
+    case LTTextureFormatRGBA:
+      return YES;
+    case LTTextureFormatRed:
+    case LTTextureFormatRG:
+      return [LTDevice currentDevice].supportsRGTextures;
+  }
 }
 
 - (void)setDefaultValues {
@@ -279,11 +357,20 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
   return NO;
 }
 
-- (void)mappedImage:(LTTextureMappedBlock)block {
+- (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
   block(image, YES);
+}
+
+- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+  LTParameterAssert(block);
+
+  cv::Mat image([self image]);
+  block(&image, YES);
+
+  // User wrote data to image, so it must be uploaded back to the GPU.
   [self load:image];
 }
 
@@ -339,18 +426,14 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 /// avoided when possible. The resulting \c cv::Mat element type will be set to the texture's
 /// precision.
 - (cv::Mat)imageWithRect:(CGRect)rect {
-  cv::Mat image(rect.size.height, rect.size.width, self.matType);
-
+  cv::Mat image;
   [self storeRect:rect toImage:&image];
-  
   return image;
 }
 
 - (cv::Mat)image {
-  cv::Mat image(self.size.height, self.size.width, self.matType);
-  
+  cv::Mat image;
   [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:&image];
-  
   return image;
 }
 
@@ -469,18 +552,7 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 }
 
 - (int)matType {
-  switch (self.channels) {
-    case LTTextureChannelsRGBA:
-      switch (self.precision) {
-        case LTTexturePrecisionByte:
-          return CV_8UC4;
-        case LTTexturePrecisionHalfFloat:
-          return CV_16UC4;
-        case LTTexturePrecisionFloat:
-          return CV_32FC4;
-      }
-      break;
-  }
+  return LTMatTypeForPrecisionAndChannels(self.precision, self.channels);
 }
 
 #pragma mark -

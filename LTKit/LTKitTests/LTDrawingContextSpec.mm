@@ -106,10 +106,7 @@ context(@"texture binding while drawing", ^{
   __block LTFbo *fbo;
 
   beforeEach(^{
-    LTTexture *output = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                precision:LTTexturePrecisionByte
-                                                 channels:LTTextureChannelsRGBA
-                                           allocateMemory:YES];
+    LTTexture *output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
     fbo = [[LTFbo alloc] initWithTexture:output];
 
     vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];

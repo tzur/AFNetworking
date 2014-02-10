@@ -23,10 +23,7 @@ afterEach(^{
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
 
     expect(fbo.name).toNot.equal(0);
@@ -38,7 +35,7 @@ context(@"initialization", ^{
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
 
@@ -51,7 +48,7 @@ context(@"initialization", ^{
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
 
     expect(^{
@@ -65,7 +62,7 @@ context(@"initialization", ^{
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
 
     // Simulator doesn't support rendering to a colorbuffer, so no real initialization can happen.
@@ -80,7 +77,7 @@ context(@"initialization", ^{
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
 
     expect(^{
@@ -91,7 +88,7 @@ context(@"initialization", ^{
   it(@"should not init with zero-size texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeZero
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
 
     expect(^{
@@ -109,7 +106,7 @@ context(@"clearing", ^{
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:size
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo clearWithColor:value];
@@ -126,7 +123,7 @@ context(@"binding", ^{
   beforeEach(^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA
+                                                    format:LTTextureFormatRGBA
                                             allocateMemory:YES];
     fbo = [[LTFbo alloc] initWithTexture:texture];
   });

@@ -171,32 +171,6 @@
 }
 
 #pragma mark -
-#pragma mark Class methods
-#pragma mark -
-
-+ (LTTexturePrecision)bestTargetPrecisionForSourcePrecision:(LTTexturePrecision)precision {
-  switch (precision) {
-    case LTTexturePrecisionByte:
-      // Byte precision is always available per OpenGL ES 2.0 spec.
-      return LTTexturePrecisionByte;
-    case LTTexturePrecisionHalfFloat:
-      if ([LTDevice currentDevice].canRenderToHalfFloatTextures) {
-        return LTTexturePrecisionHalfFloat;
-      } else {
-        return LTTexturePrecisionByte;
-      }
-    case LTTexturePrecisionFloat:
-      if ([LTDevice currentDevice].canRenderToFloatTextures) {
-        return LTTexturePrecisionFloat;
-      } else if ([LTDevice currentDevice].canRenderToHalfFloatTextures) {
-        return LTTexturePrecisionHalfFloat;
-      } else {
-        return LTTexturePrecisionByte;
-      }
-  }
-}
-
-#pragma mark -
 #pragma mark Properties
 #pragma mark -
 

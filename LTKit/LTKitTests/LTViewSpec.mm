@@ -280,9 +280,10 @@ context(@"drawing", ^{
   
   it(@"should draw transparent pixels as black if contentTransparency is NO", ^{
     view.contentTransparency = NO;
-    [contentTexture mappedImage:^(cv::Mat mapped, BOOL) {
-      mapped(cv::Rect(0, 0, mapped.cols / 2, mapped.rows / 2)).setTo(cv::Vec4b(128, 0, 0, 128));
-      cv::resize(mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
+    [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      cv::Vec4b transparency(128, 0, 0, 128);
+      (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(transparency);
+      cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
       cv::flip(resizedContent, resizedContent, 0);
       expectedOutput = view.backgroundColor.cvVector;
       resizedContent.copyTo(expectedOutput(contentAreaInOutput));
@@ -295,12 +296,12 @@ context(@"drawing", ^{
   
   it(@"should blend transparent pixels with a checkerboard if contentTransparency is YES", ^{
     view.contentTransparency = YES;
-    [contentTexture mappedImage:^(cv::Mat mapped, BOOL) {
+    [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       cv::Vec4b semiTransparent(128, 0, 0, 128);
       cv::Vec4b blendedWhite = LTBlend(cv::Vec4b(255, 255, 255, 255), semiTransparent);
       cv::Vec4b blendedGray = LTBlend(cv::Vec4b(193, 193, 193, 255), semiTransparent);
-      mapped(cv::Rect(0, 0, mapped.cols / 2, mapped.rows / 2)).setTo(semiTransparent);
-      cv::resize(mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
+      (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(semiTransparent);
+      cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
       unsigned int pixels = (unsigned int)view.pixelsPerCheckerboardSquare;
       resizedContent(cv::Rect(0, 0, pixels, pixels)) = blendedGray;
       resizedContent(cv::Rect(pixels, pixels, pixels, pixels)) = blendedGray;

@@ -90,14 +90,8 @@ beforeEach(^{
   cv::Mat image = LTLoadMatWithName([self class], @"Noise.png");
   LTTexture *input = [LTTexture textureWithImage:image];
 
-  outputA = [LTTexture textureWithSize:input.size
-                             precision:LTTexturePrecisionByte
-                              channels:LTTextureChannelsRGBA
-                        allocateMemory:YES];
-  outputB = [LTTexture textureWithSize:input.size
-                             precision:LTTexturePrecisionByte
-                              channels:LTTextureChannelsRGBA
-                        allocateMemory:YES];
+  outputA = [LTTexture textureWithPropertiesOf:input];
+  outputB = [LTTexture textureWithPropertiesOf:input];
 
   processor = [[LTBilateralFilterProcessor alloc] initWithInput:input
                                                         outputs:@[outputA, outputB]];
@@ -118,12 +112,12 @@ it(@"should process input image correctly", ^{
   cv::Mat goldA = LTLoadMatWithName([self class], @"NoiseGoldA.png");
   cv::Mat goldB = LTLoadMatWithName([self class], @"NoiseGoldB.png");
 
-  // After long research and discussion, we decided to give a large fuzziness in this test (5, which
+  // After long research and discussion, we decided to give a large fuzziness in this test (6, which
   // is ~2% error). We suspect the errors are floating point errors and precision errors when
   // calling functions such as exp() and distance() on the GPU, which may be implemented differently
   // than their parallel CRT implmentations.
-  expect(LTFuzzyCompareMat(goldA, [outputA image], 5)).to.beTruthy();
-  expect(LTFuzzyCompareMat(goldB, [outputB image], 5)).to.beTruthy();
+  expect(LTFuzzyCompareMat(goldA, [outputA image], 6)).to.beTruthy();
+  expect(LTFuzzyCompareMat(goldB, [outputB image], 6)).to.beTruthy();
 });
 
 context(@"properties", ^{

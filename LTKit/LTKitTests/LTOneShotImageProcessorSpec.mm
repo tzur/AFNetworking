@@ -31,17 +31,14 @@ static NSString * const kAuxiliaryTextureName = @"auxTexture";
 beforeEach(^{
   input = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                   precision:LTTexturePrecisionByte
-                                   channels:LTTextureChannelsRGBA
+                                     format:LTTextureFormatRGBA
                              allocateMemory:YES];
 
   cv::Mat image = cv::Mat4b(1, 1);
   image.setTo(cv::Vec4b(16, 0, 0, 255));
   auxTexture = [[LTGLTexture alloc] initWithImage:image];
 
-  output = [[LTGLTexture alloc] initWithSize:input.size
-                                   precision:input.precision
-                                    channels:input.channels
-                              allocateMemory:YES];
+  output = [[LTGLTexture alloc] initWithPropertiesOf:input];
 
   program = [[LTProgram alloc]
              initWithVertexSource:[PassthroughVsh source]

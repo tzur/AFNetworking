@@ -29,7 +29,7 @@ context(@"properties", ^{
   it(@"will not set wrap to repeat on NPOT texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 3)
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                                    format:LTTextureFormatRGBA allocateMemory:NO];
     texture.wrap = LTTextureWrapRepeat;
 
     expect(texture.wrap).toNot.equal(LTTextureWrapRepeat);
@@ -38,7 +38,7 @@ context(@"properties", ^{
   it(@"will set the warp to repeat on POT texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                                    format:LTTextureFormatRGBA allocateMemory:NO];
     texture.wrap = LTTextureWrapRepeat;
 
     expect(texture.wrap).to.equal(LTTextureWrapRepeat);
@@ -47,7 +47,7 @@ context(@"properties", ^{
   it(@"will set min and mag filters", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                                    format:LTTextureFormatRGBA allocateMemory:NO];
 
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -59,7 +59,7 @@ context(@"properties", ^{
   it(@"will set maximal mipmap level", ^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
                                                  precision:LTTexturePrecisionByte
-                                                  channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                                    format:LTTextureFormatRGBA allocateMemory:NO];
     texture.maxMipmapLevel = 1000;
 
     expect(texture.maxMipmapLevel).to.equal(1000);
@@ -71,7 +71,7 @@ context(@"binding and execution", ^{
 
   beforeEach(^{
     texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1) precision:LTTexturePrecisionByte
-                                       channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                         format:LTTextureFormatRGBA allocateMemory:NO];
   });
 
   afterEach(^{

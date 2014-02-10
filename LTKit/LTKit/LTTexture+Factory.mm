@@ -24,9 +24,9 @@
 }
 
 + (instancetype)textureWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                       channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory {
+                         format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
   return [[[self textureClass] alloc] initWithSize:size precision:precision
-                                          channels:channels allocateMemory:allocateMemory];
+                                            format:format allocateMemory:allocateMemory];
 }
 
 + (instancetype)textureWithImage:(const cv::Mat &)image {

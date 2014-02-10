@@ -72,7 +72,7 @@ context(@"drawing", ^{
   beforeEach(^{
     output = [[LTGLTexture alloc] initWithSize:kFramebufferSize
                                       precision:LTTexturePrecisionByte
-                                       channels:LTTextureChannelsRGBA
+                                        format:LTTextureFormatRGBA
                                  allocateMemory:YES];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];

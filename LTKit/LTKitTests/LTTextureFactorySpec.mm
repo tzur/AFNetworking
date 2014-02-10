@@ -20,7 +20,7 @@ afterEach(^{
 it(@"should initialize with size precision channels and allocate memory", ^{
   LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                         precision:LTTexturePrecisionByte
-                                         channels:LTTextureChannelsRGBA
+                                           format:LTTextureFormatRGBA
                                    allocateMemory:YES];
 
   expect(texture).to.beKindOf([LTTexture class]);

@@ -580,10 +580,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // TODO: (yaron) this can be optimized by creating an LTMMTexture which is backed by a cv::Mat,
   // so there will be no need to create two duplicate images in memory (one of a texture and one of
   // LTImage).
-  LTTexture *texture = [LTTexture textureWithSize:self.framebufferSize
-                                        precision:LTTexturePrecisionByte
-                                         channels:LTTextureChannelsRGBA
-                                   allocateMemory:YES];
+  LTTexture *texture = [LTTexture byteRGBATextureWithSize:self.framebufferSize];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
   [self drawToFbo:fbo];
   return [[LTImage alloc] initWithMat:[texture image] copy:NO];
