@@ -54,14 +54,7 @@
 }
 
 - (instancetype)initWithCenter:(CGPoint)center size:(CGSize)size angle:(CGFloat)angle {
-  if (self = [super init]) {
-    self.rect = CGRectCenteredAt(center, size);
-    self.angle = angle;
-    self.center = center;
-    [self updateTransform];
-    [self updateVertices];
-  }
-  return self;
+  return [self initWithRect:CGRectCenteredAt(center, size) angle:angle];
 }
 
 #pragma mark -
@@ -72,7 +65,7 @@
   CGAffineTransform transform = CGAffineTransformIdentity;
   if (self.angle) {
     transform = CGAffineTransformTranslate(transform, self.center.x, self.center.y);
-    // in iOS, negative values mean clockwise rotation, while positive values in OSX.
+    // In iOS, negative values mean clockwise rotation, while positive values in OSX.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     transform = CGAffineTransformRotate(transform, -self.angle);
 #else

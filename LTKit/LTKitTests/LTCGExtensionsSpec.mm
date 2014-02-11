@@ -68,13 +68,15 @@ context(@"cgpoint operations", ^{
     expect(CGPointMake(1, 2) * CGSizeMake(3, 4)).to.equal(CGPointMake(3, 8));
     expect(CGPointMake(1, 2) / CGSizeMake(0.5, 0.25)).to.equal(CGPointMake(2, 8));
 
-    // in iOS, negative values mean clockwise rotation, while positive values in OSX.
+    // In iOS, negative values mean clockwise rotation, while positive values in OSX.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    const CGFloat cwAngle = -M_PI_2;
+    const CGFloat kClockwiseAngle = -M_PI_2;
 #else
-    const CGFloat cwAngle = M_PI_2;
+    const CGFloat kClockwiseAngle = M_PI_2;
 #endif
-    expect(CGAffineTransformMakeRotation(cwAngle) * CGPointMake(1, 2)).to.equal(CGPointMake(2, -1));
+    CGPoint point = CGAffineTransformMakeRotation(kClockwiseAngle) * CGPointMake(1, 2);
+    expect(point.x).to.beCloseTo(2);
+    expect(point.y).to.beCloseTo(-1);
   });
 });
 

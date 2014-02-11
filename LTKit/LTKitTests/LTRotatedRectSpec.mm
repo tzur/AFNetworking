@@ -14,7 +14,6 @@ const CGPoint kCenter = CGRectCenter(kRect);
 __block LTRotatedRect *rotatedRect;
 
 context(@"initializers and factory methods", ^{
-  
   context(@"initializers", ^{
     it(@"should initialize with rect", ^{
       rotatedRect = [[LTRotatedRect alloc] initWithRect:kRect angle:kAngle];
@@ -56,8 +55,8 @@ context(@"initializers and factory methods", ^{
   });
 });
 
+// The expected values for these tests were calculated in matlab for the current kRect and kAngle.
 context(@"properties", ^{
-  
   const CGFloat kAcceptedDifference = 1e-3;
   
   beforeEach(^{
