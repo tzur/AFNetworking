@@ -149,6 +149,12 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
       routine = [[interpolationRoutineClass alloc] initWithKeyFrames:keyFrames];
     });
 
+    it(@"should return the correct range of the interval window", ^{
+      NSRange range = [routine rangeOfIntervalInWindow];
+      expect(range.location).to.beInTheRangeOf(0, expectedKeyFrames);
+      expect(range.location + range.length).to.beInTheRangeOf(0, expectedKeyFrames);
+    });
+    
     it(@"should not interpolate outside [0,1]", ^{
       expect(^{
         interpolated = [routine valueAtKey:-FLT_EPSILON];
@@ -158,6 +164,16 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
       }).to.raise(NSInvalidArgumentException);
     });
     
+    it(@"should interpolate a single property", ^{
+      NSNumber *value = [routine valueOfPropertyNamed:@"floatToInterpolate" atKey:0.5];
+      expect(value).to.equal(keyObject.floatToInterpolate);
+    });
+
+    it(@"should return 0 when trying to interpolate a single invalid property", ^{
+      NSNumber *value = [routine valueOfPropertyNamed:@"propertyNotToInterpolate" atKey:0.5];
+      expect(value).to.equal(0);
+    });
+
     it(@"should not interpolate undesired properties", ^{
       interpolated = [routine valueAtKey:0.5];
       expect(interpolated.propertyNotToInterpolate).to.equal(0);

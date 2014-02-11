@@ -29,8 +29,24 @@ static const GLKMatrix4 M = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
   return coefficients;
 }
 
+- (NSRange)rangeOfIntervalInWindow {
+  return NSMakeRange(1, 2);
+}
+
 + (NSUInteger)expectedKeyFrames {
   return 4;
+}
+
+@end
+
+@implementation LTCatmullRomInterpolationRoutineFactory
+
+- (LTInterpolationRoutine *)createRoutineWithKeyFrames:(NSArray *)keyFrames {
+  return [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
+}
+
+- (NSUInteger)expectedKeyFrames {
+  return [LTCatmullRomInterpolationRoutine expectedKeyFrames];
 }
 
 @end
