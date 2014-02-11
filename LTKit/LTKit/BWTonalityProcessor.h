@@ -19,19 +19,19 @@
 /// conversion process.
 @property (nonatomic) GLKVector3 colorFilter;
 
-///
-@property (nonatomic) LTColorGradient *colorGradient;
+/// Maps greyscale values to color in order to create a certain tint to a final result.
+@property (strong, nonatomic) LTColorGradient *colorGradient;
 
-///
+/// Brightens the image. Should be in [-1 1] range.
 @property (nonatomic) CGFloat brightness;
 
-///
+/// Increases the global contrast of the image. Should be in [0 2] range.
 @property (nonatomic) CGFloat contrast;
 
-///
+/// Changes the exposure of the image. Should be in [0 2] range.
 @property (nonatomic) CGFloat exposure;
 
-///
+/// Increases the local contrast of the image. Should be in [0 4] range.
 @property (nonatomic) CGFloat structure;
 
 @end

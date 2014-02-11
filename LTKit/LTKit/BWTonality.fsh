@@ -21,7 +21,7 @@ void main() {
   mediump float lum = dot(color.rgb, colorFilter);
   mediump float smoothLum = dot(smoothColor.rgb, colorFilter);
   
-  lum = smoothLum + structure*(lum - smoothLum);
+  lum = smoothLum + structure * (lum - smoothLum);
   lum = brightness + 0.5 + contrast * (exposure * lum - 0.5);
   
   color.rgb = texture2D(colorGradient, vec2(lum, 0.0)).rgb;

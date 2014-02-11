@@ -12,10 +12,7 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
-// DEBUG
-#import "LTTestUtils.h"
-
-@interface BWTonalityProcessor ()
+@interface LTGPUImageProcessor ()
 /// Dictionary of \c NSString to \c LTTexture of axiliary textures to use to assist processing.
 /// @attention this property reveals auxiliaryTextures property of LTGPUImageProcessor.
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
@@ -26,8 +23,8 @@
 
 static const CGFloat kSmoothDownsampleFactor = 6.0;
 
-static const CGFloat kBrightnessMin = -0.5;
-static const CGFloat kBrightnessMax = 0.5;
+static const CGFloat kBrightnessMin = -1.0;
+static const CGFloat kBrightnessMax = 1.0;
 static const CGFloat kBrightnessDefault = 0.0;
 
 static const CGFloat kContrastMin = 0.0;
@@ -68,7 +65,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
     self.contrast = kContrastDefault;
     self.exposure = kExposureDefault;
     self.structure = kStructureDefault;
-//    self.colorGradient = identityGradient;
+    self.colorGradient = identityGradient;
   }
   return self;
 }
@@ -78,7 +75,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
   
   _colorFilter = colorFilter / std::sum(colorFilter);
-  self[@"colorFilter"] = $(colorFilter);
+  self[@"colorFilter"] = $(_colorFilter);
 }
 
 - (void)setBrightness:(CGFloat)brightness {
@@ -113,13 +110,12 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   self[@"structure"] = @(structure);
 }
 
-//- (void)setColorGradient:(LTColorGradient *)colorGradient {
-//  _colorGradient = colorGradient;
-//  // Update color gradient texture in auxiliary textures.
-//  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures copy];
-////  LTTexture *tex = [colorGradient textureWithSamplingPoints:256];
-////  auxiliaryTextures[[BWTonalityFsh colorGradient]] = [colorGradient textureWithSamplingPoints:256];
-////  self.auxiliaryTextures = auxiliaryTextures;
-//}
+- (void)setColorGradient:(LTColorGradient *)colorGradient {
+  _colorGradient = colorGradient;
+  // Update color gradient texture in auxiliary textures.
+  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
+  auxiliaryTextures[[BWTonalityFsh colorGradient]] = [colorGradient textureWithSamplingPoints:256];
+  self.auxiliaryTextures = auxiliaryTextures;
+}
 
 @end
