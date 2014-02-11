@@ -266,6 +266,18 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         cv::Mat read = [cloned image];
         expect(LTCompareMat(image, read)).to.beTruthy();
       });
+
+      it(@"should not clone to a texture with a different size", ^{
+        CGSize size = CGSizeMake(texture.size.width - 1, texture.size.height - 1);
+        LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithSize:size
+                                                                  precision:texture.precision
+                                                                     format:texture.format
+                                                             allocateMemory:YES];
+
+        expect(^{
+          [texture cloneTo:cloned];
+        }).to.raise(NSInvalidArgumentException);
+      });
     });
 
     context(@"memory mapping texture", ^{

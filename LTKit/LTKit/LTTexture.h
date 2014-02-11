@@ -195,9 +195,8 @@ namespace cv {
 /// change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
-/// Clones the texture into the given texture. If the target texture is of different size, the
-/// texture will be resized to fit exactly into the target texture, so if the aspect ratios of the
-/// textures are different, the cloned texture will be non-uniformly scaled.
+/// Clones the texture into the given texture. The target \c texture must be of the same size of the
+/// receiver.
 - (void)cloneTo:(LTTexture *)texture;
 
 /// Marks a beginning of read operation from the texture.

@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLException.h"
@@ -218,8 +219,10 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)cloneTo:(LTTexture *)texture {
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+  LTParameterAssert(texture.size == self.size,
+                    @"Cloned texture size must be equal to this texture size");
 
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
   [self cloneToFramebuffer:fbo];
 }
 
@@ -231,7 +234,11 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
   CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
   CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
-  [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+  [self executeAndPreserveParameters:^{
+    self.minFilterInterpolation = LTTextureInterpolationNearest;
+    self.magFilterInterpolation = LTTextureInterpolationNearest;
+    [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+  }];
 }
 
 // Assuming that OpenGL calls are synchronized (when used in a single-threaded environment), no

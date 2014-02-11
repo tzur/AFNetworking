@@ -4,6 +4,7 @@
 #import "LTMMTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
@@ -205,12 +206,19 @@
 }
 
 - (void)cloneTo:(LTTexture *)texture {
+  LTParameterAssert(texture.size == self.size,
+                    @"Cloned texture size must be equal to this texture size");
+
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
 
   CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
   CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
-  [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+  [self executeAndPreserveParameters:^{
+    self.minFilterInterpolation = LTTextureInterpolationNearest;
+    self.magFilterInterpolation = LTTextureInterpolationNearest;
+    [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+  }];
 }
 
 - (void)beginReadFromTexture {
