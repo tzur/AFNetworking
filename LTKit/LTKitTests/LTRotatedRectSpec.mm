@@ -56,6 +56,7 @@ context(@"initializers and factory methods", ^{
 });
 
 // The expected values for these tests were calculated in matlab for the current kRect and kAngle.
+// Script is available at: lightricks-research/ltkit/LTRotatedRect/LTRotatedRect.m.
 context(@"properties", ^{
   const CGFloat kAcceptedDifference = 1e-3;
   
