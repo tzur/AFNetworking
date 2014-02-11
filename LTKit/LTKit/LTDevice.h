@@ -137,6 +137,9 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 /// \c YES if writing to float textures is supported.
 @property (readonly, nonatomic) BOOL canRenderToFloatTextures;
 
+/// \c YES if creating and rendering \c RED or \c RG textures is supported.
+@property (readonly, nonatomic) BOOL supportsRGTextures;
+
 @end
 
 #pragma mark -

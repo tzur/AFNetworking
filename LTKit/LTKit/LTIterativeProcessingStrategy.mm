@@ -190,11 +190,7 @@
 
 - (LTTexture *)intermediateTexture {
   if (!_intermediateTexture) {
-    LTTexture *similar = [self.outputs lastObject];
-    _intermediateTexture = [LTTexture textureWithSize:similar.size
-                                            precision:similar.precision
-                                             channels:similar.channels
-                                       allocateMemory:YES];
+    _intermediateTexture = [LTTexture textureWithPropertiesOf:[self.outputs lastObject]];
   }
   return _intermediateTexture;
 }

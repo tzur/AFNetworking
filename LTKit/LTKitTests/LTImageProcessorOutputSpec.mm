@@ -6,10 +6,7 @@
 #import "LTGLTexture.h"
 
 static LTTexture *LTCreateTexture() {
-  return [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                 precision:LTTexturePrecisionByte
-                                  channels:LTTextureChannelsRGBA
-                            allocateMemory:YES];
+  return [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
 }
 
 SpecBegin(LTSingleTextureOutput)

@@ -106,7 +106,7 @@ beforeEach(^{
 
   texture = [[LTGLTexture alloc] initWithSize:inputSize
                                     precision:LTTexturePrecisionByte
-                                     channels:LTTextureChannelsRGBA allocateMemory:NO];
+                                       format:LTTextureFormatRGBA allocateMemory:NO];
   [texture load:image];
   texture.magFilterInterpolation = LTTextureInterpolationNearest;
 });
@@ -150,7 +150,7 @@ context(@"drawing", ^{
 
     output = [[LTGLTexture alloc] initWithSize:inputSize
                                      precision:LTTexturePrecisionByte
-                                      channels:LTTextureChannelsRGBA allocateMemory:YES];
+                                        format:LTTextureFormatRGBA allocateMemory:YES];
 
     fbo = [[LTFbo alloc] initWithTexture:output];
   });
@@ -339,7 +339,8 @@ context(@"auxiliary texture inputs", ^{
 
     output = [[LTGLTexture alloc] initWithSize:inputSize
                                      precision:LTTexturePrecisionByte
-                                      channels:LTTextureChannelsRGBA allocateMemory:YES];
+                                        format:LTTextureFormatRGBA
+                                allocateMemory:YES];
     clearTexture = [[LTGLTexture alloc] initWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
 
     fbo = [[LTFbo alloc] initWithTexture:output];
@@ -415,7 +416,7 @@ context(@"custom uniforms", ^{
 
     output = [[LTGLTexture alloc] initWithSize:inputSize
                                      precision:LTTexturePrecisionByte
-                                      channels:LTTextureChannelsRGBA allocateMemory:YES];
+                                        format:LTTextureFormatRGBA allocateMemory:YES];
 
     fbo = [[LTFbo alloc] initWithTexture:output];
   });

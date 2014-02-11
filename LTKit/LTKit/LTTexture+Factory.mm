@@ -3,6 +3,7 @@
 
 #import "LTTexture+Factory.h"
 
+#import "LTDevice.h"
 #import "LTGLTexture.h"
 #import "LTMMTexture.h"
 
@@ -23,14 +24,40 @@
   return activeClass;
 }
 
++ (Class)defaultTextureClass {
+  return [LTGLTexture class];
+}
+
++ (Class)classForPrecision:(LTTexturePrecision)precision {
+  if ([[self class] precisionSupportedByMemoryMappedTexture:precision]) {
+    return [[self class] textureClass];
+  } else {
+    return [[self class] defaultTextureClass];
+  }
+}
+
++ (BOOL)precisionSupportedByMemoryMappedTexture:(LTTexturePrecision)precision {
+  switch (precision) {
+    case LTTexturePrecisionByte:
+      return YES;
+    case LTTexturePrecisionHalfFloat:
+      return [[LTDevice currentDevice] canRenderToHalfFloatTextures];
+    case LTTexturePrecisionFloat:
+      return [[LTDevice currentDevice] canRenderToFloatTextures];
+  }
+}
+
 + (instancetype)textureWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                       channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory {
-  return [[[self textureClass] alloc] initWithSize:size precision:precision
-                                          channels:channels allocateMemory:allocateMemory];
+                         format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
+  Class textureClass = [self classForPrecision:precision];
+  return [[textureClass alloc] initWithSize:size precision:precision
+                                     format:format allocateMemory:allocateMemory];
 }
 
 + (instancetype)textureWithImage:(const cv::Mat &)image {
-  return [(LTTexture *)[[self textureClass] alloc] initWithImage:image];
+  LTTexturePrecision precision = LTTexturePrecisionFromMat(image);
+  Class textureClass = [self classForPrecision:precision];
+  return [(LTTexture *)[textureClass alloc] initWithImage:image];
 }
 
 + (instancetype)byteRGBATextureWithSize:(CGSize)size {
@@ -38,7 +65,8 @@
 }
 
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture {
-  return [[[self textureClass] alloc] initWithPropertiesOf:texture];
+  Class textureClass = [self classForPrecision:texture.precision];
+  return [[textureClass alloc] initWithPropertiesOf:texture];
 }
 
 + (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image {

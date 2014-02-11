@@ -7,7 +7,7 @@
 typedef NS_ENUM(GLenum, LTTexturePrecision) {
   LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
   LTTexturePrecisionHalfFloat = GL_HALF_FLOAT_OES,
-  LTTexturePrecisionFloat = GL_FLOAT,
+  LTTexturePrecisionFloat = GL_FLOAT
 };
 
 /// Type of interpolation used by the sampler on the GPU.
@@ -31,13 +31,29 @@ typedef NS_ENUM(GLenum, LTTextureWrap) {
   /// Clamp texture coordinates.
   LTTextureWrapClamp = GL_CLAMP_TO_EDGE,
   /// Wrap texture coordinates cyclically.
-  LTTextureWrapRepeat = GL_REPEAT,
+  LTTextureWrapRepeat = GL_REPEAT
 };
 
 /// Number of channels stored in the texture.
 typedef NS_ENUM(NSUInteger, LTTextureChannels) {
-  /// RGBA (four channels).
-  LTTextureChannelsRGBA = 4,
+  /// Single channel.
+  LTTextureChannelsOne = 1,
+  /// Two channels.
+  LTTextureChannelsTwo = 2,
+  /// Four channels.
+  LTTextureChannelsFour = 4
+};
+
+/// Format the texture is stored in the GPU.
+typedef NS_ENUM(GLenum, LTTextureFormat) {
+  /// Single, red channel only.
+  LTTextureFormatRed = GL_RED_EXT,
+  /// Dual red and green channels.
+  LTTextureFormatRG = GL_RG_EXT,
+  /// All four channels.
+  LTTextureFormatRGBA = GL_RGBA,
+  /// Single channel, but values are replicated across the RGB channels, and alpha is always 1.
+  LTTextureFormatLuminance = GL_LUMINANCE
 };
 
 /// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c
@@ -55,6 +71,21 @@ LTTextureChannels LTTextureChannelsFromMatType(int type);
 /// Returns number of channels for a given \c cv::Mat, or throws an \c LTGLException with \c
 /// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
 LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image);
+
+/// Returns format for a given \c cv::Mat type.
+LTTextureFormat LTTextureFormatFromMatType(int type);
+
+/// Returns format for a given \c cv::Mat.
+LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image);
+
+/// Returns a \c cv::Mat depth for the given \c precision.
+int LTMatDepthForPrecision(LTTexturePrecision precision);
+
+/// Returns a \c cv::Mat type for the given \c precision and \c channels.
+int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels);
+
+/// Returns a \c cv::Mat type for the given \c precision and \c format.
+int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat format);
 
 namespace cv {
   class Mat;
@@ -87,7 +118,8 @@ namespace cv {
 ///
 /// @param size size of the texture.
 /// @param precision precision of the texture.
-/// @param channels number of channels of the texture.
+/// @param format format the texture is stored in the GPU with. The format must be supported on the
+/// target platform, or an \c NSInvalidArguemntException will be thrown.
 /// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
 /// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
 /// Otherwise, the implementation will try to create a texture object only without allocating the
@@ -100,7 +132,7 @@ namespace cv {
 ///
 /// @note Designated initializer.
 - (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-          channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory;
+            format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
@@ -143,7 +175,7 @@ namespace cv {
 - (void)destroy;
 
 /// Stores the texture's data in the given \c rect to the given \c image. The image will be created
-/// with the same precision and size of the given \c rect, if needed. The rect must be contained in
+/// with the same precision and size of the given \c rect. The given \c rect must be contained in
 /// the texture's rect (0, 0, size.width, size.height).
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image;
 
@@ -222,21 +254,37 @@ namespace cv {
 /// @note all texture writes that are GPU based should be executed via this method.
 - (void)writeToTexture:(LTVoidBlock)block;
 
+/// Block for transferring the texture contents while allowing read-only access. If \c isCopy is \c
+/// YES, the given image is a copy of the texture and its reference can be stored outside the context
+/// of the block. Otherwise, the memory is directly mapped to the texture's memory and \c mapped
+/// should not be referenced outside this block (unless it is duplicated to a new \c cv::Mat).
+typedef void (^LTTextureMappedReadBlock)(const cv::Mat &mapped, BOOL isCopy);
+
 /// Block for transferring the texture contents and allow updates. If \c isCopy is \c YES, the given
 /// image is a copy of the texture and its reference can be stored outside the context of the block.
 /// Otherwise, the memory is directly mapped to the texture's memory and \c mapped should not be
 /// referenced outside this block (unless it is duplicated to a new \c cv::Mat).
-typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
+typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
+
+/// Calls the given \c block with an image with the texture's contents. The contents of \mapped
+/// cannot be modified. This allows to incorporate optimizations such as using reader-lock and
+/// avoiding copy the buffer back to the GPU upon completion of this method.
+///
+/// @note if \c isCopy is set to \c YES, the \c mapped mat can be retained. Otherwise, no copies of
+/// it should be made outside the block.
+///
+/// @see LTTextureMappedReadBlock for more information about the \c block.
+- (void)mappedImageForReading:(LTTextureMappedReadBlock)block;
 
 /// Calls the given \c block with an image with the texture's contents, which can be modified inside
 /// the block. When the method returns, the texture's contents will contain the updated image
 /// contents.
 ///
-/// @note if \c isCopy is set to \c YES, updating the texture after executing \c block will require
-/// a buffer copy with the size of the texture.
+/// @note if \c isCopy is set to \c YES, the \c mapped mat can be retained. Otherwise, no copies of
+/// it should be made outside the block.
 ///
-/// @see LTTextureMappedBlock for more information about the \c block.
-- (void)mappedImage:(LTTextureMappedBlock)block;
+/// @see LTTextureMappedWriteBlock for more information about the \c block.
+- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block;
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type
@@ -263,8 +311,10 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 - (cv::Mat)imageWithRect:(CGRect)rect;
 
 /// Returns a \c Mat object from the texture. This is a heavy operation since it requires
-/// duplicating the texture to a new memory location. The matrix type, size and number of channels
-/// depends on the texture's values.
+/// duplicating the texture to a new memory location. The matrix type and size depends on the
+/// texture's values, but the matrix will always contain 4 channels.
+///
+/// @see storeRect:toImage: for more information.
 - (cv::Mat)image;
 
 /// Executes the given block while recording changes to the texture's openGL parameters (such as
@@ -282,9 +332,11 @@ typedef void (^LTTextureMappedBlock)(cv::Mat mapped, BOOL isCopy);
 /// Precision of the texture.
 @property (readonly, nonatomic) LTTexturePrecision precision;
 
-// Number of channels of the texture.  Currently supported number is 1 (luminance only) and 4
-// (RGBA).
+/// Number of channels of the texture.
 @property (readonly, nonatomic) LTTextureChannels channels;
+
+/// Format the texture is stored with on the GPU.
+@property (readonly, nonatomic) LTTextureFormat format;
 
 /// Set to \c YES if the texture is using its alpha channel. This cannot be inferred from the
 /// texture data itself, and should be set to \c YES when needed. Setting this value to \c YES will

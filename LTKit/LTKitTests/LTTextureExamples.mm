@@ -13,6 +13,8 @@ NSString * const kLTTextureExamplesTextureClass = @"LTTextureExamplesTextureClas
 NSString * const kLTTextureDefaultValuesExamples = @"LTTextureDefaultValuesExamples";
 NSString * const kLTTextureDefaultValuesExamplesTexture = @"LTTextureDefaultValuesExamplesTexture";
 
+NSString * const kLTTexturePrecisionAndFormatExamples = @"LTTexturePrecisionAndFormatExamples";
+
 SharedExamplesBegin(LTTextureExamples)
 
 sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
@@ -22,29 +24,119 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     textureClass = data[kLTTextureExamplesTextureClass];
   });
 
-  context(@"init without an image", ^{
-    it(@"should create an unallocated texture with size", ^{
-      CGSize size = CGSizeMake(42, 42);
-      LTTexturePrecision precision = LTTexturePrecisionByte;
-      LTTextureChannels channels = LTTextureChannelsRGBA;
+  sharedExamplesFor(@"LTTexture precision and format", ^(NSDictionary *data) {
+    __block LTTexturePrecision precision;
+    __block LTTextureFormat format;
+    __block int matType;
+    __block cv::Mat image;
 
+    beforeAll(^{
+      precision = (LTTexturePrecision)[data[@"precision"] unsignedIntValue];
+      format = (LTTextureFormat)[data[@"format"] unsignedIntValue];
+      matType = LTMatTypeForPrecisionAndFormat(precision, format);
+    });
+
+    it(@"should create texture", ^{
+      CGSize size = CGSizeMake(42, 42);
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
                                                                  precision:precision
-                                                                  channels:channels
+                                                                    format:format
                                                             allocateMemory:NO];
 
       expect(texture.size).to.equal(size);
       expect(texture.precision).to.equal(precision);
-      expect(texture.channels).to.equal(channels);
+      expect(texture.format).to.equal(format);
     });
 
-    it(@"should create an RGBA8 texture", ^{
-      CGSize size = CGSizeMake(42, 42);
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initByteRGBAWithSize:size];
+    it(@"should load image from mat", ^{
+      CGSize size = CGSizeMake(42, 67);
+      cv::Mat image(size.height, size.width, matType);
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
 
       expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionByte);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
+      expect(texture.precision).to.equal(precision);
+      expect(texture.channels).to.equal(image.channels());
+    });
+  });
+
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionByte),
+                       @"format": @(LTTextureFormatLuminance)});
+
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionHalfFloat),
+                       @"format": @(LTTextureFormatLuminance)});
+
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"format": @(LTTextureFormatRed)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"format": @(LTTextureFormatRG)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"format": @(LTTextureFormatRGBA)});
+  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+                     @{@"precision": @(LTTexturePrecisionFloat),
+                       @"format": @(LTTextureFormatLuminance)});
+
+  context(@"red and rg textures", ^{
+    it(@"should read red channel data", ^{
+      cv::Mat1b image(16, 16);
+      image.setTo(128);
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      cv::Mat read = [texture image];
+
+      expect(read.type()).to.equal(CV_8U);
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
+
+    it(@"should read rg channel data", ^{
+      cv::Mat2b image(16, 16);
+      image.setTo(cv::Vec2b(128, 64));
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      cv::Mat read = [texture image];
+
+      expect(read.type()).to.equal(CV_8UC2);
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
+  });
+
+  context(@"init without an image", ^{
+    it(@"should create an unallocated texture with size", ^{
+      CGSize size = CGSizeMake(42, 42);
+      LTTexturePrecision precision = LTTexturePrecisionByte;
+      LTTextureFormat format = LTTextureFormatRGBA;
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
+                                                                 precision:precision
+                                                                    format:format
+                                                            allocateMemory:NO];
+
+      expect(texture.size).to.equal(size);
+      expect(texture.precision).to.equal(precision);
+      expect(texture.format).to.equal(format);
     });
 
     it(@"should create a texture with similar properties", ^{
@@ -63,7 +155,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       beforeEach(^{
         texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
                                                         precision:LTTexturePrecisionByte
-                                                         channels:LTTextureChannelsRGBA
+                                                           format:LTTextureFormatRGBA
                                                    allocateMemory:NO];
       });
 
@@ -79,28 +171,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
   });
 
   context(@"init with an image", ^{
-    it(@"should load RGBA image", ^{
-      CGSize size = CGSizeMake(42, 67);
-      cv::Mat image(size.height, size.width, CV_8UC4);
-
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-
-      expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionByte);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
-    });
-
-    it(@"should load half-float RGBA image", ^{
-      CGSize size = CGSizeMake(42, 67);
-      cv::Mat image(size.height, size.width, CV_16UC4);
-
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-
-      expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(LTTexturePrecisionHalfFloat);
-      expect(texture.channels).to.equal(LTTextureChannelsRGBA);
-    });
-
     it(@"should not load invalid image depth", ^{
       CGSize size = CGSizeMake(42, 67);
       cv::Mat image(size.height, size.width, CV_64FC4);
@@ -122,13 +192,13 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
   context(@"texture with data", ^{
     __block LTTexture *texture;
-    __block cv::Mat image;
+    __block cv::Mat4b image;
 
     beforeEach(^{
-      image.create(48, 67, CV_8UC4);
+      image.create(48, 67);
       for (int y = 0; y < image.rows; ++y) {
         for (int x = 0; x < image.cols; ++x) {
-          image.at<cv::Vec4b>(y, x) = cv::Vec4b(x, y, 0, 255);
+          image(y, x) = cv::Vec4b(x, y, 0, 255);
         }
       }
 
@@ -160,7 +230,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         CGPoint point = CGPointMake(1, 7);
 
         GLKVector4 actual = [texture pixelValue:point];
-        GLKVector4 expected = LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x));
+        GLKVector4 expected = LTCVVec4bToGLKVector4(image(point.y, point.x));
 
         expect(expected).to.equal(actual);
       });
@@ -171,7 +241,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         GLKVector4s actual = [texture pixelValues:points];
         GLKVector4s expected;
         for (const CGPoint &point : points) {
-          expected.push_back(LTCVVec4bToGLKVector4(image.at<cv::Vec4b>(point.y, point.x)));
+          expected.push_back(LTCVVec4bToGLKVector4(image(point.y, point.x)));
         }
 
         expect(expected == actual).to.equal(YES);
@@ -188,11 +258,8 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         expect(LTCompareMat(image, read)).to.beTruthy();
       });
 
-      it(@"should clone itself to an existing texture", ^{
-        LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithSize:texture.size
-                                                                  precision:texture.precision
-                                                                   channels:texture.channels
-                                                             allocateMemory:YES];
+      dit(@"should clone itself to an existing texture", ^{
+        LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
         
         [texture cloneTo:cloned];
         
@@ -203,15 +270,15 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
     context(@"memory mapping texture", ^{
       it(@"should map correct texture data", ^{
-        [texture mappedImage:^(cv::Mat mapped, BOOL) {
+        [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
           expect(LTCompareMat(image, mapped)).to.beTruthy();
         }];
       });
 
       it(@"should reflect changes on texture", ^{
         cv::Scalar value(0, 0, 255, 255);
-        [texture mappedImage:^(cv::Mat mapped, BOOL) {
-          mapped.setTo(value);
+        [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+          mapped->setTo(value);
         }];
         expect(LTCompareMatWithValue(value, [texture image])).to.beTruthy();
       });

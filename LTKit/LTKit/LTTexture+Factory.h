@@ -13,7 +13,7 @@
 ///
 /// @param size size of the texture.
 /// @param precision precision of the texture.
-/// @param channels number of channels of the texture.
+/// @param format format the texture is stored in the GPU with.
 /// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
 /// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
 /// Otherwise, the implementation will try to create a texture object only without allocating the
@@ -26,7 +26,7 @@
 ///
 /// @note Designated initializer.
 + (instancetype)textureWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                       channels:(LTTextureChannels)channels allocateMemory:(BOOL)allocateMemory;
+                         format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
