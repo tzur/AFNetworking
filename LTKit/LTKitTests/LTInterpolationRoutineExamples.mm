@@ -7,7 +7,10 @@
 #import "LTInterpolationRoutine.h"
 
 NSString * const kLTInterpolationRoutineExamples = @"LTInterpolationRoutineExamples";
-NSString * const kLTInterpolationRoutineClass = @"LTInterpolationRoutineExamplesTextureClass";
+NSString * const kLTInterpolationRoutineFactoryExamples = @"LTInterpolationRoutineFactoryExamples";
+
+NSString * const kLTInterpolationRoutineClass = @"LTInterpolationRoutineExamplesClass";
+NSString * const kLTInterpolationRoutineFactory = @"LTInterpolationRoutineFactoryExamplesFactory";
 
 static NSArray *LTArrayWithInstancesOfObject(NSObject *object, NSUInteger numInstances) {
   NSMutableArray *array = [NSMutableArray array];
@@ -98,6 +101,32 @@ static BOOL LTEqualWhithin(double a, double b, double withinValue = FLT_EPSILON)
 #pragma mark -
 
 SharedExamplesBegin(LTInterpolationRoutineExamples)
+
+sharedExamplesFor(kLTInterpolationRoutineFactoryExamples, ^(NSDictionary *data) {
+  __block id<LTInterpolationRoutineFactory> factory;
+  __block Class expectedInterpolationRoutineClass;
+  __block InterpolatedObject *keyObject;
+  __block NSUInteger expectedKeyFrames;
+  
+  beforeEach(^{
+    factory = data[kLTInterpolationRoutineFactory];
+    expectedInterpolationRoutineClass = data[kLTInterpolationRoutineClass];
+    expectedKeyFrames = [factory expectedKeyFrames];
+    keyObject = [[InterpolatedObject alloc] init];
+  });
+  
+  it(@"should initialize with the expected number of keyframes", ^{
+    NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
+    LTInterpolationRoutine *routine = [factory routineWithKeyFrames:keyFrames];
+    expect([routine isKindOfClass:expectedInterpolationRoutineClass]).to.beTruthy();
+  });
+  
+  it(@"expected number of keyframes should match the instance's expected number of keyframes", ^{
+    NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
+    LTInterpolationRoutine *routine = [factory routineWithKeyFrames:keyFrames];
+    expect([factory expectedKeyFrames]).to.equal([[routine class] expectedKeyFrames]);
+  });
+});
 
 sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
   __block Class interpolationRoutineClass;

@@ -46,7 +46,7 @@
 @protocol LTInterpolationRoutineFactory <NSObject>
 
 /// Initializes and returns an interpolation routine with the given keyframes.
-- (LTInterpolationRoutine *)createRoutineWithKeyFrames:(NSArray *)keyFrames;
+- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames;
 
 /// Returns the expected number of key frames for the interpolation routine created by the factory.
 - (NSUInteger)expectedKeyFrames;
