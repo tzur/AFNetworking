@@ -45,8 +45,8 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                                                 fragmentSource:[BWTonalityFsh source]];
   // Prepare smoothed version of the image.
-  LTTexture *smoothTexture =
-      [LTTexture byteRGBATextureWithSize:input.size / kSmoothDownsampleFactor];
+  LTTexture *smoothTexture = [self prepareSmoothTexture:input];
+  
   LTBoxFilterProcessor *smoother =
       [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[smoothTexture]];
   smoother.iterationsPerOutput = @[@3];
@@ -68,6 +68,13 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
     self.colorGradient = identityGradient;
   }
   return self;
+}
+
+- (LTTexture *)prepareSmoothTexture:(LTTexture *)input {
+  CGFloat width = std::max(1.0f, input.size.width / kSmoothDownsampleFactor);
+  CGFloat height = std::max(1.0f, input.size.height / kSmoothDownsampleFactor);
+  
+  return [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
 }
 
 - (void)setColorFilter:(GLKVector3)colorFilter {

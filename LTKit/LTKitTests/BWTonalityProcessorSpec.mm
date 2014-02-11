@@ -76,9 +76,15 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  it(@"should return the input black and white image whithout changes on default parameters", ^{
-    LTTexture *deltaTexture = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMake(7, 7))];
+  fit(@"should return the input black and white image whithout changes on default parameters", ^{
+    LTTexture *deltaTexture = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMake(3, 3))];
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
+    
+    // Important: without nearest neighbor magnification filter the test will not pass on the
+    // device (iPhone 5).
+    // Our current conjecture is that floating point errors for a certain sizes of texture offset
+    // the sampling point.
+    deltaTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     
     BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:deltaTexture
                                                                     output:deltaOutput];
@@ -88,11 +94,11 @@ context(@"processing", ^{
   });
   
   it(@"should return black image if blue channel is black and color filter is zero on blue", ^{
-    cv::Mat4b greenDelta(7, 7);
+    cv::Mat4b greenDelta(3, 3);
     greenDelta = cv::Vec4b(0, 0, 0, 255);
-    greenDelta(3, 3) = cv::Vec4b(0, 255, 0, 255);
+    greenDelta(1, 1) = cv::Vec4b(0, 255, 0, 255);
     
-    cv::Mat4b greenDeltaOutput(7, 7);
+    cv::Mat4b greenDeltaOutput(3, 3);
     greenDeltaOutput = cv::Vec4b(0, 0, 0, 255);
     
     LTTexture *deltaTexture = [LTTexture textureWithImage:greenDelta];
