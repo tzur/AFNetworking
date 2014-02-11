@@ -76,7 +76,7 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  fit(@"should return the input black and white image whithout changes on default parameters", ^{
+  it(@"should return the input black and white image whithout changes on default parameters", ^{
     LTTexture *deltaTexture = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMake(3, 3))];
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
     
