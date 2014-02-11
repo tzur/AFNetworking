@@ -1,6 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
+// The goal of this shader is to perform color to black-and-white conversion.
+// The conversion includes color filter that weights the contribution of each rgb channel.
+// Tonal parameters that set the tone of the result and color gradient that adds a tint to the final
+// result.
+
 uniform sampler2D sourceTexture;
 uniform sampler2D smoothTexture;
 uniform sampler2D colorGradient;

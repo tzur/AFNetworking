@@ -93,10 +93,10 @@
   LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
                                                 initWithPosition:0.0
                                                 color:GLKVector3Make(0.0, 0.0, 0.0)];
-  
   LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
                                                 initWithPosition:1.0
                                                 color:GLKVector3Make(1.0, 1.0, 1.0)];
+  
   NSArray *controlPoints = @[controlPoint0, controlPoint1];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }

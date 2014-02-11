@@ -78,7 +78,7 @@ GLK_INLINE GLKVector4 GLKVector4FromVec4b(const cv::Vec4b &vec) {
   return GLKVector4Make(vec(0), vec(1), vec(2), vec(3)) / 255.0;
 }
 
-/// Return true if every component of the vector is larger or equal to a and smaller or equal to b.
+/// Returns \c YES if every component of the vector is in [a, b] range.
 GLK_INLINE BOOL GLKVectorInRange(const GLKVector3 &vec, const float a, const float b) {
   return (vec.x >= a && vec.y >= a && vec.z >= a && vec.x <= b && vec.y <= b && vec.z <= b);
 }

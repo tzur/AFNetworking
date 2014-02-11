@@ -13,10 +13,7 @@
 #import "LTTexture+Factory.h"
 
 @interface LTGPUImageProcessor ()
-/// Dictionary of \c NSString to \c LTTexture of axiliary textures to use to assist processing.
-/// @attention this property reveals auxiliaryTextures property of LTGPUImageProcessor.
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-
 @end
 
 @implementation BWTonalityProcessor
@@ -41,23 +38,19 @@ static const CGFloat kStructureDefault = 1.0;
 
 static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114);
 
+static const NSInteger kGradientSamplingPoints = 256;
+
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                                                 fragmentSource:[BWTonalityFsh source]];
-  // Prepare smoothed version of the image.
-  LTTexture *smoothTexture = [self prepareSmoothTexture:input];
-  
-  LTBoxFilterProcessor *smoother =
-      [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[smoothTexture]];
-  smoother.iterationsPerOutput = @[@3];
-  [smoother process];
-  
+  LTTexture *smoothTexture = [self createSmoothTexture:input];
   // Default color gradient.
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
   
   NSDictionary *auxiliaryTextures =
       @{[BWTonalityFsh smoothTexture] : smoothTexture,
-        [BWTonalityFsh colorGradient] : [identityGradient textureWithSamplingPoints:256]};
+        [BWTonalityFsh colorGradient] :
+        [identityGradient textureWithSamplingPoints:kGradientSamplingPoints]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     self.colorFilter = kColorFilterDefault;
@@ -70,11 +63,17 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   return self;
 }
 
-- (LTTexture *)prepareSmoothTexture:(LTTexture *)input {
-  CGFloat width = std::max(1.0f, input.size.width / kSmoothDownsampleFactor);
-  CGFloat height = std::max(1.0f, input.size.height / kSmoothDownsampleFactor);
+- (LTTexture *)createSmoothTexture:(LTTexture *)input {
+  CGFloat width = MAX(1.0, input.size.width / kSmoothDownsampleFactor);
+  CGFloat height = MAX(1.0, input.size.height / kSmoothDownsampleFactor);
   
-  return [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
+  LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
+  
+  LTBoxFilterProcessor *smoother = [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[smoothTexture]];
+  smoother.iterationsPerOutput = @[@3];
+  [smoother process];
+  
+  return smoothTexture;
 }
 
 - (void)setColorFilter:(GLKVector3)colorFilter {
@@ -121,7 +120,8 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   _colorGradient = colorGradient;
   // Update color gradient texture in auxiliary textures.
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[BWTonalityFsh colorGradient]] = [colorGradient textureWithSamplingPoints:256];
+  auxiliaryTextures[[BWTonalityFsh colorGradient]] =
+      [colorGradient textureWithSamplingPoints:kGradientSamplingPoints];
   self.auxiliaryTextures = auxiliaryTextures;
 }
 

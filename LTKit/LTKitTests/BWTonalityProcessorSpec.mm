@@ -32,6 +32,15 @@ afterEach(^{
 });
 
 context(@"properties", ^{
+  it(@"should return identity as default color gradient", ^{
+    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
+                                          textureWithSamplingPoints:256];
+    LTTexture *defaultGradientTexture = [tone.colorGradient textureWithSamplingPoints:256];
+    expect(LTFuzzyCompareMat(defaultGradientTexture.image,
+                             identityGradientTexture.image)).to.beTruthy();
+  });
+  
   it(@"should fail of invalid brightness parameter", ^{
     BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
@@ -72,6 +81,17 @@ context(@"properties", ^{
     expect(^{
       tone.colorFilter = GLKVector3Make(0.0, 0.0, 0.0);
     }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should not fail on correct input", ^{
+    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    expect(^{
+      tone.brightness = 0.1;
+      tone.contrast = 1.2;
+      tone.exposure = 1.5;
+      tone.structure = 0.9;
+      tone.colorFilter = GLKVector3Make(1.0, 1.0, 0.0);
+    }).toNot.raiseAny();
   });
 });
 
