@@ -65,6 +65,16 @@ context(@"cgpoint operations", ^{
     expect(CGPointMake(1, 2) * 2).to.equal(CGPointMake(2, 4));
     expect(0.5 * CGPointMake(1, 2)).to.equal(CGPointMake(0.5, 1));
     expect(CGPointMake(1, 2) / 0.5).to.equal(CGPointMake(2, 4));
+    expect(CGPointMake(1, 2) * CGSizeMake(3, 4)).to.equal(CGPointMake(3, 8));
+    expect(CGPointMake(1, 2) / CGSizeMake(0.5, 0.25)).to.equal(CGPointMake(2, 8));
+
+    // in iOS, negative values mean clockwise rotation, while positive values in OSX.
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+    const CGFloat cwAngle = -M_PI_2;
+#else
+    const CGFloat cwAngle = M_PI_2;
+#endif
+    expect(CGAffineTransformMakeRotation(cwAngle) * CGPointMake(1, 2)).to.equal(CGPointMake(2, -1));
   });
 });
 
@@ -89,6 +99,7 @@ context(@"cgsize operations", ^{
     expect(0.5 * CGSizeMake(1, 2)).to.equal(CGSizeMake(0.5, 1));
     expect(CGSizeMake(1, 2) / 0.5).to.equal(CGSizeMake(2, 4));
     expect(CGSizeMake(3, 4) / CGSizeMake(2, 3)).to.equal(CGSizeMake(3 / 2.0, 4 / 3.0));
+    expect(CGSizeMake(3, 4) * CGSizeMake(2, 3)).to.equal(CGSizeMake(3 * 2, 4 * 3));
   });
   
   it(@"min/max", ^{
