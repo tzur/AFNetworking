@@ -9,3 +9,7 @@
 /// \c 1 is the third one.
 @interface LTCatmullRomInterpolationRoutine : LTInterpolationRoutine
 @end
+
+/// Factory for creating linear interpolation routine instances.
+@interface LTCatmullRomInterpolationRoutineFactory : NSObject <LTInterpolationRoutineFactory>
+@end

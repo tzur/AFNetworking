@@ -68,4 +68,8 @@
   return @(value);
 }
 
+- (NSRange)rangeOfIntervalInWindow {
+  LTAssert(NO, "@Abstract method that should be implemented by subclasses");
+}
+
 @end

@@ -7,6 +7,10 @@
 
 SpecBegin(LTLinearInterpolationRoutine)
 
+itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
+  @{kLTInterpolationRoutineFactory: [[LTLinearInterpolationRoutineFactory alloc] init],
+    kLTInterpolationRoutineClass: [LTLinearInterpolationRoutine class]});
+
 itShouldBehaveLike(kLTInterpolationRoutineExamples,
   @{kLTInterpolationRoutineClass: [LTLinearInterpolationRoutine class]});
 
