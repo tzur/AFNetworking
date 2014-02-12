@@ -88,19 +88,34 @@ CG_INLINE CGSize operator-(const CGPoint &lhs, const CGPoint &rhs) {
   return CGSizeMake(lhs.x - rhs.x, lhs.y - rhs.y);
 }
 
-/// Multiply a CGPoint by a scalar value.
+/// Multiply a point by a scalar value.
 CG_INLINE CGPoint operator*(const CGPoint &lhs, const CGFloat &rhs) {
   return CGPointMake(lhs.x * rhs, lhs.y * rhs);
 }
 
-/// Multiply a CGPoint by a scalar value.
+/// Multiply a point by a scalar value.
 CG_INLINE CGPoint operator*(const CGFloat &lhs, const CGPoint &rhs) {
   return CGPointMake(rhs.x * lhs, rhs.y * lhs);
 }
 
-/// Divide a CGPoint by a scalar value.
+/// Divide a point by a scalar value.
 CG_INLINE CGPoint operator/(const CGPoint &lhs, const CGFloat &rhs) {
   return CGPointMake(lhs.x / rhs, lhs.y / rhs);
+}
+
+/// Multiply a point by a size, component-wise.
+CG_INLINE CGPoint operator*(const CGPoint &lhs, const CGSize &rhs) {
+  return CGPointMake(lhs.x * rhs.width, lhs.y * rhs.height);
+}
+
+/// Divide a point by a size, component-wise.
+CG_INLINE CGPoint operator/(const CGPoint &lhs, const CGSize &rhs) {
+  return CGPointMake(lhs.x / rhs.width, lhs.y / rhs.height);
+}
+
+/// Apply an affine transformation on a point.
+CG_INLINE CGPoint operator*(const CGAffineTransform &lhs, const CGPoint &rhs) {
+  return CGPointApplyAffineTransform(rhs, lhs);
 }
 
 #pragma mark -
@@ -137,22 +152,27 @@ CG_INLINE CGSize operator-(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width - rhs.width, lhs.height - rhs.height);
 }
 
-/// Multiply a CGSize by a scalar value.
+/// Multiply a size by a scalar value.
 CG_INLINE CGSize operator*(const CGSize &lhs, const CGFloat &rhs) {
   return CGSizeMake(lhs.width * rhs, lhs.height * rhs);
 }
 
-/// Multiply a CGSize by a scalar value.
+/// Multiply a size by a scalar value.
 CG_INLINE CGSize operator*(const CGFloat &lhs, const CGSize &rhs) {
   return CGSizeMake(rhs.width * lhs, rhs.height * lhs);
 }
 
-/// Divide a CGSize by a scalar value.
+/// Divide a size by a scalar value.
 CG_INLINE CGSize operator/(const CGSize &lhs, const CGFloat &rhs) {
   return CGSizeMake(lhs.width / rhs, lhs.height / rhs);
 }
 
-/// Divide a CGSize by another CGSize, component-wise.
+/// Multiply a size by another size, component-wise.
+CG_INLINE CGSize operator*(const CGSize &lhs, const CGSize &rhs) {
+  return CGSizeMake(lhs.width * rhs.width, lhs.height * rhs.height);
+}
+
+/// Divide a size by another size, component-wise.
 CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
 }
