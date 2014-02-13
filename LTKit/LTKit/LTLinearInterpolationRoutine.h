@@ -7,3 +7,7 @@
 /// linear interpolation between them.
 @interface LTLinearInterpolationRoutine : LTInterpolationRoutine
 @end
+
+/// Factory for creating linear interpolation routine instances.
+@interface LTLinearInterpolationRoutineFactory : NSObject <LTInterpolationRoutineFactory>
+@end

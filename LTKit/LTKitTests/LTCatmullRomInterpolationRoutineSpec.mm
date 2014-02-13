@@ -7,8 +7,12 @@
 
 SpecBegin(LTCatmullRomInterpolationRoutine)
 
+itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
+  @{kLTInterpolationRoutineFactory: [[LTCatmullRomInterpolationRoutineFactory alloc] init],
+    kLTInterpolationRoutineClass: [LTCatmullRomInterpolationRoutine class]});
+
 itShouldBehaveLike(kLTInterpolationRoutineExamples,
-                   @{kLTInterpolationRoutineClass: [LTCatmullRomInterpolationRoutine class]});
+  @{kLTInterpolationRoutineClass: [LTCatmullRomInterpolationRoutine class]});
 
 context(@"should perform correct catmull-rom interpolation", ^{
   __block InterpolatedObject *p0;

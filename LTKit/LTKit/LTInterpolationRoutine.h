@@ -22,6 +22,9 @@
 /// (must be in range [0,1]). Properties that are not interpolated will be have their default value.
 - (id)valueAtKey:(CGFloat)key;
 
+/// Returns the interpolated property at the given \c key (must be in range [0,1]).
+- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key;
+
 /// Returns a dictionary mapping each property to an \c NSArray with its polynomial coefficients (as
 /// \c NSNumbers).
 /// Subclasses must implement this abstract method and calculate the coefficients according to the
@@ -31,5 +34,21 @@
 /// @note it is safe to assume that \c keyFrames contains the expected number of objects, and that
 /// all of them are of the same type and conform to the \c LTInterpolatedObject protocol.
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames;
+
+/// Returns the range (in the input keyframes array) of the interval interpolated by the keys [0,1].
+///
+/// @note Subclasses must implement this method and return the appropriate range.
+- (NSRange)rangeOfIntervalInWindow;
+
+@end
+
+/// Abstract factory for \c LTInterpolationRoutine subclasses.
+@protocol LTInterpolationRoutineFactory <NSObject>
+
+/// Initializes and returns an interpolation routine with the given keyframes.
+- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames;
+
+/// Returns the expected number of key frames for the interpolation routine created by the factory.
+- (NSUInteger)expectedKeyFrames;
 
 @end
