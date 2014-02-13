@@ -40,4 +40,11 @@
 /// Size of the texture is [numberOfPoints x 1 x 3]
 - (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints;
 
+/// Creates an instance of LTColorGradient that represents a linear gradient. Linear gradient can be
+/// thought of as an identity mapping between the position and the range value: y = x across the
+/// color channels.
+///
+/// @return color gradient that represents an identity manipulation.
++ (LTColorGradient *)identityGradient;
+
 @end

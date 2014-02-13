@@ -73,7 +73,7 @@
   cv::Mat4b mat(1, (int)numberOfPoints);
   
   for (int col = 0; col < (int)numberOfPoints; ++col) {
-    CGFloat currentPosition = ((CGFloat)col) / numberOfPoints;
+    CGFloat currentPosition = ((CGFloat)col) / (numberOfPoints - 1);
     // Update the interpolation edges, only if currentPosition is passed the right edge and there is
     // a control point on the right that can be used as a new edge.
     if (currentPosition >= p1.position && rightEdgeIndex < self.controlPoints.count - 1) {
@@ -87,6 +87,18 @@
   }
   
   return [LTTexture textureWithImage:mat];
+}
+
++ (LTColorGradient *)identityGradient {
+  LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
+                                                initWithPosition:0.0
+                                                color:GLKVector3Make(0.0, 0.0, 0.0)];
+  LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
+                                                initWithPosition:1.0
+                                                color:GLKVector3Make(1.0, 1.0, 1.0)];
+  
+  NSArray *controlPoints = @[controlPoint0, controlPoint1];
+  return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }
 
 @end
