@@ -153,6 +153,10 @@
 		8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
 		8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */; };
 		8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */; };
+		8BAE3A0D18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0C18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm */; };
+		8BAE3A1018AD025700DA79E1 /* LTBinaryLaplacian.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */; };
+		8BAE3A1118AD025700DA79E1 /* LTBinaryLaplacian.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */; };
+		8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */; };
 		8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47135183A438300CA1681 /* LTDrawingContext.mm */; };
@@ -560,6 +564,11 @@
 		8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTRectDrawer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAE1FB018573ED80075A5AB /* LTRectDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTRectDrawerSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGLKitExtensions.h; sourceTree = "<group>"; };
+		8BAE3A0B18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBinaryLaplacianProcessor.h; sourceTree = "<group>"; };
+		8BAE3A0C18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessor.mm; sourceTree = "<group>"; };
+		8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.fsh; sourceTree = "<group>"; };
+		8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.vsh; sourceTree = "<group>"; };
+		8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessor.mm; sourceTree = "<group>"; };
 		8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TwoInputTextures.fsh; sourceTree = "<group>"; };
 		8BB47134183A438300CA1681 /* LTDrawingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTDrawingContext.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BB47135183A438300CA1681 /* LTDrawingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDrawingContext.mm; sourceTree = "<group>"; };
@@ -658,6 +667,10 @@
 				8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */,
 				8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */,
 				8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */,
+				8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */,
+				8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */,
+				8BAE3A0B18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.h */,
+				8BAE3A0C18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm */,
 				03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */,
 				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
 				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
@@ -681,11 +694,12 @@
 		03BBB3191887B7AB001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
-				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
-				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
-				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
-				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 				03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */,
+				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
+				8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */,
+				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
+				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
+				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				039C95B01897E50700F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
 			);
 			name = Blocks;
@@ -1556,9 +1570,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BAE3A1018AD025700DA79E1 /* LTBinaryLaplacian.fsh in Sources */,
+				8BAE3A1118AD025700DA79E1 /* LTBinaryLaplacian.vsh in Sources */,
 				039C95B41897E91700F1E213 /* LTOneShotMultiscaleNoise.fsh in Sources */,
 				03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */,
 				03BBB386188CF732001E7703 /* LTFractionalNoise.fsh in Sources */,
+				8BAE3A0D18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
 				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
 				03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */,
@@ -1678,6 +1695,7 @@
 				8BD685FF1885519700571E75 /* LTBilateralFilterProcessorSpec.mm in Sources */,
 				8B3F94A01879B00C00FAA265 /* LTIterativeImageProcessorSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
+				8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
 				03BBB32C1887BB8C001E7703 /* LTColorGradientSpec.mm in Sources */,
