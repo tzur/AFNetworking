@@ -651,12 +651,29 @@
 		03BBB30C1887B797001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */,
+				03AD29AD18913E9400516D14 /* LTBicubicResizeProcessor.h */,
+				03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */,
+				8BD685E91885404600571E75 /* LTBilateralFilter.fsh */,
+				8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */,
+				8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */,
+				8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */,
+				03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */,
+				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
+				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
+				03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */,
 				03BBB31E1887B7CB001E7703 /* LTColorGradient.h */,
 				03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */,
 				03BBB373188C0675001E7703 /* LTFractionalNoise.h */,
 				03BBB374188C0675001E7703 /* LTFractionalNoise.mm */,
 				03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */,
 				03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */,
+				039C95A11897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.h */,
+				039C95A21897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
+				039C95B21897E84300F1E213 /* LTOneShotMultiscaleNoise.fsh */,
+				03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */,
+				03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */,
+				030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -666,6 +683,10 @@
 			children = (
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
+				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
+				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
+				03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */,
+				039C95B01897E50700F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -1261,47 +1282,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8BD685E518853FD900571E75 /* Boxes */ = {
-			isa = PBXGroup;
-			children = (
-				8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */,
-				8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */,
-				8BD685E91885404600571E75 /* LTBilateralFilter.fsh */,
-				8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */,
-				03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */,
-				03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */,
-				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
-				03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */,
-				03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */,
-				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
-				030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */,
-				03AD29AD18913E9400516D14 /* LTBicubicResizeProcessor.h */,
-				03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */,
-				03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */,
-				039C95A11897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.h */,
-				039C95A21897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
-				039C95B21897E84300F1E213 /* LTOneShotMultiscaleNoise.fsh */,
-			);
-			name = Boxes;
-			sourceTree = "<group>";
-		};
-		8BD685FD1885518600571E75 /* Boxes */ = {
-			isa = PBXGroup;
-			children = (
-				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
-				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
-				03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */,
-				039C95B01897E50700F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
-			);
-			name = Boxes;
-			sourceTree = "<group>";
-		};
 		8BFE439818759482008B699F /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
 				8BFE4399187594F7008B699F /* Base */,
 				03BBB30C1887B797001E7703 /* Blocks */,
-				8BD685E518853FD900571E75 /* Boxes */,
 				8BFE439F18759D1F008B699F /* Utils */,
 			);
 			name = "Image Processing";
@@ -1321,7 +1306,6 @@
 			children = (
 				8BFE43A118759D3D008B699F /* Base */,
 				03BBB3191887B7AB001E7703 /* Blocks */,
-				8BD685FD1885518600571E75 /* Boxes */,
 				8BFE43A018759D33008B699F /* Utils */,
 			);
 			name = "Image Processing";
