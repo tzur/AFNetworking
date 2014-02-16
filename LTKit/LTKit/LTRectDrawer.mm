@@ -4,40 +4,33 @@
 #import "LTRectDrawer.h"
 
 #import "LTArrayBuffer.h"
+#import "LTCGExtensions.h"
 #import "LTDrawingContext.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
-#import "LTVertexArray.h"
+#import "LTRotatedRect.h"
 #import "LTTexture.h"
+#import "LTVertexArray.h"
 
-/// Holds the position and texture coordinate of each of the rect's corners.
-LTGPUStructMake(LTRectDrawerVertex,
-                GLKVector2, position,
-                GLKVector2, texcoord);
+#import "LTMultiRectDrawer.h"
+#import "LTSingleRectDrawer.h"
 
 @interface LTRectDrawer ()
 
 /// Program to use when drawing the rect.
 @property (strong, nonatomic) LTProgram *program;
 
-/// Context holding the geometry and program.
-@property (strong, nonatomic) LTDrawingContext *context;
-
-/// Mapping between uniform name and its attached texture.
-@property (strong, nonatomic) NSMutableDictionary *uniformToTexture;
-
-/// Set of mandatory uniforms that must exist in the given program.
-@property (readonly, nonatomic) NSSet *mandatoryUniforms;
+/// Drawer used for drawing multiple rectangles in a single call.
+@property (strong, nonatomic) LTMultiRectDrawer *multiRectDrawer;
+/// Drawer used for drawing single rectangles.
+@property (strong, nonatomic) LTSingleRectDrawer *singleRectDrawer;
 
 @end
 
 @implementation LTRectDrawer
-
-/// Uniform name of the source texture, which must be contained in each rect drawer program.
-static NSString * const kSourceTextureUniform = @"sourceTexture";
 
 #pragma mark -
 #pragma mark Initialization
@@ -50,20 +43,13 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 - (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
     auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   if (self = [super init]) {
-    LTParameterAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of "
-                      "the required uniforms %@ doesn't exist in the given program",
-                      self.mandatoryUniforms);
-    LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
-                       isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
-                      "texture uniforms %@ doesn't exist in the given program",
-                      [uniformToAuxiliaryTexture allKeys]);
-
-    self.uniformToTexture = [NSMutableDictionary dictionary];
-    [self setSourceTexture:texture];
-    [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
-
+    self.singleRectDrawer = [[LTSingleRectDrawer alloc] initWithProgram:program
+                                                          sourceTexture:texture
+                                                      auxiliaryTextures:uniformToAuxiliaryTexture];
+    self.multiRectDrawer = [[LTMultiRectDrawer alloc] initWithProgram:program
+                                                        sourceTexture:texture
+                                                    auxiliaryTextures:uniformToAuxiliaryTexture];
     self.program = program;
-    self.context = [self createDrawingContext];
   }
   return self;
 }
@@ -71,53 +57,8 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 - (void)setAuxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   [uniformToAuxiliaryTexture
    enumerateKeysAndObjectsUsingBlock:^(NSString *key, LTTexture *texture, BOOL *) {
-     [self setTexture:texture withName:key];
+     [self setAuxiliaryTexture:texture withName:key];
    }];
-}
-
-- (LTDrawingContext *)createDrawingContext {
-  LTVertexArray *vertexArray = [self createVertexArray];
-
-  LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
-                                                            vertexArray:vertexArray
-                                                       uniformToTexture:self.uniformToTexture];
-  return context;
-}
-
-- (LTVertexArray *)createVertexArray {
-  LTArrayBuffer *arrayBuffer = [self createArrayBuffer];
-
-  LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                initWithAttributes:@[@"position", @"texcoord"]];
-  LTVertexArrayElement *element = [self createVertexArrayElementWithArrayBuffer:arrayBuffer];
-  [vertexArray addElement:element];
-
-  return vertexArray;
-}
-
-- (LTVertexArrayElement *)createVertexArrayElementWithArrayBuffer:(LTArrayBuffer *)arrayBuffer {
-  return [[LTVertexArrayElement alloc]
-          initWithStructName:@"LTRectDrawerVertex"
-          arrayBuffer:arrayBuffer
-          attributeMap:@{@"position": @"position",
-                         @"texcoord": @"texcoord"}];
-}
-
-- (LTArrayBuffer *)createArrayBuffer {
-  std::vector<LTRectDrawerVertex> vertexData{
-    {.position = {{0, 0}}, .texcoord = {{0, 0}}},
-    {.position = {{1, 0}}, .texcoord = {{1, 0}}},
-    {.position = {{0, 1}}, .texcoord = {{0, 1}}},
-    {.position = {{1, 1}}, .texcoord = {{1, 1}}},
-  };
-
-  LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                             usage:LTArrayBufferUsageStaticDraw];
-  [arrayBuffer setData:[NSData dataWithBytesNoCopy:&vertexData[0]
-                                            length:vertexData.size() * sizeof(LTRectDrawerVertex)
-                                      freeWhenDone:NO]];
-
-  return arrayBuffer;
 }
 
 #pragma mark -
@@ -125,56 +66,52 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
-  [fbo bindAndDraw:^{
-    GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, fbo.size.width, 0, fbo.size.height, -1, 1);
-    self.program[@"projection"] = $(projection);
-    [self drawRect:targetRect fromRect:sourceRect];
-  }];
+  [self.singleRectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+}
+
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
+        fromRotatedRect:(LTRotatedRect *)sourceRect {
+  [self.singleRectDrawer drawRotatedRect:targetRect inFramebuffer:fbo fromRotatedRect:sourceRect];
+}
+
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+        fromRotatedRects:(NSArray *)sourceRects {
+  [self.multiRectDrawer drawRotatedRects:targetRects inFramebuffer:fbo
+                        fromRotatedRects:sourceRects];
 }
 
 - (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
         fromRect:(CGRect)sourceRect {
-  // Since we're using a flipped projection matrix, the original order of vertices will generate
-  // a back-faced polygon by default, as the test is performed on the projected coordinates.
-  // therefore we use the clockwise front facing polygons mode while drawing.
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = $(projection);
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
-    context.clockwiseFrontFacingPolygons = YES;
-    [self drawRect:targetRect fromRect:sourceRect];
-  }];
+  [self.singleRectDrawer drawRect:targetRect inScreenFramebufferWithSize:size fromRect:sourceRect];
 }
 
-- (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
-  GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
-  self.program[@"modelview"] = $(modelview);
-
-  GLKMatrix3 texture = [self matrix3ForTextureRect:sourceRect];
-  self.program[@"texture"] = $(texture);
-
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inScreenFramebufferWithSize:(CGSize)size
+        fromRotatedRect:(LTRotatedRect *)sourceRect {
+  [self.singleRectDrawer drawRotatedRect:targetRect inScreenFramebufferWithSize:size
+                         fromRotatedRect:sourceRect];
 }
 
-- (GLKMatrix3)matrix3ForTextureRect:(CGRect)rect {
-  CGSize size = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
-  CGRect normalizedRect = CGRectMake(rect.origin.x / size.width,
-                                     rect.origin.y / size.height,
-                                     rect.size.width / size.width,
-                                     rect.size.height / size.height);
-  return [self matrix3ForRect:normalizedRect];
+- (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
+        fromRotatedRects:(NSArray *)sourceRects {
+  [self.multiRectDrawer drawRotatedRects:targetRects inScreenFramebufferWithSize:size
+                        fromRotatedRects:sourceRects];
 }
 
-- (GLKMatrix3)matrix3ForRect:(CGRect)rect {
-  GLKMatrix3 scale = GLKMatrix3MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix3 translate = GLKMatrix3MakeTranslation(rect.origin.x, rect.origin.y);
-  return GLKMatrix3Multiply(translate, scale);
+- (void)drawRect:(CGRect)targetRect inBoundFramebufferWithSize:(CGSize)size
+        fromRect:(CGRect)sourceRect {
+  [self.singleRectDrawer drawRect:targetRect inBoundFramebufferWithSize:size fromRect:sourceRect];
 }
 
-- (GLKMatrix4)matrix4ForRect:(CGRect)rect {
-  GLKMatrix4 scale = GLKMatrix4MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix4 translate = GLKMatrix4MakeTranslation(rect.origin.x, rect.origin.y, 0);
-  return GLKMatrix4Multiply(translate, scale);
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inBoundFramebufferWithSize:(CGSize)size
+        fromRotatedRect:(LTRotatedRect *)sourceRect {
+  [self.singleRectDrawer drawRotatedRect:targetRect inBoundFramebufferWithSize:size
+                         fromRotatedRect:sourceRect];
+}
+
+- (void)drawRotatedRects:(NSArray *)targetRects inBoundFramebufferWithSize:(CGSize)size
+        fromRotatedRects:(NSArray *)sourceRects {
+  [self.multiRectDrawer drawRotatedRects:targetRects inBoundFramebufferWithSize:size
+                        fromRotatedRects:sourceRects];
 }
 
 #pragma mark -
@@ -182,29 +119,18 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (void)setSourceTexture:(LTTexture *)texture {
-  LTParameterAssert(texture);
-  [self setTexture:texture withName:kSourceTextureUniform];
+  [self.singleRectDrawer setSourceTexture:texture];
+  [self.multiRectDrawer setSourceTexture:texture];
 }
 
 - (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
-  LTParameterAssert(texture);
-  LTParameterAssert(name && ![name isEqualToString:kSourceTextureUniform]);
-  [self setTexture:texture withName:name];
-}
-
-- (void)setTexture:(LTTexture *)texture withName:(NSString *)name {
-  if ([self.uniformToTexture[name] isEqual:texture]) {
-    return;
-  }
-  self.uniformToTexture[name] = texture;
-
-  [self.context attachUniform:name toTexture:texture];
+  [self.singleRectDrawer setAuxiliaryTexture:texture withName:name];
+  [self.multiRectDrawer setAuxiliaryTexture:texture withName:name];
 }
 
 - (void)setUniform:(NSString *)name withValue:(id)value {
-  LTAssert(![name isEqualToString:@"position"] &&
-           ![name isEqualToString:@"texcoord"], @"Uniform name cannot be one of %@",
-           self.mandatoryUniforms);
+  LTAssert(![name isEqualToString:@"position"] && ![name isEqualToString:@"texcoord"],
+           @"Uniform name cannot be position or texcoord");
 
   self.program[name] = value;
 }
@@ -219,18 +145,6 @@ static NSString * const kSourceTextureUniform = @"sourceTexture";
 
 - (id)uniformForName:(NSString *)name {
   return self.program[name];
-}
-
-- (NSSet *)mandatoryUniforms {
-  static NSSet *uniforms;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture",
-                                     kSourceTextureUniform]];
-  });
-
-  return uniforms;
 }
 
 @end

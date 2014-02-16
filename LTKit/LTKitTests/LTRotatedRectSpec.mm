@@ -65,10 +65,10 @@ context(@"properties", ^{
   });
   
   it(@"should return correct vertices", ^{
-    const CGPoint expectedV0 = CGPointMake(0.0251, 3.6464);
-    const CGPoint expectedV1 = CGPointMake(2.1464, 1.5251);
-    const CGPoint expectedV2 = CGPointMake(4.9749, 4.3536);
-    const CGPoint expectedV3 = CGPointMake(2.8536, 6.4749);
+    const CGPoint expectedV0 = CGPointMake(2.8536, 1.5251);
+    const CGPoint expectedV1 = CGPointMake(4.9749, 3.6464);
+    const CGPoint expectedV2 = CGPointMake(2.1464, 6.4749);
+    const CGPoint expectedV3 = CGPointMake(0.0251, 4.3536);
     
     expect(rotatedRect.v0.x).to.beCloseToWithin(expectedV0.x, kAcceptedDifference);
     expect(rotatedRect.v0.y).to.beCloseToWithin(expectedV0.y, kAcceptedDifference);
@@ -82,11 +82,11 @@ context(@"properties", ^{
   
   it(@"should return correct transform", ^{
     expect(rotatedRect.transform.a).to.beCloseToWithin(std::cos(kAngle), kAcceptedDifference);
-    expect(rotatedRect.transform.b).to.beCloseToWithin(-std::sin(kAngle), kAcceptedDifference);
-    expect(rotatedRect.transform.c).to.beCloseToWithin(std::sin(kAngle), kAcceptedDifference);
+    expect(rotatedRect.transform.b).to.beCloseToWithin(std::sin(kAngle), kAcceptedDifference);
+    expect(rotatedRect.transform.c).to.beCloseToWithin(-std::sin(kAngle), kAcceptedDifference);
     expect(rotatedRect.transform.d).to.beCloseToWithin(std::cos(kAngle), kAcceptedDifference);
-    expect(rotatedRect.transform.tx).to.beCloseToWithin(-2.0961, kAcceptedDifference);
-    expect(rotatedRect.transform.ty).to.beCloseToWithin(2.9393, kAcceptedDifference);
+    expect(rotatedRect.transform.tx).to.beCloseToWithin(3.5607, kAcceptedDifference);
+    expect(rotatedRect.transform.ty).to.beCloseToWithin(-0.5962, kAcceptedDifference);
   });
 });
 

@@ -1,14 +1,18 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTMultiRectDrawer.h"
 #import "LTProcessingDrawer.h"
+#import "LTSingleRectDrawer.h"
+
+@class LTRotatedRect;
 
 /// @class LTRectDrawer
 ///
 /// Class for drawing rectangular regions from a source texture into a rectangular region of a
-/// target framebuffer, an operation which is very common when using programs to perform image
-/// processing operations.
-@interface LTRectDrawer : NSObject <LTProcessingDrawer>
+/// target framebuffer, optimzied for drawing both singe rects and an array of rects (using the
+/// \c LTSingleRectDrawer and \c LTMultiRectDrawer classes.
+@interface LTRectDrawer : NSObject <LTProcessingDrawer, LTMultiRectDrawer, LTSingleRectDrawer>
 
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c
 /// modelview, \c texture}.
