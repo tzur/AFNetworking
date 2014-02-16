@@ -3,6 +3,8 @@
 
 #import "LTOpenCVExtensions.h"
 
+using half_float::half;
+
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
   LTAssert(&input != output, @"Conversion cannot be made in-place");
 
@@ -48,15 +50,20 @@ void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
 
   // Convert to the correct data type, if needed.
   if (input.depth() != CV_MAT_DEPTH(type)) {
-    LTAssert(input.depth() != CV_16U && CV_MAT_DEPTH(type) != CV_16U,
-             @"Converting from/to half-float is not yet supported");
-
-    double alpha = 1;
-    if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_8U) {
-      alpha = 255;
-    } else if (input.depth() == CV_8U && CV_MAT_DEPTH(type) == CV_32F) {
-      alpha = 1.0 / 255.0;
+    if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_16F) {
+      LTConvertHalfFloat<float, half>(*sameChannels, output);
+    } else if (input.depth() == CV_16F && CV_MAT_DEPTH(type) == CV_32F) {
+      LTConvertHalfFloat<half, float>(*sameChannels, output);
+    } else if (input.depth() == CV_16F || CV_MAT_DEPTH(type) == CV_16F) {
+      LTAssert(NO, @"Converting from/to half-float to non-float types is not yet supported");
+    } else {
+      double alpha = 1;
+      if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_8U) {
+        alpha = 255;
+      } else if (input.depth() == CV_8U && CV_MAT_DEPTH(type) == CV_32F) {
+        alpha = 1.0 / 255.0;
+      }
+      sameChannels->convertTo(*output, type, alpha);
     }
-    sameChannels->convertTo(*output, type, alpha);
   }
 }

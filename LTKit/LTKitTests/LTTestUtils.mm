@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 #import "SpectaUtility.h"
 
 using half_float::half;
@@ -287,6 +288,13 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
     case CV_8UC4: {
       cv::Mat bgrMat;
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+    } break;
+    case CV_16FC4: {
+      cv::Mat4b converted;
+      LTConvertHalfFloat<half_float::half, uchar>(mat, &converted, 255);
+      cv::Mat bgrMat;
+      cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     case CV_32FC4: {
