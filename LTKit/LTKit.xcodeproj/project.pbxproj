@@ -157,6 +157,9 @@
 		8BAE3A1018AD025700DA79E1 /* LTBinaryLaplacian.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */; };
 		8BAE3A1118AD025700DA79E1 /* LTBinaryLaplacian.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */; };
 		8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */; };
+		8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */; };
+		8BAE3A3218AD273500DA79E1 /* LTMaskedArithmetic.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */; };
+		8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */; };
 		8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47135183A438300CA1681 /* LTDrawingContext.mm */; };
@@ -569,6 +572,10 @@
 		8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.fsh; sourceTree = "<group>"; };
 		8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.vsh; sourceTree = "<group>"; };
 		8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessor.mm; sourceTree = "<group>"; };
+		8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMaskedArithmeticProcessor.h; sourceTree = "<group>"; };
+		8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMaskedArithmeticProcessor.mm; sourceTree = "<group>"; };
+		8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMaskedArithmetic.fsh; sourceTree = "<group>"; };
+		8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMaskedArithmeticProcessorSpec.mm; sourceTree = "<group>"; };
 		8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TwoInputTextures.fsh; sourceTree = "<group>"; };
 		8BB47134183A438300CA1681 /* LTDrawingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTDrawingContext.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BB47135183A438300CA1681 /* LTDrawingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDrawingContext.mm; sourceTree = "<group>"; };
@@ -681,6 +688,9 @@
 				03BBB374188C0675001E7703 /* LTFractionalNoise.mm */,
 				03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */,
 				03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */,
+				8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */,
+				8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */,
+				8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */,
 				039C95A11897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.h */,
 				039C95A21897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
 				039C95B21897E84300F1E213 /* LTOneShotMultiscaleNoise.fsh */,
@@ -700,6 +710,7 @@
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
+				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
 				039C95B01897E50700F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
 			);
 			name = Blocks;
@@ -1570,6 +1581,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BAE3A3218AD273500DA79E1 /* LTMaskedArithmetic.fsh in Sources */,
 				8BAE3A1018AD025700DA79E1 /* LTBinaryLaplacian.fsh in Sources */,
 				8BAE3A1118AD025700DA79E1 /* LTBinaryLaplacian.vsh in Sources */,
 				039C95B41897E91700F1E213 /* LTOneShotMultiscaleNoise.fsh in Sources */,
@@ -1578,6 +1590,7 @@
 				8BAE3A0D18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
 				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
+				8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */,
 				03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */,
 				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
 				282CF085187B030000904F07 /* LTView.mm in Sources */,
@@ -1689,6 +1702,7 @@
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
 				03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
+				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
