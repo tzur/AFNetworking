@@ -90,6 +90,7 @@
 		28C61C0718B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0418B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm */; };
 		28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0518B23D540036D66E /* LTTouchCollectorFilterSpec.mm */; };
 		28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */; };
+		28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0B18B23D930036D66E /* LTTouchCollector.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -531,6 +532,8 @@
 		28C61C0418B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollectorDistanceFilterSpec.mm; sourceTree = "<group>"; };
 		28C61C0518B23D540036D66E /* LTTouchCollectorFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollectorFilterSpec.mm; sourceTree = "<group>"; };
 		28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollectorTimeIntervalFilterSpec.mm; sourceTree = "<group>"; };
+		28C61C0A18B23D930036D66E /* LTTouchCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchCollector.h; sourceTree = "<group>"; };
+		28C61C0B18B23D930036D66E /* LTTouchCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollector.mm; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -954,6 +957,8 @@
 		28C61BF918B23CFC0036D66E /* Touch Collector */ = {
 			isa = PBXGroup;
 			children = (
+				28C61C0A18B23D930036D66E /* LTTouchCollector.h */,
+				28C61C0B18B23D930036D66E /* LTTouchCollector.mm */,
 				28C61BFB18B23D430036D66E /* LTTouchCollectorDistanceFilter.h */,
 				28C61BFC18B23D430036D66E /* LTTouchCollectorDistanceFilter.mm */,
 				28C61BFD18B23D430036D66E /* LTTouchCollectorFilter.h */,
@@ -1803,6 +1808,7 @@
 				8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */,
 				2843B77918ABBF350044B87A /* LTSingleRectDrawer.mm in Sources */,
 				8BABFD62188C13FA004163DA /* LTOneShotProcessingStrategy.mm in Sources */,
+				28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
