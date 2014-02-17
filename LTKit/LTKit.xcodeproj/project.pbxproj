@@ -83,6 +83,7 @@
 		289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
+		28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -513,6 +514,8 @@
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
+		28C61BEA18B23CD10036D66E /* LTPainterPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterPoint.h; sourceTree = "<group>"; };
+		28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPoint.mm; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -906,6 +909,8 @@
 			isa = PBXGroup;
 			children = (
 				284ED12518954EA100414A8A /* LTInterpolationRoutines */,
+				28C61BEA18B23CD10036D66E /* LTPainterPoint.h */,
+				28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */,
 			);
 			name = Painting;
 			sourceTree = "<group>";
@@ -1793,6 +1798,7 @@
 				039C95A31897E4A100F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm in Sources */,
 				8BABFD69188C5A29004163DA /* LTNextIterationPlacement.mm in Sources */,
 				8BA11AE11831555100A5001D /* LTTexture.mm in Sources */,
+				28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */,
 				289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */,
 				8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
