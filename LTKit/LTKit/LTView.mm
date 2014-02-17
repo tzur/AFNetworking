@@ -146,6 +146,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
                                                         contentSize:self.contentTexture.size
                                                               state:state];
   self.navigationView.delegate = self;
+  self.navigationView.mode = self.navigationMode;
   self.navigationView.contentInset = self.contentInset;
   self.navigationView.maxZoomScale = self.maxZoomScale;
   self.navigationView.doubleTapLevels = self.doubleTapLevels;
@@ -642,6 +643,14 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
   visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
   return visibleContentRect;
+}
+
+- (CGFloat)zoomScale {
+  return self.navigationView.zoomScale;
+}
+
+- (UIView *)viewForContentCoordinates {
+  return self.navigationView.viewForContentCoordinates;
 }
 
 @end

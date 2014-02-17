@@ -574,6 +574,10 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   return state;
 }
 
+- (UIView *)viewForContentCoordinates {
+  return self.contentView;
+}
+
 - (void)setContentSize:(CGSize)contentSize {
   if (_contentSize == contentSize) {
     return;
