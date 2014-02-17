@@ -19,6 +19,9 @@
 @property (nonatomic) CGFloat corner;
 
 ///
+@property (nonatomic) CGFloat transitionExponent;
+
+///
 @property (nonatomic) GLKVector3 noiseChannelMixer;
 
 ///
@@ -28,6 +31,6 @@
 @property (nonatomic) CGFloat contrastScalingBoost;
 
 ///
-@property (nonatomic) GLKVector3 wideColor;
+@property (nonatomic) GLKVector3 color;
 
 @end

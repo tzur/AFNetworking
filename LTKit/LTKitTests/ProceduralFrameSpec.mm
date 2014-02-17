@@ -3,6 +3,7 @@
 
 #import "ProceduralFrame.h"
 
+#import "LTOneShotMultiscaleNoiseProcessor.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
@@ -51,13 +52,23 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  fit(@"should return the input black and white image whithout changes on default parameters", ^{
-    LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(128, 128)];
+  fit(@"should return frame", ^{
+    LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(512, 256)];
     
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
-    frame.corner = 0.0;
-    frame.width = 20.0;
-    frame.spread = 10.0;
+    LTTexture *noiseOutput = [LTTexture textureWithPropertiesOf:frameTexture];
+    LTOneShotMultiscaleNoiseProcessor *multiscaleNoise =
+        [[LTOneShotMultiscaleNoiseProcessor alloc] initWithOutput:noiseOutput];
+    multiscaleNoise[@"seed"] = @(30.0);
+    multiscaleNoise[@"density"] = @(4.0);
+    [multiscaleNoise process];
+    
+    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noiseOutput
+                                                             output:frameTexture];
+    frame.width = 5.0;
+    frame.spread = 5.0;
+    frame.corner = 2.0;
+    frame.transitionExponent = 1.0;
+    frame.noiseAmplitude = 0.0;
     
     LTSingleTextureOutput *processed = [frame process];
     
