@@ -4,7 +4,7 @@
 #import "LTColorGradient.h"
 
 #import "LTTestUtils.h"
-#import "LTTexture.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTColorGradient)
 
@@ -98,6 +98,25 @@ context(@"writing gradient values to texture", ^{
     texture = nil;
     
     [EAGLContext setCurrentContext:nil];
+  });
+  
+  it(@"should be equal to [0-1] linear gradient with two points", ^{
+    LTTexture *identity = [[LTColorGradient identityGradient] textureWithSamplingPoints:2];
+    cv::Mat4b grid(1, 2);
+    grid = cv::Vec4b(255, 0, 0, 255);
+    grid(0, 0) = cv::Vec4b(0, 0, 0, 255);
+    grid(0, 1) = cv::Vec4b(255, 255, 255, 255);
+    expect(LTCompareMat(identity.image, grid)).to.beTruthy();
+  });
+  
+  it(@"should be equal to [0-1] linear gradient with three points", ^{
+    LTTexture *identity = [[LTColorGradient identityGradient] textureWithSamplingPoints:3];
+    cv::Mat4b grid(1, 3);
+    grid = cv::Vec4b(255, 0, 0, 255);
+    grid(0, 0) = cv::Vec4b(0, 0, 0, 255);
+    grid(0, 1) = cv::Vec4b(128, 128, 128, 255);
+    grid(0, 2) = cv::Vec4b(255, 255, 255, 255);
+    expect(LTCompareMat(identity.image, grid)).to.beTruthy();
   });
   
   it(@"should be equal to pre-computed red gradient", ^{

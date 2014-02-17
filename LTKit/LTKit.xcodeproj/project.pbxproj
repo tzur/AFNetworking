@@ -10,8 +10,13 @@
 		030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */; };
 		030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */; };
 		030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */; };
+		030CF73518993574000E9ED0 /* BWTonalityProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF73418993574000E9ED0 /* BWTonalityProcessor.mm */; };
+		030CF744189935AF000E9ED0 /* BWTonality.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74218993594000E9ED0 /* BWTonality.fsh */; };
+		030CF74618993BF1000E9ED0 /* BWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* BWTonalityProcessorSpec.mm */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
+		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
+		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
 		0367A4B018ACF45700B42E34 /* ProceduralFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* ProceduralFrame.mm */; };
 		0367A4B218ACF47B00B42E34 /* ProceduralFrameSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B118ACF47B00B42E34 /* ProceduralFrameSpec.mm */; };
 		0367A4B518ACF7AA00B42E34 /* ProceduralFrame.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B318ACF5CB00B42E34 /* ProceduralFrame.fsh */; };
@@ -364,8 +369,14 @@
 		030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SimulatorMultiscaleNoise.png; path = Resources/SimulatorMultiscaleNoise.png; sourceTree = "<group>"; };
 		030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5MultiscaleNoise.png; path = Resources/iPhone5MultiscaleNoise.png; sourceTree = "<group>"; };
+		030CF73318993574000E9ED0 /* BWTonalityProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWTonalityProcessor.h; sourceTree = "<group>"; };
+		030CF73418993574000E9ED0 /* BWTonalityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BWTonalityProcessor.mm; sourceTree = "<group>"; };
+		030CF74218993594000E9ED0 /* BWTonality.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BWTonality.fsh; sourceTree = "<group>"; };
+		030CF74518993BF1000E9ED0 /* BWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
+		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
+		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
 		0367A4AE18ACF45700B42E34 /* ProceduralFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProceduralFrame.h; sourceTree = "<group>"; };
 		0367A4AF18ACF45700B42E34 /* ProceduralFrame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProceduralFrame.mm; sourceTree = "<group>"; };
 		0367A4B118ACF47B00B42E34 /* ProceduralFrameSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProceduralFrameSpec.mm; sourceTree = "<group>"; };
@@ -672,6 +683,9 @@
 				03BBB374188C0675001E7703 /* LTFractionalNoise.mm */,
 				03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */,
 				03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */,
+				030CF73318993574000E9ED0 /* BWTonalityProcessor.h */,
+				030CF73418993574000E9ED0 /* BWTonalityProcessor.mm */,
+				030CF74218993594000E9ED0 /* BWTonality.fsh */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -681,6 +695,7 @@
 			children = (
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				03BBB32B1887BB8C001E7703 /* LTColorGradientSpec.mm */,
+				030CF74518993BF1000E9ED0 /* BWTonalityProcessorSpec.mm */,
 				0367A4B118ACF47B00B42E34 /* ProceduralFrameSpec.mm */,
 			);
 			name = Blocks;
@@ -904,6 +919,8 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */,
+				0367A47818A9FD3500B42E34 /* Lena128.png */,
 				030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */,
 				030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */,
 				03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */,
@@ -1562,6 +1579,7 @@
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
+				0367A47918A9FD3500B42E34 /* Lena128.png in Resources */,
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
 				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
@@ -1572,6 +1590,7 @@
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
+				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
@@ -1591,6 +1610,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				030CF744189935AF000E9ED0 /* BWTonality.fsh in Sources */,
 				0367A4B518ACF7AA00B42E34 /* ProceduralFrame.fsh in Sources */,
 				039C95B41897E91700F1E213 /* LTOneShotMultiscaleNoise.fsh in Sources */,
 				03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */,
@@ -1622,6 +1642,7 @@
 				8BC465BE18995C2E0094F7BC /* LTGPUBlock.mm in Sources */,
 				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
+				030CF73518993574000E9ED0 /* BWTonalityProcessor.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				2843B6F818A7E1050044B87A /* LTRotatedRect.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
@@ -1724,6 +1745,7 @@
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
+				030CF74618993BF1000E9ED0 /* BWTonalityProcessorSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 			);
