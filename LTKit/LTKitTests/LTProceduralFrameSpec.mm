@@ -1,14 +1,14 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "ProceduralFrame.h"
+#import "LTProceduralFrame.h"
 
 #import "LTGLKitExtensions.h"
 #import "LTOneShotMultiscaleNoiseProcessor.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(ProceduralFrame)
+SpecBegin(LTProceduralFrame)
 
 __block LTTexture *noise;
 __block LTTexture *output;
@@ -54,13 +54,6 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on invalid transition exponent", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
-    expect(^{
-      frame.transitionExponent = -1;
-    }).to.raise(NSInvalidArgumentException);
-  });
-  
   it(@"should fail on invalid noise amplitude", ^{
     ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
@@ -94,7 +87,6 @@ context(@"properties", ^{
       frame.width = 15.0;
       frame.spread = 25.0;
       frame.corner = 0.0;
-      frame.transitionExponent = 1.0;
       frame.noiseAmplitude = 2.0;
       frame.noiseChannelMixer = GLKVector3Make(1.0, 1.0, 1.0);
       frame.color = GLKVector3Make(1.0, 1.0, 1.0);
@@ -151,9 +143,9 @@ context(@"processing", ^{
   it(@"should return rounded black frame with thin transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
     ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
-    frame.width = 25;
-    frame.spread = 5.0;
-    frame.corner = 12;
+    frame.width = 10.0;
+    frame.spread = 10.0;
+    frame.corner = 8;
     frame.noiseAmplitude = 0.0;
     frame.color = GLKVector3Make(0.0, 0.0, 0.0);
     [frame process];
@@ -172,7 +164,6 @@ context(@"processing", ^{
     frame.width = 0.0;
     frame.spread = 10.0;
     frame.corner = 0.0;
-    frame.transitionExponent = 1.0;
     frame.noiseAmplitude = 1.0;
     frame.noiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
     frame.color = GLKVector3Make(0.0, 0.0, 0.0);

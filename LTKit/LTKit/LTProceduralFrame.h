@@ -13,7 +13,8 @@
 @interface ProceduralFrame : LTOneShotImageProcessor
 
 /// Initializes a dual frame processor with a noise and output texture.
-/// Noise is assumed to be with 0.5 mean. @attention stick to this assumption, unless you want to
+///
+/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
 /// create a very specific visual result and understand well the underlying frame creation process.
 - (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output;
 
@@ -31,17 +32,12 @@
 /// values with the power function. Default value is 0.
 @property (nonatomic) CGFloat corner;
 
-/// The values in the transition area are remapped by raising them in the power of
-/// \c transitionExponent. Should be in [0, 1] ramge. Default value is 1.
-/// @attention this parameter is important, because the distance fields created
-@property (nonatomic) CGFloat transitionExponent;
-
 /// Mixes the noise channels of the noise texture in order to create the transition noise. Default
 /// value is (1, 0, 0). Input values are normalized, to remove potential interference with noise
 /// amplitude.
 @property (nonatomic) GLKVector3 noiseChannelMixer;
 
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude it 1.
+/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
 @property (nonatomic) CGFloat noiseAmplitude;
 
 /// Color of the foreground and of the transition area. Components should be in [0, 1] range.
