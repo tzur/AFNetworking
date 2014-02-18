@@ -24,6 +24,7 @@
 
 // Image Processing/Boxes.
 #import <LTKit/LTBilateralFilterProcessor.h>
+#import <LTKit/LTFFTProcessor.h>
 
 // Image Processing/Utils.
 #import <LTKit/LTBoundaryCondition.h>
