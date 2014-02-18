@@ -24,7 +24,7 @@
 }
 
 - (BOOL)acceptNewPoint:(LTPainterPoint *)newPoint withOldPoint:(LTPainterPoint *)oldPoint {
-  return newPoint.timestamp - oldPoint.timestamp > self.minimalTimeInterval;
+  return (newPoint.timestamp - oldPoint.timestamp) > self.minimalTimeInterval;
 }
 
 @end

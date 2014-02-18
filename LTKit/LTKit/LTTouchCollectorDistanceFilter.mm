@@ -22,12 +22,12 @@
 #pragma mark -
 
 + (instancetype)filterWithMinimalScreenDistance:(CGFloat)distance {
-  return [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorScreenDistance
+  return [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorDistanceScreen
                                               minimalDistance:distance];
 }
 
 + (instancetype)filterWithMinimalContentDistance:(CGFloat)distance {
-  return [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorContentDistance
+  return [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorDistanceContent
                                               minimalDistance:distance];
 }
 
@@ -50,7 +50,7 @@
 }
 
 - (CGPoint)positionForPoint:(LTPainterPoint *)point {
-  return (self.type == LTTouchCollectorScreenDistance) ?
+  return (self.type == LTTouchCollectorDistanceScreen) ?
       point.screenPosition : point.contentPosition;
 }
 

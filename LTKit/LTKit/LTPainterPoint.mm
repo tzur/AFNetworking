@@ -16,27 +16,12 @@
 @implementation LTPainterPoint
 
 - (instancetype)init {
-  if (self = [super init]) {
-  }
-  return self;
+  return self = [super init];
 }
 
-- (instancetype)initWithScreenPosition:(CGPoint)screenPosition
-                       contentPosition:(CGPoint)contentPosition
-                           atZoomScale:(CGFloat)zoomScale {
-  return [self initWithScreenPosition:screenPosition contentPosition:contentPosition
-                          atZoomScale:zoomScale withTimestamp:CACurrentMediaTime()];
-}
-
-- (instancetype)initWithScreenPosition:(CGPoint)screenPosition
-                       contentPosition:(CGPoint)contentPosition
-                           atZoomScale:(CGFloat)zoomScale
-                         withTimestamp:(CFTimeInterval)timestamp {
+- (instancetype)initWithCurrentTimestamp {
   if (self = [self init]) {
-    self.screenPosition = screenPosition;
-    self.contentPosition = contentPosition;
-    self.zoomScale = zoomScale;
-    self.timestamp = timestamp;
+    self.timestamp = CACurrentMediaTime();
   }
   return self;
 }
@@ -94,6 +79,26 @@
 
 - (CGFloat)screenPositionY {
   return self.screenPosition.y;
+}
+
+#pragma mark -
+#pragma mark Clamped Properties
+#pragma mark -
+
+- (void)setTimestamp:(CFTimeInterval)timestamp {
+  _timestamp = MAX(0, timestamp);
+}
+
+- (void)setZoomScale:(CGFloat)zoomScale {
+  _zoomScale = MAX(0, zoomScale);
+}
+
+- (void)setDistanceFromStart:(CGFloat)distanceFromStart {
+  _distanceFromStart = MAX(0, distanceFromStart);
+}
+
+- (void)setDiameter:(CGFloat)diameter {
+  _diameter = MAX(0, diameter);
 }
 
 @end

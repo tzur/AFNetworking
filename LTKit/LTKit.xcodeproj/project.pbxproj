@@ -49,6 +49,7 @@
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
 		03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
+		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF085187B030000904F07 /* LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF07E187B030000904F07 /* LTView.mm */; };
 		282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF082187B030000904F07 /* LTViewNavigationView.mm */; };
@@ -457,6 +458,7 @@
 		03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5FractionalNoise.png; path = Resources/iPhone5FractionalNoise.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
+		280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPointSpec.mm; sourceTree = "<group>"; };
 		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 			children = (
 				284ED12A189565F500414A8A /* Interpolation Routines */,
 				28C61BFA18B23D200036D66E /* Touch Collector */,
+				280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */,
 			);
 			name = Painting;
 			sourceTree = "<group>";
@@ -1898,6 +1901,7 @@
 				8BABFD71188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
 				2843B6FB18A938AF0044B87A /* LTRotatedRectSpec.mm in Sources */,
+				280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */,
 				8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */,
 				8BAE3A4D18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,

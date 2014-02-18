@@ -27,9 +27,9 @@
 
 @end
 
-/// The \c LTTouchCollector class is used to collect single-finger painting touch events, handling
-/// the logic of ignoring the multi-finger events, disabling navigation on the \c LTView after
-/// a stroke started, etc.
+/// The \c LTTouchCollector class is used to collect single-finger painting touch events on an \c
+/// LTView. This class handles the logic of ignoring the multi-finger events, disabling navigation
+/// on the \c LTView after a stroke started, etc.
 /// Additionally, the collector can be configured with a \c LTTouchCollectorFilter for filtering
 /// the events based on differences (distance, time interval, etc.) between the last collected touch
 /// and the newly collected one.
@@ -39,7 +39,8 @@
 @property (weak, nonatomic) id<LTTouchCollectorDelegate> delegate;
 
 /// Filter used to decide whether to collect a new touch event, based on the differences with the
-/// previously collected touch.
+/// previously collected touch. When the object is initialized, or when filter is set to nil, a
+/// default filter with a single screen point distance threshold will be used.
 @property (strong, nonatomic) id<LTTouchCollectorFilter> filter;
 
 @end

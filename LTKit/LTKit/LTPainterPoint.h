@@ -3,39 +3,31 @@
 
 #import "LTInterpolatedObject.h"
 
-/// This class represents a point used in the \c LTPainter mechaism, with interpolated properties.
+/// This class represents a point used in the \c LTPainter mechanism, with interpolated properties.
 @interface LTPainterPoint : NSObject <LTInterpolatedObject>
 
-/// Initializes the point with the given position, zoom scale, and the current timestamp.
-- (instancetype)initWithScreenPosition:(CGPoint)screenPosition
-                       contentPosition:(CGPoint)contentPosition
-                           atZoomScale:(CGFloat)zoomScale;
+/// initializes a point with the default primitive values and the current timestamp.
+-(instancetype)initWithCurrentTimestamp;
 
-/// Initializes the point with the given position, zoom scale, and timestamp.
-- (instancetype)initWithScreenPosition:(CGPoint)screenPosition
-                       contentPosition:(CGPoint)contentPosition
-                           atZoomScale:(CGFloat)zoomScale
-                         withTimestamp:(CFTimeInterval)timestamp;
-
-/// Designated initializer: create an uninitialized point.
+/// Designated initializer: create a point with the default primitive values for its properties.
 - (instancetype)init;
 
-/// Timestamp of the point.
+/// Timestamp of the point, clamped to range [0,Inf).
 @property (nonatomic) CFTimeInterval timestamp;
 
-/// The position of the point, in screen coordinates.
+/// Position of the point, in screen coordinates.
 @property (nonatomic) CGPoint screenPosition;
 
-/// The position of the point, in content coordinates.
+/// Position of the point, in content coordinates.
 @property (nonatomic) CGPoint contentPosition;
 
-/// The zoom scale of the view at the time the point is taken.
+/// Zoom scale of the view at the time the point is taken, clamped to range [0,Inf).
 @property (nonatomic) CGFloat zoomScale;
 
-/// Distance of the point from the start of the stroke it belongs to.
+/// Distance of the point from the start of the stroke it belongs to. Clamped to range [0,Inf).
 @property (nonatomic) CGFloat distanceFromStart;
 
-/// Diameter of the point, in pixels.
+/// Diameter of the point in pixels, clamped to range [0,Inf).
 @property (nonatomic) CGFloat diameter;
 
 @end

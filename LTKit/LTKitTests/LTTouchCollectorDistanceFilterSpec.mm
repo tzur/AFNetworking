@@ -19,16 +19,16 @@ beforeEach(^{
 context(@"initialization", ^{
   it(@"should initialize with a valid distance", ^{
     expect(^{
-      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorScreenDistance
+      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorDistanceScreen
                                                     minimalDistance:0];
-      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorScreenDistance
+      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorDistanceScreen
                                                     minimalDistance:FLT_EPSILON];
     }).notTo.raiseAny();
   });
   
   it(@"should raise an exception when initialized with a negative distance", ^{
     expect(^{
-      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorScreenDistance
+      filter = [[LTTouchCollectorDistanceFilter alloc] initWithType:LTTouchCollectorDistanceScreen
                                                     minimalDistance:-FLT_EPSILON];
     }).to.raise(NSInvalidArgumentException);
   });

@@ -15,9 +15,8 @@
   if (self = [super init]) {
     NSMutableArray *array = [NSMutableArray array];
     for (id filter in filters) {
-      if ([filter conformsToProtocol:@protocol(LTTouchCollectorFilter)]) {
-        [array addObject:filter];
-      }
+      LTParameterAssert([filter conformsToProtocol:@protocol(LTTouchCollectorFilter)]);
+      [array addObject:filter];
     }
     self.filters = array;
   }

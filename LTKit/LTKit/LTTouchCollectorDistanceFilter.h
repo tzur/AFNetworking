@@ -5,8 +5,8 @@
 
 /// Possible distance metrics supported by the \c LTTouchCollectorDistanceFilter.
 typedef NS_ENUM(NSUInteger, LTTouchCollectorDistanceType) {
-  LTTouchCollectorScreenDistance = 0,
-  LTTouchCollectorContentDistance
+  LTTouchCollectorDistanceScreen = 0,
+  LTTouchCollectorDistanceContent
 };
 
 /// Filters incoming \c LTPainterPoints according to the distance between them (in either screen or
@@ -14,11 +14,18 @@ typedef NS_ENUM(NSUInteger, LTTouchCollectorDistanceType) {
 @interface LTTouchCollectorDistanceFilter : NSObject <LTTouchCollectorFilter>
 
 /// Creates a distance filter accepting points with screen distance above the given threshold.
+///
+/// @param distance must be a non-negative value.
 + (instancetype)filterWithMinimalScreenDistance:(CGFloat)distance;
+
 /// Creates a distance filter accepting points with content distance above the given threshold.
+///
+/// @param distance must be a non-negative value.
 + (instancetype)filterWithMinimalContentDistance:(CGFloat)distance;
 
 /// Initializes the filter with the given type and threshold distance.
+///
+/// @param distance must be a non-negative value.
 - (instancetype)initWithType:(LTTouchCollectorDistanceType)type minimalDistance:(CGFloat)distance;
 
 @end

@@ -116,7 +116,7 @@
 /// Returns the current zoom scale of the \c LTView.
 @property (readonly, nonatomic) CGFloat zoomScale;
 
-/// A view that can be used for aquiring touch and gesture locations in content coordinates.
+/// A view that can be used for acquiring touch and gesture locations in content coordinates.
 /// For example, the following will return the gesture location in content coordinates (in points):
 /// @code
 /// [gesture locationInView:ltView.viewForContentCoordinates]
