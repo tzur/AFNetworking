@@ -262,12 +262,12 @@ CG_INLINE CGPoint floor(const CGPoint &point) {
 }
 
 /// Ceils the given CGPoint, coordinate-wise.
-  CG_INLINE CGPoint ceil(const CGPoint &point) {
+CG_INLINE CGPoint ceil(const CGPoint &point) {
   return CGPointMake(ceil(point.x), ceil(point.y));
 }
 
 /// Rounds the given CGPoint, coordinate-wise.
-  CG_INLINE CGPoint round(const CGPoint &point) {
+CG_INLINE CGPoint round(const CGPoint &point) {
   return CGPointMake(round(point.x), round(point.y));
 }
 

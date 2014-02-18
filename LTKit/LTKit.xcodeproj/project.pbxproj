@@ -40,6 +40,12 @@
 		03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */; };
 		03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
 		03BBB389188CFB60001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
+		03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168118B26FA40026B56A /* RoundishBlackFrame.png */; };
+		03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168218B26FA40026B56A /* RoundWhiteFrame.png */; };
+		03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168318B26FA40026B56A /* StraightBlueFrame.png */; };
+		03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168418B26FA40026B56A /* StraightRedFrame.png */; };
+		03D5169818B2768D0026B56A /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5169718B2768D0026B56A /* TiledNoise.png */; };
+		03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5169918B3344F0026B56A /* StraightBlackNoisyFrame.png */; };
 		03F99DB61895447100B77136 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB51895447100B77136 /* Lena.png */; };
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
 		03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */; };
@@ -407,6 +413,12 @@
 		03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFractionalNoiseSpec.mm; sourceTree = "<group>"; };
 		03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.fsh; sourceTree = "<group>"; };
 		03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.vsh; sourceTree = "<group>"; };
+		03D5168118B26FA40026B56A /* RoundishBlackFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundishBlackFrame.png; path = Resources/RoundishBlackFrame.png; sourceTree = "<group>"; };
+		03D5168218B26FA40026B56A /* RoundWhiteFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundWhiteFrame.png; path = Resources/RoundWhiteFrame.png; sourceTree = "<group>"; };
+		03D5168318B26FA40026B56A /* StraightBlueFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightBlueFrame.png; path = Resources/StraightBlueFrame.png; sourceTree = "<group>"; };
+		03D5168418B26FA40026B56A /* StraightRedFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightRedFrame.png; path = Resources/StraightRedFrame.png; sourceTree = "<group>"; };
+		03D5169718B2768D0026B56A /* TiledNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiledNoise.png; path = Resources/TiledNoise.png; sourceTree = "<group>"; };
+		03D5169918B3344F0026B56A /* StraightBlackNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightBlackNoisyFrame.png; path = Resources/StraightBlackNoisyFrame.png; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5FractionalNoise.png; path = Resources/iPhone5FractionalNoise.png; sourceTree = "<group>"; };
@@ -919,6 +931,12 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03D5169918B3344F0026B56A /* StraightBlackNoisyFrame.png */,
+				03D5169718B2768D0026B56A /* TiledNoise.png */,
+				03D5168118B26FA40026B56A /* RoundishBlackFrame.png */,
+				03D5168218B26FA40026B56A /* RoundWhiteFrame.png */,
+				03D5168318B26FA40026B56A /* StraightBlueFrame.png */,
+				03D5168418B26FA40026B56A /* StraightRedFrame.png */,
 				0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */,
 				0367A47818A9FD3500B42E34 /* Lena128.png */,
 				030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */,
@@ -1572,13 +1590,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03D5169818B2768D0026B56A /* TiledNoise.png in Resources */,
 				030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */,
+				03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */,
 				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
+				03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */,
 				0367A47918A9FD3500B42E34 /* Lena128.png in Resources */,
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
 				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
@@ -1589,8 +1610,11 @@
 				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
+				03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */,
+				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
+				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,

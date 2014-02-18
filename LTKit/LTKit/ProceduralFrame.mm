@@ -3,16 +3,11 @@
 
 #import "ProceduralFrame.h"
 
+#import "LTGLKitExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+ProceduralFrameFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-
-@interface ProceduralFrame ()
-// Aspect ration is equal to width / height of the output texture.
-@property (nonatomic) CGFloat aspectRatio;
-
-@end
 
 @implementation ProceduralFrame
 
@@ -36,6 +31,9 @@ static const CGFloat kMinNoiseAmplitude = 0.0;
 static const CGFloat kMaxNoiseAmplitude = 100.0;
 static const CGFloat kDefaultNoiseAmplitude = 1.0;
 
+static const GLKVector3 kDefaultColor = GLKVector3Make(1.0, 1.0, 1.0);
+static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
+
 - (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output {
   LTProgram *program =
     [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
@@ -45,11 +43,19 @@ static const CGFloat kDefaultNoiseAmplitude = 1.0;
 
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
+    // Set default parameters.
     self.corner = kDefaultCorner;
     self.width = kDefaultWidth;
     self.spread = kDefaultSpread;
     self.transitionExponent = kDefaultTransitionExponent;
     self.noiseAmplitude = kDefaultNoiseAmplitude;
+    self.noiseChannelMixer = kDefaultNoiseChannelMixer;
+    self.color = kDefaultColor;
+    
+    // Precompute the distance shift that is used to correct aspect ratio in the shader.
+    // Aspect ratio is corrected by zeroing the longer dimension near the center, so non-zero part
+    // of both dimensions is equal. Such strategy (instead of simple scaling) is needed in order to
+    // preserve the correct transition behaviour.
     GLKVector2 distanceShift;
     if (output.size.width > output.size.height) {
       distanceShift = GLKVector2Make(1.0 - output.size.height / output.size.width, 0.0);
@@ -66,17 +72,18 @@ static const CGFloat kDefaultNoiseAmplitude = 1.0;
 // field that is beuild in the shader. Changing either width, spread or corner requires to
 // recompute the edges.
 - (void)updateEdges {
-  CGFloat edge0;
-  CGFloat edge1;
+  // Distance field value on the edge between the foreground and the transition.
+  CGFloat edge0 = std::abs((self.width/100.0 - 0.5) * 2.0); // [-1, 1]
+  // Distance field value on the edge between the transition and the background.
+  CGFloat edge1 = std::abs(((self.width + self.spread)/100.0 - 0.5) * 2.0); // [-1, 1];
   
-  if (self.corner == 0.0) {
-    edge0 = std::abs((self.width/100.0 - 0.5) * 2.0); // [-0.5 0.5]
-    edge1 = std::abs(((self.width + self.spread)/100.0 - 0.5) * 2.0);
-  } else {
-    edge0 = std::abs(self.width/100.0 - 0.5);
+  // For max semi-norm, no further precomputation is needed. Continue if corner corresponds to
+  // p-norm.
+  if (self.corner > 0.0) {
+    edge0 = std::abs((self.width/100.0 - 0.5) * 2.0);
     edge0 = std::pow(edge0, self.corner); // At center y is zero, thus ommited.
     
-    edge1 = std::abs((self.width + self.spread)/100.0 - 0.5);
+    edge1 = std::abs(((self.width + self.spread)/100.0 - 0.5) * 2.0);
     edge1 = std::pow(edge1, self.corner);
   }
   self[@"edge0"] = @(edge0);
@@ -129,13 +136,16 @@ static const CGFloat kDefaultNoiseAmplitude = 1.0;
 }
 
 - (void)setColor:(GLKVector3)color {
-  LTParameterAssert(noiseAmplitude >= kMinNoiseAmplitude,
-                    @"Frame color components should be ");
-  LTParameterAssert(noiseAmplitude <= kMaxNoiseAmplitude,
-                    @"Noise amplitude is higher than maximum value");
-  
+  LTParameterAssert(GLKVectorInRange(color, 0.0, 1.0),
+                    @"Frame color components should be in [0, 1] range");
   _color = color;
   self[@"color"] = $(color);
+}
+
+- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+  // Normalize the input, so mixing doesn't affect amplitude.
+  _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
+  self[@"noiseChannelMixer"] = $(_noiseChannelMixer);
 }
 
 @end
