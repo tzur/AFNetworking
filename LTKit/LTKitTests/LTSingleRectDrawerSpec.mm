@@ -9,6 +9,8 @@
 #import "LTProcessingDrawerExamples.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTestUtils.h"
 
 NSString * const kLTSingleRectDrawerExamples = @"LTSingleRectDrawerExamples";
@@ -64,8 +66,8 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
     __block LTFbo *fbo;
     
     beforeEach(^{
-      program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
-                                         fragmentSource:kPassthroughFragmentSource];
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                         fragmentSource:[PassthroughFsh source]];
       rectDrawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
       output = [[LTGLTexture alloc] initWithSize:inputSize
@@ -268,7 +270,6 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
 
 SharedExamplesEnd
 
-
 SpecBegin(LTSingleRectDrawer)
 
 itShouldBehaveLike(kLTProcessingDrawerExamples,
@@ -278,5 +279,3 @@ itShouldBehaveLike(kLTSingleRectDrawerExamples,
                    @{kLTSingleRectDrawerClass: [LTSingleRectDrawer class]});
 
 SpecEnd
-
-

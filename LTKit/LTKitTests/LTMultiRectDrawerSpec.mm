@@ -10,6 +10,8 @@
 #import "LTProcessingDrawerExamples.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTestUtils.h"
 
 NSString * const kLTMultiRectDrawerExamples = @"LTMultiRectDrawerExamples";
@@ -65,8 +67,8 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     __block LTFbo *fbo;
     
     beforeEach(^{
-      program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
-                                         fragmentSource:kPassthroughFragmentSource];
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                         fragmentSource:[PassthroughFsh source]];
       rectDrawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
       output = [[LTGLTexture alloc] initWithSize:inputSize
@@ -121,8 +123,8 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                       fromRotatedRects:@[[LTRotatedRect rect:subrect]]];
         }];
         
-        // Actual image should be a resized version of the subimage at the given range, flipped across
-        // the x-axis.
+        // Actual image should be a resized version of the subimage at the given range, flipped
+        // across the x-axis.
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
         cv::Mat subimage = image(cv::Rect(subrect.origin.x, subrect.origin.y,
                                           subrect.size.width, subrect.size.height));
@@ -165,8 +167,8 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                       fromRotatedRects:@[[LTRotatedRect rect:inRect]]];
         }];
         
-        // Actual image should be a resized version of the subimage at inputSubrect positioned at the
-        // given outputSubrect.
+        // Actual image should be a resized version of the subimage at inputSubrect positioned at
+        // the given outputSubrect.
         cv::Mat resized;
         cv::Mat subimage = image(cv::Rect(inRect.origin.x, inRect.origin.y,
                                           inRect.size.width, inRect.size.height));
@@ -301,5 +303,3 @@ itShouldBehaveLike(kLTMultiRectDrawerExamples,
                    @{kLTMultiRectDrawerClass: [LTMultiRectDrawer class]});
 
 SpecEnd
-
-

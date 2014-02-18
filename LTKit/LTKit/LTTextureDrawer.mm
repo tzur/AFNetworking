@@ -58,22 +58,22 @@ NSString * const kSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (LTDrawingContext *)createDrawingContext {
-  LTAssert(NO, @"Abstract method that should be implemented in the subclass");
+  LTMethodNotImplemented();
 }
 
 - (void)drawRect:(__unused CGRect)targetRect inFramebuffer:(LTFbo __unused *)fbo
         fromRect:(__unused CGRect)sourceRect {
-  LTAssert(NO, @"Abstract method that should be implemented in the subclass");
+  LTMethodNotImplemented();
 }
 
 - (void)drawRotatedRect:(LTRotatedRect __unused *)targetRect inFramebuffer:(LTFbo __unused *)fbo
         fromRotatedRect:(LTRotatedRect __unused *)sourceRect {
-  LTAssert(NO, @"Abstract method that should be implemented in the subclass");
+  LTMethodNotImplemented();
 }
 
 - (void)drawRotatedRects:(NSArray __unused *)targetRects inFramebuffer:(LTFbo __unused *)fbo
         fromRotatedRects:(NSArray __unused *)sourceRects {
-  LTAssert(NO, @"Abstract method that should be implemented in the subclass");
+  LTMethodNotImplemented();
 }
 
 #pragma mark -

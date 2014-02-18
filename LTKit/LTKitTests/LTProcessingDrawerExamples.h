@@ -8,9 +8,3 @@ extern NSString * const kLTProcessingDrawerExamples;
 
 /// Class object, implementing the LTProcessingDrawer protocol to test.
 extern NSString * const kLTProcessingDrawerClass;
-
-/// Passthrough vertex shader.
-extern NSString * const kPassthroughVertexSource;
-
-/// Passthrough fragmentShader.
-extern NSString * const kPassthroughFragmentSource;

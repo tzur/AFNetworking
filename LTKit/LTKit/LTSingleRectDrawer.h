@@ -3,6 +3,11 @@
 
 #import "LTTextureDrawer.h"
 
+/// @protocol LTSingleRectDrawer
+///
+/// Protocol for drawing rectangular regions from a source texture into a rectangular region
+/// of a target framebuffer, with additional draw methods for drawing a single rotated rectangle
+/// or an axis-aligned one to a bound framebuffer or screenbuffer.
 @protocol LTSingleRectDrawer <LTProcessingDrawer>
 
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen

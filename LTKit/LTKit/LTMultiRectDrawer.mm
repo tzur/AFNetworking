@@ -14,7 +14,10 @@
 #import "LTRotatedRect.h"
 #import "LTVertexArray.h"
 
-/// Holds the position and texture coordinate of each of the rect's corners.
+/// Holds the position and texture coordinate of each of the rect's corners. Notice that the
+/// position attribute is a \c GLKVector3, meaning the z coordinate is set and passed to the shader.
+/// This allows some GPUs to optimize the drawing of overlapping rectangles, and drawing only the
+/// top one.
 LTGPUStructMake(LTMultiRectDrawerVertex,
                 GLKVector3, position,
                 GLKVector2, texcoord);
@@ -115,31 +118,8 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   std::vector<LTMultiRectDrawerVertex> triangles;
   CGFloat z = 0;
   for (NSUInteger i = 0; i < targetRects.count; ++i) {
-    LTRotatedRect *targetRect = targetRects[i];
-    LTRotatedRect *sourceRect = sourceRects[i];
-
-    CGPoint v0 = targetRect.v0;
-    CGPoint v1 = targetRect.v1;
-    CGPoint v2 = targetRect.v2;
-    CGPoint v3 = targetRect.v3;
-
-    CGPoint t0 = sourceRect.v0 / sourceSize;
-    CGPoint t1 = sourceRect.v1 / sourceSize;
-    CGPoint t2 = sourceRect.v2 / sourceSize;
-    CGPoint t3 = sourceRect.v3 / sourceSize;
-    
-    triangles.push_back({.position = GLKVector3Make(v0.x, v0.y, z),
-                         .texcoord = GLKVector2Make(t0.x, t0.y)});
-    triangles.push_back({.position = GLKVector3Make(v1.x, v1.y, z),
-                         .texcoord = GLKVector2Make(t1.x, t1.y)});
-    triangles.push_back({.position = GLKVector3Make(v2.x, v2.y, z),
-                         .texcoord = GLKVector2Make(t2.x, t2.y)});
-    triangles.push_back({.position = GLKVector3Make(v2.x, v2.y, z),
-                         .texcoord = GLKVector2Make(t2.x, t2.y)});
-    triangles.push_back({.position = GLKVector3Make(v3.x, v3.y, z),
-                         .texcoord = GLKVector2Make(t3.x, t3.y)});
-    triangles.push_back({.position = GLKVector3Make(v0.x, v0.y, z),
-                         .texcoord = GLKVector2Make(t0.x, t0.y)});    
+    [self addTrianglesTo:&triangles withZCoordinate:z fromTargetRect:targetRects[i]
+              sourceRect:sourceRects[i] usingSourceSize:sourceSize];
     z += 1.0 / targetRects.count;
   }
   NSData *data = [NSData dataWithBytesNoCopy:&triangles[0]
@@ -148,21 +128,50 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   [self.arrayBuffer setData:data];
 }
 
+- (void)addTrianglesTo:(std::vector<LTMultiRectDrawerVertex> *)triangles withZCoordinate:(CGFloat)z
+        fromTargetRect:(LTRotatedRect *)targetRect sourceRect:(LTRotatedRect *)sourceRect
+       usingSourceSize:(CGSize)sourceSize {
+  CGPoint v0 = targetRect.v0;
+  CGPoint v1 = targetRect.v1;
+  CGPoint v2 = targetRect.v2;
+  CGPoint v3 = targetRect.v3;
+  
+  CGPoint t0 = sourceRect.v0 / sourceSize;
+  CGPoint t1 = sourceRect.v1 / sourceSize;
+  CGPoint t2 = sourceRect.v2 / sourceSize;
+  CGPoint t3 = sourceRect.v3 / sourceSize;
+  
+  triangles->push_back({.position = GLKVector3Make(v0.x, v0.y, z),
+                        .texcoord = GLKVector2Make(t0.x, t0.y)});
+  triangles->push_back({.position = GLKVector3Make(v1.x, v1.y, z),
+                        .texcoord = GLKVector2Make(t1.x, t1.y)});
+  triangles->push_back({.position = GLKVector3Make(v2.x, v2.y, z),
+                        .texcoord = GLKVector2Make(t2.x, t2.y)});
+  triangles->push_back({.position = GLKVector3Make(v2.x, v2.y, z),
+                        .texcoord = GLKVector2Make(t2.x, t2.y)});
+  triangles->push_back({.position = GLKVector3Make(v3.x, v3.y, z),
+                        .texcoord = GLKVector2Make(t3.x, t3.y)});
+  triangles->push_back({.position = GLKVector3Make(v0.x, v0.y, z),
+                        .texcoord = GLKVector2Make(t0.x, t0.y)});
+}
+
 #pragma mark -
 #pragma mark Drawing (Single Rect)
 #pragma mark -
 
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
-  LogDebug(@"Using LTMultiRectDrawer for drawing a single rect, "
-           "consider using LTSingleRectDrawer instead");
+  LogWarning(@"Using LTMultiRectDrawer for drawing a single rect, "
+             "consider using LTSingleRectDrawer instead for improved performance, as it uses a "
+             "static geometry for drawing");
   [self drawRotatedRects:@[[LTRotatedRect rect:targetRect]] inFramebuffer:fbo
         fromRotatedRects:@[[LTRotatedRect rect:sourceRect]]];
 }
 
 - (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
         fromRotatedRect:(LTRotatedRect *)sourceRect {
-  LogDebug(@"Using LTMultiRectDrawer for drawing a single rect, "
-           "consider using LTSingleRectDrawer instead");
+  LogWarning(@"Using LTMultiRectDrawer for drawing a single rect, "
+             "consider using LTSingleRectDrawer instead for improved performance, as it uses a "
+             "static geometry for drawing");
   [self drawRotatedRects:@[targetRect] inFramebuffer:fbo fromRotatedRects:@[sourceRect]];
 }
 

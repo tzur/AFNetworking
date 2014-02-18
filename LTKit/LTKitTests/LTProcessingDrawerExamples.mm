@@ -9,37 +9,13 @@
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTestUtils.h"
 #import "NSValue+GLKitExtensions.h"
 
 NSString * const kLTProcessingDrawerExamples = @"LTProcessingDrawerExamples";
 NSString * const kLTProcessingDrawerClass = @"LTProcessingDrawerExamplesClass";
-
-NSString * const kPassthroughVertexSource =
-    @"uniform highp mat4 modelview;"
-    "uniform highp mat4 projection;"
-    "uniform highp mat3 texture;"
-    ""
-    "attribute highp vec4 position;"
-    "attribute highp vec3 texcoord;"
-    ""
-    "varying highp vec2 vTexcoord;"
-    ""
-    "void main() {"
-    "  vec4 newpos = vec4(position.xy, 0.0, 1.0);"
-    "  vTexcoord = (texture * vec3(texcoord.xy, 1.0)).xy;"
-    "  gl_Position = projection * modelview * newpos;"
-    "}";
-
-NSString * const kPassthroughFragmentSource =
-    @"uniform sampler2D sourceTexture;"
-    ""
-    "varying highp vec2 vTexcoord;"
-    ""
-    "void main() {"
-    "  highp vec4 color = texture2D(sourceTexture, vTexcoord);"
-    "  gl_FragColor = color;"
-    "}";
 
 #pragma mark -
 #pragma mark Shared Tests
@@ -191,8 +167,8 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
   
   context(@"initialization", ^{
     it(@"should initialize with valid program", ^{
-      LTProgram *program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
-                                                    fragmentSource:kPassthroughFragmentSource];
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                                    fragmentSource:[PassthroughFsh source]];
       
       expect(^{
         __unused id drawer = [[drawerClass alloc] initWithProgram:program
@@ -202,7 +178,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     
     it(@"should not initialize with program with missing uniforms", ^{
       LTProgram *program = [[LTProgram alloc] initWithVertexSource:kMissingVertexSource
-                                                    fragmentSource:kPassthroughFragmentSource];
+                                                    fragmentSource:[PassthroughFsh source]];
       
       expect(^{
         __unused id drawer = [[drawerClass alloc] initWithProgram:program
@@ -218,8 +194,8 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     __block LTFbo *fbo;
     
     beforeEach(^{
-      program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
-                                         fragmentSource:kPassthroughFragmentSource];
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                         fragmentSource:[PassthroughFsh source]];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
       output = [[LTGLTexture alloc] initWithSize:inputSize
@@ -494,7 +470,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     __block LTFbo *fbo;
     
     beforeEach(^{
-      program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:kFragmentWithThreeSamplersSource];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture
                                   auxiliaryTextures:@{@"otherTexture": texture}];
@@ -568,7 +544,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     __block LTFbo *fbo;
     
     beforeEach(^{
-      program = [[LTProgram alloc] initWithVertexSource:kPassthroughVertexSource
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:kFragmentWithUniformSource];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       

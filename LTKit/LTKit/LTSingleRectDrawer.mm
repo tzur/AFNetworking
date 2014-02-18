@@ -230,7 +230,8 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
         fromRotatedRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count == sourceRects.count);
   LogDebug(@"Using LTSingleRectDrawer for drawing an array of rects, "
-           "consider using LTMultiRectDrawer instead");
+           "consider using LTMultiRectDrawer instead for improved performance, as it uses a single "
+           "draw call for drawing all the rectangles");
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       [self drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
