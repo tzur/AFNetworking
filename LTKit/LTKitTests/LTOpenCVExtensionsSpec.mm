@@ -60,7 +60,7 @@ context(@"mat conversion", ^{
       LTConvertMat(input, &output, CV_32FC4);
 
       cv::Scalar convertedValue(1, 0, 0.5, 1);
-      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output, 1.0/255.0)).to.beTruthy();
     });
 
     it(@"should scale from float to ubyte", ^{
@@ -97,7 +97,7 @@ context(@"mat conversion", ^{
       cv::Mat4hf expected(input.size());
       expected.setTo(cv::Vec4hf(half(0.5), half(-1.0), half(0.5), half(1.0)));
       
-      expect(LTFuzzyCompareMat(expected, output)).to.beTruthy();
+      expect(LTFuzzyCompareMat(expected, output, 1.0/255.0)).to.beTruthy();
     });
   });
 

@@ -76,7 +76,7 @@ it(@"should produce correct result", ^{
   expected.setTo(cv::Vec4hf(half(0), half(0), half(0), half(1)));
   expected(roi).setTo(cv::Vec4hf(half(0), half(-0.25), half(0.43921), half(1)));
 
-  expect(LTFuzzyCompareMat(expected, result.texture.image)).to.beTruthy();
+  expect(LTFuzzyCompareMat(expected, result.texture.image, 1.0/255.0)).to.beTruthy();
 });
 
 SpecEnd
