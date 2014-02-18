@@ -159,7 +159,8 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self readFromTexture:^{
     // Read pixels into the mutable data, according to the texture precision.
     glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
-                 [self bestSupportedReadingFormat], LTTexturePrecisionFromMat(*image),
+                 [self bestSupportedReadingFormat],
+                 LTTexturePrecisionFromMatType(matTypeForReading),
                  readImage.data);
   }];
 

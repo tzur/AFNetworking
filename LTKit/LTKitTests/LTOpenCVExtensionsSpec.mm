@@ -5,6 +5,8 @@
 
 #import "LTTestUtils.h"
 
+using half_float::half;
+
 SpecBegin(LTOpenCVExtensions)
 
 context(@"mat conversion", ^{
@@ -58,7 +60,7 @@ context(@"mat conversion", ^{
       LTConvertMat(input, &output, CV_32FC4);
 
       cv::Scalar convertedValue(1, 0, 0.5, 1);
-      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output, 1.0/255.0)).to.beTruthy();
     });
 
     it(@"should scale from float to ubyte", ^{
@@ -71,6 +73,31 @@ context(@"mat conversion", ^{
 
       cv::Scalar convertedValue(255, 0, 128, 255);
       expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+    });
+
+    it(@"should convert half-float to float", ^{
+      cv::Vec4hf value(half(0.5), half(-1.0), half(0.5), half(1.0));
+      cv::Mat4hf input(16, 16);
+      input.setTo(value);
+
+      cv::Mat4f output;
+      LTConvertMat(input, &output, CV_32FC4);
+
+      expect(LTFuzzyCompareMatWithValue(cv::Scalar(0.5, -1, 0.5, 1), output)).to.beTruthy();
+    });
+
+    it(@"should convert float to half-float", ^{
+      cv::Vec4f value(0.5, -1.0, 0.5, 1.0);
+      cv::Mat4f input(16, 16);
+      input.setTo(value);
+
+      cv::Mat4hf output;
+      LTConvertMat(input, &output, CV_16FC4);
+
+      cv::Mat4hf expected(input.size());
+      expected.setTo(cv::Vec4hf(half(0.5), half(-1.0), half(0.5), half(1.0)));
+      
+      expect(LTFuzzyCompareMat(expected, output, 1.0/255.0)).to.beTruthy();
     });
   });
 

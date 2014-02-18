@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 #import "SpectaUtility.h"
 
 using half_float::half;
@@ -19,7 +20,8 @@ static NSString * const kMatOutputBasedir = @"/tmp/";
 static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual);
 
 template <typename T>
-static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness);
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness,
+                              cv::Point *firstMismatch);
 
 template <typename T>
 static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
@@ -54,7 +56,7 @@ BOOL LTRunningApplicationTests() {
   return environment[@"XCInjectBundle"] != nil;
 }
 
-BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
+BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, cv::Point *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
     return NO;
@@ -62,66 +64,86 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual) {
 
   switch (expected.type()) {
     case CV_8UC1:
-      return LTCompareMatCells<uchar>(expected, actual, 0);
+      return LTCompareMatCells<uchar>(expected, actual, 0, firstMismatch);
     case CV_8UC2:
-      return LTCompareMatCells<cv::Vec2b>(expected, actual, 0);
+      return LTCompareMatCells<cv::Vec2b>(expected, actual, 0, firstMismatch);
     case CV_8UC4:
-      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0));
+      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0), firstMismatch);
     case CV_16F:
-      return LTCompareMatCells<half>(expected, actual, half(0.f));
+      return LTCompareMatCells<half>(expected, actual, half(0.f), firstMismatch);
     case CV_16FC2:
-      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(0.f), half(0.f)));
+      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(0.f), half(0.f)),
+                                           firstMismatch);
     case CV_16FC4:
       return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(0.f), half(0.f),
-                                                                        half(0.f), half(0.f)));
+                                                                        half(0.f), half(0.f)),
+                                           firstMismatch);
+    case CV_32F:
+      return LTCompareMatCells<float>(expected, actual, 0.f, firstMismatch);
     case CV_32FC4:
-      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(0, 0, 0, 0));
+      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(0, 0, 0, 0), firstMismatch);
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
 }
 
-BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range) {
+BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range,
+                       cv::Point *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
     return NO;
   }
 
-  if (expected.depth() == CV_32F || expected.depth() == CV_16F) {
-    range /= 255.0;
-  }
-
   switch (expected.type()) {
     case CV_8UC1:
-      return LTCompareMatCells<uchar>(expected, actual, range);
+      return LTCompareMatCells<uchar>(expected, actual, range, firstMismatch);
     case CV_8UC2:
-      return LTCompareMatCells<cv::Vec2b>(expected, actual, cv::Vec2b(range, range));
+      return LTCompareMatCells<cv::Vec2b>(expected, actual, cv::Vec2b(range, range), firstMismatch);
     case CV_8UC4:
-      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range));
+      return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(range, range, range, range),
+                                          firstMismatch);
     case CV_16FC1:
-      return LTCompareMatCells<half>(expected, actual, half(range));
+      return LTCompareMatCells<half>(expected, actual, half(range), firstMismatch);
     case CV_16FC2:
-      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(range), half(range)));
+      return LTCompareMatCells<cv::Vec2hf>(expected, actual, cv::Vec2hf(half(range), half(range)),
+                                           firstMismatch);
     case CV_16FC4:
       return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(range), half(range),
-                                                                        half(range), half(range)));
+                                                                        half(range), half(range)),
+                                           firstMismatch);
+    case CV_32F:
+      return LTCompareMatCells<float>(expected, actual, range, firstMismatch);
     case CV_32FC4:
-      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(range, range, range, range));
+      return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(range, range, range, range),
+                                          firstMismatch);
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
 }
 
-BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual) {
+BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
+                           cv::Point *firstMismatch) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
   mat.setTo(expected);
-  return LTCompareMat(mat, actual);
+  return LTCompareMat(mat, actual, firstMismatch);
 }
 
-BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual, double range) {
+BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual, double range,
+                                cv::Point *firstMismatch) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
   mat.setTo(expected);
-  return LTFuzzyCompareMat(mat, actual, range);
+  return LTFuzzyCompareMat(mat, actual, range, firstMismatch);
+}
+
+NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position) {
+  std::stringstream message;
+  message << mat(cv::Rect(position, cv::Size(1, 1)));
+  return [NSString stringWithCString:message.str().c_str() encoding:NSUTF8StringEncoding];
+}
+
+NSString *LTScalarAsString(const cv::Scalar &scalar) {
+  return [NSString stringWithFormat:@"(%g, %g, %g, %g)",
+          scalar[0], scalar[1], scalar[2], scalar[3]];
 }
 
 cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
@@ -206,7 +228,8 @@ static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual)
 }
 
 template <typename T>
-static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness) {
+static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness,
+                              cv::Point *firstMismatch) {
   for (int y = 0; y < expected.rows; ++y) {
     for (int x = 0; x < expected.cols; ++x) {
       T va = expected.at<T>(y, x);
@@ -214,6 +237,9 @@ static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, co
 
       if (!LTCompareMatCell(va, vb, fuzziness, std::is_fundamental<T>())) {
         LTWriteMatrices(expected, actual);
+        if (firstMismatch) {
+          *firstMismatch = cv::Point(x, y);
+        }
         return NO;
       }
     }
@@ -288,6 +314,18 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::Mat bgrMat;
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+    } break;
+    case CV_16FC4: {
+      cv::Mat4b converted;
+      LTConvertHalfFloat<half_float::half, uchar>(mat, &converted, 255);
+      cv::Mat bgrMat;
+      cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+    } break;
+    case CV_32F: {
+      cv::Mat converted;
+      mat.convertTo(converted, CV_8U, 255.0);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
     } break;
     case CV_32FC4: {
       cv::Mat converted;

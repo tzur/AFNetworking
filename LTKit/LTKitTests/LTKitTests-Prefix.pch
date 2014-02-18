@@ -19,4 +19,11 @@ extern "C" {
 
 #ifdef __cplusplus
   #import "LTTestUtils.h"
+
+  #import "EXPMatchers+equalMat.h"
+  #import "EXPMatchers+equalScalar.h"
+  #import "EXPMatchers+beCloseToMat.h"
+  #import "EXPMatchers+beCloseToScalar.h"
+
+  #import "LTEasyBoxing+OpenCVExtensions.h"
 #endif
