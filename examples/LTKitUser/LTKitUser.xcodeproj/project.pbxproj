@@ -29,10 +29,6 @@
 		8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51841868606300821829 /* AVFoundation.framework */; };
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
-		8BAD634B18AA77C100482564 /* source.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD634818AA77C100482564 /* source.jpg */; };
-		8BAD634C18AA77C100482564 /* target.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD634918AA77C100482564 /* target.jpg */; };
-		8BAD634D18AA77C100482564 /* mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD634A18AA77C100482564 /* mask.png */; };
-		8BAD635018AA8B6B00482564 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAD634F18AA8B6B00482564 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,10 +90,6 @@
 		8B8E51841868606300821829 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8B8E51861868607000821829 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8B8E51881868607500821829 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		8BAD634818AA77C100482564 /* source.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = source.jpg; path = "../../../../lightricks-research/enlight/PatchFourier/source.jpg"; sourceTree = "<group>"; };
-		8BAD634918AA77C100482564 /* target.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = target.jpg; path = "../../../../lightricks-research/enlight/PatchFourier/target.jpg"; sourceTree = "<group>"; };
-		8BAD634A18AA77C100482564 /* mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mask.png; path = "../../../../lightricks-research/enlight/PatchFourier/mask.png"; sourceTree = "<group>"; };
-		8BAD634F18AA8B6B00482564 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BAD635018AA8B6B00482564 /* Accelerate.framework in Frameworks */,
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
 				8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */,
@@ -155,7 +146,6 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8BAD634F18AA8B6B00482564 /* Accelerate.framework */,
 				8B8E51881868607500821829 /* CoreMedia.framework */,
 				8B8E51861868607000821829 /* AssetsLibrary.framework */,
 				8B8E51841868606300821829 /* AVFoundation.framework */,
@@ -173,9 +163,6 @@
 		8B8E51331868479100821829 /* LTKitUser */ = {
 			isa = PBXGroup;
 			children = (
-				8BAD634818AA77C100482564 /* source.jpg */,
-				8BAD634918AA77C100482564 /* target.jpg */,
-				8BAD634A18AA77C100482564 /* mask.png */,
 				289884B9188D992000AD338E /* Main-iPad.storyboard */,
 				289884BA188D992000AD338E /* Main-iPhone.storyboard */,
 				8B8E513C1868479100821829 /* LTAppDelegate.h */,
@@ -338,12 +325,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BAD634D18AA77C100482564 /* mask.png in Resources */,
-				8BAD634B18AA77C100482564 /* source.jpg in Resources */,
 				289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */,
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
-				8BAD634C18AA77C100482564 /* target.jpg in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
