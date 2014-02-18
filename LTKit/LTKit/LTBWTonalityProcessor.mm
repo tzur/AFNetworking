@@ -1,14 +1,14 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "BWTonalityProcessor.h"
+#import "LTBWTonalityProcessor.h"
 
 #import "LTBoxFilterProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+BWTonalityFsh.h"
+#import "LTShaderStorage+LTBWTonalityFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
@@ -16,7 +16,7 @@
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
 @end
 
-@implementation BWTonalityProcessor
+@implementation LTBWTonalityProcessor
 
 static const CGFloat kSmoothDownsampleFactor = 6.0;
 
@@ -42,15 +42,15 @@ static const NSInteger kGradientSamplingPoints = 256;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[BWTonalityFsh source]];
+                                                fragmentSource:[LTBWTonalityFsh source]];
   LTTexture *smoothTexture = [self createSmoothTexture:input];
   // Default color gradient.
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
   
   NSDictionary *auxiliaryTextures =
-      @{[BWTonalityFsh smoothTexture] : smoothTexture,
-        [BWTonalityFsh colorGradient] :
-        [identityGradient textureWithSamplingPoints:kGradientSamplingPoints]};
+      @{[LTBWTonalityFsh smoothTexture] : smoothTexture,
+        [LTBWTonalityFsh colorGradient] :
+            [identityGradient textureWithSamplingPoints:kGradientSamplingPoints]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     self.colorFilter = kColorFilterDefault;
@@ -120,7 +120,7 @@ static const NSInteger kGradientSamplingPoints = 256;
   _colorGradient = colorGradient;
   // Update color gradient texture in auxiliary textures.
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[BWTonalityFsh colorGradient]] =
+  auxiliaryTextures[[LTBWTonalityFsh colorGradient]] =
       [colorGradient textureWithSamplingPoints:kGradientSamplingPoints];
   self.auxiliaryTextures = auxiliaryTextures;
 }

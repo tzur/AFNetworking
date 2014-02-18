@@ -5,12 +5,12 @@
 
 @class LTColorGradient;
 
-/// @class BWTonalityProcessor
+/// @class LTBWTonalityProcessor
 ///
 /// Converts RGB image to BW (black and white). Tunes the tonal characteristics of the result.
 /// This class doesn't handle additional content that can be added to the image, such as noise,
 /// texture, vignetting patterns and frames.
-@interface BWTonalityProcessor : LTOneShotImageProcessor
+@interface LTBWTonalityProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture to be converted to BW and the output.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;

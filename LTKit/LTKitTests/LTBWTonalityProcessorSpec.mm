@@ -1,13 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "BWTonalityProcessor.h"
+#import "LTBWTonalityProcessor.h"
 
 #import "LTColorGradient.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(BWTonalityProcessor)
+SpecBegin(LTBWTonalityProcessor)
 
 __block LTTexture *noise;
 __block LTTexture *output;
@@ -33,7 +33,7 @@ afterEach(^{
 
 context(@"properties", ^{
   it(@"should return identity as default color gradient", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
     LTTexture *defaultGradientTexture = [tone.colorGradient textureWithSamplingPoints:256];
@@ -42,49 +42,49 @@ context(@"properties", ^{
   });
   
   it(@"should fail of invalid brightness parameter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.brightness = 2.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail of invalid contrast parameter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.contrast = 10.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail of invalid exposure parameter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.exposure = -1.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail of invalid structure parameter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.structure = -1.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail of negative color filter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.colorFilter = GLKVector3Make(-0.1, 0.1, 1.0);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on black color filter", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.colorFilter = GLKVector3Make(0.0, 0.0, 0.0);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should not fail on correct input", ^{
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:noise output:output];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.brightness = 0.1;
       tone.contrast = 1.2;
@@ -106,8 +106,8 @@ context(@"processing", ^{
     // the sampling point.
     deltaTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:deltaTexture
-                                                                    output:deltaOutput];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
+                                                                        output:deltaOutput];
     LTSingleTextureOutput *processed = [tone process];
     
     expect(LTFuzzyCompareMat(deltaTexture.image, processed.texture.image)).to.beTruthy();
@@ -123,8 +123,8 @@ context(@"processing", ^{
     
     LTTexture *deltaTexture = [LTTexture textureWithImage:greenDelta];
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:deltaTexture
-                                                                    output:deltaOutput];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
+                                                                        output:deltaOutput];
     tone.colorFilter = GLKVector3Make(0.0, 0.0, 1.0);
     LTSingleTextureOutput *processed = [tone process];
 
@@ -153,7 +153,8 @@ context(@"processing", ^{
     
     LTColorGradient *colorGradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
     
-    BWTonalityProcessor *tone = [[BWTonalityProcessor alloc] initWithInput:lena output:lenaOutput];
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
+                                                                        output:lenaOutput];
     tone.exposure = 0.9;
     tone.structure = 1.5;
     tone.brightness = 0.1;
