@@ -17,9 +17,11 @@
 #ifdef LT_ABORT_ON_ASSERTIONS
 #define LTAssert(expression, ...) _LTAssertAbort(expression, __VA_ARGS__)
 #define LTParameterAssert(expression, ...) _LTParameterAssertAbort(expression, __VA_ARGS__)
+#define LTMethodNotImplemented() _LTMethodNotImplementedAbort()
 #else
 #define LTAssert(expression, ...) _LTAssertRaise(expression, __VA_ARGS__)
 #define LTParameterAssert(expression, ...) _LTParameterAssertRaise(expression, __VA_ARGS__)
+#define LTMethodNotImplemented() _LTMethodNotImplementedRaise()
 #endif
 
 #pragma mark -
@@ -40,6 +42,27 @@
 #define _LTParameterAssertRaise(expression, ...) \
   _LTAssertAndRaise(expression, @"Parameter assertion failure: %s in %s on line %s:%d. %@", \
       NSInvalidArgumentException, __VA_ARGS__)
+
+#define _LTMethodNotImplementedMessage() \
+  [NSString stringWithFormat:@"%s is an abstract method and should be implemented in a subclass.", \
+      __PRETTY_FUNCTION__]
+
+#define _LTMethodNotImplementedAbort() \
+  do { \
+    [[LTLogger sharedLogger] logWithFormat:@"%@" file:__FILE__ line:__LINE__ \
+        logLevel:LTLogLevelError, _LTMethodNotImplementedMessage()]; \
+    abort(); \
+    __builtin_unreachable(); \
+  } while (0)
+
+#define _LTMethodNotImplementedRaise() \
+  do { \
+      [[LTLogger sharedLogger] logWithFormat:@"%@" file:__FILE__ line:__LINE__ \
+          logLevel:LTLogLevelError, _LTMethodNotImplementedMessage()]; \
+      [[[NSException alloc] initWithName:NSInternalInconsistencyException \
+          reason:_LTMethodNotImplementedMessage() userInfo:nil] raise]; \
+    __builtin_unreachable(); \
+  } while (0)
 
 #define _LTAssertMessage(EXPRESSION, MESSAGE, ...) \
   [NSString stringWithFormat:MESSAGE, #EXPRESSION, __func__, __FILE__, __LINE__, \

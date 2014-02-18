@@ -5,6 +5,9 @@
 /// CGRect, and the angle, in radians, which the rectangle is rotated (around its center).
 @interface LTRotatedRect : NSObject
 
+/// Returns an unrotated rect (angle is \c 0).
++ (instancetype)rect:(CGRect)rect;
+
 /// Returns a rotated rect with the given angle (in radians).
 + (instancetype)rect:(CGRect)rect withAngle:(CGFloat)angle;
 

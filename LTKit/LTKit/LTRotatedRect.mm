@@ -26,6 +26,10 @@
 #pragma mark Class Methods
 #pragma mark -
 
++ (instancetype)rect:(CGRect)rect {
+  return [[LTRotatedRect alloc] initWithRect:rect angle:0];
+}
+
 + (instancetype)rect:(CGRect)rect withAngle:(CGFloat)angle {
   return [[LTRotatedRect alloc] initWithRect:rect angle:angle];
 }
@@ -61,15 +65,21 @@
 #pragma mark Properties
 #pragma mark -
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"Origin: (%g,%g), Size: (%g,%g), Center: (%g,%g), Angle: %g",
+          self.rect.origin.x, self.rect.origin.y, self.rect.size.width, self.rect.size.height,
+          self.center.x, self.center.y, self.angle];
+}
+
 - (void)updateTransform {
   CGAffineTransform transform = CGAffineTransformIdentity;
   if (self.angle) {
     transform = CGAffineTransformTranslate(transform, self.center.x, self.center.y);
     // In iOS, negative values mean clockwise rotation, while positive values in OSX.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    transform = CGAffineTransformRotate(transform, -self.angle);
-#else
     transform = CGAffineTransformRotate(transform, self.angle);
+#else
+    transform = CGAffineTransformRotate(transform, -self.angle);
 #endif
     transform = CGAffineTransformTranslate(transform, -self.center.x, -self.center.y);
   }

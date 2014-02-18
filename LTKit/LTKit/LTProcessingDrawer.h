@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@class LTFbo, LTProgram, LTTexture;
+@class LTFbo, LTProgram, LTRotatedRect, LTTexture;
 
 /// Protocol for drawers that can be used to process an image using the GPU.
 @protocol LTProcessingDrawer <NSObject>
@@ -30,20 +30,13 @@
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
 
-/// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen
-/// framebuffer with the given size. The rects are defined in the source and target coordinate
-/// systems accordingly, in pixels.
-///
-/// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
-///
-/// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
-/// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
-/// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
-/// bottom left pixel.
-///
-/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
-- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect;
+/// @see \c drawRect:inFramebuffer:fromRect:, but with \c LTRotatedRects as arguments.
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
+        fromRotatedRect:(LTRotatedRect *)sourceRect;
+
+/// @see \c drawRect:inFramebuffer:fromRect:, but with \c NSArray of \c LTRotatedRects as arguments.
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+        fromRotatedRects:(NSArray *)sourceRects;
 
 /// Sets the source texture to the given \c texture. If the texture is equal to the current
 /// configured texture, no action will be done. The given texture cannot be \c nil.
