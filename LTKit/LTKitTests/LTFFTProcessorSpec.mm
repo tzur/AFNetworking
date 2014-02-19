@@ -5,6 +5,44 @@
 
 SpecBegin(LTFFTProcessor)
 
+context(@"initialization", ^{
+  it(@"should raise when initializing with non power of two input", ^{
+    cv::Mat1f real(15, 15);
+    cv::Mat1f imag(15, 15);
+    LTSplitComplexMat input = {.real = real, .imag = imag};
+
+    expect(^{
+      LTSplitComplexMat output;
+      __unused LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input
+                                                                          output:&output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when initializing input with different real and imag size", ^{
+    cv::Mat1f real(16, 16);
+    cv::Mat1f imag(32, 32);
+    LTSplitComplexMat input = {.real = real, .imag = imag};
+
+    expect(^{
+      LTSplitComplexMat output;
+      __unused LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input
+                                                                          output:&output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should initialize with correctly sized inputs", ^{
+    cv::Mat1f real(16, 16);
+    cv::Mat1f imag(16, 16);
+    LTSplitComplexMat input = {.real = real, .imag = imag};
+
+    expect(^{
+      LTSplitComplexMat output;
+      __unused LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input
+                                                                          output:&output];
+    }).toNot.raiseAny();
+  });
+});
+
 context(@"forward transform", ^{
   context(@"real input", ^{
     it(@"should produce correct transform of constant input", ^{
