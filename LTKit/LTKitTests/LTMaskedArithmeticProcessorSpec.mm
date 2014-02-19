@@ -20,10 +20,11 @@ afterEach(^{
 
 context(@"initialization", ^{
   it(@"should raise when initializing with different sized operands", ^{
-    cv::Mat4b image(16, 16);
-    LTTexture *mask = [LTTexture textureWithImage:image];
-    LTTexture *first = [LTTexture textureWithImage:image];
-    LTTexture *second = [LTTexture textureWithImage:image(cv::Rect(0, 0, 10, 10))];
+    cv::Mat4b imageA = cv::Mat4b::zeros(16, 16);
+    cv::Mat4b imageB = cv::Mat4b::zeros(14, 14);
+    LTTexture *mask = [LTTexture textureWithImage:imageA];
+    LTTexture *first = [LTTexture textureWithImage:imageA];
+    LTTexture *second = [LTTexture textureWithImage:imageB];
     LTTexture *output = [LTTexture textureWithPropertiesOf:mask];
 
     expect(^{
@@ -35,10 +36,11 @@ context(@"initialization", ^{
   });
 
   it(@"should raise when initializing with different sized operand and mask", ^{
-    cv::Mat4b image(16, 16);
-    LTTexture *mask = [LTTexture textureWithImage:image(cv::Rect(0, 0, 10, 10))];
-    LTTexture *first = [LTTexture textureWithImage:image];
-    LTTexture *second = [LTTexture textureWithImage:image];
+    cv::Mat4b imageA = cv::Mat4b::zeros(16, 16);
+    cv::Mat4b imageB = cv::Mat4b::zeros(14, 14);
+    LTTexture *mask = [LTTexture textureWithImage:imageB];
+    LTTexture *first = [LTTexture textureWithImage:imageA];
+    LTTexture *second = [LTTexture textureWithImage:imageA];
     LTTexture *output = [LTTexture textureWithPropertiesOf:mask];
 
     expect(^{

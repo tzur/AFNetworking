@@ -180,6 +180,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                     "(%d, %d)", rect.size.width, rect.size.height, image.cols, image.rows);
   LTParameterAssert(image.type() == [self matType], @"Given image has different type than the "
                     "type derived for this texture (%d vs. %d)", image.type(), [self matType]);
+  LTParameterAssert(image.isContinuous(), @"Given image matrix must be continuous");
 
   [self bindAndExecute:^{
     [self writeRect:rect fromImage:image];
