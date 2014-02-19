@@ -48,3 +48,14 @@ it(@"should initialize and set properties", ^{
 });
 
 SpecEnd
+
+SpecBegin(LTSingleMatOutput)
+
+it(@"should initialize and set properties", ^{
+  cv::Mat4b mat(cv::Mat4b::zeros(16, 16));
+  LTSingleMatOutput *output = [[LTSingleMatOutput alloc] initWithMat:mat];
+
+  expect($(output.mat)).to.equalMat($(mat));
+});
+
+SpecEnd

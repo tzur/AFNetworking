@@ -40,3 +40,23 @@
 }
 
 @end
+
+#pragma mark -
+#pragma mark LTSingleMatOutput
+#pragma mark -
+
+@interface LTSingleMatOutput () {
+  cv::Mat _mat;
+}
+@end
+
+@implementation LTSingleMatOutput
+
+- (instancetype)initWithMat:(const cv::Mat &)mat {
+  if (self = [super init]) {
+    _mat = mat;
+  }
+  return self;
+}
+
+@end

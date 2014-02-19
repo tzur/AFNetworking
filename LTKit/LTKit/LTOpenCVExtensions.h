@@ -23,6 +23,11 @@ void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 template <typename _From, typename _To>
 void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1);
 
+/// Returns a shifted version of the given \c mat, such that the zero-frequency component is moved
+/// to the center of the matrix. This is done by swapping the first quadrand with the third and the
+/// second with the fourth. This is done in-place, so the input is affected.
+cv::Mat *LTInPlaceFFTShift(cv::Mat *mat);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -

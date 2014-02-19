@@ -67,3 +67,24 @@ void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
     }
   }
 }
+
+cv::Mat *LTInPlaceFFTShift(cv::Mat *mat) {
+  int rows = mat->rows / 2;
+  int cols = mat->cols / 2;
+
+  cv::Mat q0 = (*mat)(cv::Rect(0, 0, rows, cols));
+  cv::Mat q1 = (*mat)(cv::Rect(rows, 0, rows, cols));
+  cv::Mat q2 = (*mat)(cv::Rect(0, cols, rows, cols));
+  cv::Mat q3 = (*mat)(cv::Rect(rows, cols, rows, cols));
+
+  // Shuffle matrix quarters.
+  cv::Mat1f temp(rows, cols);
+  q0.copyTo(temp);
+  q3.copyTo(q0);
+  temp.copyTo(q3);
+  q1.copyTo(temp);
+  q2.copyTo(q1);
+  temp.copyTo(q2);
+
+  return mat;
+}

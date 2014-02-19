@@ -116,4 +116,15 @@ context(@"mat conversion", ^{
   });
 });
 
+context(@"fft shift", ^{
+  it(@"should shift correctly", ^{
+    cv::Mat1f mat = (cv::Mat1f(2, 2) << 1, 2, 3, 4);
+    LTInPlaceFFTShift(&mat);
+
+    cv::Mat1f expected = (cv::Mat1f(2, 2) << 4, 3, 2, 1);
+
+    expect($(expected)).to.equalMat($(mat));
+  });
+});
+
 SpecEnd

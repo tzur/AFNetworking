@@ -11,7 +11,7 @@
 @interface LTSingleTextureOutput : NSObject <LTImageProcessorOutput>
 
 /// Initializes with a single texture.
-- (instancetype)initWithTexture:(LTTexture *)output;
+- (instancetype)initWithTexture:(LTTexture *)texture;
 
 /// Output texture.
 @property (readonly, nonatomic) LTTexture *texture;
@@ -26,5 +26,16 @@
 
 /// Output textures.
 @property (readonly, nonatomic) NSArray *textures;
+
+@end
+
+/// DTO for output containing a single cv::Mat.
+@interface LTSingleMatOutput : NSObject <LTImageProcessorOutput>
+
+/// Initializes with a mat.
+- (instancetype)initWithMat:(const cv::Mat &)mat;
+
+/// Output mat.
+@property (readonly, nonatomic) const cv::Mat &mat;
 
 @end
