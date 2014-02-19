@@ -167,6 +167,9 @@ context(@"properties", ^{
     expect(view.maxZoomScale).to.equal(16);
     expect(view.doubleTapZoomFactor).to.equal(3);
     expect(view.doubleTapLevels).to.equal(3);
+    expect(view.zoomScale).to.equal(view.navigationView.zoomScale);
+    expect(view.viewForContentCoordinates).to.
+        beIdenticalTo(view.navigationView.viewForContentCoordinates);
   });
   
   it(@"should set contentTransparency", ^{

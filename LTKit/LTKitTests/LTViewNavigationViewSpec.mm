@@ -155,6 +155,10 @@ context(@"properties", ^{
     expect(view.scrollView.panGestureRecognizer.enabled).to.beFalsy();
     expect(view.scrollView.pinchGestureRecognizer.enabled).to.beFalsy();
   });
+  
+  it(@"should return the correct viewForContentCoordinates", ^{
+    expect(view.viewForContentCoordinates).to.beIdenticalTo(view.contentView);
+  });
 });
 
 context(@"delegate", ^{
