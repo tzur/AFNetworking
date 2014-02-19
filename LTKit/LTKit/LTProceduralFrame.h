@@ -3,16 +3,16 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class ProceduralFrame
+/// @class LTProceduralFrame
 ///
 /// Creates a procedural frame. The frame consists of three regions: foreground, background and
 /// transition area. Foreground is shaded with the solid color, background is left untouched by
 /// setting alpha to zero and the transition area is modulated with noise to create a visually
 /// pleasing result. The roundness of the frame corners can be conrolled in the range between
 /// completely straight and very curved connection of the frame's sides.
-@interface ProceduralFrame : LTOneShotImageProcessor
+@interface LTProceduralFrame : LTOneShotImageProcessor
 
-/// Initializes a dual frame processor with a noise and output texture.
+/// Initializes a procedural frame processor with a noise and output texture.
 ///
 /// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
 /// create a very specific visual result and understand well the underlying frame creation process.

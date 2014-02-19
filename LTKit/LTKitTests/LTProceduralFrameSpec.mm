@@ -34,55 +34,55 @@ afterEach(^{
 
 context(@"properties", ^{
   it(@"should fail on invalid width parameter", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.width = -10;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid spread parameter", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.spread = 1000;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid corner parameter", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.corner = -1;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid noise amplitude", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.noiseAmplitude = -1;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid width parameter", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.width = -10;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on negative color", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.color = GLKVector3Make(-0.1, 0.9, 0.2);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should return normalized noise channel mixer property", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     frame.noiseChannelMixer = GLKVector3Make(2.0, 0.0, 0.0);
     expect(frame.noiseChannelMixer == GLKVector3Make(1.0, 0.0, 0.0)).to.beTruthy();
   });
   
   it(@"should not fail on correct input", ^{
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:output];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:output];
     expect(^{
       frame.width = 15.0;
       frame.spread = 25.0;
@@ -97,7 +97,7 @@ context(@"properties", ^{
 context(@"processing", ^{
   it(@"should return round white frame with abrupt transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:frameTexture];
     frame.width = 25;
     frame.spread = 0.0;
     frame.corner = 2;
@@ -107,12 +107,12 @@ context(@"processing", ^{
     
     LTTexture *precomputedFrame =
         [LTTexture textureWithImage:LTLoadMatWithName([self class], @"RoundWhiteFrame.png")];
-    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+    expect($(precomputedFrame.image)).to.beCloseToMat($(frameTexture.image));
   });
   
   it(@"should return straight red frame with abrupt transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:frameTexture];
     frame.width = 25;
     frame.spread = 0.0;
     frame.corner = 0;
@@ -122,12 +122,12 @@ context(@"processing", ^{
     
     LTTexture *precomputedFrame =
         [LTTexture textureWithImage:LTLoadMatWithName([self class], @"StraightRedFrame.png")];
-    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+    expect($(precomputedFrame.image)).to.beCloseToMat($(frameTexture.image));
   });
   
   it(@"should return straight blue frame with abrupt transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 16)];
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:frameTexture];
     frame.width = 25;
     frame.spread = 0.0;
     frame.corner = 0;
@@ -137,12 +137,12 @@ context(@"processing", ^{
     
     LTTexture *precomputedFrame =
         [LTTexture textureWithImage:LTLoadMatWithName([self class], @"StraightBlueFrame.png")];
-    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+    expect($(precomputedFrame.image)).to.beCloseToMat($(frameTexture.image));
   });
   
   it(@"should return rounded black frame with thin transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:noise output:frameTexture];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:noise output:frameTexture];
     frame.width = 10.0;
     frame.spread = 10.0;
     frame.corner = 8;
@@ -152,7 +152,7 @@ context(@"processing", ^{
     
     LTTexture *precomputedFrame =
         [LTTexture textureWithImage:LTLoadMatWithName([self class], @"RoundishBlackFrame.png")];
-    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+    expect($(precomputedFrame.image)).to.beCloseToMat($(frameTexture.image));
   });
   
   it(@"should return straight, black, noisy frame", ^{
@@ -160,7 +160,7 @@ context(@"processing", ^{
     LTTexture *tiledNoise =
         [LTTexture textureWithImage:LTLoadMatWithName([self class], @"TiledNoise.png")];
     
-    ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:tiledNoise output:frameTexture];
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:tiledNoise output:frameTexture];
     frame.width = 0.0;
     frame.spread = 10.0;
     frame.corner = 0.0;
@@ -171,8 +171,10 @@ context(@"processing", ^{
     
     LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMatWithName([self class],
         @"StraightBlackNoisyFrame.png")];
-    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+    expect($(precomputedFrame.image)).to.beCloseToMat($(frameTexture.image));
   });
+  
+  pending(@"should test tiled noise when implemented");
 });
 
 SpecEnd
