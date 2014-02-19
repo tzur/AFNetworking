@@ -27,8 +27,8 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 
 - (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output {
   LTProgram *program =
-  [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                           fragmentSource:[LTNoisyVignettingFsh source]];
+      [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
+                               fragmentSource:[LTNoisyVignettingFsh source]];
   
   NSDictionary *auxiliaryTextures = @{[LTNoisyVignettingFsh noiseTexture]: noise};
   
@@ -55,8 +55,7 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   GLKVector2 distanceShift;
   if (size.width > size.height) {
     distanceShift = GLKVector2Make(1.0 - size.height / size.width, 0.0);
-  }
-  else {
+  } else {
     distanceShift = GLKVector2Make(0.0, 1.0 - size.width / size.height);
   }
   self[@"distanceShift"] = $(distanceShift);

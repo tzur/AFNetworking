@@ -9,7 +9,9 @@ uniform sampler2D sourceTexture;
 uniform sampler2D noiseTexture;
 
 // Vignetting parameters.
-uniform highp float spread; // Value in [0, 1] range. 0 - no transition,  1 - full transition.
+// Value in [0, 1] range. 0 - no transition,  1 - full transition.
+uniform highp float spread;
+// Value in [2, 16] range. 2 - circle, 16 - rounded rect.
 uniform highp float corner;
 uniform highp float noiseAmplitude;
 uniform highp vec3 noiseChannelMixer;
