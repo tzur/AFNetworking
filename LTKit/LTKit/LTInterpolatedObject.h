@@ -20,7 +20,7 @@
 /// of a primitive floating point type.
 ///
 /// @note It is possible to interpolate complex properties (such as \c CGPoint for example) by
-/// creating helper properties for setting and getting their components. See \c LTTouchPoint.
+/// creating helper properties for setting and getting their components. See \c LTPainterPoint.
 - (NSArray *)propertiesToInterpolate;
 
 @end
