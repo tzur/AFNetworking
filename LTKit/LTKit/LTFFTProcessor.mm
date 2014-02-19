@@ -53,6 +53,9 @@
 
     self.input = input;
     self.output = output;
+    _output->real.addref();
+    _output->imag.addref();
+
     self.normalization = LTFFTTransformNormalizeReal | LTFFTTransformNormalizeImag;
   }
   return self;
@@ -62,6 +65,10 @@
   if (!_fftSetup) {
     vDSP_destroy_fftsetup(_fftSetup);
     _fftSetup = nil;
+  }
+  if (_output) {
+    _output->real.release();
+    _output->imag.release();
   }
 }
 
@@ -140,6 +147,7 @@
 }
 
 - (FFTSetup)fftSetup {
+  // TODO:(yaron) initialize this statically, per log2(maximalDimension).
   if (!_fftSetup) {
     int maximalDimension = std::max(self.size.width, self.size.height);
     _fftSetup = vDSP_create_fftsetup(log2(maximalDimension), kFFTRadix2);
