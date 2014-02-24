@@ -186,7 +186,7 @@
 		8BAE3A0D18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0C18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm */; };
 		8BAE3A1018AD025700DA79E1 /* LTBinaryLaplacian.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */; };
 		8BAE3A1118AD025700DA79E1 /* LTBinaryLaplacian.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */; };
-		8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */; };
+		8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessorSpec.mm */; };
 		8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */; };
 		8BAE3A3218AD273500DA79E1 /* LTMaskedArithmetic.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */; };
 		8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */; };
@@ -659,7 +659,7 @@
 		8BAE3A0C18ACFEF700DA79E1 /* LTBinaryLaplacianProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessor.mm; sourceTree = "<group>"; };
 		8BAE3A0E18ACFF6E00DA79E1 /* LTBinaryLaplacian.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.fsh; sourceTree = "<group>"; };
 		8BAE3A0F18ACFF6E00DA79E1 /* LTBinaryLaplacian.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBinaryLaplacian.vsh; sourceTree = "<group>"; };
-		8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessor.mm; sourceTree = "<group>"; };
+		8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBinaryLaplacianProcessorSpec.mm; sourceTree = "<group>"; };
 		8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMaskedArithmeticProcessor.h; sourceTree = "<group>"; };
 		8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMaskedArithmeticProcessor.mm; sourceTree = "<group>"; };
 		8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMaskedArithmetic.fsh; sourceTree = "<group>"; };
@@ -830,7 +830,7 @@
 				8BAE3A9F18B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm */,
 				03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */,
 				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
-				8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm */,
+				8BAE3A1218AD031100DA79E1 /* LTBinaryLaplacianProcessorSpec.mm */,
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
 				8BAE3A8718B3B15A00DA79E1 /* LTColorGradientSpec.mm */,
@@ -1943,7 +1943,7 @@
 				8B3F94A01879B00C00FAA265 /* LTIterativeImageProcessorSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAE3AA018B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm in Sources */,
-				8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessor.mm in Sources */,
+				8BAE3A1318AD031100DA79E1 /* LTBinaryLaplacianProcessorSpec.mm in Sources */,
 				2843B77E18ACBF710044B87A /* LTSingleRectDrawerSpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
