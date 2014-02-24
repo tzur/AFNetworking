@@ -102,9 +102,21 @@ context(@"mat conversion", ^{
   });
 
   context(@"different depth and channels", ^{
-    it(@"should convert depth and number of channels", ^{
+    it(@"should convert depth and number of channels for float", ^{
       cv::Vec4f value(1, 0.5, 0.5, 1);
       cv::Mat4f input(16, 16);
+      input.setTo(value);
+
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_8UC2);
+
+      cv::Scalar convertedValue(255, 128);
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+    });
+
+    it(@"should convert depth and number of channels for half-float", ^{
+      cv::Vec4hf value(half(1), half(0.5), half(0.5), half(1));
+      cv::Mat4hf input(16, 16);
       input.setTo(value);
 
       cv::Mat output;

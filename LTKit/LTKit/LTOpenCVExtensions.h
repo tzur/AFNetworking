@@ -18,8 +18,9 @@
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 
 /// Converts the given \c input mat to an \c output mat with an optional \c alpha scaling. Either \c
-/// input or \c output should be of half-float precision. The \c _From and \c _To template
-/// parameters define the source matrix type and the target matrix type to convert to, accordingly.
+/// input or \c output should be of half-float precision, and they cannot point to the same memory
+/// address. The \c _From and \c _To template parameters define the source matrix type and the
+/// target matrix type to convert to, accordingly.
 template <typename _From, typename _To>
 void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1);
 
@@ -36,6 +37,8 @@ template <typename _From, typename _To>
 void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha) {
   static_assert(cv::DataDepth<_From>::value == CV_16F ||
                 cv::DataDepth<_To>::value == CV_16F, "_From or _To must be of a half-float type");
+
+  LTParameterAssert(input.data != output->data, @"Input and output cannot point to the same data");
 
   output->create(input.size(), CV_MAKETYPE(cv::DataDepth<_To>::value, input.channels()));
   LTAssert(input.isContinuous() && output->isContinuous(), @"input and output matrices must be "
