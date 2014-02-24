@@ -315,9 +315,10 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
+    case CV_16F:
     case CV_16FC4: {
       cv::Mat4b converted;
-      LTConvertHalfFloat<half_float::half, uchar>(mat, &converted, 255);
+      LTConvertMat(mat, &converted, converted.type());
       cv::Mat bgrMat;
       cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
