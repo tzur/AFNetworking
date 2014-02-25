@@ -22,6 +22,7 @@
 @end
 
 @interface LTPatchCompositorProcessor ()
+@property (strong, nonatomic) LTTexture *source;
 @property (strong, nonatomic) LTTexture *target;
 @end
 
@@ -41,9 +42,16 @@
   };
   if (self = [super initWithProgram:program sourceTexture:source
                   auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+    self.source = source;
     self.target = target;
+    [self setDefaultValues];
   }
   return self;
+}
+
+- (void)setDefaultValues {
+  self.sourceRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
+  self.targetRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.target.size)];
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {

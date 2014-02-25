@@ -16,10 +16,12 @@
                       membrane:(LTTexture *)membrane mask:(LTTexture *)mask
                         output:(LTTexture *)output;
 
-/// Region of interest in the source texture, defined in source texture coordinates.
+/// Region of interest in the source texture, defined in source texture coordinates. The default
+/// value is an axis aligned (0, 0, source.width, source.height) rect.
 @property (strong, nonatomic) LTRotatedRect *sourceRect;
 
-/// Region of interest in the target texture, defined in target texture coordinates.
+/// Region of interest in the target texture, defined in target texture coordinates. The default
+/// value is an axis aligned (0, 0, target.width, target.height) rect.
 @property (strong, nonatomic) LTRotatedRect *targetRect;
 
 @end

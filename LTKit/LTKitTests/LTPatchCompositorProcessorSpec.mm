@@ -18,13 +18,21 @@ afterEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should initialize with correcly sized textures", ^{
-    LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *membrane = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *output = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+  __block LTTexture *source;
+  __block LTTexture *target;
+  __block LTTexture *membrane;
+  __block LTTexture *mask;
+  __block LTTexture *output;
 
+  beforeEach(^{
+    source = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+    target = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+    membrane = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+    mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
+  });
+
+  it(@"should initialize with correcly sized textures", ^{
     expect(^{
       __unused LTPatchCompositorProcessor *processor = [[LTPatchCompositorProcessor alloc]
                                                         initWithSource:source target:target
@@ -33,10 +41,6 @@ context(@"initialization", ^{
   });
 
   it(@"should raise if output has different size than target", ^{
-    LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *membrane = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
-    LTTexture *mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:CGSizeMake(8, 8)];
 
     expect(^{
@@ -44,6 +48,20 @@ context(@"initialization", ^{
                                                         initWithSource:source target:target
                                                         membrane:membrane mask:mask output:output];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should have default values after initialization", ^{
+    LTPatchCompositorProcessor *processor = [[LTPatchCompositorProcessor alloc]
+                                             initWithSource:source target:target
+                                             membrane:membrane mask:mask output:output];
+
+    LTRotatedRect *expectedSourceRect = [LTRotatedRect rect:CGRectMake(0, 0, source.size.width,
+                                                                       source.size.height)];
+    LTRotatedRect *expectedTargetRect = [LTRotatedRect rect:CGRectMake(0, 0, target.size.width,
+                                                                       target.size.height)];
+
+    expect(processor.sourceRect).to.equal(expectedSourceRect);
+    expect(processor.targetRect).to.equal(expectedTargetRect);
   });
 });
 
