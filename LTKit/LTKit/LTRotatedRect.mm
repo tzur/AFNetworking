@@ -61,16 +61,6 @@
   return [self initWithRect:CGRectCenteredAt(center, size) angle:angle];
 }
 
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"Origin: (%g,%g), Size: (%g,%g), Center: (%g,%g), Angle: %g",
-          self.rect.origin.x, self.rect.origin.y, self.rect.size.width, self.rect.size.height,
-          self.center.x, self.center.y, self.angle];
-}
-
 - (void)updateTransform {
   CGAffineTransform transform = CGAffineTransformIdentity;
   if (self.angle) {
@@ -94,8 +84,47 @@
   self.v3 = self.transform * CGPointMake(v0.x, v0.y + self.rect.size.height);
 }
 
+#pragma mark -
+#pragma mark Equality
+#pragma mark -
+
+- (BOOL)isEqual:(id)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[LTRotatedRect class]]) {
+    return NO;
+  }
+
+  return [self isEqualToRotatedRect:object];
+}
+
+- (BOOL)isEqualToRotatedRect:(LTRotatedRect *)rect {
+  return CGRectEqualToRect(self.rect, rect.rect) &&
+      self.angle == rect.angle &&
+      self.center == rect.center;
+}
+
+- (NSUInteger)hash {
+  NSUInteger hashCode = CGRectHash(self.rect);
+  hashCode = 31 * hashCode + [@(self.angle) hash];
+  hashCode = 31 * hashCode + CGPointHash(self.center);
+  return hashCode;
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
 - (void)setAngle:(CGFloat)angle {
   _angle = std::fmod(angle, 2 * M_PI);
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"Origin: (%g,%g), Size: (%g,%g), Center: (%g,%g), Angle: %g",
+          self.rect.origin.x, self.rect.origin.y, self.rect.size.width, self.rect.size.height,
+          self.center.x, self.center.y, self.angle];
 }
 
 @end

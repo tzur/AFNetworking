@@ -118,6 +118,11 @@ CG_INLINE CGPoint operator*(const CGAffineTransform &lhs, const CGPoint &rhs) {
   return CGPointApplyAffineTransform(rhs, lhs);
 }
 
+/// Returns a hash code for the given point.
+CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
+  return 31 * [@(point.x) hash] + [@(point.y) hash];
+}
+
 #pragma mark -
 #pragma mark CGSize Operations
 #pragma mark -
@@ -233,6 +238,15 @@ CG_INLINE CGRect CGRectCenteredAt(const CGPoint &center, const CGSize &size) {
 /// Returns the center of the given rect.
 CG_INLINE CGPoint CGRectCenter(const CGRect &rect) {
   return rect.origin + 0.5 * rect.size;
+}
+
+/// Returns a hash code for the given rect.
+CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
+  NSUInteger hashCode = [@(rect.origin.x) hash];
+  hashCode = 31 * hashCode + [@(rect.origin.y) hash];
+  hashCode = 31 * hashCode + [@(rect.size.width) hash];
+  hashCode = 31 * hashCode + [@(rect.size.height) hash];
+  return hashCode;
 }
 
 #pragma mark -
