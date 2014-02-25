@@ -158,6 +158,10 @@
 		8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C68A18699EB100E6F486 /* BlueTransparent.png */; };
 		8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */; };
 		8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */; };
+		8BAAC5C918BB637C00A4B4DA /* LTPatchCompositorProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5C818BB637C00A4B4DA /* LTPatchCompositorProcessor.mm */; };
+		8BAAC5D818BB64C200A4B4DA /* LTPatchCompositor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5D618BB642700A4B4DA /* LTPatchCompositor.fsh */; };
+		8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */; };
+		8BAAC5DC18BB789800A4B4DA /* LTPatchCompositor.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */; };
 		8BAB99C91869DBF600D79554 /* White.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99C81869DBF600D79554 /* White.jpg */; };
 		8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D61869F73400D79554 /* QuadDown.jpg */; };
 		8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */; };
@@ -627,6 +631,11 @@
 		8BA8C68A18699EB100E6F486 /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparent.png; path = Resources/BlueTransparent.png; sourceTree = "<group>"; };
 		8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparentPremultiplied.png; path = Resources/BlueTransparentPremultiplied.png; sourceTree = "<group>"; };
 		8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDrawingContextSpec.mm; sourceTree = "<group>"; };
+		8BAAC5C718BB637C00A4B4DA /* LTPatchCompositorProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchCompositorProcessor.h; sourceTree = "<group>"; };
+		8BAAC5C818BB637C00A4B4DA /* LTPatchCompositorProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchCompositorProcessor.mm; sourceTree = "<group>"; };
+		8BAAC5D618BB642700A4B4DA /* LTPatchCompositor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPatchCompositor.fsh; sourceTree = "<group>"; };
+		8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPatchCompositor.vsh; sourceTree = "<group>"; };
+		8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchCompositorProcessorSpec.mm; sourceTree = "<group>"; };
 		8BAB99C81869DBF600D79554 /* White.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = White.jpg; path = Resources/White.jpg; sourceTree = "<group>"; };
 		8BAB99D61869F73400D79554 /* QuadDown.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDown.jpg; path = Resources/QuadDown.jpg; sourceTree = "<group>"; };
 		8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDownMirrored.jpg; path = Resources/QuadDownMirrored.jpg; sourceTree = "<group>"; };
@@ -820,6 +829,10 @@
 				039C95A11897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.h */,
 				039C95A21897E4A000F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
 				039C95B21897E84300F1E213 /* LTOneShotMultiscaleNoise.fsh */,
+				8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */,
+				8BAAC5D618BB642700A4B4DA /* LTPatchCompositor.fsh */,
+				8BAAC5C718BB637C00A4B4DA /* LTPatchCompositorProcessor.h */,
+				8BAAC5C818BB637C00A4B4DA /* LTPatchCompositorProcessor.mm */,
 				0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */,
 				0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */,
 				0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */,
@@ -845,6 +858,7 @@
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
 				039C95B01897E50700F1E213 /* LTOneShotMultiscaleNoiseProcessor.mm */,
+				8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */,
 				0367A4B118ACF47B00B42E34 /* LTProceduralFrameSpec.mm */,
 			);
 			name = Blocks;
@@ -1866,6 +1880,7 @@
 				8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
+				8BAAC5C918BB637C00A4B4DA /* LTPatchCompositorProcessor.mm in Sources */,
 				288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */,
 				282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */,
 				8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */,
@@ -1878,6 +1893,8 @@
 				03AD29AF18913E9400516D14 /* LTBicubicResizeProcessor.mm in Sources */,
 				8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */,
 				8BABFD5F188C0E9B004163DA /* LTIterativeProcessingStrategy.mm in Sources */,
+				8BAAC5D818BB64C200A4B4DA /* LTPatchCompositor.fsh in Sources */,
+				8BAAC5DC18BB789800A4B4DA /* LTPatchCompositor.vsh in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1945,6 +1962,7 @@
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
+				8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */,
 				03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
