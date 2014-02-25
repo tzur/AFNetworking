@@ -3,8 +3,14 @@
 
 #import "LTFFTConvolutionProcessor.h"
 
+#import <Accelerate/Accelerate.h>
+
 #import "LTFFTProcessor.h"
 #import "LTOpenCVExtensions.h"
+#import "LTSplitComplexMat.h"
+#import "LTSplitComplexMultiplier.h"
+#import "LTSplitComplexTexture.h"
+#import "LTTexture+Factory.h"
 
 @interface LTFFTConvolutionProcessor () {
   cv::Mat1f _first;
@@ -15,8 +21,8 @@
 @property (strong, nonatomic) LTFFTProcessor *firstProcessor;
 @property (strong, nonatomic) LTFFTProcessor *secondProcessor;
 
-@property (nonatomic) LTSplitComplexMat firstOutput;
-@property (nonatomic) LTSplitComplexMat secondOutput;
+@property (nonatomic) LTSplitComplexMat *firstOutput;
+@property (nonatomic) LTSplitComplexMat *secondOutput;
 
 @end
 
@@ -32,7 +38,6 @@
   if (self = [super init]) {
     _first = first;
     _second = second;
-    _second.addref();
     _output = output;
     self.shiftResult = YES;
     [self createProcessors];
@@ -40,39 +45,44 @@
   return self;
 }
 
-- (void)dealloc {
-  _second.release();
+- (instancetype)initWithFirstTransformedOperand:(LTSplitComplexMat *)firstTransformed
+                                  secondOperand:(const cv::Mat1f &)second
+                                         output:(cv::Mat1f *)output {
+  LTParameterAssert(output, @"Given output matrix cannot be nil");
+  LTParameterAssert(firstTransformed.real.size() == second.size() &&
+                    firstTransformed.imag.size() == second.size() &&
+                    second.size() == output->size(),
+                    @"Both operands and output should have the same size");
+
+  if (self = [super init]) {
+    self.firstOutput = firstTransformed;
+    _second = second;
+    _output = output;
+    self.shiftResult = YES;
+    [self createProcessors];
+  }
+  return self;
 }
 
 - (void)createProcessors {
-  self.firstProcessor = [[LTFFTProcessor alloc] initWithRealInput:_first output:&_firstOutput];
-  self.secondProcessor = [[LTFFTProcessor alloc] initWithRealInput:_second output:&_secondOutput];
+  if (!self.firstOutput) {
+    self.firstOutput = [[LTSplitComplexMat alloc] init];
+    self.firstProcessor = [[LTFFTProcessor alloc] initWithRealInput:_first
+                                                             output:self.firstOutput];
+  }
+  self.secondOutput = [[LTSplitComplexMat alloc] init];
+  self.secondProcessor = [[LTFFTProcessor alloc] initWithRealInput:_second
+                                                            output:self.secondOutput];
 }
 
 - (id<LTImageProcessorOutput>)process {
   [self.firstProcessor process];
   [self.secondProcessor process];
 
-  cv::Mat1f real(_first.size());
-  cv::Mat1f imag(_second.size());
+  LTSplitComplexMat *input = [self multiplyTransformedMatrices];
+  LTSplitComplexMat *output = [[LTSplitComplexMat alloc] initWithReal:*_output imag:cv::Mat1f()];
 
-  // Multiply two complex matrices. First output is a + i*b, second is c + i*d.
-  // TODO: (yaron) test the performance of this loop and optimize using NEON or GPU if needed.
-  for (int y = 0; y < _first.rows; ++y) {
-    for (int x = 0; x < _first.cols; ++x) {
-      float a = self.firstOutput.real(y, x);
-      float b = self.firstOutput.imag(y, x);
-      float c = self.secondOutput.real(y, x);
-      float d = self.secondOutput.imag(y, x);
-
-      real(y, x) = a * c - b * d;
-      imag(y, x) = a * d + b * c;
-    }
-  }
-
-  LTSplitComplexMat output = {.real = *_output, .imag = cv::Mat1f()};
-  LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:{.real = real, .imag = imag}
-                                                             output:&output];
+  LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input output:output];
   processor.normalization = LTFFTTransformNormalizeReal;
   processor.transformDirection = LTFFTTransformDirectionInverse;
   [processor process];
@@ -82,6 +92,27 @@
   }
 
   return [[LTSingleMatOutput alloc] initWithMat:*_output];
+}
+
+- (LTSplitComplexMat *)multiplyTransformedMatrices {
+  cv::Mat1f real(_second.size());
+  cv::Mat1f imag(_second.size());
+
+  DSPSplitComplex first = {
+    .realp = (float *)self.firstOutput.real.data,
+    .imagp = (float *)self.firstOutput.imag.data
+  };
+  DSPSplitComplex second = {
+    .realp = (float *)self.secondOutput.real.data,
+    .imagp = (float *)self.secondOutput.imag.data
+  };
+  DSPSplitComplex output = {
+    .realp = (float *)real.data,
+    .imagp = (float *)imag.data
+  };
+  vDSP_zvmul(&first, 1, &second, 1, &output, 1, _second.total(), 1);
+
+  return [[LTSplitComplexMat alloc] initWithReal:real imag:imag];
 }
 
 #pragma mark -
