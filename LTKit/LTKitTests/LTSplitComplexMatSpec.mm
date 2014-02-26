@@ -13,8 +13,8 @@ it(@"should initialize empty matrices", ^{
 });
 
 it(@"should initialize with matrices", ^{
-  cv::Mat1f real(16, 16);
-  cv::Mat1f imag(16, 16);
+  cv::Mat1f real(16, 16, 0.f);
+  cv::Mat1f imag(16, 16, 0.f);
 
   LTSplitComplexMat *splitComplex = [[LTSplitComplexMat alloc] initWithReal:real imag:imag];
 
