@@ -8,8 +8,6 @@
 #import "LTFFTProcessor.h"
 #import "LTOpenCVExtensions.h"
 #import "LTSplitComplexMat.h"
-#import "LTSplitComplexMultiplier.h"
-#import "LTSplitComplexTexture.h"
 #import "LTTexture+Factory.h"
 
 @interface LTFFTConvolutionProcessor () {
