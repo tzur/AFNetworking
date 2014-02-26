@@ -60,3 +60,22 @@
 }
 
 @end
+
+#pragma mark -
+#pragma mark LTSplitComplexMatOutput
+#pragma mark -
+
+@interface LTSplitComplexMatOutput ()
+@property (readwrite, nonatomic) LTSplitComplexMat *splitComplexMat;
+@end
+
+@implementation LTSplitComplexMatOutput
+
+- (instancetype)initWithSplitComplexMat:(LTSplitComplexMat *)splitComplexMat {
+  if (self = [super init]) {
+    self.splitComplexMat = splitComplexMat;
+  }
+  return self;
+}
+
+@end
