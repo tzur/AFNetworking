@@ -39,7 +39,7 @@
 }
 
 + (instancetype)squareWithCenter:(CGPoint)center length:(CGFloat)length angle:(CGFloat)angle {
-  return [[LTRotatedRect alloc] initWithCenter:center size:CGSizeMake(length, length) angle:angle];
+  return [[LTRotatedRect alloc] initWithCenter:center size:CGSizeMakeUniform(length) angle:angle];
 }
 
 #pragma mark -
