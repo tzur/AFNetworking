@@ -182,6 +182,11 @@ CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
 }
 
+/// Returns a uniform size with the given length at each dimension.
+CG_INLINE CGSize CGSizeMakeUniform(const CGFloat &length) {
+  return CGSizeMake(length, length);
+}
+
 namespace std {
 
 /// Returns the smaller component.
