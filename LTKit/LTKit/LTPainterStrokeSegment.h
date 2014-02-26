@@ -19,7 +19,7 @@
                    distanceFromStart:(CGFloat)distance
              andInterpolationRoutine:(LTInterpolationRoutine *)routine;
 
-/// Returns a list of points on the segment
+/// Returns a list of points on the segment.
 - (NSArray *)pointsWithInterval:(CGFloat)distance startingAtOffset:(CGFloat)offset;
 
 /// Index of the segment in the stroke.

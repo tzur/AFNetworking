@@ -47,13 +47,14 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
     self.routine = routine;
     self.startPoint = [routine valueAtKey:0];
     self.endPoint = [routine valueAtKey:1];
-    self.distances = [self esimtateLengthOfSemgntUsingSamples:kNumSamplesForLengthEstimation];
+    self.distances = [self esimtateLengthWithNumberOfSamples:kNumSamplesForLengthEstimation];
     self.length = [self.distances.lastObject doubleValue];
   }
   return self;
 }
 
-- (NSArray *)esimtateLengthOfSemgntUsingSamples:(NSUInteger)count {
+- (NSArray *)esimtateLengthWithNumberOfSamples:(NSUInteger)count {
+  LTParameterAssert(count > 1);
   CGFloat length = 0;
   CGFloat step = 1.0 / count;
   CGPoint previousPoint = self.startPoint.contentPosition;
@@ -79,8 +80,12 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
     if (idx || !offset) {
       CGFloat distance = [obj doubleValue];
       if (distance >= nextDistance) {
-        CGFloat key =
-            (idx > 0) ? idx - 1 + ((nextDistance - prevDistance) / (distance - prevDistance)) : 0;
+        // Approximate (using linear interpolation) the key offset between the current sample and
+        // the previous one, unless we're dealing with the first sample and there's no offset.
+        CGFloat key = 0;
+        if (idx > 0) {
+          key = idx - 1 + ((nextDistance - prevDistance) / (distance - prevDistance));
+        }
         LTPainterPoint *point = [self.routine valueAtKey:MIN(1, key / self.distances.count)];
         point.distanceFromStart = self.distanceFromStart + nextDistance;
         [points addObject:point];

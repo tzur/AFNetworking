@@ -3,7 +3,7 @@
 
 #import "LTInterpolationRoutine.h"
 
-/// Implementation of a degenerate interpolation routine, accepting a single keyframes and returning
+/// Implementation of a degenerate interpolation routine, accepting a single keyframe and returning
 /// it througout the interval.
 @interface LTDegenerateInterpolationRoutine : LTInterpolationRoutine
 @end
