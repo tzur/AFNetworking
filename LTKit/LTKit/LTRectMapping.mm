@@ -36,10 +36,8 @@ GLKMatrix4 LTMatrix4ForRect(CGRect rect) {
 #pragma mark -
 
 GLKMatrix3 LTTextureMatrix3ForRotatedRect(LTRotatedRect *rotatedRect, CGSize textureSize) {
-  LTRotatedRect *normalizedRect = [LTRotatedRect rectWithCenter:rotatedRect.center / textureSize
-                                                           size:rotatedRect.rect.size / textureSize
-                                                          angle:rotatedRect.angle];
-  return LTMatrix3ForRotatedRect(normalizedRect);
+  GLKMatrix3 scale = GLKMatrix3MakeScale(1 / textureSize.width, 1 / textureSize.height, 1);
+  return GLKMatrix3Multiply(scale, LTMatrix3ForRotatedRect(rotatedRect));
 }
 
 GLKMatrix3 LTMatrix3ForRotatedRect(LTRotatedRect *rotatedRect) {
