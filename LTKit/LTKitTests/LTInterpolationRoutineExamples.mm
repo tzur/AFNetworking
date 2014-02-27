@@ -126,6 +126,15 @@ sharedExamplesFor(kLTInterpolationRoutineFactoryExamples, ^(NSDictionary *data) 
     LTInterpolationRoutine *routine = [factory routineWithKeyFrames:keyFrames];
     expect([factory expectedKeyFrames]).to.equal([[routine class] expectedKeyFrames]);
   });
+  
+  it(@"range of interval in window should match the instance's range", ^{
+    NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
+    LTInterpolationRoutine *routine = [factory routineWithKeyFrames:keyFrames];
+    NSRange factoryRange = [factory rangeOfIntervalInWindow];
+    NSRange instanceRange = [[routine class] rangeOfIntervalInWindow];
+    expect(factoryRange.location).to.equal(instanceRange.location);
+    expect(factoryRange.length).to.equal(instanceRange.length);
+  });
 });
 
 sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
@@ -179,7 +188,7 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
     });
 
     it(@"should return the correct range of the interval window", ^{
-      NSRange range = [routine rangeOfIntervalInWindow];
+      NSRange range = [[routine class] rangeOfIntervalInWindow];
       expect(range.location).to.beInTheRangeOf(0, expectedKeyFrames);
       expect(range.location + range.length).to.beInTheRangeOf(0, expectedKeyFrames);
     });

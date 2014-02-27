@@ -14,6 +14,11 @@
 /// type of interpolation they implement.
 + (NSUInteger)expectedKeyFrames;
 
+/// Returns the range (in the input keyframes array) of the interval interpolated by the keys [0,1].
+///
+/// @note Subclasses must implement this method and return the appropriate range.
++ (NSRange)rangeOfIntervalInWindow;
+
 /// Initializes the interpolation routine with the given keyframes, validating the count and type of
 /// keyframes provided (all of the same class, and conform to the \c LTInterpolatedObject protocol).
 - (instancetype)initWithKeyFrames:(NSArray *)keyFrames;
@@ -35,11 +40,6 @@
 /// all of them are of the same type and conform to the \c LTInterpolatedObject protocol.
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames;
 
-/// Returns the range (in the input keyframes array) of the interval interpolated by the keys [0,1].
-///
-/// @note Subclasses must implement this method and return the appropriate range.
-- (NSRange)rangeOfIntervalInWindow;
-
 @end
 
 /// Abstract factory for \c LTInterpolationRoutine subclasses.
@@ -50,5 +50,8 @@
 
 /// Returns the expected number of key frames for the interpolation routine created by the factory.
 - (NSUInteger)expectedKeyFrames;
+
+/// Returns the range (in the input keyframes array) of the interval interpolated by the keys [0,1].
+- (NSRange)rangeOfIntervalInWindow;
 
 @end
