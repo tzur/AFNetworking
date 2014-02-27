@@ -50,6 +50,7 @@
 		03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
+		280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */; };
 		280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B14BF18B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm */; };
 		280B3D9418BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B3D9318BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
@@ -81,6 +82,7 @@
 		284ED12E1895667500414A8A /* LTInterpolationRoutineExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */; };
 		284ED1301895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */; };
 		287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705A618BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm */; };
+		287705B518BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705B418BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm */; };
 		287705B818BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705B718BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm */; };
 		287705BB18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705BA18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm */; };
 		288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB3F718351FFE00A11FA4 /* LTFbo.mm */; };
@@ -475,6 +477,8 @@
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
 		280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPointSpec.mm; sourceTree = "<group>"; };
+		280B14BC18B3C9AE0091B3D7 /* LTPainterStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterStroke.h; sourceTree = "<group>"; };
+		280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStroke.mm; sourceTree = "<group>"; };
 		280B14BE18B3C9AE0091B3D7 /* LTPainterStrokeSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterStrokeSegment.h; sourceTree = "<group>"; };
 		280B14BF18B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStrokeSegment.mm; sourceTree = "<group>"; };
 		280B3D9318BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDegenerateInterpolationRoutineSpec.mm; sourceTree = "<group>"; };
@@ -532,6 +536,7 @@
 		284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolationRoutineSpec.mm; sourceTree = "<group>"; };
 		284ED131189568AC00414A8A /* LTInterpolationRoutineExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolationRoutineExamples.h; sourceTree = "<group>"; };
 		287705A618BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStrokeSegmentSpec.mm; sourceTree = "<group>"; };
+		287705B418BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStrokeSpec.mm; sourceTree = "<group>"; };
 		287705B618BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDegenerateInterpolationRoutine.h; sourceTree = "<group>"; };
 		287705B718BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDegenerateInterpolationRoutine.mm; sourceTree = "<group>"; };
 		287705B918BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
@@ -966,6 +971,7 @@
 				28C61BFA18B23D200036D66E /* Touch Collector */,
 				280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */,
 				287705A618BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm */,
+				287705B418BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm */,
 			);
 			name = Painting;
 			sourceTree = "<group>";
@@ -989,6 +995,8 @@
 				28C61BF918B23CFC0036D66E /* Touch Collector */,
 				28C61BEA18B23CD10036D66E /* LTPainterPoint.h */,
 				28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */,
+				280B14BC18B3C9AE0091B3D7 /* LTPainterStroke.h */,
+				280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */,
 				280B14BE18B3C9AE0091B3D7 /* LTPainterStrokeSegment.h */,
 				280B14BF18B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm */,
 			);
@@ -1882,6 +1890,7 @@
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
+				280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */,
 				8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */,
 				8BABFD5C188BFA6B004163DA /* LTGPUImageProcessor.mm in Sources */,
 				8BC465B6189948360094F7BC /* LTOperationsExecutor.mm in Sources */,
@@ -1991,6 +2000,7 @@
 				282CF092187B034200904F07 /* LTViewSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
+				287705B518BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm in Sources */,
 				28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */,
