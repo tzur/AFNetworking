@@ -56,6 +56,15 @@ BOOL LTRunningApplicationTests() {
   return environment[@"XCInjectBundle"] != nil;
 }
 
+cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
+  angle = angle * (-180 / M_PI);
+  cv::Point2f center((input.cols / 2.0) - 0.5, (input.rows / 2.0) - 0.5);
+  cv::Mat R = cv::getRotationMatrix2D(center, angle, 1.0);
+  cv::Mat rotated;
+  cv::warpAffine(input, rotated, R, input.size(), cv::INTER_NEAREST, cv::BORDER_REPLICATE);
+  return rotated;
+}
+
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, cv::Point *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
