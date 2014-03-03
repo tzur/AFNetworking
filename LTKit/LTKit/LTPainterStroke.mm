@@ -51,7 +51,8 @@
   // Use the default factory, but fall back to a linear interpolation factory in case there aren't
   // enough control points.
   id<LTInterpolationRoutineFactory> factory = self.factory;
-  if (self.controlPoints.count < factory.expectedKeyFrames - [factory rangeOfIntervalInWindow].location) {
+  if (self.controlPoints.count < factory.expectedKeyFrames -
+                                 [factory rangeOfIntervalInWindow].location) {
     factory = [[LTLinearInterpolationRoutineFactory alloc] init];
   } else if (self.controlPoints.count < factory.expectedKeyFrames) {
     return nil;
@@ -100,7 +101,7 @@
 }
 
 - (NSArray *)segments {
-  return self.mutableSegments;
+  return [self.mutableSegments copy];
 }
 
 @end
