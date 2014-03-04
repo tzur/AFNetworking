@@ -170,6 +170,8 @@
 		8BAAC5D818BB64C200A4B4DA /* LTPatchCompositor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5D618BB642700A4B4DA /* LTPatchCompositor.fsh */; };
 		8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */; };
 		8BAAC5DC18BB789800A4B4DA /* LTPatchCompositor.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */; };
+		8BAB7C3418C4BEBD005BE12A /* LTMathUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB7C3318C4BEBD005BE12A /* LTMathUtils.mm */; };
+		8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB7C5118C60065005BE12A /* LTMathUtilsSpec.mm */; };
 		8BAB99C91869DBF600D79554 /* White.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99C81869DBF600D79554 /* White.jpg */; };
 		8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D61869F73400D79554 /* QuadDown.jpg */; };
 		8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */; };
@@ -660,6 +662,9 @@
 		8BAAC5D618BB642700A4B4DA /* LTPatchCompositor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPatchCompositor.fsh; sourceTree = "<group>"; };
 		8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPatchCompositor.vsh; sourceTree = "<group>"; };
 		8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchCompositorProcessorSpec.mm; sourceTree = "<group>"; };
+		8BAB7C3218C4BEBD005BE12A /* LTMathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMathUtils.h; sourceTree = "<group>"; };
+		8BAB7C3318C4BEBD005BE12A /* LTMathUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMathUtils.mm; sourceTree = "<group>"; };
+		8BAB7C5118C60065005BE12A /* LTMathUtilsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMathUtilsSpec.mm; sourceTree = "<group>"; };
 		8BAB99C81869DBF600D79554 /* White.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = White.jpg; path = Resources/White.jpg; sourceTree = "<group>"; };
 		8BAB99D61869F73400D79554 /* QuadDown.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDown.jpg; path = Resources/QuadDown.jpg; sourceTree = "<group>"; };
 		8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = QuadDownMirrored.jpg; path = Resources/QuadDownMirrored.jpg; sourceTree = "<group>"; };
@@ -1116,6 +1121,8 @@
 				8B3DEC1018296D2200EA0C1A /* LTLogger.m */,
 				8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */,
 				8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */,
+				8BAB7C3218C4BEBD005BE12A /* LTMathUtils.h */,
+				8BAB7C3318C4BEBD005BE12A /* LTMathUtils.mm */,
 				28EA156518B9E217003C00BF /* LTPropertyMacros.h */,
 				2843B6F618A7E1050044B87A /* LTRotatedRect.h */,
 				2843B6F718A7E1050044B87A /* LTRotatedRect.mm */,
@@ -1227,6 +1234,7 @@
 				8B9D3FDF189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm */,
 				8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.m */,
+				8BAB7C5118C60065005BE12A /* LTMathUtilsSpec.mm */,
 				8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */,
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */,
@@ -1869,6 +1877,7 @@
 				28C61C0218B23D430036D66E /* LTTouchCollectorFilter.mm in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
 				8BB14D8318BF490700701A1B /* LTPatchKernel.mm in Sources */,
+				8BAB7C3418C4BEBD005BE12A /* LTMathUtils.mm in Sources */,
 				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
 				8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */,
 				03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */,
@@ -2015,6 +2024,7 @@
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
+				8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */,
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
 				0367A4B218ACF47B00B42E34 /* LTProceduralFrameSpec.mm in Sources */,
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
