@@ -321,6 +321,9 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// inside this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveParameters:(LTVoidBlock)execute;
 
+/// Clears the texture with the given \c color.
+- (void)clearWithColor:(GLKVector4)color;
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -

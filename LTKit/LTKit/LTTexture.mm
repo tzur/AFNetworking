@@ -5,6 +5,7 @@
 
 #import "LTBoundaryCondition.h"
 #import "LTDevice.h"
+#import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTImage.h"
 #import "LTMathUtils.h"
@@ -443,6 +444,11 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   LTTextureParameters *parameters = [self currentParameters];
   execute();
   [self setCurrentParameters:parameters];
+}
+
+- (void)clearWithColor:(GLKVector4)color {
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
+  [fbo clearWithColor:color];
 }
 
 #pragma mark -
