@@ -4,6 +4,7 @@
 #import "LTTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLException.h"
@@ -167,6 +168,8 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   if (self = [super init]) {
     LTParameterAssert([self formatSupported:format],
                       @"Given texture format %d is not supported in this system", format);
+    LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
+                      size.width, size.height);
 
     _precision = precision;
     _format = format;

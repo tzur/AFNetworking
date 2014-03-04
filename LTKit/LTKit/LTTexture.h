@@ -116,7 +116,7 @@ namespace cv {
 /// Creates an empty texture on the GPU.  Throws \c LTGLException with \c
 /// kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
-/// @param size size of the texture.
+/// @param size size of the texture. Must be integral.
 /// @param precision precision of the texture.
 /// @param format format the texture is stored in the GPU with. The format must be supported on the
 /// target platform, or an \c NSInvalidArguemntException will be thrown.

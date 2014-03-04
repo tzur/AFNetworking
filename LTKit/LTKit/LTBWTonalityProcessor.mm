@@ -66,8 +66,9 @@ static const NSInteger kGradientSamplingPoints = 256;
 - (LTTexture *)createSmoothTexture:(LTTexture *)input {
   CGFloat width = MAX(1.0, input.size.width / kSmoothDownsampleFactor);
   CGFloat height = MAX(1.0, input.size.height / kSmoothDownsampleFactor);
-  
-  LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
+
+  CGSize size = std::floor(CGSizeMake(width, height));
+  LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:size];
   
   LTBoxFilterProcessor *smoother = [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[smoothTexture]];
   smoother.iterationsPerOutput = @[@3];
