@@ -7,6 +7,7 @@
 #import "LTDevice.h"
 #import "LTGLException.h"
 #import "LTImage.h"
+#import "LTMathUtils.h"
 
 LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
   switch (CV_MAT_DEPTH(type)) {
@@ -475,13 +476,6 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   return CGRectContainsRect(texture, rect);
 }
 
-- (BOOL)isPowerOfTwo:(CGSize)size {
-  int width = size.width;
-  int height = size.height;
-  
-  return !((width & (width - 1)) || (height & (height - 1)));
-}
-
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
@@ -526,7 +520,7 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   }
   
   // When changing the mode to repeat, make sure the texture is POT.
-  if (wrap == LTTextureWrapRepeat && ![self isPowerOfTwo:self.size]) {
+  if (wrap == LTTextureWrapRepeat && !LTIsPowerOfTwo(self.size)) {
     LogWarning(@"Trying to change texture wrap method to repeat for NPOT texture");
     return;
   }
