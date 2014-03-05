@@ -98,4 +98,10 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
   return points;
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"Segment from (%g,%g) to (%g,%g): method: %@",
+          self.startPoint.contentPosition.x, self.startPoint.contentPosition.y,
+          self.endPoint.contentPosition.x, self.endPoint.contentPosition.y, [self.routine class]];
+}
+
 @end

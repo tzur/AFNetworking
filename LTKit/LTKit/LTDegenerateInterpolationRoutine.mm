@@ -21,12 +21,12 @@
 }
 
 
-- (NSRange)rangeOfIntervalInWindow {
-  return NSMakeRange(0, 1);
-}
-
 + (NSUInteger)expectedKeyFrames {
   return 1;
+}
+
++ (NSRange)rangeOfIntervalInWindow {
+  return NSMakeRange(0, 1);
 }
 
 @end
@@ -39,6 +39,10 @@
 
 - (NSUInteger)expectedKeyFrames {
   return [LTDegenerateInterpolationRoutine expectedKeyFrames];
+}
+
+- (NSRange)rangeOfIntervalInWindow {
+  return [LTDegenerateInterpolationRoutine rangeOfIntervalInWindow];
 }
 
 @end

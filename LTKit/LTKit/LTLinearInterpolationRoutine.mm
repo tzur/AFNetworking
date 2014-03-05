@@ -20,12 +20,12 @@
   return coefficients;
 }
 
-- (NSRange)rangeOfIntervalInWindow {
-  return NSMakeRange(0, 2);
-}
-
 + (NSUInteger)expectedKeyFrames {
   return 2;
+}
+
++ (NSRange)rangeOfIntervalInWindow {
+  return NSMakeRange(0, 2);
 }
 
 @end
@@ -38,6 +38,10 @@
 
 - (NSUInteger)expectedKeyFrames {
   return [LTLinearInterpolationRoutine expectedKeyFrames];
+}
+
+- (NSRange)rangeOfIntervalInWindow {
+  return [LTLinearInterpolationRoutine rangeOfIntervalInWindow];
 }
 
 @end
