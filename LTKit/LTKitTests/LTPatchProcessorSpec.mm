@@ -154,6 +154,9 @@ context(@"processing", ^{
       (*mapped)(maskROI).setTo(cv::Vec4b(255, 0, 0, 255));
     }];
 
+    mask.minFilterInterpolation = LTTextureInterpolationNearest;
+    mask.magFilterInterpolation = LTTextureInterpolationNearest;
+
     [processor maskUpdated];
     LTSingleTextureOutput *result = [processor process];
 
