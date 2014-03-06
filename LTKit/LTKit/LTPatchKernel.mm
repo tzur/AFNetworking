@@ -11,7 +11,7 @@ cv::Mat1f LTPatchKernelCreate(const cv::Size &size) {
     for (int x = 0; x < size.width; ++x) {
       cv::Point2f current(x, y);
       float distanceToCenter = cv::norm(center - current);
-      float value = 1.f / std::powf(distanceToCenter + 0.1f, 3.f);
+      float value = 1.f / std::powf(distanceToCenter + 0.1f, 2.5f);
       kernel(y, x) = value;
     }
   }
