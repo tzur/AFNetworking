@@ -3,6 +3,8 @@
 
 #import "../../third_party/utils/half/half.hpp"
 
+#import <opencv2/core/core.hpp>
+
 /// Support for half-float matrices and vectors for OpenCV.
 
 /// @important currently supported operations are:

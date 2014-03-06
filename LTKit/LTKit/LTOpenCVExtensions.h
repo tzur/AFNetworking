@@ -3,6 +3,8 @@
 
 #import <opencv2/core/core.hpp>
 
+#import "LTCVHalfFloatExtension.h"
+
 /// Converts the given \c input mat to a \c mat with the given \c type, and writes the result to
 /// \c type. The \c output matrix will be created with the corresponding type.
 ///

@@ -1,6 +1,11 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#ifdef __cplusplus
+  #import <algorithm>
+  #import <cmath>
+#endif
+
 /// The "empty" point. This is the point returned when, for example, we intersect parallel lines.
 ///
 /// @note the null point is not the same as the zero point, and that the null point will never be

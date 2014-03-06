@@ -2145,7 +2145,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
-					"$(SRCROOT)../third_party/utils/half",
+					"$(SRCROOT)/../third_party/utils/half",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
@@ -2193,7 +2193,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
-					"$(SRCROOT)../third_party/utils/half",
+					"$(SRCROOT)/../third_party/utils/half",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
@@ -2331,6 +2331,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
+					"$(SRCROOT)/../third_party/utils/half",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
