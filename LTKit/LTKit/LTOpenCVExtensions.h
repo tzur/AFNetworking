@@ -41,13 +41,21 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha) {
   LTParameterAssert(input.data != output->data, @"Input and output cannot point to the same data");
 
   output->create(input.size(), CV_MAKETYPE(cv::DataDepth<_To>::value, input.channels()));
-  LTAssert(input.isContinuous() && output->isContinuous(), @"input and output matrices must be "
-           "continuous for this conversion operation");
+
+  cv::Size size(input.size());
+  if (input.isContinuous() && output->isContinuous()) {
+    size.width *= size.height;
+    size.height = 1;
+  }
+  size.width *= input.channels();
 
   // TODO:(yaron) performance can be increased by doing this in batch.
-  _From *inputData = (_From *)input.data;
-  _To *outputData = (_To *)output->data;
-  for (size_t i = 0; i < input.total() * input.channels(); ++i) {
-    outputData[i] = cv::saturate_cast<_To>(half_float::half(inputData[i]) * alpha);
+  for (int i = 0; i < size.height; ++i) {
+    const _From *inputPtr = input.ptr<_From>(i);
+    _To *outputPtr = output->ptr<_To>(i);
+
+    for (int j = 0; j < size.width; ++j) {
+      outputPtr[j] = cv::saturate_cast<_To>(half_float::half(inputPtr[j]) * alpha);
+    }
   }
 }

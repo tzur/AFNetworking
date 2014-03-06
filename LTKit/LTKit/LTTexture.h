@@ -116,7 +116,7 @@ namespace cv {
 /// Creates an empty texture on the GPU.  Throws \c LTGLException with \c
 /// kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
-/// @param size size of the texture.
+/// @param size size of the texture. Must be integral.
 /// @param precision precision of the texture.
 /// @param format format the texture is stored in the GPU with. The format must be supported on the
 /// target platform, or an \c NSInvalidArguemntException will be thrown.
@@ -320,6 +320,9 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// \c minFilterInterpolation, \c magFilterInterpolation, and \c wrap). Any change to the parameters
 /// inside this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveParameters:(LTVoidBlock)execute;
+
+/// Clears the texture with the given \c color.
+- (void)clearWithColor:(GLKVector4)color;
 
 #pragma mark -
 #pragma mark Properties

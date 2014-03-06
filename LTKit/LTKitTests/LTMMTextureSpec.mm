@@ -4,6 +4,7 @@
 #import "LTMMTexture.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
@@ -40,12 +41,12 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
 SpecBegin(LTMMTexture)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTMMTexture class]});

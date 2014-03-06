@@ -4,9 +4,12 @@
 #import "LTTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTCGExtensions.h"
 #import "LTDevice.h"
+#import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTImage.h"
+#import "LTMathUtils.h"
 
 LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
   switch (CV_MAT_DEPTH(type)) {
@@ -165,6 +168,8 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   if (self = [super init]) {
     LTParameterAssert([self formatSupported:format],
                       @"Given texture format %d is not supported in this system", format);
+    LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
+                      size.width, size.height);
 
     _precision = precision;
     _format = format;
@@ -444,6 +449,11 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   [self setCurrentParameters:parameters];
 }
 
+- (void)clearWithColor:(GLKVector4)color {
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
+  [fbo clearWithColor:color];
+}
+
 #pragma mark -
 #pragma mark Storing and fetching internal parameters
 #pragma mark -
@@ -473,13 +483,6 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
 - (BOOL)inTextureRect:(CGRect)rect {
   CGRect texture = CGRectMake(0, 0, self.size.width, self.size.height);
   return CGRectContainsRect(texture, rect);
-}
-
-- (BOOL)isPowerOfTwo:(CGSize)size {
-  int width = size.width;
-  int height = size.height;
-  
-  return !((width & (width - 1)) || (height & (height - 1)));
 }
 
 #pragma mark -
@@ -526,7 +529,7 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   }
   
   // When changing the mode to repeat, make sure the texture is POT.
-  if (wrap == LTTextureWrapRepeat && ![self isPowerOfTwo:self.size]) {
+  if (wrap == LTTextureWrapRepeat && !LTIsPowerOfTwo(self.size)) {
     LogWarning(@"Trying to change texture wrap method to repeat for NPOT texture");
     return;
   }

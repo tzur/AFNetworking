@@ -7,6 +7,7 @@
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLException.h"
+#import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
@@ -21,7 +22,6 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 @interface LTTexture ()
 
 - (BOOL)inTextureRect:(CGRect)rect;
-- (BOOL)isPowerOfTwo:(CGSize)size;
 
 @property (readonly, nonatomic) int matType;
 
@@ -56,11 +56,11 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTParameterAssert(images.size(), @"Images vector must contain at least one image");
 
   CGSize currentLevelSize = LTCGSizeOfMat(images[0]);
-  LTParameterAssert([self isPowerOfTwo:currentLevelSize], @"Base image must be a power of two");
+  LTParameterAssert(LTIsPowerOfTwo(currentLevelSize), @"Base image must be a power of two");
 
   for (Matrices::size_type i = 1; i < images.size(); ++i) {
-    LTParameterAssert(images[i].type() == images[0].type(), @"Image type for level %lu (%d) doesn't "
-                      "match base level type (%d)", i, images[i].type(), self.matType);
+    LTParameterAssert(images[i].type() == images[0].type(), @"Image type for level %lu (%d) "
+                      "doesn't match base level type (%d)", i, images[i].type(), self.matType);
 
     CGSize previousLevelSize = currentLevelSize;
     currentLevelSize = LTCGSizeOfMat(images[i]);
