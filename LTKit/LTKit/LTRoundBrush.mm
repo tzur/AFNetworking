@@ -4,15 +4,12 @@
 #import "LTRoundBrush.h"
 
 #import "LTGLKitExtensions.h"
+#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
-
-#import "LTGLTexture.h"
-
-#import "LTFbo.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;

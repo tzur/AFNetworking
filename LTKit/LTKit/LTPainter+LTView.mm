@@ -145,45 +145,40 @@
 }
 
 #pragma mark -
-#pragma mark - Category Properties
+#pragma mark Category Properties
 #pragma mark -
 
-static const void *_delegateKey = &_delegateKey;
-static const void *_currentStrokeKey = &_currentStrokeKey;
-static const void *_lastDrawnPointKey = &_lastDrawnPointKey;
-static const void *_kTouchCollectorKey = &_kTouchCollectorKey;
-
 - (id<LTPainterDelegate>)delegate {
-  return objc_getAssociatedObject(self, _delegateKey);
+  return objc_getAssociatedObject(self, @selector(delegate));
 }
 
 - (void)setDelegate:(id<LTPainterDelegate>)delegate {
-  objc_setAssociatedObject(self, _delegateKey, delegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  objc_setAssociatedObject(self, @selector(delegate), delegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (LTPainterPoint *)lastDrawnPoint {
-  return objc_getAssociatedObject(self, _lastDrawnPointKey);
+  return objc_getAssociatedObject(self, @selector(lastDrawnPoint));
 }
 
 - (void)setLastDrawnPoint:(LTPainterPoint *)lastDrawnPoint {
-  objc_setAssociatedObject(self, _lastDrawnPointKey, lastDrawnPoint,
+  objc_setAssociatedObject(self, @selector(lastDrawnPoint), lastDrawnPoint,
                            OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (LTPainterStroke *)currentStroke {
-  return objc_getAssociatedObject(self, _currentStrokeKey);
+  return objc_getAssociatedObject(self, @selector(currentStroke));
 }
 
 - (void)setCurrentStroke:(LTPainterStroke *)currentStroke {
-  objc_setAssociatedObject(self, _currentStrokeKey, currentStroke,
+  objc_setAssociatedObject(self, @selector(currentStroke), currentStroke,
                            OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (LTTouchCollector *)touchCollector {
-  LTTouchCollector *touchCollector = objc_getAssociatedObject(self, _kTouchCollectorKey);
+  LTTouchCollector *touchCollector = objc_getAssociatedObject(self, @selector(touchCollector));
   if (!touchCollector) {
     touchCollector = [self createTouchCollector];
-    objc_setAssociatedObject(self, _kTouchCollectorKey, touchCollector,
+    objc_setAssociatedObject(self, @selector(touchCollector), touchCollector,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
   return touchCollector;
