@@ -38,13 +38,13 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (instancetype)init {
   if (self = [super init]) {
-    [self setCircularBrushDefaults];
+    [self setRoundBrushDefaults];
     [self updateBrushForCurrentProperties];
   }
   return self;
 }
 
-- (void)setCircularBrushDefaults {
+- (void)setRoundBrushDefaults {
   self.hardness = kDefaultHardness;
   self.intensity = kDefaultIntensity;
 }

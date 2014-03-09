@@ -117,6 +117,7 @@
 		28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */; };
 		28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0B18B23D930036D66E /* LTTouchCollector.mm */; };
 		28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */; };
+		28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -614,6 +615,8 @@
 		28C61C0B18B23D930036D66E /* LTTouchCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollector.mm; sourceTree = "<group>"; };
 		28EA156518B9E217003C00BF /* LTPropertyMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPropertyMacros.h; sourceTree = "<group>"; };
 		28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPropertyMacrosSpec.mm; sourceTree = "<group>"; };
+		28ED10F718CCB26C00EE1633 /* LTPainter+LTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTPainter+LTView.h"; sourceTree = "<group>"; };
+		28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTPainter+LTView.mm"; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -1098,6 +1101,8 @@
 				280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */,
 				280B14BE18B3C9AE0091B3D7 /* LTPainterStrokeSegment.h */,
 				280B14BF18B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm */,
+				28ED10F718CCB26C00EE1633 /* LTPainter+LTView.h */,
+				28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */,
 			);
 			name = Painting;
 			sourceTree = "<group>";
@@ -2056,6 +2061,7 @@
 				288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */,
 				282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */,
 				8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */,
+				28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,

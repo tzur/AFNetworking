@@ -35,6 +35,8 @@
         fromRotatedRect:(LTRotatedRect *)sourceRect;
 
 /// @see \c drawRect:inFramebuffer:fromRect:, but with \c NSArray of \c LTRotatedRects as arguments.
+///
+/// @note \c targetRects and \c sourceRects must have the same number of elements.
 - (void)drawRotatedRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRotatedRects:(NSArray *)sourceRects;
 

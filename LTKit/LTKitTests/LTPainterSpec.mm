@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter.h"
+#import "LTPainter+LTView.h"
 
 #import "LTBrush.h"
 #import "LTCGExtensions.h"
@@ -48,21 +48,22 @@ __block LTTexture *canvas;
 context(@"initialization", ^{
   it(@"should initialize with sandboxed stroke mode", ^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke canvas:canvas];
+    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
+                                canvasTexture:canvas];
     expect(painter.mode).to.equal(LTPainterTargetModeSandboxedStroke);
     expect(painter.strokeTexture.size).to.equal(canvas.size);
   });
   
   it(@"should initialize with direct stroke mode", ^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvas:canvas];
+    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvasTexture:canvas];
     expect(painter.mode).to.equal(LTPainterTargetModeDirectStroke);
     expect(painter.strokeTexture.size).to.equal(CGSizeMakeUniform(1));
   });
   
   it(@"should raise when initializing without a canvas", ^{
     expect(^{
-      painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvas:nil];
+      painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvasTexture:nil];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -70,7 +71,8 @@ context(@"initialization", ^{
 context(@"properties", ^{
   beforeEach(^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke canvas:canvas];
+    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
+                                canvasTexture:canvas];
   });
   
   afterEach(^{
@@ -129,7 +131,8 @@ context(@"painting", ^{
   
   beforeEach(^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke canvas:canvas];
+    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
+                                canvasTexture:canvas];
     expected.create(canvas.size.height, canvas.size.width);
     background.create(canvas.size.height, canvas.size.width);
     clear.create(canvas.size.height, canvas.size.width);
@@ -307,7 +310,8 @@ context(@"painting", ^{
     expect($(canvas.image)).to.beCloseToMat($(expected));
     
     LTPainterStroke *stroke = painter.strokes.lastObject;
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke canvas:canvas];
+    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
+                                canvasTexture:canvas];
     painter.airbrush = YES;
     painter.brush = brush;
     painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
