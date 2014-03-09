@@ -23,7 +23,7 @@
      collectedTimerTouch:(LTPainterPoint *)touch;
 
 /// Called when the collector finished collecting touches for the stroke.
-- (void)ltTouchCollectorFinishedStroke:(LTTouchCollector *)touchCollector;
+- (void)ltTouchCollectorFinishedStroke:(LTTouchCollector *)touchCollector cancelled:(BOOL)cancelled;
 
 @end
 
