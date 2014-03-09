@@ -10,7 +10,7 @@
     [self updateProgramForCurrentProperties]; \
   });
 
-@class LTFbo, LTPainterStrokeSegment, LTRotatedRect, LTTexture, LTPainterPoint;
+@class LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect, LTTexture;
 
 /// @class LTBrush
 ///
@@ -18,6 +18,8 @@
 /// used to draw a point or a stroke segment on a target framebuffer, and contain adjustable
 /// properties controlling the behavior and appearance of the painted areas.
 /// This basic brush class simply draws a texture according to its properties.
+///
+/// @see http://www.smashingmagazine.com/2009/11/16/brushing-up-on-photoshops-brush-tool/
 @interface LTBrush : NSObject
 
 /// Does the necessary preparations for drawing a new stroke (without drawing anything).
@@ -32,7 +34,8 @@
 ///
 /// @param previousPoint the last point that was previously drawn on the segment, used for accurate
 /// spacing calculation, as the next point should be spaced from the last drawn point and not from
-/// the start of the segment.
+/// the start of the segment. In case this argument is nil, the first point will be drawn on the
+/// beginning of the segment.
 /// @param lastDrawnPoint will store the last point that is actually drawn on the segment by this
 /// method. In case 
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment

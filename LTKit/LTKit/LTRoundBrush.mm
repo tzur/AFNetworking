@@ -78,9 +78,11 @@ static const CGFloat kBrushGaussianSigma = 0.3;
   self.texture = [LTGLTexture textureWithMipmapImages:levels];
   self.texture.minFilterInterpolation = LTTextureInterpolationLinearMipmapLinear;
   self.texture.magFilterInterpolation = LTTextureInterpolationLinear;
-  LogDebug(@"generated new brush texture");
 }
 
+/// Generate the brush matrix for the given diameter.
+/// The boundary rows/columns are set to zero to avoid artifacts due to clamping when magnifying or
+/// minifying the texture.
 - (cv::Mat)createBrushMatForDiameter:(uint)diameter {
   using half_float::half;
   cv::Mat1hf mat(diameter, diameter);
@@ -94,6 +96,9 @@ static const CGFloat kBrushGaussianSigma = 0.3;
       CGFloat x = (j - radius + 0.5) / radius;
       CGFloat squaredDistance = x * x + y * y;
       CGFloat arg = -squaredDistance * inv2SigmaSquare;
+      
+      /// The brush hardness parameter controls the solidness of the brush (1 for completly solid).
+      /// The edgeFactor smoothes the edges of the brush.
       CGFloat value = std::exp((1 - self.hardness) * arg);
       CGFloat edgeFactor = 1 - MIN(1, MAX(0, (std::sqrt(squaredDistance) * radius - radius + 0.5)));
       mat(i+1, j+1) = half(edgeFactor * value);
@@ -121,16 +126,9 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, hardness, Hardness,
   self.shouldUpdateBrush = YES;
 });
 
-
 - (void)setIntensity:(GLKVector4)intensity {
-  LTParameterAssert(intensity.x >= self.minIntensity.x);
-  LTParameterAssert(intensity.y >= self.minIntensity.y);
-  LTParameterAssert(intensity.z >= self.minIntensity.z);
-  LTParameterAssert(intensity.w >= self.minIntensity.w);
-  LTParameterAssert(intensity.x <= self.maxIntensity.x);
-  LTParameterAssert(intensity.y <= self.maxIntensity.y);
-  LTParameterAssert(intensity.z <= self.maxIntensity.z);
-  LTParameterAssert(intensity.w <= self.maxIntensity.w);
+  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(intensity, self.minIntensity));
+  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxIntensity, intensity));
   _intensity = intensity;
   [self updateProgramForCurrentProperties];
 }

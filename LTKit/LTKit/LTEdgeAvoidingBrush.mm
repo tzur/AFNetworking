@@ -10,8 +10,8 @@
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTEdgeAvoidingBrushShaderVsh.h"
 #import "LTShaderStorage+LTEdgeAvoidingBrushShaderFsh.h"
+#import "LTShaderStorage+LTEdgeAvoidingBrushShaderVsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
@@ -39,6 +39,7 @@
 /// edge-avoiding sampling points from its center.
 static const CGFloat kSizeToSamplingFactor = 50;
 
+/// Override the default hardness value of the \c LTRoundBrush.
 static const CGFloat kDefaultHardness = 0.5;
 
 #pragma mark -

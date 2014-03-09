@@ -9,11 +9,11 @@
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
-#import "LTTexture+Factory.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTShaderStorage+LTBrushShaderFsh.h"
+#import "LTShaderStorage+LTBrushShaderVsh.h"
+#import "LTTexture+Factory.h"
 
 @interface LTBrush ()
 
@@ -93,8 +93,8 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment
-                  fromPreviousPoint:(LTPainterPoint *)previousPoint
-                      inFramebuffer:(LTFbo *)fbo
+             fromPreviousPoint:(LTPainterPoint *)previousPoint
+                 inFramebuffer:(LTFbo *)fbo
           saveLastDrawnPointTo:(LTPainterPoint **)lastDrawnPoint {
   NSArray *points = [self pointsForStrokeSegment:segment fromPreviousPoint:previousPoint];
 
@@ -121,7 +121,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 /// the actual draw.
 - (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRects:(NSArray *)sourceRects {
-  if (self.texture) {
+  if (self.texture && targetRects.count) {
     [self.drawer drawRotatedRects:targetRects inFramebuffer:fbo fromRotatedRects:sourceRects];
   }
 }
@@ -148,7 +148,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (LTRotatedRect *)normalizeRect:(LTRotatedRect *)rotatedRect forSize:(CGSize)size {
   return [LTRotatedRect rectWithCenter:rotatedRect.center / size
                                   size:rotatedRect.rect.size / size
-                                   angle:self.angle];
+                                 angle:self.angle];
 }
 
 - (void)updateProgramForCurrentProperties {

@@ -119,13 +119,13 @@ namespace std {
     return GLKVector4Make(round(v.x), round(v.y), round(v.z), round(v.w));
   }
   
-  /// Choose the minimal elements.
+  /// Element-wise minimum.
   GLK_INLINE GLKVector4 min(const GLKVector4 &lhs, const GLKVector4 &rhs) {
     return
         GLKVector4Make(min(lhs.x, rhs.x), min(lhs.y, rhs.y), min(lhs.z, rhs.z), min(lhs.w, rhs.w));
   }
   
-  /// Choose the maximal elements.
+  /// Element-wise maximum.
   GLK_INLINE GLKVector4 max(const GLKVector4 &lhs, const GLKVector4 &rhs) {
     return
         GLKVector4Make(max(lhs.x, rhs.x), max(lhs.y, rhs.y), max(lhs.z, rhs.z), max(lhs.w, rhs.w));
