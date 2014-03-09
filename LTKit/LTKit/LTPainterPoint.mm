@@ -45,6 +45,17 @@
   return propertiesToInterpolate;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+  LTPainterPoint *point = [[[self class] allocWithZone:zone] init];
+  point.timestamp = self.timestamp;
+  point.screenPosition = self.screenPosition;
+  point.contentPosition = self.contentPosition;
+  point.zoomScale = self.zoomScale;
+  point.diameter = self.diameter;
+  point.distanceFromStart = self.distanceFromStart;
+  return point;
+}
+
 #pragma mark -
 #pragma mark Setters/Getters for CGPoint interpolated properties
 #pragma mark -

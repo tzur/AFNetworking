@@ -89,4 +89,40 @@ context(@"properties", ^{
   });
 });
 
+context(@"copying", ^{
+  __block LTPainterPoint *point;
+  
+  beforeEach(^{
+    point = [[LTPainterPoint alloc] init];
+    point.timestamp = 1;
+    point.screenPosition = CGPointMake(1, 1);
+    point.contentPosition = CGPointMake(2, 2);
+    point.zoomScale = 3;
+    point.distanceFromStart = 4;
+    point.diameter = 5;
+  });
+  
+  it(@"should copy", ^{
+    LTPainterPoint *copy = [point copy];
+    expect(copy).notTo.beIdenticalTo(point);
+    expect(copy.timestamp).to.equal(point.timestamp);
+    expect(copy.screenPosition).to.equal(point.screenPosition);
+    expect(copy.contentPosition).to.equal(point.contentPosition);
+    expect(copy.zoomScale).to.equal(point.zoomScale);
+    expect(copy.distanceFromStart).to.equal(point.distanceFromStart);
+    expect(copy.diameter).to.equal(point.diameter);
+  });
+  
+  it(@"should copy with zone", ^{
+    LTPainterPoint *copy = [point copyWithZone:nil];
+    expect(copy).notTo.beIdenticalTo(point);
+    expect(copy.timestamp).to.equal(point.timestamp);
+    expect(copy.screenPosition).to.equal(point.screenPosition);
+    expect(copy.contentPosition).to.equal(point.contentPosition);
+    expect(copy.zoomScale).to.equal(point.zoomScale);
+    expect(copy.distanceFromStart).to.equal(point.distanceFromStart);
+    expect(copy.diameter).to.equal(point.diameter);
+  });
+});
+
 SpecEnd

@@ -55,6 +55,7 @@
 #import <LTKit/LTGPUStructsMacros.h>
 #import <LTKit/LTGPUQueue.h>
 #import <LTKit/LTMMTexture.h>
+#import <LTKit/LTPainter+LTView.h>
 #import <LTKit/LTProgram.h>
 #import <LTKit/LTShader.h>
 #import <LTKit/LTTexture.h>

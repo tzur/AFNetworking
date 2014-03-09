@@ -105,6 +105,11 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 }
 
 - (void)drawRotatedRects:(NSArray *)targetRects fromRotatedRects:(NSArray *)sourceRects {
+  LTParameterAssert(targetRects.count == sourceRects.count);
+  if (!targetRects.count) {
+    return;
+  }
+  
   self.program[@"modelview"] = $(GLKMatrix4Identity);
   self.program[@"texture"] = $(GLKMatrix3Identity);
   [self updateArrayBufferWithTargetRects:targetRects sourceRects:sourceRects];
@@ -112,7 +117,7 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 }
 
 - (void)updateArrayBufferWithTargetRects:(NSArray *)targetRects sourceRects:(NSArray *)sourceRects {
-  LTParameterAssert(targetRects.count == sourceRects.count);
+  LTParameterAssert(targetRects.count);
 
   CGSize sourceSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
   std::vector<LTMultiRectDrawerVertex> triangles;

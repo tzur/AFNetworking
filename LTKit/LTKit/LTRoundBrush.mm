@@ -4,15 +4,12 @@
 #import "LTRoundBrush.h"
 
 #import "LTGLKitExtensions.h"
+#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
-
-#import "LTGLTexture.h"
-
-#import "LTFbo.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
@@ -38,13 +35,13 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (instancetype)init {
   if (self = [super init]) {
-    [self setCircularBrushDefaults];
+    [self setRoundBrushDefaults];
     [self updateBrushForCurrentProperties];
   }
   return self;
 }
 
-- (void)setCircularBrushDefaults {
+- (void)setRoundBrushDefaults {
   self.hardness = kDefaultHardness;
   self.intensity = kDefaultIntensity;
 }
