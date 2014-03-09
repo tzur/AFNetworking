@@ -97,7 +97,7 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 
 /// The typical size (in points) of a finger on the device. This depends on the device's screen
 /// points per inch.
-@property (readonly, nonatomic) CGFloat fingerSizeInPoints;
+@property (readonly, nonatomic) CGFloat fingerSizeOnDevice;
 
 #pragma mark -
 #pragma mark Localization

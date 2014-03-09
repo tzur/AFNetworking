@@ -71,16 +71,6 @@ static cv::Mat4b LTRotatedSubrect(const cv::Mat4b input, LTRotatedRect *subrect)
   return cropped;
 }
 
-/// Rotates (clockwise) the given mat by the given angle (in radians) around its center.
-static cv::Mat4b LTRotateMat(const cv::Mat4b input, CGFloat angle) {
-  angle = angle * (-180 / M_PI);
-  cv::Point2f center((input.cols / 2.0) - 0.5, (input.rows / 2.0) - 0.5);
-  cv::Mat R = cv::getRotationMatrix2D(center, angle, 1.0);
-  cv::Mat4b rotated;
-  cv::warpAffine(input, rotated, R, input.size(), cv::INTER_NEAREST, cv::BORDER_REPLICATE);
-  return rotated;
-}
-
 SharedExamplesBegin(LTProcessingDrawerExamples)
 
 static NSString * const kMissingVertexSource =
