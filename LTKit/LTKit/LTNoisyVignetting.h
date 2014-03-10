@@ -22,9 +22,12 @@
 /// Should be in [0-100] range. Default value is 100.
 @property (nonatomic) CGFloat spread;
 
-/// Determines the corner type of the frame by creating an appropriate distance field.
-/// Should be in [2-16] range. At value 2, the pattern will be completely rounded in a square image.
-/// For higher values, the roundness will decrease.
+/// Determines the corner type of the frame and corresponds to the p-norm which is used to compute
+/// the distance field. Should be in [2-16] range.
+/// Corner values determince how the distance field in the shader is created. The corner can be
+/// completely round by passing 2 and creating an Euclidean distance field for increasingly higher
+/// values, the distance field will become more rectangular. The limit of 16 is due to the precision
+/// limits in the shader.
 @property (nonatomic) CGFloat corner;
 
 /// Mixes the noise channels of the noise texture in order to create the transition noise. Default

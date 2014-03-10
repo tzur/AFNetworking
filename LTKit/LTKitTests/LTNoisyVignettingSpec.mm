@@ -5,7 +5,7 @@
 
 #import "LTGLKitExtensions.h"
 #import "LTOneShotMultiscaleNoiseProcessor.h"
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTNoisyVignetting)
@@ -23,7 +23,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  noise = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Noise.png")];
+  noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:noise];
 });
 
@@ -81,7 +81,7 @@ context(@"processing", ^{
     [vignette process];
     
     LTTexture *precomputedVignette =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"RoundWideVignetting.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
   });
   
@@ -94,7 +94,7 @@ context(@"processing", ^{
     [vignette process];
     
     LTTexture *precomputedVignette =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"StraightWideVignetting.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"StraightWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
   });
 
