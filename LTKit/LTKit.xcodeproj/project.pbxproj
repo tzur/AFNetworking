@@ -15,6 +15,7 @@
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
+		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
 		0367A4B018ACF45700B42E34 /* LTProceduralFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */; };
@@ -419,6 +420,7 @@
 		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
+		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
 		0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProceduralFrame.h; sourceTree = "<group>"; };
@@ -460,6 +462,14 @@
 		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessor.mm; sourceTree = "<group>"; };
 		03D516F618B5DBBD0026B56A /* LTAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAdjust.fsh; sourceTree = "<group>"; };
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
+		03DDE61418CDA8470060ADCB /* fillLightCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fillLightCurve.png; path = Resources/Curves/fillLightCurve.png; sourceTree = "<group>"; };
+		03DDE61518CDA8470060ADCB /* highlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = highlightsCurve.png; path = Resources/Curves/highlightsCurve.png; sourceTree = "<group>"; };
+		03DDE61618CDA8470060ADCB /* identityCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = identityCurve.png; path = Resources/Curves/identityCurve.png; sourceTree = "<group>"; };
+		03DDE61718CDA8470060ADCB /* negativeBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = negativeBrightnessCurve.png; path = Resources/Curves/negativeBrightnessCurve.png; sourceTree = "<group>"; };
+		03DDE61818CDA8470060ADCB /* negativeContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = negativeContrastCurve.png; path = Resources/Curves/negativeContrastCurve.png; sourceTree = "<group>"; };
+		03DDE61918CDA8470060ADCB /* positiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = positiveBrightnessCurve.png; path = Resources/Curves/positiveBrightnessCurve.png; sourceTree = "<group>"; };
+		03DDE61A18CDA8470060ADCB /* positiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = positiveContrastCurve.png; path = Resources/Curves/positiveContrastCurve.png; sourceTree = "<group>"; };
+		03DDE61B18CDA8470060ADCB /* shadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadowsCurve.png; path = Resources/Curves/shadowsCurve.png; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5FractionalNoise.png; path = Resources/iPhone5FractionalNoise.png; sourceTree = "<group>"; };
@@ -855,6 +865,21 @@
 			name = Blocks;
 			sourceTree = "<group>";
 		};
+		03DDE60718CDA4460060ADCB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				03DDE61418CDA8470060ADCB /* fillLightCurve.png */,
+				03DDE61518CDA8470060ADCB /* highlightsCurve.png */,
+				03DDE61618CDA8470060ADCB /* identityCurve.png */,
+				03DDE61718CDA8470060ADCB /* negativeBrightnessCurve.png */,
+				03DDE61818CDA8470060ADCB /* negativeContrastCurve.png */,
+				03DDE61918CDA8470060ADCB /* positiveBrightnessCurve.png */,
+				03DDE61A18CDA8470060ADCB /* positiveContrastCurve.png */,
+				03DDE61B18CDA8470060ADCB /* shadowsCurve.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		28178214187C2E7200548AE4 /* OCMock */ = {
 			isa = PBXGroup;
 			children = (
@@ -1103,6 +1128,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0366BA4018CCA51A002E6BA1 /* Meal.jpg */,
 				03D5169918B3344F0026B56A /* StraightBlackNoisyFrame.png */,
 				03D5169718B2768D0026B56A /* TiledNoise.png */,
 				03D5168118B26FA40026B56A /* RoundishBlackFrame.png */,
@@ -1515,6 +1541,7 @@
 			children = (
 				8BFE4399187594F7008B699F /* Base */,
 				03BBB30C1887B797001E7703 /* Blocks */,
+				03DDE60718CDA4460060ADCB /* Resources */,
 				8BFE439F18759D1F008B699F /* Utils */,
 			);
 			name = "Image Processing";
@@ -1750,6 +1777,7 @@
 			files = (
 				03D5169818B2768D0026B56A /* TiledNoise.png in Resources */,
 				030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */,
+				0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */,
 				03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */,
 				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,

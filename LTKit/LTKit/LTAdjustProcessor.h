@@ -15,13 +15,13 @@
 
 /// Luminance Control.
 
-/// Changes the brightness of the image. Should be in [0, 1] range. Default value is 0.
+/// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat brightness;
 
-/// Changes the global contrast of the image. Should be in [0, 2] range. Default value is 1.
+/// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat contrast;
 
-/// Changes the exposure of the image. Should be in [0, 3] range. Default value is 1.
+/// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat exposure;
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
@@ -29,17 +29,17 @@
 
 /// Levels Control.
 
-/// Remapes black (0, 0, 0) to \c blackPoint. Components should be in [-1, 1] range. Default value is
-/// black (0, 0, 0).
+/// Remapes black vec3(0) to \c vec3(blackPoint). Components should be in [-1, 1] range. Default
+/// value is black (0, 0, 0).
 @property (nonatomic) GLKVector3 blackPoint;
 
-/// Remapes white (1, 1, 1) to \c whitePoint. Components should be in [0, 2] range. Default value
-/// is white (1, 1, 1).
+/// Remapes white vec3(1) to \c vec3(whitePoint). Components should be in [0, 2] range. Default
+/// value is white (1, 1, 1).
 @property (nonatomic) GLKVector3 whitePoint;
 
 /// Color Control.
 
-/// Changes the saturation of the image. Should be in [0, 3] range. Default value is 1.
+/// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat saturation;
 
 /// Changes the temperature of the image. Should be in [-1, 1] range. Default value is 0.
