@@ -160,7 +160,8 @@ context(@"processing", ^{
     LTTexture *tiledNoise =
         [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
     
-    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithNoise:tiledNoise output:frameTexture];
+    LTProceduralFrame *frame =
+        [[LTProceduralFrame alloc] initWithNoise:tiledNoise output:frameTexture];
     frame.width = 0.0;
     frame.spread = 10.0;
     frame.corner = 0.0;
