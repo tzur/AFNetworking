@@ -3,7 +3,7 @@
 
 #import "LTImage.h"
 
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 
 SpecBegin(LTImage)
 
@@ -32,7 +32,7 @@ context(@"loading images", ^{
   });
 
   it(@"should load an rgba jpeg image", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"White.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"White.jpg");
 
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
@@ -43,7 +43,7 @@ context(@"loading images", ^{
   });
 
   it(@"should load an non-premultiplied alpha png image", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"BlueTransparent.png");
+    UIImage *jpeg = LTLoadImage([self class], @"BlueTransparent.png");
 
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
@@ -54,7 +54,7 @@ context(@"loading images", ^{
   });
 
   it(@"should load a premultiplied alpha png image", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"BlueTransparentPremultiplied.png");
+    UIImage *jpeg = LTLoadImage([self class], @"BlueTransparentPremultiplied.png");
 
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
@@ -65,7 +65,7 @@ context(@"loading images", ^{
   });
 
   it(@"should load gray jpeg image", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"Gray.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"Gray.jpg");
 
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
@@ -79,7 +79,7 @@ context(@"loading images", ^{
     __block LTImage *expected;
 
     beforeAll(^{
-      UIImage *image = LTLoadImageWithName([self class], @"QuadUp.jpg");
+      UIImage *image = LTLoadImage([self class], @"QuadUp.jpg");
       expected = [[LTImage alloc] initWithImage:image];
     });
 
@@ -87,7 +87,7 @@ context(@"loading images", ^{
       it(@"should load rotated images as portrait", ^{
         NSString *imageName = data[@"name"];
 
-        UIImage *rotated = LTLoadImageWithName([self class], imageName);
+        UIImage *rotated = LTLoadImage([self class], imageName);
         LTImage *image = [[LTImage alloc] initWithImage:rotated];
 
         expect(LTCompareMat(expected.mat, image.mat)).to.beTruthy();
@@ -109,21 +109,21 @@ context(@"loading images", ^{
 
 context(@"image properties", ^{
   it(@"should have correct size", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"White.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"White.jpg");
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
     expect(image.size).to.equal(jpeg.size);
   });
 
   it(@"should have correct depth for rgba images", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"White.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"White.jpg");
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
     expect(image.depth).to.equal(LTImageDepthRGBA);
   });
 
   it(@"should have correct depth for grayscale images", ^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"Gray.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"Gray.jpg");
     LTImage *image = [[LTImage alloc] initWithImage:jpeg];
 
     expect(image.depth).to.equal(LTImageDepthGrayscale);
@@ -134,7 +134,7 @@ context(@"uiimage conversion", ^{
   __block LTImage *expected;
 
   beforeEach(^{
-    UIImage *jpeg = LTLoadImageWithName([self class], @"QuadUp.jpg");
+    UIImage *jpeg = LTLoadImage([self class], @"QuadUp.jpg");
     expected = [[LTImage alloc] initWithImage:jpeg];
   });
 

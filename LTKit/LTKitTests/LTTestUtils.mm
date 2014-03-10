@@ -56,6 +56,15 @@ BOOL LTRunningApplicationTests() {
   return environment[@"XCInjectBundle"] != nil;
 }
 
+cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
+  angle = angle * (-180 / M_PI);
+  cv::Point2f center((input.cols / 2.0) - 0.5, (input.rows / 2.0) - 0.5);
+  cv::Mat R = cv::getRotationMatrix2D(center, angle, 1.0);
+  cv::Mat rotated;
+  cv::warpAffine(input, rotated, R, input.size(), cv::INTER_NEAREST, cv::BORDER_REPLICATE);
+  return rotated;
+}
+
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, cv::Point *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
     LTWriteMatrices(expected, actual);
@@ -181,41 +190,16 @@ cv::Mat4b LTCreateDeltaMat(CGSize size) {
   return delta;
 }
 
-UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
-  NSString *path = LTPathForResource(classInBundle, name);
-  UIImage *image = [UIImage imageWithContentsOfFile:path];
-  LTAssert(image, @"Image cannot be loaded");
-
-  return image;
-}
-
-cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name) {
-  UIImage *image = LTLoadImageWithName(classInBundle, name);
-  return [[LTImage alloc] initWithImage:image].mat;
-}
-
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName) {
   cv::Mat mat;
   if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
       [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
-    mat = LTLoadMatWithName(classInBundle, simulatorName);
+    mat = LTLoadMat(classInBundle, simulatorName);
   } else {
-    mat = LTLoadMatWithName(classInBundle, deviceName);
+    mat = LTLoadMat(classInBundle, deviceName);
   }
   return mat;
-}
-
-NSString *LTPathForResource(Class classInBundle, NSString *name) {
-  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
-
-  NSString *resource = [name stringByDeletingPathExtension];
-  NSString *type = [name pathExtension];
-
-  NSString *path = [bundle pathForResource:resource ofType:type];
-  LTAssert(path, @"Given image filename doesn't exist in the test bundle");
-
-  return path;
 }
 
 #pragma mark -
@@ -315,9 +299,10 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
+    case CV_16F:
     case CV_16FC4: {
       cv::Mat4b converted;
-      LTConvertHalfFloat<half_float::half, uchar>(mat, &converted, 255);
+      LTConvertMat(mat, &converted, converted.type());
       cv::Mat bgrMat;
       cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);

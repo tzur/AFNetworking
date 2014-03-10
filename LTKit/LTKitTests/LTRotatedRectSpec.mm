@@ -90,4 +90,29 @@ context(@"properties", ^{
   });
 });
 
+context(@"equality and hash", ^{
+  __block LTRotatedRect *a;
+  __block LTRotatedRect *b;
+  __block LTRotatedRect *c;
+
+  beforeEach(^{
+    a = [LTRotatedRect rect:CGRectMake(0, 1, 2, 3) withAngle:M_PI];
+    b = [LTRotatedRect rect:CGRectMake(0, 1, 2, 3) withAngle:M_PI];
+    c = [LTRotatedRect rect:CGRectMake(0, 1, 2, 3) withAngle:M_PI_2];
+  });
+
+  it(@"should return yes for equal objects", ^{
+    expect(a).to.equal(b);
+  });
+
+  it(@"should return no for non-equal objects", ^{
+    expect(a).toNot.equal(c);
+    expect(b).toNot.equal(c);
+  });
+
+  it(@"should have same hash value for equal rects", ^{
+    expect([a hash]).to.equal([b hash]);
+  });
+});
+
 SpecEnd

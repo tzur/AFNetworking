@@ -81,6 +81,12 @@ context(@"cgpoint operations", ^{
 });
 
 context(@"cgsize operations", ^{
+  it(@"construction", ^{
+    expect(CGSizeMakeUniform(0)).to.equal(CGSizeZero);
+    expect(CGSizeMakeUniform(1)).to.equal(CGSizeMake(1, 1));
+    expect(CGSizeMakeUniform(-1)).to.equal(CGSizeMake(-1, -1));
+  });
+  
   it(@"comparison", ^{
     expect(CGSizeMake(1, 2) == CGSizeMake(1, 2)).to.beTruthy();
     expect(CGSizeMake(1, 2) != CGSizeMake(1, 2)).to.beFalsy();

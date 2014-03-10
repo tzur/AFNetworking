@@ -280,6 +280,16 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       });
     });
 
+    context(@"clearing texture", ^{
+      dit(@"should clear texture with color", ^{
+        GLKVector4 color = GLKVector4Make(1.0, 0.0, 0.0, 1.0);
+        [texture clearWithColor:color];
+
+        cv::Scalar expected(color.r * 255, color.g * 255, color.b * 255, color.a * 255);
+        expect($([texture image])).to.equalScalar($(expected));
+      });
+    });
+
     context(@"memory mapping texture", ^{
       it(@"should map correct texture data", ^{
         [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {

@@ -120,10 +120,11 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 
 - (void)handlePossibleStrokeEndingTouches:(NSSet *)touches inView:(LTView *)view {
   if ([touches containsObject:self.paintingTouch]) {
+    BOOL cancelled = self.paintingTouch.phase == UITouchPhaseCancelled;
     self.paintingTouch = nil;
     [self endTimer];
     view.navigationMode = LTViewNavigationTwoFingers;
-    [self.delegate ltTouchCollectorFinishedStroke:self];
+    [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
   }
 }
 

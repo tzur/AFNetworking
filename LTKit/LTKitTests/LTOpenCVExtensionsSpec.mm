@@ -102,9 +102,21 @@ context(@"mat conversion", ^{
   });
 
   context(@"different depth and channels", ^{
-    it(@"should convert depth and number of channels", ^{
+    it(@"should convert depth and number of channels for float", ^{
       cv::Vec4f value(1, 0.5, 0.5, 1);
       cv::Mat4f input(16, 16);
+      input.setTo(value);
+
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_8UC2);
+
+      cv::Scalar convertedValue(255, 128);
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+    });
+
+    it(@"should convert depth and number of channels for half-float", ^{
+      cv::Vec4hf value(half(1), half(0.5), half(0.5), half(1));
+      cv::Mat4hf input(16, 16);
       input.setTo(value);
 
       cv::Mat output;
@@ -124,6 +136,35 @@ context(@"fft shift", ^{
     cv::Mat1f expected = (cv::Mat1f(2, 2) << 4, 3, 2, 1);
 
     expect($(expected)).to.equalMat($(mat));
+  });
+});
+
+context(@"load image", ^{
+  it(@"should load image", ^{
+    UIImage *image = LTLoadImage([self class], @"White.jpg");
+
+    expect(image).toNot.beNil();
+    expect(image.size).to.equal(CGSizeMake(16, 16));
+  });
+
+  it(@"should fail when loading non-existing image", ^{
+    expect(^{
+      UIImage __unused *image = LTLoadImage([self class], @"_Invalid.png");
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should load mat", ^{
+    cv::Mat mat = LTLoadMat([self class], @"White.jpg");
+
+    expect(mat.type()).to.equal(CV_8UC4);
+    expect(mat.rows).to.equal(16);
+    expect(mat.cols).to.equal(16);
+  });
+
+  it(@"should fail when loading non-existing mat", ^{
+    expect(^{
+      cv::Mat __unused mat = LTLoadMat([self class], @"_Invalid.png");
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

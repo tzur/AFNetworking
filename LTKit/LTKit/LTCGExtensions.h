@@ -1,6 +1,11 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#ifdef __cplusplus
+  #import <algorithm>
+  #import <cmath>
+#endif
+
 /// The "empty" point. This is the point returned when, for example, we intersect parallel lines.
 ///
 /// @note the null point is not the same as the zero point, and that the null point will never be
@@ -118,6 +123,11 @@ CG_INLINE CGPoint operator*(const CGAffineTransform &lhs, const CGPoint &rhs) {
   return CGPointApplyAffineTransform(rhs, lhs);
 }
 
+/// Returns a hash code for the given point.
+CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
+  return 31 * [@(point.x) hash] + [@(point.y) hash];
+}
+
 #pragma mark -
 #pragma mark CGSize Operations
 #pragma mark -
@@ -177,6 +187,11 @@ CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
 }
 
+/// Returns a uniform size with the given length at each dimension.
+CG_INLINE CGSize CGSizeMakeUniform(const CGFloat &length) {
+  return CGSizeMake(length, length);
+}
+
 namespace std {
 
 /// Returns the smaller component.
@@ -233,6 +248,15 @@ CG_INLINE CGRect CGRectCenteredAt(const CGPoint &center, const CGSize &size) {
 /// Returns the center of the given rect.
 CG_INLINE CGPoint CGRectCenter(const CGRect &rect) {
   return rect.origin + 0.5 * rect.size;
+}
+
+/// Returns a hash code for the given rect.
+CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
+  NSUInteger hashCode = [@(rect.origin.x) hash];
+  hashCode = 31 * hashCode + [@(rect.origin.y) hash];
+  hashCode = 31 * hashCode + [@(rect.size.width) hash];
+  hashCode = 31 * hashCode + [@(rect.size.height) hash];
+  return hashCode;
 }
 
 #pragma mark -

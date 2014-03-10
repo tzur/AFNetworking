@@ -3,7 +3,7 @@
 
 #import "LTImageProcessor.h"
 
-@class LTTexture;
+@class LTSplitComplexMat, LTTexture;
 
 /// Possible directions of the Fourier transform to execute.
 typedef NS_ENUM(NSUInteger, LTFFTTransformDirection) {
@@ -16,23 +16,6 @@ typedef NS_OPTIONS(NSUInteger, LTFFTNormalization) {
   LTFFTTransformNormalizeReal = 1 << 0,
   LTFFTTransformNormalizeImag = 1 << 1
 };
-
-/// Holds two separate real and imaginary data, to use with the FFT processor.
-typedef struct {
-  cv::Mat1f real;
-  cv::Mat1f imag;
-} LTSplitComplexMat;
-
-/// Class for holding split complex output, as returned from the processor.
-@interface LTSplitComplexOutput : NSObject <LTImageProcessorOutput>
-
-/// Initializes with a single texture.
-- (instancetype)initWithSplitComplexMat:(LTSplitComplexMat)splitComplexMat;
-
-/// Output texture.
-@property (readonly, nonatomic) LTSplitComplexMat splitComplexMat;
-
-@end
 
 /// Processor for executing FFT on the CPU. The input and output are given as a two split planes:
 /// one for the real part and one for the imaginary part. Since the transform doesn't normalize by
@@ -51,7 +34,7 @@ typedef struct {
 
 /// Initializes with a complex input and a complex output structs. \c input and \c output must be of
 /// the same size and their dimensions must be a power of two.
-- (instancetype)initWithInput:(LTSplitComplexMat)input output:(LTSplitComplexMat *)output;
+- (instancetype)initWithInput:(LTSplitComplexMat *)input output:(LTSplitComplexMat *)output;
 
 /// Direction of the Fourier transform to execute. Default value is LTFFTTransformDirectionForward.
 @property (nonatomic) LTFFTTransformDirection transformDirection;

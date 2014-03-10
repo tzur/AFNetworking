@@ -4,6 +4,7 @@
 #import "LTImageProcessorOutput.h"
 
 #import "LTGLTexture.h"
+#import "LTSplitComplexMat.h"
 
 static LTTexture *LTCreateTexture() {
   return [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
@@ -56,6 +57,22 @@ it(@"should initialize and set properties", ^{
   LTSingleMatOutput *output = [[LTSingleMatOutput alloc] initWithMat:mat];
 
   expect($(output.mat)).to.equalMat($(mat));
+});
+
+SpecEnd
+
+SpecBegin(LTSplitComplexMatOutput)
+
+it(@"should initialize and set properties", ^{
+  cv::Mat1f real(cv::Mat1f::zeros(16, 16));
+  cv::Mat1f imag(cv::Mat1f::ones(16, 16));
+
+  LTSplitComplexMat *splitComplexMat = [[LTSplitComplexMat alloc] initWithReal:real imag:imag];
+  LTSplitComplexMatOutput *output = [[LTSplitComplexMatOutput alloc]
+                                     initWithSplitComplexMat:splitComplexMat];
+
+  expect($(output.splitComplexMat.real)).to.equalMat($(real));
+  expect($(output.splitComplexMat.imag)).to.equalMat($(imag));
 });
 
 SpecEnd

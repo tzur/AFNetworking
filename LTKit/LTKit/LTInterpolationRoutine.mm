@@ -19,7 +19,11 @@
 @implementation LTInterpolationRoutine
 
 + (NSUInteger)expectedKeyFrames {
-  LTAssert(NO, "@Abstract method that should be implemented by subclasses");
+  LTMethodNotImplemented();
+}
+
++ (NSRange)rangeOfIntervalInWindow {
+  LTMethodNotImplemented();
 }
 
 - (instancetype)initWithKeyFrames:(NSArray *)keyFrames {
@@ -40,7 +44,7 @@
 }
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray __unused *)keyFrames {
-  LTAssert(NO, "@Abstract method that should be implemented by subclasses");
+  LTMethodNotImplemented();
 }
 
 - (id)valueAtKey:(CGFloat)key {
@@ -66,10 +70,6 @@
     value = key * value + [coefficient doubleValue];
   }
   return @(value);
-}
-
-- (NSRange)rangeOfIntervalInWindow {
-  LTAssert(NO, "@Abstract method that should be implemented by subclasses");
 }
 
 @end

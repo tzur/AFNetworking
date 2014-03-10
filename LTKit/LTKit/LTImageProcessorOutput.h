@@ -1,7 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@class LTTexture;
+#import <opencv2/core/core.hpp>
+
+@class LTSplitComplexMat, LTTexture;
 
 /// Protocol for tagging classes which contain output of \c LTImageProcessor classes.
 @protocol LTImageProcessorOutput <NSObject>
@@ -37,5 +39,16 @@
 
 /// Output mat.
 @property (readonly, nonatomic) const cv::Mat &mat;
+
+@end
+
+/// DTO for holding a split complex mat output.
+@interface LTSplitComplexMatOutput : NSObject <LTImageProcessorOutput>
+
+/// Initializes with a split complex mat.
+- (instancetype)initWithSplitComplexMat:(LTSplitComplexMat *)splitComplexMat;
+
+/// Output texture.
+@property (readonly, nonatomic) LTSplitComplexMat *splitComplexMat;
 
 @end

@@ -83,6 +83,11 @@ GLK_INLINE GLKVector4 GLKVector4FromVec4b(const cv::Vec4b &vec) {
   return GLKVector4Make(vec(0), vec(1), vec(2), vec(3)) / 255.0;
 }
 
+/// Creates a \c GLKVector2 from a \c CGPoint.
+GLK_INLINE GLKVector2 GLKVector2FromCGPoint(const CGPoint &point) {
+  return GLKVector2Make(point.x, point.y);
+}
+
 /// Returns \c YES if every component of the vector is in [a, b] range.
 GLK_INLINE BOOL GLKVectorInRange(const GLKVector3 &vec, const float a, const float b) {
   return (vec.x >= a && vec.y >= a && vec.z >= a && vec.x <= b && vec.y <= b && vec.z <= b);
@@ -112,6 +117,18 @@ namespace std {
   /// Round the elements.
   CG_INLINE GLKVector4 round(const GLKVector4 &v) {
     return GLKVector4Make(round(v.x), round(v.y), round(v.z), round(v.w));
+  }
+  
+  /// Element-wise minimum.
+  GLK_INLINE GLKVector4 min(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+    return
+        GLKVector4Make(min(lhs.x, rhs.x), min(lhs.y, rhs.y), min(lhs.z, rhs.z), min(lhs.w, rhs.w));
+  }
+  
+  /// Element-wise maximum.
+  GLK_INLINE GLKVector4 max(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+    return
+        GLKVector4Make(max(lhs.x, rhs.x), max(lhs.y, rhs.y), max(lhs.z, rhs.z), max(lhs.w, rhs.w));
   }
 }
 

@@ -4,11 +4,14 @@
 #import <LTKit/LTAssert.h>
 
 // Supporting Files.
+#import <LTKit/LTCVHalfFloatExtension.h>
+#import <LTKit/LTCGExtensions.h>
 #import <LTKit/LTGLKitExtensions.h>
 #import <LTKit/LTGLUtils.h>
 #import <LTKit/LTLogger.h>
 #import <LTKit/LTLoggerMacrosImpl.h>
-#import <LTKit/LTShader.h>
+#import <LTKit/LTOpenCVExtensions.h>
+#import <LTKit/LTRotatedRect.h>
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSValue+GLKitExtensions.h>
 
@@ -23,8 +26,16 @@
 #import <LTKit/LTOneShotImageProcessor.h>
 
 // Image Processing/Boxes.
+#import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
+#import <LTKit/LTBoundaryExtractor.h>
+#import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
+#import <LTKit/LTMaskedArithmeticProcessor.h>
+#import <LTKit/LTPatchCompositorProcessor.h>
+#import <LTKit/LTPatchProcessor.h>
+#import <LTKit/LTRectCopyProcessor.h>
+#import <LTKit/LTSplitComplexMat.h>
 
 // Image Processing/Utils.
 #import <LTKit/LTBoundaryCondition.h>
@@ -44,7 +55,9 @@
 #import <LTKit/LTGPUStructsMacros.h>
 #import <LTKit/LTGPUQueue.h>
 #import <LTKit/LTMMTexture.h>
+#import <LTKit/LTPainter+LTView.h>
 #import <LTKit/LTProgram.h>
+#import <LTKit/LTShader.h>
 #import <LTKit/LTTexture.h>
 #import <LTKit/LTTexture+Factory.h>
 #import <LTKit/LTVertexArray.h>

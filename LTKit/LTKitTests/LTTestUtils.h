@@ -53,17 +53,13 @@ GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value);
 /// Converts a \c GLKVector4 to \c cv::Vec4b.
 cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
 
+/// Rotates (clockwise) the given mat by the given angle (in radians) around its center.
+/// Uses nearest neighbor interpolation.
+cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle);
+
 /// Returns a matrix of the given size containing a delta function. Delta function is a matrix with
 /// zeros everywhere, besides the center where it is one.
 cv::Mat4b LTCreateDeltaMat(CGSize size);
-
-/// Loads an image with the given \c name from the bundle that contains the given class. Throws
-/// exception if the image cannot be found or loaded.
-UIImage *LTLoadImageWithName(Class classInBundle, NSString *name);
-
-/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
-/// class. Throws exception if the image cannot be found or loaded.
-cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
 
 /// Loads an image to \c cv::Mat. The name of the image can differ between simulator and device.
 /// Loads from the bundle that contains the given class. Throws exception if the image cannot be

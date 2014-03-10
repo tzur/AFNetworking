@@ -5,27 +5,12 @@
 
 #import <Accelerate/Accelerate.h>
 
-@interface LTSplitComplexOutput ()
-@property (readwrite, nonatomic) LTSplitComplexMat splitComplexMat;
-@end
-
-@implementation LTSplitComplexOutput
-
-- (instancetype)initWithSplitComplexMat:(LTSplitComplexMat)splitComplexMat {
-  if (self = [super init]) {
-    self.splitComplexMat = splitComplexMat;
-  }
-  return self;
-}
-
-@end
+#import "LTSplitComplexMat.h"
 
 @interface LTFFTProcessor ()
 
-@property (nonatomic) LTSplitComplexMat input;
+@property (nonatomic) LTSplitComplexMat *input;
 @property (nonatomic) LTSplitComplexMat *output;
-
-@property (nonatomic) FFTSetup fftSetup;
 
 @property (readonly, nonatomic) cv::Size size;
 @property (readonly, nonatomic) size_t totalElements;
@@ -39,11 +24,12 @@
 #pragma mark -
 
 - (instancetype)initWithRealInput:(const cv::Mat1f &)realInput output:(LTSplitComplexMat *)output {
-  LTSplitComplexMat input = {.real = realInput, .imag = cv::Mat1f::zeros(realInput.size())};
+  LTSplitComplexMat *input = [[LTSplitComplexMat alloc]
+                              initWithReal:realInput imag:cv::Mat1f::zeros(realInput.size())];
   return [self initWithInput:input output:output];
 }
 
-- (instancetype)initWithInput:(LTSplitComplexMat)input output:(LTSplitComplexMat *)output {
+- (instancetype)initWithInput:(LTSplitComplexMat *)input output:(LTSplitComplexMat *)output {
   if (self = [super init]) {
     LTParameterAssert([self isPowerOfTwo:input.real.size()] &&
                       [self isPowerOfTwo:input.imag.size()],
@@ -53,23 +39,10 @@
 
     self.input = input;
     self.output = output;
-    _output->real.addref();
-    _output->imag.addref();
 
     self.normalization = LTFFTTransformNormalizeReal | LTFFTTransformNormalizeImag;
   }
   return self;
-}
-
-- (void)dealloc {
-  if (!_fftSetup) {
-    vDSP_destroy_fftsetup(_fftSetup);
-    _fftSetup = nil;
-  }
-  if (_output) {
-    _output->real.release();
-    _output->imag.release();
-  }
 }
 
 - (BOOL)isPowerOfTwo:(cv::Size)size {
@@ -91,16 +64,38 @@
 }
 
 #pragma mark -
+#pragma mark FFT Setup
+#pragma mark -
+
++ (FFTSetup)fftSetupForSize:(cv::Size)size {
+  static FFTSetup setup = NULL;
+  static int maximalSetupDimension = 0;
+
+  // Create a new setup only if the requested dimension is larger than the one in the current setup.
+  int maximalDimension = std::max(size.width, size.height);
+  LTAssert(maximalDimension > 0, @"Requested maximal dimension for setup must be larger than 0");
+
+  if (maximalDimension > maximalSetupDimension) {
+    if (setup) {
+      vDSP_destroy_fftsetup(setup);
+    }
+    setup = vDSP_create_fftsetup(log2(maximalDimension), kFFTRadix2);
+    maximalSetupDimension = maximalDimension;
+  }
+  return setup;
+}
+
+#pragma mark -
 #pragma mark Processing
 #pragma mark -
 
 - (id<LTImageProcessorOutput>)process {
-  _output->real.create(self.size);
-  _output->imag.create(self.size);
+  _output.real.create(self.size);
+  _output.imag.create(self.size);
 
   [self runFFT];
 
-  return [[LTSplitComplexOutput alloc] initWithSplitComplexMat:*self.output];
+  return [[LTSplitComplexMatOutput alloc] initWithSplitComplexMat:self.output];
 }
 
 - (cv::Size)size {
@@ -122,17 +117,19 @@
   input.imagp = (float *)_input.imag.data;
 
   DSPSplitComplex output;
-  output.realp = (float *)_output->real.data;
-  output.imagp = (float *)_output->imag.data;
+  output.realp = (float *)_output.real.data;
+  output.imagp = (float *)_output.imag.data;
 
   const vDSP_Stride kRowStride = 1;
   const vDSP_Stride kColumnStride = 0;
 
+  FFTSetup fftSetup = [[self class] fftSetupForSize:self.size];
+
   if (self.transformDirection == LTFFTTransformDirectionForward) {
-    vDSP_fft2d_zop(self.fftSetup, &input, kRowStride, kColumnStride, &output,
+    vDSP_fft2d_zop(fftSetup, &input, kRowStride, kColumnStride, &output,
                    kRowStride, kColumnStride, logColumns, logRows, FFT_FORWARD);
   } else {
-    vDSP_fft2d_zop(self.fftSetup, &input, kRowStride, kColumnStride, &output,
+    vDSP_fft2d_zop(fftSetup, &input, kRowStride, kColumnStride, &output,
                    kRowStride, kColumnStride, logColumns, logRows, FFT_INVERSE);
 
     // Since the inverse transform doesn't scale by 1/N, we need to do it ourselves.
@@ -144,15 +141,6 @@
       vDSP_vsmul(output.imagp, 1, &scale, output.imagp, 1, numElements);
     }
   }
-}
-
-- (FFTSetup)fftSetup {
-  // TODO:(yaron) initialize this statically, per log2(maximalDimension).
-  if (!_fftSetup) {
-    int maximalDimension = std::max(self.size.width, self.size.height);
-    _fftSetup = vDSP_create_fftsetup(log2(maximalDimension), kFFTRadix2);
-  }
-  return _fftSetup;
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
+#import "LTRectMapping.h"
 #import "LTRotatedRect.h"
 #import "LTVertexArray.h"
 
@@ -115,34 +116,14 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 }
 
 - (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
-  GLKMatrix4 modelview = [self matrix4ForRect:targetRect];
+  GLKMatrix4 modelview = LTMatrix4ForRect(targetRect);
   self.program[@"modelview"] = $(modelview);
-  
-  GLKMatrix3 texture = [self matrix3ForTextureRect:sourceRect];
+
+  CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+  GLKMatrix3 texture = LTTextureMatrix3ForRect(sourceRect, textureSize);
   self.program[@"texture"] = $(texture);
   
   [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
-}
-
-- (GLKMatrix3)matrix3ForTextureRect:(CGRect)rect {
-  CGSize size = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
-  CGRect normalizedRect = CGRectMake(rect.origin.x / size.width,
-                                     rect.origin.y / size.height,
-                                     rect.size.width / size.width,
-                                     rect.size.height / size.height);
-  return [self matrix3ForRect:normalizedRect];
-}
-
-- (GLKMatrix3)matrix3ForRect:(CGRect)rect {
-  GLKMatrix3 scale = GLKMatrix3MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix3 translate = GLKMatrix3MakeTranslation(rect.origin.x, rect.origin.y);
-  return GLKMatrix3Multiply(translate, scale);
-}
-
-- (GLKMatrix4)matrix4ForRect:(CGRect)rect {
-  GLKMatrix4 scale = GLKMatrix4MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix4 translate = GLKMatrix4MakeTranslation(rect.origin.x, rect.origin.y, 0);
-  return GLKMatrix4Multiply(translate, scale);
 }
 
 #pragma mark -
@@ -179,47 +160,14 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 }
 
 - (void)drawRotatedRect:(LTRotatedRect *)targetRect fromRotatedRect:(LTRotatedRect *)sourceRect {
-  GLKMatrix4 modelview = [self matrix4ForRotatedRect:targetRect];
+  GLKMatrix4 modelview = LTMatrix4ForRotatedRect(targetRect);
   self.program[@"modelview"] = $(modelview);
-  
-  GLKMatrix3 texture = [self matrix3ForRotatedTextureRect:sourceRect];
+
+  CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+  GLKMatrix3 texture = LTTextureMatrix3ForRotatedRect(sourceRect, textureSize);
   self.program[@"texture"] = $(texture);
   
   [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
-}
-
-- (GLKMatrix3)matrix3ForRotatedTextureRect:(LTRotatedRect *)rotatedRect {
-  CGSize size = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
-  LTRotatedRect *normalizedRect = [LTRotatedRect rectWithCenter:rotatedRect.center / size
-                                                           size:rotatedRect.rect.size / size
-                                                          angle:rotatedRect.angle];
-  return [self matrix3ForRotatedRect:normalizedRect];
-}
-
-- (GLKMatrix3)matrix3ForRotatedRect:(LTRotatedRect *)rotatedRect {
-  CGRect rect = rotatedRect.rect;
-  GLKMatrix3 scale = GLKMatrix3MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix3 translateToCenter = GLKMatrix3MakeTranslation(-rect.size.width / 2,
-                                                           -rect.size.height / 2);
-  GLKMatrix3 rotate = GLKMatrix3MakeRotation(rotatedRect.angle, 0, 0, 1);
-  GLKMatrix3 translate = GLKMatrix3MakeTranslation(rect.origin.x + rect.size.width / 2,
-                                                   rect.origin.y + rect.size.height / 2);
-  return GLKMatrix3Multiply(translate,
-                            GLKMatrix3Multiply(rotate,
-                                               GLKMatrix3Multiply(translateToCenter, scale)));
-}
-
-- (GLKMatrix4)matrix4ForRotatedRect:(LTRotatedRect *)rotatedRect {
-  CGRect rect = rotatedRect.rect;
-  GLKMatrix4 scale = GLKMatrix4MakeScale(rect.size.width, rect.size.height, 1);
-  GLKMatrix4 translateToCenter = GLKMatrix4MakeTranslation(-rect.size.width / 2,
-                                                           -rect.size.height / 2, 0);
-  GLKMatrix4 rotate = GLKMatrix4MakeRotation(rotatedRect.angle, 0, 0, 1);
-  GLKMatrix4 translate = GLKMatrix4MakeTranslation(rect.origin.x + rect.size.width / 2,
-                                                   rect.origin.y + rect.size.height / 2, 0);
-  return GLKMatrix4Multiply(translate,
-                            GLKMatrix4Multiply(rotate,
-                                               GLKMatrix4Multiply(translateToCenter, scale)));
 }
 
 #pragma mark -

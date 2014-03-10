@@ -4,7 +4,7 @@
 #import "LTBWTonalityProcessor.h"
 
 #import "LTColorGradient.h"
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTBWTonalityProcessor)
@@ -22,7 +22,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  noise = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Noise.png")];
+  noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:noise];
 });
 
@@ -132,7 +132,7 @@ context(@"processing", ^{
   });
   
   it(@"should create correct conversion", ^{
-    LTTexture *lena = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Lena128.png")];
+    LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
     
     // Scale the red channel slightly to create a "neutral-to-cold" gradient.
@@ -165,7 +165,7 @@ context(@"processing", ^{
     
     // Important: this test depends on the performance of other classes and processors, thus is
     // expected to fail once changes introduced to major rendering components, such as smoothing.
-    cv::Mat image = LTLoadMatWithName([self class], @"Lena128BWTonality.png");
+    cv::Mat image = LTLoadMat([self class], @"Lena128BWTonality.png");
     expect(LTFuzzyCompareMat(processed.texture.image, image)).to.beTruthy();
   });
 });

@@ -40,15 +40,17 @@
     LTNextIterationPlacement *placement = [self.strategy iterationStarted];
 
     [self.drawer setSourceTexture:placement.sourceTexture];
-
-    CGRect sourceRect = CGRectFromOriginAndSize(CGPointZero, placement.sourceTexture.size);
-    CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, placement.targetFbo.size);
-    [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
-
+    [self drawWithPlacement:placement];
     [self.strategy iterationEnded];
   }
 
   return [self.strategy processedOutputs];
+}
+
+- (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
+  CGRect sourceRect = CGRectFromOriginAndSize(CGPointZero, placement.sourceTexture.size);
+  CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, placement.targetFbo.size);
+  [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
 }
 
 - (void)setAuxiliaryTextures:(NSDictionary *)auxiliaryTextures {

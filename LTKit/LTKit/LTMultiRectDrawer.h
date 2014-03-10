@@ -22,6 +22,7 @@
 /// bottom left pixel.
 ///
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
+/// @note \c targetRects and \c sourceRects must have the same number of elements.
 - (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects;
 
@@ -35,6 +36,7 @@
 ///
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
+/// @note \c targetRects and \c sourceRects must have the same number of elements.
 - (void)drawRotatedRects:(NSArray *)targetRects inBoundFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects;
 

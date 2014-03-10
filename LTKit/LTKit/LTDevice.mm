@@ -310,7 +310,7 @@ static NSDictionary * const kDeviceTypeToString = @{
 }
 
 - (CGFloat)fingerSizeOnDevice {
-  return self.pointsPerInch * kCommonFingerSizeInInches;
+  return std::round(self.pointsPerInch * kCommonFingerSizeInInches);
 }
 
 #pragma mark -

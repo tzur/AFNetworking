@@ -3,6 +3,8 @@
 
 #import <opencv2/core/core.hpp>
 
+#import "LTCVHalfFloatExtension.h"
+
 /// Converts the given \c input mat to a \c mat with the given \c type, and writes the result to
 /// \c type. The \c output matrix will be created with the corresponding type.
 ///
@@ -18,8 +20,9 @@
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 
 /// Converts the given \c input mat to an \c output mat with an optional \c alpha scaling. Either \c
-/// input or \c output should be of half-float precision. The \c _From and \c _To template
-/// parameters define the source matrix type and the target matrix type to convert to, accordingly.
+/// input or \c output should be of half-float precision, and they cannot point to the same memory
+/// address. The \c _From and \c _To template parameters define the source matrix type and the
+/// target matrix type to convert to, accordingly.
 template <typename _From, typename _To>
 void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1);
 
@@ -27,6 +30,18 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1)
 /// to the center of the matrix. This is done by swapping the first quadrand with the third and the
 /// second with the fourth. This is done in-place, so the input is affected.
 cv::Mat *LTInPlaceFFTShift(cv::Mat *mat);
+
+/// Loads an image with the given \c name from the bundle that contains the given class. Throws
+/// exception if the image cannot be found or loaded.
+UIImage *LTLoadImage(Class classInBundle, NSString *name);
+
+/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
+/// class. Throws exception if the image cannot be found or loaded.
+cv::Mat LTLoadMat(Class classInBundle, NSString *name);
+
+/// Loads an image from the main bundle to \c cv::Mat with the given \c name. Throws exception if
+/// the image cannot be found or loaded.
+cv::Mat LTLoadMatFromMainBundle(NSString *name);
 
 #pragma mark -
 #pragma mark Details
@@ -37,14 +52,24 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha) {
   static_assert(cv::DataDepth<_From>::value == CV_16F ||
                 cv::DataDepth<_To>::value == CV_16F, "_From or _To must be of a half-float type");
 
+  LTParameterAssert(input.data != output->data, @"Input and output cannot point to the same data");
+
   output->create(input.size(), CV_MAKETYPE(cv::DataDepth<_To>::value, input.channels()));
-  LTAssert(input.isContinuous() && output->isContinuous(), @"input and output matrices must be "
-           "continuous for this conversion operation");
+
+  cv::Size size(input.size());
+  if (input.isContinuous() && output->isContinuous()) {
+    size.width *= size.height;
+    size.height = 1;
+  }
+  size.width *= input.channels();
 
   // TODO:(yaron) performance can be increased by doing this in batch.
-  _From *inputData = (_From *)input.data;
-  _To *outputData = (_To *)output->data;
-  for (size_t i = 0; i < input.total() * input.channels(); ++i) {
-    outputData[i] = cv::saturate_cast<_To>(half_float::half(inputData[i]) * alpha);
+  for (int i = 0; i < size.height; ++i) {
+    const _From *inputPtr = input.ptr<_From>(i);
+    _To *outputPtr = output->ptr<_To>(i);
+
+    for (int j = 0; j < size.width; ++j) {
+      outputPtr[j] = cv::saturate_cast<_To>(half_float::half(inputPtr[j]) * alpha);
+    }
   }
 }
