@@ -4,7 +4,7 @@
 #import "LTBilateralFilterProcessor.h"
 
 #import "LTImage.h"
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 static const int kBilateralWindowSize = 3;
@@ -87,7 +87,7 @@ __block LTTexture *outputB;
 __block LTBilateralFilterProcessor *processor;
 
 beforeEach(^{
-  cv::Mat image = LTLoadMatWithName([self class], @"Noise.png");
+  cv::Mat image = LTLoadMat([self class], @"Noise.png");
   LTTexture *input = [LTTexture textureWithImage:image];
 
   outputA = [LTTexture textureWithPropertiesOf:input];
@@ -109,8 +109,8 @@ it(@"should process input image correctly", ^{
 
   [processor process];
 
-  cv::Mat goldA = LTLoadMatWithName([self class], @"NoiseGoldA.png");
-  cv::Mat goldB = LTLoadMatWithName([self class], @"NoiseGoldB.png");
+  cv::Mat goldA = LTLoadMat([self class], @"NoiseGoldA.png");
+  cv::Mat goldB = LTLoadMat([self class], @"NoiseGoldB.png");
 
   // After long research and discussion, we decided to give a large fuzziness in this test (6, which
   // is ~2% error). We suspect the errors are floating point errors and precision errors when

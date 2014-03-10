@@ -6,7 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTGLTexture.h"
 #import "LTImage.h"
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 
 SpecBegin(LTBicubicResizeProcessor)
 
@@ -50,7 +50,7 @@ context(@"processing", ^{
     [processor process];
     
     // Result of filtering 8x8 delta function.
-    cv::Mat processedDelta = LTLoadMatWithName([self class], @"DeltaBicubic.png");
+    cv::Mat processedDelta = LTLoadMat([self class], @"DeltaBicubic.png");
     expect(LTFuzzyCompareMat(processedDelta, [output image], 2)).to.beTruthy();
   });
 });

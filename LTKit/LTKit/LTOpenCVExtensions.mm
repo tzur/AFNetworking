@@ -3,10 +3,13 @@
 
 #import "LTOpenCVExtensions.h"
 
+#import "LTImage.h"
+
 using half_float::half;
 
 void LTConvertToSameNumberOfChannels(const cv::Mat &input, cv::Mat *output, int type);
 void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type);
+NSString *LTPathForResource(Class classInBundle, NSString *name);
 
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
   LTAssert(&input != output, @"Conversion cannot be made in-place");
@@ -106,4 +109,34 @@ cv::Mat *LTInPlaceFFTShift(cv::Mat *mat) {
   temp.copyTo(q2);
 
   return mat;
+}
+
+UIImage *LTLoadImage(Class classInBundle, NSString *name) {
+  NSString *path = LTPathForResource(classInBundle, name);
+  UIImage *image = [UIImage imageWithContentsOfFile:path];
+  LTParameterAssert(image, @"Given image name '%@' cannot be loaded", name);
+
+  return image;
+}
+
+cv::Mat LTLoadMat(Class classInBundle, NSString *name) {
+  UIImage *image = LTLoadImage(classInBundle, name);
+  return [[LTImage alloc] initWithImage:image].mat;
+}
+
+cv::Mat LTLoadMatFromMainBundle(NSString *name) {
+  UIImage *image = [UIImage imageNamed:name];
+  return [[LTImage alloc] initWithImage:image].mat;
+}
+
+NSString *LTPathForResource(Class classInBundle, NSString *name) {
+  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
+
+  NSString *resource = [name stringByDeletingPathExtension];
+  NSString *type = [name pathExtension];
+
+  NSString *path = [bundle pathForResource:resource ofType:type];
+  LTParameterAssert(path, @"Given image name '%@' doesn't exist in bundle '%@'", name, bundle);
+
+  return path;
 }

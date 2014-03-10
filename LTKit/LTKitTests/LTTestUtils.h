@@ -61,14 +61,6 @@ cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle);
 /// zeros everywhere, besides the center where it is one.
 cv::Mat4b LTCreateDeltaMat(CGSize size);
 
-/// Loads an image with the given \c name from the bundle that contains the given class. Throws
-/// exception if the image cannot be found or loaded.
-UIImage *LTLoadImageWithName(Class classInBundle, NSString *name);
-
-/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
-/// class. Throws exception if the image cannot be found or loaded.
-cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name);
-
 /// Loads an image to \c cv::Mat. The name of the image can differ between simulator and device.
 /// Loads from the bundle that contains the given class. Throws exception if the image cannot be
 /// found or loaded.

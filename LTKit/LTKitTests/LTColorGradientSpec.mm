@@ -3,7 +3,7 @@
 
 #import "LTColorGradient.h"
 
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTColorGradient)
@@ -123,7 +123,7 @@ context(@"writing gradient values to texture", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
 
-    cv::Mat image = LTLoadMatWithName([self class], @"RedGradient.png");
+    cv::Mat image = LTLoadMat([self class], @"RedGradient.png");
     expect(LTFuzzyCompareMat(texture.image, image)).to.beTruthy();
   });
   
@@ -131,7 +131,7 @@ context(@"writing gradient values to texture", ^{
     gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
     texture = [gradient textureWithSamplingPoints:256];
 
-    cv::Mat image = LTLoadMatWithName([self class], @"RedBlueGradient.png");
+    cv::Mat image = LTLoadMat([self class], @"RedBlueGradient.png");
     expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
   });
 });

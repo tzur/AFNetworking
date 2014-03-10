@@ -5,7 +5,7 @@
 
 #import "LTGLKitExtensions.h"
 #import "LTOneShotMultiscaleNoiseProcessor.h"
-#import "LTTestUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTProceduralFrame)
@@ -23,7 +23,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  noise = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Noise.png")];
+  noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:noise];
 });
 
@@ -106,7 +106,7 @@ context(@"processing", ^{
     [frame process];
     
     LTTexture *precomputedFrame =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"RoundWhiteFrame.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWhiteFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
   
@@ -121,7 +121,7 @@ context(@"processing", ^{
     [frame process];
     
     LTTexture *precomputedFrame =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"StraightRedFrame.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"StraightRedFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
   
@@ -136,7 +136,7 @@ context(@"processing", ^{
     [frame process];
     
     LTTexture *precomputedFrame =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"StraightBlueFrame.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"StraightBlueFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
   
@@ -151,14 +151,14 @@ context(@"processing", ^{
     [frame process];
     
     LTTexture *precomputedFrame =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"RoundishBlackFrame.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"RoundishBlackFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
   
   it(@"should return straight, black, noisy frame", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(64, 64)];
     LTTexture *tiledNoise =
-        [LTTexture textureWithImage:LTLoadMatWithName([self class], @"TiledNoise.png")];
+        [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
     
     ProceduralFrame *frame = [[ProceduralFrame alloc] initWithNoise:tiledNoise output:frameTexture];
     frame.width = 0.0;
@@ -169,7 +169,7 @@ context(@"processing", ^{
     frame.color = GLKVector3Make(0.0, 0.0, 0.0);
     [frame process];
     
-    LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMatWithName([self class],
+    LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMat([self class],
         @"StraightBlackNoisyFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });

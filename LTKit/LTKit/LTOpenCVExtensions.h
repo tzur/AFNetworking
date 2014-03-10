@@ -31,6 +31,18 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1)
 /// second with the fourth. This is done in-place, so the input is affected.
 cv::Mat *LTInPlaceFFTShift(cv::Mat *mat);
 
+/// Loads an image with the given \c name from the bundle that contains the given class. Throws
+/// exception if the image cannot be found or loaded.
+UIImage *LTLoadImage(Class classInBundle, NSString *name);
+
+/// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
+/// class. Throws exception if the image cannot be found or loaded.
+cv::Mat LTLoadMat(Class classInBundle, NSString *name);
+
+/// Loads an image from the main bundle to \c cv::Mat with the given \c name. Throws exception if
+/// the image cannot be found or loaded.
+cv::Mat LTLoadMatFromMainBundle(NSString *name);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -

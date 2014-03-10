@@ -190,41 +190,16 @@ cv::Mat4b LTCreateDeltaMat(CGSize size) {
   return delta;
 }
 
-UIImage *LTLoadImageWithName(Class classInBundle, NSString *name) {
-  NSString *path = LTPathForResource(classInBundle, name);
-  UIImage *image = [UIImage imageWithContentsOfFile:path];
-  LTAssert(image, @"Image cannot be loaded");
-
-  return image;
-}
-
-cv::Mat LTLoadMatWithName(Class classInBundle, NSString *name) {
-  UIImage *image = LTLoadImageWithName(classInBundle, name);
-  return [[LTImage alloc] initWithImage:image].mat;
-}
-
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName) {
   cv::Mat mat;
   if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
       [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
-    mat = LTLoadMatWithName(classInBundle, simulatorName);
+    mat = LTLoadMat(classInBundle, simulatorName);
   } else {
-    mat = LTLoadMatWithName(classInBundle, deviceName);
+    mat = LTLoadMat(classInBundle, deviceName);
   }
   return mat;
-}
-
-NSString *LTPathForResource(Class classInBundle, NSString *name) {
-  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
-
-  NSString *resource = [name stringByDeletingPathExtension];
-  NSString *type = [name pathExtension];
-
-  NSString *path = [bundle pathForResource:resource ofType:type];
-  LTAssert(path, @"Given image filename doesn't exist in the test bundle");
-
-  return path;
 }
 
 #pragma mark -

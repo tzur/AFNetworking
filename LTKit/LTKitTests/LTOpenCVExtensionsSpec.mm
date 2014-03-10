@@ -139,4 +139,33 @@ context(@"fft shift", ^{
   });
 });
 
+context(@"load image", ^{
+  it(@"should load image", ^{
+    UIImage *image = LTLoadImage([self class], @"White.jpg");
+
+    expect(image).toNot.beNil();
+    expect(image.size).to.equal(CGSizeMake(16, 16));
+  });
+
+  it(@"should fail when loading non-existing image", ^{
+    expect(^{
+      UIImage __unused *image = LTLoadImage([self class], @"_Invalid.png");
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should load mat", ^{
+    cv::Mat mat = LTLoadMat([self class], @"White.jpg");
+
+    expect(mat.type()).to.equal(CV_8UC4);
+    expect(mat.rows).to.equal(16);
+    expect(mat.cols).to.equal(16);
+  });
+
+  it(@"should fail when loading non-existing mat", ^{
+    expect(^{
+      cv::Mat __unused mat = LTLoadMat([self class], @"_Invalid.png");
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 SpecEnd
