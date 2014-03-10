@@ -55,7 +55,6 @@
 #import <LTKit/LTGPUStructsMacros.h>
 #import <LTKit/LTGPUQueue.h>
 #import <LTKit/LTMMTexture.h>
-#import <LTKit/LTPainter+LTView.h>
 #import <LTKit/LTProgram.h>
 #import <LTKit/LTShader.h>
 #import <LTKit/LTTexture.h>
@@ -64,6 +63,19 @@
 
 // GPU/Drawers.
 #import <LTKit/LTRectDrawer.h>
+
+// GPU/Painting.
+#import <LTKit/LTPainter+LTView.h>
+
+// GPU/Painting/Brushes.
+#import <LTKit/LTBrush.h>
+#import <LTKit/LTEdgeAvoidingBrush.h>
+#import <LTKit/LTErasingBrush.h>
+#import <LTKit/LTRoundBrush.h>
+
+// GPU/Painting/Interpolation Routines.
+#import <LTKit/LTCatmullRomInterpolationRoutine.h>
+#import <LTKit/LTLinearInterpolationRoutine.h>
 
 // UI.
 #import <LTKit/LTView.h>
