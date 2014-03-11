@@ -270,6 +270,7 @@
 		8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta-iOS.a */; };
 		8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */; };
 		8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA674118310F92003FCB65 /* libSpecta-iOS.a */; };
+		8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */; };
 		8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */; };
 		8BD685FB18854F0200571E75 /* LTBilateralFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685E91885404600571E75 /* LTBilateralFilter.fsh */; };
 		8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */; };
@@ -436,6 +437,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = E9901C3B18205AB100844A05;
 			remoteInfo = "Specta-OSXTests";
+		};
+		8BCFC01D18CF0B6100E612DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B3DEBDC18296B6100EA0C1A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
+			remoteInfo = LTKitBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -839,6 +847,11 @@
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
 		8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+GLKitExtensions.m"; sourceTree = "<group>"; };
 		8BCA673918310DA8003FCB65 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitBundle-Info.plist"; sourceTree = "<group>"; };
+		8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTKitBundle.h"; sourceTree = "<group>"; };
+		8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+LTKitBundle.m"; sourceTree = "<group>"; };
 		8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBilateralFilterProcessor.h; sourceTree = "<group>"; };
 		8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTBilateralFilterProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BD685E91885404600571E75 /* LTBilateralFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBilateralFilter.fsh; sourceTree = "<group>"; };
@@ -1191,6 +1204,7 @@
 			isa = PBXGroup;
 			children = (
 				8B3DEBE918296B6100EA0C1A /* LTKit */,
+				8BCFBFF618CF0AF100E612DE /* LTKitBundle */,
 				8B3DEBFD18296B6100EA0C1A /* LTKitTests */,
 				8B3DEBE618296B6100EA0C1A /* Frameworks */,
 				8B3DEBE518296B6100EA0C1A /* Products */,
@@ -1202,6 +1216,7 @@
 			children = (
 				8B3DEBE418296B6100EA0C1A /* libLTKit.a */,
 				8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */,
+				8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1222,6 +1237,7 @@
 				8B3DEC1218296D7600EA0C1A /* GLKit.framework */,
 				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
 				8B3DEBF518296B6100EA0C1A /* XCTest.framework */,
+				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1715,6 +1731,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8BCFBFF618CF0AF100E612DE /* LTKitBundle */ = {
+			isa = PBXGroup;
+			children = (
+				8BCFBFF718CF0AF100E612DE /* Supporting Files */,
+			);
+			path = LTKitBundle;
+			sourceTree = "<group>";
+		};
+		8BCFBFF718CF0AF100E612DE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */,
+				8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */,
+				8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		8BFE439818759482008B699F /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
@@ -1790,6 +1824,7 @@
 				8B8E50EE1861CCEC00821829 /* PBXBuildRule */,
 			);
 			dependencies = (
+				8BCFC01E18CF0B6100E612DE /* PBXTargetDependency */,
 			);
 			name = LTKit;
 			productName = LTKit;
@@ -1816,6 +1851,21 @@
 			productName = LTKitTests;
 			productReference = 8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8BCFBFF218CF0AF000E612DE /* LTKitBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BCFC00C18CF0AF100E612DE /* Build configuration list for PBXNativeTarget "LTKitBundle" */;
+			buildPhases = (
+				8BCFBFF118CF0AF000E612DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LTKitBundle;
+			productName = LTKitBundle;
+			productReference = 8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -1853,6 +1903,7 @@
 			projectRoot = "";
 			targets = (
 				8B3DEBE318296B6100EA0C1A /* LTKit */,
+				8BCFBFF218CF0AF000E612DE /* LTKitBundle */,
 				8B3DEBF318296B6100EA0C1A /* LTKitTests */,
 			);
 		};
@@ -1996,6 +2047,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BCFBFF118CF0AF000E612DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2079,6 +2137,7 @@
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
 				0367A4B018ACF45700B42E34 /* LTProceduralFrame.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
+				8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */,
 				03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */,
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
 				03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */,
@@ -2235,6 +2294,11 @@
 			isa = PBXTargetDependency;
 			name = "Expecta-iOS";
 			targetProxy = 8BCA6724182FD8E6003FCB65 /* PBXContainerItemProxy */;
+		};
+		8BCFC01E18CF0B6100E612DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BCFBFF218CF0AF000E612DE /* LTKitBundle */;
+			targetProxy = 8BCFC01D18CF0B6100E612DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2534,6 +2598,52 @@
 			};
 			name = "Application Tests";
 		};
+		8BCFBFFD18CF0AF100E612DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LTKitBundle/LTKitBundle-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "LTKitBundle/LTKitBundle-Info.plist";
+				PRODUCT_NAME = LTKit;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		8BCFBFFE18CF0AF100E612DE /* Application Tests */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LTKitBundle/LTKitBundle-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "LTKitBundle/LTKitBundle-Info.plist";
+				PRODUCT_NAME = LTKit;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = "Application Tests";
+		};
+		8BCFBFFF18CF0AF100E612DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LTKitBundle/LTKitBundle-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "LTKitBundle/LTKitBundle-Info.plist";
+				PRODUCT_NAME = LTKit;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2563,6 +2673,16 @@
 				8B3DEC0B18296B6100EA0C1A /* Debug */,
 				8BC465781897B80F0094F7BC /* Application Tests */,
 				8B3DEC0C18296B6100EA0C1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BCFC00C18CF0AF100E612DE /* Build configuration list for PBXNativeTarget "LTKitBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BCFBFFD18CF0AF100E612DE /* Debug */,
+				8BCFBFFE18CF0AF100E612DE /* Application Tests */,
+				8BCFBFFF18CF0AF100E612DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

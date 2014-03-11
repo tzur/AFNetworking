@@ -79,3 +79,6 @@
 
 // UI.
 #import <LTKit/LTView.h>
+
+// LTKitBundle.
+#import <LTKitBundle/NSBundle+LTKitBundle.h>
