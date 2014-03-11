@@ -17,11 +17,6 @@
 		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; };
 		8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
 		8B8E51461868479100821829 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51451868479100821829 /* Images.xcassets */; };
-		8B8E514D1868479100821829 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E514C1868479100821829 /* XCTest.framework */; };
-		8B8E514E1868479100821829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512D1868479100821829 /* Foundation.framework */; };
-		8B8E514F1868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
-		8B8E51571868479100821829 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51551868479100821829 /* InfoPlist.strings */; };
-		8B8E51591868479100821829 /* LTKitUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51581868479100821829 /* LTKitUserTests.m */; };
 		8B8E51701868592400821829 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E516F1868592400821829 /* GLKit.framework */; };
 		8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51711868592E00821829 /* OpenGLES.framework */; };
 		8B8E517518685A7300821829 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTKit.a */; };
@@ -30,16 +25,10 @@
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
+		8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B8E51501868479100821829 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E51221868479100821829 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B8E51291868479100821829;
-			remoteInfo = LTKitUser;
-		};
 		8B8E5167186847B200821829 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
@@ -61,6 +50,13 @@
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTKit;
 		};
+		8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTKitBundle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -79,11 +75,7 @@
 		8B8E51421868479100821829 /* LTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTViewController.h; sourceTree = "<group>"; };
 		8B8E51431868479100821829 /* LTViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewController.mm; sourceTree = "<group>"; };
 		8B8E51451868479100821829 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		8B8E514B1868479100821829 /* LTKitUserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitUserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E514C1868479100821829 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		8B8E51541868479100821829 /* LTKitUserTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitUserTests-Info.plist"; sourceTree = "<group>"; };
-		8B8E51561868479100821829 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8B8E51581868479100821829 /* LTKitUserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTKitUserTests.m; sourceTree = "<group>"; };
 		8B8E5162186847B200821829 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B8E516F1868592400821829 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8B8E51711868592E00821829 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -113,16 +105,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B8E51481868479100821829 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B8E514D1868479100821829 /* XCTest.framework in Frameworks */,
-				8B8E514F1868479100821829 /* UIKit.framework in Frameworks */,
-				8B8E514E1868479100821829 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -130,7 +112,6 @@
 			isa = PBXGroup;
 			children = (
 				8B8E51331868479100821829 /* LTKitUser */,
-				8B8E51521868479100821829 /* LTKitUserTests */,
 				8B8E516B186847B900821829 /* Libraries */,
 				8B8E512C1868479100821829 /* Frameworks */,
 				8B8E512B1868479100821829 /* Products */,
@@ -141,7 +122,6 @@
 			isa = PBXGroup;
 			children = (
 				8B8E512A1868479100821829 /* LTKitUser.app */,
-				8B8E514B1868479100821829 /* LTKitUserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,28 +170,11 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8B8E51521868479100821829 /* LTKitUserTests */ = {
-			isa = PBXGroup;
-			children = (
-				8B8E51581868479100821829 /* LTKitUserTests.m */,
-				8B8E51531868479100821829 /* Supporting Files */,
-			);
-			path = LTKitUserTests;
-			sourceTree = "<group>";
-		};
-		8B8E51531868479100821829 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8B8E51541868479100821829 /* LTKitUserTests-Info.plist */,
-				8B8E51551868479100821829 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		8B8E5163186847B200821829 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				8B8E5168186847B200821829 /* libLTKit.a */,
+				8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */,
 				8B8E516A186847B200821829 /* LTKitTests.xctest */,
 			);
 			name = Products;
@@ -246,24 +209,6 @@
 			productReference = 8B8E512A1868479100821829 /* LTKitUser.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8B8E514A1868479100821829 /* LTKitUserTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8B8E515F1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUserTests" */;
-			buildPhases = (
-				8B8E51471868479100821829 /* Sources */,
-				8B8E51481868479100821829 /* Frameworks */,
-				8B8E51491868479100821829 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8B8E51511868479100821829 /* PBXTargetDependency */,
-			);
-			name = LTKitUserTests;
-			productName = LTKitUserTests;
-			productReference = 8B8E514B1868479100821829 /* LTKitUserTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -276,9 +221,6 @@
 				TargetAttributes = {
 					8B8E51291868479100821829 = {
 						DevelopmentTeam = KG6GWND6BG;
-					};
-					8B8E514A1868479100821829 = {
-						TestTargetID = 8B8E51291868479100821829;
 					};
 				};
 			};
@@ -302,7 +244,6 @@
 			projectRoot = "";
 			targets = (
 				8B8E51291868479100821829 /* LTKitUser */,
-				8B8E514A1868479100821829 /* LTKitUserTests */,
 			);
 		};
 /* End PBXProject section */
@@ -322,6 +263,13 @@
 			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitBundle.bundle;
+			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -333,14 +281,7 @@
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B8E51491868479100821829 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B8E51571868479100821829 /* InfoPlist.strings in Resources */,
+				8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,22 +298,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B8E51471868479100821829 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B8E51591868479100821829 /* LTKitUserTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B8E51511868479100821829 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8B8E51291868479100821829 /* LTKitUser */;
-			targetProxy = 8B8E51501868479100821829 /* PBXContainerItemProxy */;
-		};
 		8B8E517418685A5700821829 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTKit;
@@ -385,14 +313,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				8B8E51371868479100821829 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		8B8E51551868479100821829 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8B8E51561868479100821829 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -463,28 +383,6 @@
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
-			};
-			name = "Application Tests";
-		};
-		289EA7A01897D12600720FC6 /* Application Tests */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LTKitUser.app/LTKitUser";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "LTKitUserTests/LTKitUserTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = "Application Tests";
 		};
@@ -614,46 +512,6 @@
 			};
 			name = Release;
 		};
-		8B8E51601868479100821829 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LTKitUser.app/LTKitUser";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "LTKitUserTests/LTKitUserTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		8B8E51611868479100821829 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LTKitUser.app/LTKitUser";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
-				INFOPLIST_FILE = "LTKitUserTests/LTKitUserTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -673,16 +531,6 @@
 				8B8E515D1868479100821829 /* Debug */,
 				289EA79F1897D12600720FC6 /* Application Tests */,
 				8B8E515E1868479100821829 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8B8E515F1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUserTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8B8E51601868479100821829 /* Debug */,
-				289EA7A01897D12600720FC6 /* Application Tests */,
-				8B8E51611868479100821829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
