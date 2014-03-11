@@ -25,6 +25,7 @@
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
+		8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTKit;
+		};
+		8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTKitBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -166,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8E5168186847B200821829 /* libLTKit.a */,
+				8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */,
 				8B8E516A186847B200821829 /* LTKitTests.xctest */,
 			);
 			name = Products;
@@ -254,6 +263,13 @@
 			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitBundle.bundle;
+			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -265,6 +281,7 @@
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
+				8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
