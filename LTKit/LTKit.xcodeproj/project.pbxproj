@@ -48,6 +48,7 @@
 		03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */; };
 		03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */; };
 		03C7B6CA18CF124900E728F5 /* ShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C218CF124900E728F5 /* ShadowsCurve.png */; };
+		03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6D618CF313500E728F5 /* MealAdjusted.png */; };
 		03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168118B26FA40026B56A /* RoundishBlackFrame.png */; };
 		03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168218B26FA40026B56A /* RoundWhiteFrame.png */; };
 		03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168318B26FA40026B56A /* StraightBlueFrame.png */; };
@@ -518,6 +519,7 @@
 		03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveBrightnessCurve.png; path = Curves/PositiveBrightnessCurve.png; sourceTree = "<group>"; };
 		03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveContrastCurve.png; path = Curves/PositiveContrastCurve.png; sourceTree = "<group>"; };
 		03C7B6C218CF124900E728F5 /* ShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowsCurve.png; path = Curves/ShadowsCurve.png; sourceTree = "<group>"; };
+		03C7B6D618CF313500E728F5 /* MealAdjusted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealAdjusted.png; path = Resources/MealAdjusted.png; sourceTree = "<group>"; };
 		03D5168118B26FA40026B56A /* RoundishBlackFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundishBlackFrame.png; path = Resources/RoundishBlackFrame.png; sourceTree = "<group>"; };
 		03D5168218B26FA40026B56A /* RoundWhiteFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundWhiteFrame.png; path = Resources/RoundWhiteFrame.png; sourceTree = "<group>"; };
 		03D5168318B26FA40026B56A /* StraightBlueFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightBlueFrame.png; path = Resources/StraightBlueFrame.png; sourceTree = "<group>"; };
@@ -1325,6 +1327,7 @@
 			isa = PBXGroup;
 			children = (
 				0366BA4018CCA51A002E6BA1 /* Meal.jpg */,
+				03C7B6D618CF313500E728F5 /* MealAdjusted.png */,
 				03D5169918B3344F0026B56A /* StraightBlackNoisyFrame.png */,
 				03D5169718B2768D0026B56A /* TiledNoise.png */,
 				03D5168118B26FA40026B56A /* RoundishBlackFrame.png */,
@@ -2044,6 +2047,7 @@
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
+				03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,

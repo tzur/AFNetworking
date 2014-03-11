@@ -5,7 +5,7 @@
 
 /// @class LTAdjustProcessor
 ///
-/// This class tonally adjust the image. The manipulations can be categorized into the three
+/// This class tonally adjusts the image. The manipulations can be categorized into the three
 /// following categories: luminance, color and details.
 /// Luminance / color separation is done with YIQ color space.
 /// Base / details separation is done with separable bilateral filter.

@@ -298,34 +298,35 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
   
-  it(@"should create correct conversion of luminance, color and details", ^{
-    LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena.png")];
-    LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
-  
-    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:lena output:lenaOutput];
+  it(@"should create correct conversion of luminance, color  and details", ^{
+    LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
+    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
+    
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    
     // Luminance.
-    adjust.exposure = 0.0;
-    adjust.brightness = 1.0;
-    adjust.contrast = 0.0;
-    adjust.offset = 0.0;
-    adjust.blackPoint = GLKVector3Make(0.5, 0.5, 0.5);
+    adjust.exposure = 0.1;
+    adjust.brightness = -0.1;
+    adjust.contrast = 0.1;
+    adjust.offset = 0.05;
+    adjust.blackPoint = GLKVector3Make(0.1, 0.1, 0.0);
     adjust.whitePoint = GLKVector3Make(1.0, 1.0, 1.0);
     // Color.
-    adjust.saturation = -0.1;
-    adjust.temperature = 0.1;
-    adjust.tint = 0.1;
+    adjust.saturation = -0.3;
+    adjust.temperature = 0.05;
+    adjust.tint = -0.05;
     // Details.
-    adjust.details = 0.1;
-    adjust.shadows = 0.1;
-    adjust.fillLight = 0.1;
-    adjust.highlights = 0.1;
-
+    adjust.details = 0.2;
+    adjust.shadows = 0.2;
+    adjust.fillLight = 0.4;
+    adjust.highlights = 0.3;
+    
     [adjust process];
     
     // Important: this test heavily depends on the smoother setup and is expected to change after
     // fine-tuning of the smoother.
-    cv::Mat image = LTLoadMat([self class], @"Lena128BWTonality.png");
-    expect($(lenaOutput.image)).to.beCloseToMat($(image));
+    cv::Mat image = LTLoadMat([self class], @"MealAdjusted.png");
+    expect($(output.image)).to.beCloseToMat($(image));
 
   });
 });
