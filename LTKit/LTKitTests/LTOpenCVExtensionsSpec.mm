@@ -166,6 +166,15 @@ context(@"load image", ^{
       cv::Mat __unused mat = LTLoadMat([self class], @"_Invalid.png");
     }).to.raise(NSInvalidArgumentException);
   });
+
+  it(@"should load mat from bundle", ^{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    cv::Mat mat = LTLoadMatFromBundle(bundle, @"White.jpg");
+
+    expect(mat.type()).to.equal(CV_8UC4);
+    expect(mat.rows).to.equal(16);
+    expect(mat.cols).to.equal(16);
+  });
 });
 
 SpecEnd

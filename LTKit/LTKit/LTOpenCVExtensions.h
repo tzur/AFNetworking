@@ -43,6 +43,10 @@ cv::Mat LTLoadMat(Class classInBundle, NSString *name);
 /// the image cannot be found or loaded.
 cv::Mat LTLoadMatFromMainBundle(NSString *name);
 
+/// Loads an image from the main bundle to \c cv::Mat with the given \c name. Throws exception if
+/// the image cannot be found or loaded.
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -

@@ -67,6 +67,3 @@ cv::Mat4b LTCreateDeltaMat(CGSize size);
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName);
 
-/// Returns the path for a resource in the bundle defined by the given \c classInBundle which it
-/// contains. Raises an exception if the image cannot be loaded.
-NSString *LTPathForResource(Class classInBundle, NSString *name);
