@@ -6,13 +6,11 @@
 #import "LTBilateralFilterProcessor.h"
 #import "LTBoxFilterProcessor.h"
 #import "LTGLKitExtensions.h"
+#import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTAdjustFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-// TODO:(zeev) Remove it and change to LTOpenCVExtensions once Yaron moves mat loading there.
-#import "LTTestUtils.h"
-#import "LTImage.h"
 
 @interface LTGPUImageProcessor ()
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
@@ -307,11 +305,9 @@ static const uchar negativeContrastCurveData[256] = {128, 128, 128, 128, 128, 12
 - (const cv::Mat1b &)identityCurve {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-//    _identityCurve = dataToCurve(identityCurveData);
-    
-    UIImage *image = LTLoadImageWithName([self class], @"identityCurve.png");
-    _identityCurve = [[LTImage alloc] initWithImage:image].mat;
-    
+    _identityCurve = dataToCurve(identityCurveData);
+//     _identityCurve = LTLoadMat([self class], @"identityCurve.png");
+
 //    _identityCurve = LTLoadMatWithName([self class], @"identityCurve.png");
     
   });

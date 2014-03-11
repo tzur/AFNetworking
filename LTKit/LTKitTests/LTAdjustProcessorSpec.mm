@@ -5,6 +5,7 @@
 
 #import "LTColorGradient.h"
 #import "LTGLContext.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
@@ -23,7 +24,7 @@ afterEach(^{
 });
 
 beforeEach(^{
-  input = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Noise.png")];
+  input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:input];
 });
 
@@ -57,14 +58,14 @@ context(@"properties", ^{
   it(@"should fail on invalid whitePoint parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.whitePoint = GLKVector3Make(4, 4, 4);
+      adjust.whitePoint = GLKVector3Make(1, 1, 4);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid blackPoint parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.blackPoint = GLKVector3Make(4, 4, 4);
+      adjust.blackPoint = GLKVector3Make(4, 0, 0);
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -142,6 +143,34 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
+  
+  it(@"should process positive brightness and contrast correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(64,64,64,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(102,102,102,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.brightness = 0.5;
+    adjust.contrast = 0.15;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
+  it(@"should process negative contrast correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(0,0,0,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.contrast = -1.0;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
   it(@"should process offset correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0,0,0,255));
     cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
@@ -178,18 +207,18 @@ context(@"processing", ^{
                                                                   output:outputTexture];
     adjust.blackPoint = GLKVector3Make(0.5, 0.5, 0.5);
     [adjust process];
-    expect($(outputTexture.image)).to.beCloseToMat($(output));
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
-  it(@"should process negative contrast correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(0,0,0,255));
+  it(@"should process white point correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(64,64,64,255));
     cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.contrast = -1.0;
+    adjust.whitePoint = GLKVector3Make(0.5, 0.5, 0.5);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
@@ -206,6 +235,32 @@ context(@"processing", ^{
     adjust.saturation = -1.0;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
+  it(@"should process temperature correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(51,77,102,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(66,73,86,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.temperature = 0.2;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process tint correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(51,77,102,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(61,67,128,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.tint = 0.2;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
   it(@"should process tonality correctly", ^{
@@ -243,33 +298,33 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
   
-  fit(@"should create correct conversion", ^{
-    LTTexture *lena = [LTTexture textureWithImage:LTLoadMatWithName([self class], @"Meal.jpg")];
+  it(@"should create correct conversion of luminance, color and details", ^{
+    LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena.png")];
     LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
   
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:lena output:lenaOutput];
-    
+    // Luminance.
     adjust.exposure = 0.0;
     adjust.brightness = 1.0;
     adjust.contrast = 0.0;
     adjust.offset = 0.0;
-//    adjust.blackPoint = GLKVector3Make(0.5, 0.5, 0.5);
-//    adjust.whitePoint = GLKVector3Make(1.0, 1.0, 1.0);
-//    // Color
-//    adjust.saturation = -0.1;
-//    adjust.temperature = 0.1;
-//    adjust.tint = 0.1;
-//    // Details.
-//    adjust.details = 0.1;
-//    adjust.shadows = 0.1;
-//    adjust.fillLight = 0.1;
-//    adjust.highlights = 0.1;
-    // TODO: Add more parameters.
+    adjust.blackPoint = GLKVector3Make(0.5, 0.5, 0.5);
+    adjust.whitePoint = GLKVector3Make(1.0, 1.0, 1.0);
+    // Color.
+    adjust.saturation = -0.1;
+    adjust.temperature = 0.1;
+    adjust.tint = 0.1;
+    // Details.
+    adjust.details = 0.1;
+    adjust.shadows = 0.1;
+    adjust.fillLight = 0.1;
+    adjust.highlights = 0.1;
+
     [adjust process];
     
     // Important: this test heavily depends on the smoother setup and is expected to change after
     // fine-tuning of the smoother.
-    cv::Mat image = LTLoadMatWithName([self class], @"Lena128BWTonality.png");
+    cv::Mat image = LTLoadMat([self class], @"Lena128BWTonality.png");
     expect($(lenaOutput.image)).to.beCloseToMat($(image));
 
   });

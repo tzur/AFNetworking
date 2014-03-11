@@ -6,8 +6,9 @@
 /// @class LTAdjustProcessor
 ///
 /// This class tonally adjust the image. The manipulations can be categorized into the three
-/// following categories: luminance, levels, color and details.
-/// The luminance / color separation is done with YIQ color space.
+/// following categories: luminance, color and details.
+/// Luminance / color separation is done with YIQ color space.
+/// Base / details separation is done with separable bilateral filter.
 @interface LTAdjustProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture to be adjusted and output texture.
@@ -29,12 +30,12 @@
 
 /// Levels Control.
 
-/// Remapes black vec3(0) to \c vec3(blackPoint). Components should be in [-1, 1] range. Default
-/// value is black (0, 0, 0).
+/// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
+/// (0, 0, 0).
 @property (nonatomic) GLKVector3 blackPoint;
 
-/// Remapes white vec3(1) to \c vec3(whitePoint). Components should be in [0, 2] range. Default
-/// value is white (1, 1, 1).
+/// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
+/// (1, 1, 1).
 @property (nonatomic) GLKVector3 whitePoint;
 
 /// Color Control.
