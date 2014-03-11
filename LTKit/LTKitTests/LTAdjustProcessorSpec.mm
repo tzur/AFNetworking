@@ -29,7 +29,7 @@ beforeEach(^{
 });
 
 afterEach(^{
-  input =  nil;
+  input = nil;
   output = nil;
 });
 
@@ -143,10 +143,9 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  
   it(@"should process positive brightness and contrast correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(64,64,64,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(102,102,102,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(102, 102, 102, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -159,8 +158,8 @@ context(@"processing", ^{
   });
   
   it(@"should process negative contrast correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(0,0,0,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(0, 0, 0,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -172,8 +171,8 @@ context(@"processing", ^{
   });
   
   it(@"should process offset correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(0,0,0,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(0, 0, 0, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -185,8 +184,8 @@ context(@"processing", ^{
   });
   
   it(@"should process exposure correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(128,128,128,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(255,255,255,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(255, 255, 255, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -198,8 +197,8 @@ context(@"processing", ^{
   });
   
   it(@"should process black point correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(128,192,255,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(0,128,255,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 192, 255, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(0, 128, 255, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -211,8 +210,8 @@ context(@"processing", ^{
   });
   
   it(@"should process white point correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(64,64,64,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128,128,128,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -224,7 +223,7 @@ context(@"processing", ^{
   });
   
   it(@"should process saturation correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(0,128,255,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(0, 128, 255, 255));
     // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
     cv::Mat4b output(1, 1, cv::Vec4b(104,104,104,255));
     
@@ -238,8 +237,8 @@ context(@"processing", ^{
   });
   
   it(@"should process temperature correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(51,77,102,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(66,73,86,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(66, 73, 86, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -251,8 +250,8 @@ context(@"processing", ^{
   });
   
   it(@"should process tint correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(51,77,102,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(61,67,128,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(61, 67, 128, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -264,10 +263,10 @@ context(@"processing", ^{
   });
   
   it(@"should process tonality correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(128,128,128,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
     // See lightricks-research/enlight/Adjust/runmeAdjustTonalityTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
-    cv::Mat4b output(1, 1, cv::Vec4b(195,195,195,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(195, 195, 195, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -282,10 +281,10 @@ context(@"processing", ^{
   });
   
   it(@"should process color correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(51,77,102,255));
+    cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
     // See lightricks-research/enlight/Adjust/runmeAdjustColorTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
-    cv::Mat4b output(1, 1, cv::Vec4b(59,79,73,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(59, 79, 73, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -298,7 +297,7 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
   
-  it(@"should create correct conversion of luminance, color  and details", ^{
+  it(@"should create correct conversion of luminance, color and details", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
     LTTexture *output = [LTTexture textureWithPropertiesOf:input];
     
@@ -327,7 +326,6 @@ context(@"processing", ^{
     // fine-tuning of the smoother.
     cv::Mat image = LTLoadMat([self class], @"MealAdjusted.png");
     expect($(output.image)).to.beCloseToMat($(image));
-
   });
 });
 

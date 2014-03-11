@@ -3,6 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
+
 /// @class LTAdjustProcessor
 ///
 /// This class tonally adjusts the image. The manipulations can be categorized into the three
@@ -14,57 +16,65 @@
 /// Initializes the processor with input texture to be adjusted and output texture.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
-/// Luminance Control.
+#pragma mark -
+#pragma mark Luminance
+#pragma mark -
 
 /// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat brightness;
+LTBoundedPrimitiveProperty(CGFloat, brightness, Brightness);
 
 /// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat contrast;
+LTBoundedPrimitiveProperty(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat exposure;
+LTBoundedPrimitiveProperty(CGFloat, exposure, Exposure);
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat offset;
+LTBoundedPrimitiveProperty(CGFloat, offset, Offset);
 
-/// Levels Control.
+#pragma mark -
+#pragma mark Levels
+#pragma mark -
 
 /// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
 /// (0, 0, 0).
-@property (nonatomic) GLKVector3 blackPoint;
+LTBoundedPrimitiveProperty(GLKVector3, blackPoint, BlackPoint);
 
 /// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
 /// (1, 1, 1).
-@property (nonatomic) GLKVector3 whitePoint;
+LTBoundedPrimitiveProperty(GLKVector3, whitePoint, WhitePoint);
 
-/// Color Control.
+#pragma mark -
+#pragma mark Color
+#pragma mark -
 
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat saturation;
+LTBoundedPrimitiveProperty(CGFloat, saturation, Saturation);
 
 /// Changes the temperature of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat temperature;
+LTBoundedPrimitiveProperty(CGFloat, temperature, Temperature);
 
 /// Changes the tint of the image. Should be in [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat tint;
+LTBoundedPrimitiveProperty(CGFloat, tint, Tint);
 
-/// Local Contrast Control.
+#pragma mark -
+#pragma mark Details
+#pragma mark -
 
 /// Controls the local contrast by changing the amplitude of the image details. Should be in [-1, 1]
 /// range. Default value is 0.
-@property (nonatomic) CGFloat details;
+LTBoundedPrimitiveProperty(CGFloat, details, Details);
 
 /// Brightens the shadows, while preserving local contrast. Should be in [0, 1] range. Default value
 /// is 0.
-@property (nonatomic) CGFloat shadows;
+LTBoundedPrimitiveProperty(CGFloat, shadows, Shadows);
 
 /// Brightens the mid-range, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-@property (nonatomic) CGFloat fillLight;
+LTBoundedPrimitiveProperty(CGFloat, fillLight, FillLight);
 
 /// Compresses the highlights, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-@property (nonatomic) CGFloat highlights;
+LTBoundedPrimitiveProperty(CGFloat, highlights, Highlights);
 
 @end
