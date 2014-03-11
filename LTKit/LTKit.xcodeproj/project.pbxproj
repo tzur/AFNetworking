@@ -40,6 +40,14 @@
 		03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */; };
 		03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB360188BE6C1001E7703 /* RedBlueGradient.png */; };
 		03BBB389188CFB60001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
+		03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BB18CF124900E728F5 /* FillLightCurve.png */; };
+		03C7B6C418CF124900E728F5 /* HighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */; };
+		03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BD18CF124900E728F5 /* IdentityCurve.png */; };
+		03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */; };
+		03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */; };
+		03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */; };
+		03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */; };
+		03C7B6CA18CF124900E728F5 /* ShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C218CF124900E728F5 /* ShadowsCurve.png */; };
 		03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168118B26FA40026B56A /* RoundishBlackFrame.png */; };
 		03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168218B26FA40026B56A /* RoundWhiteFrame.png */; };
 		03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D5168318B26FA40026B56A /* StraightBlueFrame.png */; };
@@ -502,6 +510,14 @@
 		03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFractionalNoiseSpec.mm; sourceTree = "<group>"; };
 		03BBB384188CF59A001E7703 /* LTFractionalNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.fsh; sourceTree = "<group>"; };
 		03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.vsh; sourceTree = "<group>"; };
+		03C7B6BB18CF124900E728F5 /* FillLightCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FillLightCurve.png; path = Curves/FillLightCurve.png; sourceTree = "<group>"; };
+		03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HighlightsCurve.png; path = Curves/HighlightsCurve.png; sourceTree = "<group>"; };
+		03C7B6BD18CF124900E728F5 /* IdentityCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IdentityCurve.png; path = Curves/IdentityCurve.png; sourceTree = "<group>"; };
+		03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeBrightnessCurve.png; path = Curves/NegativeBrightnessCurve.png; sourceTree = "<group>"; };
+		03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeContrastCurve.png; path = Curves/NegativeContrastCurve.png; sourceTree = "<group>"; };
+		03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveBrightnessCurve.png; path = Curves/PositiveBrightnessCurve.png; sourceTree = "<group>"; };
+		03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveContrastCurve.png; path = Curves/PositiveContrastCurve.png; sourceTree = "<group>"; };
+		03C7B6C218CF124900E728F5 /* ShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowsCurve.png; path = Curves/ShadowsCurve.png; sourceTree = "<group>"; };
 		03D5168118B26FA40026B56A /* RoundishBlackFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundishBlackFrame.png; path = Resources/RoundishBlackFrame.png; sourceTree = "<group>"; };
 		03D5168218B26FA40026B56A /* RoundWhiteFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundWhiteFrame.png; path = Resources/RoundWhiteFrame.png; sourceTree = "<group>"; };
 		03D5168318B26FA40026B56A /* StraightBlueFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightBlueFrame.png; path = Resources/StraightBlueFrame.png; sourceTree = "<group>"; };
@@ -512,14 +528,6 @@
 		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessor.mm; sourceTree = "<group>"; };
 		03D516F618B5DBBD0026B56A /* LTAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAdjust.fsh; sourceTree = "<group>"; };
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
-		03DDE61418CDA8470060ADCB /* fillLightCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fillLightCurve.png; path = Resources/Curves/fillLightCurve.png; sourceTree = "<group>"; };
-		03DDE61518CDA8470060ADCB /* highlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = highlightsCurve.png; path = Resources/Curves/highlightsCurve.png; sourceTree = "<group>"; };
-		03DDE61618CDA8470060ADCB /* identityCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = identityCurve.png; path = Resources/Curves/identityCurve.png; sourceTree = "<group>"; };
-		03DDE61718CDA8470060ADCB /* negativeBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = negativeBrightnessCurve.png; path = Resources/Curves/negativeBrightnessCurve.png; sourceTree = "<group>"; };
-		03DDE61818CDA8470060ADCB /* negativeContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = negativeContrastCurve.png; path = Resources/Curves/negativeContrastCurve.png; sourceTree = "<group>"; };
-		03DDE61918CDA8470060ADCB /* positiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = positiveBrightnessCurve.png; path = Resources/Curves/positiveBrightnessCurve.png; sourceTree = "<group>"; };
-		03DDE61A18CDA8470060ADCB /* positiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = positiveContrastCurve.png; path = Resources/Curves/positiveContrastCurve.png; sourceTree = "<group>"; };
-		03DDE61B18CDA8470060ADCB /* shadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadowsCurve.png; path = Resources/Curves/shadowsCurve.png; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5FractionalNoise.png; path = Resources/iPhone5FractionalNoise.png; sourceTree = "<group>"; };
@@ -847,7 +855,7 @@
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
 		8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+GLKitExtensions.m"; sourceTree = "<group>"; };
 		8BCA673918310DA8003FCB65 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
-		8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = LTKitBundle.bundle; path = LTKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitBundle-Info.plist"; sourceTree = "<group>"; };
 		8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTKitBundle.h"; sourceTree = "<group>"; };
@@ -996,19 +1004,19 @@
 			name = Blocks;
 			sourceTree = "<group>";
 		};
-		03DDE60718CDA4460060ADCB /* Resources */ = {
+		03C7B6BA18CF123900E728F5 /* Curves */ = {
 			isa = PBXGroup;
 			children = (
-				03DDE61418CDA8470060ADCB /* fillLightCurve.png */,
-				03DDE61518CDA8470060ADCB /* highlightsCurve.png */,
-				03DDE61618CDA8470060ADCB /* identityCurve.png */,
-				03DDE61718CDA8470060ADCB /* negativeBrightnessCurve.png */,
-				03DDE61818CDA8470060ADCB /* negativeContrastCurve.png */,
-				03DDE61918CDA8470060ADCB /* positiveBrightnessCurve.png */,
-				03DDE61A18CDA8470060ADCB /* positiveContrastCurve.png */,
-				03DDE61B18CDA8470060ADCB /* shadowsCurve.png */,
+				03C7B6BB18CF124900E728F5 /* FillLightCurve.png */,
+				03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */,
+				03C7B6BD18CF124900E728F5 /* IdentityCurve.png */,
+				03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */,
+				03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */,
+				03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */,
+				03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */,
+				03C7B6C218CF124900E728F5 /* ShadowsCurve.png */,
 			);
-			name = Resources;
+			name = Curves;
 			sourceTree = "<group>";
 		};
 		28178214187C2E7200548AE4 /* OCMock */ = {
@@ -1734,6 +1742,7 @@
 		8BCFBFF618CF0AF100E612DE /* LTKitBundle */ = {
 			isa = PBXGroup;
 			children = (
+				03C7B6BA18CF123900E728F5 /* Curves */,
 				8BCFBFF718CF0AF100E612DE /* Supporting Files */,
 			);
 			path = LTKitBundle;
@@ -1754,7 +1763,6 @@
 			children = (
 				8BFE4399187594F7008B699F /* Base */,
 				03BBB30C1887B797001E7703 /* Blocks */,
-				03DDE60718CDA4460060ADCB /* Resources */,
 				8BFE439F18759D1F008B699F /* Utils */,
 			);
 			name = "Image Processing";
@@ -2051,6 +2059,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */,
+				03C7B6CA18CF124900E728F5 /* ShadowsCurve.png in Resources */,
+				03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */,
+				03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */,
+				03C7B6C418CF124900E728F5 /* HighlightsCurve.png in Resources */,
+				03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */,
+				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
+				03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

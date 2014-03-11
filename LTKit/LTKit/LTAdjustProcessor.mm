@@ -11,6 +11,7 @@
 #import "LTShaderStorage+LTAdjustFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
+#import "NSBundle+LTKitBundle.h"
 
 @interface LTGPUImageProcessor ()
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
@@ -305,11 +306,9 @@ static const uchar negativeContrastCurveData[256] = {128, 128, 128, 128, 128, 12
 - (const cv::Mat1b &)identityCurve {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    _identityCurve = dataToCurve(identityCurveData);
-//     _identityCurve = LTLoadMat([self class], @"identityCurve.png");
-
-//    _identityCurve = LTLoadMatWithName([self class], @"identityCurve.png");
-    
+//    _identityCurve = dataToCurve(identityCurveData);
+//    [NSBundle LTKitBundle]
+     _identityCurve = LTLoadMat([self class], @"IdentityCurve.png");
   });
   return _identityCurve;
 }
