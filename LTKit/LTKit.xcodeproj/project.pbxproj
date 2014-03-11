@@ -830,7 +830,7 @@
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
 		8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+GLKitExtensions.m"; sourceTree = "<group>"; };
 		8BCA673918310DA8003FCB65 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
-		8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BCFBFF318CF0AF000E612DE /* LTKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = LTKitBundle.bundle; path = LTKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitBundle-Info.plist"; sourceTree = "<group>"; };
 		8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTKitBundle.h"; sourceTree = "<group>"; };

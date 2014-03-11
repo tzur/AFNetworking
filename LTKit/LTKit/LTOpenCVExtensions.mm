@@ -9,7 +9,8 @@ using half_float::half;
 
 void LTConvertToSameNumberOfChannels(const cv::Mat &input, cv::Mat *output, int type);
 void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type);
-NSString *LTPathForResource(Class classInBundle, NSString *name);
+NSString *LTPathForResourceNearClass(Class classInBundle, NSString *name);
+NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name);
 
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
   LTAssert(&input != output, @"Conversion cannot be made in-place");
@@ -112,7 +113,7 @@ cv::Mat *LTInPlaceFFTShift(cv::Mat *mat) {
 }
 
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
-  NSString *path = LTPathForResource(classInBundle, name);
+  NSString *path = LTPathForResourceNearClass(classInBundle, name);
   UIImage *image = [UIImage imageWithContentsOfFile:path];
   LTParameterAssert(image, @"Given image name '%@' cannot be loaded", name);
 
@@ -129,9 +130,18 @@ cv::Mat LTLoadMatFromMainBundle(NSString *name) {
   return [[LTImage alloc] initWithImage:image].mat;
 }
 
-NSString *LTPathForResource(Class classInBundle, NSString *name) {
-  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name) {
+  NSString *path = LTPathForResourceInBundle(bundle, name);
+  UIImage *image = [UIImage imageWithContentsOfFile:path];
+  return [[LTImage alloc] initWithImage:image].mat;
+}
 
+NSString *LTPathForResourceNearClass(Class classInBundle, NSString *name) {
+  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
+  return LTPathForResourceInBundle(bundle, name);
+}
+
+NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name) {
   NSString *resource = [name stringByDeletingPathExtension];
   NSString *type = [name pathExtension];
 
