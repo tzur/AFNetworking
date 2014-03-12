@@ -34,6 +34,9 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
     expect(context.stencilTestEnabled).to.beFalsy();
     expect(context.ditheringEnabled).to.beTruthy();
     expect(context.clockwiseFrontFacingPolygons).to.beFalsy();
+
+    expect(context.packAlignment).to.equal(4);
+    expect(context.unpackAlignment).to.equal(4);
   });
 });
 
@@ -215,6 +218,24 @@ context(@"context values", ^{
     glGetIntegerv(GL_FRONT_FACE, &frontFace);
     expect(frontFace).to.equal(GL_CW);
   });
+
+  it(@"should set pack alignment", ^{
+    context.packAlignment = 1;
+
+    expect(context.packAlignment).to.equal(1);
+    GLint packAlignment;
+    glGetIntegerv(GL_PACK_ALIGNMENT, &packAlignment);
+    expect(packAlignment).to.equal(1);
+  });
+
+  it(@"should set unpack alignment", ^{
+    context.unpackAlignment = 1;
+
+    expect(context.unpackAlignment).to.equal(1);
+    GLint unpackAlignment;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpackAlignment);
+    expect(unpackAlignment).to.equal(1);
+  });
 });
 
 context(@"execution", ^{
@@ -255,6 +276,9 @@ context(@"execution", ^{
       context.stencilTestEnabled = !context.stencilTestEnabled;
       context.ditheringEnabled = !context.ditheringEnabled;
       context.clockwiseFrontFacingPolygons = !context.clockwiseFrontFacingPolygons;
+
+      context.packAlignment = 1;
+      context.unpackAlignment = 1;
     }];
 
     return @{@"context": context};

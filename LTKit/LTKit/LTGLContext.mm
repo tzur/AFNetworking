@@ -46,6 +46,9 @@ typedef struct {
   BOOL stencilTestEnabled;
   BOOL ditheringEnabled;
   BOOL clockwiseFrontFacingPolygons;
+
+  GLint packAlignment;
+  GLint unpackAlignment;
 } LTGLContextValues;
 
 @interface LTGLContext () {
@@ -124,6 +127,7 @@ typedef struct {
   [self fetchScissorBoxState];
   [self fetchFlagsState];
   [self fetchFrontFaceState];
+  [self fetchAlignmentState];
   LTGLCheckDbg(@"Failed retrieving context state");
 }
 
@@ -160,6 +164,14 @@ typedef struct {
   _clockwiseFrontFacingPolygons = (frontFace == GL_CW);
 }
 
+- (void)fetchAlignmentState {
+  GLint packAlignment, unpackAlignment;
+  glGetIntegerv(GL_PACK_ALIGNMENT, &packAlignment);
+  glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpackAlignment);
+  _packAlignment = packAlignment;
+  _unpackAlignment = unpackAlignment;
+}
+
 #pragma mark -
 #pragma mark Storing and fetching internal state
 #pragma mark -
@@ -175,7 +187,9 @@ typedef struct {
     .scissorTestEnabled = self.scissorTestEnabled,
     .stencilTestEnabled = self.stencilTestEnabled,
     .ditheringEnabled = self.ditheringEnabled,
-    .clockwiseFrontFacingPolygons = self.clockwiseFrontFacingPolygons
+    .clockwiseFrontFacingPolygons = self.clockwiseFrontFacingPolygons,
+    .packAlignment = self.packAlignment,
+    .unpackAlignment = self.unpackAlignment
   };
 }
 
@@ -190,6 +204,8 @@ typedef struct {
   self.stencilTestEnabled = values.stencilTestEnabled;
   self.ditheringEnabled = values.ditheringEnabled;
   self.clockwiseFrontFacingPolygons = values.clockwiseFrontFacingPolygons;
+  self.packAlignment = values.packAlignment;
+  self.unpackAlignment = values.unpackAlignment;
 }
 
 #pragma mark -
@@ -302,6 +318,30 @@ typedef struct {
   }
   _clockwiseFrontFacingPolygons = clockwiseFrontFacingPolygons;
   [self updateFrontFace];
+}
+
+- (void)setPackAlignment:(GLint)packAlignment {
+  if (_packAlignment == packAlignment) {
+    return;
+  }
+  [self verifyAlignment:packAlignment];
+  _packAlignment = packAlignment;
+  glPixelStorei(GL_PACK_ALIGNMENT, packAlignment);
+}
+
+- (void)setUnpackAlignment:(GLint)unpackAlignment {
+  if (_unpackAlignment == unpackAlignment) {
+    return;
+  }
+  [self verifyAlignment:unpackAlignment];
+  _unpackAlignment = unpackAlignment;
+  glPixelStorei(GL_UNPACK_ALIGNMENT, unpackAlignment);
+}
+
+- (void)verifyAlignment:(GLint)alignment {
+  static NSArray const *kValidAlignments = @[@1, @2, @4, @8];
+  LTParameterAssert([kValidAlignments containsObject:@(alignment)],
+                    @"Given alignment '%d' is not one of the allowed values", alignment);
 }
 
 - (void)updateBlendFunc {

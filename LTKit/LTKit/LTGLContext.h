@@ -107,4 +107,12 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// \c YES if a clockwise drawn polygon is front facing, \c NO if a counter-clockwise one is.
 @property (nonatomic) BOOL clockwiseFrontFacingPolygons;
 
+/// Alignment requirements for start of each pixel in memory, when reading data from OpenGL.
+/// Allowed values are {1, 2, 4, 8}.
+@property (nonatomic) GLint packAlignment;
+
+/// Alignment requirements for start of each pixel in memory, when writing data to OpenGL.
+/// Allowed values are {1, 2, 4, 8}.
+@property (nonatomic) GLint unpackAlignment;
+
 @end
