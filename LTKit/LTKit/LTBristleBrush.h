@@ -26,7 +26,4 @@ LTBoundedPrimitiveProperty(NSUInteger, bristles, Bristles);
 /// Thickness of the bristles. Must be in range [0,2]. Default is 0.1.
 LTBoundedPrimitiveProperty(CGFloat, thickness, Thickness);
 
-/// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
-LTBoundedPrimitiveProperty(GLKVector4, intensity, Intensity);
-
 @end

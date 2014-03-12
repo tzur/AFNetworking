@@ -7,6 +7,7 @@
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
+#import "LTGLKitExtensions.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
@@ -123,6 +124,26 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         brush.flow = brush.maxFlow + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
+    
+    it(@"should set intensity", ^{
+      const GLKVector4 newValue = GLKVector4Make(0.3, 0.4, 0.5, 0.6);
+      expect(brush.intensity).notTo.equal(newValue);
+      brush.intensity = newValue;
+      expect(brush.intensity).to.equal(newValue);
+      
+      for (NSUInteger i = 0; i < 4; ++i) {
+        GLKVector4 newValue = brush.minIntensity;
+        newValue.v[i] -= kEpsilon;
+        expect(^{
+          brush.intensity = newValue;
+        }).to.raise(NSInvalidArgumentException);
+        newValue = brush.maxIntensity;
+        newValue.v[i] += kEpsilon;
+        expect(^{
+          brush.intensity = newValue;
+        }).to.raise(NSInvalidArgumentException);
+      }
+    });
   });
 });
 
@@ -160,8 +181,8 @@ context(@"properties", ^{
     expect(brush.spacing).to.equal(0.05);
     expect(brush.opacity).to.equal(1);
     expect(brush.flow).to.equal(1);
-    cv::Mat4b expected(1, 1);
-    expected = cv::Vec4b(255, 255, 255, 255);
+    expect(brush.intensity).to.equal(GLKVector4Make(1, 1, 1, 1));
+    cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
   });
 });
@@ -253,31 +274,34 @@ context(@"drawing", ^{
   it(@"should draw with replaced texture", ^{
     const CGSize kSize = CGSizeMakeUniform(kTargetBrushDiameter);
     const CGSize kHalf = kSize / 2;
-    cv::Mat4b newTexture(kSize.height, kSize.width);
-    newTexture(cv::Rect(0, 0, kHalf.width, kHalf.height)) = cv::Vec4b(255, 0, 0, 255);
-    newTexture(cv::Rect(kHalf.width, 0, kHalf.width, kHalf.height)) = cv::Vec4b(0, 255, 0, 255);
-    newTexture(cv::Rect(0, kHalf.height, kHalf.width, kHalf.height)) = cv::Vec4b(0, 0, 255, 255);
-    newTexture(cv::Rect(kHalf.width, kHalf.height, kHalf.width, kHalf.height)) =
-        cv::Vec4b(255, 255, 0, 255);
+    cv::Mat1b newTexture(kSize.height, kSize.width);
+    newTexture(cv::Rect(0, 0, kHalf.width, kHalf.height)) = 25;
+    newTexture(cv::Rect(kHalf.width, 0, kHalf.width, kHalf.height)) = 50;
+    newTexture(cv::Rect(0, kHalf.height, kHalf.width, kHalf.height)) = 100;
+    newTexture(cv::Rect(kHalf.width, kHalf.height, kHalf.width, kHalf.height)) = 200;
     brush.texture = [LTTexture textureWithImage:newTexture];
     brush.texture.minFilterInterpolation = LTTextureInterpolationNearest;
     brush.texture.magFilterInterpolation = LTTextureInterpolationNearest;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-    newTexture.copyTo(expected(LTCVRectWithCGRect(targetRect)));
+    cv::Mat1b expectedSingle(expected.rows, expected.cols, (uchar)0);
+    newTexture.copyTo(expectedSingle(LTCVRectWithCGRect(targetRect)));
+    cv::cvtColor(expectedSingle, expected, CV_GRAY2RGBA);
     expect($(output.image)).to.equalMat($(expected));
   });
   
   it(@"drawing should be additive", ^{
+    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      mapped->setTo(cv::Vec4b(1, 2, 3, 255));
+      mapped->setTo(3);
     }];
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(1, 2, 3, 255));
+    expected.setTo(0);
+    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(3, 3, 3, 3));
     expect($(output.image)).to.beCloseToMat($(expected));
     [brush drawPoint:centerPoint inFramebuffer:fbo];
-    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(2, 4, 6, 255));
+    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(6, 6, 6, 6));
     expect($(output.image)).to.equalMat($(expected));
   });
   
@@ -315,7 +339,7 @@ context(@"drawing", ^{
   
   it(@"should draw with updated opacity", ^{
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      mapped->setTo(cv::Vec4b(100, 100, 100, 255));
+      mapped->setTo(100);
     }];
     brush.opacity = 0.5;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
@@ -340,6 +364,18 @@ context(@"drawing", ^{
     expect($(output.image)).to.beCloseToMat($(expected));
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(191, 191, 191, 255));
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should draw with updated intensity", ^{
+    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+    brush.intensity = kIntensity;
+    [brush drawPoint:centerPoint inFramebuffer:fbo];
+    CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
+    expected.setTo(0);
+    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(0.1 * 255, 0.2 * 255,
+                                                             0.3 * 255, 0.4 * 255));
     expect($(output.image)).to.beCloseToMat($(expected));
   });
 });

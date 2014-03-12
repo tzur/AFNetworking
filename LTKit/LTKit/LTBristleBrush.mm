@@ -7,16 +7,12 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
-#import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
-#import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
-@property (strong, nonatomic) LTProgram *program;
 @end
 
 @interface LTBristleBrush ()
@@ -58,7 +54,6 @@ static const CGFloat kBristleSigma = 0.4;
 - (void)setBristleBrushDefaults {
   self.shape = LTBristleBrushShapeRound;
   self.spacing = kDefaultSpacing;
-  self.intensity = kDefaultIntensity;
   self.bristles = kDefaultBristles;
   self.thickness = kDefaultThickness;
 }
@@ -67,11 +62,6 @@ static const CGFloat kBristleSigma = 0.4;
   return [LTTexture textureWithSize:CGSizeMakeUniform(kBaseLevelDiameter)
                           precision:LTTexturePrecisionHalfFloat format:LTTextureFormatRed
                      allocateMemory:YES];
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                  fragmentSource:[LTRoundBrushShaderFsh source]];
 }
 
 - (LTFbo *)createBrushFbo {
@@ -101,12 +91,6 @@ static const CGFloat kBristleSigma = 0.4;
   }
   
   return mat;
-}
-
-- (void)updateProgramForCurrentProperties {
-  self.program[[LTRoundBrushShaderFsh opacity]] = @(self.opacity);
-  self.program[[LTRoundBrushShaderFsh flow]] = @(self.flow);
-  self.program[[LTRoundBrushShaderFsh intensity]] = $(self.intensity);
 }
 
 #pragma mark -
@@ -174,17 +158,5 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, thickness, Thicknes
 LTBoundedPrimitivePropertyImplementWithCustomSetter(NSUInteger, bristles, Bristles, 2, 100, 10, ^{
   self.shouldUpdateBrush = YES;
 });
-
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, intensity, Intensity,
-                                                 GLKVector4Make(0, 0, 0, 0),
-                                                 GLKVector4Make(1, 1, 1, 1),
-                                                 GLKVector4Make(1, 1, 1, 1));
-
-- (void)setIntensity:(GLKVector4)intensity {
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(intensity, self.minIntensity));
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxIntensity, intensity));
-  _intensity = intensity;
-  [self updateProgramForCurrentProperties];
-}
 
 @end

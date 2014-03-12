@@ -6,16 +6,12 @@
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTMathUtils.h"
-#import "LTProgram.h"
-#import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
-@property (strong, nonatomic) LTProgram *program;
-@property (strong, nonatomic) LTRectDrawer *drawer;
 @end
 
 @interface LTRoundBrush ()
@@ -44,12 +40,6 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (void)setRoundBrushDefaults {
   self.hardness = kDefaultHardness;
-  self.intensity = kDefaultIntensity;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                  fragmentSource:[LTRoundBrushShaderFsh source]];
 }
 
 #pragma mark -
@@ -104,31 +94,13 @@ static const CGFloat kBrushGaussianSigma = 0.3;
   return mat;
 }
 
-- (void)updateProgramForCurrentProperties {
-  self.program[[LTRoundBrushShaderFsh opacity]] = @(self.opacity);
-  self.program[[LTRoundBrushShaderFsh flow]] = @(self.flow);
-  self.program[[LTRoundBrushShaderFsh intensity]] = $(self.intensity);
-}
-
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, intensity, Intensity,
-                                                 GLKVector4Make(0, 0, 0, 0),
-                                                 GLKVector4Make(1, 1, 1, 1),
-                                                 GLKVector4Make(1, 1, 1, 1));
-
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, hardness, Hardness, 0, 1, 1, ^{
   self.shouldUpdateBrush = YES;
 });
-
-- (void)setIntensity:(GLKVector4)intensity {
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(intensity, self.minIntensity));
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxIntensity, intensity));
-  _intensity = intensity;
-  [self updateProgramForCurrentProperties];
-}
 
 - (NSArray *)adjustableProperties {
   return @[@"scale", @"spacing", @"opacity", @"flow", @"hardness"];
