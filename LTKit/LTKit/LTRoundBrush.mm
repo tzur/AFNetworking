@@ -6,8 +6,6 @@
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTMathUtils.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
-#import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()

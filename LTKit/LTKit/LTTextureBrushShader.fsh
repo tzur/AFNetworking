@@ -12,7 +12,11 @@ uniform highp vec4 intensity;
 varying highp vec2 vTexcoord;
 
 void main() {
-  mediump vec4 previousColor = gl_LastFragData[0];
-  highp vec4 newColor = texture2D(sourceTexture, vTexcoord).r * intensity;
-  gl_FragColor = clamp(min(previousColor + flow * newColor, opacity), previousColor, vec4(1.0));
+  mediump vec4 dst = gl_LastFragData[0];
+  highp vec4 src = texture2D(sourceTexture, vTexcoord) * intensity;
+  
+  src.a = min(src.a * flow, opacity);
+  highp float a = dst.a + (1.0 - dst.a) * src.a;
+  highp vec3 rgb = src.rgb * src.a + (1.0 - src.a) * dst.a * dst.rgb;
+  gl_FragColor = vec4(rgb / a, a);
 }
