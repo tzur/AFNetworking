@@ -17,6 +17,9 @@ static NSString * const kMatOutputBasedir = @"/tmp/";
 #pragma mark Forward declarations
 #pragma mark -
 
+static cv::Vec4hf LTScalarToHalfFloat(const cv::Scalar &scalar);
+static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, cv::Point position);
+
 static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual);
 
 template <typename T>
@@ -140,18 +143,51 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual, double range,
                                 cv::Point *firstMismatch) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
-  mat.setTo(expected);
+  if (mat.depth() == CV_16F) {
+    mat.setTo(LTScalarToHalfFloat(expected));
+  } else {
+    mat.setTo(expected);
+  }
   return LTFuzzyCompareMat(mat, actual, range, firstMismatch);
 }
 
+static cv::Vec4hf LTScalarToHalfFloat(const cv::Scalar &scalar) {
+  return cv::Vec4hf(half(scalar[0]), half(scalar[1]), half(scalar[2]), half(scalar[3]));
+}
+
 NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position) {
-  std::stringstream message;
-  message << mat(cv::Rect(position, cv::Size(1, 1)));
-  return [NSString stringWithCString:message.str().c_str() encoding:NSUTF8StringEncoding];
+  if (mat.depth() == CV_16F) {
+    return LTHalfFloatMatAsString(mat, position);
+  } else {
+    std::stringstream message;
+    message << mat(cv::Rect(position, cv::Size(1, 1)));
+    return [NSString stringWithCString:message.str().c_str() encoding:NSUTF8StringEncoding];
+  }
+}
+
+static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, cv::Point position) {
+  switch (mat.channels()) {
+    case 1: {
+      half value(mat.at<half>(position));
+      return [NSString stringWithFormat:@"[%g]", (float)value];
+    } case 2: {
+      cv::Vec2hf value(mat.at<cv::Vec2hf>(position));
+      return [NSString stringWithFormat:@"[%g, %g]", (float)value[0], (float)value[1]];
+    } case 3: {
+      cv::Vec3hf value(mat.at<cv::Vec3hf>(position));
+      return [NSString stringWithFormat:@"[%g, %g, %g]", (float)value[0], (float)value[1],
+              (float)value[2]];
+    } case 4: {
+      cv::Vec4hf value(mat.at<cv::Vec4hf>(position));
+      return [NSString stringWithFormat:@"[%g, %g, %g, %g]", (float)value[0], (float)value[1],
+              (float)value[2], (float)value[3]];
+    } default:
+      return @"[Invalid number of channels]";
+  }
 }
 
 NSString *LTScalarAsString(const cv::Scalar &scalar) {
-  return [NSString stringWithFormat:@"(%g, %g, %g, %g)",
+  return [NSString stringWithFormat:@"[%g, %g, %g, %g]",
           scalar[0], scalar[1], scalar[2], scalar[3]];
 }
 
