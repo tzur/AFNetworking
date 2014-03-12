@@ -6,16 +6,12 @@
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTMathUtils.h"
-#import "LTProgram.h"
-#import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTShaderStorage+LTRoundBrushShaderFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
-@property (strong, nonatomic) LTProgram *program;
-@property (strong, nonatomic) LTRectDrawer *drawer;
 @end
 
 @interface LTRoundBrush ()
@@ -44,11 +40,6 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (void)setRoundBrushDefaults {
   self.hardness = kDefaultHardness;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                  fragmentSource:[LTRoundBrushShaderFsh source]];
 }
 
 #pragma mark -

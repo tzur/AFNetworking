@@ -7,14 +7,12 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
-#import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
-@property (strong, nonatomic) LTProgram *program;
 @end
 
 @interface LTBristleBrush ()
