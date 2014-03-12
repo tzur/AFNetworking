@@ -297,8 +297,8 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
   
-  // We run this test only on the simulator, since the differences in the smoother (bilateral
-  // filter) case up to 27 level difference on some pixels near the strong edges.
+  // We run this test only on the simulator. Working assumption is that the smoother (bilateral
+  // filter) causes up to 27 level differences on some pixels near the strong edges.
   // The overall "feel" of the image should be the same on both the simulator and the devices.
   sit(@"should create correct conversion of luminance, color and details", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
