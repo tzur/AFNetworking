@@ -13,12 +13,12 @@ static NSString * const kInvalidFragmentSource = @"foo;";
 SpecBegin(LTShader)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 context(@"shader compilation", ^{

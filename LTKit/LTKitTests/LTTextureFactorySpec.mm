@@ -6,12 +6,12 @@
 SpecBegin(LTTextureFactory)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 /// Since the class is currently decided in compile time, only verify that the class methods are

@@ -13,12 +13,12 @@
 SpecBegin(LTDrawingContext)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 context(@"binding program and vertex array", ^{

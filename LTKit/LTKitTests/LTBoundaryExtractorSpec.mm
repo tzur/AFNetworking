@@ -8,12 +8,12 @@
 SpecBegin(LTBoundaryExtractor)
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
-  [EAGLContext setCurrentContext:nil];
+  [LTGLContext setCurrentContext:nil];
 });
 
 it(@"should produce correct result with white subrect", ^{
