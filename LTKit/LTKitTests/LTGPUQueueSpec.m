@@ -7,12 +7,12 @@
 
 SpecBegin(LTGPUQueue)
 
-const dispatch_time_t kSempahoreWaitTime = dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC);
-
 __block LTGPUQueue *queue;
+__block dispatch_time_t semaphoreWaitTime;
 
 beforeEach(^{
   queue = [[LTGPUQueue alloc] init];
+  semaphoreWaitTime = dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC);
 });
 
 context(@"async blocks", ^{
@@ -33,7 +33,7 @@ context(@"async blocks", ^{
       dispatch_semaphore_signal(semaphore);
     } completion:nil];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(ranBlock).to.beTruthy();
   });
@@ -52,7 +52,7 @@ context(@"async blocks", ^{
       return YES;
     }];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(calledCompletion).to.beTruthy();
     expect(causedError).to.beFalsy();
@@ -73,7 +73,7 @@ context(@"async blocks", ^{
       return YES;
     }];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(calledCompletion).to.beFalsy();
     expect(causedError).to.beTruthy();
@@ -91,7 +91,7 @@ context(@"async blocks", ^{
       } completion:nil];
     } completion:nil];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(ranBlock).to.beTruthy();
   });
@@ -137,7 +137,7 @@ context(@"pause and resume", ^{
       dispatch_semaphore_signal(semaphore);
     }];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(queue.isPaused).to.beTruthy();
     expect(paused).to.beTruthy();
@@ -151,7 +151,7 @@ context(@"pause and resume", ^{
       dispatch_semaphore_signal(semaphore);
     }];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(queue.isPaused).to.beFalsy();
   });
@@ -174,7 +174,7 @@ context(@"pause and resume", ^{
       }];
     }];
 
-    dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
     expect(ranFirstTask).to.beTruthy();
     expect(ranSecondTask).to.beFalsy();
@@ -196,12 +196,12 @@ context(@"pause and resume", ^{
       dispatch_semaphore_signal(pauseSemaphore);
     }];
 
-    dispatch_semaphore_wait(pauseSemaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(pauseSemaphore, semaphoreWaitTime);
 
     expect(ranTask).to.beFalsy();
 
     [queue resume];
-    dispatch_semaphore_wait(taskSemaphore, kSempahoreWaitTime);
+    dispatch_semaphore_wait(taskSemaphore, semaphoreWaitTime);
 
     expect(ranTask).to.beTruthy();
   });
@@ -305,7 +305,7 @@ context(@"failure handling", ^{
         [LTGLException raise:@"MyError" format:@"description"];
       } completion:nil];
 
-      dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+      dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
       expect(calledErrorHandler).to.beTruthy();
     });
@@ -317,7 +317,7 @@ context(@"failure handling", ^{
         return NO;
       }];
 
-      dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+      dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
       expect(calledErrorHandler).to.beTruthy();
     });
@@ -330,7 +330,7 @@ context(@"failure handling", ^{
         return YES;
       }];
 
-      dispatch_semaphore_wait(semaphore, kSempahoreWaitTime);
+      dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
       expect(calledErrorHandler).to.beFalsy();
     });
