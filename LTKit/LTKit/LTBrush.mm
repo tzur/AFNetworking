@@ -129,9 +129,9 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (NSArray *)pointsForStrokeSegment:(LTPainterStrokeSegment *)segment
                   fromPreviousPoint:(LTPainterPoint *)previousPoint {
   CGFloat diameter = [self diameterForZoomScale:segment.zoomScale];
-  CGFloat spacing = diameter * self.spacing;
-  CGFloat offset =
-      previousPoint ? previousPoint.distanceFromStart - segment.distanceFromStart + spacing : 0;
+  CGFloat spacing = MAX(diameter * self.spacing, 1.0);
+  CGFloat offset = previousPoint ?
+      MAX(0, previousPoint.distanceFromStart - segment.distanceFromStart + spacing) : 0;
   
   NSArray *points = [segment pointsWithInterval:spacing startingAtOffset:offset];
   for (LTPainterPoint *point in points) {

@@ -3,6 +3,8 @@
 
 #import "LTRoundBrush.h"
 
+@class LTTexture;
+
 /// @class LTEdgeAvoidingBrush
 ///
 /// A class representing a round edge-avoiding brush used by the \c LTPainter, using an input

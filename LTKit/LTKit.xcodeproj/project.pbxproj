@@ -116,6 +116,12 @@
 		284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12B1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm */; };
 		284ED12E1895667500414A8A /* LTInterpolationRoutineExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */; };
 		284ED1301895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */; };
+		286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932A18CF727300F203DF /* BristleBrushBristles.2.png */; };
+		286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932B18CF727300F203DF /* BristleBrushBristles.4.png */; };
+		286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932C18CF727300F203DF /* BristleBrushBristles.20.png */; };
+		286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A933C18CF743200F203DF /* BristleBrushThickness.1.5.png */; };
+		286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */; };
+		286A934118CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A933E18CF743200F203DF /* BristleBrushThickness.0.1.png */; };
 		287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705A618BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm */; };
 		287705B518BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705B418BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm */; };
 		287705B818BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705B718BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm */; };
@@ -135,7 +141,9 @@
 		28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */; };
 		28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0B18B23D930036D66E /* LTTouchCollector.mm */; };
 		28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */; };
+		28ED10EB18CC9EFE00EE1633 /* LTBristleBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10EA18CC9EFE00EE1633 /* LTBristleBrush.mm */; };
 		28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */; };
+		28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.m */; };
 		8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2DAE72184B821000F1623B /* LTGPUQueueSpec.m */; };
@@ -629,6 +637,12 @@
 		284ED12D1895667500414A8A /* LTInterpolationRoutineExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInterpolationRoutineExamples.mm; sourceTree = "<group>"; };
 		284ED12F1895668800414A8A /* LTCatmullRomInterpolationRoutineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolationRoutineSpec.mm; sourceTree = "<group>"; };
 		284ED131189568AC00414A8A /* LTInterpolationRoutineExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolationRoutineExamples.h; sourceTree = "<group>"; };
+		286A932A18CF727300F203DF /* BristleBrushBristles.2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushBristles.2.png; sourceTree = "<group>"; };
+		286A932B18CF727300F203DF /* BristleBrushBristles.4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushBristles.4.png; sourceTree = "<group>"; };
+		286A932C18CF727300F203DF /* BristleBrushBristles.20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushBristles.20.png; sourceTree = "<group>"; };
+		286A933C18CF743200F203DF /* BristleBrushThickness.1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushThickness.1.5.png; sourceTree = "<group>"; };
+		286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushThickness.0.75.png; sourceTree = "<group>"; };
+		286A933E18CF743200F203DF /* BristleBrushThickness.0.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BristleBrushThickness.0.1.png; sourceTree = "<group>"; };
 		287705A618BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStrokeSegmentSpec.mm; sourceTree = "<group>"; };
 		287705B418BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStrokeSpec.mm; sourceTree = "<group>"; };
 		287705B618BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDegenerateInterpolationRoutine.h; sourceTree = "<group>"; };
@@ -661,8 +675,11 @@
 		28C61C0B18B23D930036D66E /* LTTouchCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollector.mm; sourceTree = "<group>"; };
 		28EA156518B9E217003C00BF /* LTPropertyMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPropertyMacros.h; sourceTree = "<group>"; };
 		28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPropertyMacrosSpec.mm; sourceTree = "<group>"; };
+		28ED10E918CC9EFE00EE1633 /* LTBristleBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBristleBrush.h; sourceTree = "<group>"; };
+		28ED10EA18CC9EFE00EE1633 /* LTBristleBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBristleBrush.mm; sourceTree = "<group>"; };
 		28ED10F718CCB26C00EE1633 /* LTPainter+LTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTPainter+LTView.h"; sourceTree = "<group>"; };
 		28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTPainter+LTView.mm"; sourceTree = "<group>"; };
+		28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBristleBrushSpec.mm; sourceTree = "<group>"; };
 		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUQueue.m; sourceTree = "<group>"; };
@@ -1087,6 +1104,9 @@
 		2839067818C4D98500BD21CE /* Brushes */ = {
 			isa = PBXGroup;
 			children = (
+				28ED10DC18CC9BF500EE1633 /* Effects */,
+				28ED10E918CC9EFE00EE1633 /* LTBristleBrush.h */,
+				28ED10EA18CC9EFE00EE1633 /* LTBristleBrush.mm */,
 				2839068618C4D9AA00BD21CE /* LTBrush.h */,
 				2839068718C4D9AA00BD21CE /* LTBrush.mm */,
 				2839068818C4D9AA00BD21CE /* LTBrushShader.fsh */,
@@ -1114,6 +1134,7 @@
 				2839069B18C4DB0A00BD21CE /* LTErasingBrushSpec.mm */,
 				2839069C18C4DB0A00BD21CE /* LTRoundBrushSpec.h */,
 				2839069D18C4DB0A00BD21CE /* LTRoundBrushSpec.mm */,
+				28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */,
 			);
 			name = Brushes;
 			sourceTree = "<group>";
@@ -1223,6 +1244,13 @@
 				28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */,
 			);
 			name = "Touch Collector";
+			sourceTree = "<group>";
+		};
+		28ED10DC18CC9BF500EE1633 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Effects;
 			sourceTree = "<group>";
 		};
 		8B3DEBDB18296B6100EA0C1A = {
@@ -1341,6 +1369,12 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				286A932A18CF727300F203DF /* BristleBrushBristles.2.png */,
+				286A932B18CF727300F203DF /* BristleBrushBristles.4.png */,
+				286A932C18CF727300F203DF /* BristleBrushBristles.20.png */,
+				286A933C18CF743200F203DF /* BristleBrushThickness.1.5.png */,
+				286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */,
+				286A933E18CF743200F203DF /* BristleBrushThickness.0.1.png */,
 				0366BA4018CCA51A002E6BA1 /* Meal.jpg */,
 				03C7B6D618CF313500E728F5 /* MealAdjusted.png */,
 				03D516CB18B4AB840026B56A /* StraightWideVignetting.png */,
@@ -2045,6 +2079,7 @@
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
+				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
 				03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */,
@@ -2056,11 +2091,15 @@
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
+				286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
 				03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */,
 				03D516CA18B4A9E10026B56A /* RoundWideVignetting.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
+				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
+				286A934118CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
+				286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
@@ -2072,6 +2111,7 @@
 				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
+				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
@@ -2145,6 +2185,7 @@
 				2843B77918ABBF350044B87A /* LTSingleRectDrawer.mm in Sources */,
 				8BAF8BDF18BCAA8600C77C04 /* LTRectMapping.mm in Sources */,
 				8BABFD62188C13FA004163DA /* LTOneShotProcessingStrategy.mm in Sources */,
+				28ED10EB18CC9EFE00EE1633 /* LTBristleBrush.mm in Sources */,
 				28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
@@ -2250,6 +2291,7 @@
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */,
+				28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */,
 				8BABFD71188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm in Sources */,
 				280B3D9418BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm in Sources */,
 				283906A018C4DB0A00BD21CE /* LTErasingBrushSpec.mm in Sources */,
