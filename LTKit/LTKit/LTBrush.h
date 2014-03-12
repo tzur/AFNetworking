@@ -81,4 +81,7 @@ LTBoundedPrimitiveProperty(CGFloat, opacity, Opacity)
 /// Must be in range [0.01,1], default is \c 1.
 LTBoundedPrimitiveProperty(CGFloat, flow, Flow)
 
+/// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
+LTBoundedPrimitiveProperty(GLKVector4, intensity, Intensity);
+
 @end

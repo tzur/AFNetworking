@@ -12,7 +12,4 @@
 /// Fuzziness of the brush outline. Must be in range [0,1], default is \c 1.
 LTBoundedPrimitiveProperty(CGFloat, hardness, Hardness)
 
-/// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
-LTBoundedPrimitiveProperty(GLKVector4, intensity, Intensity);
-
 @end

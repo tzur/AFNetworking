@@ -54,26 +54,6 @@ sharedExamplesFor(kLTRoundBrushExamples, ^(NSDictionary *data) {
         brush.hardness = brush.maxHardness + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
-    
-    it(@"should set intensity", ^{
-      const GLKVector4 newValue = GLKVector4Make(0.3, 0.4, 0.5, 0.6);
-      expect(brush.intensity).notTo.equal(newValue);
-      brush.intensity = newValue;
-      expect(brush.intensity).to.equal(newValue);
-      
-      for (NSUInteger i = 0; i < 4; ++i) {
-        GLKVector4 newValue = brush.minIntensity;
-        newValue.v[i] -= kEpsilon;
-        expect(^{
-          brush.intensity = newValue;
-        }).to.raise(NSInvalidArgumentException);
-        newValue = brush.maxIntensity;
-        newValue.v[i] += kEpsilon;
-        expect(^{
-          brush.intensity = newValue;
-        }).to.raise(NSInvalidArgumentException);
-      }
-    });
   });
 });
 
@@ -107,7 +87,6 @@ context(@"properties", ^{
   
   it(@"should have default properties", ^{
     expect(brush.hardness).to.equal(1);
-    expect(brush.intensity).to.equal(GLKVector4Make(1, 1, 1, 1));
   });
 });
 
@@ -164,18 +143,6 @@ context(@"drawing", ^{
       expected(cv::Rect(1, 1, 2, 2)).setTo(171);
       expect($(output.image)).to.beCloseToMat($(expected));
     });
-    
-    it(@"should draw with updated intensity", ^{
-      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
-      const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
-      brush.intensity = kIntensity;
-      [brush startNewStrokeAtPoint:point];
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected = cv::Vec4b(0 ,0, 0, 0);
-      expected.rowRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
-      expected.colRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
-      expect($(output.image)).to.beCloseToMat($(expected));
-    });
   });
   
   context(@"brush properties related to the shader", ^{
@@ -209,6 +176,18 @@ context(@"drawing", ^{
       [brush drawPoint:point inFramebuffer:fbo];
       expected.rowRange(1, 3).setTo(52);
       expected.colRange(1, 3).setTo(52);
+      expect($(output.image)).to.beCloseToMat($(expected));
+    });
+    
+    it(@"should draw with updated intensity", ^{
+      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+      const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+      brush.intensity = kIntensity;
+      [brush startNewStrokeAtPoint:point];
+      [brush drawPoint:point inFramebuffer:fbo];
+      expected = cv::Vec4b(0 ,0, 0, 0);
+      expected.rowRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
+      expected.colRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
       expect($(output.image)).to.beCloseToMat($(expected));
     });
   });

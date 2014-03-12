@@ -46,7 +46,6 @@ context(@"properties", ^{
     expect(brush.shape).to.equal(LTBristleBrushShapeRound);
     expect(brush.bristles).to.equal(10);
     expect(brush.thickness).to.equal(0.1);
-    expect(brush.intensity).to.equal(GLKVector4Make(1, 1, 1, 1));
     expect(brush.spacing).to.equal(0.01);
   });
   
@@ -76,27 +75,6 @@ context(@"properties", ^{
       brush.thickness = brush.maxThickness + kEpsilon;
     }).to.raise(NSInvalidArgumentException);
   });
-  
-  it(@"should set intensity", ^{
-    const GLKVector4 newValue = GLKVector4Make(0.3, 0.4, 0.5, 0.6);
-    expect(brush.intensity).notTo.equal(newValue);
-    brush.intensity = newValue;
-    expect(brush.intensity).to.equal(newValue);
-    
-    for (NSUInteger i = 0; i < 4; ++i) {
-      GLKVector4 newValue = brush.minIntensity;
-      newValue.v[i] -= kEpsilon;
-      expect(^{
-        brush.intensity = newValue;
-      }).to.raise(NSInvalidArgumentException);
-      newValue = brush.maxIntensity;
-      newValue.v[i] += kEpsilon;
-      expect(^{
-        brush.intensity = newValue;
-      }).to.raise(NSInvalidArgumentException);
-    }
-  });
-  
 });
 
 context(@"drawing", ^{

@@ -51,16 +51,17 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
 - (void)setBrushDefaults {
   self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice * [UIScreen mainScreen].scale;
+  self.flow = kDefaultFlow;
   self.scale = kDefaultScale;
   self.angle = kDefaultAngle;
   self.spacing = kDefaultSpacing;
   self.opacity = kDefaultOpacity;
-  self.flow = kDefaultFlow;
+  self.intensity = kDefaultIntensity;
 }
 
 - (LTTexture *)createTexture {
-  cv::Mat4b defaultMat(kDefaultTextureSize.height, kDefaultTextureSize.width);
-  defaultMat = cv::Vec4b(255, 255, 255, 255);
+  cv::Mat1b defaultMat(kDefaultTextureSize.height, kDefaultTextureSize.width);
+  defaultMat = 255;
   return [LTTexture textureWithImage:defaultMat];
 }
 
@@ -154,6 +155,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (void)updateProgramForCurrentProperties {
   self.program[[LTBrushShaderFsh flow]] = @(self.flow);
   self.program[[LTBrushShaderFsh opacity]] = @(self.opacity);
+  self.program[[LTBrushShaderFsh intensity]] = $(self.intensity);
 }
 
 #pragma mark -
@@ -165,14 +167,25 @@ LTBoundedPrimitivePropertyImplement(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
 LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, opacity, Opacity, 0, 1, 1)
 LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, flow, Flow, 0.01, 1, 1)
 LTBoundedPrimitivePropertyImplementWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0)
+LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, intensity, Intensity,
+                                                 GLKVector4Make(0, 0, 0, 0),
+                                                 GLKVector4Make(1, 1, 1, 1),
+                                                 GLKVector4Make(1, 1, 1, 1));
 
 - (void)setAngle:(CGFloat)angle {
   angle = std::fmod(angle, 2 * M_PI);
   _angle = angle + ((angle < 0) ? 2 * M_PI : 0);
 }
 
+- (void)setIntensity:(GLKVector4)intensity {
+  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(intensity, self.minIntensity));
+  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxIntensity, intensity));
+  _intensity = intensity;
+  [self updateProgramForCurrentProperties];
+}
+
 - (void)setTexture:(LTTexture *)texture {
-  LTParameterAssert(texture);
+  LTParameterAssert(texture.channels == LTTextureChannelsOne);
   _texture = texture;
   [self.drawer setSourceTexture:texture];
 }
