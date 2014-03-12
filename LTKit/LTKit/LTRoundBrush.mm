@@ -5,6 +5,7 @@
 
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
+#import "LTMathUtils.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
@@ -63,8 +64,7 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 }
 
 - (void)updateBrushForCurrentProperties {
-  LTAssert(!((kBaseLevelDiameter & (kBaseLevelDiameter - 1))),
-             @"base level diameter must be power of two");
+  LTParameterAssert(LTIsPowerOfTwo(kBaseLevelDiameter));
   
   self.shouldUpdateBrush = NO;
   Matrices levels;

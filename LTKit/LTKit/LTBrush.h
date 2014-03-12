@@ -10,7 +10,7 @@
     [self updateProgramForCurrentProperties]; \
   });
 
-@class LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect, LTTexture;
+@class LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect;
 
 /// @class LTBrush
 ///

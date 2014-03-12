@@ -3,6 +3,11 @@
 
 #import "LTMathUtils.h"
 
+BOOL LTIsPowerOfTwo(CGFloat value) {
+  int intValue = value;
+  return value == intValue && !(intValue & (intValue - 1));
+}
+
 BOOL LTIsPowerOfTwo(CGSize size) {
   int width = size.width;
   int height = size.height;
