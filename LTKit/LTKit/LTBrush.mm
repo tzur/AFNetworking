@@ -60,8 +60,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (LTTexture *)createTexture {
-  cv::Mat1b defaultMat(kDefaultTextureSize.height, kDefaultTextureSize.width);
-  defaultMat = 255;
+  cv::Mat1b defaultMat(kDefaultTextureSize.height, kDefaultTextureSize.width, 255);
   return [LTTexture textureWithImage:defaultMat];
 }
 
@@ -185,7 +184,7 @@ LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, intensity, Intensit
 }
 
 - (void)setTexture:(LTTexture *)texture {
-  LTParameterAssert(texture.channels == LTTextureChannelsOne);
+  LTParameterAssert(texture.format == LTTextureFormatRed);
   _texture = texture;
   [self.drawer setSourceTexture:texture];
 }

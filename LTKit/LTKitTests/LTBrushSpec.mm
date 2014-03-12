@@ -182,8 +182,7 @@ context(@"properties", ^{
     expect(brush.opacity).to.equal(1);
     expect(brush.flow).to.equal(1);
     expect(brush.intensity).to.equal(GLKVector4Make(1, 1, 1, 1));
-    cv::Mat1b expected(1, 1);
-    expected = 255;
+    cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
   });
 });
@@ -280,17 +279,12 @@ context(@"drawing", ^{
     newTexture(cv::Rect(kHalf.width, 0, kHalf.width, kHalf.height)) = 50;
     newTexture(cv::Rect(0, kHalf.height, kHalf.width, kHalf.height)) = 100;
     newTexture(cv::Rect(kHalf.width, kHalf.height, kHalf.width, kHalf.height)) = 200;
-    // TODO:(yaron) remove this when LTTexture can load these textures.
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     brush.texture = [LTTexture textureWithImage:newTexture];
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     brush.texture.minFilterInterpolation = LTTextureInterpolationNearest;
     brush.texture.magFilterInterpolation = LTTextureInterpolationNearest;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-    cv::Mat1b expectedSingle;
-    expectedSingle.create(expected.rows, expected.cols);
-    expectedSingle.setTo(0);
+    cv::Mat1b expectedSingle(expected.rows, expected.cols, (uchar)0);
     newTexture.copyTo(expectedSingle(LTCVRectWithCGRect(targetRect)));
     cv::cvtColor(expectedSingle, expected, CV_GRAY2RGBA);
     expect($(output.image)).to.equalMat($(expected));
