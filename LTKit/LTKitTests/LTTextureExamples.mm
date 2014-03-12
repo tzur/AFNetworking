@@ -100,7 +100,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
                        @"format": @(LTTextureFormatLuminance)});
 
   context(@"red and rg textures", ^{
-    it(@"should read red channel data", ^{
+    it(@"should read 4-byte aligned red channel data", ^{
       cv::Mat1b image(16, 16);
       image.setTo(128);
 
@@ -111,7 +111,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       expect(LTCompareMat(image, read)).to.beTruthy();
     });
 
-    it(@"should read rg channel data", ^{
+    it(@"should read 4-byte aligned rg channel data", ^{
       cv::Mat2b image(16, 16);
       image.setTo(cv::Vec2b(128, 64));
 
@@ -119,6 +119,18 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       cv::Mat read = [texture image];
 
       expect(read.type()).to.equal(CV_8UC2);
+      expect(LTCompareMat(image, read)).to.beTruthy();
+    });
+
+    it(@"should read non-4-byte aligned red channel data", ^{
+      cv::Mat1b image(10, 10);
+      image(cv::Rect(0, 0, 5, 10)).setTo(128);
+      image(cv::Rect(5, 0, 5, 10)).setTo(64);
+
+      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      cv::Mat read = [texture image];
+
+      expect(read.type()).to.equal(CV_8U);
       expect(LTCompareMat(image, read)).to.beTruthy();
     });
   });

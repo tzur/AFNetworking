@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
@@ -157,11 +158,18 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }
 
   [self readFromTexture:^{
-    // Read pixels into the mutable data, according to the texture precision.
-    glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
-                 [self bestSupportedReadingFormat],
-                 LTTexturePrecisionFromMatType(matTypeForReading),
-                 readImage.data);
+    LTGLContext *context = [LTGLContext currentContext];
+    [context executeAndPreserveState:^{
+      // Since the default pack alignment is 4, it is necessarry to verify there's no special
+      // packing of the texture that may effect the representation of the Mat if the number of bytes
+      // per row % 4 != 0.
+      context.packAlignment = 1;
+      // Read pixels into the mutable data, according to the texture precision.
+      glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
+                   [self bestSupportedReadingFormat],
+                   LTTexturePrecisionFromMatType(matTypeForReading),
+                   readImage.data);
+    }];
   }];
 
   // Convert read data to the output image's type, if needed.
@@ -196,17 +204,25 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }
 
   [self writeToTexture:^{
-    // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
-    if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
-      glTexImage2D(GL_TEXTURE_2D, 0, self.format, rect.size.width, rect.size.height, 0,
-                   self.format, self.precision, image.data);
-    } else {
-      // TODO: (yaron) this may create another copy of the texture. This needs to be profiled and
-      // if suffers from performance impact, consider using glTexStorage.
-      glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                      rect.size.width, rect.size.height, self.format, self.precision,
-                      image.data);
-    }
+    LTGLContext *context = [LTGLContext currentContext];
+    [context executeAndPreserveState:^{
+      // Since the default pack alignment is 4, it is necessarry to verify there's no special
+      // packing of the texture that may effect the representation of the Mat if the number of bytes
+      // per row % 4 != 0.
+      context.unpackAlignment = 1;
+
+      // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
+      if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
+        glTexImage2D(GL_TEXTURE_2D, 0, self.format, rect.size.width, rect.size.height, 0,
+                     self.format, self.precision, image.data);
+      } else {
+        // TODO: (yaron) this may create another copy of the texture. This needs to be profiled and
+        // if suffers from performance impact, consider using glTexStorage.
+        glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
+                        rect.size.width, rect.size.height, self.format, self.precision,
+                        image.data);
+      }
+    }];
   }];
 }
 

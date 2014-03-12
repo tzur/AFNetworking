@@ -89,15 +89,15 @@ context(@"writing gradient values to texture", ^{
   __block LTTexture *texture;
   
   beforeEach(^{
-    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    [EAGLContext setCurrentContext:context];
+    LTGLContext *context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
   });
-  
+
   afterEach(^{
     gradient = nil;
     texture = nil;
     
-    [EAGLContext setCurrentContext:nil];
+    [LTGLContext setCurrentContext:nil];
   });
   
   it(@"should be equal to [0-1] linear gradient with two points", ^{
