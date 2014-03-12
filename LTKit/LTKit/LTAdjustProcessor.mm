@@ -53,7 +53,6 @@ static const CGFloat kDetailsScaling = 2.0;
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                                                 fragmentSource:[LTAdjustFsh source]];
-  [self initCurves];
   // TODO:(zeev) Since smooth textures are used for luminance only, it make sense to build a
   // smoother that can leverage that by intermediate results into different RGBA channels. This will
   // reduce the sampling overhead in shaders and YIQ conversion computation.
@@ -70,23 +69,7 @@ static const CGFloat kDetailsScaling = 2.0;
   return self;
 }
 
-- (void)setDefaultValues {
-  self.brightness = kDefaultBrightness;
-  self.contrast = kDefaultContrast;
-  self.exposure = kDefaultExposure;
-  self.offset = kDefaultOffset;
-  self.blackPoint = kDefaultBlackPoint;
-  self.whitePoint = kDefaultWhitePoint;
-  self.saturation = kDefaultSaturation;
-  self.temperature = kDefaultTemperature;
-  self.tint = kDefaultTint;
-  self.details = kDefaultDetails;
-  self.shadows = kDefaultShadows;
-  self.fillLight = kDefaultFillLight;
-  self.highlights = kDefaultHighlights;
-}
-
-- (void)initCurves {
++ (void)initialize {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     kIdentityCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
@@ -102,6 +85,22 @@ static const CGFloat kDetailsScaling = 2.0;
     kNegativeContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
                                                  @"NegativeContrastCurve.png");
   });
+}
+
+- (void)setDefaultValues {
+  self.brightness = kDefaultBrightness;
+  self.contrast = kDefaultContrast;
+  self.exposure = kDefaultExposure;
+  self.offset = kDefaultOffset;
+  self.blackPoint = kDefaultBlackPoint;
+  self.whitePoint = kDefaultWhitePoint;
+  self.saturation = kDefaultSaturation;
+  self.temperature = kDefaultTemperature;
+  self.tint = kDefaultTint;
+  self.details = kDefaultDetails;
+  self.shadows = kDefaultShadows;
+  self.fillLight = kDefaultFillLight;
+  self.highlights = kDefaultHighlights;
 }
 
 - (NSArray *)createSmoothTextures:(LTTexture *)input {
@@ -237,8 +236,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
 }
 
 // Update brightness, contrast, exposure and offset.
-// Since these manipulations do not differ across RGB channels, the only require luminance update.
-- (cv::Mat1b)updateToneLuminanceCurve {
+// Since these manipulations do not differ across RGB channels, they only require luminance update.
+- (cv::Mat1b)toneLuminanceCurve {
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
@@ -268,7 +267,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
 
 // Update levels (white and black points) and curves.
 // These manipulations can differ across RGB channels, thus 3-channels LUT is required.
-- (cv::Mat1b)updateToneRGBACurve:(cv::Mat1b)toneCurve {
+- (cv::Mat1b)toneRGBACurveForLuminanceCurve:(cv::Mat1b)toneCurve {
   cv::Mat4b toneRGBACurve(1, kLutSize);
   
   GLKVector3 blackPoint = self.blackPoint * 255;
@@ -291,7 +290,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
 }
 
 - (void)updateToneLUT {
-  cv::Mat4b toneRGBACurve = [self updateToneRGBACurve:[self updateToneLuminanceCurve]];
+  cv::Mat1b toneCurve = [self toneLuminanceCurve];
+  cv::Mat4b toneRGBACurve = [self toneRGBACurveForLuminanceCurve:toneCurve];
   
   // Update details LUT texture in auxiliary textures.
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];

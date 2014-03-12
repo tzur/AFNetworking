@@ -31,11 +31,12 @@ void main() {
   
   const mediump vec3 kRGBToYPrime = vec3(0.299, 0.587, 0.114);
   
-  const mediump mat3 RGBtoYIQ = mat3(0.299, 0.596, 0.212, 0.587, -0.274, -0.523, 0.114, -0.322,
-                                     0.311);
-  const mediump mat3 YIQtoRGB = mat3(1.0, 1.0, 1.0, 0.9563, -0.2721, -1.107, 0.621, -0.6474,
-                                     1.7046);
-  
+  const mediump mat3 RGBtoYIQ = mat3(0.299, 0.596, 0.212,
+                                     0.587, -0.274, -0.523,
+                                     0.114, -0.322, 0.311);
+  const mediump mat3 YIQtoRGB = mat3(1.0, 1.0, 1.0,
+                                     0.9563, -0.2721, -1.107,
+                                     0.621, -0.6474, 1.7046);
   const highp float kIMax = 0.596;
   const highp float kQMax = 0.523;
   const highp float kEps = 0.01;
