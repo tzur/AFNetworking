@@ -23,5 +23,10 @@ void main() {
   // http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
   highp float a = dst.a + (1.0 - dst.a) * src.a;
   highp vec3 rgb = src.rgb * src.a + (1.0 - src.a) * dst.a * dst.rgb;
-  gl_FragColor = vec4(rgb / a, a);
+  
+  // If the result alpha is 0, the result rgb should be 0 as well.
+  // safeA = (a <= 0) ? 1 : a;
+  // gl_FragColor = (a <= 0) ? 0 : vec4(rgb / a, a);
+  highp float safeA = a + (step(a, 0.0));
+  gl_FragColor = (1.0 - step(a, 0.0)) * vec4(rgb / safeA, a);
 }

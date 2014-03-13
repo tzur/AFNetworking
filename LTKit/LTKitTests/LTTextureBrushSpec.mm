@@ -234,6 +234,15 @@ context(@"drawing", ^{
         
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
       });
+      
+      it(@"blending with zero result opacity should result in zero rgb as well", ^{
+        [fbo clearWithColor:GLKVector4Make(1, 1, 1, 0)];
+        brush.intensity = GLKVector4Make(1, 1, 1, 0);
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.setTo(0);
+        expect($(output.image)).to.equalMat($(expected));
+      });
     });
             
     context(@"premultipliedAlpha is YES", ^{
@@ -300,6 +309,15 @@ context(@"drawing", ^{
         expected(kBottomRight).setTo(cv::Vec4b(37, 55, 37, 255) * 0.87);
         
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
+      });
+      
+      it(@"blending with zero result opacity should result in zero rgb as well", ^{
+        [fbo clearWithColor:GLKVector4Make(1, 1, 1, 0)];
+        brush.intensity = GLKVector4Make(1, 1, 1, 0);
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.setTo(0);
+        expect($(output.image)).to.equalMat($(expected));
       });
     });
   });
