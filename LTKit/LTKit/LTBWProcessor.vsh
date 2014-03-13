@@ -4,7 +4,7 @@
 uniform highp mat4 modelview;
 uniform highp mat4 projection;
 uniform highp mat3 texture;
-uniform highp float grainScaling;
+uniform highp vec2 grainScaling;
 
 attribute highp vec4 position;
 attribute highp vec3 texcoord;

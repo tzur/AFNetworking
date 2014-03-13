@@ -4,6 +4,7 @@
 #import "LTBWTonalityProcessor.h"
 
 #import "LTColorGradient.h"
+#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
@@ -13,8 +14,8 @@ __block LTTexture *noise;
 __block LTTexture *output;
 
 beforeEach(^{
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  [EAGLContext setCurrentContext:context];
+  LTGLContext *context = [[LTGLContext alloc] init];
+  [LTGLContext setCurrentContext:context];
 });
 
 afterEach(^{
@@ -36,8 +37,7 @@ context(@"properties", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
-    LTTexture *defaultGradientTexture = [tone.colorGradient textureWithSamplingPoints:256];
-    expect(LTFuzzyCompareMat(defaultGradientTexture.image,
+    expect(LTFuzzyCompareMat(tone.colorGradientTexture.image,
                              identityGradientTexture.image)).to.beTruthy();
   });
   
@@ -160,7 +160,7 @@ context(@"processing", ^{
     tone.brightness = 0.1;
     tone.contrast = 0.8;
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
-    tone.colorGradient = colorGradient;
+    tone.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
     LTSingleTextureOutput *processed = [tone process];
     
     // Important: this test depends on the performance of other classes and processors, thus is

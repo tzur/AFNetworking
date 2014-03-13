@@ -1,15 +1,19 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTNoisyVignetting.h"
+#import "LTProceduralVignetting.h"
 
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTNoisyVignettingFsh.h"
+#import "LTShaderStorage+LTProceduralVignettingFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
-@implementation LTNoisyVignetting
+@interface LTGPUImageProcessor ()
+@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
+@end
+
+@implementation LTProceduralVignetting
 
 static const CGFloat kMinSpread = 0.0;
 static const CGFloat kMaxSpread = 100.0;
@@ -25,12 +29,13 @@ static const CGFloat kDefaultNoiseAmplitude = 1.0;
 
 static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
-- (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output {
+- (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
       [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                               fragmentSource:[LTNoisyVignettingFsh source]];
+                               fragmentSource:[LTProceduralVignettingFsh source]];
   
-  NSDictionary *auxiliaryTextures = @{[LTNoisyVignettingFsh noiseTexture]: noise};
+  LTTexture *defaultNoise = [self createNeutralNoise];
+  NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
   
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
@@ -45,6 +50,12 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self.spread = kDefaultSpread;
   self.noiseAmplitude = kDefaultNoiseAmplitude;
   self.noiseChannelMixer = kDefaultNoiseChannelMixer;
+  _noise = self.auxiliaryTextures[[LTProceduralVignettingFsh noiseTexture]];
+}
+
+- (LTTexture *)createNeutralNoise {
+  cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+  return [LTTexture textureWithImage:input];
 }
 
 // Precompute the distance shift that is used to correct aspect ratio in the shader.
@@ -75,6 +86,14 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   
   _corner = corner;
   self[@"corner"] = @(corner);
+}
+
+- (void)setNoise:(LTTexture *)noise {
+  // Update details LUT texture in auxiliary textures.
+  _noise = noise;
+  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
+  auxiliaryTextures[[LTProceduralVignettingFsh noiseTexture]] = noise;
+  self.auxiliaryTextures = auxiliaryTextures;
 }
 
 - (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {

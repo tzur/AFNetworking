@@ -21,8 +21,10 @@
 /// Default value is the NTSC conversion triplet (0.299, 0.587, 0.114).
 @property (nonatomic) GLKVector3 colorFilter;
 
-/// Maps greyscale values to color in order to create a certain tint to a final result.
-@property (strong, nonatomic) LTColorGradient *colorGradient;
+/// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
+/// This LUT is used to colorize (add tint) to the BW conversion. Default value is an identity
+/// mapping.
+@property (strong, nonatomic) LTTexture *colorGradientTexture;
 
 /// Brightens the image. Should be in [-1 1] range. Default value is 0.
 @property (nonatomic) CGFloat brightness;

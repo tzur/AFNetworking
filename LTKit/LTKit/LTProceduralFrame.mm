@@ -9,6 +9,10 @@
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
 #import "LTTexture+Factory.h"
 
+@interface LTGPUImageProcessor ()
+@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
+@end
+
 @implementation LTProceduralFrame
 
 static const CGFloat kMinWidth = 0.0;
@@ -30,12 +34,13 @@ static const CGFloat kDefaultNoiseAmplitude = 1.0;
 static const GLKVector3 kDefaultColor = GLKVector3Make(1.0, 1.0, 1.0);
 static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
-- (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output {
+- (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
     [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                              fragmentSource:[LTProceduralFrameFsh source]];
   
-  NSDictionary *auxiliaryTextures = @{[LTProceduralFrameFsh noiseTexture]: noise};
+  LTTexture *defaultNoise = [self createNeutralNoise];
+  NSDictionary *auxiliaryTextures = @{[LTProceduralFrameFsh noiseTexture]: defaultNoise};
 
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
@@ -52,6 +57,12 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self.noiseAmplitude = kDefaultNoiseAmplitude;
   self.noiseChannelMixer = kDefaultNoiseChannelMixer;
   self.color = kDefaultColor;
+  _noise = self.auxiliaryTextures[[LTProceduralFrameFsh noiseTexture]];
+}
+
+- (LTTexture *)createNeutralNoise {
+  cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+  return [LTTexture textureWithImage:input];
 }
 
 // Precompute the distance shift that is used to correct aspect ratio in the shader.
@@ -106,6 +117,14 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   
   _corner = corner;
   self[@"corner"] = @(corner);
+}
+
+- (void)setNoise:(LTTexture *)noise {
+  // Update details LUT texture in auxiliary textures.
+  _noise = noise;
+  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
+  auxiliaryTextures[[LTProceduralFrameFsh noiseTexture]] = noise;
+  self.auxiliaryTextures = auxiliaryTextures;
 }
 
 - (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
