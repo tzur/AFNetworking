@@ -17,7 +17,8 @@ static NSString * const kComplexFragmentSource = @"varying highp vec2 myVarying;
     "void main() { gl_FragColor = vec4(myVarying.x, myVarying.y, 0.0, 0.0); }";
 
 static NSString * const kUniformTypesVertexSource =
-  @"uniform highp int uInt; "
+  @"uniform bool uBool; "
+  "uniform highp int uInt; "
   "uniform highp float uFloat; "
   "uniform highp vec2 uVec2; "
   "uniform highp vec3 uVec3; "
@@ -27,6 +28,7 @@ static NSString * const kUniformTypesVertexSource =
   "uniform highp mat4 uMat4; "
   "uniform highp sampler2D uSampler; "
   "void main() { "
+  "  uBool; "
   "  uInt; "
   "  uFloat; "
   "  texture2D(uSampler, vec2(0.0)); "
@@ -54,7 +56,8 @@ context(@"getting and setting uniforms and attributes", ^{
   it(@"should set and get uniform values", ^{
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
                                                   fragmentSource:kBasicFragmentSource];
-    
+
+    NSNumber *boolValue = @(YES);
     NSNumber *intValue = @(7);
     NSNumber *floatValue = @(1);
     
@@ -78,7 +81,8 @@ context(@"getting and setting uniforms and attributes", ^{
     NSValue *mat2 = $(m2);
     NSValue *mat3 = $(m3);
     NSValue *mat4 = $(m4);
-    
+
+    program[@"uBool"] = boolValue;
     program[@"uInt"] = intValue;
     program[@"uFloat"] = floatValue;
     program[@"uSampler"] = intValue;
@@ -89,7 +93,8 @@ context(@"getting and setting uniforms and attributes", ^{
     program[@"uMat3"] = mat3;
     program[@"uMat4"] = mat4;
     program[@"uSampler"] = intValue;
-    
+
+    expect(program[@"uBool"]).to.equal(boolValue);
     expect(program[@"uInt"]).to.equal(intValue);
     expect(program[@"uFloat"]).to.equal(floatValue);
     expect(program[@"uSampler"]).to.equal(intValue);

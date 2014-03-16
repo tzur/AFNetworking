@@ -281,6 +281,7 @@
   
   [self bindAndExecute:^{
     switch (object.type) {
+      case GL_BOOL:
       case GL_INT:
       case GL_SAMPLER_2D: {
         if (![value isKindOfClass:[NSNumber class]]) {
@@ -350,6 +351,7 @@
   }
 
   switch (object.type) {
+    case GL_BOOL:
     case GL_INT:
     case GL_SAMPLER_2D: {
       GLint value;
