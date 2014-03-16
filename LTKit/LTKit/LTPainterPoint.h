@@ -7,7 +7,7 @@
 @interface LTPainterPoint : NSObject <LTInterpolatedObject, NSCopying>
 
 /// initializes a point with the default primitive values and the current timestamp.
--(instancetype)initWithCurrentTimestamp;
+- (instancetype)initWithCurrentTimestamp;
 
 /// Designated initializer: create a point with the default primitive values for its properties.
 - (instancetype)init;

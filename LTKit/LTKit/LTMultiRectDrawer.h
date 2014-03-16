@@ -26,7 +26,6 @@
 - (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects;
 
-
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target
 /// coordinate systems accordingly, in pixels.
