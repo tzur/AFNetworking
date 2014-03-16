@@ -274,7 +274,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
   GLKVector3 whitePoint = self.whitePoint * 255;
   
   // Levels: black and white point.
-  for (NSUInteger i = 0; i < kLutSize; i++) {
+  for (int i = 0; i < kLutSize; i++) {
     // Remaps to [-kMinBlackPoint, kMaxWhitePoint].
     CGFloat red = (toneCurve(0, i) - blackPoint.r) / (whitePoint.r - blackPoint.r);
     CGFloat green = (toneCurve(0, i) - blackPoint.g) / (whitePoint.g - blackPoint.g);
