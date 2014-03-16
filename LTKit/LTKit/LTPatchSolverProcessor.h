@@ -11,7 +11,7 @@
 @interface LTPatchSolverProcessor : NSObject <LTImageProcessor>
 
 /// Initializes with mask, source texture, target texture and an output texture. The output texture
-/// must have the larger dimension to be a power of two and with half-float precision.
+/// must be of half-float precision.
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output;
 

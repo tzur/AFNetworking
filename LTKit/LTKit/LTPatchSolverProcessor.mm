@@ -73,8 +73,6 @@
 
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output {
-  LTParameterAssert(LTIsPowerOfTwo(std::max(output.size)),
-                    @"Largest dimension of the output must be a power of two");
   LTParameterAssert(output.precision == LTTexturePrecisionHalfFloat,
                     @"Output texture must be of half-float precision");
   if (self = [super init]) {
@@ -83,7 +81,8 @@
     self.target = target;
     self.output = output;
 
-    self.workingSize = CGSizeMake(std::max(self.output.size), std::max(self.output.size));
+    CGFloat workingDimension = (1 << (int)ceil(log2(std::max(self.output.size))));
+    self.workingSize = CGSizeMake(workingDimension, workingDimension);
 
     [self createTransformedKernel];
     [self createResizersAndTextures];

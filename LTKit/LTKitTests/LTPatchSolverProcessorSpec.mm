@@ -50,22 +50,6 @@ context(@"initialization", ^{
                                                     output:output];
     }).to.raise(NSInvalidArgumentException);
   });
-
-  it(@"should not initialize with non largest dimension power of two texture", ^{
-    LTTexture *mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
-    LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
-    LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
-    LTTexture *output = [LTTexture textureWithSize:CGSizeMake(16, 17)
-                                         precision:LTTexturePrecisionByte
-                                            format:LTTextureFormatRGBA allocateMemory:YES];
-
-    expect(^{
-      LTPatchSolverProcessor __unused *processor = [[LTPatchSolverProcessor alloc]
-                                                    initWithMask:mask
-                                                    source:source target:target
-                                                    output:output];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 context(@"processing", ^{
