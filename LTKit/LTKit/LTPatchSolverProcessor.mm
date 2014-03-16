@@ -219,12 +219,14 @@
   cv::Mat1f erf(diff.size());
 
   for (int i = 0; i < 3; ++i) {
-    cv::Mat1f erf([self convolveKernelWith:diffChannels[i]]);
+    @autoreleasepool {
+      cv::Mat1f erf([self convolveKernelWith:diffChannels[i]]);
 
-    cv::Mat1f membrane;
-    cv::divide(erf, _chi, membrane);
-    LTInPlaceFFTShift(&membrane);
-    membraneChannels.push_back(membrane);
+      cv::Mat1f membrane;
+      cv::divide(erf, _chi, membrane);
+      LTInPlaceFFTShift(&membrane);
+      membraneChannels.push_back(membrane);
+    }
   }
 
   membraneChannels.push_back(cv::Mat1f::zeros(erf.size()));
