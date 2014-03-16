@@ -7,9 +7,10 @@
 #import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
-#import "LTProceduralVignetting.h"
+#import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProceduralFrame.h"
+#import "LTProceduralVignetting.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBWProcessorFsh.h"
 #import "LTShaderStorage+LTBWProcessorVsh.h"
@@ -23,28 +24,29 @@
 
 @property (strong, nonatomic) LTBWTonalityProcessor *toneProcessor;
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
-@property (strong, nonatomic) LTProceduralFrame *wideFrameProcessor;
-@property (strong, nonatomic) LTProceduralFrame *narrowFrameProcessor;
+@property (strong, nonatomic) LTProceduralFrame *outerFrameProcessor;
+@property (strong, nonatomic) LTProceduralFrame *innerFrameProcessor;
+@property (nonatomic) CGSize outputSize;
 
 @end
 
 @implementation LTBWProcessor
 
 @synthesize grainTexture = _grainTexture;
-@synthesize wideFrameNoise = _wideFrameNoise;
-@synthesize narrowFrameNoise = _narrowFrameNoise;
+@synthesize outerFrameNoise = _outerFrameNoise;
+@synthesize innerFrameNoise = _innerFrameNoise;
 
 static const CGFloat kVignettingMaxDimension = 256;
 static const CGFloat kFrameMaxDimension = 1024;
+static const GLKVector3 kDefaultVignettingColor = GLKVector3Make(0.0, 0.0, 0.0);
+// Unlike in LTProceduralVignetting class, the default spread here is 0, so no vignetting is seen by
+// default.
+static const CGFloat kDefaultVignettingSpread = 0;
+static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTBWProcessorVsh source]
                                                 fragmentSource:[LTBWProcessorFsh source]];
-  
-  // Setup noise.
-  LTTexture *noise = [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
-  noise.wrap = LTTextureWrapRepeat;
-  
   // Setup tonality.
   LTTexture *toneTexture = [LTTexture textureWithPropertiesOf:output];
   self.toneProcessor = [[LTBWTonalityProcessor alloc] initWithInput:input output:toneTexture];
@@ -56,37 +58,42 @@ static const CGFloat kFrameMaxDimension = 1024;
   [self.vignetteProcessor process];
   
   // Setup wide frame.
-  LTTexture *wideFrameTexture = [self createFrameTextureWithInput:input];
-  self.wideFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:wideFrameTexture];
-  [self.wideFrameProcessor process];
+  LTTexture *outerFrameTexture = [self createFrameTextureWithInput:input];
+  self.outerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:outerFrameTexture];
+  [self.outerFrameProcessor process];
   
   // Setup narrow frame.
-  LTTexture *narrowFrameTexture = [self createFrameTextureWithInput:input];
-  self.narrowFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:narrowFrameTexture];
-  [self.narrowFrameProcessor process];
+  LTTexture *innerFrameTexture = [self createFrameTextureWithInput:input];
+  self.innerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:innerFrameTexture];
+  [self.innerFrameProcessor process];
   
   NSDictionary *auxiliaryTextures =
       @{[LTBWProcessorFsh grainTexture]: self.grainTexture,
         [LTBWProcessorFsh vignettingTexture]: vignetteTexture,
-        [LTBWProcessorFsh wideFrameTexture]: wideFrameTexture,
-        [LTBWProcessorFsh narrowFrameTexture]: narrowFrameTexture};
+        [LTBWProcessorFsh outerFrameTexture]: outerFrameTexture,
+        [LTBWProcessorFsh innerFrameTexture]: innerFrameTexture};
   if (self = [super initWithProgram:program sourceTexture:toneTexture
                   auxiliaryTextures:auxiliaryTextures andOutput:output]) {
-    [self setupGrainTextureScalingWith:input grain:noise];
     [self setDefaultValues];
+    _outputSize = output.size;
   }
   return self;
 }
 
 - (void)setDefaultValues {
-  self.grainAmplitude = kDefaultGrainAmplitude;
-  self[@"grainChannelMixer"] = $(GLKVector3Make(1.0, 0.0, 0.0));
-  self[@"vignetteColor"] = $(GLKVector3Make(0.0, 0.0, 0.0));
+  // New properties introduced by LTBWProcessor.
+  _grainAmplitude = kDefaultGrainAmplitude;
+  _grainChannelMixer = kDefaultGrainChannelMixer;
+  self[@"grainChannelMixer"] = $(self.grainChannelMixer);
+  _vignetteColor = kDefaultVignettingColor;
+  self[@"vignetteColor"] = $(self.vignetteColor);
+  // Existing properties that LTBWProcessor mirrors from other processors.
+  self.vignettingSpread = kDefaultVignettingSpread;
 }
 
-- (void)setupGrainTextureScalingWith:(LTTexture *)input grain:(LTTexture *)grain {
-  CGFloat xScale = input.size.width / grain.size.width;
-  CGFloat yScale = input.size.height / grain.size.height;
+- (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
+  CGFloat xScale = size.width / grain.size.width;
+  CGFloat yScale = size.height / grain.size.height;
   self[@"grainScaling"] = $(GLKVector2Make(xScale, yScale));
 }
 
@@ -112,7 +119,9 @@ static const CGFloat kFrameMaxDimension = 1024;
 
 - (LTTexture *)createNeutralNoise {
   cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
-  return [LTTexture textureWithImage:input];
+  LTTexture *neutralNoise = [LTTexture textureWithImage:input];
+  neutralNoise.wrap = LTTextureWrapRepeat;
+  return neutralNoise;
 }
 
 #pragma mark -
@@ -122,79 +131,111 @@ static const CGFloat kFrameMaxDimension = 1024;
 // Tone.
 
 - (void)setColorFilter:(GLKVector3)colorFilter {
-  _colorFilter = colorFilter;
   self.toneProcessor.colorFilter = colorFilter;
   [self.toneProcessor process];
 }
 
+- (GLKVector3)colorFilter {
+  return self.toneProcessor.colorFilter;
+}
+
 - (void)setBrightness:(CGFloat)brightness {
-  _brightness = brightness;
   self.toneProcessor.brightness = brightness;
   [self.toneProcessor process];
 }
 
+- (CGFloat)brightness {
+  return self.toneProcessor.brightness;
+}
+
 - (void)setContrast:(CGFloat)contrast {
-  _contrast = contrast;
   self.toneProcessor.contrast = contrast;
   [self.toneProcessor process];
 }
 
+- (CGFloat)contrast {
+  return self.toneProcessor.contrast;
+}
+
 - (void)setExposure:(CGFloat)exposure {
-  _exposure = exposure;
   self.toneProcessor.exposure = exposure;
   [self.toneProcessor process];
 }
 
+- (CGFloat)exposure {
+  return self.toneProcessor.exposure;
+}
+
 - (void)setStructure:(CGFloat)structure {
-  _structure = structure;
   self.toneProcessor.structure = structure;
   [self.toneProcessor process];
 }
 
+- (CGFloat)structure {
+  return self.toneProcessor.structure;
+}
+
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
-  _colorGradientTexture = colorGradientTexture;
   self.toneProcessor.colorGradientTexture = colorGradientTexture;
   [self.toneProcessor process];
+}
+
+- (LTTexture *)colorGradientTexture {
+  return self.toneProcessor.colorGradientTexture;
 }
 
 // Vignetting.
 
 - (void)setVignetteColor:(GLKVector3)vignetteColor {
   LTParameterAssert(GLKVectorInRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
-
   _vignetteColor = vignetteColor;
   self[@"vignetteColor"] = $(vignetteColor);
   [self.vignetteProcessor process];
 }
 
 - (void)setVignettingSpread:(CGFloat)vignettingSpread {
-  _vignettingSpread = vignettingSpread;
   self.vignetteProcessor.spread = vignettingSpread;
   [self.vignetteProcessor process];
 }
 
+- (CGFloat)vignettingSpread {
+  return self.vignetteProcessor.spread;
+}
+
 - (void)setVignettingCorner:(CGFloat)vignettingCorner {
-  _vignettingCorner = vignettingCorner;
   self.vignetteProcessor.corner = vignettingCorner;
   [self.vignetteProcessor process];
 }
 
+- (CGFloat)vignettingCorner {
+  return self.vignetteProcessor.corner;
+}
+
 - (void)setVignettingNoise:(LTTexture *)vignettingNoise {
-  _vignettingNoise = vignettingNoise;
   self.vignetteProcessor.noise = vignettingNoise;
   [self.vignetteProcessor process];
 }
 
+- (LTTexture *)vignettingNoise {
+  return self.vignetteProcessor.noise;
+}
+
 - (void)setVignettingNoiseChannelMixer:(GLKVector3)vignettingNoiseChannelMixer {
-  _vignettingNoiseChannelMixer = vignettingNoiseChannelMixer;
   self.vignetteProcessor.noiseChannelMixer = vignettingNoiseChannelMixer;
   [self.vignetteProcessor process];
 }
 
+- (GLKVector3)vignettingNoiseChannelMixer {
+  return self.vignetteProcessor.noiseChannelMixer;
+}
+
 - (void)setVignettingNoiseAmplitude:(CGFloat)vignettingNoiseAmplitude {
-  _vignettingNoiseAmplitude = vignettingNoiseAmplitude;
   self.vignetteProcessor.noiseAmplitude = vignettingNoiseAmplitude;
   [self.vignetteProcessor process];
+}
+
+- (CGFloat)vignettingNoiseAmplitude {
+  return self.vignetteProcessor.noiseAmplitude;
 }
 
 // Grain.
@@ -207,12 +248,20 @@ static const CGFloat kFrameMaxDimension = 1024;
 }
 
 - (void)setGrainTexture:(LTTexture *)grainTexture {
-  // Update details LUT texture in auxiliary textures.
+  LTParameterAssert([self isValidGrainTexture:grainTexture],
+                    @"Grain texture should be either tileable or match the output size.");
   _grainTexture = grainTexture;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
   auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = grainTexture;
   self.auxiliaryTextures = auxiliaryTextures;
+  [self setupGrainTextureScalingWithOutputSize:self.outputSize grain:self.grainTexture];
   [self process];
+}
+
+- (BOOL)isValidGrainTexture:(LTTexture *)texture {
+  BOOL isTilable = LTIsPowerOfTwo(texture.size) && (texture.wrap == LTTextureWrapRepeat);
+  BOOL matchesOutputSize = (texture.size == self.outputSize);
+  return isTilable || matchesOutputSize;
 }
 
 -(void)setGrainChannelMixer:(GLKVector3)grainChannelMixer {
@@ -222,111 +271,153 @@ static const CGFloat kFrameMaxDimension = 1024;
 }
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100,
-    0, ^{
+    1, ^{
   _grainAmplitude = grainAmplitude;
   self[@"grainAmplitude"] = @(grainAmplitude);
   [self process];
 });
 
-// Wide Frame.
+// Outer Frame.
 
-- (void)setWideFrameWidth:(CGFloat)wideFrameWidth {
-  _wideFrameWidth = wideFrameWidth;
-  self.wideFrameProcessor.width = wideFrameWidth;
-  [self.wideFrameProcessor process];
+- (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
+  self.outerFrameProcessor.width = outerFrameWidth;
+  [self.outerFrameProcessor process];
 }
 
-- (void)setWideFrameSpread:(CGFloat)wideFrameSpread {
-  _wideFrameSpread = wideFrameSpread;
-  self.wideFrameProcessor.spread = wideFrameSpread;
-  [self.wideFrameProcessor process];
+- (CGFloat)outerFrameWidth {
+  return self.outerFrameProcessor.width;
 }
 
-- (void)setWideFrameCorner:(CGFloat)wideFrameCorner {
-  _wideFrameCorner = wideFrameCorner;
-  self.wideFrameProcessor.corner = wideFrameCorner;
-  [self.wideFrameProcessor process];
+- (void)setOuterFrameSpread:(CGFloat)outerFrameSpread {
+  self.outerFrameProcessor.spread = outerFrameSpread;
+  [self.outerFrameProcessor process];
 }
 
-- (LTTexture *)wideFrameNoise {
-  if (!_wideFrameNoise) {
-    _wideFrameNoise = [self createNeutralNoise];
+- (CGFloat)outerFrameSpread {
+  return self.outerFrameProcessor.spread;
+}
+
+- (void)setOuterFrameCorner:(CGFloat)outerFrameCorner {
+  self.outerFrameProcessor.corner = outerFrameCorner;
+  [self.outerFrameProcessor process];
+}
+
+- (CGFloat)outerFrameCorner {
+  return self.outerFrameProcessor.corner;
+}
+
+- (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
+  // Update details LUT texture in auxiliary textures.
+  _outerFrameNoise = outerFrameNoise;
+  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
+  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = outerFrameNoise;
+  self.auxiliaryTextures = auxiliaryTextures;
+  [self process];
+}
+
+- (LTTexture *)outerFrameNoise {
+  if (!_outerFrameNoise) {
+    _outerFrameNoise = [self createNeutralNoise];
   }
-  return _wideFrameNoise;
+  return _outerFrameNoise;
 }
 
-- (void)setWideFrameNoise:(LTTexture *)wideFrameNoise {
+- (void)setOuterFrameNoiseChannelMixer:(GLKVector3)outerFrameNoiseChannelMixer {
+  self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
+  [self.outerFrameProcessor process];
+}
+
+- (GLKVector3)outerFrameNoiseChannelMixer {
+  return self.outerFrameProcessor.noiseChannelMixer;
+}
+
+- (void)setOuterFrameNoiseAmplitude:(CGFloat)outerFrameNoiseAmplitude {
+  self.outerFrameProcessor.noiseAmplitude = outerFrameNoiseAmplitude;
+  [self.outerFrameProcessor process];
+}
+
+- (CGFloat)outerFrameNoiseAmplitude {
+  return self.outerFrameProcessor.noiseAmplitude;
+}
+
+- (void)setOuterFrameColor:(GLKVector3)outerFrameColor {
+  self.outerFrameProcessor.color = outerFrameColor;
+  [self.outerFrameProcessor process];
+}
+
+- (GLKVector3)outerFrameColor {
+  return self.outerFrameProcessor.color;
+}
+
+// Inner Frame.
+
+- (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
+  LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,
+                    @"Sum of outer and inner width is above maximum value.");
+  _innerFrameWidth = self.outerFrameWidth + innerFrameWidth;
+  self.innerFrameProcessor.width = _innerFrameWidth;
+  [self.innerFrameProcessor process];
+}
+
+- (void)setInnerFrameSpread:(CGFloat)innerFrameSpread {
+  self.innerFrameProcessor.spread = innerFrameSpread;
+  [self.innerFrameProcessor process];
+}
+
+- (CGFloat)innerFrameSpread {
+  return self.innerFrameProcessor.spread;
+}
+
+- (void)setInnerFrameCorner:(CGFloat)innerFrameCorner {
+  self.innerFrameProcessor.corner = innerFrameCorner;
+  [self.innerFrameProcessor process];
+}
+
+- (CGFloat)innerFrameCorner {
+  return self.innerFrameProcessor.corner;
+}
+
+- (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
   // Update details LUT texture in auxiliary textures.
-  _wideFrameNoise = wideFrameNoise;
+  _innerFrameNoise = innerFrameNoise;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = wideFrameNoise;
+  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = innerFrameNoise;
   self.auxiliaryTextures = auxiliaryTextures;
   [self process];
 }
 
-- (void)setWideFrameNoiseChannelMixer:(GLKVector3)wideFrameNoiseChannelMixer {
-  _wideFrameNoiseChannelMixer = wideFrameNoiseChannelMixer;
-  self.wideFrameProcessor.noiseChannelMixer = wideFrameNoiseChannelMixer;
-  [self.wideFrameProcessor process];
+- (LTTexture *)innerFrameNoise {
+  if (!_innerFrameNoise) {
+    _innerFrameNoise = [self createNeutralNoise];
+  }
+  return _innerFrameNoise;
 }
 
-- (void)setWideFrameNoiseAmplitude:(CGFloat)wideFrameNoiseAmplitude {
-  _wideFrameNoiseAmplitude = wideFrameNoiseAmplitude;
-  self.wideFrameProcessor.noiseAmplitude = wideFrameNoiseAmplitude;
-  [self.wideFrameProcessor process];
+- (void)setInnerFrameNoiseChannelMixer:(GLKVector3)innerFrameNoiseChannelMixer {
+  self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
+  [self.innerFrameProcessor process];
 }
 
-- (void)setWideFrameColor:(GLKVector3)wideFrameColor {
-  _wideFrameColor = wideFrameColor;
-  self.wideFrameProcessor.color = wideFrameColor;
-  [self.wideFrameProcessor process];
+- (GLKVector3)innerFrameNoiseChannelMixer {
+  return self.innerFrameProcessor.noiseChannelMixer;
 }
 
-// Narrow Frame.
-
-- (void)setNarrowFrameWidth:(CGFloat)narrowFrameWidth {
-  _narrowFrameWidth = narrowFrameWidth;
-  self.narrowFrameProcessor.width = narrowFrameWidth;
-  [self.narrowFrameProcessor process];
+- (void)setInnerFrameNoiseAmplitude:(CGFloat)innerFrameNoiseAmplitude {
+  self.innerFrameProcessor.noiseAmplitude = innerFrameNoiseAmplitude;
+  [self.innerFrameProcessor process];
 }
 
-- (void)setNarrowFrameSpread:(CGFloat)narrowFrameSpread {
-  _narrowFrameSpread = narrowFrameSpread;
-  self.narrowFrameProcessor.spread = narrowFrameSpread;
-  [self.narrowFrameProcessor process];
+- (CGFloat)innerFrameNoiseAmplitude {
+  return self.innerFrameProcessor.noiseAmplitude;
 }
 
-- (void)setNarrowFrameCorner:(CGFloat)narrowFrameCorner {
-  _narrowFrameCorner = narrowFrameCorner;
-  self.narrowFrameProcessor.corner = narrowFrameCorner;
-  [self.narrowFrameProcessor process];
+- (void)setInnerFrameColor:(GLKVector3)innerFrameColor {
+  self.innerFrameProcessor.color = innerFrameColor;
+  [self.innerFrameProcessor process];
 }
 
-- (void)setNarrowFrameNoise:(LTTexture *)narrowFrameNoise {
-  // Update details LUT texture in auxiliary textures.
-  _narrowFrameNoise = narrowFrameNoise;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = narrowFrameNoise;
-  self.auxiliaryTextures = auxiliaryTextures;
-  [self process];
-}
-
-- (void)setNarrowFrameNoiseChannelMixer:(GLKVector3)narrowFrameNoiseChannelMixer {
-  _narrowFrameNoiseChannelMixer = narrowFrameNoiseChannelMixer;
-  self.narrowFrameProcessor.noiseChannelMixer = narrowFrameNoiseChannelMixer;
-  [self.narrowFrameProcessor process];
-}
-
-- (void)setNarrowFrameNoiseAmplitude:(CGFloat)narrowFrameNoiseAmplitude {
-  _narrowFrameNoiseAmplitude = narrowFrameNoiseAmplitude;
-  self.narrowFrameProcessor.noiseAmplitude = narrowFrameNoiseAmplitude;
-  [self.narrowFrameProcessor process];
-}
-
-- (void)setNarrowFrameColor:(GLKVector3)narrowFrameColor {
-  _narrowFrameColor = narrowFrameColor;
-  self.narrowFrameProcessor.color = narrowFrameColor;
-  [self.narrowFrameProcessor process];
+- (GLKVector3)innerFrameColor {
+  return self.innerFrameProcessor.color;
 }
 
 @end

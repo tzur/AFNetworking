@@ -4,8 +4,8 @@
 uniform sampler2D sourceTexture;
 uniform sampler2D grainTexture;
 uniform sampler2D vignettingTexture;
-uniform sampler2D wideFrameTexture;
-uniform sampler2D narrowFrameTexture;
+uniform sampler2D outerFrameTexture;
+uniform sampler2D innerFrameTexture;
 
 varying highp vec2 vTexcoord;
 varying highp vec2 vGrainTexcoord;
@@ -18,16 +18,14 @@ void main() {
   mediump vec4 tone = texture2D(sourceTexture, vTexcoord);
   mediump float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
   mediump float vignette = texture2D(vignettingTexture, vTexcoord).r;
-  mediump vec4 wideFrame = texture2D(wideFrameTexture, vTexcoord);
-  mediump vec4 narrowFrame = texture2D(narrowFrameTexture, vTexcoord);
+  mediump vec4 innerFrame = texture2D(innerFrameTexture, vTexcoord);
+  mediump vec4 outerFrame = texture2D(outerFrameTexture, vTexcoord);
   
   tone.rgb = tone.rgb + grainAmplitude * (grain - 0.5);
-  //  tone.rgb = mix(tone.rgb, vec3(grain), 0.8);
   tone.rgb = mix(tone.rgb, vignetteColor, vignette);
-
-  tone.rgb = wideFrame.rgb + (1.0 - wideFrame.a) * tone.rgb;
-  tone.rgb = narrowFrame.rgb + (1.0 - narrowFrame.a) * tone.rgb;
   
-//  gl_FragColor = vec4(vec3(grain), 1.0);
+  tone.rgb = innerFrame.rgb + (1.0 - innerFrame.a) * tone.rgb;
+  tone.rgb = outerFrame.rgb + (1.0 - outerFrame.a) * tone.rgb;
+  
   gl_FragColor = tone;
 }

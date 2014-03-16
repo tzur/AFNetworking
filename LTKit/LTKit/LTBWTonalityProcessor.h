@@ -3,6 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
+
 @class LTColorGradient;
 
 /// @class LTBWTonalityProcessor
@@ -27,15 +29,15 @@
 @property (strong, nonatomic) LTTexture *colorGradientTexture;
 
 /// Brightens the image. Should be in [-1 1] range. Default value is 0.
-@property (nonatomic) CGFloat brightness;
+LTBoundedPrimitiveProperty(CGFloat, brightness, Brightness);
 
-/// Increases the global contrast of the image. Should be in [0, 2] range. Default value is 1.
-@property (nonatomic) CGFloat contrast;
+/// Increases the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
+LTBoundedPrimitiveProperty(CGFloat, contrast, Contrast);
 
-/// Changes the exposure of the image. Should be in [0, 2] range. Default value is 1.
-@property (nonatomic) CGFloat exposure;
+/// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
+LTBoundedPrimitiveProperty(CGFloat, exposure, Exposure);
 
-/// Increases the local contrast of the image. Should be in [0, 4] range. Default value is 1.
-@property (nonatomic) CGFloat structure;
+/// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
+LTBoundedPrimitiveProperty(CGFloat, structure, Structure);
 
 @end

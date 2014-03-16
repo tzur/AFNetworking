@@ -47,4 +47,7 @@
 /// Default color is white (1, 1, 1).
 @property (nonatomic) GLKVector3 color;
 
+/// Maximum supported width of the frame, as percentage of the smaller image dimensionn.
+@property (nonatomic, readonly) CGFloat maxWidth;
+
 @end

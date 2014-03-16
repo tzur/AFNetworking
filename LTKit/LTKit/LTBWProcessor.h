@@ -29,13 +29,13 @@
 /// Brightens the image. Should be in [-1 1] range. Default value is 0.
 @property (nonatomic) CGFloat brightness;
 
-/// Increases the global contrast of the image. Should be in [0, 2] range. Default value is 1.
+/// Increases the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat contrast;
 
-/// Changes the exposure of the image. Should be in [0, 2] range. Default value is 1.
+/// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat exposure;
 
-/// Increases the local contrast of the image. Should be in [0, 4] range. Default value is 1.
+/// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat structure;
 
 /// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
@@ -47,27 +47,27 @@
 #pragma mark Grain
 #pragma mark -
 
-/// Grain (noise) texture that modulates with the image. Default value is a constant 0.5, which
-/// doesn't affect the image.
+/// Grain (noise) texture that modulates the image. Default value is a constant 0.5, which doesn't
+/// affect the image.
+/// @attention The texture should either have dimensions which are powers-of-2 and wrapping mode set
+/// to LTTextureWrapRepeat or size of the texture should match the size of the output. This
+/// restriction is enforced in order to create one-to-one mapping between the pixels of the output
+/// and of the noise and thus preserve high-frequencies of the noise from interpolation smoothing.
 @property (strong, nonatomic) LTTexture *grainTexture;
 
 /// Mixes the channels of the grain texture. Default value is (1, 0, 0). Input values are
 /// normalized, to remove potential interference with noise amplitude.
 @property (nonatomic) GLKVector3 grainChannelMixer;
 
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
+/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
 LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 
 #pragma mark -
 #pragma mark Vignetting
 #pragma mark -
 
-/// Color of the vignetting pattern.
+/// Color of the vignetting pattern. Default color is black (0, 0, 0).
 @property (nonatomic) GLKVector3 vignetteColor;
-
-/// Noise texture that modulates with the vignetting pattern. Default value is a constant 0.5, which
-/// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *vignettingTexture;
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 100.
@@ -90,75 +90,77 @@ LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 /// amplitude.
 @property (nonatomic) GLKVector3 vignettingNoiseChannelMixer;
 
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
+/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
 @property (nonatomic) CGFloat vignettingNoiseAmplitude;
 
 #pragma mark -
-#pragma mark Wide Frame
+#pragma mark Outer Frame
 #pragma mark -
 
-/// In wide frame, percent of the smaller image dimension that the foreground should occupy.
-/// Should be in [0-25] range. Default value is 0.
-@property (nonatomic) CGFloat wideFrameWidth;
+/// Width of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
+/// range. Default value is 0.
+@property (nonatomic) CGFloat outerFrameWidth;
 
-/// In wide frame, percent of the smaller image dimension that the transition should occupy.
-/// Should be in [0-25] range. Default value is 0.
-@property (nonatomic) CGFloat wideFrameSpread;
+/// Spread of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
+/// range. Default value is 0.
+@property (nonatomic) CGFloat outerFrameSpread;
 
-/// In wide frame, determines the corner type of the frame by creating an appropriate distance
+/// In outer frame, determines the corner type of the frame by creating an appropriate distance
 /// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
 /// values will create a different degrees of roundness, which stem from the remapping the distance
 /// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat wideFrameCorner;
+@property (nonatomic) CGFloat outerFrameCorner;
 
-/// Noise texture that modulates with the wide frame. Default value is a constant 0.5, which doesn't
-/// affect the image.
-@property (strong, nonatomic) LTTexture *wideFrameNoise;
+/// Noise texture that modulates with the outer frame. Default value is a constant 0.5, which
+/// doesn't affect the image.
+@property (strong, nonatomic) LTTexture *outerFrameNoise;
 
-/// In wide frame, Mixes the noise channels of the noise texture in order to create the transition
+/// In outer frame, mixes the noise channels of the noise texture in order to create the transition
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
-@property (nonatomic) GLKVector3 wideFrameNoiseChannelMixer;
+@property (nonatomic) GLKVector3 outerFrameNoiseChannelMixer;
 
-/// In wide frame, Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
-@property (nonatomic) CGFloat wideFrameNoiseAmplitude;
+/// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
+@property (nonatomic) CGFloat outerFrameNoiseAmplitude;
 
-/// In wide frame, Color of the foreground and of the transition area. Components should be in
+/// In outer frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) GLKVector3 wideFrameColor;
+@property (nonatomic) GLKVector3 outerFrameColor;
 
 #pragma mark -
-#pragma mark Narrow Frame
+#pragma mark Inner Frame
 #pragma mark -
 
-/// In narrow frame, percent of the smaller image dimension that the foreground should occupy.
+/// Width of the inner frame, as percentage of the smaller image dimension. Inner frame width is
+/// measured from outerFrameWidth inwards. The transition (spread) part of the outter frame is still
+/// visible, since the inner frame is layered bellow the outer frame.
 /// Should be in [0-25] range. Default value is 0.
-@property (nonatomic) CGFloat narrowFrameWidth;
+@property (nonatomic) CGFloat innerFrameWidth;
 
-/// In narrow frame, percent of the smaller image dimension that the transition should occupy.
-/// Should be in [0-25] range. Default value is 0.
-@property (nonatomic) CGFloat narrowFrameSpread;
+/// Spread of the inner frame, as percentage of the smaller image dimension. Should be in [0-25]
+/// range. Default value is 0.
+@property (nonatomic) CGFloat innerFrameSpread;
 
-/// In narrow frame, determines the corner type of the frame by creating an appropriate distance f
+/// In inner frame, determines the corner type of the frame by creating an appropriate distance
 /// field. hould be in [0-32] range. At 0 value, the corner will be completely straight. Higher
 /// values will create a different degrees of roundness, which stem from the remapping the distance
 /// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat narrowFrameCorner;
+@property (nonatomic) CGFloat innerFrameCorner;
 
-/// Noise texture that modulates with the narrow frame. Default value is a constant 0.5, which
+/// Noise texture that modulates with the inner frame. Default value is a constant 0.5, which
 /// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *narrowFrameNoise;
+@property (strong, nonatomic) LTTexture *innerFrameNoise;
 
-/// In narrow frame, mixes the noise channels of the noise texture in order to create the transition
+/// In inner frame, mixes the channels of the noise texture in order to create the transition
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
-@property (nonatomic) GLKVector3 narrowFrameNoiseChannelMixer;
+@property (nonatomic) GLKVector3 innerFrameNoiseChannelMixer;
 
-/// In narrow frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
-@property (nonatomic) CGFloat narrowFrameNoiseAmplitude;
+/// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
+@property (nonatomic) CGFloat innerFrameNoiseAmplitude;
 
-/// In narrow frame, color of the foreground and of the transition area. Components should be in
+/// In inner frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) GLKVector3 narrowFrameColor;
+@property (nonatomic) GLKVector3 innerFrameColor;
 
 @end

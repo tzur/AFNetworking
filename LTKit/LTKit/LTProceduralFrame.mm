@@ -150,4 +150,8 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self[@"noiseChannelMixer"] = $(_noiseChannelMixer);
 }
 
+- (CGFloat)maxWidth {
+  return kMaxWidth;
+}
+
 @end

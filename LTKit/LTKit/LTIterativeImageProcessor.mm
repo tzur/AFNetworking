@@ -14,10 +14,6 @@
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
 @end
 
-@interface LTIterativeImageProcessor ()
-@property (strong, nonatomic) NSArray *outputs;
-@end
-
 @implementation LTIterativeImageProcessor
 
 #pragma mark -
