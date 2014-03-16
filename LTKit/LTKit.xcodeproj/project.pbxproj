@@ -133,6 +133,8 @@
 		288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4021835203300A11FA4 /* LTFboSpec.mm */; };
 		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
 		289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */; };
+		28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */; };
+		28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */; };
@@ -663,6 +665,9 @@
 		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
 		289A872E1895158500EB8E86 /* LTInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInterpolationRoutine.h; sourceTree = "<group>"; };
 		289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInterpolationRoutine.mm; sourceTree = "<group>"; };
+		28A4889518D0C014006BD8CF /* LTBrushScatterEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushScatterEffect.h; sourceTree = "<group>"; };
+		28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffect.mm; sourceTree = "<group>"; };
+		28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffectSpec.mm; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
@@ -1141,6 +1146,7 @@
 		2839068518C4D98F00BD21CE /* Brushes */ = {
 			isa = PBXGroup;
 			children = (
+				28A5EAB118D1DC49007E80C9 /* Effects */,
 				2839069818C4DB0A00BD21CE /* LTBrushSpec.h */,
 				2839069918C4DB0A00BD21CE /* LTBrushSpec.mm */,
 				2839069A18C4DB0A00BD21CE /* LTEdgeAvoidingBrushSpec.mm */,
@@ -1216,6 +1222,14 @@
 			name = Painting;
 			sourceTree = "<group>";
 		};
+		28A5EAB118D1DC49007E80C9 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1263,6 +1277,8 @@
 		28ED10DC18CC9BF500EE1633 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				28A4889518D0C014006BD8CF /* LTBrushScatterEffect.h */,
+				28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -2260,6 +2276,7 @@
 				28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
+				28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 				8B9D3FE6189541F0001A964D /* LTTexture+Factory.mm in Sources */,
 				280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */,
@@ -2359,6 +2376,7 @@
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
 				8BAECBB618BDEAAC00315425 /* LTSplitComplexMatSpec.mm in Sources */,
+				28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */,
 				2839069E18C4DB0A00BD21CE /* LTBrushSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */,
