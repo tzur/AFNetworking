@@ -158,7 +158,7 @@ context(@"effect", ^{
     for (UIColor *color in colors) {
       __block CGFloat h, s, b, a;
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
-      expect(h).notTo.beCloseToWithin(baseHue, 1e-5);
+      expect(h).notTo.equal(baseHue);
       expect(s).to.beCloseToWithin(baseSaturation, 1e-4);
       expect(b).to.beCloseToWithin(baseBrightness, 1e-4);
       expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
@@ -182,7 +182,7 @@ context(@"effect", ^{
       __block CGFloat h, s, b, a;
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
       expect(h).to.beCloseToWithin(baseHue, 1e-4);
-      expect(s).notTo.beCloseToWithin(baseSaturation, 1e-5);
+      expect(s).notTo.equal(baseSaturation);
       expect(b).to.beCloseToWithin(baseBrightness, 1e-4);
       expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
       maxDistance = MAX(maxDistance, std::abs(s - baseSaturation));
@@ -205,7 +205,7 @@ context(@"effect", ^{
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
       expect(h).to.beCloseToWithin(baseHue, 1e-4);
       expect(s).to.beCloseToWithin(baseSaturation, 1e-4);
-      expect(b).notTo.beCloseToWithin(baseBrightness, 1e-5);
+      expect(b).notTo.equal(baseBrightness);
       expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
       maxDistance = MAX(maxDistance, std::abs(b - baseBrightness));
       sumDistance += std::abs(b - baseBrightness);
