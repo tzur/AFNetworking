@@ -16,6 +16,8 @@
 
 /// Returns an array of target colors based on the given array of normalized \c LTRotatedRects which
 /// represent the (normalized) locations of the brush tips, and the given base color.
+///
+/// @note when the \c baseColorTexture property is set, the baseColor argument is discarded.
 - (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)color;
 
 /// Specifies a percentage by which the hue of the paint can vary in stroke.
@@ -33,7 +35,7 @@ LTBoundedPrimitiveProperty(CGFloat, brightnessJitter, BrightnessJitter);
 /// When set, the effect will sample the base color from this texture according to the center of
 /// each rect. When set to \nil, the base color will be used.
 ///
-/// @note For performance reasons, this texture shoulds be a memory mapped texture.
+/// @note For performance reasons, this texture should be a memory mapped texture.
 @property (strong, nonatomic) LTTexture *baseColorTexture;
 
 // TODO:(amit) add the foreground/background jitter, and the purity control.
