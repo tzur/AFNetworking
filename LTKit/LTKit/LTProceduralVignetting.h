@@ -3,20 +3,17 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class LTNoisyVignetting
+/// @class LTProceduralVignetting
 ///
 /// Creates a vignetting pattern.
 /// Vignetting pattern has a value of 1 at the corners of the image and decreases towards the
 /// center. The fallof can be modulated with a noise to create a more ragged appearance.
 ///
 /// @attention This class is not in charge to set the color of the vignetting.
-@interface LTNoisyVignetting : LTOneShotImageProcessor
+@interface LTProceduralVignetting : LTOneShotImageProcessor
 
-/// Initializes a noisy vignetting processor with a noise and output texture.
-///
-/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
-/// create a very specific visual result and understand well the underlying frame creation process.
-- (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output;
+/// Initializes a procedural vignetting processor with an output texture.
+- (instancetype)initWithOutput:(LTTexture *)output;
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 100.
@@ -29,6 +26,12 @@
 /// values, the distance field will become more rectangular. The limit of 16 is due to the precision
 /// limits in the shader.
 @property (nonatomic) CGFloat corner;
+
+/// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
+/// which doesn't affect the image.
+/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
+/// create a very specific visual result and understand well the underlying frame creation process.
+@property (strong, nonatomic) LTTexture *noise;
 
 /// Mixes the noise channels of the noise texture in order to create the transition noise. Default
 /// value is (1, 0, 0). Input values are normalized, to remove potential interference with noise
