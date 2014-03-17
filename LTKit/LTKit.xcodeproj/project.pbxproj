@@ -137,6 +137,8 @@
 		28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */; };
 		28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */; };
 		28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */; };
+		28A5EAC318D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */; };
+		28A5EAC618D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC518D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */; };
@@ -673,6 +675,9 @@
 		28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffect.mm; sourceTree = "<group>"; };
 		28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffectSpec.mm; sourceTree = "<group>"; };
 		28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffectSpec.mm; sourceTree = "<group>"; };
+		28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushColorDynamicsEffectSpec.mm; sourceTree = "<group>"; };
+		28A5EAC418D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushColorDynamicsEffect.h; sourceTree = "<group>"; };
+		28A5EAC518D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushColorDynamicsEffect.mm; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
@@ -1232,6 +1237,7 @@
 			children = (
 				28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */,
 				28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */,
+				28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -1287,6 +1293,8 @@
 				28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */,
 				28A488A418D0C027006BD8CF /* LTBrushShapeDynamicsEffect.h */,
 				28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */,
+				28A5EAC418D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.h */,
+				28A5EAC518D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -2203,6 +2211,7 @@
 				280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */,
 				28C61C0218B23D430036D66E /* LTTouchCollectorFilter.mm in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
+				28A5EAC618D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm in Sources */,
 				8BB14D8318BF490700701A1B /* LTPatchKernel.mm in Sources */,
 				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
 				8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */,
@@ -2340,6 +2349,7 @@
 				283906A018C4DB0A00BD21CE /* LTErasingBrushSpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
 				2843B6FB18A938AF0044B87A /* LTRotatedRectSpec.mm in Sources */,
+				28A5EAC318D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm in Sources */,
 				8BB14D8518BF54B900701A1B /* LTPatchKernelSpec.mm in Sources */,
 				280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */,
 				8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */,
