@@ -14,6 +14,7 @@ SpecBegin(LTBWProcessor)
 
 __block LTTexture *noise;
 __block LTTexture *output;
+__block LTBWProcessor *processor;
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];
@@ -27,38 +28,46 @@ afterEach(^{
 beforeEach(^{
   noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:noise];
+  processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
 });
 
 afterEach(^{
+  processor =  nil;
   noise =  nil;
   output = nil;
 });
 
 context(@"properties", ^{
-  it(@"should return default scalar and vector properties correctly", ^{
-    LTBWProcessor *processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
-    // Tone.
+  it(@"should return default tone properties correctly", ^{
     expect(processor.brightness).to.equal(0);
     expect(processor.contrast).to.equal(0);
     expect(processor.exposure).to.equal(0);
     expect(processor.structure).to.equal(0);
-    // Grain.
+  });
+  
+  it(@"should return default grain properties correctly", ^{
     expect(processor.grainAmplitude).to.equal(1);
     expect(processor.grainChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    // Vignetting.
+  });
+  
+  it(@"should return default vignetting properties correctly", ^{
     expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
     expect(processor.vignettingSpread).to.equal(0);
     expect(processor.vignettingCorner).to.equal(2);
     expect(processor.vignettingNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
     expect(processor.vignettingNoiseAmplitude).to.equal(1);
-    // Outer frame.
+  });
+  
+  it(@"should return default outer frame properties correctly", ^{
     expect(processor.outerFrameWidth).to.equal(0);
     expect(processor.outerFrameSpread).to.equal(0);
     expect(processor.outerFrameCorner).to.equal(0);
     expect(processor.outerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
     expect(processor.outerFrameNoiseAmplitude).to.equal(1);
     expect(processor.outerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
-    // Inner frame.
+  });
+  
+  it(@"should return default inner frame properties correctly", ^{
     expect(processor.innerFrameWidth).to.equal(0);
     expect(processor.innerFrameSpread).to.equal(0);
     expect(processor.innerFrameCorner).to.equal(0);
@@ -68,7 +77,6 @@ context(@"properties", ^{
   });
   
   it(@"should return default color gradient as identity", ^{
-    LTBWProcessor *processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
     expect(LTFuzzyCompareMat(processor.colorGradientTexture.image,
@@ -76,7 +84,6 @@ context(@"properties", ^{
   });
   
   it(@"should return default noise of grain, vignetting and frames as constant 0.5", ^{
-    LTBWProcessor *processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
     cv::Mat4b deafultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
     expect(LTFuzzyCompareMat(processor.grainTexture.image, deafultNoise)).to.beTruthy();
     expect(LTFuzzyCompareMat(processor.vignettingNoise.image, deafultNoise)).to.beTruthy();
@@ -84,41 +91,54 @@ context(@"properties", ^{
     expect(LTFuzzyCompareMat(processor.innerFrameNoise.image, deafultNoise)).to.beTruthy();
   });
   
-  it(@"should not fail on correct input", ^{
-    LTBWProcessor *processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
+  it(@"should not fail on correct tone input", ^{
     expect(^{
-      // Tone.
       processor.brightness = 0.1;
       processor.contrast = 0.1;
       processor.exposure = 0.1;
       processor.structure = 0.9;
       processor.colorFilter = GLKVector3Make(1.0, 1.0, 0.0);
-      // Vignetting.
+    }).toNot.raiseAny();
+  });
+  
+  it(@"should not fail on correct vignette input", ^{
+    expect(^{
       processor.vignettingNoise = noise;
       processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
       processor.vignettingSpread = 15.0;
       processor.vignettingCorner = 6.0;
       processor.vignettingNoiseAmplitude = 0.5;
       processor.vignettingNoiseChannelMixer = GLKVector3Make(1.0, 0.9, 0.2);
-      // Grain.
+    }).toNot.raiseAny();
+  });
+
+  it(@"should not fail on correct grain input", ^{
+    expect(^{
       processor.grainTexture = noise;
       processor.grainAmplitude = 1.1;
       processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 1.0);
-      // Outer frame.
+    }).toNot.raiseAny();
+  });
+  
+  it(@"should not fail on correct outer frame input", ^{
+    expect(^{
       processor.outerFrameWidth = 1;
       processor.outerFrameSpread = 0.1;
       processor.outerFrameCorner = 0.0;
       processor.outerFrameNoiseAmplitude = 1.0;
       processor.outerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
       processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
-      // Inner frame.
+    }).toNot.raiseAny();
+  });
+  
+  it(@"should not fail on correct inner frame input", ^{
+    expect(^{
       processor.innerFrameWidth = 2;
       processor.innerFrameSpread = 0.0;
       processor.innerFrameCorner = 0.0;
       processor.innerFrameNoiseAmplitude = 1.0;
       processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
       processor.innerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
-      
     }).toNot.raiseAny();
   });
 });
@@ -162,7 +182,6 @@ context(@"processing", ^{
     processor.innerFrameNoiseAmplitude = 1.0;
     processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
     processor.innerFrameColor = GLKVector3Make(1.0, 1.0, 1.0);
-    
     // Scale the red channel slightly to create a "neutral-to-cold" gradient.
     CGFloat redScale = 0.95;
     LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]

@@ -155,8 +155,8 @@ context(@"processing", ^{
     
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
                                                                         output:lenaOutput];
-    tone.exposure = -0.1520; //0.9;
-    tone.structure = 0.2925; //1.5;
+    tone.exposure = -0.1520;
+    tone.structure = 0.2925;
     tone.brightness = 0.1;
     tone.contrast = -0.2;
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);

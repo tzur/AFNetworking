@@ -102,8 +102,6 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
   });
-
-  pending(@"should test vignetting with noise");
   
   pending(@"should test tiled noise when implemented");
 });

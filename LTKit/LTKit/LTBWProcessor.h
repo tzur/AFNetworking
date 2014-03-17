@@ -133,7 +133,7 @@ LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 
 /// Width of the inner frame, as percentage of the smaller image dimension. Inner frame width is
 /// measured from outerFrameWidth inwards. The transition (spread) part of the outter frame is still
-/// visible, since the inner frame is layered bellow the outer frame.
+/// visible, since the inner frame is layered below the outer frame.
 /// Should be in [0-25] range. Default value is 0.
 @property (nonatomic) CGFloat innerFrameWidth;
 

@@ -12,7 +12,7 @@
 /// @attention This class is not in charge to set the color of the vignetting.
 @interface LTProceduralVignetting : LTOneShotImageProcessor
 
-/// Initializes a noisy vignetting processor with an output texture.
+/// Initializes a procedural vignetting processor with an output texture.
 - (instancetype)initWithOutput:(LTTexture *)output;
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.

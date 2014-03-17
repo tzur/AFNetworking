@@ -22,6 +22,7 @@
 
 @interface LTBWProcessor ()
 
+@property (nonatomic) BOOL subProcessorsInitialized;
 @property (strong, nonatomic) LTBWTonalityProcessor *toneProcessor;
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 @property (strong, nonatomic) LTProceduralFrame *outerFrameProcessor;
@@ -50,22 +51,18 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   // Setup tonality.
   LTTexture *toneTexture = [LTTexture textureWithPropertiesOf:output];
   self.toneProcessor = [[LTBWTonalityProcessor alloc] initWithInput:input output:toneTexture];
-  [self.toneProcessor process];
   
   // Setup vignetting.
   LTTexture *vignetteTexture = [self createVignettingTextureWithInput:input];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
-  [self.vignetteProcessor process];
   
   // Setup wide frame.
   LTTexture *outerFrameTexture = [self createFrameTextureWithInput:input];
   self.outerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:outerFrameTexture];
-  [self.outerFrameProcessor process];
   
   // Setup narrow frame.
   LTTexture *innerFrameTexture = [self createFrameTextureWithInput:input];
   self.innerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:innerFrameTexture];
-  [self.innerFrameProcessor process];
   
   NSDictionary *auxiliaryTextures =
       @{[LTBWProcessorFsh grainTexture]: self.grainTexture,
@@ -76,6 +73,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
                   auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
     _outputSize = output.size;
+    _subProcessorsInitialized = NO;
   }
   return self;
 }
@@ -124,11 +122,24 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return neutralNoise;
 }
 
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
+- (void)initializeSubProcessors {
+  [self.toneProcessor process];
+  [self.vignetteProcessor process];
+  [self.outerFrameProcessor process];
+  [self.innerFrameProcessor process];
+  self.subProcessorsInitialized = YES;
+}
 
-// Tone.
+- (id<LTImageProcessorOutput>)process {
+  if (!self.subProcessorsInitialized) {
+    [self initializeSubProcessors];
+  }
+  return [super process];
+}
+
+#pragma mark -
+#pragma mark Tone
+#pragma mark -
 
 - (void)setColorFilter:(GLKVector3)colorFilter {
   self.toneProcessor.colorFilter = colorFilter;
@@ -184,7 +195,9 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return self.toneProcessor.colorGradientTexture;
 }
 
-// Vignetting.
+#pragma mark -
+#pragma mark Vignetting
+#pragma mark -
 
 - (void)setVignetteColor:(GLKVector3)vignetteColor {
   LTParameterAssert(GLKVectorInRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
@@ -238,7 +251,9 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return self.vignetteProcessor.noiseAmplitude;
 }
 
-// Grain.
+#pragma mark -
+#pragma mark Grain
+#pragma mark -
 
 - (LTTexture *)grainTexture {
   if (!_grainTexture) {
@@ -277,7 +292,9 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
   [self process];
 });
 
-// Outer Frame.
+#pragma mark -
+#pragma mark Outer Frame
+#pragma mark -
 
 - (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
   self.outerFrameProcessor.width = outerFrameWidth;
@@ -349,7 +366,9 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
   return self.outerFrameProcessor.color;
 }
 
-// Inner Frame.
+#pragma mark -
+#pragma mark Inner Frame
+#pragma mark -
 
 - (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
   LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,

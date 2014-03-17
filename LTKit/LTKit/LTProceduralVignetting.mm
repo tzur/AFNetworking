@@ -35,6 +35,7 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
                                fragmentSource:[LTProceduralVignettingFsh source]];
   
   LTTexture *defaultNoise = [self createNeutralNoise];
+  _noise = defaultNoise;
   NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
   
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
@@ -50,7 +51,6 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self.spread = kDefaultSpread;
   self.noiseAmplitude = kDefaultNoiseAmplitude;
   self.noiseChannelMixer = kDefaultNoiseChannelMixer;
-  _noise = self.auxiliaryTextures[[LTProceduralVignettingFsh noiseTexture]];
 }
 
 - (LTTexture *)createNeutralNoise {
