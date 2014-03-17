@@ -20,25 +20,7 @@
 
 static const CGFloat kSmoothDownsampleFactor = 6.0;
 
-static const CGFloat kBrightnessMin = -1.0;
-static const CGFloat kBrightnessMax = 1.0;
-static const CGFloat kBrightnessDefault = 0.0;
-
-static const CGFloat kContrastMin = 0.0;
-static const CGFloat kContrastMax = 2.0;
-static const CGFloat kContrastDefault = 1.0;
-
-static const CGFloat kExposureMin = 0.0;
-static const CGFloat kExposureMax = 2.0;
-static const CGFloat kExposureDefault = 1.0;
-
-static const CGFloat kStructureMin = 0.0;
-static const CGFloat kStructureMax = 4.0;
-static const CGFloat kStructureDefault = 1.0;
-
 static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114);
-
-static const NSInteger kGradientSamplingPoints = 256;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
@@ -48,19 +30,22 @@ static const NSInteger kGradientSamplingPoints = 256;
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
   
   NSDictionary *auxiliaryTextures =
-      @{[LTBWTonalityFsh smoothTexture] : smoothTexture,
-        [LTBWTonalityFsh colorGradient] :
-            [identityGradient textureWithSamplingPoints:kGradientSamplingPoints]};
+      @{[LTBWTonalityFsh smoothTexture]: smoothTexture,
+        [LTBWTonalityFsh colorGradient]: [identityGradient textureWithSamplingPoints:256]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
-    self.colorFilter = kColorFilterDefault;
-    self.brightness = kBrightnessDefault;
-    self.contrast = kContrastDefault;
-    self.exposure = kExposureDefault;
-    self.structure = kStructureDefault;
-    self.colorGradient = identityGradient;
+    [self setDefaultValues];
   }
   return self;
+}
+
+- (void)setDefaultValues {
+  self.colorFilter = kColorFilterDefault;
+  self.brightness = kDefaultBrightness;
+  self.contrast = kDefaultContrast;
+  self.exposure = kDefaultExposure;
+  self.structure = kDefaultStructure;
+  _colorGradientTexture = self.auxiliaryTextures[[LTBWTonalityFsh colorGradient]];
 }
 
 - (LTTexture *)createSmoothTexture:(LTTexture *)input {
@@ -70,7 +55,8 @@ static const NSInteger kGradientSamplingPoints = 256;
   CGSize size = std::floor(CGSizeMake(width, height));
   LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:size];
   
-  LTBoxFilterProcessor *smoother = [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[smoothTexture]];
+  LTBoxFilterProcessor *smoother = [[LTBoxFilterProcessor alloc] initWithInput:input
+                                                                       outputs:@[smoothTexture]];
   smoother.iterationsPerOutput = @[@3];
   [smoother process];
   
@@ -85,44 +71,41 @@ static const NSInteger kGradientSamplingPoints = 256;
   self[@"colorFilter"] = $(_colorFilter);
 }
 
-- (void)setBrightness:(CGFloat)brightness {
-  LTParameterAssert(brightness >= kBrightnessMin, @"Brightness is lower than minimum value");
-  LTParameterAssert(brightness <= kBrightnessMax, @"Brightness is higher than maximum value");
-  
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
   _brightness = brightness;
-  self[@"brightness"] = @(brightness);
-}
+  self[@"brightness"] = @(_brightness);
+});
 
-- (void)setContrast:(CGFloat)contrast {
-  LTParameterAssert(contrast >= kContrastMin, @"Contrast is lower than minimum value");
-  LTParameterAssert(contrast <= kContrastMax, @"Contrast is higher than maximum value");
-  
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
   _contrast = contrast;
-  self[@"contrast"] = @(contrast);
-}
+  // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 2].
+  CGFloat remap = contrast < 0 ? contrast + 1 : 1 + contrast;
+  self[@"contrast"] = @(remap);
+});
 
-- (void)setExposure:(CGFloat)exposure {
-  LTParameterAssert(exposure >= kExposureMin, @"Exposure is lower than minimum value");
-  LTParameterAssert(exposure <= kExposureMax, @"Exposure is higher than maximum value");
-  
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
   _exposure = exposure;
-  self[@"exposure"] = @(exposure);
-}
+  // Remap [-1, 1] -> [0.5, 2].
+  CGFloat remap = std::powf(2.0, exposure);
+  self[@"exposure"] = @(remap);
+});
 
-- (void)setStructure:(CGFloat)structure {
-  LTParameterAssert(structure >= kStructureMin, @"Structure is lower than minimum value");
-  LTParameterAssert(structure <= kStructureMax, @"Structure is higher than maximum value");
-  
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
   _structure = structure;
-  self[@"structure"] = @(structure);
-}
+  // Remap [-1, 1] -> [0.25, 4].
+  CGFloat remap = std::powf(4.0, structure);
+  self[@"structure"] = @(remap);
+});
 
-- (void)setColorGradient:(LTColorGradient *)colorGradient {
-  _colorGradient = colorGradient;
-  // Update color gradient texture in auxiliary textures.
+- (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
+  LTParameterAssert(colorGradientTexture.size.height == 1,
+                    @"colorGradientTexture height is not one");
+  LTParameterAssert(colorGradientTexture.size.width <= 256,
+                    @"colorGradientTexture width is larger than 256");
+  
+  _colorGradientTexture = colorGradientTexture;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWTonalityFsh colorGradient]] =
-      [colorGradient textureWithSamplingPoints:kGradientSamplingPoints];
+  auxiliaryTextures[[LTBWTonalityFsh colorGradient]] = colorGradientTexture;
   self.auxiliaryTextures = auxiliaryTextures;
 }
 

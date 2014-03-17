@@ -4,6 +4,7 @@
 #import "LTBWTonalityProcessor.h"
 
 #import "LTColorGradient.h"
+#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
@@ -36,8 +37,7 @@ context(@"properties", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
-    LTTexture *defaultGradientTexture = [tone.colorGradient textureWithSamplingPoints:256];
-    expect(LTFuzzyCompareMat(defaultGradientTexture.image,
+    expect(LTFuzzyCompareMat(tone.colorGradientTexture.image,
                              identityGradientTexture.image)).to.beTruthy();
   });
   
@@ -58,14 +58,14 @@ context(@"properties", ^{
   it(@"should fail of invalid exposure parameter", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
-      tone.exposure = -1.0;
+      tone.exposure = -2.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail of invalid structure parameter", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
-      tone.structure = -1.0;
+      tone.structure = -2.0;
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -87,9 +87,9 @@ context(@"properties", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
       tone.brightness = 0.1;
-      tone.contrast = 1.2;
-      tone.exposure = 1.5;
-      tone.structure = 0.9;
+      tone.contrast = -0.2;
+      tone.exposure = 0.5;
+      tone.structure = -0.9;
       tone.colorFilter = GLKVector3Make(1.0, 1.0, 0.0);
     }).toNot.raiseAny();
   });
@@ -155,12 +155,12 @@ context(@"processing", ^{
     
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
                                                                         output:lenaOutput];
-    tone.exposure = 0.9;
-    tone.structure = 1.5;
+    tone.exposure = -0.1520; //0.9;
+    tone.structure = 0.2925; //1.5;
     tone.brightness = 0.1;
-    tone.contrast = 0.8;
+    tone.contrast = -0.2;
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
-    tone.colorGradient = colorGradient;
+    tone.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
     LTSingleTextureOutput *processed = [tone process];
     
     // Important: this test depends on the performance of other classes and processors, thus is

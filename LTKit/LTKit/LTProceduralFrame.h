@@ -12,11 +12,8 @@
 /// completely straight and very curved connection of the frame's sides.
 @interface LTProceduralFrame : LTOneShotImageProcessor
 
-/// Initializes a procedural frame processor with a noise and output texture.
-///
-/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
-/// create a very specific visual result and understand well the underlying frame creation process.
-- (instancetype)initWithNoise:(LTTexture *)noise output:(LTTexture *)output;
+/// Initializes a procedural frame processor with an output texture.
+- (instancetype)initWithOutput:(LTTexture *)output;
 
 /// Percent of the smaller image dimension that the foreground should occupy.
 /// Should be in [0-25] range. Default value is 0.
@@ -32,6 +29,12 @@
 /// values with the power function. Default value is 0.
 @property (nonatomic) CGFloat corner;
 
+/// Noise textures that modulates with the frame. Default value is a constant 0.5, which doesn't
+/// affect the image.
+/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
+/// create a very specific visual result and understand well the underlying frame creation process.
+@property (strong, nonatomic) LTTexture *noise;
+
 /// Mixes the noise channels of the noise texture in order to create the transition noise. Default
 /// value is (1, 0, 0). Input values are normalized, to remove potential interference with noise
 /// amplitude.
@@ -43,5 +46,8 @@
 /// Color of the foreground and of the transition area. Components should be in [0, 1] range.
 /// Default color is white (1, 1, 1).
 @property (nonatomic) GLKVector3 color;
+
+/// Maximum supported width of the frame, as percentage of the smaller image dimensionn.
+@property (nonatomic, readonly) CGFloat maxWidth;
 
 @end
