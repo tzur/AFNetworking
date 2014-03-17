@@ -3,6 +3,7 @@
 
 #import "LTTextureBrush.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
@@ -16,6 +17,8 @@
 SpecBegin(LTTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTTextureBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTTextureBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

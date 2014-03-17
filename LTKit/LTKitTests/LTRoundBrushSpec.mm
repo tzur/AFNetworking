@@ -3,7 +3,9 @@
 
 #import "LTRoundBrushSpec.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
+
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
@@ -64,6 +66,8 @@ SpecBegin(LTRoundBrush)
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTRoundBrush class]});
 
 itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTRoundBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTRoundBrushClass: [LTBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

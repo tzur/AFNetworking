@@ -45,7 +45,7 @@
 - (NSUInteger)randomCount {
   NSUInteger minCount = std::round(self.count * (1.0 - self.countJitter));
   NSUInteger maxCount = std::round(self.count * (1.0 + self.countJitter));
-  return arc4random_uniform(maxCount - minCount) + minCount;
+  return arc4random_uniform((uint)maxCount - (uint)minCount) + minCount;
 }
 
 - (LTRotatedRect *)randomRectFromRect:(LTRotatedRect *)rect {
@@ -59,10 +59,8 @@
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplement(CGFloat, scatter, Scatter, 0, 10, 1);
-
 LTBoundedPrimitivePropertyImplement(NSUInteger, count, Count, 1, 16, 1);
-
+LTBoundedPrimitivePropertyImplement(CGFloat, scatter, Scatter, 0, 10, 1);
 LTBoundedPrimitivePropertyImplement(CGFloat, countJitter, CountJitter, 0, 1, 0);
 
 @end

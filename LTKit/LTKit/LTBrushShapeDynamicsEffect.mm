@@ -32,6 +32,7 @@
 #pragma mark -
 
 - (NSMutableArray *)dynamicRectsFromRects:(NSArray *)rects {
+  LTParameterAssert(rects);
   srand48(arc4random());
   NSMutableArray *dynamicRects = [NSMutableArray array];
   for (LTRotatedRect *rect in rects) {

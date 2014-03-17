@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
@@ -41,7 +42,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
     __block LTBrush *brush;
     
     beforeEach(^{
-      brush = [[LTBrush alloc] init];
+      brush = [[brushClass alloc] init];
     });
     
     afterEach(^{
@@ -152,6 +153,8 @@ SharedExamplesEnd
 SpecBegin(LTBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

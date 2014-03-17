@@ -5,6 +5,9 @@
 
 @interface UIColor (GLKVector)
 
+/// Returns the \c UIColor generated from the given rgba vector.
++ (UIColor *)colorWithGLKVector:(GLKVector4)glkVector;
+
 /// Returns the \c GLKVector4 representation of the color.
 @property (readonly, nonatomic) GLKVector4 glkVector;
 
