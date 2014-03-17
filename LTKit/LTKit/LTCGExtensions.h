@@ -128,6 +128,25 @@ CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
   return 31 * [@(point.x) hash] + [@(point.y) hash];
 }
 
+namespace std {
+  /// Constrains a value to lie between two values.
+  CG_INLINE CGFloat clamp(const CGFloat &value, const CGFloat &a, const CGFloat &b) {
+    return (a <= b) ?
+        min(max(value, a), b) : min(max(value, b), a);
+  }
+
+  /// Constrains a point to lie between two values (for both axes).
+  CG_INLINE CGPoint clamp(const CGPoint &point, const CGFloat &a, const CGFloat &b) {
+    return CGPointMake(clamp(point.x, a, b), clamp(point.y, a, b));
+  }
+  
+  /// Constrains a point to lie inside the given rect.
+  CG_INLINE CGPoint clamp(const CGPoint &point, const CGRect &rect) {
+    return CGPointMake(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
+                       clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
+  }
+}
+
 #pragma mark -
 #pragma mark CGSize Operations
 #pragma mark -
