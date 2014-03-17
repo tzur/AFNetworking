@@ -46,6 +46,19 @@ context(@"uiedgeinsets operations", ^{
   });
 });
 
+context(@"cgfloat operations", ^{
+  it(@"clamping", ^{
+    expect(std::clamp(-1, 0, 1)).to.equal(0);
+    expect(std::clamp(-1, 1, 0)).to.equal(0);
+    expect(std::clamp(2, 0, 1)).to.equal(1);
+    expect(std::clamp(2, 1, 0)).to.equal(1);
+    expect(std::clamp(0.5, 0, 1)).to.equal(0.5);
+    expect(std::clamp(0.5, 1, 0)).to.equal(0.5);
+    expect(std::clamp(0.5, 0, 0)).to.equal(0);
+    expect(std::clamp(0.5, 1, 1)).to.equal(1);
+  });
+});
+
 context(@"cgpoint operations", ^{
   it(@"comparison", ^{
     expect(CGPointMake(1, 2) == CGPointMake(1, 2)).to.beTruthy();
@@ -77,6 +90,21 @@ context(@"cgpoint operations", ^{
     CGPoint point = CGAffineTransformMakeRotation(kClockwiseAngle) * CGPointMake(1, 2);
     expect(point.x).to.beCloseTo(2);
     expect(point.y).to.beCloseTo(-1);
+  });
+  
+  it(@"clamping", ^{
+    expect(std::clamp(CGPointMake(0.5, -0.5), 0, 1)).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5), 1, 0)).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5), -1, 0)).to.equal(CGPointMake(0, -0.5));
+    expect(std::clamp(CGPointMake(0.5, -0.5), 0, -1)).to.equal(CGPointMake(0, -0.5));
+    expect(std::clamp(CGPointMake(0.5, -0.5),
+                      CGRectMake(0, 0, 1, 1))).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5),
+                      CGRectMake(0, 0, 1, 1))).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5),
+                      CGRectMake(0, 0, -1, -1))).to.equal(CGPointMake(0, -0.5));
+    expect(std::clamp(CGPointMake(0.5, -0.5),
+                      CGRectMake(0, 0, -1, -1))).to.equal(CGPointMake(0, -0.5));
   });
 });
 
