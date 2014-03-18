@@ -297,6 +297,11 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 #pragma mark -
 
 - (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
+  // Update the dependent inner frame.
+  _innerFrameWidth = outerFrameWidth + self.innerFrameWidth - self.outerFrameWidth;
+  self.innerFrameProcessor.width = _innerFrameWidth;
+  [self.innerFrameProcessor process];
+  // Update outer frame.
   self.outerFrameProcessor.width = outerFrameWidth;
   [self.outerFrameProcessor process];
 }
@@ -324,7 +329,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 }
 
 - (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
-  // Update details LUT texture in auxiliary textures.
+  // Update noise texture in auxiliary textures.
   _outerFrameNoise = outerFrameNoise;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
   auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = outerFrameNoise;
@@ -397,7 +402,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 }
 
 - (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
-  // Update details LUT texture in auxiliary textures.
+  // Update noise texture in auxiliary textures.
   _innerFrameNoise = innerFrameNoise;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
   auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = innerFrameNoise;

@@ -144,7 +144,7 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  sit(@"should return the input black and white image whithout changes on default parameters", ^{
+  sit(@"should return correct black and white image", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
     
@@ -201,8 +201,13 @@ context(@"processing", ^{
     processor.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];;
     
     [processor process];
-    
     cv::Mat image = LTLoadMat([self class], @"MealBWProcessor.png");
+    expect($(output.image)).to.beCloseToMat($(image));
+    
+    processor.outerFrameWidth = processor.outerFrameWidth + 5.0;
+    
+    [processor process];
+    image = LTLoadMat([self class], @"MealBWProcessorWideFrame.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
 });

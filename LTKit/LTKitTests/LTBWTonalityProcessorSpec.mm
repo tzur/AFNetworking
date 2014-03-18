@@ -131,7 +131,7 @@ context(@"processing", ^{
     expect(LTFuzzyCompareMat(greenDeltaOutput, processed.texture.image)).to.beTruthy();
   });
   
-  it(@"should create correct conversion", ^{
+  sit(@"should create correct conversion", ^{
     LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
     
@@ -155,8 +155,8 @@ context(@"processing", ^{
     
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
                                                                         output:lenaOutput];
-    tone.exposure = -0.1520;
-    tone.structure = 0.2925;
+    tone.exposure = -0.2;
+    tone.structure = 0.5;
     tone.brightness = 0.1;
     tone.contrast = -0.2;
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
