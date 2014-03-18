@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTTexture.h"
 #import "LTRotatedRect.h"
+#import "UIColor+Vector.h"
 
 @implementation LTBrushColorDynamicsEffect
 
@@ -32,22 +33,17 @@
 
 static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
 
-- (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)color {
+- (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)baseColor {
   LTParameterAssert(rects);
-  LTParameterAssert(color);
+  LTParameterAssert(baseColor);
   srand48(arc4random());
+  
   NSMutableArray *colors = [NSMutableArray array];
-  for (LTRotatedRect *rect in rects) {
-    if (self.baseColorTexture) {
-      // We're sampling at pixel centers, so size is multiplied by the texture size - 1.
-      CGPoint target = std::round(std::clamp(rect.center, kNormalRect) *
-                                  (self.baseColorTexture.size - CGSizeMakeUniform(1)));
-      GLKVector4 baseColor = [self.baseColorTexture pixelValue:target];
-      color = [UIColor colorWithRed:baseColor.r green:baseColor.g
-                               blue:baseColor.b alpha:baseColor.a];
-    }
+  NSArray *baseColorsFromTexture = [self baseColorsFromTextureForRects:rects];
+  [rects enumerateObjectsUsingBlock:^(LTRotatedRect *rect, NSUInteger idx, BOOL *) {
+    UIColor *color = baseColorsFromTexture ? baseColorsFromTexture[idx] : baseColor;
     [colors addObject:[self randomColorFromRect:rect baseColor:color]];
-  }
+  }];
   return colors;
 }
 
@@ -69,6 +65,28 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
                     saturation:std::clamp(s + randomSaturationJitter, 0, 1)
                     brightness:std::clamp(b + randomBrightnessJitter, 0, 1)
                          alpha:a];
+}
+
+- (NSArray *)baseColorsFromTextureForRects:(NSArray *)rects {
+  if (!self.baseColorTexture) {
+    return nil;
+  }
+  
+  // We're sampling at pixel centers, so size is multiplied by the texture size - 1.
+  CGPoints targets;
+  CGSize textureSize = self.baseColorTexture.size - CGSizeMakeUniform(1);
+  for (LTRotatedRect *rect in rects) {
+    targets.push_back(std::round(std::clamp(rect.center, kNormalRect) * textureSize));
+  }
+  return [self colorsFromGLKColors:[self.baseColorTexture pixelValues:targets]];
+}
+
+- (NSArray *)colorsFromGLKColors:(const GLKVector4s &)glkColors {
+  NSMutableArray *colors = [NSMutableArray array];
+  for (const GLKVector4 &glkColor : glkColors) {
+    [colors addObject:[UIColor colorWithGLKVector:glkColor]];
+  }
+  return colors;
 }
 
 #pragma mark -
