@@ -65,9 +65,9 @@ SpecBegin(LTRoundBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTRoundBrush class]});
 
-itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTRoundBrush class]});
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTRoundBrushClass: [LTBrush class]});
+itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTRoundBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

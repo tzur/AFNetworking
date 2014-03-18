@@ -17,6 +17,8 @@
 
 @interface LTTextureBrush ()
 
+@property (strong, nonatomic) LTTexture *texture;
+
 /// Program used when the \c premultipliedAlpha property is set to \c NO. This shader blends under
 /// the assumption that both the input texture and output canvas are not premultiplied.
 @property (strong, nonatomic) LTProgram *normalProgram;
@@ -130,6 +132,14 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
                                                    sourceTexture:self.texture];
   }
   return _premultipliedDrawer;
+}
+
+#pragma mark -
+#pragma mark For Testing
+#pragma mark -
+
+- (void)setSingleTexture:(LTTexture __unused *)texture {
+  LTMethodNotImplemented();
 }
 
 @end

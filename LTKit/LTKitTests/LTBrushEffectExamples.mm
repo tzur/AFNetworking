@@ -84,7 +84,6 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
     
     beforeEach(^{
       brush = [[brushClass alloc] init];
-      [brush.texture clearWithColor:GLKVector4Make(1, 1, 1, 1)];
       brush.baseDiameter = kBaseBrushDiameter;
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
       
@@ -102,6 +101,9 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 zoomScale:1
                                                    distanceFromStart:0
                                              andInterpolationRoutine:spline];
+      
+      [brush startNewStrokeAtPoint:point];
+      [brush.texture clearWithColor:GLKVector4Make(1, 1, 1, 1)];
     });
     
     afterEach(^{
@@ -128,11 +130,12 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
       brush.scatterEffect.countJitter = 0;
       brush.flow = 0.5;
       
+      [brush startNewStrokeAtPoint:point];
       [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
           saveLastDrawnPointTo:nil];
       CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
       expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMat($(expected));
     });
     
     it(@"should apply shapeDynamics effect when drawing a segment", ^{
@@ -150,6 +153,7 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
       NSUInteger numBlack = 0;
       for (NSUInteger i = 0; i < 100; ++i) {
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [brush startNewStrokeAtPoint:point];
         [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
             saveLastDrawnPointTo:nil];
         
@@ -170,6 +174,7 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
       __block CGFloat minBrightness = 1;
       for (NSUInteger i = 0; i < 100; ++i) {
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [brush startNewStrokeAtPoint:point];
         [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
             saveLastDrawnPointTo:nil];
         

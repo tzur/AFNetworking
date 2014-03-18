@@ -118,7 +118,7 @@ context(@"effect", ^{
     effect = [[LTBrushColorDynamicsEffect alloc] init];
     srand48(0);
     sourceRects = [NSMutableArray array];
-    for (NSUInteger i = 0; i < 10000; ++i) {
+    for (NSUInteger i = 0; i < 1000; ++i) {
       [sourceRects addObject:[LTRotatedRect rectWithCenter:CGPointMake(drand48(), drand48())
                                                       size:CGSizeMakeUniform(drand48())
                                                      angle:drand48() * 2 * M_PI]];
@@ -159,9 +159,9 @@ context(@"effect", ^{
       __block CGFloat h, s, b, a;
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
       expect(h).notTo.equal(baseHue);
-      expect(s).to.beCloseToWithin(baseSaturation, 1e-4);
-      expect(b).to.beCloseToWithin(baseBrightness, 1e-4);
-      expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
+      expect(s).to.beCloseToWithin(baseSaturation, 1e-2);
+      expect(b).to.beCloseToWithin(baseBrightness, 1e-2);
+      expect(a).to.beCloseToWithin(baseAlpha, 1e-2);
       CGFloat distance = MIN(std::abs(h - baseHue), std::abs(1 + h - baseHue));
       maxDistance = MAX(maxDistance, distance);
       sumDistance += distance;
@@ -181,10 +181,10 @@ context(@"effect", ^{
     for (UIColor *color in colors) {
       __block CGFloat h, s, b, a;
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
-      expect(h).to.beCloseToWithin(baseHue, 1e-4);
+      expect(h).to.beCloseToWithin(baseHue, 1e-2);
       expect(s).notTo.equal(baseSaturation);
-      expect(b).to.beCloseToWithin(baseBrightness, 1e-4);
-      expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
+      expect(b).to.beCloseToWithin(baseBrightness, 1e-2);
+      expect(a).to.beCloseToWithin(baseAlpha, 1e-2);
       maxDistance = MAX(maxDistance, std::abs(s - baseSaturation));
       sumDistance += std::abs(s - baseSaturation);
     }
@@ -203,10 +203,10 @@ context(@"effect", ^{
     for (UIColor *color in colors) {
       __block CGFloat h, s, b, a;
       expect([color getHue:&h saturation:&s brightness:&b alpha:&a]).to.beTruthy();
-      expect(h).to.beCloseToWithin(baseHue, 1e-4);
-      expect(s).to.beCloseToWithin(baseSaturation, 1e-4);
+      expect(h).to.beCloseToWithin(baseHue, 1e-2);
+      expect(s).to.beCloseToWithin(baseSaturation, 1e-2);
       expect(b).notTo.equal(baseBrightness);
-      expect(a).to.beCloseToWithin(baseAlpha, 1e-4);
+      expect(a).to.beCloseToWithin(baseAlpha, 1e-2);
       maxDistance = MAX(maxDistance, std::abs(b - baseBrightness));
       sumDistance += std::abs(b - baseBrightness);
     }
