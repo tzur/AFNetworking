@@ -214,12 +214,12 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
 
     it(@"should interpolate a single property at multiple keys", ^{
       NSArray *keys = @[@0.25, @0.5, @0.75];
-      std::vector<CGFloat> keysVector;
+      CGFloats keysVector;
       for (NSNumber *key in keys) {
         keysVector.push_back([key doubleValue]);
       }
       
-      std::vector<CGFloat> values = [routine valuesOfCGFloatPropertyNamed:@"pointToInterpolateX"
+      CGFloats values = [routine valuesOfCGFloatPropertyNamed:@"pointToInterpolateX"
                                                                    atKeys:keysVector];
       expect(values.size()).to.equal(keysVector.size());
       for (NSUInteger i = 0; i < keys.count; ++i) {

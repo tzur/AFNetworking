@@ -8,7 +8,7 @@
 #import "LTPainterPoint.h"
 
 @interface LTPainterStrokeSegment () {
-  std::vector<CGFloat> _distances;
+  CGFloats _distances;
 }
 
 @property (nonatomic) NSUInteger index;
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) LTInterpolationRoutine *routine;
 
 /// Array of distances of each sampling point along the segment.
-@property (readonly, nonatomic) std::vector<CGFloat> &distances;
+@property (readonly, nonatomic) CGFloats &distances;
 
 @end
 
@@ -55,26 +55,24 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
   return self;
 }
 
-- (void)fillDistances:(std::vector<CGFloat> *)distances WithNumberOfSamples:(NSUInteger)count {
+- (void)fillDistances:(CGFloats *)distances WithNumberOfSamples:(NSUInteger)count {
   LTParameterAssert(count > 1);
   LTParameterAssert(distances);
-  std::vector<CGFloat>keys;
+  CGFloats keys;
   CGFloat step = 1.0 / count;
   for (NSUInteger i = 1; i < count; ++i) {
     keys.push_back(i * step);
   }
 
-  std::vector<CGFloat> xPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionX"
-                                                                        atKeys:keys];
-  std::vector<CGFloat> yPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionY"
-                                                                        atKeys:keys];
+  CGFloats xPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionX" atKeys:keys];
+  CGFloats yPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionY" atKeys:keys];
+  LTAssert(xPositions.size() == yPositions.size());
   
   CGFloat length = 0;
   CGPoint previousPoint = self.startPoint.contentPosition;
   distances->clear();
   distances->push_back(0);
-  for (auto x = xPositions.cbegin(), y = yPositions.cbegin();
-       x < xPositions.cend() && y < yPositions.cend(); ++x, ++y) {
+  for (auto x = xPositions.cbegin(), y = yPositions.cbegin(); x < xPositions.cend(); ++x, ++y) {
     CGPoint point = CGPointMake(*x, *y);
     length += CGPointDistance(previousPoint, point);
     distances->push_back(length);
@@ -85,9 +83,9 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
 - (NSArray *)pointsWithInterval:(CGFloat)interval startingAtOffset:(CGFloat)offset {
   LTParameterAssert(interval > 0);
   LTParameterAssert(offset >= 0);
-  __block NSMutableArray *points = [NSMutableArray array];
-  __block CGFloat nextDistance = offset;
-  __block CGFloat prevDistance = 0;
+  NSMutableArray *points = [NSMutableArray array];
+  CGFloat nextDistance = offset;
+  CGFloat prevDistance = 0;
   for (NSUInteger idx = 0; idx < self.distances.size(); ++idx) {
     if (idx || !offset) {
       CGFloat distance = self.distances[idx];
