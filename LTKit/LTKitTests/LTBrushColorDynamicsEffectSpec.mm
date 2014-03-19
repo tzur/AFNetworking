@@ -211,7 +211,7 @@ context(@"effect", ^{
       sumDistance += std::abs(b - baseBrightness);
     }
     expect(maxDistance).to.beCloseToWithin(effect.brightnessJitter, 1e-2);
-    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.brightnessJitter / 2, 1e-2);
+    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.brightnessJitter / 2, 5e-2);
   });
   
   it(@"should sample the base color from the baseColorTexture when set", ^{
