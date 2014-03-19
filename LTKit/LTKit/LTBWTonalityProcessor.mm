@@ -32,11 +32,7 @@ static cv::Mat1b kNegativeBrightnessCurve;
 static cv::Mat1b kPositiveContrastCurve;
 static cv::Mat1b kNegativeContrastCurve;
 
-static const CGFloat kSmoothDownsampleFactor = 4.0;
-
 static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114);
-
-static const ushort kLutSize = 256;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
@@ -44,9 +40,10 @@ static const ushort kLutSize = 256;
   LTTexture *smoothTexture = [self createSmoothTexture:input];
   // Default color gradient.
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
-  
+
   NSDictionary *auxiliaryTextures =
       @{[LTBWTonalityFsh smoothTexture]: smoothTexture,
+        [LTBWTonalityFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve],
         [LTBWTonalityFsh colorGradient]: [identityGradient textureWithSamplingPoints:256]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
@@ -80,6 +77,8 @@ static const ushort kLutSize = 256;
 }
 
 - (LTTexture *)createSmoothTexture:(LTTexture *)input {
+  static const CGFloat kSmoothDownsampleFactor = 4.0;
+  
   CGFloat width = MAX(1.0, input.size.width / kSmoothDownsampleFactor);
   CGFloat height = MAX(1.0, input.size.height / kSmoothDownsampleFactor);
 
@@ -134,6 +133,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
 }
 
 - (void)updateToneLUT {
+  static const ushort kLutSize = 256;
+  
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
@@ -158,7 +159,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure);
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWTonalityFsh toneLUT]] = [LTTexture textureWithImage:toneCurve];
+  [auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
   self.auxiliaryTextures = auxiliaryTextures;
 }
 

@@ -12,7 +12,7 @@
 
 SpecBegin(LTBWProcessor)
 
-__block LTTexture *noise;
+__block LTTexture *input;
 __block LTTexture *output;
 __block LTBWProcessor *processor;
 
@@ -26,14 +26,14 @@ afterEach(^{
 });
 
 beforeEach(^{
-  noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
-  output = [LTTexture textureWithPropertiesOf:noise];
-  processor = [[LTBWProcessor alloc] initWithInput:noise output:output];
+  input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
+  output = [LTTexture textureWithPropertiesOf:input];
+  processor = [[LTBWProcessor alloc] initWithInput:input output:output];
 });
 
 afterEach(^{
   processor =  nil;
-  noise =  nil;
+  input =  nil;
   output = nil;
 });
 
@@ -103,7 +103,7 @@ context(@"properties", ^{
   
   it(@"should not fail on correct vignette input", ^{
     expect(^{
-      processor.vignettingNoise = noise;
+      processor.vignettingNoise = input;
       processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
       processor.vignettingSpread = 15.0;
       processor.vignettingCorner = 6.0;
@@ -114,7 +114,7 @@ context(@"properties", ^{
 
   it(@"should not fail on correct grain input", ^{
     expect(^{
-      processor.grainTexture = noise;
+      processor.grainTexture = input;
       processor.grainAmplitude = 1.1;
       processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 1.0);
     }).toNot.raiseAny();
@@ -144,14 +144,14 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  sit(@"should return correct black and white image", ^{
-    LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
-    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
+  beforeEach(^{
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
+    output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
+    processor = [[LTBWProcessor alloc] initWithInput:input output:output];
     
     LTTexture *noise = [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
     noise.wrap = LTTextureWrapRepeat;
     
-    LTBWProcessor *processor = [[LTBWProcessor alloc] initWithInput:input output:output];
     // Tone.
     processor.colorFilter = GLKVector3Make(1.0, 0.0, 1.0);
     processor.brightness = 0.1;
@@ -198,16 +198,25 @@ context(@"processing", ^{
                                controlPoint4];
     // Color gradient.
     LTColorGradient *colorGradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
-    processor.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];;
-    
+    processor.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
+  });
+  
+  afterEach(^{
+    processor =  nil;
+    input =  nil;
+    output = nil;
+  });
+  
+  sit(@"should return correct black and white conversion", ^{
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"MealBWProcessor.png");
     expect($(output.image)).to.beCloseToMat($(image));
-    
+  });
+  
+  sit(@"should return the same conversion with a wider outer frame", ^{
     processor.outerFrameWidth = processor.outerFrameWidth + 5.0;
-    
     [processor process];
-    image = LTLoadMat([self class], @"MealBWProcessorWideFrame.png");
+    cv::Mat image = LTLoadMat([self class], @"MealBWProcessorWideFrame.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
 });
