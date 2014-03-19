@@ -62,6 +62,13 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
+  it(@"should fail of invalid exposure parameter", ^{
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
+    expect(^{
+      tone.offset = -1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
   it(@"should fail of invalid structure parameter", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
@@ -129,6 +136,19 @@ context(@"processing", ^{
     LTSingleTextureOutput *processed = [tone process];
 
     expect(LTFuzzyCompareMat(greenDeltaOutput, processed.texture.image)).to.beTruthy();
+  });
+  
+  it(@"should increase offset correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(192, 192, 192, 255));
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    
+    LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:inputTexture
+                                                                        output:outputTexture];
+    tone.offset = 0.25;
+    [tone process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
   
   sit(@"should create correct conversion", ^{

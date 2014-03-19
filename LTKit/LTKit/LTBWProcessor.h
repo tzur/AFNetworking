@@ -35,6 +35,9 @@
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat exposure;
 
+/// Changes the additive offest of the image. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat offset;
+
 /// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat structure;
 

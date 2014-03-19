@@ -156,6 +156,7 @@ context(@"processing", ^{
     processor.colorFilter = GLKVector3Make(1.0, 0.0, 1.0);
     processor.brightness = 0.1;
     processor.exposure = 0.1;
+    processor.offset = 0.2;
     processor.structure = 0.3;
     // Vignetting.
     processor.vignettingNoise = noise;
