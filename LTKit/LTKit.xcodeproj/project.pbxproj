@@ -179,7 +179,7 @@
 		8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5818329538000845BA /* CoreMedia.framework */; };
 		8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */; };
 		8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
-		8B3DEBED18296B6100EA0C1A /* LTKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
+		8B3DEBED18296B6100EA0C1A /* LTKit.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
 		8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE418296B6100EA0C1A /* libLTKit.a */; };
 		8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3DEC0018296B6100EA0C1A /* InfoPlist.strings */; };
@@ -492,14 +492,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8B3DEBE218296B6100EA0C1A /* CopyFiles */ = {
+		8B3DEBE218296B6100EA0C1A /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				8B3DEBED18296B6100EA0C1A /* LTKit.h in CopyFiles */,
+				8B3DEBED18296B6100EA0C1A /* LTKit.h in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1999,7 +2000,8 @@
 			buildPhases = (
 				8B3DEBE018296B6100EA0C1A /* Sources */,
 				8B3DEBE118296B6100EA0C1A /* Frameworks */,
-				8B3DEBE218296B6100EA0C1A /* CopyFiles */,
+				8B3DEBE218296B6100EA0C1A /* Copy Files */,
+				8B66DF1018D88084007BC1C6 /* ShellScript */,
 			);
 			buildRules = (
 				8B8E50EB1861BD2900821829 /* PBXBuildRule */,
@@ -2257,6 +2259,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B66DF1018D88084007BC1C6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -f \"$DERIVED_FILE_DIR\"/LTShaderStorage*.h \"$TARGET_BUILD_DIR\"/include/\"$PRODUCT_NAME\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8B3DEBE018296B6100EA0C1A /* Sources */ = {
