@@ -173,14 +173,16 @@ context(@"processing", ^{
     processor.outerFrameWidth = 1.5;
     processor.outerFrameSpread = 1.5;
     processor.outerFrameCorner = 0.0;
-    processor.outerFrameNoiseAmplitude = 1.0;
+    processor.outerFrameNoise = noise;
+    processor.outerFrameNoiseAmplitude = 0.0;
     processor.outerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
     processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
     // Inner frame.
     processor.innerFrameWidth = 2;
     processor.innerFrameSpread = 0.0;
     processor.innerFrameCorner = 0.0;
-    processor.innerFrameNoiseAmplitude = 1.0;
+    processor.innerFrameNoise = noise;
+    processor.innerFrameNoiseAmplitude = 0.0;
     processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
     processor.innerFrameColor = GLKVector3Make(1.0, 1.0, 1.0);
     // Scale the red channel slightly to create a "neutral-to-cold" gradient.
@@ -220,6 +222,22 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MealBWProcessorWideFrame.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
+  
+  sit(@"should return the same conversion with a noisy frame", ^{
+    // Outer frame.
+    processor.outerFrameWidth = 1.0;
+    processor.outerFrameSpread = 2.0;
+    processor.outerFrameNoiseAmplitude = 20.0;
+    processor.outerFrameColor = GLKVector3Make(1.0, 1.0, 1.0);
+    // Inner frame.
+    processor.innerFrameWidth = 0.0;
+    processor.innerFrameSpread = 0.0;
+    
+    [processor process];
+    cv::Mat image = LTLoadMat([self class], @"MealBWProcessorNoisyFrame.png");
+    expect($(output.image)).to.beCloseToMat($(image));
+  });
+  
 });
 
 SpecEnd
