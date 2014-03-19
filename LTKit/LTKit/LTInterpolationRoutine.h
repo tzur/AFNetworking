@@ -30,6 +30,12 @@
 /// Returns the interpolated property at the given \c key (must be in range [0,1]).
 - (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key;
 
+/// Returns a vector of the interpolated properties at the given keys (must be in range [0,1]).
+///
+/// @note This is an optimization greately improving the performance of scenarios where a single
+/// property needs to be estimated on lots of keys.
+- (CGFloats)valuesOfCGFloatPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys;
+
 /// Returns a dictionary mapping each property to an \c NSArray with its polynomial coefficients (as
 /// \c NSNumbers).
 /// Subclasses must implement this abstract method and calculate the coefficients according to the

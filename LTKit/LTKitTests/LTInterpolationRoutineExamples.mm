@@ -212,6 +212,24 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
       expect(value).to.equal(0);
     });
 
+    it(@"should interpolate a single property at multiple keys", ^{
+      NSArray *keys = @[@0.25, @0.5, @0.75];
+      CGFloats keysVector;
+      for (NSNumber *key in keys) {
+        keysVector.push_back([key doubleValue]);
+      }
+      
+      CGFloats values = [routine valuesOfCGFloatPropertyNamed:@"pointToInterpolateX"
+                                                                   atKeys:keysVector];
+      expect(values.size()).to.equal(keysVector.size());
+      for (NSUInteger i = 0; i < keys.count; ++i) {
+        CGFloat key = keysVector[i];
+        CGFloat value = values[i];
+        NSNumber *expectedValue = [routine valueOfPropertyNamed:@"pointToInterpolateX" atKey:key];
+        expect(value).to.equal(expectedValue);
+      }
+    });
+    
     it(@"should not interpolate undesired properties", ^{
       interpolated = [routine valueAtKey:0.5];
       expect(interpolated.propertyNotToInterpolate).to.equal(0);
