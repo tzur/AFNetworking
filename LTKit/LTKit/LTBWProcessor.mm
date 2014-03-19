@@ -34,8 +34,6 @@
 @implementation LTBWProcessor
 
 @synthesize grainTexture = _grainTexture;
-@synthesize outerFrameNoise = _outerFrameNoise;
-@synthesize innerFrameNoise = _innerFrameNoise;
 
 static const CGFloat kVignettingMaxDimension = 256;
 static const CGFloat kFrameMaxDimension = 1024;
@@ -338,19 +336,11 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 }
 
 - (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
-  // Update noise texture in auxiliary textures.
-  _outerFrameNoise = outerFrameNoise;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = outerFrameNoise;
-  self.auxiliaryTextures = auxiliaryTextures;
-  [self process];
+  self.outerFrameProcessor.noise = outerFrameNoise;
 }
 
 - (LTTexture *)outerFrameNoise {
-  if (!_outerFrameNoise) {
-    _outerFrameNoise = [self createNeutralNoise];
-  }
-  return _outerFrameNoise;
+  return self.outerFrameProcessor.noise;
 }
 
 - (void)setOuterFrameNoiseChannelMixer:(GLKVector3)outerFrameNoiseChannelMixer {
@@ -411,19 +401,12 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 }
 
 - (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
-  // Update noise texture in auxiliary textures.
-  _innerFrameNoise = innerFrameNoise;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = innerFrameNoise;
-  self.auxiliaryTextures = auxiliaryTextures;
-  [self process];
+  self.innerFrameProcessor.noise = innerFrameNoise;
+  [self.innerFrameProcessor process];
 }
 
 - (LTTexture *)innerFrameNoise {
-  if (!_innerFrameNoise) {
-    _innerFrameNoise = [self createNeutralNoise];
-  }
-  return _innerFrameNoise;
+  return self.innerFrameProcessor.noise;
 }
 
 - (void)setInnerFrameNoiseChannelMixer:(GLKVector3)innerFrameNoiseChannelMixer {

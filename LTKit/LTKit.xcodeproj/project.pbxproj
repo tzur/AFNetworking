@@ -15,6 +15,7 @@
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
+		03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */; };
 		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
@@ -515,6 +516,7 @@
 		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
+		03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorNoisyFrame.png; path = Resources/MealBWProcessorNoisyFrame.png; sourceTree = "<group>"; };
 		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
@@ -1487,6 +1489,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */,
 				03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */,
 				03B3765618D612830017B705 /* MealBWProcessor.png */,
 				286A932A18CF727300F203DF /* BristleBrushBristles.2.png */,
@@ -2197,6 +2200,7 @@
 				0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */,
 				03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */,
 				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
+				03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
