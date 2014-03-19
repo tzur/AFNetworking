@@ -175,6 +175,15 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return self.toneProcessor.exposure;
 }
 
+- (void)setOffset:(CGFloat)offset {
+  self.toneProcessor.offset = offset;
+  [self.toneProcessor process];
+}
+
+- (CGFloat)offset {
+  return self.toneProcessor.offset;
+}
+
 - (void)setStructure:(CGFloat)structure {
   self.toneProcessor.structure = structure;
   [self.toneProcessor process];

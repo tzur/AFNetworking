@@ -37,6 +37,9 @@ LTBoundedPrimitiveProperty(CGFloat, contrast, Contrast);
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
 LTBoundedPrimitiveProperty(CGFloat, exposure, Exposure);
 
+/// Changes the offset of the image. Should be in [-1, 1] range. Default value is 0.
+LTBoundedPrimitiveProperty(CGFloat, offset, Offset);
+
 /// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
 LTBoundedPrimitiveProperty(CGFloat, structure, Structure);
 
