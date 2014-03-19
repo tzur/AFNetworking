@@ -10,7 +10,8 @@
     [self updateProgramForCurrentProperties]; \
   });
 
-@class LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect;
+@class LTBrushColorDynamicsEffect, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
+    LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect;
 
 /// @class LTBrush
 ///
@@ -58,6 +59,15 @@
 /// Controls the base size of the brush, in pixels. The default value for iOS is the average finger
 /// size on the device.
 @property (nonatomic) NSUInteger baseDiameter;
+
+/// Scattering effect applied during the brush strokes.
+@property (strong, nonatomic) LTBrushScatterEffect *scatterEffect;
+
+/// Shape dynamics effect applied during the brush strokes.
+@property (strong, nonatomic) LTBrushShapeDynamicsEffect *shapeDynamicsEffect;
+
+/// Color dynamics effect applied during the brush strokes.
+@property (strong, nonatomic) LTBrushColorDynamicsEffect *colorDynamicsEffect;
 
 /// Controls the size of the brush with respect to the base size.
 /// Must be in range [0.1,3], default is \c 1.

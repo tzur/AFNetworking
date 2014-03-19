@@ -18,7 +18,7 @@
 /// represent the (normalized) locations of the brush tips, and the given base color.
 ///
 /// @note when the \c baseColorTexture property is set, the baseColor argument is discarded.
-- (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)color;
+- (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)baseColor;
 
 /// Specifies a percentage by which the hue of the paint can vary in stroke.
 /// Must be in range [0,1], default is 1.

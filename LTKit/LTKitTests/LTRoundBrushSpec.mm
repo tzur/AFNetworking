@@ -3,7 +3,9 @@
 
 #import "LTRoundBrushSpec.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
+
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
@@ -62,6 +64,8 @@ SharedExamplesEnd
 SpecBegin(LTRoundBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTRoundBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBrush class]});
 
 itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTRoundBrush class]});
 

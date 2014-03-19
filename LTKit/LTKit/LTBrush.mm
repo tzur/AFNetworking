@@ -3,6 +3,9 @@
 
 #import "LTBrush.h"
 
+#import "LTBrushColorDynamicsEffect.h"
+#import "LTBrushScatterEffect.h"
+#import "LTBrushShapeDynamicsEffect.h"
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
@@ -10,10 +13,11 @@
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
-#import "LTRotatedRect.h"
+#import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTBrushShaderFsh.h"
 #import "LTShaderStorage+LTBrushShaderVsh.h"
 #import "LTTexture+Factory.h"
+#import "UIColor+Vector.h"
 
 @interface LTBrush ()
 
@@ -76,7 +80,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 #pragma mark -
-#pragma mark Public Interface
+#pragma mark Drawing
 #pragma mark -
 
 - (void)startNewStrokeAtPoint:(LTPainterPoint __unused *)point {
@@ -98,21 +102,25 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
           saveLastDrawnPointTo:(LTPainterPoint **)lastDrawnPoint {
   NSArray *points = [self pointsForStrokeSegment:segment fromPreviousPoint:previousPoint];
 
-  NSMutableArray *sourceRects = [NSMutableArray array];
-  NSMutableArray *targetRects = [NSMutableArray array];
-  NSMutableArray *normalizedRects = [NSMutableArray array];
+  NSMutableArray *mutableTargetRects = [NSMutableArray array];
   for (LTPainterPoint *point in points) {
+    [mutableTargetRects addObject:[LTRotatedRect squareWithCenter:point.contentPosition
+                                                           length:point.diameter angle:self.angle]];
+  }
+  
+  NSArray *targetRects = [self targetRectsWithEffectsFromRects:mutableTargetRects
+                                               framebufferSize:fbo.size];
+  
+  NSMutableArray *sourceRects = [NSMutableArray array];
+  for (NSUInteger i = 0; i < targetRects.count; ++i) {
     [sourceRects addObject:[LTRotatedRect rect:CGRectFromSize(self.texture.size)]];
-    [targetRects addObject:[LTRotatedRect squareWithCenter:point.contentPosition
-                                                    length:point.diameter angle:self.angle]];
-    [normalizedRects addObject:[self normalizeRect:targetRects.lastObject forSize:fbo.size]];
   }
   
   [self drawRects:targetRects inFramebuffer:fbo fromRects:sourceRects];
   if (lastDrawnPoint) {
     *lastDrawnPoint = points.lastObject;
   }
-  return normalizedRects;
+  return [self normalizedRects:targetRects forSize:fbo.size];
 }
 
 /// Draws the given source rects on the given target rects in the framebuffer.
@@ -122,8 +130,44 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRects:(NSArray *)sourceRects {
   if (self.texture && targetRects.count) {
-    [self.drawer drawRotatedRects:targetRects inFramebuffer:fbo fromRotatedRects:sourceRects];
+    if ([(LTRotatedRect *)targetRects.firstObject color]) {
+      [self drawColoredRects:targetRects inFramebuffer:fbo fromRects:sourceRects];
+    } else {
+      [self.drawer drawRotatedRects:targetRects inFramebuffer:fbo fromRotatedRects:sourceRects];
+    }
   }
+}
+
+- (void)drawColoredRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+               fromRects:(NSArray *)sourceRects {
+  LTParameterAssert(targetRects.count == sourceRects.count);
+  [fbo bindAndDraw:^{
+    for (NSUInteger i = 0; i < targetRects.count; ++i) {
+      self.program[[LTBrushShaderFsh intensity]] =
+          $([(LTRotatedRect *)targetRects[i] color].glkVector);
+      [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
+                   fromRotatedRect:sourceRects[i]];
+    }
+  }];
+}
+
+- (NSArray *)targetRectsWithEffectsFromRects:(NSArray *)targetRects framebufferSize:(CGSize)size {
+  if (self.scatterEffect) {
+    targetRects = [self.scatterEffect scatteredRectsFromRects:targetRects];
+  }
+  if (self.shapeDynamicsEffect) {
+    targetRects = [self.shapeDynamicsEffect dynamicRectsFromRects:targetRects];
+  }
+  if (self.colorDynamicsEffect) {
+    NSArray *normalizedRects = [self normalizedRects:targetRects forSize:size];
+    NSArray *colors = [self.colorDynamicsEffect colorsFromRects:normalizedRects
+                          baseColor:[UIColor colorWithGLKVector:self.intensity]];
+    [targetRects enumerateObjectsUsingBlock:^(LTRotatedRect *rect, NSUInteger idx, BOOL *) {
+      rect.color = colors[idx];
+    }];
+  }
+  
+  return targetRects;
 }
 
 - (NSArray *)pointsForStrokeSegment:(LTPainterStrokeSegment *)segment
@@ -143,6 +187,14 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (CGFloat)diameterForZoomScale:(CGFloat)zoomScale {
   LTParameterAssert(zoomScale > 0);
   return self.baseDiameter * self.scale / zoomScale;
+}
+
+- (NSArray *)normalizedRects:(NSArray *)rects forSize:(CGSize)size {
+  NSMutableArray *normalizedRects = [NSMutableArray array];
+  for (LTRotatedRect *rect in rects) {
+    [normalizedRects addObject:[self normalizeRect:rect forSize:size]];
+  }
+  return normalizedRects;
 }
 
 - (LTRotatedRect *)normalizeRect:(LTRotatedRect *)rotatedRect forSize:(CGSize)size {

@@ -3,6 +3,7 @@
 
 #import "LTBristleBrush.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
@@ -19,6 +20,8 @@
 SpecBegin(LTBristleBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBristleBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

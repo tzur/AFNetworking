@@ -10,5 +10,6 @@
 ///
 /// @note Due to the nature of this brush, it behaves correctly only when drawing to half-float
 /// framebuffers, and in the \c LTPainterTargetModeSandboxedStroke mode.
+/// @note The behavior of some of the brush effects on this brush is unexpected.
 @interface LTErasingBrush : LTRoundBrush
 @end

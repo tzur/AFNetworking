@@ -11,8 +11,9 @@
 /// texture for determining a factor based on the color similarity of each pixel to the area at the
 /// center of the brush, and applying this factor on the brush intensity.
 ///
-/// @note for performance reasons, the minimal value of the scale property is changed to 0.5.
-/// @note the default value of the hardness property is changed to 0.
+/// @note For performance reasons, the minimal value of the scale property is changed to 0.5.
+/// @note The default value of the hardness property is changed to 0.
+/// @note The behavior of some of the brush effects on this brush is unexpected.
 @interface LTEdgeAvoidingBrush : LTRoundBrush
 
 /// Texture of the base image (for color distance and edge-avoiding paint). When set to \c nil, the

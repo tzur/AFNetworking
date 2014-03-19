@@ -8,6 +8,10 @@
 
 @implementation UIColor (GLKVector)
 
++ (UIColor *)colorWithGLKVector:(GLKVector4)glkVector {
+  return [UIColor colorWithRed:glkVector.r green:glkVector.g blue:glkVector.b alpha:glkVector.a];
+}
+
 - (GLKVector4)glkVector {
   CGFloat r, g, b, a;
   if ([self getRed:&r green:&g blue:&b alpha:&a]) {
