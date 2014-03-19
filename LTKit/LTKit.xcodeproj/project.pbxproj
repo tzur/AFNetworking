@@ -34,6 +34,7 @@
 		03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */; };
 		03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */; };
 		03B3765718D612830017B705 /* MealBWProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B3765618D612830017B705 /* MealBWProcessor.png */; };
+		03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */; };
 		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
 		03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB374188C0675001E7703 /* LTFractionalNoise.mm */; };
 		03BBB383188C0B98001E7703 /* LTFractionalNoiseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */; };
@@ -537,6 +538,7 @@
 		03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBicubicResize.fsh; sourceTree = "<group>"; };
 		03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTBicubicResizeProcessorSpec.mm; path = ../LTKit/LTBicubicResizeProcessorSpec.mm; sourceTree = "<group>"; };
 		03B3765618D612830017B705 /* MealBWProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessor.png; path = Resources/MealBWProcessor.png; sourceTree = "<group>"; };
+		03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorWideFrame.png; path = Resources/MealBWProcessorWideFrame.png; sourceTree = "<group>"; };
 		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
 		03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorGradient.mm; sourceTree = "<group>"; };
 		03BBB360188BE6C1001E7703 /* RedBlueGradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBlueGradient.png; path = Resources/RedBlueGradient.png; sourceTree = "<group>"; };
@@ -1484,6 +1486,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */,
 				03B3765618D612830017B705 /* MealBWProcessor.png */,
 				286A932A18CF727300F203DF /* BristleBrushBristles.2.png */,
 				286A932B18CF727300F203DF /* BristleBrushBristles.4.png */,
@@ -2229,6 +2232,7 @@
 				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
+				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
 				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
