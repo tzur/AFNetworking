@@ -73,6 +73,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   self.contrast = kDefaultContrast;
   self.exposure = kDefaultExposure;
   self.structure = kDefaultStructure;
+  self.offset = kDefaultOffset;
   _colorGradientTexture = self.auxiliaryTextures[[LTBWTonalityFsh colorGradient]];
 }
 
@@ -111,6 +112,10 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, contrast, Contrast,
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+  [self updateToneLUT];
+});
+
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
@@ -157,7 +162,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
           (1.0 - brightness) * kIdentityCurve + brightness * brightnessCurve,
           toneCurve);
   
-  toneCurve = toneCurve * std::pow(2.0, self.exposure);
+  toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
   [auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
   self.auxiliaryTextures = auxiliaryTextures;
