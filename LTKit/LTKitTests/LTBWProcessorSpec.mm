@@ -237,7 +237,6 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MealBWProcessorNoisyFrame.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
 });
 
 SpecEnd
