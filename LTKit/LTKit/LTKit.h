@@ -25,10 +25,12 @@
 #import <LTKit/LTIterativeImageProcessor.h>
 #import <LTKit/LTOneShotImageProcessor.h>
 
-// Image Processing/Boxes.
+// Image Processing/Blocks.
 #import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoundaryExtractor.h>
+#import <LTKit/LTBWProcessor.h>
+#import <LTKit/LTColorGradient.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
 #import <LTKit/LTMaskedArithmeticProcessor.h>
