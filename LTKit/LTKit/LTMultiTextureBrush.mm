@@ -88,5 +88,4 @@
   self.textures = @[texture];
 }
 
-
 @end

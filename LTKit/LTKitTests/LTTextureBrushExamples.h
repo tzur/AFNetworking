@@ -8,3 +8,10 @@ extern NSString * const kLTTextureBrushExamples;
 
 /// Class object, a subclass of the \c LTTextureBrush class to test.
 extern NSString * const kLTTextureBrushClass;
+
+@interface LTTextureBrush (ForTesting)
+
+/// Sets a single texture as the texture used for painting.
+- (void)setSingleTexture:(LTTexture *)texture;
+
+@end

@@ -21,10 +21,3 @@
 @property (nonatomic) BOOL premultipliedAlpha;
 
 @end
-
-@interface LTTextureBrush (ForTesting)
-
-/// Sets a single texture as the texture used for painting.
-- (void)setSingleTexture:(LTTexture *)texture;
-
-@end

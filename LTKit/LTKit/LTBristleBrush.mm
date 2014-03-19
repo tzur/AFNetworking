@@ -159,4 +159,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(NSUInteger, bristles, Bristl
   self.shouldUpdateBrush = YES;
 });
 
+- (NSArray *)adjustableProperties {
+  return @[@"scale", @"spacing", @"flow", @"opacity", @"angle", @"bristles", @"thickness"];
+}
+
 @end
