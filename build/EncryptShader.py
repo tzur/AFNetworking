@@ -87,6 +87,7 @@ class ShaderEncryptor(object):
             "SHADER_OBJC_NAME": self.__capitalized_objc_name,
             "YEAR": time.localtime().tm_year,
             "SCRIPT_NAME": os.path.basename(sys.argv[0]),
+            "IMPORT_FILE": self.__import_file(),
             "BUFFER": self.__buffer,
             "GETTER_DECLARATION": self.__getter_declaration,
             "GETTER_IMPLEMENTATION": self.__getter_implementation,
@@ -144,6 +145,13 @@ class ShaderEncryptor(object):
         declaration = "+ (NSString *)%s;" % method_name
 
         return declaration, "\n".join(implementation)
+
+    @staticmethod
+    def __import_file():
+        if os.environ["PROJECT_NAME"].startswith("LTKit"):
+            return "\"LTShaderStorage.h\""
+        else:
+            return "<LTKit/LTShaderStorage.h>"
 
     def write_to(self, output_directory):
         try:

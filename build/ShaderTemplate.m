@@ -3,7 +3,7 @@
 
 #import "@CONTAINER_CLASS_NAME@+@SHADER_OBJC_NAME@.h"
 
-#import "LTShaderStorage.h"
+#import @IMPORT_FILE@
 
 @BUFFER@
 
