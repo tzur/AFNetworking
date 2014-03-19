@@ -72,4 +72,24 @@
   return @(value);
 }
 
+- (std::vector<CGFloat>)valuesOfCGFloatPropertyNamed:(NSString *)name
+    atKeys:(const std::vector<CGFloat> &)keys {
+  NSArray *coefficientsForProperty = self.coefficients[name];
+  std::vector<double> coefficients;
+  for (NSNumber *coefficient in coefficientsForProperty) {
+    coefficients.push_back([coefficient doubleValue]);
+  }
+  
+  std::vector<CGFloat> values;
+  for (const CGFloat &key : keys) {
+    double value = 0;
+    for (const double &coefficient : coefficients) {
+      value = key * value + coefficient;
+    }
+    values.push_back(value);
+  }
+  
+  return values;
+}
+
 @end
