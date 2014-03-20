@@ -27,6 +27,7 @@
 
 // Image Processing/Blocks.
 #import <LTKit/LTArithmeticProcessor.h>
+#import <LTKit/LTAdjustProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoundaryExtractor.h>
 #import <LTKit/LTBWProcessor.h>
