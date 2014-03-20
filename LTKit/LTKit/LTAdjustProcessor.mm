@@ -163,34 +163,35 @@ LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, whitePoint, WhitePo
 }
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
+  _saturation = saturation;
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
-  _saturation = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
-  self[@"saturation"] = @(_saturation);
+  CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
+  self[@"saturation"] = @(remap);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, temperature, Temperature, -1, 1, 0, ^{
+  _temperature = temperature;
   // Remap [-1, 1] to [-kTemperatureScaling, kTemperatureScaling]
   // Temperature in this processor is an additive scale of the I channel in YIQ, so theoretically
   // max value is 0.596 (pure red) and min value is -0.596 (green-blue color).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
-  _temperature = temperature * kTemperatureScaling;
-  self[@"temperature"] = @(_temperature);
+  self[@"temperature"] = @(temperature * kTemperatureScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, tint, Tint, -1, 1, 0, ^{
+  _tint = tint;
   // Remap [-1, 1] to [-kTintScaling, kTintScaling]
   // Tint in this processor is an additive scale of the Q channel in YIQ, so theoretically
   // max value is 0.523 (red-blue) and min value is -0.523 (pure green).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
-  _tint = tint * kTintScaling;
-  self[@"tint"] = @(_tint);
+  self[@"tint"] = @(tint * kTintScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, details, Details, -1, 1, 0, ^{
-  _details = details * kDetailsScaling;
-  self[@"details"] = @(_details);
+  _details = details;
+  self[@"details"] = @(details * kDetailsScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, shadows, Shadows, 0, 1, 0, ^{
