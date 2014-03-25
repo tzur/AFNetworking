@@ -30,9 +30,6 @@
 
 @implementation LTBristleBrush
 
-/// Override the default spacing of the \c LTBrush.
-static const CGFloat kDefaultSpacing = 0.01;
-
 /// Size (in pixels) of the brush texture on the base level.
 static const uint kBaseLevelDiameter = 256;
 
@@ -53,9 +50,8 @@ static const CGFloat kBristleSigma = 0.4;
 
 - (void)setBristleBrushDefaults {
   self.shape = LTBristleBrushShapeRound;
-  self.spacing = kDefaultSpacing;
-  self.bristles = kDefaultBristles;
-  self.thickness = kDefaultThickness;
+  self.bristles = self.defaultBristles;
+  self.thickness = self.defaultThickness;
 }
 
 - (LTTexture *)createTexture {
@@ -98,6 +94,9 @@ static const CGFloat kBristleSigma = 0.4;
 #pragma mark -
 
 - (void)startNewStrokeAtPoint:(LTPainterPoint *)point {
+  if (self.randomAnglePerStroke) {
+    self.angle = drand48() * 2 * M_PI;
+  }
   [super startNewStrokeAtPoint:point];
   if (self.shouldUpdateBrush) {
     [self updateBrushForCurrentProperties];
@@ -151,11 +150,15 @@ static const CGFloat kBristleSigma = 0.4;
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, thickness, Thickness, 0, 2, 0.1, ^{
+- (CGFloat)defaultSpacing {
+  return 0.01;
+}
+
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2, ^{
   self.shouldUpdateBrush = YES;
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(NSUInteger, bristles, Bristles, 2, 100, 10, ^{
+LTBoundedPrimitivePropertyImplementWithCustomSetter(NSUInteger, bristles, Bristles, 2, 20, 5, ^{
   self.shouldUpdateBrush = YES;
 });
 

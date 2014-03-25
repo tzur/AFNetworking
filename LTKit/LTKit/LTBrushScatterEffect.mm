@@ -20,9 +20,9 @@
 }
 
 - (void)setScatterEffectDefaults {
-  self.scatter = kDefaultScatter;
-  self.count = kDefaultCount;
-  self.countJitter = kDefaultCountJitter;
+  self.scatter = self.defaultScatter;
+  self.count = self.defaultCount;
+  self.countJitter = self.defaultCountJitter;
 }
 
 #pragma mark -

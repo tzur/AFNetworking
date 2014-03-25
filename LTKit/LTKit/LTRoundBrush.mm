@@ -37,7 +37,7 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 }
 
 - (void)setRoundBrushDefaults {
-  self.hardness = kDefaultHardness;
+  self.hardness = self.defaultHardness;
 }
 
 #pragma mark -

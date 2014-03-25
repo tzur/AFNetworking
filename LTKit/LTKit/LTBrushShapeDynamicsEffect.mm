@@ -20,11 +20,11 @@
 }
 
 - (void)setShapeDynamicsEffectDefaults {
-  self.sizeJitter = kDefaultSizeJitter;
-  self.minimumDiameter = kDefaultMinimumDiameter;
-  self.angleJitter = kDefaultAngleJitter;
-  self.roundnessJitter = kDefaultRoundnessJitter;
-  self.minimumRoundness = kDefaultMinimumRoundness;
+  self.sizeJitter = self.defaultSizeJitter;
+  self.minimumDiameter = self.defaultMinimumDiameter;
+  self.angleJitter = self.defaultAngleJitter;
+  self.roundnessJitter = self.defaultRoundnessJitter;
+  self.minimumRoundness = self.defaultMinimumRoundness;
 }
 
 #pragma mark -
