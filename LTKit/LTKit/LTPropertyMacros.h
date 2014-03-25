@@ -7,7 +7,8 @@
 #define LTBoundedPrimitiveProperty(type, name, Name) \
 @property (nonatomic) type name; \
 @property (readonly, nonatomic) type min##Name; \
-@property (readonly, nonatomic) type max##Name;
+@property (readonly, nonatomic) type max##Name; \
+@property (readonly, nonatomic) type default##Name;
 
 /// Implement a primitve property, creating constants named \c kMinProperty, \c kMaxProperty, and
 /// \c kDefaultProperty, and implement the minProperty and maxProperty getters.
@@ -21,7 +22,10 @@
     return kMin##Name; \
   } \
   - (type)max##Name { \
-  return kMax##Name; \
+    return kMax##Name; \
+  } \
+  - (type)default##Name { \
+    return kDefault##Name; \
   }
 
 /// Implement a primitive property using \c LTBoundedPrimitivePropertyImplementWithoutSetter, and

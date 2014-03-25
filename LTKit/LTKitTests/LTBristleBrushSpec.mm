@@ -47,8 +47,8 @@ context(@"properties", ^{
 
   it(@"should have default properties", ^{
     expect(brush.shape).to.equal(LTBristleBrushShapeRound);
-    expect(brush.bristles).to.equal(10);
-    expect(brush.thickness).to.equal(0.1);
+    expect(brush.bristles).to.equal(5);
+    expect(brush.thickness).to.equal(0.2);
     expect(brush.spacing).to.equal(0.01);
   });
   

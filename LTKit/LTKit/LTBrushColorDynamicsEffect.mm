@@ -22,9 +22,9 @@
 }
 
 - (void)setColorDynamicsEffectDefaults {
-  self.hueJitter = kDefaultHueJitter;
-  self.saturationJitter = kDefaultSaturationJitter;
-  self.brightnessJitter = kDefaultBrightnessJitter;
+  self.hueJitter = self.defaultHueJitter;
+  self.saturationJitter = self.defaultSaturationJitter;
+  self.brightnessJitter = self.defaultBrightnessJitter;
 }
 
 #pragma mark -

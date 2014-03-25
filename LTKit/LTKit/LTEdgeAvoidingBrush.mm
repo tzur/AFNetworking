@@ -39,9 +39,6 @@
 /// edge-avoiding sampling points from its center.
 static const CGFloat kSizeToSamplingFactor = 50;
 
-/// Override the default hardness value of the \c LTRoundBrush.
-static const CGFloat kDefaultHardness = 0.5;
-
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -54,9 +51,7 @@ static const CGFloat kDefaultHardness = 0.5;
 }
 
 - (void)setEdgeAvoidingBrushDefaults {
-  self.hardness = kDefaultHardness;
-  self.scale = kDefaultScale;
-  self.sigma = kDefaultSigma;
+  self.sigma = self.defaultSigma;
 }
 
 - (LTProgram *)createProgram {
@@ -131,6 +126,10 @@ static const CGFloat kDefaultHardness = 0.5;
 
 LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, sigma, Sigma, 0.01, 1, 0.5);
 LTBoundedPrimitivePropertyImplementWithoutSetter(CGFloat, scale, Scale, 0.5, 3, 1);
+
+- (CGFloat)defaultHardness {
+  return 0.5;
+}
 
 - (NSArray *)adjustableProperties {
   return [super.adjustableProperties arrayByAddingObject:@"sigma"];

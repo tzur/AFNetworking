@@ -14,6 +14,7 @@
 #import <LTKit/LTRotatedRect.h>
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSValue+GLKitExtensions.h>
+#import <LTKit/UIColor+Vector.h>
 
 // Base.
 #import <LTKit/LTDevice.h>
@@ -30,6 +31,7 @@
 #import <LTKit/LTAdjustProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoundaryExtractor.h>
+#import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
 #import <LTKit/LTColorGradient.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
@@ -71,16 +73,25 @@
 #import <LTKit/LTPainter+LTView.h>
 
 // GPU/Painting/Brushes.
+#import <LTKit/LTBristleBrush.h>
 #import <LTKit/LTBrush.h>
 #import <LTKit/LTEdgeAvoidingBrush.h>
 #import <LTKit/LTErasingBrush.h>
+#import <LTKit/LTMultiTextureBrush.h>
 #import <LTKit/LTRoundBrush.h>
+#import <LTKit/LTTextureBrush.h>
+
+// GPU/Painting/Brush Effects.
+#import <LTKit/LTBrushColorDynamicsEffect.h>
+#import <LTKit/LTBrushScatterEffect.h>
+#import <LTkit/LTBrushShapeDynamicsEffect.h>
 
 // GPU/Painting/Interpolation Routines.
 #import <LTKit/LTCatmullRomInterpolationRoutine.h>
 #import <LTKit/LTLinearInterpolationRoutine.h>
 
 // UI.
+#import <LTkit/LTAnimation.h>
 #import <LTKit/LTView.h>
 
 // LTKitBundle.
