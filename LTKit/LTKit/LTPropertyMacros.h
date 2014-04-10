@@ -7,21 +7,25 @@
 #define LTBoundedPrimitiveProperty(type, name, Name) \
 @property (nonatomic) type name; \
 @property (readonly, nonatomic) type min##Name; \
-@property (readonly, nonatomic) type max##Name;
+@property (readonly, nonatomic) type max##Name; \
+@property (readonly, nonatomic) type default##Name;
 
 /// Implement a primitve property, creating constants named \c kMinProperty, \c kMaxProperty, and
 /// \c kDefaultProperty, and implement the minProperty and maxProperty getters.
 #define LTBoundedPrimitivePropertyImplementWithoutSetter(type, name, Name, minValue, maxValue, \
     defaultValue) \
-  static const type kMin##Name = minValue; \
-  static const type kMax##Name = maxValue; \
-  static const type kDefault##Name = defaultValue; \
   \
   - (type)min##Name { \
+    static const type kMin##Name = minValue; \
     return kMin##Name; \
   } \
   - (type)max##Name { \
-  return kMax##Name; \
+    static const type kMax##Name = maxValue; \
+    return kMax##Name; \
+  } \
+  - (type)default##Name { \
+    static const type kDefault##Name = defaultValue; \
+    return kDefault##Name; \
   }
 
 /// Implement a primitive property using \c LTBoundedPrimitivePropertyImplementWithoutSetter, and

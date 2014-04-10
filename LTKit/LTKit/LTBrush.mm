@@ -55,12 +55,12 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
 - (void)setBrushDefaults {
   self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice * [UIScreen mainScreen].scale;
-  self.flow = kDefaultFlow;
-  self.scale = kDefaultScale;
-  self.angle = kDefaultAngle;
-  self.spacing = kDefaultSpacing;
-  self.opacity = kDefaultOpacity;
-  self.intensity = kDefaultIntensity;
+  self.flow = self.defaultFlow;
+  self.scale = self.defaultScale;
+  self.angle = self.defaultAngle;
+  self.spacing = self.defaultSpacing;
+  self.opacity = self.defaultOpacity;
+  self.intensity = self.defaultIntensity;
 }
 
 - (LTTexture *)createTexture {

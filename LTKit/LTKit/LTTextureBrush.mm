@@ -39,21 +39,7 @@
 
 @implementation LTTextureBrush
 
-/// Override the default spacing of the \c LTBrush.
-static const CGFloat kDefaultSpacing = 2.0;
-
 static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
-
-- (instancetype)init {
-  if (self = [super init]) {
-    [self setTextureBrushDefaults];
-  }
-  return self;
-}
-
-- (void)setTextureBrushDefaults {
-  self.spacing = kDefaultSpacing;
-}
 
 - (LTTexture *)createTexture {
   cv::Mat4b defaultMat(kDefaultTextureSize.height, kDefaultTextureSize.width,
@@ -84,6 +70,10 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (CGFloat)defaultSpacing {
+  return 2.0;
+}
 
 - (void)setTexture:(LTTexture *)texture {
   LTParameterAssert(texture.format == LTTextureFormatRGBA);

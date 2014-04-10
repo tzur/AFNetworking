@@ -78,7 +78,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 
 - (void)setDefaultValues {
   // New properties introduced by LTBWProcessor.
-  _grainAmplitude = kDefaultGrainAmplitude;
+  _grainAmplitude = self.defaultGrainAmplitude;
   _grainChannelMixer = kDefaultGrainChannelMixer;
   self[@"grainChannelMixer"] = $(self.grainChannelMixer);
   _vignetteColor = kDefaultVignettingColor;
