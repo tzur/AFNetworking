@@ -170,6 +170,8 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
                       @"Given texture format %d is not supported in this system", format);
     LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
                       size.width, size.height);
+    LTParameterAssert(size.height > 0 && size.width > 0, @"Given size (%g, %g) has width or height "
+                      "which are <= 0", size.width, size.height);
 
     _precision = precision;
     _format = format;

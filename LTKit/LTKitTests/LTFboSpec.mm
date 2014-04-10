@@ -84,17 +84,6 @@ context(@"initialization", ^{
       __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
     }).to.raise(kLTFboInvalidTextureException);
   });
-
-  it(@"should not init with zero-size texture", ^{
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeZero
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
-
-    expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-    }).to.raise(kLTFboInvalidTextureException);
-  });
 });
 
 context(@"clearing", ^{
