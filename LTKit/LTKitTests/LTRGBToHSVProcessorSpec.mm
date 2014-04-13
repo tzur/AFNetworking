@@ -5,7 +5,6 @@
 
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTRGBToHSVProcessor)
@@ -31,6 +30,7 @@ context(@"processing", ^{
     [processor process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
   });
+  
   it(@"should process red correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(255, 0, 0, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(0, 255, 255, 255));
@@ -42,6 +42,7 @@ context(@"processing", ^{
     [processor process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
   });
+  
   it(@"should process green correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 255, 0, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(85, 255, 255, 255));
@@ -53,6 +54,7 @@ context(@"processing", ^{
     [processor process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
   });
+  
   it(@"should process grey correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 0, 255, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(170, 255, 255, 255));

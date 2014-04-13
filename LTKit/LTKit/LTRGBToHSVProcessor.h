@@ -3,12 +3,10 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class LTRGBToHSVProcessor
-///
-/// Converts from RGB to HSV color space.
+/// LTRGBToHSVProcessor converts from RGB to HSV color space.
 @interface LTRGBToHSVProcessor : LTOneShotImageProcessor
 
-/// Initialize with input RGB image to be converted and output to store the HSV result.
+/// Initializes with input RGB image to be converted and output to store the HSV result.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
 @end
