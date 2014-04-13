@@ -53,7 +53,7 @@ void main() {
   lowp float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
   lowp float vignette = texture2D(vignettingTexture, vTexcoord).r;
   color.rgb = color.rgb + grainAmplitude * (grain - 0.5);
-  color.rgb = mix(color.rgb, vignetteColor, vignette  * vignettingOpacity);
+  color.rgb = mix(color.rgb, vignetteColor, vignette * vignettingOpacity);
   
   gl_FragColor = color;
 }

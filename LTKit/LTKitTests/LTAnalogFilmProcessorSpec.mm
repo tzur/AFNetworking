@@ -32,8 +32,8 @@ beforeEach(^{
 });
 
 afterEach(^{
-  processor =  nil;
-  input =  nil;
+  processor = nil;
+  input = nil;
   output = nil;
 });
 
@@ -207,7 +207,6 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"IslandAnalogFilm.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
 });
 
 SpecEnd

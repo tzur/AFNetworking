@@ -9,7 +9,7 @@
 
 /// @class LTAnalogFilmProcessor
 ///
-/// Implements analog film effect. Control the tonal characteristics of the result and additional
+/// Implements analog film effect. Controls the tonal characteristics of the result and additional
 /// content that makes the effect more appealing: grain, vignetting and texture.
 @interface LTAnalogFilmProcessor : LTOneShotImageProcessor
 
@@ -43,8 +43,7 @@ LTBoundedPrimitiveProperty(CGFloat, saturation, Saturation);
 #pragma mark -
 
 /// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
-/// This LUT is used to add tint to the image. Default value is an identity
-/// mapping.
+/// This LUT is used to add tint to the image. Default value is an identity mapping.
 @property (strong, nonatomic) LTTexture *colorGradientTexture;
 
 /// Tinted result mixed with the original image according to colorGradientAlpha. Should be in [0, 1]

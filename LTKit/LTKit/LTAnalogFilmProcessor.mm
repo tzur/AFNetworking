@@ -21,8 +21,8 @@
 @end
 
 @interface LTAnalogFilmProcessor ()
-
-@property (nonatomic) BOOL subProcessorsInitialized;
+// Returns YES is subprocessor used by this class is initialized, NO otherwise.
+@property (nonatomic) BOOL subProcessorInitialized;
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 @property (nonatomic) CGSize outputSize;
 
@@ -39,10 +39,12 @@ static cv::Mat1b kNegativeBrightnessCurve;
 static cv::Mat1b kPositiveContrastCurve;
 static cv::Mat1b kNegativeContrastCurve;
 
+// Downsampling wrt original image that is used when creating a smooth texture.
 static const CGFloat kSmoothDownsampleFactor = 2.0;
 static const NSUInteger kSmoothTextureIterations = 6;
 static const CGFloat kSaturationScaling = 1.5;
 static const CGFloat kGrainAmplitudeScaling = 0.5;
+static const ushort kLutSize = 256;
 static const CGFloat kColorGradientAlphaScaling = 0.5;
 static const CGFloat kVignettingMaxDimension = 256;
 static const GLKVector3 kDefaultVignettingColor = GLKVector3Make(0.0, 0.0, 0.0);
@@ -59,16 +61,16 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
   
   NSDictionary *auxiliaryTextures =
-  @{[LTAnalogFilmFsh smoothTexture]: [self createSmoothTexture:input],
-    [LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve],
-    [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:256],
-    [LTAnalogFilmFsh grainTexture]: self.grainTexture,
-    [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
+      @{[LTAnalogFilmFsh smoothTexture]: [self createSmoothTexture:input],
+        [LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve],
+        [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:kLutSize],
+        [LTAnalogFilmFsh grainTexture]: self.grainTexture,
+        [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     [self setDefaultValues];
     _outputSize = output.size;
-    _subProcessorsInitialized = NO;
+    _subProcessorInitialized = NO;
   }
   return self;
 }
@@ -89,18 +91,22 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 }
 
 - (void)setDefaultValues {
-  // Set values and push them to the shader.
-  _grainChannelMixer = kDefaultGrainChannelMixer;
-  self[@"grainChannelMixer"] = $(self.grainChannelMixer);
-  _vignetteColor = kDefaultVignettingColor;
-  self[@"vignetteColor"] = $(self.vignetteColor);
-  self.vignettingSpread = kDefaultVignettingSpread;
+  // Get default value of the color gradient texture, which was already set in the constructor.
   _colorGradientTexture = self.auxiliaryTextures[[LTAnalogFilmFsh colorGradient]];
+  
   // Set values and update the shader using the setter code.
+  self.grainChannelMixer = kDefaultGrainChannelMixer;
   self.structure = self.defaultStructure;
   self.saturation = self.defaultSaturation;
   self.vignettingOpacity = self.defaultVignettingOpacity;
-  // No need to update the shader of the following properties.
+  self.colorGradientAlpha = self.defaultColorGradientAlpha;
+  
+  // Update vignetting values of the subprocessor.
+  self.vignetteColor = kDefaultVignettingColor;
+  self.vignettingSpread = kDefaultVignettingSpread;
+  
+  // Since these properties are encapsulated by LUT and default LUT is set in the constructor, no
+  // need update the shader after setting the following properties.
   _brightness = self.defaultBrightness;
   _contrast = self.defaultContrast;
   _exposure = self.defaultExposure;
@@ -126,19 +132,18 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 - (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
   CGFloat xScale = size.width / grain.size.width;
   CGFloat yScale = size.height / grain.size.height;
-  self[@"grainScaling"] = $(GLKVector2Make(xScale, yScale));
+  self[[LTAnalogFilmVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
 }
 
-- (CGSize)findConstrainedSizeWithSize:(CGSize)size maxDimension:(CGFloat)maxDimension {
+- (CGSize)aspectFitSize:(CGSize)size toSize:(CGFloat)maxDimension {
   CGFloat largerDimension = MAX(size.width, size.height);
   // Size of the result shouldn't be larger than input size.
   CGFloat scaleFactor = MIN(1.0, maxDimension / largerDimension);
-  return std::round(CGSizeMake(size.width * scaleFactor, size.height * scaleFactor));
+  return std::floor(CGSizeMake(size.width * scaleFactor, size.height * scaleFactor));
 }
 
 - (LTTexture *)createVignettingTextureWithInput:(LTTexture *)input {
-  CGSize vignettingSize = [self findConstrainedSizeWithSize:input.size
-                                               maxDimension:kVignettingMaxDimension];
+  CGSize vignettingSize = [self aspectFitSize:input.size toSize:kVignettingMaxDimension];
   LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:vignettingSize];
   return vignetteTexture;
 }
@@ -150,14 +155,14 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return neutralNoise;
 }
 
-- (void)initializeSubProcessors {
+- (void)initializeSubProcessor {
   [self.vignetteProcessor process];
-  self.subProcessorsInitialized = YES;
+  self.subProcessorInitialized = YES;
 }
 
 - (id<LTImageProcessorOutput>)process {
-  if (!self.subProcessorsInitialized) {
-    [self initializeSubProcessors];
+  if (!self.subProcessorInitialized) {
+    [self initializeSubProcessor];
   }
   return [super process];
 }
@@ -186,14 +191,14 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
   _structure = structure;
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
-  self[@"structure"] = @(remap);
+  self[[LTAnalogFilmFsh structure]] = @(remap);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
   _saturation = saturation;
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
-  self[@"saturation"] = @(remap);
+  self[[LTAnalogFilmFsh saturation]] = @(remap);
 });
 
 #pragma mark -
@@ -203,7 +208,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturat
 - (void)setVignetteColor:(GLKVector3)vignetteColor {
   LTParameterAssert(GLKVectorInRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
   _vignetteColor = vignetteColor;
-  self[@"vignetteColor"] = $(vignetteColor);
+  self[[LTAnalogFilmFsh vignetteColor]] = $(vignetteColor);
   [self.vignetteProcessor process];
 }
 
@@ -255,7 +260,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturat
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, VignettingOpacity,
   0, 1, 0, ^{
   _vignettingOpacity = vignettingOpacity;
-  self[@"vignettingOpacity"] = @(vignettingOpacity);
+  self[[LTAnalogFilmFsh vignettingOpacity]] = @(vignettingOpacity);
 });
 
 #pragma mark -
@@ -277,7 +282,6 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, 
   auxiliaryTextures[[LTAnalogFilmFsh grainTexture]] = grainTexture;
   self.auxiliaryTextures = auxiliaryTextures;
   [self setupGrainTextureScalingWithOutputSize:self.outputSize grain:self.grainTexture];
-  [self process];
 }
 
 - (BOOL)isValidGrainTexture:(LTTexture *)texture {
@@ -288,15 +292,13 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, 
 
 -(void)setGrainChannelMixer:(GLKVector3)grainChannelMixer {
   _grainChannelMixer = grainChannelMixer / std::sum(grainChannelMixer);
-  self[@"grainChannelMixer"] = $(_grainChannelMixer);
-  [self process];
+  self[[LTAnalogFilmFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1,
-  0, ^{
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, GrainAmplitude,
+  0, 1, 0, ^{
   _grainAmplitude = grainAmplitude;
-  self[@"grainAmplitude"] = @(grainAmplitude * kGrainAmplitudeScaling);
-  [self process];
+  self[[LTAnalogFilmFsh grainAmplitude]] = @(grainAmplitude * kGrainAmplitudeScaling);
 });
 
 #pragma mark -
@@ -306,8 +308,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
   LTParameterAssert(colorGradientTexture.size.height == 1,
                     @"colorGradientTexture height is not one");
-  LTParameterAssert(colorGradientTexture.size.width <= 256,
-                    @"colorGradientTexture width is larger than 256");
+  LTParameterAssert(colorGradientTexture.size.width <= kLutSize,
+                    @"colorGradientTexture width is larger than kLutSize");
   
   _colorGradientTexture = colorGradientTexture;
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
@@ -318,7 +320,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha,
   -1, 1, 0, ^{
   _colorGradientAlpha = colorGradientAlpha;
-  self[@"colorGradientAlpha"] = @(colorGradientAlpha * kColorGradientAlphaScaling);
+  self[[LTAnalogFilmFsh colorGradientAlpha]] = @(colorGradientAlpha * kColorGradientAlphaScaling);
 });
 
 #pragma mark -
@@ -326,8 +328,6 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha,
 #pragma mark -
 
 - (void)updateToneLUT {
-  static const ushort kLutSize = 256;
-  
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
