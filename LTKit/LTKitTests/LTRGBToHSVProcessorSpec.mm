@@ -28,7 +28,7 @@ context(@"processing", ^{
     LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:inputTexture
                                                                          output:outputTexture];
     [processor process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
   
   it(@"should process red correctly", ^{
@@ -40,7 +40,7 @@ context(@"processing", ^{
     LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:inputTexture
                                                                          output:outputTexture];
     [processor process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
   
   it(@"should process green correctly", ^{
@@ -52,7 +52,7 @@ context(@"processing", ^{
     LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:inputTexture
                                                                          output:outputTexture];
     [processor process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
   
   it(@"should process grey correctly", ^{
@@ -64,7 +64,7 @@ context(@"processing", ^{
     LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:inputTexture
                                                                          output:outputTexture];
     [processor process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
 });
   
