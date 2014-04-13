@@ -6,6 +6,7 @@
 #import "LTBilateralFilterProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTColorGradient.h"
+#import "LTCurve.h"
 #import "LTGLKitExtensions.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
@@ -32,13 +33,6 @@
 
 @synthesize grainTexture = _grainTexture;
 
-// The follow matrices hold the curves data.
-static cv::Mat1b kIdentityCurve;
-static cv::Mat1b kPositiveBrightnessCurve;
-static cv::Mat1b kNegativeBrightnessCurve;
-static cv::Mat1b kPositiveContrastCurve;
-static cv::Mat1b kNegativeContrastCurve;
-
 // Downsampling wrt original image that is used when creating a smooth texture.
 static const CGFloat kSmoothDownsampleFactor = 2.0;
 static const NSUInteger kSmoothTextureIterations = 6;
@@ -62,7 +56,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   
   NSDictionary *auxiliaryTextures =
       @{[LTAnalogFilmFsh smoothTexture]: [self createSmoothTexture:input],
-        [LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve],
+        [LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
         [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:kLutSize],
         [LTAnalogFilmFsh grainTexture]: self.grainTexture,
         [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
@@ -73,21 +67,6 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
     _subProcessorInitialized = NO;
   }
   return self;
-}
-
-+ (void)initialize {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    kIdentityCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
-    kPositiveBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"PositiveBrightnessCurve.png");
-    kNegativeBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"NegativeBrightnessCurve.png");
-    kPositiveContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"PositiveContrastCurve.png");
-    kNegativeContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"NegativeContrastCurve.png");
-  });
 }
 
 - (void)setDefaultValues {
@@ -331,23 +310,23 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha,
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
-  if (self.brightness >= kDefaultBrightness) {
-    brightnessCurve = kPositiveBrightnessCurve;
+  if (self.brightness >= self.defaultBrightness) {
+    brightnessCurve = [LTCurve positiveBrightness];
   } else {
-    brightnessCurve = kNegativeBrightnessCurve;
+    brightnessCurve = [LTCurve negativeBrightness];
   }
   
   cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= kDefaultContrast) {
-    contrastCurve = kPositiveContrastCurve;
+  if (self.contrast >= self.defaultContrast) {
+    contrastCurve = [LTCurve positiveContrast];
   } else {
-    contrastCurve = kNegativeContrastCurve;
+    contrastCurve = [LTCurve negativeContrast];
   }
   
   float brightness = std::abs(self.brightness);
   float contrast = std::abs(self.contrast);
-  cv::LUT((1.0 - contrast) * kIdentityCurve + contrast * contrastCurve,
-          (1.0 - brightness) * kIdentityCurve + brightness * brightnessCurve,
+  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
+          (1.0 - brightness) * [LTCurve identity]  + brightness * brightnessCurve,
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;

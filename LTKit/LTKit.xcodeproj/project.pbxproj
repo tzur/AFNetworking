@@ -49,6 +49,7 @@
 		03BBB389188CFB60001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
 		03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03C1928618F3BF3C00DC6CA6 /* Island.jpg */; };
 		03C1929518F3C3A800DC6CA6 /* IslandAnalogFilm.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */; };
+		03C192CB18FA885F00DC6CA6 /* LTCurve.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192CA18FA885F00DC6CA6 /* LTCurve.mm */; };
 		03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */; };
 		03C7B68E18CEF7AD00E728F5 /* LTBWProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */; };
 		03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */; };
@@ -564,6 +565,8 @@
 		03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.vsh; sourceTree = "<group>"; };
 		03C1928618F3BF3C00DC6CA6 /* Island.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Island.jpg; path = Resources/Island.jpg; sourceTree = "<group>"; };
 		03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IslandAnalogFilm.png; path = Resources/IslandAnalogFilm.png; sourceTree = "<group>"; };
+		03C192C918FA885F00DC6CA6 /* LTCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCurve.h; sourceTree = "<group>"; };
+		03C192CA18FA885F00DC6CA6 /* LTCurve.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCurve.mm; sourceTree = "<group>"; };
 		03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBWProcessor.h; sourceTree = "<group>"; };
 		03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWProcessor.mm; sourceTree = "<group>"; };
 		03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWProcessorSpec.mm; sourceTree = "<group>"; };
@@ -1054,6 +1057,8 @@
 				030CF74218993594000E9ED0 /* LTBWTonality.fsh */,
 				03BBB31E1887B7CB001E7703 /* LTColorGradient.h */,
 				03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */,
+				03C192C918FA885F00DC6CA6 /* LTCurve.h */,
+				03C192CA18FA885F00DC6CA6 /* LTCurve.mm */,
 				8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */,
 				8BAAC5B418BB446E00A4B4DA /* LTRectCopyProcessor.mm */,
 				03BBB373188C0675001E7703 /* LTFractionalNoise.h */,
@@ -2313,6 +2318,7 @@
 				03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */,
 				283906C918C6217A00BD21CE /* LTPainterMergeShader.fsh in Sources */,
 				286A936C18D0513000F203DF /* LTTextureBrush.mm in Sources */,
+				03C192CB18FA885F00DC6CA6 /* LTCurve.mm in Sources */,
 				283906A718C4DB1E00BD21CE /* LTTextureBrushShader.fsh in Sources */,
 				283906A618C4DB1A00BD21CE /* LTErasingBrushShader.fsh in Sources */,
 				283906A518C4DB1900BD21CE /* LTEdgeAvoidingBrushShader.vsh in Sources */,
