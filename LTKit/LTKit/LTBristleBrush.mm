@@ -129,7 +129,7 @@ static const CGFloat kBristleSigma = 0.4;
   static const uint kRandomSeed = 10;
   srand48(kRandomSeed);
   CGFloat diameter = self.texture.size.width;
-  CGFloat bristleLength = (diameter / self.bristles) * self.thickness / kMaxThickness;
+  CGFloat bristleLength = (diameter / self.bristles) * self.thickness / self.maxThickness;
   CGFloat maxRadius = MAX((diameter - bristleLength) / 2.0, 0.25 * diameter);
   CGFloat minRadius = MIN(bristleLength, maxRadius / 2.0);
   CGSize bristleSize = CGSizeMakeUniform(bristleLength);

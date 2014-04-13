@@ -88,19 +88,19 @@ static const CGFloat kDetailsScaling = 2.0;
 }
 
 - (void)setDefaultValues {
-  self.brightness = kDefaultBrightness;
-  self.contrast = kDefaultContrast;
-  self.exposure = kDefaultExposure;
-  self.offset = kDefaultOffset;
-  self.blackPoint = kDefaultBlackPoint;
-  self.whitePoint = kDefaultWhitePoint;
-  self.saturation = kDefaultSaturation;
-  self.temperature = kDefaultTemperature;
-  self.tint = kDefaultTint;
-  self.details = kDefaultDetails;
-  self.shadows = kDefaultShadows;
-  self.fillLight = kDefaultFillLight;
-  self.highlights = kDefaultHighlights;
+  self.brightness = self.defaultBrightness;
+  self.contrast = self.defaultContrast;
+  self.exposure = self.defaultExposure;
+  self.offset = self.defaultOffset;
+  self.blackPoint = self.defaultBlackPoint;
+  self.whitePoint = self.defaultWhitePoint;
+  self.saturation = self.defaultSaturation;
+  self.temperature = self.defaultTemperature;
+  self.tint = self.defaultTint;
+  self.details = self.defaultDetails;
+  self.shadows = self.defaultShadows;
+  self.fillLight = self.defaultFillLight;
+  self.highlights = self.defaultHighlights;
 }
 
 - (NSArray *)createSmoothTextures:(LTTexture *)input {
@@ -242,14 +242,14 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
-  if (self.brightness >= kDefaultBrightness) {
+  if (self.brightness >= self.defaultBrightness) {
     brightnessCurve = kPositiveBrightnessCurve;
   } else {
     brightnessCurve = kNegativeBrightnessCurve;
   }
   
   cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= kDefaultContrast) {
+  if (self.contrast >= self.defaultContrast) {
     contrastCurve = kPositiveContrastCurve;
   } else {
     contrastCurve = kNegativeContrastCurve;
