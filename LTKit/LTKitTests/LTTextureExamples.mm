@@ -161,6 +161,16 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       expect(similar.channels).to.equal(texture.channels);
     });
 
+    it(@"should not initialize with zero sized texture", ^{
+      expect(^{
+        LTTexture __unused *texture = [(LTTexture *)[textureClass alloc]
+                                       initWithSize:CGSizeZero
+                                       precision:LTTexturePrecisionByte
+                                       format:LTTextureFormatRGBA
+                                       allocateMemory:YES];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
     context(@"default values", ^{
       __block LTTexture *texture;
 

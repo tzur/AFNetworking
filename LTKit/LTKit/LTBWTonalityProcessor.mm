@@ -69,11 +69,11 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
 
 - (void)setDefaultValues {
   self.colorFilter = kColorFilterDefault;
-  self.brightness = kDefaultBrightness;
-  self.contrast = kDefaultContrast;
-  self.exposure = kDefaultExposure;
-  self.structure = kDefaultStructure;
-  self.offset = kDefaultOffset;
+  self.brightness = self.defaultBrightness;
+  self.contrast = self.defaultContrast;
+  self.exposure = self.defaultExposure;
+  self.structure = self.defaultStructure;
+  self.offset = self.defaultOffset;
   _colorGradientTexture = self.auxiliaryTextures[[LTBWTonalityFsh colorGradient]];
 }
 
@@ -143,14 +143,14 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
   cv::Mat1b toneCurve(1, kLutSize);
   
   cv::Mat1b brightnessCurve(1, kLutSize);
-  if (self.brightness >= kDefaultBrightness) {
+  if (self.brightness >= self.defaultBrightness) {
     brightnessCurve = kPositiveBrightnessCurve;
   } else {
     brightnessCurve = kNegativeBrightnessCurve;
   }
   
   cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= kDefaultContrast) {
+  if (self.contrast >= self.defaultContrast) {
     contrastCurve = kPositiveContrastCurve;
   } else {
     contrastCurve = kNegativeContrastCurve;
