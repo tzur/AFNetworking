@@ -14,17 +14,17 @@
 /// \c kDefaultProperty, and implement the minProperty and maxProperty getters.
 #define LTBoundedPrimitivePropertyImplementWithoutSetter(type, name, Name, minValue, maxValue, \
     defaultValue) \
-  static const type kMin##Name = minValue; \
-  static const type kMax##Name = maxValue; \
-  static const type kDefault##Name = defaultValue; \
   \
   - (type)min##Name { \
+    static const type kMin##Name = minValue; \
     return kMin##Name; \
   } \
   - (type)max##Name { \
+    static const type kMax##Name = maxValue; \
     return kMax##Name; \
   } \
   - (type)default##Name { \
+    static const type kDefault##Name = defaultValue; \
     return kDefault##Name; \
   }
 
