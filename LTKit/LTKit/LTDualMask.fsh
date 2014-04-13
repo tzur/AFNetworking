@@ -5,6 +5,10 @@
 // See lightricks-research/enlight/DualMask/ for a playground with concepts used by this shader and
 // references to distance computation problem.
 
+const int kMaskTypeRadial = 0;
+const int kMaskTypeLinear = 1;
+const int kMaskTypeDoubleLinear = 2;
+
 uniform sampler2D sourceTexture;
 
 uniform int maskType;
@@ -22,12 +26,12 @@ void main() {
   mediump float dist;
   
   // Distance field.
-  if (maskType == 0) {
+  if (maskType == kMaskTypeRadial) {
     dist = length(coords);
-  } else if (maskType == 1) {
+  } else if (maskType == kMaskTypeLinear) {
     dist = -normal.y * coords.x - normal.x * coords.y;
-  } else if (maskType == 2) {
-  	dist = abs(-normal.y * coords.x - normal.x * coords.y);
+  } else if (maskType == kMaskTypeDoubleLinear) {
+    dist = abs(-normal.y * coords.x - normal.x * coords.y);
   }
   
   // Mask.

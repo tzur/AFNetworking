@@ -42,7 +42,7 @@ context(@"properties", ^{
 });
 
 context(@"processing", ^{
-  fit(@"should create default radial mask correctly", ^{
+  it(@"should create default radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"RadialMaskCenter.png");
