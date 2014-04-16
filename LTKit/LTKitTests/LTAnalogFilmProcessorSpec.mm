@@ -3,7 +3,7 @@
 
 #import "LTAnalogFilmProcessor.h"
 
-#import "LTColorGradient.h"
+#import "LTColorGradient+ForTesting.h"
 #import "LTCGExtensions.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"

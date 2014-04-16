@@ -6,51 +6,96 @@
 #import "LTOpenCVExtensions.h"
 #import "NSBundle+LTKitBundle.h"
 
+#import "LTTexture+Factory.h"
+
 @implementation LTCurve
 
 + (cv::Mat1b)identity {
-  static const cv::Mat1b curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)fillLight {
-  static const cv::Mat1b curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"FillLightCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"FillLightCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)highlights {
-  static const cv::Mat1b curve =
-      LTLoadMatFromBundle([NSBundle LTKitBundle], @"HighlightsCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"HighlightsCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)shadows {
-  static const cv::Mat1b curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"ShadowsCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"ShadowsCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)positiveBrightness {
-  static const cv::Mat1b curve =
-      LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveBrightnessCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveBrightnessCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)negativeBrightness {
-  static const cv::Mat1b curve =
-      LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeBrightnessCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeBrightnessCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)positiveContrast {
-  static const cv::Mat1b curve =
-      LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveContrastCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveContrastCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
 }
 
 + (cv::Mat1b)negativeContrast {
-  static const cv::Mat1b curve =
-      LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeContrastCurve.png");
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeContrastCurve.png");
+  });
+  LTAssert(curveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   return curve;
+}
+
+BOOL curveIsLoadedCorrectly(const cv::Mat &mat) {
+  if (mat.size() == cv::Size(256, 1)) {
+    return YES;
+  } else {
+    return NO;
+  }
 }
 
 @end
