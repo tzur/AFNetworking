@@ -115,4 +115,16 @@ context(@"equality and hash", ^{
   });
 });
 
+context(@"copying", ^{
+  it(@"should copy rotated rect", ^{
+    LTRotatedRect *a = [LTRotatedRect rect:CGRectMake(0, 1, 2, 3) withAngle:0.5];
+    LTRotatedRect *b = [a copy];
+
+    NSString *aAddress = [NSString stringWithFormat:@"%p", a];
+    NSString *bAddress = [NSString stringWithFormat:@"%p", b];
+    expect(aAddress).toNot.equal(bAddress);
+    expect(a).to.equal(b);
+  });
+});
+
 SpecEnd

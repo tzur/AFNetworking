@@ -3,7 +3,7 @@
 
 /// Represents rotated (i.e. not up-right) rectangles on a plane. Each rectangle is described by a
 /// CGRect, and the angle, in radians, which the rectangle is rotated (around its center).
-@interface LTRotatedRect : NSObject
+@interface LTRotatedRect : NSObject <NSCopying>
 
 /// Returns an unrotated rect (angle is \c 0).
 + (instancetype)rect:(CGRect)rect;
