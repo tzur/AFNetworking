@@ -85,6 +85,14 @@
 }
 
 #pragma mark -
+#pragma mark Copying
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone {
+  return [[LTRotatedRect allocWithZone:zone] initWithRect:self.rect angle:self.angle];
+}
+
+#pragma mark -
 #pragma mark Equality
 #pragma mark -
 
