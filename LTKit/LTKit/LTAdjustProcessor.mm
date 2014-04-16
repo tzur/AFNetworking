@@ -5,6 +5,7 @@
 
 #import "LTBilateralFilterProcessor.h"
 #import "LTBoxFilterProcessor.h"
+#import "LTCurve.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
@@ -29,16 +30,6 @@
 
 @implementation LTAdjustProcessor
 
-// The follow matrices hold the curves data.
-static cv::Mat1b kIdentityCurve;
-static cv::Mat1b kHighlightsCurve;
-static cv::Mat1b kShadowsCurve;
-static cv::Mat1b kFillLightCurve;
-static cv::Mat1b kPositiveBrightnessCurve;
-static cv::Mat1b kNegativeBrightnessCurve;
-static cv::Mat1b kPositiveContrastCurve;
-static cv::Mat1b kNegativeContrastCurve;
-
 static const CGFloat kSmoothDownsampleFactor = 2.0;
 static const NSUInteger kFineTextureIterations = 2;
 static const NSUInteger kCoarseTextureIterations = 6;
@@ -60,31 +51,13 @@ static const CGFloat kDetailsScaling = 2.0;
   NSDictionary *auxiliaryTextures =
       @{[LTAdjustFsh fineTexture]: smoothTextures[0],
         [LTAdjustFsh coarseTexture]: smoothTextures[1],
-        [LTAdjustFsh detailsLUT]: [LTTexture textureWithImage:kIdentityCurve],
-        [LTAdjustFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve]};
+        [LTAdjustFsh detailsLUT]: [LTTexture textureWithImage:[LTCurve identity]],
+        [LTAdjustFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
-}
-
-+ (void)initialize {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    kIdentityCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
-    kFillLightCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"FillLightCurve.png");
-    kHighlightsCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"HighlightsCurve.png");
-    kShadowsCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"ShadowsCurve.png");
-    kPositiveBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"PositiveBrightnessCurve.png");
-    kNegativeBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"NegativeBrightnessCurve.png");
-    kPositiveContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"PositiveContrastCurve.png");
-    kNegativeContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"NegativeContrastCurve.png");
-  });
 }
 
 - (void)setDefaultValues {
@@ -166,7 +139,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturat
   _saturation = saturation;
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
-  self[@"saturation"] = @(remap);
+  self[[LTAdjustFsh saturation]] = @(remap);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, temperature, Temperature, -1, 1, 0, ^{
@@ -176,7 +149,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, temperature, Temper
   // max value is 0.596 (pure red) and min value is -0.596 (green-blue color).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
-  self[@"temperature"] = @(temperature * kTemperatureScaling);
+  self[[LTAdjustFsh temperature]] = @(temperature * kTemperatureScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, tint, Tint, -1, 1, 0, ^{
@@ -186,12 +159,12 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, tint, Tint, -1, 1, 
   // max value is 0.523 (red-blue) and min value is -0.523 (pure green).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
-  self[@"tint"] = @(tint * kTintScaling);
+  self[[LTAdjustFsh tint]] = @(tint * kTintScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, details, Details, -1, 1, 0, ^{
   _details = details;
-  self[@"details"] = @(details * kDetailsScaling);
+  self[[LTAdjustFsh details]] = @(details * kDetailsScaling);
 });
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, shadows, Shadows, 0, 1, 0, ^{
@@ -208,14 +181,14 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
 
 - (LTTexture *)detailsLUT {
   if (!_detailsLUT) {
-    _detailsLUT = [LTTexture textureWithImage:kIdentityCurve];
+    _detailsLUT = [LTTexture textureWithImage:[LTCurve identity]];
   }
   return _detailsLUT;
 }
 
 - (LTTexture *)toneLUT {
   if (!_toneLUT) {
-    _toneLUT = [LTTexture textureWithImage:kIdentityCurve];
+    _toneLUT = [LTTexture textureWithImage:[LTCurve identity]];
   }
   return _toneLUT;
 }
@@ -223,11 +196,12 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
 - (void)updateDetailsLUT {
   cv::Mat1b detailsCurve(1, kLutSize);
   
-  cv::LUT((1.0 - self.fillLight) * kIdentityCurve + self.fillLight * kFillLightCurve,
-          (1.0 - self.shadows) * kIdentityCurve + self.shadows * kShadowsCurve, detailsCurve);
+  cv::LUT((1.0 - self.fillLight) * [LTCurve identity] + self.fillLight * [LTCurve fillLight],
+          (1.0 - self.shadows) * [LTCurve identity] + self.shadows * [LTCurve shadows],
+          detailsCurve);
   
   cv::LUT(detailsCurve,
-          (1.0 - self.highlights) * kIdentityCurve + self.highlights * kHighlightsCurve,
+          (1.0 - self.highlights) * [LTCurve identity] + self.highlights * [LTCurve highlights],
           detailsCurve);
   
   // Update details LUT texture in auxiliary textures.
@@ -243,22 +217,22 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
   
   cv::Mat1b brightnessCurve(1, kLutSize);
   if (self.brightness >= self.defaultBrightness) {
-    brightnessCurve = kPositiveBrightnessCurve;
+    brightnessCurve = [LTCurve positiveBrightness];
   } else {
-    brightnessCurve = kNegativeBrightnessCurve;
+    brightnessCurve = [LTCurve negativeBrightness];
   }
   
   cv::Mat1b contrastCurve(1, kLutSize);
   if (self.contrast >= self.defaultContrast) {
-    contrastCurve = kPositiveContrastCurve;
+    contrastCurve = [LTCurve positiveContrast];
   } else {
-    contrastCurve = kNegativeContrastCurve;
+    contrastCurve = [LTCurve negativeContrast];
   }
   
   float brightness = std::abs(self.brightness);
   float contrast = std::abs(self.contrast);
-  cv::LUT((1.0 - contrast) * kIdentityCurve + contrast * contrastCurve,
-          (1.0 - brightness) * kIdentityCurve + brightness * brightnessCurve,
+  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
+          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
