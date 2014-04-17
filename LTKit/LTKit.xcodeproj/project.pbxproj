@@ -15,6 +15,9 @@
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
+		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
+		031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */; };
+		031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */; };
 		03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */; };
 		03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */; };
 		03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */; };
@@ -49,7 +52,6 @@
 		03BBB389188CFB60001E7703 /* RedGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BBB361188BE6C1001E7703 /* RedGradient.png */; };
 		03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03C1928618F3BF3C00DC6CA6 /* Island.jpg */; };
 		03C1929518F3C3A800DC6CA6 /* IslandAnalogFilm.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */; };
-		03C192CB18FA885F00DC6CA6 /* LTCurve.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192CA18FA885F00DC6CA6 /* LTCurve.mm */; };
 		03C1929B18F5114100DC6CA6 /* LTDualMaskProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C1929A18F5114100DC6CA6 /* LTDualMaskProcessor.mm */; };
 		03C192A918F5117E00DC6CA6 /* LTDualMaskProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */; };
 		03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C192AA18F511B000DC6CA6 /* LTDualMask.fsh */; };
@@ -58,6 +60,7 @@
 		03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C192BF18F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png */; };
 		03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C192C018F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png */; };
 		03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C192C118F6F3B200DC6CA6 /* RadialMaskOffCenter.png */; };
+		03C192CB18FA885F00DC6CA6 /* LTCurve.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192CA18FA885F00DC6CA6 /* LTCurve.mm */; };
 		03C192DD18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */; };
 		03C192ED18FABAC300DC6CA6 /* LTRGBToHSVProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C192EC18FABAC300DC6CA6 /* LTRGBToHSVProcessorSpec.mm */; };
 		03C192EE18FABDFE00DC6CA6 /* LTRGBToHSV.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */; };
@@ -546,6 +549,9 @@
 		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
+		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
+		031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethDesaturatedGreenAndBlue.png; path = Resources/MacbethDesaturatedGreenAndBlue.png; sourceTree = "<group>"; };
+		031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethSaturatedBrightenedRedAndOrange.png; path = Resources/MacbethSaturatedBrightenedRedAndOrange.png; sourceTree = "<group>"; };
 		03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorNoisyFrame.png; path = Resources/MealBWProcessorNoisyFrame.png; sourceTree = "<group>"; };
 		03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnalogFilmProcessor.h; sourceTree = "<group>"; };
 		03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnalogFilmProcessor.mm; sourceTree = "<group>"; };
@@ -588,8 +594,6 @@
 		03BBB385188CF59A001E7703 /* LTFractionalNoise.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTFractionalNoise.vsh; sourceTree = "<group>"; };
 		03C1928618F3BF3C00DC6CA6 /* Island.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Island.jpg; path = Resources/Island.jpg; sourceTree = "<group>"; };
 		03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IslandAnalogFilm.png; path = Resources/IslandAnalogFilm.png; sourceTree = "<group>"; };
-		03C192C918FA885F00DC6CA6 /* LTCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCurve.h; sourceTree = "<group>"; };
-		03C192CA18FA885F00DC6CA6 /* LTCurve.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCurve.mm; sourceTree = "<group>"; };
 		03C1929918F5114100DC6CA6 /* LTDualMaskProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDualMaskProcessor.h; sourceTree = "<group>"; };
 		03C1929A18F5114100DC6CA6 /* LTDualMaskProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDualMaskProcessor.mm; sourceTree = "<group>"; };
 		03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDualMaskProcessorSpec.mm; sourceTree = "<group>"; };
@@ -599,6 +603,8 @@
 		03C192BF18F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DoubleLinearMaskTiltedOffCenter.png; path = Resources/DoubleLinearMaskTiltedOffCenter.png; sourceTree = "<group>"; };
 		03C192C018F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinearMaskTiltedCenter.png; path = Resources/LinearMaskTiltedCenter.png; sourceTree = "<group>"; };
 		03C192C118F6F3B200DC6CA6 /* RadialMaskOffCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskOffCenter.png; path = Resources/RadialMaskOffCenter.png; sourceTree = "<group>"; };
+		03C192C918FA885F00DC6CA6 /* LTCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCurve.h; sourceTree = "<group>"; };
+		03C192CA18FA885F00DC6CA6 /* LTCurve.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCurve.mm; sourceTree = "<group>"; };
 		03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRGBToHSVProcessor.h; sourceTree = "<group>"; };
 		03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRGBToHSVProcessor.mm; sourceTree = "<group>"; };
 		03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTRGBToHSV.fsh; sourceTree = "<group>"; };
@@ -1587,6 +1593,8 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */,
+				031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */,
 				03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */,
 				03C1928618F3BF3C00DC6CA6 /* Island.jpg */,
 				03C192BE18F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png */,
@@ -1603,6 +1611,7 @@
 				286A933C18CF743200F203DF /* BristleBrushThickness.1.5.png */,
 				286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */,
 				286A933E18CF743200F203DF /* BristleBrushThickness.0.1.png */,
+				031DF21218FEB18E003FA627 /* Macbeth.jpg */,
 				0366BA4018CCA51A002E6BA1 /* Meal.jpg */,
 				03C7B6D618CF313500E728F5 /* MealAdjusted.png */,
 				03D516CB18B4AB840026B56A /* StraightWideVignetting.png */,
@@ -2331,6 +2340,7 @@
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
+				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
@@ -2342,6 +2352,7 @@
 				286A934118CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
 				286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
+				031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
@@ -2357,6 +2368,7 @@
 				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
+				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
