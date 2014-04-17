@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTTypedefs.h"
+
 /// Class used for timing blocks of code using a high-precision timer which is independent on a
 /// runloop (such as \c NSTimer).
 @interface LTTimer : NSObject

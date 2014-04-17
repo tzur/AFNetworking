@@ -12,6 +12,7 @@
 #import <LTKit/LTLoggerMacrosImpl.h>
 #import <LTKit/LTOpenCVExtensions.h>
 #import <LTKit/LTRotatedRect.h>
+#import <LTKit/LTTimer.h>
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSValue+GLKitExtensions.h>
 #import <LTKit/UIColor+Vector.h>
