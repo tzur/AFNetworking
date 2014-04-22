@@ -68,10 +68,10 @@ context(@"properties", ^{
 context(@"processing", ^{
   sit(@"should reduce saturation of greens and blues and preserve their luminance", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
-    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
+    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
     
     LTSelectiveAdjustProcessor *processor =
-    [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];
+        [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];
     processor.greenSaturation = -1.0;
     processor.blueSaturation = -1.0;
     
@@ -82,7 +82,7 @@ context(@"processing", ^{
   
   sit(@"should reduce saturation of reds and oranges and increase their luminance", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
-    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
+    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
     
     LTSelectiveAdjustProcessor *processor =
         [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];

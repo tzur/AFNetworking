@@ -30,10 +30,10 @@ uniform mediump float blueLuminance;
 varying highp vec2 vTexcoord;
 
 // This cryptic code is inspired by: http://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
-mediump vec3 HSVToRGB(mediump vec3 c) {
+mediump vec3 HSVToRGB(mediump vec3 hsv) {
   mediump vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-  mediump vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+  mediump vec3 p = abs(fract(hsv.xxx + K.xyz) * 6.0 - K.www);
+  return hsv.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), hsv.y);
 }
 
 void main() {
