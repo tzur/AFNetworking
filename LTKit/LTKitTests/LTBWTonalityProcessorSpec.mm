@@ -3,7 +3,7 @@
 
 #import "LTBWTonalityProcessor.h"
 
-#import "LTColorGradient.h"
+#import "LTColorGradient+ForTesting.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
@@ -155,24 +155,6 @@ context(@"processing", ^{
     LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
     
-    // Scale the red channel slightly to create a "neutral-to-cold" gradient.
-    CGFloat redScale = 0.95;
-    LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.0 color:GLKVector3Make(0.0, 0.0, 0.0)];
-    LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.25 color:GLKVector3Make(0.25 * redScale, 0.25, 0.25)];
-    LTColorGradientControlPoint *controlPoint2 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.5 color:GLKVector3Make(0.5 * redScale, 0.5, 0.5)];
-    LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.75 color:GLKVector3Make(0.75 * redScale, 0.75, 0.75)];
-    LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:1.0 color:GLKVector3Make(1.0 * redScale, 1.0, 1.0)];
-    
-    NSArray *controlPoints = @[controlPoint0, controlPoint1, controlPoint2, controlPoint3,
-                               controlPoint4];
-    
-    LTColorGradient *colorGradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
-    
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
                                                                         output:lenaOutput];
     tone.exposure = -0.2;
@@ -180,7 +162,8 @@ context(@"processing", ^{
     tone.brightness = 0.1;
     tone.contrast = -0.2;
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
-    tone.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
+    tone.colorGradientTexture =
+        [[LTColorGradient colderThanNeutralGradient] textureWithSamplingPoints:256];
     LTSingleTextureOutput *processed = [tone process];
     
     // Important: this test depends on the performance of other classes and processors, thus is

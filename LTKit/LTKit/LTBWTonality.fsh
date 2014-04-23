@@ -23,8 +23,9 @@ void main() {
   lowp vec4 color = texture2D(sourceTexture, vTexcoord);
   lowp vec4 smoothColor = texture2D(smoothTexture, vTexcoord);
   
+  const lowp float kEpsilon = 0.005;
   lowp float lum = dot(color.rgb, colorFilter);
-  lowp float smoothLum = dot(smoothColor.rgb, colorFilter);
+  lowp float smoothLum = dot(smoothColor.rgb, colorFilter) + kEpsilon;
   // Details.
   lum = smoothLum * pow((lum / smoothLum), structure);
   // Apply tonality LUT.

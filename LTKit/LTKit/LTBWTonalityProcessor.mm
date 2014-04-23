@@ -6,6 +6,7 @@
 #import "LTBilateralFilterProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTColorGradient.h"
+#import "LTCurve.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
@@ -25,13 +26,6 @@
 
 @implementation LTBWTonalityProcessor
 
-// The follow matrices hold the curves data.
-static cv::Mat1b kIdentityCurve;
-static cv::Mat1b kPositiveBrightnessCurve;
-static cv::Mat1b kNegativeBrightnessCurve;
-static cv::Mat1b kPositiveContrastCurve;
-static cv::Mat1b kNegativeContrastCurve;
-
 static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114);
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
@@ -43,28 +37,13 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
 
   NSDictionary *auxiliaryTextures =
       @{[LTBWTonalityFsh smoothTexture]: smoothTexture,
-        [LTBWTonalityFsh toneLUT]: [LTTexture textureWithImage:kIdentityCurve],
+        [LTBWTonalityFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
         [LTBWTonalityFsh colorGradient]: [identityGradient textureWithSamplingPoints:256]};
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
-}
-
-+ (void)initialize {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    kIdentityCurve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
-    kPositiveBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"PositiveBrightnessCurve.png");
-    kNegativeBrightnessCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                   @"NegativeBrightnessCurve.png");
-    kPositiveContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"PositiveContrastCurve.png");
-    kNegativeContrastCurve = LTLoadMatFromBundle([NSBundle LTKitBundle],
-                                                 @"NegativeContrastCurve.png");
-  });
 }
 
 - (void)setDefaultValues {
@@ -100,7 +79,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
   
   _colorFilter = colorFilter / std::sum(colorFilter);
-  self[@"colorFilter"] = $(_colorFilter);
+  self[[LTBWTonalityFsh colorFilter]] = $(_colorFilter);
 }
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
@@ -122,7 +101,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, offset, Offset, -1,
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
-  self[@"structure"] = @(remap);
+  self[[LTBWTonalityFsh structure]] = @(remap);
 });
 
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
@@ -144,22 +123,22 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
   
   cv::Mat1b brightnessCurve(1, kLutSize);
   if (self.brightness >= self.defaultBrightness) {
-    brightnessCurve = kPositiveBrightnessCurve;
+    brightnessCurve = [LTCurve positiveBrightness];
   } else {
-    brightnessCurve = kNegativeBrightnessCurve;
+    brightnessCurve = [LTCurve negativeBrightness];
   }
   
   cv::Mat1b contrastCurve(1, kLutSize);
   if (self.contrast >= self.defaultContrast) {
-    contrastCurve = kPositiveContrastCurve;
+    contrastCurve = [LTCurve positiveContrast];
   } else {
-    contrastCurve = kNegativeContrastCurve;
+    contrastCurve = [LTCurve negativeContrast];
   }
   
   float brightness = std::abs(self.brightness);
   float contrast = std::abs(self.contrast);
-  cv::LUT((1.0 - contrast) * kIdentityCurve + contrast * contrastCurve,
-          (1.0 - brightness) * kIdentityCurve + brightness * brightnessCurve,
+  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
+          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
