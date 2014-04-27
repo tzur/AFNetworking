@@ -65,6 +65,9 @@
 - (void)createCumulativeDistributionFunction {
   _cdf.resize(_pdf.size());
   std::partial_sum(_pdf.begin(), _pdf.end(), _cdf.begin());
+  // Because of numerical errors, sum will usually be a bit smaller than 1. Therefore, Make sure the
+  // last CDF element is indeed 1 to avoid indexing issues while sampling.
+  _cdf.back() = 1.f;
 }
 
 - (void)initializePRNG {
@@ -79,7 +82,7 @@
 
     // Get index and map between internal -> external.
     Floats::difference_type index =
-        std::lower_bound(_cdf.cbegin(), _cdf.cend(), random) - _cdf.begin();
+        std::lower_bound(_cdf.cbegin(), _cdf.cend(), random) - _cdf.cbegin();
     NSNumber *externalIndex = self.indexMapping[@(index)];
     [samples addObject:externalIndex];
   }
