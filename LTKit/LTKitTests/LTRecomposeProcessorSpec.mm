@@ -16,11 +16,11 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @implementation LTDegenerateSampler
 
-- (instancetype)initWithFrequencies:(NSArray *)frequencies {
+- (instancetype)initWithFrequencies:(const Floats &)frequencies {
   if (self = [super init]) {
-    [frequencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *) {
-      _pairs.push_back(std::make_pair(idx, [obj floatValue]));
-    }];
+    for (Floats::size_type i = 0; i < frequencies.size(); ++i) {
+      _pairs.push_back(std::make_pair(i, frequencies[i]));
+    };
     std::stable_sort(_pairs.begin(), _pairs.end(), [](LTIndexedFloat a, LTIndexedFloat b) {
       return a.second > b.second;
     });
@@ -43,7 +43,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @implementation LTDegenerateSamplerFactory
 
-- (id<LTDistributionSampler>)samplerWithFrequencies:(NSArray *)frequencies {
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies {
   return [[LTDegenerateSampler alloc] initWithFrequencies:frequencies];
 }
 

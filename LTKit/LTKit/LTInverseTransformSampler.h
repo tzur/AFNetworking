@@ -5,6 +5,8 @@
 #pragma mark Sampler
 #pragma mark -
 
+typedef std::vector<float> Floats;
+
 /// Protocol for a 1D random sampler given a frequency table.
 @protocol LTDistributionSampler <NSObject>
 
@@ -12,7 +14,7 @@
 /// The value of each frequency cell is equal to its cell index probability to be returned from
 /// the sampling method. The given \c frequencies can be unnormalized, but must not be empty. Each
 /// fequency must be non-negative and the sum of frequencies must be positive.
-- (instancetype)initWithFrequencies:(NSArray *)frequencies;
+- (instancetype)initWithFrequencies:(const Floats &)frequencies;
 
 /// Returns the given number of samples in the range [0, frequencies.count) from the distribution.
 - (NSArray *)sample:(NSUInteger)times;
@@ -39,7 +41,7 @@
 /// Returns a sampler initialized with the given \c frequencies.
 ///
 /// @see -[LTDistributionSampler initWithFrequencies:] for more information.
-- (id<LTDistributionSampler>)samplerWithFrequencies:(NSArray *)frequencies;
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies;
 
 @end
 

@@ -90,7 +90,7 @@
   self.decimationOrder = nil;
 }
 
-- (NSMutableArray *)calculateMaskFrequencies {
+- (Floats)calculateMaskFrequencies {
   __block cv::Mat1f sum;
 
   // Sum the mask to get a 1D signal.
@@ -112,12 +112,7 @@
   // has a minimal small frequency so it will be able to be selected when sampling.
   smoothedSum = maxValue - smoothedSum + kEpsilon;
 
-  NSMutableArray *frequencies = [NSMutableArray array];
-  for (float value : smoothedSum) {
-    [frequencies addObject:@(value)];
-  }
-
-  return frequencies;
+  return Floats(smoothedSum.begin(), smoothedSum.end());
 }
 
 #pragma mark -
@@ -136,8 +131,8 @@
 
 - (void)updateDecimationOrderIfNeeded {
   if (!self.decimationOrder) {
-    NSMutableArray *frequencies = [self calculateMaskFrequencies];
-    self.decimationOrder = [self calculateDecimationOrderUsingFrequencies:frequencies];
+    Floats frequencies = [self calculateMaskFrequencies];
+    self.decimationOrder = [self calculateDecimationOrderUsingFrequencies:&frequencies];
   }
 }
 
@@ -150,12 +145,12 @@
   }
 }
 
-- (NSArray *)calculateDecimationOrderUsingFrequencies:(NSMutableArray *)frequencies {
+- (NSArray *)calculateDecimationOrderUsingFrequencies:(Floats *)frequencies {
   NSMutableArray *decimationOrder = [NSMutableArray array];
 
   // Sample from the distribution with no repetitions.
   while (decimationOrder.count < self.decimationDimensionSize) {
-    id<LTDistributionSampler> sampler = [self.samplerFactory samplerWithFrequencies:frequencies];
+    id<LTDistributionSampler> sampler = [self.samplerFactory samplerWithFrequencies:*frequencies];
     NSUInteger samplesRequired = self.decimationDimensionSize - decimationOrder.count;
 
     // NSOrderedSet is used here instead of NSSet to preserve the sampling order, so
@@ -165,7 +160,7 @@
     NSOrderedSet *samples = [NSOrderedSet orderedSetWithArray:[sampler sample:samplesRequired]];
     [decimationOrder addObjectsFromArray:[samples array]];
     for (NSNumber *index in samples) {
-      frequencies[[index unsignedIntegerValue]] = @0;
+      (*frequencies)[[index unsignedIntegerValue]] = 0.f;
     }
   }
 

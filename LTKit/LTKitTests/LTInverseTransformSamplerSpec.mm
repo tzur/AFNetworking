@@ -9,12 +9,12 @@ context(@"initialization", ^{
   it(@"should not initialize on empty distribution", ^{
     expect(^{
       LTInverseTransformSampler __unused *sampler =
-          [[LTInverseTransformSampler alloc] initWithFrequencies:[NSArray array]];
+          [[LTInverseTransformSampler alloc] initWithFrequencies:Floats()];
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should not initialize on all zero distribution", ^{
-    NSArray *frequencies = @[@0, @0, @0];
+    Floats frequencies = {0.f, 0.f, 0.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
           [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
@@ -22,7 +22,7 @@ context(@"initialization", ^{
   });
 
   it(@"should not initialize on distribution with negative value", ^{
-    NSArray *frequencies = @[@1, @-1, @0];
+    Floats frequencies = {2.f, -1.f, 0.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
           [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
@@ -30,7 +30,7 @@ context(@"initialization", ^{
   });
 
   it(@"should initialize with a given distribution", ^{
-    NSArray *frequencies = @[@5, @6, @1];
+    Floats frequencies = {5.f, 6.f, 1.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
           [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
@@ -42,7 +42,7 @@ context(@"sampling", ^{
   const NSUInteger kSamples = 100;
 
   it(@"should sample correctly from a single value distribution", ^{
-    NSArray *frequencies = @[@42];
+    Floats frequencies = {42.f};
 
     LTInverseTransformSampler *sampler =
         [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
@@ -57,7 +57,7 @@ context(@"sampling", ^{
   });
 
   it(@"should sample correctly from a degenerate distribution", ^{
-    NSArray *frequencies = @[@0, @0, @42, @0, @0];
+    Floats frequencies = {0.f, 0.f, 42.f, 0.f, 0.f};
 
     LTInverseTransformSampler *sampler =
         [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
@@ -78,7 +78,7 @@ context(@"factory", ^{
   it(@"should return inverse transform sampler", ^{
     LTInverseTransformSamplerFactory *factory = [[LTInverseTransformSamplerFactory alloc] init];
 
-    id<LTDistributionSampler> sampler = [factory samplerWithFrequencies:@[@1, @2]];
+    id<LTDistributionSampler> sampler = [factory samplerWithFrequencies:{1.f, 2.f}];
 
     expect(sampler).to.beKindOf([LTInverseTransformSampler class]);
   });

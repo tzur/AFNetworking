@@ -9,8 +9,6 @@
 #pragma mark LTInverseTransformSampler
 #pragma mark -
 
-typedef std::vector<float> Floats;
-
 @interface LTInverseTransformSampler () {
   Floats _cdf;
   Floats _pdf;
@@ -23,7 +21,7 @@ typedef std::vector<float> Floats;
 
 @implementation LTInverseTransformSampler
 
-- (id)initWithFrequencies:(NSArray *)frequencies {
+- (id)initWithFrequencies:(const Floats &)frequencies {
   if (self = [super init]) {
     [self verifyFrequencies:frequencies];
     [self createProbabilityDensityFunctionFromFrequencies:frequencies];
@@ -33,31 +31,33 @@ typedef std::vector<float> Floats;
   return self;
 }
 
-- (void)verifyFrequencies:(NSArray *)frequencies {
-  LTParameterAssert(frequencies.count, @"Given distribution must not be empty");
+- (void)verifyFrequencies:(const Floats &)frequencies {
+  LTParameterAssert(frequencies.size(), @"Given distribution must not be empty");
 
-  LTParameterAssert([[frequencies valueForKeyPath:@"@sum.self"] floatValue] > 0.f,
-                    @"Frequencies sum must be positive");
+  auto negative = std::find_if(frequencies.begin(), frequencies.end(), [](float value) {
+    return value < 0.f;
+  });
+  LTParameterAssert(negative == frequencies.end(), @"All given frequencies must be non-negative");
 
-  NSPredicate *aboveZeroPredicate = [NSPredicate predicateWithFormat:@"floatValue > 0"];
-  LTParameterAssert([frequencies filteredArrayUsingPredicate:aboveZeroPredicate].count,
-                    @"At least one frequency must be positive");
+  auto positive = std::find_if(frequencies.begin(), frequencies.end(), [](float value) {
+    return value > 0.f;
+  });
+  LTParameterAssert(positive != frequencies.end(), @"At least one frequency must be positive");
 }
 
-- (void)createProbabilityDensityFunctionFromFrequencies:(NSArray *)frequencies {
+- (void)createProbabilityDensityFunctionFromFrequencies:(const Floats &)frequencies {
   NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
 
-  float sum = [[frequencies valueForKeyPath:@"@sum.self"] floatValue];
+  float sum = std::accumulate(frequencies.begin(), frequencies.end(), 0);
 
-  [frequencies enumerateObjectsUsingBlock:^(NSNumber *obj, NSUInteger idx, BOOL *) {
-    float value = [obj floatValue];
+  for (Floats::size_type i = 0; i < frequencies.size(); ++i) {
+    indexMapping[@(_pdf.size())] = @(i);
 
-    indexMapping[@(_pdf.size())] = @(idx);
-
+    float value = frequencies[i];
     if (value) {
       _pdf.push_back(value / sum);
     }
-  }];
+  };
 
   self.indexMapping = [indexMapping copy];
 }
@@ -95,7 +95,7 @@ typedef std::vector<float> Floats;
 
 @implementation LTInverseTransformSamplerFactory
 
-- (id<LTDistributionSampler>)samplerWithFrequencies:(NSArray *)frequencies {
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies {
   return [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
 }
 
