@@ -177,7 +177,9 @@ context(@"cpu gpu memory synchronization", ^{
 
   dit(@"should synchronize half-float red texture", ^{
     cv::Mat1hf image(16, 16);
-    image.setTo(1);
+    std::transform(image.begin(), image.end(), image.begin(), [](half) {
+      return half(1);
+    });
 
     cv::Mat actual = LTDrawFromMMTextureToGLTexture(image);
 
