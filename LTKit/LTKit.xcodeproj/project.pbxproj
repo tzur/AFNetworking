@@ -226,6 +226,7 @@
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
 		8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */; };
 		8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */; };
+		8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */; };
 		8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */; };
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EAA21187C5D960004A57A /* Colorize.fsh */; };
@@ -328,6 +329,7 @@
 		8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */; };
 		8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */; };
 		8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */; };
+		8BB92F9B1906601B00954124 /* LTInverseTransformSamplerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB92F9A1906601B00954124 /* LTInverseTransformSamplerSpec.mm */; };
 		8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */; };
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */; };
@@ -346,6 +348,8 @@
 		8BD685FB18854F0200571E75 /* LTBilateralFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685E91885404600571E75 /* LTBilateralFilter.fsh */; };
 		8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */; };
 		8BD685FF1885519700571E75 /* LTBilateralFilterProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */; };
+		8BE51F6618FFF15300E907AE /* LTRecomposeProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BE51F6518FFF15300E907AE /* LTRecomposeProcessor.mm */; };
+		8BE51F7418FFF78000E907AE /* LTRecomposeProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BE51F7318FFF78000E907AE /* LTRecomposeProcessorSpec.mm */; };
 		8BEBF3DD18FA9995005A0DE9 /* LTMixerProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3DC18FA9995005A0DE9 /* LTMixerProcessor.mm */; };
 		8BEBF3EC18FA9CA5005A0DE9 /* LTMixer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3EA18FA9ABA005A0DE9 /* LTMixer.fsh */; };
 		8BEBF3ED18FA9CA5005A0DE9 /* LTMixer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3EB18FA9ABA005A0DE9 /* LTMixer.vsh */; };
@@ -844,6 +848,8 @@
 		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
 		8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLoggerMacrosImpl.h; sourceTree = "<group>"; };
+		8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInverseTransformSampler.h; sourceTree = "<group>"; };
+		8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInverseTransformSampler.mm; sourceTree = "<group>"; };
 		8B7DC39B18328063008D004B /* LTBoundaryCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoundaryCondition.h; sourceTree = "<group>"; };
 		8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryCondition.mm; sourceTree = "<group>"; };
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
@@ -988,6 +994,7 @@
 		8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUStructsMacros.h; sourceTree = "<group>"; };
 		8BB4715A183B63D000CA1681 /* LTGPUStructSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGPUStructSpec.m; sourceTree = "<group>"; };
 		8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVertexArraySpec.mm; sourceTree = "<group>"; };
+		8BB92F9A1906601B00954124 /* LTInverseTransformSamplerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInverseTransformSamplerSpec.mm; sourceTree = "<group>"; };
 		8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureSpec.mm; sourceTree = "<group>"; };
 		8BBE8941183503CD006C58AA /* LTTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTestUtils.h; sourceTree = "<group>"; };
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
@@ -1018,6 +1025,9 @@
 		8BD685E91885404600571E75 /* LTBilateralFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBilateralFilter.fsh; sourceTree = "<group>"; };
 		8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBilateralFilter.vsh; sourceTree = "<group>"; };
 		8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBilateralFilterProcessorSpec.mm; sourceTree = "<group>"; };
+		8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRecomposeProcessor.h; sourceTree = "<group>"; };
+		8BE51F6518FFF15300E907AE /* LTRecomposeProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRecomposeProcessor.mm; sourceTree = "<group>"; };
+		8BE51F7318FFF78000E907AE /* LTRecomposeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRecomposeProcessorSpec.mm; sourceTree = "<group>"; };
 		8BEBF3DB18FA9995005A0DE9 /* LTMixerProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMixerProcessor.h; sourceTree = "<group>"; };
 		8BEBF3DC18FA9995005A0DE9 /* LTMixerProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMixerProcessor.mm; sourceTree = "<group>"; };
 		8BEBF3EA18FA9ABA005A0DE9 /* LTMixer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMixer.fsh; sourceTree = "<group>"; };
@@ -1131,9 +1141,6 @@
 				8BAE3A8518B3B11500DA79E1 /* LTFFTConvolutionProcessor.mm */,
 				8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */,
 				8BAE3A3618B121E800DA79E1 /* LTFFTProcessor.mm */,
-				03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */,
-				03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */,
-				03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */,
 				8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */,
 				8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */,
 				8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */,
@@ -1160,6 +1167,11 @@
 				0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */,
 				0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */,
 				0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */,
+				03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */,
+				03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */,
+				03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */,
+				8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */,
+				8BE51F6518FFF15300E907AE /* LTRecomposeProcessor.mm */,
 				03C1930A18FADC7300DC6CA6 /* LTSelectiveAdjust.fsh */,
 				03C192FB18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.h */,
 				03C192FC18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.mm */,
@@ -1185,7 +1197,7 @@
 				03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */,
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
 				8BAE3A8718B3B15A00DA79E1 /* LTColorGradientSpec.mm */,
-				8BAAC5C218BB45A600A4B4DA /* LTRectCopyProcessorSpec.mm */,
+				03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */,
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				8BAE3A8918B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm */,
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
@@ -1199,8 +1211,9 @@
 				8BAECBB518BDEAAC00315425 /* LTSplitComplexMatSpec.mm */,
 				8BAECDEB18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm */,
 				03D516B418B3A6DB0026B56A /* LTProceduralVignettingSpec.mm */,
-				03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */,
 				03C192EC18FABAC300DC6CA6 /* LTRGBToHSVProcessorSpec.mm */,
+				8BE51F7318FFF78000E907AE /* LTRecomposeProcessorSpec.mm */,
+				8BAAC5C218BB45A600A4B4DA /* LTRectCopyProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -1546,6 +1559,8 @@
 				8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */,
 				8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */,
 				8BA3E140182A707200FDD95A /* LTGLUtils.h */,
+				8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */,
+				8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */,
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
 				8B3DEC1018296D2200EA0C1A /* LTLogger.m */,
@@ -1687,6 +1702,7 @@
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
 				8B9D3FDF189130F1001A964D /* LTCVHalfFloatExtensionSpec.mm */,
 				8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */,
+				8BB92F9A1906601B00954124 /* LTInverseTransformSamplerSpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.m */,
 				8BAB7C5118C60065005BE12A /* LTMathUtilsSpec.mm */,
 				8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */,
@@ -2519,6 +2535,7 @@
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
 				03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */,
 				288AB4061835320200A11FA4 /* LTDevice.mm in Sources */,
+				8BE51F6618FFF15300E907AE /* LTRecomposeProcessor.mm in Sources */,
 				8BC465B31899267C0094F7BC /* LTForegroundOperation.mm in Sources */,
 				284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
@@ -2533,6 +2550,7 @@
 				289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */,
 				8B19621D184B6DA40065A057 /* LTGPUQueue.m in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
+				8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
 				8BAAC5C918BB637C00A4B4DA /* LTPatchCompositorProcessor.mm in Sources */,
 				288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */,
@@ -2584,6 +2602,7 @@
 				0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */,
 				0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */,
 				03D516F918B5DBEF0026B56A /* LTAdjustProcessorSpec.mm in Sources */,
+				8BE51F7418FFF78000E907AE /* LTRecomposeProcessorSpec.mm in Sources */,
 				8B9D3FF418954605001A964D /* LTTextureFactorySpec.mm in Sources */,
 				8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */,
@@ -2672,6 +2691,7 @@
 				28C61C0718B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm in Sources */,
 				8BEBF3EF18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm in Sources */,
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
+				8BB92F9B1906601B00954124 /* LTInverseTransformSamplerSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 				030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */,
