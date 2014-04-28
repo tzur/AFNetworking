@@ -11,6 +11,8 @@ const int kMaskTypeDoubleLinear = 2;
 
 uniform sampler2D sourceTexture;
 
+uniform mediump vec2 aspectRatioCorrection;
+
 uniform int maskType;
 uniform mediump vec2 center;
 uniform mediump float shift;
@@ -22,7 +24,7 @@ varying highp vec2 vTexcoord;
 void main() {
   sourceTexture;
   
-  mediump vec2 coords = vTexcoord - center;
+  mediump vec2 coords = (vTexcoord - center) * aspectRatioCorrection;
   mediump float dist;
   
   // Distance field.
@@ -33,7 +35,6 @@ void main() {
   } else if (maskType == kMaskTypeDoubleLinear) {
     dist = abs(-normal.y * coords.x - normal.x * coords.y);
   }
-  
   // Mask.
   dist = max(0.0, dist * 2.0 - shift);
   dist = smoothstep(1.0 - spread, 0.0 + spread, dist);
