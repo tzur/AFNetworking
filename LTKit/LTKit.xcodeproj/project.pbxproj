@@ -98,7 +98,6 @@
 		03D516FA18B5DC280026B56A /* LTAdjust.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03D516F618B5DBBD0026B56A /* LTAdjust.fsh */; };
 		03F99DB61895447100B77136 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB51895447100B77136 /* Lena.png */; };
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
-		03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
 		280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */; };
@@ -655,7 +654,6 @@
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
-		03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5FractionalNoise.png; path = Resources/iPhone5FractionalNoise.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
 		280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPointSpec.mm; sourceTree = "<group>"; };
@@ -1652,7 +1650,6 @@
 				0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */,
 				0367A47818A9FD3500B42E34 /* Lena128.png */,
 				030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */,
-				03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */,
 				03F99DB7189632B700B77136 /* DeltaBicubic.png */,
 				03F99DB51895447100B77136 /* Lena.png */,
 				03AD29A218910BF700516D14 /* SimulatorFractionalNoise.png */,
@@ -2366,7 +2363,6 @@
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
-				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
