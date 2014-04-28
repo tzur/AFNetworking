@@ -170,7 +170,7 @@ context(@"processing", ^{
   // We run this test only on the device. Working assumption is that the smoother (bilateral
   // filter) causes up to 27 level differences on some pixels near the strong edges.
   // The overall "feel" of the image should be the same on both the simulator and the devices.
-  dit(@"should create correct conversion of luminance, color and details", ^{
+  sit(@"should create correct conversion of luminance, color and details", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
     
@@ -205,7 +205,7 @@ context(@"processing", ^{
     // Important: this test heavily depends on the smoother setup and is expected to change after
     // fine-tuning of the smoother.
     cv::Mat image = LTLoadMat([self class], @"IslandAnalogFilm.png");
-    expect($(output.image)).to.beCloseToMat($(image));
+    expect($(output.image)).to.beCloseToMatWithin($(image), 5);
   });
 });
 
