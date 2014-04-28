@@ -4,6 +4,7 @@
 #import "LTFractionalNoise.h"
 
 #import "LTGLTexture.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 
 SpecBegin(LTFractionalNoise)
@@ -49,7 +50,7 @@ context(@"processing", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should create noise", ^{
+  sit(@"should create noise", ^{
     LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
     noise.amplitude = 0.5;
     noise.horizontalSeed = 0.0;
@@ -63,8 +64,7 @@ context(@"processing", ^{
     // If the test fails, human observer should verify that the noise produced by the round-off
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
-    cv::Mat image = LTLoadDeviceDependentMat([self class], @"SimulatorFractionalNoise.png",
-        @"iPhone5FractionalNoise.png");
+    cv::Mat image = LTLoadMat([self class], @"SimulatorFractionalNoise.png");
     expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
   });
 });
