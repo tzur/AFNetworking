@@ -41,6 +41,7 @@
 		03AD29AF18913E9400516D14 /* LTBicubicResizeProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */; };
 		03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */; };
 		03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */; };
+		03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */; };
 		03B3765718D612830017B705 /* MealBWProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B3765618D612830017B705 /* MealBWProcessor.png */; };
 		03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */; };
 		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
@@ -585,6 +586,7 @@
 		03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBicubicResizeProcessor.mm; sourceTree = "<group>"; };
 		03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBicubicResize.fsh; sourceTree = "<group>"; };
 		03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTBicubicResizeProcessorSpec.mm; path = ../LTKit/LTBicubicResizeProcessorSpec.mm; sourceTree = "<group>"; };
+		03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterNonSquare.png; path = Resources/RadialMaskCenterNonSquare.png; sourceTree = "<group>"; };
 		03B3765618D612830017B705 /* MealBWProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessor.png; path = Resources/MealBWProcessor.png; sourceTree = "<group>"; };
 		03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorWideFrame.png; path = Resources/MealBWProcessorWideFrame.png; sourceTree = "<group>"; };
 		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
@@ -1616,6 +1618,7 @@
 				03C192BF18F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png */,
 				03C192C018F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png */,
 				03C192C118F6F3B200DC6CA6 /* RadialMaskOffCenter.png */,
+				03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */,
 				03C192B018F67FBA00DC6CA6 /* RadialMaskCenter.png */,
 				03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */,
 				03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */,
@@ -2374,6 +2377,7 @@
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */,
+				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
