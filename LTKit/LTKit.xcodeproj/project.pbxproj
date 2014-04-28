@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */; };
 		030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */; };
-		030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */; };
 		030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */; };
 		030CF744189935AF000E9ED0 /* LTBWTonality.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74218993594000E9ED0 /* LTBWTonality.fsh */; };
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
@@ -549,7 +548,6 @@
 /* Begin PBXFileReference section */
 		030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SimulatorMultiscaleNoise.png; path = Resources/SimulatorMultiscaleNoise.png; sourceTree = "<group>"; };
-		030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone5MultiscaleNoise.png; path = Resources/iPhone5MultiscaleNoise.png; sourceTree = "<group>"; };
 		030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBWTonalityProcessor.h; sourceTree = "<group>"; };
 		030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessor.mm; sourceTree = "<group>"; };
 		030CF74218993594000E9ED0 /* LTBWTonality.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWTonality.fsh; sourceTree = "<group>"; };
@@ -1650,7 +1648,6 @@
 				03D5168418B26FA40026B56A /* StraightRedFrame.png */,
 				0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */,
 				0367A47818A9FD3500B42E34 /* Lena128.png */,
-				030CF71D1899231E000E9ED0 /* iPhone5MultiscaleNoise.png */,
 				030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */,
 				03F99E421897AEF500B77136 /* iPhone5FractionalNoise.png */,
 				03F99DB7189632B700B77136 /* DeltaBicubic.png */,
@@ -2388,7 +2385,6 @@
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
-				030CF71E1899231E000E9ED0 /* iPhone5MultiscaleNoise.png in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
