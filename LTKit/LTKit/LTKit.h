@@ -37,10 +37,13 @@
 #import <LTKit/LTColorGradient.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
+#import <LTKit/LTMaskOverlayProcessor.h>
 #import <LTKit/LTMaskedArithmeticProcessor.h>
+#import <LTKit/LTMixerProcessor.h>
 #import <LTKit/LTPatchCompositorProcessor.h>
 #import <LTKit/LTPatchProcessor.h>
 #import <LTKit/LTRectCopyProcessor.h>
+#import <LTKit/LTRecomposeProcessor.h>
 #import <LTKit/LTSplitComplexMat.h>
 
 // Image Processing/Utils.
