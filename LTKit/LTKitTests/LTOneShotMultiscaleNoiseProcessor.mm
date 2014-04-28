@@ -4,6 +4,7 @@
 #import "LTOneShotMultiscaleNoiseProcessor.h"
 
 #import "LTGLTexture.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 
 SpecBegin(LTOneShotMultiscaleNoiseProcessor)
@@ -37,22 +38,21 @@ context(@"intialization", ^{
 });
 
 context(@"processing", ^{
-  it(@"should create noise", ^{
+  sit(@"should create noise", ^{
     LTOneShotMultiscaleNoiseProcessor *noise = [[LTOneShotMultiscaleNoiseProcessor alloc]
                                                 initWithOutput:output];
     noise[@"seed"] = @(0.25);
     noise[@"density"] = @(2.0);
-    LTSingleTextureOutput *processed = [noise process];
-    
+    [noise process];
     // Compare current output of the shader with the result that passed human visual inspection.
     // Important: this test may break upon introducing new architectures, since the test is
     // dependent on the round-off errors which may differ on a new architecture.
     // If the test fails, human observer should verify that the noise produced by the round-off
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
-    cv::Mat image = LTLoadDeviceDependentMat([self class], @"SimulatorMultiscaleNoise.png",
-                                             @"iPhone5MultiscaleNoise.png");
-    expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
+    cv::Mat image = LTLoadMat([self class], @"SimulatorMultiscaleNoise.png");
+
+    expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
 });
 
