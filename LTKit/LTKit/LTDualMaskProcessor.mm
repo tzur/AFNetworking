@@ -8,17 +8,11 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
-@interface LTDualMaskProcessor ()
-@property (nonatomic) CGSize maskSize;
-@end
-
 @implementation LTDualMaskProcessor
 
 - (instancetype)initWithOutput:(LTTexture *)output {
   if (self = [super initWithProgram:[self createProgram] sourceTexture:output auxiliaryTextures:nil
                           andOutput:output]) {
-    // TODO:(zeev) Remove it once Yaron adds public properties to access input/output size.
-    self.maskSize = output.size;
     [self setAspectRatioCorrectionWithSize:output.size];
     [self setDefaultValues];
   }
@@ -32,9 +26,9 @@
 
 - (void)setDefaultValues {
   self.maskType = LTDualMaskTypeRadial;
-  self.center = GLKVector2Make(self.maskSize.width / 2, self.maskSize.height / 2);
+  self.center = GLKVector2Make(self.outputSize.width / 2, self.outputSize.height / 2);
   self.spread = self.defaultSpread;
-  self.diameter = MIN(self.maskSize.width, self.maskSize.height) / 2;
+  self.diameter = MIN(self.outputSize.width, self.outputSize.height) / 2;
   self.angle = self.defaultAngle;
 }
 
@@ -60,14 +54,14 @@
 
 - (void)setCenter:(GLKVector2)center {
   _center = center;
-  GLKVector2 remap = GLKVector2Make(center.x / self.maskSize.width,
-                                    center.y / self.maskSize.height);
+  GLKVector2 remap = GLKVector2Make(center.x / self.outputSize.width,
+                                    center.y / self.outputSize.height);
   self[[LTDualMaskFsh center]] = $(remap);
 }
 
 - (void)updateDiameterWith:(CGFloat)diameter {
   if (self.maskType == LTDualMaskTypeRadial || self.maskType == LTDualMaskTypeDoubleLinear) {
-    CGFloat remap = diameter / MIN(self.maskSize.width, self.maskSize.height) - 0.5;
+    CGFloat remap = diameter / MIN(self.outputSize.width, self.outputSize.height) - 0.5;
     self[[LTDualMaskFsh shift]] = @(remap);
   } else if (self.maskType == LTDualMaskTypeLinear) {
     self[[LTDualMaskFsh shift]] = @(-0.5);

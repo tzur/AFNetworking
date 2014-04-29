@@ -9,11 +9,6 @@
 #import "LTShaderStorage+LTBilateralFilterVsh.h"
 #import "LTTexture.h"
 
-@interface LTBilateralFilterProcessor ()
-@property (nonatomic) CGSize inputSize;
-@property (nonatomic) CGSize outputSize;
-@end
-
 @implementation LTBilateralFilterProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {

@@ -24,7 +24,6 @@
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 @property (strong, nonatomic) LTProceduralFrame *outerFrameProcessor;
 @property (strong, nonatomic) LTProceduralFrame *innerFrameProcessor;
-@property (nonatomic) CGSize outputSize;
 
 @end
 
@@ -67,7 +66,6 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   if (self = [super initWithProgram:program sourceTexture:toneTexture
                   auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
-    _outputSize = output.size;
     _subProcessorsInitialized = NO;
   }
   return self;

@@ -25,7 +25,6 @@
 
 /// Internal vignetting processor.
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
-@property (nonatomic) CGSize outputSize;
 
 @end
 
@@ -63,7 +62,6 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     [self setDefaultValues];
-    _outputSize = output.size;
     _subProcessorInitialized = NO;
   }
   return self;

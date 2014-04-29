@@ -17,4 +17,10 @@
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output;
 
+/// Size of the input texture or the source texture, if there are auxiliary textures available.
+@property (readonly, nonatomic) CGSize inputSize;
+
+/// Size of the output texture.
+@property (readonly, nonatomic) CGSize outputSize;
+
 @end
