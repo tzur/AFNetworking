@@ -60,6 +60,14 @@
   }];
 }
 
+- (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
+  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
+  auxiliaryTextures[name] = texture;
+  _auxiliaryTextures = [auxiliaryTextures copy];
+
+  [self.drawer setAuxiliaryTexture:texture withName:name];
+}
+
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
   [self.drawer setUniform:key withValue:obj];
 }

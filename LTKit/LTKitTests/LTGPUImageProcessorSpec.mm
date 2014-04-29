@@ -6,6 +6,10 @@
 #import "LTNextIterationPlacement.h"
 #import "LTTexture.h"
 
+@interface LTGPUImageProcessor ()
+- (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name;
+@end
+
 SpecBegin(LTGPUImageProcessor)
 
 __block id drawer;
@@ -58,6 +62,20 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:@{kTextureName: texture}];
     [processor process];
     
+    [drawer verify];
+  });
+
+  it(@"should set auxiliary texture via protected interface", ^{
+    static NSString * const kTextureName = @"MyTexture";
+
+    [[drawer expect] setAuxiliaryTexture:texture withName:kTextureName];
+
+    LTGPUImageProcessor *processor =
+        [[LTGPUImageProcessor alloc] initWithDrawer:drawer strategy:strategy
+                               andAuxiliaryTextures:nil];
+    [processor setAuxiliaryTexture:texture withName:kTextureName];
+    [processor process];
+
     [drawer verify];
   });
 
