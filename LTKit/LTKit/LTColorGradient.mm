@@ -18,9 +18,9 @@
 
 @end
 
-@interface LTColorGradient()
+@interface LTColorGradient ()
 
-// Array of LTColorGradientControlPoints.
+/// Array of LTColorGradientControlPoints.
 @property (strong, nonatomic) NSArray *controlPoints;
 
 @end
