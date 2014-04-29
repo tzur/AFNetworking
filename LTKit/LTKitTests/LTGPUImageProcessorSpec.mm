@@ -3,12 +3,9 @@
 
 #import "LTGPUImageProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTNextIterationPlacement.h"
 #import "LTTexture.h"
-
-@interface LTGPUImageProcessor ()
-- (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name;
-@end
 
 SpecBegin(LTGPUImageProcessor)
 

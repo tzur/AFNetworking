@@ -7,6 +7,7 @@
 #import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProceduralFrame.h"
@@ -15,10 +16,6 @@
 #import "LTShaderStorage+LTBWProcessorFsh.h"
 #import "LTShaderStorage+LTBWProcessorVsh.h"
 #import "LTTexture+Factory.h"
-
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-@end
 
 @interface LTBWProcessor ()
 
@@ -273,9 +270,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   LTParameterAssert([self isValidGrainTexture:grainTexture],
                     @"Grain texture should be either tileable or match the output size.");
   _grainTexture = grainTexture;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWProcessorFsh grainTexture]] = grainTexture;
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:grainTexture withName:[LTBWProcessorFsh grainTexture]];
   [self setupGrainTextureScalingWithOutputSize:self.outputSize grain:self.grainTexture];
   [self process];
 }

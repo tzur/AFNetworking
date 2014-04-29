@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTTexture.h"
 
 @interface LTGPUImageProcessor ()
@@ -14,9 +15,6 @@
 
 /// Strategy which manages the processing execution.
 @property (strong, nonatomic) id<LTProcessingStrategy> strategy;
-
-/// Dictionary of \c NSString to \c LTTexture of axiliary textures to use to assist processing.
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
 
 @end
 
@@ -51,21 +49,6 @@
   CGRect sourceRect = CGRectFromOriginAndSize(CGPointZero, placement.sourceTexture.size);
   CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, placement.targetFbo.size);
   [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
-}
-
-- (void)setAuxiliaryTextures:(NSDictionary *)auxiliaryTextures {
-  _auxiliaryTextures = auxiliaryTextures;
-  [auxiliaryTextures enumerateKeysAndObjectsUsingBlock:^(NSString *key, LTTexture *obj, BOOL *) {
-    [self.drawer setAuxiliaryTexture:obj withName:key];
-  }];
-}
-
-- (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[name] = texture;
-  _auxiliaryTextures = [auxiliaryTextures copy];
-
-  [self.drawer setAuxiliaryTexture:texture withName:name];
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {

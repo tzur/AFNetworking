@@ -8,6 +8,7 @@
 #import "LTColorGradient.h"
 #import "LTCurve.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProceduralVignetting.h"
@@ -17,13 +18,12 @@
 #import "LTTexture+Factory.h"
 #import "NSBundle+LTKitBundle.h"
 
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-@end
-
 @interface LTAnalogFilmProcessor ()
-// Returns YES is subprocessor used by this class is initialized, NO otherwise.
+
+/// Returns YES is subprocessor used by this class is initialized, NO otherwise.
 @property (nonatomic) BOOL subProcessorInitialized;
+
+/// Internal vignetting processor.
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 @property (nonatomic) CGSize outputSize;
 
@@ -257,9 +257,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, 
   LTParameterAssert([self isValidGrainTexture:grainTexture],
                     @"Grain texture should be either tileable or match the output size.");
   _grainTexture = grainTexture;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTAnalogFilmFsh grainTexture]] = grainTexture;
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:grainTexture withName:[LTAnalogFilmFsh grainTexture]];
   [self setupGrainTextureScalingWithOutputSize:self.outputSize grain:self.grainTexture];
 }
 
@@ -291,9 +289,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
                     @"colorGradientTexture width is larger than kLutSize");
   
   _colorGradientTexture = colorGradientTexture;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTAnalogFilmFsh colorGradient]] = colorGradientTexture;
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:colorGradientTexture withName:[LTAnalogFilmFsh colorGradient]];
 }
 
 LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha,
@@ -330,9 +326,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha,
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  [auxiliaryTextures[[LTAnalogFilmFsh toneLUT]] load:toneCurve];
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self.auxiliaryTextures[[LTAnalogFilmFsh toneLUT]] load:toneCurve];
 }
 
 @end

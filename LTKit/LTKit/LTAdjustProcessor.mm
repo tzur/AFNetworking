@@ -7,6 +7,7 @@
 #import "LTBoxFilterProcessor.h"
 #import "LTCurve.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTAdjustFsh.h"
@@ -14,16 +15,13 @@
 #import "LTTexture+Factory.h"
 #import "NSBundle+LTKitBundle.h"
 
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-@end
-
 @interface LTAdjustProcessor ()
 
-// Texture that holds LUT that encapsulates brightess, contrast, exposure, offset, black point and
-// white point adjustments.
+/// Texture that holds LUT that encapsulates brightess, contrast, exposure, offset, black point and
+/// white point adjustments.
 @property (strong, nonatomic) LTTexture *toneLUT;
-// Texture that holds LUT that encapsulates shadows, fill light and highlights adjustments.
+
+/// Texture that holds LUT that encapsulates shadows, fill light and highlights adjustments.
 @property (strong, nonatomic) LTTexture *detailsLUT;
 
 @end
@@ -203,11 +201,9 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
   cv::LUT(detailsCurve,
           (1.0 - self.highlights) * [LTCurve identity] + self.highlights * [LTCurve highlights],
           detailsCurve);
-  
-  // Update details LUT texture in auxiliary textures.
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTAdjustFsh detailsLUT]] = [LTTexture textureWithImage:detailsCurve];
-  self.auxiliaryTextures = auxiliaryTextures;
+
+  [self setAuxiliaryTexture:[LTTexture textureWithImage:detailsCurve]
+                   withName:[LTAdjustFsh detailsLUT]];
 }
 
 // Update brightness, contrast, exposure and offset.
@@ -268,10 +264,8 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlig
   cv::Mat1b toneCurve = [self toneLuminanceCurve];
   cv::Mat4b toneRGBACurve = [self toneRGBACurveForLuminanceCurve:toneCurve];
   
-  // Update details LUT texture in auxiliary textures.
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTAdjustFsh toneLUT]] = [LTTexture textureWithImage:toneRGBACurve];
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:[LTTexture textureWithImage:toneRGBACurve]
+                   withName:[LTAdjustFsh toneLUT]];
 }
 
 @end

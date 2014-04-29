@@ -8,6 +8,7 @@
 #import "LTColorGradient.h"
 #import "LTCurve.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBWTonalityFsh.h"
@@ -15,13 +16,11 @@
 #import "LTTexture+Factory.h"
 #import "NSBundle+LTKitBundle.h"
 
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-@end
-
 @interface LTBWTonalityProcessor ()
-// Texture that holds LUT that encapsulates brightess, contrast, exposure and structure.
+
+/// Texture that holds LUT that encapsulates brightess, contrast, exposure and structure.
 @property (strong, nonatomic) LTTexture *toneLUT;
+
 @end
 
 @implementation LTBWTonalityProcessor
@@ -111,9 +110,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
                     @"colorGradientTexture width is larger than 256");
   
   _colorGradientTexture = colorGradientTexture;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTBWTonalityFsh colorGradient]] = colorGradientTexture;
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:colorGradientTexture withName:[LTBWTonalityFsh colorGradient]];
 }
 
 - (void)updateToneLUT {
@@ -142,9 +139,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structur
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  [auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self.auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
 }
 
 @end
