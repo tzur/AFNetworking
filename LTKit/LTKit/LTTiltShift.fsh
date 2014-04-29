@@ -11,16 +11,19 @@ uniform mediump float intensity;
 varying highp vec2 vTexcoord;
 
 void main() {
-  intensity;
-  const lowp vec3 kColorFilter = vec3(0.299, 0.587, 0.114);
-  
   lowp vec3 color = texture2D(sourceTexture, vTexcoord).rgb;
   lowp vec3 fine = texture2D(fineTexture, vTexcoord).rgb;
   lowp vec3 coarse = texture2D(coarseTexture, vTexcoord).rgb;
+
+  // Splitting point between original-fine and fine-coarse regimes.
+  lowp float splittingPoint = 0.4;
+  lowp vec3 blur = mix(mix(color, fine, intensity / splittingPoint),
+                       mix(fine, coarse, (intensity - splittingPoint) / (1.0 - splittingPoint)),
+                       step(splittingPoint, intensity));
   
   lowp float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
   
-  lowp vec3 result = mix(color, coarse, dualMask);
+  lowp vec3 result = mix(blur, color, dualMask);
   
-  gl_FragColor = vec4(vec3(dualMask), 1.0);
+  gl_FragColor = vec4(vec3(result), 1.0);
 }

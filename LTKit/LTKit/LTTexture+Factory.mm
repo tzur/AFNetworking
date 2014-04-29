@@ -64,6 +64,11 @@
   return [[[self textureClass] alloc] initByteRGBAWithSize:size];
 }
 
++ (instancetype)byteRTextureWithSize:(CGSize)size {
+    return [[[self textureClass] alloc] initWithSize:size precision:LTTexturePrecisionByte
+                                              format:LTTextureFormatRed allocateMemory:YES];
+}
+
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture {
   Class textureClass = [self classForPrecision:texture.precision];
   return [[textureClass alloc] initWithPropertiesOf:texture];

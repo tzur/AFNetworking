@@ -4,7 +4,9 @@
 #import "LTTiltShiftProcessor.h"
 
 #import "LTBoxFilterProcessor.h"
+#import "LTCGExtensions.h"
 #import "LTDualMaskProcessor.h"
+#import "LTGLKitExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTTiltShiftFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
@@ -23,9 +25,13 @@
 
 @implementation LTTiltShiftProcessor
 
+// Since dual mask is smooth, strong downsampling will have a little impact of the quality, while
+// significantly reducing the memory requirements.
+static const CGFloat kMaskScalingFactor = 4.0;
+
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   // Setup dual mask.
-  LTTexture *dualMaskTexture = [LTTexture textureWithPropertiesOf:output];
+  LTTexture *dualMaskTexture = [self createDualMaskTextureWithOutput:output];
   self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
   // Setup smoothing.
   NSArray *smoothTextures = [self createSmoothTextures:input];
@@ -38,6 +44,11 @@
     [self setDefaultValues];
   }
   return self;
+}
+
+- (LTTexture *)createDualMaskTextureWithOutput:(LTTexture *)output {
+  CGSize maskSize = std::ceil(output.size / kMaskScalingFactor);
+  return [LTTexture byteRTextureWithSize:maskSize];
 }
 
 - (LTProgram *)createProgram {
@@ -96,21 +107,25 @@ static const NSUInteger kCoarseTextureIterations = 6;
 }
 
 - (void)setCenter:(GLKVector2)center {
-  self.dualMaskProcessor.center = center;
+  // Scaling transforms from image coordinate system to mask coordinate system.
+  self.dualMaskProcessor.center = center / kMaskScalingFactor;
   [self.dualMaskProcessor process];
 }
 
 - (GLKVector2)center {
-  return self.dualMaskProcessor.center;
+  // Scaling transforms from mask coordinate system to image coordinate system.
+  return self.dualMaskProcessor.center *  kMaskScalingFactor;
 }
 
 - (void)setDiameter:(CGFloat)diameter {
-  self.dualMaskProcessor.diameter = diameter;
+  // Scaling transforms from image coordinate system to mask coordinate system.
+  self.dualMaskProcessor.diameter = diameter / kMaskScalingFactor;
   [self.dualMaskProcessor process];
 }
 
 - (CGFloat)diameter {
-  return self.dualMaskProcessor.diameter;
+  // Scaling transforms from mask coordinate system to image coordinate system.
+  return self.dualMaskProcessor.diameter * kMaskScalingFactor;
 }
 
 - (void)setSpread:(CGFloat)spread {

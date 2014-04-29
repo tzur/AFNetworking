@@ -23,13 +23,14 @@
 /// Dual mask type to construct. Default is LTDualMaskTypeRadial.
 @property (nonatomic) LTDualMaskType maskType;
 
-/// Center of the mask on unit square [0, 1] x [0, 1]. Default value is (0.5, 0.5).
-/// TODO:(zeev) Switch to pixels coordinate system.
+/// Center of the mask in coordinates of the output image, aka "pixel cooridnates". Despite the
+/// relation to pixels, values in this coordinate system doesn't have to be integer.
+/// Default value is the center (width/2, height/2). Range is unbounded.
 @property (nonatomic) GLKVector2 center;
 
-/// Diameter of the mask is the length of the straight line between two neutral points through the
-/// center. Should be in [0, 1] range. Default value is 0.5, so diameter of the red part is half the
-/// unit square (or half of the smaller image dimension when corrected for aspect ratio).
+/// Diameter of the mask is the length in pixels of the straight line between two neutral points
+/// through the center. Range is unbounded. Default value is min(width, height) / 2, so diameter of
+/// the red part is half the of the smaller image dimension when corrected for aspect ratio.
 /// @attention In case of linear mask type the width is zero by construction and this property
 /// doesn't affect the mask.
 @property (nonatomic) CGFloat diameter;

@@ -39,8 +39,8 @@ afterEach(^{
 context(@"properties", ^{
   it(@"should return default mask properties correctly", ^{
     expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
-    expect(GLKVector2AllEqualToVector2(processor.center, GLKVector2Make(0.5, 0.5))).to.beTruthy();
-    expect(processor.diameter).to.equal(0.5);
+    expect(GLKVector2AllEqualToVector2(processor.center, GLKVector2Make(8, 8))).to.beTruthy();
+    expect(processor.diameter).to.equal(8);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
   });
@@ -49,14 +49,29 @@ context(@"properties", ^{
 context(@"properties", ^{
   beforeEach(^{
     input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.jpg")];
-    output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 1.0)];
+    output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.1)];
     processor = [[LTTiltShiftProcessor alloc] initWithInput:input output:output];
   });
   
-  it(@"should apply blue and red colors", ^{
+  sit(@"should apply radial tilt-shift pattern", ^{
+    processor.center = GLKVector2Make(output.size.width / 2, output.size.height / 2);
+    processor.diameter = output.size.width / 2;
+    processor.spread = 1.0;
+    processor.intensity = 0.8;
     [processor process];
     
-    cv::Mat image = LTLoadMat([self class], @"Island.jpg");
+    cv::Mat image = LTLoadMat([self class], @"TiltShiftRadial.png");
+    expect($(output.image)).to.beCloseToMatWithin($(image), 1);
+  });
+  
+  sit(@"should apply linear tilt-shift pattern", ^{
+    processor.maskType = LTDualMaskTypeDoubleLinear;
+    processor.center = GLKVector2Make(output.size.width / 2, output.size.height / 2);
+    processor.diameter = output.size.width / 4;
+    processor.spread = 1;
+    [processor process];
+    
+    cv::Mat image = LTLoadMat([self class], @"TiltShiftDoubleLinear.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
 });
