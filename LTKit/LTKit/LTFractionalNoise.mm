@@ -53,9 +53,5 @@
   self[@"velocitySeed"] = @(drand48());
 }
 
-- (id<LTImageProcessorOutput>)process {
-  return [super process];
-}
-
 @end
 

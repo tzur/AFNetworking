@@ -4,14 +4,11 @@
 #import "LTProceduralFrame.h"
 
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
 #import "LTTexture+Factory.h"
-
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) NSDictionary *auxiliaryTextures;
-@end
 
 @implementation LTProceduralFrame
 
@@ -122,9 +119,7 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 - (void)setNoise:(LTTexture *)noise {
   // Update details LUT texture in auxiliary textures.
   _noise = noise;
-  NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
-  auxiliaryTextures[[LTProceduralFrameFsh noiseTexture]] = noise;
-  self.auxiliaryTextures = auxiliaryTextures;
+  [self setAuxiliaryTexture:noise withName:[LTProceduralFrameFsh noiseTexture]];
 }
 
 - (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
