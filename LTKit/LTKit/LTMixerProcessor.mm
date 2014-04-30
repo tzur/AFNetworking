@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTPassthroughProcessor.h"
 #import "LTProgram.h"
+#import "LTRectMapping.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTMixerFsh.h"
 #import "LTShaderStorage+LTMixerVsh.h"
@@ -114,6 +115,13 @@
 - (void)setFrontRotation:(float)frontRotation {
   _frontRotation = frontRotation;
   [self updateFrontTargetRect];
+}
+
+- (void)setFrontSourceRect:(LTRotatedRect *)frontSourceRect {
+  _frontSourceRect = frontSourceRect;
+
+  GLKMatrix3 targetTextureMat = LTTextureMatrix3ForRotatedRect(frontSourceRect, self.front.size);
+  self[[LTMixerVsh frontTextureMat]] = $(targetTextureMat);
 }
 
 - (void)updateFrontTargetRect {

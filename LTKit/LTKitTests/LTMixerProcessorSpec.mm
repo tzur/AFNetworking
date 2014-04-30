@@ -3,6 +3,7 @@
 
 #import "LTMixerProcessor.h"
 
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 /// Write plus sign with the given offset and the specified color.
@@ -110,6 +111,21 @@ context(@"front placement", ^{
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     LTPlusSignAt(expected, cv::Point(3, 3), resultColor);
+
+    expect($([result.texture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should blend complex image with correct translation, scaling and rotation", ^{
+    cv::Mat4b image(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
+    image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
+    [front load:image];
+
+    processor.frontTranslation = GLKVector2Make(4, 4);
+    processor.frontScaling = 1.5;
+    processor.frontRotation = M_PI_4;
+    LTSingleTextureOutput *result = [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementRect.png");
 
     expect($([result.texture image])).to.beCloseToMat($(expected));
   });
