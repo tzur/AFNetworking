@@ -31,8 +31,8 @@ beforeEach(^{
 });
 
 afterEach(^{
-  processor =  nil;
-  input =  nil;
+  processor = nil;
+  input = nil;
   output = nil;
 });
 

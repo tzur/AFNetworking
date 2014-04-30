@@ -38,7 +38,7 @@
 ///
 /// @code
 /// [initWithSize:size precision:LTTexturePrecisionByte
-///      channels:LTTextureChannelsRGBA allocateMemory:YES]
+///        format:LTTextureFormatRGBA allocateMemory:YES]
 /// @endcode
 + (instancetype)byteRGBATextureWithSize:(CGSize)size;
 
@@ -49,7 +49,7 @@
 /// [initWithSize:size precision:LTTexturePrecisionByte
 ///        format:LTTextureFormatRed allocateMemory:YES];
 /// @endcode
-+ (instancetype)byteRTextureWithSize:(CGSize)size;
++ (instancetype)byteRedTextureWithSize:(CGSize)size;
 
 /// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
 /// \c texture. This is a convenience method which is similar to calling:

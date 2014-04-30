@@ -64,7 +64,7 @@
   return [[[self textureClass] alloc] initByteRGBAWithSize:size];
 }
 
-+ (instancetype)byteRTextureWithSize:(CGSize)size {
++ (instancetype)byteRedTextureWithSize:(CGSize)size {
     return [[[self textureClass] alloc] initWithSize:size precision:LTTexturePrecisionByte
                                               format:LTTextureFormatRed allocateMemory:YES];
 }

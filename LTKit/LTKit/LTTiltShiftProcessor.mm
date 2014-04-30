@@ -25,7 +25,7 @@
 
 @implementation LTTiltShiftProcessor
 
-// Since dual mask is smooth, strong downsampling will have a little impact of the quality, while
+// Since dual mask is smooth, strong downsampling will have very little impact on the quality, while
 // significantly reducing the memory requirements.
 static const CGFloat kMaskScalingFactor = 4.0;
 
@@ -47,8 +47,9 @@ static const CGFloat kMaskScalingFactor = 4.0;
 }
 
 - (LTTexture *)createDualMaskTextureWithOutput:(LTTexture *)output {
-  CGSize maskSize = std::ceil(output.size / kMaskScalingFactor);
-  return [LTTexture byteRTextureWithSize:maskSize];
+  CGSize maskSize = CGSizeMake(MAX(1, std::round(output.size.width / kMaskScalingFactor)),
+                               MAX(1, std::round(output.size.height / kMaskScalingFactor)));
+  return [LTTexture byteRedTextureWithSize:maskSize];
 }
 
 - (LTProgram *)createProgram {
@@ -114,7 +115,7 @@ static const NSUInteger kCoarseTextureIterations = 6;
 
 - (GLKVector2)center {
   // Scaling transforms from mask coordinate system to image coordinate system.
-  return self.dualMaskProcessor.center *  kMaskScalingFactor;
+  return self.dualMaskProcessor.center * kMaskScalingFactor;
 }
 
 - (void)setDiameter:(CGFloat)diameter {

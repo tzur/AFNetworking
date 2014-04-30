@@ -1,6 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
+// This shader applies a tilt-shift effect by creating blur and mixing it with the original image
+// using dual mask.
+// The blur is constructed by mixing the original imagea and two differnt blur levels according to
+// the intensity parameter.
+
 uniform sampler2D sourceTexture;
 uniform sampler2D fineTexture;
 uniform sampler2D coarseTexture;
