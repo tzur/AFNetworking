@@ -4,7 +4,7 @@
 #import "LTProceduralFrame.h"
 
 #import "LTGLKitExtensions.h"
-#import "LTOneShotMultiscaleNoiseProcessor.h"
+#import "LTMultiscaleNoiseProcessor.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
