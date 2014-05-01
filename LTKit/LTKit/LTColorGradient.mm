@@ -7,13 +7,29 @@
 
 @implementation LTColorGradientControlPoint
 
-- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color {
+- (instancetype)initWithPosition:(CGFloat)position colorWithAlpha:(GLKVector4)color {
   LTParameterAssert(position >= 0 && position <= 1, @"Position should be in [0-1] range");
   if (self = [super init]) {
     _position = position;
     _color = color;
   }
   return self;
+}
+
++ (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position
+                                                    color:(GLKVector3)color {
+  return [[LTColorGradientControlPoint alloc]
+      initWithPosition:position colorWithAlpha:GLKVector4Make(color.r, color.g, color.b, 1)];
+}
+
++ (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position
+                                           colorWithAlpha:(GLKVector4)color {
+  return [[LTColorGradientControlPoint alloc] initWithPosition:position colorWithAlpha:color];
+}
+
+- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color {
+  return [self initWithPosition:position
+                 colorWithAlpha:GLKVector4Make(color.r, color.g, color.b, 1)];
 }
 
 @end
@@ -53,12 +69,12 @@
 }
 
 // Linearly interpolate/extrapolate two control points to get the values at position.
-+ (GLKVector3)sampleWithPoint0:(LTColorGradientControlPoint *)p0
++ (GLKVector4)sampleWithPoint0:(LTColorGradientControlPoint *)p0
                         point1:(LTColorGradientControlPoint *)p1 atPosition:(CGFloat)position {
   CGFloat x0 = p0.position;
   CGFloat x1 = p1.position;
-  GLKVector3 y0 = p0.color;
-  GLKVector3 y1 = p1.color;
+  GLKVector4 y0 = p0.color;
+  GLKVector4 y1 = p1.color;
   return std::round((y0 + (position - x0)/(x1 - x0) * (y1 - y0)) * 255.0);
 }
 
@@ -82,8 +98,8 @@
       p1 = self.controlPoints[rightEdgeIndex];
     }
     // Interpolate/extrapolate the control points to get the in-between values.
-    GLKVector3 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
-    mat(0, col) = cv::Vec4b(color.r, color.g, color.b, 255);
+    GLKVector4 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
+    mat(0, col) = cv::Vec4b(color.r, color.g, color.b, color.a);
   }
   
   return [LTTexture textureWithImage:mat];

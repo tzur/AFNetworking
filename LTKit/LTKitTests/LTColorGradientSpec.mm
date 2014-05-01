@@ -40,14 +40,30 @@ context(@"LTColorGradientControlPoint intialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should not initialize on position within the range", ^{
+  it(@"should initialize on position within the range", ^{
     expect(^{
       __unused LTColorGradientControlPoint *controlPoint = [[LTColorGradientControlPoint alloc]
           initWithPosition:0.5 color:GLKVector3Make(0.0, 0.0, 1.0)];
     }).toNot.raiseAny();
   });
+  
+  it(@"should initialize using class method on position within the range", ^{
+    expect(^{
+      GLKVector3 whiteColor = GLKVector3Make(1.0, 1.0, 1.0);
+      __unused LTColorGradientControlPoint *controlPoint =
+          [LTColorGradientControlPoint controlPointWithPosition:0.5 color:whiteColor];
+    }).toNot.raiseAny();
+  });
+  
+  it(@"should not initialize using class method on position out the range", ^{
+    expect(^{
+      GLKVector4 blueColor = GLKVector4Make(0.0, 0.0, 1.0, 1.0);
+      __unused LTColorGradientControlPoint *controlPoint =
+          [LTColorGradientControlPoint controlPointWithPosition:2.0 colorWithAlpha:blueColor];
+    }).to.raise(NSInvalidArgumentException);
+  });
 });
-        
+
 context(@"LTColorGradient intialization", ^{
   it(@"should not initialize on nil", ^{
     expect(^{
@@ -132,6 +148,21 @@ context(@"writing gradient values to texture", ^{
     texture = [gradient textureWithSamplingPoints:256];
 
     cv::Mat image = LTLoadMat([self class], @"RedBlueGradient.png");
+    expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
+  });
+  
+  it(@"should be equal to semi-transparent grdient", ^{
+    LTColorGradientControlPoint *transparentBlack = [[LTColorGradientControlPoint alloc]
+        initWithPosition:0.0 colorWithAlpha:GLKVector4Make(0.0, 0.0, 0.0, 0.0)];
+    LTColorGradientControlPoint *opaqueWhite = [[LTColorGradientControlPoint alloc]
+        initWithPosition:1.0 colorWithAlpha:GLKVector4Make(1.0, 1.0, 1.0, 1.0)];
+    
+    NSArray *controlPoints = @[transparentBlack, opaqueWhite];
+    
+    gradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
+    texture = [gradient textureWithSamplingPoints:256];
+    
+    cv::Mat image = LTLoadMat([self class], @"SemiTransparentBlack.png");
     expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
   });
 });
