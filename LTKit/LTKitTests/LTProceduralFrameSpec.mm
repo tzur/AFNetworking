@@ -33,6 +33,19 @@ afterEach(^{
 });
 
 context(@"properties", ^{
+  it(@"should return default properties correctly", ^{
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
+    expect(frame.width).to.equal(0);
+    expect(frame.spread).to.equal(0);
+    expect(frame.corner).to.equal(0);
+    expect(GLKVector3AllEqualToVector3(frame.noiseChannelMixer,
+                                       GLKVector3Make(1, 0, 0))).to.beTruthy();
+    expect(frame.noiseAmplitude).to.equal(1);
+    expect(frame.noiseCoordinatesOffset).to.equal(0);
+    expect(frame.noiseMapping).to.equal(LTProceduralFrameNoiseMappingStretch);
+    expect(GLKVector3AllEqualToVector3(frame.color, GLKVector3Make(1, 1, 1))).to.beTruthy();
+  });
+  
   it(@"should return default noise texture correctly", ^{
     cv::Mat4b defaultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
     LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
@@ -67,6 +80,13 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
+  it(@"should fail on invalid noise coordinates offset", ^{
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
+    expect(^{
+      frame.noiseCoordinatesOffset = 1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
   it(@"should fail on invalid width parameter", ^{
     LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
     expect(^{
@@ -78,6 +98,15 @@ context(@"properties", ^{
     LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
     expect(^{
       frame.color = GLKVector3Make(-0.1, 0.9, 0.2);
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should fail on non-tilable texture if tileable mapping is set", ^{
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:output];
+    expect(^{
+      frame.noiseMapping = LTProceduralFrameNoiseMappingTile;
+      // Try to pass non-power of two (non-tileable) texture.
+      frame.noise = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 3)];
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -180,6 +209,25 @@ context(@"processing", ^{
         @"StraightBlackNoisyFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
+  
+  sit(@"should return a frame where noise is a shifted tilable checkerboard pattern", ^{
+    LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(64, 64)];
+    LTTexture *tiledNoise =
+    [LTTexture textureWithImage:LTLoadMat([self class], @"Checkerboard.png")];
+    tiledNoise.wrap = LTTextureWrapRepeat;
+    
+    LTProceduralFrame *frame = [[LTProceduralFrame alloc] initWithOutput:frameTexture];
+    frame.spread = 10.0;
+    frame.noise = tiledNoise;
+    frame.noiseMapping = LTProceduralFrameNoiseMappingTile;
+    frame.noiseCoordinatesOffset = 0.25;
+    frame.color = GLKVector3Make(0.0, 0.0, 0.0);
+    [frame process];
+    
+    LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMat([self class],
+        @"ShiftedTiledFrame.png")];
+    expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
+  });  
 });
 
 SpecEnd

@@ -14,6 +14,9 @@
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */; };
 		03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388E190FD0240095F99B /* TiltShiftRadial.png */; };
+		031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 031338B019111DD20095F99B /* LTProceduralFrame.vsh */; };
+		031338C1191216020095F99B /* Checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 031338C0191216020095F99B /* Checkerboard.png */; };
+		031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 031338C2191238050095F99B /* ShiftedTiledFrame.png */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
 		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
@@ -568,6 +571,9 @@
 		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftDoubleLinear.png; path = Resources/TiltShiftDoubleLinear.png; sourceTree = "<group>"; };
 		0313388E190FD0240095F99B /* TiltShiftRadial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftRadial.png; path = Resources/TiltShiftRadial.png; sourceTree = "<group>"; };
+		031338B019111DD20095F99B /* LTProceduralFrame.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTProceduralFrame.vsh; sourceTree = "<group>"; };
+		031338C0191216020095F99B /* Checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkerboard.png; path = Resources/Checkerboard.png; sourceTree = "<group>"; };
+		031338C2191238050095F99B /* ShiftedTiledFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShiftedTiledFrame.png; path = Resources/ShiftedTiledFrame.png; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
 		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
@@ -1206,9 +1212,10 @@
 				8BB14D7318BF464F00701A1B /* LTPatchProcessor.mm */,
 				8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */,
 				8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */,
+				031338B019111DD20095F99B /* LTProceduralFrame.vsh */,
+				0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */,
 				0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */,
 				0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */,
-				0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */,
 				03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */,
 				03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */,
 				03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */,
@@ -1659,6 +1666,8 @@
 			children = (
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
+				031338C0191216020095F99B /* Checkerboard.png */,
+				031338C2191238050095F99B /* ShiftedTiledFrame.png */,
 				031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */,
 				031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */,
 				03AFC15A190CE52100F17063 /* DuoBlue.png */,
@@ -2399,7 +2408,9 @@
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
+				031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
+				031338C1191216020095F99B /* Checkerboard.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
@@ -2493,6 +2504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
+				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,

@@ -3,37 +3,22 @@
 
 #import "LTProceduralFrame.h"
 
+#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTMathUtils.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTShaderStorage+LTProceduralFrameVsh.h"
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTProceduralFrame
 
-static const CGFloat kMinWidth = 0.0;
-static const CGFloat kMaxWidth = 25.0;
-static const CGFloat kDefaultWidth = 0.0;
-
-static const CGFloat kMinSpread = 0.0;
-static const CGFloat kMaxSpread = 50.0;
-static const CGFloat kDefaultSpread = 0.0;
-
-static const CGFloat kMinCorner = 0.0;
-static const CGFloat kMaxCorner = 32.0;
-static const CGFloat kDefaultCorner = 0.0;
-
-static const CGFloat kMinNoiseAmplitude = 0.0;
-static const CGFloat kMaxNoiseAmplitude = 100.0;
-static const CGFloat kDefaultNoiseAmplitude = 1.0;
-
-static const GLKVector3 kDefaultColor = GLKVector3Make(1.0, 1.0, 1.0);
 static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
 - (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
-    [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
+    [[LTProgram alloc] initWithVertexSource:[LTProceduralFrameVsh source]
                              fragmentSource:[LTProceduralFrameFsh source]];
   
   LTTexture *defaultNoise = [self createNeutralNoise];
@@ -48,13 +33,15 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 }
 
 - (void)setDefaultValues {
-  self.corner = kDefaultCorner;
-  self.width = kDefaultWidth;
-  self.spread = kDefaultSpread;
-  self.noiseAmplitude = kDefaultNoiseAmplitude;
-  self.noiseChannelMixer = kDefaultNoiseChannelMixer;
-  self.color = kDefaultColor;
+  self.corner = self.defaultCorner;
+  self.width = self.defaultWidth;
+  self.spread = self.defaultSpread;
+  self.color = self.defaultColor;
   _noise = self.auxiliaryTextures[[LTProceduralFrameFsh noiseTexture]];
+  self.noiseAmplitude = self.defaultNoiseAmplitude;
+  self.noiseChannelMixer = kDefaultNoiseChannelMixer;
+  self.noiseMapping = LTProceduralFrameNoiseMappingStretch;
+  self.noiseCoordinatesOffset = self.defaultNoiseCoordinatesOffset;
 }
 
 - (LTTexture *)createNeutralNoise {
@@ -74,7 +61,7 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   else {
     distanceShift = GLKVector2Make(0.0, 1.0 - size.width / size.height);
   }
-  self[@"distanceShift"] = $(distanceShift);
+  self[[LTProceduralFrameFsh distanceShift]] = $(distanceShift);
 }
 
 // Width and spread of the frame determine the edges (edge0 and edge1) of the distance field that
@@ -88,65 +75,90 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   // Distance field value on the edge between the transition and the background.
   CGFloat edge1 = std::abs(((self.width + self.spread) / 100.0 - 0.5) * 2.0); // [-1, 1];
   
-  self[@"edge0"] = @(edge0);
-  self[@"edge1"] = @(edge1);
+  self[[LTProceduralFrameFsh edge0]] = @(edge0);
+  self[[LTProceduralFrameFsh edge1]] = @(edge1);
 }
 
-- (void)setWidth:(CGFloat)width {
-  LTParameterAssert(width >= kMinWidth, @"Width is lower than minimum value");
-  LTParameterAssert(width <= kMaxWidth, @"Width is higher than maximum value");
-  
+#pragma mark -
+#pragma mark Basic Properties
+#pragma mark -
+
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, width, Width, 0, 25, 0, ^{
   _width = width;
   [self updateEdges];
-}
+});
 
-- (void)setSpread:(CGFloat)spread {
-  LTParameterAssert(spread >= kMinSpread, @"Spread is lower than minimum value");
-  LTParameterAssert(spread <= kMaxSpread, @"Spread is higher than maximum value");
-  
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, spread, Spread, 0, 50, 0, ^{
   _spread = spread;
   [self updateEdges];
+});
+
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, corner, Corner, 0, 32, 0, ^{
+  _corner = corner;
+  self[[LTProceduralFrameFsh corner]] = @(corner);
+});
+
+LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, color, Color,
+                                                 GLKVector3Make(0, 0, 0),
+                                                 GLKVector3Make(1, 1, 1),
+                                                 GLKVector3Make(1, 1, 1));
+
+- (void)setColor:(GLKVector3)color {
+  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(color, self.minColor));
+  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(self.maxColor, color));
+  _color = color;
+  self[[LTProceduralFrameFsh color]] = $(color);
 }
 
-- (void)setCorner:(CGFloat)corner {
-  LTParameterAssert(corner >= kMinCorner, @"Corner is lower than minimum value");
-  LTParameterAssert(corner <= kMaxCorner, @"Corner is higher than maximum value");
-  
-  _corner = corner;
-  self[@"corner"] = @(corner);
-}
+#pragma mark -
+#pragma mark Noise Properties
+#pragma mark -
 
 - (void)setNoise:(LTTexture *)noise {
-  // Update details LUT texture in auxiliary textures.
+  LTParameterAssert([self isValidNoiseTexture:noise],
+      @"Noise should be either tileable or noiseMapping should be "
+       "in LTProceduralFrameNoiseMappingScale mode.");
   _noise = noise;
   [self setAuxiliaryTexture:noise withName:[LTProceduralFrameFsh noiseTexture]];
 }
 
-- (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
-  LTParameterAssert(noiseAmplitude >= kMinNoiseAmplitude,
-                    @"Noise amplitude is lower than minimum value");
-  LTParameterAssert(noiseAmplitude <= kMaxNoiseAmplitude,
-                    @"Noise amplitude is higher than maximum value");
-  
-  _noiseAmplitude = noiseAmplitude;
-  self[@"noiseAmplitude"] = @(noiseAmplitude);
+- (BOOL)isValidNoiseTexture:(LTTexture *)texture {
+  BOOL isTilable = LTIsPowerOfTwo(texture.size) && (texture.wrap == LTTextureWrapRepeat);
+  BOOL inStretchMode = (self.noiseMapping == LTProceduralFrameNoiseMappingStretch);
+  return isTilable || inStretchMode;
 }
 
-- (void)setColor:(GLKVector3)color {
-  LTParameterAssert(GLKVectorInRange(color, 0.0, 1.0),
-                    @"Frame color components should be in [0, 1] range");
-  _color = color;
-  self[@"color"] = $(color);
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseAmplitude, NoiseAmplitude,
+                                                    0, 100, 1, ^{
+  _noiseAmplitude = noiseAmplitude;
+  self[[LTProceduralFrameFsh noiseAmplitude]] = @(noiseAmplitude);
+});
+
+- (void)setNoiseMapping:(LTProceduralFrameNoiseMapping)noiseMapping {
+  _noiseMapping = noiseMapping;
+  switch (noiseMapping) {
+    case LTProceduralFrameNoiseMappingStretch:
+      self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(1, 1));
+      return;
+    case LTProceduralFrameNoiseMappingTile:
+      CGFloat xScale = self.outputSize.width / self.noise.size.width;
+      CGFloat yScale = self.outputSize.height / self.noise.size.height;
+      self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
+      return;
+  }
 }
+
+LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseCoordinatesOffset,
+                                                    NoiseCoordinatesOffset, 0, 1, 0, ^{
+  _noiseCoordinatesOffset = noiseCoordinatesOffset;
+  self[[LTProceduralFrameVsh grainOffset]] = $(GLKVector2Make(noiseCoordinatesOffset,
+                                                              noiseCoordinatesOffset));
+});
 
 - (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
   // Normalize the input, so mixing doesn't affect amplitude.
   _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
-  self[@"noiseChannelMixer"] = $(_noiseChannelMixer);
-}
-
-- (CGFloat)maxWidth {
-  return kMaxWidth;
+  self[[LTProceduralFrameFsh noiseChannelMixer]] = $(_noiseChannelMixer);
 }
 
 @end
