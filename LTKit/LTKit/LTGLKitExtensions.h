@@ -14,7 +14,7 @@ GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
 #ifdef __cplusplus
 
 /// Returns whether two vectors are equal.
-GLK_INLINE BOOL operator==(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+GLK_INLINE BOOL operator==(const GLKVector2 &lhs, const GLKVector2 &rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
 }
 
@@ -23,9 +23,29 @@ GLK_INLINE BOOL operator==(const GLKVector3 &lhs, const GLKVector3 &rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
 }
 
+/// Returns whether two vectors are equal.
+GLK_INLINE BOOL operator==(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
+}
+
+/// Returns whether two vectors are not equal.
+GLK_INLINE BOOL operator!=(const GLKVector2 &lhs, const GLKVector2 &rhs) {
+  return !(lhs == rhs);
+}
+
+/// Returns whether two vectors are not equal.
+GLK_INLINE BOOL operator!=(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return !(lhs == rhs);
+}
+
 /// Returns whether two vectors are not equal.
 GLK_INLINE BOOL operator!=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return !(lhs == rhs);
+}
+
+/// Add two vectors.
+GLK_INLINE GLKVector2 operator+(const GLKVector2 &lhs, const GLKVector2 &rhs) {
+  return GLKVector2Add(lhs, rhs);
 }
 
 /// Add two vectors.
@@ -39,6 +59,11 @@ GLK_INLINE GLKVector4 operator+(const GLKVector4 &lhs, const GLKVector4 &rhs) {
 }
 
 /// Subtract two vectors.
+GLK_INLINE GLKVector2 operator-(const GLKVector2 &lhs, const GLKVector2 &rhs) {
+  return GLKVector2Subtract(lhs, rhs);
+}
+
+/// Subtract two vectors.
 GLK_INLINE GLKVector3 operator-(const GLKVector3 &lhs, const GLKVector3 &rhs) {
   return GLKVector3Subtract(lhs, rhs);
 }
@@ -49,13 +74,13 @@ GLK_INLINE GLKVector4 operator-(const GLKVector4 &lhs, const GLKVector4 &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
-  return GLKVector3MultiplyScalar(lhs, rhs);
+GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const float &rhs) {
+  return GLKVector2MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
-  return GLKVector3MultiplyScalar(rhs, lhs);
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
+  return GLKVector3MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
@@ -64,8 +89,23 @@ GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector2 operator*(const float &lhs, const GLKVector2 &rhs) {
+  return GLKVector2MultiplyScalar(rhs, lhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
+  return GLKVector3MultiplyScalar(rhs, lhs);
+}
+
+/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector4 operator*(const float &lhs, const GLKVector4 &rhs) {
   return GLKVector4MultiplyScalar(rhs, lhs);
+}
+
+/// Divide a vector by a scalar value (element wise).
+GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const float &rhs)  {
+  return GLKVector2DivideScalar(lhs, rhs);
 }
 
 /// Divide a vector by a scalar value (element wise).

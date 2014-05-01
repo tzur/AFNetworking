@@ -38,9 +38,18 @@
 ///
 /// @code
 /// [initWithSize:size precision:LTTexturePrecisionByte
-///      channels:LTTextureChannelsRGBA allocateMemory:YES]
+///        format:LTTextureFormatRGBA allocateMemory:YES]
 /// @endcode
 + (instancetype)byteRGBATextureWithSize:(CGSize)size;
+
+/// Creates a new byte precision, 1 channels R texture with the given \c size and allocates its
+/// memory. This is a convenience method which is similar to calling:
+///
+/// @code
+/// [initWithSize:size precision:LTTexturePrecisionByte
+///        format:LTTextureFormatRed allocateMemory:YES];
+/// @endcode
++ (instancetype)byteRedTextureWithSize:(CGSize)size;
 
 /// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
 /// \c texture. This is a convenience method which is similar to calling:
