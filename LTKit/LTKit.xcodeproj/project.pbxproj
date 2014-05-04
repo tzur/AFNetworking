@@ -46,6 +46,14 @@
 		03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */; };
 		03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC17E190E24C600F17063 /* LTTiltShift.fsh */; };
 		03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */; };
+		03AFC13D19067EB800F17063 /* LTDuoProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */; };
+		03AFC14D19067F0400F17063 /* LTDuoProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC14C19067F0400F17063 /* LTDuoProcessorSpec.mm */; };
+		03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC14A19067ED700F17063 /* LTDuo.fsh */; };
+		03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC1561908ED0500F17063 /* SemiTransparentBlack.png */; };
+		03AFC1591909608600F17063 /* SanFrancisco.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC1581909608600F17063 /* SanFrancisco.jpg */; };
+		03AFC15D190CE52100F17063 /* DuoBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15A190CE52100F17063 /* DuoBlue.png */; };
+		03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15B190CE52100F17063 /* DuoBlueRed.png */; };
+		03AFC15F190CE52100F17063 /* DuoRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15C190CE52100F17063 /* DuoRed.png */; };
 		03B3765718D612830017B705 /* MealBWProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B3765618D612830017B705 /* MealBWProcessor.png */; };
 		03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */; };
 		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
@@ -599,6 +607,15 @@
 		03AFC17E190E24C600F17063 /* LTTiltShift.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTTiltShift.fsh; sourceTree = "<group>"; };
 		03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTiltShiftProcessorSpec.mm; sourceTree = "<group>"; };
 		03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterNonSquare.png; path = Resources/RadialMaskCenterNonSquare.png; sourceTree = "<group>"; };
+		03AFC13B19067EB800F17063 /* LTDuoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDuoProcessor.h; sourceTree = "<group>"; };
+		03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDuoProcessor.mm; sourceTree = "<group>"; };
+		03AFC14A19067ED700F17063 /* LTDuo.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTDuo.fsh; sourceTree = "<group>"; };
+		03AFC14C19067F0400F17063 /* LTDuoProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDuoProcessorSpec.mm; sourceTree = "<group>"; };
+		03AFC1561908ED0500F17063 /* SemiTransparentBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentBlack.png; path = Resources/SemiTransparentBlack.png; sourceTree = "<group>"; };
+		03AFC1581909608600F17063 /* SanFrancisco.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = SanFrancisco.jpg; path = Resources/SanFrancisco.jpg; sourceTree = "<group>"; };
+		03AFC15A190CE52100F17063 /* DuoBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoBlue.png; path = Resources/DuoBlue.png; sourceTree = "<group>"; };
+		03AFC15B190CE52100F17063 /* DuoBlueRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoBlueRed.png; path = Resources/DuoBlueRed.png; sourceTree = "<group>"; };
+		03AFC15C190CE52100F17063 /* DuoRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoRed.png; path = Resources/DuoRed.png; sourceTree = "<group>"; };
 		03B3765618D612830017B705 /* MealBWProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessor.png; path = Resources/MealBWProcessor.png; sourceTree = "<group>"; };
 		03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorWideFrame.png; path = Resources/MealBWProcessorWideFrame.png; sourceTree = "<group>"; };
 		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
@@ -1150,6 +1167,9 @@
 				03C192AA18F511B000DC6CA6 /* LTDualMask.fsh */,
 				03C1929918F5114100DC6CA6 /* LTDualMaskProcessor.h */,
 				03C1929A18F5114100DC6CA6 /* LTDualMaskProcessor.mm */,
+				03AFC14A19067ED700F17063 /* LTDuo.fsh */,
+				03AFC13B19067EB800F17063 /* LTDuoProcessor.h */,
+				03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */,
 				8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */,
 				8BAAC5B418BB446E00A4B4DA /* LTRectCopyProcessor.mm */,
 				03BBB373188C0675001E7703 /* LTFractionalNoise.h */,
@@ -1223,6 +1243,8 @@
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
 				8BAE3A8718B3B15A00DA79E1 /* LTColorGradientSpec.mm */,
 				03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */,
+				03AFC14C19067F0400F17063 /* LTDuoProcessorSpec.mm */,
+				8BAAC5C218BB45A600A4B4DA /* LTRectCopyProcessorSpec.mm */,
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				8BAE3A8918B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm */,
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
@@ -1639,6 +1661,11 @@
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
 				031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */,
 				031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */,
+				03AFC15A190CE52100F17063 /* DuoBlue.png */,
+				03AFC15B190CE52100F17063 /* DuoBlueRed.png */,
+				03AFC15C190CE52100F17063 /* DuoRed.png */,
+				03AFC1581909608600F17063 /* SanFrancisco.jpg */,
+				03AFC1561908ED0500F17063 /* SemiTransparentBlack.png */,
 				03C1929418F3C3A800DC6CA6 /* IslandAnalogFilm.png */,
 				03C1928618F3BF3C00DC6CA6 /* Island.jpg */,
 				03C192BE18F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png */,
@@ -2384,22 +2411,28 @@
 				03C1929518F3C3A800DC6CA6 /* IslandAnalogFilm.png in Resources */,
 				03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */,
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
+				03AFC15F190CE52100F17063 /* DuoRed.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
+				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
+				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
 				03C192B118F67FBA00DC6CA6 /* RadialMaskCenter.png in Resources */,
+				03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */,
 				03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */,
 				03D516CA18B4A9E10026B56A /* RoundWideVignetting.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
 				286A934118CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
+				03AFC15D190CE52100F17063 /* DuoBlue.png in Resources */,
 				286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
 				031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */,
+				03AFC1591909608600F17063 /* SanFrancisco.jpg in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
@@ -2461,6 +2494,7 @@
 			files = (
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
+				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,
 				03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */,
 				03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */,
@@ -2474,6 +2508,7 @@
 				283906A718C4DB1E00BD21CE /* LTTextureBrushShader.fsh in Sources */,
 				283906A618C4DB1A00BD21CE /* LTErasingBrushShader.fsh in Sources */,
 				283906A518C4DB1900BD21CE /* LTEdgeAvoidingBrushShader.vsh in Sources */,
+				03AFC13D19067EB800F17063 /* LTDuoProcessor.mm in Sources */,
 				283906A418C4DB1700BD21CE /* LTEdgeAvoidingBrushShader.fsh in Sources */,
 				283906A218C4DB1300BD21CE /* LTBrushShader.fsh in Sources */,
 				283906A318C4DB1500BD21CE /* LTBrushShader.vsh in Sources */,
@@ -2615,6 +2650,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03AFC14D19067F0400F17063 /* LTDuoProcessorSpec.mm in Sources */,
 				287705BB18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				28907A6618D7274E00DFBE7F /* LTBrushEffectExamples.mm in Sources */,
 				8BAE3A4718B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm in Sources */,
