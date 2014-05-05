@@ -4,8 +4,9 @@
 #import "LTMixerProcessor.h"
 
 #import "LTCGExtensions.h"
-#import "LTPassthroughProcessor.h"
+#import "LTGLKitExtensions.h"
 #import "LTProgram.h"
+#import "LTRectCopyProcessor.h"
 #import "LTRectMapping.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTMixerFsh.h"
@@ -23,8 +24,8 @@
 
 @interface LTMixerProcessor ()
 
-/// Passthrough processor used to write the back texture prior to mixing.
-@property (strong, nonatomic) LTPassthroughProcessor *passthroughProcessor;
+/// Processor used to write the back texture to output prior to mixing.
+@property (strong, nonatomic) LTRectCopyProcessor *backCopyProcessor;
 
 /// Source rect to draw front texture from.
 @property (strong, nonatomic) LTRotatedRect *frontSourceRect;
@@ -47,24 +48,22 @@
                         mask:(LTTexture *)mask output:(LTTexture *)output {
   LTParameterAssert(front.size == mask.size, @"Front size (%g, %g) must equal mask size (%g, %g)",
                     front.size.width, front.size.height, mask.size.width, mask.size.height);
-  if (self = [super initWithProgram:[self createMixerProgram] sourceTexture:back
-                  auxiliaryTextures:@{[LTMixerFsh frontTexture]: front,
-                                      [LTMixerFsh maskTexture]: mask}
+  if (self = [super initWithProgram:[self createMixerProgram] sourceTexture:front
+                  auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask}
                           andOutput:output]) {
     self.front = front;
-    self.passthroughProcessor = [self createPassthroughProcessorWithInput:back output:output];
+    self.backCopyProcessor = [self createBackCopyProcessorWithInput:back output:output];
     [self setDefaultValues];
   }
   return self;
 }
 
 - (void)setDefaultValues {
+  self.frontSourceRect = [LTRotatedRect rect:CGRectFromSize(self.front.size)];
+
   self.frontTranslation = GLKVector2Make(0, 0);
   self.frontScaling = 1;
   self.frontRotation = 0;
-
-  self.frontSourceRect = [LTRotatedRect rect:CGRectFromSize(self.front.size)];
-  self.frontTargetRect = [self.frontSourceRect copy];
 }
 
 - (LTProgram *)createMixerProgram {
@@ -72,9 +71,9 @@
                                   fragmentSource:[LTMixerFsh source]];
 }
 
-- (LTPassthroughProcessor *)createPassthroughProcessorWithInput:(LTTexture *)input
-                                                         output:(LTTexture *)output {
-  return [[LTPassthroughProcessor alloc] initWithInput:input output:output];
+- (LTRectCopyProcessor *)createBackCopyProcessorWithInput:(LTTexture *)input
+                                                   output:(LTTexture *)output {
+  return [[LTRectCopyProcessor alloc] initWithInput:input output:output];
 }
 
 #pragma mark -
@@ -84,7 +83,7 @@
 - (id<LTImageProcessorOutput>)process {
   // TODO:(yaron) this can be improved by processing only the area that needs to be redrawn since
   // the last processing.
-  [self.passthroughProcessor process];
+  [self.backCopyProcessor process];
   return [super process];
 }
 
@@ -102,6 +101,19 @@
   self[[LTMixerFsh blendMode]] = @(blendMode);
 }
 
+- (void)setOutputFillMode:(LTMixerOutputFillMode)outputFillMode {
+  _outputFillMode = outputFillMode;
+
+  switch (outputFillMode) {
+    case LTMixerOutputFillModeStretch:
+      self.backCopyProcessor.texturingMode = LTRectCopyTexturingModeStretch;
+      break;
+    case LTMixerOutputFillModeTile:
+      self.backCopyProcessor.texturingMode = LTRectCopyTexturingModeTile;
+      break;
+  }
+}
+
 - (void)setFrontTranslation:(GLKVector2)frontTranslation {
   _frontTranslation = frontTranslation;
   [self updateFrontTargetRect];
@@ -115,13 +127,6 @@
 - (void)setFrontRotation:(float)frontRotation {
   _frontRotation = frontRotation;
   [self updateFrontTargetRect];
-}
-
-- (void)setFrontSourceRect:(LTRotatedRect *)frontSourceRect {
-  _frontSourceRect = frontSourceRect;
-
-  GLKMatrix3 targetTextureMat = LTTextureMatrix3ForRotatedRect(frontSourceRect, self.front.size);
-  self[[LTMixerVsh frontTextureMat]] = $(targetTextureMat);
 }
 
 - (void)updateFrontTargetRect {

@@ -362,6 +362,9 @@
 		8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */; };
 		8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA8F46191111980088310E /* MixerPlacementRect.png */; };
 		8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */; };
+		8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */; };
+		8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA8F5119179BC70088310E /* MixerPlacementComplex.png */; };
+		8BFA8F541917C97B0088310E /* MixerTilingComplex.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA8F531917C97B0088310E /* MixerTilingComplex.png */; };
 		8BFE1E0818756A69008035BF /* LTOneShotImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E0718756A69008035BF /* LTOneShotImageProcessor.mm */; };
 		8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E1618756B1D008035BF /* LTIterativeImageProcessor.mm */; };
 		8BFE439D18759533008B699F /* LTImageProcessorOutput.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE439C18759533008B699F /* LTImageProcessorOutput.mm */; };
@@ -1049,6 +1052,9 @@
 		8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTGPUImageProcessor+Protected.mm"; sourceTree = "<group>"; };
 		8BFA8F46191111980088310E /* MixerPlacementRect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MixerPlacementRect.png; path = Resources/MixerPlacementRect.png; sourceTree = "<group>"; };
 		8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMultiscaleNoiseProcessorSpec.mm; sourceTree = "<group>"; };
+		8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTRectCopy.fsh; sourceTree = "<group>"; };
+		8BFA8F5119179BC70088310E /* MixerPlacementComplex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MixerPlacementComplex.png; path = Resources/MixerPlacementComplex.png; sourceTree = "<group>"; };
+		8BFA8F531917C97B0088310E /* MixerTilingComplex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MixerTilingComplex.png; path = Resources/MixerTilingComplex.png; sourceTree = "<group>"; };
 		8BFE1E0618756A69008035BF /* LTOneShotImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTOneShotImageProcessor.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BFE1E0718756A69008035BF /* LTOneShotImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTOneShotImageProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BFE1E1518756B1D008035BF /* LTIterativeImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTIterativeImageProcessor.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1642,6 +1648,8 @@
 				286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */,
 				286A933E18CF743200F203DF /* BristleBrushThickness.0.1.png */,
 				8BFA8F46191111980088310E /* MixerPlacementRect.png */,
+				8BFA8F5119179BC70088310E /* MixerPlacementComplex.png */,
+				8BFA8F531917C97B0088310E /* MixerTilingComplex.png */,
 				031DF21218FEB18E003FA627 /* Macbeth.jpg */,
 				0366BA4018CCA51A002E6BA1 /* Meal.jpg */,
 				03C7B6D618CF313500E728F5 /* MealAdjusted.png */,
@@ -2356,6 +2364,7 @@
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
+				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
 				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
@@ -2388,6 +2397,7 @@
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
 				8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */,
+				8BFA8F541917C97B0088310E /* MixerTilingComplex.png in Resources */,
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */,
 				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,

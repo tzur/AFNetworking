@@ -11,6 +11,14 @@ typedef NS_ENUM(NSUInteger, LTBlendMode) {
   LTBlendModeHardLight
 };
 
+/// How to handle the back texture if is has a different size than the output.
+typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
+  /// Stretch the back texture (possibly non-uniformly) to completely fill the output.
+  LTMixerOutputFillModeStretch = 0,
+  /// Tile the back texture to fill the output.
+  LTMixerOutputFillModeTile
+};
+
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
 /// mask on the front texture. The back texture is fixed, while the front texture can be translated,
 /// rotated and scaled. The mixer takes care of textures with alpha, and incorporates the mask's
@@ -24,6 +32,10 @@ typedef NS_ENUM(NSUInteger, LTBlendMode) {
 
 /// Blend mode used to blend \c front to \c back. The default value is \c LTBlendModeNormal.
 @property (nonatomic) LTBlendMode blendMode;
+
+/// How the output should be filled with the back texture. This only has effect when the size of the
+/// output is different than the back texture. The default value is \c LTMixerOutputFillModeStretch.
+@property (nonatomic) LTMixerOutputFillMode outputFillMode;
 
 /// Translation of the front texture on top of the back texture. The default value is \c (0, 0).
 @property (nonatomic) GLKVector2 frontTranslation;
