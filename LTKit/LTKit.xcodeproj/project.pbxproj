@@ -1187,6 +1187,7 @@
 				03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */,
 				03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */,
 				03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */,
+				8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */,
 				8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */,
 				8BAAC5B418BB446E00A4B4DA /* LTRectCopyProcessor.mm */,
 				8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */,
@@ -2455,6 +2456,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
+				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
 				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,
 				03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */,
 				03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */,
