@@ -5,6 +5,18 @@
 #import <cmath>
 #import <opencv2/core/core.hpp>
 
+GLK_INLINE GLKMatrix2 GLKMatrix2Make(float m00, float m01, float m10, float m11) {
+  GLKMatrix2 m = {{m00, m01,
+                   m10, m11}};
+  return m;
+}
+
+GLK_INLINE GLKMatrix2 GLKMatrix2Transpose(GLKMatrix2 matrix) {
+  GLKMatrix2 m = {{matrix.m[0], matrix.m[2],
+                   matrix.m[1], matrix.m[3]}};
+  return m;
+}
+
 GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
   return GLKMatrix3Make(1, 0, 0,
                         0, 1, 0,
