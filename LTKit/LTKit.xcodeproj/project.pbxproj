@@ -14,6 +14,9 @@
 		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */; };
 		03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388E190FD0240095F99B /* TiltShiftRadial.png */; };
+		031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 031338B019111DD20095F99B /* LTProceduralFrame.vsh */; };
+		031338C1191216020095F99B /* Checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 031338C0191216020095F99B /* Checkerboard.png */; };
+		031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 031338C2191238050095F99B /* ShiftedTiledFrame.png */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
 		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
@@ -27,8 +30,8 @@
 		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
-		0367A4B018ACF45700B42E34 /* LTProceduralFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */; };
-		0367A4B218ACF47B00B42E34 /* LTProceduralFrameSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B118ACF47B00B42E34 /* LTProceduralFrameSpec.mm */; };
+		0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */; };
+		0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */; };
 		0367A4B518ACF7AA00B42E34 /* LTProceduralFrame.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */; };
 		03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */; };
 		03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */; };
@@ -41,10 +44,6 @@
 		03AD29AF18913E9400516D14 /* LTBicubicResizeProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */; };
 		03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */; };
 		03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */; };
-		03AFC171190E24B500F17063 /* LTTiltShiftProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC170190E24B500F17063 /* LTTiltShiftProcessor.mm */; };
-		03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */; };
-		03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC17E190E24C600F17063 /* LTTiltShift.fsh */; };
-		03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */; };
 		03AFC13D19067EB800F17063 /* LTDuoProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */; };
 		03AFC14D19067F0400F17063 /* LTDuoProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC14C19067F0400F17063 /* LTDuoProcessorSpec.mm */; };
 		03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC14A19067ED700F17063 /* LTDuo.fsh */; };
@@ -53,6 +52,10 @@
 		03AFC15D190CE52100F17063 /* DuoBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15A190CE52100F17063 /* DuoBlue.png */; };
 		03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15B190CE52100F17063 /* DuoBlueRed.png */; };
 		03AFC15F190CE52100F17063 /* DuoRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC15C190CE52100F17063 /* DuoRed.png */; };
+		03AFC171190E24B500F17063 /* LTTiltShiftProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC170190E24B500F17063 /* LTTiltShiftProcessor.mm */; };
+		03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */; };
+		03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AFC17E190E24C600F17063 /* LTTiltShift.fsh */; };
+		03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */; };
 		03B3765718D612830017B705 /* MealBWProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B3765618D612830017B705 /* MealBWProcessor.png */; };
 		03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */; };
 		03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03BBB31F1887B7CB001E7703 /* LTColorGradient.mm */; };
@@ -574,6 +577,9 @@
 		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftDoubleLinear.png; path = Resources/TiltShiftDoubleLinear.png; sourceTree = "<group>"; };
 		0313388E190FD0240095F99B /* TiltShiftRadial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftRadial.png; path = Resources/TiltShiftRadial.png; sourceTree = "<group>"; };
+		031338B019111DD20095F99B /* LTProceduralFrame.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTProceduralFrame.vsh; sourceTree = "<group>"; };
+		031338C0191216020095F99B /* Checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkerboard.png; path = Resources/Checkerboard.png; sourceTree = "<group>"; };
+		031338C2191238050095F99B /* ShiftedTiledFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShiftedTiledFrame.png; path = Resources/ShiftedTiledFrame.png; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
 		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
@@ -588,9 +594,9 @@
 		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
-		0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProceduralFrame.h; sourceTree = "<group>"; };
-		0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrame.mm; sourceTree = "<group>"; };
-		0367A4B118ACF47B00B42E34 /* LTProceduralFrameSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrameSpec.mm; sourceTree = "<group>"; };
+		0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProceduralFrameProcessor.h; sourceTree = "<group>"; };
+		0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrameProcessor.mm; sourceTree = "<group>"; };
+		0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrameProcessorSpec.mm; sourceTree = "<group>"; };
 		0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTProceduralFrame.fsh; sourceTree = "<group>"; };
 		03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSeparableImageProcessor.h; sourceTree = "<group>"; };
 		03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessor.mm; sourceTree = "<group>"; };
@@ -607,11 +613,6 @@
 		03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBicubicResizeProcessor.mm; sourceTree = "<group>"; };
 		03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBicubicResize.fsh; sourceTree = "<group>"; };
 		03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTBicubicResizeProcessorSpec.mm; path = ../LTKit/LTBicubicResizeProcessorSpec.mm; sourceTree = "<group>"; };
-		03AFC16F190E24B500F17063 /* LTTiltShiftProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTiltShiftProcessor.h; sourceTree = "<group>"; };
-		03AFC170190E24B500F17063 /* LTTiltShiftProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTiltShiftProcessor.mm; sourceTree = "<group>"; };
-		03AFC17E190E24C600F17063 /* LTTiltShift.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTTiltShift.fsh; sourceTree = "<group>"; };
-		03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTiltShiftProcessorSpec.mm; sourceTree = "<group>"; };
-		03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterNonSquare.png; path = Resources/RadialMaskCenterNonSquare.png; sourceTree = "<group>"; };
 		03AFC13B19067EB800F17063 /* LTDuoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDuoProcessor.h; sourceTree = "<group>"; };
 		03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDuoProcessor.mm; sourceTree = "<group>"; };
 		03AFC14A19067ED700F17063 /* LTDuo.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTDuo.fsh; sourceTree = "<group>"; };
@@ -621,6 +622,11 @@
 		03AFC15A190CE52100F17063 /* DuoBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoBlue.png; path = Resources/DuoBlue.png; sourceTree = "<group>"; };
 		03AFC15B190CE52100F17063 /* DuoBlueRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoBlueRed.png; path = Resources/DuoBlueRed.png; sourceTree = "<group>"; };
 		03AFC15C190CE52100F17063 /* DuoRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DuoRed.png; path = Resources/DuoRed.png; sourceTree = "<group>"; };
+		03AFC16F190E24B500F17063 /* LTTiltShiftProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTiltShiftProcessor.h; sourceTree = "<group>"; };
+		03AFC170190E24B500F17063 /* LTTiltShiftProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTiltShiftProcessor.mm; sourceTree = "<group>"; };
+		03AFC17E190E24C600F17063 /* LTTiltShift.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTTiltShift.fsh; sourceTree = "<group>"; };
+		03AFC180190E24F600F17063 /* LTTiltShiftProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTiltShiftProcessorSpec.mm; sourceTree = "<group>"; };
+		03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterNonSquare.png; path = Resources/RadialMaskCenterNonSquare.png; sourceTree = "<group>"; };
 		03B3765618D612830017B705 /* MealBWProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessor.png; path = Resources/MealBWProcessor.png; sourceTree = "<group>"; };
 		03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorWideFrame.png; path = Resources/MealBWProcessorWideFrame.png; sourceTree = "<group>"; };
 		03BBB31E1887B7CB001E7703 /* LTColorGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorGradient.h; sourceTree = "<group>"; };
@@ -1221,9 +1227,10 @@
 				8BB14D7318BF464F00701A1B /* LTPatchProcessor.mm */,
 				8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */,
 				8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */,
-				0367A4AE18ACF45700B42E34 /* LTProceduralFrame.h */,
-				0367A4AF18ACF45700B42E34 /* LTProceduralFrame.mm */,
+				031338B019111DD20095F99B /* LTProceduralFrame.vsh */,
 				0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */,
+				0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */,
+				0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */,
 				03C192EA18FABA0D00DC6CA6 /* LTRGBToHSV.fsh */,
 				03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */,
 				03C192DC18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.mm */,
@@ -1273,7 +1280,7 @@
 				8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */,
 				8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */,
 				8BAB7C5318C61853005BE12A /* LTPatchProcessorSpec.mm */,
-				0367A4B118ACF47B00B42E34 /* LTProceduralFrameSpec.mm */,
+				0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */,
 				03C1930C18FADC9000DC6CA6 /* LTSelectiveAdjustProcessorSpec.mm */,
 				8BAECBB518BDEAAC00315425 /* LTSplitComplexMatSpec.mm */,
 				8BAECDEB18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm */,
@@ -1678,6 +1685,8 @@
 			children = (
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
+				031338C0191216020095F99B /* Checkerboard.png */,
+				031338C2191238050095F99B /* ShiftedTiledFrame.png */,
 				031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */,
 				031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */,
 				03AFC15A190CE52100F17063 /* DuoBlue.png */,
@@ -2422,7 +2431,9 @@
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
 				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
+				031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
+				031338C1191216020095F99B /* Checkerboard.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
@@ -2439,7 +2450,6 @@
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
-				03F99E431897AEF500B77136 /* iPhone5FractionalNoise.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
@@ -2518,6 +2528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
+				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
@@ -2624,7 +2635,7 @@
 				282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */,
 				03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */,
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
-				0367A4B018ACF45700B42E34 /* LTProceduralFrame.mm in Sources */,
+				0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */,
 				03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */,
@@ -2760,7 +2771,7 @@
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
 				8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */,
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
-				0367A4B218ACF47B00B42E34 /* LTProceduralFrameSpec.mm in Sources */,
+				0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */,
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */,

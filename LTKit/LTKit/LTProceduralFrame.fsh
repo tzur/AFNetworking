@@ -21,6 +21,7 @@ uniform highp vec3 color;
 uniform highp vec2 distanceShift;
 
 varying highp vec2 vTexcoord;
+varying highp vec2 vGrainTexcoord;
 
 void main() {
   sourceTexture;
@@ -46,7 +47,7 @@ void main() {
   
   // 3. Add noise in the transition area.
   // Read noise and make it zero mean.
-  highp vec3 noiseTriplet = texture2D(noiseTexture, vTexcoord).rgb - 0.5;
+  highp vec3 noiseTriplet = texture2D(noiseTexture, vGrainTexcoord).rgb - 0.5;
   highp float noise = dot(noiseTriplet, noiseChannelMixer) * noiseAmplitude;
   
   highp float contrastScalingFactor = 1.0 - 2.0 * abs(dist - 0.5);
