@@ -5,7 +5,7 @@
 
 SpecBegin(LTGLKitExtensions)
 
-fcontext(@"GLKMatrix2", ^{
+context(@"GLKMatrix2", ^{
   it(@"should make GLKMatrix2", ^{
     GLKMatrix2 m = GLKMatrix2Make(1, 2, 3, 4);
 
@@ -16,7 +16,7 @@ fcontext(@"GLKMatrix2", ^{
   });
 });
 
-fcontext(@"GLKMatrix3", ^{
+context(@"GLKMatrix3", ^{
   it(@"should transpose matrix", ^{
     GLKMatrix3 m = GLKMatrix3Make(1, 2, 3,
                                   4, 5, 6,
@@ -49,7 +49,7 @@ fcontext(@"GLKMatrix3", ^{
   });
 });
 
-fcontext(@"GLKVector2 operations", ^{
+context(@"GLKVector2 operations", ^{
   it(@"equal", ^{
     expect(GLKVector2Make(1, 2) == GLKVector2Make(1, 2)).to.beTruthy();
     expect(GLKVector2Make(1, 2) == GLKVector2Make(-1, 2)).to.beFalsy();
@@ -89,7 +89,7 @@ fcontext(@"GLKVector2 operations", ^{
   });
 });
 
-fcontext(@"GLKVector3 operations", ^{
+context(@"GLKVector3 operations", ^{
   it(@"equal", ^{
     expect(GLKVector3Make(1, 2, 3) == GLKVector3Make(1, 2, 3)).to.beTruthy();
     expect(GLKVector3Make(1, 2, 3) == GLKVector3Make(-1, 2, 3)).to.beFalsy();
@@ -140,7 +140,7 @@ fcontext(@"GLKVector3 operations", ^{
   });
 });
 
-fcontext(@"GLKVector4 operations", ^{
+context(@"GLKVector4 operations", ^{
   it(@"equal", ^{
     expect(GLKVector4Make(1, 2, 3, 4) == GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
     expect(GLKVector4Make(1, 2, 3, 4) == GLKVector4Make(-1, 2, 3, 4)).to.beFalsy();
