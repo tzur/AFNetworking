@@ -2,6 +2,7 @@
 // Created by Amit Goldstein.
 
 #import "LTCGExtensions.h"
+#import "LTGLKitExtensions.h"
 
 SpecBegin(LTCGExtensions)
 
@@ -216,6 +217,37 @@ context(@"rounding cgstructs", ^{
     expect(CGRoundRect(rect)).to.equal(CGRectFromEdges(0, 1, 3, 2));
     expect(CGRoundRectInside(rect)).to.equal(CGRectFromEdges(1, 1, 2, 2));
     expect(CGRoundRectOutside(rect)).to.equal(CGRectFromEdges(0, 0, 3, 3));
+  });
+});
+
+context(@"GLKitExtensions interfacing", ^{
+  it(@"should calculate line equations", ^{
+    CGPoint p0 = CGPointMake(-2, 0);
+    CGPoint p1 = CGPointMake(4, -5);
+    expect(GLKLineEquation(CGPointZero, CGPointZero)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(p0, p0)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(p1, p1)).to.beCloseToGLKVector(GLKVector3Zero);
+    
+    expect(GLKLineEquation(p0, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1, p0));
+    expect(GLKLineEquation(CGPointZero, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1,
+                                                                                    CGPointZero));
+    expect(GLKLineEquation(p0, CGPointZero)).to.beCloseToGLKVector(-GLKLineEquation(CGPointZero,
+                                                                                    p0));
+    
+    GLKVector3 line = GLKLineEquation(p0, p1);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(-0.5, -0.6, -1));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
+    
+    line = GLKLineEquation(CGPointZero, p0);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(0, 2, 0));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
+    
+    line = GLKLineEquation(CGPointZero, p1);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(-5, -4, 0));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
   });
 });
 

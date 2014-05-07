@@ -25,6 +25,24 @@ GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
 
 #ifdef __cplusplus
 
+/// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
+GLK_EXTERN const GLKVector4 GLKVector4Zero;
+
+/// The "zero" vector, equivalent to GLKVector3Make(0, 0, 0).
+GLK_EXTERN const GLKVector3 GLKVector3Zero;
+
+/// The "zero" vector, equivalent to GLKVector2Make(0, 0).
+GLK_EXTERN const GLKVector2 GLKVector2Zero;
+
+/// The "one" vector, equivalent to GLKVector4Make(1, 1, 1, 1).
+GLK_EXTERN const GLKVector4 GLKVector4One;
+
+/// The "one" vector, equivalent to GLKVector3Make(1, 1, 1).
+GLK_EXTERN const GLKVector3 GLKVector3One;
+
+/// The "one" vector, equivalent to GLKVector2Make(1, 1).
+GLK_EXTERN const GLKVector2 GLKVector2One;
+
 /// Returns whether two vectors are equal.
 GLK_INLINE BOOL operator==(const GLKVector2 &lhs, const GLKVector2 &rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
@@ -53,6 +71,31 @@ GLK_INLINE BOOL operator!=(const GLKVector3 &lhs, const GLKVector3 &rhs) {
 /// Returns whether two vectors are not equal.
 GLK_INLINE BOOL operator!=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return !(lhs == rhs);
+}
+
+/// Returns whether two vectors are equal.
+GLK_INLINE BOOL operator<=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return GLKVector4AllGreaterThanOrEqualToVector4(rhs, lhs);
+}
+
+/// Returns whether two vectors are equal.
+GLK_INLINE BOOL operator>=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return GLKVector4AllGreaterThanOrEqualToVector4(lhs, rhs);
+}
+
+/// Negate vector.
+GLK_INLINE GLKVector2 operator-(const GLKVector2 &vec) {
+  return GLKVector2Negate(vec);
+}
+
+/// Negate vector.
+GLK_INLINE GLKVector3 operator-(const GLKVector3 &vec) {
+  return GLKVector3Negate(vec);
+}
+
+/// Negate vector.
+GLK_INLINE GLKVector4 operator-(const GLKVector4 &vec) {
+  return GLKVector4Negate(vec);
 }
 
 /// Add two vectors.
@@ -91,18 +134,13 @@ GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const float &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
-  return GLKVector3MultiplyScalar(lhs, rhs);
-}
-
-/// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
-  return GLKVector4MultiplyScalar(lhs, rhs);
-}
-
-/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector2 operator*(const float &lhs, const GLKVector2 &rhs) {
   return GLKVector2MultiplyScalar(rhs, lhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
+  return GLKVector3MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
@@ -111,12 +149,17 @@ GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
+  return GLKVector4MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector4 operator*(const float &lhs, const GLKVector4 &rhs) {
   return GLKVector4MultiplyScalar(rhs, lhs);
 }
 
 /// Divide a vector by a scalar value (element wise).
-GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const float &rhs)  {
+GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const float &rhs) {
   return GLKVector2DivideScalar(lhs, rhs);
 }
 
@@ -140,9 +183,23 @@ GLK_INLINE GLKVector2 GLKVector2FromCGPoint(const CGPoint &point) {
   return GLKVector2Make(point.x, point.y);
 }
 
+GLK_INLINE GLKVector2 GLKVector2NormalTo(const GLKVector2 &vec) {
+  return GLKVector2Make(vec.y, -vec.x);
+}
+
 /// Returns \c YES if every component of the vector is in [a, b] range.
 GLK_INLINE BOOL GLKVector3InRange(const GLKVector3 &vec, const float a, const float b) {
   return (vec.x >= a && vec.y >= a && vec.z >= a && vec.x <= b && vec.y <= b && vec.z <= b);
+}
+
+/// Returns the standard line equation between the given points, or \c GLKVector3Zero in the
+/// degenerate case.
+GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target);
+
+/// Returns the standard line equation between the given points, or \c GLKVector3Zero in the
+/// degenerate case.
+GLK_INLINE GLKVector3 GLKLineEquation(const CGPoint &source, const CGPoint &target) {
+  return GLKLineEquation(GLKVector2FromCGPoint(source), GLKVector2FromCGPoint(target));
 }
 
 namespace std {
@@ -159,6 +216,11 @@ namespace std {
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector4 &v) {
     return v.x + v.y + v.z + v.w;
+  }
+  
+  /// Round the elements.
+  CG_INLINE GLKVector2 round(const GLKVector2 &v) {
+    return GLKVector2Make(round(v.x), round(v.y));
   }
   
   /// Round the elements.

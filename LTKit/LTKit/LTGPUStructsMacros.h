@@ -33,13 +33,18 @@
 /// @note beware from alignment constraints when creating structs. For example, GLKVector4 is
 /// 16-byte aligned. Usually, this is not required in such structs. Therefore, consider using
 /// #pragma pack(n) to reduce the total size of the struct.
-#define LTGPUStructMake(STRUCT, ...) \
+#define LTGPUStructDeclare(STRUCT, ...) \
   typedef struct { \
     metamacro_foreach2(_LTStructMember,, _LTNull, __VA_ARGS__) \
   } STRUCT; \
-  \
+
+#define LTGPUStructImplement(STRUCT, ...) \
   __attribute__((constructor)) static void __register##STRUCT() { \
     [[LTGPUStructRegistry sharedInstance] \
         registerStruct:[[LTGPUStruct alloc] initWithName:@#STRUCT size:sizeof(STRUCT) \
              andFields:@[metamacro_foreach2(_LTStructDict, STRUCT, _LTComma, __VA_ARGS__)]]]; \
   }
+
+#define LTGPUStructMake(STRUCT, ...) \
+  LTGPUStructDeclare(STRUCT, __VA_ARGS__) \
+  LTGPUStructImplement(STRUCT, __VA_ARGS__)

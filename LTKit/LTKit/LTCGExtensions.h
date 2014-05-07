@@ -33,6 +33,33 @@ CG_INLINE BOOL CGSizeIsNull(CGSize size) {
   return isnan(size.width) && isnan(size.height);
 }
 
+#pragma mark -
+#pragma mark CGTriangle
+#pragma mark -
+
+typedef NS_OPTIONS(NSUInteger, CGTriangleEdgeMask) {
+  CGTriangleEdgeNone = 0,
+  CGTriangleEdgeAB = (1 << 0),  // => 00000001
+  CGTriangleEdgeBC = (1 << 1),  // => 00000010
+  CGTriangleEdgeCA = (1 << 2),  // => 00000100
+  CGTriangleEdgeAll = CGTriangleEdgeAB | CGTriangleEdgeBC | CGTriangleEdgeCA // => 00000111
+};
+
+struct CGTriangle {
+  CGPoint a;
+  CGPoint b;
+  CGPoint c;
+};
+typedef struct CGTriangle CGTriangle;
+
+CG_INLINE CGTriangle CGTriangleMake(CGPoint a, CGPoint b, CGPoint c) {
+  CGTriangle t;
+  t.a = a;
+  t.b = b;
+  t.c = c;
+  return t;
+}
+
 #ifdef __cplusplus
 
 #pragma mark -
