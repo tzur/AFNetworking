@@ -4,13 +4,13 @@
 #import <LTKit/LTAssert.h>
 
 // Supporting Files.
-#import <LTKit/LTCVHalfFloatExtension.h>
 #import <LTKit/LTCGExtensions.h>
 #import <LTKit/LTGLKitExtensions.h>
 #import <LTKit/LTGLUtils.h>
 #import <LTKit/LTLogger.h>
 #import <LTKit/LTLoggerMacrosImpl.h>
 #import <LTKit/LTOpenCVExtensions.h>
+#import <LTKit/LTOpenCVHalfFloat.h>
 #import <LTKit/LTRotatedRect.h>
 #import <LTKit/LTTimer.h>
 #import <LTKit/LTTypedefs.h>
