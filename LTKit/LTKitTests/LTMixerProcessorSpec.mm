@@ -3,6 +3,7 @@
 
 #import "LTMixerProcessor.h"
 
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 /// Write plus sign with the given offset and the specified color.
@@ -44,7 +45,7 @@ beforeEach(^{
   back = [LTTexture textureWithImage:cv::Mat4b(16, 16, backColor)];
   front = [LTTexture textureWithImage:cv::Mat4b(8, 8, frontColor)];
   mask = [LTTexture textureWithSize:CGSizeMake(8, 8)
-                          precision:LTTexturePrecisionHalfFloat
+                          precision:LTTexturePrecisionByte
                              format:LTTextureFormatRed allocateMemory:YES];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
@@ -110,6 +111,94 @@ context(@"front placement", ^{
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     LTPlusSignAt(expected, cv::Point(3, 3), resultColor);
+
+    expect($([result.texture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should blend complex front with correct translation, scaling and rotation", ^{
+    cv::Mat4b image(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
+    image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
+    [front load:image];
+
+    processor.frontTranslation = GLKVector2Make(4, 4);
+    processor.frontScaling = 1.5;
+    processor.frontRotation = M_PI_4;
+    LTSingleTextureOutput *result = [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementRect.png");
+
+    expect($([result.texture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should blend complex front to complex back with correct translation", ^{
+    cv::Mat4b frontImage(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
+    frontImage(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(255, 255, 0, 255);
+    [front load:frontImage];
+
+    cv::Mat4b backImage(back.size.height, back.size.width, cv::Vec4b(0, 255, 0, 255));
+    backImage(cv::Rect(0, 8, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
+    backImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
+    [back load:backImage];
+
+    processor.frontTranslation = GLKVector2Make(4, 4);
+    LTSingleTextureOutput *result = [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementComplex.png");
+
+    expect($([result.texture image])).to.beCloseToMat($(expected));
+  });
+});
+
+context(@"tiling", ^{
+  it(@"should tile back on output", ^{
+    // Front is completely disabled by the mask, only verify back tiling.
+    [mask clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+
+    // Create square pattern.
+    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
+      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
+    }];
+
+    // Enlarge output to enable tiling.
+    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
+
+    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+    processor.outputFillMode = LTMixerOutputFillModeTile;
+    LTSingleTextureOutput *result = [processor process];
+
+    cv::Mat4b expected(32, 32);
+    [back mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+      mapped.copyTo(expected(cv::Rect(0, 0, 16, 16)));
+      mapped.copyTo(expected(cv::Rect(0, 16, 16, 16)));
+      mapped.copyTo(expected(cv::Rect(16, 0, 16, 16)));
+      mapped.copyTo(expected(cv::Rect(16, 16, 16, 16)));
+    }];
+
+    expect($([result.texture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should blend tiled back image with translation, scaling and rotation", ^{
+    cv::Mat4b frontImage(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
+    frontImage(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(255, 255, 0, 255);
+    [front load:frontImage];
+    front.magFilterInterpolation = LTTextureInterpolationNearest;
+
+    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
+      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
+    }];
+
+    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
+
+    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+    processor.outputFillMode = LTMixerOutputFillModeTile;
+    processor.frontTranslation = GLKVector2Make(6, 6);
+    processor.frontRotation = M_PI_2;
+    processor.frontScaling = 2.0;
+    LTSingleTextureOutput *result = [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"MixerTilingComplex.png");
 
     expect($([result.texture image])).to.beCloseToMat($(expected));
   });

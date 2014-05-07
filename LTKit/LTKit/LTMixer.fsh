@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#extension GL_EXT_shader_framebuffer_fetch : require
+
 const int kBlendModeNormal = 0;
 const int kBlendModeDarken = 1;
 const int kBlendModeMultiply = 2;
@@ -8,18 +10,16 @@ const int kBlendModeHardLight = 3;
 const int kBlendModeSoftLight = 4;
 
 uniform lowp sampler2D sourceTexture;
-uniform lowp sampler2D frontTexture;
 uniform mediump sampler2D maskTexture;
 
 uniform int blendMode;
 
-varying highp vec2 vBackTexcoord;
 varying highp vec2 vFrontTexcoord;
 varying highp vec2 vMaskTexcoord;
 
 void main() {
-  lowp vec4 back = texture2D(sourceTexture, vBackTexcoord);
-  lowp vec4 front = texture2D(frontTexture, vFrontTexcoord);
+  mediump vec4 back = gl_LastFragData[0];
+  lowp vec4 front = texture2D(sourceTexture, vFrontTexcoord);
   mediump vec4 mask = texture2D(maskTexture, vMaskTexcoord);
 
   // Calculate new front, including mask alpha value.

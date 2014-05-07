@@ -3,11 +3,9 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class LTOneShotImageProcessor
-///
 /// Creates multiscale pseudo-noise by exploiting numerical issues of trigonometric functions and
 /// bilinear resampling.
-@interface LTOneShotMultiscaleNoiseProcessor : LTOneShotImageProcessor
+@interface LTMultiscaleNoiseProcessor : LTOneShotImageProcessor
 
 /// Initializes a noise processor with an output texture. Default seed value is 0, and default
 /// density is 2.
