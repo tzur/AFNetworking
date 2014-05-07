@@ -125,7 +125,7 @@ LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, whitePoint, WhitePo
                                                  GLKVector3Make(1, 1, 1));
 
 - (void)setWhitePoint:(GLKVector3)whitePoint {
-  LTParameterAssert(GLKVectorInRange(whitePoint, 0.0, 2.0), @"Color filter is out of range.");
+  LTParameterAssert(GLKVector3InRange(whitePoint, 0.0, 2.0), @"Color filter is out of range.");
   LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(whitePoint, self.minWhitePoint));
   LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(self.maxWhitePoint, whitePoint));
   

@@ -183,7 +183,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturat
 #pragma mark -
 
 - (void)setVignetteColor:(GLKVector3)vignetteColor {
-  LTParameterAssert(GLKVectorInRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
+  LTParameterAssert(GLKVector3InRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
   _vignetteColor = vignetteColor;
   self[[LTAnalogFilmFsh vignetteColor]] = $(vignetteColor);
   [self.vignetteProcessor process];

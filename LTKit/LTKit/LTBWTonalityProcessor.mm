@@ -74,7 +74,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
 }
 
 - (void)setColorFilter:(GLKVector3)colorFilter {
-  LTParameterAssert(GLKVectorInRange(colorFilter, 0.0, 1.0), @"Color filter is out of range.");
+  LTParameterAssert(GLKVector3InRange(colorFilter, 0.0, 1.0), @"Color filter is out of range.");
   LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
   
   _colorFilter = colorFilter / std::sum(colorFilter);

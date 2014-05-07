@@ -202,7 +202,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 #pragma mark -
 
 - (void)setVignetteColor:(GLKVector3)vignetteColor {
-  LTParameterAssert(GLKVectorInRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
+  LTParameterAssert(GLKVector3InRange(vignetteColor, 0.0, 1.0), @"Color filter is out of range.");
   _vignetteColor = vignetteColor;
   self[@"vignetteColor"] = $(vignetteColor);
   [self.vignetteProcessor process];

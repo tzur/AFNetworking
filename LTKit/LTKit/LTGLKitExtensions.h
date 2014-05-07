@@ -141,7 +141,7 @@ GLK_INLINE GLKVector2 GLKVector2FromCGPoint(const CGPoint &point) {
 }
 
 /// Returns \c YES if every component of the vector is in [a, b] range.
-GLK_INLINE BOOL GLKVectorInRange(const GLKVector3 &vec, const float a, const float b) {
+GLK_INLINE BOOL GLKVector3InRange(const GLKVector3 &vec, const float a, const float b) {
   return (vec.x >= a && vec.y >= a && vec.z >= a && vec.x <= b && vec.y <= b && vec.z <= b);
 }
 
