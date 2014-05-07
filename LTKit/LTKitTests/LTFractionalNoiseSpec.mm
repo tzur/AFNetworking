@@ -7,18 +7,9 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 
-SpecBegin(LTFractionalNoise)
+SpecGLBegin(LTFractionalNoise)
 
 __block LTTexture *output;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(4, 4)];
@@ -69,4 +60,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -5,16 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTMaskOverlayProcessorSpec)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTMaskOverlayProcessorSpec)
 
 context(@"processing", ^{
   __block LTMaskOverlayProcessor *processor;
@@ -57,4 +48,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

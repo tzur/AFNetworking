@@ -71,16 +71,7 @@ __unused static cv::Mat4b LTCPUBilateralFilter(cv::Mat4f original, float rangeSi
   return output;
 }
 
-SpecBegin(LTBilateralFilterProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTBilateralFilterProcessor)
 
 __block LTTexture *outputA;
 __block LTTexture *outputB;
@@ -128,4 +119,4 @@ context(@"properties", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

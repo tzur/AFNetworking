@@ -5,25 +5,15 @@
 
 #import "LTColorGradient.h"
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTBWProcessor)
+SpecGLBegin(LTBWProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
 __block LTBWProcessor *processor;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
@@ -32,8 +22,8 @@ beforeEach(^{
 });
 
 afterEach(^{
-  processor =  nil;
-  input =  nil;
+  processor = nil;
+  input = nil;
   output = nil;
 });
 
@@ -239,4 +229,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

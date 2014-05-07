@@ -135,16 +135,7 @@ context(@"initialization", ^{
 
 SpecEnd
 
-SpecBegin(LTVertexArray)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTVertexArray)
 
 it(@"should fail initializing with empty attribute", ^{
   expect(^{
@@ -409,4 +400,4 @@ context(@"vertex attrib configuration", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

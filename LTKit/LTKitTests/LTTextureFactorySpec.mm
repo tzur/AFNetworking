@@ -3,16 +3,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTTextureFactory)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTTextureFactory)
 
 /// Since the class is currently decided in compile time, only verify that the class methods are
 /// correctly called and that the returned object is indeed a texture class.
@@ -60,4 +51,4 @@ it(@"should initialize mipmap with multiple images", ^{
   expect(texture).to.beKindOf([LTTexture class]);
 });
 
-SpecEnd
+SpecGLEnd

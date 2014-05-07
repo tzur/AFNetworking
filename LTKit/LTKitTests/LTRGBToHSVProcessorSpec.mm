@@ -3,20 +3,10 @@
 
 #import "LTRGBToHSVProcessor.h"
 
-#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTRGBToHSVProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTRGBToHSVProcessor)
 
 context(@"processing", ^{
   it(@"should process grey correctly", ^{
@@ -68,4 +58,4 @@ context(@"processing", ^{
   });
 });
   
-SpecEnd
+SpecGLEnd

@@ -7,18 +7,9 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 
-SpecBegin(LTMultiscaleNoiseProcessor)
+SpecGLBegin(LTMultiscaleNoiseProcessor)
 
 __block LTTexture *output;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(128, 64)];
@@ -56,4 +47,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

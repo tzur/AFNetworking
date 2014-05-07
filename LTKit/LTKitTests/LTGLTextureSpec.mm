@@ -4,7 +4,6 @@
 #import "LTGLTexture.h"
 
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+PassthroughFsh.h"
@@ -12,16 +11,7 @@
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
 
-SpecBegin(LTGLTexture)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTGLTexture)
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTGLTexture class]});
 
@@ -198,4 +188,4 @@ context(@"mipmapping", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

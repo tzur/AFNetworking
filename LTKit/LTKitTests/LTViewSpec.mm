@@ -5,7 +5,6 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
@@ -21,16 +20,7 @@
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 @end
 
-SpecBegin(LTView)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTView)
 
 __block LTTexture *contentTexture;
 __block LTTexture *outputTexture;
@@ -611,4 +601,4 @@ context(@"touch delegate", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

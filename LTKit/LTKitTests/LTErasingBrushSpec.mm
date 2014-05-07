@@ -6,26 +6,16 @@
 #import "LTBrushSpec.h"
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTRoundBrushSpec.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTErasingBrush)
+SpecGLBegin(LTErasingBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTErasingBrush class]});
 
 itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTErasingBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 context(@"drawing", ^{
   using half_float::half;
@@ -134,4 +124,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

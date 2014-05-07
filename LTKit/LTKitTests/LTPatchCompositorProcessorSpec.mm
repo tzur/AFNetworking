@@ -6,16 +6,7 @@
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTPatchCompositorProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTPatchCompositorProcessor)
 
 context(@"initialization", ^{
   __block LTTexture *source;
@@ -113,4 +104,4 @@ it(@"should composite correctly", ^{
   expect($([result.texture image])).to.beCloseToMat($(expected));
 });
 
-SpecEnd
+SpecGLEnd

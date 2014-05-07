@@ -5,16 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTBoundaryExtractor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTBoundaryExtractor)
 
 it(@"should produce correct result with white subrect", ^{
   cv::Mat4b image(32, 32, cv::Vec4b(0, 0, 0, 255));
@@ -59,4 +50,4 @@ it(@"should produce correct result with complete white rect", ^{
   expect(LTCompareMat(expected, [result.texture image])).to.beTruthy();
 });
 
-SpecEnd
+SpecGLEnd

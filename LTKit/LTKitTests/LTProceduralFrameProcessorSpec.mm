@@ -8,19 +8,10 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTProceduralFrameProcessor)
+SpecGLBegin(LTLTProceduralFrame)
 
 __block LTTexture *noise;
 __block LTTexture *output;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
@@ -236,4 +227,4 @@ context(@"processing", ^{
   });  
 });
 
-SpecEnd
+SpecGLEnd

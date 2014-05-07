@@ -5,16 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTIterativeProcessingStrategy)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTIterativeProcessingStrategy)
 
 __block LTTexture *input;
 __block LTTexture *outputA;
@@ -173,4 +164,4 @@ context(@"iterations", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

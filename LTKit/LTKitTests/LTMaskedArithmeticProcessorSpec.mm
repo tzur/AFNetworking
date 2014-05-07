@@ -7,16 +7,7 @@
 
 using half_float::half;
 
-SpecBegin(LTMaskedArithmeticProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTMaskedArithmeticProcessor)
 
 context(@"initialization", ^{
   it(@"should raise when initializing with different sized operands", ^{
@@ -81,4 +72,4 @@ it(@"should produce correct result", ^{
   expect(LTFuzzyCompareMat(expected, result.texture.image, 1.0/255.0)).to.beTruthy();
 });
 
-SpecEnd
+SpecGLEnd

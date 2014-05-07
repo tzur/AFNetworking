@@ -5,16 +5,7 @@
 
 #import "LTGPUResourceExamples.h"
 
-SpecBegin(LTArrayBuffer)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTArrayBuffer)
 
 sharedExamplesFor(@"array buffer that initializes its data", ^(NSDictionary *dict) {
   it(@"should add initial data", ^{
@@ -253,4 +244,4 @@ context(@"binding", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

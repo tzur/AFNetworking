@@ -4,24 +4,14 @@
 #import "LTAdjustProcessor.h"
 
 #import "LTColorGradient.h"
-#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTAdjustProcessor)
+SpecGLBegin(LTAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
@@ -332,4 +322,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

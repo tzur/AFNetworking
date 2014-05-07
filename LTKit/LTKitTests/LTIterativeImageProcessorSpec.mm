@@ -5,7 +5,6 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
@@ -31,16 +30,7 @@ typedef void (^LTIterativeImageProcessorStubCallback)(NSUInteger iteration);
 
 @end
 
-SpecBegin(LTIterativeImageProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTIterativeImageProcessor)
 
 __block LTTexture *input;
 __block LTTexture *auxInput;
@@ -325,4 +315,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

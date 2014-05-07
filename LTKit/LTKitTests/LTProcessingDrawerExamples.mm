@@ -5,7 +5,6 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"

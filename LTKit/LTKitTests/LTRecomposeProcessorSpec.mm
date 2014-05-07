@@ -49,16 +49,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @end
 
-SpecBegin(LTRecomposeProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTRecomposeProcessor)
 
 context(@"initialization", ^{
   it(@"should not initialize if input size is different than mask size", ^{
@@ -205,4 +196,4 @@ context(@"properties", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

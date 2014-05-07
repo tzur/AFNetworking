@@ -6,16 +6,7 @@
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTBoxFilterProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTBoxFilterProcessor)
 
 __block LTTexture *output;
 __block LTBoxFilterProcessor *processor;
@@ -42,4 +33,4 @@ it(@"should process input image correctly", ^{
   expect(LTFuzzyCompareMat(processedDelta, [output image])).to.beTruthy();
 });
 
-SpecEnd
+SpecGLEnd

@@ -5,16 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTArithmeticProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTArithmeticProcessor)
 
 __block LTTexture *first;
 __block LTTexture *second;
@@ -104,4 +95,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

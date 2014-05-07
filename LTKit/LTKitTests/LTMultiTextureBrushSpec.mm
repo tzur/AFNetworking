@@ -7,25 +7,15 @@
 #import "LTTextureBrushExamples.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTMultiTextureBrush)
+SpecGLBegin(LTMultiTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTMultiTextureBrush class]});
 
 itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTMultiTextureBrush class]});
 
 itShouldBehaveLike(kLTTextureBrushExamples, @{kLTTextureBrushClass: [LTMultiTextureBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 __block LTMultiTextureBrush *brush;
 
@@ -78,4 +68,4 @@ context(@"properties", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

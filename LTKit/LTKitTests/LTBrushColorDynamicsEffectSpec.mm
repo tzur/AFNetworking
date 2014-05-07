@@ -4,25 +4,15 @@
 #import "LTBrushColorDynamicsEffect.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTTexture+Factory.h"
 #import "LTRotatedRect.h"
 #import "UIColor+Vector.h"
 
-SpecBegin(LTBrushColorDynamicsEffect)
+SpecGLBegin(LTBrushColorDynamicsEffect)
 
 const CGFloat kEpsilon = 1e-6;
 
 __block LTBrushColorDynamicsEffect *effect;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 context(@"initialization", ^{
   it(@"should initialize with default initializer", ^{
@@ -253,4 +243,4 @@ context(@"effect", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

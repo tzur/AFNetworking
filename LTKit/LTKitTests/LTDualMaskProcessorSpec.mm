@@ -6,19 +6,10 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTDualMaskProcessor)
+SpecGLBegin(LTDualMaskProcessor)
 
 __block LTTexture *output;
 __block LTDualMaskProcessor *processor;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
@@ -100,4 +91,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

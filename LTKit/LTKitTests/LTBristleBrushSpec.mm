@@ -8,7 +8,6 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
@@ -17,20 +16,11 @@
 @property (readonly, nonatomic) LTTexture *texture;
 @end
 
-SpecBegin(LTBristleBrush)
+SpecGLBegin(LTBristleBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
 
 itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBristleBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 __block LTBristleBrush *brush;
 
@@ -163,4 +153,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd
