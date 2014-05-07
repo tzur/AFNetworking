@@ -27,7 +27,6 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
     brushClass = data[kLTTextureBrushClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
-    
   });
   
   afterEach(^{

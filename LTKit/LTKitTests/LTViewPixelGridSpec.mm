@@ -4,23 +4,13 @@
 #import "LTViewPixelGrid.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTGridDrawer.h"
 
 @interface LTViewPixelGrid ()
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
 @end
 
-SpecBegin(LTViewPixelGrid)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTViewPixelGrid)
 
 const CGSize contentSize = CGSizeMake(256, 512);
 const CGRect contentBounds = CGRectFromOriginAndSize(CGPointZero, contentSize);
@@ -150,4 +140,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -4,22 +4,12 @@
 #import "LTFbo.h"
 
 #import "LTDevice.h"
-#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 
-SpecBegin(LTFbo)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTFbo)
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
@@ -127,4 +117,4 @@ context(@"binding", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

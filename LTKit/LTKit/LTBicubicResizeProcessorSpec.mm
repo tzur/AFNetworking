@@ -8,16 +8,7 @@
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 
-SpecBegin(LTBicubicResizeProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTBicubicResizeProcessor)
 
 __block LTGLTexture *input;
 __block LTGLTexture *output;
@@ -55,4 +46,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

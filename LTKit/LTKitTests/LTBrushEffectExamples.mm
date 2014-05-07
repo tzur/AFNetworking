@@ -9,7 +9,6 @@
 #import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"

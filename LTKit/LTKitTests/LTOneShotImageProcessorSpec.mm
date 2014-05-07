@@ -10,16 +10,7 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
 
-SpecBegin(LTOneShotImageProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTOneShotImageProcessor)
 
 __block LTTexture *input;
 __block LTTexture *auxTexture;
@@ -110,4 +101,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

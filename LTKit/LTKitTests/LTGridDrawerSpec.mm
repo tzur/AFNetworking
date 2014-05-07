@@ -4,7 +4,6 @@
 #import "LTGridDrawer.h"
 
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
 
@@ -30,22 +29,17 @@ static void LTBlendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::V
   }
 }
 
-SpecBegin(LTGridDrawerSpec)
+SpecGLBegin(LTGridDrawerSpec)
 
 beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-  
+  LTGLContext *context = [LTGLContext currentContext];
+
   // Make sure that everything is properly drawn when face culling is enabled, and with a normal
   // blending mode.
   context.faceCullingEnabled = YES;
   context.blendEnabled = YES;
   context.blendEquation = kLTGLContextBlendEquationDefault;
   context.blendFunc = kLTGLContextBlendFuncNormal;
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
 });
 
 context(@"initialization", ^{
@@ -234,4 +228,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

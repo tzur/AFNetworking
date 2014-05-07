@@ -6,16 +6,7 @@
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTRectCopyProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTRectCopyProcessor)
 
 __block cv::Mat4b image;
 __block LTTexture *input;
@@ -144,4 +135,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -3,25 +3,15 @@
 
 #import "LTProceduralVignetting.h"
 
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTMultiscaleNoiseProcessor.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTProceduralVignetting)
+SpecGLBegin(LTProceduralVignetting)
 
 __block LTTexture *noise;
 __block LTTexture *output;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
@@ -106,4 +96,4 @@ context(@"processing", ^{
   pending(@"should test tiled noise when implemented");
 });
 
-SpecEnd
+SpecGLEnd

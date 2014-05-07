@@ -6,26 +6,16 @@
 #import "LTBrushSpec.h"
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTRoundBrushSpec.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTEdgeAvoidingBrush)
+SpecGLBegin(LTEdgeAvoidingBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTEdgeAvoidingBrush class]});
 
 itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTEdgeAvoidingBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 context(@"properties", ^{
   const CGFloat kEpsilon = 1e-6;
@@ -286,4 +276,4 @@ context(@"edge avoiding drawing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

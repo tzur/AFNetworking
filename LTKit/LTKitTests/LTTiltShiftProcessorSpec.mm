@@ -4,25 +4,15 @@
 #import "LTTiltShiftProcessor.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTTiltShiftProcessor)
+SpecGLBegin(LTTiltShiftProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
 __block LTTiltShiftProcessor *processor;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   input = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
@@ -76,4 +66,4 @@ context(@"properties", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

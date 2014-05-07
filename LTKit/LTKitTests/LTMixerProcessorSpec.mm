@@ -20,16 +20,7 @@ void LTPlusSignAt(cv::Mat4b image, const cv::Point &offset, const cv::Vec4b &col
   }
 }
 
-SpecBegin(LTMixerProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTMixerProcessor)
 
 const cv::Vec4b backColor(cv::Vec4b(128, 64, 255, 255));
 const cv::Vec4b frontColor(cv::Vec4b(64, 128, 32, 255));
@@ -248,4 +239,4 @@ context(@"blending", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

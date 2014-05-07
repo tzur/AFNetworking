@@ -6,16 +6,7 @@
 #import "LTFbo.h"
 #import "LTGLTexture.h"
 
-SpecBegin(LTOneShotProcessingStrategy)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTOneShotProcessingStrategy)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -86,4 +77,4 @@ context(@"LTProcessingStrategy", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

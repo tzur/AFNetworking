@@ -7,25 +7,15 @@
 #import "LTTextureBrushExamples.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTSingleTextureBrush)
+SpecGLBegin(LTSingleTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
 itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
 itShouldBehaveLike(kLTTextureBrushExamples, @{kLTTextureBrushClass: [LTSingleTextureBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 __block LTSingleTextureBrush *brush;
 

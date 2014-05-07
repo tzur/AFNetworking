@@ -6,7 +6,6 @@
 #import "LTBrush.h"
 #import "LTCGExtensions.h"
 #import "LTCatmullRomInterpolationRoutine.h"
-#import "LTGLContext.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
@@ -29,16 +28,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @interface LTPainter () <LTTouchCollectorDelegate>
 @end
 
-SpecBegin(LTPainter)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTPainter)
 
 const CGSize kCanvasSize = CGSizeMake(64, 64);
 
@@ -322,4 +312,4 @@ context(@"painting", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

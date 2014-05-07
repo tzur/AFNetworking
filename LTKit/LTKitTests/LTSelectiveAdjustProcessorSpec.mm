@@ -8,20 +8,11 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTSelectiveAdjustProcessor)
+SpecGLBegin(LTSelectiveAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
 __block LTSelectiveAdjustProcessor *processor;
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 beforeEach(^{
   input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
@@ -97,4 +88,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

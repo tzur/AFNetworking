@@ -4,20 +4,10 @@
 #import "LTPatchProcessor.h"
 
 #import "LTCGExtensions.h"
-#import "LTGLContext.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTPatchProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTPatchProcessor)
 
 context(@"initialization", ^{
   const CGSize kSize = CGSizeMake(16, 16);
@@ -169,4 +159,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -14,16 +14,7 @@
 // is probably possible only by refactoring the LTTexture abstract class to the strategy pattern:
 // http://stackoverflow.com/questions/243274/best-practice-with-unit-testing-abstract-classes
 
-SpecBegin(LTTexture)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTTexture)
 
 context(@"properties", ^{
   it(@"will not set wrap to repeat on NPOT texture", ^{
@@ -154,4 +145,4 @@ context(@"binding and execution", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

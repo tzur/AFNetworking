@@ -41,16 +41,7 @@ static NSString * const kUniformTypesVertexSource =
   "  gl_Position = vec4(0.0); "
   "} ";
 
-SpecBegin(LTProgram)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTProgram)
 
 context(@"getting and setting uniforms and attributes", ^{
   it(@"should set and get uniform values", ^{
@@ -193,4 +184,4 @@ context(@"binding", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -7,7 +7,6 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"

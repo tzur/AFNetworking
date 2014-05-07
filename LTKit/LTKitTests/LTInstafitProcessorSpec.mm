@@ -6,16 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTInstafitProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTInstafitProcessor)
 
 context(@"initialization", ^{
   it(@"should not intitialize if output texture is not a square", ^{
@@ -165,4 +156,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd

@@ -4,7 +4,6 @@
 #import "LTMMTexture.h"
 
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
@@ -38,16 +37,7 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
 @property (nonatomic) GLsync syncObject;
 @end
 
-SpecBegin(LTMMTexture)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+SpecGLBegin(LTMMTexture)
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTMMTexture class]});
 
@@ -242,4 +232,4 @@ context(@"cpu gpu memory synchronization", ^{
   });
 });
 
-SpecEnd
+SpecGLEnd
