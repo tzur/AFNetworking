@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTProceduralFrame.h"
+#import "LTProceduralFrameProcessor.h"
 
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
@@ -12,7 +12,7 @@
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
 #import "LTTexture+Factory.h"
 
-@implementation LTProceduralFrame
+@implementation LTProceduralFrameProcessor
 
 static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
@@ -139,12 +139,12 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseAmplitude, Noi
   switch (noiseMapping) {
     case LTProceduralFrameNoiseMappingStretch:
       self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(1, 1));
-      return;
+      break;
     case LTProceduralFrameNoiseMappingTile:
       CGFloat xScale = self.outputSize.width / self.noise.size.width;
       CGFloat yScale = self.outputSize.height / self.noise.size.height;
       self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
-      return;
+      break;
   }
 }
 

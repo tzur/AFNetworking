@@ -10,7 +10,7 @@
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
-#import "LTProceduralFrame.h"
+#import "LTProceduralFrameProcessor.h"
 #import "LTProceduralVignetting.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBWProcessorFsh.h"
@@ -22,8 +22,8 @@
 @property (nonatomic) BOOL subProcessorsInitialized;
 @property (strong, nonatomic) LTBWTonalityProcessor *toneProcessor;
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
-@property (strong, nonatomic) LTProceduralFrame *outerFrameProcessor;
-@property (strong, nonatomic) LTProceduralFrame *innerFrameProcessor;
+@property (strong, nonatomic) LTProceduralFrameProcessor *outerFrameProcessor;
+@property (strong, nonatomic) LTProceduralFrameProcessor *innerFrameProcessor;
 
 @end
 
@@ -52,11 +52,11 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   
   // Setup wide frame.
   LTTexture *outerFrameTexture = [self createFrameTextureWithInput:input];
-  self.outerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:outerFrameTexture];
+  self.outerFrameProcessor = [[LTProceduralFrameProcessor alloc] initWithOutput:outerFrameTexture];
   
   // Setup narrow frame.
   LTTexture *innerFrameTexture = [self createFrameTextureWithInput:input];
-  self.innerFrameProcessor = [[LTProceduralFrame alloc] initWithOutput:innerFrameTexture];
+  self.innerFrameProcessor = [[LTProceduralFrameProcessor alloc] initWithOutput:innerFrameTexture];
   
   NSDictionary *auxiliaryTextures =
       @{[LTBWProcessorFsh grainTexture]: self.grainTexture,

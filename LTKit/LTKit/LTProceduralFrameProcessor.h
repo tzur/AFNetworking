@@ -18,7 +18,7 @@ typedef NS_ENUM(GLenum, LTProceduralFrameNoiseMapping) {
 /// setting alpha to zero and the transition area is modulated with noise to create a visually
 /// pleasing result. The roundness of the frame corners can be conrolled in the range between
 /// completely straight and very curved connection of the frame's sides.
-@interface LTProceduralFrame : LTOneShotImageProcessor
+@interface LTProceduralFrameProcessor : LTOneShotImageProcessor
 
 /// Initializes a procedural frame processor with an output texture.
 - (instancetype)initWithOutput:(LTTexture *)output;
