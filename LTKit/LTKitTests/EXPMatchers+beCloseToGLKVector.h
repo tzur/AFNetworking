@@ -5,4 +5,5 @@ EXPMatcherInterface(_beCloseToGLKVectorWithin, (id expected, id within));
 EXPMatcherInterface(beCloseToGLKVectorWithin, (id expected, id within));
 
 #define beCloseToGLKVector(expected) _beCloseToGLKVectorWithin(EXPObjectify((expected)), nil)
-#define beCloseToGLKVectorWithin(expected, range) _beCloseToGLKVectorWithin(EXPObjectify((expected)), EXPObjectify((range)))
+#define beCloseToGLKVectorWithin(expected, range) \
+    _beCloseToGLKVectorWithin(EXPObjectify((expected)), EXPObjectify((range)))

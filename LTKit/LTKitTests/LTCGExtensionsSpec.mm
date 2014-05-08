@@ -2,7 +2,6 @@
 // Created by Amit Goldstein.
 
 #import "LTCGExtensions.h"
-#import "LTGLKitExtensions.h"
 
 SpecBegin(LTCGExtensions)
 
@@ -181,6 +180,29 @@ context(@"cgrect operations", ^{
   });
 });
 
+context(@"cgtriangle operations", ^{
+  it(@"triangle make", ^{
+    CGPoint a = CGPointMake(1, 2);
+    CGPoint b = CGPointMake(3, 4);
+    CGPoint c = CGPointMake(-5, 6);
+    CGTriangle triangle = CGTriangleMake(a, b, c);
+    expect(triangle.a).to.equal(a);
+    expect(triangle.b).to.equal(b);
+    expect(triangle.c).to.equal(c);
+  });
+  
+  it(@"triangle edge mask make", ^{
+    expect(CGTriangleEdgeMaskMake(NO, NO, NO)).to.equal(CGTriangleEdgeNone);
+    expect(CGTriangleEdgeMaskMake(YES, NO, NO)).to.equal(CGTriangleEdgeAB);
+    expect(CGTriangleEdgeMaskMake(NO, YES, NO)).to.equal(CGTriangleEdgeBC);
+    expect(CGTriangleEdgeMaskMake(NO, NO, YES)).to.equal(CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(YES, YES, NO)).to.equal(CGTriangleEdgeAB | CGTriangleEdgeBC);
+    expect(CGTriangleEdgeMaskMake(YES, NO, YES)).to.equal(CGTriangleEdgeAB | CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(NO, YES, YES)).to.equal(CGTriangleEdgeBC | CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(YES, YES, YES)).to.equal(CGTriangleEdgeAll);
+  });
+});
+
 it(@"distance functions", ^{
   expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));
   expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));
@@ -217,37 +239,6 @@ context(@"rounding cgstructs", ^{
     expect(CGRoundRect(rect)).to.equal(CGRectFromEdges(0, 1, 3, 2));
     expect(CGRoundRectInside(rect)).to.equal(CGRectFromEdges(1, 1, 2, 2));
     expect(CGRoundRectOutside(rect)).to.equal(CGRectFromEdges(0, 0, 3, 3));
-  });
-});
-
-context(@"GLKitExtensions interfacing", ^{
-  it(@"should calculate line equations", ^{
-    CGPoint p0 = CGPointMake(-2, 0);
-    CGPoint p1 = CGPointMake(4, -5);
-    expect(GLKLineEquation(CGPointZero, CGPointZero)).to.beCloseToGLKVector(GLKVector3Zero);
-    expect(GLKLineEquation(p0, p0)).to.beCloseToGLKVector(GLKVector3Zero);
-    expect(GLKLineEquation(p1, p1)).to.beCloseToGLKVector(GLKVector3Zero);
-    
-    expect(GLKLineEquation(p0, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1, p0));
-    expect(GLKLineEquation(CGPointZero, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1,
-                                                                                    CGPointZero));
-    expect(GLKLineEquation(p0, CGPointZero)).to.beCloseToGLKVector(-GLKLineEquation(CGPointZero,
-                                                                                    p0));
-    
-    GLKVector3 line = GLKLineEquation(p0, p1);
-    expect(line).to.beCloseToGLKVector(GLKVector3Make(-0.5, -0.6, -1));
-    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
-    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
-    
-    line = GLKLineEquation(CGPointZero, p0);
-    expect(line).to.beCloseToGLKVector(GLKVector3Make(0, 2, 0));
-    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
-    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
-    
-    line = GLKLineEquation(CGPointZero, p1);
-    expect(line).to.beCloseToGLKVector(GLKVector3Make(-5, -4, 0));
-    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
-    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
   });
 });
 

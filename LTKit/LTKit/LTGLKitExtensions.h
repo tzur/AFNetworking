@@ -134,23 +134,23 @@ GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const float &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector2 operator*(const float &lhs, const GLKVector2 &rhs) {
-  return GLKVector2MultiplyScalar(rhs, lhs);
-}
-
-/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
   return GLKVector3MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
-  return GLKVector3MultiplyScalar(rhs, lhs);
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
+  return GLKVector4MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
-GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
-  return GLKVector4MultiplyScalar(lhs, rhs);
+GLK_INLINE GLKVector2 operator*(const float &lhs, const GLKVector2 &rhs) {
+  return GLKVector2MultiplyScalar(rhs, lhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const float &lhs, const GLKVector3 &rhs) {
+  return GLKVector3MultiplyScalar(rhs, lhs);
 }
 
 /// Multiply a vector by a scalar value.
@@ -183,6 +183,9 @@ GLK_INLINE GLKVector2 GLKVector2FromCGPoint(const CGPoint &point) {
   return GLKVector2Make(point.x, point.y);
 }
 
+/// Returns a \c GLKVector2 that is perpendicular to the given \c GLKVector2.
+/// The length of the returned vector is equal to the length of the source vector, and the direction
+/// is a counter clockwise rotation (in bottom-left origin coordinate system).
 GLK_INLINE GLKVector2 GLKVector2NormalTo(const GLKVector2 &vec) {
   return GLKVector2Make(vec.y, -vec.x);
 }
@@ -192,12 +195,12 @@ GLK_INLINE BOOL GLKVector3InRange(const GLKVector3 &vec, const float a, const fl
   return (vec.x >= a && vec.y >= a && vec.z >= a && vec.x <= b && vec.y <= b && vec.z <= b);
 }
 
-/// Returns the standard line equation between the given points, or \c GLKVector3Zero in the
-/// degenerate case.
+/// Returns the coefficients of the standard line equation (Ax + By + C = 0) between the given
+/// points, or a \c GLKVector3Zero in the degenerate case.
 GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target);
 
-/// Returns the standard line equation between the given points, or \c GLKVector3Zero in the
-/// degenerate case.
+/// Returns the coefficients of the standard line equation (Ax + By + C = 0) between the given
+/// points, or a \c GLKVector3Zero in the degenerate case.
 GLK_INLINE GLKVector3 GLKLineEquation(const CGPoint &source, const CGPoint &target) {
   return GLKLineEquation(GLKVector2FromCGPoint(source), GLKVector2FromCGPoint(target));
 }

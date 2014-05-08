@@ -37,6 +37,7 @@ CG_INLINE BOOL CGSizeIsNull(CGSize size) {
 #pragma mark CGTriangle
 #pragma mark -
 
+/// Mask representing edges of a \c CGTriangle.
 typedef NS_OPTIONS(NSUInteger, CGTriangleEdgeMask) {
   CGTriangleEdgeNone = 0,
   CGTriangleEdgeAB = (1 << 0),  // => 00000001
@@ -45,22 +46,27 @@ typedef NS_OPTIONS(NSUInteger, CGTriangleEdgeMask) {
   CGTriangleEdgeAll = CGTriangleEdgeAB | CGTriangleEdgeBC | CGTriangleEdgeCA // => 00000111
 };
 
-struct CGTriangle {
+/// A structure that contains a triangle in a two-dimensional coordinate system (consists of three
+/// \c CGPoint vertices).
+typedef struct CGTriangle {
   CGPoint a;
   CGPoint b;
   CGPoint c;
-};
-typedef struct CGTriangle CGTriangle;
-
-CG_INLINE CGTriangle CGTriangleMake(CGPoint a, CGPoint b, CGPoint c) {
-  CGTriangle t;
-  t.a = a;
-  t.b = b;
-  t.c = c;
-  return t;
-}
+} CGTriangle;
 
 #ifdef __cplusplus
+
+/// Returns a triangle with the specified vertices.
+CG_INLINE CGTriangle CGTriangleMake(CGPoint a, CGPoint b, CGPoint c) {
+  return {.a = a, .b = b, .c = c};
+}
+
+/// Returns a triangle edge mask with the specified edges.
+CG_INLINE CGTriangleEdgeMask CGTriangleEdgeMaskMake(BOOL ab, BOOL bc, BOOL ca) {
+  return (ab ? CGTriangleEdgeAB : CGTriangleEdgeNone) |
+         (bc ? CGTriangleEdgeBC : CGTriangleEdgeNone) |
+         (ca ? CGTriangleEdgeCA : CGTriangleEdgeNone);
+}
 
 #pragma mark -
 #pragma mark UIEdgeInsets Operations
