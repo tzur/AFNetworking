@@ -180,6 +180,29 @@ context(@"cgrect operations", ^{
   });
 });
 
+context(@"cgtriangle operations", ^{
+  it(@"triangle make", ^{
+    CGPoint a = CGPointMake(1, 2);
+    CGPoint b = CGPointMake(3, 4);
+    CGPoint c = CGPointMake(-5, 6);
+    CGTriangle triangle = CGTriangleMake(a, b, c);
+    expect(triangle.a).to.equal(a);
+    expect(triangle.b).to.equal(b);
+    expect(triangle.c).to.equal(c);
+  });
+  
+  it(@"triangle edge mask make", ^{
+    expect(CGTriangleEdgeMaskMake(NO, NO, NO)).to.equal(CGTriangleEdgeNone);
+    expect(CGTriangleEdgeMaskMake(YES, NO, NO)).to.equal(CGTriangleEdgeAB);
+    expect(CGTriangleEdgeMaskMake(NO, YES, NO)).to.equal(CGTriangleEdgeBC);
+    expect(CGTriangleEdgeMaskMake(NO, NO, YES)).to.equal(CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(YES, YES, NO)).to.equal(CGTriangleEdgeAB | CGTriangleEdgeBC);
+    expect(CGTriangleEdgeMaskMake(YES, NO, YES)).to.equal(CGTriangleEdgeAB | CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(NO, YES, YES)).to.equal(CGTriangleEdgeBC | CGTriangleEdgeCA);
+    expect(CGTriangleEdgeMaskMake(YES, YES, YES)).to.equal(CGTriangleEdgeAll);
+  });
+});
+
 it(@"distance functions", ^{
   expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));
   expect(CGPointDistance(CGPointZero, CGPointMake(1, 2))).to.beCloseTo(sqrt(5));

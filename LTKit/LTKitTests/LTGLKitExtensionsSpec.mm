@@ -87,6 +87,10 @@ context(@"GLKVector2 operations", ^{
     GLKVector2 vec = GLKVector2Make(1.5, 2.7);
     expect(std::floor(vec) == GLKVector2Make(1, 2)).to.beTruthy();
   });
+  
+  it(@"round", ^{
+    expect(std::round(GLKVector2Make(1.5, 2.7)) == GLKVector2Make(2, 3)).to.beTruthy();
+  });
 });
 
 context(@"GLKVector3 operations", ^{
@@ -198,6 +202,60 @@ context(@"GLKVector4 operations", ^{
   it(@"max", ^{
     expect(std::max(GLKVector4Make(1, 2, 3, 4), GLKVector4Make(1, 0, 7, -5)) ==
            GLKVector4Make(1, 2, 7, 4)).to.beTruthy();
+  });
+});
+
+context(@"standard line equation", ^{
+  it(@"should calculate line equations from CGPoints", ^{
+    CGPoint p0 = CGPointMake(-2, 0);
+    CGPoint p1 = CGPointMake(4, -5);
+    expect(GLKLineEquation(CGPointZero, CGPointZero)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(p0, p0)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(p1, p1)).to.beCloseToGLKVector(GLKVector3Zero);
+    
+    expect(GLKLineEquation(p0, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1, p0));
+    expect(GLKLineEquation(CGPointZero, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1,
+                                                                                    CGPointZero));
+    expect(GLKLineEquation(p0, CGPointZero)).to.beCloseToGLKVector(-GLKLineEquation(CGPointZero,
+                                                                                    p0));
+    
+    GLKVector3 line = GLKLineEquation(p0, p1);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(-0.5, -0.6, -1));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
+    
+    line = GLKLineEquation(CGPointZero, p0);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(0, 2, 0));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
+    
+    line = GLKLineEquation(CGPointZero, p1);
+    expect(line).to.beCloseToGLKVector(GLKVector3Make(-5, -4, 0));
+    expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
+    expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
+  });
+  
+  it(@"should calculate line equations from GLKVector2s", ^{
+    CGPoint p0 = CGPointMake(-2, 0);
+    CGPoint p1 = CGPointMake(4, -5);
+    GLKVector2 v0 = GLKVector2FromCGPoint(p0);
+    GLKVector2 v1 = GLKVector2FromCGPoint(p1);
+    
+    expect(GLKLineEquation(GLKVector2Zero, GLKVector2Zero)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(v0, v0)).to.beCloseToGLKVector(GLKVector3Zero);
+    expect(GLKLineEquation(v1, v1)).to.beCloseToGLKVector(GLKVector3Zero);
+    
+    expect(GLKLineEquation(v0, v1)).to.beCloseToGLKVector(-GLKLineEquation(v1, v0));
+    expect(GLKLineEquation(GLKVector2Zero, v1))
+        .to.beCloseToGLKVector(-GLKLineEquation(v1, GLKVector2Zero));
+    expect(GLKLineEquation(v0, GLKVector2Zero))
+        .to.beCloseToGLKVector(-GLKLineEquation(GLKVector2Zero, v0));
+    
+    expect(GLKLineEquation(v0, v1)).to.beCloseToGLKVector(GLKLineEquation(p0, p1));
+    expect(GLKLineEquation(GLKVector2Zero, v0))
+        .to.beCloseToGLKVector(GLKLineEquation(CGPointZero, p0));
+    expect(GLKLineEquation(GLKVector2Zero, v1))
+        .to.beCloseToGLKVector(GLKLineEquation(CGPointZero, p1));
   });
 });
 
