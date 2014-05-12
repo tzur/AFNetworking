@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"

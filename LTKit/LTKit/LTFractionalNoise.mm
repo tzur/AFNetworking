@@ -3,7 +3,7 @@
 
 #import "LTFractionalNoise.h"
 
-#import "LTGLTexture.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTFractionalNoiseVsh.h"
 #import "LTShaderStorage+LTFractionalNoiseFsh.h"

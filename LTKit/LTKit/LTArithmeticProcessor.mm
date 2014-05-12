@@ -4,6 +4,7 @@
 #import "LTArithmeticProcessor.h"
 
 #import "LTCGExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTArithmeticFsh.h"

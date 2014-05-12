@@ -3,6 +3,7 @@
 
 #import "LTSelectiveAdjustProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTRGBToHSVProcessor.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

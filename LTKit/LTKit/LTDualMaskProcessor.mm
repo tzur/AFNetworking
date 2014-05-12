@@ -3,6 +3,7 @@
 
 #import "LTDualMaskProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTDualMaskFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

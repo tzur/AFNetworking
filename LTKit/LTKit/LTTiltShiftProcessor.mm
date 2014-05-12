@@ -6,6 +6,7 @@
 #import "LTBoxFilterProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTDualMaskProcessor.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTTiltShiftFsh.h"

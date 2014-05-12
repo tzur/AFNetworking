@@ -3,6 +3,7 @@
 
 #import "LTMultiscaleNoiseProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTMultiscaleNoiseFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

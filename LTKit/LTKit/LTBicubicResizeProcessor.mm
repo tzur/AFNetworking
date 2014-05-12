@@ -3,6 +3,7 @@
 
 #import "LTBicubicResizeProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTBicubicResizeFsh.h"
@@ -12,7 +13,8 @@
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithProgram:[self createProgram] input:input andOutput:output]) {
-    self[@"texelOffset"] = $(GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height));
+    self[[LTBicubicResizeFsh texelOffset]] =
+        $(GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height));
   }
   return self;
 }
