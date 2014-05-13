@@ -13,7 +13,7 @@
 /// taken care of by this class, which makes sure the drawer is aware of them prior to processing.
 ///
 /// This class shouldn't be used directly, but sublassed to contain a specific drawer and strategy.
-@interface LTGPUImageProcessor : NSObject <LTImageProcessor>
+@interface LTGPUImageProcessor : LTImageProcessor
 
 /// Initializes with an \c LTProcessingDrawer, \c LTProcessingStrategy and auxiliary textures, which
 /// can be \c nil.

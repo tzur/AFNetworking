@@ -13,7 +13,13 @@
   #import "LTTypedefs.h"
   #import "NSValue+GLKitExtensions.h"
 
-  #import <extobjc/extobjc.h>
+  #ifdef __cplusplus
+  extern "C" {
+  #endif
+    #import <extobjc/extobjc.h>
+  #ifdef __cplusplus
+  }
+  #endif
   #import <Objection-iOS/Objection.h>
 #endif
 

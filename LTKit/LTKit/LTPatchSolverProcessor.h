@@ -8,7 +8,7 @@
 /// Processor for solving the Poisson equation. The processor is given a mask, source and target
 /// textures, and calculates a result to the equation given the boundary condition T - S on the
 /// mask's boundary.
-@interface LTPatchSolverProcessor : NSObject <LTImageProcessor>
+@interface LTPatchSolverProcessor : LTImageProcessor
 
 /// Initializes with mask, source texture, target texture and an output texture. The output texture
 /// must be of half-float precision.

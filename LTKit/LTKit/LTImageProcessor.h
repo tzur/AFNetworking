@@ -3,19 +3,39 @@
 
 #import "LTImageProcessorOutput.h"
 
-/// Protocol for generic image processing mechanism. The mechanism accepts a varying number of
+#import "LTKeyPathCoding.h"
+
+/// Abstract class for generic image processing mechanism. The mechanism accepts a varying number of
 /// inputs, including textures and an input model, and produces a varying number of outputs. Once
 /// constructed, the processor has fixed inputs and outputs, but its input model can be changed.
-@protocol LTImageProcessor <NSObject>
+///
+/// The class supports serialization and deserialization of the input model in a form of a
+/// dictionary. To support this feature, subclasses should override the \c modelInputProperties
+/// getter and return a set of properties which comprise the input model.
+@interface LTImageProcessor : NSObject
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
 
 /// Generates a new output based on the current image processor inputs. This method blocks until a
-/// result is available.
+/// result is available. This is an abstract method that must be overridden by subclasses.
 - (id<LTImageProcessorOutput>)process;
 
-/// Sets a processor's input model object value for the given \c key.
-- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
 
-/// Returns the input model object for the given \c key.
-- (id)objectForKeyedSubscript:(NSString *)key;
+/// Sets the given input model to the object. Keys set of the \c model must be equal to the
+/// \c modelProperties.
+- (void)setInputModel:(NSDictionary *)model;
+
+/// Returns the input model properties defined in \c modelProperties to a dictionary, where each key
+/// is the property name and the value is the property's value.
+- (NSDictionary *)inputModel;
+
+/// Names of the model input properties of this object that are part of the model to load and save.
+/// The default implementation returns \c nil, therefore no properties are part of the input model.
++ (NSSet *)inputModelProperties;
 
 @end
