@@ -14,6 +14,15 @@ context(@"GLKMatrix2", ^{
     expect(m.m10).to.equal(3);
     expect(m.m11).to.equal(4);
   });
+
+  it(@"equal", ^{
+    GLKMatrix2 a = {{1, 2, 3, 4}};
+    GLKMatrix2 b = {{4, 3, 2, 1}};
+    GLKMatrix2 c = {{1, 2, 3, 4}};
+
+    expect(a == b).to.beFalsy();
+    expect(a == c).to.beTruthy();
+  });
 });
 
 context(@"GLKMatrix3", ^{
@@ -46,6 +55,26 @@ context(@"GLKMatrix3", ^{
     expect(m.m20).to.equal(1);
     expect(m.m21).to.equal(2);
     expect(m.m22).to.equal(1);
+  });
+
+  it(@"equal", ^{
+    GLKMatrix3 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    GLKMatrix3 b = {{9, 8, 7, 6, 5, 4, 3, 2, 1}};
+    GLKMatrix3 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+
+    expect(a == b).to.beFalsy();
+    expect(a == c).to.beTruthy();
+  });
+});
+
+context(@"GLKMatrix4", ^{
+  it(@"equal", ^{
+    GLKMatrix4 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
+    GLKMatrix4 b = {{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1}};
+    GLKMatrix4 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
+
+    expect(a == b).to.beFalsy();
+    expect(a == c).to.beTruthy();
   });
 });
 
