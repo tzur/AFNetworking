@@ -6,6 +6,7 @@
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTProgram.h"
+#import "LTPropertyMacros.h"
 #import "LTShaderStorage+LTShapeDrawerShapeVsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTVertexArray.h"
@@ -22,7 +23,7 @@ LTGPUStructImplement(LTShapeDrawerVertex,
                      GLKVector4, color,
                      GLKVector4, shadowColor);
 
-@interface LTShapeDrawerShape () {
+@interface LTCommonDrawableShape () {
   LTShapeDrawerVertices _strokeVertices;
   LTShapeDrawerVertices _shadowVertices;
 }
@@ -34,7 +35,7 @@ LTGPUStructImplement(LTShapeDrawerVertex,
 
 @end
 
-@implementation LTShapeDrawerShape
+@implementation LTCommonDrawableShape
 
 LTBoundedPrimitivePropertyImplement(CGFloat, opacity, Opacity, 0, 1, 1);
 

@@ -124,7 +124,14 @@
 		280F5A1A191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A18191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm */; };
 		280F5A1E191A8D1E00F9F80B /* LTShapeDrawerShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1C191A8D1E00F9F80B /* LTShapeDrawerShape.mm */; };
 		280F5A20191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */; };
+		280F5A26191A970400F9F80B /* LTShapeDrawerEllipticShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A25191A970400F9F80B /* LTShapeDrawerEllipticShape.mm */; };
+		280F5A28191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A27191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm */; };
+		280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A29191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png */; };
+		280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2A191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png */; };
+		280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2B191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png */; };
+		280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2C191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png */; };
 		280F5A37191A97B100F9F80B /* LTShapeDrawerShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTShapeDrawerShape.vsh */; };
+		280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF085187B030000904F07 /* LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF07E187B030000904F07 /* LTView.mm */; };
 		282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF082187B030000904F07 /* LTViewNavigationView.mm */; };
@@ -722,6 +729,14 @@
 		280F5A1C191A8D1E00F9F80B /* LTShapeDrawerShape.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerShape.mm; sourceTree = "<group>"; };
 		280F5A1D191A8D1E00F9F80B /* LTShapeDrawerShape.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerShape.vsh; sourceTree = "<group>"; };
 		280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerParamsSpec.mm; sourceTree = "<group>"; };
+		280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerEllipticShape.fsh; sourceTree = "<group>"; };
+		280F5A24191A970400F9F80B /* LTShapeDrawerEllipticShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerEllipticShape.h; sourceTree = "<group>"; };
+		280F5A25191A970400F9F80B /* LTShapeDrawerEllipticShape.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerEllipticShape.mm; sourceTree = "<group>"; };
+		280F5A27191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerEllipticShapeSpec.mm; sourceTree = "<group>"; };
+		280F5A29191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerEllipticShapeCircle.png; path = Resources/ShapeDrawerEllipticShapeCircle.png; sourceTree = "<group>"; };
+		280F5A2A191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerEllipticShapeEllipse.png; path = Resources/ShapeDrawerEllipticShapeEllipse.png; sourceTree = "<group>"; };
+		280F5A2B191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerEllipticShapeFilledEllipse.png; path = Resources/ShapeDrawerEllipticShapeFilledEllipse.png; sourceTree = "<group>"; };
+		280F5A2C191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerEllipticShapeRotatedEllipse.png; path = Resources/ShapeDrawerEllipticShapeRotatedEllipse.png; sourceTree = "<group>"; };
 		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -1357,6 +1372,9 @@
 		280F5A12191A8CCE00F9F80B /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
+				280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */,
+				280F5A24191A970400F9F80B /* LTShapeDrawerEllipticShape.h */,
+				280F5A25191A970400F9F80B /* LTShapeDrawerEllipticShape.mm */,
 			);
 			name = Shapes;
 			sourceTree = "<group>";
@@ -1374,6 +1392,7 @@
 		280F5A14191A8CDF00F9F80B /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
+				280F5A27191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm */,
 			);
 			name = Shapes;
 			sourceTree = "<group>";
@@ -1746,6 +1765,10 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				280F5A29191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png */,
+				280F5A2A191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png */,
+				280F5A2B191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png */,
+				280F5A2C191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png */,
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
 				031338C0191216020095F99B /* Checkerboard.png */,
@@ -2535,6 +2558,7 @@
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
 				031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */,
 				03AFC1591909608600F17063 /* SanFrancisco.jpg in Resources */,
+				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
@@ -2545,15 +2569,18 @@
 				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
+				280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
+				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
 				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
+				280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2596,6 +2623,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
 				280F5A37191A97B100F9F80B /* LTShapeDrawerShape.vsh in Sources */,
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
@@ -2653,6 +2681,7 @@
 				8BAE3AB518B6220900DA79E1 /* LTSplitComplexMat.mm in Sources */,
 				2843B77C18ABBF450044B87A /* LTMultiRectDrawer.mm in Sources */,
 				28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */,
+				280F5A26191A970400F9F80B /* LTShapeDrawerEllipticShape.mm in Sources */,
 				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
 				28C61C0118B23D430036D66E /* LTTouchCollectorDistanceFilter.mm in Sources */,
 				282CF085187B030000904F07 /* LTView.mm in Sources */,
@@ -2811,6 +2840,7 @@
 				280F5A0F191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
 				8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */,
 				8BAE3A4D18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm in Sources */,
+				280F5A28191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,
 				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */,
