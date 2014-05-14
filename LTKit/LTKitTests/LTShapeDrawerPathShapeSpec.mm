@@ -26,7 +26,7 @@ beforeEach(^{
 afterEach(^{
   shape = nil;
   [LTGLContext setCurrentContext:nil];
-  [LTShapeDrawerShape clearPrograms];
+  [LTCommonDrawableShape clearPrograms];
 });
 
 context(@"initialization", ^{
