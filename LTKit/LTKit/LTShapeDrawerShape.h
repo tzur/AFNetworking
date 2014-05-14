@@ -1,7 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPropertyMacros.h"
 #import "LTShapeDrawerShapeCommon.h"
 
 @class LTArrayBuffer, LTDrawingContext, LTProgram, LTShapeDrawerParams;
@@ -21,30 +20,24 @@
 /// Draws the shape on the currently bound screen framebuffer.
 - (void)drawInScreenFramebufferWithSize:(CGSize)size;
 
-/// Sets the opacity of the shape to draw.
-- (void)setOpacity:(CGFloat)opacity;
-
-/// The opacity of the shape to draw.
-- (CGFloat)opacity;
-
-/// Sets the translation of the shape (from the origin).
-- (void)setTranslation:(CGPoint)translation;
-
 /// The translation of the shape (from the origin).
-- (CGPoint)translation;
-
-/// Sets the rotation angle (clockwise, around the origin) of the shape.
-- (void)setRotationAngle:(CGFloat)angle;
+@property (nonatomic) CGPoint translation;
 
 /// The rotation angle (clockwise, around the origin) of the shape.
-- (CGFloat)rotationAngle;
+@property (nonatomic) CGFloat rotationAngle;
+
+/// The opacity of the shape to draw.
+@property (nonatomic) CGFloat opacity;
 
 @end
 
-/// @class LTShapeDrawerShape
+/// @class LTCommonDrawableShape
 ///
-/// Abstract class sharing some common funcionality shared between the different shapes.
-@interface LTShapeDrawerShape : NSObject
+/// Abstract class sharing common funcionality shared between the different shapes.
+///
+/// @note While not mandatory, most of the \c LTDrawableShape implementations are likely to inherit
+/// from this class, adding the missing functionality required by the \c LTDrawableShape protocol.
+@interface LTCommonDrawableShape : NSObject
 
 /// Initializes the shape drawer with the given drawer parameters.
 - (instancetype)initWithParams:(LTShapeDrawerParams *)params;
@@ -83,12 +76,18 @@
 /// Array buffer used for drawing the shape.
 @property (readonly, nonatomic) LTArrayBuffer *arrayBuffer;
 
-/// Opacity of the shape.
-LTBoundedPrimitiveProperty(CGFloat, opacity, Opacity);
+/// The translation of the shape (from the origin).
+@property (nonatomic) CGPoint translation;
+
+/// The rotation angle (clockwise, around the origin) of the shape.
+@property (nonatomic) CGFloat rotationAngle;
+
+/// The opacity of the shape to draw.
+@property (nonatomic) CGFloat opacity;
 
 @end
 
-@interface LTShapeDrawerShape (ForTesting)
+@interface LTCommonDrawableShape (ForTesting)
 
 /// Clears the cached shader programs.
 + (void)clearPrograms;
