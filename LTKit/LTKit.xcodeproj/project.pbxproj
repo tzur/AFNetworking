@@ -243,7 +243,6 @@
 		8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5818329538000845BA /* CoreMedia.framework */; };
 		8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */; };
 		8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
-		8B3DEBED18296B6100EA0C1A /* LTKit.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
 		8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE418296B6100EA0C1A /* libLTKit.a */; };
 		8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3DEC0018296B6100EA0C1A /* InfoPlist.strings */; };
@@ -269,6 +268,141 @@
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EAA21187C5D960004A57A /* Colorize.fsh */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.m */; };
+		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
+		8B871FC81924A75E00517F2E /* LTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB4041835320200A11FA4 /* LTDevice.h */; };
+		8B871FC91924A75E00517F2E /* LTShaderStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8E50E81861AA8900821829 /* LTShaderStorage.h */; };
+		8B871FCA1924A75E00517F2E /* LTImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7EFB918743EBE005695D0 /* LTImageProcessor.h */; };
+		8B871FCB1924A75E00517F2E /* LTImageProcessorOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFE439B18759533008B699F /* LTImageProcessorOutput.h */; };
+		8B871FCC1924A75E00517F2E /* LTIterativeImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFE1E1518756B1D008035BF /* LTIterativeImageProcessor.h */; };
+		8B871FCD1924A75E00517F2E /* LTGPUImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD5A188BFA6B004163DA /* LTGPUImageProcessor.h */; };
+		8B871FCE1924A75E00517F2E /* LTGPUImageProcessor+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFA8F2F190FE64B0088310E /* LTGPUImageProcessor+Protected.h */; };
+		8B871FCF1924A75E00517F2E /* LTOneShotImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFE1E0618756A69008035BF /* LTOneShotImageProcessor.h */; };
+		8B871FD01924A75E00517F2E /* LTProcessingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD63188C5806004163DA /* LTProcessingStrategy.h */; };
+		8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD5D188C0E9B004163DA /* LTIterativeProcessingStrategy.h */; };
+		8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD67188C5A29004163DA /* LTNextIterationPlacement.h */; };
+		8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD60188C13FA004163DA /* LTOneShotProcessingStrategy.h */; };
+		8B871FD41924A75E00517F2E /* LTAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D516E718B5DB780026B56A /* LTAdjustProcessor.h */; };
+		8B871FD51924A75E00517F2E /* LTAnalogFilmProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */; };
+		8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A8E18B4D35D00DA79E1 /* LTArithmeticProcessor.h */; };
+		8B871FD71924A75E00517F2E /* LTBicubicResizeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AD29AD18913E9400516D14 /* LTBicubicResizeProcessor.h */; };
+		8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */; };
+		8B871FD91924A75E00517F2E /* LTBoundaryExtractor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A0B18ACFEF700DA79E1 /* LTBoundaryExtractor.h */; };
+		8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */; };
+		8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */; };
+		8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */; };
+		8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BBB31E1887B7CB001E7703 /* LTColorGradient.h */; };
+		8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192C918FA885F00DC6CA6 /* LTCurve.h */; };
+		8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C1929918F5114100DC6CA6 /* LTDualMaskProcessor.h */; };
+		8B871FE01924A75E00517F2E /* LTDuoProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AFC13B19067EB800F17063 /* LTDuoProcessor.h */; };
+		8B871FE11924A75E00517F2E /* LTRectCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */; };
+		8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BBB373188C0675001E7703 /* LTFractionalNoise.h */; };
+		8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A8418B3B11500DA79E1 /* LTFFTConvolutionProcessor.h */; };
+		8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */; };
+		8B871FE51924A75E00517F2E /* LTInstafitProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFA8F35191002260088310E /* LTInstafitProcessor.h */; };
+		8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB92FAC1906AE5400954124 /* LTMaskOverlayProcessor.h */; };
+		8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */; };
+		8B871FE81924A75F00517F2E /* LTMixerProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BEBF3DB18FA9995005A0DE9 /* LTMixerProcessor.h */; };
+		8B871FE91924A75F00517F2E /* LTMultiscaleNoiseProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 039C95A11897E4A000F1E213 /* LTMultiscaleNoiseProcessor.h */; };
+		8B871FEA1924A75F00517F2E /* LTPassthroughProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BEBF3F718FAA1BD005A0DE9 /* LTPassthroughProcessor.h */; };
+		8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D516A218B3A6500026B56A /* LTProceduralVignetting.h */; };
+		8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAAC5C718BB637C00A4B4DA /* LTPatchCompositorProcessor.h */; };
+		8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB14D7218BF464F00701A1B /* LTPatchProcessor.h */; };
+		8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */; };
+		8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */; };
+		8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */; };
+		8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */; };
+		8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */; };
+		8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192FB18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.h */; };
+		8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */; };
+		8B871FF51924A75F00517F2E /* LTSplitComplexMat.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3AB318B6220900DA79E1 /* LTSplitComplexMat.h */; };
+		8B871FF61924A75F00517F2E /* LTTiltShiftProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AFC16F190E24B500F17063 /* LTTiltShiftProcessor.h */; };
+		8B871FF71924A75F00517F2E /* LTBoundaryCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7DC39B18328063008D004B /* LTBoundaryCondition.h */; };
+		8B871FF81924A75F00517F2E /* LTPatchKernel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB14D8118BF490700701A1B /* LTPatchKernel.h */; };
+		8B871FF91924A75F00517F2E /* LTArrayBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBE894F1838CA2C006C58AA /* LTArrayBuffer.h */; };
+		8B871FFA1924A75F00517F2E /* LTDrawingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB47134183A438300CA1681 /* LTDrawingContext.h */; };
+		8B871FFB1924A75F00517F2E /* LTFbo.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB3F618351FFE00A11FA4 /* LTFbo.h */; };
+		8B871FFC1924A76000517F2E /* LTGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8E51031861F54600821829 /* LTGLContext.h */; };
+		8B871FFD1924A76000517F2E /* LTGLException.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BCA66F3182FB5E2003FCB65 /* LTGLException.h */; };
+		8B871FFE1924A76000517F2E /* LTGLTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */; };
+		8B871FFF1924A76000517F2E /* LTGPUResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3667F0184757E5002A1833 /* LTGPUResource.h */; };
+		8B8720001924A76000517F2E /* LTGPUStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB47156183B5FBA00CA1681 /* LTGPUStruct.h */; };
+		8B8720011924A76000517F2E /* LTGPUStructsMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */; };
+		8B8720021924A76000517F2E /* LTGPUQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B19621B184B6DA40065A057 /* LTGPUQueue.h */; };
+		8B8720031924A76000517F2E /* LTMMTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3F94D0187C194500FAA265 /* LTMMTexture.h */; };
+		8B8720041924A76000517F2E /* LTProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E139182A602F00FDD95A /* LTProgram.h */; };
+		8B8720051924A76000517F2E /* LTShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E13C182A606600FDD95A /* LTShader.h */; };
+		8B8720061924A76000517F2E /* LTTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA11ADF1831555100A5001D /* LTTexture.h */; };
+		8B8720071924A76000517F2E /* LTTexture+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */; };
+		8B8720081924A76000517F2E /* LTVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB4713F183A470400CA1681 /* LTVertexArray.h */; };
+		8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A24191A970400F9F80B /* LTShapeDrawerEllipticShape.h */; };
+		8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 283BD0521922215B00B68A90 /* LTShapeDrawerPathShape.h */; };
+		8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A15191A8CFE00F9F80B /* LTShapeDrawerParams.h */; };
+		8B87200C1924A76100517F2E /* LTShapeDrawerShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A1B191A8D1E00F9F80B /* LTShapeDrawerShape.h */; };
+		8B87200D1924A76100517F2E /* LTShapeDrawerShapeCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A17191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.h */; };
+		8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 284791E61862E70200A70AF5 /* LTGridDrawer.h */; };
+		8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2843B77A18ABBF450044B87A /* LTMultiRectDrawer.h */; };
+		8B8720101924A76100517F2E /* LTProcessingDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD64188C58F8004163DA /* LTProcessingDrawer.h */; };
+		8B8720111924A76100517F2E /* LTRectDrawer+PassthroughShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */; };
+		8B8720121924A76100517F2E /* LTRectDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */; };
+		8B8720131924A76100517F2E /* LTRectMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAF8BDD18BCAA8600C77C04 /* LTRectMapping.h */; };
+		8B8720141924A76100517F2E /* LTSingleRectDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2843B77718ABBF350044B87A /* LTSingleRectDrawer.h */; };
+		8B8720151924A76100517F2E /* LTTextureDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2843B77418ABBF1F0044B87A /* LTTextureDrawer.h */; };
+		8B8720161924A76200517F2E /* LTBrushScatterEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4889518D0C014006BD8CF /* LTBrushScatterEffect.h */; };
+		8B8720171924A76200517F2E /* LTBrushShapeDynamicsEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A488A418D0C027006BD8CF /* LTBrushShapeDynamicsEffect.h */; };
+		8B8720181924A76200517F2E /* LTBrushColorDynamicsEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A5EAC418D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.h */; };
+		8B8720191924A76200517F2E /* LTRotatedRect+UIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */; };
+		8B87201A1924A76200517F2E /* LTEdgeAvoidingBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2839068A18C4D9AA00BD21CE /* LTEdgeAvoidingBrush.h */; };
+		8B87201B1924A76200517F2E /* LTErasingBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2839068E18C4D9AA00BD21CE /* LTErasingBrush.h */; };
+		8B87201C1924A76200517F2E /* LTRoundBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2839069118C4D9AA00BD21CE /* LTRoundBrush.h */; };
+		8B87201D1924A76200517F2E /* LTTextureBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 286A936A18D0513000F203DF /* LTTextureBrush.h */; };
+		8B87201E1924A76200517F2E /* LTMultiTextureBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 284004AD18D7510500403938 /* LTMultiTextureBrush.h */; };
+		8B87201F1924A76200517F2E /* LTSingleTextureBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 284004BC18D7650800403938 /* LTSingleTextureBrush.h */; };
+		8B8720201924A76300517F2E /* LTBristleBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ED10E918CC9EFE00EE1633 /* LTBristleBrush.h */; };
+		8B8720211924A76300517F2E /* LTBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2839068618C4D9AA00BD21CE /* LTBrush.h */; };
+		8B8720221924A76300517F2E /* LTCatmullRomInterpolationRoutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 284ED12618954ECB00414A8A /* LTCatmullRomInterpolationRoutine.h */; };
+		8B8720231924A76300517F2E /* LTDegenerateInterpolationRoutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 287705B618BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.h */; };
+		8B8720241924A76300517F2E /* LTInterpolatedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */; };
+		8B8720251924A76300517F2E /* LTInterpolationRoutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 289A872E1895158500EB8E86 /* LTInterpolationRoutine.h */; };
+		8B8720261924A76300517F2E /* LTLinearInterpolationRoutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 284ED11618954E9B00414A8A /* LTLinearInterpolationRoutine.h */; };
+		8B8720271924A76300517F2E /* LTTouchCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61C0A18B23D930036D66E /* LTTouchCollector.h */; };
+		8B8720281924A76300517F2E /* LTTouchCollectorDistanceFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61BFB18B23D430036D66E /* LTTouchCollectorDistanceFilter.h */; };
+		8B8720291924A76400517F2E /* LTTouchCollectorFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61BFD18B23D430036D66E /* LTTouchCollectorFilter.h */; };
+		8B87202A1924A76400517F2E /* LTTouchCollectorTimeIntervalFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61BFF18B23D430036D66E /* LTTouchCollectorTimeIntervalFilter.h */; };
+		8B87202B1924A76400517F2E /* LTPainter.h in Headers */ = {isa = PBXBuildFile; fileRef = 283906B118C4E27300BD21CE /* LTPainter.h */; };
+		8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61BEA18B23CD10036D66E /* LTPainterPoint.h */; };
+		8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */ = {isa = PBXBuildFile; fileRef = 280B14BC18B3C9AE0091B3D7 /* LTPainterStroke.h */; };
+		8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 280B14BE18B3C9AE0091B3D7 /* LTPainterStrokeSegment.h */; };
+		8B87202F1924A76400517F2E /* LTPainter+LTView.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ED10F718CCB26C00EE1633 /* LTPainter+LTView.h */; };
+		8B8720301924A76400517F2E /* half.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FDE18913084001A964D /* half.hpp */; };
+		8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BC465B11899267C0094F7BC /* LTForegroundOperation.h */; };
+		8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BC465BC18995C2E0094F7BC /* LTGPUBlock.h */; };
+		8B8720331924A76500517F2E /* LTOperationsExecutor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BC465B4189948360094F7BC /* LTOperationsExecutor.h */; };
+		8B8720341924A76500517F2E /* LTAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E13F182A68FC00FDD95A /* LTAssert.h */; };
+		8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2836211E186C58DC00665ED9 /* LTCGExtensions.h */; };
+		8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FB718910941001A964D /* LTEasyBoxing.h */; };
+		8B8720371924A76500517F2E /* LTOpenCVExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */; };
+		8B8720381924A76500517F2E /* LTOpenCVHalfFloat.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FD018912E74001A964D /* LTOpenCVHalfFloat.h */; };
+		8B8720391924A76600517F2E /* LTGLKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */; };
+		8B87203A1924A76600517F2E /* LTGLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E140182A707200FDD95A /* LTGLUtils.h */; };
+		8B87203B1924A76600517F2E /* LTInverseTransformSampler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */; };
+		8B87203C1924A76600517F2E /* LTLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEC0F18296D2200EA0C1A /* LTLogger.h */; };
+		8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */; };
+		8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */; };
+		8B87203F1924A76600517F2E /* LTMathUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB7C3218C4BEBD005BE12A /* LTMathUtils.h */; };
+		8B8720401924A76700517F2E /* LTPropertyMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 28EA156518B9E217003C00BF /* LTPropertyMacros.h */; };
+		8B8720411924A76700517F2E /* LTRotatedRect.h in Headers */ = {isa = PBXBuildFile; fileRef = 2843B6F618A7E1050044B87A /* LTRotatedRect.h */; };
+		8B8720421924A76700517F2E /* LTTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF9A53918F684AC00CCA084 /* LTTimer.h */; };
+		8B8720431924A76700517F2E /* LTTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA11AEA18320FCB00A5001D /* LTTypedefs.h */; };
+		8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF088187B030A00904F07 /* NSObject+AddToContainer.h */; };
+		8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */; };
+		8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF08B187B031800904F07 /* UIColor+Vector.h */; };
+		8B8720471924A76800517F2E /* LTView.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF07D187B030000904F07 /* LTView.h */; };
+		8B8720481924A76800517F2E /* LTViewDelegates.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF07F187B030000904F07 /* LTViewDelegates.h */; };
+		8B8720491924A76800517F2E /* LTViewNavigationMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF080187B030000904F07 /* LTViewNavigationMode.h */; };
+		8B87204A1924A76800517F2E /* LTViewNavigationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF081187B030000904F07 /* LTViewNavigationView.h */; };
+		8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF083187B030000904F07 /* LTViewPixelGrid.h */; };
+		8B87204C1924A76800517F2E /* LTAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ABE003187153AD005A5DEC /* LTAnimation.h */; };
+		8B87204D1924A76800517F2E /* NSBundle+LTKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */; };
 		8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50E91861AA8900821829 /* LTShaderStorage.m */; };
 		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
@@ -578,20 +712,6 @@
 			remoteInfo = LTKitBundle;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		8B3DEBE218296B6100EA0C1A /* Copy Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				8B3DEBED18296B6100EA0C1A /* LTKit.h in Copy Files */,
-			);
-			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		030A0BD3188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
@@ -2338,6 +2458,151 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		8B871FC61924A73A00517F2E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B871FC71924A75E00517F2E /* LTKit.h in Headers */,
+				8B871FC81924A75E00517F2E /* LTDevice.h in Headers */,
+				8B871FC91924A75E00517F2E /* LTShaderStorage.h in Headers */,
+				8B871FCA1924A75E00517F2E /* LTImageProcessor.h in Headers */,
+				8B871FCB1924A75E00517F2E /* LTImageProcessorOutput.h in Headers */,
+				8B871FCC1924A75E00517F2E /* LTIterativeImageProcessor.h in Headers */,
+				8B871FCD1924A75E00517F2E /* LTGPUImageProcessor.h in Headers */,
+				8B871FCE1924A75E00517F2E /* LTGPUImageProcessor+Protected.h in Headers */,
+				8B871FCF1924A75E00517F2E /* LTOneShotImageProcessor.h in Headers */,
+				8B871FD01924A75E00517F2E /* LTProcessingStrategy.h in Headers */,
+				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
+				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
+				8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */,
+				8B871FD41924A75E00517F2E /* LTAdjustProcessor.h in Headers */,
+				8B871FD51924A75E00517F2E /* LTAnalogFilmProcessor.h in Headers */,
+				8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */,
+				8B871FD71924A75E00517F2E /* LTBicubicResizeProcessor.h in Headers */,
+				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
+				8B871FD91924A75E00517F2E /* LTBoundaryExtractor.h in Headers */,
+				8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */,
+				8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */,
+				8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */,
+				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
+				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
+				8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */,
+				8B871FE01924A75E00517F2E /* LTDuoProcessor.h in Headers */,
+				8B871FE11924A75E00517F2E /* LTRectCopyProcessor.h in Headers */,
+				8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */,
+				8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */,
+				8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */,
+				8B871FE51924A75E00517F2E /* LTInstafitProcessor.h in Headers */,
+				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
+				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
+				8B871FE81924A75F00517F2E /* LTMixerProcessor.h in Headers */,
+				8B871FE91924A75F00517F2E /* LTMultiscaleNoiseProcessor.h in Headers */,
+				8B871FEA1924A75F00517F2E /* LTPassthroughProcessor.h in Headers */,
+				8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */,
+				8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */,
+				8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */,
+				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
+				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
+				8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */,
+				8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */,
+				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
+				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
+				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
+				8B871FF51924A75F00517F2E /* LTSplitComplexMat.h in Headers */,
+				8B871FF61924A75F00517F2E /* LTTiltShiftProcessor.h in Headers */,
+				8B871FF71924A75F00517F2E /* LTBoundaryCondition.h in Headers */,
+				8B871FF81924A75F00517F2E /* LTPatchKernel.h in Headers */,
+				8B871FF91924A75F00517F2E /* LTArrayBuffer.h in Headers */,
+				8B871FFA1924A75F00517F2E /* LTDrawingContext.h in Headers */,
+				8B871FFB1924A75F00517F2E /* LTFbo.h in Headers */,
+				8B871FFC1924A76000517F2E /* LTGLContext.h in Headers */,
+				8B871FFD1924A76000517F2E /* LTGLException.h in Headers */,
+				8B871FFE1924A76000517F2E /* LTGLTexture.h in Headers */,
+				8B871FFF1924A76000517F2E /* LTGPUResource.h in Headers */,
+				8B8720001924A76000517F2E /* LTGPUStruct.h in Headers */,
+				8B8720011924A76000517F2E /* LTGPUStructsMacros.h in Headers */,
+				8B8720021924A76000517F2E /* LTGPUQueue.h in Headers */,
+				8B8720031924A76000517F2E /* LTMMTexture.h in Headers */,
+				8B8720041924A76000517F2E /* LTProgram.h in Headers */,
+				8B8720051924A76000517F2E /* LTShader.h in Headers */,
+				8B8720061924A76000517F2E /* LTTexture.h in Headers */,
+				8B8720071924A76000517F2E /* LTTexture+Factory.h in Headers */,
+				8B8720081924A76000517F2E /* LTVertexArray.h in Headers */,
+				8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */,
+				8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */,
+				8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */,
+				8B87200C1924A76100517F2E /* LTShapeDrawerShape.h in Headers */,
+				8B87200D1924A76100517F2E /* LTShapeDrawerShapeCommon.h in Headers */,
+				8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */,
+				8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */,
+				8B8720101924A76100517F2E /* LTProcessingDrawer.h in Headers */,
+				8B8720111924A76100517F2E /* LTRectDrawer+PassthroughShader.h in Headers */,
+				8B8720121924A76100517F2E /* LTRectDrawer.h in Headers */,
+				8B8720131924A76100517F2E /* LTRectMapping.h in Headers */,
+				8B8720141924A76100517F2E /* LTSingleRectDrawer.h in Headers */,
+				8B8720151924A76100517F2E /* LTTextureDrawer.h in Headers */,
+				8B8720161924A76200517F2E /* LTBrushScatterEffect.h in Headers */,
+				8B8720171924A76200517F2E /* LTBrushShapeDynamicsEffect.h in Headers */,
+				8B8720181924A76200517F2E /* LTBrushColorDynamicsEffect.h in Headers */,
+				8B8720191924A76200517F2E /* LTRotatedRect+UIColor.h in Headers */,
+				8B87201A1924A76200517F2E /* LTEdgeAvoidingBrush.h in Headers */,
+				8B87201B1924A76200517F2E /* LTErasingBrush.h in Headers */,
+				8B87201C1924A76200517F2E /* LTRoundBrush.h in Headers */,
+				8B87201D1924A76200517F2E /* LTTextureBrush.h in Headers */,
+				8B87201E1924A76200517F2E /* LTMultiTextureBrush.h in Headers */,
+				8B87201F1924A76200517F2E /* LTSingleTextureBrush.h in Headers */,
+				8B8720201924A76300517F2E /* LTBristleBrush.h in Headers */,
+				8B8720211924A76300517F2E /* LTBrush.h in Headers */,
+				8B8720221924A76300517F2E /* LTCatmullRomInterpolationRoutine.h in Headers */,
+				8B8720231924A76300517F2E /* LTDegenerateInterpolationRoutine.h in Headers */,
+				8B8720241924A76300517F2E /* LTInterpolatedObject.h in Headers */,
+				8B8720251924A76300517F2E /* LTInterpolationRoutine.h in Headers */,
+				8B8720261924A76300517F2E /* LTLinearInterpolationRoutine.h in Headers */,
+				8B8720271924A76300517F2E /* LTTouchCollector.h in Headers */,
+				8B8720281924A76300517F2E /* LTTouchCollectorDistanceFilter.h in Headers */,
+				8B8720291924A76400517F2E /* LTTouchCollectorFilter.h in Headers */,
+				8B87202A1924A76400517F2E /* LTTouchCollectorTimeIntervalFilter.h in Headers */,
+				8B87202B1924A76400517F2E /* LTPainter.h in Headers */,
+				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
+				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
+				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
+				8B87202F1924A76400517F2E /* LTPainter+LTView.h in Headers */,
+				8B8720301924A76400517F2E /* half.hpp in Headers */,
+				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
+				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
+				8B8720331924A76500517F2E /* LTOperationsExecutor.h in Headers */,
+				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
+				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
+				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
+				8B8720371924A76500517F2E /* LTOpenCVExtensions.h in Headers */,
+				8B8720381924A76500517F2E /* LTOpenCVHalfFloat.h in Headers */,
+				8B8720391924A76600517F2E /* LTGLKitExtensions.h in Headers */,
+				8B87203A1924A76600517F2E /* LTGLUtils.h in Headers */,
+				8B87203B1924A76600517F2E /* LTInverseTransformSampler.h in Headers */,
+				8B87203C1924A76600517F2E /* LTLogger.h in Headers */,
+				8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */,
+				8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */,
+				8B87203F1924A76600517F2E /* LTMathUtils.h in Headers */,
+				8B8720401924A76700517F2E /* LTPropertyMacros.h in Headers */,
+				8B8720411924A76700517F2E /* LTRotatedRect.h in Headers */,
+				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
+				8B8720431924A76700517F2E /* LTTypedefs.h in Headers */,
+				8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */,
+				8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */,
+				8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */,
+				8B8720471924A76800517F2E /* LTView.h in Headers */,
+				8B8720481924A76800517F2E /* LTViewDelegates.h in Headers */,
+				8B8720491924A76800517F2E /* LTViewNavigationMode.h in Headers */,
+				8B87204A1924A76800517F2E /* LTViewNavigationView.h in Headers */,
+				8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */,
+				8B87204C1924A76800517F2E /* LTAnimation.h in Headers */,
+				8B87204D1924A76800517F2E /* NSBundle+LTKitBundle.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		8B3DEBE318296B6100EA0C1A /* LTKit */ = {
 			isa = PBXNativeTarget;
@@ -2345,7 +2610,7 @@
 			buildPhases = (
 				8B3DEBE018296B6100EA0C1A /* Sources */,
 				8B3DEBE118296B6100EA0C1A /* Frameworks */,
-				8B3DEBE218296B6100EA0C1A /* Copy Files */,
+				8B871FC61924A73A00517F2E /* Headers */,
 				8B66DF1018D88084007BC1C6 /* ShellScript */,
 			);
 			buildRules = (
