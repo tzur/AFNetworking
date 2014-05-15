@@ -17,14 +17,11 @@
 
 @interface LTShapeDrawerEllipticShape ()
 
+@property (nonatomic) BOOL filled;
+@property (nonatomic) CGSize size;
+
 /// Holds the drawing parameters that were used to generate the existing vertices.
 @property (strong, nonatomic) LTShapeDrawerParams *paramsForExistingVertices;
-
-/// \c YES iff the generated shape is a filled ellipse.
-@property (nonatomic) BOOL filled;
-
-/// The size of the axis-aligned ellipse.
-@property (nonatomic) CGSize rectSize;
 
 @end
 
@@ -39,7 +36,7 @@
   LTParameterAssert(rotatedRect);
   if (self = [super initWithParams:params]) {
     self.filled = filled;
-    self.rectSize = rotatedRect.rect.size;
+    self.size = rotatedRect.rect.size;
     self.translation = rotatedRect.center;
     self.rotationAngle = rotatedRect.angle;
   }
@@ -65,7 +62,7 @@
 
 - (void)updateVerticesForFilledEllipse {
   LTCommonDrawableShapeSegment segment;
-  CGSize halfSize = self.rectSize / 2;
+  CGSize halfSize = self.size / 2;
   for (NSUInteger i = 0; i < 4; ++i) {
     segment.v[i].lineBounds = GLKVector4Make(halfSize.width, halfSize.height, 0, 0);
     segment.v[i].shadowBounds = GLKVector4Make(self.params.shadowWidth + 1.0, 0, 0, 0);
@@ -73,7 +70,7 @@
     segment.v[i].shadowColor = self.params.shadowColor;
   }
 
-  CGSize size = self.rectSize + CGSizeMakeUniform(1.0 + 2.0 * self.params.shadowWidth);
+  CGSize size = self.size + CGSizeMakeUniform(1.0 + 2.0 * self.params.shadowWidth);
   LTRotatedRect *rect = [LTRotatedRect rectWithCenter:CGPointZero size:size angle:0];
   segment.src0.position = GLKVector2FromCGPoint(rect.v0);
   segment.src1.position = GLKVector2FromCGPoint(rect.v1);
@@ -91,11 +88,11 @@
 - (void)updateVerticesForNonFilledEllipse {
   static const CGFloat kMinSegments = 1;
   static const CGFloat kMaxSegments = 1000;
-  CGFloat segments = MIN(kMaxSegments, MAX(kMinSegments, 2 * M_PI * std::max(self.rectSize)));
+  CGFloat segments = MIN(kMaxSegments, MAX(kMinSegments, 2 * M_PI * std::max(self.size)));
   float step = 2.0 * M_PI / segments;
   
   CGFloat offset = 1.0 + self.params.lineRadius + self.params.shadowWidth;
-  CGSize radius = self.rectSize / 2;
+  CGSize radius = self.size / 2;
   for (NSUInteger i = 0; i < segments - 1; ++i) {
     LTCommonDrawableShapeSegment segment;
     for (NSUInteger i = 0; i < 4; ++i) {

@@ -20,4 +20,7 @@
 /// \c YES iff the generated shape is a filled ellipse.
 @property (readonly, nonatomic) BOOL filled;
 
+/// Size of the unrotated ellipse.
+@property (readonly, nonatomic) CGSize size;
+
 @end
