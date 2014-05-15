@@ -57,8 +57,13 @@
 #pragma mark -
 
 - (void)setData:(NSData *)data {
+  [self setDataWithConcatenatedData:@[data]];
+}
+
+- (void)setDataWithConcatenatedData:(NSArray *)dataArray {
   // Do not update to zero length.
-  if (!data.length) {
+  NSUInteger totalLength = [self lengthOfDataInArray:dataArray];
+  if (!totalLength) {
     return;
   }
 
@@ -70,25 +75,41 @@
           [LTGLException raise:kLTArrayBufferDisallowsStaticBufferUpdateException
                         format:@"Tried to update a GL_STATIC_DRAW buffer"];
         };
-        [self createBufferWithBufferData:data];
+        [self createBufferWithBufferData:[self concatenatedData:dataArray]];
         break;
       case LTArrayBufferUsageDynamicDraw:
         // Dynamic buffers updates buffer if the data has the same size, and creates a new one for
         // different size.
-        if (self.size != data.length) {
-          [self createBufferWithBufferData:data];
+        if (self.size != totalLength) {
+          [self createBufferWithBufferData:[self concatenatedData:dataArray]];
         } else {
-          [self createBufferWithSize:data.length];
-          [self updateBufferWithMapping:data];
+          [self createBufferWithSize:totalLength];
+          [self updateBufferWithMapping:dataArray];
         }
         break;
       case LTArrayBufferUsageStreamDraw:
         // Stream buffers creates a new buffer for each update.
-        [self createBufferWithSize:data.length];
-        [self updateBufferWithMapping:data];
+        [self createBufferWithSize:totalLength];
+        [self updateBufferWithMapping:dataArray];
         break;
     }
   }];
+}
+
+- (NSUInteger)lengthOfDataInArray:(NSArray *)dataArray {
+  return [[dataArray valueForKeyPath:@"@sum.length"] unsignedIntegerValue];
+}
+
+- (NSData *)concatenatedData:(NSArray *)dataArray {
+  if (dataArray.count == 1) {
+    return dataArray.firstObject;
+  }
+  
+  NSMutableData *result = [NSMutableData dataWithCapacity:[self lengthOfDataInArray:dataArray]];
+  for (NSData *data in dataArray) {
+    [result appendData:data];
+  }
+  return result;
 }
 
 - (NSData *)data {
@@ -136,8 +157,8 @@
   self.size = data.length;
 }
 
-- (void)updateBufferWithMapping:(NSData *)data {
-  GLvoid *mappedBuffer = glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
+- (void)updateBufferWithMapping:(NSArray *)dataArray {
+  char *mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
   if (!mappedBuffer) {
     // OpenGL's documentation says: "If an error is generated, glMapBuffer returns NULL, and
     // glUnmapBuffer returns GL_FALSE.". Throwing another exception for safety.
@@ -147,7 +168,13 @@
                   format:@"glMapBufferOES() returned NULL pointer"];
     return;
   }
-  memcpy(mappedBuffer, data.bytes, data.length);
+  
+  NSUInteger offset = 0;
+  for (NSData *data in dataArray) {
+    memcpy(mappedBuffer + offset, data.bytes, data.length);
+    offset += data.length;
+  }
+  
   if (!glUnmapBufferOES(self.type)) {
     // From OpenGL's documentation: "...In such situations, GL_FALSE is returned and the data store
     // contents are undefined. An application must detect this rare condition and reinitialize the

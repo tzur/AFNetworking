@@ -44,6 +44,16 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
 /// continuously, use \c LTArrayBufferUsageDynamicDraw or \c LTArrayBufferUsageStreamDraw.
 - (void)setData:(NSData *)data;
 
+/// Updates the buffer with the data in the given array (of \c NSData), concatenated one after
+/// another according to their order in the array. If the total size of the data is different than
+/// the current size of the buffer, the buffer will be re-allocated.
+///
+/// @note buffers of type \c LTArrayBufferUsageStaticDraw should only be initialized once. Trying to
+/// update will yield an \c LTGLException with \c
+/// kLTArrayBufferDisallowsStaticBufferUpdateException. For a buffer than can be updated
+/// continuously, use \c LTArrayBufferUsageDynamicDraw or \c LTArrayBufferUsageStreamDraw.
+- (void)setDataWithConcatenatedData:(NSArray *)dataArray;
+
 /// Retrieves the buffer data back to the CPU. This triggers a GPU -> CPU copy.
 ///
 /// @note this is a heavy operation which should usually be avoided. In common scenarios, try to

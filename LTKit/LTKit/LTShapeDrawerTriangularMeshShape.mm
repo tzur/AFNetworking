@@ -195,17 +195,20 @@ typedef union {
 }
 
 - (void)updateBuffer {
-  NSUInteger numTriangles = self.filledTriangles.size() + self.shadowTriangles.size();
-  NSMutableData *data = [NSMutableData dataWithLength:numTriangles * sizeof(LTShapeDrawerTriangle)];
+  NSMutableArray *dataArray = [NSMutableArray array];
   if (!self.shadowTriangles.empty()) {
-    memcpy(data.mutableBytes, &self.shadowTriangles[0],
-           self.shadowTriangles.size() * sizeof(LTShapeDrawerTriangle));
+    [dataArray addObject:
+        [NSData dataWithBytesNoCopy:&self.shadowTriangles[0]
+                             length:self.shadowTriangles.size() * sizeof(LTShapeDrawerTriangle)
+                       freeWhenDone:NO]];
   }
   if (!self.filledTriangles.empty()) {
-    memcpy((char *)data.mutableBytes + self.shadowTriangles.size() * sizeof(LTShapeDrawerTriangle),
-           &self.filledTriangles[0], self.filledTriangles.size() * sizeof(LTShapeDrawerTriangle));
+    [dataArray addObject:
+        [NSData dataWithBytesNoCopy:&self.filledTriangles[0]
+                             length:self.filledTriangles.size() * sizeof(LTShapeDrawerTriangle)
+                       freeWhenDone:NO]];
   }
-  [self.arrayBuffer setData:data];
+  [self.arrayBuffer setDataWithConcatenatedData:dataArray];
 }
 
 @end

@@ -125,20 +125,20 @@ static NSMutableDictionary *cachedPrograms;
 }
 
 - (void)updateBuffer {
-  NSUInteger numVertices = self.strokeVertices.size() + self.shadowVertices.size();
-  NSMutableData *data =
-      [NSMutableData dataWithLength:numVertices * sizeof(LTCommonDrawableShapeVertex)];
+  NSMutableArray *dataArray = [NSMutableArray array];
   if (!self.shadowVertices.empty()) {
-    memcpy(data.mutableBytes, &self.shadowVertices[0],
-           self.shadowVertices.size() * sizeof(LTCommonDrawableShapeVertex));
+    [dataArray addObject:
+        [NSData dataWithBytesNoCopy:&self.shadowVertices[0]
+                             length:self.shadowVertices.size() * sizeof(LTCommonDrawableShapeVertex)
+                       freeWhenDone:NO]];
   }
   if (!self.strokeVertices.empty()) {
-    memcpy((char *)data.mutableBytes +
-           self.shadowVertices.size() * sizeof(LTCommonDrawableShapeVertex),
-           &self.strokeVertices[0],
-           self.strokeVertices.size() * sizeof(LTCommonDrawableShapeVertex));
+    [dataArray addObject:
+        [NSData dataWithBytesNoCopy:&self.strokeVertices[0]
+                             length:self.strokeVertices.size() * sizeof(LTCommonDrawableShapeVertex)
+                       freeWhenDone:NO]];
   }
-  [self.arrayBuffer setData:data];
+  [self.arrayBuffer setDataWithConcatenatedData:dataArray];
 }
 
 #pragma mark -
