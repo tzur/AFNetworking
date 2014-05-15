@@ -133,6 +133,16 @@
 		280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */; };
 		280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
+		282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6921924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png */; };
+		282AC6981924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6931924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png */; };
+		282AC6991924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6941924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png */; };
+		282AC69A1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6951924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png */; };
+		282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6961924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png */; };
+		282AC6A91924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282AC6A81924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm */; };
+		282AC6AE1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 282AC6AB1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h */; };
+		282AC6AF1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282AC6AC1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm */; };
+		282AC6B01924B9EE006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 282AC6AA1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh */; };
+		282AC6B11924B9F2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 282AC6AD1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh */; };
 		282CF085187B030000904F07 /* LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF07E187B030000904F07 /* LTView.mm */; };
 		282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF082187B030000904F07 /* LTViewNavigationView.mm */; };
 		282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF084187B030000904F07 /* LTViewPixelGrid.mm */; };
@@ -337,8 +347,8 @@
 		8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A24191A970400F9F80B /* LTShapeDrawerEllipticShape.h */; };
 		8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 283BD0521922215B00B68A90 /* LTShapeDrawerPathShape.h */; };
 		8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A15191A8CFE00F9F80B /* LTShapeDrawerParams.h */; };
-		8B87200C1924A76100517F2E /* LTShapeDrawerShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A1B191A8D1E00F9F80B /* LTShapeDrawerShape.h */; };
-		8B87200D1924A76100517F2E /* LTShapeDrawerShapeCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A17191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.h */; };
+		8B87200C1924A76100517F2E /* LTDrawableShape.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A1B191A8D1E00F9F80B /* LTDrawableShape.h */; };
+		8B87200D1924A76100517F2E /* LTCommonDrawableShapeStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 280F5A17191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.h */; };
 		8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 284791E61862E70200A70AF5 /* LTGridDrawer.h */; };
 		8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2843B77A18ABBF450044B87A /* LTMultiRectDrawer.h */; };
 		8B8720101924A76100517F2E /* LTProcessingDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD64188C58F8004163DA /* LTProcessingDrawer.h */; };
@@ -874,6 +884,16 @@
 		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		282AC6851924A49C006CAA2B /* LTCommonDrawableShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCommonDrawableShape.h; sourceTree = "<group>"; };
+		282AC6921924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerTriangularMeshShapeMultipleTriangles.png; path = Resources/ShapeDrawerTriangularMeshShapeMultipleTriangles.png; sourceTree = "<group>"; };
+		282AC6931924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerTriangularMeshShapeRotation.png; path = Resources/ShapeDrawerTriangularMeshShapeRotation.png; sourceTree = "<group>"; };
+		282AC6941924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerTriangularMeshShapeTranslation.png; path = Resources/ShapeDrawerTriangularMeshShapeTranslation.png; sourceTree = "<group>"; };
+		282AC6951924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerTriangularMeshShapeTriangle.png; path = Resources/ShapeDrawerTriangularMeshShapeTriangle.png; sourceTree = "<group>"; };
+		282AC6961924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png; path = Resources/ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png; sourceTree = "<group>"; };
+		282AC6A81924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerTriangularMeshShapeSpec.mm; sourceTree = "<group>"; };
+		282AC6AA1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerTriangularMeshShape.fsh; sourceTree = "<group>"; };
+		282AC6AB1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerTriangularMeshShape.h; sourceTree = "<group>"; };
+		282AC6AC1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerTriangularMeshShape.mm; sourceTree = "<group>"; };
+		282AC6AD1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerTriangularMeshShape.vsh; sourceTree = "<group>"; };
 		282CF07D187B030000904F07 /* LTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTView.h; sourceTree = "<group>"; };
 		282CF07E187B030000904F07 /* LTView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTView.mm; sourceTree = "<group>"; };
 		282CF07F187B030000904F07 /* LTViewDelegates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTViewDelegates.h; sourceTree = "<group>"; };
@@ -1519,6 +1539,10 @@
 				283BD0511922215B00B68A90 /* LTShapeDrawerPathShape.fsh */,
 				283BD0521922215B00B68A90 /* LTShapeDrawerPathShape.h */,
 				283BD0531922215B00B68A90 /* LTShapeDrawerPathShape.mm */,
+				282AC6AB1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h */,
+				282AC6AC1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm */,
+				282AC6AA1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh */,
+				282AC6AD1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh */,
 			);
 			name = Shapes;
 			sourceTree = "<group>";
@@ -1536,6 +1560,7 @@
 		280F5A14191A8CDF00F9F80B /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
+				282AC6A81924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm */,
 				280F5A27191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm */,
 				283BD0551922217500B68A90 /* LTShapeDrawerPathShapeSpec.mm */,
 			);
@@ -1920,6 +1945,11 @@
 				283BD03C1922214300B68A90 /* ShapeDrawerPathShapeRotation.png */,
 				283BD03D1922214300B68A90 /* ShapeDrawerPathShapeTranslation.png */,
 				283BD03E1922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png */,
+				282AC6921924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png */,
+				282AC6931924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png */,
+				282AC6941924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png */,
+				282AC6951924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png */,
+				282AC6961924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png */,
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
 				031338C0191216020095F99B /* Checkerboard.png */,
@@ -2490,6 +2520,7 @@
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
 				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
 				8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */,
+				282AC6AE1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h in Headers */,
 				8B871FE01924A75E00517F2E /* LTDuoProcessor.h in Headers */,
 				8B871FE11924A75E00517F2E /* LTRectCopyProcessor.h in Headers */,
 				8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */,
@@ -2534,8 +2565,8 @@
 				8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */,
 				8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */,
 				8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */,
-				8B87200C1924A76100517F2E /* LTShapeDrawerShape.h in Headers */,
-				8B87200D1924A76100517F2E /* LTShapeDrawerShapeCommon.h in Headers */,
+				8B87200C1924A76100517F2E /* LTDrawableShape.h in Headers */,
+				8B87200D1924A76100517F2E /* LTCommonDrawableShapeStructs.h in Headers */,
 				8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */,
 				8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */,
 				8B8720101924A76100517F2E /* LTProcessingDrawer.h in Headers */,
@@ -2812,11 +2843,13 @@
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
 				283BD0441922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png in Resources */,
 				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
+				282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */,
 				03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				283BD0401922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png in Resources */,
+				282AC6981924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
@@ -2826,6 +2859,7 @@
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
 				031338C1191216020095F99B /* Checkerboard.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
+				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
@@ -2850,6 +2884,7 @@
 				03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */,
 				03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */,
 				03D516CA18B4A9E10026B56A /* RoundWideVignetting.png in Resources */,
+				282AC6991924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
 				286A934118CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
@@ -2873,6 +2908,7 @@
 				283BD0421922214300B68A90 /* ShapeDrawerPathShapeRotation.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
+				282AC69A1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
@@ -2925,6 +2961,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282AC6B11924B9F2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh in Sources */,
+				282AC6B01924B9EE006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh in Sources */,
 				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
 				280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */,
@@ -3053,6 +3091,7 @@
 				280F5A1E191A8D1E00F9F80B /* LTCommonDrawableShape.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
 				2839069518C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm in Sources */,
+				282AC6AF1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm in Sources */,
 				2839069618C4D9AA00BD21CE /* LTErasingBrush.mm in Sources */,
 				039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */,
 				280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */,
@@ -3151,6 +3190,7 @@
 				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */,
 				284004D718D8423500403938 /* LTMultiTextureBrushSpec.mm in Sources */,
 				8BAE3A3F18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm in Sources */,
+				282AC6A91924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm in Sources */,
 				8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */,
 				288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */,
 				8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */,
