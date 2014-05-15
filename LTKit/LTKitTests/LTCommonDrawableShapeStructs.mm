@@ -1,18 +1,19 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTShapeDrawerShapeCommon.h"
+#import "LTCommonDrawableShapeStructs.h"
 
 #import "LTGLKitExtensions.h"
 
-BOOL LTAreVerticesEqual(const LTShapeDrawerVertex &v0, const LTShapeDrawerVertex &v1) {
-  return !memcmp(&v0, &v1, sizeof(LTShapeDrawerVertex));
+BOOL LTAreVerticesEqual(const LTCommonDrawableShapeVertex &v0,
+                        const LTCommonDrawableShapeVertex &v1) {
+  return !memcmp(&v0, &v1, sizeof(LTCommonDrawableShapeVertex));
 }
 
-SpecBegin(LTShapeDrawerShapeCommon)
+SpecBegin(LTCommonDrawableShapeStructs)
 
-__block LTShapeDrawerVertices shadowVertices;
-__block LTShapeDrawerVertices strokeVertices;
+__block LTCommonDrawableShapeVertices shadowVertices;
+__block LTCommonDrawableShapeVertices strokeVertices;
 
 beforeEach(^{
   shadowVertices.clear();
@@ -20,7 +21,7 @@ beforeEach(^{
 });
 
 context(@"adding vertices", ^{
-  __block LTShapeDrawerVertex vertex;
+  __block LTCommonDrawableShapeVertex vertex;
   
   beforeEach(^{
     vertex.position = GLKVector2One;
@@ -67,10 +68,10 @@ context(@"adding vertices", ^{
 });
 
 context(@"adding segments", ^{
-  __block LTShapeDrawerSegment segment;
+  __block LTCommonDrawableShapeSegment segment;
   
   beforeEach(^{
-    for (LTShapeDrawerVertex &vertex : segment.v) {
+    for (LTCommonDrawableShapeVertex &vertex : segment.v) {
       vertex.offset = GLKVector2One * 2;
       vertex.lineBounds = GLKVector4One;
       vertex.shadowBounds = GLKVector4One * 2;
@@ -112,7 +113,7 @@ context(@"adding segments", ^{
   it(@"should add segment without shadow vertices", ^{
     LTAddSegment(segment, &strokeVertices, nil);
     expect(strokeVertices.size()).to.equal(6);
-    for (const LTShapeDrawerVertex &vertex : strokeVertices) {
+    for (const LTCommonDrawableShapeVertex &vertex : strokeVertices) {
       // beCloseToGLKVector is used since 'equal' matcher doesn't work properly for GLKVector2.
       expect(vertex.offset).to.beCloseToGLKVector(segment.src0.offset);
       expect(vertex.lineBounds).to.equal(segment.src0.lineBounds);

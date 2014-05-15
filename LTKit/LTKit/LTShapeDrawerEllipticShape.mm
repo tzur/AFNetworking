@@ -10,7 +10,7 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTShapeDrawerShapeVsh.h"
+#import "LTShaderStorage+LTCommonDrawableShapeVsh.h"
 #import "LTShaderStorage+LTShapeDrawerEllipticShapeFsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTRotatedRect.h"
@@ -47,7 +47,7 @@
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTShapeDrawerShapeVsh source]
+  return [[LTProgram alloc] initWithVertexSource:[LTCommonDrawableShapeVsh source]
                                   fragmentSource:[LTShapeDrawerEllipticShapeFsh source]];
 }
 
@@ -64,7 +64,7 @@
 }
 
 - (void)updateVerticesForFilledEllipse {
-  LTShapeDrawerSegment segment;
+  LTCommonDrawableShapeSegment segment;
   CGSize halfSize = self.rectSize / 2;
   for (NSUInteger i = 0; i < 4; ++i) {
     segment.v[i].lineBounds = GLKVector4Make(halfSize.width, halfSize.height, 0, 0);
@@ -97,7 +97,7 @@
   CGFloat offset = 1.0 + self.params.lineRadius + self.params.shadowWidth;
   CGSize radius = self.rectSize / 2;
   for (NSUInteger i = 0; i < segments - 1; ++i) {
-    LTShapeDrawerSegment segment;
+    LTCommonDrawableShapeSegment segment;
     for (NSUInteger i = 0; i < 4; ++i) {
       segment.v[i].lineBounds = GLKVector4Make(1, self.params.lineRadius,
                                                1, self.params.lineRadius);
@@ -158,19 +158,19 @@
       GLKMatrix4Rotate(GLKMatrix4MakeTranslation(self.translation.x, self.translation.y, 0),
                        self.rotationAngle, 0, 0, 1);
   
-  self.program[[LTShapeDrawerShapeVsh modelview]] = $(modelview);
+  self.program[[LTCommonDrawableShapeVsh modelview]] = $(modelview);
   self.program[[LTShapeDrawerEllipticShapeFsh opacity]] = @(self.opacity);
   self.program[[LTShapeDrawerEllipticShapeFsh filled]] = @(self.filled);
 }
 
 - (void)setProjectionForFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[[LTShapeDrawerShapeVsh projection]] = $(projection);
+  self.program[[LTCommonDrawableShapeVsh projection]] = $(projection);
 }
 
 - (void)setProjectionForScreenFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[[LTShapeDrawerShapeVsh projection]] = $(projection);
+  self.program[[LTCommonDrawableShapeVsh projection]] = $(projection);
 }
 
 @end

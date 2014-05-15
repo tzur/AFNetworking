@@ -1,13 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTShapeDrawerShape.h"
+#import "LTCommonDrawableShape.h"
 
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTProgram.h"
 #import "LTPropertyMacros.h"
-#import "LTShaderStorage+LTShapeDrawerShapeVsh.h"
+#import "LTShaderStorage+LTCommonDrawableShapeVsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTVertexArray.h"
 
@@ -15,7 +15,7 @@
 #pragma mark Common Utility Methods
 #pragma mark -
 
-LTGPUStructImplement(LTShapeDrawerVertex,
+LTGPUStructImplement(LTCommonDrawableShapeVertex,
                      GLKVector2, position,
                      GLKVector2, offset,
                      GLKVector4, lineBounds,
@@ -24,8 +24,8 @@ LTGPUStructImplement(LTShapeDrawerVertex,
                      GLKVector4, shadowColor);
 
 @interface LTCommonDrawableShape () {
-  LTShapeDrawerVertices _strokeVertices;
-  LTShapeDrawerVertices _shadowVertices;
+  LTCommonDrawableShapeVertices _strokeVertices;
+  LTCommonDrawableShapeVertices _shadowVertices;
 }
 
 @property (strong, nonatomic) LTShapeDrawerParams *params;
@@ -117,7 +117,7 @@ static NSMutableDictionary *cachedPrograms;
 }
 
 - (NSString *)vertexShaderStructName {
-  return @"LTShapeDrawerVertex";
+  return @"LTCommonDrawableShapeVertex";
 }
 
 - (NSArray *)vertexShaderAttributes {
@@ -126,14 +126,17 @@ static NSMutableDictionary *cachedPrograms;
 
 - (void)updateBuffer {
   NSUInteger numVertices = self.strokeVertices.size() + self.shadowVertices.size();
-  NSMutableData *data = [NSMutableData dataWithLength:numVertices * sizeof(LTShapeDrawerVertex)];
+  NSMutableData *data =
+      [NSMutableData dataWithLength:numVertices * sizeof(LTCommonDrawableShapeVertex)];
   if (!self.shadowVertices.empty()) {
     memcpy(data.mutableBytes, &self.shadowVertices[0],
-           self.shadowVertices.size() * sizeof(LTShapeDrawerVertex));
+           self.shadowVertices.size() * sizeof(LTCommonDrawableShapeVertex));
   }
   if (!self.strokeVertices.empty()) {
-    memcpy((char *)data.mutableBytes + self.shadowVertices.size() * sizeof(LTShapeDrawerVertex),
-           &self.strokeVertices[0], self.strokeVertices.size() * sizeof(LTShapeDrawerVertex));
+    memcpy((char *)data.mutableBytes +
+           self.shadowVertices.size() * sizeof(LTCommonDrawableShapeVertex),
+           &self.strokeVertices[0],
+           self.strokeVertices.size() * sizeof(LTCommonDrawableShapeVertex));
   }
   [self.arrayBuffer setData:data];
 }
