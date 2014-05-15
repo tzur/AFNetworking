@@ -10,7 +10,7 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTShapeDrawerShapeVsh.h"
+#import "LTShaderStorage+LTCommonDrawableShapeVsh.h"
 #import "LTShaderStorage+LTShapeDrawerPathShapeFsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTVertexArray.h"
@@ -32,7 +32,7 @@
 #pragma mark -
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTShapeDrawerShapeVsh source]
+  return [[LTProgram alloc] initWithVertexSource:[LTCommonDrawableShapeVsh source]
                                   fragmentSource:[LTShapeDrawerPathShapeFsh source]];
 }
 
@@ -46,8 +46,9 @@
 }
 
 - (void)addLineToPoint:(CGPoint)point {
-  LTShapeDrawerSegment segment = [self verticesForLineFrom:GLKVector2FromCGPoint(self.currentPoint)
-                                                        to:GLKVector2FromCGPoint(point)];
+  LTCommonDrawableShapeSegment segment =
+      [self verticesForLineFrom:GLKVector2FromCGPoint(self.currentPoint)
+                             to:GLKVector2FromCGPoint(point)];
   LTAddSegment(segment, &self.strokeVertices, &self.shadowVertices);
   self.currentPoint = point;
 }
@@ -56,7 +57,7 @@
   [self addLineToPoint:self.startingPoint];
 }
 
-- (LTShapeDrawerSegment)verticesForLineFrom:(GLKVector2)source to:(GLKVector2)target {
+- (LTCommonDrawableShapeSegment)verticesForLineFrom:(GLKVector2)source to:(GLKVector2)target {
   CGFloat shadowWidth = self.params.shadowWidth;
   CGFloat lineRadius = self.params.lineRadius;
   GLKVector2 direction = GLKVector2Normalize(target - source);
@@ -65,7 +66,7 @@
   GLKVector4 offset = GLKVector4Make(1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius,
                                      1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius);
   
-  LTShapeDrawerSegment segment;
+  LTCommonDrawableShapeSegment segment;
   for (NSUInteger i = 0; i < 4; ++i) {
     segment.v[i].lineBounds =
         GLKVector4Make(0.5 * lineLength, lineRadius, 0.5 * lineLength, lineRadius);
@@ -120,18 +121,18 @@
       GLKMatrix4Rotate(GLKMatrix4MakeTranslation(self.translation.x, self.translation.y, 0),
                        self.rotationAngle, 0, 0, 1);
   
-  self.program[[LTShapeDrawerShapeVsh modelview]] = $(modelview);
+  self.program[[LTCommonDrawableShapeVsh modelview]] = $(modelview);
   self.program[[LTShapeDrawerPathShapeFsh opacity]] = @(self.opacity);
 }
 
 - (void)setProjectionForFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[[LTShapeDrawerShapeVsh projection]] = $(projection);
+  self.program[[LTCommonDrawableShapeVsh projection]] = $(projection);
 }
 
 - (void)setProjectionForScreenFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[[LTShapeDrawerShapeVsh projection]] = $(projection);
+  self.program[[LTCommonDrawableShapeVsh projection]] = $(projection);
 }
 
 @end

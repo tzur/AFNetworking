@@ -121,8 +121,8 @@
 		280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F59FE191A61FB00F9F80B /* LTGLKitExtensions.mm */; };
 		280F5A0F191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A0E191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm */; };
 		280F5A19191A8CFE00F9F80B /* LTShapeDrawerParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A16191A8CFE00F9F80B /* LTShapeDrawerParams.mm */; };
-		280F5A1A191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A18191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm */; };
-		280F5A1E191A8D1E00F9F80B /* LTShapeDrawerShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1C191A8D1E00F9F80B /* LTShapeDrawerShape.mm */; };
+		280F5A1A191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A18191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm */; };
+		280F5A1E191A8D1E00F9F80B /* LTCommonDrawableShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1C191A8D1E00F9F80B /* LTCommonDrawableShape.mm */; };
 		280F5A20191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */; };
 		280F5A26191A970400F9F80B /* LTShapeDrawerEllipticShape.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A25191A970400F9F80B /* LTShapeDrawerEllipticShape.mm */; };
 		280F5A28191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A27191A971C00F9F80B /* LTShapeDrawerEllipticShapeSpec.mm */; };
@@ -130,7 +130,7 @@
 		280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2A191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png */; };
 		280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2B191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png */; };
 		280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2C191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png */; };
-		280F5A37191A97B100F9F80B /* LTShapeDrawerShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTShapeDrawerShape.vsh */; };
+		280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */; };
 		280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF085187B030000904F07 /* LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF07E187B030000904F07 /* LTView.mm */; };
@@ -214,7 +214,7 @@
 		28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */; };
 		28A5EAC318D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */; };
 		28A5EAC618D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC518D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm */; };
-		28A8C7A919209E8A00A38FDE /* LTShapeDrawerShapeCommonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTShapeDrawerShapeCommonSpec.mm */; };
+		28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */; };
@@ -732,11 +732,11 @@
 		280F5A0E191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKVector.mm"; sourceTree = "<group>"; };
 		280F5A15191A8CFE00F9F80B /* LTShapeDrawerParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerParams.h; sourceTree = "<group>"; };
 		280F5A16191A8CFE00F9F80B /* LTShapeDrawerParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerParams.mm; sourceTree = "<group>"; };
-		280F5A17191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerShapeCommon.h; sourceTree = "<group>"; };
-		280F5A18191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerShapeCommon.mm; sourceTree = "<group>"; };
-		280F5A1B191A8D1E00F9F80B /* LTShapeDrawerShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerShape.h; sourceTree = "<group>"; };
-		280F5A1C191A8D1E00F9F80B /* LTShapeDrawerShape.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerShape.mm; sourceTree = "<group>"; };
-		280F5A1D191A8D1E00F9F80B /* LTShapeDrawerShape.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerShape.vsh; sourceTree = "<group>"; };
+		280F5A17191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCommonDrawableShapeStructs.h; sourceTree = "<group>"; };
+		280F5A18191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
+		280F5A1B191A8D1E00F9F80B /* LTDrawableShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDrawableShape.h; sourceTree = "<group>"; };
+		280F5A1C191A8D1E00F9F80B /* LTCommonDrawableShape.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShape.mm; sourceTree = "<group>"; };
+		280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTCommonDrawableShape.vsh; sourceTree = "<group>"; };
 		280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerParamsSpec.mm; sourceTree = "<group>"; };
 		280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTShapeDrawerEllipticShape.fsh; sourceTree = "<group>"; };
 		280F5A24191A970400F9F80B /* LTShapeDrawerEllipticShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawerEllipticShape.h; sourceTree = "<group>"; };
@@ -753,6 +753,7 @@
 		2817821A187C2E7200548AE4 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		282AC6851924A49C006CAA2B /* LTCommonDrawableShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCommonDrawableShape.h; sourceTree = "<group>"; };
 		282CF07D187B030000904F07 /* LTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTView.h; sourceTree = "<group>"; };
 		282CF07E187B030000904F07 /* LTView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTView.mm; sourceTree = "<group>"; };
 		282CF07F187B030000904F07 /* LTViewDelegates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTViewDelegates.h; sourceTree = "<group>"; };
@@ -875,7 +876,7 @@
 		28A5EAC418D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushColorDynamicsEffect.h; sourceTree = "<group>"; };
 		28A5EAC518D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushColorDynamicsEffect.mm; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
-		28A8C7A819209E8A00A38FDE /* LTShapeDrawerShapeCommonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerShapeCommonSpec.mm; sourceTree = "<group>"; };
+		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
@@ -1377,13 +1378,14 @@
 			isa = PBXGroup;
 			children = (
 				280F5A12191A8CCE00F9F80B /* Shapes */,
+				280F5A1B191A8D1E00F9F80B /* LTDrawableShape.h */,
+				280F5A1C191A8D1E00F9F80B /* LTCommonDrawableShape.mm */,
+				282AC6851924A49C006CAA2B /* LTCommonDrawableShape.h */,
+				280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */,
+				280F5A17191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.h */,
+				280F5A18191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm */,
 				280F5A15191A8CFE00F9F80B /* LTShapeDrawerParams.h */,
 				280F5A16191A8CFE00F9F80B /* LTShapeDrawerParams.mm */,
-				280F5A1B191A8D1E00F9F80B /* LTShapeDrawerShape.h */,
-				280F5A1C191A8D1E00F9F80B /* LTShapeDrawerShape.mm */,
-				280F5A1D191A8D1E00F9F80B /* LTShapeDrawerShape.vsh */,
-				280F5A17191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.h */,
-				280F5A18191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm */,
 			);
 			name = "Shape Drawer";
 			sourceTree = "<group>";
@@ -1406,7 +1408,7 @@
 			children = (
 				280F5A14191A8CDF00F9F80B /* Shapes */,
 				280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */,
-				28A8C7A819209E8A00A38FDE /* LTShapeDrawerShapeCommonSpec.mm */,
+				28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */,
 			);
 			name = "Shape Drawer";
 			sourceTree = "<group>";
@@ -2660,7 +2662,7 @@
 			files = (
 				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
-				280F5A37191A97B100F9F80B /* LTShapeDrawerShape.vsh in Sources */,
+				280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */,
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
@@ -2768,7 +2770,7 @@
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
 				28C61C0318B23D430036D66E /* LTTouchCollectorTimeIntervalFilter.m in Sources */,
 				8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */,
-				280F5A1A191A8CFE00F9F80B /* LTShapeDrawerShapeCommon.mm in Sources */,
+				280F5A1A191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm in Sources */,
 				282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */,
 				03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */,
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
@@ -2783,7 +2785,7 @@
 				8BE51F6618FFF15300E907AE /* LTRecomposeProcessor.mm in Sources */,
 				8BC465B31899267C0094F7BC /* LTForegroundOperation.mm in Sources */,
 				284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */,
-				280F5A1E191A8D1E00F9F80B /* LTShapeDrawerShape.mm in Sources */,
+				280F5A1E191A8D1E00F9F80B /* LTCommonDrawableShape.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
 				2839069518C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm in Sources */,
 				2839069618C4D9AA00BD21CE /* LTErasingBrush.mm in Sources */,
@@ -2920,7 +2922,7 @@
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */,
-				28A8C7A919209E8A00A38FDE /* LTShapeDrawerShapeCommonSpec.mm in Sources */,
+				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
 				8BAAC5C318BB45A600A4B4DA /* LTRectCopyProcessorSpec.mm in Sources */,
 				8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */,

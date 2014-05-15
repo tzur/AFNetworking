@@ -1,24 +1,27 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTShapeDrawerShapeCommon.h"
+#import "LTCommonDrawableShapeStructs.h"
 
 #import "LTGLKitExtensions.mm"
 
-void LTAddShadowVertex(const LTShapeDrawerVertex &vertex, LTShapeDrawerVertices *shadowVertices) {
+void LTAddShadowVertex(const LTCommonDrawableShapeVertex &vertex,
+                       LTCommonDrawableShapeVertices *shadowVertices) {
   LTParameterAssert(shadowVertices);
   shadowVertices->push_back(vertex);
   shadowVertices->back().color = GLKVector4Zero;
 }
 
-void LTAddStrokeVertex(const LTShapeDrawerVertex &vertex, LTShapeDrawerVertices *strokeVertices) {
+void LTAddStrokeVertex(const LTCommonDrawableShapeVertex &vertex,
+                       LTCommonDrawableShapeVertices *strokeVertices) {
   LTParameterAssert(strokeVertices);
   strokeVertices->push_back(vertex);
   strokeVertices->back().shadowColor = GLKVector4Zero;
 }
 
-void LTAddSegment(const LTShapeDrawerSegment &segment, LTShapeDrawerVertices *strokeVertices,
-                LTShapeDrawerVertices *shadowVertices) {
+void LTAddSegment(const LTCommonDrawableShapeSegment &segment,
+                  LTCommonDrawableShapeVertices *strokeVertices,
+                  LTCommonDrawableShapeVertices *shadowVertices) {
   LTParameterAssert(strokeVertices);
   if (shadowVertices) {
     LTAddShadowVertex(segment.src0, shadowVertices);
