@@ -208,7 +208,7 @@ typedef union {
                              length:self.filledTriangles.size() * sizeof(LTShapeDrawerTriangle)
                        freeWhenDone:NO]];
   }
-  [self.arrayBuffer setDataWithContcatedData:dataArray];
+  [self.arrayBuffer setDataWithConcatenatedData:dataArray];
 }
 
 @end

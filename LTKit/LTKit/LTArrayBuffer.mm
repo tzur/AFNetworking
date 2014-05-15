@@ -57,16 +57,16 @@
 #pragma mark -
 
 - (void)setData:(NSData *)data {
-  [self setDataWithContcatedData:@[data]];
+  [self setDataWithConcatenatedData:@[data]];
 }
 
-- (void)setDataWithContcatedData:(NSArray *)dataArray {
+- (void)setDataWithConcatenatedData:(NSArray *)dataArray {
   // Do not update to zero length.
   NSUInteger totalLength = [self lengthOfDataInArray:dataArray];
   if (!totalLength) {
     return;
   }
-  
+
   [self bindAndExecute:^{
     switch (self.usage) {
       case LTArrayBufferUsageStaticDraw:
@@ -75,13 +75,13 @@
           [LTGLException raise:kLTArrayBufferDisallowsStaticBufferUpdateException
                         format:@"Tried to update a GL_STATIC_DRAW buffer"];
         };
-        [self createBufferWithBufferData:[self concatedData:dataArray]];
+        [self createBufferWithBufferData:[self concatenatedData:dataArray]];
         break;
       case LTArrayBufferUsageDynamicDraw:
         // Dynamic buffers updates buffer if the data has the same size, and creates a new one for
         // different size.
         if (self.size != totalLength) {
-          [self createBufferWithBufferData:[self concatedData:dataArray]];
+          [self createBufferWithBufferData:[self concatenatedData:dataArray]];
         } else {
           [self createBufferWithSize:totalLength];
           [self updateBufferWithMapping:dataArray];
@@ -97,14 +97,10 @@
 }
 
 - (NSUInteger)lengthOfDataInArray:(NSArray *)dataArray {
-  NSUInteger length = 0;
-  for (NSData *data in dataArray) {
-    length += data.length;
-  }
-  return length;
+  return [[dataArray valueForKeyPath:@"@sum.length"] unsignedIntegerValue];
 }
 
-- (NSData *)concatedData:(NSArray *)dataArray {
+- (NSData *)concatenatedData:(NSArray *)dataArray {
   if (dataArray.count == 1) {
     return dataArray.firstObject;
   }

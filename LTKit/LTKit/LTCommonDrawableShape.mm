@@ -138,7 +138,7 @@ static NSMutableDictionary *cachedPrograms;
                              length:self.strokeVertices.size() * sizeof(LTCommonDrawableShapeVertex)
                        freeWhenDone:NO]];
   }
-  [self.arrayBuffer setDataWithContcatedData:dataArray];
+  [self.arrayBuffer setDataWithConcatenatedData:dataArray];
 }
 
 #pragma mark -
