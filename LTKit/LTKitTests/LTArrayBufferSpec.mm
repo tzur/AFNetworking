@@ -8,7 +8,7 @@
 SpecGLBegin(LTArrayBuffer)
 
 sharedExamplesFor(@"array buffer that initializes its data", ^(NSDictionary *dict) {
-  it(@"should add initial data", ^{
+  it(@"should add initial data with a single buffer", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *data = dict[@"data"];
     [buffer setData:data];
@@ -16,10 +16,22 @@ sharedExamplesFor(@"array buffer that initializes its data", ^(NSDictionary *dic
     expect(buffer.size).to.equal(data.length);
     expect([buffer data]).to.equal(data);
   });
+  
+  it(@"should add initial data by concating buffers", ^{
+    LTArrayBuffer *buffer = dict[@"buffer"];
+    NSData *data = dict[@"data"];
+    NSData *otherData = [NSMutableData dataWithLength:data.length];
+    [buffer setDataWithContcatedData:@[data, otherData]];
+    
+    NSMutableData *concatedData = [data mutableCopy];
+    [concatedData appendData:otherData];
+    expect(buffer.size).to.equal(concatedData.length);
+    expect([buffer data]).to.equal(concatedData);
+  });
 });
 
 sharedExamplesFor(@"array buffer that modifies its contents", ^(NSDictionary *dict) {
-  it(@"should update data with the same size", ^{
+  it(@"should update data with a single buffer of the same size", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *reversedData = dict[@"reversedData"];
 
@@ -30,7 +42,21 @@ sharedExamplesFor(@"array buffer that modifies its contents", ^(NSDictionary *di
     expect([buffer data]).to.equal(reversedData);
   });
 
-  it(@"should update data with different size", ^{
+  it(@"should update data with concated buffers of the same size", ^{
+    LTArrayBuffer *buffer = dict[@"buffer"];
+    NSData *reversedData = dict[@"reversedData"];
+    NSData *otherData = [NSMutableData dataWithLength:reversedData.length];
+    
+    [buffer setDataWithContcatedData:@[dict[@"data"], otherData]];
+    [buffer setDataWithContcatedData:@[otherData, reversedData]];
+    
+    NSMutableData *concatedData = [otherData mutableCopy];
+    [concatedData appendData:reversedData];
+    expect(buffer.size).to.equal(concatedData.length);
+    expect([buffer data]).to.equal(concatedData);
+  });
+
+  it(@"should update data with a single buffer of different size", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *otherData = dict[@"otherData"];
 
@@ -39,6 +65,20 @@ sharedExamplesFor(@"array buffer that modifies its contents", ^(NSDictionary *di
 
     expect(buffer.size).to.equal(otherData.length);
     expect([buffer data]).to.equal(otherData);
+  });
+  
+  it(@"should update data with concated buffers of different size", ^{
+    LTArrayBuffer *buffer = dict[@"buffer"];
+    NSData *data = dict[@"data"];
+    NSData *otherData = dict[@"otherData"];
+    
+    [buffer setData:data];
+    [buffer setDataWithContcatedData:@[otherData, data]];
+    
+    NSMutableData *concatedData = [otherData mutableCopy];
+    [concatedData appendData:data];
+    expect(buffer.size).to.equal(concatedData.length);
+    expect([buffer data]).to.equal(concatedData);
   });
 });
 
