@@ -242,4 +242,30 @@ context(@"rounding cgstructs", ^{
   });
 });
 
+context(@"scaling down cgsizes", ^{
+  it(@"should scale down correctly", ^{
+    CGSize inputSize = CGSizeMake(20, 10);
+    CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
+    expect(outputSize).to.equal(CGSizeMake(10, 5));
+  });
+  
+  it(@"should scale down correctly with rounding", ^{
+    CGSize inputSize = CGSizeMake(201, 100);
+    CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
+    expect(outputSize).to.equal(CGSizeMake(10, 5));
+  });
+  
+  it(@"should scale down, without setting any side below 1", ^{
+    CGSize inputSize = CGSizeMake(100, 2);
+    CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
+    expect(outputSize).to.equal(CGSizeMake(10, 1));
+  });
+  
+  it(@"should not scale up and return the original size", ^{
+    CGSize inputSize = CGSizeMake(10, 10);
+    CGSize outputSize = CGScaleDownToDimension(inputSize, 100);
+    expect(outputSize).to.equal(inputSize);
+  });
+});
+
 SpecEnd
