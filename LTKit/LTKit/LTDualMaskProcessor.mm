@@ -29,7 +29,7 @@
   self.center = GLKVector2Make(self.outputSize.width / 2, self.outputSize.height / 2);
   self.spread = self.defaultSpread;
   self.diameter = MIN(self.outputSize.width, self.outputSize.height) / 2;
-  self.angle = self.defaultAngle;
+  self.angle = 0.0;
 }
 
 - (void)setAspectRatioCorrectionWithSize:(CGSize)size {
@@ -79,8 +79,9 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, spread, Spread, -1,
   self[[LTDualMaskFsh spread]] = @(remap);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, angle, Angle, -M_PI, M_PI, 0, ^{
+- (void)setAngle:(CGFloat)angle {
+  _angle = angle;
   self[[LTDualMaskFsh normal]] = $(GLKVector2Make(cos(angle), sin(angle)));
-});
+}
 
 @end
