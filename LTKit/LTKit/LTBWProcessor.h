@@ -135,9 +135,9 @@ LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 #pragma mark -
 
 /// Width of the inner frame, as percentage of the smaller image dimension. Inner frame width is
-/// measured from outerFrameWidth inwards. The transition (spread) part of the outter frame is still
-/// visible, since the inner frame is layered below the outer frame.
-/// Should be in [0-25] range. Default value is 0.
+/// measured from outerFrameWidth inwards. The transition (spread) part of the outer frame is still
+/// visible, since the inner frame is layered below the outer frame. Should be in [0-25] range.
+/// Default value is 0.
 @property (nonatomic) CGFloat innerFrameWidth;
 
 /// Spread of the inner frame, as percentage of the smaller image dimension. Should be in [0-25]
@@ -145,7 +145,7 @@ LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 @property (nonatomic) CGFloat innerFrameSpread;
 
 /// In inner frame, determines the corner type of the frame by creating an appropriate distance
-/// field. hould be in [0-32] range. At 0 value, the corner will be completely straight. Higher
+/// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
 /// values will create a different degrees of roundness, which stem from the remapping the distance
 /// field values with the power function. Default value is 0.
 @property (nonatomic) CGFloat innerFrameCorner;

@@ -386,4 +386,17 @@ CG_INLINE CGRect CGRoundRectOutside(const CGRect &rect) {
   return CGRectFromPoints(std::floor(rect.origin), std::ceil(rect.origin + rect.size));
 }
 
+#pragma mark -
+#pragma mark Image Dimensions
+#pragma mark -
+
+/// Scales down size, so the the big dimension is equal to maxDimension. The result of the scaling
+/// is rounded  and each dimension is guaranteed to be at least 1. If the big dimension is smaller
+/// than maxDimension, return the size unchanged.
+CG_INLINE CGSize CGScaleDownToDimension(CGSize size, CGFloat maxDimension) {
+  CGFloat scaleFactor = MIN(1.0, maxDimension / MAX(size.width, size.height));
+  return std::round(CGSizeMake(MAX(1.0, size.width * scaleFactor),
+                               MAX(1.0, size.height * scaleFactor)));
+}
+
 #endif
