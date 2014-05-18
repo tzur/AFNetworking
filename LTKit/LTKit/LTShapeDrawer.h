@@ -30,7 +30,7 @@
 - (void)removeShape:(id)shape;
 
 /// Adds the given shape to the shape queue. This must be a shape returned by one of the drawer's
-/// shape generating methods.
+/// shape generating methods, and it is not affected by the current \c drawingParameters.
 - (void)addShape:(id)shape;
 
 /// Adds a path shape with the given translation and rotation.
@@ -106,11 +106,13 @@
 /// Opacity to use when drawing the shapes in the shape queue. Must be in range [0,1].
 ///
 /// @note Updating this property affects the opacity of all shapes in the queue, as this is done
-/// without updating the vertices buffer or each shape, and allows
+/// without updating the vertices buffer or each shape, and allows animating the opacity with ease.
 LTBoundedPrimitiveProperty(CGFloat, opacity, Opacity);
 
 /// Drawing parameters applied to newly added shapes.
 ///
+/// @note Although this property is read-only, its own properties are read/write.
+/// Use these properties primarily to configure the parameters applied to generated shapes.
 /// @note Updating any of the drawing parameters will not affect shapes that were already added to
 /// the shape queue. Newly added shapes will be added with the parameters at time of addition.
 @property (readonly, nonatomic) LTShapeDrawerParams *drawingParameters;

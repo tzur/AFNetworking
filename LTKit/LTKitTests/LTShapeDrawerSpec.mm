@@ -25,7 +25,7 @@ beforeEach(^{
   [LTGLContext setCurrentContext:context];
   
   // Make sure that everything is properly drawn when face culling is enabled.
-  context.faceCullingEnabled = NO;
+  context.faceCullingEnabled = YES;
 });
 
 afterEach(^{
