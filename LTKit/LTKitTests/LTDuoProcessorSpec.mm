@@ -33,6 +33,7 @@ context(@"properties", ^{
     expect(processor.angle).to.equal(0);
     expect(processor.blueColor).to.equal(GLKVector4Make(0, 0, 1, 1));
     expect(processor.redColor).to.equal(GLKVector4Make(1, 0, 0, 1));
+    expect(processor.opacity).to.equal(processor.defaultOpacity);
   });
   
   it(@"should fail when passing incorrect red color", ^{

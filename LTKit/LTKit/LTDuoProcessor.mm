@@ -53,6 +53,7 @@
 - (void)setDefaultValues {
   self.blueColor = self.defaultBlueColor;
   self.redColor = self.defaultRedColor;
+  self.opacity = self.defaultOpacity;
 }
 
 #pragma mark -
