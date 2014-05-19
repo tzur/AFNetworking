@@ -320,7 +320,6 @@
 		8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */; };
 		8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */; };
 		8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */; };
-		8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */; };
 		8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */; };
 		8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192FB18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.h */; };
 		8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */; };
@@ -2558,7 +2557,6 @@
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
 				8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */,
-				8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
