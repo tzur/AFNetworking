@@ -204,7 +204,7 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
   return [self runSyncIfNotPaused:block failure:nil];
 }
 
-- (BOOL)executeSyncBlock:(LTVoidBlock)block error:(NSError **)error {
+- (BOOL)executeSyncBlock:(LTVoidBlock)block error:(NSError *__autoreleasing *)error {
   [self useContext];
 
   @try {
