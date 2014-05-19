@@ -217,8 +217,8 @@ context(@"GLKVector4 operations", ^{
   });
 
   it(@"convert from vec4b", ^{
-    expect(GLKVector4FromVec4b(cv::Vec4b(0, 255, 0, 255)) ==
-           GLKVector4Make(0, 1, 0, 1)).to.beTruthy();
+    expect(GLKVector4FromVec4b(cv::Vec4b(0, 255, 0, 255)))
+        .to.beCloseToGLKVector(GLKVector4Make(0, 1, 0, 1));
   });
 
   it(@"sum", ^{

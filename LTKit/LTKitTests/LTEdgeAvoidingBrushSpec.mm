@@ -158,7 +158,7 @@ context(@"non-edge avoiding drawing", ^{
       [brush drawPoint:point inFramebuffer:fbo];
       expected.rowRange(1, 3).setTo(52);
       expected.colRange(1, 3).setTo(52);
-      expect($(output.image)).to.beCloseToMat($(expected));
+      expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
     });
   });
 });
