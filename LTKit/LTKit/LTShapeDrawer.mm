@@ -32,7 +32,6 @@
 }
 
 - (void)setup {
-  self.opacity = self.defaultOpacity;
   self.drawingParameters = [[LTShapeDrawerParams alloc] init];
   self.shapes = [NSMutableArray array];
 }
@@ -190,6 +189,6 @@
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplement(CGFloat, opacity, Opacity, 0, 1, 1);
+LTProperty(CGFloat, opacity, Opacity, 0, 1, 1);
 
 @end

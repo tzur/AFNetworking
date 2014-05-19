@@ -73,7 +73,7 @@
   [self updateDiameterWith:diameter];
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, spread, Spread, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, spread, Spread, -1, 1, 0, ^{
   static const CGFloat kSpreadScaling = 0.45;
   CGFloat remap = spread * kSpreadScaling;
   self[[LTDualMaskFsh spread]] = @(remap);

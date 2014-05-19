@@ -285,9 +285,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   [self process];
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100,
-    1, ^{
-  _grainAmplitude = grainAmplitude;
+LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100, 1, ^{
   self[@"grainAmplitude"] = @(grainAmplitude);
   [self process];
 });

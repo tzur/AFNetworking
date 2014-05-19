@@ -24,9 +24,9 @@ typedef NS_ENUM(NSUInteger, LTBristleBrushShape) {
 @property (nonatomic) BOOL randomAnglePerStroke;
 
 /// Number of bristles in the brush. Must be in rane [2,100].
-LTBoundedPrimitiveProperty(NSUInteger, bristles, Bristles);
+LTDeclareProperty(NSUInteger, bristles, Bristles);
 
 /// Thickness of the bristles. Must be in range [0,2]. Default is 0.1.
-LTBoundedPrimitiveProperty(CGFloat, thickness, Thickness);
+LTDeclareProperty(CGFloat, thickness, Thickness);
 
 @end

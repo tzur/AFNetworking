@@ -10,6 +10,6 @@
 @interface LTRoundBrush : LTBrush
 
 /// Fuzziness of the brush outline. Must be in range [0,1], default is \c 1.
-LTBoundedPrimitiveProperty(CGFloat, hardness, Hardness)
+LTDeclareProperty(CGFloat, hardness, Hardness)
 
 @end

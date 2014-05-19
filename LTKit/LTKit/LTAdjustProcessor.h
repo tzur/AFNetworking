@@ -21,16 +21,16 @@
 #pragma mark -
 
 /// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, brightness, Brightness);
+LTDeclareProperty(CGFloat, brightness, Brightness);
 
 /// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, contrast, Contrast);
+LTDeclareProperty(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, exposure, Exposure);
+LTDeclareProperty(CGFloat, exposure, Exposure);
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, offset, Offset);
+LTDeclareProperty(CGFloat, offset, Offset);
 
 #pragma mark -
 #pragma mark Levels
@@ -38,24 +38,24 @@ LTBoundedPrimitiveProperty(CGFloat, offset, Offset);
 
 /// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
 /// (0, 0, 0).
-LTBoundedPrimitiveProperty(GLKVector3, blackPoint, BlackPoint);
+LTDeclareProperty(GLKVector3, blackPoint, BlackPoint);
 
 /// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
 /// (1, 1, 1).
-LTBoundedPrimitiveProperty(GLKVector3, whitePoint, WhitePoint);
+LTDeclareProperty(GLKVector3, whitePoint, WhitePoint);
 
 #pragma mark -
 #pragma mark Color
 #pragma mark -
 
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, saturation, Saturation);
+LTDeclareProperty(CGFloat, saturation, Saturation);
 
 /// Changes the temperature of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, temperature, Temperature);
+LTDeclareProperty(CGFloat, temperature, Temperature);
 
 /// Changes the tint of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, tint, Tint);
+LTDeclareProperty(CGFloat, tint, Tint);
 
 #pragma mark -
 #pragma mark Details
@@ -63,18 +63,18 @@ LTBoundedPrimitiveProperty(CGFloat, tint, Tint);
 
 /// Controls the local contrast by changing the amplitude of the image details. Should be in [-1, 1]
 /// range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, details, Details);
+LTDeclareProperty(CGFloat, details, Details);
 
 /// Brightens the shadows, while preserving local contrast. Should be in [0, 1] range. Default value
 /// is 0.
-LTBoundedPrimitiveProperty(CGFloat, shadows, Shadows);
+LTDeclareProperty(CGFloat, shadows, Shadows);
 
 /// Brightens the mid-range, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-LTBoundedPrimitiveProperty(CGFloat, fillLight, FillLight);
+LTDeclareProperty(CGFloat, fillLight, FillLight);
 
 /// Compresses the highlights, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-LTBoundedPrimitiveProperty(CGFloat, highlights, Highlights);
+LTDeclareProperty(CGFloat, highlights, Highlights);
 
 @end

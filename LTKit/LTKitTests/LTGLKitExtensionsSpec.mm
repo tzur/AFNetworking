@@ -108,6 +108,23 @@ context(@"GLKVector3 operations", ^{
     expect(GLKVector3Make(1, 2, 3) != GLKVector3Make(1, 2, -3)).to.beTruthy();
   });
 
+  it(@"greater or equal", ^{
+    expect(GLKVector3Make(1, 2, 3) <= GLKVector3Make(1, 2, 3)).to.beTruthy();
+    expect(GLKVector3Make(1.1, 2, 3) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
+    expect(GLKVector3Make(1, 2.1, 3) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
+    expect(GLKVector3Make(1, 2, 3.1) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
+    
+    expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2, 3)).to.beTruthy();
+    expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1.1, 2, 3)).to.beFalsy();
+    expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2.1, 3)).to.beFalsy();
+    expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2, 3.1)).to.beFalsy();
+  });
+  
+  it(@"uniform", ^{
+    expect(GLKVector3Make(1) == GLKVector3Make(1, 1, 1)).to.beTruthy();
+    expect(GLKVector3Make(2) == GLKVector3Make(2, 2, 2)).to.beTruthy();
+  });
+  
   it(@"add", ^{
     expect(GLKVector3Make(1, 2, 3) + GLKVector3Make(4, 5, 6) ==
            GLKVector3Make(5, 7, 9)).to.beTruthy();
@@ -161,6 +178,25 @@ context(@"GLKVector4 operations", ^{
     expect(GLKVector4Make(1, 2, 3, 4) != GLKVector4Make(1, 2, 3, -4)).to.beTruthy();
   });
 
+  it(@"greater or equal", ^{
+    expect(GLKVector4Make(1, 2, 3, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
+    expect(GLKVector4Make(1.1, 2, 3, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2.1, 3, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2, 3.1, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2, 3, 4.1) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
+    
+    expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
+    expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1.1, 2, 3, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2.1, 3, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3.1, 4)).to.beFalsy();
+    expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3, 4.1)).to.beFalsy();
+  });
+  
+  it(@"uniform", ^{
+    expect(GLKVector4Make(1) == GLKVector4Make(1, 1, 1, 1)).to.beTruthy();
+    expect(GLKVector4Make(2) == GLKVector4Make(2, 2, 2, 2)).to.beTruthy();
+  });
+  
   it(@"add", ^{
     expect(GLKVector4Make(1, 2, 3, 4) + GLKVector4Make(5, 6, 7, 8) ==
            GLKVector4Make(6, 8, 10, 12)).to.beTruthy();

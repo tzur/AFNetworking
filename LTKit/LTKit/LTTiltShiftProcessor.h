@@ -48,6 +48,6 @@
 #pragma mark -
 
 /// Intensity of the blur.
-LTBoundedPrimitiveProperty(CGFloat, intensity, Intensity);
+LTDeclareProperty(CGFloat, intensity, Intensity);
 
 @end

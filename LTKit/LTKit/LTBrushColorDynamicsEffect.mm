@@ -93,9 +93,9 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplement(CGFloat, hueJitter, HueJitter, 0, 1, 1);
-LTBoundedPrimitivePropertyImplement(CGFloat, saturationJitter, SaturationJitter, 0, 1, 1);
-LTBoundedPrimitivePropertyImplement(CGFloat, brightnessJitter, BrightnessJitter, 0, 1, 1);
+LTProperty(CGFloat, hueJitter, HueJitter, 0, 1, 1);
+LTProperty(CGFloat, saturationJitter, SaturationJitter, 0, 1, 1);
+LTProperty(CGFloat, brightnessJitter, BrightnessJitter, 0, 1, 1);
 
 - (void)setBaseColorTexture:(LTTexture *)baseColorTexture {
   LTParameterAssert(!baseColorTexture || baseColorTexture.format == LTTextureFormatRGBA);

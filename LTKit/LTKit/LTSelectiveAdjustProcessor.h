@@ -17,59 +17,59 @@
 #pragma mark -
 
 /// Changes the saturation of the red. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, redSaturation, RedSaturation);
+LTDeclareProperty(CGFloat, redSaturation, RedSaturation);
 
 /// Changes the luminance of the red. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, redLuminance, RedLuminance);
+LTDeclareProperty(CGFloat, redLuminance, RedLuminance);
 
 #pragma mark -
 #pragma mark Orange
 #pragma mark -
 
 /// Changes the saturation of the orange. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, orangeSaturation, OrangeSaturation);
+LTDeclareProperty(CGFloat, orangeSaturation, OrangeSaturation);
 
 /// Changes the luminance of the orange. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, orangeLuminance, OrangeLuminance);
+LTDeclareProperty(CGFloat, orangeLuminance, OrangeLuminance);
 
 #pragma mark -
 #pragma mark Yellow
 #pragma mark -
 
 /// Changes the saturation of the yellow. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, yellowSaturation, YellowSaturation);
+LTDeclareProperty(CGFloat, yellowSaturation, YellowSaturation);
 
 /// Changes the luminance of the yellow. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, yellowLuminance, YellowLuminance);
+LTDeclareProperty(CGFloat, yellowLuminance, YellowLuminance);
 
 #pragma mark -
 #pragma mark Green
 #pragma mark -
 
 /// Changes the saturation of the green. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, greenSaturation, GreenSaturation);
+LTDeclareProperty(CGFloat, greenSaturation, GreenSaturation);
 
 /// Changes the luminance of the green. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, greenLuminance, GreenLuminance);
+LTDeclareProperty(CGFloat, greenLuminance, GreenLuminance);
 
 #pragma mark -
 #pragma mark Cyan
 #pragma mark -
 
 /// Changes the saturation of the cyan. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, cyanSaturation, CyanSaturation);
+LTDeclareProperty(CGFloat, cyanSaturation, CyanSaturation);
 
 /// Changes the luminance of the cyan. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, cyanLuminance, CyanLuminance);
+LTDeclareProperty(CGFloat, cyanLuminance, CyanLuminance);
 
 #pragma mark -
 #pragma mark Blue
 #pragma mark -
 
 /// Changes the saturation of the blue. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, blueSaturation, BlueSaturation);
+LTDeclareProperty(CGFloat, blueSaturation, BlueSaturation);
 
 /// Changes the luminance of the blue. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, blueLuminance, BlueLuminance);
+LTDeclareProperty(CGFloat, blueLuminance, BlueLuminance);
 
 @end

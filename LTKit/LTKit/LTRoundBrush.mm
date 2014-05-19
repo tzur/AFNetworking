@@ -96,7 +96,7 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, hardness, Hardness, 0, 1, 1, ^{
+LTPropertyWithSetter(CGFloat, hardness, Hardness, 0, 1, 1, ^{
   self.shouldUpdateBrush = YES;
 });
 

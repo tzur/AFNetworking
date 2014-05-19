@@ -70,63 +70,51 @@ static const CGFloat kLuminanceExponentBase = 2.0;
   return std::pow(kLuminanceExponentBase, luminance);
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, redSaturation, RedSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, redSaturation, RedSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh redSaturation]] = @([self remapSaturation:redSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, redLuminance, RedLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, redLuminance, RedLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh redLuminance]] = @([self remapLuminance:redLuminance]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, orangeSaturation, OrangeSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, orangeSaturation, OrangeSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh orangeSaturation]] = @([self remapSaturation:orangeSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, orangeLuminance, OrangeLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, orangeLuminance, OrangeLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh orangeLuminance]] = @([self remapLuminance:orangeLuminance]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, yellowSaturation, YellowSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, yellowSaturation, YellowSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh yellowSaturation]] = @([self remapSaturation:yellowSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, yellowLuminance, YellowLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, yellowLuminance, YellowLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh yellowLuminance]] = @([self remapLuminance:yellowLuminance]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, greenSaturation, GreenSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, greenSaturation, GreenSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh greenSaturation]] = @([self remapSaturation:greenSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, greenLuminance, GreenLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, greenLuminance, GreenLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh greenLuminance]] = @([self remapLuminance:greenLuminance]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, cyanSaturation, CyanSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, cyanSaturation, CyanSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh cyanSaturation]] = @([self remapSaturation:cyanSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, cyanLuminance, CyanLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, cyanLuminance, CyanLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh cyanLuminance]] = @([self remapLuminance:cyanLuminance]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, blueSaturation, BlueSaturation,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, blueSaturation, BlueSaturation, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh blueSaturation]] = @([self remapSaturation:blueSaturation]);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, blueLuminance, BlueLuminance,
-    -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, blueLuminance, BlueLuminance, -1, 1, 0, ^{
   self[[LTSelectiveAdjustFsh blueLuminance]] = @([self remapLuminance:blueLuminance]);
 });
 
