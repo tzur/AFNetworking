@@ -2,7 +2,7 @@
 // Created by Amit Goldstein.
 
 /// Represents rotated (i.e. not up-right) rectangles on a plane. Each rectangle is described by a
-/// CGRect, and the angle, in radians, which the rectangle is rotated (around its center).
+/// CGRect, and the angle in radians which the rectangle is rotated (clockwise, around its center).
 @interface LTRotatedRect : NSObject <NSCopying>
 
 /// Returns an unrotated rect (angle is \c 0).
@@ -26,7 +26,7 @@
 
 /// Unrotated rect.
 @property (readonly, nonatomic) CGRect rect;
-/// Rotation angle, in radians.
+/// Rotation angle (clockwise), in radians.
 @property (readonly, nonatomic) CGFloat angle;
 /// Center of the rotated rect.
 @property (readonly, nonatomic) CGPoint center;
