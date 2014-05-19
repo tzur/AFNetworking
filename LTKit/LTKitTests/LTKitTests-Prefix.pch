@@ -18,6 +18,7 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
+  #import "LTTestModule.h"
   #import "LTTestUtils.h"
 
   #import "EXPMatchers+equalMat.h"
