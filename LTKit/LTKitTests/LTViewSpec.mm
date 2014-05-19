@@ -306,8 +306,7 @@ context(@"drawing", ^{
     }];
     
     [view drawToFbo:fbo];
-    output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(outputTexture.image)).to.beCloseToMat($(expectedOutput));
   });
   
   context(@"magnifying interpolation", ^{
