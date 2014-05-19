@@ -6,10 +6,11 @@
 #import "LTProgram.h"
 #import "LTDualMaskProcessor.h"
 #import "LTColorGradient.h"
+#import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTShaderStorage+LTDuoFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-#import "LTGPUImageProcessor+Protected.h"
 
 @interface LTDuoProcessor ()
 
@@ -142,31 +143,17 @@ static const ushort kGradientSize = 256;
                    withName:uniformName];
 }
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, blueColor, BlueColor,
-                                                 GLKVector4Make(0, 0, 0, 0),
-                                                 GLKVector4Make(1, 1, 1, 1),
-                                                 GLKVector4Make(0, 0, 1, 1));
-
-- (void)setBlueColor:(GLKVector4)blueColor {
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(blueColor, self.minBlueColor));
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxBlueColor, blueColor));
-  _blueColor = blueColor;
+LTPropertyWithSetter(GLKVector4, blueColor, BlueColor,
+                     GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 1, 1), ^{
   [self updateGradientWithColor:blueColor uniformName:[LTDuoFsh blueLUT]];
-}
+});
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, redColor, RedColor,
-                                                 GLKVector4Make(0, 0, 0, 0),
-                                                 GLKVector4Make(1, 1, 1, 1),
-                                                 GLKVector4Make(1, 0, 0, 1));
-
-- (void)setRedColor:(GLKVector4)redColor {
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(redColor, self.minRedColor));
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxRedColor, redColor));
-  _redColor = redColor;
+LTPropertyWithSetter(GLKVector4, redColor, RedColor,
+                     GLKVector4Zero, GLKVector4One, GLKVector4Make(1, 0, 0, 1), ^{
   [self updateGradientWithColor:redColor uniformName:[LTDuoFsh redLUT]];
-}
+});
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, opacity, Opacity, 0, 1, 1, ^{
+LTPropertyWithSetter(CGFloat, opacity, Opacity, 0, 1, 1, ^{
   self[[LTDuoFsh opacity]] = @(opacity);
 });
 

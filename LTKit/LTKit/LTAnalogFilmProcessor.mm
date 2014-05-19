@@ -148,31 +148,29 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 #pragma mark Tone
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
-  _structure = structure;
+LTPropertyWithSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
   self[[LTAnalogFilmFsh structure]] = @(remap);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
-  _saturation = saturation;
+LTPropertyWithSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
   self[[LTAnalogFilmFsh saturation]] = @(remap);
@@ -234,9 +232,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturat
   return self.vignetteProcessor.noiseAmplitude;
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, VignettingOpacity,
-  0, 1, 0, ^{
-  _vignettingOpacity = vignettingOpacity;
+LTPropertyWithSetter(CGFloat, vignettingOpacity, VignettingOpacity, 0, 1, 0, ^{
   self[[LTAnalogFilmFsh vignettingOpacity]] = @(vignettingOpacity);
 });
 
@@ -270,9 +266,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, vignettingOpacity, 
   self[[LTAnalogFilmFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, GrainAmplitude,
-  0, 1, 0, ^{
-  _grainAmplitude = grainAmplitude;
+LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 0, ^{
   self[[LTAnalogFilmFsh grainAmplitude]] = @(grainAmplitude * kGrainAmplitudeScaling);
 });
 
@@ -290,9 +284,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, grainAmplitude, Gra
   [self setAuxiliaryTexture:colorGradientTexture withName:[LTAnalogFilmFsh colorGradient]];
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha,
-  -1, 1, 0, ^{
-  _colorGradientAlpha = colorGradientAlpha;
+LTPropertyWithSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha, -1, 1, 0, ^{
   self[[LTAnalogFilmFsh colorGradientAlpha]] = @(colorGradientAlpha * kColorGradientAlphaScaling);
 });
 

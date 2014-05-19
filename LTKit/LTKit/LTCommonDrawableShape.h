@@ -3,6 +3,7 @@
 
 #import "LTGPUStruct.h"
 #import "LTCommonDrawableShapeStructs.h"
+#import "LTPropertyMacros.h"
 
 @class LTArrayBuffer, LTDrawingContext, LTProgram, LTShapeDrawerParams;
 
@@ -58,7 +59,7 @@
 @property (nonatomic) CGFloat rotationAngle;
 
 /// The opacity of the shape to draw.
-@property (nonatomic) CGFloat opacity;
+LTDeclareProperty(CGFloat, opacity, Opacity);
 
 @end
 

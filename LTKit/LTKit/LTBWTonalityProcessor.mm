@@ -81,23 +81,23 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   self[[LTBWTonalityFsh colorFilter]] = $(_colorFilter);
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
   self[[LTBWTonalityFsh structure]] = @(remap);

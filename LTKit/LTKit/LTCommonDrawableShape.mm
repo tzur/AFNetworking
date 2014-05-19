@@ -37,7 +37,7 @@ LTGPUStructImplement(LTCommonDrawableShapeVertex,
 
 @implementation LTCommonDrawableShape
 
-LTBoundedPrimitivePropertyImplement(CGFloat, opacity, Opacity, 0, 1, 1);
+LTProperty(CGFloat, opacity, Opacity, 0, 1, 1);
 
 /// Strores the programs used for each type of shape, to reuse them instead of reallocating them
 /// every time.

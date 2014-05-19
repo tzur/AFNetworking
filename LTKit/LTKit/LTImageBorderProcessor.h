@@ -20,7 +20,7 @@
 /// is used to compute a scaling factor for noise amplitude of outer and inner frames. It does not
 /// change the values outerFrameNoiseAmplitude and innerFrameNoiseAmplitude properties. Should be in
 /// [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, roughness, Roughness);
+LTDeclareProperty(CGFloat, roughness, Roughness);
 
 #pragma mark -
 #pragma mark Outer Frame

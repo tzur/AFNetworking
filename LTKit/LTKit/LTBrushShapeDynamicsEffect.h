@@ -18,23 +18,23 @@
 
 /// Controls the randomness of how the size of brush marks varies in a stroke. The higher the value,
 /// the higher the probability of a significant change. Must be in range [0,1], default is 1.
-LTBoundedPrimitiveProperty(CGFloat, sizeJitter, SizeJitter);
+LTDeclareProperty(CGFloat, sizeJitter, SizeJitter);
 
 /// Specifies the minimum percentage by which brush marks can scale when \c sizeJitter is enabled.
 /// Must be in range [0,1], default is 0.5.
-LTBoundedPrimitiveProperty(CGFloat, minimumDiameter, MinimumDiameter);
+LTDeclareProperty(CGFloat, minimumDiameter, MinimumDiameter);
 
 /// Controls how the angle of the brush varies in a stroke. The higher the value, the higher the
 /// probability of a significant change. When set to \c 1, the brush can rotate 180 degrees in both
 /// directions. Must be in range [0,1], default is 1.
-LTBoundedPrimitiveProperty(CGFloat, angleJitter, AngleJitter);
+LTDeclareProperty(CGFloat, angleJitter, AngleJitter);
 
 /// Controls how the roundness of the brush varies in a stroke. The higher the value, the higher the
 /// probability that a round brush will turn into an ellipse. Must be in range [0,1], default is 0.
-LTBoundedPrimitiveProperty(CGFloat, roundnessJitter, RoundnessJitter);
+LTDeclareProperty(CGFloat, roundnessJitter, RoundnessJitter);
 
 /// Specifies the minimum roundness for brush marks when \c roundnessJitter is enabled.
 /// Must be in range [0,1], default is 0.25.
-LTBoundedPrimitiveProperty(CGFloat, minimumRoundness, MinimumRoundness);
+LTDeclareProperty(CGFloat, minimumRoundness, MinimumRoundness);
 
 @end

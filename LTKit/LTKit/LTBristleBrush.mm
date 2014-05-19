@@ -154,11 +154,11 @@ static const CGFloat kBristleSigma = 0.4;
   return 0.01;
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2, ^{
+LTPropertyWithSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2, ^{
   self.shouldUpdateBrush = YES;
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(NSUInteger, bristles, Bristles, 2, 20, 5, ^{
+LTPropertyWithSetter(NSUInteger, bristles, Bristles, 2, 20, 5, ^{
   self.shouldUpdateBrush = YES;
 });
 

@@ -21,22 +21,22 @@
 #pragma mark -
 
 /// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, brightness, Brightness);
+LTDeclareProperty(CGFloat, brightness, Brightness);
 
 /// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, contrast, Contrast);
+LTDeclareProperty(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, exposure, Exposure);
+LTDeclareProperty(CGFloat, exposure, Exposure);
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, offset, Offset);
+LTDeclareProperty(CGFloat, offset, Offset);
 
 /// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, structure, Structure);
+LTDeclareProperty(CGFloat, structure, Structure);
 
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, saturation, Saturation);
+LTDeclareProperty(CGFloat, saturation, Saturation);
 
 #pragma mark -
 #pragma mark Gradient
@@ -49,7 +49,7 @@ LTBoundedPrimitiveProperty(CGFloat, saturation, Saturation);
 /// Tinted result mixed with the original image according to colorGradientAlpha. Should be in [0, 1]
 /// range. When 0, no tinting will occur. When 1, the result will be completely tinted. Default
 /// value is 0.
-LTBoundedPrimitiveProperty(CGFloat, colorGradientAlpha, ColorGradientAlpha);
+LTDeclareProperty(CGFloat, colorGradientAlpha, ColorGradientAlpha);
 
 #pragma mark -
 #pragma mark Grain
@@ -68,7 +68,7 @@ LTBoundedPrimitiveProperty(CGFloat, colorGradientAlpha, ColorGradientAlpha);
 @property (nonatomic) GLKVector3 grainChannelMixer;
 
 /// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 0.
-LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
+LTDeclareProperty(CGFloat, grainAmplitude, GrainAmplitude);
 
 #pragma mark -
 #pragma mark Vignetting
@@ -102,6 +102,6 @@ LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
 @property (nonatomic) CGFloat vignettingNoiseAmplitude;
 
 /// Vignetting opacity. Should be in [0, 1] range. Default amplitude is 0.
-LTBoundedPrimitiveProperty(CGFloat, vignettingOpacity, VignettingOpacity);
+LTDeclareProperty(CGFloat, vignettingOpacity, VignettingOpacity);
 
 @end

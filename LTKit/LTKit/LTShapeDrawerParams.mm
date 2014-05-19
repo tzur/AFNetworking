@@ -8,21 +8,6 @@
 
 @implementation LTShapeDrawerParams
 
-- (instancetype)init {
-  if (self = [super init]) {
-    [self setDefaults];
-  }
-  return self;
-}
-
-- (void)setDefaults {
-  self.lineWidth = self.defaultLineWidth;
-  self.shadowWidth = self.defaultShadowWidth;
-  self.fillColor = self.defaultFillColor;
-  self.strokeColor = self.defaultStrokeColor;
-  self.shadowColor = self.defaultShadowColor;
-}
-
 - (BOOL)isEqual:(id)object {
   if (![object isKindOfClass:[self class]]) {
     return NO;
@@ -51,13 +36,11 @@
   return 0.5 * self.lineWidth;
 }
 
-LTBoundedPrimitivePropertyImplement(CGFloat, lineWidth, LineWidth, 1, CGFLOAT_MAX, 1);
-LTBoundedPrimitivePropertyImplement(CGFloat, shadowWidth, ShadowWidth, 0, CGFLOAT_MAX, 0);
-LTBoundedPrimitivePropertyImplement(GLKVector4, fillColor, FillColor,
-                                    GLKVector4Zero, GLKVector4One, GLKVector4One);
-LTBoundedPrimitivePropertyImplement(GLKVector4, strokeColor, StrokeColor,
-                                    GLKVector4Zero, GLKVector4One, GLKVector4One);
-LTBoundedPrimitivePropertyImplement(GLKVector4, shadowColor, ShadowColor,
-                                    GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 0, 1));
+LTProperty(CGFloat, lineWidth, LineWidth, 1, CGFLOAT_MAX, 1);
+LTProperty(CGFloat, shadowWidth, ShadowWidth, 0, CGFLOAT_MAX, 0);
+LTProperty(GLKVector4, fillColor, FillColor, GLKVector4Zero, GLKVector4One, GLKVector4One);
+LTProperty(GLKVector4, strokeColor, StrokeColor, GLKVector4Zero, GLKVector4One, GLKVector4One);
+LTProperty(GLKVector4, shadowColor, ShadowColor,
+           GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 0, 1));
 
 @end

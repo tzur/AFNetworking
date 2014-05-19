@@ -151,7 +151,7 @@ static const NSUInteger kCoarseTextureIterations = 6;
 #pragma mark Blue
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, intensity, Intensity, 0, 1, 1, ^{
+LTPropertyWithSetter(CGFloat, intensity, Intensity, 0, 1, 1, ^{
   self[[LTTiltShiftFsh intensity]] = @(intensity);
 });
 

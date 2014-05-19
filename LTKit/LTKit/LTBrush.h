@@ -3,10 +3,8 @@
 
 #import "LTPropertyMacros.h"
 
-#define LTBoundedPrimitivePropertyImplementAndUpdateProgram(type, name, Name, minValue, maxValue, \
-    defaultValue) \
-  LTBoundedPrimitivePropertyImplementWithCustomSetter(type, name, Name, minValue, maxValue, \
-    defaultValue, ^{ \
+#define LTPropertyUpdatingProgram(type, name, Name, minValue, maxValue, defaultValue) \
+  LTPropertyWithSetter(type, name, Name, minValue, maxValue, defaultValue, ^{ \
     [self updateProgramForCurrentProperties]; \
   });
 
@@ -71,27 +69,27 @@
 
 /// Controls the size of the brush with respect to the base size.
 /// Must be in range [0.1,3], default is \c 1.
-LTBoundedPrimitiveProperty(CGFloat, scale, Scale)
+LTDeclareProperty(CGFloat, scale, Scale)
 
 /// Rotation angle around the brush center, in radians. Automatically converted to the corresponding
 /// angle in range [0,2*PI). Default is \c 0.
-LTBoundedPrimitiveProperty(CGFloat, angle, Angle)
+LTDeclareProperty(CGFloat, angle, Angle)
 
 /// Spacing (in percentage) between the brush placements.
 /// Must be in range [0.01,10], default is \c 0.05.
 /// \c 1 will place the next brush exactly adjacent to the previous one, with no overlap (assuming
 /// the brush is round).
 /// Values smaller than \c 1 will place the brush closer to the previous brush, creating an overlap.
-LTBoundedPrimitiveProperty(CGFloat, spacing, Spacing)
+LTDeclareProperty(CGFloat, spacing, Spacing)
 
 /// Maximal opacity value for the stroke. Must be in range [0,1], default is \c 1.
-LTBoundedPrimitiveProperty(CGFloat, opacity, Opacity)
+LTDeclareProperty(CGFloat, opacity, Opacity)
 
 /// Rate at which color is applied as the brush paints over an area.
 /// Must be in range [0.01,1], default is \c 1.
-LTBoundedPrimitiveProperty(CGFloat, flow, Flow)
+LTDeclareProperty(CGFloat, flow, Flow)
 
 /// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
-LTBoundedPrimitiveProperty(GLKVector4, intensity, Intensity);
+LTDeclareProperty(GLKVector4, intensity, Intensity);
 
 @end

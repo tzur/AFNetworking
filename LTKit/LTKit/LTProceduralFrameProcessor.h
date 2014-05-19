@@ -29,21 +29,21 @@ typedef NS_ENUM(GLenum, LTProceduralFrameNoiseMapping) {
 
 /// Percent of the smaller image dimension that the foreground should occupy.
 /// Should be in [0-25] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, width, Width);
+LTDeclareProperty(CGFloat, width, Width);
 
 /// Percent of the smaller image dimension that the transition should occupy.
 /// Should be in [0-25] range. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, spread, Spread);
+LTDeclareProperty(CGFloat, spread, Spread);
 
 /// Determines the corner type of the frame by creating an appropriate distance field.
 /// Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher values
 /// will create a different degrees of roundness, which stem from the remapping the distance field
 /// values with the power function. Default value is 0.
-LTBoundedPrimitiveProperty(CGFloat, corner, Corner);
+LTDeclareProperty(CGFloat, corner, Corner);
 
 /// Color of the foreground and of the transition area. Components should be in [0, 1] range.
 /// Default color is white (1, 1, 1).
-LTBoundedPrimitiveProperty(GLKVector3, color, Color);
+LTDeclareProperty(GLKVector3, color, Color);
 
 #pragma mark -
 #pragma mark Noise Properties
@@ -61,7 +61,7 @@ LTBoundedPrimitiveProperty(GLKVector3, color, Color);
 @property (nonatomic) GLKVector3 noiseChannelMixer;
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
-LTBoundedPrimitiveProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
+LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 /// Select how noise is used in frame creation. It is possible to scale the noise texture to the
 /// size of the frame or tile it. Default value is LTProceduralFrameNoiseMappingScale.
@@ -69,6 +69,6 @@ LTBoundedPrimitiveProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 /// Offset the noise texture in [0-1] range. Default value is 0. This is useful to create a variety
 /// of frames from the same noise texture.
-LTBoundedPrimitiveProperty(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset);
+LTDeclareProperty(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset);
 
 @end

@@ -43,6 +43,16 @@ GLK_EXTERN const GLKVector3 GLKVector3One;
 /// The "one" vector, equivalent to GLKVector2Make(1, 1).
 GLK_EXTERN const GLKVector2 GLKVector2One;
 
+/// Returns a new three-component vector with the same value for each component.
+GLK_INLINE GLKVector3 GLKVector3Make(float value) {
+  return GLKVector3Make(value, value, value);
+}
+
+/// Returns a new four-component vector with the same value for each component.
+GLK_INLINE GLKVector4 GLKVector4Make(float value) {
+  return GLKVector4Make(value, value, value, value);
+}
+
 /// Returns whether two vectors are equal.
 GLK_INLINE BOOL operator==(const GLKVector2 &lhs, const GLKVector2 &rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
@@ -73,14 +83,28 @@ GLK_INLINE BOOL operator!=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return !(lhs == rhs);
 }
 
-/// Returns whether two vectors are equal.
+/// Returns YES if each component in the second vector is greater than or equal to the corresponding
+/// component of the first vector, NO otherwise.
 GLK_INLINE BOOL operator<=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return GLKVector4AllGreaterThanOrEqualToVector4(rhs, lhs);
 }
 
-/// Returns whether two vectors are equal.
+/// Returns YES if each component in the first vector is greater than or equal to the corresponding
+/// component of the second vector, NO otherwise.
 GLK_INLINE BOOL operator>=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return GLKVector4AllGreaterThanOrEqualToVector4(lhs, rhs);
+}
+
+/// Returns YES if each component in the second vector is greater than or equal to the corresponding
+/// component of the first vector, NO otherwise.
+GLK_INLINE BOOL operator<=(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return GLKVector3AllGreaterThanOrEqualToVector3(rhs, lhs);
+}
+
+/// Returns YES if each component in the first vector is greater than or equal to the corresponding
+/// component of the second vector, NO otherwise.
+GLK_INLINE BOOL operator>=(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return GLKVector3AllGreaterThanOrEqualToVector3(lhs, rhs);
 }
 
 /// Negate vector.

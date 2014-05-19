@@ -63,7 +63,7 @@
 @property (nonatomic) GLKVector3 grainChannelMixer;
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
-LTBoundedPrimitiveProperty(CGFloat, grainAmplitude, GrainAmplitude);
+LTDeclareProperty(CGFloat, grainAmplitude, GrainAmplitude);
 
 #pragma mark -
 #pragma mark Vignetting

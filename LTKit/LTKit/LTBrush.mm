@@ -9,6 +9,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
+#import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
@@ -213,26 +214,18 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplement(CGFloat, scale, Scale, 0.01, 3.0, 1.0)
-LTBoundedPrimitivePropertyImplement(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
-LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, opacity, Opacity, 0, 1, 1)
-LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, flow, Flow, 0.01, 1, 1)
-LTBoundedPrimitivePropertyImplementWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0)
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector4, intensity, Intensity,
-                                                 GLKVector4Make(0, 0, 0, 0),
-                                                 GLKVector4Make(1, 1, 1, 1),
-                                                 GLKVector4Make(1, 1, 1, 1));
+LTProperty(CGFloat, scale, Scale, 0.01, 3.0, 1.0)
+LTProperty(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
+LTPropertyUpdatingProgram(CGFloat, opacity, Opacity, 0, 1, 1)
+LTPropertyUpdatingProgram(CGFloat, flow, Flow, 0.01, 1, 1)
+LTPropertyUpdatingProgram(GLKVector4, intensity, Intensity,
+                          GLKVector4Zero, GLKVector4One, GLKVector4One);
+
+LTPropertyBounds(CGFloat, angle, Angle, 0, 2 * M_PI, 0)
 
 - (void)setAngle:(CGFloat)angle {
   angle = std::fmod(angle, 2 * M_PI);
   _angle = angle + ((angle < 0) ? 2 * M_PI : 0);
-}
-
-- (void)setIntensity:(GLKVector4)intensity {
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(intensity, self.minIntensity));
-  LTParameterAssert(GLKVector4AllGreaterThanOrEqualToVector4(self.maxIntensity, intensity));
-  _intensity = intensity;
-  [self updateProgramForCurrentProperties];
 }
 
 - (void)setTexture:(LTTexture *)texture {

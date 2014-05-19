@@ -91,57 +91,39 @@ static const CGFloat kDetailsScaling = 2.0;
   return @[fine, coarse];
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
   [self updateToneLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, blackPoint, BlackPoint,
-                                                 GLKVector3Make(-1, -1, -1),
-                                                 GLKVector3Make(1, 1, 1),
-                                                 GLKVector3Make(0, 0, 0));
-
-- (void)setBlackPoint:(GLKVector3)blackPoint {
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(blackPoint, self.minBlackPoint));
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(self.maxBlackPoint, blackPoint));
-  _blackPoint = blackPoint;
+LTPropertyWithSetter(GLKVector3, blackPoint, BlackPoint,
+                     -GLKVector3One, GLKVector3One, GLKVector3Zero, ^{
   [self updateToneLUT];
-}
+});
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, whitePoint, WhitePoint,
-                                                 GLKVector3Make(0, 0, 0),
-                                                 GLKVector3Make(2, 2, 2),
-                                                 GLKVector3Make(1, 1, 1));
-
-- (void)setWhitePoint:(GLKVector3)whitePoint {
-  LTParameterAssert(GLKVector3InRange(whitePoint, 0.0, 2.0), @"Color filter is out of range.");
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(whitePoint, self.minWhitePoint));
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(self.maxWhitePoint, whitePoint));
-  
-  _whitePoint = whitePoint;
+LTPropertyWithSetter(GLKVector3, whitePoint, WhitePoint,
+                     GLKVector3Zero, GLKVector3Make(2), GLKVector3One, ^{
   [self updateToneLUT];
-}
+});
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
-  _saturation = saturation;
+LTPropertyWithSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
   self[[LTAdjustFsh saturation]] = @(remap);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, temperature, Temperature, -1, 1, 0, ^{
-  _temperature = temperature;
+LTPropertyWithSetter(CGFloat, temperature, Temperature, -1, 1, 0, ^{
   // Remap [-1, 1] to [-kTemperatureScaling, kTemperatureScaling]
   // Temperature in this processor is an additive scale of the I channel in YIQ, so theoretically
   // max value is 0.596 (pure red) and min value is -0.596 (green-blue color).
@@ -150,8 +132,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, temperature, Temper
   self[[LTAdjustFsh temperature]] = @(temperature * kTemperatureScaling);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, tint, Tint, -1, 1, 0, ^{
-  _tint = tint;
+LTPropertyWithSetter(CGFloat, tint, Tint, -1, 1, 0, ^{
   // Remap [-1, 1] to [-kTintScaling, kTintScaling]
   // Tint in this processor is an additive scale of the Q channel in YIQ, so theoretically
   // max value is 0.523 (red-blue) and min value is -0.523 (pure green).
@@ -160,20 +141,19 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, tint, Tint, -1, 1, 
   self[[LTAdjustFsh tint]] = @(tint * kTintScaling);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, details, Details, -1, 1, 0, ^{
-  _details = details;
+LTPropertyWithSetter(CGFloat, details, Details, -1, 1, 0, ^{
   self[[LTAdjustFsh details]] = @(details * kDetailsScaling);
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, shadows, Shadows, 0, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, shadows, Shadows, 0, 1, 0, ^{
   [self updateDetailsLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, fillLight, FillLight, 0, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, fillLight, FillLight, 0, 1, 0, ^{
   [self updateDetailsLUT];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, highlights, Highlights, 0, 1, 0, ^{
+LTPropertyWithSetter(CGFloat, highlights, Highlights, 0, 1, 0, ^{
   [self updateDetailsLUT];
 });
 

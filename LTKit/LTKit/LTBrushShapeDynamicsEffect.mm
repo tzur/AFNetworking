@@ -60,14 +60,10 @@
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplement(CGFloat, sizeJitter, SizeJitter, 0, 1, 1);
-
-LTBoundedPrimitivePropertyImplement(CGFloat, minimumDiameter, MinimumDiameter, 0, 1, 0.5);
-
-LTBoundedPrimitivePropertyImplement(CGFloat, angleJitter, AngleJitter, 0, 1, 1);
-
-LTBoundedPrimitivePropertyImplement(CGFloat, roundnessJitter, RoundnessJitter, 0, 1, 0);
-
-LTBoundedPrimitivePropertyImplement(CGFloat, minimumRoundness, MinimumRoundness, 0, 1, 0.25);
+LTProperty(CGFloat, sizeJitter, SizeJitter, 0, 1, 1);
+LTProperty(CGFloat, minimumDiameter, MinimumDiameter, 0, 1, 0.5);
+LTProperty(CGFloat, angleJitter, AngleJitter, 0, 1, 1);
+LTProperty(CGFloat, roundnessJitter, RoundnessJitter, 0, 1, 0);
+LTProperty(CGFloat, minimumRoundness, MinimumRoundness, 0, 1, 0.25);
 
 @end

@@ -83,32 +83,21 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 #pragma mark Basic Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, width, Width, 0, 25, 0, ^{
-  _width = width;
+LTPropertyWithSetter(CGFloat, width, Width, 0, 25, 0, ^{
   [self updateEdges];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, spread, Spread, 0, 50, 0, ^{
-  _spread = spread;
+LTPropertyWithSetter(CGFloat, spread, Spread, 0, 50, 0, ^{
   [self updateEdges];
 });
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, corner, Corner, 0, 32, 0, ^{
-  _corner = corner;
+LTPropertyWithSetter(CGFloat, corner, Corner, 0, 32, 0, ^{
   self[[LTProceduralFrameFsh corner]] = @(corner);
 });
 
-LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, color, Color,
-                                                 GLKVector3Make(0, 0, 0),
-                                                 GLKVector3Make(1, 1, 1),
-                                                 GLKVector3Make(1, 1, 1));
-
-- (void)setColor:(GLKVector3)color {
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(color, self.minColor));
-  LTParameterAssert(GLKVector3AllGreaterThanOrEqualToVector3(self.maxColor, color));
-  _color = color;
+LTPropertyWithSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GLKVector3One, ^{
   self[[LTProceduralFrameFsh color]] = $(color);
-}
+});
 
 #pragma mark -
 #pragma mark Noise Properties
@@ -128,9 +117,7 @@ LTBoundedPrimitivePropertyImplementWithoutSetter(GLKVector3, color, Color,
   return isTilable || inStretchMode;
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseAmplitude, NoiseAmplitude,
-                                                    0, 100, 1, ^{
-  _noiseAmplitude = noiseAmplitude;
+LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 1, ^{
   self[[LTProceduralFrameFsh noiseAmplitude]] = @(noiseAmplitude);
 });
 
@@ -148,9 +135,7 @@ LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseAmplitude, Noi
   }
 }
 
-LTBoundedPrimitivePropertyImplementWithCustomSetter(CGFloat, noiseCoordinatesOffset,
-                                                    NoiseCoordinatesOffset, 0, 1, 0, ^{
-  _noiseCoordinatesOffset = noiseCoordinatesOffset;
+LTPropertyWithSetter(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset, 0, 1, 0, ^{
   self[[LTProceduralFrameVsh grainOffset]] = $(GLKVector2Make(noiseCoordinatesOffset,
                                                               noiseCoordinatesOffset));
 });

@@ -124,8 +124,19 @@ static const CGFloat kSizeToSamplingFactor = 50;
 #pragma mark Properties
 #pragma mark -
 
-LTBoundedPrimitivePropertyImplementAndUpdateProgram(CGFloat, sigma, Sigma, 0.01, 1, 0.5);
-LTBoundedPrimitivePropertyImplementWithoutSetter(CGFloat, scale, Scale, 0.5, 3, 1);
+LTPropertyUpdatingProgram(CGFloat, sigma, Sigma, 0.01, 1, 0.5);
+
+- (CGFloat)minScale {
+  return 0.5;
+}
+
+- (CGFloat)maxScale {
+  return 3;
+}
+
+- (CGFloat)defaultScale {
+  return 1;
+}
 
 - (CGFloat)defaultHardness {
   return 0.5;
