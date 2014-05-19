@@ -25,7 +25,9 @@
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
-		8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */; };
+		8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */; };
+		8BB22AAC1929DE1B00ACE1D5 /* LTKitUserModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22AAB1929DE1B00ACE1D5 /* LTKitUserModule.mm */; };
+		8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKit.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,9 @@
 		8B8E51861868607000821829 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8B8E51881868607500821829 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../../third_party/utils/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
+		8BB22AAA1929DE1B00ACE1D5 /* LTKitUserModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKitUserModule.h; sourceTree = "<group>"; };
+		8BB22AAB1929DE1B00ACE1D5 /* LTKitUserModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTKitUserModule.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +100,7 @@
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
 				8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */,
+				8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */,
 				8B8E517518685A7300821829 /* libLTKit.a in Frameworks */,
 				8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */,
 				8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */,
@@ -129,6 +135,7 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */,
 				8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */,
 				8B8E51881868607500821829 /* CoreMedia.framework */,
 				8B8E51861868607000821829 /* AssetsLibrary.framework */,
@@ -151,6 +158,8 @@
 				289884BA188D992000AD338E /* Main-iPhone.storyboard */,
 				8B8E513C1868479100821829 /* LTAppDelegate.h */,
 				8B8E513D1868479100821829 /* LTAppDelegate.m */,
+				8BB22AAA1929DE1B00ACE1D5 /* LTKitUserModule.h */,
+				8BB22AAB1929DE1B00ACE1D5 /* LTKitUserModule.mm */,
 				8B8E51421868479100821829 /* LTViewController.h */,
 				8B8E51431868479100821829 /* LTViewController.mm */,
 				8B8E51451868479100821829 /* Images.xcassets */,
@@ -174,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8E5168186847B200821829 /* libLTKit.a */,
-				8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */,
+				8BCFC02518CF0C7200E612DE /* LTKit.bundle */,
 				8B8E516A186847B200821829 /* LTKitTests.xctest */,
 			);
 			name = Products;
@@ -263,10 +272,10 @@
 			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BCFC02518CF0C7200E612DE /* LTKitBundle.bundle */ = {
+		8BCFC02518CF0C7200E612DE /* LTKit.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = LTKitBundle.bundle;
+			path = LTKit.bundle;
 			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -281,7 +290,7 @@
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
-				8BCFC03018CF0D1C00E612DE /* LTKitBundle.bundle in Resources */,
+				8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */,
+				8BB22AAC1929DE1B00ACE1D5 /* LTKitUserModule.mm in Sources */,
 				8B8E513A1868479100821829 /* main.m in Sources */,
 				8B8E51441868479100821829 /* LTViewController.mm in Sources */,
 			);
@@ -375,6 +385,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../third_party/images/opencv",
+					"$(SRCROOT)/../../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
@@ -480,6 +491,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../third_party/images/opencv",
+					"$(SRCROOT)/../../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
@@ -501,6 +513,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../third_party/images/opencv",
+					"$(SRCROOT)/../../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";

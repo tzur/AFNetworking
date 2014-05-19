@@ -331,7 +331,6 @@
 		8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */; };
 		8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */; };
 		8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192DB18FAB9B900DC6CA6 /* LTRGBToHSVProcessor.h */; };
-		8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */; };
 		8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BE51F6418FFF15300E907AE /* LTRecomposeProcessor.h */; };
 		8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192FB18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.h */; };
 		8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */; };
@@ -424,6 +423,8 @@
 		8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF083187B030000904F07 /* LTViewPixelGrid.h */; };
 		8B87204C1924A76800517F2E /* LTAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ABE003187153AD005A5DEC /* LTAnimation.h */; };
 		8B87204D1924A76800517F2E /* NSBundle+LTKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */; };
+		8B8720D91928951600517F2E /* UIImage+Loading.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8720D71928951600517F2E /* UIImage+Loading.h */; };
+		8B8720DA1928951600517F2E /* UIImage+Loading.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8720D81928951600517F2E /* UIImage+Loading.m */; };
 		8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50E91861AA8900821829 /* LTShaderStorage.m */; };
 		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
@@ -517,6 +518,10 @@
 		8BB14D7418BF464F00701A1B /* LTPatchProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB14D7318BF464F00701A1B /* LTPatchProcessor.mm */; };
 		8BB14D8318BF490700701A1B /* LTPatchKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB14D8218BF490700701A1B /* LTPatchKernel.mm */; };
 		8BB14D8518BF54B900701A1B /* LTPatchKernelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB14D8418BF54B900701A1B /* LTPatchKernelSpec.mm */; };
+		8BB22A911928CB8200ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
+		8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
+		8BB22AA41928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */; };
+		8BB22AA91928D28D00ACE1D5 /* LTTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22AA61928D28D00ACE1D5 /* LTTestModule.m */; };
 		8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47135183A438300CA1681 /* LTDrawingContext.mm */; };
 		8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47140183A470400CA1681 /* LTVertexArray.mm */; };
 		8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47157183B5FBA00CA1681 /* LTGPUStruct.m */; };
@@ -1115,6 +1120,8 @@
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B7EAA21187C5D960004A57A /* Colorize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Colorize.fsh; path = Resources/Colorize.fsh; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
+		8B8720D71928951600517F2E /* UIImage+Loading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Loading.h"; sourceTree = "<group>"; };
+		8B8720D81928951600517F2E /* UIImage+Loading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Loading.m"; sourceTree = "<group>"; };
 		8B8E50E81861AA8900821829 /* LTShaderStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShaderStorage.h; sourceTree = "<group>"; };
 		8B8E50E91861AA8900821829 /* LTShaderStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTShaderStorage.m; sourceTree = "<group>"; };
 		8B8E50F01861CE1800821829 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Resources/Shader.vsh; sourceTree = "<group>"; };
@@ -1243,6 +1250,10 @@
 		8BB14D8118BF490700701A1B /* LTPatchKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchKernel.h; sourceTree = "<group>"; };
 		8BB14D8218BF490700701A1B /* LTPatchKernel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchKernel.mm; sourceTree = "<group>"; };
 		8BB14D8418BF54B900701A1B /* LTPatchKernelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchKernelSpec.mm; sourceTree = "<group>"; };
+		8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/utils/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
+		8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+LoadingSpec.mm"; sourceTree = "<group>"; };
+		8BB22AA51928D28D00ACE1D5 /* LTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTestModule.h; sourceTree = "<group>"; };
+		8BB22AA61928D28D00ACE1D5 /* LTTestModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTestModule.m; sourceTree = "<group>"; };
 		8BB47134183A438300CA1681 /* LTDrawingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTDrawingContext.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BB47135183A438300CA1681 /* LTDrawingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDrawingContext.mm; sourceTree = "<group>"; };
 		8BB4713F183A470400CA1681 /* LTVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVertexArray.h; sourceTree = "<group>"; };
@@ -1328,6 +1339,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB22A911928CB8200ACE1D5 /* Objection-iOS.framework in Frameworks */,
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */,
 				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
@@ -1346,6 +1358,7 @@
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
+				8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
@@ -1869,6 +1882,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
 				8B3C0A5818329538000845BA /* CoreMedia.framework */,
@@ -1936,6 +1950,8 @@
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
 				282CF08B187B031800904F07 /* UIColor+Vector.h */,
 				282CF08C187B031800904F07 /* UIColor+Vector.mm */,
+				8B8720D71928951600517F2E /* UIImage+Loading.h */,
+				8B8720D81928951600517F2E /* UIImage+Loading.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2098,6 +2114,7 @@
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
+				8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2381,6 +2398,8 @@
 				03C1933018FE530A00DC6CA6 /* LTColorGradient+ForTesting.h */,
 				03C1933118FE530A00DC6CA6 /* LTColorGradient+ForTesting.m */,
 				8BAE3A4318B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h */,
+				8BB22AA51928D28D00ACE1D5 /* LTTestModule.h */,
+				8BB22AA61928D28D00ACE1D5 /* LTTestModule.m */,
 				8BBE8941183503CD006C58AA /* LTTestUtils.h */,
 				8BBE8942183506E4006C58AA /* LTTestUtils.mm */,
 				8BAE3A3D18B2326700DA79E1 /* NSValue+OpenCVExtensions.h */,
@@ -2574,7 +2593,6 @@
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
 				8B871FF01924A75F00517F2E /* LTRGBToHSVProcessor.h in Headers */,
-				8B871FF11924A75F00517F2E /* LTRectCopyProcessor.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
@@ -2641,6 +2659,7 @@
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
 				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
 				8B8720331924A76500517F2E /* LTOperationsExecutor.h in Headers */,
+				8B8720D91928951600517F2E /* UIImage+Loading.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
 				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
@@ -3159,6 +3178,7 @@
 				03AFC171190E24B500F17063 /* LTTiltShiftProcessor.mm in Sources */,
 				28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
+				8B8720DA1928951600517F2E /* UIImage+Loading.m in Sources */,
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
 				28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
@@ -3268,6 +3288,7 @@
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
+				8BB22AA41928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm in Sources */,
 				8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */,
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
 				0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */,
@@ -3303,6 +3324,7 @@
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
 				28C61C0718B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm in Sources */,
 				8BEBF3EF18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm in Sources */,
+				8BB22AA91928D28D00ACE1D5 /* LTTestModule.m in Sources */,
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				8BB92F9B1906601B00954124 /* LTInverseTransformSamplerSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
@@ -3359,6 +3381,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3366,6 +3389,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/images/opencv",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3414,6 +3438,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
@@ -3422,6 +3447,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/images/opencv",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "LTKIT_SHADER_ENCRYPTION_KEY=\"@\\\"$LTKIT_SHADER_ENCRYPTION_KEY\\\"\"";
@@ -3545,6 +3571,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3552,6 +3579,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/images/opencv",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;

@@ -99,7 +99,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment
              fromPreviousPoint:(LTPainterPoint *)previousPoint
                  inFramebuffer:(LTFbo *)fbo
-          saveLastDrawnPointTo:(LTPainterPoint **)lastDrawnPoint {
+          saveLastDrawnPointTo:(LTPainterPoint *__autoreleasing *)lastDrawnPoint {
   NSArray *points = [self pointsForStrokeSegment:segment fromPreviousPoint:previousPoint];
 
   NSMutableArray *mutableTargetRects = [NSMutableArray array];
