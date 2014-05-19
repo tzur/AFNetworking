@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <GLKit/GLKMathTypes.h>
+
 /// Category for boxing and unboxing GLKit structs.
 @interface NSValue (GLKitExtensions)
 
