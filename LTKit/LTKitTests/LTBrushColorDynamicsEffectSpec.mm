@@ -108,7 +108,7 @@ context(@"effect", ^{
     effect = [[LTBrushColorDynamicsEffect alloc] init];
     srand48(0);
     sourceRects = [NSMutableArray array];
-    for (NSUInteger i = 0; i < 1000; ++i) {
+    for (NSUInteger i = 0; i < 5000; ++i) {
       [sourceRects addObject:[LTRotatedRect rectWithCenter:CGPointMake(drand48(), drand48())
                                                       size:CGSizeMakeUniform(drand48())
                                                      angle:drand48() * 2 * M_PI]];
@@ -157,7 +157,7 @@ context(@"effect", ^{
       sumDistance += distance;
     }
     expect(maxDistance).to.beCloseToWithin(effect.hueJitter, 1e-2);
-    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.hueJitter / 2, 1e-2);
+    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.hueJitter / 2, 5e-2);
   });
   
   it(@"should return colors according to the saturationJitter property", ^{
@@ -179,7 +179,7 @@ context(@"effect", ^{
       sumDistance += std::abs(s - baseSaturation);
     }
     expect(maxDistance).to.beCloseToWithin(effect.saturationJitter, 1e-2);
-    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.saturationJitter / 2, 1e-2);
+    expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.saturationJitter / 2, 5e-2);
   });
   
   it(@"should return colors according to the brightnessJitter property", ^{

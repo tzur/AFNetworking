@@ -88,13 +88,11 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   [self updateProgramForCurrentProperties];
 }
 
-- (LTRotatedRect *)drawPoint:(LTPainterPoint *)point inFramebuffer:(LTFbo *)fbo {
+- (NSArray *)drawPoint:(LTPainterPoint *)point inFramebuffer:(LTFbo *)fbo {
   CGFloat diameter = [self diameterForZoomScale:point.zoomScale];
-  LTRotatedRect *sourceRect = [LTRotatedRect rect:CGRectFromSize(self.texture.size)];
   LTRotatedRect *targetRect =
       [LTRotatedRect squareWithCenter:point.contentPosition length:diameter angle:self.angle];
-  [self drawRects:@[targetRect] inFramebuffer:fbo fromRects:@[sourceRect]];
-  return [self normalizeRect:targetRect forSize:fbo.size];
+  return [self applyEffectsAndDrawRects:@[targetRect] inFramebuffer:fbo];
 }
 
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment
@@ -102,25 +100,22 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
                  inFramebuffer:(LTFbo *)fbo
           saveLastDrawnPointTo:(LTPainterPoint *__autoreleasing *)lastDrawnPoint {
   NSArray *points = [self pointsForStrokeSegment:segment fromPreviousPoint:previousPoint];
+  if (lastDrawnPoint) {
+    *lastDrawnPoint = points.lastObject;
+  }
 
   NSMutableArray *mutableTargetRects = [NSMutableArray array];
   for (LTPainterPoint *point in points) {
     [mutableTargetRects addObject:[LTRotatedRect squareWithCenter:point.contentPosition
                                                            length:point.diameter angle:self.angle]];
   }
-  
-  NSArray *targetRects = [self targetRectsWithEffectsFromRects:mutableTargetRects
-                                               framebufferSize:fbo.size];
-  
-  NSMutableArray *sourceRects = [NSMutableArray array];
-  for (NSUInteger i = 0; i < targetRects.count; ++i) {
-    [sourceRects addObject:[LTRotatedRect rect:CGRectFromSize(self.texture.size)]];
-  }
-  
+  return [self applyEffectsAndDrawRects:mutableTargetRects inFramebuffer:fbo];
+}
+
+- (NSArray *)applyEffectsAndDrawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo {
+  targetRects = [self targetRectsWithEffectsFromRects:targetRects framebufferSize:fbo.size];
+  NSArray *sourceRects = [self sourceRectsWithCount:targetRects.count];
   [self drawRects:targetRects inFramebuffer:fbo fromRects:sourceRects];
-  if (lastDrawnPoint) {
-    *lastDrawnPoint = points.lastObject;
-  }
   return [self normalizedRects:targetRects forSize:fbo.size];
 }
 
@@ -150,6 +145,14 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
                    fromRotatedRect:sourceRects[i]];
     }
   }];
+}
+
+- (NSArray *)sourceRectsWithCount:(NSUInteger)count {
+  NSMutableArray *sourceRects = [NSMutableArray array];
+  for (NSUInteger i = 0; i < count; ++i) {
+    [sourceRects addObject:[LTRotatedRect rect:CGRectFromSize(self.texture.size)]];
+  }
+  return sourceRects;
 }
 
 - (NSArray *)targetRectsWithEffectsFromRects:(NSArray *)targetRects framebufferSize:(CGSize)size {

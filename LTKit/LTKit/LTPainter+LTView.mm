@@ -91,9 +91,9 @@
   CGPointDistance(point.contentPosition, self.lastDrawnPoint.contentPosition);
   
   [self.currentStroke addPointAt:point];
-  LTRotatedRect *paintedRect = [self.brush drawPoint:point inFramebuffer:self.fboForPainting];
+  NSArray *paintedRects = [self.brush drawPoint:point inFramebuffer:self.fboForPainting];
   self.lastDrawnPoint = point;
-  [self.delegate ltPainter:self didPaintInRotatedRects:@[paintedRect]];
+  [self.delegate ltPainter:self didPaintInRotatedRects:paintedRects];
 }
 
 - (void)ltTouchCollectorFinishedStroke:(LTTouchCollector __unused *)touchCollector
@@ -101,9 +101,9 @@
   LTAssert(self.currentStroke, @"finished a stroke, but no stroke in progress");
   // Identify a tap gesture and draw a point for it.
   if (!cancelled && !self.lastDrawnPoint) {
-    LTRotatedRect *paintedRect = [self.brush drawPoint:self.currentStroke.startingPoint
-                                         inFramebuffer:self.fboForPainting];
-    [self.delegate ltPainter:self didPaintInRotatedRects:@[paintedRect]];
+    NSArray *paintedRects = [self.brush drawPoint:self.currentStroke.startingPoint
+                                    inFramebuffer:self.fboForPainting];
+    [self.delegate ltPainter:self didPaintInRotatedRects:paintedRects];
   }
   [self endStroke];
 }
