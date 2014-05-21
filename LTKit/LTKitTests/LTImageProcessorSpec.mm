@@ -9,7 +9,7 @@
 
 @interface LTFakeImageProcessor : LTImageProcessor
 
-@property (nonatomic) CGFloat floatValue;
+@property (nonatomic) float floatValue;
 @property (nonatomic) NSInteger integerValue;
 
 @property (nonatomic) GLKVector2 vector2Value;
