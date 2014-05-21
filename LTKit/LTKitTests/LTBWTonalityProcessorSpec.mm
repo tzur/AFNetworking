@@ -105,9 +105,9 @@ context(@"processing", ^{
     
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
                                                                         output:deltaOutput];
-    LTSingleTextureOutput *processed = [tone process];
-    
-    expect(LTFuzzyCompareMat(deltaTexture.image, processed.texture.image)).to.beTruthy();
+    [tone process];
+
+    expect($([deltaOutput image])).to.beCloseToMat($([deltaTexture image]));
   });
   
   it(@"should return black image if blue channel is black and color filter is zero on blue", ^{
@@ -123,9 +123,9 @@ context(@"processing", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
                                                                         output:deltaOutput];
     tone.colorFilter = GLKVector3Make(0.0, 0.0, 1.0);
-    LTSingleTextureOutput *processed = [tone process];
+    [tone process];
 
-    expect(LTFuzzyCompareMat(greenDeltaOutput, processed.texture.image)).to.beTruthy();
+    expect($([deltaOutput image])).to.beCloseToMat($(greenDeltaOutput));
   });
   
   it(@"should increase offset correctly", ^{
@@ -154,12 +154,12 @@ context(@"processing", ^{
     tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
     tone.colorGradientTexture =
         [[LTColorGradient colderThanNeutralGradient] textureWithSamplingPoints:256];
-    LTSingleTextureOutput *processed = [tone process];
+    [tone process];
     
     // Important: this test depends on the performance of other classes and processors, thus is
     // expected to fail once changes introduced to major rendering components, such as smoothing.
     cv::Mat image = LTLoadMat([self class], @"Lena128BWTonality.png");
-    expect(LTFuzzyCompareMat(processed.texture.image, image)).to.beTruthy();
+    expect($([lenaOutput image])).to.beCloseToMat($(image));
   });
 });
 

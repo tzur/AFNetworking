@@ -16,7 +16,7 @@ it(@"should produce correct result with white subrect", ^{
   LTTexture *output = [LTTexture textureWithPropertiesOf:input];
 
   LTBoundaryExtractor *processor = [[LTBoundaryExtractor alloc] initWithInput:input output:output];
-  LTSingleTextureOutput *result = [processor process];
+  [processor process];
 
   // Draw the expected rect boundary.
   cv::Mat4b expected(image.size(), cv::Vec4b(0, 0, 0, 255));
@@ -26,7 +26,7 @@ it(@"should produce correct result with white subrect", ^{
   cv::line(expected, rect.br() - cv::Point(1, 1), rect.br() - cv::Point(rect.width, 1), white);
   cv::line(expected, rect.br() - cv::Point(1, 1), rect.br() - cv::Point(1, rect.height), white);
 
-  expect(LTCompareMat(expected, [result.texture image])).to.beTruthy();
+  expect($(output.image)).to.beCloseToMat($(expected));
 });
 
 it(@"should produce correct result with complete white rect", ^{
@@ -37,7 +37,7 @@ it(@"should produce correct result with complete white rect", ^{
   LTTexture *output = [LTTexture textureWithPropertiesOf:input];
 
   LTBoundaryExtractor *processor = [[LTBoundaryExtractor alloc] initWithInput:input output:output];
-  LTSingleTextureOutput *result = [processor process];
+  [processor process];
 
   // Draw the expected rect boundary.
   cv::Mat4b expected(image.size(), cv::Vec4b(0, 0, 0, 255));
@@ -47,7 +47,7 @@ it(@"should produce correct result with complete white rect", ^{
   cv::line(expected, rect.br() - cv::Point(1, 1), rect.br() - cv::Point(rect.width, 1), white);
   cv::line(expected, rect.br() - cv::Point(1, 1), rect.br() - cv::Point(1, rect.height), white);
 
-  expect(LTCompareMat(expected, [result.texture image])).to.beTruthy();
+  expect($(output.image)).to.beCloseToMat($(expected));
 });
 
 SpecGLEnd

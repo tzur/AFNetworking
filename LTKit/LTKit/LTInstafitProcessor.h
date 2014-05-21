@@ -3,6 +3,8 @@
 
 #import "LTImageProcessor.h"
 
+@class LTTexture;
+
 /// Processor for the Instafit feature, allowing to place a non-square image on a square output,
 /// with controllable tilable background.
 @interface LTInstafitProcessor : LTImageProcessor

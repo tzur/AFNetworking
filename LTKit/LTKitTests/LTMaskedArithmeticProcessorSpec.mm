@@ -63,13 +63,13 @@ it(@"should produce correct result", ^{
                                             initWithFirstOperand:first secondOperand:second
                                             mask:mask output:output];
 
-  LTSingleTextureOutput *result = [processor process];
+  [processor process];
 
   cv::Mat4hf expected(maskImage.size());
   expected.setTo(cv::Vec4hf(half(0), half(0), half(0), half(1)));
   expected(roi).setTo(cv::Vec4hf(half(0), half(-0.25), half(0.43921), half(1)));
 
-  expect(LTFuzzyCompareMat(expected, result.texture.image, 1.0/255.0)).to.beTruthy();
+  expect($(output.image)).to.beCloseToMat($(expected));
 });
 
 SpecGLEnd

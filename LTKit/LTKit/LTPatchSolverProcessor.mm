@@ -168,20 +168,20 @@
 #pragma mark Processing
 #pragma mark -
 
-- (LTSingleTextureOutput *)process {
+- (void)process {
   // TODO: (yaron) optional performance boost: process textures that their rect has been changed
   // only.
-  LTSingleTextureOutput *sourceOutput = [self.sourceResizer process];
-  LTSingleTextureOutput *targetOutput = [self.targetResizer process];
+  [self.sourceResizer process];
+  [self.targetResizer process];
 
   // TODO: (yaron) optional performance boost is to move all GPU operations in this processor to CPU
   // for small working sizes. This will avoid the 3-4ms of GPU->CPU synchronization that is occurred
   // when mapping the images for reading.
   __block cv::Mat4f source, target, maskMat;
-  [sourceOutput.texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+  [self.sourceResized mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTConvertMat(mapped, &source, CV_32FC4);
   }];
-  [targetOutput.texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+  [self.targetResized mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTConvertMat(mapped, &target, CV_32FC4);
   }];
 
@@ -192,8 +192,6 @@
   cv::Mat4hf membraneHalfFloat;
   LTConvertMat(membrane(roi), &membraneHalfFloat, membraneHalfFloat.type());
   [self.output load:membraneHalfFloat];
-
-  return [[LTSingleTextureOutput alloc] initWithTexture:self.output];
 }
 
 - (cv::Mat4f)differenceAtBoundaryForSource:(const cv::Mat4f &)source

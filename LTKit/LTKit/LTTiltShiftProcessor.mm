@@ -63,7 +63,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
   self.subProcessorInitialized = YES;
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   if (!self.subProcessorInitialized) {
     [self initializeSubProcessor];
   }

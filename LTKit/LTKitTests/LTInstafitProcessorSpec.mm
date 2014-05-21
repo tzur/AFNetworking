@@ -64,22 +64,22 @@ context(@"processing", ^{
   });
 
   it(@"should place image with default background", ^{
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 255, 255, 255));
     inputImage.copyTo(expected(cv::Rect(0, 0, inputImage.cols, inputImage.rows)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should place image with custom single color background", ^{
     processor.background = [LTTexture textureWithImage:cv::Mat4b(1, 1, cv::Vec4b(255, 0, 0, 255))];
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 0, 0, 255));
     inputImage.copyTo(expected(cv::Rect(0, 0, inputImage.cols, inputImage.rows)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should place image with custom tiled texture", ^{
@@ -88,7 +88,7 @@ context(@"processing", ^{
     texture(cv::Rect(8, 8, 8, 8)).setTo(cv::Vec4b(0, 0, 255, 255));
 
     processor.background = [LTTexture textureWithImage:texture];
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width);
     for (int y = 0; y < expected.cols; y += texture.cols) {
@@ -98,7 +98,7 @@ context(@"processing", ^{
     }
     inputImage.copyTo(expected(cv::Rect(0, 0, inputImage.cols, inputImage.rows)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should place image with correct mask", ^{
@@ -107,7 +107,7 @@ context(@"processing", ^{
 
     [mask load:maskImage];
 
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 255, 255, 255));
     inputImage.copyTo(expected(cv::Rect(0, 0, inputImage.cols, inputImage.rows)));
@@ -116,43 +116,43 @@ context(@"processing", ^{
     cv::Mat4b whiteImage(rightROI.height, rightROI.width, cv::Vec4b(255, 255, 255, 255));
     cv::addWeighted(inputImage(rightROI), 0.5, whiteImage, 0.5, 0, expected(rightROI));
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should translate input image", ^{
     processor.translation = GLKVector2Make(5, 5);
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 255, 255, 255));
     inputImage.copyTo(expected(cv::Rect(processor.translation.x, processor.translation.y,
                                         inputImage.cols, inputImage.rows)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should scale input image", ^{
     input.magFilterInterpolation = LTTextureInterpolationNearest;
     processor.translation = GLKVector2Make(inputImage.cols / 2, inputImage.rows / 2);
     processor.scaling = 2.0;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width);
     cv::resize(inputImage, expected, expected.size(), 0, 0, cv::INTER_NEAREST);
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should rotate input image", ^{
     input.magFilterInterpolation = LTTextureInterpolationNearest;
     processor.rotation = M_PI_2;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 255, 255, 255));
     cv::Rect roi(0, 0, inputImage.cols, inputImage.rows);
     cv::flip(inputImage, expected(roi), 0);
     cv::transpose(expected(roi), expected(roi));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 });
 

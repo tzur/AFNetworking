@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTImageProcessorOutput.h"
-
 #import "LTKeyPathCoding.h"
 
 /// Abstract class for generic image processing mechanism. The mechanism accepts a varying number of
@@ -20,7 +18,7 @@
 
 /// Generates a new output based on the current image processor inputs. This method blocks until a
 /// result is available. This is an abstract method that must be overridden by subclasses.
-- (id<LTImageProcessorOutput>)process;
+- (void)process;
 
 #pragma mark -
 #pragma mark Input model

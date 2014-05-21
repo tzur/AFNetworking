@@ -73,7 +73,7 @@
                                                             output:self.secondOutput];
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   [self.firstProcessor process];
   [self.secondProcessor process];
 
@@ -88,8 +88,6 @@
   if (self.shiftResult) {
     LTInPlaceFFTShift(_output);
   }
-
-  return [[LTSingleMatOutput alloc] initWithMat:*_output];
 }
 
 - (LTSplitComplexMat *)multiplyTransformedMatrices {

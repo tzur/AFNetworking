@@ -68,7 +68,7 @@ static const CGFloat kFrameMaxDimension = 1024;
   self.subProcessorsInitialized = YES;
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   if (!self.subProcessorsInitialized) {
     [self initializeSubProcessors];
   }

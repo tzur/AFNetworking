@@ -44,7 +44,7 @@
   self.subProcessorInitialized = YES;
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   if (!self.subProcessorInitialized) {
     [self initializeSubProcessors];
   }

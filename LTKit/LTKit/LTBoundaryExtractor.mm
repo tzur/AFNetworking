@@ -32,16 +32,6 @@
   return self;
 }
 
-- (id<LTImageProcessorOutput>)process {
-  __block id<LTImageProcessorOutput> result;
-
-  [self.input executeAndPreserveParameters:^{
-    result = [super process];
-  }];
-  
-  return result;
-}
-
 - (void)setTexelOffset:(GLKVector2)texelOffset {
   _texelOffset = texelOffset;
   self[[LTBoundaryExtractorVsh texelOffset]] = $(texelOffset);

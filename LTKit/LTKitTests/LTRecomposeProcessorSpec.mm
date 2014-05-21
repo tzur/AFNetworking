@@ -79,6 +79,7 @@ context(@"processing", ^{
   __block LTRecomposeProcessor *processor;
   __block cv::Mat4b image;
   __block LTTexture *mask;
+  __block LTTexture *output;
 
   beforeEach(^{
     image = cv::Mat4b(4, 4);
@@ -90,7 +91,7 @@ context(@"processing", ^{
     LTTexture *input = [LTTexture textureWithImage:image];
     mask = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionByte
                                format:LTTextureFormatRed allocateMemory:YES];
-    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
+    output = [LTTexture textureWithPropertiesOf:input];
 
     [mask clearWithColor:GLKVector4Make(0, 0, 0, 1)];
     [output clearWithColor:GLKVector4Make(0, 0, 0, 0)];
@@ -102,31 +103,32 @@ context(@"processing", ^{
 
   afterEach(^{
     mask = nil;
+    output = nil;
     processor = nil;
   });
 
   it(@"should decimate horizontally", ^{
     processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     // Take cols 2,3.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
     image(cv::Rect(2, 0, 1, 4)).copyTo(expected(cv::Rect(0, 0, 1, 4)));
     image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should decimate vertically", ^{
     processor.decimationDimension = LTRecomposeDecimationDimensionVertical;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     // Take cols 2,3.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
     image(cv::Rect(0, 2, 4, 1)).copyTo(expected(cv::Rect(0, 0, 4, 1)));
     image(cv::Rect(0, 3, 4, 1)).copyTo(expected(cv::Rect(0, 1, 4, 1)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 
   it(@"should decimate according to mask", ^{
@@ -136,14 +138,14 @@ context(@"processing", ^{
     [processor setMaskUpdated];
 
     processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     // Take cols 1,3, since a mask is blocking column 1 from disappearing.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
     image(cv::Rect(1, 0, 1, 4)).copyTo(expected(cv::Rect(0, 0, 1, 4)));
     image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
 
-    expect($([result.texture image])).to.equalMat($(expected));
+    expect($([output image])).to.equalMat($(expected));
   });
 });
 

@@ -39,7 +39,7 @@
 #pragma mark Processing
 #pragma mark -
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   return [self.mixer process];
 }
 

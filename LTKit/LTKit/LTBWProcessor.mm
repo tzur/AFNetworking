@@ -123,7 +123,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self.subProcessorsInitialized = YES;
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   if (!self.subProcessorsInitialized) {
     [self initializeSubProcessors];
   }

@@ -52,15 +52,15 @@ context(@"forward transform", ^{
       LTSplitComplexMat *output = [[LTSplitComplexMat alloc] init];
 
       LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithRealInput:input output:output];
-      LTSplitComplexMatOutput *result = [processor process];
+      [processor process];
 
       // For constant input, the output should be a single DC coefficient and phases of 0.
       cv::Mat1f expectedReal = cv::Mat1f::zeros(input.size());
       expectedReal(0, 0) = input.total() * 1.0;
       cv::Mat1f expectedImag = cv::Mat1f::zeros(input.size());
 
-      expect($(result.splitComplexMat.real)).to.beCloseToMat($(expectedReal));
-      expect($(result.splitComplexMat.imag)).to.beCloseToMat($(expectedImag));
+      expect($(output.real)).to.beCloseToMat($(expectedReal));
+      expect($(output.imag)).to.beCloseToMat($(expectedImag));
     });
 
     it(@"should produce correct transform of complex input", ^{
@@ -74,7 +74,7 @@ context(@"forward transform", ^{
       LTSplitComplexMat *output = [[LTSplitComplexMat alloc] init];
 
       LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithRealInput:input output:output];
-      LTSplitComplexMatOutput *result = [processor process];
+      [processor process];
 
       // Output calculated by Matlab.
       cv::Mat1f expectedReal = (cv::Mat1f(input.size()) << 120, -8, -8, -8,
@@ -86,8 +86,8 @@ context(@"forward transform", ^{
                                                              0,  0,  0,  0,
                                                            -32,  0,  0,  0);
 
-      expect($(result.splitComplexMat.real)).to.beCloseToMat($(expectedReal));
-      expect($(result.splitComplexMat.imag)).to.beCloseToMat($(expectedImag));
+      expect($(output.real)).to.beCloseToMat($(expectedReal));
+      expect($(output.imag)).to.beCloseToMat($(expectedImag));
     });
   });
 
@@ -100,15 +100,15 @@ context(@"forward transform", ^{
       LTSplitComplexMat *output = [[LTSplitComplexMat alloc] init];
 
       LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input output:output];
-      LTSplitComplexMatOutput *result = [processor process];
+      [processor process];
 
       cv::Mat1f expectedReal = cv::Mat1f::zeros(inputReal.size());
       expectedReal(0, 0) = inputReal.total();
       cv::Mat1f expectedImag = cv::Mat1f::zeros(inputImag.size());
       expectedImag(0, 0) = inputReal.total();
 
-      expect($(result.splitComplexMat.real)).to.beCloseToMat($(expectedReal));
-      expect($(result.splitComplexMat.imag)).to.beCloseToMat($(expectedImag));
+      expect($(output.real)).to.beCloseToMat($(expectedReal));
+      expect($(output.imag)).to.beCloseToMat($(expectedImag));
     });
   });
 });
@@ -121,16 +121,16 @@ context(@"inverse transform", ^{
 
     LTFFTProcessor *forwardProcessor = [[LTFFTProcessor alloc] initWithRealInput:input
                                                                           output:forwardOutput];
-    LTSplitComplexMatOutput *forwardResult = [forwardProcessor process];
+    [forwardProcessor process];
 
     LTFFTProcessor *inverseProcessor = [[LTFFTProcessor alloc]
-                                        initWithInput:forwardResult.splitComplexMat
+                                        initWithInput:forwardOutput
                                         output:inverseOutput];
     inverseProcessor.transformDirection = LTFFTTransformDirectionInverse;
-    LTSplitComplexMatOutput *inverseResult = [inverseProcessor process];
+    [inverseProcessor process];
 
-    expect($(inverseResult.splitComplexMat.real)).to.beCloseToMat($(input));
-    expect($(inverseResult.splitComplexMat.imag)).to.beCloseToScalar($(cv::Scalar(0)));
+    expect($(inverseOutput.real)).to.beCloseToMat($(input));
+    expect($(inverseOutput.imag)).to.beCloseToScalar($(cv::Scalar(0)));
   });
 
   context(@"normalization", ^{
@@ -163,10 +163,10 @@ context(@"inverse transform", ^{
       LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input output:output];
       processor.transformDirection = LTFFTTransformDirectionInverse;
       processor.normalization = LTFFTTransformNormalizeReal;
-      LTSplitComplexMatOutput *result = [processor process];
+      [processor process];
 
-      expect($(result.splitComplexMat.real)).to.beCloseToMat($(expectedReal));
-      expect($(result.splitComplexMat.imag)).to.beCloseToMat($(expectedImag * input.imag.total()));
+      expect($(output.real)).to.beCloseToMat($(expectedReal));
+      expect($(output.imag)).to.beCloseToMat($(expectedImag * input.imag.total()));
     });
 
     it(@"should normalize imag output only", ^{
@@ -175,10 +175,10 @@ context(@"inverse transform", ^{
       LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithInput:input output:output];
       processor.transformDirection = LTFFTTransformDirectionInverse;
       processor.normalization = LTFFTTransformNormalizeImag;
-      LTSplitComplexMatOutput *result = [processor process];
+      [processor process];
 
-      expect($(result.splitComplexMat.real)).to.beCloseToMat($(expectedReal * input.real.total()));
-      expect($(result.splitComplexMat.imag)).to.beCloseToMat($(expectedImag));
+      expect($(output.real)).to.beCloseToMat($(expectedReal * input.real.total()));
+      expect($(output.imag)).to.beCloseToMat($(expectedImag));
     });
   });
 });

@@ -53,12 +53,4 @@
   self.didProcess = YES;
 }
 
-- (id<LTImageProcessorOutput>)processedOutputs {
-  if (self.didProcess) {
-    return [[LTSingleTextureOutput alloc] initWithTexture:self.output];
-  } else {
-    return nil;
-  }
-}
-
 @end

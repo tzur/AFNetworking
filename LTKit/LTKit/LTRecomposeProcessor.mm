@@ -119,14 +119,12 @@
 #pragma mark Processing
 #pragma mark -
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   [self updateDecimationOrderIfNeeded];
   [self updateRectsForLinesToDecimate];
 
   [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.fbo
                fromRotatedRects:self.sourceRects];
-
-  return [[LTSingleTextureOutput alloc] initWithTexture:self.output];
 }
 
 - (void)updateDecimationOrderIfNeeded {

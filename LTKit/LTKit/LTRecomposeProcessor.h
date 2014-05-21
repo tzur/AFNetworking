@@ -5,6 +5,8 @@
 
 @protocol LTDistributionSamplerFactory;
 
+@class LTTexture;
+
 /// Dimension to recompose across.
 typedef NS_ENUM(NSUInteger, LTRecomposeDecimationDimension) {
   LTRecomposeDecimationDimensionHorizontal = 0,

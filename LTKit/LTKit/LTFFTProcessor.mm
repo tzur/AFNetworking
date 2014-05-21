@@ -78,13 +78,11 @@
 #pragma mark Processing
 #pragma mark -
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   _output.real.create(self.size);
   _output.imag.create(self.size);
 
   [self runFFT];
-
-  return [[LTSplitComplexMatOutput alloc] initWithSplitComplexMat:self.output];
 }
 
 - (cv::Size)size {

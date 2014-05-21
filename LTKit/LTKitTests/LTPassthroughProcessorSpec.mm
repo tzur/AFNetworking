@@ -14,9 +14,9 @@ it(@"should copy input to output", ^{
 
   LTPassthroughProcessor *processor = [[LTPassthroughProcessor alloc] initWithInput:input
                                                                              output:output];
-  LTSingleTextureOutput *result = [processor process];
+  [processor process];
 
-  expect($([result.texture image])).to.beCloseToMat($(image));
+  expect($([output image])).to.beCloseToMat($(image));
 });
 
 SpecGLEnd

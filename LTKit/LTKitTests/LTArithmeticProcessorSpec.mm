@@ -58,9 +58,9 @@ context(@"processing", ^{
                                                                              secondOperand:second
                                                                                     output:output];
     processor.operation = LTArithmeticOperationAdd;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
-    expect($([result.texture image])).to.beCloseToScalar($(cv::Scalar(192, 192, 192, 255)));
+    expect($([output image])).to.beCloseToScalar($(cv::Scalar(192, 192, 192, 255)));
   });
 
   it(@"should subtract two textures", ^{
@@ -68,9 +68,9 @@ context(@"processing", ^{
                                                                              secondOperand:second
                                                                                     output:output];
     processor.operation = LTArithmeticOperationSubtract;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
-    expect($([result.texture image])).to.beCloseToScalar($(cv::Scalar(64, 64, 64, 255)));
+    expect($([output image])).to.beCloseToScalar($(cv::Scalar(64, 64, 64, 255)));
   });
 
   it(@"should multiply two textures", ^{
@@ -78,10 +78,10 @@ context(@"processing", ^{
                                                                              secondOperand:second
                                                                                     output:output];
     processor.operation = LTArithmeticOperationMultiply;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     // Value should be (128 * 64) / 255, since multiplication is done in [0, 1].
-    expect($([result.texture image])).to.beCloseToScalar($(cv::Scalar(32, 32, 32, 255)));
+    expect($([output image])).to.beCloseToScalar($(cv::Scalar(32, 32, 32, 255)));
   });
 
   it(@"should divide two textures", ^{
@@ -89,9 +89,9 @@ context(@"processing", ^{
                                                                              secondOperand:first
                                                                                     output:output];
     processor.operation = LTArithmeticOperationDivide;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
     
-    expect($([result.texture image])).to.beCloseToScalar($(cv::Scalar(128, 128, 128, 255)));
+    expect($([output image])).to.beCloseToScalar($(cv::Scalar(128, 128, 128, 255)));
   });
 });
 

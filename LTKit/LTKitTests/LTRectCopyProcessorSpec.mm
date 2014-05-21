@@ -50,18 +50,18 @@ context(@"processing", ^{
     it(@"should copy non-rotated rect to non-rotated rect", ^{
       processor.inputRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
       processor.outputRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
-      LTSingleTextureOutput *result = [processor process];
+      [processor process];
 
       cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
       expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 0, 0, 255);
 
-      expect($([result.texture image])).to.equalMat($(expected));
+      expect($([output image])).to.equalMat($(expected));
     });
 
     it(@"should copy rotated rect to non-rotated rect", ^{
       processor.inputRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16) withAngle:M_PI];
       processor.outputRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
-      LTSingleTextureOutput *result = [processor process];
+      [processor process];
 
       cv::Mat4b flippedInput(image);
       cv::flip(flippedInput, flippedInput, 0);
@@ -69,7 +69,7 @@ context(@"processing", ^{
       cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
       flippedInput.copyTo(expected(cv::Rect(0, 0, 16, 16)));
 
-      expect($([result.texture image])).to.equalMat($(expected));
+      expect($([output image])).to.equalMat($(expected));
     });
   });
 
@@ -86,7 +86,7 @@ context(@"processing", ^{
     it(@"should tile input rect from origin to target rect", ^{
       processor.inputRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
       processor.outputRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
-      LTSingleTextureOutput *result = [processor process];
+      [processor process];
 
       // There should be 4 tiles of the red/green texture in the rect (0, 0, 16, 16).
       cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
@@ -95,13 +95,13 @@ context(@"processing", ^{
       image(cv::Rect(0, 0, 8, 8)).copyTo(expected(cv::Rect(0, 8, 8, 8)));
       image(cv::Rect(0, 0, 8, 8)).copyTo(expected(cv::Rect(8, 8, 8, 8)));
 
-      expect($([result.texture image])).to.equalMat($(expected));
+      expect($([output image])).to.equalMat($(expected));
     });
 
     it(@"should tile input translated rect from inner origin to target rect", ^{
       processor.inputRect = [LTRotatedRect rect:CGRectMake(2, 2, 10, 8)];
       processor.outputRect = [LTRotatedRect rect:CGRectMake(2, 2, 20, 16)];
-      LTSingleTextureOutput *result = [processor process];
+      [processor process];
 
       // There should be 4 tiles of the red/green texture in the rect (0, 0, 16, 16).
       cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
@@ -110,13 +110,13 @@ context(@"processing", ^{
       image(cv::Rect(2, 2, 10, 8)).copyTo(expected(cv::Rect(2, 10, 10, 8)));
       image(cv::Rect(2, 2, 10, 8)).copyTo(expected(cv::Rect(12, 10, 10, 8)));
 
-      expect($([result.texture image])).to.equalMat($(expected));
+      expect($([output image])).to.equalMat($(expected));
     });
 
     it(@"should tile input translated and rotated rect from inner origin to target rect", ^{
       processor.inputRect = [LTRotatedRect rect:CGRectMake(2, 2, 6, 8) withAngle:-M_PI_2];
       processor.outputRect = [LTRotatedRect rect:CGRectMake(2, 2, 12, 16)];
-      LTSingleTextureOutput *result = [processor process];
+      [processor process];
 
       // There should be 4 tiles of the rotated red/green texture in the rect (0, 0, 16, 16).
       cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
@@ -130,7 +130,7 @@ context(@"processing", ^{
       segment.copyTo(expected(cv::Rect(2, 10, 6, 8)));
       segment.copyTo(expected(cv::Rect(8, 10, 6, 8)));
 
-      expect($([result.texture image])).to.equalMat($(expected));
+      expect($([output image])).to.equalMat($(expected));
     });
   });
 });

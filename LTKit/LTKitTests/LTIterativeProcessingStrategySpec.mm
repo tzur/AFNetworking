@@ -98,31 +98,6 @@ context(@"LTProcessingStrategy", ^{
       [strategy iterationStarted];
     }).to.raise(NSInternalInconsistencyException);
   });
-
-  it(@"should initially generate no processed outputs", ^{
-    expect([strategy processedOutputs]).to.beNil();
-  });
-
-  it(@"should generate processed output once ready", ^{
-    [strategy processingWillBegin];
-
-    for (NSUInteger i = 0; i < iterationsForOutputA; ++i) {
-      [strategy iterationStarted];
-      [strategy iterationEnded];
-    }
-
-    id<LTImageProcessorOutput> processedA = [strategy processedOutputs];
-    expect(processedA).to.beKindOf([LTMultipleTextureOutput class]);
-    expect(((LTMultipleTextureOutput *)processedA).textures.count).to.equal(1);
-
-    for (NSUInteger i = 0; i < iterationsForOutputB - iterationsForOutputA; ++i) {
-      [strategy iterationStarted];
-      [strategy iterationEnded];
-    }
-
-    id<LTImageProcessorOutput> processedB = [strategy processedOutputs];
-    expect(((LTMultipleTextureOutput *)processedB).textures.count).to.equal(2);
-  });
 });
 
 context(@"iterations", ^{

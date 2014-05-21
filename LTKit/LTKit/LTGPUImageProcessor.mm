@@ -31,7 +31,7 @@
   return self;
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   [self.strategy processingWillBegin];
 
   while ([self.strategy hasMoreIterations]) {
@@ -41,8 +41,6 @@
     [self drawWithPlacement:placement];
     [self.strategy iterationEnded];
   }
-
-  return [self.strategy processedOutputs];
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {

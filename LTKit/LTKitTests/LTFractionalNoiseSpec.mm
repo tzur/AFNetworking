@@ -47,7 +47,7 @@ context(@"processing", ^{
     noise.horizontalSeed = 0.0;
     noise.verticalSeed = 0.0;
     noise.velocitySeed = 0.0;
-    LTSingleTextureOutput *processed = [noise process];
+    [noise process];
     
     // Compare current output of the shader with the result that passed human visual inspection.
     // Important: this test may break upon introducing new architectures, since the test is
@@ -56,7 +56,7 @@ context(@"processing", ^{
     // errors on the new architecture is visually appealing and then update the test by saving
     // the result as a new gold standard on this architecture.
     cv::Mat image = LTLoadMat([self class], @"SimulatorFractionalNoise.png");
-    expect(LTFuzzyCompareMat(image, processed.texture.image)).to.beTruthy();
+    expect(LTFuzzyCompareMat(image, output.image)).to.beTruthy();
   });
 });
 

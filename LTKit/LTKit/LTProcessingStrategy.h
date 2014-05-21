@@ -23,7 +23,4 @@
 /// (which can be empty or \c nil).
 - (void)iterationEnded;
 
-/// Retrieves the output textures that were processed so far.
-- (id<LTImageProcessorOutput>)processedOutputs;
-
 @end

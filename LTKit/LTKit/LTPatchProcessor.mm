@@ -129,9 +129,9 @@ static const CGFloat kDefaultWorkingSize = 64;
 #pragma mark Processing
 #pragma mark -
 
-- (LTSingleTextureOutput *)process {
+- (void)process {
   [self.solver process];
-  return [self.compositor process];
+  [self.compositor process];
 }
 
 #pragma mark -

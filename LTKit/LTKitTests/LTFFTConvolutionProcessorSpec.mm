@@ -73,23 +73,23 @@ context(@"processing", ^{
   });
 
   it(@"should process and shift", ^{
-    LTSingleMatOutput *result = [processor process];
+    [processor process];
 
     cv::Mat1f expected(first.size());
     cv::filter2D(first, expected, CV_32F, second, cv::Point(7, 7));
 
-    expect($(expected)).to.beCloseToMat($(result.mat));
+    expect($(output)).to.beCloseToMat($(expected));
   });
 
   it(@"should process and not shift", ^{
     processor.shiftResult = NO;
-    LTSingleMatOutput *result = [processor process];
+    [processor process];
 
     cv::Mat1f expected(first.size());
     cv::filter2D(first, expected, CV_32F, second, cv::Point(7, 7));
     LTInPlaceFFTShift(&expected);
 
-    expect($(expected)).to.beCloseToMat($(result.mat));
+    expect($(output)).to.beCloseToMat($(expected));
   });
 });
 

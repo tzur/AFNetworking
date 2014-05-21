@@ -26,8 +26,7 @@
 
 @implementation LTFakeImageProcessor
 
-- (id<LTImageProcessorOutput>)process {
-  return nil;
+- (void)process {
 }
 
 + (NSSet *)inputModelProperties {

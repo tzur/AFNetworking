@@ -81,7 +81,7 @@
 #pragma mark Processing
 #pragma mark -
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   // TODO:(yaron) this can be improved by processing only the area that needs to be redrawn since
   // the last processing.
   [self.backCopyProcessor process];

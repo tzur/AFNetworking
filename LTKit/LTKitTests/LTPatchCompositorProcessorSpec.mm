@@ -94,14 +94,14 @@ it(@"should composite correctly", ^{
                                            membrane:membrane mask:mask output:output];
   processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
   processor.targetRect = [LTRotatedRect rect:CGRectMake(0, 0, 32, 32)];
-  LTSingleTextureOutput *result = [processor process];
+  [processor process];
 
   // Set initially to target.
   cv::Mat4b expected(targetImage);
   // Source + membrane.
   expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 128, 0, 255);
 
-  expect($([result.texture image])).to.beCloseToMat($(expected));
+  expect($([output image])).to.beCloseToMat($(expected));
 });
 
 SpecGLEnd

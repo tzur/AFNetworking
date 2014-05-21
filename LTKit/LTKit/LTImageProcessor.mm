@@ -9,7 +9,7 @@
 #pragma mark Processing
 #pragma mark -
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   LTMethodNotImplemented();
 }
 

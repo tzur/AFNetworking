@@ -24,7 +24,6 @@
 
 // Image Processing/Base.
 #import <LTKit/LTImageProcessor.h>
-#import <LTKit/LTImageProcessorOutput.h>
 #import <LTKit/LTIterativeImageProcessor.h>
 #import <LTKit/LTOneShotImageProcessor.h>
 

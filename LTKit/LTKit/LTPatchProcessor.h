@@ -3,7 +3,7 @@
 
 #import "LTImageProcessor.h"
 
-@class LTRotatedRect;
+@class LTRotatedRect, LTTexture;
 
 /// Processor for executing a patch operation. The operation copies a desired area from the \c
 /// source texture, identified by the \c mask texture, to an area in the \c target texture while

@@ -10,6 +10,7 @@ SpecGLBegin(LTMaskOverlayProcessorSpec)
 context(@"processing", ^{
   __block LTMaskOverlayProcessor *processor;
   __block LTTexture *input;
+  __block LTTexture *output;
 
   beforeEach(^{
     cv::Mat4b inputImage(16, 16, cv::Vec4b(128, 64, 32, 255));
@@ -18,33 +19,34 @@ context(@"processing", ^{
 
     input = [LTTexture textureWithImage:inputImage];
     LTTexture *mask = [LTTexture textureWithImage:maskImage];
-    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
+    output = [LTTexture textureWithPropertiesOf:input];
 
     processor = [[LTMaskOverlayProcessor alloc] initWithImage:input mask:mask output:output];
   });
 
   afterEach(^{
+    output = nil;
     input = nil;
     processor = nil;
   });
 
   it(@"should add default mask correctly", ^{
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(input.size.height, input.size.width, cv::Vec4b(160, 48, 24, 255));
     expected(cv::Rect(0, 0, 4, 4)) = cv::Vec4b(192, 32, 16, 255);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should add custom mask color correctly", ^{
     processor.maskColor = GLKVector4Make(0.5, 0.25, 0.75, 1.0);
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(input.size.height, input.size.width, cv::Vec4b(128, 64, 112, 255));
     expected(cv::Rect(0, 0, 4, 4)) = cv::Vec4b(128, 64, 192, 255);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 });
 

@@ -68,42 +68,42 @@ context(@"initialization", ^{
 context(@"front placement", ^{
   it(@"should blend with correct translation placement", ^{
     processor.frontTranslation = GLKVector2Make(1.0, 1.0);
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Vec4b resultColor;
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(1, 1, 8, 8)).setTo(resultColor);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should blend with correct scaling placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
     processor.frontTranslation = GLKVector2Make(1.0, 1.0);
     processor.frontScaling = 0.5;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Vec4b resultColor;
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(3, 3, 4, 4)).setTo(resultColor);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should blend with correct rotation placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
     processor.frontTranslation = GLKVector2Make(4.0, 4.0);
     processor.frontRotation = M_PI_4;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Vec4b resultColor;
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     LTPlusSignAt(expected, cv::Point(3, 3), resultColor);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should blend complex front with correct translation, scaling and rotation", ^{
@@ -114,11 +114,11 @@ context(@"front placement", ^{
     processor.frontTranslation = GLKVector2Make(4, 4);
     processor.frontScaling = 1.5;
     processor.frontRotation = M_PI_4;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementRect.png");
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should blend complex front to complex back with correct translation", ^{
@@ -132,11 +132,11 @@ context(@"front placement", ^{
     [back load:backImage];
 
     processor.frontTranslation = GLKVector2Make(4, 4);
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementComplex.png");
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 });
 
@@ -156,7 +156,7 @@ context(@"tiling", ^{
 
     processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
     processor.outputFillMode = LTMixerOutputFillModeTile;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(32, 32);
     [back mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
@@ -166,7 +166,7 @@ context(@"tiling", ^{
       mapped.copyTo(expected(cv::Rect(16, 16, 16, 16)));
     }];
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should blend tiled back image with translation, scaling and rotation", ^{
@@ -187,55 +187,55 @@ context(@"tiling", ^{
     processor.frontTranslation = GLKVector2Make(6, 6);
     processor.frontRotation = M_PI_2;
     processor.frontScaling = 2.0;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerTilingComplex.png");
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 });
 
 context(@"blending", ^{
   it(@"should mix with normal blending mode", ^{
     processor.blendMode = LTBlendModeNormal;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Vec4b resultColor;
     cv::addWeighted(frontColor, 0.5, backColor, 0.5, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(resultColor);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should mix with darken blending mode", ^{
     processor.blendMode = LTBlendModeDarken;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 143, 255));
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should mix with multiply blending mode", ^{
     processor.blendMode = LTBlendModeMultiply;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(80, 48, 143, 255));
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should mix with hard-light blending mode", ^{
     processor.blendMode = LTBlendModeHardLight;
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 159, 255));
     
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 });
 

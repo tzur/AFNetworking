@@ -53,16 +53,16 @@
                fromRotatedRect:self.inputRect];
 }
 
-- (id<LTImageProcessorOutput>)process {
+- (void)process {
   switch (self.texturingMode) {
     case LTRectCopyTexturingModeStretch:
-      return [super process];
+      [super process];
     case LTRectCopyTexturingModeTile:
       return [self processTileTexturingMode];
   }
 }
 
-- (id<LTImageProcessorOutput>)processTileTexturingMode {
+- (void)processTileTexturingMode {
   CGSize scalingFactor = self.outputRect.rect.size / self.inputRect.rect.size;
   self[[LTRectCopyFsh scaling]] = $(GLKVector2Make(scalingFactor.width, scalingFactor.height));
 
@@ -84,7 +84,7 @@
                                    self.inputRect.rect.size.height / self.inputSize.height);
   self[[LTRectCopyFsh size]] = $(size);
 
-  return [super process];
+  [super process];
 }
 
 - (GLKVector2)directionVectorFromFirstPoint:(CGPoint)first secondPoint:(CGPoint)second {

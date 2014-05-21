@@ -85,20 +85,20 @@ context(@"processing", ^{
   it(@"should produce correct output", ^{
     processor[@"value"] = @0.5;
 
-    LTSingleTextureOutput *processed = [processor process];
+    [processor process];
 
     cv::Scalar expected(144, 128, 128, 255);
-    expect(LTFuzzyCompareMatWithValue(expected, [processed.texture image])).to.beTruthy();
+    expect(LTFuzzyCompareMatWithValue(expected, [output image])).to.beTruthy();
   });
 
   it(@"should produce correct output twice", ^{
     processor[@"value"] = @0.5;
 
     [processor process];
-    LTSingleTextureOutput *processed = [processor process];
+    [processor process];
 
     cv::Scalar expected(144, 128, 128, 255);
-    expect(LTFuzzyCompareMatWithValue(expected, [processed.texture image])).to.beTruthy();
+    expect(LTFuzzyCompareMatWithValue(expected, [output image])).to.beTruthy();
   });
 });
 

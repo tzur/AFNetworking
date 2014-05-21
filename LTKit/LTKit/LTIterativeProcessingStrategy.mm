@@ -101,18 +101,6 @@
   ++self.currentIteration;
 }
 
-- (id<LTImageProcessorOutput>)processedOutputs {
-  if (!self.nextOutputIndex) {
-    return nil;
-  }
-
-  NSMutableArray *textures = [NSMutableArray array];
-  for (NSUInteger i = 0; i < self.nextOutputIndex; ++i) {
-    [textures addObject:self.outputs[i]];
-  }
-  return [[LTMultipleTextureOutput alloc] initWithTextures:[textures copy]];
-}
-
 #pragma mark -
 #pragma mark LTProcessingStrategy utilities
 #pragma mark -

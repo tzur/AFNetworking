@@ -101,14 +101,14 @@ context(@"processing", ^{
   });
 
   it(@"should clone constant to constant", ^{
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
     cv::Rect roi(processor.targetRect.rect.origin.x,
                  processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should consider source rect when cloning", ^{
@@ -122,14 +122,14 @@ context(@"processing", ^{
     source.magFilterInterpolation = LTTextureInterpolationNearest;
 
     processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
     cv::Rect roi(processor.targetRect.rect.origin.x,
                  processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 
   it(@"should consider mask when cloning", ^{
@@ -148,14 +148,14 @@ context(@"processing", ^{
     mask.magFilterInterpolation = LTTextureInterpolationNearest;
 
     [processor maskUpdated];
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
     cv::Rect roi(processor.targetRect.rect.origin.x,
                  processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
-    expect($([result.texture image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMat($(expected));
   });
 });
 

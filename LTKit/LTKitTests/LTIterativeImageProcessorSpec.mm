@@ -210,11 +210,10 @@ context(@"processing", ^{
         processor.iterationsPerOutput = iterations;
         processor[@"value"] = @(0.25);
 
-        LTMultipleTextureOutput *output = [processor process];
-        LTTexture *result = [output.textures firstObject];
+        [processor process];
         cv::Scalar scalar(value, value, value, 255);
 
-        expect(LTCompareMatWithValue(scalar, [result image])).to.beTruthy();
+        expect($(output.image)).to.beCloseToScalar($(scalar));
       });
     });
 
@@ -241,12 +240,18 @@ context(@"processing", ^{
   });
 
   context(@"multiple outputs", ^{
+    __block LTTexture *anotherOutput;
+
     beforeEach(^{
-      LTTexture *anotherOutput = [LTTexture textureWithPropertiesOf:input];
+      anotherOutput = [LTTexture textureWithPropertiesOf:input];
 
       processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
                                                    auxiliaryTextures:@{@"auxTexture": auxInput}
                                                              outputs:@[output, anotherOutput]];
+    });
+
+    afterEach(^{
+      anotherOutput = nil;
     });
 
     sharedExamplesFor(@"processing output correctly", ^(NSDictionary *data) {
@@ -270,15 +275,13 @@ context(@"processing", ^{
         processor.iterationsPerOutput = iterations;
         processor[@"value"] = @(0.25);
 
-        LTMultipleTextureOutput *output = [processor process];
+        [processor process];
 
-        LTTexture *firstResult = [output.textures firstObject];
         cv::Scalar firstScalar(firstValue, firstValue, firstValue, 255);
-        expect(LTCompareMatWithValue(firstScalar, [firstResult image])).to.beTruthy();
+        expect($(output.image)).to.beCloseToScalar($(firstScalar));
 
-        LTTexture *secondResult = [output.textures lastObject];
         cv::Scalar secondScalar(secondValue, secondValue, secondValue, 255);
-        expect(LTCompareMatWithValue(secondScalar, [secondResult image])).to.beTruthy();
+        expect($(anotherOutput.image)).to.beCloseToScalar($(secondScalar));
       });
     });
 

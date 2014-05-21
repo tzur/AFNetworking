@@ -61,20 +61,6 @@ context(@"LTProcessingStrategy", ^{
 
     expect([strategy hasMoreIterations]).to.beFalsy();
   });
-
-  it(@"should create processed outputs after processing", ^{
-    [strategy processingWillBegin];
-    [strategy iterationStarted];
-    [strategy iterationEnded];
-    id<LTImageProcessorOutput> processorOutput = [strategy processedOutputs];
-
-    expect(processorOutput).to.beKindOf([LTSingleTextureOutput class]);
-    expect(((LTSingleTextureOutput *)processorOutput).texture).to.equal(output);
-  });
-
-  it(@"should create nil processed outputs before processing", ^{
-    expect([strategy processedOutputs]).to.beNil();
-  });
 });
 
 SpecGLEnd
