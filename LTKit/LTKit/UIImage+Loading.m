@@ -74,7 +74,7 @@
 	// Generate scale modifier.
 	NSString *scaleModifier = @"";
 	if (intScale != 1) {
-		scaleModifier = [NSString stringWithFormat:@"@%dx", intScale];
+		scaleModifier = [NSString stringWithFormat:@"@%lux", (unsigned long)intScale];
 	}
 
   // Orientation modifier.
