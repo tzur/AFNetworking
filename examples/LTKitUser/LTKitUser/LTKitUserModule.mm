@@ -12,6 +12,8 @@
   [self bind:[UIDevice currentDevice] toClass:[UIDevice class]];
   [self bind:[LTDevice currentDevice] toClass:[LTDevice class]];
   [self bind:[UIApplication sharedApplication] toClass:[UIApplication class]];
+  [self bind:[NSFileManager defaultManager] toClass:[NSFileManager class]];
+  [self bind:[LTFileManager sharedManager] toClass:[LTFileManager class]];
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "LTGLException.h"
 #import "LTImage.h"
 #import "LTMathUtils.h"
+#import "LTTextureContentsDataArchiver.h"
 
 LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
   switch (CV_MAT_DEPTH(type)) {
@@ -275,6 +276,96 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
 - (void)endWriteToTexture {
   LTAssert(NO, @"-[LTTexture endWriteToTexture] is an abstract method that should be overridden "
            "by subclasses");
+}
+
+#pragma mark -
+#pragma mark NSCoding
+#pragma mark -
+
+static NSString * const kArchiveKey = @"archive";
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+  CGSize size = [aDecoder decodeCGSizeForKey:@keypath(self, size)];
+  LTTexturePrecision precision =
+      (LTTexturePrecision)[[aDecoder decodeObjectOfClass:[NSValue class]
+                                                  forKey:@keypath(self, precision)]
+                           unsignedIntValue];
+  LTTextureFormat format =
+      (LTTextureFormat)[[aDecoder decodeObjectOfClass:[NSValue class]
+                                               forKey:@keypath(self, format)]
+                        unsignedIntValue];
+
+  if (self = [self initWithSize:size precision:precision format:format allocateMemory:NO]) {
+    [self unarchiveWithCoder:aDecoder];
+
+    self.usingAlphaChannel = [aDecoder decodeBoolForKey:@keypath(self, usingAlphaChannel)];
+    self.usingHighPrecisionByte =
+        [aDecoder decodeBoolForKey:@keypath(self, usingHighPrecisionByte)];
+
+    self.minFilterInterpolation =
+        (LTTextureInterpolation)[[aDecoder
+                                  decodeObjectOfClass:[NSValue class]
+                                  forKey:@keypath(self, minFilterInterpolation)]
+                                 unsignedIntValue];
+    self.magFilterInterpolation =
+    (LTTextureInterpolation)[[aDecoder
+                              decodeObjectOfClass:[NSValue class]
+                              forKey:@keypath(self, magFilterInterpolation)]
+                             unsignedIntValue];
+    self.wrap = (LTTextureWrap)[[aDecoder decodeObjectOfClass:[NSValue class]
+                                                       forKey:@keypath(self, wrap)]
+                                unsignedIntValue];
+    self.maxMipmapLevel = [aDecoder decodeIntForKey:@keypath(self, maxMipmapLevel)];
+  }
+  return self;
+}
+
+- (void)unarchiveWithCoder:(NSCoder *)aDecoder {
+  self.contentsArchiver = [aDecoder decodeObjectOfClasses:LTTextureContentsArchivers()
+                                                   forKey:@keypath(self, contentsArchiver)];
+  NSData *archive = [aDecoder decodeObjectOfClass:[NSData class] forKey:kArchiveKey];
+  NSError *error;
+  if (![self.contentsArchiver unarchiveData:archive toTexture:self error:&error]) {
+    [LTGLException raise:kLTTextureCreationFailedException
+                  format:@"Failed unarchiving texture: (description: %@, info: %@)",
+     error.description, error.userInfo];
+  }
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+  [self archiveWithCoder:aCoder];
+
+  [aCoder encodeCGSize:self.size forKey:@keypath(self, size)];
+  [aCoder encodeObject:@(self.precision) forKey:@keypath(self, precision)];
+  [aCoder encodeObject:@(self.format) forKey:@keypath(self, format)];
+
+  [aCoder encodeBool:self.usingAlphaChannel forKey:@keypath(self, usingAlphaChannel)];
+  [aCoder encodeBool:self.usingHighPrecisionByte forKey:@keypath(self, usingHighPrecisionByte)];
+
+  [aCoder encodeObject:@(self.minFilterInterpolation)
+                forKey:@keypath(self, minFilterInterpolation)];
+  [aCoder encodeObject:@(self.magFilterInterpolation)
+                forKey:@keypath(self, magFilterInterpolation)];
+  [aCoder encodeObject:@(self.wrap) forKey:@keypath(self, wrap)];
+  [aCoder encodeInt:self.maxMipmapLevel forKey:@keypath(self, maxMipmapLevel)];
+
+  [aCoder encodeObject:self.contentsArchiver forKey:@keypath(self, contentsArchiver)];
+}
+
+- (void)archiveWithCoder:(NSCoder *)aCoder {
+  NSError *error;
+  NSData *archive = [self.contentsArchiver archiveTexture:self error:&error];
+  if (!archive) {
+    [LTGLException raise:kLTTextureCreationFailedException
+                  format:@"Failed archiving texture: (description: %@, info: %@)",
+     error.description, error.userInfo];
+    __builtin_unreachable();
+  }
+  [aCoder encodeObject:archive forKey:kArchiveKey];
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
 }
 
 #pragma mark -
@@ -554,6 +645,13 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   }];
 
   _maxMipmapLevel = maxMipmapLevel;
+}
+
+- (id<LTTextureContentsArchiver>)contentsArchiver {
+  if (!_contentsArchiver) {
+    _contentsArchiver = [[LTTextureContentsDataArchiver alloc] init];
+  }
+  return _contentsArchiver;
 }
 
 - (int)matType {

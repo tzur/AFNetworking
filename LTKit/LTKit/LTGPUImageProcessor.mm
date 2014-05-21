@@ -51,12 +51,4 @@
   [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
 }
 
-- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
-  [self.drawer setUniform:key withValue:obj];
-}
-
-- (id)objectForKeyedSubscript:(NSString *)key {
-  return [self.drawer uniformForName:key];
-}
-
 @end

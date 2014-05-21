@@ -3,10 +3,11 @@
 
 #import "LTBoundaryExtractor.h"
 
-#import "LTTexture.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBoundaryExtractorFsh.h"
 #import "LTShaderStorage+LTBoundaryExtractorVsh.h"
+#import "LTTexture.h"
 
 @interface LTBoundaryExtractor ()
 

@@ -4,6 +4,7 @@
 #import "LTPatchCompositorProcessor.h"
 
 #import "LTCGExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTNextIterationPlacement.h"
 #import "LTProgram.h"
 #import "LTRectMapping.h"

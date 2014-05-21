@@ -32,8 +32,8 @@ context(@"processing", ^{
   sit(@"should create noise", ^{
     LTMultiscaleNoiseProcessor *noise = [[LTMultiscaleNoiseProcessor alloc]
                                          initWithOutput:output];
-    noise[@"seed"] = @(0.25);
-    noise[@"density"] = @(2.0);
+    noise.seed = 0.25;
+    noise.density = 2.0;
     [noise process];
     // Compare current output of the shader with the result that passed human visual inspection.
     // Important: this test may break upon introducing new architectures, since the test is

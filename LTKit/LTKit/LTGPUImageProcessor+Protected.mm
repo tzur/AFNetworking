@@ -12,6 +12,14 @@
 
 @implementation LTGPUImageProcessor (Protected)
 
+- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
+  [self.drawer setUniform:key withValue:obj];
+}
+
+- (id)objectForKeyedSubscript:(NSString *)key {
+  return [self.drawer uniformForName:key];
+}
+
 - (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
   NSMutableDictionary *auxiliaryTextures = [self.auxiliaryTextures mutableCopy];
   auxiliaryTextures[name] = texture;

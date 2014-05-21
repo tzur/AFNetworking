@@ -3,6 +3,7 @@
 
 #import "LTSeparableImageProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTTexture.h"

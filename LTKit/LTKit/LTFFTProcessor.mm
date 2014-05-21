@@ -53,17 +53,6 @@
 }
 
 #pragma mark -
-#pragma mark Input model
-#pragma mark -
-
-- (void)setObject:(id __unused)obj forKeyedSubscript:(NSString __unused *)key {
-}
-
-- (id)objectForKeyedSubscript:(NSString __unused *)key {
-  return nil;
-}
-
-#pragma mark -
 #pragma mark FFT Setup
 #pragma mark -
 

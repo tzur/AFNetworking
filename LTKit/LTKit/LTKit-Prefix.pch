@@ -11,9 +11,16 @@
   #import "LTGLUtils.h"
   #import "LTLogger.h"
   #import "LTTypedefs.h"
+  #import "NSError+LTKit.h"
   #import "NSValue+GLKitExtensions.h"
 
-  #import <extobjc/extobjc.h>
+  #ifdef __cplusplus
+  extern "C" {
+  #endif
+    #import <extobjc/extobjc.h>
+  #ifdef __cplusplus
+  }
+  #endif
   #import <Objection-iOS/Objection.h>
 #endif
 

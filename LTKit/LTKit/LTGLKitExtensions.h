@@ -68,6 +68,21 @@ GLK_INLINE BOOL operator==(const GLKVector4 &lhs, const GLKVector4 &rhs) {
   return !memcmp(lhs.v, rhs.v, sizeof(lhs.v));
 }
 
+/// Returns whether two matrices are equal.
+GLK_INLINE BOOL operator==(const GLKMatrix2 &lhs, const GLKMatrix2 &rhs) {
+  return !memcmp(lhs.m, rhs.m, sizeof(lhs.m));
+}
+
+/// Returns whether two matrices are equal.
+GLK_INLINE BOOL operator==(const GLKMatrix3 &lhs, const GLKMatrix3 &rhs) {
+  return !memcmp(lhs.m, rhs.m, sizeof(lhs.m));
+}
+
+/// Returns whether two matrices are equal.
+GLK_INLINE BOOL operator==(const GLKMatrix4 &lhs, const GLKMatrix4 &rhs) {
+  return !memcmp(lhs.m, rhs.m, sizeof(lhs.m));
+}
+
 /// Returns whether two vectors are not equal.
 GLK_INLINE BOOL operator!=(const GLKVector2 &lhs, const GLKVector2 &rhs) {
   return !(lhs == rhs);

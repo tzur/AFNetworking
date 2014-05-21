@@ -25,7 +25,7 @@ typedef NS_OPTIONS(NSUInteger, LTFFTNormalization) {
 ///
 /// @note because of implementation details, the inputs and outputs to this processor must have
 /// dimensions which are a power of two.
-@interface LTFFTProcessor : NSObject <LTImageProcessor>
+@interface LTFFTProcessor : LTImageProcessor
 
 /// Initializes with a real input (so the imaginary part is considered all zeroed) and a complex
 /// output struct. \c realInput and \c output must be of the same size and their dimensions must be

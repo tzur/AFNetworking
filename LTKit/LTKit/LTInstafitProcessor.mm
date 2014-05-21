@@ -83,15 +83,4 @@
   self.mixer.frontRotation = _rotation;
 }
 
-#pragma mark -
-#pragma mark Model values
-#pragma mark -
-
-- (void)setObject:(id __unused)obj forKeyedSubscript:(NSString __unused *)key {
-}
-
-- (id)objectForKeyedSubscript:(NSString __unused *)key {
-  return nil;
-}
-
 @end

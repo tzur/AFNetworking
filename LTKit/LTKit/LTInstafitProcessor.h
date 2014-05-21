@@ -5,7 +5,7 @@
 
 /// Processor for the Instafit feature, allowing to place a non-square image on a square output,
 /// with controllable tilable background.
-@interface LTInstafitProcessor : NSObject <LTImageProcessor>
+@interface LTInstafitProcessor : LTImageProcessor
 
 /// Initializes with an input image, mask (that will hide parts of the input image) and an output
 /// texture. The output texture must be a square.

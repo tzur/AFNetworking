@@ -225,18 +225,6 @@
   _linesToDecimate = linesToDecimate;
 }
 
-#pragma mark -
-#pragma mark Model values
-#pragma mark -
-
-- (id)objectForKeyedSubscript:(NSString __unused *)key {
-  LTMethodNotImplemented();
-}
-
-- (void)setObject:(id __unused)obj forKeyedSubscript:(NSString __unused *)key {
-  LTMethodNotImplemented();
-}
-
 @end
 
 @implementation LTRecomposeProcessor (ForTesting)

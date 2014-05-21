@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, LTRecomposeDecimationDimension) {
 /// texture (which is sized as the \c input texture), but draws the result from (0, 0) and keeps
 /// unused area of the output texture untouched. Therefore, additional cropping may be needed post
 /// processing.
-@interface LTRecomposeProcessor : NSObject <LTImageProcessor>
+@interface LTRecomposeProcessor : LTImageProcessor
 
 /// Initializes with an input image, a mask with the same size as \c input and an output texture.
 /// The given mask controls what parts of the image should be kept when decimating the image.

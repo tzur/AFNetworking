@@ -4,11 +4,12 @@
 #import "LTOneShotImageProcessor.h"
 
 #import "LTFbo.h"
-#import "LTGLTexture.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
+#import "LTTexture+Factory.h"
 
 SpecGLBegin(LTOneShotImageProcessor)
 
@@ -20,16 +21,16 @@ __block LTProgram *program;
 static NSString * const kAuxiliaryTextureName = @"auxTexture";
 
 beforeEach(^{
-  input = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                  precision:LTTexturePrecisionByte
-                                     format:LTTextureFormatRGBA
-                             allocateMemory:YES];
+  input = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                           precision:LTTexturePrecisionByte
+                              format:LTTextureFormatRGBA
+                      allocateMemory:YES];
 
   cv::Mat image = cv::Mat4b(1, 1);
   image.setTo(cv::Vec4b(16, 0, 0, 255));
-  auxTexture = [[LTGLTexture alloc] initWithImage:image];
+  auxTexture = [LTTexture textureWithImage:image];
 
-  output = [[LTGLTexture alloc] initWithPropertiesOf:input];
+  output = [LTTexture textureWithPropertiesOf:input];
 
   program = [[LTProgram alloc]
              initWithVertexSource:[PassthroughVsh source]

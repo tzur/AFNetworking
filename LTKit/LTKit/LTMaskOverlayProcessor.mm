@@ -3,6 +3,7 @@
 
 #import "LTMaskOverlayProcessor.h"
 
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTMaskOverlayFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

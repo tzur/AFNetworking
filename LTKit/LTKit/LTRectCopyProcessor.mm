@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTNextIterationPlacement.h"
 #import "LTProgram.h"

@@ -11,7 +11,7 @@
 ///
 /// Since the processing is a heavy operation, it is recommended to set a small working size when a
 /// real-time feedback is required, and enlarge the size to produce a high-quality result.
-@interface LTPatchProcessor : NSObject <LTImageProcessor>
+@interface LTPatchProcessor : LTImageProcessor
 
 /// Initializes with mask, source texture, target texture and an output texture. The target texture
 /// and the output texture must have the same size.
