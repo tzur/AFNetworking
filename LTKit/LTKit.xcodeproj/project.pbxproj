@@ -290,6 +290,7 @@
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EAA21187C5D960004A57A /* Colorize.fsh */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.m */; };
+		8B871F98192396BE00517F2E /* NSError+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.m */; };
 		8B871FAF1923CEF800517F2E /* LTFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* LTFileManager.m */; };
 		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B871FC81924A75E00517F2E /* LTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB4041835320200A11FA4 /* LTDevice.h */; };
@@ -1126,6 +1127,8 @@
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B7EAA21187C5D960004A57A /* Colorize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Colorize.fsh; path = Resources/Colorize.fsh; sourceTree = "<group>"; };
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTLoggerSpec.m; sourceTree = "<group>"; };
+		8B871F96192396BE00517F2E /* NSError+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+LTKit.h"; sourceTree = "<group>"; };
+		8B871F97192396BE00517F2E /* NSError+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+LTKit.m"; sourceTree = "<group>"; };
 		8B871FAD1923CEF800517F2E /* LTFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFileManager.h; sourceTree = "<group>"; };
 		8B871FAE1923CEF800517F2E /* LTFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTFileManager.m; sourceTree = "<group>"; };
 		8B8720D71928951600517F2E /* UIImage+Loading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Loading.h"; sourceTree = "<group>"; };
@@ -1964,6 +1967,8 @@
 				8BF9A53918F684AC00CCA084 /* LTTimer.h */,
 				8BF9A53A18F684AC00CCA084 /* LTTimer.m */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
+				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
+				8B871F97192396BE00517F2E /* NSError+LTKit.m */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
@@ -3140,6 +3145,8 @@
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
 				2839069418C4D9AA00BD21CE /* LTBrush.mm in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
+				8B871F98192396BE00517F2E /* NSError+LTKit.m in Sources */,
+				8B328FE1192B598A0010592E /* LTTextureContentsDataArchiver.mm in Sources */,
 				280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */,
 				8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */,
 				8BABFD5C188BFA6B004163DA /* LTGPUImageProcessor.mm in Sources */,
