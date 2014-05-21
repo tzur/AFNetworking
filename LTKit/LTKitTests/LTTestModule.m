@@ -4,6 +4,7 @@
 #import "LTTestModule.h"
 
 #import "LTDevice.h"
+#import "LTFileManager.h"
 
 @implementation LTTestModule
 
@@ -13,6 +14,8 @@
     self.uiDevice = [OCMockObject partialMockForObject:[UIDevice currentDevice]];
     self.ltDevice = [OCMockObject partialMockForObject:[LTDevice currentDevice]];
     self.uiApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+    self.nsFileManager = [OCMockObject partialMockForObject:[NSFileManager defaultManager]];
+    self.ltFileManager = [OCMockObject partialMockForObject:[LTFileManager sharedManager]];
   }
   return self;
 }
@@ -22,6 +25,8 @@
   [self bind:self.uiDevice toClass:[UIDevice class]];
   [self bind:self.ltDevice toClass:[LTDevice class]];
   [self bind:self.uiApplication toClass:[UIApplication class]];
+  [self bind:self.nsFileManager toClass:[NSFileManager class]];
+  [self bind:self.ltFileManager toClass:[LTFileManager class]];
 }
 
 @end

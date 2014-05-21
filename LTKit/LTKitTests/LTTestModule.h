@@ -38,4 +38,10 @@
 /// \c UIApplication partical mock object.
 @property (strong, nonatomic) id uiApplication;
 
+/// \c NSFileManager partical mock object.
+@property (strong, nonatomic) id nsFileManager;
+
+/// \c LTFileManager partical mock object.
+@property (strong, nonatomic) id ltFileManager;
+
 @end
