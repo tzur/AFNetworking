@@ -3,7 +3,7 @@
 	url = https://github.com/Lightricks/expecta.git
 [submodule "third_party/testing/Specta"]
 	path = third_party/testing/Specta
-	url = https://github.com/specta/specta.git
+	url = https://github.com/Lightricks/specta.git
 [submodule "third_party/utils/libextobjc"]
 	path = third_party/utils/libextobjc
 	url = https://github.com/Lightricks/libextobjc.git
