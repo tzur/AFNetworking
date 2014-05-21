@@ -136,7 +136,6 @@
 		280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2A191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png */; };
 		280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2B191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png */; };
 		280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 280F5A2C191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png */; };
-		280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */; };
 		280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A23191A970400F9F80B /* LTShapeDrawerEllipticShape.fsh */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6921924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png */; };
@@ -533,6 +532,7 @@
 		8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
 		8BB22AA41928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */; };
 		8BB22AA91928D28D00ACE1D5 /* LTTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22AA61928D28D00ACE1D5 /* LTTestModule.m */; };
+		8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 280F5A1D191A8D1E00F9F80B /* LTCommonDrawableShape.vsh */; };
 		8BB22B131929ED0600ACE1D5 /* LTTextureContentsBundleArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB22B121929ED0600ACE1D5 /* LTTextureContentsBundleArchiverSpec.mm */; };
 		8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47135183A438300CA1681 /* LTDrawingContext.mm */; };
 		8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB47140183A470400CA1681 /* LTVertexArray.mm */; };
@@ -3113,8 +3113,7 @@
 				282AC6B01924B9EE006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh in Sources */,
 				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
-				280F5A37191A97B100F9F80B /* LTCommonDrawableShape.vsh in Sources */,
-				280F5A37191A97B100F9F80B /* LTShapeDrawerShape.vsh in Sources */,
+				8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */,
 				031338E3191284100095F99B /* LTImageBorder.fsh in Sources */,
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				8B329022192CBBE90010592E /* LTTextureContentsArchiver.mm in Sources */,
