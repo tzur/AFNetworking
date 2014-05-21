@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTFileManager.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
@@ -13,6 +14,85 @@
 // TODO: (yaron) refactor LTTexture to test the abstract functionality in a different spec. This
 // is probably possible only by refactoring the LTTexture abstract class to the strategy pattern:
 // http://stackoverflow.com/questions/243274/best-practice-with-unit-testing-abstract-classes
+
+@interface LTFakeTextureContentsArchiverModel : NSObject <NSCoding> {
+  cv::Mat _mat;
+}
+
+- (instancetype)initWithMat:(const cv::Mat &)mat;
+
+@property (readonly, nonatomic) const cv::Mat &mat;
+@property (strong, nonatomic) NSData *data;
+@property (nonatomic) CGSize size;
+@property (nonatomic) int type;
+
+@end
+
+@implementation LTFakeTextureContentsArchiverModel
+
+- (instancetype)initWithMat:(const cv::Mat &)mat {
+  if (self = [super init]) {
+    _mat = mat;
+    self.data = [NSData dataWithBytesNoCopy:mat.data length:mat.total() * mat.elemSize()
+                               freeWhenDone:NO];
+    self.type = mat.type();
+    self.size = CGSizeMake(mat.cols, mat.rows);
+  }
+  return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+  NSData *data = [aDecoder decodeObjectForKey:@"data"];
+  CGSize size = [aDecoder decodeCGSizeForKey:@"size"];
+  int type = [aDecoder decodeIntForKey:@"type"];
+
+  cv::Mat mat(size.height, size.width, type);
+  memcpy(mat.data, data.bytes, data.length);
+
+  return [self initWithMat:mat];
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+  NSData *data = [NSData dataWithBytesNoCopy:_mat.data length:_mat.total() * _mat.elemSize()
+                                freeWhenDone:NO];
+  [aCoder encodeObject:data forKey:@"data"];
+  [aCoder encodeCGSize:CGSizeMake(_mat.cols, _mat.rows) forKey:@"size"];
+  [aCoder encodeInt:_mat.type() forKey:@"type"];
+}
+
+@end
+
+@interface LTFakeTextureContentsArchiver : NSObject <LTTextureContentsArchiver>
+@end
+
+@implementation LTFakeTextureContentsArchiver
+
+- (id)initWithCoder:(NSCoder __unused *)aDecoder {
+  return [self init];
+}
+
+- (void)encodeWithCoder:(NSCoder __unused *)aCoder {
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+- (NSData *)archiveTexture:(LTTexture *)texture error:(NSError *__autoreleasing __unused *)error {
+  cv::Mat image = [texture image];
+  LTFakeTextureContentsArchiverModel *model = [[LTFakeTextureContentsArchiverModel alloc]
+                                               initWithMat:image];
+  return [NSKeyedArchiver archivedDataWithRootObject:model];
+}
+
+- (BOOL)unarchiveData:(NSData *)data toTexture:(LTTexture *)texture
+                error:(NSError *__autoreleasing __unused *)error {
+  LTFakeTextureContentsArchiverModel *model = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  [texture load:model.mat];
+  return YES;
+}
+
+@end
 
 SpecGLBegin(LTTexture)
 
@@ -142,6 +222,42 @@ context(@"binding and execution", ^{
       return @{kLTTextureDefaultValuesExamplesTexture:
                  [NSValue valueWithNonretainedObject:texture]};
     });
+  });
+});
+
+context(@"coding and decoding", ^{
+  it(@"should code and decode correctly", ^{
+    LTGLTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 5)
+                                                   precision:LTTexturePrecisionByte
+                                                      format:LTTextureFormatRGBA
+                                              allocateMemory:YES];
+    texture.contentsArchiver = [[LTFakeTextureContentsArchiver alloc] init];
+
+    texture.minFilterInterpolation = LTTextureInterpolationNearest;
+    texture.usingAlphaChannel = YES;
+    texture.usingHighPrecisionByte = YES;
+
+    cv::Mat1b image(texture.size.height, texture.size.width);
+    for (int y = 0; y < image.rows; ++y) {
+      for (int x = 0; x < image.cols; ++x) {
+        image(y, x) = x + y;
+      }
+    }
+
+    NSData *encoded = [NSKeyedArchiver archivedDataWithRootObject:texture];
+    LTTexture *decoded = [NSKeyedUnarchiver unarchiveObjectWithData:encoded];
+
+    expect(decoded.size).to.equal(texture.size);
+    expect(decoded.precision).to.equal(texture.precision);
+    expect(decoded.channels).to.equal(texture.channels);
+    expect(decoded.format).to.equal(texture.format);
+    expect(decoded.usingAlphaChannel).to.equal(texture.usingAlphaChannel);
+    expect(decoded.usingHighPrecisionByte).to.equal(texture.usingHighPrecisionByte);
+    expect(decoded.minFilterInterpolation).to.equal(texture.minFilterInterpolation);
+    expect(decoded.magFilterInterpolation).to.equal(texture.magFilterInterpolation);
+    expect(decoded.wrap).to.equal(texture.wrap);
+    expect(decoded.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
+    expect($([decoded image])).to.equalMat($([texture image]));
   });
 });
 
