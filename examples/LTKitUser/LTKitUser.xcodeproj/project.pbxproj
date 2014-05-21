@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884B9188D992000AD338E /* Main-iPad.storyboard */; };
 		289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884BA188D992000AD338E /* Main-iPhone.storyboard */; };
+		8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B329054192CCB640010592E /* libextobjc_iOS.a */; };
 		8B8E512E1868479100821829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512D1868479100821829 /* Foundation.framework */; };
 		8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512F1868479100821829 /* CoreGraphics.framework */; };
 		8B8E51321868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
@@ -64,6 +65,7 @@
 /* Begin PBXFileReference section */
 		289884B9188D992000AD338E /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		289884BA188D992000AD338E /* Main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPhone.storyboard"; sourceTree = "<group>"; };
+		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B8E512A1868479100821829 /* LTKitUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTKitUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -96,12 +98,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */,
+				8B8E517518685A7300821829 /* libLTKit.a in Frameworks */,
 				8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */,
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
 				8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */,
 				8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */,
-				8B8E517518685A7300821829 /* libLTKit.a in Frameworks */,
 				8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */,
 				8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */,
 				8B8E51701868592400821829 /* GLKit.framework in Frameworks */,
@@ -135,6 +138,7 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B329054192CCB640010592E /* libextobjc_iOS.a */,
 				8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */,
 				8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */,
 				8B8E51881868607500821829 /* CoreMedia.framework */,
