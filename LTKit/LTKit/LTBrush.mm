@@ -148,7 +148,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (NSArray *)sourceRectsWithCount:(NSUInteger)count {
-  NSMutableArray *sourceRects = [NSMutableArray array];
+  NSMutableArray *sourceRects = [NSMutableArray arrayWithCapacity:count];
   for (NSUInteger i = 0; i < count; ++i) {
     [sourceRects addObject:[LTRotatedRect rect:CGRectFromSize(self.texture.size)]];
   }

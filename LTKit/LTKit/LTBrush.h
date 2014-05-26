@@ -32,13 +32,13 @@
 
 /// Draws the given stroke segment in the given framebuffer.
 ///
-/// @param previousPoint The last point that was previously drawn on the segment, used for accurate
+/// @param previousPoint the last point that was previously drawn on the segment, used for accurate
 /// spacing calculation, as the next point should be spaced from the last drawn point and not from
-/// the start of the segment. In case this argument is nil, the first point will be drawn on the
+/// the start of the segment. in case this argument is nil, the first point will be drawn on the
 /// beginning of the segment.
-/// @param lastDrawnPoint Will store the last point that is actually drawn on the segment by this
-/// method. In case
-/// @return Array of the \c LTRotatedRects that were used for drawing the segment (after applying
+/// @param lastDrawnPoint will store the last point that is actually drawn on the segment by this
+/// method.
+/// @return array of the \c LTRotatedRects that were used for drawing the segment (after applying
 /// the current brush effects).
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment
              fromPreviousPoint:(LTPainterPoint *)previousPoint
