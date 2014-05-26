@@ -111,78 +111,122 @@ sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
       brush = nil;
     });
 
-    it(@"should not apply effects when drawing a point", ^{
-      brush.scatterEffect = [[LTBrushScatterEffect alloc] init];
-      brush.shapeDynamicsEffect = [[LTBrushShapeDynamicsEffect alloc] init];
-      brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];
-      
-      [brush drawPoint:point inFramebuffer:fbo];
-      CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-      expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
-      expect($(output.image)).to.equalMat($(expected));
-    });
-    
-    it(@"should apply scatter effect when drawing a segment", ^{
-      brush.scatterEffect = [[LTBrushScatterEffect alloc] init];
-      brush.scatterEffect.count = 10;
-      brush.scatterEffect.scatter = 0;
-      brush.scatterEffect.countJitter = 0;
-      brush.flow = 0.5;
-      
-      [brush startNewStrokeAtPoint:point];
-      [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
-          saveLastDrawnPointTo:nil];
-      CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-      expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
-      expect($(output.image)).to.beCloseToMat($(expected));
-    });
-    
-    it(@"should apply shapeDynamics effect when drawing a segment", ^{
-      brush.shapeDynamicsEffect = [[LTBrushShapeDynamicsEffect alloc] init];
-      brush.shapeDynamicsEffect.sizeJitter = 0;
-      brush.shapeDynamicsEffect.angleJitter = 0;
-      brush.shapeDynamicsEffect.roundnessJitter = 1;
-      brush.shapeDynamicsEffect.minimumRoundness = 0;
+    context(@"scatter effect", ^{
+      beforeEach(^{
+        brush.scatterEffect = [[LTBrushScatterEffect alloc] init];
+        brush.scatterEffect.count = 10;
+        brush.scatterEffect.scatter = 0;
+        brush.scatterEffect.countJitter = 0;
+        brush.flow = 0.5;
 
-      // This is performed multiple times since the random jitter might be small enough to leave the
-      // target rectangle at the same number pixels. The chances of this happening more 100 times
-      // are < 1/2^100.
+        CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
+        expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+      });
+      
+      it(@"should apply when drawing a point", ^{
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should apply when drawing a segment", ^{
+        [brush startNewStrokeAtPoint:point];
+        [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
+            saveLastDrawnPointTo:nil];
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+    });
+    
+    context(@"shapeDynamics effect", ^{
       const GLKVector4 kBlack = GLKVector4Make(0, 0, 0, 1);
       const CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
-      NSUInteger numBlack = 0;
-      for (NSUInteger i = 0; i < 100; ++i) {
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-        [brush startNewStrokeAtPoint:point];
-        [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
-            saveLastDrawnPointTo:nil];
-        
-        GLKVector4 color = [output pixelValue:targetRect.origin];
-        if (color == kBlack) {
-          numBlack++;
+
+      beforeEach(^{
+        brush.shapeDynamicsEffect = [[LTBrushShapeDynamicsEffect alloc] init];
+        brush.shapeDynamicsEffect.sizeJitter = 0;
+        brush.shapeDynamicsEffect.angleJitter = 0;
+        brush.shapeDynamicsEffect.roundnessJitter = 1;
+        brush.shapeDynamicsEffect.minimumRoundness = 0;
+      });
+      
+      it(@"should apply when drawing a point", ^{
+        // This is performed multiple times since the random jitter might be small enough to leave
+        // the target rectangle at the same number pixels. The chances of this happening more 100
+        // times are < 1/2^100.
+        NSUInteger numBlack = 0;
+        for (NSUInteger i = 0; i < 100; ++i) {
+          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [brush startNewStrokeAtPoint:point];
+          [brush drawPoint:point inFramebuffer:fbo];
+          
+          GLKVector4 color = [output pixelValue:targetRect.origin];
+          if (color == kBlack) {
+            numBlack++;
+          }
         }
-      }
-      expect(numBlack).to.beGreaterThan(0);
+        expect(numBlack).to.beGreaterThan(0);
+      });
+      
+      it(@"should apply when drawing a segment", ^{
+        // This is performed multiple times since the random jitter might be small enough to leave
+        // the target rectangle at the same number pixels. The chances of this happening more 100
+        // times are < 1/2^100.
+        NSUInteger numBlack = 0;
+        for (NSUInteger i = 0; i < 100; ++i) {
+          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [brush startNewStrokeAtPoint:point];
+          [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
+              saveLastDrawnPointTo:nil];
+          
+          GLKVector4 color = [output pixelValue:targetRect.origin];
+          if (color == kBlack) {
+            numBlack++;
+          }
+        }
+        expect(numBlack).to.beGreaterThan(0);
+      });
     });
     
-    it(@"should apply colorDynamics effect when drawing a segment", ^{
-      brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];
-      brush.colorDynamicsEffect.brightnessJitter = 1;
+    context(@"colorDynamics effect", ^{
+      beforeEach(^{
+        brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];
+        brush.colorDynamicsEffect.brightnessJitter = 1;
+      });
       
-      // This is performed multiple times, since the jitter might increase the brightness (which is
-      // already at the maximum value). This will fail if this happens 100 times (1/2^100 chance).
-      __block CGFloat minBrightness = 1;
-      for (NSUInteger i = 0; i < 100; ++i) {
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-        [brush startNewStrokeAtPoint:point];
-        [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
-            saveLastDrawnPointTo:nil];
-        
-        __block UIColor *color = [UIColor colorWithGLKVector:[output pixelValue:kOutputCenter]];
-        __block CGFloat brightness;
-        expect([color getHue:nil saturation:nil brightness:&brightness alpha:nil]).to.beTruthy();
-        minBrightness = MIN(minBrightness, brightness);
-      }
-      expect(minBrightness).notTo.beCloseToWithin(1, 1e-2);
+      it(@"should apply when drawing a point", ^{
+        // This is performed multiple times, since the jitter might increase the brightness (which
+        // is already at the maximum value). This will fail if this happens 100 times (1/2^100).
+        __block CGFloat minBrightness = 1;
+        for (NSUInteger i = 0; i < 100; ++i) {
+          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [brush startNewStrokeAtPoint:point];
+          [brush drawPoint:point inFramebuffer:fbo];
+          
+          __block UIColor *color = [UIColor colorWithGLKVector:[output pixelValue:kOutputCenter]];
+          __block CGFloat brightness;
+          expect([color getHue:nil saturation:nil brightness:&brightness alpha:nil]).to.beTruthy();
+          minBrightness = MIN(minBrightness, brightness);
+        }
+        expect(minBrightness).notTo.beCloseToWithin(1, 1e-2);
+      });
+
+      it(@"should apply when drawing a segment", ^{
+        // This is performed multiple times, since the jitter might increase the brightness (which
+        // is already at the maximum value). This will fail if this happens 100 times (1/2^100).
+        __block CGFloat minBrightness = 1;
+        for (NSUInteger i = 0; i < 100; ++i) {
+          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [brush startNewStrokeAtPoint:point];
+          [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
+              saveLastDrawnPointTo:nil];
+          
+          __block UIColor *color = [UIColor colorWithGLKVector:[output pixelValue:kOutputCenter]];
+          __block CGFloat brightness;
+          expect([color getHue:nil saturation:nil brightness:&brightness alpha:nil]).to.beTruthy();
+          minBrightness = MIN(minBrightness, brightness);
+        }
+        expect(minBrightness).notTo.beCloseToWithin(1, 1e-2);
+      });
     });
   });
 });

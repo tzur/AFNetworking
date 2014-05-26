@@ -86,6 +86,7 @@
 #import <LTKit/LTErasingBrush.h>
 #import <LTKit/LTMultiTextureBrush.h>
 #import <LTKit/LTRoundBrush.h>
+#import <LTKit/LTSingleTextureBrush.h>
 #import <LTKit/LTTextureBrush.h>
 
 // GPU/Painting/Brush Effects.
