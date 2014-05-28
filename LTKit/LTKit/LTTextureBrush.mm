@@ -5,9 +5,8 @@
 
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
-#import "LTShaderStorage+LTTextureBrushShaderFsh.h"
-#import "LTShaderStorage+LTTextureBrushPremultipliedShaderFsh.h"
+#import "LTShaderStorage+LTBrushVsh.h"
+#import "LTShaderStorage+LTTextureBrushFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
@@ -20,20 +19,6 @@
 /// Texture holding the brush. Cannot be set to \c nil, and default value is a 1x1 rgba texture with
 /// maximal intensity in all channels.
 @property (strong, nonatomic) LTTexture *texture;
-
-/// Program used when the \c premultipliedAlpha property is set to \c NO. This shader blends under
-/// the assumption that both the input texture and output canvas are not premultiplied.
-@property (strong, nonatomic) LTProgram *normalProgram;
-
-/// Program used when the \c premultipliedAlpha property is set to \c YES. This shader blends under
-/// the assumption that both the input texture and output canvas are premultiplied.
-@property (strong, nonatomic) LTProgram *premultipliedProgram;
-
-/// Drawer used when the \c premultipliedAlpha property is set to \c NO.
-@property (strong, nonatomic) LTRectDrawer *normalDrawer;
-
-/// Drawer used when the \c premultipliedAlpha property is set to \c NO.
-@property (strong, nonatomic) LTRectDrawer *premultipliedDrawer;
 
 @end
 
@@ -48,23 +33,15 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (LTProgram *)createProgram {
-  return self.premultipliedAlpha ? self.premultipliedProgram : self.normalProgram;
-}
-
-- (LTRectDrawer *)createDrawer {
-  return self.premultipliedAlpha ? self.premultipliedDrawer : self.normalDrawer;
+  return [[LTProgram alloc] initWithVertexSource:[LTBrushVsh source]
+                                  fragmentSource:[LTTextureBrushFsh source]];
 }
 
 - (void)updateProgramForCurrentProperties {
-  if (self.premultipliedAlpha) {
-    self.premultipliedProgram[[LTTextureBrushPremultipliedShaderFsh flow]] = @(self.flow);
-    self.premultipliedProgram[[LTTextureBrushPremultipliedShaderFsh opacity]] = @(self.opacity);
-    self.premultipliedProgram[[LTTextureBrushPremultipliedShaderFsh intensity]] = $(self.intensity);
-  } else {
-    self.normalProgram[[LTTextureBrushShaderFsh flow]] = @(self.flow);
-    self.normalProgram[[LTTextureBrushShaderFsh opacity]] = @(self.opacity);
-    self.normalProgram[[LTTextureBrushShaderFsh intensity]] = $(self.intensity);
-  }
+  self.program[[LTTextureBrushFsh premultiplied]] = @(self.premultipliedAlpha);
+  self.program[[LTTextureBrushFsh flow]] = @(self.flow);
+  self.program[[LTTextureBrushFsh opacity]] = @(self.opacity);
+  self.program[[LTTextureBrushFsh intensity]] = $(self.intensity);
 }
 
 #pragma mark -
@@ -78,8 +55,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 - (void)setTexture:(LTTexture *)texture {
   LTParameterAssert(texture.format == LTTextureFormatRGBA);
   _texture = texture;
-  [self.normalDrawer setSourceTexture:texture];
-  [self.premultipliedDrawer setSourceTexture:texture];
+  [self.drawer setSourceTexture:texture];
 }
 
 - (void)setPremultipliedAlpha:(BOOL)premultipliedAlpha {
@@ -88,42 +64,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   }
   
   _premultipliedAlpha = premultipliedAlpha;
-  self.program = self.premultipliedAlpha ? self.premultipliedProgram : self.normalProgram;
-  self.drawer = self.premultipliedAlpha ? self.premultipliedDrawer : self.normalDrawer;
   [self updateProgramForCurrentProperties];
-}
-
-- (LTProgram *)normalProgram {
-  if (!_normalProgram) {
-    _normalProgram = [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                              fragmentSource:[LTTextureBrushShaderFsh source]];
-  }
-  return _normalProgram;
-}
-
-- (LTProgram *)premultipliedProgram {
-  if (!_premultipliedProgram) {
-    _premultipliedProgram =
-        [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                 fragmentSource:[LTTextureBrushPremultipliedShaderFsh source]];
-  }
-  return _premultipliedProgram;
-}
-
-- (LTRectDrawer *)normalDrawer {
-  if (!_normalDrawer) {
-    _normalDrawer = [[LTRectDrawer alloc] initWithProgram:self.normalProgram
-                                            sourceTexture:self.texture];
-  }
-  return _normalDrawer;
-}
-
-- (LTRectDrawer *)premultipliedDrawer {
-  if (!_premultipliedDrawer) {
-    _premultipliedDrawer = [[LTRectDrawer alloc] initWithProgram:self.premultipliedProgram
-                                                   sourceTexture:self.texture];
-  }
-  return _premultipliedDrawer;
 }
 
 - (NSArray *)adjustableProperties {

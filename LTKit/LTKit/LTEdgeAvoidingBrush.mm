@@ -10,8 +10,8 @@
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTEdgeAvoidingBrushShaderFsh.h"
-#import "LTShaderStorage+LTEdgeAvoidingBrushShaderVsh.h"
+#import "LTShaderStorage+LTEdgeAvoidingBrushFsh.h"
+#import "LTShaderStorage+LTEdgeAvoidingBrushVsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
@@ -55,18 +55,16 @@ static const CGFloat kSizeToSamplingFactor = 50;
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTEdgeAvoidingBrushShaderVsh source]
-                                  fragmentSource:[LTEdgeAvoidingBrushShaderFsh source]];
+  return [[LTProgram alloc] initWithVertexSource:[LTEdgeAvoidingBrushVsh source]
+                                  fragmentSource:[LTEdgeAvoidingBrushFsh source]];
 }
 
 - (LTRectDrawer *)createDrawer {
   LTAssert(self.texture);
   LTAssert(self.program);
   LTAssert(self.inputTexture);
-  return [[LTRectDrawer alloc]
-              initWithProgram:self.program
-                sourceTexture:self.texture
-            auxiliaryTextures:@{[LTEdgeAvoidingBrushShaderFsh inputImage]: self.inputTexture}];
+  return [[LTRectDrawer alloc] initWithProgram:self.program sourceTexture:self.texture
+              auxiliaryTextures:@{[LTEdgeAvoidingBrushFsh inputImage]: self.inputTexture}];
 }
 
 #pragma mark -
@@ -98,18 +96,18 @@ static const CGFloat kSizeToSamplingFactor = 50;
   CGPoint sample3 = (CGRectCenter(rect) + CGSizeMake(offset.width, -offset.height)) / size;
   CGPoint sample4 = (CGRectCenter(rect) + CGSizeMake(offset.width, offset.height)) / size;
   
-  self.program[[LTEdgeAvoidingBrushShaderFsh samplePoint0]] = $(GLKVector2FromCGPoint(sample0));
-  self.program[[LTEdgeAvoidingBrushShaderFsh samplePoint1]] = $(GLKVector2FromCGPoint(sample1));
-  self.program[[LTEdgeAvoidingBrushShaderFsh samplePoint2]] = $(GLKVector2FromCGPoint(sample2));
-  self.program[[LTEdgeAvoidingBrushShaderFsh samplePoint3]] = $(GLKVector2FromCGPoint(sample3));
-  self.program[[LTEdgeAvoidingBrushShaderFsh samplePoint4]] = $(GLKVector2FromCGPoint(sample4));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint0]] = $(GLKVector2FromCGPoint(sample0));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint1]] = $(GLKVector2FromCGPoint(sample1));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint2]] = $(GLKVector2FromCGPoint(sample2));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint3]] = $(GLKVector2FromCGPoint(sample3));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint4]] = $(GLKVector2FromCGPoint(sample4));
 }
 
 - (void)updateProgramForCurrentProperties {
-  self.program[[LTEdgeAvoidingBrushShaderFsh flow]] = @(self.flow);
-  self.program[[LTEdgeAvoidingBrushShaderFsh sigma]] = @([self mappedSigma:self.sigma]);
-  self.program[[LTEdgeAvoidingBrushShaderFsh opacity]] = @(self.opacity);
-  self.program[[LTEdgeAvoidingBrushShaderFsh intensity]] = $(self.intensity);
+  self.program[[LTEdgeAvoidingBrushFsh flow]] = @(self.flow);
+  self.program[[LTEdgeAvoidingBrushFsh sigma]] = @([self mappedSigma:self.sigma]);
+  self.program[[LTEdgeAvoidingBrushFsh opacity]] = @(self.opacity);
+  self.program[[LTEdgeAvoidingBrushFsh intensity]] = $(self.intensity);
 }
 
 
@@ -152,8 +150,7 @@ LTPropertyUpdatingProgram(CGFloat, sigma, Sigma, 0.01, 1, 0.5);
 
 - (void)setInputTexture:(LTTexture *)inputTexture {
   _inputTexture = inputTexture;
-  [self.drawer setAuxiliaryTexture:self.inputTexture
-                          withName:[LTEdgeAvoidingBrushShaderFsh inputImage]];
+  [self.drawer setAuxiliaryTexture:self.inputTexture withName:[LTEdgeAvoidingBrushFsh inputImage]];
   [self updateProgramForCurrentProperties];
 }
 

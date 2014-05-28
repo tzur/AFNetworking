@@ -15,8 +15,8 @@
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect+UIColor.h"
-#import "LTShaderStorage+LTBrushShaderFsh.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
+#import "LTShaderStorage+LTBrushFsh.h"
+#import "LTShaderStorage+LTBrushVsh.h"
 #import "LTTexture+Factory.h"
 #import "UIColor+Vector.h"
 
@@ -70,8 +70,8 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                  fragmentSource:[LTBrushShaderFsh source]];
+  return [[LTProgram alloc] initWithVertexSource:[LTBrushVsh source]
+                                  fragmentSource:[LTBrushFsh source]];
 }
 
 - (LTRectDrawer *)createDrawer {
@@ -139,8 +139,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   LTParameterAssert(targetRects.count == sourceRects.count);
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
-      self.program[[LTBrushShaderFsh intensity]] =
-          $([(LTRotatedRect *)targetRects[i] color].glkVector);
+      self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].glkVector);
       [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];
     }
@@ -208,9 +207,9 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (void)updateProgramForCurrentProperties {
-  self.program[[LTBrushShaderFsh flow]] = @(self.flow);
-  self.program[[LTBrushShaderFsh opacity]] = @(self.opacity);
-  self.program[[LTBrushShaderFsh intensity]] = $(self.intensity);
+  self.program[[LTBrushFsh flow]] = @(self.flow);
+  self.program[[LTBrushFsh opacity]] = @(self.opacity);
+  self.program[[LTBrushFsh intensity]] = $(self.intensity);
 }
 
 #pragma mark -

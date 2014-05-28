@@ -177,4 +177,38 @@ context(@"load image", ^{
   });
 });
 
+context(@"generate mat", ^{
+  it(@"should generate a square gaussian mat", ^{
+    const CGSize kTargetSize = CGSizeMake(256, 256);
+    cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3);
+    expect(mat.rows).to.equal(kTargetSize.height);
+    expect(mat.cols).to.equal(kTargetSize.width);
+    expect(mat.type()).to.equal(CV_16U);
+
+    cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
+    cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
+    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+    
+    cv::Mat expected = LTLoadMat([self class], @"GaussianSquare.png");
+    expect($(convertedRGB)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should generate anisotropic gaussian mat", ^{
+    const CGSize kTargetSize = CGSizeMake(512, 256);
+    cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3);
+    expect(mat.rows).to.equal(kTargetSize.height);
+    expect(mat.cols).to.equal(kTargetSize.width);
+    expect(mat.type()).to.equal(CV_16U);
+    
+    cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
+    cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
+    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+    
+    cv::Mat expected = LTLoadMat([self class], @"GaussianAnisotropic.png");
+    expect($(convertedRGB)).to.beCloseToMat($(expected));
+  });
+});
+
 SpecEnd
