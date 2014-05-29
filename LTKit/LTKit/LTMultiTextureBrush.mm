@@ -8,16 +8,12 @@
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect+UIColor.h"
-#import "LTShaderStorage+LTTextureBrushShaderFsh.h"
-#import "LTShaderStorage+LTTextureBrushPremultipliedShaderFsh.h"
+#import "LTShaderStorage+LTBrushFsh.h"
 #import "UIColor+Vector.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTProgram *program;
 @property (strong, nonatomic) LTRectDrawer *drawer;
-@end
-
-@interface LTTextureBrush ()
 @property (strong, nonatomic) LTTexture *texture;
 @end
 
@@ -49,7 +45,7 @@
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       LTRotatedRect *targetRect = targetRects[i];
       if (targetRect.color) {
-        self.program[self.intensityForCurrentShader] = $(targetRect.color.glkVector);
+        self.program[[LTBrushFsh intensity]] = $(targetRect.color.glkVector);
       }
       
       NSUInteger textureIdx = arc4random_uniform((uint)self.textures.count) %  self.textures.count;
@@ -63,11 +59,6 @@
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
-
-- (NSString *)intensityForCurrentShader {
-  return self.premultipliedAlpha ?
-      [LTTextureBrushPremultipliedShaderFsh intensity] : [LTTextureBrushShaderFsh intensity];
-}
 
 - (void)setTextures:(NSArray *)textures {
   LTParameterAssert(textures.count);

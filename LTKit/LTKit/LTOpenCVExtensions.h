@@ -47,6 +47,10 @@ cv::Mat LTLoadMatFromMainBundle(NSString *name);
 /// the image cannot be found or loaded.
 cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name);
 
+/// Generates a single-channel half-float matrix with the given size, containing a gaussian with
+/// the given sigma.
+cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -

@@ -150,3 +150,21 @@ NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name) {
 
   return path;
 }
+
+cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma) {
+  using half_float::half;
+  cv::Mat1hf mat(size.height, size.width);
+  mat = half(0.0);
+  CGSize radius = CGSizeMake(mat.cols / 2 - 1, mat.rows / 2 - 1);
+  double inv2SigmaSquare = 1.0 / (2.0 * sigma * sigma);
+  for (int i = 0; i < 2 * radius.height; ++i) {
+    for (int j = 0; j < 2 * radius.width; ++j) {
+      double y = (i - radius.height + 0.5) / radius.height;
+      double x = (j - radius.width + 0.5) / radius.width;
+      double squaredDistance = x * x + y * y;
+      double arg = -squaredDistance * inv2SigmaSquare;
+      mat(i + 1, j + 1) = half(std::exp(arg));
+    }
+  }
+  return mat;
+}

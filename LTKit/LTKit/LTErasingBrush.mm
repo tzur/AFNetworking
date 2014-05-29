@@ -4,14 +4,14 @@
 #import "LTErasingBrush.h"
 
 #import "LTProgram.h"
-#import "LTShaderStorage+LTBrushShaderVsh.h"
-#import "LTShaderStorage+LTErasingBrushShaderFsh.h"
+#import "LTShaderStorage+LTBrushVsh.h"
+#import "LTShaderStorage+LTErasingBrushFsh.h"
 
 @implementation LTErasingBrush
 
 - (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBrushShaderVsh source]
-                                  fragmentSource:[LTErasingBrushShaderFsh source]];
+  return [[LTProgram alloc] initWithVertexSource:[LTBrushVsh source]
+                                  fragmentSource:[LTErasingBrushFsh source]];
 }
 
 @end
