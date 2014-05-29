@@ -1,10 +1,5 @@
-//
-//  LTEdgeAvoidingMultiTextureBrush.m
-//  LTKit
-//
-//  Created by Amit Goldstein on 5/25/14.
-//  Copyright (c) 2014 Lightricks. All rights reserved.
-//
+// Copyright (c) 2014 Lightricks. All rights reserved.
+// Created by Amit Goldstein.
 
 #import "LTEdgeAvoidingMultiTextureBrush.h"
 
@@ -39,8 +34,6 @@
 
 @implementation LTEdgeAvoidingMultiTextureBrush
 
-@synthesize inputTexture = _inputTexture;
-
 - (LTProgram *)createProgram {
   return [[LTProgram alloc] initWithVertexSource:[LTEdgeAvoidingBrushVsh source]
                                   fragmentSource:[LTEdgeAvoidingMultiTextureBrushFsh source]];
@@ -54,7 +47,7 @@
               auxiliaryTextures:@{[LTEdgeAvoidingMultiTextureBrushFsh gaussianTexture]:
                                   self.gaussianTexture,
                                   [LTEdgeAvoidingMultiTextureBrushFsh auxiliaryTexture]:
-                                  self.inputTexture}];
+                                  self.inputOrDefaultTexture}];
 }
 
 - (void)updateProgramForCurrentProperties {
@@ -73,9 +66,14 @@
 
 LTPropertyUpdatingProgram(CGFloat, sigma, Sigma, 0.01, 1, 1);
 
+/// Sigma used for generating the gaussian, yielding a falloff which is very close to \c 0 at the
+/// edges.
+static const double kGaussianSigma = 0.3;
+
 - (void)setTexture:(LTTexture *)texture {
   [super setTexture:texture];
-  self.gaussianTexture = [LTTexture textureWithImage:LTCreateGaussianMat(texture.size, 0.3)];
+  self.gaussianTexture =
+      [LTTexture textureWithImage:LTCreateGaussianMat(texture.size, kGaussianSigma)];
 }
 
 - (void)setGaussianTexture:(LTTexture *)gaussianTexture {
@@ -91,22 +89,21 @@ LTPropertyUpdatingProgram(CGFloat, sigma, Sigma, 0.01, 1, 1);
 
 - (void)setInputTexture:(LTTexture *)inputTexture {
   _inputTexture = inputTexture;
-  [self.drawer setAuxiliaryTexture:self.inputTexture
+  [self.drawer setAuxiliaryTexture:self.inputOrDefaultTexture
                           withName:[LTEdgeAvoidingMultiTextureBrushFsh auxiliaryTexture]];
   [self updateProgramForCurrentProperties];
 }
 
-- (LTTexture *)inputTexture {
-  return _inputTexture ?: self.defaultInputTexture;
-}
-
 - (LTTexture *)defaultInputTexture {
   if (!_defaultInputTexture) {
-    cv::Mat4b mat(1, 1);
-    mat = cv::Vec4b(0, 0, 0, 0);
+    cv::Mat4b mat(1, 1, cv::Vec4b(0, 0, 0, 0));
     _defaultInputTexture = [LTTexture textureWithImage:mat];
   }
   return _defaultInputTexture;
+}
+
+- (LTTexture *)inputOrDefaultTexture {
+  return self.inputTexture ?: self.defaultInputTexture;
 }
 
 @end

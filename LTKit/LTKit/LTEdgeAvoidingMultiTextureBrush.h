@@ -1,10 +1,5 @@
-//
-//  LTEdgeAvoidingMultiTextureBrush.h
-//  LTKit
-//
-//  Created by Amit Goldstein on 5/25/14.
-//  Copyright (c) 2014 Lightricks. All rights reserved.
-//
+// Copyright (c) 2014 Lightricks. All rights reserved.
+// Created by Amit Goldstein.
 
 #import "LTMultiTextureBrush.h"
 
@@ -21,7 +16,7 @@
 @interface LTEdgeAvoidingMultiTextureBrush : LTMultiTextureBrush
 
 /// Texture of the base image (for color distance and edge-avoiding paint). When set to \c nil, the
-/// brush will use the target framebuffer color instead.
+/// brush will use the target framebuffer color instead. Default is \c nil.
 @property (strong, nonatomic) LTTexture *inputTexture;
 
 /// Edge Avoiding sigma parameter. The lower the value of this parameter, the stronger the

@@ -44,7 +44,7 @@ context(@"properties", ^{
     expect(brush.textures.count).to.equal(1);
     expect($([(LTTexture *)brush.textures.firstObject image])).to.equalMat($(expectedTexture));
     expect(brush.sigma).to.equal(1.0);
-    expect($(brush.inputTexture.image)).to.equalMat($(expectedInputTexture));
+    expect(brush.inputTexture).to.beNil();
   });
   
   it(@"should set textures", ^{
@@ -94,9 +94,11 @@ context(@"properties", ^{
   it(@"should set inputTexture", ^{
     cv::Mat4b newInputTexture(1, 1);
     newInputTexture = cv::Vec4b(1, 2, 3, 4);
-    expect($(brush.inputTexture.image)).notTo.equalMat($(newInputTexture));
+    expect(brush.inputTexture).to.beNil();
     brush.inputTexture = [LTTexture textureWithImage:newInputTexture];
     expect($(brush.inputTexture.image)).to.equalMat($(newInputTexture));
+    brush.inputTexture = nil;
+    expect(brush.inputTexture).to.beNil();
   });
 });
 
@@ -147,7 +149,7 @@ context(@"edge avoiding drawing", ^{
     brush = nil;
   });
   
-  it(@"setting the sigma to 1.0 should disable the edge-avoiding effect", ^{
+  it(@"should disable the edge-avoiding effect when setting sigma to 1.0", ^{
     brush.intensity = GLKVector4One;
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];
@@ -174,7 +176,7 @@ context(@"edge avoiding drawing", ^{
     expect($(output.image)).to.beCloseToMat($(expected));
   });
 
-  it(@"setting the inputTexture to nil should use the target framebuffer instead", ^{
+  it(@"should use the target framebuffer instead when setting the inputTexture to nil", ^{
     brush.sigma = brush.minSigma;
     brush.intensity = GLKVector4Make(0.5, 0.5, 0.5, 1.0);
     brush.inputTexture = nil;
