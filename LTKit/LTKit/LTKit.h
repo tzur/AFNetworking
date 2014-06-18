@@ -26,6 +26,8 @@
 #import <LTKit/LTImageProcessor.h>
 #import <LTKit/LTIterativeImageProcessor.h>
 #import <LTKit/LTOneShotImageProcessor.h>
+#import <LTKit/LTPainterImageProcessor.h>
+#import <LTKit/LTProgressiveImageProcessor.h>
 
 // Image Processing/Blocks.
 #import <LTKit/LTArithmeticProcessor.h>
@@ -42,6 +44,7 @@
 #import <LTKit/LTMixerProcessor.h>
 #import <LTKit/LTPatchCompositorProcessor.h>
 #import <LTKit/LTPatchProcessor.h>
+#import <LTKit/LTRGBToHSVProcessor.h>
 #import <LTKit/LTRectCopyProcessor.h>
 #import <LTKit/LTRecomposeProcessor.h>
 #import <LTKit/LTSplitComplexMat.h>
@@ -78,11 +81,15 @@
 
 // GPU/Painting.
 #import <LTKit/LTPainter+LTView.h>
+#import <LTKit/LTPainterStroke.h>
+#import <LTKit/LTSingleAirbrushPaintingStrategy.h>
+#import <LTKit/LTSingleBrushPaintingStrategy.h>
 
 // GPU/Painting/Brushes.
 #import <LTKit/LTBristleBrush.h>
 #import <LTKit/LTBrush.h>
 #import <LTKit/LTEdgeAvoidingBrush.h>
+#import <LTKit/LTEdgeAvoidingMultiTextureBrush.h>
 #import <LTKit/LTErasingBrush.h>
 #import <LTKit/LTMultiTextureBrush.h>
 #import <LTKit/LTRoundBrush.h>
