@@ -78,16 +78,16 @@
   return std::round((y0 + (position - x0)/(x1 - x0) * (y1 - y0)) * 255.0);
 }
 
-- (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints {
+- (cv::Mat4b)matWithSamplingPoints:(NSUInteger)numberOfPoints {
   LTParameterAssert(numberOfPoints >= 2, @"Number of bins in the texture should be larger than 2");
-  
+
   // Initialize the interpolation edges with first two control points.
   LTColorGradientControlPoint *p0 = self.controlPoints[0];
   LTColorGradientControlPoint *p1 = self.controlPoints[1];
-  
+
   NSUInteger rightEdgeIndex = 1;
   cv::Mat4b mat(1, (int)numberOfPoints);
-  
+
   for (int col = 0; col < (int)numberOfPoints; ++col) {
     CGFloat currentPosition = ((CGFloat)col) / (numberOfPoints - 1);
     // Update the interpolation edges, only if currentPosition is passed the right edge and there is
@@ -101,8 +101,13 @@
     GLKVector4 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
     mat(0, col) = cv::Vec4b(color.r, color.g, color.b, color.a);
   }
-  
-  return [LTTexture textureWithImage:mat];
+
+  return mat;
+}
+
+- (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints {
+  cv::Mat4b image([self matWithSamplingPoints:numberOfPoints]);
+  return [LTTexture textureWithImage:image];
 }
 
 + (LTColorGradient *)identityGradient {

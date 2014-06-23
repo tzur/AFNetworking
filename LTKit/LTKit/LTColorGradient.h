@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
+#import <opencv2/core/core.hpp>
+
 @class LTTexture;
 
 /// Color gradient control point is a mapping of a single point in the intensity domain to color.
@@ -51,8 +53,16 @@
 /// Number of sampling points should be at least two. First point samples at 0.0, last one at 1.0.
 /// Using low number of sampling points can result in an inadequate representation of the gradient.
 ///
-/// @return texture that holds the sampled values.
-/// Size of the texture is [numberOfPoints x 1 x 3]
+/// @return mat that holds the sampled values with size of [numberOfPoints x 1].
+- (cv::Mat4b)matWithSamplingPoints:(NSUInteger)numberOfPoints;
+
+/// Discretize [0-1] range, sample gradient values and write these values to texture.
+///
+/// @param numberOfPoints is a number of points to sample the gradient with.
+/// Number of sampling points should be at least two. First point samples at 0.0, last one at 1.0.
+/// Using low number of sampling points can result in an inadequate representation of the gradient.
+///
+/// @return texture that holds the sampled values with size of [numberOfPoints x 1 x 3].
 - (LTTexture *)textureWithSamplingPoints:(NSUInteger)numberOfPoints;
 
 /// Creates an instance of LTColorGradient that represents a linear gradient. Linear gradient can be

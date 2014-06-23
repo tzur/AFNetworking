@@ -100,55 +100,40 @@ context(@"LTColorGradient intialization", ^{
   });
 });
 
-context(@"writing gradient values to texture", ^{
-  __block LTColorGradient *gradient;
-  __block LTTexture *texture;
-  
-  beforeEach(^{
-    LTGLContext *context = [[LTGLContext alloc] init];
-    [LTGLContext setCurrentContext:context];
-  });
-
-  afterEach(^{
-    gradient = nil;
-    texture = nil;
-    
-    [LTGLContext setCurrentContext:nil];
-  });
-  
+context(@"writing gradient values to mat", ^{
   it(@"should be equal to [0-1] linear gradient with two points", ^{
-    LTTexture *identity = [[LTColorGradient identityGradient] textureWithSamplingPoints:2];
+    cv::Mat4b identity = [[LTColorGradient identityGradient] matWithSamplingPoints:2];
     cv::Mat4b grid(1, 2);
     grid = cv::Vec4b(255, 0, 0, 255);
     grid(0, 0) = cv::Vec4b(0, 0, 0, 255);
     grid(0, 1) = cv::Vec4b(255, 255, 255, 255);
-    expect(LTCompareMat(identity.image, grid)).to.beTruthy();
+    expect($(identity)).to.equalMat($(grid));
   });
   
   it(@"should be equal to [0-1] linear gradient with three points", ^{
-    LTTexture *identity = [[LTColorGradient identityGradient] textureWithSamplingPoints:3];
+    cv::Mat4b identity = [[LTColorGradient identityGradient] matWithSamplingPoints:3];
     cv::Mat4b grid(1, 3);
     grid = cv::Vec4b(255, 0, 0, 255);
     grid(0, 0) = cv::Vec4b(0, 0, 0, 255);
     grid(0, 1) = cv::Vec4b(128, 128, 128, 255);
     grid(0, 2) = cv::Vec4b(255, 255, 255, 255);
-    expect(LTCompareMat(identity.image, grid)).to.beTruthy();
+    expect($(identity)).to.equalMat($(grid));
   });
   
   it(@"should be equal to pre-computed red gradient", ^{
-    gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
-    texture = [gradient textureWithSamplingPoints:256];
+    LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
+    cv::Mat4b mat = [gradient matWithSamplingPoints:256];
 
     cv::Mat image = LTLoadMat([self class], @"RedGradient.png");
-    expect(LTFuzzyCompareMat(texture.image, image)).to.beTruthy();
+    expect($(mat)).to.beCloseToMat($(image));
   });
   
   it(@"should be equal to pre-computed red/blue gradient", ^{
-    gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
-    texture = [gradient textureWithSamplingPoints:256];
+    LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
+    cv::Mat4b mat = [gradient matWithSamplingPoints:256];
 
     cv::Mat image = LTLoadMat([self class], @"RedBlueGradient.png");
-    expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
+    expect($(mat)).to.beCloseToMatWithin($(image), 3);
   });
   
   it(@"should be equal to semi-transparent grdient", ^{
@@ -159,11 +144,27 @@ context(@"writing gradient values to texture", ^{
     
     NSArray *controlPoints = @[transparentBlack, opaqueWhite];
     
-    gradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
-    texture = [gradient textureWithSamplingPoints:256];
+    LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
+    cv::Mat4b mat = [gradient matWithSamplingPoints:256];
     
     cv::Mat image = LTLoadMat([self class], @"SemiTransparentBlack.png");
-    expect(LTFuzzyCompareMat(texture.image, image, 3)).to.beTruthy();
+    expect($(mat)).to.beCloseToMatWithin($(image), 3);
+  });
+});
+
+context(@"writing gradient values to texture", ^{
+  beforeEach(^{
+    [LTGLContext setCurrentContext:[[LTGLContext alloc] init]];
+  });
+
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
+  });
+
+  it(@"should produce texture that is equal to mat", ^{
+    cv::Mat4b identityMat = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
+    LTTexture *identityTexture = [[LTColorGradient identityGradient] textureWithSamplingPoints:256];
+    expect($(identityTexture.image)).to.equalMat($(identityMat));
   });
 });
 
