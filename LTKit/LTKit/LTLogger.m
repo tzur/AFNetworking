@@ -55,67 +55,77 @@
       return [NSString stringWithFormat:(formatString), (*(typeToMatch *)value)]; \
     }
 
-	MATCH_TYPE_AND_HANDLER(CGPoint, NSStringFromCGPoint);
-	MATCH_TYPE_AND_HANDLER(CGSize, NSStringFromCGSize);
-	MATCH_TYPE_AND_HANDLER(CGRect, NSStringFromCGRect);
-	MATCH_TYPE_AND_HANDLER(NSRange, NSStringFromRange);
-	MATCH_TYPE_AND_HANDLER(Class, NSStringFromClass);
-	MATCH_TYPE_AND_HANDLER(SEL, NSStringFromSelector);
-	MATCH_TYPE_AND_HANDLER(BOOL, stringFromBoolOrChar);
-	MATCH_TYPE_AND_HANDLER(NSDecimal, stringFromNSDecimalWithCurrentLocal);
-  
-	MATCH_TYPE_AND_FORMAT_STRING(CFStringRef, @"%@");
-	MATCH_TYPE_AND_FORMAT_STRING(CFArrayRef, @"%@");
-	MATCH_TYPE_AND_FORMAT_STRING(long long, @"%lld");
-	MATCH_TYPE_AND_FORMAT_STRING(unsigned long long, @"%llu");
-	MATCH_TYPE_AND_FORMAT_STRING(float, @"%f");
-	MATCH_TYPE_AND_FORMAT_STRING(double, @"%f");
-	MATCH_TYPE_AND_FORMAT_STRING(short, @"%hi");
-	MATCH_TYPE_AND_FORMAT_STRING(unsigned short, @"%hu");
-	MATCH_TYPE_AND_FORMAT_STRING(int, @"%i");
-	MATCH_TYPE_AND_FORMAT_STRING(unsigned, @"%u");
-	MATCH_TYPE_AND_FORMAT_STRING(long, @"%li");
-	MATCH_TYPE_AND_FORMAT_STRING(long double, @"%Lf");
-	MATCH_TYPE_AND_FORMAT_STRING(char *, @"%s");
-	MATCH_TYPE_AND_FORMAT_STRING(const char *, @"%s");
+  MATCH_TYPE_AND_HANDLER(CGPoint, NSStringFromCGPoint);
+  MATCH_TYPE_AND_HANDLER(CGSize, NSStringFromCGSize);
+  MATCH_TYPE_AND_HANDLER(CGRect, NSStringFromCGRect);
+  MATCH_TYPE_AND_HANDLER(CGAffineTransform, NSStringFromCGAffineTransform);
+  MATCH_TYPE_AND_HANDLER(NSRange, NSStringFromRange);
+  MATCH_TYPE_AND_HANDLER(Class, NSStringFromClass);
+  MATCH_TYPE_AND_HANDLER(SEL, NSStringFromSelector);
+  MATCH_TYPE_AND_HANDLER(BOOL, stringFromBoolOrChar);
+  MATCH_TYPE_AND_HANDLER(NSDecimal, stringFromNSDecimalWithCurrentLocale);
+  MATCH_TYPE_AND_HANDLER(UIEdgeInsets, NSStringFromUIEdgeInsets);
+  MATCH_TYPE_AND_HANDLER(UIOffset, NSStringFromUIOffset);
+  MATCH_TYPE_AND_HANDLER(GLKMatrix2, NSStringFromGLKMatrix2);
+  MATCH_TYPE_AND_HANDLER(GLKMatrix3, NSStringFromGLKMatrix3);
+  MATCH_TYPE_AND_HANDLER(GLKMatrix4, NSStringFromGLKMatrix4);
+  MATCH_TYPE_AND_HANDLER(GLKQuaternion, NSStringFromGLKQuaternion);
+  MATCH_TYPE_AND_HANDLER(GLKVector2, NSStringFromGLKVector2);
+  MATCH_TYPE_AND_HANDLER(GLKVector3, NSStringFromGLKVector3);
+  MATCH_TYPE_AND_HANDLER(GLKVector4, NSStringFromGLKVector4);
+
+  MATCH_TYPE_AND_FORMAT_STRING(CFStringRef, @"%@");
+  MATCH_TYPE_AND_FORMAT_STRING(CFArrayRef, @"%@");
+  MATCH_TYPE_AND_FORMAT_STRING(long long, @"%lld");
+  MATCH_TYPE_AND_FORMAT_STRING(unsigned long long, @"%llu");
+  MATCH_TYPE_AND_FORMAT_STRING(float, @"%f");
+  MATCH_TYPE_AND_FORMAT_STRING(double, @"%f");
+  MATCH_TYPE_AND_FORMAT_STRING(short, @"%hi");
+  MATCH_TYPE_AND_FORMAT_STRING(unsigned short, @"%hu");
+  MATCH_TYPE_AND_FORMAT_STRING(int, @"%i");
+  MATCH_TYPE_AND_FORMAT_STRING(unsigned, @"%u");
+  MATCH_TYPE_AND_FORMAT_STRING(long, @"%li");
+  MATCH_TYPE_AND_FORMAT_STRING(long double, @"%Lf");
+  MATCH_TYPE_AND_FORMAT_STRING(char *, @"%s");
+  MATCH_TYPE_AND_FORMAT_STRING(const char *, @"%s");
 #if __has_feature(objc_arc)
-	MATCH_TYPE_AND_FORMAT_STRING(__unsafe_unretained id, @"%@");
+  MATCH_TYPE_AND_FORMAT_STRING(__unsafe_unretained id, @"%@");
 #else
   MATCH_TYPE_AND_FORMAT_STRING(id, @"%@");
 #endif
   
-	if ([[self class] isCharArray:typeCode]) {
+  if ([[self class] isCharArray:typeCode]) {
     return [NSString stringWithFormat:@"%s", (char *)value];
   }
-  
-	MATCH_TYPE_AND_FORMAT_STRING(void *, @"(void *)%p");
-  
+
+  MATCH_TYPE_AND_FORMAT_STRING(void *, @"(void *)%p");
+
 #undef MATCH_TYPE_AND_HANDLER
 #undef MATCH_TYPE_AND_FORMAT_STRING
-  
-	return nil;
+
+  return nil;
 }
 
 + (BOOL)isCharArray:(const char *)typeCode {
   LTParameterAssert(typeCode);
-  
+
   size_t length = strlen(typeCode);
   if (length <= 2) {
     return NO;
   }
-  
-	if (typeCode[0] != '[' || typeCode[length - 2] != 'c'
+
+  if (typeCode[0] != '[' || typeCode[length - 2] != 'c'
       || typeCode[length - 1] != ']') {
     return NO;
   }
-  
-	for (size_t i = 1; i < length - 2; i++) {
-		if (!isdigit(typeCode[i])) {
+
+  for (size_t i = 1; i < length - 2; i++) {
+    if (!isdigit(typeCode[i])) {
       return NO;
     }
   }
-  
-	return YES;
+
+  return YES;
 }
 
 static NSString *stringFromBoolOrChar(BOOL value) {
@@ -128,8 +138,8 @@ static NSString *stringFromBoolOrChar(BOOL value) {
   }
 }
 
-static NSString *stringFromNSDecimalWithCurrentLocal(NSDecimal value) {
-	return NSDecimalString(&value, [NSLocale currentLocale]);
+static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
+  return NSDecimalString(&value, [NSLocale currentLocale]);
 }
 
 #pragma mark -
