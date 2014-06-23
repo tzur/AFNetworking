@@ -32,7 +32,7 @@ context(@"properties", ^{
     expect(processor.outerFrameSpread).to.equal(0);
     expect(processor.outerFrameCorner).to.equal(0);
     expect(processor.outerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.outerFrameNoiseAmplitude).to.equal(1);
+    expect(processor.outerFrameNoiseAmplitude).to.equal(0);
     expect(processor.outerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
   });
   
@@ -41,7 +41,7 @@ context(@"properties", ^{
     expect(processor.innerFrameSpread).to.equal(0);
     expect(processor.innerFrameCorner).to.equal(0);
     expect(processor.innerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.innerFrameNoiseAmplitude).to.equal(1);
+    expect(processor.innerFrameNoiseAmplitude).to.equal(0);
     expect(processor.innerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
   });
   
@@ -115,11 +115,13 @@ context(@"processing", ^{
     processor.outerFrameWidth = 10.0;
     processor.outerFrameSpread = 10.0;
     processor.outerFrameNoise = noise;
+    processor.outerFrameNoiseAmplitude = 1.0;
     processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
     // Inner frame.
     processor.innerFrameWidth = 10.0;
     processor.innerFrameSpread = 5.0;
     processor.innerFrameNoise = noise;
+    processor.innerFrameNoiseAmplitude = 1.0;
     processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
     // Both.
     processor.roughness = 1.0;

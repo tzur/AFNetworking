@@ -31,7 +31,7 @@ context(@"properties", ^{
     expect(frame.corner).to.equal(0);
     expect(GLKVector3AllEqualToVector3(frame.noiseChannelMixer,
                                        GLKVector3Make(1, 0, 0))).to.beTruthy();
-    expect(frame.noiseAmplitude).to.equal(1);
+    expect(frame.noiseAmplitude).to.equal(0);
     expect(frame.noiseCoordinatesOffset).to.equal(0);
     expect(frame.noiseMapping).to.equal(LTProceduralFrameNoiseMappingStretch);
     expect(GLKVector3AllEqualToVector3(frame.color, GLKVector3Make(1, 1, 1))).to.beTruthy();
@@ -103,8 +103,8 @@ context(@"properties", ^{
   
   it(@"should return normalized noise channel mixer property", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
-    frame.noiseChannelMixer = GLKVector3Make(2.0, 0.0, 0.0);
-    expect(frame.noiseChannelMixer == GLKVector3Make(1.0, 0.0, 0.0)).to.beTruthy();
+    frame.noiseChannelMixer = GLKVector3Make(-1.0, 0.0, 0.0);
+    expect(frame.noiseChannelMixer).to.beCloseToGLKVector(GLKVector3Make(1.0, 0.0, 0.0));
   });
   
   it(@"should not fail on correct input", ^{
@@ -216,6 +216,7 @@ context(@"processing", ^{
         [[LTProceduralFrameProcessor alloc] initWithOutput:frameTexture];
     frame.spread = 10.0;
     frame.noise = tiledNoise;
+    frame.noiseAmplitude = 1.0;
     frame.noiseMapping = LTProceduralFrameNoiseMappingTile;
     frame.noiseCoordinatesOffset = 0.25;
     frame.color = GLKVector3Make(0.0, 0.0, 0.0);

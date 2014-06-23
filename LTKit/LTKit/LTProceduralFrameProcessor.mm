@@ -14,8 +14,6 @@
 
 @implementation LTProceduralFrameProcessor
 
-static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-
 - (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
     [[LTProgram alloc] initWithVertexSource:[LTProceduralFrameVsh source]
@@ -39,7 +37,7 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   self.color = self.defaultColor;
   _noise = self.auxiliaryTextures[[LTProceduralFrameFsh noiseTexture]];
   self.noiseAmplitude = self.defaultNoiseAmplitude;
-  self.noiseChannelMixer = kDefaultNoiseChannelMixer;
+  self.noiseChannelMixer = self.defaultNoiseChannelMixer;
   self.noiseMapping = LTProceduralFrameNoiseMappingStretch;
   self.noiseCoordinatesOffset = self.defaultNoiseCoordinatesOffset;
 }
@@ -117,7 +115,14 @@ LTPropertyWithSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GL
   return isTilable || inStretchMode;
 }
 
-LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 1, ^{
+LTPropertyWithSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
+                     -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0), ^{
+  // Normalize the input, so mixing doesn't affect amplitude.
+  _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
+  self[[LTProceduralFrameFsh noiseChannelMixer]] = $(_noiseChannelMixer);
+});
+
+LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0, ^{
   self[[LTProceduralFrameFsh noiseAmplitude]] = @(noiseAmplitude);
 });
 
@@ -139,11 +144,5 @@ LTPropertyWithSetter(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset, 0,
   self[[LTProceduralFrameVsh grainOffset]] = $(GLKVector2Make(noiseCoordinatesOffset,
                                                               noiseCoordinatesOffset));
 });
-
-- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
-  // Normalize the input, so mixing doesn't affect amplitude.
-  _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
-  self[[LTProceduralFrameFsh noiseChannelMixer]] = $(_noiseChannelMixer);
-}
 
 @end

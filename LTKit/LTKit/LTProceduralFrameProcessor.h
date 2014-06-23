@@ -55,15 +55,15 @@ LTDeclareProperty(GLKVector3, color, Color);
 /// create a very specific visual result and understand well the underlying frame creation process.
 @property (strong, nonatomic) LTTexture *noise;
 
-/// Mixes the noise channels of the noise texture in order to create the transition noise. Default
-/// value is (1, 0, 0). Input values are normalized, to remove potential interference with noise
-/// amplitude.
-@property (nonatomic) GLKVector3 noiseChannelMixer;
+/// Mixes the noise channels of the noise texture in order to create the transition noise.
+/// Components should be in [-1, 1] range. Default value is (1, 0, 0). Input values are normalized,
+/// to remove potential interference with noise amplitude.
+LTDeclareProperty(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
 
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
+/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
 
-/// Select how noise is used in frame creation. It is possible to scale the noise texture to the
+/// Selects how noise is used in frame creation. It is possible to scale the noise texture to the
 /// size of the frame or tile it. Default value is LTProceduralFrameNoiseMappingScale.
 @property (nonatomic) LTProceduralFrameNoiseMapping noiseMapping;
 

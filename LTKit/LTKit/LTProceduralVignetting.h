@@ -3,6 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
+
 /// @class LTProceduralVignetting
 ///
 /// Creates a vignetting pattern.
@@ -17,28 +19,29 @@
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 100.
-@property (nonatomic) CGFloat spread;
+LTDeclareProperty(CGFloat, spread, Spread);
 
 /// Determines the corner type of the frame and corresponds to the p-norm which is used to compute
-/// the distance field. Should be in [2-16] range.
+/// the distance field. Should be in [2-16] range. The default value is 2.
 /// Corner values determince how the distance field in the shader is created. The corner can be
 /// completely round by passing 2 and creating an Euclidean distance field for increasingly higher
 /// values, the distance field will become more rectangular. The limit of 16 is due to the precision
 /// limits in the shader.
-@property (nonatomic) CGFloat corner;
+LTDeclareProperty(CGFloat, corner, Corner);
 
 /// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
-/// which doesn't affect the image.
+/// which doesn't affect the image. Set \c noise back to \c nil to restore the default value.
+///
 /// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
 /// create a very specific visual result and understand well the underlying frame creation process.
 @property (strong, nonatomic) LTTexture *noise;
 
-/// Mixes the noise channels of the noise texture in order to create the transition noise. Default
-/// value is (1, 0, 0). Input values are normalized, to remove potential interference with noise
-/// amplitude.
-@property (nonatomic) GLKVector3 noiseChannelMixer;
+/// Mixes the noise channels of the noise texture in order to create the transition noise.
+/// Components should be in [-1, 1] range. Default value is (1, 0, 0). Input values are normalized,
+/// to remove potential interference with noise amplitude.
+LTDeclareProperty(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat noiseAmplitude;
+LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 @end

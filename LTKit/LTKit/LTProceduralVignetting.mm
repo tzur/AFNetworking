@@ -12,20 +12,6 @@
 
 @implementation LTProceduralVignetting
 
-static const CGFloat kMinSpread = 0.0;
-static const CGFloat kMaxSpread = 100.0;
-static const CGFloat kDefaultSpread = kMaxSpread;
-
-static const CGFloat kMinCorner = 2.0;
-static const CGFloat kMaxCorner = 16.0;
-static const CGFloat kDefaultCorner = kMinCorner;
-
-static const CGFloat kMinNoiseAmplitude = 0.0;
-static const CGFloat kMaxNoiseAmplitude = 100.0;
-static const CGFloat kDefaultNoiseAmplitude = 1.0;
-
-static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-
 - (instancetype)initWithOutput:(LTTexture *)output {
   LTProgram *program =
       [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
@@ -44,10 +30,11 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 }
 
 - (void)setDefaultValues {
-  self.corner = kDefaultCorner;
-  self.spread = kDefaultSpread;
-  self.noiseAmplitude = kDefaultNoiseAmplitude;
-  self.noiseChannelMixer = kDefaultNoiseChannelMixer;
+  self.corner = self.defaultCorner;
+  self.spread = self.defaultSpread;
+  self.noiseAmplitude = self.defaultNoiseAmplitude;
+  self.noiseChannelMixer = self.defaultNoiseChannelMixer;
+  self.noise = nil;
 }
 
 - (LTTexture *)createNeutralNoise {
@@ -66,45 +53,35 @@ static const GLKVector3 kDefaultNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   } else {
     distanceShift = GLKVector2Make(0.0, 1.0 - size.width / size.height);
   }
-  self[@"distanceShift"] = $(distanceShift);
+  self[[LTProceduralVignettingFsh distanceShift]] = $(distanceShift);
 }
 
-- (void)setSpread:(CGFloat)spread {
-  LTParameterAssert(spread >= kMinSpread, @"Spread is lower than minimum value");
-  LTParameterAssert(spread <= kMaxSpread, @"Spread is higher than maximum value");
-  
-  _spread = spread;
-  self[@"spread"] = @(spread / 100.0);
-}
+LTPropertyWithSetter(CGFloat, spread, Spread, 0, 100, 100, ^{
+  self[[LTProceduralVignettingFsh spread]] = @(spread / 100.0);
+});
 
-- (void)setCorner:(CGFloat)corner {
-  LTParameterAssert(corner >= kMinCorner, @"Corner is lower than minimum value");
-  LTParameterAssert(corner <= kMaxCorner, @"Corner is higher than maximum value");
-  
-  _corner = corner;
-  self[@"corner"] = @(corner);
-}
+LTPropertyWithSetter(CGFloat, corner, Corner, 2, 16, 2, ^{
+  self[[LTProceduralVignettingFsh corner]] = @(corner);
+});
 
 - (void)setNoise:(LTTexture *)noise {
-  // Update details LUT texture in auxiliary textures.
-  _noise = noise;
-  [self setAuxiliaryTexture:noise withName:[LTProceduralVignettingFsh noiseTexture]];
+  if (!noise) {
+    _noise = [self createNeutralNoise];
+  } else {
+    _noise = noise;
+  }
+  [self setAuxiliaryTexture:_noise withName:[LTProceduralVignettingFsh noiseTexture]];
 }
 
-- (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
-  LTParameterAssert(noiseAmplitude >= kMinNoiseAmplitude,
-                    @"Noise amplitude is lower than minimum value");
-  LTParameterAssert(noiseAmplitude <= kMaxNoiseAmplitude,
-                    @"Noise amplitude is higher than maximum value");
-  
-  _noiseAmplitude = noiseAmplitude;
-  self[@"noiseAmplitude"] = @(noiseAmplitude);
-}
-
-- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+LTPropertyWithSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
+                     -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0), ^{
   // Normalize the input, so mixing doesn't affect amplitude.
   _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
-  self[@"noiseChannelMixer"] = $(_noiseChannelMixer);
-}
+  self[[LTProceduralVignettingFsh noiseChannelMixer]] = $(_noiseChannelMixer);
+});
+
+LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0, ^{
+  self[[LTProceduralVignettingFsh noiseAmplitude]] = @(noiseAmplitude);
+});
 
 @end

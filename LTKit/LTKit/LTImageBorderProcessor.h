@@ -49,7 +49,7 @@ LTDeclareProperty(CGFloat, roughness, Roughness);
 /// with noise amplitude.
 @property (nonatomic) GLKVector3 outerFrameNoiseChannelMixer;
 
-/// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
+/// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat outerFrameNoiseAmplitude;
 
 /// In outer frame, color of the foreground and of the transition area. Components should be in
@@ -85,7 +85,7 @@ LTDeclareProperty(CGFloat, roughness, Roughness);
 /// with noise amplitude.
 @property (nonatomic) GLKVector3 innerFrameNoiseChannelMixer;
 
-/// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 1.
+/// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat innerFrameNoiseAmplitude;
 
 /// In inner frame, color of the foreground and of the transition area. Components should be in

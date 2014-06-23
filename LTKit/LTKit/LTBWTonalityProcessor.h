@@ -21,11 +21,11 @@
 /// conversion process. Color components should be in [0, 1] range. An attempt to pass the black
 /// color (all components are zero) will raise an exception.
 /// Default value is the NTSC conversion triplet (0.299, 0.587, 0.114).
-@property (nonatomic) GLKVector3 colorFilter;
+LTDeclareProperty(GLKVector3, colorFilter, ColorFilter);
 
 /// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
 /// This LUT is used to colorize (add tint) to the BW conversion. Default value is an identity
-/// mapping.
+/// mapping. Setting this property to \c nil will restore the default value.
 @property (strong, nonatomic) LTTexture *colorGradientTexture;
 
 /// Brightens the image. Should be in [-1 1] range. Default value is 0.

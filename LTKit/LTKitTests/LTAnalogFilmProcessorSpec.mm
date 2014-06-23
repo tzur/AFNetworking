@@ -46,7 +46,7 @@ context(@"properties", ^{
     expect(processor.vignettingSpread).to.equal(0);
     expect(processor.vignettingCorner).to.equal(2);
     expect(processor.vignettingNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.vignettingNoiseAmplitude).to.equal(1);
+    expect(processor.vignettingNoiseAmplitude).to.equal(0);
     expect(processor.vignettingOpacity).to.equal(0);
   });
   

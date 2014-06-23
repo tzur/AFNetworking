@@ -25,8 +25,6 @@
 
 @implementation LTBWTonalityProcessor
 
-static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114);
-
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
                                                 fragmentSource:[LTBWTonalityFsh source]];
@@ -46,7 +44,7 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
 }
 
 - (void)setDefaultValues {
-  self.colorFilter = kColorFilterDefault;
+  self.colorFilter = self.defaultColorFilter;
   self.brightness = self.defaultBrightness;
   self.contrast = self.defaultContrast;
   self.exposure = self.defaultExposure;
@@ -73,13 +71,12 @@ static const GLKVector3 kColorFilterDefault = GLKVector3Make(0.299, 0.587, 0.114
   return smoothTexture;
 }
 
-- (void)setColorFilter:(GLKVector3)colorFilter {
-  LTParameterAssert(GLKVector3InRange(colorFilter, 0.0, 1.0), @"Color filter is out of range.");
+LTPropertyWithSetter(GLKVector3, colorFilter, ColorFilter,
+                     GLKVector3Zero, GLKVector3One, GLKVector3Make(0.299, 0.587, 0.114), ^{
   LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
-  
   _colorFilter = colorFilter / std::sum(colorFilter);
   self[[LTBWTonalityFsh colorFilter]] = $(_colorFilter);
-}
+});
 
 LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
   [self updateToneLUT];
@@ -104,12 +101,17 @@ LTPropertyWithSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
 });
 
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
-  LTParameterAssert(colorGradientTexture.size.height == 1,
-                    @"colorGradientTexture height is not one");
-  LTParameterAssert(colorGradientTexture.size.width <= 256,
-                    @"colorGradientTexture width is larger than 256");
+  if (!colorGradientTexture) {
+    _colorGradientTexture = [[LTColorGradient identityGradient] textureWithSamplingPoints:256];
+  } else {
+    LTParameterAssert(colorGradientTexture.size.height == 1,
+                      @"colorGradientTexture height is not one");
+    LTParameterAssert(colorGradientTexture.size.width <= 256,
+                      @"colorGradientTexture width is larger than 256");
+
+    _colorGradientTexture = colorGradientTexture;
+  }
   
-  _colorGradientTexture = colorGradientTexture;
   [self setAuxiliaryTexture:colorGradientTexture withName:[LTBWTonalityFsh colorGradient]];
 }
 

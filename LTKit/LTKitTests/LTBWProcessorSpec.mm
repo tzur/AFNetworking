@@ -42,10 +42,10 @@ context(@"properties", ^{
   
   it(@"should return default vignetting properties correctly", ^{
     expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
-    expect(processor.vignettingSpread).to.equal(0);
-    expect(processor.vignettingCorner).to.equal(2);
-    expect(processor.vignettingNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.vignettingNoiseAmplitude).to.equal(1);
+    expect(processor.vignetteSpread).to.equal(0);
+    expect(processor.vignetteCorner).to.equal(2);
+    expect(processor.vignetteNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.vignetteNoiseAmplitude).to.equal(0);
   });
   
   it(@"should return default outer frame properties correctly", ^{
@@ -53,7 +53,7 @@ context(@"properties", ^{
     expect(processor.outerFrameSpread).to.equal(0);
     expect(processor.outerFrameCorner).to.equal(0);
     expect(processor.outerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.outerFrameNoiseAmplitude).to.equal(1);
+    expect(processor.outerFrameNoiseAmplitude).to.equal(0);
     expect(processor.outerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
   });
   
@@ -62,7 +62,7 @@ context(@"properties", ^{
     expect(processor.innerFrameSpread).to.equal(0);
     expect(processor.innerFrameCorner).to.equal(0);
     expect(processor.innerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.innerFrameNoiseAmplitude).to.equal(1);
+    expect(processor.innerFrameNoiseAmplitude).to.equal(0);
     expect(processor.innerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
   });
   
@@ -76,7 +76,7 @@ context(@"properties", ^{
   it(@"should return default noise of grain, vignetting and frames as constant 0.5", ^{
     cv::Mat4b deafultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
     expect(LTFuzzyCompareMat(processor.grainTexture.image, deafultNoise)).to.beTruthy();
-    expect(LTFuzzyCompareMat(processor.vignettingNoise.image, deafultNoise)).to.beTruthy();
+    expect(LTFuzzyCompareMat(processor.vignetteNoise.image, deafultNoise)).to.beTruthy();
     expect(LTFuzzyCompareMat(processor.outerFrameNoise.image, deafultNoise)).to.beTruthy();
     expect(LTFuzzyCompareMat(processor.innerFrameNoise.image, deafultNoise)).to.beTruthy();
   });
@@ -93,12 +93,12 @@ context(@"properties", ^{
   
   it(@"should not fail on correct vignette input", ^{
     expect(^{
-      processor.vignettingNoise = input;
+      processor.vignetteNoise = input;
       processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
-      processor.vignettingSpread = 15.0;
-      processor.vignettingCorner = 6.0;
-      processor.vignettingNoiseAmplitude = 0.5;
-      processor.vignettingNoiseChannelMixer = GLKVector3Make(1.0, 0.9, 0.2);
+      processor.vignetteSpread = 15.0;
+      processor.vignetteCorner = 6.0;
+      processor.vignetteNoiseAmplitude = 0.5;
+      processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.9, 0.2);
     }).toNot.raiseAny();
   });
 
@@ -149,12 +149,12 @@ context(@"processing", ^{
     processor.offset = 0.2;
     processor.structure = 0.3;
     // Vignetting.
-    processor.vignettingNoise = noise;
+    processor.vignetteNoise = noise;
     processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
-    processor.vignettingSpread = 25.0;
-    processor.vignettingCorner = 8.0;
-    processor.vignettingNoiseAmplitude = 10.0;
-    processor.vignettingNoiseChannelMixer = GLKVector3Make(1.0, 0.1, 0.2);
+    processor.vignetteSpread = 25.0;
+    processor.vignetteCorner = 8.0;
+    processor.vignetteNoiseAmplitude = 10.0;
+    processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.1, 0.2);
     // Grain.
     processor.grainTexture = noise;
     processor.grainAmplitude = 1.1;

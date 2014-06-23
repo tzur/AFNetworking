@@ -18,12 +18,16 @@
 
 // Returns YES is subprocessors used by this class are initialized, NO otherwise.
 @property (nonatomic) BOOL subProcessorsInitialized;
+
 // Frame that is used to create an outer part of the image border.
 @property (strong, nonatomic) LTProceduralFrameProcessor *outerFrameProcessor;
+
 // Frame that is used to create an inner part of the image border.
 @property (strong, nonatomic) LTProceduralFrameProcessor *innerFrameProcessor;
+
 // Texture that stores the result of outerFrameProcessor.
 @property (strong, nonatomic) LTTexture *outerFrameTexture;
+
 // Texture that stores the result of innerFrameProcessor.
 @property (strong, nonatomic) LTTexture *innerFrameTexture;
 
