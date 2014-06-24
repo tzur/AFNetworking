@@ -19,6 +19,9 @@
   \
   afterEach(^{ \
     [JSObjection setDefaultInjector:lastUsedInjector]; \
+    \
+    injector = nil; \
+    module = nil; \
   });
 
 /// Objection module for LTKit tests. The module is initially initialized with empty partial mocks
