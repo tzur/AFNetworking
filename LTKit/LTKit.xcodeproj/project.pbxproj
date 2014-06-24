@@ -589,6 +589,9 @@
 		8BEBF3EF18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3EE18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm */; };
 		8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3F818FAA1BD005A0DE9 /* LTPassthroughProcessor.mm */; };
 		8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */; };
+		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
+		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
+		8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */; };
 		8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBF518296B6100EA0C1A /* XCTest.framework */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
@@ -1386,6 +1389,9 @@
 		8BEBF3F718FAA1BD005A0DE9 /* LTPassthroughProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPassthroughProcessor.h; sourceTree = "<group>"; };
 		8BEBF3F818FAA1BD005A0DE9 /* LTPassthroughProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPassthroughProcessor.mm; sourceTree = "<group>"; };
 		8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumRegistrySpec.mm; sourceTree = "<group>"; };
+		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
+		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
+		8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTBidirectionaMap.m; sourceTree = "<group>"; };
 		8BF7EFB918743EBE005695D0 /* LTImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImageProcessor.h; sourceTree = "<group>"; };
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
@@ -2008,6 +2014,7 @@
 			children = (
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 				8B8E50FC1861EB1F00821829 /* Base */,
+				8BF7B1631949BC3100E67079 /* Data Structures */,
 				8BFE439818759482008B699F /* Image Processing */,
 				8B9851721868A4B200D680D0 /* Images */,
 				8B871FAC1923CE2400517F2E /* IO */,
@@ -2199,6 +2206,7 @@
 			isa = PBXGroup;
 			children = (
 				8B8E50FD1861EB4000821829 /* Base */,
+				8BEE674419596F59005E4D53 /* Data Structures */,
 				8BFE439E18759CED008B699F /* Image Processing */,
 				8B9C4FD61868BE8600AA8BF6 /* Images */,
 				8B329023192CC2590010592E /* IO */,
@@ -2634,6 +2642,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8BEE674419596F59005E4D53 /* Data Structures */ = {
+			isa = PBXGroup;
+			children = (
+				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
+			);
+			name = "Data Structures";
+			sourceTree = "<group>";
+		};
+		8BF7B1631949BC3100E67079 /* Data Structures */ = {
+			isa = PBXGroup;
+			children = (
+				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
+				8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */,
+			);
+			name = "Data Structures";
+			sourceTree = "<group>";
+		};
 		8BFE439818759482008B699F /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2811,6 +2836,7 @@
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
 				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
+				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
 				8B8720331924A76500517F2E /* LTOperationsExecutor.h in Headers */,
 				8B8720D91928951600517F2E /* UIImage+Loading.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
@@ -3339,6 +3365,7 @@
 				8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */,
 				8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.m in Sources */,
+				8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */,
 				8BAAC5C918BB637C00A4B4DA /* LTPatchCompositorProcessor.mm in Sources */,
 				288AB3F818351FFE00A11FA4 /* LTFbo.mm in Sources */,
 				282CF086187B030000904F07 /* LTViewNavigationView.mm in Sources */,
@@ -3511,6 +3538,7 @@
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 				8B329020192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm in Sources */,
+				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
 				030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
