@@ -20,7 +20,11 @@
 
 // Base.
 #import <LTKit/LTDevice.h>
+#import <LTKit/LTEnumRegistry.h>
 #import <LTKit/LTShaderStorage.h>
+
+// Data Structures.
+#import <LTKit/LTBidirectionalMap.h>
 
 // Image Processing/Base.
 #import <LTKit/LTImageProcessor.h>
