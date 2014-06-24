@@ -157,6 +157,12 @@ context(@"input model", ^{
       [processor setInputModel:model];
     }).to.raise(NSInvalidArgumentException);
   });
+
+  it(@"should raise when trying to access non-existing key", ^{
+    expect(^{
+      [processor valueForKeyPath:@"foo"];
+    }).to.raiseAny();
+  });
 });
 
 SpecEnd

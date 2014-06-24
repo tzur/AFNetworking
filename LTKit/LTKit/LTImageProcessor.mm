@@ -107,7 +107,7 @@
     free(attributes);
   };
 
-  if (![[[self class] allowedUnionTypes] containsObject:@(attributes->type)]) {
+  if (!attributes || ![[[self class] allowedUnionTypes] containsObject:@(attributes->type)]) {
     [super valueForUndefinedKey:key];
   }
 
