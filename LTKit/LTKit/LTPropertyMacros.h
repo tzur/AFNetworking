@@ -16,9 +16,16 @@
 #define LTProxyProperty(type, name, Name, proxyBase) \
   LTProxyCustomProperty(type, name, Name, proxyBase, name, Name, ^{})
 
-/// Implement a primitve property, proxying another property with a custom name(updating the proxied
-/// property in the setter and returning its value, bounds, and default value in the corresponding
-/// getters). Additionally, runs the given custom block in the setter after the new value is set.
+/// Implement a primitve property, proxying another property (updating the proxied property in the
+/// setter and returning its value, bounds, and default value in the corresponding getters).
+/// Additionally, runs the given custom block in the setter after the new value is set.
+#define LTProxyPropertyWithSetter(type, name, Name, proxyBase, afterSetterBlock) \
+  LTProxyCustomProperty(type, name, Name, proxyBase, name, Name, afterSetterBlock)
+
+/// Implement a primitve property, proxying another property with a custom name (updating the
+/// proxied property in the setter and returning its value, bounds, and default value in the
+/// corresponding getters). Additionally, runs the given custom block in the setter after the new
+/// value is set.
 #define LTProxyCustomProperty(type, name, Name, proxyBase, customName, CustomName, \
     afterSetterBlock) \
   - (type)min##Name { \
