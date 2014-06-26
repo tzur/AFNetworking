@@ -318,10 +318,7 @@ LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100, 1, ^{
 
 LTProxyCustomProperty(CGFloat, outerFrameWidth, OuterFrameWidth,
                       self.outerFrameProcessor, width, Width, ^{
-  LogExpression(outerFrameWidth);
-  LogExpression(self.innerFrameWidth);
   // Update the dependent inner frame.
-  // TODO:(yaron) make sure that this makes sense.
   self.innerFrameProcessor.width = outerFrameWidth + self.innerFrameWidth;
   [self setNeedsInnerFrameProcessing];
 
