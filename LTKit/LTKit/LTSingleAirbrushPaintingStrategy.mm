@@ -40,6 +40,8 @@
 
 - (LTSingleAirbrushPoints)generatePointsForCanvasSize:(CGSize)size {
   // TODO:(amit) replace with LTRandom when available.
+  LTParameterAssert(self.brush.baseDiameter);
+  LTParameterAssert(self.brush.scale);
   srand48(arc4random());
   CGFloat diameter = self.brush.baseDiameter * self.brush.scale / self.fillFactor;
   CGFloat radius = diameter / 2;
