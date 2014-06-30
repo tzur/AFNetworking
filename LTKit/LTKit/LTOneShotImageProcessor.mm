@@ -10,10 +10,13 @@
 @interface LTOneShotImageProcessor ()
 
 /// Size of the input texture.
-@property (readwrite, nonatomic) CGSize inputSize;
+@property (nonatomic) CGSize inputSize;
 
 /// Size of the output texture.
-@property (readwrite, nonatomic) CGSize outputSize;
+@property (nonatomic) CGSize outputSize;
+
+/// Output texture of the processor.
+@property (strong, nonatomic) LTTexture *outputTexture;
 
 @end
 
@@ -28,6 +31,7 @@
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output {
   self.inputSize = sourceTexture.size;
   self.outputSize = output.size;
+  self.outputTexture = output;
 
   LTOneShotProcessingStrategy *strategy = [[LTOneShotProcessingStrategy alloc]
                                            initWithInput:sourceTexture andOutput:output];
