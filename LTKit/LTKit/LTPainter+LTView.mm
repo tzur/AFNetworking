@@ -153,7 +153,7 @@
 }
 
 - (void)setDelegate:(id<LTPainterDelegate>)delegate {
-  objc_setAssociatedObject(self, @selector(delegate), delegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  objc_setAssociatedObject(self, @selector(delegate), delegate, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (LTPainterPoint *)lastDrawnPoint {
