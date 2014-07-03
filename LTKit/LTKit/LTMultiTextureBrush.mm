@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
+#import "LTRandom.h"
 #import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTBrushFsh.h"
 #import "UIColor+Vector.h"
@@ -48,7 +49,7 @@
         self.program[[LTBrushFsh intensity]] = $(targetRect.color.glkVector);
       }
       
-      NSUInteger textureIdx = arc4random_uniform((uint)self.textures.count) %  self.textures.count;
+      NSUInteger textureIdx = [self.random randomUnsignedIntegerBelow:self.textures.count];
       [self.drawer setSourceTexture:self.textures[textureIdx]];
       [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];

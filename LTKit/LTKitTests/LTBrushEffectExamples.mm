@@ -12,18 +12,51 @@
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
+#import "LTRandom.h"
 #import "LTTexture+Factory.h"
 #import "UIColor+Vector.h"
 
-NSString * const kLTBrushEffectExamples = @"LTBrushEffectExamples";
+NSString * const kLTBrushEffectLTBrushExamples = @"LTBrushEffectLTBrushExamples";
+NSString * const kLTBrushEffectSubclassExamples = @"LTBrushEffectSubclassExamples";
+NSString * const kLTBrushEffectClass = @"LTBrushEffectClass";
 
+/// Shared group name for testing subclasses of LTBrushEffect.
+extern NSString * const kLTBrushEffectExamples;
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
 @end
 
 SharedExamplesBegin(LTBrushEffectExamples)
 
-sharedExamplesFor(kLTBrushEffectExamples, ^(NSDictionary *data) {
+sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
+  __block Class effectClass;
+  __block LTBrushEffect *effect;
+  
+  beforeEach(^{
+    effectClass = data[kLTBrushEffectClass];
+    LTGLContext *context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+  });
+  
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
+  });
+  
+  context(@"initialization", ^{
+    it(@"should initailize with default initializer", ^{
+      effect = [[effectClass alloc] init];
+      expect(effect.random).notTo.beNil();
+    });
+    
+    it(@"should initialize with a given random generator", ^{
+      LTRandom *random = [[LTRandom alloc] init];
+      effect = [[effectClass alloc] initWithRandom:random];
+      expect(effect.random).to.beIdenticalTo(random);
+    });
+  });
+});
+
+sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
   __block Class brushClass;
   
   beforeEach(^{

@@ -3,6 +3,8 @@
 
 #import "LTPropertyMacros.h"
 
+#import "LTBrushEffect.h"
+
 @class LTTexture;
 
 /// @class LTBrushColorDynamicsEffect
@@ -12,7 +14,7 @@
 /// the brush as we paint.
 ///
 /// @see http://www.photoshopessentials.com/basics/photoshop-brushes/brush-dynamics/
-@interface LTBrushColorDynamicsEffect : NSObject
+@interface LTBrushColorDynamicsEffect : LTBrushEffect
 
 /// Returns an array of target colors based on the given array of normalized \c LTRotatedRects which
 /// represent the (normalized) locations of the brush tips, and the given base color.

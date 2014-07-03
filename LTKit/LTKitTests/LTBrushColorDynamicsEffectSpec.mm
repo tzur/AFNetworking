@@ -3,13 +3,19 @@
 
 #import "LTBrushColorDynamicsEffect.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTCGExtensions.h"
 #import "LTTexture+Factory.h"
+#import "LTRandom.h"
 #import "LTRotatedRect.h"
 #import "UIColor+Vector.h"
 
 SpecGLBegin(LTBrushColorDynamicsEffect)
 
+itShouldBehaveLike(kLTBrushEffectSubclassExamples,
+                   @{kLTBrushEffectClass: [LTBrushColorDynamicsEffect class]});
+
+const NSUInteger kTestingSeed = 1234;
 const CGFloat kEpsilon = 1e-6;
 
 __block LTBrushColorDynamicsEffect *effect;
@@ -105,13 +111,15 @@ context(@"effect", ^{
   __block CGFloat baseHue, baseSaturation, baseBrightness, baseAlpha;
   
   beforeEach(^{
-    effect = [[LTBrushColorDynamicsEffect alloc] init];
-    srand48(0);
+    LTRandom *random = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    effect = [[LTBrushColorDynamicsEffect alloc] initWithRandom:random];
     sourceRects = [NSMutableArray array];
     for (NSUInteger i = 0; i < 5000; ++i) {
-      [sourceRects addObject:[LTRotatedRect rectWithCenter:CGPointMake(drand48(), drand48())
-                                                      size:CGSizeMakeUniform(drand48())
-                                                     angle:drand48() * 2 * M_PI]];
+      [sourceRects addObject:[LTRotatedRect
+                              rectWithCenter:CGPointMake([random randomDouble],
+                                                         [random randomDouble])
+                              size:CGSizeMakeUniform([random randomDouble])
+                              angle:[random randomDoubleBetweenMin:0 max:2 * M_PI]]];
     }
     
     baseHue = 0.75;

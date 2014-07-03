@@ -20,7 +20,7 @@ SpecGLBegin(LTBristleBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBristleBrush class]});
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
 
 __block LTBristleBrush *brush;
 

@@ -8,6 +8,7 @@
 #import "LTPainter.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
+#import "LTRandom.h"
 #import "LTTexture.h"
 
 @interface LTSingleAirbrushPaintingStrategy ()
@@ -29,11 +30,14 @@
 
 SpecBegin(LTSingleAirbrushPaintingStrategy)
 
+static const NSUInteger kTestingSeed = 1234;
+
 __block LTSingleAirbrushPaintingStrategy *strategy;
 __block id brush;
 
 beforeEach(^{
   brush = [OCMockObject niceMockForClass:[LTBrush class]];
+  [[[brush stub] andReturn:[[LTRandom alloc] initWithSeed:kTestingSeed]] random];
 });
 
 afterEach(^{
@@ -67,6 +71,7 @@ context(@"instance", ^{
       expect(strategy.pointsTransformer).to.beNil();
       expect(strategy.fillFactor).to.equal(1);
       expect(strategy.fillRandomness).to.equal(1);
+      expect(strategy.random).to.beIdenticalTo([brush random]);
     });
     
     it(@"should set points", ^{

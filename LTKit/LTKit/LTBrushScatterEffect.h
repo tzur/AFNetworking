@@ -3,6 +3,8 @@
 
 #import "LTPropertyMacros.h"
 
+#import "LTBrushEffect.h"
+
 /// @class LTBrushScatterEffect
 ///
 /// A class representing a dynamic brush effect used by the \c LTBrush.
@@ -10,7 +12,7 @@
 /// tip along each brush strokes. This creates the illusion that we're "spraying" the brush.
 ///
 /// @see http://www.photoshopessentials.com/basics/photoshop-brushes/brush-dynamics/
-@interface LTBrushScatterEffect : NSObject
+@interface LTBrushScatterEffect : LTBrushEffect
 
 /// Returns an array of scattered \c LTRotatedRects based on the given array of \c LTRotatedRects
 /// which represents the original locations of the brush tips.

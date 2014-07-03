@@ -13,7 +13,7 @@ SpecGLBegin(LTMultiTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTMultiTextureBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTMultiTextureBrush class]});
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTMultiTextureBrush class]});
 
 itShouldBehaveLike(kLTTextureBrushExamples, @{kLTTextureBrushClass: [LTMultiTextureBrush class]});
 

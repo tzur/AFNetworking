@@ -3,6 +3,8 @@
 
 #import "LTPropertyMacros.h"
 
+#import "LTBrushEffect.h"
+
 /// @class LTBrushShapeDynamicsEffect
 ///
 /// A class representing a dynamic brush effect used by the \c LTBrush.
@@ -10,7 +12,7 @@
 /// and roundness of the brush as we paint.
 ///
 /// @see http://www.photoshopessentials.com/basics/photoshop-brushes/brush-dynamics/
-@interface LTBrushShapeDynamicsEffect : NSObject
+@interface LTBrushShapeDynamicsEffect : LTBrushEffect
 
 /// Returns an array of the manipulated \c LTRotatedRects based on the given array of \c
 /// LTRotatedRects which represent the original locations of the brush tips.

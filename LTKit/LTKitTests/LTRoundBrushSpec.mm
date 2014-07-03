@@ -65,7 +65,7 @@ SpecBegin(LTRoundBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTRoundBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBrush class]});
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
 
 itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTRoundBrush class]});
 

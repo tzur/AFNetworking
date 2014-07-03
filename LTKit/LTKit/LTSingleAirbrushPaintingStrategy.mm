@@ -9,6 +9,7 @@
 #import "LTPainter.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
+#import "LTRandom.h"
 #import "LTTexture.h"
 
 @interface LTSingleAirbrushPaintingStrategy ()
@@ -39,10 +40,8 @@
 }
 
 - (LTSingleAirbrushPoints)generatePointsForCanvasSize:(CGSize)size {
-  // TODO:(amit) replace with LTRandom when available.
   LTParameterAssert(self.brush.baseDiameter);
   LTParameterAssert(self.brush.scale);
-  srand48(arc4random());
   CGFloat diameter = self.brush.baseDiameter * self.brush.scale / self.fillFactor;
   CGFloat radius = diameter / 2;
   CGFloat maxOffset = self.fillRandomness * radius;
@@ -50,8 +49,8 @@
   for (NSUInteger row = 0; row <= size.height / diameter; ++row) {
     for (NSUInteger col = 0; col <= size.width / diameter; ++col) {
       CGPoint position = CGPointMake(col * diameter + radius, row * diameter + radius);
-      position.x += (2 * drand48() - 1) * maxOffset;
-      position.y += (2 * drand48() - 1) * maxOffset;
+      position.x += [self.random randomDoubleBetweenMin:-maxOffset max:maxOffset];
+      position.y += [self.random randomDoubleBetweenMin:-maxOffset max:maxOffset];
       points.push_back({.position = position,
         .normalizedPosition = position / size,
         .scaleFactor = 1});

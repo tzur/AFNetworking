@@ -3,10 +3,17 @@
 
 #import "LTBrushShapeDynamicsEffect.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTCGExtensions.h"
+#import "LTRandom.h"
 #import "LTRotatedRect.h"
 
 SpecBegin(LTBrushShapeDynamicsEffect)
+
+itShouldBehaveLike(kLTBrushEffectSubclassExamples,
+                   @{kLTBrushEffectClass: [LTBrushShapeDynamicsEffect class]});
+
+static const NSUInteger kTestingSeed = 1234;
 
 __block LTBrushShapeDynamicsEffect *effect;
 
@@ -109,13 +116,16 @@ context(@"effect", ^{
   __block NSArray *dynamicRects;
   
   beforeEach(^{
-    effect = [[LTBrushShapeDynamicsEffect alloc] init];
+    LTRandom *random = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    effect = [[LTBrushShapeDynamicsEffect alloc] initWithRandom:random];
     srand48(0);
     sourceRects = [NSMutableArray array];
     for (NSUInteger i = 0; i < 1000; ++i) {
-      [sourceRects addObject:[LTRotatedRect rectWithCenter:CGPointMake(drand48(), drand48()) * 10
-                                                      size:CGSizeMakeUniform(drand48()) * 10
-                                                     angle:drand48() * 2 * M_PI]];
+      [sourceRects addObject:[LTRotatedRect
+                              rectWithCenter:CGPointMake([random randomDoubleBetweenMin:0 max:10],
+                                                         [random randomDoubleBetweenMin:0 max:10])
+                              size:CGSizeMakeUniform([random randomDoubleBetweenMin:0 max:10])
+                              angle:[random randomDoubleBetweenMin:0 max:2 * M_PI]]];
     }
   });
   

@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
+#import "LTRandom.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
@@ -95,7 +96,7 @@ static const CGFloat kBristleSigma = 0.4;
 
 - (void)startNewStrokeAtPoint:(LTPainterPoint *)point {
   if (self.randomAnglePerStroke) {
-    self.angle = drand48() * 2 * M_PI;
+    self.angle = [self.random randomDoubleBetweenMin:0 max:2 * M_PI];
   }
   [super startNewStrokeAtPoint:point];
   if (self.shouldUpdateBrush) {
@@ -126,8 +127,8 @@ static const CGFloat kBristleSigma = 0.4;
 - (NSArray *)bristlesForCurrentProperties {
   // We're using a contant seed since we prefer something pseudo-random, that will generate the same
   // brush under the same parameters. This is important so users can duplicate a previous result.
-  static const uint kRandomSeed = 10;
-  srand48(kRandomSeed);
+  static const NSUInteger kRandomSeed = 100;
+  LTRandom *random = [[LTRandom alloc] initWithSeed:kRandomSeed];
   CGFloat diameter = self.texture.size.width;
   CGFloat bristleLength = (diameter / self.bristles) * self.thickness / self.maxThickness;
   CGFloat maxRadius = MAX((diameter - bristleLength) / 2.0, 0.25 * diameter);
@@ -136,8 +137,8 @@ static const CGFloat kBristleSigma = 0.4;
   
   NSMutableArray *bristles = [NSMutableArray array];
   for (NSUInteger i = 0; i < self.bristles; ++i) {
-    CGFloat angle = drand48() * 2 * M_PI;
-    CGFloat radius = drand48() * (maxRadius - minRadius) + minRadius;
+    CGFloat angle = [random randomDoubleBetweenMin:0 max:2 * M_PI];
+    CGFloat radius = [random randomDoubleBetweenMin:minRadius max:maxRadius];
     CGPoint center = CGPointMake(std::sin(angle), std::cos(angle)) * radius;
     [bristles addObject:[LTRotatedRect rectWithCenter:center + self.brushFbo.size / 2
                                                  size:bristleSize angle:-angle]];

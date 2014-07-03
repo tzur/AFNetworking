@@ -3,10 +3,17 @@
 
 #import "LTBrushScatterEffect.h"
 
+#import "LTBrushEffectExamples.h"
 #import "LTCGExtensions.h"
+#import "LTRandom.h"
 #import "LTRotatedRect.h"
 
 SpecBegin(LTBrushScatterEffect)
+
+itShouldBehaveLike(kLTBrushEffectSubclassExamples,
+                   @{kLTBrushEffectClass: [LTBrushScatterEffect class]});
+
+const NSUInteger kTestingSeed = 1234;
 
 __block LTBrushScatterEffect *effect;
 
@@ -79,7 +86,8 @@ context(@"effect", ^{
   __block NSArray *scatteredRects;
   
   beforeEach(^{
-    effect = [[LTBrushScatterEffect alloc] init];
+    LTRandom *random = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    effect = [[LTBrushScatterEffect alloc] initWithRandom:random];
     sourceRects = @[
         [LTRotatedRect rectWithCenter:CGPointMake(0, 0) size:CGSizeMakeUniform(1) angle:0],
         [LTRotatedRect rectWithCenter:CGPointMake(1, 1) size:CGSizeMakeUniform(2) angle:M_PI_4],

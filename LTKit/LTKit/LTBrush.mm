@@ -13,6 +13,7 @@
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
+#import "LTRandom.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTBrushFsh.h"
@@ -21,6 +22,9 @@
 #import "UIColor+Vector.h"
 
 @interface LTBrush ()
+
+/// The random generator used by the effect.
+@property (strong, nonatomic) LTRandom *random;
 
 /// Texture holding the brush. Cannot be set to \c nil, and default value is a 1x1 texture with
 /// maximal intensity.
@@ -44,8 +48,13 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 #pragma mark -
 
 - (instancetype)init {
+  return [self initWithRandom:[[LTRandom alloc] init]];
+}
+
+- (instancetype)initWithRandom:(LTRandom *)random {
   if (self = [super init]) {
     [self setBrushDefaults];
+    self.random = random;
     self.texture = [self createTexture];
     self.program = [self createProgram];
     self.drawer = [self createDrawer];
@@ -56,12 +65,6 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
 - (void)setBrushDefaults {
   self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice * [UIScreen mainScreen].scale;
-  self.flow = self.defaultFlow;
-  self.scale = self.defaultScale;
-  self.angle = self.defaultAngle;
-  self.spacing = self.defaultSpacing;
-  self.opacity = self.defaultOpacity;
-  self.intensity = self.defaultIntensity;
 }
 
 - (LTTexture *)createTexture {

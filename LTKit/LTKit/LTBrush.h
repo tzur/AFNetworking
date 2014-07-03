@@ -9,7 +9,7 @@
   });
 
 @class LTBrushColorDynamicsEffect, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
-    LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRotatedRect;
+    LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;
 
 /// @class LTBrush
 ///
@@ -20,6 +20,12 @@
 ///
 /// @see http://www.smashingmagazine.com/2009/11/16/brushing-up-on-photoshops-brush-tool/
 @interface LTBrush : NSObject
+
+/// Initializes the brush with its own random generator.
+- (instancetype)init;
+
+/// Designated initializer: initializes the brush with the given random generator.
+- (instancetype)initWithRandom:(LTRandom *)random;
 
 /// Does the necessary preparations for drawing a new stroke (without drawing anything).
 - (void)startNewStrokeAtPoint:(LTPainterPoint *)point;
@@ -56,6 +62,9 @@
 
 /// Returns an array of property names (\c NSString) that can be adjusted for the brush.
 - (NSArray *)adjustableProperties;
+
+/// The random generator used by the brush.
+@property (readonly, nonatomic) LTRandom *random;
 
 /// Controls the base size of the brush, in pixels. The default value for iOS is the average finger
 /// size on the device.
