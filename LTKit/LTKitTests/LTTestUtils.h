@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <numeric>
+
 // This file contains various testing utilities for \c LTKit.
 
 /// Executes the given test if running on the simulator.
@@ -67,3 +69,17 @@ cv::Mat4b LTCreateDeltaMat(CGSize size);
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName);
 
+/// Returns the mean value of all elements in the given container.
+template <typename Container>
+double LTMean(const Container &container) {
+  return container.size() > 0 ?
+      std::accumulate(container.begin(), container.end(), 0.0) / (double)container.size() : 0.0;
+}
+
+/// Returns the variance of all elements in the given container.
+template <typename Container>
+double LTVariance(const Container &container) {
+  double mean = LTMean(container);
+  double squareSum = std::inner_product(container.begin(), container.end(), container.begin(), 0.0);
+  return squareSum / container.size() - mean * mean;
+}
