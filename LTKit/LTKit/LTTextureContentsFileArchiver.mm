@@ -8,7 +8,13 @@
 #import "LTTexture.h"
 
 @interface LTTextureContentsFileArchiver ()
+
 @property (strong, nonatomic) NSString *filePath;
+
+/// File manager used when saving and loading texture storage. The default value is
+/// \c [LTFileManager shareManager].
+@property (strong, nonatomic) LTFileManager *fileManager;
+
 @end
 
 @implementation LTTextureContentsFileArchiver
@@ -107,19 +113,6 @@
 - (void)verifySupportedTexture:(LTTexture *)texture {
   LTParameterAssert(texture.precision == LTTexturePrecisionByte &&
                     texture.format == LTTextureFormatRGBA, @"Only RGBA8 textures are supported");
-}
-
-@end
-
-@implementation LTTextureContentsFileArchiver (ForTesting)
-
-- (LTFileManager *)fileManager {
-  return objc_getAssociatedObject(self, @selector(fileManager));
-}
-
-- (void)setFileManager:(LTFileManager *)fileManager {
-  objc_setAssociatedObject(self, @selector(fileManager), fileManager,
-                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

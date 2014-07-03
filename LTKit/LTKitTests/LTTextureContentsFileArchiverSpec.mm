@@ -7,6 +7,10 @@
 #import "LTFileManager.h"
 #import "LTTexture+Factory.h"
 
+@interface LTTextureContentsFileArchiver ()
+@property (strong, nonatomic) LTFileManager *fileManager;
+@end
+
 @interface LTFakeFileManager : LTFileManager
 
 @property (nonatomic) NSUInteger saveCount;

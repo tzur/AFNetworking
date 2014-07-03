@@ -24,11 +24,3 @@
 @property (readonly, nonatomic) NSString *filePath;
 
 @end
-
-@interface LTTextureContentsFileArchiver (ForTesting)
-
-/// File manager used when saving and loading texture storage. The default value is
-/// \c [LTFileManager shareManager].
-@property (strong, nonatomic) LTFileManager *fileManager;
-
-@end
