@@ -84,9 +84,10 @@ context(@"random", ^{
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
       second.push_back([random randomDouble]);
     }
-    for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
-      expect(first[i]).to.equal(second[i]);
-    }
+#pragma push_macro("equal")
+#undef equal
+    expect(std::equal(first.begin(), first.end(), second.begin())).to.beTruthy();
+#pragma pop_macro("equal")
   });
   
   it(@"should generate identical random sequence when using same seed", ^{
