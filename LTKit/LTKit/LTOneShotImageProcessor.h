@@ -23,4 +23,7 @@
 /// Size of the output texture.
 @property (readonly, nonatomic) CGSize outputSize;
 
+/// Output texture of the processor.
+@property (readonly, nonatomic) LTTexture *outputTexture;
+
 @end
