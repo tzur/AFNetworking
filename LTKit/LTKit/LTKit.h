@@ -64,6 +64,7 @@
 
 // IO.
 #import <LTKit/LTFileManager.h>
+#import <LTKit/LTImageLoader.h>
 
 // GPU/Base.
 #import <LTKit/LTArrayBuffer.h>
