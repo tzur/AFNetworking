@@ -5,27 +5,11 @@
 
 #import "LTCGExtensions.h"
 #import "LTTexture.h"
+#import "LTRandom.h"
 #import "LTRotatedRect.h"
 #import "UIColor+Vector.h"
 
 @implementation LTBrushColorDynamicsEffect
-
-#pragma mark -
-#pragma mark Initialization
-#pragma mark -
-
-- (instancetype)init {
-  if (self = [super init]) {
-    [self setColorDynamicsEffectDefaults];
-  }
-  return self;
-}
-
-- (void)setColorDynamicsEffectDefaults {
-  self.hueJitter = self.defaultHueJitter;
-  self.saturationJitter = self.defaultSaturationJitter;
-  self.brightnessJitter = self.defaultBrightnessJitter;
-}
 
 #pragma mark -
 #pragma mark Effect
@@ -36,8 +20,6 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
 - (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)baseColor {
   LTParameterAssert(rects);
   LTParameterAssert(baseColor);
-  srand48(arc4random());
-  
   NSMutableArray *colors = [NSMutableArray array];
   NSArray *baseColorsFromTexture = [self baseColorsFromTextureForRects:rects];
   [rects enumerateObjectsUsingBlock:^(LTRotatedRect *rect, NSUInteger idx, BOOL *) {
@@ -50,9 +32,11 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
 // TODO:(amit) the rect might be used when different control methods will be implemented, for
 // example, based on the size of the rect, etc.
 - (UIColor *)randomColorFromRect:(LTRotatedRect __unused *)rect baseColor:(UIColor *)color {
-  CGFloat randomHueJitter = (2 * drand48() - 1) * self.hueJitter;
-  CGFloat randomSaturationJitter = (2 * drand48() - 1) * self.saturationJitter;
-  CGFloat randomBrightnessJitter = (2 * drand48() - 1) * self.brightnessJitter;
+  CGFloat randomHueJitter = [self.random randomDoubleBetweenMin:-self.hueJitter max:self.hueJitter];
+  CGFloat randomSaturationJitter =
+      [self.random randomDoubleBetweenMin:-self.saturationJitter max:self.saturationJitter];
+  CGFloat randomBrightnessJitter =
+      [self.random randomDoubleBetweenMin:-self.brightnessJitter max:self.brightnessJitter];
 
   CGFloat h, s, b, a;
   if (![color getHue:&h saturation:&s brightness:&b alpha:&a]) {

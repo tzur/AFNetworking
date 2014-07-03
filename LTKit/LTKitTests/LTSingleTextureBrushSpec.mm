@@ -13,7 +13,7 @@ SpecGLBegin(LTSingleTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
 itShouldBehaveLike(kLTTextureBrushExamples, @{kLTTextureBrushClass: [LTSingleTextureBrush class]});
 

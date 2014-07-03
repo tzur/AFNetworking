@@ -3,7 +3,7 @@
 
 #import "LTPaintingStrategy.h"
 
-@class LTBrush;
+@class LTBrush, LTRandom;
 
 /// @class LTSingleBrushPaintingStrategy
 ///
@@ -19,5 +19,8 @@
 
 /// Brush used for painting.
 @property (readonly, nonatomic) LTBrush *brush;
+
+/// Random generator used by the strategy.
+@property (readonly, nonatomic) LTRandom *random;
 
 @end

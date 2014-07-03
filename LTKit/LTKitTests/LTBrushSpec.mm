@@ -11,6 +11,7 @@
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
+#import "LTRandom.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
@@ -34,6 +35,19 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
   
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
+  });
+  
+  context(@"initialization", ^{
+    it(@"should initailize with default initializer", ^{
+      LTBrush *brush = [[brushClass alloc] init];
+      expect(brush.random).notTo.beNil();
+    });
+    
+    it(@"should initialize with a given random generator", ^{
+      LTRandom *random = [[LTRandom alloc] init];
+      LTBrush *brush = [[brushClass alloc] initWithRandom:random];
+      expect(brush.random).to.beIdenticalTo(random);
+    });
   });
   
   context(@"properties", ^{
@@ -153,7 +167,7 @@ SpecBegin(LTBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples, @{kLTBrushClass: [LTBrush class]});
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];

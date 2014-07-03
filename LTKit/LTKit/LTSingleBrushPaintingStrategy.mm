@@ -3,6 +3,8 @@
 
 #import "LTSingleBrushPaintingStrategy.h"
 
+#import "LTBrush.h"
+
 @interface LTSingleBrushPaintingStrategy ()
 @property (strong ,nonatomic) LTBrush *brush;
 @end
@@ -24,6 +26,10 @@
 - (NSArray *)paintingDirectionsForStartingProgress:(__unused double)startingProgress
                                     endingProgress:(__unused double)endingProgress {
   LTMethodNotImplemented();
+}
+
+- (LTRandom *)random {
+  return self.brush.random;
 }
 
 @end

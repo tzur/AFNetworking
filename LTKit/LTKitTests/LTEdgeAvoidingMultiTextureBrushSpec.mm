@@ -16,7 +16,7 @@ SpecGLBegin(LTEdgeAvoidingMultiTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTEdgeAvoidingMultiTextureBrush class]});
 
-itShouldBehaveLike(kLTBrushEffectExamples,
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples,
                    @{kLTBrushClass: [LTEdgeAvoidingMultiTextureBrush class]});
 
 itShouldBehaveLike(kLTTextureBrushExamples,
