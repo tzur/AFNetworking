@@ -1,6 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <LTKit/LTEnumRegistry.h>
 #import <numeric>
 
 // This file contains various testing utilities for \c LTKit.
@@ -68,6 +69,12 @@ cv::Mat4b LTCreateDeltaMat(CGSize size);
 /// found or loaded.
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName);
+
+typedef void (^LTForeachEnumValueBlock)(NSUInteger value);
+
+/// Calls the given block for each enum value that exists for the given enum defined by \c enumName.
+/// The given \c enumName must be registered in \c LTEnumRegistry.
+void LTForeachEnumValue(NSString *enumName, LTForeachEnumValueBlock block);
 
 /// Returns the mean value of all elements in the given container.
 template <typename Container>
