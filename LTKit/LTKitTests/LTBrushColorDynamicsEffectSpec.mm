@@ -15,7 +15,6 @@ SpecGLBegin(LTBrushColorDynamicsEffect)
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushColorDynamicsEffect class]});
 
-const NSUInteger kTestingSeed = 1234;
 const CGFloat kEpsilon = 1e-6;
 
 __block LTBrushColorDynamicsEffect *effect;
@@ -111,7 +110,7 @@ context(@"effect", ^{
   __block CGFloat baseHue, baseSaturation, baseBrightness, baseAlpha;
   
   beforeEach(^{
-    LTRandom *random = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    LTRandom *random = [[LTRandom alloc] init];
     effect = [[LTBrushColorDynamicsEffect alloc] initWithRandom:random];
     sourceRects = [NSMutableArray array];
     for (NSUInteger i = 0; i < 5000; ++i) {

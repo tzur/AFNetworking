@@ -30,14 +30,12 @@
 
 SpecBegin(LTSingleAirbrushPaintingStrategy)
 
-static const NSUInteger kTestingSeed = 1234;
-
 __block LTSingleAirbrushPaintingStrategy *strategy;
 __block id brush;
 
 beforeEach(^{
   brush = [OCMockObject niceMockForClass:[LTBrush class]];
-  [[[brush stub] andReturn:[[LTRandom alloc] initWithSeed:kTestingSeed]] random];
+  [[[brush stub] andReturn:[[LTRandom alloc] init]] random];
 });
 
 afterEach(^{

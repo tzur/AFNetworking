@@ -48,10 +48,11 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 #pragma mark -
 
 - (instancetype)init {
-  return [self initWithRandom:[[LTRandom alloc] init]];
+  return [self initWithRandom:[JSObjection defaultInjector][[LTRandom class]]];
 }
 
 - (instancetype)initWithRandom:(LTRandom *)random {
+  LTParameterAssert(random);
   if (self = [super init]) {
     [self setBrushDefaults];
     self.random = random;

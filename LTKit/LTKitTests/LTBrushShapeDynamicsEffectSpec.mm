@@ -13,8 +13,6 @@ SpecBegin(LTBrushShapeDynamicsEffect)
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushShapeDynamicsEffect class]});
 
-static const NSUInteger kTestingSeed = 1234;
-
 __block LTBrushShapeDynamicsEffect *effect;
 
 context(@"initialization", ^{
@@ -116,7 +114,7 @@ context(@"effect", ^{
   __block NSArray *dynamicRects;
   
   beforeEach(^{
-    LTRandom *random = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    LTRandom *random = [[LTRandom alloc] init];
     effect = [[LTBrushShapeDynamicsEffect alloc] initWithRandom:random];
     srand48(0);
     sourceRects = [NSMutableArray array];
