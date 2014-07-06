@@ -288,4 +288,7 @@ namespace std {
   }
 }
 
+/// Converts the given \c GLKVector4 from the RGB colorspace to the HSV colorspace.
+GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba);
+
 #endif

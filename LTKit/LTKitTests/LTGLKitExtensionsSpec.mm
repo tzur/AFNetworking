@@ -3,6 +3,8 @@
 
 #import "LTGLKitExtensions.h"
 
+#import "UIColor+Vector.h"
+
 SpecBegin(LTGLKitExtensions)
 
 context(@"GLKMatrix2", ^{
@@ -321,6 +323,29 @@ context(@"standard line equation", ^{
         .to.beCloseToGLKVector(GLKLineEquation(CGPointZero, p0));
     expect(GLKLineEquation(GLKVector2Zero, v1))
         .to.beCloseToGLKVector(GLKLineEquation(CGPointZero, p1));
+  });
+});
+
+context(@"colorspace conversion", ^{
+  __block GLKVector4s pixels;
+  
+  it(@"should convert from rgb to hsv", ^{
+    for (float r = 0; r <= 1.0; r += 0.1) {
+      for (float g = 0; g <= 1.0; g += 0.1) {
+        for (float b = 0; b <= 1.0; b += 0.1) {
+          for (float a = 0; a <= 1.0; a += 0.1) {
+            pixels.push_back(GLKVector4Make(r, g, b, a));
+          }
+        }
+      }
+    }
+    
+    for (const auto rgba : pixels) {
+      GLKVector4 hsva = GLKRGBA2HSVA(rgba);
+      CGFloat h,s,v;
+      [[UIColor colorWithGLKVector:rgba] getHue:&h saturation:&s brightness:&v alpha:nil];
+      expect(hsva).to.beCloseToGLKVectorWithin(GLKVector4Make(h, s, v, rgba.a), 1e-4);
+    }
   });
 });
 

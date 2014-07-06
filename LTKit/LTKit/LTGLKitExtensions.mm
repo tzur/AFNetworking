@@ -29,3 +29,29 @@ GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target) {
   }
   return line / (line.z ? ABS(line.z) : 1.0);
 }
+
+GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
+  float h, s, v, delta;
+  float min = MIN(rgba.r, MIN(rgba.g, rgba.b));
+  float max = MAX(rgba.r, MAX(rgba.g, rgba.b));
+  delta = max - min;
+  
+  v = max;
+  if (max <= 0) {
+    return GLKVector4Make(0, 0, 0, 1);
+  }
+  s = delta / max;
+  
+  if (rgba.r == max) {
+    // Between yellow & magenta.
+    h = (rgba.g - rgba.b) / delta;
+  } else if (rgba.g == max) {
+    // Between cyan & yellow.
+    h = 2 + (rgba.b - rgba.r) / delta;
+  } else {
+    // Between magenta & cyan.
+    h = 4 + (rgba.r - rgba.g) / delta;
+  }
+  h /= 6;
+  return GLKVector4Make(h > 0 ? h : h + 1, s, v, rgba.a);
+}
