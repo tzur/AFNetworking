@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
+#import "LTEnumRegistry.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "SpectaUtility.h"

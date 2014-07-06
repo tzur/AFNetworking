@@ -1,7 +1,6 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <LTKit/LTEnumRegistry.h>
 #import <numeric>
 
 // This file contains various testing utilities for \c LTKit.
