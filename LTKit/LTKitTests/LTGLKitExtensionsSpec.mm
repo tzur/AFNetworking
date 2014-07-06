@@ -340,7 +340,7 @@ context(@"colorspace conversion", ^{
       }
     }
     
-    for (auto rgba : pixels) {
+    for (const auto rgba : pixels) {
       GLKVector4 hsva = GLKRGBA2HSVA(rgba);
       CGFloat h,s,v;
       [[UIColor colorWithGLKVector:rgba] getHue:&h saturation:&s brightness:&v alpha:nil];
