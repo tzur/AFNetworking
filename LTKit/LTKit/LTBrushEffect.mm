@@ -15,7 +15,7 @@
 @implementation LTBrushEffect
 
 - (instancetype)init {
-  return [self initWithRandom:[[LTRandom alloc] init]];
+  return [self initWithRandom:[JSObjection defaultInjector][[LTRandom class]]];
 }
 
 - (instancetype)initWithRandom:(LTRandom *)random {

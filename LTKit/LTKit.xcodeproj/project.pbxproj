@@ -196,6 +196,8 @@
 		2843B77E18ACBF710044B87A /* LTSingleRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B77D18ACBF710044B87A /* LTSingleRectDrawerSpec.mm */; };
 		2843B78018ACBFB60044B87A /* LTMultiRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B77F18ACBFB60044B87A /* LTMultiRectDrawerSpec.mm */; };
 		2843B78318ACC08B0044B87A /* LTProcessingDrawerExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B78218ACC08B0044B87A /* LTProcessingDrawerExamples.mm */; };
+		28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 28463D0E196983DE0021A7CD /* LTDefaultModule.h */; };
+		28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 28463D0F196983DE0021A7CD /* LTDefaultModule.m */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
@@ -1036,6 +1038,8 @@
 		2843B78218ACC08B0044B87A /* LTProcessingDrawerExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProcessingDrawerExamples.mm; sourceTree = "<group>"; };
 		2843B78418ACF4F10044B87A /* LTSingleRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSingleRectDrawerSpec.h; sourceTree = "<group>"; };
 		2843B78518ACF5030044B87A /* LTMultiRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMultiRectDrawerSpec.h; sourceTree = "<group>"; };
+		28463D0E196983DE0021A7CD /* LTDefaultModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultModule.h; sourceTree = "<group>"; };
+		28463D0F196983DE0021A7CD /* LTDefaultModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTDefaultModule.m; sourceTree = "<group>"; };
 		284791E61862E70200A70AF5 /* LTGridDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGridDrawer.h; sourceTree = "<group>"; };
 		284791E71862E70200A70AF5 /* LTGridDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawer.mm; sourceTree = "<group>"; };
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
@@ -2086,6 +2090,8 @@
 				282CF08C187B031800904F07 /* UIColor+Vector.mm */,
 				8B8720D71928951600517F2E /* UIImage+Loading.h */,
 				8B8720D81928951600517F2E /* UIImage+Loading.m */,
+				28463D0E196983DE0021A7CD /* LTDefaultModule.h */,
+				28463D0F196983DE0021A7CD /* LTDefaultModule.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2751,6 +2757,7 @@
 				8B871FC71924A75E00517F2E /* LTKit.h in Headers */,
 				8B871FC81924A75E00517F2E /* LTDevice.h in Headers */,
 				8B871FC91924A75E00517F2E /* LTShaderStorage.h in Headers */,
+				28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */,
 				8B871FCA1924A75E00517F2E /* LTImageProcessor.h in Headers */,
 				8B871FCC1924A75E00517F2E /* LTIterativeImageProcessor.h in Headers */,
 				8B871FCD1924A75E00517F2E /* LTGPUImageProcessor.h in Headers */,
@@ -3356,6 +3363,7 @@
 				2843B6F818A7E1050044B87A /* LTRotatedRect.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */,
+				28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */,
 				8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */,
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
 				28C61C0318B23D430036D66E /* LTTouchCollectorTimeIntervalFilter.m in Sources */,

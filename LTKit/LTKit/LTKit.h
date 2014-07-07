@@ -5,6 +5,7 @@
 
 // Supporting Files.
 #import <LTKit/LTCGExtensions.h>
+#import <LTKit/LTDefaultModule.h>
 #import <LTKit/LTEasyBoxing.h>
 #import <LTKit/LTGLKitExtensions.h>
 #import <LTKit/LTGLUtils.h>

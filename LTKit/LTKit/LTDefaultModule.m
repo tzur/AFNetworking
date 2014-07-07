@@ -1,19 +1,24 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
-// Created by Yaron Inger.
+// Created by Amit Goldstein.
 
-#import "LTKitUserModule.h"
+#import "LTDefaultModule.h"
 
-#import <LTKit/LTKit.h>
+#import "LTDevice.h"
+#import "LTFileManager.h"
+#import "LTRandom.h"
 
-@implementation LTKitUserModule
+@implementation LTDefaultModule
 
 - (void)configure {
   [self bind:[UIScreen mainScreen] toClass:[UIScreen class]];
   [self bind:[UIDevice currentDevice] toClass:[UIDevice class]];
-  [self bind:[LTDevice currentDevice] toClass:[LTDevice class]];
   [self bind:[UIApplication sharedApplication] toClass:[UIApplication class]];
   [self bind:[NSFileManager defaultManager] toClass:[NSFileManager class]];
+  [self bind:[LTDevice currentDevice] toClass:[LTDevice class]];
   [self bind:[LTFileManager sharedManager] toClass:[LTFileManager class]];
+  [self bindBlock:^id(JSObjectionInjector __unused *context) {
+    return [[LTRandom alloc] init];
+  } toClass:[LTRandom class]];
 }
 
 @end
