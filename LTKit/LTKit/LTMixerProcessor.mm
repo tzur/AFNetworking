@@ -14,6 +14,18 @@
 #import "LTShaderStorage+LTMixerVsh.h"
 #import "LTTexture.h"
 
+LTEnumImplement(NSUInteger, LTBlendMode,
+  LTBlendModeNormal,
+  LTBlendModeDarken,
+  LTBlendModeMultiply,
+  LTBlendModeHardLight,
+  LTBlendModeSoftLight,
+  LTBlendModeLighten,
+  LTBlendModeScreen,
+  LTBlendModeColorBurn,
+  LTBlendModeOverlay
+);
+
 @interface LTGPUImageProcessor ()
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement;

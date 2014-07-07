@@ -237,6 +237,56 @@ context(@"blending", ^{
     
     expect($([output image])).to.beCloseToMat($(expected));
   });
+
+  it(@"should mix with soft-light blending mode", ^{
+    processor.blendMode = LTBlendModeSoftLight;
+    [processor process];
+
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(112, 64, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should mix with lighten blending mode", ^{
+    processor.blendMode = LTBlendModeLighten;
+    [processor process];
+
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(128, 96, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should mix with screen blending mode", ^{
+    processor.blendMode = LTBlendModeScreen;
+    [processor process];
+
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(144, 112, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should mix with screen color burn mode", ^{
+    processor.blendMode = LTBlendModeColorBurn;
+    [processor process];
+
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(64, 32, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should mix with screen overlay mode", ^{
+    processor.blendMode = LTBlendModeOverlay;
+    [processor process];
+
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
 });
 
 SpecGLEnd

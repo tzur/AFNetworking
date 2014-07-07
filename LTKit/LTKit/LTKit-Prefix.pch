@@ -32,5 +32,6 @@
   #pragma clang diagnostic pop
 
   #import "LTEasyBoxing.h"
+  #import "LTEnumRegistry.h"
   #import "LTOpenCVHalfFloat.h"
 #endif

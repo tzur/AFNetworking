@@ -4,12 +4,17 @@
 #import "LTOneShotImageProcessor.h"
 
 /// Types of blend modes that are usable in the mixer.
-typedef NS_ENUM(NSUInteger, LTBlendMode) {
-  LTBlendModeNormal = 0,
+LTEnumDeclare(NSUInteger, LTBlendMode,
+  LTBlendModeNormal,
   LTBlendModeDarken,
   LTBlendModeMultiply,
-  LTBlendModeHardLight
-};
+  LTBlendModeHardLight,
+  LTBlendModeSoftLight,
+  LTBlendModeLighten,
+  LTBlendModeScreen,
+  LTBlendModeColorBurn,
+  LTBlendModeOverlay
+);
 
 /// How to handle the back texture if is has a different size than the output.
 typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
