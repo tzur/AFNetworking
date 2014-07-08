@@ -99,7 +99,6 @@
 #import <LTKit/LTBrush.h>
 #import <LTKit/LTEdgeAvoidingBrush.h>
 #import <LTKit/LTEdgeAvoidingMultiTextureBrush.h>
-#import <LTKit/LTErasingBrush.h>
 #import <LTKit/LTMultiTextureBrush.h>
 #import <LTKit/LTRoundBrush.h>
 #import <LTKit/LTSingleTextureBrush.h>

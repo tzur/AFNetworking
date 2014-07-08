@@ -3,6 +3,12 @@
 
 #extension GL_EXT_shader_framebuffer_fetch : require
 
+const int kModePaint = 0;
+const int kModeEraseDirect = 1;
+const int kModeEraseIndirect = 2;
+
+uniform int mode;
+
 uniform mediump sampler2D sourceTexture;
 uniform lowp sampler2D inputImage;
 
@@ -43,5 +49,15 @@ void main() {
   highp vec4 newColor = brush * factor * intensity;
   
   mediump vec4 previousColor = gl_LastFragData[0];
-  gl_FragColor = clamp(min(previousColor + flow * newColor, opacity), previousColor, vec4(1.0));
+  if (mode == kModeEraseDirect) {
+    // LTRoundBrushModeEraseDirect.
+    gl_FragColor =
+        clamp(max(previousColor - flow * newColor, 1.0 - opacity), vec4(0.0), previousColor);
+  } else if (mode == kModeEraseIndirect) {
+    // LTRoundBrushModeEraseIndirect.
+    gl_FragColor = clamp(max(previousColor - flow * newColor, -opacity), vec4(-1.0), previousColor);
+  } else {
+    // Default mode is LTRoundBrushModePaint: regular painting.
+    gl_FragColor = clamp(min(previousColor + flow * newColor, opacity), previousColor, vec4(1.0));
+  }
 }
