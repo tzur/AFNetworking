@@ -6,9 +6,13 @@
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTMathUtils.h"
+#import "LTProgram.h"
+#import "LTShaderStorage+LTBrushVsh.h"
+#import "LTShaderStorage+LTRoundBrushFsh.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
+@property (strong, nonatomic) LTProgram *program;
 @property (strong, nonatomic) LTTexture *texture;
 @end
 
@@ -30,14 +34,14 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (instancetype)init {
   if (self = [super init]) {
-    [self setRoundBrushDefaults];
     [self updateBrushForCurrentProperties];
   }
   return self;
 }
 
-- (void)setRoundBrushDefaults {
-  self.hardness = self.defaultHardness;
+- (LTProgram *)createProgram {
+  return [[LTProgram alloc] initWithVertexSource:[LTBrushVsh source]
+                                  fragmentSource:[LTRoundBrushFsh source]];
 }
 
 #pragma mark -
@@ -90,6 +94,13 @@ static const CGFloat kBrushGaussianSigma = 0.3;
     }
   }
   return mat;
+}
+
+- (void)updateProgramForCurrentProperties {
+  self.program[[LTRoundBrushFsh mode]] = @(self.mode);
+  self.program[[LTRoundBrushFsh flow]] = @(self.flow);
+  self.program[[LTRoundBrushFsh opacity]] = @(self.opacity);
+  self.program[[LTRoundBrushFsh intensity]] = $(self.intensity);
 }
 
 #pragma mark -

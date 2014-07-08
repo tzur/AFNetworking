@@ -113,7 +113,7 @@ context(@"drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [fbo clearWithColor:GLKVector4Zero];
     
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
@@ -150,49 +150,164 @@ context(@"drawing", ^{
   });
   
   context(@"brush properties related to the shader", ^{
-    it(@"drawing should be additive", ^{
-      brush.hardness = 0.5;
-      [brush startNewStrokeAtPoint:point];
-      [brush drawPoint:point inFramebuffer:fbo];
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected.rowRange(1, 3).setTo(72);
-      expected.colRange(1, 3).setTo(72);
-      expected(cv::Rect(1, 1, 2, 2)).setTo(255);
-      expect($(output.image)).to.beCloseToMat($(expected));
+    context(@"painting mode", ^{
+      it(@"drawing should be additive", ^{
+        brush.hardness = 0.5;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(72);
+        expected.colRange(1, 3).setTo(72);
+        expected(cv::Rect(1, 1, 2, 2)).setTo(255);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated opacity", ^{
+        brush.opacity = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(26);
+        expected.colRange(1, 3).setTo(26);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated flow", ^{
+        brush.flow = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(26);
+        expected.colRange(1, 3).setTo(26);
+        expect($(output.image)).to.beCloseToMat($(expected));
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(52);
+        expected.colRange(1, 3).setTo(52);
+        expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
+      });
+      
+      it(@"should draw with updated intensity", ^{
+        const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+        brush.intensity = kIntensity;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
+        expected.colRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
     });
     
-    it(@"should draw with updated opacity", ^{
-      brush.opacity = 0.1;
-      [brush startNewStrokeAtPoint:point];
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected.rowRange(1, 3).setTo(26);
-      expected.colRange(1, 3).setTo(26);
-      expect($(output.image)).to.beCloseToMat($(expected));
+    context(@"direct erasing mode", ^{
+      beforeEach(^{
+        [fbo clearWithColor:GLKVector4One];
+        expected.setTo(cv::Vec4b(255, 255, 255, 255));
+        brush.mode = LTRoundBrushModeEraseDirect;
+      });
+      
+      it(@"drawing should be additive", ^{
+        brush.hardness = 0.5;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(255 - 72);
+        expected.colRange(1, 3).setTo(255 - 72);
+        expected(cv::Rect(1, 1, 2, 2)).setTo(0);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated opacity", ^{
+        brush.opacity = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(255 - 26);
+        expected.colRange(1, 3).setTo(255 - 26);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated flow", ^{
+        brush.flow = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(255 - 26);
+        expected.colRange(1, 3).setTo(255 - 26);
+        expect($(output.image)).to.beCloseToMat($(expected));
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(255 - 52);
+        expected.colRange(1, 3).setTo(255 - 52);
+        expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
+      });
+      
+      it(@"should draw with updated intensity", ^{
+        const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+        brush.intensity = kIntensity;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(LTGLKVector4ToVec4b(GLKVector4One - kIntensity));
+        expected.colRange(1, 3).setTo(LTGLKVector4ToVec4b(GLKVector4One - kIntensity));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
     });
     
-    it(@"should draw with updated flow", ^{
-      brush.flow = 0.1;
-      [brush startNewStrokeAtPoint:point];
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected.rowRange(1, 3).setTo(26);
-      expected.colRange(1, 3).setTo(26);
-      expect($(output.image)).to.beCloseToMat($(expected));
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected.rowRange(1, 3).setTo(52);
-      expected.colRange(1, 3).setTo(52);
-      expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
-    });
-    
-    it(@"should draw with updated intensity", ^{
-      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
-      const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
-      brush.intensity = kIntensity;
-      [brush startNewStrokeAtPoint:point];
-      [brush drawPoint:point inFramebuffer:fbo];
-      expected = cv::Vec4b(0 ,0, 0, 0);
-      expected.rowRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
-      expected.colRange(1, 3).setTo(LTGLKVector4ToVec4b(kIntensity));
-      expect($(output.image)).to.beCloseToMat($(expected));
+    context(@"indirect erasing mode", ^{
+      using half_float::half;
+      
+      const cv::Vec4hf kBlack(half(0), half(0), half(0), half(0));
+      const cv::Vec4hf kWhite(half(1), half(1), half(1), half(1));
+
+      __block cv::Mat4hf expected;
+      
+      beforeEach(^{
+        output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
+                                     format:LTTextureFormatRGBA allocateMemory:YES];
+        fbo = [[LTFbo alloc] initWithTexture:output];
+        [fbo clearWithColor:GLKVector4Zero];
+        
+        expected.create(kOutputSize.height, kOutputSize.width);
+        expected.setTo(kBlack);
+        
+        brush.mode = LTRoundBrushModeEraseIndirect;
+      });
+      
+      it(@"drawing should be additive", ^{
+        brush.hardness = 0.5;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(-cv::Vec4hf(half(0.28), half(0.28), half(0.28), half(0.28)));
+        expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.28), half(0.28), half(0.28), half(0.28)));
+        expected(cv::Rect(1, 1, 2, 2)).setTo(-kWhite);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated opacity", ^{
+        brush.opacity = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
+        expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated flow", ^{
+        brush.flow = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
+        expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
+        expect($(output.image)).to.beCloseToMat($(expected));
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(-cv::Vec4hf(half(0.2), half(0.2), half(0.2), half(0.2)));
+        expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.2), half(0.2), half(0.2), half(0.2)));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+      
+      it(@"should draw with updated intensity", ^{
+        const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+        brush.intensity = kIntensity;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.2), half(0.3), half(0.4)));
+        expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.2), half(0.3), half(0.4)));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
     });
   });
 });

@@ -43,17 +43,6 @@ static const CGFloat kSizeToSamplingFactor = 50;
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)init {
-  if (self = [super init]) {
-    [self setEdgeAvoidingBrushDefaults];
-  }
-  return self;
-}
-
-- (void)setEdgeAvoidingBrushDefaults {
-  self.sigma = self.defaultSigma;
-}
-
 - (LTProgram *)createProgram {
   return [[LTProgram alloc] initWithVertexSource:[LTEdgeAvoidingBrushVsh source]
                                   fragmentSource:[LTEdgeAvoidingBrushFsh source]];
@@ -104,12 +93,12 @@ static const CGFloat kSizeToSamplingFactor = 50;
 }
 
 - (void)updateProgramForCurrentProperties {
+  self.program[[LTEdgeAvoidingBrushFsh mode]] = @(self.mode);
   self.program[[LTEdgeAvoidingBrushFsh flow]] = @(self.flow);
   self.program[[LTEdgeAvoidingBrushFsh sigma]] = @([self mappedSigma:self.sigma]);
   self.program[[LTEdgeAvoidingBrushFsh opacity]] = @(self.opacity);
   self.program[[LTEdgeAvoidingBrushFsh intensity]] = $(self.intensity);
 }
-
 
 - (CGFloat)mappedSigma:(CGFloat)sigma {
   LTParameterAssert(sigma >= 0 && sigma <= 1);
