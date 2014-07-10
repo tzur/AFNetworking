@@ -10,6 +10,7 @@
   #import "LTAssert.h"
   #import "LTGLUtils.h"
   #import "LTLogger.h"
+  #import "LTPropertyMacros.h"
   #import "LTTypedefs.h"
   #import "NSError+LTKit.h"
   #import "NSValue+GLKitExtensions.h"
