@@ -19,7 +19,7 @@ static NS_RETURNS_RETAINED NSString *descriptionOf(const std::vector<double> &ve
   return [array componentsJoinedByString:@","];
 }
 
-EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id within)) {
+EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length, id within)) {
   __block NSString *prerequisiteErrorMessage;
   __block std::vector<double> expectedVector;
   __block std::vector<double> actualVector;
@@ -39,19 +39,22 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id within
   match(^BOOL{
     double range = within ? [within doubleValue] : kDefaultWithinValue;
     if ([expected isKindOfClass:[EXPFloatTuple class]]) {
-      for (NSUInteger i = 0; i < [(EXPFloatTuple *)expected size]; ++i) {
-        expectedVector.push_back([(EXPFloatTuple *)expected values][0]);
-        actualVector.push_back([(EXPFloatTuple *)actual values][0]);
+      for (NSUInteger i = 0; i < [length unsignedIntegerValue]; ++i) {
+        expectedVector.push_back([(EXPFloatTuple *)expected values][i]);
+        actualVector.push_back([(EXPFloatTuple *)actual values][i]);
       }
     } else {
-      for (NSUInteger i = 0; i < [(EXPDoubleTuple *)expected size]; ++i) {
-        expectedVector.push_back([(EXPDoubleTuple *)expected values][0]);
-        actualVector.push_back([(EXPDoubleTuple *)actual values][0]);
+      for (NSUInteger i = 0; i < [length unsignedIntegerValue]; ++i) {
+        expectedVector.push_back([(EXPDoubleTuple *)expected values][i]);
+        actualVector.push_back([(EXPDoubleTuple *)actual values][i]);
       }
     }
     
     for (auto eIter = expectedVector.cbegin(), aIter = actualVector.cbegin();
          eIter != expectedVector.cend() && aIter != actualVector.cend(); ++eIter, ++aIter) {
+      if (isnan(*eIter) != isnan(*aIter)) {
+        return NO;
+      }
       if (ABS(*eIter - *aIter) > range) {
         return NO;
       }
