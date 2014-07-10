@@ -38,10 +38,13 @@ GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
   
   v = max;
   if (max <= 0) {
-    return GLKVector4Make(0, 0, 0, 1);
+    return GLKVector4Make(0, 0, 0, rgba.a);
   }
-  s = delta / max;
+  if (delta <= 0) {
+    return GLKVector4Make(0, 0, v, rgba.a);
+  }
   
+  s = delta / max;
   if (rgba.r == max) {
     // Between yellow & magenta.
     h = (rgba.g - rgba.b) / delta;
