@@ -5,10 +5,6 @@
 
 /// Avoid including this file directly. To use these macros, include \c LTGPUStructs.h.
 
-/// Foreach separator operators.
-#define _LTComma() ,
-#define _LTNull()
-
 /// Prints a member of a struct.
 #define _LTStructMember(CONTEXT, TYPE, MEMBER) \
     TYPE MEMBER; \

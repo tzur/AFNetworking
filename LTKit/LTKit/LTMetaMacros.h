@@ -9,6 +9,10 @@
 #pragma mark Interface
 #pragma mark -
 
+/// Foreach separator operators.
+#define _LTComma() ,
+#define _LTNull()
+
 /// For each consecutive variadic argument (up to twenty), MACRO is passed the
 /// zero-based index of the current argument, CONTEXT, and then two consecutive arguments.
 /// The results of adjoining invocations of MACRO are then separated by SEP.
