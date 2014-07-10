@@ -78,7 +78,7 @@
 #pragma mark Properties
 #pragma mark -
 
-- (void)setEdgesMode:(BOOL)edgesMode {
+- (void)setEdgesMode:(LTEdgesMode)edgesMode {
   _edgesMode = edgesMode;
   self[[LTEdgesMaskFsh edgesMode]] = @(edgesMode);
 }
