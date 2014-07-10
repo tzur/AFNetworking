@@ -18,6 +18,6 @@ typedef NS_ENUM(NSUInteger, LTEdgesMode) {
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
 /// Determines the type of the edges. Default value is LTEdgesModeGrey.
-@property (nonatomic) BOOL edgesMode;
+@property (nonatomic) LTEdgesMode edgesMode;
 
 @end
