@@ -63,6 +63,10 @@ context(@"initialization", ^{
           [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
     }).to.raise(NSInvalidArgumentException);
   });
+
+  it(@"should initialize with default values", ^{
+    expect(processor.frontOpacity).to.equal(1);
+  });
 });
 
 context(@"front placement", ^{
@@ -284,6 +288,20 @@ context(@"blending", ^{
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 255, 255));
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+});
+
+context(@"opacity", ^{
+  it(@"should change opacity of front texture", ^{
+    processor.frontOpacity = 0.5;
+    [processor process];
+
+    cv::Vec4b resultColor;
+    cv::addWeighted(frontColor, 0.25, backColor, 0.75, 0, resultColor);
+    cv::Mat4b expected(16, 16, backColor);
+    expected(cv::Rect(0, 0, 8, 8)).setTo(resultColor);
 
     expect($([output image])).to.beCloseToMat($(expected));
   });

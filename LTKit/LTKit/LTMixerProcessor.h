@@ -3,8 +3,10 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
+
 /// Types of blend modes that are usable in the mixer.
-LTEnumDeclare(NSUInteger, LTBlendMode,
+typedef NS_ENUM(NSUInteger, LTBlendMode) {
   LTBlendModeNormal,
   LTBlendModeDarken,
   LTBlendModeMultiply,
@@ -14,7 +16,7 @@ LTEnumDeclare(NSUInteger, LTBlendMode,
   LTBlendModeScreen,
   LTBlendModeColorBurn,
   LTBlendModeOverlay
-);
+};
 
 /// How to handle the back texture if is has a different size than the output.
 typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
@@ -51,5 +53,8 @@ typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
 /// Rotation, in radians, of the front texture on top of the back texture. The default value is
 /// \c 0.
 @property (nonatomic) float frontRotation;
+
+/// Opacity of the front texture in the range [0, 1]. Default value is \c 1.
+LTDeclareProperty(CGFloat, frontOpacity, FrontOpacity);
 
 @end

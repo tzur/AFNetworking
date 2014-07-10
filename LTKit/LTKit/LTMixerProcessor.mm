@@ -14,18 +14,6 @@
 #import "LTShaderStorage+LTMixerVsh.h"
 #import "LTTexture.h"
 
-LTEnumImplement(NSUInteger, LTBlendMode,
-  LTBlendModeNormal,
-  LTBlendModeDarken,
-  LTBlendModeMultiply,
-  LTBlendModeHardLight,
-  LTBlendModeSoftLight,
-  LTBlendModeLighten,
-  LTBlendModeScreen,
-  LTBlendModeColorBurn,
-  LTBlendModeOverlay
-);
-
 @interface LTGPUImageProcessor ()
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement;
@@ -77,6 +65,7 @@ LTEnumImplement(NSUInteger, LTBlendMode,
   self.frontTranslation = GLKVector2Make(0, 0);
   self.frontScaling = 1;
   self.frontRotation = 0;
+  self.frontOpacity = self.defaultFrontOpacity;
 }
 
 - (LTProgram *)createMixerProgram {
@@ -155,5 +144,9 @@ LTEnumImplement(NSUInteger, LTBlendMode,
 
   self.frontTargetRect = [LTRotatedRect rect:scaledAndTranslated withAngle:self.frontRotation];
 }
+
+LTPropertyWithSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1, ^{
+  self[[LTMixerFsh opacity]] = @(frontOpacity);
+});
 
 @end

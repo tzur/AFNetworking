@@ -17,6 +17,7 @@ uniform lowp sampler2D sourceTexture;
 uniform mediump sampler2D maskTexture;
 
 uniform int blendMode;
+uniform mediump float opacity;
 
 varying highp vec2 vFrontTexcoord;
 varying highp vec2 vMaskTexcoord;
@@ -86,8 +87,8 @@ void main() {
   mediump vec4 front = texture2D(sourceTexture, vFrontTexcoord);
   mediump vec4 mask = texture2D(maskTexture, vMaskTexcoord);
 
-  // Calculate new front, including mask alpha value.
-  front = front * mask.r;
+  // Calculate new front, including mask alpha value and opacity.
+  front = front * mask.r * opacity;
 
   // Define variables as they appear in SVG spec. See http://www.w3.org/TR/SVGCompositing/.
   mediump vec3 Sca = front.rgb;
