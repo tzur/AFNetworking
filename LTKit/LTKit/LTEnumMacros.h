@@ -68,7 +68,7 @@
   _LTVerifyImplementation(NAME, __VA_ARGS__); \
   \
   /* Register the enum with LTEnumRegistry. */ \
-  _LTEnumRegister(NAME, __VA_ARGS__) \
+  _LTEnumRegister(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumImplementNSValueCategory(TYPE, NAME)
@@ -78,7 +78,7 @@
   _LTVerifyImplementationWithValues(NAME, __VA_ARGS__); \
   \
   /* Register the enum with LTEnumRegistry. */ \
-  _LTEnumRegisterWithValues(NAME, __VA_ARGS__) \
+  _LTEnumRegisterWithValues(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumImplementNSValueCategory(TYPE, NAME)
@@ -88,19 +88,19 @@
 #pragma mark -
 
 /// Registers the enum with \c LTEnumRegistry on image load.
-#define _LTEnumRegister(NAME, ...) \
+#define _LTEnumRegister(NAME, TYPE, ...) \
   __attribute__((constructor)) static void __register##NAME() { \
     [[LTEnumRegistry sharedInstance] \
         registerEnumName:@#NAME \
-        withFieldToValue:@{metamacro_foreach(_LTEnumDictionaryField,, __VA_ARGS__)}]; \
+        withFieldToValue:@{metamacro_foreach_cxt(_LTEnumDictionaryField,, TYPE, __VA_ARGS__)}]; \
   }
 
 /// Registers the enum with \c LTEnumRegistry on image load.
-#define _LTEnumRegisterWithValues(NAME, ...) \
+#define _LTEnumRegisterWithValues(NAME, TYPE, ...) \
   __attribute__((constructor)) static void __register##NAME() { \
     [[LTEnumRegistry sharedInstance] \
         registerEnumName:@#NAME \
-        withFieldToValue:@{metamacro_foreach2(_LTEnumDictionaryFieldWithValue,, \
+        withFieldToValue:@{metamacro_foreach2(_LTEnumDictionaryFieldWithValue, TYPE, \
                                               _LTNull, __VA_ARGS__)}]; \
   }
 
@@ -172,12 +172,12 @@
   ARG = VALUE,
 
 /// Callback to define a dictionary field with \c ARG as \c NSString and INDEX as \c NSNumber.
-#define _LTEnumDictionaryField(INDEX, ARG) \
-  _LTEnumDictionaryFieldWithValue(, ARG, INDEX)
+#define _LTEnumDictionaryField(INDEX, TYPE, ARG) \
+  _LTEnumDictionaryFieldWithValue(TYPE, ARG, INDEX)
 
 /// Callback to define a dictionary field with \c ARG as \c NSString and INDEX as \c NSNumber.
-#define _LTEnumDictionaryFieldWithValue(CONTEXT, ARG, VALUE) \
-  @#ARG: @(VALUE),
+#define _LTEnumDictionaryFieldWithValue(TYPE, ARG, VALUE) \
+  @#ARG: @((TYPE)VALUE),
 
 /// Callback to define a single enum field in the traits struct.
 #define _LTEnumTraitsStuctField(INDEX, ARG) \
