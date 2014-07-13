@@ -25,6 +25,9 @@
 /// Time the timer was last split.
 @property (nonatomic) CFTimeInterval splitTime;
 
+/// Returns \c YES if the timer is currently running.
+@property (readwrite, nonatomic) BOOL isRunning;
+
 @end
 
 @implementation LTTimer

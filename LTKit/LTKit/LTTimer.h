@@ -21,7 +21,7 @@
 - (CFTimeInterval)stop;
 
 /// Returns \c YES if the timer is currently running.
-@property (nonatomic) BOOL isRunning;
+@property (readonly, nonatomic) BOOL isRunning;
 
 @end
 
