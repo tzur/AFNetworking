@@ -95,7 +95,7 @@
 }
 
 - (LTBrush *)createDefaultBrush {
-  return [[LTRoundBrush alloc] init];
+  return [[LTBrush alloc] init];
 }
 
 - (id<LTInterpolationRoutineFactory>)createDefaultSplineFactory {
