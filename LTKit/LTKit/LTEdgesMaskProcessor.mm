@@ -61,16 +61,15 @@
 - (void)processSmoothTexture {
   LTBilateralFilterProcessor *smoother = [[LTBilateralFilterProcessor alloc]
       initWithInput:self.inputTexture outputs:@[self.smoothTexture]];
-  smoother.iterationsPerOutput = @[@(4)];
-  smoother.rangeSigma = 0.1;
+  smoother.iterationsPerOutput = @[@(2)];
+  smoother.rangeSigma = 0.2;
   [smoother process];
 }
 
 - (void)process {
-  if (!self.smoothTextureCreated) {
-    [self processSmoothTexture];
-    self.smoothTextureCreated = YES;
-  }
+  // TODO:(amit) replace logic with texture seed when available.
+  [self processSmoothTexture];
+  self.smoothTextureCreated = YES;
   return [super process];
 }
 
