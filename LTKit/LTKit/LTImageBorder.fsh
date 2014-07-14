@@ -16,6 +16,6 @@ void main() {
   
   color.rgb = innerFrame.rgb + (1.0 - innerFrame.a) * color.rgb;
   color.rgb = outerFrame.rgb + (1.0 - outerFrame.a) * color.rgb;
-  
+  color.a = min(1.0, color.a + innerFrame.a + outerFrame.a);
   gl_FragColor = color;
 }

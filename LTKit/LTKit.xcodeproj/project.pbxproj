@@ -247,6 +247,7 @@
 		289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 289A872F1895158500EB8E86 /* LTInterpolationRoutine.mm */; };
 		28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */; };
 		28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */; };
+		28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A4C9351973E3EA00CDA935 /* RedBorderOnClearBackground.png */; };
 		28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */; };
 		28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */; };
 		28A5EAC318D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */; };
@@ -1106,6 +1107,7 @@
 		28A4889618D0C014006BD8CF /* LTBrushScatterEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffect.mm; sourceTree = "<group>"; };
 		28A488A418D0C027006BD8CF /* LTBrushShapeDynamicsEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushShapeDynamicsEffect.h; sourceTree = "<group>"; };
 		28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffect.mm; sourceTree = "<group>"; };
+		28A4C9351973E3EA00CDA935 /* RedBorderOnClearBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBorderOnClearBackground.png; path = Resources/RedBorderOnClearBackground.png; sourceTree = "<group>"; };
 		28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffectSpec.mm; sourceTree = "<group>"; };
 		28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffectSpec.mm; sourceTree = "<group>"; };
 		28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushColorDynamicsEffectSpec.mm; sourceTree = "<group>"; };
@@ -2154,6 +2156,7 @@
 				282AC6961924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png */,
 				03BCFD46191FA6E200529AD6 /* NoisyBorder.png */,
 				03BCFD47191FA6E200529AD6 /* RedBorder.png */,
+				28A4C9351973E3EA00CDA935 /* RedBorderOnClearBackground.png */,
 				03BCFD48191FA6E200529AD6 /* SmoothBorder.png */,
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
@@ -3200,6 +3203,7 @@
 				8BAB99C91869DBF600D79554 /* White.jpg in Resources */,
 				03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */,
 				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,
+				28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */,
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */,
