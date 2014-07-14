@@ -84,7 +84,18 @@ context(@"processing", ^{
     
     LTTexture *precomputedResult =
        [LTTexture textureWithImage:LTLoadMat([self class], @"RedBorder.png")];
-    expect(LTFuzzyCompareMat(output.image, precomputedResult.image)).to.beTruthy();
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+  
+  sit(@"should return rectangular white frame with no noise on clear background", ^{
+    [input clearWithColor:GLKVector4Zero];
+    processor.outerFrameWidth = 25;
+    processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    [processor process];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"RedBorderOnClearBackground.png")];
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
   
   sit(@"should return same result on same parameters, but different history", ^{
@@ -105,7 +116,7 @@ context(@"processing", ^{
     anotherProcessor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
     [anotherProcessor process];
     
-    expect(LTFuzzyCompareMat(output.image, alternativeOutput.image)).to.beTruthy();
+    expect($(output.image)).to.beCloseToMat($(alternativeOutput.image));
   });
   
   sit(@"should return rectangular noisy frame with different degrees of roughness", ^{
@@ -129,12 +140,12 @@ context(@"processing", ^{
     
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"NoisyBorder.png")];
-    expect(LTFuzzyCompareMat(output.image, precomputedResult.image)).to.beTruthy();
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
     
     precomputedResult = [LTTexture textureWithImage:LTLoadMat([self class], @"SmoothBorder.png")];
     processor.roughness = -1.0;
     [processor process];
-    expect(LTFuzzyCompareMat(output.image, precomputedResult.image)).to.beTruthy();
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
 });
 
