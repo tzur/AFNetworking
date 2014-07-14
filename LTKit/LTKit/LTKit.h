@@ -36,13 +36,15 @@
 #import <LTKit/LTProgressiveImageProcessor.h>
 
 // Image Processing/Blocks.
-#import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTAdjustProcessor.h>
+#import <LTKit/LTAnalogFilmProcessor.h>
+#import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoundaryExtractor.h>
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
 #import <LTKit/LTColorGradient.h>
+#import <LTKit/LTEdgesMaskProcessor.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
 #import <LTKit/LTImageBorderProcessor.h>
@@ -86,7 +88,7 @@
 #import <LTKit/LTVertexArray.h>
 
 // GPU/Drawers.
-#import <LTKit/LTRectDrawer.h>
+#import <LTKit/LTRectDrawer+PassthroughShader.h>
 
 // GPU/Painting.
 #import <LTKit/LTPainter+LTView.h>
