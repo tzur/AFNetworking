@@ -26,26 +26,36 @@ void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 template <typename _From, typename _To>
 void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1);
 
-/// Returns a shifted version of the given \c mat, such that the zero-frequency component is moved
-/// to the center of the matrix. This is done by swapping the first quadrand with the third and the
-/// second with the fourth. This is done in-place, so the input is affected.
-cv::Mat *LTInPlaceFFTShift(cv::Mat *mat);
+/// Shifts the given \c mat, such that the zero-frequency component is moved to the center of the
+/// matrix. This is done by swapping the first quadrand with the third and the second with the
+/// fourth.
+void LTInPlaceFFTShift(cv::Mat *mat);
+
+/// Performs a pre-divide, to convert an image with premultiplied alpha into a non-premultiplied
+/// one. Throws exception if the input format is not byte RGBA.
+void LTPreDivideMat(cv::Mat *mat);
 
 /// Loads an image with the given \c name from the bundle that contains the given class. Throws
 /// exception if the image cannot be found or loaded.
 UIImage *LTLoadImage(Class classInBundle, NSString *name);
 
 /// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
-/// class. Throws exception if the image cannot be found or loaded.
-cv::Mat LTLoadMat(Class classInBundle, NSString *name);
+/// class. If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha
+/// premultiplication. Throws exception if the image cannot be found or loaded, or if trying to
+/// preDivide a non byte RGBA image.
+cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL preDivide = NO);
 
-/// Loads an image from the main bundle to \c cv::Mat with the given \c name. Throws exception if
-/// the image cannot be found or loaded.
-cv::Mat LTLoadMatFromMainBundle(NSString *name);
+/// Loads an image from the main bundle to \c cv::Mat with the given \c name.
+/// If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha premultiplication.
+/// Throws exception if the image cannot be found or loaded, or if trying to preDivide a non byte
+/// RGBA image.
+cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide = NO);
 
-/// Loads an image from the main bundle to \c cv::Mat with the given \c name. Throws exception if
-/// the image cannot be found or loaded.
-cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name);
+/// Loads an image from the main bundle to \c cv::Mat with the given \c name.
+/// If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha premultiplication.
+/// Throws exception if the image cannot be found or loaded, or if trying to preDivide a non byte
+/// RGBA image.
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide = NO);
 
 /// Generates a single-channel half-float matrix with the given size, containing a gaussian with
 /// the given sigma.

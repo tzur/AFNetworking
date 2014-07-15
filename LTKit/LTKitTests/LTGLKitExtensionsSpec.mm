@@ -190,6 +190,16 @@ context(@"GLKVector3 operations", ^{
   it(@"round", ^{
     expect(std::round(GLKVector3Make(1.5, 2.7, 3.2)) == GLKVector3Make(2, 3, 3)).to.beTruthy();
   });
+  
+  it(@"min", ^{
+    expect(std::min(GLKVector3Make(1, 2, 3), GLKVector3Make(1, 0, 7)) ==
+           GLKVector3Make(1, 0, 3)).to.beTruthy();
+  });
+  
+  it(@"max", ^{
+    expect(std::max(GLKVector3Make(1, 2, 3), GLKVector3Make(1, 0, 7)) ==
+           GLKVector3Make(1, 2, 7)).to.beTruthy();
+  });
 });
 
 context(@"GLKVector4 operations", ^{

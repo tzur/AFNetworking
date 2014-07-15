@@ -139,6 +139,41 @@ context(@"fft shift", ^{
   });
 });
 
+context(@"pre-divide", ^{
+  it(@"should pre-divide correctly", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 51));
+    cv::Mat4b expected(2, 2, cv::Vec4b(50, 100, 150, 51));
+    LTPreDivideMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+  
+  it(@"should pre-divide and clamp to 255", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 1));
+    cv::Mat4b expected(2, 2, cv::Vec4b(255, 255, 255, 1));
+    LTPreDivideMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+  
+  it(@"should return black when alpha is zero", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 0));
+    cv::Mat4b expected(2, 2, cv::Vec4b());
+    LTPreDivideMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+  
+  it(@"should fail when trying to pre-divide a non byte rgba mat", ^{
+    expect(^{
+      cv::Mat4f mat1f(2, 2);
+      LTPreDivideMat(&mat1f);
+    }).to.raise(NSInvalidArgumentException);
+    
+    expect(^{
+      cv::Mat3b mat3b(2, 2);
+      LTPreDivideMat(&mat3b);
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 context(@"load image", ^{
   it(@"should load image", ^{
     UIImage *image = LTLoadImage([self class], @"White.jpg");
@@ -174,6 +209,18 @@ context(@"load image", ^{
     expect(mat.type()).to.equal(CV_8UC4);
     expect(mat.rows).to.equal(16);
     expect(mat.cols).to.equal(16);
+  });
+  
+  it(@"should load mat and pre-divide it", ^{
+    cv::Mat matWithoutPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", NO);
+    cv::Mat matWithPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", YES);
+    expect($(matWithPreDivision)).notTo.equalMat($(matWithoutPreDivision));
+    
+    cv::Mat expected = LTLoadMat([self class], @"SemiTransparentGray.png");
+    expect($(matWithoutPreDivision)).to.equalMat($(expected));
+    
+    LTPreDivideMat(&expected);
+    expect($(matWithPreDivision)).to.equalMat($(expected));
   });
 });
 
