@@ -3,6 +3,7 @@
 
 #import "LTOpenCVExtensions.h"
 
+#import "LTGLKitExtensions.h"
 #import "LTImage.h"
 
 using half_float::half;
@@ -91,7 +92,7 @@ void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type) {
   }
 }
 
-cv::Mat *LTInPlaceFFTShift(cv::Mat *mat) {
+void LTInPlaceFFTShift(cv::Mat *mat) {
   int rows = mat->rows / 2;
   int cols = mat->cols / 2;
 
@@ -108,8 +109,19 @@ cv::Mat *LTInPlaceFFTShift(cv::Mat *mat) {
   q1.copyTo(temp);
   q2.copyTo(q1);
   temp.copyTo(q2);
+}
 
-  return mat;
+void LTPreDivideMat(cv::Mat *mat) {
+  LTParameterAssert(mat->type() == CV_8UC4, @"preDivide only works on byte RGBA images");
+  std::transform(mat->begin<cv::Vec4b>(), mat->end<cv::Vec4b>(), mat->begin<cv::Vec4b>(),
+                 [](const cv::Vec4b &color) -> cv::Vec4b {
+    if (!color[3]) {
+      return cv::Vec4b();
+    }
+    GLKVector3 rgb = GLKVector3Make(color[0], color[1], color[2]) / ((color[3] / 255.0) ?: 1.0);
+    rgb = std::min(std::round(rgb), GLKVector3Make(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
+    return cv::Vec4b(rgb.r, rgb.g, rgb.b, color[3]);
+  });
 }
 
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
@@ -120,20 +132,25 @@ UIImage *LTLoadImage(Class classInBundle, NSString *name) {
   return image;
 }
 
-cv::Mat LTLoadMat(Class classInBundle, NSString *name) {
-  UIImage *image = LTLoadImage(classInBundle, name);
-  return [[LTImage alloc] initWithImage:image].mat;
+cv::Mat LTMatFromImage(UIImage *image, BOOL preDivide) {
+  cv::Mat mat = [[LTImage alloc] initWithImage:image].mat;
+  if (preDivide) {
+    LTPreDivideMat(&mat);
+  }
+  return mat;
 }
 
-cv::Mat LTLoadMatFromMainBundle(NSString *name) {
-  UIImage *image = [UIImage imageNamed:name];
-  return [[LTImage alloc] initWithImage:image].mat;
+cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL preDivide) {
+  return LTMatFromImage(LTLoadImage(classInBundle, name), preDivide);
 }
 
-cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name) {
+cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide) {
+  return LTMatFromImage([UIImage imageNamed:name], preDivide);
+}
+
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide) {
   NSString *path = LTPathForResourceInBundle(bundle, name);
-  UIImage *image = [UIImage imageWithContentsOfFile:path];
-  return [[LTImage alloc] initWithImage:image].mat;
+  return LTMatFromImage([UIImage imageWithContentsOfFile:path], preDivide);
 }
 
 NSString *LTPathForResourceNearClass(Class classInBundle, NSString *name) {
