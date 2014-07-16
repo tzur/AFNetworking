@@ -31,18 +31,42 @@
 
   for (NSString *key in model) {
     // TODO: (yaron) Since setValue:forKeyPath: doesn't have type-safety, add type validation here.
-    [self setValue:model[key] forKeyPath:key];
+
+    Class objectClass = [self classForKey:key];
+    if ([objectClass conformsToProtocol:@protocol(LTEnum)] &&
+        [model[key] isKindOfClass:[NSString class]]) {
+      id<LTEnum> enumObject = [[objectClass alloc] initWithName:model[key]];
+      [self setValue:enumObject forKeyPath:key];
+    } else {
+      [self setValue:model[key] forKeyPath:key];
+    }
   }
 }
 
 - (NSDictionary *)inputModel {
   NSMutableDictionary *model = [NSMutableDictionary dictionary];
 
-  for (NSString *keyPath in [[self class] inputModelProperties]) {
-    model[keyPath] = [self valueForKeyPath:keyPath] ?: [NSNull null];
+  for (NSString *key in [[self class] inputModelProperties]) {
+    id value = [self valueForKeyPath:key] ?: [NSNull null];
+
+    // Convert LTEnum to its string representation.
+    if ([value conformsToProtocol:@protocol(LTEnum)]) {
+      model[key] = ((id<LTEnum>)value).name;
+    } else {
+      model[key] = value;
+    }
   }
 
   return [model copy];
+}
+
+- (Class)classForKey:(NSString *)key {
+  ext_propertyAttributes *attributes = [self propertyAttributesForKey:key];
+  @onExit {
+    free(attributes);
+  };
+
+  return attributes->objectClass;
 }
 
 + (NSSet *)inputModelProperties {

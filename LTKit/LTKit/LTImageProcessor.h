@@ -29,11 +29,14 @@
 - (void)setInputModel:(NSDictionary *)model;
 
 /// Returns the input model properties defined in \c modelProperties to a dictionary, where each key
-/// is the property name and the value is the property's value.
+/// is the property name and the value is the property's value. \c LTEnum values will be
+/// automatically converted to strings.
 - (NSDictionary *)inputModel;
 
 /// Names of the model input properties of this object that are part of the model to load and save.
 /// The default implementation returns \c nil, therefore no properties are part of the input model.
+/// The model can contain \c LTEnum values as enumeration objects (that conform to \c LTEnum) or as
+/// \c NSString, that will be automatically resolved to their representing object.
 + (NSSet *)inputModelProperties;
 
 @end
