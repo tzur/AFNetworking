@@ -176,7 +176,7 @@
   \
   - (instancetype)initWithName:(NSString *)name { \
     NSValue *value = [LTEnumRegistry sharedInstance][@#NAME][name]; \
-    LTAssert(value, @"Field %@ does not exist in the enum %@", name, @#NAME); \
+    LTParameterAssert(value, @"Field %@ does not exist in the enum %@", name, @#NAME); \
     return [self initWithValue:[value NAME##Value]]; \
   } \
   \
