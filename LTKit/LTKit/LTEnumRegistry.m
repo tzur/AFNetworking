@@ -3,6 +3,8 @@
 
 #import "LTEnumRegistry.h"
 
+#import "LTBidirectionalMap.h"
+
 @interface LTEnumRegistry ()
 
 /// Maps enum name (\c NSString ) to an \c NSDictionary of field names (\c NSString) to their
@@ -34,14 +36,14 @@
 - (void)registerEnumName:(NSString *)enumName withFieldToValue:(NSDictionary *)fieldToValue {
   LTParameterAssert(![self isEnumRegistered:enumName],
                     @"Given enum name '%@' is already registered", enumName);
-  self.enumMapping[enumName] = fieldToValue;
+  self.enumMapping[enumName] = [[LTBidirectionalMap alloc] initWithDictionary:fieldToValue];
 }
 
 - (BOOL)isEnumRegistered:(NSString *)enumName {
   return self.enumMapping[enumName] != nil;
 }
 
-- (NSDictionary *)enumFieldToValueForName:(NSString *)enumName {
+- (LTBidirectionalMap *)enumFieldToValueForName:(NSString *)enumName {
   return self.enumMapping[enumName];
 }
 

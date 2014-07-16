@@ -364,7 +364,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
 void LTForeachEnumValue(NSString *enumName, LTForeachEnumValueBlock block) {
   LTParameterAssert(block);
 
-  NSDictionary *mapping = [[LTEnumRegistry sharedInstance] enumFieldToValueForName:enumName];
+  LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] enumFieldToValueForName:enumName];
   LTParameterAssert(mapping, @"Given enum name '%@' is not registered", enumName);
 
   for (NSNumber *value in mapping.allValues) {

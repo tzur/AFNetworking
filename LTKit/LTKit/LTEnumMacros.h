@@ -3,6 +3,9 @@
 
 #import "LTMetaMacros.h"
 
+#import "LTBidirectionalMap.h"
+#import "LTEnum.h"
+
 /// Avoid including this file directly. To use these macros, include \c LTEnumRegistry.h.
 
 #pragma mark -
@@ -41,24 +44,36 @@
 
 #define LTEnumDeclare(TYPE, NAME, ...) \
   /* Define the enum itself. */ \
-  typedef NS_ENUM(TYPE, NAME) { \
+  typedef NS_ENUM(TYPE, _##NAME) { \
     metamacro_foreach(_LTEnumField,, __VA_ARGS__) \
   }; \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumDeclareNSValueCategory(TYPE, NAME); \
   \
+  /* Declare the Enum wrapper class. */ \
+  _LTEnumDeclareClass(NAME); \
+  \
+  /* Defined easy boxing overloaded method. */ \
+  _LTDefineEasyBoxingEnum(NAME); \
+  \
   /* Define traits struct. */ \
   _LTDefineTraitsStruct(NAME, __VA_ARGS__)
 
 #define LTEnumDeclareWithValues(TYPE, NAME, ...) \
   /* Define the enum itself. */ \
-  typedef NS_ENUM(TYPE, NAME) { \
+  typedef NS_ENUM(TYPE, _##NAME) { \
     metamacro_foreach2(_LTEnumFieldWithValue,, _LTNull, __VA_ARGS__) \
   }; \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumDeclareNSValueCategory(TYPE, NAME); \
+  \
+  /* Declare the Enum wrapper class. */ \
+  _LTEnumDeclareClass(NAME); \
+  \
+  /* Defined easy boxing overloaded method. */ \
+  _LTDefineEasyBoxingEnum(NAME); \
   \
   /* Define traits struct. */ \
   _LTDefineTraitsStructWithValues(NAME, __VA_ARGS__)
@@ -71,7 +86,10 @@
   _LTEnumRegister(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
-  _LTEnumImplementNSValueCategory(TYPE, NAME)
+  _LTEnumImplementNSValueCategory(TYPE, NAME) \
+  \
+  /* Implement the Enum wrapper class. */ \
+  _LTEnumImplementClass(NAME);
 
 #define LTEnumImplementWithValues(TYPE, NAME, ...) \
   /* Verify the implementation matches the definition. */ \
@@ -81,7 +99,10 @@
   _LTEnumRegisterWithValues(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
-  _LTEnumImplementNSValueCategory(TYPE, NAME)
+  _LTEnumImplementNSValueCategory(TYPE, NAME) \
+  \
+  /* Implement the Enum wrapper class. */ \
+  _LTEnumImplementClass(NAME);
 
 #pragma mark -
 #pragma mark Implementation
@@ -106,11 +127,11 @@
 
 /// Defines NSValue category with boxing / unboxing methods.
 #define _LTEnumDeclareNSValueCategory(TYPE, NAME) \
-  @interface NSValue (_ ## NAME) \
+  @interface NSValue (_##NAME) \
   \
-  - (NAME)NAME ## Value; \
+  - (_##NAME)NAME ## Value; \
   \
-  + (NSValue *)valueWith ## NAME:(NAME)value; \
+  + (NSValue *)valueWith ## NAME:(_##NAME)value; \
   \
   @end
 
@@ -118,21 +139,94 @@
 #define _LTEnumImplementNSValueCategory(TYPE, NAME) \
   @implementation NSValue (_ ## NAME) \
   \
-  - (NAME)NAME ## Value { \
-    NAME value; \
+  - (_##NAME)NAME ## Value { \
+    _##NAME value; \
     [self getValue:&value]; \
     return value; \
   } \
   \
-  + (NSValue *)valueWith ## NAME:(NAME)value { \
-    return [NSValue valueWithBytes:&value objCType:@encode(NAME)]; \
+  + (NSValue *)valueWith ## NAME:(_##NAME)value { \
+    return [NSValue valueWithBytes:&value objCType:@encode(_##NAME)]; \
   } \
   \
   @end
 
+/// Declares the enum wrapper class.
+#define _LTEnumDeclareClass(NAME) \
+  @interface NAME : NSObject <LTEnum> \
+  \
+  - (instancetype)initWithName:(NSString *)name; \
+  - (instancetype)initWithValue:(_##NAME)value; \
+  \
+  + (instancetype)enum; \
+  + (instancetype)enumWithName:(NSString *)name; \
+  + (instancetype)enumWithValue:(_##NAME)value; \
+  \
+  @property (nonatomic) _##NAME value; \
+  @property (readonly, nonatomic) NSString *name; \
+  \
+  @end
+
+/// Implement the enum wrapper class.
+#define _LTEnumImplementClass(NAME) \
+  @implementation NAME \
+  \
+  - (instancetype)initWithName:(NSString *)name { \
+    NSValue *value = [LTEnumRegistry sharedInstance][@#NAME][name]; \
+    LTAssert(value, @"Field %@ does not exist in the enum %@", name, @#NAME); \
+    return [self initWithValue:[value NAME##Value]]; \
+  } \
+  \
+  - (instancetype)initWithValue:(_##NAME)value { \
+    if (self = [super init]) { \
+      self.value = value; \
+    } \
+    return self; \
+  } \
+  + (instancetype)enum { \
+    return [[[self class] alloc] init]; \
+  } \
+  \
+  + (instancetype)enumWithName:(NSString *)name { \
+    return [[[self class] alloc] initWithName:name]; \
+  } \
+  \
+  + (instancetype)enumWithValue:(_##NAME)value { \
+    return [[NAME alloc] initWithValue:value]; \
+  } \
+  \
+  - (NSString *)name { \
+    return [[LTEnumRegistry sharedInstance][@#NAME] keyForObject:@(self.value)]; \
+  } \
+  \
+  - (BOOL)isEqual:(id)object { \
+    if (self == object) { \
+      return YES; \
+    } \
+    \
+    if (![object isKindOfClass:[NAME class]]) { \
+      return NO; \
+    } \
+    \
+    return self.value == ((NAME *)object).value; \
+  } \
+  \
+  - (NSString *)description { \
+    return [NSString stringWithFormat:@"<%@: %p, %@: %lu>", [self class], self, \
+        self.name, (unsigned long)self.value]; \
+  } \
+  \
+  @end
+
+/// Declare easy boxing method.
+#define _LTDefineEasyBoxingEnum(NAME) \
+  NS_INLINE NAME __unused *$(const _##NAME value) { \
+    return [NAME enumWithValue:value]; \
+  }
+
 /// Defines a traits struct used to verify that the declaration and implementation are similar.
 #define _LTDefineTraitsStruct(NAME, ...) \
-  struct _## NAME { \
+  struct __## NAME { \
     metamacro_foreach(_LTEnumTraitsStuctField,, __VA_ARGS__) \
     static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
   };
@@ -140,7 +234,7 @@
 /// Defines a traits struct with given field values used to verify that the declaration and
 /// implementation are similar.
 #define _LTDefineTraitsStructWithValues(NAME, ...) \
-  struct _## NAME { \
+  struct __## NAME { \
     metamacro_foreach2(_LTEnumTraitsStuctFieldAndValue,, _LTNull, __VA_ARGS__) \
     static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
   };
@@ -149,7 +243,7 @@
 /// implementation are similar.
 #define _LTVerifyImplementation(NAME, ...) \
   __unused static void __verify##NAME() { \
-    static_assert(_##NAME::fieldCount == metamacro_argcount(__VA_ARGS__), \
+    static_assert(__##NAME::fieldCount == metamacro_argcount(__VA_ARGS__), \
                   "Field count doesn't match for enum " #NAME); \
     metamacro_foreach_cxt(_LTEnumVerifyField,, NAME, __VA_ARGS__) \
   }
@@ -158,7 +252,7 @@
 /// implementation are similar.
 #define _LTVerifyImplementationWithValues(NAME, ...) \
   __unused static void __verify##NAME() { \
-    static_assert(_##NAME::fieldCount == metamacro_argcount(__VA_ARGS__), \
+    static_assert(__##NAME::fieldCount == metamacro_argcount(__VA_ARGS__), \
                   "Field count doesn't match for enum " #NAME); \
     metamacro_foreach2(_LTEnumVerifyFieldWithValue, NAME, _LTNull, __VA_ARGS__) \
   }
@@ -193,5 +287,5 @@
 
 /// Callback to define a validation for a single enum field with its value.
 #define _LTEnumVerifyFieldWithValue(NAME, ARG, VALUE) \
-  static_assert(_##NAME::ARG == VALUE, "Enum field " #ARG " with value " #VALUE " doesn't " \
+  static_assert(__##NAME::ARG == VALUE, "Enum field " #ARG " with value " #VALUE " doesn't " \
                 "match declaration");

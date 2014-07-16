@@ -3,6 +3,8 @@
 
 #import "LTEnumMacros.h"
 
+@class LTBidirectionalMap;
+
 /// Registry for enumeration types defined by the macro \c LTEnumMake(). This allows run-time
 /// inspection of enumeration types and their declared fields.
 @interface LTEnumRegistry : NSObject
@@ -17,9 +19,9 @@
 /// Returns \c YES if the given enum is registered.
 - (BOOL)isEnumRegistered:(NSString *)enumName;
 
-/// Returns a dictionary that maps the given enum's field names (\c NSString) to their numeric
-/// (\c NSNumber) values.
-- (NSDictionary *)enumFieldToValueForName:(NSString *)enumName;
+/// Returns an \c LTBidirectionalMap that maps the given enum's field names (\c NSString) to their
+/// numeric (\c NSNumber) values and vice versa.
+- (LTBidirectionalMap *)enumFieldToValueForName:(NSString *)enumName;
 
 /// Returns the enum dictionary for the given enum name (\c NSString).
 - (id)objectForKeyedSubscript:(NSString *)key;

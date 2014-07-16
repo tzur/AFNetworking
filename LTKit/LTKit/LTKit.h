@@ -22,6 +22,7 @@
 
 // Base.
 #import <LTKit/LTDevice.h>
+#import <LTKit/LTEnum.h>
 #import <LTKit/LTEnumRegistry.h>
 #import <LTKit/LTShaderStorage.h>
 
