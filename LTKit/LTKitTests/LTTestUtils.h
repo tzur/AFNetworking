@@ -69,12 +69,6 @@ cv::Mat4b LTCreateDeltaMat(CGSize size);
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName);
 
-typedef void (^LTForeachEnumValueBlock)(NSUInteger value);
-
-/// Calls the given block for each enum value that exists for the given enum defined by \c enumName.
-/// The given \c enumName must be registered in \c LTEnumRegistry.
-void LTForeachEnumValue(NSString *enumName, LTForeachEnumValueBlock block);
-
 /// Returns the mean value of all elements in the given container.
 template <typename Container>
 double LTMean(const Container &container) {

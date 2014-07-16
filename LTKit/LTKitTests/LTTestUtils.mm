@@ -360,14 +360,3 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       LTAssert(NO, @"Unsupported mat type given: %d", mat.type());
   }
 }
-
-void LTForeachEnumValue(NSString *enumName, LTForeachEnumValueBlock block) {
-  LTParameterAssert(block);
-
-  LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] enumFieldToValueForName:enumName];
-  LTParameterAssert(mapping, @"Given enum name '%@' is not registered", enumName);
-
-  for (NSNumber *value in mapping.allValues) {
-    block([value unsignedIntegerValue]);
-  }
-}

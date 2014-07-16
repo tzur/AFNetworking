@@ -69,6 +69,30 @@ context(@"enum objects", ^{
     LTMyNameWithValues *enumObjectC = [LTMyNameWithValues enumWithName:@"LTMyNameWithValuesC"];
     expect(enumObjectC.value).to.equal(LTMyNameWithValuesC);
   });
+
+  it(@"should enumerate enum values", ^{
+    NSMutableArray *values = [NSMutableArray array];
+
+    [LTMyNameWithValues enumerateValuesUsingBlock:^(_LTMyNameWithValues value) {
+      [values addObject:@(value)];
+    }];
+
+    expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
+      @[@(LTMyNameWithValuesA), @(LTMyNameWithValuesB), @(LTMyNameWithValuesC)]
+    );
+  });
+
+  it(@"should enumerate enum objects", ^{
+    NSMutableArray *values = [NSMutableArray array];
+
+    [LTMyNameWithValues enumerateEnumUsingBlock:^(LTMyNameWithValues *value) {
+      [values addObject:value];
+    }];
+
+    expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
+      @[$(LTMyNameWithValuesA), $(LTMyNameWithValuesB), $(LTMyNameWithValuesC)]
+    );
+  });
 });
 
 SpecEnd

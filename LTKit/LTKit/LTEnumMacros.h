@@ -162,6 +162,9 @@
   + (instancetype)enumWithName:(NSString *)name; \
   + (instancetype)enumWithValue:(_##NAME)value; \
   \
+  + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block; \
+  + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block; \
+  \
   @property (nonatomic) _##NAME value; \
   @property (readonly, nonatomic) NSString *name; \
   \
@@ -195,8 +198,29 @@
     return [[NAME alloc] initWithValue:value]; \
   } \
   \
+  + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block { \
+    LTParameterAssert(block); \
+    LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
+        enumFieldToValueForName:@#NAME]; \
+    \
+    for (NSNumber *value in mapping.allValues) { \
+      block([value NAME##Value]); \
+    } \
+  } \
+  \
+  + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block { \
+    LTParameterAssert(block); \
+    [self enumerateValuesUsingBlock:^(_##NAME value) { \
+      block([[NAME alloc] initWithValue:value]); \
+    }]; \
+  } \
+  \
   - (NSString *)name { \
     return [[LTEnumRegistry sharedInstance][@#NAME] keyForObject:@(self.value)]; \
+  } \
+  \
+  - (NSUInteger)hash { \
+    return (NSUInteger)self.value; \
   } \
   \
   - (BOOL)isEqual:(id)object { \
@@ -209,6 +233,16 @@
     } \
     \
     return self.value == ((NAME *)object).value; \
+  } \
+  \
+  - (NSComparisonResult)compare:(NAME *)object { \
+    if (self.value < object.value) { \
+      return NSOrderedAscending; \
+    } else if (self.value > object.value) { \
+      return NSOrderedDescending; \
+    } else { \
+      return NSOrderedSame; \
+    } \
   } \
   \
   - (NSString *)description { \
