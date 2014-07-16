@@ -368,6 +368,10 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// value is \c 0.
 @property (nonatomic) GLint maxMipmapLevel;
 
+/// Current generation ID of this texture. The generation ID changes whenever the texture is
+/// modified. This can be used as an efficient way to check if a texture has changed.
+@property (readonly, nonatomic) NSUInteger generationID;
+
 /// Archiver used to store the texture's contents while coding and decoding. The default archiver is
 /// the \c LTTextureContentsDataArchiver.
 @property (strong, nonatomic) id<LTTextureContentsArchiver> contentsArchiver;

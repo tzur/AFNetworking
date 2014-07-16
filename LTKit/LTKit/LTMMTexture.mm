@@ -13,6 +13,7 @@
 
 - (GLKVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
 - (BOOL)inTextureRect:(CGRect)rect;
+- (void)increaseGenerationID;
 
 @property (readonly, nonatomic) int matType;
 
@@ -238,6 +239,8 @@
   // Make \c self.syncObject a synchronization barrier that is right beyond the last drawing to this
   // texture in the GPU queue.
   self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
+
+  [self increaseGenerationID];
   [self.lock unlock];
 }
 
@@ -293,13 +296,14 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 - (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
   LTParameterAssert(block);
 
-  return [self mappedImageWithBlock:^(cv::Mat *mapped, BOOL isCopy) {
+  [self mappedImageWithBlock:^(cv::Mat *mapped, BOOL isCopy) {
     block(*mapped, isCopy);
   }];
 }
 
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
-  return [self mappedImageWithBlock:block];
+  [self mappedImageWithBlock:block];
+  [self increaseGenerationID];
 }
 
 - (void)mappedImageWithBlock:(LTTextureMappedBlock)block {

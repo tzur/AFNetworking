@@ -327,6 +327,34 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         expect(LTCompareMatWithValue(value, [texture image])).to.beTruthy();
       });
     });
+
+    context(@"generation ID", ^{
+      it(@"should produce different generation ID after writing via OpenGL", ^{
+        NSUInteger generationID = texture.generationID;
+        [texture clearWithColor:GLKVector4Zero];
+        expect(texture.generationID).toNot.equal(generationID);
+      });
+
+      it(@"should not produce different generation ID after reading via OpenGL", ^{
+        NSUInteger generationID = texture.generationID;
+        cv::Mat image(texture.image);
+        expect(texture.generationID).to.equal(generationID);
+      });
+
+      it(@"should produce different generation ID after writing via mapping", ^{
+        NSUInteger generationID = texture.generationID;
+        [texture mappedImageForWriting:^(cv::Mat *, BOOL) {
+        }];
+        expect(texture.generationID).toNot.equal(generationID);
+      });
+
+      it(@"should not produce different generation ID after reading via mapping", ^{
+        NSUInteger generationID = texture.generationID;
+        [texture mappedImageForReading:^(const cv::Mat &, BOOL) {
+        }];
+        expect(texture.generationID).to.equal(generationID);
+      });
+    });
   });
 });
 

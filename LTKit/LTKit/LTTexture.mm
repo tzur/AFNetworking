@@ -156,6 +156,10 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
+/// Current generation ID of this texture. The generation ID changes whenever the texture is
+/// modified. This can be used as an efficient way to check if a texture has changed.
+@property (readwrite, nonatomic) NSUInteger generationID;
+
 @end
 
 @implementation LTTexture
@@ -576,6 +580,10 @@ static NSString * const kArchiveKey = @"archive";
 - (BOOL)inTextureRect:(CGRect)rect {
   CGRect texture = CGRectMake(0, 0, self.size.width, self.size.height);
   return CGRectContainsRect(texture, rect);
+}
+
+- (void)increaseGenerationID {
+  self.generationID += 1;
 }
 
 #pragma mark -

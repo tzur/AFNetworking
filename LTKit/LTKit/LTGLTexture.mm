@@ -23,6 +23,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 @interface LTTexture ()
 
 - (BOOL)inTextureRect:(CGRect)rect;
+- (void)increaseGenerationID;
 
 @property (readonly, nonatomic) int matType;
 
@@ -260,11 +261,21 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 // Assuming that OpenGL calls are synchronized (when used in a single-threaded environment), no
-// synchronization needs to be done.
-- (void)beginReadFromTexture {}
-- (void)endReadFromTexture {}
-- (void)beginWriteToTexture {}
-- (void)endWriteToTexture {}
+// synchronization needs to be done, therefore no logic appears in reading and writing, besides
+// updating the generation ID.
+
+- (void)beginReadFromTexture {
+}
+
+- (void)endReadFromTexture {
+}
+
+- (void)beginWriteToTexture {
+}
+
+- (void)endWriteToTexture {
+  [self increaseGenerationID];
+}
 
 #pragma mark -
 #pragma mark Reading and writing formats
