@@ -68,8 +68,24 @@
   return [self.valuesToKeys objectForKey:object];
 }
 
+- (NSArray *)allValues {
+  return [self.keysToValues allValues];
+}
+
 - (NSUInteger)count {
   return self.keysToValues.count;
+}
+
+- (BOOL)isEqual:(id)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[LTBidirectionalMap class]]) {
+    return NO;
+  }
+
+  return [self.keysToValues isEqual:((LTBidirectionalMap *)object).keysToValues];
 }
 
 - (NSString *)description {

@@ -116,6 +116,11 @@ context(@"retrieving keys and values", ^{
   it(@"should return nil for an non existing value", ^{
     expect([map keyForObject:@"foo"]).to.beNil();
   });
+
+  it(@"should return all values", ^{
+    map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
+    expect([[map allValues] sortedArrayUsingSelector:@selector(compare:)]).to.equal(@[@1, @2, @7]);
+  });
 });
 
 context(@"memory management", ^{

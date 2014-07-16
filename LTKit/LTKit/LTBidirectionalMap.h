@@ -31,6 +31,9 @@
 /// Returns the key associated with the given \c object.
 - (id)keyForObject:(id)object;
 
+/// Returns an array containing all the values.
+- (NSArray *)allValues;
+
 /// Number of elements in the map.
 @property (readonly, nonatomic) NSUInteger count;
 
