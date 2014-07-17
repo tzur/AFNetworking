@@ -11,10 +11,21 @@ GLK_INLINE GLKMatrix2 GLKMatrix2Make(float m00, float m01, float m10, float m11)
   return m;
 }
 
+GLK_INLINE GLKMatrix2 GLKMatrix2MakeRotation(float radians) {
+  return GLKMatrix2Make(cosf(radians), sinf(radians),
+                        -sinf(radians), cosf(radians));
+}
+
 GLK_INLINE GLKMatrix2 GLKMatrix2Transpose(GLKMatrix2 matrix) {
   GLKMatrix2 m = {{matrix.m[0], matrix.m[2],
                    matrix.m[1], matrix.m[3]}};
   return m;
+}
+
+GLK_INLINE GLKVector2 GLKMatrix2MultiplyVector2(GLKMatrix2 matrixLeft, GLKVector2 vectorRight) {
+  GLKVector2 v = {{matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[2] * vectorRight.v[1],
+                   matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[3] * vectorRight.v[1]}};
+  return v;
 }
 
 GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {

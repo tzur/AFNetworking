@@ -25,6 +25,22 @@ context(@"GLKMatrix2", ^{
     expect(a == b).to.beFalsy();
     expect(a == c).to.beTruthy();
   });
+
+  it(@"should make rotation matrix", ^{
+    GLKMatrix2 m = GLKMatrix2MakeRotation(M_PI_4);
+
+    expect(m.m00).to.beCloseTo(1 / sqrt(2));
+    expect(m.m10).to.beCloseTo(-1 / sqrt(2));
+    expect(m.m01).to.beCloseTo(1 / sqrt(2));
+    expect(m.m11).to.beCloseTo(1 / sqrt(2));
+  });
+
+  it(@"should multiply correctly", ^{
+    GLKMatrix2 m = {{1, 2, 3, 4}};
+    GLKVector2 v = {{1, 2}};
+
+    expect(GLKMatrix2MultiplyVector2(m, v) == GLKVector2Make(7, 10)).to.beTruthy();
+  });
 });
 
 context(@"GLKMatrix3", ^{
