@@ -9,10 +9,6 @@
 #pragma mark LTBoundedType
 #pragma mark -
 
-@interface LTBoundedType ()
-@property (copy, nonatomic) LTVoidBlock afterSetterBlock;
-@end
-
 @implementation LTBoundedType
 
 - (instancetype)initBoundedType {
@@ -21,12 +17,6 @@
 
 - (instancetype)init {
   LTMethodNotImplemented();
-}
-
-- (void)afterSetter {
-  if (self.afterSetterBlock) {
-    self.afterSetterBlock();
-  }
 }
 
 @end
@@ -39,17 +29,17 @@
 
 + (instancetype)min:(CGFloat)minValue max:(CGFloat)maxValue default:(CGFloat)defaultValue {
   return [[LTBoundedCGFloat alloc] initWithMin:minValue max:maxValue default:defaultValue
-                              afterSetterBlock:^{}];
+                              afterSetterBlock:^(CGFloat, CGFloat) {}];
 }
 
 + (instancetype)min:(CGFloat)minValue max:(CGFloat)maxValue default:(CGFloat)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+   afterSetterBlock:(LTBoundedCGFloatSetterBlock)afterSetterBlock {
   return [[LTBoundedCGFloat alloc] initWithMin:minValue max:maxValue default:defaultValue
                               afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(CGFloat)minValue max:(CGFloat)maxValue default:(CGFloat)defaultValue
-           afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+           afterSetterBlock:(LTBoundedCGFloatSetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -64,8 +54,11 @@
 - (void)setValue:(CGFloat)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  CGFloat oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {
@@ -82,17 +75,17 @@
 
 + (instancetype)min:(double)minValue max:(double)maxValue default:(double)defaultValue {
   return [[LTBoundedDouble alloc] initWithMin:minValue max:maxValue default:defaultValue
-                             afterSetterBlock:^{}];
+                             afterSetterBlock:^(double, double) {}];
 }
 
 + (instancetype)min:(double)minValue max:(double)maxValue default:(double)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+   afterSetterBlock:(LTBoundedDoubleSetterBlock)afterSetterBlock {
   return [[LTBoundedDouble alloc] initWithMin:minValue max:maxValue default:defaultValue
                              afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(double)minValue max:(double)maxValue default:(double)defaultValue
-           afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+           afterSetterBlock:(LTBoundedDoubleSetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -107,8 +100,11 @@
 - (void)setValue:(double)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  double oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {
@@ -118,24 +114,25 @@
 @end
 
 #pragma mark -
-#pragma mark LTBoundedInteger
+#pragma mark LTBoundedNSInteger
 #pragma mark -
 
-@implementation LTBoundedInteger
+@implementation LTBoundedNSInteger
 
 + (instancetype)min:(NSInteger)minValue max:(NSInteger)maxValue default:(NSInteger)defaultValue {
-  return [[LTBoundedInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
-                              afterSetterBlock:^{}];
+  return [[LTBoundedNSInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                afterSetterBlock:^(NSInteger, NSInteger) {}];
 }
 
 + (instancetype)min:(NSInteger)minValue max:(NSInteger)maxValue default:(NSInteger)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
-  return [[LTBoundedInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
-                              afterSetterBlock:afterSetterBlock];
+   afterSetterBlock:(LTBoundedNSIntegerSetterBlock)afterSetterBlock {
+  return [[LTBoundedNSInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(NSInteger)minValue max:(NSInteger)maxValue
-                    default:(NSInteger)defaultValue afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+                    default:(NSInteger)defaultValue
+           afterSetterBlock:(LTBoundedNSIntegerSetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -150,8 +147,11 @@
 - (void)setValue:(NSInteger)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  NSInteger oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {
@@ -161,25 +161,25 @@
 @end
 
 #pragma mark -
-#pragma mark LTBoundedUInteger
+#pragma mark LTBoundedNSUInteger
 #pragma mark -
 
-@implementation LTBoundedUInteger
+@implementation LTBoundedNSUInteger
 
 + (instancetype)min:(NSUInteger)minValue max:(NSUInteger)maxValue default:(NSUInteger)defaultValue {
-  return [[LTBoundedUInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
-                               afterSetterBlock:^{}];
+  return [[LTBoundedNSUInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                 afterSetterBlock:^(NSUInteger, NSUInteger) {}];
 }
 
 + (instancetype)min:(NSUInteger)minValue max:(NSUInteger)maxValue default:(NSUInteger)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
-  return [[LTBoundedUInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
-                               afterSetterBlock:afterSetterBlock];
+   afterSetterBlock:(LTBoundedNSUIntegerSetterBlock)afterSetterBlock {
+  return [[LTBoundedNSUInteger alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                 afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(NSUInteger)minValue max:(NSUInteger)maxValue
                     default:(NSUInteger)defaultValue
-           afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+           afterSetterBlock:(LTBoundedNSUIntegerSetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -194,8 +194,11 @@
 - (void)setValue:(NSUInteger)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  NSUInteger oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {
@@ -212,18 +215,18 @@
 
 + (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue {
   return [[LTBoundedGLKVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
-                               afterSetterBlock:^{}];
+                                 afterSetterBlock:^(GLKVector3, GLKVector3) {}];
 }
 
 + (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+   afterSetterBlock:(LTBoundedGLKVector3SetterBlock)afterSetterBlock {
   return [[LTBoundedGLKVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
-                               afterSetterBlock:afterSetterBlock];
+                                 afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(GLKVector3)minValue max:(GLKVector3)maxValue
                     default:(GLKVector3)defaultValue
-           afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+           afterSetterBlock:(LTBoundedGLKVector3SetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -238,8 +241,11 @@
 - (void)setValue:(GLKVector3)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  GLKVector3 oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {
@@ -256,18 +262,18 @@
 
 + (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue {
   return [[LTBoundedGLKVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
-                                 afterSetterBlock:^{}];
+                                 afterSetterBlock:^(GLKVector4, GLKVector4) {}];
 }
 
 + (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue
-   afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+   afterSetterBlock:(LTBoundedGLKVector4SetterBlock)afterSetterBlock {
   return [[LTBoundedGLKVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
                                  afterSetterBlock:afterSetterBlock];
 }
 
 - (instancetype)initWithMin:(GLKVector4)minValue max:(GLKVector4)maxValue
                     default:(GLKVector4)defaultValue
-           afterSetterBlock:(LTVoidBlock)afterSetterBlock {
+           afterSetterBlock:(LTBoundedGLKVector4SetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -282,8 +288,11 @@
 - (void)setValue:(GLKVector4)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
+  GLKVector4 oldValue = _value;
   _value = value;
-  [self afterSetter];
+  if (self.afterSetterBlock) {
+    self.afterSetterBlock(value, oldValue);
+  }
 }
 
 - (NSString *)debugDescription {

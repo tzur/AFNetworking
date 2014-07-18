@@ -23,12 +23,6 @@ GLKVector4 LTVector4Epsilon(NSUInteger i) {
 
 SpecBegin(LTBoundedProperties)
 
-__block BOOL customSetterCalled;
-
-beforeEach(^{
-  customSetterCalled = NO;
-});
-
 #pragma mark -
 #pragma mark LTBoundedCGFloat
 #pragma mark -
@@ -36,11 +30,15 @@ beforeEach(^{
 context(@"bounded CGFloat", ^{
   __block LTBoundedCGFloat *instance;
   __block LTBoundedCGFloat *instanceWithSetter;
+  __block CGFloat setterOldValue;
+  __block CGFloat setterNewValue;
   
   beforeEach(^{
     instance = [LTBoundedCGFloat min:0 max:1 default:0.5];
-    instanceWithSetter = [LTBoundedCGFloat min:-1 max:0 default:-0.5 afterSetterBlock:^{
-      customSetterCalled = YES;
+    instanceWithSetter = [LTBoundedCGFloat min:-1 max:0 default:-0.5
+                              afterSetterBlock:^(CGFloat value, CGFloat oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
 });
   
@@ -107,9 +105,9 @@ context(@"bounded CGFloat", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.equal(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.equal(instanceWithSetter.minValue);
   });
 });
 
@@ -120,11 +118,15 @@ context(@"bounded CGFloat", ^{
 context(@"bounded double", ^{
   __block LTBoundedDouble *instance;
   __block LTBoundedDouble *instanceWithSetter;
+  __block double setterOldValue;
+  __block double setterNewValue;
   
   beforeEach(^{
     instance = [LTBoundedDouble min:0 max:1 default:0.5];
-    instanceWithSetter = [LTBoundedDouble min:-1 max:0 default:-0.5 afterSetterBlock:^{
-      customSetterCalled = YES;
+    instanceWithSetter = [LTBoundedDouble min:-1 max:0 default:-0.5
+                             afterSetterBlock:^(double value, double oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
   });
   
@@ -191,9 +193,9 @@ context(@"bounded double", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.equal(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.equal(instanceWithSetter.minValue);
   });
 });
 
@@ -202,35 +204,39 @@ context(@"bounded double", ^{
 #pragma mark -
 
 context(@"bounded NSInteger", ^{
-  __block LTBoundedInteger *instance;
-  __block LTBoundedInteger *instanceWithSetter;
+  __block LTBoundedNSInteger *instance;
+  __block LTBoundedNSInteger *instanceWithSetter;
+  __block NSInteger setterOldValue;
+  __block NSInteger setterNewValue;
   
   beforeEach(^{
-    instance = [LTBoundedInteger min:0 max:5 default:1];
-    instanceWithSetter = [LTBoundedInteger min:-5 max:0 default:-1 afterSetterBlock:^{
-      customSetterCalled = YES;
+    instance = [LTBoundedNSInteger min:0 max:5 default:1];
+    instanceWithSetter = [LTBoundedNSInteger min:-5 max:0 default:-1
+                                afterSetterBlock:^(NSInteger value, NSInteger oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
   });
   
   it(@"should not initialize with the default initializer", ^{
     expect(^{
-      instance = [[LTBoundedInteger alloc] init];
+      instance = [[LTBoundedNSInteger alloc] init];
     }).to.raise(NSInternalInconsistencyException);
   });
   
   it(@"should raise when initializing with min > max", ^{
     expect(^{
-      instance = [LTBoundedInteger min:1 max:0 default:0];
+      instance = [LTBoundedNSInteger min:1 max:0 default:0];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should raise when initializing with default not in range", ^{
     expect(^{
-      instance = [LTBoundedInteger min:0 max:1 default:-1];
+      instance = [LTBoundedNSInteger min:0 max:1 default:-1];
     }).to.raise(NSInvalidArgumentException);
     
     expect(^{
-      instance = [LTBoundedInteger min:0 max:1 default:2];
+      instance = [LTBoundedNSInteger min:0 max:1 default:2];
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -275,9 +281,9 @@ context(@"bounded NSInteger", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.equal(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.equal(instanceWithSetter.minValue);
   });
 });
 
@@ -286,35 +292,39 @@ context(@"bounded NSInteger", ^{
 #pragma mark -
 
 context(@"bounded NSUInteger", ^{
-  __block LTBoundedUInteger *instance;
-  __block LTBoundedUInteger *instanceWithSetter;
+  __block LTBoundedNSUInteger *instance;
+  __block LTBoundedNSUInteger *instanceWithSetter;
+  __block NSUInteger setterOldValue;
+  __block NSUInteger setterNewValue;
   
   beforeEach(^{
-    instance = [LTBoundedUInteger min:0 max:5 default:1];
-    instanceWithSetter = [LTBoundedUInteger min:5 max:10 default:6 afterSetterBlock:^{
-      customSetterCalled = YES;
+    instance = [LTBoundedNSUInteger min:0 max:5 default:1];
+    instanceWithSetter = [LTBoundedNSUInteger min:5 max:10 default:6
+                                 afterSetterBlock:^(NSUInteger value, NSUInteger oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
   });
   
   it(@"should not initialize with the default initializer", ^{
     expect(^{
-      instance = [[LTBoundedUInteger alloc] init];
+      instance = [[LTBoundedNSUInteger alloc] init];
     }).to.raise(NSInternalInconsistencyException);
   });
   
   it(@"should raise when initializing with min > max", ^{
     expect(^{
-      instance = [LTBoundedUInteger min:1 max:0 default:0];
+      instance = [LTBoundedNSUInteger min:1 max:0 default:0];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should raise when initializing with default not in range", ^{
     expect(^{
-      instance = [LTBoundedUInteger min:1 max:2 default:0];
+      instance = [LTBoundedNSUInteger min:1 max:2 default:0];
     }).to.raise(NSInvalidArgumentException);
     
     expect(^{
-      instance = [LTBoundedUInteger min:0 max:1 default:2];
+      instance = [LTBoundedNSUInteger min:0 max:1 default:2];
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -359,9 +369,9 @@ context(@"bounded NSUInteger", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.equal(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.equal(instanceWithSetter.minValue);
   });
 });
 
@@ -372,13 +382,17 @@ context(@"bounded NSUInteger", ^{
 context(@"bounded GLKVector3", ^{
   __block LTBoundedGLKVector3 *instance;
   __block LTBoundedGLKVector3 *instanceWithSetter;
+  __block GLKVector3 setterOldValue;
+  __block GLKVector3 setterNewValue;
   
   beforeEach(^{
     instance =
         [LTBoundedGLKVector3 min:GLKVector3Zero max:GLKVector3One default:0.5 * GLKVector3One];
     instanceWithSetter = [LTBoundedGLKVector3 min:-GLKVector3One max:GLKVector3Zero
-                                          default:-0.5 * GLKVector3One afterSetterBlock:^{
-      customSetterCalled = YES;
+                                          default:-0.5 * GLKVector3One
+                                 afterSetterBlock:^(GLKVector3 value, GLKVector3 oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
   });
   
@@ -454,9 +468,9 @@ context(@"bounded GLKVector3", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.beCloseToGLKVector(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.beCloseToGLKVector(instanceWithSetter.minValue);
   });
 });
 
@@ -467,13 +481,17 @@ context(@"bounded GLKVector3", ^{
 context(@"bounded GLKVector4", ^{
   __block LTBoundedGLKVector4 *instance;
   __block LTBoundedGLKVector4 *instanceWithSetter;
+  __block GLKVector4 setterOldValue;
+  __block GLKVector4 setterNewValue;
   
   beforeEach(^{
     instance =
         [LTBoundedGLKVector4 min:GLKVector4Zero max:GLKVector4One default:0.5 * GLKVector4One];
     instanceWithSetter = [LTBoundedGLKVector4 min:-GLKVector4One max:GLKVector4Zero
-                                          default:-0.5 * GLKVector4One afterSetterBlock:^{
-      customSetterCalled = YES;
+                                          default:-0.5 * GLKVector4One
+                                 afterSetterBlock:^(GLKVector4 value, GLKVector4 oldValue) {
+      setterOldValue = oldValue;
+      setterNewValue = value;
     }];
   });
   
@@ -549,9 +567,9 @@ context(@"bounded GLKVector4", ^{
   });
   
   it(@"should perform custom setter", ^{
-    expect(customSetterCalled).to.beFalsy();
     instanceWithSetter.value = instanceWithSetter.minValue;
-    expect(customSetterCalled).to.beTruthy();
+    expect(setterOldValue).to.beCloseToGLKVector(instanceWithSetter.defaultValue);
+    expect(setterNewValue).to.beCloseToGLKVector(instanceWithSetter.minValue);
   });
 });
 
