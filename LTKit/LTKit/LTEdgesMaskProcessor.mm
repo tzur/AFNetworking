@@ -11,75 +11,75 @@
 #import "LTShaderStorage+LTEdgesMaskVsh.h"
 #import "LTTexture+Factory.h"
 
+/// Types of edges that the processor can create.
+typedef NS_ENUM(NSUInteger, LTEdgesMode) {
+  LTEdgesModeGrey = 0,
+  LTEdgesModeColor
+};
+
+/// Helper class used to actually compute the edges from the input texture.
+@interface LTEdgeMaskSubprocessor : LTOneShotImageProcessor
+@end
+
+@implementation LTEdgeMaskSubprocessor
+
+- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
+  LTParameterAssert(output.format == LTTextureFormatRed || output.format == LTTextureFormatRGBA);
+  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTEdgesMaskVsh source]
+                                                fragmentSource:[LTEdgesMaskFsh source]];
+  if (self = [super initWithProgram:program input:input andOutput:output]) {
+    self[[LTEdgesMaskVsh texelOffset]] = $(GLKVector2Make(1.0 / input.size.width,
+                                                          1.0 / input.size.height));
+    self[[LTEdgesMaskFsh edgesMode]] =
+        @((output.format == LTTextureFormatRed) ? LTEdgesModeGrey : LTEdgesModeColor);
+  }
+  return self;
+}
+
+@end
+
 @interface LTEdgesMaskProcessor ()
 
-/// Offset between the pixel and it's south-east neighbour in the shader.
-@property (nonatomic) GLKVector2 texelOffset;
-
-/// If \c YES, the smooth processor has created a smooth texture, \c NO otherwise.
-@property (nonatomic) BOOL smoothTextureCreated;
-
-/// Smooth texture that is used to compute the edges.
-@property (strong, nonatomic) LTTexture *smoothTexture;
-
-// Input texture that is used to compute the edges.
+/// Input texture of the processor.
 @property (strong, nonatomic) LTTexture *inputTexture;
+
+/// Output texture of the processor.
+@property (strong, nonatomic) LTTexture *outputTexture;
 
 @end
 
 @implementation LTEdgesMaskProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTEdgesMaskVsh source]
-                                                fragmentSource:[LTEdgesMaskFsh source]];
-  self.smoothTexture = [self allocateSmoothTexture:input outoutSize:output.size];
-  if (self = [super initWithProgram:program input:self.smoothTexture andOutput:output]) {
-    self.texelOffset = GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height);
-    self.edgesMode = LTEdgesModeGrey;
-    self.smoothTextureCreated = NO;
+  LTParameterAssert(output.format == LTTextureFormatRed || output.format == LTTextureFormatRGBA);
+  if (self = [super init]) {
     self.inputTexture = input;
+    self.outputTexture = output;
   }
   return self;
-}
-
-- (LTTexture *)allocateSmoothTexture:(LTTexture *)input outoutSize:(CGSize)outputSize {
-  CGFloat width = MIN(input.size.height, outputSize.width);
-  CGFloat height = MIN(input.size.height, outputSize.height);
-  LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
-  return smoothTexture;
-}
-
-- (void)setTexelOffset:(GLKVector2)texelOffset {
-  _texelOffset = texelOffset;
-  self[[LTEdgesMaskVsh texelOffset]] = $(texelOffset);
 }
 
 #pragma mark -
 #pragma mark Processing
 #pragma mark -
 
-- (void)processSmoothTexture {
+- (void)process {
+  LTTexture *smoothTexture = [self createSmoothTexture];
+  LTEdgeMaskSubprocessor *processor = [[LTEdgeMaskSubprocessor alloc]
+                                       initWithInput:smoothTexture output:self.outputTexture];
+  [processor process];
+}
+
+- (LTTexture *)createSmoothTexture {
+  CGFloat width = MIN(self.inputTexture.size.width, self.outputTexture.size.width);
+  CGFloat height = MIN(self.outputTexture.size.height, self.outputTexture.size.height);
+  LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
   LTBilateralFilterProcessor *smoother = [[LTBilateralFilterProcessor alloc]
-      initWithInput:self.inputTexture outputs:@[self.smoothTexture]];
+                                          initWithInput:self.inputTexture outputs:@[texture]];
   smoother.iterationsPerOutput = @[@(2)];
   smoother.rangeSigma = 0.2;
   [smoother process];
-}
-
-- (void)process {
-  // TODO:(amit) replace logic with texture seed when available.
-  [self processSmoothTexture];
-  self.smoothTextureCreated = YES;
-  return [super process];
-}
-
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
-
-- (void)setEdgesMode:(LTEdgesMode)edgesMode {
-  _edgesMode = edgesMode;
-  self[[LTEdgesMaskFsh edgesMode]] = @(edgesMode);
+  return texture;
 }
 
 @end
