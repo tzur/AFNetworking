@@ -32,8 +32,8 @@ static const uint kBaseLevelDiameter = 256;
 /// texture edges.
 static const CGFloat kBrushGaussianSigma = 0.3;
 
-- (instancetype)init {
-  if (self = [super init]) {
+- (instancetype)initWithRandom:(LTRandom *)random {
+  if (self = [super initWithRandom:random]) {
     [self updateBrushForCurrentProperties];
   }
   return self;

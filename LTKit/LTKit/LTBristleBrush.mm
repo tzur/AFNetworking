@@ -40,8 +40,8 @@ static const uint kBristleDiameter = 64;
 /// Sigma of the gaussian representing each bristle.
 static const CGFloat kBristleSigma = 0.4;
 
-- (instancetype)init {
-  if (self = [super init]) {
+- (instancetype)initWithRandom:(LTRandom *)random {
+  if (self = [super initWithRandom:random]) {
     [self setBristleBrushDefaults];
     self.brushFbo = [self createBrushFbo];
     self.bristleDrawer = [self createBristleDrawer];
