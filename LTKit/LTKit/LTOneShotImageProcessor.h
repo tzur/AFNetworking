@@ -26,4 +26,7 @@
 /// Output texture of the processor.
 @property (readonly, nonatomic) LTTexture *outputTexture;
 
+/// Input texture of the processor.
+@property (readonly, nonatomic) LTTexture *inputTexture;
+
 @end

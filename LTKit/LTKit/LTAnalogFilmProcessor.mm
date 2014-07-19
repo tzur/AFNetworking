@@ -26,6 +26,9 @@
 /// Internal vignetting processor.
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 
+/// The generation id of the input texture that was used to create the current smooth texture.
+@property (nonatomic) NSUInteger smoothTextureGenerationID;
+
 @end
 
 @implementation LTAnalogFilmProcessor
@@ -48,14 +51,13 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTAnalogFilmVsh source]
                                                 fragmentSource:[LTAnalogFilmFsh source]];
   // Setup vignetting.
-  LTTexture *vignetteTexture = [self createVignettingTextureWithInput:input];
+  LTTexture *vignetteTexture = [self createVignettingTextureWithSize:input.size];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
   // Default color gradient.
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
   
   NSDictionary *auxiliaryTextures =
-      @{[LTAnalogFilmFsh smoothTexture]: [self createSmoothTexture:input],
-        [LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
+      @{[LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
         [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:kLutSize],
         [LTAnalogFilmFsh grainTexture]: self.grainTexture,
         [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
@@ -119,8 +121,8 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   return std::floor(CGSizeMake(size.width * scaleFactor, size.height * scaleFactor));
 }
 
-- (LTTexture *)createVignettingTextureWithInput:(LTTexture *)input {
-  CGSize vignettingSize = [self aspectFitSize:input.size toSize:kVignettingMaxDimension];
+- (LTTexture *)createVignettingTextureWithSize:(CGSize)size {
+  CGSize vignettingSize = [self aspectFitSize:size toSize:kVignettingMaxDimension];
   LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:vignettingSize];
   return vignetteTexture;
 }
@@ -141,7 +143,17 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   if (!self.subProcessorInitialized) {
     [self initializeSubProcessor];
   }
+  [self updateSmoothTextureIfNecessary];
   return [super process];
+}
+
+- (void)updateSmoothTextureIfNecessary {
+  if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTAnalogFilmFsh smoothTexture]]) {
+    self.smoothTextureGenerationID = self.inputTexture.generationID;
+    [self setAuxiliaryTexture:[self createSmoothTexture:self.inputTexture]
+                     withName:[LTAnalogFilmFsh smoothTexture]];
+  }
 }
 
 #pragma mark -
