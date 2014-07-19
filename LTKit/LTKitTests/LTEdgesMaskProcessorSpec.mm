@@ -15,8 +15,6 @@ __block LTEdgesMaskProcessor *processor;
 
 beforeEach(^{
   input = [LTTexture textureWithImage:LTLoadMat([self class], @"MacbethSmall.jpg")];
-  output = [LTTexture textureWithPropertiesOf:input];
-  processor = [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];
 });
 
 afterEach(^{
@@ -25,14 +23,10 @@ afterEach(^{
   output = nil;
 });
 
-context(@"properties", ^{
-  it(@"should return default tone properties correctly", ^{
-    expect(processor.edgesMode).to.equal(LTEdgesModeGrey);
-  });
-});
-  
 context(@"processing", ^{
   sit(@"should return greyscale edges", ^{
+    output = [LTTexture byteRedTextureWithSize:input.size];
+    processor = [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];
     LTEdgesMaskProcessor *processor =
         [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];
     [processor process];
@@ -41,9 +35,10 @@ context(@"processing", ^{
   });
   
   sit(@"should return color edges", ^{
+    output = [LTTexture byteRGBATextureWithSize:input.size];
+    processor = [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];
     LTEdgesMaskProcessor *processor =
         [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];
-    processor.edgesMode = LTEdgesModeColor;
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"MacbethColorEdges.png");
     expect($(output.image)).to.beCloseToMat($(image));
