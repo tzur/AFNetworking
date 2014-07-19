@@ -24,8 +24,8 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)init {
-  if (self = [super init]) {
+- (instancetype)initWithRandom:(LTRandom *)random {
+  if (self = [super initWithRandom:random]) {
     [self setMultiTextureBrushDefaults];
   }
   return self;
