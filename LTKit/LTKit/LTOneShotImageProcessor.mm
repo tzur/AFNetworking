@@ -9,14 +9,11 @@
 
 @interface LTOneShotImageProcessor ()
 
-/// Size of the input texture.
-@property (nonatomic) CGSize inputSize;
-
-/// Size of the output texture.
-@property (nonatomic) CGSize outputSize;
-
 /// Output texture of the processor.
 @property (strong, nonatomic) LTTexture *outputTexture;
+
+/// Input texture of the processor.
+@property (strong, nonatomic) LTTexture *inputTexture;
 
 @end
 
@@ -29,8 +26,7 @@
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
               auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output {
-  self.inputSize = sourceTexture.size;
-  self.outputSize = output.size;
+  self.inputTexture = sourceTexture;
   self.outputTexture = output;
 
   LTOneShotProcessingStrategy *strategy = [[LTOneShotProcessingStrategy alloc]
@@ -38,6 +34,14 @@
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
                                                      sourceTexture:sourceTexture];
   return [super initWithDrawer:rectDrawer strategy:strategy andAuxiliaryTextures:auxiliaryTextures];
+}
+
+- (CGSize)inputSize {
+  return self.inputTexture.size;
+}
+
+- (CGSize)outputSize {
+  return self.outputTexture.size;
 }
 
 @end

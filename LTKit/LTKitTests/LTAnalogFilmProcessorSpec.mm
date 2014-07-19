@@ -157,6 +157,30 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
   
+  it(@"should use the most recent input", ^{
+    cv::Mat4b input(4, 4, cv::Vec4b(0, 0, 0, 255));
+    cv::Mat4b output(4, 4, cv::Vec4b(198, 198, 198, 255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAnalogFilmProcessor *processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture
+                                                                             output:outputTexture];
+    processor.brightness = 0.3;
+    processor.contrast = 0.2;
+    processor.exposure = 0.1;
+    processor.offset = 0.1;
+    processor.structure = 0.5;
+    [processor process];
+    
+    // Update the input texture and process again, making sure that the processing will be applied
+    // on the most recent input.
+    [inputTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->setTo(cv::Vec4b(128, 128, 128, 255));
+    }];
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
   // We run this test only on the device. Working assumption is that the smoother (bilateral
   // filter) causes up to 27 level differences on some pixels near the strong edges.
   // The overall "feel" of the image should be the same on both the simulator and the devices.
