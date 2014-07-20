@@ -136,7 +136,7 @@ context(@"properties", ^{
 context(@"processing", ^{
   beforeEach(^{
     input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
-    output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.25)];
+    output = [LTTexture textureWithPropertiesOf:input];
     processor = [[LTBWProcessor alloc] initWithInput:input output:output];
     
     LTTexture *noise = [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
