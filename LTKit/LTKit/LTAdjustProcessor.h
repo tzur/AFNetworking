@@ -45,6 +45,14 @@ LTDeclareProperty(GLKVector3, blackPoint, BlackPoint);
 LTDeclareProperty(GLKVector3, whitePoint, WhitePoint);
 
 #pragma mark -
+#pragma mark Curves
+#pragma mark -
+
+/// LUT of size 256, which encapsulates a curves manipulation on the image.
+/// Default mapping is an identity for all the three channels.
+@property (nonatomic) cv::Mat3b curves;
+
+#pragma mark -
 #pragma mark Color
 #pragma mark -
 

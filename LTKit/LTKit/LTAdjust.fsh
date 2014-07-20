@@ -63,8 +63,8 @@ void main() {
   
   // Tone, Levels and Curves.
   color.r = texture2D(toneLUT, vec2(color.r, 0.0)).r;
-  color.g = texture2D(toneLUT, vec2(color.g, 0.0)).r;
-  color.b = texture2D(toneLUT, vec2(color.b, 0.0)).r;
+  color.g = texture2D(toneLUT, vec2(color.g, 0.0)).g;
+  color.b = texture2D(toneLUT, vec2(color.b, 0.0)).b;
   
   gl_FragColor = color;
 }
