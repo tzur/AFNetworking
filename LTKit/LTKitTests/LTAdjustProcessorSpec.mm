@@ -324,7 +324,7 @@ context(@"processing", ^{
   // The overall "feel" of the image should be the same on both the simulator and the devices.
   sit(@"should create correct conversion of luminance, color and details", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
-    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size / 2)];
+    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
     
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     
