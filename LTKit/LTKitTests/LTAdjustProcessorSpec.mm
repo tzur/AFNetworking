@@ -3,6 +3,7 @@
 
 #import "LTAdjustProcessor.h"
 
+#import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
@@ -108,6 +109,14 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
+  it(@"should fail on invalid curves parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      cv::Mat3b mat(1, 100, cv::Vec3b(0, 0, 0));
+      adjust.curves = mat;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
   it(@"should not fail on correct input", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
@@ -119,6 +128,9 @@ context(@"properties", ^{
       // Levels.
       adjust.whitePoint = GLKVector3Make(0.9, 1.0, 1.0);
       adjust.blackPoint = GLKVector3Make(-0.1, 0.0, 0.1);
+      // Curves.
+      cv::Mat3b mat(1, 256, 1);
+      adjust.curves = mat;
       // Color.
       adjust.saturation = 0.2;
       adjust.temperature = 0.5;
@@ -212,6 +224,26 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
+  it(@"should process curves correctly", ^{
+    cv::Mat4b input(11, 11, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b output(11, 11, cv::Vec4b(0, 64, 128, 255));
+    
+    std::vector<cv::Mat1b> channels = {cv::Mat1b(1, 256), cv::Mat1b(1, 256), cv::Mat1b(1, 256)};
+    for (NSUInteger i = 0; i < 3; ++i) {
+      channels[i].setTo(i * 64);
+    }
+    cv::Mat3b curves(1, 256);
+    cv::merge(channels, curves);
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.curves = curves;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
   it(@"should process saturation correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 128, 255, 255));
     // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
@@ -292,7 +324,7 @@ context(@"processing", ^{
   // The overall "feel" of the image should be the same on both the simulator and the devices.
   sit(@"should create correct conversion of luminance, color and details", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
-    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
+    LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size / 2)];
     
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     
