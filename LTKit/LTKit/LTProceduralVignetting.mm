@@ -18,7 +18,6 @@
                                fragmentSource:[LTProceduralVignettingFsh source]];
   
   LTTexture *defaultNoise = [self createNeutralNoise];
-  _noise = defaultNoise;
   NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
   
   if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
