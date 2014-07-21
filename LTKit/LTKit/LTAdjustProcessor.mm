@@ -77,7 +77,7 @@ static const CGFloat kDetailsScaling = 2.0;
 
 - (void)setDefaultCurves {
   cv::Mat3b mat(1, kLutSize);
-  for (NSUInteger i = 0; i < kLutSize; ++i) {
+  for (ushort i = 0; i < kLutSize; ++i) {
     mat(0, i) = cv::Vec3b(i, i, i);
   }
   _curves = mat;
