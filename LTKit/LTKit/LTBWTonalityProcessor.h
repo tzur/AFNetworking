@@ -21,7 +21,8 @@
 /// conversion process. Color components should be in [0, 1] range. An attempt to pass the black
 /// color (all components are zero) will raise an exception.
 /// Default value is the NTSC conversion triplet (0.299, 0.587, 0.114).
-LTDeclareProperty(GLKVector3, colorFilter, ColorFilter);
+@property (nonatomic) GLKVector3 colorFilter;
+LTPropertyDeclare(GLKVector3, colorFilter, ColorFilter);
 
 /// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
 /// This LUT is used to colorize (add tint) to the BW conversion. Default value is an identity
@@ -29,18 +30,23 @@ LTDeclareProperty(GLKVector3, colorFilter, ColorFilter);
 @property (strong, nonatomic) LTTexture *colorGradientTexture;
 
 /// Brightens the image. Should be in [-1 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, brightness, Brightness);
+@property (nonatomic) CGFloat brightness;
+LTPropertyDeclare(CGFloat, brightness, Brightness);
 
 /// Increases the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, contrast, Contrast);
+@property (nonatomic) CGFloat contrast;
+LTPropertyDeclare(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, exposure, Exposure);
+@property (nonatomic) CGFloat exposure;
+LTPropertyDeclare(CGFloat, exposure, Exposure);
 
 /// Changes the offset of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, offset, Offset);
+@property (nonatomic) CGFloat offset;
+LTPropertyDeclare(CGFloat, offset, Offset);
 
 /// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, structure, Structure);
+@property (nonatomic) CGFloat structure;
+LTPropertyDeclare(CGFloat, structure, Structure);
 
 @end

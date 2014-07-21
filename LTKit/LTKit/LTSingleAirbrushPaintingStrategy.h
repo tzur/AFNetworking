@@ -57,12 +57,14 @@ typedef std::vector<LTSingleAirbrushPoint> LTSingleAirbrushPoints;
 
 /// Controls the density of the filling. Small values mean sparser painting, and higher values mean
 /// denser painting. Must be in range [0.1,10], default is 1.
-LTDeclareProperty(CGFloat, fillFactor, FillFactor);
+@property (nonatomic) CGFloat fillFactor;
+LTPropertyDeclare(CGFloat, fillFactor, FillFactor);
 
 /// Controls the scattering randomness of the generated points. \c 0 indicates no randomness, such
 /// that the points are generated on a grid with fixed distances between them. \c 1 indicates the
 /// maximum randomness such that every point can fall anywhere on square determined by the brush
 /// radius. Must be in range [0,1], default is 1.
-LTDeclareProperty(CGFloat, fillRandomness, FillRandomness);
+@property (nonatomic) CGFloat fillRandomness;
+LTPropertyDeclare(CGFloat, fillRandomness, FillRandomness);
 
 @end

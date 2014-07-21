@@ -52,7 +52,8 @@ typedef NS_ENUM(NSUInteger, LTDualMaskType) {
 
 /// Spread of the mask determines how smooth or abrupt the transition from Red to Blue part around
 /// neutral point is. Should be in [-1, 1] range. -1 is smooth, 1 is abrupt. Default value it 0.
-LTDeclareProperty(CGFloat, spread, Spread);
+@property (nonatomic) CGFloat spread;
+LTPropertyDeclare(CGFloat, spread, Spread);
 
 /// Angle in radians which tilts the mask. Default value is 0.
 /// @attention Radial mask is rotationally invariant, thus this parameters doesn't affect the mask.

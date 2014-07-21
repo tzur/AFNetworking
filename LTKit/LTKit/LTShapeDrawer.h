@@ -107,7 +107,8 @@
 ///
 /// @note Updating this property affects the opacity of all shapes in the queue, as this is done
 /// without updating the vertices buffer or each shape, and allows animating the opacity with ease.
-LTDeclareProperty(CGFloat, opacity, Opacity);
+@property (nonatomic) CGFloat opacity;
+LTPropertyDeclare(CGFloat, opacity, Opacity);
 
 /// Drawing parameters applied to newly added shapes.
 ///

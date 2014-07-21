@@ -6,10 +6,14 @@
 /// Used to test the macro-generated bounded primitive properties.
 @interface TestClass : NSObject
 
-LTDeclareProperty(CGFloat, basicProperty, BasicProperty)
-LTDeclareProperty(NSUInteger, uintProperty, UintProperty)
-LTDeclareProperty(CGFloat, noSetterProperty, NoSetterProperty)
-LTDeclareProperty(CGFloat, customSetterProperty, CustomSetterProperty)
+@property (nonatomic) CGFloat basicProperty;
+LTPropertyDeclare(CGFloat, basicProperty, BasicProperty)
+@property (nonatomic) NSUInteger uintProperty;
+LTPropertyDeclare(NSUInteger, uintProperty, UintProperty)
+@property (nonatomic) CGFloat noSetterProperty;
+LTPropertyDeclare(CGFloat, noSetterProperty, NoSetterProperty)
+@property (nonatomic) CGFloat customSetterProperty;
+LTPropertyDeclare(CGFloat, customSetterProperty, CustomSetterProperty)
 
 @property (nonatomic) BOOL didCallCustomSetter;
 
@@ -17,9 +21,12 @@ LTDeclareProperty(CGFloat, customSetterProperty, CustomSetterProperty)
 
 @interface ContainerClass : NSObject
 
-LTDeclareProperty(CGFloat, basicProperty, BasicProperty)
-LTDeclareProperty(CGFloat, uintProperty, UintProperty)
-LTDeclareProperty(CGFloat, customProxyProperty, CustomProxyProperty)
+@property (nonatomic) CGFloat basicProperty;
+LTPropertyDeclare(CGFloat, basicProperty, BasicProperty)
+@property (nonatomic) CGFloat uintProperty;
+LTPropertyDeclare(CGFloat, uintProperty, UintProperty)
+@property (nonatomic) CGFloat customProxyProperty;
+LTPropertyDeclare(CGFloat, customProxyProperty, CustomProxyProperty)
 
 @property (nonatomic) BOOL didCallCustomSetter;
 @property (nonatomic) BOOL didCallProxySetter;

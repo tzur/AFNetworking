@@ -21,22 +21,28 @@
 #pragma mark -
 
 /// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, brightness, Brightness);
+@property (nonatomic) CGFloat brightness;
+LTPropertyDeclare(CGFloat, brightness, Brightness);
 
 /// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, contrast, Contrast);
+@property (nonatomic) CGFloat contrast;
+LTPropertyDeclare(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, exposure, Exposure);
+@property (nonatomic) CGFloat exposure;
+LTPropertyDeclare(CGFloat, exposure, Exposure);
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, offset, Offset);
+@property (nonatomic) CGFloat offset;
+LTPropertyDeclare(CGFloat, offset, Offset);
 
 /// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, structure, Structure);
+@property (nonatomic) CGFloat structure;
+LTPropertyDeclare(CGFloat, structure, Structure);
 
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, saturation, Saturation);
+@property (nonatomic) CGFloat saturation;
+LTPropertyDeclare(CGFloat, saturation, Saturation);
 
 #pragma mark -
 #pragma mark Gradient
@@ -49,7 +55,8 @@ LTDeclareProperty(CGFloat, saturation, Saturation);
 /// Tinted result mixed with the original image according to colorGradientAlpha. Should be in [0, 1]
 /// range. When 0, no tinting will occur. When 1, the result will be completely tinted. Default
 /// value is 0.
-LTDeclareProperty(CGFloat, colorGradientAlpha, ColorGradientAlpha);
+@property (nonatomic) CGFloat colorGradientAlpha;
+LTPropertyDeclare(CGFloat, colorGradientAlpha, ColorGradientAlpha);
 
 #pragma mark -
 #pragma mark Grain
@@ -68,7 +75,8 @@ LTDeclareProperty(CGFloat, colorGradientAlpha, ColorGradientAlpha);
 @property (nonatomic) GLKVector3 grainChannelMixer;
 
 /// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 0.
-LTDeclareProperty(CGFloat, grainAmplitude, GrainAmplitude);
+@property (nonatomic) CGFloat grainAmplitude;
+LTPropertyDeclare(CGFloat, grainAmplitude, GrainAmplitude);
 
 #pragma mark -
 #pragma mark Vignetting
@@ -102,6 +110,7 @@ LTDeclareProperty(CGFloat, grainAmplitude, GrainAmplitude);
 @property (nonatomic) CGFloat vignettingNoiseAmplitude;
 
 /// Vignetting opacity. Should be in [0, 1] range. Default amplitude is 0.
-LTDeclareProperty(CGFloat, vignettingOpacity, VignettingOpacity);
+@property (nonatomic) CGFloat vignettingOpacity;
+LTPropertyDeclare(CGFloat, vignettingOpacity, VignettingOpacity);
 
 @end

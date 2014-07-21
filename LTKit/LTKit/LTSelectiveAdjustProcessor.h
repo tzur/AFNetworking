@@ -17,59 +17,71 @@
 #pragma mark -
 
 /// Changes the saturation of the red. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, redSaturation, RedSaturation);
+@property (nonatomic) CGFloat redSaturation;
+LTPropertyDeclare(CGFloat, redSaturation, RedSaturation);
 
 /// Changes the luminance of the red. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, redLuminance, RedLuminance);
+@property (nonatomic) CGFloat redLuminance;
+LTPropertyDeclare(CGFloat, redLuminance, RedLuminance);
 
 #pragma mark -
 #pragma mark Orange
 #pragma mark -
 
 /// Changes the saturation of the orange. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, orangeSaturation, OrangeSaturation);
+@property (nonatomic) CGFloat orangeSaturation;
+LTPropertyDeclare(CGFloat, orangeSaturation, OrangeSaturation);
 
 /// Changes the luminance of the orange. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, orangeLuminance, OrangeLuminance);
+@property (nonatomic) CGFloat orangeLuminance;
+LTPropertyDeclare(CGFloat, orangeLuminance, OrangeLuminance);
 
 #pragma mark -
 #pragma mark Yellow
 #pragma mark -
 
 /// Changes the saturation of the yellow. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, yellowSaturation, YellowSaturation);
+@property (nonatomic) CGFloat yellowSaturation;
+LTPropertyDeclare(CGFloat, yellowSaturation, YellowSaturation);
 
 /// Changes the luminance of the yellow. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, yellowLuminance, YellowLuminance);
+@property (nonatomic) CGFloat yellowLuminance;
+LTPropertyDeclare(CGFloat, yellowLuminance, YellowLuminance);
 
 #pragma mark -
 #pragma mark Green
 #pragma mark -
 
 /// Changes the saturation of the green. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, greenSaturation, GreenSaturation);
+@property (nonatomic) CGFloat greenSaturation;
+LTPropertyDeclare(CGFloat, greenSaturation, GreenSaturation);
 
 /// Changes the luminance of the green. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, greenLuminance, GreenLuminance);
+@property (nonatomic) CGFloat greenLuminance;
+LTPropertyDeclare(CGFloat, greenLuminance, GreenLuminance);
 
 #pragma mark -
 #pragma mark Cyan
 #pragma mark -
 
 /// Changes the saturation of the cyan. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, cyanSaturation, CyanSaturation);
+@property (nonatomic) CGFloat cyanSaturation;
+LTPropertyDeclare(CGFloat, cyanSaturation, CyanSaturation);
 
 /// Changes the luminance of the cyan. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, cyanLuminance, CyanLuminance);
+@property (nonatomic) CGFloat cyanLuminance;
+LTPropertyDeclare(CGFloat, cyanLuminance, CyanLuminance);
 
 #pragma mark -
 #pragma mark Blue
 #pragma mark -
 
 /// Changes the saturation of the blue. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, blueSaturation, BlueSaturation);
+@property (nonatomic) CGFloat blueSaturation;
+LTPropertyDeclare(CGFloat, blueSaturation, BlueSaturation);
 
 /// Changes the luminance of the blue. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, blueLuminance, BlueLuminance);
+@property (nonatomic) CGFloat blueLuminance;
+LTPropertyDeclare(CGFloat, blueLuminance, BlueLuminance);
 
 @end

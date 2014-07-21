@@ -48,6 +48,7 @@
 #pragma mark -
 
 /// Intensity of the blur.
-LTDeclareProperty(CGFloat, intensity, Intensity);
+@property (nonatomic) CGFloat intensity;
+LTPropertyDeclare(CGFloat, intensity, Intensity);
 
 @end

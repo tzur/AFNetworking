@@ -21,6 +21,7 @@
 
 /// Edge Avoiding sigma parameter. The lower the value of this parameter, the stronger the
 /// edge-avoiding effect will be. Must be in range [0.01,1], default is \c 1 (not edge-avoiding).
-LTDeclareProperty(CGFloat, sigma, Sigma)
+@property (nonatomic) CGFloat sigma;
+LTPropertyDeclare(CGFloat, sigma, Sigma)
 
 @end

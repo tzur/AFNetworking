@@ -59,7 +59,8 @@
 @property (nonatomic) CGFloat rotationAngle;
 
 /// The opacity of the shape to draw.
-LTDeclareProperty(CGFloat, opacity, Opacity);
+@property (nonatomic) CGFloat opacity;
+LTPropertyDeclare(CGFloat, opacity, Opacity);
 
 @end
 

@@ -21,14 +21,17 @@
 /// Controls how far apart the individual brush tips will appear. The maximum distance in each
 /// direction will be \c scatter * size of the brush. When set to \c 0, no scattering is applied.
 /// Must be in range [0,10], Default is 1.0.
-LTDeclareProperty(CGFloat, scatter, Scatter);
+@property (nonatomic) CGFloat scatter;
+LTPropertyDeclare(CGFloat, scatter, Scatter);
 
 /// Controls how many copies of the brush tip will appear. Must be in range [1,16], default is 1.
-LTDeclareProperty(NSUInteger, count, Count);
+@property (nonatomic) NSUInteger count;
+LTPropertyDeclare(NSUInteger, count, Count);
 
 /// Control the randomness of the number of additional brush tips (up to \c count, of course).
 /// The higher this value, the less likely that exactly \c count brush tips will appear.
 /// Must be in range [0,1], deafult is 0.0.
-LTDeclareProperty(CGFloat, countJitter, CountJitter);
+@property (nonatomic) CGFloat countJitter;
+LTPropertyDeclare(CGFloat, countJitter, CountJitter);
 
 @end
