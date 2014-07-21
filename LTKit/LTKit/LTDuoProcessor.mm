@@ -143,18 +143,24 @@ static const ushort kGradientSize = 256;
                    withName:uniformName];
 }
 
-LTPropertyWithSetter(GLKVector4, blueColor, BlueColor,
-                     GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 1, 1), ^{
+LTPropertyWithoutSetter(GLKVector4, blueColor, BlueColor,
+                        GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 1, 1));
+- (void)setBlueColor:(GLKVector4)blueColor {
+  [self _verifyAndSetBlueColor:blueColor];
   [self updateGradientWithColor:blueColor uniformName:[LTDuoFsh blueLUT]];
-});
+}
 
-LTPropertyWithSetter(GLKVector4, redColor, RedColor,
-                     GLKVector4Zero, GLKVector4One, GLKVector4Make(1, 0, 0, 1), ^{
+LTPropertyWithoutSetter(GLKVector4, redColor, RedColor,
+                        GLKVector4Zero, GLKVector4One, GLKVector4Make(1, 0, 0, 1));
+- (void)setRedColor:(GLKVector4)redColor {
+  [self _verifyAndSetRedColor:redColor];
   [self updateGradientWithColor:redColor uniformName:[LTDuoFsh redLUT]];
-});
+}
 
-LTPropertyWithSetter(CGFloat, opacity, Opacity, 0, 1, 1, ^{
+LTPropertyWithoutSetter(CGFloat, opacity, Opacity, 0, 1, 1);
+- (void)setOpacity:(CGFloat)opacity {
+  [self _verifyAndSetOpacity:opacity];
   self[[LTDuoFsh opacity]] = @(opacity);
-});
+}
 
 @end

@@ -100,71 +100,97 @@ static const CGFloat kDetailsScaling = 2.0;
   return @[fine, coarse];
 }
 
-LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
+- (void)setBrightness:(CGFloat)brightness {
+  [self _verifyAndSetBrightness:brightness];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
+- (void)setContrast:(CGFloat)contrast {
+  [self _verifyAndSetContrast:contrast];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
+- (void)setExposure:(CGFloat)exposure {
+  [self _verifyAndSetExposure:exposure];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
+- (void)setOffset:(CGFloat)offset {
+  [self _verifyAndSetOffset:offset];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(GLKVector3, blackPoint, BlackPoint,
-                     -GLKVector3One, GLKVector3One, GLKVector3Zero, ^{
+LTPropertyWithoutSetter(GLKVector3, blackPoint, BlackPoint,
+                        -GLKVector3One, GLKVector3One, GLKVector3Zero);
+- (void)setBlackPoint:(GLKVector3)blackPoint {
+  [self _verifyAndSetBlackPoint:blackPoint];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(GLKVector3, whitePoint, WhitePoint,
-                     GLKVector3Zero, GLKVector3Make(2), GLKVector3One, ^{
+LTPropertyWithoutSetter(GLKVector3, whitePoint, WhitePoint,
+                        GLKVector3Zero, GLKVector3Make(2), GLKVector3One);
+- (void)setWhitePoint:(GLKVector3)whitePoint {
+  [self _verifyAndSetWhitePoint:whitePoint];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
+- (void)setSaturation:(CGFloat)saturation {
+  [self _verifyAndSetSaturation:saturation];
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
   self[[LTAdjustFsh saturation]] = @(remap);
-});
+}
 
-LTPropertyWithSetter(CGFloat, temperature, Temperature, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, temperature, Temperature, -1, 1, 0);
+- (void)setTemperature:(CGFloat)temperature {
+  [self _verifyAndSetTemperature:temperature];
   // Remap [-1, 1] to [-kTemperatureScaling, kTemperatureScaling]
   // Temperature in this processor is an additive scale of the I channel in YIQ, so theoretically
   // max value is 0.596 (pure red) and min value is -0.596 (green-blue color).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
   self[[LTAdjustFsh temperature]] = @(temperature * kTemperatureScaling);
-});
+}
 
-LTPropertyWithSetter(CGFloat, tint, Tint, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, tint, Tint, -1, 1, 0);
+- (void)setTint:(CGFloat)tint {
+  [self _verifyAndSetTint:tint];
   // Remap [-1, 1] to [-kTintScaling, kTintScaling]
   // Tint in this processor is an additive scale of the Q channel in YIQ, so theoretically
   // max value is 0.523 (red-blue) and min value is -0.523 (pure green).
   // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
   // that RGB values are always positive.
   self[[LTAdjustFsh tint]] = @(tint * kTintScaling);
-});
+}
 
-LTPropertyWithSetter(CGFloat, details, Details, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, details, Details, -1, 1, 0);
+- (void)setDetails:(CGFloat)details {
+  [self _verifyAndSetDetails:details];
   self[[LTAdjustFsh details]] = @(details * kDetailsScaling);
-});
+}
 
-LTPropertyWithSetter(CGFloat, shadows, Shadows, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, shadows, Shadows, 0, 1, 0);
+- (void)setShadows:(CGFloat)shadows {
+  [self _verifyAndSetShadows:shadows];
   [self updateDetailsLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, fillLight, FillLight, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, fillLight, FillLight, 0, 1, 0);
+- (void)setFillLight:(CGFloat)fillLight {
+  [self _verifyAndSetFillLight:fillLight];
   [self updateDetailsLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, highlights, Highlights, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
+- (void)setHighlights:(CGFloat)highlights {
+  [self _verifyAndSetHighlights:highlights];
   [self updateDetailsLUT];
-});
+}
 
 - (void)setCurves:(cv::Mat3b)curves {
   LTParameterAssert(curves.rows == 1 && curves.cols == 256 && curves.type() == CV_8UC3,

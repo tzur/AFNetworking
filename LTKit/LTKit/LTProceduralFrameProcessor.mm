@@ -81,21 +81,29 @@
 #pragma mark Basic Properties
 #pragma mark -
 
-LTPropertyWithSetter(CGFloat, width, Width, 0, 25, 0, ^{
+LTPropertyWithoutSetter(CGFloat, width, Width, 0, 25, 0);
+- (void)setWidth:(CGFloat)width {
+  [self _verifyAndSetWidth:width];
   [self updateEdges];
-});
+}
 
-LTPropertyWithSetter(CGFloat, spread, Spread, 0, 50, 0, ^{
+LTPropertyWithoutSetter(CGFloat, spread, Spread, 0, 50, 0);
+- (void)setSpread:(CGFloat)spread {
+  [self _verifyAndSetSpread:spread];
   [self updateEdges];
-});
+}
 
-LTPropertyWithSetter(CGFloat, corner, Corner, 0, 32, 0, ^{
+LTPropertyWithoutSetter(CGFloat, corner, Corner, 0, 32, 0);
+- (void)setCorner:(CGFloat)corner {
+  [self _verifyAndSetCorner:corner];
   self[[LTProceduralFrameFsh corner]] = @(corner);
-});
+}
 
-LTPropertyWithSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GLKVector3One, ^{
+LTPropertyWithoutSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GLKVector3One);
+- (void)setColor:(GLKVector3)color {
+  [self _verifyAndSetColor:color];
   self[[LTProceduralFrameFsh color]] = $(color);
-});
+}
 
 #pragma mark -
 #pragma mark Noise Properties
@@ -115,16 +123,20 @@ LTPropertyWithSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GL
   return isTilable || inStretchMode;
 }
 
-LTPropertyWithSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
-                     -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0), ^{
+LTPropertyWithoutSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
+                        -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0));
+- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+  [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.
   _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
   self[[LTProceduralFrameFsh noiseChannelMixer]] = $(_noiseChannelMixer);
-});
+}
 
-LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0, ^{
+LTPropertyWithoutSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0);
+- (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
+  [self _verifyAndSetNoiseAmplitude:noiseAmplitude];
   self[[LTProceduralFrameFsh noiseAmplitude]] = @(noiseAmplitude);
-});
+}
 
 - (void)setNoiseMapping:(LTProceduralFrameNoiseMapping)noiseMapping {
   _noiseMapping = noiseMapping;
@@ -140,9 +152,11 @@ LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0, ^{
   }
 }
 
-LTPropertyWithSetter(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset, 0, 1, 0);
+- (void)setNoiseCoordinatesOffset:(CGFloat)noiseCoordinatesOffset {
+  [self _verifyAndSetNoiseCoordinatesOffset:noiseCoordinatesOffset];
   self[[LTProceduralFrameVsh grainOffset]] = $(GLKVector2Make(noiseCoordinatesOffset,
                                                               noiseCoordinatesOffset));
-});
+}
 
 @end

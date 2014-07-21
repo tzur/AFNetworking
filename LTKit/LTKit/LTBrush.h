@@ -4,9 +4,12 @@
 #import "LTPropertyMacros.h"
 
 #define LTPropertyUpdatingProgram(type, name, Name, minValue, maxValue, defaultValue) \
-  LTPropertyWithSetter(type, name, Name, minValue, maxValue, defaultValue, ^{ \
+  LTPropertyWithoutSetter(type, name, Name, minValue, maxValue, defaultValue); \
+  - (void)set##Name:(type)name { \
+    [self _verifyAndSet##Name:name]; \
+    _##name = name; \
     [self updateProgramForCurrentProperties]; \
-  });
+  }
 
 @class LTBrushColorDynamicsEffect, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
     LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;

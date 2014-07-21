@@ -39,22 +39,28 @@ LTPropertyDeclare(CGFloat, customProxyProperty, CustomProxyProperty)
 LTProperty(CGFloat, basicProperty, BasicProperty, 0, 1, 0.5);
 LTProperty(NSUInteger, uintProperty, UintProperty, 10, 100, 50);
 LTPropertyBounds(CGFloat, noSetterProperty, NoSetterProperty, -1, 0, -0.5);
-LTPropertyWithSetter(CGFloat, customSetterProperty, CustomSetterProperty, -1, 1, 0.1, ^{
+LTPropertyWithoutSetter(CGFloat, customSetterProperty, CustomSetterProperty, -1, 1, 0.1);
+- (void)setCustomSetterProperty:(CGFloat)customSetterProperty {
+  [self _verifyAndSetCustomSetterProperty:customSetterProperty];
   self.didCallCustomSetter = YES;
-});
+}
 
 @end
 
 @implementation ContainerClass
 
-LTProxyProperty(CGFloat, basicProperty, BasicProperty, self.testClass);
-LTProxyPropertyWithSetter(CGFloat, uintProperty, UintProperty, self.testClass, ^{
+LTPropertyProxy(CGFloat, basicProperty, BasicProperty, self.testClass);
+LTPropertyProxyWithoutSetter(CGFloat, uintProperty, UintProperty, self.testClass);
+- (void)setUintProperty:(CGFloat)uintProperty {
+  self.testClass.uintProperty = uintProperty;
   self.didCallProxySetter = YES;
-});
-LTProxyCustomProperty(CGFloat, customProxyProperty, CustomProxyProperty, self.testClass,
-                      basicProperty, BasicProperty, ^{
+}
+LTPropertyProxyCustomWithoutSetter(CGFloat, customProxyProperty, CustomProxyProperty,
+                                   self.testClass, basicProperty, BasicProperty);
+- (void)setCustomProxyProperty:(CGFloat)customProxyProperty {
+  self.testClass.basicProperty = customProxyProperty;
   self.didCallCustomSetter = YES;
-});
+}
 
 @end
 

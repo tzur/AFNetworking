@@ -71,34 +71,46 @@
   return smoothTexture;
 }
 
-LTPropertyWithSetter(GLKVector3, colorFilter, ColorFilter,
-                     GLKVector3Zero, GLKVector3One, GLKVector3Make(0.299, 0.587, 0.114), ^{
+LTPropertyWithoutSetter(GLKVector3, colorFilter, ColorFilter,
+                        GLKVector3Zero, GLKVector3One, GLKVector3Make(0.299, 0.587, 0.114));
+- (void)setColorFilter:(GLKVector3)colorFilter {
+  [self _verifyAndSetColorFilter:colorFilter];
   LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
   _colorFilter = colorFilter / std::sum(colorFilter);
   self[[LTBWTonalityFsh colorFilter]] = $(_colorFilter);
-});
+}
 
-LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
+- (void)setBrightness:(CGFloat)brightness {
+  [self _verifyAndSetBrightness:brightness];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
+- (void)setContrast:(CGFloat)contrast {
+  [self _verifyAndSetContrast:contrast];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
+- (void)setExposure:(CGFloat)exposure {
+  [self _verifyAndSetExposure:exposure];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
+- (void)setOffset:(CGFloat)offset {
+  [self _verifyAndSetOffset:offset];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
+- (void)setStructure:(CGFloat)structure {
+  [self _verifyAndSetStructure:structure];
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
   self[[LTBWTonalityFsh structure]] = @(remap);
-});
+}
 
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
   if (!colorGradientTexture) {

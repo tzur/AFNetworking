@@ -160,33 +160,45 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 #pragma mark Tone
 #pragma mark -
 
-LTPropertyWithSetter(CGFloat, brightness, Brightness, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
+- (void)setBrightness:(CGFloat)brightness {
+  [self _verifyAndSetBrightness:brightness];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, contrast, Contrast, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
+- (void)setContrast:(CGFloat)contrast {
+  [self _verifyAndSetContrast:contrast];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, exposure, Exposure, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
+- (void)setExposure:(CGFloat)exposure {
+  [self _verifyAndSetExposure:exposure];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, offset, Offset, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
+- (void)setOffset:(CGFloat)offset {
+  [self _verifyAndSetOffset:offset];
   [self updateToneLUT];
-});
+}
 
-LTPropertyWithSetter(CGFloat, structure, Structure, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
+- (void)setStructure:(CGFloat)structure {
+  [self _verifyAndSetStructure:structure];
   // Remap [-1, 1] -> [0.25, 4].
   CGFloat remap = std::powf(4.0, structure);
   self[[LTAnalogFilmFsh structure]] = @(remap);
-});
+}
 
-LTPropertyWithSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
+- (void)setSaturation:(CGFloat)saturation {
+  [self _verifyAndSetSaturation:saturation];
   // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
   self[[LTAnalogFilmFsh saturation]] = @(remap);
-});
+}
 
 #pragma mark -
 #pragma mark Vignetting
@@ -244,9 +256,11 @@ LTPropertyWithSetter(CGFloat, saturation, Saturation, -1, 1, 0, ^{
   return self.vignetteProcessor.noiseAmplitude;
 }
 
-LTPropertyWithSetter(CGFloat, vignettingOpacity, VignettingOpacity, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, vignettingOpacity, VignettingOpacity, 0, 1, 0);
+- (void)setVignettingOpacity:(CGFloat)vignettingOpacity {
+  [self _verifyAndSetVignettingOpacity:vignettingOpacity];
   self[[LTAnalogFilmFsh vignettingOpacity]] = @(vignettingOpacity);
-});
+}
 
 #pragma mark -
 #pragma mark Grain
@@ -278,9 +292,11 @@ LTPropertyWithSetter(CGFloat, vignettingOpacity, VignettingOpacity, 0, 1, 0, ^{
   self[[LTAnalogFilmFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 
-LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 0);
+- (void)setGrainAmplitude:(CGFloat)grainAmplitude {
+  [self _verifyAndSetGrainAmplitude:grainAmplitude];
   self[[LTAnalogFilmFsh grainAmplitude]] = @(grainAmplitude * kGrainAmplitudeScaling);
-});
+}
 
 #pragma mark -
 #pragma mark Gradient Texture
@@ -296,9 +312,11 @@ LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 0, ^{
   [self setAuxiliaryTexture:colorGradientTexture withName:[LTAnalogFilmFsh colorGradient]];
 }
 
-LTPropertyWithSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha, -1, 1, 0);
+- (void)setColorGradientAlpha:(CGFloat)colorGradientAlpha {
+  [self _verifyAndSetColorGradientAlpha:colorGradientAlpha];
   self[[LTAnalogFilmFsh colorGradientAlpha]] = @(colorGradientAlpha * kColorGradientAlphaScaling);
-});
+}
 
 #pragma mark -
 #pragma mark Tone LUT

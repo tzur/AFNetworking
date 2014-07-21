@@ -74,11 +74,13 @@
   [self updateDiameterWith:diameter];
 }
 
-LTPropertyWithSetter(CGFloat, spread, Spread, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
+- (void)setSpread:(CGFloat)value {
+  [self _verifyAndSetSpread:value];
   static const CGFloat kSpreadScaling = 0.45;
-  CGFloat remap = spread * kSpreadScaling;
+  CGFloat remap = value * kSpreadScaling;
   self[[LTDualMaskFsh spread]] = @(remap);
-});
+}
 
 - (void)setAngle:(CGFloat)angle {
   _angle = angle;

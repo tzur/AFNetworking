@@ -189,29 +189,41 @@
 #pragma mark Tone
 #pragma mark -
 
-LTProxyPropertyWithSetter(GLKVector3, colorFilter, ColorFilter, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(GLKVector3, colorFilter, ColorFilter, self.toneProcessor);
+- (void)setColorFilter:(GLKVector3)colorFilter {
+  self.toneProcessor.colorFilter = colorFilter;
   [self setNeedsToneProcessing];
-});
+}
 
-LTProxyPropertyWithSetter(CGFloat, brightness, Brightness, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(CGFloat, brightness, Brightness, self.toneProcessor);
+- (void)setBrightness:(CGFloat)brightness {
+  self.toneProcessor.brightness = brightness;
   [self setNeedsToneProcessing];
-});
+}
 
-LTProxyPropertyWithSetter(CGFloat, contrast, Contrast, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(CGFloat, contrast, Contrast, self.toneProcessor);
+- (void)setContrast:(CGFloat)contrast {
+  self.toneProcessor.contrast = contrast;
   [self setNeedsToneProcessing];
-});
+}
 
-LTProxyPropertyWithSetter(CGFloat, exposure, Exposure, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(CGFloat, exposure, Exposure, self.toneProcessor);
+- (void)setExposure:(CGFloat)exposure {
+  self.toneProcessor.exposure = exposure;
   [self setNeedsToneProcessing];
-});
+}
 
-LTProxyPropertyWithSetter(CGFloat, offset, Offset, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(CGFloat, offset, Offset, self.toneProcessor);
+- (void)setOffset:(CGFloat)offset {
+  self.toneProcessor.offset = offset;
   [self setNeedsToneProcessing];
-});
+}
 
-LTProxyPropertyWithSetter(CGFloat, structure, Structure, self.toneProcessor, ^{
+LTPropertyProxyWithoutSetter(CGFloat, structure, Structure, self.toneProcessor);
+- (void)setStructure:(CGFloat)structure {
+  self.toneProcessor.structure = structure;
   [self setNeedsToneProcessing];
-});
+}
 
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
   if (!colorGradientTexture) {
@@ -223,10 +235,12 @@ LTProxyPropertyWithSetter(CGFloat, structure, Structure, self.toneProcessor, ^{
   [self setNeedsToneProcessing];
 }
 
-LTPropertyWithSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0, 1, 1, ^{
+LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0, 1, 1);
+- (void)setColorGradientIntensity:(CGFloat)colorGradientIntensity {
+  [self _verifyAndSetColorGradientIntensity:colorGradientIntensity];
   [self processInternalColorGradientTexture];
   [self setNeedsToneProcessing];
-});
+}
 
 - (void)processInternalColorGradientTexture {
   if (self.colorGradientMat.empty()) {
@@ -243,20 +257,26 @@ LTPropertyWithSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0,
 #pragma mark Vignette
 #pragma mark -
 
-LTPropertyWithSetter(GLKVector3, vignetteColor, VignetteColor,
-                     GLKVector3Zero, GLKVector3One, GLKVector3Zero, ^{
+LTPropertyWithoutSetter(GLKVector3, vignetteColor, VignetteColor,
+                        GLKVector3Zero, GLKVector3One, GLKVector3Zero);
+- (void)setVignetteColor:(GLKVector3)vignetteColor {
+  [self _verifyAndSetVignetteColor:vignetteColor];
   self[@"vignetteColor"] = $(vignetteColor);
-});
+}
 
-LTProxyCustomProperty(CGFloat, vignetteSpread, VignetteSpread,
-                      self.vignetteProcessor, spread, Spread, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, vignetteSpread, VignetteSpread,
+                                   self.vignetteProcessor, spread, Spread);
+- (void)setVignetteSpread:(CGFloat)vignetteSpread {
+  self.vignetteProcessor.spread = vignetteSpread;
   [self setNeedsVignetteProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, vignetteCorner, VignetteCorner,
-                      self.vignetteProcessor, corner, Corner, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
+                                   self.vignetteProcessor, corner, Corner);
+- (void)setVignetteCorner:(CGFloat)vignetteCorner {
+  self.vignetteProcessor.corner = vignetteCorner;
   [self setNeedsVignetteProcessing];
-});
+}
 
 - (void)setVignetteNoise:(LTTexture *)vignetteNoise {
   self.vignetteProcessor.noise = vignetteNoise;
@@ -267,15 +287,19 @@ LTProxyCustomProperty(CGFloat, vignetteCorner, VignetteCorner,
   return self.vignetteProcessor.noise;
 }
 
-LTProxyCustomProperty(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
-                      self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer, ^{
+LTPropertyProxyCustomWithoutSetter(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
+                                   self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer);
+- (void)setVignetteNoiseChannelMixer:(GLKVector3)vignetteNoiseChannelMixer {
+  self.vignetteProcessor.noiseChannelMixer = vignetteNoiseChannelMixer;
   [self setNeedsVignetteProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude,
-                      self.vignetteProcessor, noiseAmplitude, NoiseAmplitude, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude,
+                                   self.vignetteProcessor, noiseAmplitude, NoiseAmplitude);
+- (void)setVignetteNoiseAmplitude:(CGFloat)vignetteNoiseAmplitude {
+  self.vignetteProcessor.noiseAmplitude = vignetteNoiseAmplitude;
   [self setNeedsVignetteProcessing];
-});
+}
 
 #pragma mark -
 #pragma mark Grain
@@ -302,39 +326,49 @@ LTProxyCustomProperty(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude,
   return isTilable || matchesOutputSize;
 }
 
-LTPropertyWithSetter(GLKVector3, grainChannelMixer, GrainChannelMixer,
-                     GLKVector3Zero, GLKVector3One, GLKVector3Make(1, 0, 0), ^{
+LTPropertyWithoutSetter(GLKVector3, grainChannelMixer, GrainChannelMixer,
+                        GLKVector3Zero, GLKVector3One, GLKVector3Make(1, 0, 0));
+- (void)setGrainChannelMixer:(GLKVector3)grainChannelMixer {
+  [self _verifyAndSetGrainChannelMixer:grainChannelMixer];
   _grainChannelMixer = grainChannelMixer / std::sum(grainChannelMixer);
   self[[LTBWProcessorFsh grainChannelMixer]] = $(_grainChannelMixer);
-});
+}
 
-LTPropertyWithSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100, 1, ^{
+LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100, 1);
+- (void)setGrainAmplitude:(CGFloat)grainAmplitude {
+  [self _verifyAndSetGrainAmplitude:grainAmplitude];
   self[[LTBWProcessorFsh grainAmplitude]] = @(grainAmplitude);
-});
+}
 
 #pragma mark -
 #pragma mark Outer Frame
 #pragma mark -
 
-LTProxyCustomProperty(CGFloat, outerFrameWidth, OuterFrameWidth,
-                      self.outerFrameProcessor, width, Width, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, outerFrameWidth, OuterFrameWidth,
+                                   self.outerFrameProcessor, width, Width);
+- (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
+  self.outerFrameProcessor.width = outerFrameWidth;
   // Update the dependent inner frame.
   self.innerFrameProcessor.width = outerFrameWidth + self.innerFrameWidth;
   [self setNeedsInnerFrameProcessing];
 
   // Update outer frame.
   [self setNeedsOuterFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, outerFrameSpread, OuterFrameSpread,
-                      self.outerFrameProcessor, spread, Spread, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, outerFrameSpread, OuterFrameSpread,
+                                   self.outerFrameProcessor, spread, Spread);
+- (void)setOuterFrameSpread:(CGFloat)outerFrameSpread {
+  self.outerFrameProcessor.spread = outerFrameSpread;
   [self setNeedsOuterFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, outerFrameCorner, OuterFrameCorner,
-                      self.outerFrameProcessor, corner, Corner, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, outerFrameCorner, OuterFrameCorner,
+                                   self.outerFrameProcessor, corner, Corner);
+- (void)setOuterFrameCorner:(CGFloat)outerFrameCorner {
+  self.outerFrameProcessor.corner = outerFrameCorner;
   [self setNeedsOuterFrameProcessing];
-});
+}
 
 - (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
   self.outerFrameProcessor.noise = outerFrameNoise;
@@ -344,41 +378,54 @@ LTProxyCustomProperty(CGFloat, outerFrameCorner, OuterFrameCorner,
   return self.outerFrameProcessor.noise;
 }
 
-LTProxyCustomProperty(GLKVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
-                      self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer, ^{
+LTPropertyProxyCustomWithoutSetter(GLKVector3, outerFrameNoiseChannelMixer,
+                                   OuterFrameNoiseChannelMixer,
+                                   self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
+- (void)setOuterFrameNoiseChannelMixer:(GLKVector3)outerFrameNoiseChannelMixer {
+  self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
   [self setNeedsOuterFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude,
-                      self.outerFrameProcessor, noiseAmplitude, NoiseAmplitude, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude,
+                                   self.outerFrameProcessor, noiseAmplitude, NoiseAmplitude);
+- (void)setOuterFrameNoiseAmplitude:(CGFloat)outerFrameNoiseAmplitude {
+  self.outerFrameProcessor.noiseAmplitude = outerFrameNoiseAmplitude;
   [self setNeedsOuterFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(GLKVector3, outerFrameColor, OuterFrameColor,
-                      self.outerFrameProcessor, color, Color, ^{
+LTPropertyProxyCustomWithoutSetter(GLKVector3, outerFrameColor, OuterFrameColor,
+                                   self.outerFrameProcessor, color, Color);
+- (void)setOuterFrameColor:(GLKVector3)outerFrameColor {
+  self.outerFrameProcessor.color = outerFrameColor;
   [self setNeedsOuterFrameProcessing];
-});
+}
 
 #pragma mark -
 #pragma mark Inner Frame
 #pragma mark -
 
-LTPropertyWithSetter(CGFloat, innerFrameWidth, InnerFrameWidth, 0, 25, 0, ^{
+LTPropertyWithoutSetter(CGFloat, innerFrameWidth, InnerFrameWidth, 0, 25, 0);
+- (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
+  [self _verifyAndSetInnerFrameWidth:innerFrameWidth];
   LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,
                     @"Sum of outer and inner width is above maximum value.");
   self.innerFrameProcessor.width = self.outerFrameWidth + innerFrameWidth;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, innerFrameSpread, InnerFrameSpread,
-                      self.innerFrameProcessor, spread, Spread, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, innerFrameSpread, InnerFrameSpread,
+                                   self.innerFrameProcessor, spread, Spread);
+- (void)setInnerFrameSpread:(CGFloat)innerFrameSpread {
+  self.innerFrameProcessor.spread = innerFrameSpread;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, innerFrameCorner, InnerFrameCorner,
-                      self.innerFrameProcessor, corner, Corner, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, innerFrameCorner, InnerFrameCorner,
+                                   self.innerFrameProcessor, corner, Corner);
+- (void)setInnerFrameCorner:(CGFloat)innerFrameCorner {
+  self.innerFrameProcessor.corner = innerFrameCorner;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
 - (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
   self.innerFrameProcessor.noise = innerFrameNoise;
@@ -389,19 +436,25 @@ LTProxyCustomProperty(CGFloat, innerFrameCorner, InnerFrameCorner,
   return self.innerFrameProcessor.noise;
 }
 
-LTProxyCustomProperty(GLKVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
-                      self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer, ^{
+LTPropertyProxyCustomWithoutSetter(GLKVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
+                                   self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
+- (void)setInnerFrameNoiseChannelMixer:(GLKVector3)innerFrameNoiseChannelMixer {
+  self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude,
-                      self.innerFrameProcessor, noiseAmplitude, NoiseAmplitude, ^{
+LTPropertyProxyCustomWithoutSetter(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude,
+                                   self.innerFrameProcessor, noiseAmplitude, NoiseAmplitude);
+- (void)setInnerFrameNoiseAmplitude:(CGFloat)innerFrameNoiseAmplitude {
+  self.innerFrameProcessor.noiseAmplitude = innerFrameNoiseAmplitude;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
-LTProxyCustomProperty(GLKVector3, innerFrameColor, InnerFrameColor,
-                      self.innerFrameProcessor, color, Color, ^{
+LTPropertyProxyCustomWithoutSetter(GLKVector3, innerFrameColor, InnerFrameColor,
+                                   self.innerFrameProcessor, color, Color);
+- (void)setInnerFrameColor:(GLKVector3)innerFrameColor {
+  self.innerFrameProcessor.color = innerFrameColor;
   [self setNeedsInnerFrameProcessing];
-});
+}
 
 @end
