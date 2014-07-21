@@ -49,15 +49,15 @@
   return uniform(_engine);
 }
 
-- (NSInteger)randomIntegerBetweenMin:(NSInteger)min max:(NSInteger)max {
+- (int)randomIntegerBetweenMin:(int)min max:(int)max {
   LTParameterAssert(min <= max);
-  std::uniform_int_distribution<NSInteger> uniform(min, max);
+  std::uniform_int_distribution<int> uniform(min, max);
   return uniform(_engine);
 }
 
-- (NSUInteger)randomUnsignedIntegerBelow:(NSUInteger)max {
+- (uint)randomUnsignedIntegerBelow:(uint)max {
   LTParameterAssert(max > 0);
-  std::uniform_int_distribution<NSInteger> uniform(0, max-1);
+  std::uniform_int_distribution<uint> uniform(0, max - 1);
   return uniform(_engine);
 }
 

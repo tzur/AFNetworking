@@ -49,7 +49,7 @@
         self.program[[LTBrushFsh intensity]] = $(targetRect.color.glkVector);
       }
       
-      NSUInteger textureIdx = [self.random randomUnsignedIntegerBelow:self.textures.count];
+      uint textureIdx = [self.random randomUnsignedIntegerBelow:(uint)self.textures.count];
       [self.drawer setSourceTexture:self.textures[textureIdx]];
       [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];

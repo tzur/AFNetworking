@@ -28,7 +28,7 @@
 - (NSUInteger)randomCount {
   NSUInteger minCount = std::round(self.count * (1.0 - self.countJitter));
   NSUInteger maxCount = std::round(self.count * (1.0 + self.countJitter));
-  return [self.random randomIntegerBetweenMin:minCount max:maxCount];
+  return [self.random randomIntegerBetweenMin:(uint)minCount max:(uint)maxCount];
 }
 
 - (LTRotatedRect *)randomRectFromRect:(LTRotatedRect *)rect {

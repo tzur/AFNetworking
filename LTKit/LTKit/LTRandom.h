@@ -30,10 +30,10 @@
 - (double)randomDoubleBetweenMin:(double)min max:(double)max;
 
 /// Returns a uniformly distributed \c NSInteger in range [min,max].
-- (NSInteger)randomIntegerBetweenMin:(NSInteger)min max:(NSInteger)max;
+- (int)randomIntegerBetweenMin:(int)min max:(int)max;
 
 /// Returns a uniformly distributed \c NSUInteger in range [0,max-1].
-- (NSUInteger)randomUnsignedIntegerBelow:(NSUInteger)max;
+- (uint)randomUnsignedIntegerBelow:(uint)max;
 
 /// Seed used to initialize the random generator.
 @property (readonly, nonatomic) NSUInteger seed;
