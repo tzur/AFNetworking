@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, LTRoundBrushMode) {
 @property (nonatomic) LTRoundBrushMode mode;
 
 /// Fuzziness of the brush outline. Must be in range [0,1], default is \c 1.
-LTDeclareProperty(CGFloat, hardness, Hardness)
+@property (nonatomic) CGFloat hardness;
+LTPropertyDeclare(CGFloat, hardness, Hardness)
 
 @end

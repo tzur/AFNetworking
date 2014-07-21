@@ -29,21 +29,25 @@ typedef NS_ENUM(GLenum, LTProceduralFrameNoiseMapping) {
 
 /// Percent of the smaller image dimension that the foreground should occupy.
 /// Should be in [0-25] range. Default value is 0.
-LTDeclareProperty(CGFloat, width, Width);
+@property (nonatomic) CGFloat width;
+LTPropertyDeclare(CGFloat, width, Width);
 
 /// Percent of the smaller image dimension that the transition should occupy.
 /// Should be in [0-25] range. Default value is 0.
-LTDeclareProperty(CGFloat, spread, Spread);
+@property (nonatomic) CGFloat spread;
+LTPropertyDeclare(CGFloat, spread, Spread);
 
 /// Determines the corner type of the frame by creating an appropriate distance field.
 /// Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher values
 /// will create a different degrees of roundness, which stem from the remapping the distance field
 /// values with the power function. Default value is 0.
-LTDeclareProperty(CGFloat, corner, Corner);
+@property (nonatomic) CGFloat corner;
+LTPropertyDeclare(CGFloat, corner, Corner);
 
 /// Color of the foreground and of the transition area. Components should be in [0, 1] range.
 /// Default color is white (1, 1, 1).
-LTDeclareProperty(GLKVector3, color, Color);
+@property (nonatomic) GLKVector3 color;
+LTPropertyDeclare(GLKVector3, color, Color);
 
 #pragma mark -
 #pragma mark Noise Properties
@@ -58,10 +62,12 @@ LTDeclareProperty(GLKVector3, color, Color);
 /// Mixes the noise channels of the noise texture in order to create the transition noise.
 /// Components should be in [-1, 1] range. Default value is (1, 0, 0). Input values are normalized,
 /// to remove potential interference with noise amplitude.
-LTDeclareProperty(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
+@property (nonatomic) GLKVector3 noiseChannelMixer;
+LTPropertyDeclare(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
+@property (nonatomic) CGFloat noiseAmplitude;
+LTPropertyDeclare(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 /// Selects how noise is used in frame creation. It is possible to scale the noise texture to the
 /// size of the frame or tile it. Default value is LTProceduralFrameNoiseMappingScale.
@@ -69,6 +75,7 @@ LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 /// Offset the noise texture in [0-1] range. Default value is 0. This is useful to create a variety
 /// of frames from the same noise texture.
-LTDeclareProperty(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset);
+@property (nonatomic) CGFloat noiseCoordinatesOffset;
+LTPropertyDeclare(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset);
 
 @end

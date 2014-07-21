@@ -10,19 +10,24 @@
 @interface LTShapeDrawerParams : NSObject <NSCopying>
 
 /// Line width of drawn strokes. Must be greater or equal to 1.
-LTDeclareProperty(CGFloat, lineWidth, LineWidth);
+@property (nonatomic) CGFloat lineWidth;
+LTPropertyDeclare(CGFloat, lineWidth, LineWidth);
 
 /// Width of the shadow (at each side) around the the stroke. Must be non-negative.
-LTDeclareProperty(CGFloat, shadowWidth, ShadowWidth);
+@property (nonatomic) CGFloat shadowWidth;
+LTPropertyDeclare(CGFloat, shadowWidth, ShadowWidth);
 
 /// Color of filled shapes. Must be in range [0,1].
-LTDeclareProperty(GLKVector4, fillColor, FillColor);
+@property (nonatomic) GLKVector4 fillColor;
+LTPropertyDeclare(GLKVector4, fillColor, FillColor);
 
 /// Color of outlined shapes or paths. Must be in range [0,1].
-LTDeclareProperty(GLKVector4, strokeColor, StrokeColor);
+@property (nonatomic) GLKVector4 strokeColor;
+LTPropertyDeclare(GLKVector4, strokeColor, StrokeColor);
 
 /// Color of the shadows around filled shapes, outlines, or strokes. Must be in range [0,1].
-LTDeclareProperty(GLKVector4, shadowColor, ShadowColor);
+@property (nonatomic) GLKVector4 shadowColor;
+LTPropertyDeclare(GLKVector4, shadowColor, ShadowColor);
 
 /// Half the line width.
 @property (readonly, nonatomic) CGFloat lineRadius;

@@ -45,14 +45,17 @@
 /// The mapping in the blue region is constructed by assigning this color to luminance midrange and
 /// building the gradient around it. Gradient will map black to black and white to white. Default
 /// color is opaque blue (0, 0, 1, 1).
-LTDeclareProperty(GLKVector4, blueColor, BlueColor);
+@property (nonatomic) GLKVector4 blueColor;
+LTPropertyDeclare(GLKVector4, blueColor, BlueColor);
 
 /// The mapping in the red region is constructed by assigning this color to luminance midrange and
 /// building the gradient around it. Gradient will map black to black and white to white. Default
 /// color is opaque red (1, 0, 0, 1).
-LTDeclareProperty(GLKVector4, redColor, RedColor);
+@property (nonatomic) GLKVector4 redColor;
+LTPropertyDeclare(GLKVector4, redColor, RedColor);
 
 /// Opacity of the result wrt input texture.
-LTDeclareProperty(CGFloat, opacity, Opacity);
+@property (nonatomic) CGFloat opacity;
+LTPropertyDeclare(CGFloat, opacity, Opacity);
 
 @end

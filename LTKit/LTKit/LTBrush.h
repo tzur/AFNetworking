@@ -81,27 +81,33 @@
 
 /// Controls the size of the brush with respect to the base size.
 /// Must be in range [0.1,3], default is \c 1.
-LTDeclareProperty(CGFloat, scale, Scale)
+@property (nonatomic) CGFloat scale;
+LTPropertyDeclare(CGFloat, scale, Scale)
 
 /// Rotation angle around the brush center, in radians. Automatically converted to the corresponding
 /// angle in range [0,2*PI). Default is \c 0.
-LTDeclareProperty(CGFloat, angle, Angle)
+@property (nonatomic) CGFloat angle;
+LTPropertyDeclare(CGFloat, angle, Angle)
 
 /// Spacing (in percentage) between the brush placements.
 /// Must be in range [0.01,10], default is \c 0.05.
 /// \c 1 will place the next brush exactly adjacent to the previous one, with no overlap (assuming
 /// the brush is round).
 /// Values smaller than \c 1 will place the brush closer to the previous brush, creating an overlap.
-LTDeclareProperty(CGFloat, spacing, Spacing)
+@property (nonatomic) CGFloat spacing;
+LTPropertyDeclare(CGFloat, spacing, Spacing)
 
 /// Maximal opacity value for the stroke. Must be in range [0,1], default is \c 1.
-LTDeclareProperty(CGFloat, opacity, Opacity)
+@property (nonatomic) CGFloat opacity;
+LTPropertyDeclare(CGFloat, opacity, Opacity)
 
 /// Rate at which color is applied as the brush paints over an area.
 /// Must be in range [0.01,1], default is \c 1.
-LTDeclareProperty(CGFloat, flow, Flow)
+@property (nonatomic) CGFloat flow;
+LTPropertyDeclare(CGFloat, flow, Flow)
 
 /// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
-LTDeclareProperty(GLKVector4, intensity, Intensity);
+@property (nonatomic) GLKVector4 intensity;
+LTPropertyDeclare(GLKVector4, intensity, Intensity);
 
 @end

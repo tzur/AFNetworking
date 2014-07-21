@@ -55,6 +55,7 @@ typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
 @property (nonatomic) float frontRotation;
 
 /// Opacity of the front texture in the range [0, 1]. Default value is \c 1.
-LTDeclareProperty(CGFloat, frontOpacity, FrontOpacity);
+@property (nonatomic) CGFloat frontOpacity;
+LTPropertyDeclare(CGFloat, frontOpacity, FrontOpacity);
 
 @end

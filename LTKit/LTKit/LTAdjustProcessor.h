@@ -21,16 +21,20 @@
 #pragma mark -
 
 /// Changes the brightness of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, brightness, Brightness);
+@property (nonatomic) CGFloat brightness;
+LTPropertyDeclare(CGFloat, brightness, Brightness);
 
 /// Changes the global contrast of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, contrast, Contrast);
+@property (nonatomic) CGFloat contrast;
+LTPropertyDeclare(CGFloat, contrast, Contrast);
 
 /// Changes the exposure of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, exposure, Exposure);
+@property (nonatomic) CGFloat exposure;
+LTPropertyDeclare(CGFloat, exposure, Exposure);
 
 /// Changes the additive offset of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, offset, Offset);
+@property (nonatomic) CGFloat offset;
+LTPropertyDeclare(CGFloat, offset, Offset);
 
 #pragma mark -
 #pragma mark Levels
@@ -38,11 +42,13 @@ LTDeclareProperty(CGFloat, offset, Offset);
 
 /// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
 /// (0, 0, 0).
-LTDeclareProperty(GLKVector3, blackPoint, BlackPoint);
+@property (nonatomic) GLKVector3 blackPoint;
+LTPropertyDeclare(GLKVector3, blackPoint, BlackPoint);
 
 /// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
 /// (1, 1, 1).
-LTDeclareProperty(GLKVector3, whitePoint, WhitePoint);
+@property (nonatomic) GLKVector3 whitePoint;
+LTPropertyDeclare(GLKVector3, whitePoint, WhitePoint);
 
 #pragma mark -
 #pragma mark Curves
@@ -57,13 +63,16 @@ LTDeclareProperty(GLKVector3, whitePoint, WhitePoint);
 #pragma mark -
 
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, saturation, Saturation);
+@property (nonatomic) CGFloat saturation;
+LTPropertyDeclare(CGFloat, saturation, Saturation);
 
 /// Changes the temperature of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, temperature, Temperature);
+@property (nonatomic) CGFloat temperature;
+LTPropertyDeclare(CGFloat, temperature, Temperature);
 
 /// Changes the tint of the image. Should be in [-1, 1] range. Default value is 0.
-LTDeclareProperty(CGFloat, tint, Tint);
+@property (nonatomic) CGFloat tint;
+LTPropertyDeclare(CGFloat, tint, Tint);
 
 #pragma mark -
 #pragma mark Details
@@ -71,18 +80,22 @@ LTDeclareProperty(CGFloat, tint, Tint);
 
 /// Controls the local contrast by changing the amplitude of the image details. Should be in [-1, 1]
 /// range. Default value is 0.
-LTDeclareProperty(CGFloat, details, Details);
+@property (nonatomic) CGFloat details;
+LTPropertyDeclare(CGFloat, details, Details);
 
 /// Brightens the shadows, while preserving local contrast. Should be in [0, 1] range. Default value
 /// is 0.
-LTDeclareProperty(CGFloat, shadows, Shadows);
+@property (nonatomic) CGFloat shadows;
+LTPropertyDeclare(CGFloat, shadows, Shadows);
 
 /// Brightens the mid-range, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-LTDeclareProperty(CGFloat, fillLight, FillLight);
+@property (nonatomic) CGFloat fillLight;
+LTPropertyDeclare(CGFloat, fillLight, FillLight);
 
 /// Compresses the highlights, while preserving local contrast. Should be in [0, 1] range. Default
 /// value is 0.
-LTDeclareProperty(CGFloat, highlights, Highlights);
+@property (nonatomic) CGFloat highlights;
+LTPropertyDeclare(CGFloat, highlights, Highlights);
 
 @end

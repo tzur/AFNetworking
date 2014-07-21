@@ -3,9 +3,8 @@
 
 /// Useful property declaration and implementation macros.
 
-/// Define a primitive property, together with a readonly min/max properties.
-#define LTDeclareProperty(type, name, Name) \
-@property (nonatomic) type name; \
+/// Define the readonly min/max/default properties of a primitve property.
+#define LTPropertyDeclare(type, name, Name) \
 @property (nonatomic) BOOL __##name##Set; \
 @property (readonly, nonatomic) type min##Name; \
 @property (readonly, nonatomic) type max##Name; \

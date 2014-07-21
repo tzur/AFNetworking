@@ -24,15 +24,18 @@
 
 /// Specifies a percentage by which the hue of the paint can vary in stroke.
 /// Must be in range [0,1], default is 1.
-LTDeclareProperty(CGFloat, hueJitter, HueJitter);
+@property (nonatomic) CGFloat hueJitter;
+LTPropertyDeclare(CGFloat, hueJitter, HueJitter);
 
 /// Specifies a percentage by which the saturation of the paint can vary in stroke.
 /// Must be in range [0,1], default is 1.
-LTDeclareProperty(CGFloat, saturationJitter, SaturationJitter);
+@property (nonatomic) CGFloat saturationJitter;
+LTPropertyDeclare(CGFloat, saturationJitter, SaturationJitter);
 
 /// Specifies a percentage by which the brightness of the paint can vary in stroke.
 /// Must be in range [0,1], default is 1.
-LTDeclareProperty(CGFloat, brightnessJitter, BrightnessJitter);
+@property (nonatomic) CGFloat brightnessJitter;
+LTPropertyDeclare(CGFloat, brightnessJitter, BrightnessJitter);
 
 /// When set, the effect will sample the base color from this texture according to the center of
 /// each rect. When set to \nil, the base color will be used.

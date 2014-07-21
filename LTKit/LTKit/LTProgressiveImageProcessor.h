@@ -24,6 +24,7 @@
 
 /// Indicates how much processing should be done in the next call to \c process. Must be in range
 /// [0,1], and greater or equal than \c processedProgress.
-LTDeclareProperty(double, targetProgress, TargetProgress);
+@property (nonatomic) double targetProgress;
+LTPropertyDeclare(double, targetProgress, TargetProgress);
 
 @end

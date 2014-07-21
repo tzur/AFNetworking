@@ -19,7 +19,8 @@
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 100.
-LTDeclareProperty(CGFloat, spread, Spread);
+@property (nonatomic) CGFloat spread;
+LTPropertyDeclare(CGFloat, spread, Spread);
 
 /// Determines the corner type of the frame and corresponds to the p-norm which is used to compute
 /// the distance field. Should be in [2-16] range. The default value is 2.
@@ -27,7 +28,8 @@ LTDeclareProperty(CGFloat, spread, Spread);
 /// completely round by passing 2 and creating an Euclidean distance field for increasingly higher
 /// values, the distance field will become more rectangular. The limit of 16 is due to the precision
 /// limits in the shader.
-LTDeclareProperty(CGFloat, corner, Corner);
+@property (nonatomic) CGFloat corner;
+LTPropertyDeclare(CGFloat, corner, Corner);
 
 /// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
 /// which doesn't affect the image. Set \c noise back to \c nil to restore the default value.
@@ -39,9 +41,11 @@ LTDeclareProperty(CGFloat, corner, Corner);
 /// Mixes the noise channels of the noise texture in order to create the transition noise.
 /// Components should be in [-1, 1] range. Default value is (1, 0, 0). Input values are normalized,
 /// to remove potential interference with noise amplitude.
-LTDeclareProperty(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
+@property (nonatomic) GLKVector3 noiseChannelMixer;
+LTPropertyDeclare(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-LTDeclareProperty(CGFloat, noiseAmplitude, NoiseAmplitude);
+@property (nonatomic) CGFloat noiseAmplitude;
+LTPropertyDeclare(CGFloat, noiseAmplitude, NoiseAmplitude);
 
 @end
