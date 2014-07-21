@@ -7,7 +7,6 @@
   LTPropertyWithoutSetter(type, name, Name, minValue, maxValue, defaultValue); \
   - (void)set##Name:(type)name { \
     [self _verifyAndSet##Name:name]; \
-    _##name = name; \
     [self updateProgramForCurrentProperties]; \
   }
 

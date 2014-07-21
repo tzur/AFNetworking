@@ -75,10 +75,10 @@
 }
 
 LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
-- (void)setSpread:(CGFloat)value {
-  [self _verifyAndSetSpread:value];
+- (void)setSpread:(CGFloat)spread {
+  [self _verifyAndSetSpread:spread];
   static const CGFloat kSpreadScaling = 0.45;
-  CGFloat remap = value * kSpreadScaling;
+  CGFloat remap = spread * kSpreadScaling;
   self[[LTDualMaskFsh spread]] = @(remap);
 }
 
