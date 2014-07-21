@@ -116,7 +116,7 @@
 
   NSUInteger size;
   NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:2], &size, NULL);
-  std::unique_ptr<char> argument(new char[size]);
+  std::unique_ptr<char[]> argument(new char[size]);
   [value getValue:argument.get()];
 
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -139,12 +139,14 @@
 }
 
 - (NSValue *)valueForProperty:(ext_propertyAttributes *)attributes {
+  LTAssert(attributes, @"Given property attributes cannot be NULL");
+
   NSMethodSignature *signature = [self signatureForSelector:attributes->getter];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
   [invocation setSelector:attributes->getter];
   [invocation invokeWithTarget:self];
 
-  std::unique_ptr<char> value(new char[signature.methodReturnLength]);
+  std::unique_ptr<char[]> value(new char[signature.methodReturnLength]);
   [invocation getReturnValue:value.get()];
 
   // Return value with the original type and not the stripped one to preserve \c isEqualToValue:
