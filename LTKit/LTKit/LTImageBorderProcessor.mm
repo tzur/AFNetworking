@@ -16,7 +16,7 @@
 
 @interface LTImageBorderProcessor ()
 
-// Returns YES is subprocessors used by this class are initialized, NO otherwise.
+// Returns YES if subprocessors used by this class are initialized, NO otherwise.
 @property (nonatomic) BOOL subProcessorsInitialized;
 
 // Frame that is used to create an outer part of the image border.
