@@ -374,7 +374,7 @@ CG_INLINE CGRect CGRoundRect(const CGRect &rect) {
 /// keeping the result rect inside the original one.
 ///
 /// @note assumes non-negative origin and size.
-CG_INLINE CGRect CGRoundRectInside(const CGRect &rect) {
+CG_INLINE CGRect CGRoundRectInside(const CGRect rect) {
   return CGRectFromPoints(std::ceil(rect.origin), std::floor(rect.origin + rect.size));
 }
 
@@ -382,7 +382,7 @@ CG_INLINE CGRect CGRoundRectInside(const CGRect &rect) {
 /// the result rect contains the original one.
 ///
 /// @note assumes non-negative origin and size.
-CG_INLINE CGRect CGRoundRectOutside(const CGRect &rect) {
+CG_INLINE CGRect CGRoundRectOutside(const CGRect rect) {
   return CGRectFromPoints(std::floor(rect.origin), std::ceil(rect.origin + rect.size));
 }
 
@@ -391,12 +391,21 @@ CG_INLINE CGRect CGRoundRectOutside(const CGRect &rect) {
 #pragma mark -
 
 /// Scales down size, so the the big dimension is equal to maxDimension. The result of the scaling
-/// is rounded  and each dimension is guaranteed to be at least 1. If the big dimension is smaller
+/// is rounded and each dimension is guaranteed to be at least 1. If the big dimension is smaller
 /// than maxDimension, return the size unchanged.
 CG_INLINE CGSize CGScaleDownToDimension(CGSize size, CGFloat maxDimension) {
   CGFloat scaleFactor = MIN(1.0, maxDimension / MAX(size.width, size.height));
   return std::round(CGSizeMake(MAX(1.0, size.width * scaleFactor),
                                MAX(1.0, size.height * scaleFactor)));
+}
+
+/// Fits \c size to fit in \c sizeToFit.
+CG_INLINE CGSize CGSizeAspectFit(CGSize size, CGSize sizeToFit) {
+  CGFloat widthRatio = sizeToFit.width / size.width;
+  CGFloat heightRatio = sizeToFit.height / size.height;
+
+  CGFloat scaleRatio = MIN(widthRatio, heightRatio);
+  return std::round(size * scaleRatio);
 }
 
 #endif

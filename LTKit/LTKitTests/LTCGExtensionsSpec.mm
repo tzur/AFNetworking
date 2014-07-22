@@ -268,4 +268,27 @@ context(@"scaling down cgsizes", ^{
   });
 });
 
+context(@"fitting cgsizes", ^{
+  it(@"should aspect fit by scaling down size by width", ^{
+    CGSize inputSize = CGSizeMake(20, 10);
+    CGSize fitSize = CGSizeMake(10, 7);
+    CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
+    expect(outputSize).to.equal(CGSizeMake(10, 5));
+  });
+
+  it(@"should aspect fit by scaling down size by height", ^{
+    CGSize inputSize = CGSizeMake(9, 21);
+    CGSize fitSize = CGSizeMake(10, 7);
+    CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
+    expect(outputSize).to.equal(CGSizeMake(3, 7));
+  });
+
+  it(@"should aspect fit by scaling up size", ^{
+    CGSize inputSize = CGSizeMake(20, 10);
+    CGSize fitSize = CGSizeMake(40, 40);
+    CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
+    expect(outputSize).to.equal(CGSizeMake(40, 20));
+  });
+});
+
 SpecEnd
