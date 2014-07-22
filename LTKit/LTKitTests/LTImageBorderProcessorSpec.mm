@@ -77,7 +77,7 @@ context(@"processing", ^{
     processor = [[LTImageBorderProcessor alloc] initWithInput:input output:output];
   });
   
-  sit(@"should return rectangular white frame with abrupt transition and no noise", ^{
+  sit(@"should return outer frame with abrupt transition and no noise", ^{
     processor.outerFrameWidth = 25;
     processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
     [processor process];
@@ -87,7 +87,7 @@ context(@"processing", ^{
     expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
   
-  sit(@"should return rectangular white frame with no noise on clear background", ^{
+  sit(@"should return outer frame with no noise on clear background", ^{
     [input clearWithColor:GLKVector4Zero];
     processor.outerFrameWidth = 25;
     processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
@@ -95,6 +95,20 @@ context(@"processing", ^{
     
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"RedBorderOnClearBackground.png")];
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+  
+  sit(@"should return outer + inner frames with rounded corners on both frames", ^{
+    processor.outerFrameWidth = 10;
+    processor.outerFrameCorner = 15;
+    processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 1.0);
+    processor.innerFrameWidth = 10;
+    processor.innerFrameCorner = 15;
+    processor.innerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    [processor process];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"BlueRedBorderRoundedCorners.png")];
     expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
   

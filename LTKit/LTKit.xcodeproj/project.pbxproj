@@ -206,6 +206,7 @@
 		2843B78318ACC08B0044B87A /* LTProcessingDrawerExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B78218ACC08B0044B87A /* LTProcessingDrawerExamples.mm */; };
 		28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 28463D0E196983DE0021A7CD /* LTDefaultModule.h */; };
 		28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 28463D0F196983DE0021A7CD /* LTDefaultModule.m */; };
+		28470F2D1977953D0031E500 /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 28470F2C1977953D0031E500 /* BlueRedBorderRoundedCorners.png */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
@@ -1058,6 +1059,7 @@
 		2843B78518ACF5030044B87A /* LTMultiRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMultiRectDrawerSpec.h; sourceTree = "<group>"; };
 		28463D0E196983DE0021A7CD /* LTDefaultModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultModule.h; sourceTree = "<group>"; };
 		28463D0F196983DE0021A7CD /* LTDefaultModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTDefaultModule.m; sourceTree = "<group>"; };
+		28470F2C1977953D0031E500 /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		284791E61862E70200A70AF5 /* LTGridDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGridDrawer.h; sourceTree = "<group>"; };
 		284791E71862E70200A70AF5 /* LTGridDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawer.mm; sourceTree = "<group>"; };
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
@@ -2147,6 +2149,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				28470F2C1977953D0031E500 /* BlueRedBorderRoundedCorners.png */,
 				28A366A219754475009F0A4D /* SemiTransparentGray.png */,
 				28A612941934F15D00D005D8 /* GaussianAnisotropic.png */,
 				28A612951934F15D00D005D8 /* GaussianSquare.png */,
@@ -3184,6 +3187,7 @@
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
 				03AFC15F190CE52100F17063 /* DuoRed.png in Resources */,
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
+				28470F2D1977953D0031E500 /* BlueRedBorderRoundedCorners.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
