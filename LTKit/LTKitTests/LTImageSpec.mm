@@ -5,6 +5,24 @@
 
 #import "LTOpenCVExtensions.h"
 
+static cv::Mat4b LTLoadRGBAImage(Class className, NSString *name) {
+  NSBundle *bundle = [NSBundle bundleForClass:className];
+  NSString *path = [bundle pathForResource:name ofType:@"png"];
+
+  cv::Mat3b bgr(cv::imread([path cStringUsingEncoding:NSUTF8StringEncoding]));
+  cv::Mat ones = cv::Mat::ones(bgr.size(), CV_8U) * 255;
+
+  cv::Mat4b output(bgr.size());
+
+  const int fromTo[] = {0, 2, 1, 1, 2, 0, 3, 3};
+  Matrices inputs{bgr, ones};
+  Matrices outputs{output};
+
+  cv::mixChannels(inputs, outputs, fromTo, 4);
+
+  return output;
+}
+
 SpecBegin(LTImage)
 
 context(@"loading images", ^{
@@ -18,7 +36,7 @@ context(@"loading images", ^{
   it(@"should load mat without copying", ^{
     LTImage *image = [[LTImage alloc] initWithMat:mat copy:NO];
 
-    expect(LTCompareMat(mat, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(mat));
   });
 
   it(@"should load mat with copying", ^{
@@ -28,7 +46,7 @@ context(@"loading images", ^{
     LTImage *image = [[LTImage alloc] initWithMat:mat copy:YES];
     mat.setTo(cv::Vec4b(0, 0, 0, 0));
 
-    expect(LTCompareMat(expected, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(expected));
   });
 
   it(@"should load an rgba jpeg image", ^{
@@ -39,29 +57,29 @@ context(@"loading images", ^{
     cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
     expected.setTo(cv::Vec4b(255, 255, 255, 255));
 
-    expect(LTCompareMat(expected, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(expected));
   });
 
   it(@"should load an non-premultiplied alpha png image", ^{
-    UIImage *jpeg = LTLoadImage([self class], @"BlueTransparent.png");
+    UIImage *png = LTLoadImage([self class], @"BlueTransparent.png");
 
-    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
+    LTImage *image = [[LTImage alloc] initWithImage:png];
 
     cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
     expected.setTo(cv::Vec4b(0, 0, 128, 128));
 
-    expect(LTCompareMat(expected, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(expected));
   });
 
   it(@"should load a premultiplied alpha png image", ^{
-    UIImage *jpeg = LTLoadImage([self class], @"BlueTransparentPremultiplied.png");
+    UIImage *png = LTLoadImage([self class], @"BlueTransparentPremultiplied.png");
 
-    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
+    LTImage *image = [[LTImage alloc] initWithImage:png];
 
     cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
     expected.setTo(cv::Vec4b(0, 0, 128, 128));
 
-    expect(LTCompareMat(expected, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(expected));
   });
 
   it(@"should load gray jpeg image", ^{
@@ -72,7 +90,20 @@ context(@"loading images", ^{
     cv::Mat expected(image.size.height, image.size.width, CV_8UC1);
     expected.setTo(128);
 
-    expect(LTCompareMat(expected, image.mat)).to.beTruthy();
+    expect($(image.mat)).to.equalMat($(expected));
+  });
+
+  it(@"should load @2x image", ^{
+    UIImage *png = LTLoadImage([self class], @"LTImageNoise@2x.png");
+    expect(png.scale).to.equal(2);
+
+    LTImage *image = [[LTImage alloc] initWithImage:png];
+    expect(image.size).to.equal(CGSizeMake(32, 32));
+
+    // To do fair comparison, we rely on OpenCV's imread.
+    cv::Mat4b expected(LTLoadRGBAImage([self class], @"LTImageNoise@2x"));
+
+    expect($(image.mat)).to.equalMat($(expected));
   });
 
   context(@"load rotated images as portrait", ^{
@@ -90,7 +121,7 @@ context(@"loading images", ^{
         UIImage *rotated = LTLoadImage([self class], imageName);
         LTImage *image = [[LTImage alloc] initWithImage:rotated];
 
-        expect(LTCompareMat(expected.mat, image.mat)).to.beTruthy();
+        expect($(image.mat)).to.equalMat($(expected.mat));
       });
     });
 
@@ -104,6 +135,16 @@ context(@"loading images", ^{
     itShouldBehaveLike(@"rotating an image", @{@"name": @"QuadDownMirrored.jpg"});
     itShouldBehaveLike(@"rotating an image", @{@"name": @"QuadLeftMirrored.jpg"});
     itShouldBehaveLike(@"rotating an image", @{@"name": @"QuadRightMirrored.jpg"});
+
+    it(@"should rotate non-rectangular image", ^{
+      UIImage *expectedImage = LTLoadImage([self class], @"RectUp.jpg");
+      LTImage *expected = [[LTImage alloc] initWithImage:expectedImage];
+
+      UIImage *rotated = LTLoadImage([self class], @"RectRotated.jpg");
+      LTImage *image = [[LTImage alloc] initWithImage:rotated];
+
+      expect($(image.mat)).to.equalMat($(expected.mat));
+    });
   });
 });
 
@@ -147,7 +188,7 @@ context(@"uiimage conversion", ^{
 
     expect(actualImage.scale).to.equal(1);
     expect(expected.size).to.equal(actual.size);
-    expect(LTCompareMat(expected.mat, actual.mat)).to.beTruthy();
+    expect($(actual.mat)).to.equalMat($(expected.mat));
   });
 
   it(@"should convert to uiimage with retina scale", ^{
@@ -156,7 +197,7 @@ context(@"uiimage conversion", ^{
 
     expect(actualImage.scale).to.equal(2);
     expect(actual.size).to.equal(expected.size);
-    expect(LTCompareMat(expected.mat, actual.mat)).to.beTruthy();
+    expect($(actual.mat)).to.equalMat($(expected.mat));
   });
 });
 
