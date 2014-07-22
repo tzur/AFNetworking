@@ -79,6 +79,28 @@
 }
 
 #pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelProperties {
+  static NSSet *properties;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTMixerProcessor, blendMode),
+      @instanceKeypath(LTMixerProcessor, outputFillMode),
+      @instanceKeypath(LTMixerProcessor, frontTranslation),
+      @instanceKeypath(LTMixerProcessor, frontScaling),
+      @instanceKeypath(LTMixerProcessor, frontRotation),
+      @instanceKeypath(LTMixerProcessor, frontOpacity)
+    ]];
+  });
+
+  return properties;
+}
+
+#pragma mark -
 #pragma mark Processing
 #pragma mark -
 
