@@ -57,8 +57,10 @@
   switch (self.texturingMode) {
     case LTRectCopyTexturingModeStretch:
       [super process];
+      return;
     case LTRectCopyTexturingModeTile:
-      return [self processTileTexturingMode];
+      [self processTileTexturingMode];
+      return;
   }
 }
 
