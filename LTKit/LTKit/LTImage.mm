@@ -3,6 +3,8 @@
 
 #import "LTImage.h"
 
+#import "LTCGExtensions.h"
+
 @interface LTImage () {
   /// Image contents.
   cv::Mat _mat;
@@ -53,10 +55,15 @@
                                                [self bitmapFlagsForColorSpace:colorSpace]);
   LTAssert(context, @"Failed to create bitmap context");
 
-  // This is to make sure the image overwrites the context buffer, which may be uninitialized.
-  CGContextSetBlendMode(context, kCGBlendModeCopy);
-  [self transformContextToPortraitOrientation:context forImage:image];
-  CGContextDrawImage(context, CGRectMake(0, 0, cols, rows), image.CGImage);
+  CGContextTranslateCTM(context, 0, size.height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+
+  UIGraphicsPushContext(context);
+  // Use kCGBlendModeCopy to make sure the image overwrites the context buffer, which may be
+  // uninitialized.
+  [image drawInRect:CGRectFromSize(size) blendMode:kCGBlendModeCopy alpha:1.0];
+  UIGraphicsPopContext();
+  
   CGContextRelease(context);
 
   return mat;
@@ -82,40 +89,6 @@
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
   }
-}
-
-- (void)transformContextToPortraitOrientation:(CGContextRef)context forImage:(UIImage *)image {
-  CGSize size = [self imageSizeInPixels:image];
-  CGContextTranslateCTM(context, size.width / 2, size.height / 2);
-  switch (image.imageOrientation) {
-    case UIImageOrientationUp:
-      // Already portrait -- nothing to do here.
-      break;
-    case UIImageOrientationDown:
-      CGContextRotateCTM(context, M_PI);
-      break;
-    case UIImageOrientationLeft:
-      CGContextRotateCTM(context, M_PI_2);
-      break;
-    case UIImageOrientationRight:
-      CGContextRotateCTM(context, -M_PI_2);
-      break;
-    case UIImageOrientationUpMirrored:
-      CGContextScaleCTM(context, -1, 1);
-      break;
-    case UIImageOrientationDownMirrored:
-      CGContextScaleCTM(context, 1, -1);
-      break;
-    case UIImageOrientationLeftMirrored:
-      CGContextScaleCTM(context, -1, 1);
-      CGContextRotateCTM(context, -M_PI_2);
-      break;
-    case UIImageOrientationRightMirrored:
-      CGContextScaleCTM(context, -1, 1);
-      CGContextRotateCTM(context, M_PI_2);
-      break;
-  }
-  CGContextTranslateCTM(context, -size.width / 2, -size.height / 2);
 }
 
 - (CGSize)imageSizeInPixels:(UIImage *)image {
