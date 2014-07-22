@@ -76,11 +76,14 @@ static const CGFloat kDetailsScaling = 2.0;
 }
 
 - (void)setDefaultCurves {
-  cv::Mat3b mat(1, kLutSize);
+  cv::Mat1b mat(1, kLutSize);
   for (ushort i = 0; i < kLutSize; ++i) {
-    mat(0, i) = cv::Vec3b(i, i, i);
+    mat(0, i) = i;
   }
-  _curves = mat;
+  _greyCurve = mat;
+  _redCurve = mat;
+  _greenCurve = mat;
+  _blueCurve = mat;
 }
 
 - (NSArray *)createSmoothTextures:(LTTexture *)input {
@@ -99,6 +102,10 @@ static const CGFloat kDetailsScaling = 2.0;
   
   return @[fine, coarse];
 }
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
 
 LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
 - (void)setBrightness:(CGFloat)brightness {
@@ -192,12 +199,37 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
   [self updateDetailsLUT];
 }
 
-- (void)setCurves:(cv::Mat3b)curves {
-  LTParameterAssert(curves.rows == 1 && curves.cols == 256 && curves.type() == CV_8UC3,
-                    @"Curves should be 1x256 matrix of CV_8UC3 values");
-  _curves = curves;
+- (BOOL)validateCurve:(cv::Mat1b)curve {
+  return curve.rows == 1 && curve.cols == 256 && curve.type() == CV_8U;
+}
+
+- (void)setGreyCurve:(cv::Mat1b)greyCurve {
+  LTParameterAssert([self validateCurve:greyCurve], @"Grey curve should be 1x256 CV_8U matrix");
+  _greyCurve = greyCurve;
   [self updateToneLUT];
 }
+
+- (void)setRedCurve:(cv::Mat1b)redCurve {
+  LTParameterAssert([self validateCurve:redCurve], @"Red curve should be 1x256 CV_8U matrix");
+  _redCurve = redCurve;
+  [self updateToneLUT];
+}
+
+- (void)setGreenCurve:(cv::Mat1b)greenCurve {
+  LTParameterAssert([self validateCurve:greenCurve], @"Green curve should be 1x256 CV_8U matrix");
+  _greenCurve = greenCurve;
+  [self updateToneLUT];
+}
+
+- (void)setBlueCurve:(cv::Mat1b)blueCurve {
+  LTParameterAssert([self validateCurve:blueCurve], @"Blue curve should be 1x256 CV_8U matrix");
+  _blueCurve = blueCurve;
+  [self updateToneLUT];
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
 
 - (LTTexture *)detailsLUT {
   if (!_detailsLUT) {
@@ -219,11 +251,9 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
   cv::LUT((1.0 - self.fillLight) * [LTCurve identity] + self.fillLight * [LTCurve fillLight],
           (1.0 - self.shadows) * [LTCurve identity] + self.shadows * [LTCurve shadows],
           detailsCurve);
-  
   cv::LUT(detailsCurve,
           (1.0 - self.highlights) * [LTCurve identity] + self.highlights * [LTCurve highlights],
           detailsCurve);
-
   [self setAuxiliaryTexture:[LTTexture textureWithImage:detailsCurve]
                    withName:[LTAdjustFsh detailsLUT]];
 }
@@ -281,13 +311,16 @@ typedef std::vector<cv::Mat1b> Channels;
 }
 
 - (cv::Mat4b)applyCurves:(Channels)levels {
-  // Curves.
-  std::vector<cv::Mat1b> curves;
-  cv::split(self.curves, curves);
+  // Apply per-channel rgb curves.
+  std::vector<cv::Mat1b> colorChannels(3);
+  cv::LUT(levels[0], self.redCurve, colorChannels[0]);
+  cv::LUT(levels[1], self.greenCurve, colorChannels[1]);
+  cv::LUT(levels[2], self.blueCurve, colorChannels[2]);
   
+  // Apply grey (luminance) curve across the channels.
   std::vector<cv::Mat1b> channels(4);
   for (NSUInteger i = 0; i < 3; ++i) {
-    cv::LUT(levels[i], curves[i], channels[i]);
+    cv::LUT(colorChannels[i], self.greyCurve, channels[i]);
   }
   channels[3] = cv::Mat1b(1, kLutSize, 255);
   

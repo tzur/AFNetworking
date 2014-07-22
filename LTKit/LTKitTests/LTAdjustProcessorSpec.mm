@@ -109,11 +109,36 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on invalid curves parameter", ^{
+  it(@"should fail on invalid grey curve", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      cv::Mat3b mat(1, 100, cv::Vec3b(0, 0, 0));
-      adjust.curves = mat;
+      cv::Mat1b mat = cv::Mat1b::zeros(1, 100);
+      adjust.greyCurve = mat;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should fail on invalid red curve", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      cv::Mat1b mat = cv::Mat1b::zeros(1, 100);
+      adjust.redCurve = mat;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  
+  it(@"should fail on invalid green curve", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      cv::Mat1b mat = cv::Mat1b::zeros(1, 100);
+      adjust.greenCurve = mat;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should fail on invalid blue curve", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      cv::Mat1b mat = cv::Mat1b::zeros(1, 100);
+      adjust.blueCurve = mat;
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -129,8 +154,11 @@ context(@"properties", ^{
       adjust.whitePoint = GLKVector3Make(0.9, 1.0, 1.0);
       adjust.blackPoint = GLKVector3Make(-0.1, 0.0, 0.1);
       // Curves.
-      cv::Mat3b mat(1, 256, 1);
-      adjust.curves = mat;
+      cv::Mat1b mat = cv::Mat1b::zeros(1, 256);
+      adjust.greyCurve = mat;
+      adjust.redCurve = mat;
+      adjust.greenCurve = mat;
+      adjust.blueCurve = mat;
       // Color.
       adjust.saturation = 0.2;
       adjust.temperature = 0.5;
@@ -226,20 +254,25 @@ context(@"processing", ^{
   
   it(@"should process curves correctly", ^{
     cv::Mat4b input(11, 11, cv::Vec4b(64, 64, 64, 255));
-    cv::Mat4b output(11, 11, cv::Vec4b(0, 64, 128, 255));
+    cv::Mat4b output(11, 11, cv::Vec4b(1, 65, 129, 255));
     
-    std::vector<cv::Mat1b> channels = {cv::Mat1b(1, 256), cv::Mat1b(1, 256), cv::Mat1b(1, 256)};
+    std::vector<cv::Mat1b> rgbCurves = {cv::Mat1b(1, 256), cv::Mat1b(1, 256), cv::Mat1b(1, 256)};
     for (NSUInteger i = 0; i < 3; ++i) {
-      channels[i].setTo(i * 64);
+      rgbCurves[i].setTo(i * 64);
     }
-    cv::Mat3b curves(1, 256);
-    cv::merge(channels, curves);
+    cv::Mat1b greyCurve = cv::Mat1b::zeros(1, 256);
+    for (NSUInteger i = 0; i < 256; ++i) {
+      greyCurve(0, i) = std::clamp(i + 1, 0.0, 255);
+    }
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.curves = curves;
+    adjust.redCurve = rgbCurves[0];
+    adjust.greenCurve = rgbCurves[1];
+    adjust.blueCurve = rgbCurves[2];
+    adjust.greyCurve = greyCurve;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });

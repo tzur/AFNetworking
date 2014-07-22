@@ -54,9 +54,18 @@ LTPropertyDeclare(GLKVector3, whitePoint, WhitePoint);
 #pragma mark Curves
 #pragma mark -
 
-/// LUT of size 256, which encapsulates a curves manipulation on the image.
-/// Default mapping is an identity for all the three channels.
-@property (nonatomic) cv::Mat3b curves;
+/// LUT with 256 values in [0, 255] range representing a red channel curve.
+@property (nonatomic) cv::Mat1b redCurve;
+
+/// LUT with 256 values in [0, 255] range representing a green channel curve.
+@property (nonatomic) cv::Mat1b greenCurve;
+
+/// LUT with 256 values in [0, 255] range representing a blue channel curve.
+@property (nonatomic) cv::Mat1b blueCurve;
+
+/// LUT with 256 values in [0, 255] range representing a luminance curve.
+/// This curve is applied after the per-channel curves.
+@property (nonatomic) cv::Mat1b greyCurve;
 
 #pragma mark -
 #pragma mark Color
