@@ -93,14 +93,16 @@ static const CGFloat kFrameMaxDimension = 1024;
 #pragma mark Both Frames
 #pragma mark -
 
-LTPropertyWithSetter(CGFloat, roughness, Roughness, -1, 1, 0, ^{
+LTPropertyWithoutSetter(CGFloat, roughness, Roughness, -1, 1, 0);
+- (void)setRoughness:(CGFloat)roughness {
+  [self _verifyAndSetRoughness:roughness];
   // Update outer frame noise amplitude.
   self.outerFrameProcessor.noiseAmplitude *= [self noiseScalingWithRoughness:roughness];
   [self.outerFrameProcessor process];
   // Update inner frame noise amplitude.
   self.innerFrameProcessor.noiseAmplitude *= [self noiseScalingWithRoughness:roughness];
   [self.innerFrameProcessor process];
-});
+}
 
 static const CGFloat kNoiseScalingBase = 10;
 

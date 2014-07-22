@@ -107,9 +107,11 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 #pragma mark Properties
 #pragma mark -
 
-LTPropertyWithSetter(CGFloat, hardness, Hardness, 0, 1, 1, ^{
+LTPropertyWithoutSetter(CGFloat, hardness, Hardness, 0, 1, 1);
+- (void)setHardness:(CGFloat)hardness {
+  [self _verifyAndSetHardness:hardness];
   self.shouldUpdateBrush = YES;
-});
+}
 
 - (NSArray *)adjustableProperties {
   return @[@"scale", @"spacing", @"opacity", @"flow", @"hardness"];

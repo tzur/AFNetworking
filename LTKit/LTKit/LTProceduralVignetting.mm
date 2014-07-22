@@ -55,13 +55,17 @@
   self[[LTProceduralVignettingFsh distanceShift]] = $(distanceShift);
 }
 
-LTPropertyWithSetter(CGFloat, spread, Spread, 0, 100, 100, ^{
+LTPropertyWithoutSetter(CGFloat, spread, Spread, 0, 100, 100);
+- (void)setSpread:(CGFloat)spread {
+  [self _verifyAndSetSpread:spread];
   self[[LTProceduralVignettingFsh spread]] = @(spread / 100.0);
-});
+}
 
-LTPropertyWithSetter(CGFloat, corner, Corner, 2, 16, 2, ^{
+LTPropertyWithoutSetter(CGFloat, corner, Corner, 2, 16, 2);
+- (void)setCorner:(CGFloat)corner {
+  [self _verifyAndSetCorner:corner];
   self[[LTProceduralVignettingFsh corner]] = @(corner);
-});
+}
 
 - (void)setNoise:(LTTexture *)noise {
   if (!noise) {
@@ -72,15 +76,19 @@ LTPropertyWithSetter(CGFloat, corner, Corner, 2, 16, 2, ^{
   [self setAuxiliaryTexture:_noise withName:[LTProceduralVignettingFsh noiseTexture]];
 }
 
-LTPropertyWithSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
-                     -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0), ^{
+LTPropertyWithoutSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
+                        -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0));
+- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+  [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.
   _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
   self[[LTProceduralVignettingFsh noiseChannelMixer]] = $(_noiseChannelMixer);
-});
+}
 
-LTPropertyWithSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0, ^{
+LTPropertyWithoutSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0);
+- (void)setNoiseAmplitude:(CGFloat)noiseAmplitude {
+  [self _verifyAndSetNoiseAmplitude:noiseAmplitude];
   self[[LTProceduralVignettingFsh noiseAmplitude]] = @(noiseAmplitude);
-});
+}
 
 @end

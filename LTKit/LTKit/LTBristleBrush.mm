@@ -155,13 +155,17 @@ static const CGFloat kBristleSigma = 0.4;
   return 0.01;
 }
 
-LTPropertyWithSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2, ^{
+LTPropertyWithoutSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2);
+- (void)setThickness:(CGFloat)thickness {
+  [self _verifyAndSetThickness:thickness];
   self.shouldUpdateBrush = YES;
-});
+}
 
-LTPropertyWithSetter(NSUInteger, bristles, Bristles, 2, 20, 5, ^{
+LTPropertyWithoutSetter(NSUInteger, bristles, Bristles, 2, 20, 5);
+- (void)setBristles:(NSUInteger)bristles {
+  [self _verifyAndSetBristles:bristles];
   self.shouldUpdateBrush = YES;
-});
+}
 
 - (NSArray *)adjustableProperties {
   return @[@"scale", @"spacing", @"flow", @"opacity", @"angle", @"bristles", @"thickness"];

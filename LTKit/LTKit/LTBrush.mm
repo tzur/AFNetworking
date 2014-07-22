@@ -227,11 +227,11 @@ LTPropertyUpdatingProgram(CGFloat, flow, Flow, 0.01, 1, 1)
 LTPropertyUpdatingProgram(GLKVector4, intensity, Intensity,
                           GLKVector4Zero, GLKVector4One, GLKVector4One);
 
-LTPropertyBounds(CGFloat, angle, Angle, 0, 2 * M_PI, 0)
-
+LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
 - (void)setAngle:(CGFloat)angle {
   angle = std::fmod(angle, 2 * M_PI);
-  _angle = angle + ((angle < 0) ? 2 * M_PI : 0);
+  angle = angle + ((angle < 0) ? 2 * M_PI : 0);
+  [self _verifyAndSetAngle:angle];
 }
 
 - (void)setTexture:(LTTexture *)texture {

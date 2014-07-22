@@ -167,8 +167,10 @@
   self.frontTargetRect = [LTRotatedRect rect:scaledAndTranslated withAngle:self.frontRotation];
 }
 
-LTPropertyWithSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1, ^{
+LTPropertyWithoutSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1);
+- (void)setFrontOpacity:(CGFloat)frontOpacity {
+  [self _verifyAndSetFrontOpacity:frontOpacity];
   self[[LTMixerFsh opacity]] = @(frontOpacity);
-});
+}
 
 @end
