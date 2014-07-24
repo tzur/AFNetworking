@@ -6,6 +6,8 @@ uniform lowp sampler2D targetTexture;
 uniform lowp sampler2D membraneTexture;
 uniform lowp sampler2D maskTexture;
 
+uniform highp float sourceOpacity;
+
 varying highp vec2 vSourceTexcoord;
 varying highp vec2 vTargetTexcoord;
 varying highp vec2 vBaseTexcoord;
@@ -16,5 +18,5 @@ void main() {
   lowp vec4 membrane = texture2D(membraneTexture, vBaseTexcoord);
   lowp vec4 mask = texture2D(maskTexture, vBaseTexcoord);
 
-  gl_FragColor = mix(target, source + membrane, mask.r);
+  gl_FragColor = mix(target, source + membrane, mask.r * sourceOpacity);
 }

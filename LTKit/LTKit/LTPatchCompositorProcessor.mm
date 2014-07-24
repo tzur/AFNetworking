@@ -53,6 +53,7 @@
 - (void)setDefaultValues {
   self.sourceRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
   self.targetRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.target.size)];
+  self.sourceOpacity = self.defaultSourceOpacity;
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
@@ -65,6 +66,12 @@
 
   GLKMatrix3 targetTextureMat = LTTextureMatrix3ForRotatedRect(targetRect, self.target.size);
   self[[LTPatchCompositorVsh targetTextureMat]] = $(targetTextureMat);
+}
+
+LTPropertyWithoutSetter(CGFloat, sourceOpacity, SourceOpacity, 0, 1, 1);
+- (void)setSourceOpacity:(CGFloat)sourceOpacity {
+  [self _verifyAndSetSourceOpacity:sourceOpacity];
+  self[[LTPatchCompositorFsh sourceOpacity]] = @(sourceOpacity);
 }
 
 @end

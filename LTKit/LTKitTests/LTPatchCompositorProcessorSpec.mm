@@ -62,6 +62,7 @@ it(@"should composite correctly", ^{
   // - Target is a 32x32 constant blue image.
   // - Membrane is an 8x8 image with 0.5 green value.
   // - Mask is 16x16 texture, which is 1 only in the 8x8 top upper left rect.
+  // - Opacity is set to 0.5, which is later multiplied with the mask.
   //
   // When compositing, only the 16x16 top left corner of source is used, and it is copied to the
   // entire target rect. The mask (after resizing to target rect coordinates) specifies only the top
@@ -94,12 +95,13 @@ it(@"should composite correctly", ^{
                                            membrane:membrane mask:mask output:output];
   processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
   processor.targetRect = [LTRotatedRect rect:CGRectMake(0, 0, 32, 32)];
+  processor.sourceOpacity = 0.5;
   [processor process];
 
   // Set initially to target.
   cv::Mat4b expected(targetImage);
   // Source + membrane.
-  expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 128, 0, 255);
+  expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(128, 64, 128, 255);
 
   expect($([output image])).to.beCloseToMat($(expected));
 });
