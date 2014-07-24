@@ -154,17 +154,10 @@
 }
 
 - (void)updateFrontTargetRect {
-  // Rect of front texture with translation only.
-  CGRect translated = CGRectMake(self.frontTranslation.x, self.frontTranslation.y,
-                                 self.front.size.width, self.front.size.height);
-  CGPoint center = CGRectCenter(translated);
-
-  // Scale around the center of the rect.
-  CGSize scaledSize = CGSizeMake(self.front.size.width * self.frontScaling,
-                                 self.front.size.height * self.frontScaling);
-  CGRect scaledAndTranslated = CGRectCenteredAt(center, scaledSize);
-
-  self.frontTargetRect = [LTRotatedRect rect:scaledAndTranslated withAngle:self.frontRotation];
+  self.frontTargetRect = [LTRotatedRect rectWithSize:self.front.size
+                                         translation:self.frontTranslation
+                                             scaling:self.frontScaling
+                                         andRotation:self.frontRotation];
 }
 
 LTPropertyWithoutSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1);
