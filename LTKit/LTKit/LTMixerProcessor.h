@@ -7,7 +7,7 @@
 
 /// Types of blend modes that are usable in the mixer.
 typedef NS_ENUM(NSUInteger, LTBlendMode) {
-  LTBlendModeNormal,
+  LTBlendModeNormal = 0,
   LTBlendModeDarken,
   LTBlendModeMultiply,
   LTBlendModeHardLight,
@@ -15,7 +15,9 @@ typedef NS_ENUM(NSUInteger, LTBlendMode) {
   LTBlendModeLighten,
   LTBlendModeScreen,
   LTBlendModeColorBurn,
-  LTBlendModeOverlay
+  LTBlendModeOverlay,
+  LTBlendModePlusLighter,
+  LTBlendModePlusDarker
 };
 
 /// How to handle the back texture if is has a different size than the output.
