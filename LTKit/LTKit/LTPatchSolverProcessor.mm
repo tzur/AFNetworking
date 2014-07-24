@@ -47,6 +47,9 @@
 /// Texture of the resized mask to working size.
 @property (strong, nonatomic) LTTexture *maskResized;
 
+/// Last generation ID of the mask texture that was processed.
+@property (nonatomic) NSUInteger lastProcessedMaskGenerationID;
+
 /// Resizer of source to working size.
 @property (strong, nonatomic) LTRectCopyProcessor *sourceResizer;
 
@@ -81,13 +84,18 @@
     self.target = target;
     self.output = output;
 
+    // TODO:(yaron) working dimension can be different than the closest power of two. As discussed
+    // in vDSP_create_fftsetup: "Parameter __vDSP_Log2N is a base-two exponent and specifies that
+    // the largest transform length that can processed using the resulting setup structure is
+    // 2**__vDSP_Log2N (or 3*2**__vDSP_Log2N or 5*2**__vDSP_Log2N if the appropriate flags are
+    // passed, as discussed below). That is, the __vDSP_Log2N parameter must equal or exceed the
+    // value passed to any subsequent FFT routine using the setup structure returned by this
+    // routine.
     CGFloat workingDimension = (1 << (int)ceil(log2(std::max(self.output.size))));
     self.workingSize = CGSizeMake(workingDimension, workingDimension);
 
     [self createTransformedKernel];
     [self createResizersAndTextures];
-
-    [self maskUpdated];
 
     [self setDefaultValues];
   }
@@ -95,13 +103,16 @@
 }
 
 - (void)setDefaultValues {
-  self.sourceRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
-  self.targetRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
+  self.sourceRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
+  self.targetRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
 }
 
-- (void)maskUpdated {
-  [self createBoundary];
-  [self calculateChi];
+- (void)processMaskIfNeeded {
+  if (_chi.empty() || self.lastProcessedMaskGenerationID != self.mask.generationID) {
+    [self createBoundary];
+    [self calculateChi];
+    self.lastProcessedMaskGenerationID = self.mask.generationID;
+  }
 }
 
 - (void)createTransformedKernel {
@@ -119,7 +130,7 @@
   self.targetResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
   self.maskResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
 
-  const GLKVector4 kBlack = GLKVector4Make(0, 0, 0, 0);
+  static const GLKVector4 kBlack = GLKVector4Make(0, 0, 0, 0);
   [self.sourceResized clearWithColor:kBlack];
   [self.targetResized clearWithColor:kBlack];
   [self.maskResized clearWithColor:kBlack];
@@ -169,6 +180,8 @@
 #pragma mark -
 
 - (void)process {
+  [self processMaskIfNeeded];
+
   // TODO: (yaron) optional performance boost: process textures that their rect has been changed
   // only.
   [self.sourceResizer process];
@@ -177,7 +190,7 @@
   // TODO: (yaron) optional performance boost is to move all GPU operations in this processor to CPU
   // for small working sizes. This will avoid the 3-4ms of GPU->CPU synchronization that is occurred
   // when mapping the images for reading.
-  __block cv::Mat4f source, target, maskMat;
+  __block cv::Mat4f source, target;
   [self.sourceResized mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTConvertMat(mapped, &source, CV_32FC4);
   }];

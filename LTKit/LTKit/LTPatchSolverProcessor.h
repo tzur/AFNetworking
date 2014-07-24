@@ -15,10 +15,6 @@
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output;
 
-/// Refreshes the internal mask cache. One must call this method if the mask contents has been
-/// changed after initialization.
-- (void)maskUpdated;
-
 /// Rotated rect defining a region of interest in the source texture, which the data is copied from.
 /// The default value is an axis aligned rect of (0, 0, source.width, source.height).
 @property (strong, nonatomic) LTRotatedRect *sourceRect;
