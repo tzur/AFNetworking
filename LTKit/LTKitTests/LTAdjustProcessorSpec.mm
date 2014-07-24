@@ -261,7 +261,7 @@ context(@"processing", ^{
       rgbCurves[i].setTo(i * 64);
     }
     cv::Mat1b greyCurve = cv::Mat1b::zeros(1, 256);
-    for (NSUInteger i = 0; i < 256; ++i) {
+    for (int i = 0; i < 256; ++i) {
       greyCurve(0, i) = std::clamp(i + 1, 0.0, 255);
     }
     
