@@ -18,7 +18,7 @@
 @property (strong, nonatomic) LTTexture *background;
 
 /// Translation of the input texture on top of the background. The default value is \c (0, 0).
-@property (nonatomic) GLKVector2 translation;
+@property (nonatomic) CGPoint translation;
 
 /// Uniform scaling of the input texture around its center. The default value is \c 1.
 @property (nonatomic) float scaling;

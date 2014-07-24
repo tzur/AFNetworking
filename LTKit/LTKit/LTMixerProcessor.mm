@@ -62,7 +62,7 @@
 - (void)setDefaultValues {
   self.frontSourceRect = [LTRotatedRect rect:CGRectFromSize(self.front.size)];
 
-  self.frontTranslation = GLKVector2Make(0, 0);
+  self.frontTranslation = CGPointZero;
   self.frontScaling = 1;
   self.frontRotation = 0;
   self.frontOpacity = self.defaultFrontOpacity;
@@ -138,7 +138,7 @@
   }
 }
 
-- (void)setFrontTranslation:(GLKVector2)frontTranslation {
+- (void)setFrontTranslation:(CGPoint)frontTranslation {
   _frontTranslation = frontTranslation;
   [self updateFrontTargetRect];
 }

@@ -71,7 +71,7 @@ context(@"initialization", ^{
 
 context(@"front placement", ^{
   it(@"should blend with correct translation placement", ^{
-    processor.frontTranslation = GLKVector2Make(1.0, 1.0);
+    processor.frontTranslation = CGPointMake(1.0, 1.0);
     [processor process];
 
     cv::Vec4b resultColor;
@@ -84,7 +84,7 @@ context(@"front placement", ^{
 
   it(@"should blend with correct scaling placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    processor.frontTranslation = GLKVector2Make(1.0, 1.0);
+    processor.frontTranslation = CGPointMake(1.0, 1.0);
     processor.frontScaling = 0.5;
     [processor process];
 
@@ -98,7 +98,7 @@ context(@"front placement", ^{
 
   it(@"should blend with correct rotation placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    processor.frontTranslation = GLKVector2Make(4.0, 4.0);
+    processor.frontTranslation = CGPointMake(4.0, 4.0);
     processor.frontRotation = M_PI_4;
     [processor process];
 
@@ -115,7 +115,7 @@ context(@"front placement", ^{
     image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
     [front load:image];
 
-    processor.frontTranslation = GLKVector2Make(4, 4);
+    processor.frontTranslation = CGPointMake(4, 4);
     processor.frontScaling = 1.5;
     processor.frontRotation = M_PI_4;
     [processor process];
@@ -135,7 +135,7 @@ context(@"front placement", ^{
     backImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
     [back load:backImage];
 
-    processor.frontTranslation = GLKVector2Make(4, 4);
+    processor.frontTranslation = CGPointMake(4, 4);
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementComplex.png");
@@ -188,7 +188,7 @@ context(@"tiling", ^{
 
     processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
     processor.outputFillMode = LTMixerOutputFillModeTile;
-    processor.frontTranslation = GLKVector2Make(6, 6);
+    processor.frontTranslation = CGPointMake(6, 6);
     processor.frontRotation = M_PI_2;
     processor.frontScaling = 2.0;
     [processor process];

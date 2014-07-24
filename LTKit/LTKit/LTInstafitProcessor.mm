@@ -68,7 +68,7 @@
   self.mixer = nil;
 }
 
-- (void)setTranslation:(GLKVector2)translation {
+- (void)setTranslation:(CGPoint)translation {
   _translation = translation;
   self.mixer.frontTranslation = _translation;
 }

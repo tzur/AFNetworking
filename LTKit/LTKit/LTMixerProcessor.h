@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
 @property (nonatomic) LTMixerOutputFillMode outputFillMode;
 
 /// Translation of the front texture on top of the back texture. The default value is \c (0, 0).
-@property (nonatomic) GLKVector2 frontTranslation;
+@property (nonatomic) CGPoint frontTranslation;
 
 /// Uniform scaling of the front texture around its center. The default value is \c 1.
 @property (nonatomic) float frontScaling;

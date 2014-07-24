@@ -120,7 +120,7 @@ context(@"processing", ^{
   });
 
   it(@"should translate input image", ^{
-    processor.translation = GLKVector2Make(5, 5);
+    processor.translation = CGPointMake(5, 5);
     [processor process];
 
     cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(255, 255, 255, 255));
@@ -132,7 +132,7 @@ context(@"processing", ^{
 
   it(@"should scale input image", ^{
     input.magFilterInterpolation = LTTextureInterpolationNearest;
-    processor.translation = GLKVector2Make(inputImage.cols / 2, inputImage.rows / 2);
+    processor.translation = CGPointMake(inputImage.cols / 2, inputImage.rows / 2);
     processor.scaling = 2.0;
     [processor process];
 
