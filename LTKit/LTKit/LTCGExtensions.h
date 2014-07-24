@@ -116,6 +116,11 @@ CG_INLINE CGPoint operator+(const CGPoint &lhs, const CGSize &rhs) {
   return CGPointMake(lhs.x + rhs.width, lhs.y + rhs.height);
 }
 
+/// Returns the point resulting by adding the right size to the left point.
+CG_INLINE CGPoint operator+(const CGSize &lhs, const CGPoint &rhs) {
+  return CGPointMake(lhs.width + rhs.x, lhs.height + rhs.y);
+}
+
 /// Returns the point resulting by subtracting the right size from the left point.
 CG_INLINE CGPoint operator-(const CGPoint &lhs, const CGSize &rhs) {
   return CGPointMake(lhs.x - rhs.width, lhs.y - rhs.height);
