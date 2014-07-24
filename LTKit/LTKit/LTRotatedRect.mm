@@ -38,6 +38,12 @@
   return [[LTRotatedRect alloc] initWithCenter:center size:size angle:angle];
 }
 
++ (instancetype)rectWithSize:(CGSize)size translation:(CGPoint)translation scaling:(CGFloat)scaling
+                 andRotation:(CGFloat)rotation {
+  CGRect scaledAndTranslated = CGRectCenteredAt(translation + size / 2, size * scaling);
+  return [self rect:scaledAndTranslated withAngle:rotation];
+}
+
 + (instancetype)squareWithCenter:(CGPoint)center length:(CGFloat)length angle:(CGFloat)angle {
   return [[LTRotatedRect alloc] initWithCenter:center size:CGSizeMakeUniform(length) angle:angle];
 }

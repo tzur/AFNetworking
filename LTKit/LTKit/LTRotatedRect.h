@@ -14,6 +14,10 @@
 /// Returns a rotated rect with the given center, size (unrotated) and angle (in radians).
 + (instancetype)rectWithCenter:(CGPoint)center size:(CGSize)size angle:(CGFloat)angle;
 
+/// Returns a rotated rect with the given size, translation, scaling around the center and rotation.
++ (instancetype)rectWithSize:(CGSize)size translation:(CGPoint)translation scaling:(CGFloat)scaling
+                 andRotation:(CGFloat)rotation;
+
 /// Returns a rotated square with the given center, edge length and angle (in radians).
 + (instancetype)squareWithCenter:(CGPoint)center length:(CGFloat)length angle:(CGFloat)angle;
 

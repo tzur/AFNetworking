@@ -44,6 +44,16 @@ context(@"initializers and factory methods", ^{
       expect(rotatedRect.angle).to.equal(kAngle);
       expect(rotatedRect.center).to.equal(kCenter);
     });
+
+    it(@"should create rect from size, translation, scaling and rotation", ^{
+      rotatedRect = [LTRotatedRect rectWithSize:CGSizeMake(4, 10)
+                                    translation:CGPointMake(4, 2)
+                                        scaling:2
+                                    andRotation:kAngle];
+      expect(rotatedRect.rect).to.equal(CGRectMake(2, -3, 8, 20));
+      expect(rotatedRect.angle).to.equal(kAngle);
+      expect(rotatedRect.center).to.equal(CGPointMake(6, 7));
+    });
     
     it(@"should create square from center", ^{
       const CGFloat kLength = 3;
