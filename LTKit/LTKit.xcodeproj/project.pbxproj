@@ -511,6 +511,7 @@
 		8BA82040197E55C800FBE68E /* RectRotated.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203E197E55C800FBE68E /* RectRotated.jpg */; };
 		8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203F197E55C800FBE68E /* RectUp.jpg */; };
 		8BA8204F197E5CAD00FBE68E /* LTImageNoise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */; };
+		8BA820BA1981572700FBE68E /* LTPatchProcessorSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */; };
 		8BA8C6841869782200E6F486 /* Gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C6831869782200E6F486 /* Gray.jpg */; };
 		8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
 		8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
@@ -1306,6 +1307,7 @@
 		8BA8203E197E55C800FBE68E /* RectRotated.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = RectRotated.jpg; path = Resources/RectRotated.jpg; sourceTree = "<group>"; };
 		8BA8203F197E55C800FBE68E /* RectUp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = RectUp.jpg; path = Resources/RectUp.jpg; sourceTree = "<group>"; };
 		8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LTImageNoise@2x.png"; path = "Resources/LTImageNoise@2x.png"; sourceTree = "<group>"; };
+		8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchProcessorSolution.png; path = Resources/LTPatchProcessorSolution.png; sourceTree = "<group>"; };
 		8BA8C6831869782200E6F486 /* Gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Gray.jpg; path = Resources/Gray.jpg; sourceTree = "<group>"; };
 		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8BA8C68A18699EB100E6F486 /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparent.png; path = Resources/BlueTransparent.png; sourceTree = "<group>"; };
@@ -2186,6 +2188,7 @@
 			isa = PBXGroup;
 			children = (
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
+				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
 				8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */,
 				8BA8203E197E55C800FBE68E /* RectRotated.jpg */,
 				8BA8203F197E55C800FBE68E /* RectUp.jpg */,
@@ -3260,6 +3263,7 @@
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				28DBC9C0197CF22100CA741D /* frameCircle.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
+				8BA820BA1981572700FBE68E /* LTPatchProcessorSolution.png in Resources */,
 				286A934118CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				03AFC15D190CE52100F17063 /* DuoBlue.png in Resources */,
 				286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */,
