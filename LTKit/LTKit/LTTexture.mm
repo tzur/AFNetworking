@@ -108,6 +108,30 @@ int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat
   return CV_MAKETYPE(LTMatDepthForPrecision(precision), (int)LTTextureChannelsFromFormat(format));
 }
 
+static NSString *NSStringFromLTTexturePrecision(LTTexturePrecision precision) {
+  switch (precision) {
+    case LTTexturePrecisionByte:
+      return @"LTTexturePrecisionByte";
+    case LTTexturePrecisionFloat:
+      return @"LTTexturePrecisionFloat";
+    case LTTexturePrecisionHalfFloat:
+      return @"LTTexturePrecisionHalfFloat";
+  }
+}
+
+static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
+  switch (format) {
+    case LTTextureFormatRed:
+      return @"LTTextureFormatRed";
+    case LTTextureFormatRG:
+      return @"LTTextureFormatRG";
+    case LTTextureFormatRGBA:
+      return @"LTTextureFormatRGBA";
+    case LTTextureFormatLuminance:
+      return @"LTTextureFormatLuminance";
+  }
+}
+
 #pragma mark -
 #pragma mark LTTextureParameters
 #pragma mark -
@@ -669,6 +693,13 @@ static NSString * const kArchiveKey = @"archive";
 #pragma mark -
 #pragma mark Debugging
 #pragma mark -
+
+- (NSString *)debugDescription {
+  return [NSString stringWithFormat:@"<%@: %p, size: %@, precision: %@, format: %@, "
+          "generation ID: %lu>", [self class], self, NSStringFromCGSize(self.size),
+          NSStringFromLTTexturePrecision(self.precision), NSStringFromLTTextureFormat(self.format),
+          (unsigned long)self.generationID];
+}
 
 - (id)debugQuickLookObject {
   return [[[LTImage alloc] initWithMat:[self image] copy:NO] UIImage];
