@@ -5,12 +5,12 @@
 
 #import <Accelerate/Accelerate.h>
 
-#import "LTBoundaryExtractor.h"
 #import "LTCGExtensions.h"
 #import "LTFFTConvolutionProcessor.h"
 #import "LTFFTProcessor.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPatchBoundaryProcessor.h"
 #import "LTPatchKernel.h"
 #import "LTRectCopyProcessor.h"
 #import "LTRotatedRect.h"
@@ -149,8 +149,8 @@
                                          precision:LTTexturePrecisionByte
                                             format:LTTextureFormatRed
                                     allocateMemory:YES];
-  LTBoundaryExtractor *processor = [[LTBoundaryExtractor alloc]
-                                    initWithInput:self.maskResized output:boundary];
+  LTPatchBoundaryProcessor *processor = [[LTPatchBoundaryProcessor alloc]
+                                         initWithInput:self.maskResized output:boundary];
   [processor process];
 
   // Convert to 1 and 4-channel float.

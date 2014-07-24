@@ -41,7 +41,6 @@
 #import <LTKit/LTAnalogFilmProcessor.h>
 #import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
-#import <LTKit/LTBoundaryExtractor.h>
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
 #import <LTKit/LTColorGradient.h>
@@ -52,7 +51,6 @@
 #import <LTKit/LTMaskOverlayProcessor.h>
 #import <LTKit/LTMaskedArithmeticProcessor.h>
 #import <LTKit/LTMixerProcessor.h>
-#import <LTKit/LTPatchCompositorProcessor.h>
 #import <LTKit/LTPatchProcessor.h>
 #import <LTKit/LTPassthroughProcessor.h>
 #import <LTKit/LTRGBToHSVProcessor.h>
