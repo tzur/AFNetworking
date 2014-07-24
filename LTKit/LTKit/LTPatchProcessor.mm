@@ -68,7 +68,8 @@ static const CGFloat kDefaultWorkingSize = 64;
     self.output = output;
 
     [self setDefaultValues];
-    
+    [self createRectCopy];
+
     self.workingSize = CGSizeMake(kDefaultWorkingSize, kDefaultWorkingSize);
   }
   return self;
@@ -88,7 +89,6 @@ static const CGFloat kDefaultWorkingSize = 64;
   [self createMembraneTexture];
   [self createSolver];
   [self createCompositor];
-  [self createRectCopy];
 }
 
 - (void)setDefaultValues {
@@ -131,8 +131,6 @@ static const CGFloat kDefaultWorkingSize = 64;
 
 - (void)createRectCopy {
   self.rectCopy = [[LTRectCopyProcessor alloc] initWithInput:self.target output:self.output];
-  self.rectCopy.inputRect = self.sourceRect;
-  self.rectCopy.outputRect = self.targetRect;
 }
 
 #pragma mark -
