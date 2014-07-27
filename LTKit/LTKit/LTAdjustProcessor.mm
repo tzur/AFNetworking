@@ -145,6 +145,13 @@ LTPropertyWithoutSetter(GLKVector3, whitePoint, WhitePoint,
   [self updateToneLUT];
 }
 
+LTPropertyWithoutSetter(GLKVector3, midPoint, MidPoint,
+                        -GLKVector3One, GLKVector3One, GLKVector3Zero);
+- (void)setMidPoint:(GLKVector3)midPoint {
+  [self _verifyAndSetMidPoint:midPoint];
+  [self updateToneLUT];
+}
+
 LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
 - (void)setSaturation:(CGFloat)saturation {
   [self _verifyAndSetSaturation:saturation];
@@ -205,25 +212,25 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
 
 - (void)setGreyCurve:(cv::Mat1b)greyCurve {
   LTParameterAssert([self validateCurve:greyCurve], @"Grey curve should be 1x256 CV_8U matrix");
-  _greyCurve = greyCurve;
+  _greyCurve = greyCurve.clone();
   [self updateToneLUT];
 }
 
 - (void)setRedCurve:(cv::Mat1b)redCurve {
   LTParameterAssert([self validateCurve:redCurve], @"Red curve should be 1x256 CV_8U matrix");
-  _redCurve = redCurve;
+  _redCurve = redCurve.clone();
   [self updateToneLUT];
 }
 
 - (void)setGreenCurve:(cv::Mat1b)greenCurve {
   LTParameterAssert([self validateCurve:greenCurve], @"Green curve should be 1x256 CV_8U matrix");
-  _greenCurve = greenCurve;
+  _greenCurve = greenCurve.clone();
   [self updateToneLUT];
 }
 
 - (void)setBlueCurve:(cv::Mat1b)blueCurve {
   LTParameterAssert([self validateCurve:blueCurve], @"Blue curve should be 1x256 CV_8U matrix");
-  _blueCurve = blueCurve;
+  _blueCurve = blueCurve.clone();
   [self updateToneLUT];
 }
 
@@ -291,17 +298,19 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
 typedef std::vector<cv::Mat1b> Channels;
 
 - (Channels)applyLevels:(cv::Mat1b)toneCurve {
-  GLKVector3 blackPoint = self.blackPoint * 255;
-  GLKVector3 whitePoint = self.whitePoint * 255;
+  GLKVector3 midPoint = GLKVector3One + self.midPoint * 0.8;
   
-  // Levels: black and white point.
+  // Levels: black, white and mid points.
   std::vector<cv::Mat1b> levels = {cv::Mat1b(1, kLutSize), cv::Mat1b(1, kLutSize),
     cv::Mat1b(1, kLutSize)};
   for (int i = 0; i < kLutSize; i++) {
     // Remaps to [-kMinBlackPoint, kMaxWhitePoint].
-    CGFloat red = (toneCurve(0, i) - blackPoint.r) / (whitePoint.r - blackPoint.r);
-    CGFloat green = (toneCurve(0, i) - blackPoint.g) / (whitePoint.g - blackPoint.g);
-    CGFloat blue = (toneCurve(0, i) - blackPoint.b) / (whitePoint.b - blackPoint.b);
+    CGFloat red = (std::powf(toneCurve(0, i) / 255.0, midPoint.r) - self.blackPoint.r) /
+        (self.whitePoint.r - self.blackPoint.r);
+    CGFloat green = (std::powf(toneCurve(0, i) / 255.0, midPoint.g)  - self.blackPoint.g) /
+        (self.whitePoint.g - self.blackPoint.g);
+    CGFloat blue = (std::powf(toneCurve(0, i) / 255.0, midPoint.b)  - self.blackPoint.b) /
+        (self.whitePoint.b - self.blackPoint.b);
     // Back to [0, 255].
     levels[0](0, i) = MIN(MAX(std::round(red * 255), 0), 255);
     levels[1](0, i) = MIN(MAX(std::round(green * 255), 0), 255);

@@ -50,6 +50,11 @@ LTPropertyDeclare(GLKVector3, blackPoint, BlackPoint);
 @property (nonatomic) GLKVector3 whitePoint;
 LTPropertyDeclare(GLKVector3, whitePoint, WhitePoint);
 
+/// Remapes mid-point with power function. Components should be in [-1, 1] range. Default value is
+/// (0, 0, 0).
+@property (nonatomic) GLKVector3 midPoint;
+LTPropertyDeclare(GLKVector3, midPoint, MidPoint);
+
 #pragma mark -
 #pragma mark Curves
 #pragma mark -
