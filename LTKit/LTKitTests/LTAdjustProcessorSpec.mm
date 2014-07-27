@@ -59,6 +59,13 @@ context(@"properties", ^{
       adjust.blackPoint = GLKVector3Make(4, 0, 0);
     }).to.raise(NSInvalidArgumentException);
   });
+  
+  it(@"should fail on invalid midPoint parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.midPoint = GLKVector3Make(3, 0, 0);
+    }).to.raise(NSInvalidArgumentException);
+  });
 
   it(@"should fail on invalid saturation parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
@@ -153,6 +160,7 @@ context(@"properties", ^{
       // Levels.
       adjust.whitePoint = GLKVector3Make(0.9, 1.0, 1.0);
       adjust.blackPoint = GLKVector3Make(-0.1, 0.0, 0.1);
+      adjust.midPoint = GLKVector3Make(-0.1, 0.9, 0.1);
       // Curves.
       cv::Mat1b mat = cv::Mat1b::zeros(1, 256);
       adjust.greyCurve = mat;
@@ -248,6 +256,19 @@ context(@"processing", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
     adjust.whitePoint = GLKVector3Make(0.5, 0.5, 0.5);
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process mid point correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128, 222, 74, 255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.midPoint = GLKVector3Make(0.0, -1.0, 1.0);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
