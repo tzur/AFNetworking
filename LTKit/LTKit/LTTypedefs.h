@@ -19,6 +19,9 @@ typedef std::vector<CGFloat> CGFloats;
 /// A collection of \c CGPoint.
 typedef std::vector<CGPoint> CGPoints;
 
+/// A collection of \c CGSize.
+typedef std::vector<CGSize> CGSizes;
+
 #pragma mark -
 #pragma mark GLKit
 #pragma mark -

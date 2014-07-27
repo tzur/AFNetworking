@@ -10,6 +10,8 @@
 
 SpecGLBegin(LTPatchProcessor)
 
+const CGSizes kWorkingSizes{CGSizeMake(64, 64)};
+
 context(@"initialization", ^{
   const CGSize kSize = CGSizeMake(16, 16);
 
@@ -34,10 +36,12 @@ context(@"initialization", ^{
 
   it(@"should initialize with proper input", ^{
     expect(^{
-      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc] initWithMask:mask
-                                                                             source:source
-                                                                             target:target
-                                                                             output:output];
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:kWorkingSizes
+                                              mask:mask
+                                              source:source
+                                              target:target
+                                              output:output];
     }).toNot.raiseAny();
   });
 
@@ -46,22 +50,49 @@ context(@"initialization", ^{
                                                                       kSize.height - 1)];
 
     expect(^{
-      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc] initWithMask:mask
-                                                                             source:source
-                                                                             target:target
-                                                                             output:output];
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:kWorkingSizes
+                                              mask:mask
+                                              source:source
+                                              target:target
+                                              output:output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not initialize if working size is not a power of two", ^{
+    expect(^{
+      CGSizes workingSizes{CGSizeMake(32, 32), CGSizeMake(62, 64)};
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:workingSizes
+                                              mask:mask
+                                              source:source
+                                              target:target
+                                              output:output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not initialize if no working size is given", ^{
+    expect(^{
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:{}
+                                              mask:mask
+                                              source:source
+                                              target:target
+                                              output:output];
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should set default values", ^{
-    LTPatchProcessor *processor = [[LTPatchProcessor alloc] initWithMask:mask
-                                                                  source:source
-                                                                  target:target
-                                                                  output:output];
+    LTPatchProcessor *processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes
+                                                                            mask:mask
+                                                                          source:source
+                                                                          target:target
+                                                                          output:output];
     expect(processor.sourceRect).to.equal([LTRotatedRect
                                            rect:CGRectFromOriginAndSize(CGPointZero, source.size)]);
     expect(processor.targetRect).to.equal([LTRotatedRect
                                            rect:CGRectFromOriginAndSize(CGPointZero, target.size)]);
+    expect(processor.workingSize).to.equal(kWorkingSizes.front());
   });
 });
 
@@ -87,8 +118,8 @@ context(@"processing", ^{
     [target clearWithColor:GLKVector4Make(0, 0, 1, 1)];
     [output clearWithColor:GLKVector4Make(0, 0, 0, 0)];
 
-    processor = [[LTPatchProcessor alloc] initWithMask:mask source:source
-                                                target:target output:output];
+    processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
+                                                        source:source target:target output:output];
     processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
                                                           kSourceSize.width, kSourceSize.height)];
   });
@@ -181,7 +212,8 @@ context(@"processing", ^{
 
       cv::Mat4b expected(LTLoadMat([self class], @"LTPatchProcessorSolution.png"));
       // Since the change is only in the red & green channels, the opacity only affects it.
-      std::transform(expected.begin(), expected.end(), expected.begin(), [](const cv::Vec4b &value) {
+      std::transform(expected.begin(), expected.end(), expected.begin(),
+                     [](const cv::Vec4b &value) {
         return cv::Vec4b(value[0] / 2, value[1] / 2, value[2], value[3]);
       });
 
