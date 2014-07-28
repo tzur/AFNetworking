@@ -3,11 +3,11 @@
 
 #import "LTDrawingContext.h"
 
-#import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
+#import "LTTextureFbo.h"
 #import "LTVertexArray.h"
 
 SpecGLBegin(LTDrawingContext)
@@ -98,7 +98,7 @@ context(@"texture binding while drawing", ^{
 
   beforeEach(^{
     LTTexture *output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
 
     vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
     textureA = [OCMockObject niceMockForClass:[LTTexture class]];

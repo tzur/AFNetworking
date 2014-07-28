@@ -13,6 +13,7 @@
 #import "LTShaderStorage+LTMixerFsh.h"
 #import "LTShaderStorage+LTMixerVsh.h"
 #import "LTTexture.h"
+#import "LTTextureFbo.h"
 
 @interface LTGPUImageProcessor ()
 

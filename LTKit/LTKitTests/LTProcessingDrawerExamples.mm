@@ -4,13 +4,13 @@
 #import "LTProcessingDrawerExamples.h"
 
 #import "LTCGExtensions.h"
-#import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTestUtils.h"
+#import "LTTextureFbo.h"
 #import "NSValue+GLKitExtensions.h"
 
 NSString * const kLTProcessingDrawerExamples = @"LTProcessingDrawerExamples";
@@ -191,7 +191,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
                                        precision:LTTexturePrecisionByte
                                           format:LTTextureFormatRGBA allocateMemory:YES];
       
-      fbo = [[LTFbo alloc] initWithTexture:output];
+      fbo = [[LTTextureFbo alloc] initWithTexture:output];
     });
     
     afterEach(^{
@@ -470,7 +470,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
                                   allocateMemory:YES];
       clearTexture = [[LTGLTexture alloc] initWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
       
-      fbo = [[LTFbo alloc] initWithTexture:output];
+      fbo = [[LTTextureFbo alloc] initWithTexture:output];
     });
     
     afterEach(^{
@@ -541,7 +541,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
                                        precision:LTTexturePrecisionByte
                                           format:LTTextureFormatRGBA allocateMemory:YES];
       
-      fbo = [[LTFbo alloc] initWithTexture:output];
+      fbo = [[LTTextureFbo alloc] initWithTexture:output];
     });
     
     afterEach(^{

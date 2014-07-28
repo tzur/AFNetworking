@@ -3,8 +3,8 @@
 
 #import "LTOneShotProcessingStrategy.h"
 
-#import "LTFbo.h"
 #import "LTGLTexture.h"
+#import "LTTextureFbo.h"
 
 SpecGLBegin(LTOneShotProcessingStrategy)
 

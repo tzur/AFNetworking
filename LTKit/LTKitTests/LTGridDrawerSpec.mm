@@ -3,9 +3,9 @@
 
 #import "LTGridDrawer.h"
 
-#import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
+#import "LTTextureFbo.h"
 
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
 /// blending the corners if necessary.
@@ -68,7 +68,7 @@ context(@"drawing", ^{
                                       precision:LTTexturePrecisionByte
                                         format:LTTextureFormatRGBA
                                  allocateMemory:YES];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
     expected = kBlack;
   });

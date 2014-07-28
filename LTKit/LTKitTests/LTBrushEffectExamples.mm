@@ -8,12 +8,12 @@
 #import "LTBrushShapeDynamicsEffect.h"
 #import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
-#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTRandom.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 #import "UIColor+Vector.h"
 
 NSString * const kLTBrushEffectLTBrushExamples = @"LTBrushEffectLTBrushExamples";
@@ -120,7 +120,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
       
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-      fbo = [[LTFbo alloc] initWithTexture:output];
+      fbo = [[LTTextureFbo alloc] initWithTexture:output];
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
       
       expected.create(kOutputSize.height, kOutputSize.width);

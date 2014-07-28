@@ -5,11 +5,11 @@
 
 #import "LTBrushSpec.h"
 #import "LTCGExtensions.h"
-#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTRoundBrushSpec.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 SpecGLBegin(LTEdgeAvoidingBrush)
 
@@ -78,7 +78,7 @@ context(@"non-edge avoiding drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     brush.hardness = 1;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:GLKVector4Zero];
     
     expected.create(kOutputSize.height, kOutputSize.width);
@@ -223,7 +223,7 @@ context(@"non-edge avoiding drawing", ^{
       beforeEach(^{
         output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
                                      format:LTTextureFormatRGBA allocateMemory:YES];
-        fbo = [[LTFbo alloc] initWithTexture:output];
+        fbo = [[LTTextureFbo alloc] initWithTexture:output];
         [fbo clearWithColor:GLKVector4Zero];
         
         expected.create(kOutputSize.height, kOutputSize.width);
@@ -307,7 +307,7 @@ context(@"edge avoiding drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     brush.inputTexture = inputTexture;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackgroundColor];
     
     expected.create(kOutputSize.height, kOutputSize.width);

@@ -3,8 +3,8 @@
 
 #import "LTIterativeProcessingStrategy.h"
 
-#import "LTFbo.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 @interface LTIterativeProcessingStrategy ()
 
@@ -21,16 +21,16 @@
 @property (strong, nonatomic) LTTexture *intermediateTexture;
 
 /// Intermediate framebuffer for processing more than a single iteration.
-@property (strong, nonatomic) LTFbo *intermediateFbo;
+@property (strong, nonatomic) LTTextureFbo *intermediateFbo;
 
 /// Current output framebuffer.
-@property (strong, nonatomic) LTFbo *outputFbo;
+@property (strong, nonatomic) LTTextureFbo *outputFbo;
 
 /// Source texture to read data from while processing.
 @property (strong, nonatomic) LTTexture *sourceTexture;
 
 /// Target framebuffer to write processed data to.
-@property (strong, nonatomic) LTFbo *targetFbo;
+@property (strong, nonatomic) LTTextureFbo *targetFbo;
 
 /// Previous texture that was set as a target.
 @property (strong, nonatomic) LTTexture *previousTargetTexture;
@@ -111,7 +111,7 @@
 
 - (void)prepareNextOutput {
   LTTexture *outputTexture = self.outputs[self.nextOutputIndex];
-  self.outputFbo = [[LTFbo alloc] initWithTexture:outputTexture];
+  self.outputFbo = [[LTTextureFbo alloc] initWithTexture:outputTexture];
 }
 
 - (void)setSourceTextureAndTargetFboForIteration:(NSUInteger)iteration {
@@ -185,7 +185,7 @@
 
 - (LTFbo *)intermediateFbo {
   if (!_intermediateFbo) {
-    _intermediateFbo = [[LTFbo alloc] initWithTexture:self.intermediateTexture];
+    _intermediateFbo = [[LTTextureFbo alloc] initWithTexture:self.intermediateTexture];
   }
   return _intermediateFbo;
 }
