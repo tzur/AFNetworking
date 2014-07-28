@@ -512,6 +512,9 @@
 		8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203F197E55C800FBE68E /* RectUp.jpg */; };
 		8BA8204F197E5CAD00FBE68E /* LTImageNoise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */; };
 		8BA820BA1981572700FBE68E /* LTPatchProcessorSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */; };
+		8BA82190198668D000FBE68E /* LTVectorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8218F198668D000FBE68E /* LTVectorSpec.mm */; };
+		8BA821B31986846900FBE68E /* NSValue+LTVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA821B11986846900FBE68E /* NSValue+LTVector.h */; };
+		8BA821B41986846900FBE68E /* NSValue+LTVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA821B21986846900FBE68E /* NSValue+LTVector.mm */; };
 		8BA8C6841869782200E6F486 /* Gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C6831869782200E6F486 /* Gray.jpg */; };
 		8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
 		8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
@@ -1308,6 +1311,10 @@
 		8BA8203F197E55C800FBE68E /* RectUp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = RectUp.jpg; path = Resources/RectUp.jpg; sourceTree = "<group>"; };
 		8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LTImageNoise@2x.png"; path = "Resources/LTImageNoise@2x.png"; sourceTree = "<group>"; };
 		8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchProcessorSolution.png; path = Resources/LTPatchProcessorSolution.png; sourceTree = "<group>"; };
+		8BA821821986686800FBE68E /* LTVector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTVector.h; sourceTree = "<group>"; };
+		8BA8218F198668D000FBE68E /* LTVectorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVectorSpec.mm; sourceTree = "<group>"; };
+		8BA821B11986846900FBE68E /* NSValue+LTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+LTVector.h"; sourceTree = "<group>"; };
+		8BA821B21986846900FBE68E /* NSValue+LTVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+LTVector.mm"; sourceTree = "<group>"; };
 		8BA8C6831869782200E6F486 /* Gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Gray.jpg; path = Resources/Gray.jpg; sourceTree = "<group>"; };
 		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8BA8C68A18699EB100E6F486 /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparent.png; path = Resources/BlueTransparent.png; sourceTree = "<group>"; };
@@ -2150,6 +2157,8 @@
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
+				8BA821B11986846900FBE68E /* NSValue+LTVector.h */,
+				8BA821B21986846900FBE68E /* NSValue+LTVector.mm */,
 				282CF08B187B031800904F07 /* UIColor+Vector.h */,
 				282CF08C187B031800904F07 /* UIColor+Vector.mm */,
 				8B8720D71928951600517F2E /* UIImage+Loading.h */,
@@ -2763,6 +2772,7 @@
 			isa = PBXGroup;
 			children = (
 				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
+				8BA8218F198668D000FBE68E /* LTVectorSpec.mm */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -2772,6 +2782,7 @@
 			children = (
 				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
 				8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */,
+				8BA821821986686800FBE68E /* LTVector.h */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -2885,6 +2896,7 @@
 				8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */,
 				8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */,
 				8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */,
+				8BA821B31986846900FBE68E /* NSValue+LTVector.h in Headers */,
 				28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */,
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
@@ -3364,6 +3376,7 @@
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				8B329022192CBBE90010592E /* LTTextureContentsArchiver.mm in Sources */,
 				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
+				8BA821B41986846900FBE68E /* NSValue+LTVector.mm in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
@@ -3678,6 +3691,7 @@
 				8BAB7C5418C61853005BE12A /* LTPatchProcessorSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAE3AA018B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm in Sources */,
+				8BA82190198668D000FBE68E /* LTVectorSpec.mm in Sources */,
 				03C7B68E18CEF7AD00E728F5 /* LTBWProcessorSpec.mm in Sources */,
 				03C1933218FE530A00DC6CA6 /* LTColorGradient+ForTesting.mm in Sources */,
 				8BAE3A1318AD031100DA79E1 /* LTPatchBoundaryProcessorSpec.mm in Sources */,

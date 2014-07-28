@@ -116,6 +116,27 @@ context(@"wrapping", ^{
     BOOL isEqual = !memcmp(expected.m, actual.m, sizeof(expected.m));
     expect(isEqual).to.beTruthy();
   });
+
+  it(@"should box LTVector2", ^{
+    LTVector2 expected(1, -1);
+    NSValue *value = $(expected);
+
+    expect([value LTVector2Value]).to.equal(expected);
+  });
+
+  it(@"should box LTVector2", ^{
+    LTVector3 expected(1, -1, 2);
+    NSValue *value = $(expected);
+
+    expect([value LTVector3Value]).to.equal(expected);
+  });
+
+  it(@"should box LTVector2", ^{
+    LTVector4 expected(1, -1, 2, 4);
+    NSValue *value = $(expected);
+
+    expect([value LTVector4Value]).to.equal(expected);
+  });
 });
 
 SpecEnd

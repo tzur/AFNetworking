@@ -2,6 +2,7 @@
 // Created by Yaron Inger.
 
 #import "NSValue+GLKitExtensions.h"
+#import "NSValue+LTVector.h"
 
 /// Shorthand for boxing common structs with \c NSValue. To use, wrap the struct variable with \c
 /// $(), instead of calling:
@@ -33,5 +34,10 @@ LTMakeEasyBoxing(GLKVector4);
 LTMakeEasyBoxing(GLKMatrix2);
 LTMakeEasyBoxing(GLKMatrix3);
 LTMakeEasyBoxing(GLKMatrix4);
+
+/// NSValue+LTKVector.
+LTMakeEasyBoxing(LTVector2);
+LTMakeEasyBoxing(LTVector3);
+LTMakeEasyBoxing(LTVector4);
 
 #undef LTMakeEasyBoxing
