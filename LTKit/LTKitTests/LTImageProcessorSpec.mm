@@ -37,7 +37,7 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 - (void)process {
 }
 
-+ (NSSet *)inputModelProperties {
++ (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
 
   static dispatch_once_t onceToken;

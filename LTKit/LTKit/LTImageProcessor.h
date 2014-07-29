@@ -33,10 +33,10 @@
 /// automatically converted to strings.
 - (NSDictionary *)inputModel;
 
-/// Names of the model input properties of this object that are part of the model to load and save.
+/// Keys of the model input properties of this object that are part of the model to load and save.
 /// The default implementation returns \c nil, therefore no properties are part of the input model.
 /// The model can contain \c LTEnum values as enumeration objects (that conform to \c LTEnum) or as
 /// \c NSString, that will be automatically resolved to their representing object.
-+ (NSSet *)inputModelProperties;
++ (NSSet *)inputModelPropertyKeys;
 
 @end

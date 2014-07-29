@@ -19,15 +19,15 @@
 
 - (void)setInputModel:(NSDictionary *)model {
   // For an undefined input model, exit gracefully.
-  if (![[self class] inputModelProperties]) {
+  if (![[self class] inputModelPropertyKeys]) {
     return;
   }
 
   LTParameterAssert([[NSSet setWithArray:model.allKeys]
-                     isEqualToSet:[[self class] inputModelProperties]],
+                     isEqualToSet:[[self class] inputModelPropertyKeys]],
                     @"Given model properties doesn't include the same keys as need to be saved "
                     "(%@ vs. %@)",
-                    [NSSet setWithArray:model.allKeys], [[self class] inputModelProperties]);
+                    [NSSet setWithArray:model.allKeys], [[self class] inputModelPropertyKeys]);
 
   for (NSString *key in model) {
     // TODO: (yaron) Since setValue:forKeyPath: doesn't have type-safety, add type validation here.
@@ -46,7 +46,7 @@
 - (NSDictionary *)inputModel {
   NSMutableDictionary *model = [NSMutableDictionary dictionary];
 
-  for (NSString *key in [[self class] inputModelProperties]) {
+  for (NSString *key in [[self class] inputModelPropertyKeys]) {
     id value = [self valueForKeyPath:key] ?: [NSNull null];
 
     // Convert LTEnum to its string representation.
@@ -60,16 +60,19 @@
   return [model copy];
 }
 
-- (Class)classForKey:(NSString *)key {
++ (Class)classForKey:(NSString *)key {
   ext_propertyAttributes *attributes = [self propertyAttributesForKey:key];
   @onExit {
     free(attributes);
   };
 
+  if (!attributes) {
+    return nil;
+  }
   return attributes->objectClass;
 }
 
-+ (NSSet *)inputModelProperties {
++ (NSSet *)inputModelPropertyKeys {
   return nil;
 }
 
@@ -92,7 +95,7 @@
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
-  ext_propertyAttributes *attributes = [self propertyAttributesForKey:key];
+  ext_propertyAttributes *attributes = [[self class] propertyAttributesForKey:key];
   @onExit {
     free(attributes);
   };
@@ -126,7 +129,7 @@
 }
 
 - (id)valueForUndefinedKey:(NSString *)key {
-  ext_propertyAttributes *attributes = [self propertyAttributesForKey:key];
+  ext_propertyAttributes *attributes = [[self class] propertyAttributesForKey:key];
   @onExit {
     free(attributes);
   };
@@ -154,7 +157,7 @@
   return [NSValue valueWithBytes:value.get() objCType:attributes->type];
 }
 
-- (ext_propertyAttributes *)propertyAttributesForKey:(NSString *)key {
++ (ext_propertyAttributes *)propertyAttributesForKey:(NSString *)key {
   const char *name = [key cStringUsingEncoding:NSUTF8StringEncoding];
   objc_property_t property = class_getProperty(self.class, name);
   if (!property) {
