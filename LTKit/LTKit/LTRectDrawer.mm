@@ -80,37 +80,19 @@
                         fromRotatedRects:sourceRects];
 }
 
-- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect {
-  [self.singleRectDrawer drawRect:targetRect inScreenFramebufferWithSize:size fromRect:sourceRect];
+- (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect {
+  [self.singleRectDrawer drawRect:targetRect inFramebufferWithSize:size fromRect:sourceRect];
 }
 
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inScreenFramebufferWithSize:(CGSize)size
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebufferWithSize:(CGSize)size
         fromRotatedRect:(LTRotatedRect *)sourceRect {
-  [self.singleRectDrawer drawRotatedRect:targetRect inScreenFramebufferWithSize:size
+  [self.singleRectDrawer drawRotatedRect:targetRect inFramebufferWithSize:size
                          fromRotatedRect:sourceRect];
 }
 
-- (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects {
-  [self.multiRectDrawer drawRotatedRects:targetRects inScreenFramebufferWithSize:size
-                        fromRotatedRects:sourceRects];
-}
-
-- (void)drawRect:(CGRect)targetRect inBoundFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect {
-  [self.singleRectDrawer drawRect:targetRect inBoundFramebufferWithSize:size fromRect:sourceRect];
-}
-
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inBoundFramebufferWithSize:(CGSize)size
-        fromRotatedRect:(LTRotatedRect *)sourceRect {
-  [self.singleRectDrawer drawRotatedRect:targetRect inBoundFramebufferWithSize:size
-                         fromRotatedRect:sourceRect];
-}
-
-- (void)drawRotatedRects:(NSArray *)targetRects inBoundFramebufferWithSize:(CGSize)size
-        fromRotatedRects:(NSArray *)sourceRects {
-  [self.multiRectDrawer drawRotatedRects:targetRects inBoundFramebufferWithSize:size
+  [self.multiRectDrawer drawRotatedRects:targetRects inFramebufferWithSize:size
                         fromRotatedRects:sourceRects];
 }
 

@@ -489,8 +489,7 @@ context(@"draw delegate", ^{
       LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:altMat];
       LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:altTexture];
       [rectDrawer drawRect:CGRectFromSize(view.framebufferSize)
-                  inScreenFramebufferWithSize:view.framebufferSize
-                  fromRect:view.visibleContentRect];
+       inFramebufferWithSize:view.framebufferSize fromRect:view.visibleContentRect];
       BOOL returnValue = YES;
       [invocation setReturnValue:&returnValue];
     }] ltView:view drawProcessedContent:contentTexture

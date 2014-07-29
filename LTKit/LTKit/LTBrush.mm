@@ -144,7 +144,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].glkVector);
-      [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
+      [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];
     }
   }];

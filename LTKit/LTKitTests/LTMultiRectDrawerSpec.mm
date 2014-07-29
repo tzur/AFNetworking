@@ -91,7 +91,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       it(@"should draw to to target texture of the same size", ^{
         [fbo bindAndDraw:^{
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]
-            inBoundFramebufferWithSize:fbo.size
+                 inFramebufferWithSize:fbo.size
                       fromRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]];
         }];
         
@@ -104,9 +104,11 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     context(@"screen framebuffer", ^{
       it(@"should draw to target texture of the same size", ^{
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]
-           inScreenFramebufferWithSize:fbo.size
+                 inFramebufferWithSize:fbo.size
                       fromRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         cv::Mat expected(image.rows, image.cols, CV_8UC4);
@@ -118,9 +120,11 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]
-   inScreenFramebufferWithSize:fbo.size
+                 inFramebufferWithSize:fbo.size
                       fromRotatedRects:@[[LTRotatedRect rect:subrect]]];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at the given range, flipped
@@ -139,9 +143,11 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:subrect]]
-           inScreenFramebufferWithSize:fbo.size
+                 inFramebufferWithSize:fbo.size
                       fromRotatedRects:@[[LTRotatedRect rect:CGRectFromSize(inputSize)]]];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version positioned at the given subrect.
@@ -162,9 +168,11 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:outRect]]
-           inScreenFramebufferWithSize:fbo.size
+                 inFramebufferWithSize:fbo.size
                       fromRotatedRects:@[[LTRotatedRect rect:inRect]]];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at inputSubrect positioned at
@@ -211,11 +219,13 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat sourceAngle = M_PI / 6;
           
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0],
                                            [LTRotatedRect rect:targetRect1]]
-             inScreenFramebufferWithSize:fbo.size
+                   inFramebufferWithSize:fbo.size
                         fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle],
                                            [LTRotatedRect rect:sourceRect withAngle:sourceAngle]]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
              
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0],
@@ -240,11 +250,13 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat targetAngle = M_PI / 6;
 
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
                                            [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
-             inScreenFramebufferWithSize:fbo.size
+                   inFramebufferWithSize:fbo.size
                         fromRotatedRects:@[[LTRotatedRect rect:sourceRect],
                                            [LTRotatedRect rect:sourceRect]]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
          [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
@@ -271,11 +283,13 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat sourceAngle1 = M_PI + M_PI / 6;
 
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
                                            [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
-             inScreenFramebufferWithSize:fbo.size
+                   inFramebufferWithSize:fbo.size
                         fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle0],
                                            [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
              
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],

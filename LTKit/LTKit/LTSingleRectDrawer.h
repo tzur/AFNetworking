@@ -10,25 +10,6 @@
 /// or an axis-aligned one to a bound framebuffer or screenbuffer.
 @protocol LTSingleRectDrawer <LTProcessingDrawer>
 
-/// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen
-/// framebuffer with the given size. The rects are defined in the source and target coordinate
-/// systems accordingly, in pixels.
-///
-/// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
-///
-/// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
-/// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
-/// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
-/// bottom left pixel.
-///
-/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
-- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect;
-
-/// @see {drawRect:inScreenFramebufferWithSize:fromRect:}, but with \c LTRotatedRects as arguments.
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRotatedRect:(LTRotatedRect *)sourceRect;
-
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target
 /// coordinate systems accordingly, in pixels.
@@ -38,11 +19,10 @@
 ///
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
-- (void)drawRect:(CGRect)targetRect inBoundFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect;
+- (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect;
 
-/// @see {drawRect:inBoundFramebufferWithSize:fromRect:}, but with \c LTRotatedRects as arguments.
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inBoundFramebufferWithSize:(CGSize)size
+/// @see {drawRect:inFramebufferWithSize:fromRect:}, but with \c LTRotatedRects as arguments.
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebufferWithSize:(CGSize)size
         fromRotatedRect:(LTRotatedRect *)sourceRect;
 
 @end

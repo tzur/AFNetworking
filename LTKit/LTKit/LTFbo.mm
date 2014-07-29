@@ -146,7 +146,11 @@
     block();
   } else {
     [self bind];
-    block();
+    LTGLContext *context = [LTGLContext currentContext];
+    [context executeAndPreserveState:^{
+      context.renderingToScreen = NO;
+      block();
+    }];
     [self unbind];
   }
 }

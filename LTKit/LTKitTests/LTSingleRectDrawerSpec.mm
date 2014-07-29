@@ -84,13 +84,13 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
       program = nil;
     });
 
-    /// Since the \c inBoundFramebuffer drawing implenentation is no different then the
+    /// Since the \c inFramebufferWithSize drawing implenentation is no different then the
     /// \c inFramebuffer implementation, there is no need to duplicate all the tests here.
     context(@"bound framebuffer", ^{
       it(@"should draw to to target texture of the same size", ^{
         [fbo bindAndDraw:^{
           [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
-    inBoundFramebufferWithSize:fbo.size
+         inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
         }];
         
@@ -98,14 +98,16 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
       });
     });
     
-    /// Things are different in the \c inScreenBuffer implementation, since the output is actually
+    /// Things are different when rendering to a screen framebuffer, since the output is actually
     /// different, tests were added to verify its correctness.
     context(@"screen framebuffer", ^{
       it(@"should draw to target texture of the same size", ^{
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
-   inScreenFramebufferWithSize:fbo.size
+         inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         cv::Mat expected(image.rows, image.cols, CV_8UC4);
@@ -117,9 +119,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo bindAndDraw:^{
+          [LTGLContext currentContext].renderingToScreen = YES;
           [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
-   inScreenFramebufferWithSize:fbo.size
-                      fromRect:subrect];
+              inFramebufferWithSize:fbo.size fromRect:subrect];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at the given range, flipped across
@@ -138,9 +141,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
         [fbo bindAndDraw:^{
-          [rectDrawer drawRect:subrect
-   inScreenFramebufferWithSize:fbo.size
+          [LTGLContext currentContext].renderingToScreen = YES;
+          [rectDrawer drawRect:subrect inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version positioned at the given subrect.
@@ -161,7 +165,9 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
         [fbo bindAndDraw:^{
-          [rectDrawer drawRect:outRect inScreenFramebufferWithSize:fbo.size fromRect:inRect];
+          [LTGLContext currentContext].renderingToScreen = YES;
+          [rectDrawer drawRect:outRect inFramebufferWithSize:fbo.size fromRect:inRect];
+          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at inputSubrect positioned at the
@@ -206,9 +212,11 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat sourceAngle = M_PI / 6;
           
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect]
-            inScreenFramebufferWithSize:fbo.size
+                  inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect]
@@ -228,9 +236,11 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat targetAngle = M_PI / 6;
           
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
-            inScreenFramebufferWithSize:fbo.size
+                  inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
@@ -251,9 +261,11 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat sourceAngle = M_PI / 6;
           
           [fbo bindAndDraw:^{
+            [LTGLContext currentContext].renderingToScreen = YES;
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
-            inScreenFramebufferWithSize:fbo.size
+                  inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
+            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]

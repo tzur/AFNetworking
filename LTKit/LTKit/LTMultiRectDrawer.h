@@ -10,22 +10,6 @@
 /// to a bound framebuffer or screenbuffer.
 @protocol LTMultiRectDrawer <LTProcessingDrawer>
 
-/// Draws the \c sourceRect region in the source texture into the \c targetRect region in a screen
-/// framebuffer with the given size. The rects are defined in the source and target coordinate
-/// systems accordingly, in pixels.
-///
-/// This method is useful when drawing to a system-supplied renderbuffer, such in \c GLKView.
-///
-/// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
-/// @note drawing will match the target coordinate system. For example, on iOS drawing to targetRect
-/// of (0,0,1,1) will draw on the top left pixel, while on OSX the same targetRect will draw on the
-/// bottom left pixel.
-///
-/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
-/// @note \c targetRects and \c sourceRects must have the same number of elements.
-- (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
-        fromRotatedRects:(NSArray *)sourceRects;
-
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target
 /// coordinate systems accordingly, in pixels.
@@ -36,7 +20,7 @@
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
 /// @note \c targetRects and \c sourceRects must have the same number of elements.
-- (void)drawRotatedRects:(NSArray *)targetRects inBoundFramebufferWithSize:(CGSize)size
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects;
 
 @end
