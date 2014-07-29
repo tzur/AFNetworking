@@ -48,19 +48,22 @@ afterEach(^{
   LTGLCheck(@"Failed to delete renderbuffer");
   glDeleteRenderbuffers(1, &framebuffer);
   LTGLCheck(@"Failed to delete framebuffer");
-  
 });
 
 context(@"initialization", ^{
   it(@"should initialize with a valid framebuffer and size", ^{
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    LTScreenFbo *fbo = [[LTScreenFbo alloc] initWithSize:CGSizeMake(4, 4)];
+    LTScreenFbo *fbo = [[LTScreenFbo alloc] initWithSize:kSize];
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     expect(fbo.name).to.equal(framebuffer);
   });
   
   it(@"should raise with an invalid framebuffer", ^{
-    
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
+    expect(^{
+      LTScreenFbo __unused *fbo = [[LTScreenFbo alloc] initWithSize:kSize];
+    }).to.raise(kLTFboCreationFailedException);
   });
 });
 
@@ -75,11 +78,6 @@ context(@"clearing", ^{
     cv::Mat4b output(kSize.height, kSize.width, cv::Vec4b(0, 0, 0, 0));
     LTGLContext *context = [LTGLContext currentContext];
     [context executeAndPreserveState:^{
-      // Since the default pack alignment is 4, it is necessarry to verify there's no special
-      // packing of the texture that may effect the representation of the Mat if the number of bytes
-      // per row % 4 != 0.
-      context.packAlignment = 1;
-      // Read pixels into the mutable data, according to the texture precision.
       glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
       glReadPixels(0, 0, kSize.width, kSize.height, GL_RGBA, GL_UNSIGNED_BYTE, output.data);
     }];

@@ -19,7 +19,7 @@
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (id)initWithTexture:(LTTexture *)texture;
 
-// Texture backed by this framebuffer.
+/// Texture backed by this framebuffer.
 @property (readonly, nonatomic) LTTexture *texture;
 
 @end
@@ -28,7 +28,7 @@
 #pragma mark For testing
 #pragma mark -
 
-@interface LTFbo (ForTesting)
+@interface LTTextureFbo (ForTesting)
 
 /// Designated initializer: create an FBO with a target texture (without clearing it in the
 /// process). If the given texture is invalid, an \c LTGLException named \c
