@@ -86,6 +86,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Scissor box, in pixels. Non-integer values will be rounded to the nearest integer.
 @property (nonatomic) CGRect scissorBox;
 
+/// \c YES if the currently bound framebuffer is a screen framebuffer.
+@property (nonatomic) BOOL renderingToScreen;
+
 /// \c YES if blending is enabled.
 @property (nonatomic) BOOL blendEnabled;
 

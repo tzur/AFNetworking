@@ -27,6 +27,7 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
     expect(context.scissorBox).to.equal(CGRectZero);
     
     expect(context.scissorTestEnabled).to.beFalsy();
+    expect(context.renderingToScreen).to.beFalsy();
     expect(context.blendEnabled).to.beFalsy();
     expect(context.faceCullingEnabled).to.beFalsy();
     expect(context.depthTestEnabled).to.beFalsy();
@@ -168,6 +169,11 @@ context(@"context values", ^{
     expect(scissorBoxRect).to.equal(expected);
   });
   
+  it(@"should set rendering to screen", ^{
+    context.renderingToScreen = YES;
+    expect(context.renderingToScreen).to.beTruthy();
+  });
+  
   it(@"should set blending", ^{
     context.blendEnabled = YES;
 
@@ -269,6 +275,7 @@ context(@"execution", ^{
 
       context.scissorBox = CGRectMake(1, 2, 3, 4);
       
+      context.renderingToScreen = !context.renderingToScreen;
       context.blendEnabled = !context.blendEnabled;
       context.faceCullingEnabled = !context.faceCullingEnabled;
       context.depthTestEnabled = !context.depthTestEnabled;

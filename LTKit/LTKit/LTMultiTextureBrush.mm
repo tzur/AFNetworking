@@ -51,7 +51,7 @@
       
       uint textureIdx = [self.random randomUnsignedIntegerBelow:(uint)self.textures.count];
       [self.drawer setSourceTexture:self.textures[textureIdx]];
-      [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
+      [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];
     }
   }];

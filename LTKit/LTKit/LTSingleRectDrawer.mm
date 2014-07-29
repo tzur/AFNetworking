@@ -88,42 +88,42 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 #pragma mark Drawing (CGRect)
 #pragma mark -
 
-- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
-  [fbo bindAndDraw:^{
-    [self drawRect:targetRect inBoundFramebufferWithSize:fbo.size fromRect:sourceRect];
-  }];
-}
-
-- (void)drawRect:(CGRect)targetRect inBoundFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[@"projection"] = $(projection);
-  [self drawRect:targetRect fromRect:sourceRect];
-}
-
-- (void)drawRect:(CGRect)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRect:(CGRect)sourceRect {
-  // Since we're using a flipped projection matrix, the original order of vertices will generate
-  // a back-faced polygon by default, as the test is performed on the projected coordinates.
-  // therefore we use the clockwise front facing polygons mode while drawing.
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = $(projection);
+- (void)framebufferWithSize:(CGSize)size drawBlock:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  
+  // In case of a screen framebuffer, we're using a flipped projection matrix so the original order
+  // of the vertices will generate a back-faced polygon, as the test is performed on the projected
+  // coordinates. Therefore we use the clockwise front facying polygon mode when drawing to a
+  // \c LTScreenFbo.
+  BOOL screenTarget = [LTGLContext currentContext].renderingToScreen;
+  self.program[@"projection"] = screenTarget ?
+      $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
+      $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
+  
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
-    context.clockwiseFrontFacingPolygons = YES;
-    [self drawRect:targetRect fromRect:sourceRect];
+    context.clockwiseFrontFacingPolygons = screenTarget;
+    block();
   }];
 }
 
-- (void)drawRect:(CGRect)targetRect fromRect:(CGRect)sourceRect {
-  GLKMatrix4 modelview = LTMatrix4ForRect(targetRect);
-  self.program[@"modelview"] = $(modelview);
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
+  [fbo bindAndDraw:^{
+    [self drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
+  }];
+}
 
-  CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
-  GLKMatrix3 texture = LTTextureMatrix3ForRect(sourceRect, textureSize);
-  self.program[@"texture"] = $(texture);
-  
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
+- (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect {
+  [self framebufferWithSize:size drawBlock:^{
+    GLKMatrix4 modelview = LTMatrix4ForRect(targetRect);
+    self.program[@"modelview"] = $(modelview);
+    
+    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+    GLKMatrix3 texture = LTTextureMatrix3ForRect(sourceRect, textureSize);
+    self.program[@"texture"] = $(texture);
+    
+    [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
+  }];
 }
 
 #pragma mark -
@@ -133,41 +133,22 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 - (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
         fromRotatedRect:(LTRotatedRect *)sourceRect {
   [fbo bindAndDraw:^{
-    [self drawRotatedRect:targetRect inBoundFramebufferWithSize:fbo.size
-          fromRotatedRect:sourceRect];
+    [self drawRotatedRect:targetRect inFramebufferWithSize:fbo.size fromRotatedRect:sourceRect];
   }];
 }
 
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inBoundFramebufferWithSize:(CGSize)size
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebufferWithSize:(CGSize)size
         fromRotatedRect:(LTRotatedRect *)sourceRect {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[@"projection"] = $(projection);
-  [self drawRotatedRect:targetRect fromRotatedRect:sourceRect];
-}
-
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inScreenFramebufferWithSize:(CGSize)size
-        fromRotatedRect:(LTRotatedRect *)sourceRect {
-  // Since we're using a flipped projection matrix, the original order of vertices will generate
-  // a back-faced polygon by default, as the test is performed on the projected coordinates.
-  // therefore we use the clockwise front facing polygons mode while drawing.
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = $(projection);
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
-    context.clockwiseFrontFacingPolygons = YES;
-    [self drawRotatedRect:targetRect fromRotatedRect:sourceRect];
+  [self framebufferWithSize:size drawBlock:^{
+    GLKMatrix4 modelview = LTMatrix4ForRotatedRect(targetRect);
+    self.program[@"modelview"] = $(modelview);
+    
+    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+    GLKMatrix3 texture = LTTextureMatrix3ForRotatedRect(sourceRect, textureSize);
+    self.program[@"texture"] = $(texture);
+    
+    [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
   }];
-}
-
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect fromRotatedRect:(LTRotatedRect *)sourceRect {
-  GLKMatrix4 modelview = LTMatrix4ForRotatedRect(targetRect);
-  self.program[@"modelview"] = $(modelview);
-
-  CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
-  GLKMatrix3 texture = LTTextureMatrix3ForRotatedRect(sourceRect, textureSize);
-  self.program[@"texture"] = $(texture);
-  
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangleStrip];
 }
 
 #pragma mark -
@@ -182,7 +163,7 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
            "draw call for drawing all the rectangles");
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
-      [self drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
+      [self drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
             fromRotatedRect:sourceRects[i]];
     }
   }];

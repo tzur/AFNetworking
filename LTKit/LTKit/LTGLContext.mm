@@ -39,6 +39,7 @@ typedef struct {
 
   CGRect scissorBox;
 
+  BOOL renderingToScreen;
   BOOL blendEnabled;
   BOOL faceCullingEnabled;
   BOOL depthTestEnabled;
@@ -181,6 +182,7 @@ typedef struct {
     .blendFunc = self.blendFunc,
     .blendEquation = self.blendEquation,
     .scissorBox = self.scissorBox,
+    .renderingToScreen = self.renderingToScreen,
     .blendEnabled = self.blendEnabled,
     .faceCullingEnabled = self.faceCullingEnabled,
     .depthTestEnabled = self.depthTestEnabled,
@@ -194,6 +196,7 @@ typedef struct {
 }
 
 - (void)setCurrentStateFromValues:(LTGLContextValues)values {
+  self.renderingToScreen = values.renderingToScreen;
   self.blendFunc = values.blendFunc;
   self.blendEquation = values.blendEquation;
   self.scissorBox = values.scissorBox;

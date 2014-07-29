@@ -131,7 +131,8 @@
 
 @interface LTView (ForTesting)
 
-/// Renders the LTView at its current state into the given Fbo.
+/// Renders the LTView at its current state into the given Fbo, acting as if rendering to a screen
+/// framebuffer.
 - (void)drawToFbo:(LTFbo *)fbo;
 
 /// Simulates touches on the LTView, for testing events forwarding to the touch delegate.

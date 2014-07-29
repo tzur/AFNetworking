@@ -70,7 +70,7 @@ static const CGFloat kSizeToSamplingFactor = 50;
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       [self updateSamplingPointsForRect:targetRects[i] inSize:fbo.size];
-      [self.drawer drawRotatedRect:targetRects[i] inBoundFramebufferWithSize:fbo.size
+      [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];
     }
   }];

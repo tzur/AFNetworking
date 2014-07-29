@@ -252,33 +252,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)glkView:(GLKView __unused *)view drawInRect:(CGRect __unused)rect {
   [LTGLContext setCurrentContext:self.context];
-  
-  [self updateContent];
-
-  [self.context clearWithColor:self.backgroundColor.glkVector];
-  [self drawBackground];
-  
-  // Get the visible content rectangle, in pixels.
-  CGRect visibleContentRect = self.navigationView.visibleContentRect;
-  visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
-  visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
-
-  // Draw the shadows surrounding the visible content rect.
-  [self drawShadows];
-  
   [self.context executeAndPreserveState:^{
-    // Set the scissor box to draw only inside the visible content rect.
-    self.context.scissorTestEnabled = YES;
-    self.context.scissorBox = [self scissorBoxForVisibleContentRect:visibleContentRect];;
-
-    // Draw the content.
-    [self drawContentForVisibleContentRect:visibleContentRect];
-    
-    // Draw the overlays.
-    [self drawOverlayForVisibleContentRect:visibleContentRect];
-    
-    // Draw the checkerboard background to visualize transparent content pixels.
-    [self drawTransparencyBackground];
+    self.context.renderingToScreen = YES;
+    [self drawToBoundFramebuffer];
   }];
   
   // We don't need the GLKView buffers for the next draw, so hint that they can be discarded.
@@ -355,9 +331,45 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark Drawing
 #pragma mark -
 
+- (void)drawToBoundFramebuffer {
+  [self updateContent];
+  
+  [self.context clearWithColor:self.backgroundColor.glkVector];
+  [self drawBackground];
+  
+  // Get the visible content rectangle, in pixels.
+  CGRect visibleContentRect = self.navigationView.visibleContentRect;
+  visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
+  visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
+  
+  // Draw the shadows surrounding the visible content rect.
+  [self drawShadows];
+  
+  [self.context executeAndPreserveState:^{
+    // Set the scissor box to draw only inside the visible content rect.
+    self.context.scissorTestEnabled = YES;
+    self.context.scissorBox = [self scissorBoxForVisibleContentRect:visibleContentRect];
+    
+    // Draw the content.
+    [self drawContentForVisibleContentRect:visibleContentRect];
+    
+    // Draw the overlays.
+    [self drawOverlayForVisibleContentRect:visibleContentRect];
+    
+    // Draw the checkerboard background to visualize transparent content pixels.
+    [self drawTransparencyBackground];
+  }];
+}
+
 - (void)drawToFbo:(LTFbo *)fbo {
   [fbo bindAndExecute:^{
-    [self glkView:nil drawInRect:self.bounds];
+    LTGLContext *context = [LTGLContext currentContext];
+    [context executeAndPreserveState:^{
+      // This method is used for testing, and the goal is to simulate rendering to a screen
+      // framebuffer, similar to a call coming from glkView:drawInRect:.
+      context.renderingToScreen = YES;
+      [self drawToBoundFramebuffer];
+    }];
   }];
 }
 
@@ -405,7 +417,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     self.context.blendEquation = kLTGLContextBlendEquationDefault;
     
     [self.checkerboardDrawer drawRect:self.framebufferBounds
-          inScreenFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
+                inFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
   }];
 }
 
@@ -440,8 +452,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       // Otherwise, use the default rectDrawer to draw the content.
       if (!didDrawProcessedContent && textureToDraw) {
         [self.rectDrawer setSourceTexture:textureToDraw];
-        [self.rectDrawer drawRect:self.framebufferBounds
-      inScreenFramebufferWithSize:self.framebufferSize
+        [self.rectDrawer drawRect:self.framebufferBounds inFramebufferWithSize:self.framebufferSize
                          fromRect:visibleContentRect];
       }
     }];
@@ -583,7 +594,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // LTImage).
   LTTexture *texture = [LTTexture byteRGBATextureWithSize:self.framebufferSize];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-  [self drawToFbo:fbo];
+  [fbo bindAndExecute:^{
+    [self drawToBoundFramebuffer];
+  }];
   return [[LTImage alloc] initWithMat:[texture image] copy:NO];
 }
 

@@ -81,39 +81,34 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 - (void)drawRotatedRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRotatedRects:(NSArray *)sourceRects {
   [fbo bindAndDraw:^{
-    [self drawRotatedRects:targetRects inBoundFramebufferWithSize:fbo.size
-          fromRotatedRects:sourceRects];
+    [self drawRotatedRects:targetRects inFramebufferWithSize:fbo.size fromRotatedRects:sourceRects];
   }];
 }
 
-- (void)drawRotatedRects:(NSArray *)targetRects inBoundFramebufferWithSize:(CGSize)size
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebufferWithSize:(CGSize)size
         fromRotatedRects:(NSArray *)sourceRects {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
-  self.program[@"projection"] = $(projection);
-  [self drawRotatedRects:targetRects fromRotatedRects:sourceRects];
-}
-
-- (void)drawRotatedRects:(NSArray *)targetRects inScreenFramebufferWithSize:(CGSize)size
-        fromRotatedRects:(NSArray *)sourceRects {
-  GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
-  self.program[@"projection"] = $(projection);
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
-    context.clockwiseFrontFacingPolygons = YES;
-    [self drawRotatedRects:targetRects fromRotatedRects:sourceRects];
-  }];
-}
-
-- (void)drawRotatedRects:(NSArray *)targetRects fromRotatedRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count == sourceRects.count);
   if (!targetRects.count) {
     return;
   }
   
+  // In case of a screen framebuffer, we're using a flipped projection matrix so the original order
+  // of the vertices will generate a back-faced polygon, as the test is performed on the projected
+  // coordinates. Therefore we use the clockwise front facying polygon mode when drawing to a
+  // \c LTScreenFbo.
+  BOOL screenTarget = [LTGLContext currentContext].renderingToScreen;
+  [self updateArrayBufferWithTargetRects:targetRects sourceRects:sourceRects];
   self.program[@"modelview"] = $(GLKMatrix4Identity);
   self.program[@"texture"] = $(GLKMatrix3Identity);
-  [self updateArrayBufferWithTargetRects:targetRects sourceRects:sourceRects];
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
+  self.program[@"projection"] = screenTarget ?
+      $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
+      $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
+  
+  LTGLContext *context = [LTGLContext currentContext];
+  [context executeAndPreserveState:^{
+    context.clockwiseFrontFacingPolygons = screenTarget;
+    [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
+  }];
 }
 
 - (void)updateArrayBufferWithTargetRects:(NSArray *)targetRects sourceRects:(NSArray *)sourceRects {
