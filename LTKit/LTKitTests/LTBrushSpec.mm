@@ -6,7 +6,6 @@
 
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
-#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
@@ -14,6 +13,7 @@
 #import "LTRandom.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 NSString * const kLTBrushExamples = @"LTBrushExamples";
 NSString * const kLTBrushClass = @"LTBrushClass";
@@ -226,7 +226,7 @@ context(@"drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     brush.spacing = 0.5;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
     
     expected.create(kOutputSize.height, kOutputSize.width);

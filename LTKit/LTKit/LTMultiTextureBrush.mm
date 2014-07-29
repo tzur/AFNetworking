@@ -9,6 +9,7 @@
 #import "LTRectDrawer.h"
 #import "LTRandom.h"
 #import "LTRotatedRect+UIColor.h"
+#import "LTTexture.h"
 #import "LTShaderStorage+LTBrushFsh.h"
 #import "UIColor+Vector.h"
 

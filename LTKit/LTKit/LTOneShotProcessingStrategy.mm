@@ -3,7 +3,7 @@
 
 #import "LTOneShotProcessingStrategy.h"
 
-#import "LTFbo.h"
+#import "LTTextureFbo.h"
 
 @interface LTOneShotProcessingStrategy ()
 
@@ -45,7 +45,7 @@
 }
 
 - (LTNextIterationPlacement *)iterationStarted {
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self.output];
+  LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:self.output];
   return [[LTNextIterationPlacement alloc] initWithSourceTexture:self.input andTargetFbo:fbo];
 }
 

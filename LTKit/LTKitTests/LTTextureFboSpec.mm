@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTFbo.h"
+#import "LTTextureFbo.h"
 
 #import "LTDevice.h"
 #import "LTGLTexture.h"
@@ -9,12 +9,12 @@
 #import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 
-SpecGLBegin(LTFbo)
+SpecGLBegin(LTTextureFbo)
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
     LTTexture *texture = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture];
 
     expect(fbo.name).toNot.equal(0);
   });
@@ -27,7 +27,7 @@ context(@"initialization", ^{
                                                  precision:LTTexturePrecisionHalfFloat
                                                     format:LTTextureFormatRGBA
                                             allocateMemory:YES];
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+    LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture device:device];
 
     expect(fbo.name).toNot.equal(0);
   });
@@ -42,7 +42,7 @@ context(@"initialization", ^{
                                             allocateMemory:YES];
 
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture device:device];
     }).to.raise(kLTFboInvalidTextureException);
   });
   
@@ -57,7 +57,7 @@ context(@"initialization", ^{
 
     // Simulator doesn't support rendering to a colorbuffer, so no real initialization can happen.
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture device:device];
     }).toNot.raise(kLTFboInvalidTextureException);
   });
 
@@ -71,7 +71,7 @@ context(@"initialization", ^{
                                             allocateMemory:YES];
 
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture device:device];
     }).to.raise(kLTFboInvalidTextureException);
   });
 });
@@ -87,7 +87,7 @@ context(@"clearing", ^{
                                                  precision:LTTexturePrecisionByte
                                                     format:LTTextureFormatRGBA
                                             allocateMemory:YES];
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    LTTextureFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture];
     [fbo clearWithColor:value];
 
     cv::Mat image = [texture image];
@@ -97,14 +97,14 @@ context(@"clearing", ^{
 });
 
 context(@"binding", ^{
-  __block LTFbo *fbo;
+  __block LTTextureFbo *fbo;
 
   beforeEach(^{
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionByte
                                                     format:LTTextureFormatRGBA
                                             allocateMemory:YES];
-    fbo = [[LTFbo alloc] initWithTexture:texture];
+    fbo = [[LTTextureFbo alloc] initWithTexture:texture];
   });
 
   afterEach(^{

@@ -7,11 +7,11 @@
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
-#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 NSString * const kLTRoundBrushExamples = @"LTRoundBrushExamples";
 NSString * const kLTRoundBrushClass = @"LTRoundBrushClass";
@@ -112,7 +112,7 @@ context(@"drawing", ^{
     brush.baseDiameter = kBaseBrushDiameter;
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:GLKVector4Zero];
     
     expected.create(kOutputSize.height, kOutputSize.width);
@@ -257,7 +257,7 @@ context(@"drawing", ^{
       beforeEach(^{
         output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
                                      format:LTTextureFormatRGBA allocateMemory:YES];
-        fbo = [[LTFbo alloc] initWithTexture:output];
+        fbo = [[LTTextureFbo alloc] initWithTexture:output];
         [fbo clearWithColor:GLKVector4Zero];
         
         expected.create(kOutputSize.height, kOutputSize.width);

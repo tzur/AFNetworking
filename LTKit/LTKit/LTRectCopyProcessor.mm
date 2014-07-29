@@ -13,6 +13,7 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTRectCopyFsh.h"
 #import "LTTexture.h"
+#import "LTTextureFbo.h"
 
 @interface LTGPUImageProcessor ()
 @property (strong, nonatomic) id<LTProcessingDrawer> drawer;

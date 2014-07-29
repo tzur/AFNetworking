@@ -7,10 +7,10 @@
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
-#import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 @interface LTBrush ()
 @property (readonly, nonatomic) LTTexture *texture;
@@ -87,7 +87,7 @@ context(@"drawing", ^{
     brush.baseDiameter = kBaseBrushDiameter;
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTFbo alloc] initWithTexture:output];
+    fbo = [[LTTextureFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
     
     expected.create(kOutputSize.height, kOutputSize.width);

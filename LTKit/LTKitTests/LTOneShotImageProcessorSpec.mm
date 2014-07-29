@@ -3,13 +3,13 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureFbo.h"
 
 SpecGLBegin(LTOneShotImageProcessor)
 
@@ -68,7 +68,7 @@ context(@"processing", ^{
   __block LTOneShotImageProcessor *processor;
 
   beforeEach(^{
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:input];
+    LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:input];
     [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
 
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};

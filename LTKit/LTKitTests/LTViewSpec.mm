@@ -4,11 +4,11 @@
 #import "LTView.h"
 
 #import "LTCGExtensions.h"
-#import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTestUtils.h"
+#import "LTTextureFbo.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
@@ -56,7 +56,7 @@ beforeEach(^{
   
   output = cv::Mat4b(framebufferSize.height, framebufferSize.width);
   outputTexture = [[LTGLTexture alloc] initWithImage:output];
-  fbo = [[LTFbo alloc] initWithTexture:outputTexture];
+  fbo = [[LTTextureFbo alloc] initWithTexture:outputTexture];
 
   expectedOutput = cv::Mat4b(framebufferSize.height, framebufferSize.width);
   resizedContent = cv::Mat4b(std::min(framebufferSize), std::min(framebufferSize));

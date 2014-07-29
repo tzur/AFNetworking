@@ -3,16 +3,19 @@
 
 #import "LTFbo.h"
 
-#import "LTDevice.h"
+#import "LTCGExtensions.h"
 #import "LTGLContext.h"
 
 @interface LTFbo ()
 
-/// Texture associated with the FBO.
-@property (strong, nonatomic) LTTexture *texture;
-
 /// Framebuffer identifier.
 @property (nonatomic) GLuint framebuffer;
+
+/// Framebuffer size.
+@property (nonatomic) CGSize size;
+
+/// Viewport to use when binding the framebuffer.
+@property (nonatomic) CGRect viewport;
 
 /// Set to the previously bound framebuffer, or \c 0 if the framebuffer is not bound.
 @property (nonatomic) GLint previousFramebuffer;
@@ -31,78 +34,17 @@
 #pragma mark Initialization and Setup
 #pragma mark -
 
-- (id)initWithTexture:(LTTexture *)texture {
-  return [self initWithTexture:texture device:[LTDevice currentDevice]];
-}
-
-- (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
+- (instancetype)initWithFramebufferIdentifier:(GLuint)identifier size:(CGSize)size
+                                     viewport:(CGRect)viewport {
+  LTParameterAssert(std::min(size) >= 1);
+  LTParameterAssert(!CGRectIsNull(viewport) && !CGRectIsEmpty(viewport));
   if (self = [super init]) {
-    LTParameterAssert(texture);
-
-    if (!texture.name) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's name is 0"];
-    }
-    if (CGSizeEqualToSize(texture.size, CGSizeZero)) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's size is (0, 0)"];
-    }
-
-    [self verifyTextureAsRenderTarget:texture withDevice:device];
-
+    self.size = size;
+    self.viewport = viewport;
+    self.framebuffer = identifier;
     self.previousViewport = CGRectNull;
-    self.texture = texture;
-
-    [self createFramebuffer];
   }
   return self;
-}
-
-- (void)dealloc {
-  if (self.framebuffer) {
-    [self bindAndExecute:^{
-      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-    }];
-    glDeleteFramebuffers(1, &_framebuffer);
-  }
-  LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
-}
-
-- (void)verifyTextureAsRenderTarget:(LTTexture *)texture withDevice:(LTDevice *)device {
-  switch (texture.precision) {
-    case LTTexturePrecisionByte:
-      // Rendering to byte precision is possible by OpenGL ES 2.0 spec.
-      break;
-    case LTTexturePrecisionHalfFloat:
-      if (!device.canRenderToHalfFloatTextures) {
-        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a "
-         "half-float precision, which is unsupported as a render target on this device"];
-      }
-      break;
-    case LTTexturePrecisionFloat:
-      if (!device.canRenderToFloatTextures) {
-        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a float "
-         "precision, which is unsupported as a render target on this device"];
-      }
-      break;
-  }
-}
-
-- (void)createFramebuffer {
-  glGenFramebuffers(1, &_framebuffer);
-  LTGLCheck(@"Framebuffer creation failed");
-
-  [self bindAndExecute:^{
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                           self.texture.name, 0);
-    LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.texture);
-
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (status != GL_FRAMEBUFFER_COMPLETE) {
-      [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
-       "(status: 0x%x, framebuffer: %d texture: %@)", status, self.framebuffer, self.texture];
-    }
-
-    LTGLCheck(@"Error while creating framebuffer");
-  }];
 }
 
 #pragma mark -
@@ -120,7 +62,8 @@
   self.previousViewport = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
 
   glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
-  glViewport(0, 0, self.texture.size.width, self.texture.size.height);
+  glViewport(self.viewport.origin.x, self.viewport.origin.y,
+             self.viewport.size.width, self.viewport.size.height);
   self.bound = YES;
 }
 
@@ -152,12 +95,7 @@
 }
 
 - (void)bindAndDraw:(LTVoidBlock)block {
-  LTParameterAssert(block);
-  [self bindAndExecute:^{
-    [self.texture writeToTexture:^{
-      block();
-    }];
-  }];
+  [self bindAndExecute:block];
 }
 
 #pragma mark -
@@ -177,10 +115,5 @@
 - (GLuint)name {
   return self.framebuffer;
 }
-
-- (CGSize)size {
-  return self.texture.size;
-}
-
 
 @end
