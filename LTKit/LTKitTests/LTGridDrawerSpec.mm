@@ -89,25 +89,25 @@ context(@"drawing", ^{
     
     it(@"should draw a single pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
     
     it(@"should draw the top left 1x1 subregion of a 2x2 pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(2, 2)];
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
 
     it(@"should draw the bottom right 1x1 subregion of a 2x2 pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(2, 2)];
-      [gridDrawer drawSubGridInRegion:CGRectMake(1, 1, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(1, 1, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
     
     it(@"should draw a 1x1 centered subregion of a 2x2 pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(2, 2)];
-      [gridDrawer drawSubGridInRegion:CGRectMake(0.5, 0.5, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0.5, 0.5, 1, 1) inFramebuffer:fbo];
 
       expected = kBlack;
       expected.row(expected.rows / 2) = kWhite;
@@ -122,7 +122,7 @@ context(@"drawing", ^{
       CGSize halfSize = CGSizeMake(kFramebufferSize.width / 2, kFramebufferSize.height / 2);
       gridDrawer = [[LTGridDrawer alloc] initWithSize:halfSize];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, halfSize.width, halfSize.height)
-                        inFrameBuffer:fbo];
+                        inFramebuffer:fbo];
       
       expected = kWhite;
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
@@ -135,7 +135,7 @@ context(@"drawing", ^{
       CGSize doubleSize = CGSizeMake(kFramebufferSize.width * 2, kFramebufferSize.height * 2);
       gridDrawer = [[LTGridDrawer alloc] initWithSize:doubleSize];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, regionSize.width, regionSize.height)
-                        inFrameBuffer:fbo];
+                        inFramebuffer:fbo];
       
       expected = kBlack;
       for (int row = 0; row < expected.rows; row += kRegionFactor) {
@@ -164,15 +164,16 @@ context(@"drawing", ^{
     
     it(@"should draw on a framebuffer object", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
     
-    it(@"should draw on an anonymous target", ^{
+    it(@"should draw on a screen framebuffer", ^{
       [fbo bindAndDraw:^{
         gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-        [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1)
-            inScreenFramebufferWithSize:fbo.size];
+        [LTGLContext currentContext].renderingToScreen = YES;
+        [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebufferWithSize:fbo.size];
+        [LTGLContext currentContext].renderingToScreen = NO;
       }];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -188,7 +189,7 @@ context(@"drawing", ^{
       cv::Vec4b rgba(10, 20, 30, 40);
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.color = LTCVVec4bToGLKVector4(rgba);
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -197,7 +198,7 @@ context(@"drawing", ^{
       const CGFloat kOpacity = 0.25;
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.opacity = kOpacity;
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, kOpacity * kWhite);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -208,7 +209,7 @@ context(@"drawing", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.color = LTCVVec4bToGLKVector4(rgba);
       gridDrawer.opacity = kOpacity;
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, kOpacity * rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -216,7 +217,7 @@ context(@"drawing", ^{
     it(@"should draw with a custom width", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.width = 3.0;
-      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFrameBuffer:fbo];
+      [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       for (NSUInteger i = 0; i < gridDrawer.width; ++i) {
         expected.row((int)i) = kWhite;
         expected.row(expected.rows - 1 - (int)i) = kWhite;

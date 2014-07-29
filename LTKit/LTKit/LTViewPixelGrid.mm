@@ -69,7 +69,7 @@ static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
       context.blendEnabled = YES;
       context.blendEquation = kLTGLContextBlendEquationDefault;
       context.blendFunc = kLTGLContextBlendFuncGrid;
-      [self.gridDrawer drawSubGridInRegion:region inScreenFramebufferWithSize:size];
+      [self.gridDrawer drawSubGridInRegion:region inFramebufferWithSize:size];
     }];
   }
 }

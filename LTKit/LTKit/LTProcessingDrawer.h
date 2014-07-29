@@ -13,7 +13,7 @@
 
 /// Designated initializer: initializes with the given program, source texture and auxiliary
 /// textures. The source coordinate system of the drawer is defined by the source texture (when used
-/// in the \c drawRect:inFramebuffer:fromRect: and \c drawRect:inScreenFramebufferWithSize:fromRect:
+/// in the \c drawRect:inFramebuffer:fromRect: and \c drawRect:inFramebufferWithSize:fromRect:
 /// methods).
 ///
 /// @param program program used while drawing. Must include the uniforms \c projection (projection

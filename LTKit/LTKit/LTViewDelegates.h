@@ -36,13 +36,11 @@
 /// @param contentTexture the content texture to draw.
 /// @param visibleContentRect the visible area (in pixels) that should be drawn to the entire
 /// framebuffer.
-/// @param screenFramebuffer indicates whether the target is a screen framebuffer.
 ///
 /// @return \c YES if the delegate drew the content texture, \c NO in case it didn't (and in this
 /// case, the \c LTView itself will draw the content using the regular drawing method).
 - (BOOL)ltView:(LTView *)view drawProcessedContent:(LTTexture *)contentTexture
-                            withVisibleContentRect:(CGRect)visibleContentRect
-                               onScreenFramebuffer:(BOOL)screenFramebuffer;
+                            withVisibleContentRect:(CGRect)visibleContentRect;
 
 @end
 

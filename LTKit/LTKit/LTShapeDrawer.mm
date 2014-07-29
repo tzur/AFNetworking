@@ -42,21 +42,14 @@
 
 - (void)drawInFramebuffer:(LTFbo *)fbo {
   [fbo bindAndDraw:^{
-    [self drawInBoundFramebufferWithSize:fbo.size];
+    [self drawInFramebufferWithSize:fbo.size];
   }];
 }
 
-- (void)drawInBoundFramebufferWithSize:(CGSize)size {
+- (void)drawInFramebufferWithSize:(CGSize)size {
   for (id<LTDrawableShape> shape in self.shapes) {
     shape.opacity = self.opacity;
-    [shape drawInBoundFramebufferWithSize:size];
-  }
-}
-
-- (void)drawInScreenFramebufferWithSize:(CGSize)size {
-  for (id<LTDrawableShape> shape in self.shapes) {
-    shape.opacity = self.opacity;
-    [shape drawInScreenFramebufferWithSize:size];
+    [shape drawInFramebufferWithSize:size];
   }
 }
 

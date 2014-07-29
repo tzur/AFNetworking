@@ -130,7 +130,7 @@ context(@"drawing", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeTriangle.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -140,7 +140,7 @@ context(@"drawing", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeBC];
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -156,7 +156,7 @@ context(@"drawing", ^{
     [shape fillTriangle:arrowLeftHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeMultipleTriangles.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -168,7 +168,7 @@ context(@"drawing", ^{
     shape.translation = kOutputCenter;
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeTranslation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -181,7 +181,7 @@ context(@"drawing", ^{
     shape.translation = kOutputCenter;
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeRotation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -194,7 +194,9 @@ context(@"drawing", ^{
     shape.translation = kOutputCenter;
     
     [fbo bindAndDraw:^{
-      [shape drawInScreenFramebufferWithSize:fbo.size];
+      [LTGLContext currentContext].renderingToScreen = YES;
+      [shape drawInFramebufferWithSize:fbo.size];
+      [LTGLContext currentContext].renderingToScreen = NO;
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeRotation.png");
     cv::flip(expected, expected, 0);

@@ -98,10 +98,7 @@
 - (void)drawInFramebuffer:(LTFbo *)fbo;
 
 /// Draws all shapes in this drawer's queue on the currently bound framebuffer.
-- (void)drawInBoundFramebufferWithSize:(CGSize)size;
-
-/// Draws all shapes in this drawer's queue on the currently bound screen framebuffer.
-- (void)drawInScreenFramebufferWithSize:(CGSize)size;
+- (void)drawInFramebufferWithSize:(CGSize)size;
 
 /// Opacity to use when drawing the shapes in the shape queue. Must be in range [0,1].
 ///

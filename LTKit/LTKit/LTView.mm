@@ -442,11 +442,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       // If the draw delegate supports the drawProcessedContent mechanism, use it to draw.
       BOOL didDrawProcessedContent = NO;
       if ([self.drawDelegate respondsToSelector:@selector(ltView:drawProcessedContent:
-                                                          withVisibleContentRect:
-                                                          onScreenFramebuffer:)]) {
+                                                          withVisibleContentRect:)]) {
         didDrawProcessedContent = [self.drawDelegate ltView:self drawProcessedContent:textureToDraw
-                                     withVisibleContentRect:visibleContentRect
-                                        onScreenFramebuffer:YES];
+                                     withVisibleContentRect:visibleContentRect];
       }
       
       // Otherwise, use the default rectDrawer to draw the content.

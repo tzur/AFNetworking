@@ -467,23 +467,24 @@ context(@"draw delegate", ^{
     expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
   });
 
-  it(@"should use provide the correct texture and visible content to the drawProcessedContent", ^{
+  it(@"should provide the correct texture and visible content to the drawProcessedContent", ^{
     // When there's no alternativeContentTexture, the content texture should be provided.
     [[mock expect] ltView:view drawProcessedContent:contentTexture
-                   withVisibleContentRect:view.visibleContentRect onScreenFramebuffer:YES];
+                   withVisibleContentRect:view.visibleContentRect];
     [view drawToFbo:fbo];
     
     // When there's an alternativeContentTexture, it should be provided instead.
     LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:inputContent];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     [[mock expect] ltView:view drawProcessedContent:altTexture
-                   withVisibleContentRect:view.visibleContentRect onScreenFramebuffer:YES];
+                   withVisibleContentRect:view.visibleContentRect];
     [view drawToFbo:fbo];
     [mock verify];
   });
   
   it(@"should use delegate to draw the processed content", ^{
     [[[[mock stub] ignoringNonObjectArgs] andDo:^(NSInvocation *invocation) {
+      expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
       cv::Mat4b altMat(kContentSize.height, kContentSize.width);
       altMat = blue;
       LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:altMat];
@@ -492,8 +493,7 @@ context(@"draw delegate", ^{
        inFramebufferWithSize:view.framebufferSize fromRect:view.visibleContentRect];
       BOOL returnValue = YES;
       [invocation setReturnValue:&returnValue];
-    }] ltView:view drawProcessedContent:contentTexture
-       withVisibleContentRect:CGRectZero onScreenFramebuffer:YES];
+    }] ltView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
     
     expectedOutput = view.backgroundColor.cvVector;
     expectedOutput(contentAreaInOutput) = blue;
@@ -504,8 +504,7 @@ context(@"draw delegate", ^{
   
   it(@"should draw the unprocessed content texture if drawProcessedContent returns NO", ^{
     [[[[mock stub] ignoringNonObjectArgs] andReturnValue:@NO]
-     ltView:view drawProcessedContent:contentTexture
-     withVisibleContentRect:CGRectZero onScreenFramebuffer:YES];
+     ltView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
 
     expectedOutput = view.backgroundColor.cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);

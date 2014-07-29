@@ -13,13 +13,13 @@
 
 /// Draws the subgrid \c region into the given framebuffer. The region is defined in the grid's
 /// coordinate system.
-- (void)drawSubGridInRegion:(CGRect)region inFrameBuffer:(LTFbo *)fbo;
+- (void)drawSubGridInRegion:(CGRect)region inFramebuffer:(LTFbo *)fbo;
 
 /// Draws the subgrid \c region in a screen framebuffer with the given size.
 ///
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note drawing will match the target coordinate system.
-- (void)drawSubGridInRegion:(CGRect)region inScreenFramebufferWithSize:(CGSize)size;
+- (void)drawSubGridInRegion:(CGRect)region inFramebufferWithSize:(CGSize)size;
 
 /// Base color of the grid, rgba with premultiplied alpha. Default is white (1,1,1,1).
 @property (nonatomic) GLKVector4 color;

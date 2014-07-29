@@ -293,8 +293,8 @@ context(@"drawing", ^{
     it(@"should draw to framebuffer", ^{
       [(id<LTDrawableShape>)[firstMock expect] setOpacity:drawer.opacity];
       [(id<LTDrawableShape>)[secondMock expect] setOpacity:drawer.opacity];
-      [(id<LTDrawableShape>)[firstMock expect] drawInBoundFramebufferWithSize:fbo.size];
-      [(id<LTDrawableShape>)[secondMock expect] drawInBoundFramebufferWithSize:fbo.size];
+      [(id<LTDrawableShape>)[firstMock expect] drawInFramebufferWithSize:fbo.size];
+      [(id<LTDrawableShape>)[secondMock expect] drawInFramebufferWithSize:fbo.size];
       [drawer drawInFramebuffer:fbo];
       [firstMock verify];
       [secondMock verify];
@@ -303,22 +303,10 @@ context(@"drawing", ^{
     it(@"should draw to bound framebuffer", ^{
       [(id<LTDrawableShape>)[firstMock expect] setOpacity:drawer.opacity];
       [(id<LTDrawableShape>)[secondMock expect] setOpacity:drawer.opacity];
-      [(id<LTDrawableShape>)[firstMock expect] drawInBoundFramebufferWithSize:fbo.size];
-      [(id<LTDrawableShape>)[secondMock expect] drawInBoundFramebufferWithSize:fbo.size];
+      [(id<LTDrawableShape>)[firstMock expect] drawInFramebufferWithSize:fbo.size];
+      [(id<LTDrawableShape>)[secondMock expect] drawInFramebufferWithSize:fbo.size];
       [fbo bindAndDraw:^{
-        [drawer drawInBoundFramebufferWithSize:fbo.size];
-      }];
-      [firstMock verify];
-      [secondMock verify];
-    });
-    
-    it(@"should draw to bound screenbuffer", ^{
-      [(id<LTDrawableShape>)[firstMock expect] setOpacity:drawer.opacity];
-      [(id<LTDrawableShape>)[secondMock expect] setOpacity:drawer.opacity];
-      [(id<LTDrawableShape>)[firstMock expect] drawInScreenFramebufferWithSize:fbo.size];
-      [(id<LTDrawableShape>)[secondMock expect] drawInScreenFramebufferWithSize:fbo.size];
-      [fbo bindAndDraw:^{
-        [drawer drawInScreenFramebufferWithSize:fbo.size];
+        [drawer drawInFramebufferWithSize:fbo.size];
       }];
       [firstMock verify];
       [secondMock verify];

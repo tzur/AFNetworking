@@ -145,7 +145,7 @@ context(@"drawing", ^{
         [LTRotatedRect rectWithCenter:kOutputCenter size:CGSizeMakeUniform(diameter) angle:0];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:NO params:params];
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:fbo.size];
+      [shape drawInFramebufferWithSize:fbo.size];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeCircle.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -155,7 +155,7 @@ context(@"drawing", ^{
     LTRotatedRect *rect = [LTRotatedRect rectWithCenter:kOutputCenter size:kOutputSize / 2 angle:0];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:NO params:params];
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:fbo.size];
+      [shape drawInFramebufferWithSize:fbo.size];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeEllipse.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -166,7 +166,7 @@ context(@"drawing", ^{
                                                   angle:M_PI / 6];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:NO params:params];
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:fbo.size];
+      [shape drawInFramebufferWithSize:fbo.size];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeRotatedEllipse.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -177,7 +177,7 @@ context(@"drawing", ^{
                                                   angle:M_PI / 6];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:YES params:params];
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:fbo.size];
+      [shape drawInFramebufferWithSize:fbo.size];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeFilledEllipse.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -188,7 +188,9 @@ context(@"drawing", ^{
                                                   angle:M_PI / 6];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:YES params:params];
     [fbo bindAndDraw:^{
-      [shape drawInScreenFramebufferWithSize:fbo.size];
+      [LTGLContext currentContext].renderingToScreen = YES;
+      [shape drawInFramebufferWithSize:fbo.size];
+      [LTGLContext currentContext].renderingToScreen = NO;
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeFilledEllipse.png");
     cv::flip(expected, expected, 0);
