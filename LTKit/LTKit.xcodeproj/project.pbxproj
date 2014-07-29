@@ -515,6 +515,7 @@
 		8BA82190198668D000FBE68E /* LTVectorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8218F198668D000FBE68E /* LTVectorSpec.mm */; };
 		8BA821B31986846900FBE68E /* NSValue+LTVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA821B11986846900FBE68E /* NSValue+LTVector.h */; };
 		8BA821B41986846900FBE68E /* NSValue+LTVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA821B21986846900FBE68E /* NSValue+LTVector.mm */; };
+		8BA822331987DB8A00FBE68E /* LTVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA822321987DB8A00FBE68E /* LTVector.mm */; };
 		8BA8C6841869782200E6F486 /* Gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8C6831869782200E6F486 /* Gray.jpg */; };
 		8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
 		8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
@@ -1315,6 +1316,8 @@
 		8BA8218F198668D000FBE68E /* LTVectorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVectorSpec.mm; sourceTree = "<group>"; };
 		8BA821B11986846900FBE68E /* NSValue+LTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+LTVector.h"; sourceTree = "<group>"; };
 		8BA821B21986846900FBE68E /* NSValue+LTVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+LTVector.mm"; sourceTree = "<group>"; };
+		8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../../third_party/utils/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		8BA822321987DB8A00FBE68E /* LTVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVector.mm; sourceTree = "<group>"; };
 		8BA8C6831869782200E6F486 /* Gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Gray.jpg; path = Resources/Gray.jpg; sourceTree = "<group>"; };
 		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8BA8C68A18699EB100E6F486 /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueTransparent.png; path = Resources/BlueTransparent.png; sourceTree = "<group>"; };
@@ -2783,6 +2786,7 @@
 				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
 				8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */,
 				8BA821821986686800FBE68E /* LTVector.h */,
+				8BA822321987DB8A00FBE68E /* LTVector.mm */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -3479,6 +3483,7 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8BFE1E0818756A69008035BF /* LTOneShotImageProcessor.mm in Sources */,
+				8BA822331987DB8A00FBE68E /* LTVector.mm in Sources */,
 				8BFA8F37191002260088310E /* LTInstafitProcessor.mm in Sources */,
 				8BC465BE18995C2E0094F7BC /* LTGPUBlock.mm in Sources */,
 				8BAE3A9018B4D35D00DA79E1 /* LTArithmeticProcessor.mm in Sources */,
