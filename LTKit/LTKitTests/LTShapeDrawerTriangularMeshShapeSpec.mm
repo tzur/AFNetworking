@@ -4,13 +4,13 @@
 #import "LTShapeDrawerTriangularMeshShape.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 #import "LTShapeDrawerParams.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 #import "UIColor+Vector.h"
 
 SpecBegin(LTShapeDrawerTriangularMeshShape)
@@ -99,7 +99,7 @@ context(@"drawing", ^{
   beforeEach(^{
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTTextureFbo alloc] initWithTexture:output];
+    fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
     
     // Prepare shape drawer params.

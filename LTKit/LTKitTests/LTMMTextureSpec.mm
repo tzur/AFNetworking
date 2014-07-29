@@ -3,6 +3,7 @@
 
 #import "LTMMTexture.h"
 
+#import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
@@ -12,7 +13,6 @@
 #import "LTShaderStorage+ValueSetterFsh.h"
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
-#import "LTTextureFbo.h"
 
 using half_float::half;
 
@@ -25,7 +25,7 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
   LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:source];
 
   LTGLTexture *target = [[LTGLTexture alloc] initWithPropertiesOf:source];
-  LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:target];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
 
   CGRect rect = CGRectMake(0, 0, source.size.width, source.size.height);
   [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
@@ -56,7 +56,7 @@ context(@"host memory mapped texture", ^{
   __block LTRectDrawer *drawer;
 
   beforeEach(^{
-    fbo = [[LTTextureFbo alloc] initWithTexture:texture];
+    fbo = [[LTFbo alloc] initWithTexture:texture];
 
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                   fragmentSource:[ColorizeFsh source]];
@@ -192,7 +192,7 @@ context(@"cpu gpu memory synchronization", ^{
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                   fragmentSource:[ValueSetterFsh source]];
     LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:source];
-    LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:target];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
 
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
     float values[] = {0, 0.25, 0.5, 0.75, 1.0};

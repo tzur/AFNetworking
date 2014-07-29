@@ -7,12 +7,12 @@
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 
 NSString * const kLTTextureBrushExamples = @"LTTextureBrushExamples";
 NSString * const kLTTextureBrushClass = @"LTTextureBrushClass";
@@ -72,7 +72,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       brush.baseDiameter = kBaseBrushDiameter;
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-      fbo = [[LTTextureFbo alloc] initWithTexture:output];
+      fbo = [[LTFbo alloc] initWithTexture:output];
       [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
       
       expected.create(kOutputSize.height, kOutputSize.width);

@@ -7,10 +7,10 @@
 #import "LTTextureBrushExamples.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 
 SpecGLBegin(LTEdgeAvoidingMultiTextureBrush)
 
@@ -131,7 +131,7 @@ context(@"edge avoiding drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     brush.inputTexture = inputTexture;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTTextureFbo alloc] initWithTexture:output];
+    fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackgroundColor];
     
     expected.create(kOutputSize.height, kOutputSize.width);

@@ -3,10 +3,10 @@
 
 #import "LTGLContext.h"
 
+#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTTestUtils.h"
-#import "LTTextureFbo.h"
 
 SpecBegin(LTGLContext)
 
@@ -305,7 +305,7 @@ context(@"execution", ^{
     cv::Vec4b blue(0, 0, 255, 255);
     mat = red;
     LTTexture *texture = [[LTGLTexture alloc] initWithImage:mat];
-    LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo bindAndDraw:^{
       [[LTGLContext currentContext] clearWithColor:GLKVector4FromVec4b(blue)];
     }];

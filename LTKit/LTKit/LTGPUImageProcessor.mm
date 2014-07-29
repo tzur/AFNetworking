@@ -4,9 +4,9 @@
 #import "LTGPUImageProcessor.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTTexture.h"
-#import "LTTextureFbo.h"
 
 @interface LTGPUImageProcessor ()
 

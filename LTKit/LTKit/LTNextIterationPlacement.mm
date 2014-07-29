@@ -3,18 +3,17 @@
 
 #import "LTNextIterationPlacement.h"
 
+#import "LTFbo.h"
 #import "LTTexture.h"
-#import "LTTextureFbo.h"
 
 @interface LTNextIterationPlacement ()
 @property (strong, nonatomic) LTTexture *sourceTexture;
-@property (strong, nonatomic) LTTextureFbo *targetFbo;
+@property (strong, nonatomic) LTFbo *targetFbo;
 @end
 
 @implementation LTNextIterationPlacement
 
-- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture
-                         andTargetFbo:(LTTextureFbo *)targetFbo {
+- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture andTargetFbo:(LTFbo *)targetFbo {
   if (self = [super init]) {
     self.sourceTexture = sourceTexture;
     self.targetFbo = targetFbo;

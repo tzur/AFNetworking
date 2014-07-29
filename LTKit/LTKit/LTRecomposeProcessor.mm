@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTInverseTransformSampler.h"
 #import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
@@ -13,7 +14,6 @@
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 
 @interface LTRecomposeProcessor ()
 
@@ -60,7 +60,7 @@
   if (self = [super init]) {
     self.drawer = [[LTMultiRectDrawer alloc] initWithProgram:[self createProgram]
                                                sourceTexture:input];
-    self.fbo = [[LTTextureFbo alloc] initWithTexture:output];
+    self.fbo = [[LTFbo alloc] initWithTexture:output];
 
     self.input = input;
     self.mask = mask;

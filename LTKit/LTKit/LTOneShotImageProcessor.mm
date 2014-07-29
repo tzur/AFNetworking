@@ -3,9 +3,9 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTFbo.h"
 #import "LTOneShotProcessingStrategy.h"
 #import "LTRectDrawer.h"
-#import "LTTexture.h"
 
 @interface LTOneShotImageProcessor ()
 

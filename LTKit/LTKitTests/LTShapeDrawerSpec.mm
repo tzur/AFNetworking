@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTCommonDrawableShape.h"
+#import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 #import "LTShapeDrawerEllipticShape.h"
@@ -12,7 +13,6 @@
 #import "LTShapeDrawerTriangularMeshShape.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 
 @interface LTShapeDrawer ()
 @property (strong, nonatomic) NSMutableArray *shapes;
@@ -269,7 +269,7 @@ context(@"drawing", ^{
     
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-    fbo = [[LTTextureFbo alloc] initWithTexture:output];
+    fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
   });
   

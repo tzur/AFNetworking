@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
+#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTMathUtils.h"
@@ -13,7 +14,6 @@
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
-#import "LTTextureFbo.h"
 
 /// Returns the \c CGSize of the given \c mat.
 CGSize LTCGSizeOfMat(const cv::Mat &mat) {
@@ -137,7 +137,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                     rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   // \c glReadPixels requires framebuffer object that is bound to the texture that is being read.
-  LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:self];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
   [fbo bindAndExecute:^{
     [self readRect:rect toImage:image];
   }];
@@ -230,7 +230,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (LTTexture *)clone {
   LTTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size precision:self.precision
                                                  format:self.format allocateMemory:YES];
-  LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:cloned];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:cloned];
 
   [self cloneToFramebuffer:fbo];
 
@@ -241,7 +241,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
 
-  LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:texture];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
   [self cloneToFramebuffer:fbo];
 }
 
@@ -252,7 +252,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
   CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
-  CGRect targetRect = CGRectMake(0, 0, fbo.size.width, fbo.size.height);
+  CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
   [self executeAndPreserveParameters:^{
     self.minFilterInterpolation = LTTextureInterpolationNearest;
     self.magFilterInterpolation = LTTextureInterpolationNearest;

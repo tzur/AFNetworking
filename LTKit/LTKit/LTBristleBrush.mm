@@ -4,13 +4,13 @@
 #import "LTBristleBrush.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
 #import "LTRandom.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
-#import "LTTextureFbo.h"
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
@@ -62,7 +62,7 @@ static const CGFloat kBristleSigma = 0.4;
 }
 
 - (LTFbo *)createBrushFbo {
-  return [[LTTextureFbo alloc] initWithTexture:self.texture];
+  return [[LTFbo alloc] initWithTexture:self.texture];
 }
 
 - (LTRectDrawer *)createBristleDrawer {

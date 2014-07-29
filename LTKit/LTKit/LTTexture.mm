@@ -6,11 +6,11 @@
 #import "LTBoundaryCondition.h"
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
+#import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTImage.h"
 #import "LTMathUtils.h"
 #import "LTTextureContentsDataArchiver.h"
-#import "LTTextureFbo.h"
 
 LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
   switch (CV_MAT_DEPTH(type)) {
@@ -571,7 +571,7 @@ static NSString * const kArchiveKey = @"archive";
 }
 
 - (void)clearWithColor:(GLKVector4)color {
-  LTFbo *fbo = [[LTTextureFbo alloc] initWithTexture:self];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
   [fbo clearWithColor:color];
 }
 

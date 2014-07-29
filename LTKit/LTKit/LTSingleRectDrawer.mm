@@ -13,7 +13,6 @@
 #import "LTProgram.h"
 #import "LTRectMapping.h"
 #import "LTRotatedRect.h"
-#import "LTTexture.h"
 #import "LTVertexArray.h"
 
 /// Holds the position and texture coordinate of each of the rect's corners.

@@ -3,13 +3,13 @@
 
 #import "LTGLTexture.h"
 
+#import "LTFbo.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
-#import "LTTextureFbo.h"
 
 SpecGLBegin(LTGLTexture)
 
@@ -118,7 +118,7 @@ context(@"mipmapping", ^{
                                          fragmentSource:[PassthroughFsh source]];
       drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
       target = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(64, 64)];
-      fbo = [[LTTextureFbo alloc] initWithTexture:target];
+      fbo = [[LTFbo alloc] initWithTexture:target];
     });
 
     afterEach(^{

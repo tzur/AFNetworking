@@ -3,6 +3,7 @@
 
 #import "LTSingleRectDrawerSpec.h"
 
+#import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProcessingDrawerExamples.h"
@@ -11,7 +12,6 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTestUtils.h"
-#import "LTTextureFbo.h"
 
 NSString * const kLTSingleRectDrawerExamples = @"LTSingleRectDrawerExamples";
 NSString * const kLTSingleRectDrawerClass = @"LTSingleRectDrawerExamplesClass";
@@ -74,7 +74,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                        precision:LTTexturePrecisionByte
                                           format:LTTextureFormatRGBA allocateMemory:YES];
       
-      fbo = [[LTTextureFbo alloc] initWithTexture:output];
+      fbo = [[LTFbo alloc] initWithTexture:output];
     });
     
     afterEach(^{
@@ -187,7 +187,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         
         beforeEach(^{
           expectedTexture = [[LTGLTexture alloc] initWithPropertiesOf:output];
-          expectedFbo = [[LTTextureFbo alloc] initWithTexture:expectedTexture];
+          expectedFbo = [[LTFbo alloc] initWithTexture:expectedTexture];
           [expectedFbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
           expected.create(expectedTexture.size.height, expectedTexture.size.width);
         });
