@@ -11,10 +11,7 @@
 @protocol LTDrawableShape <NSObject>
 
 /// Draws the shape on the currently bound framebuffer.
-- (void)drawInBoundFramebufferWithSize:(CGSize)size;
-
-/// Draws the shape on the currently bound screen framebuffer.
-- (void)drawInScreenFramebufferWithSize:(CGSize)size;
+- (void)drawInFramebufferWithSize:(CGSize)size;
 
 /// The translation of the shape (from the origin).
 @property (nonatomic) CGPoint translation;

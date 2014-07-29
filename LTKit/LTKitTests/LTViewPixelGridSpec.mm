@@ -120,21 +120,21 @@ context(@"drawing", ^{
   
   it(@"should not draw grid below minimal zoom scale", ^{
     [[[mockDrawer reject] ignoringNonObjectArgs] drawSubGridInRegion:CGRectZero
-                                         inScreenFramebufferWithSize:CGSizeZero];
+                                         inFramebufferWithSize:CGSizeZero];
     [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize];
     [mockDrawer verify];
   });
   
   it(@"should draw grid above the minimal zoom scale", ^{
     const CGSize targetSize = contentSize * (grid.minZoomScale + kSmallValue);
-    [[mockDrawer expect] drawSubGridInRegion:contentBounds inScreenFramebufferWithSize:targetSize];
+    [[mockDrawer expect] drawSubGridInRegion:contentBounds inFramebufferWithSize:targetSize];
     [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
     [mockDrawer verify];
   });
   
   it(@"should draw grid above the maximal zoom scale", ^{
     const CGSize targetSize = contentSize * (grid.maxZoomScale + kSmallValue);
-    [[mockDrawer expect] drawSubGridInRegion:contentBounds inScreenFramebufferWithSize:targetSize];
+    [[mockDrawer expect] drawSubGridInRegion:contentBounds inFramebufferWithSize:targetSize];
     [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
     [mockDrawer verify];
   });

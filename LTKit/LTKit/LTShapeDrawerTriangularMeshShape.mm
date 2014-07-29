@@ -155,14 +155,14 @@ typedef union {
 #pragma mark Drawing
 #pragma mark -
 
-- (void)drawInBoundFramebufferWithSize:(CGSize)size {
-  [self setProjectionForFramebufferWithSize:size];
-  [self drawWithClockwiseFrontFacingPolygons:NO];
-}
-
-- (void)drawInScreenFramebufferWithSize:(CGSize)size {
-  [self setProjectionForScreenFramebufferWithSize:size];
-  [self drawWithClockwiseFrontFacingPolygons:YES];
+- (void)drawInFramebufferWithSize:(CGSize)size {
+  if ([LTGLContext currentContext].renderingToScreen) {
+    [self setProjectionForScreenFramebufferWithSize:size];
+    [self drawWithClockwiseFrontFacingPolygons:YES];
+  } else {
+    [self setProjectionForFramebufferWithSize:size];
+    [self drawWithClockwiseFrontFacingPolygons:NO];
+  }
 }
 
 - (void)drawWithClockwiseFrontFacingPolygons:(BOOL)cwffPolygons {

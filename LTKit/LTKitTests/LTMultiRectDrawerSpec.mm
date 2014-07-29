@@ -85,7 +85,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       program = nil;
     });
 
-    /// Since the \c inBoundFramebuffer drawing implenentation is no different then the
+    /// Since the \c inFramebufferWithSize drawing implenentation is no different then the
     /// \c inFramebuffer implementation, there is no need to duplicate all the tests here.
     context(@"bound framebuffer", ^{
       it(@"should draw to to target texture of the same size", ^{
@@ -99,7 +99,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       });
     });
     
-    /// Things are different in the \c inScreenBuffer implementation, since the output is actually
+    /// Things are different when rendering to a screen framebuffer, since the output is actually
     /// different, tests were added to verify its correctness.
     context(@"screen framebuffer", ^{
       it(@"should draw to target texture of the same size", ^{

@@ -129,7 +129,7 @@ context(@"drawing", ^{
     [shape addLineToPoint:kOutputCenter];
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeLineFromOrigin.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -140,7 +140,7 @@ context(@"drawing", ^{
     [shape addLineToPoint:kOutputCenter + CGSizeMake(kOutputSize.width / 2, 0)];
 
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeLineFromCenter.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -154,7 +154,7 @@ context(@"drawing", ^{
     [shape closePath];
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeCloseSubpath.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -174,7 +174,7 @@ context(@"drawing", ^{
     [shape closePath];
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeTwoSubpaths.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -185,7 +185,7 @@ context(@"drawing", ^{
     shape.translation = kOutputCenter;
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeTranslation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
@@ -196,7 +196,7 @@ context(@"drawing", ^{
     shape.rotationAngle = M_PI / 6;
     
     [fbo bindAndDraw:^{
-      [shape drawInBoundFramebufferWithSize:kOutputSize];
+      [shape drawInFramebufferWithSize:kOutputSize];
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeRotation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);

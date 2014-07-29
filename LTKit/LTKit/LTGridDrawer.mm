@@ -154,18 +154,21 @@ static const CGFloat kDefaultWidth = 1.0;
 #pragma mark Drawing
 #pragma mark -
 
-- (void)drawSubGridInRegion:(CGRect)region inFrameBuffer:(LTFbo *)fbo {
+- (void)drawSubGridInRegion:(CGRect)region inFramebuffer:(LTFbo *)fbo {
   [fbo bindAndDraw:^{
-    [self setProjectionAndPixelSizeForFramebufferWithSize:fbo.size];
-    [self setUniformsForGridRegion:region framebufferSize:fbo.size];
-    [self drawWithClockwiseFrontFacingPolygons:NO];
+    [self drawSubGridInRegion:region inFramebufferWithSize:fbo.size];
   }];
 }
 
-- (void)drawSubGridInRegion:(CGRect)region inScreenFramebufferWithSize:(CGSize)size {
-  [self setProjectionAndPixelSizeForScreenFramebufferWithSize:size];
+- (void)drawSubGridInRegion:(CGRect)region inFramebufferWithSize:(CGSize)size {
   [self setUniformsForGridRegion:region framebufferSize:size];
-  [self drawWithClockwiseFrontFacingPolygons:YES];
+  if ([LTGLContext currentContext].renderingToScreen) {
+    [self setProjectionAndPixelSizeForScreenFramebufferWithSize:size];
+    [self drawWithClockwiseFrontFacingPolygons:YES];
+  } else {
+    [self setProjectionAndPixelSizeForFramebufferWithSize:size];
+    [self drawWithClockwiseFrontFacingPolygons:NO];
+  }
 }
 
 - (void)drawWithClockwiseFrontFacingPolygons:(BOOL)cwffPolygons {
