@@ -7,3 +7,6 @@
 [submodule "third_party/utils/libextobjc"]
 	path = third_party/utils/libextobjc
 	url = https://github.com/Lightricks/libextobjc.git
+[submodule "third_party/utils/Mantle"]
+	path = third_party/utils/Mantle
+	url = https://github.com/Mantle/Mantle.git

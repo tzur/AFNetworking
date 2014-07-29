@@ -712,6 +712,48 @@
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTKit;
 		};
+		8BA821E4198693B000FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC3C15F72B23004E8054;
+			remoteInfo = Mantle;
+		};
+		8BA821E6198693B000FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC5415F72B23004E8054;
+			remoteInfo = "Mantle Tests";
+		};
+		8BA821E8198693B000FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC7915F72BC7004E8054;
+			remoteInfo = "Mantle-iOS";
+		};
+		8BA821EA198693B000FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC8715F72BC7004E8054;
+			remoteInfo = "Mantle-iOS Tests";
+		};
+		8BA821EC198693B000FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A56B461804B04900A84EDC;
+			remoteInfo = "Mantle-Mac";
+		};
+		8BA821F61986942E00FBE68E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D042FC7815F72BC7004E8054;
+			remoteInfo = "Mantle-iOS";
+		};
 		8BB4714D183B534000CA1681 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
@@ -2579,6 +2621,18 @@
 			name = Half;
 			sourceTree = "<group>";
 		};
+		8BA821D5198693AF00FBE68E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BA821E5198693B000FBE68E /* Mantle.framework */,
+				8BA821E7198693B000FBE68E /* Mantle Tests.xctest */,
+				8BA821E9198693B000FBE68E /* libMantle-iOS.a */,
+				8BA821EB198693B000FBE68E /* Mantle-iOS Tests.xctest */,
+				8BA821ED198693B000FBE68E /* libMantle-Mac.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8BABFD65188C59F9004163DA /* Strategies */ = {
 			isa = PBXGroup;
 			children = (
@@ -2652,6 +2706,7 @@
 			children = (
 				8BB47146183B534000CA1681 /* extobjc.xcodeproj */,
 				8B9D3FDD18913076001A964D /* Half */,
+				8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -3029,6 +3084,7 @@
 				8B8E50EE1861CCEC00821829 /* PBXBuildRule */,
 			);
 			dependencies = (
+				8BA821F71986942E00FBE68E /* PBXTargetDependency */,
 				8BCFC01E18CF0B6100E612DE /* PBXTargetDependency */,
 			);
 			name = LTKit;
@@ -3101,6 +3157,10 @@
 					ProjectRef = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
 				},
 				{
+					ProductGroup = 8BA821D5198693AF00FBE68E /* Products */;
+					ProjectRef = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
+				},
+				{
 					ProductGroup = 8BCA673A18310DA8003FCB65 /* Products */;
 					ProjectRef = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
 				},
@@ -3115,6 +3175,41 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8BA821E5198693B000FBE68E /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 8BA821E4198693B000FBE68E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA821E7198693B000FBE68E /* Mantle Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle Tests.xctest";
+			remoteRef = 8BA821E6198693B000FBE68E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA821E9198693B000FBE68E /* libMantle-iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libMantle-iOS.a";
+			remoteRef = 8BA821E8198693B000FBE68E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA821EB198693B000FBE68E /* Mantle-iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-iOS Tests.xctest";
+			remoteRef = 8BA821EA198693B000FBE68E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA821ED198693B000FBE68E /* libMantle-Mac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libMantle-Mac.a";
+			remoteRef = 8BA821EC198693B000FBE68E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8BB4714E183B534000CA1681 /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3729,6 +3824,11 @@
 			target = 8B3DEBE318296B6100EA0C1A /* LTKit */;
 			targetProxy = 8B3DEBFA18296B6100EA0C1A /* PBXContainerItemProxy */;
 		};
+		8BA821F71986942E00FBE68E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Mantle-iOS";
+			targetProxy = 8BA821F61986942E00FBE68E /* PBXContainerItemProxy */;
+		};
 		8BCA6725182FD8E6003FCB65 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Expecta-iOS";
@@ -3796,8 +3896,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
 					"$(SRCROOT)/../third_party/utils/half",
+					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
@@ -3846,8 +3948,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
 					"$(SRCROOT)/../third_party/utils/half",
+					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
