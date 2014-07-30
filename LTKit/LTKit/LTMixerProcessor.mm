@@ -82,7 +82,7 @@
 #pragma mark Input model
 #pragma mark -
 
-+ (NSSet *)inputModelProperties {
++ (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
 
   static dispatch_once_t onceToken;

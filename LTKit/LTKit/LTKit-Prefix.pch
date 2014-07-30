@@ -22,6 +22,7 @@
   #ifdef __cplusplus
   }
   #endif
+  #import <Mantle/Mantle.h>
   #import <Objection-iOS/Objection.h>
 #endif
 

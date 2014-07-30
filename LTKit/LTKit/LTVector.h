@@ -102,9 +102,12 @@ inline LTVector2 operator/(LTVector2 lhs, const LTVector2 &rhs) {
 }
 
 /// Returns an \c NSString representation of the given vector.
-NS_INLINE NSString *NSStringFromLTVector2(const LTVector2 &vector) {
-  return [NSString stringWithFormat:@"(%g, %g)", vector.x, vector.y];
-}
+NSString *NSStringFromLTVector2(const LTVector2 &vector);
+
+/// Returns a vector from its string representation. The representation should be in the format
+/// \c @"(%g, %g)". In case an invalid format is given, LTVector2 that is set to all zeroes will be
+/// returned.
+LTVector2 LTVector2FromString(NSString *string);
 
 #pragma mark -
 #pragma mark LTVector3
@@ -207,9 +210,12 @@ inline LTVector3 operator/(LTVector3 lhs, const LTVector3 &rhs) {
 }
 
 /// Returns an \c NSString representation of the given vector.
-NS_INLINE NSString *NSStringFromLTVector3(const LTVector3 &vector) {
-  return [NSString stringWithFormat:@"(%g, %g, %g)", vector.x, vector.y, vector.z];
-}
+NSString *NSStringFromLTVector3(const LTVector3 &vector);
+
+/// Returns a vector from its string representation. The representation should be in the format
+/// \c @"(%g, %g, %g)". In case an invalid format is given, LTVector3 that is set to all zeroes will
+/// be returned.
+LTVector3 LTVector3FromString(NSString *string);
 
 #pragma mark -
 #pragma mark LTVector4
@@ -322,6 +328,9 @@ inline LTVector4 operator/(LTVector4 lhs, const LTVector4 &rhs) {
 }
 
 /// Returns an \c NSString representation of the given vector.
-NS_INLINE NSString *NSStringFromLTVector4(const LTVector4 &vector) {
-  return [NSString stringWithFormat:@"(%g, %g, %g, %g)", vector.x, vector.y, vector.z, vector.w];
-}
+NSString *NSStringFromLTVector4(const LTVector4 &vector);
+
+/// Returns a vector from its string representation. The representation should be in the format
+/// \c @"(%g, %g, %g, %g)". In case an invalid format is given, LTVector4 that is set to all zeroes
+/// will be returned.
+LTVector4 LTVector4FromString(NSString *string);

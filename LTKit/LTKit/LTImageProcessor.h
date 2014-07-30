@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTJSONSerializationAdapter.h"
 #import "LTKeyPathCoding.h"
 
 /// Abstract class for generic image processing mechanism. The mechanism accepts a varying number of
@@ -10,7 +11,7 @@
 /// The class supports serialization and deserialization of the input model in a form of a
 /// dictionary. To support this feature, subclasses should override the \c modelInputProperties
 /// getter and return a set of properties which comprise the input model.
-@interface LTImageProcessor : NSObject
+@interface LTImageProcessor : NSObject <LTJSONSerializing>
 
 #pragma mark -
 #pragma mark Processing
@@ -33,10 +34,10 @@
 /// automatically converted to strings.
 - (NSDictionary *)inputModel;
 
-/// Names of the model input properties of this object that are part of the model to load and save.
+/// Keys of the model input properties of this object that are part of the model to load and save.
 /// The default implementation returns \c nil, therefore no properties are part of the input model.
 /// The model can contain \c LTEnum values as enumeration objects (that conform to \c LTEnum) or as
 /// \c NSString, that will be automatically resolved to their representing object.
-+ (NSSet *)inputModelProperties;
++ (NSSet *)inputModelPropertyKeys;
 
 @end

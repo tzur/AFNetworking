@@ -6,6 +6,7 @@
 #import <extobjc/extobjc.h>
 
 #import "LTGLKitExtensions.h"
+#import "LTVector.h"
 
 LTEnumMake(NSUInteger, LTImageProcessorEnum,
   LTImageProcessorEnumA,
@@ -18,9 +19,9 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 @property (nonatomic) float floatValue;
 @property (nonatomic) NSInteger integerValue;
 
-@property (nonatomic) GLKVector2 vector2Value;
-@property (nonatomic) GLKVector3 vector3Value;
-@property (nonatomic) GLKVector4 vector4Value;
+@property (nonatomic) LTVector2 vector2Value;
+@property (nonatomic) LTVector3 vector3Value;
+@property (nonatomic) LTVector4 vector4Value;
 
 @property (nonatomic) GLKMatrix2 matrix2Value;
 @property (nonatomic) GLKMatrix3 matrix3Value;
@@ -37,7 +38,7 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 - (void)process {
 }
 
-+ (NSSet *)inputModelProperties {
++ (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
 
   static dispatch_once_t onceToken;
@@ -87,20 +88,20 @@ context(@"input model", ^{
       processor.stringValue = @"hello";
       processor.enumValue = $(LTImageProcessorEnumB);
 
-      processor.vector2Value = GLKVector2Make(1, 2);
-      processor.vector3Value = GLKVector3Make(1, 2, 3);
-      processor.vector4Value = GLKVector4Make(1, 2, 3, 4);
+      processor.vector2Value = LTVector2(1, 2);
+      processor.vector3Value = LTVector3(1, 2, 3);
+      processor.vector4Value = LTVector4(1, 2, 3, 4);
 
       processor.matrix2Value = matrix2;
       processor.matrix3Value = matrix3;
       processor.matrix4Value = matrix4;
 
-      NSDictionary *model = [processor inputModel];
+      NSDictionary *model = processor.inputModel;
 
       expect(model[@keypath(processor, floatValue)]).to.equal(processor.floatValue);
       expect(model[@keypath(processor, integerValue)]).to.equal(processor.integerValue);
       expect(model[@keypath(processor, stringValue)]).to.equal(processor.stringValue);
-      expect(model[@keypath(processor, enumValue)]).to.equal(@"LTImageProcessorEnumB");
+      expect(model[@keypath(processor, enumValue)]).to.equal(processor.enumValue);
 
       expect(model[@keypath(processor, vector2Value)]).to.equal($(processor.vector2Value));
       expect(model[@keypath(processor, vector3Value)]).to.equal($(processor.vector3Value));
@@ -124,9 +125,9 @@ context(@"input model", ^{
       @keypath(processor, integerValue): @(7),
       @keypath(processor, stringValue): @"hello",
       @keypath(processor, enumValue): $(LTImageProcessorEnumB),
-      @keypath(processor, vector2Value): $(GLKVector2Make(1, 2)),
-      @keypath(processor, vector3Value): $(GLKVector3Make(1, 2, 3)),
-      @keypath(processor, vector4Value): $(GLKVector4Make(1, 2, 3, 4)),
+      @keypath(processor, vector2Value): $(LTVector2(1, 2)),
+      @keypath(processor, vector3Value): $(LTVector3(1, 2, 3)),
+      @keypath(processor, vector4Value): $(LTVector4(1, 2, 3, 4)),
       @keypath(processor, matrix2Value): $(matrix2),
       @keypath(processor, matrix3Value): $(matrix3),
       @keypath(processor, matrix4Value): $(matrix4)
@@ -168,15 +169,6 @@ context(@"input model", ^{
       expect(^{
         [processor setInputModel:overcompleteModel];
       }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should set enum from string value", ^{
-      NSMutableDictionary *enumAsStringModel = [model mutableCopy];
-      enumAsStringModel[@keypath(processor, enumValue)] = @"LTImageProcessorEnumB";
-
-      [processor setInputModel:enumAsStringModel];
-
-      expect(processor.enumValue).to.equal($(LTImageProcessorEnumB));
     });
   });
 });

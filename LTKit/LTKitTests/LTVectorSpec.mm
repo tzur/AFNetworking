@@ -63,6 +63,22 @@ context(@"LTVector2", ^{
     v.g() = 8;
     expect(v).to.equal(LTVector2(5, 8));
   });
+
+  it(@"should convert from string", ^{
+    NSString *value = @"(1.5, 2.5, 3)";
+    LTVector3 vector = LTVector3FromString(value);
+    expect(vector.x).to.equal(1.5);
+    expect(vector.y).to.equal(2.5);
+    expect(vector.z).to.equal(3);
+  });
+
+  it(@"should return zero vector on invalid string", ^{
+    expect(LTVector2FromString(@"(1.5)")).to.equal(LTVector2());
+    expect(LTVector2FromString(@"(1.5, 2.5")).to.equal(LTVector2());
+    expect(LTVector2FromString(@"1.5, 2.5)")).to.equal(LTVector2());
+    expect(LTVector2FromString(@"(3)")).to.equal(LTVector2());
+    expect(LTVector2FromString(@"(a, 2)")).to.equal(LTVector2());
+  });
 });
 
 context(@"LTVector3", ^{
@@ -115,6 +131,22 @@ context(@"LTVector3", ^{
     v.g() = 8;
     v.b() = 2;
     expect(v).to.equal(LTVector3(5, 8, 2));
+  });
+
+  it(@"should convert from string", ^{
+    NSString *value = @"(1.5, 2.5, 3)";
+    LTVector3 vector = LTVector3FromString(value);
+    expect(vector.x).to.equal(1.5);
+    expect(vector.y).to.equal(2.5);
+    expect(vector.z).to.equal(3);
+  });
+
+  it(@"should return zero vector on invalid string", ^{
+    expect(LTVector3FromString(@"(1.5, 2.5)")).to.equal(LTVector3());
+    expect(LTVector3FromString(@"(1.5, 2.5, 3")).to.equal(LTVector3());
+    expect(LTVector3FromString(@"1.5, 2.5, 3)")).to.equal(LTVector3());
+    expect(LTVector3FromString(@"(3, 4)")).to.equal(LTVector3());
+    expect(LTVector3FromString(@"(a, 2, 4)")).to.equal(LTVector3());
   });
 });
 
@@ -173,6 +205,23 @@ context(@"LTVector4", ^{
     v.b() = 2;
     v.a() = 12;
     expect(v).to.equal(LTVector4(5, 8, 2, 12));
+  });
+
+  it(@"should convert from string", ^{
+    NSString *value = @"(1.5, 2.5, 3, 4)";
+    LTVector4 vector = LTVector4FromString(value);
+    expect(vector.x).to.equal(1.5);
+    expect(vector.y).to.equal(2.5);
+    expect(vector.z).to.equal(3);
+    expect(vector.w).to.equal(4);
+  });
+
+  it(@"should return zero vector on invalid string", ^{
+    expect(LTVector4FromString(@"(1.5, 2.5, 3)")).to.equal(LTVector4());
+    expect(LTVector4FromString(@"(1.5, 2.5, 3, 4")).to.equal(LTVector4());
+    expect(LTVector4FromString(@"1.5, 2.5, 3, 4)")).to.equal(LTVector4());
+    expect(LTVector4FromString(@"(3, 4)")).to.equal(LTVector4());
+    expect(LTVector4FromString(@"(a, 2, 3, 4)")).to.equal(LTVector4());
   });
 });
 

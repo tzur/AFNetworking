@@ -153,7 +153,7 @@ LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  [self.auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
+  [(LTTexture *)self.auxiliaryTextures[[LTBWTonalityFsh toneLUT]] load:toneCurve];
 }
 
 @end

@@ -346,7 +346,7 @@ LTPropertyWithoutSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha, -1, 1, 
           toneCurve);
   
   toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  [self.auxiliaryTextures[[LTAnalogFilmFsh toneLUT]] load:toneCurve];
+  [(LTTexture *)self.auxiliaryTextures[[LTAnalogFilmFsh toneLUT]] load:toneCurve];
 }
 
 @end
