@@ -102,12 +102,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
     /// different, tests were added to verify its correctness.
     context(@"screen framebuffer", ^{
       it(@"should draw to target texture of the same size", ^{
-        [fbo bindAndDraw:^{
-          [LTGLContext currentContext].renderingToScreen = YES;
+        [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
          inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         cv::Mat expected(image.rows, image.cols, CV_8UC4);
@@ -118,11 +116,9 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
       it(@"should draw subrect of input to entire output", ^{
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
-        [fbo bindAndDraw:^{
-          [LTGLContext currentContext].renderingToScreen = YES;
+        [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
               inFramebufferWithSize:fbo.size fromRect:subrect];
-          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at the given range, flipped across
@@ -140,11 +136,9 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-        [fbo bindAndDraw:^{
-          [LTGLContext currentContext].renderingToScreen = YES;
+        [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRect:subrect inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version positioned at the given subrect.
@@ -164,10 +158,8 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-        [fbo bindAndDraw:^{
-          [LTGLContext currentContext].renderingToScreen = YES;
+        [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRect:outRect inFramebufferWithSize:fbo.size fromRect:inRect];
-          [LTGLContext currentContext].renderingToScreen = NO;
         }];
         
         // Actual image should be a resized version of the subimage at inputSubrect positioned at the
@@ -211,12 +203,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                          inputSize.width / 2, inputSize.height / 2);
           CGFloat sourceAngle = M_PI / 6;
           
-          [fbo bindAndDraw:^{
-            [LTGLContext currentContext].renderingToScreen = YES;
+          [fbo bindAndDrawOnScreen:^{
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect]
                   inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
-            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect]
@@ -235,12 +225,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                          inputSize.width / 2, inputSize.height / 2);
           CGFloat targetAngle = M_PI / 6;
           
-          [fbo bindAndDraw:^{
-            [LTGLContext currentContext].renderingToScreen = YES;
+          [fbo bindAndDrawOnScreen:^{
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
                   inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect]];
-            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
@@ -260,12 +248,10 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
           CGFloat targetAngle = M_PI / 6;
           CGFloat sourceAngle = M_PI / 6;
           
-          [fbo bindAndDraw:^{
-            [LTGLContext currentContext].renderingToScreen = YES;
+          [fbo bindAndDrawOnScreen:^{
             [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
                   inFramebufferWithSize:fbo.size
                         fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
-            [LTGLContext currentContext].renderingToScreen = NO;
           }];
           
           [rectDrawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]

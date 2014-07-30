@@ -169,11 +169,9 @@ context(@"drawing", ^{
     });
     
     it(@"should draw on a screen framebuffer", ^{
-      [fbo bindAndDraw:^{
-        gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-        [LTGLContext currentContext].renderingToScreen = YES;
+      gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
+      [fbo bindAndDrawOnScreen:^{
         [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebufferWithSize:fbo.size];
-        [LTGLContext currentContext].renderingToScreen = NO;
       }];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });

@@ -63,4 +63,8 @@
 /// specific color.
 - (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device;
 
+/// Executes the given block while the receiver is bound to the active context, and \c LTGLContext's
+/// \c renderingToScreen is set to YES. 
+- (void)bindAndDrawOnScreen:(LTVoidBlock)block;
+
 @end
