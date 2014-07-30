@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTJSONSerializationAdapter.h"
 #import "LTKeyPathCoding.h"
 
 /// Abstract class for generic image processing mechanism. The mechanism accepts a varying number of
@@ -10,7 +11,7 @@
 /// The class supports serialization and deserialization of the input model in a form of a
 /// dictionary. To support this feature, subclasses should override the \c modelInputProperties
 /// getter and return a set of properties which comprise the input model.
-@interface LTImageProcessor : NSObject
+@interface LTImageProcessor : NSObject <LTJSONSerializing>
 
 #pragma mark -
 #pragma mark Processing

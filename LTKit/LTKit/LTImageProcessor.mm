@@ -63,6 +63,14 @@
 }
 
 #pragma mark -
+#pragma mark LTJSONSerializing
+#pragma mark -
+
++ (NSSet *)serializableKeyPaths {
+  return [[self class] inputModelPropertyKeys];
+}
+
+#pragma mark -
 #pragma mark Union handling
 #pragma mark -
 
