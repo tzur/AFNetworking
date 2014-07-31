@@ -373,6 +373,11 @@ context(@"colorspace conversion", ^{
       expect(hsva).to.beCloseToGLKVectorWithin(GLKVector4Make(h, s, v, rgba.a), 1e-4);
     }
   });
+  
+  it(@"should convert from rgb to yiq", ^{
+    GLKVector3 yiq = GLKRGB2YIQ(GLKVector3Make(1, 1, 1));
+    expect(yiq).to.beCloseToGLKVectorWithin(GLKVector3Make(1, 0 , 0), 1e-4);
+  });
 });
 
 SpecEnd

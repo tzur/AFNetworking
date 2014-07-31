@@ -312,4 +312,7 @@ namespace std {
 /// Converts the given \c GLKVector4 from the RGB colorspace to the HSV colorspace.
 GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba);
 
+/// Converts the given \c GLKVector3 from the RGB colorspace to the YIQ colorspace.
+GLKVector3 GLKRGB2YIQ(const GLKVector3 &rgb);
+
 #endif
