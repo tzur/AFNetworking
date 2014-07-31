@@ -187,10 +187,8 @@ context(@"drawing", ^{
     LTRotatedRect *rect = [LTRotatedRect rectWithCenter:kOutputCenter size:kOutputSize / 2
                                                   angle:M_PI / 6];
     shape = [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rect filled:YES params:params];
-    [fbo bindAndDraw:^{
-      [LTGLContext currentContext].renderingToScreen = YES;
+    [fbo bindAndDrawOnScreen:^{
       [shape drawInFramebufferWithSize:fbo.size];
-      [LTGLContext currentContext].renderingToScreen = NO;
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerEllipticShapeFilledEllipse.png");
     cv::flip(expected, expected, 0);

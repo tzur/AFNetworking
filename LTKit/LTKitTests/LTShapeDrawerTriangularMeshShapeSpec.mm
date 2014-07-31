@@ -193,10 +193,8 @@ context(@"drawing", ^{
     shape.rotationAngle = M_PI / 4;
     shape.translation = kOutputCenter;
     
-    [fbo bindAndDraw:^{
-      [LTGLContext currentContext].renderingToScreen = YES;
+    [fbo bindAndDrawOnScreen:^{
       [shape drawInFramebufferWithSize:fbo.size];
-      [LTGLContext currentContext].renderingToScreen = NO;
     }];
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeRotation.png");
     cv::flip(expected, expected, 0);

@@ -140,17 +140,21 @@
   self.bound = NO;
 }
 
+- (void)setContextWithRenderingToScreen:(BOOL)renderingToScreen andDraw:(LTVoidBlock)block {
+  LTGLContext *context = [LTGLContext currentContext];
+  [context executeAndPreserveState:^{
+    context.renderingToScreen = renderingToScreen;
+    block();
+  }];
+}
+
 - (void)bindAndExecute:(LTVoidBlock)block {
   LTParameterAssert(block);
   if (self.bound) {
     block();
   } else {
     [self bind];
-    LTGLContext *context = [LTGLContext currentContext];
-    [context executeAndPreserveState:^{
-      context.renderingToScreen = NO;
-      block();
-    }];
+    [self setContextWithRenderingToScreen:NO andDraw:block];
     [self unbind];
   }
 }
@@ -161,6 +165,12 @@
     [self.texture writeToTexture:^{
       block();
     }];
+  }];
+}
+
+- (void)bindAndDrawOnScreen:(LTVoidBlock)block {
+  [self bindAndDraw:^{
+    [self setContextWithRenderingToScreen:YES andDraw:block];
   }];
 }
 
