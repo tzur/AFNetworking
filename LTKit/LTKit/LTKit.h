@@ -45,6 +45,7 @@
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
 #import <LTKit/LTColorGradient.h>
+#import <LTKit/LTDuoProcessor.h>
 #import <LTKit/LTEdgesMaskProcessor.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
@@ -89,6 +90,9 @@
 
 // GPU/Drawers.
 #import <LTKit/LTRectDrawer+PassthroughShader.h>
+
+// GPU/Drawers/Shape Drawer.
+#import <LTKit/LTShapeDrawer.h>
 
 // GPU/Painting.
 #import <LTKit/LTPainter+LTView.h>
