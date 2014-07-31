@@ -58,3 +58,10 @@ GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
   h /= 6;
   return GLKVector4Make(h > 0 ? h : h + 1, s, v, rgba.a);
 }
+
+GLKVector3 GLKRGB2YIQ(const GLKVector3 &rgb) {
+  static const GLKMatrix3 kRGBtoYIQ = GLKMatrix3Make(0.299, 0.596, 0.212,
+                                                     0.587, -0.274, -0.523,
+                                                     0.114, -0.322, 0.311);
+  return GLKMatrix3MultiplyVector3(kRGBtoYIQ, rgb);
+}
