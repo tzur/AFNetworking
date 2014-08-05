@@ -208,6 +208,21 @@ GLK_INLINE GLKVector4 operator*(const float &lhs, const GLKVector4 &rhs) {
   return GLKVector4MultiplyScalar(rhs, lhs);
 }
 
+/// Returns the element-wise product of two vectors.
+GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const GLKVector2 &rhs) {
+  return GLKVector2Multiply(rhs, lhs);
+}
+
+/// Returns the element-wise product of two vectors.
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const GLKVector3 &rhs) {
+  return GLKVector3Multiply(rhs, lhs);
+}
+
+/// Returns the element-wise product of two vectors.
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return GLKVector4Multiply(rhs, lhs);
+}
+
 /// Divide a vector by a scalar value (element wise).
 GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const float &rhs) {
   return GLKVector2DivideScalar(lhs, rhs);

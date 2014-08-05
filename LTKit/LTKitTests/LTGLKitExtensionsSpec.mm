@@ -122,6 +122,10 @@ context(@"GLKVector2 operations", ^{
     expect(2.f * GLKVector2Make(1, 2) == GLKVector2Make(2, 4)).to.beTruthy();
   });
 
+  it(@"element-wise multiply", ^{
+    expect(GLKVector2Make(1, 2) * GLKVector2Make(3, 4)).to.beCloseToGLKVector(GLKVector2Make(3, 8));
+  });
+  
   it(@"division", ^{
     expect(GLKVector2Make(2, 4) / 2.f == GLKVector2Make(1, 2)).to.beTruthy();
   });
@@ -187,6 +191,11 @@ context(@"GLKVector3 operations", ^{
     expect(2.f * GLKVector3Make(1, 2, 3) == GLKVector3Make(2, 4, 6)).to.beTruthy();
   });
 
+  it(@"element-wise multiply", ^{
+    expect(GLKVector3Make(1, 2, 3) * GLKVector3Make(4, 5, 6))
+        .to.beCloseToGLKVector(GLKVector3Make(4, 10, 18));
+  });
+  
   it(@"division", ^{
     expect(GLKVector3Make(2, 4, 6) / 2.f == GLKVector3Make(1, 2, 3)).to.beTruthy();
   });
@@ -269,6 +278,11 @@ context(@"GLKVector4 operations", ^{
     expect(2.f * GLKVector4Make(1, 2, 3, 4) == GLKVector4Make(2, 4, 6, 8)).to.beTruthy();
   });
 
+  it(@"element-wise multiply", ^{
+    expect(GLKVector4Make(1, 2, 3, 4) * GLKVector4Make(5, 6, 7, 8))
+    .to.beCloseToGLKVector(GLKVector4Make(5, 12, 21, 32));
+  });
+  
   it(@"division", ^{
     expect(GLKVector4Make(2, 4, 6, 8) / 2.f == GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
   });
