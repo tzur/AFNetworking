@@ -21,6 +21,9 @@ struct LTVector2 {
   /// Initializes a new \c LTVector2 from \c CGPoint.
   LTVector2(CGPoint point) : x(point.x), y(point.y) {}
 
+  /// Initializes a new \c LTVector2 from \c CGSize.
+  LTVector2(CGSize size) : x(size.width), y(size.height) {}
+
   /// Cast operator to \c GLKVector2.
   operator GLKVector2() {
     return GLKVector2Make(x, y);
@@ -29,6 +32,10 @@ struct LTVector2 {
   /// Cast operator to \c CGPoint.
   operator CGPoint() {
     return CGPointMake(x, y);
+  }
+  
+  operator CGSize() {
+    return CGSizeMake(x, y);
   }
 
   /// Adds the given vector element wise to this vector.

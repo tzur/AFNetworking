@@ -19,9 +19,13 @@ context(@"LTVector2", ^{
     expect(v3.x).to.equal(3);
     expect(v3.y).to.equal(4);
 
-    LTVector2 v4(GLKVector2Make(5, 6));
+    LTVector2 v4(CGSizeMake(5, 6));
     expect(v4.x).to.equal(5);
     expect(v4.y).to.equal(6);
+    
+    LTVector2 v5(GLKVector2Make(7, 8));
+    expect(v5.x).to.equal(7);
+    expect(v5.y).to.equal(8);
   });
 
   it(@"should cast to GLKVector2", ^{
@@ -40,6 +44,14 @@ context(@"LTVector2", ^{
     expect(point.y).to.equal(vector.y);
   });
 
+  it(@"should cast to CGSize", ^{
+    LTVector2 vector(1, 2);
+    CGSize size(vector);
+    
+    expect(size.width).to.equal(vector.x);
+    expect(size.height).to.equal(vector.y);
+  });
+  
   it(@"should perform math operations correctly", ^{
     LTVector2 v1(10, 8);
     LTVector2 v2(5, 4);
