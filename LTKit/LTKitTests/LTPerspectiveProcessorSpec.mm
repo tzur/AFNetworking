@@ -8,7 +8,7 @@
 #import "LTTexture+Factory.h"
 
 // Returns a matrix with a checkerboard pattern.
-cv::Mat4b LTCheckerboard(NSUInteger rows, NSUInteger cols, NSUInteger cell) {
+static cv::Mat4b LTCheckerboard(NSUInteger rows, NSUInteger cols, NSUInteger cell) {
   cv::Mat4b mat((int)rows, (int)cols);
   for (int i = 0; i < mat.rows; ++i) {
     for (int j = 0; j < mat.cols; ++j) {
@@ -30,7 +30,7 @@ const CGSize kSize = CGSizeMake(64, 32);
 beforeEach(^{
   inputTexture = [LTTexture textureWithImage:LTCheckerboard(kSize.height, kSize.width, 8)];
   outputTexture = [LTTexture byteRGBATextureWithSize:kSize];
-  processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture output:outputTexture];
+  processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:outputTexture];
 });
 
 afterEach(^{
@@ -42,13 +42,13 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should raise when initializing without input texture", ^{
     expect(^{
-      processor = [[LTPerspectiveProcessor alloc] initWithInput:nil output:outputTexture];
+      processor = [[LTPerspectiveProcessor alloc] initWithInput:nil andOutput:outputTexture];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should raise when initializing without output texture", ^{
     expect(^{
-      processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture output:nil];
+      processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:nil];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -118,7 +118,7 @@ context(@"projection data", ^{
   beforeEach(^{
     inputTexture = [LTTexture textureWithImage:LTCheckerboard(kSize.height, kSize.width, 8)];
     outputTexture = [LTTexture byteRGBATextureWithSize:kSize];
-    processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:outputTexture];
     
     processor.horizontal = M_PI / 180 * 15;
     processor.vertical = M_PI / 180 * 15;

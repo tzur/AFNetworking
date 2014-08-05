@@ -5,12 +5,13 @@
 
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
-#import "LTFbo.h"
+#import "LTNextIterationPlacement.h"
+#import "LTProcessingDrawer.h"
 #import "LTProgram.h"
-#import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTPerspectiveProcessorFsh.h"
+#import "LTTexture.h"
 
 /// Represents a trapezoid which is a result of a perspective projection of the input texture.
 typedef union {
@@ -23,16 +24,11 @@ typedef union {
   GLKVector2 corners[4];
 } LTTrapezoid2;
 
+@interface LTGPUImageProcessor ()
+@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
+@end
+
 @interface LTPerspectiveProcessor ()
-
-/// Processor's input texture.
-@property (strong, nonatomic) LTTexture *inputTexture;
-
-/// Fbo used for updating the output texture.
-@property (strong, nonatomic) LTFbo *outputFbo;
-
-/// Drawer used to apply the perspective projecting shader on the input.
-@property (strong, nonatomic) LTRectDrawer *drawer;
 
 /// Uniform scale applied on the projection to guarantee that it entirely fits the output texture.
 @property (nonatomic) CGFloat scale;
@@ -41,13 +37,13 @@ typedef union {
 @property (nonatomic) CGSize translation;
 
 /// Matrix used to map a point in [-1,1]x[-1,1] (texture coordinates before projection) to its
-/// corresponding point in texture coordinates after the projection (again, in [-1,1]x[-1,1].
+/// corresponding point in texture coordinates after the projection (again, in [-1,1]x[-1,1]).
 @property (nonatomic) GLKMatrix3 matrix;
 
 /// Inverse matrix of the projection matrix above.
 @property (nonatomic) GLKMatrix3 inverseMatrix;
 
-/// Current result of the perspective projeciton of the input texture, in [0,1]x[0,1] coordinates.
+/// Current result of the perspective projection of the input texture, in [0,1]x[0,1] coordinates.
 @property (nonatomic) LTTrapezoid2 trapezoid;
 
 @end
@@ -58,45 +54,33 @@ typedef union {
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
+- (instancetype)initWithInput:(LTTexture *)input andOutput:(LTTexture *)output {
   LTParameterAssert(input);
   LTParameterAssert(output);
-  if (self = [super init]) {
-    self.inputTexture = input;
-    [self createDrawer];
-    [self createFboWithTexture:output];
+  if (self = [super initWithProgram:[self createPerspectiveProgram] input:input andOutput:output]) {
     [self updateModel];
   }
   return self;
 }
 
-- (void)createDrawer {
-  LTParameterAssert(self.inputTexture);
-  LTProgram *program = [[LTProgram alloc]
-                        initWithVertexSource:[LTPassthroughShaderVsh source]
-                        fragmentSource:[LTPerspectiveProcessorFsh source]];
-  self.drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self.inputTexture];
-}
-
-- (void)createFboWithTexture:(LTTexture *)outputTexture {
-  LTParameterAssert(outputTexture);
-  self.outputFbo = [[LTFbo alloc] initWithTexture:outputTexture];
+- (LTProgram *)createPerspectiveProgram {
+  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
+                                  fragmentSource:[LTPerspectiveProcessorFsh source]];
 }
 
 #pragma mark -
 #pragma mark Processing
 #pragma mark -
 
-- (void)process {
-  self.drawer[[LTPerspectiveProcessorFsh perspective]] = $(self.matrix);
-  [self.outputFbo clearWithColor:(GLKVector4Zero)];
+- (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
   CGPoint inputCenter = CGPointMake(0.5, 0.5) + self.translation / self.scale;
   LTRotatedRect *sourceRect = [LTRotatedRect rectWithCenter:self.inputTexture.size * inputCenter
                                                        size:self.inputTexture.size / self.scale
                                                       angle:0];
   
-  [self.drawer drawRotatedRect:[LTRotatedRect rect:(CGRectFromSize(self.outputFbo.size))]
-                 inFramebuffer:self.outputFbo
+  self.drawer[[LTPerspectiveProcessorFsh perspective]] = $(self.matrix);
+  [self.drawer drawRotatedRect:[LTRotatedRect rect:CGRectFromSize(self.outputTexture.size)]
+                 inFramebuffer:placement.targetFbo
                fromRotatedRect:sourceRect];
 }
 
@@ -186,10 +170,10 @@ typedef union {
     corner.y = 0.5 + 0.5 * corner.y;
   }
   
-  return { .topLeft = GLKVector2Make(trapezoid[0].x, trapezoid[0].y),
-           .topRight = GLKVector2Make(trapezoid[1].x, trapezoid[1].y),
-           .bottomLeft = GLKVector2Make(trapezoid[2].x, trapezoid[2].y),
-           .bottomRight = GLKVector2Make(trapezoid[3].x, trapezoid[3].y)};
+  return {.topLeft = GLKVector2Make(trapezoid[0].x, trapezoid[0].y),
+          .topRight = GLKVector2Make(trapezoid[1].x, trapezoid[1].y),
+          .bottomLeft = GLKVector2Make(trapezoid[2].x, trapezoid[2].y),
+          .bottomRight = GLKVector2Make(trapezoid[3].x, trapezoid[3].y)};
 }
 
 - (CGRect)boundingRectForTrapezoid:(const LTTrapezoid2 &)trapezoid {
