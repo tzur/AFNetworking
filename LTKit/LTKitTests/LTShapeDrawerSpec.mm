@@ -15,7 +15,7 @@
 #import "LTTexture+Factory.h"
 
 @interface LTShapeDrawer ()
-@property (strong, nonatomic) NSMutableArray *shapes;
+@property (strong, nonatomic) NSMutableArray *mutableShapes;
 @end
 
 SpecBegin(LTShapeDrawer)
@@ -63,6 +63,14 @@ context(@"properties", ^{
     drawer.opacity = newValue;
     expect(drawer.opacity).to.equal(newValue);
   });
+  
+  it(@"should return copy of shapes", ^{
+    id shape = [drawer addPathWithTranslation:CGPointZero rotation:0];
+    expect(drawer.shapes.count).to.equal(1);
+    expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
+    expect(drawer.shapes).notTo.beIdenticalTo(drawer.mutableShapes);
+    expect(drawer.shapes).notTo.beInstanceOf([NSMutableArray class]);
+  });
 });
 
 context(@"shapes", ^{
@@ -86,8 +94,8 @@ context(@"shapes", ^{
     it(@"should move to point in the last added path", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
-      [drawer.shapes addObject:firstMock];
-      [drawer.shapes addObject:secondMock];
+      [drawer.mutableShapes addObject:firstMock];
+      [drawer.mutableShapes addObject:secondMock];
       [[secondMock expect] moveToPoint:CGPointMake(1, 1)];
       [drawer moveToPoint:CGPointMake(1, 1)];
       [secondMock verify];
@@ -96,8 +104,8 @@ context(@"shapes", ^{
     it(@"should add line to point in the last added path", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
-      [drawer.shapes addObject:firstMock];
-      [drawer.shapes addObject:secondMock];
+      [drawer.mutableShapes addObject:firstMock];
+      [drawer.mutableShapes addObject:secondMock];
       [[secondMock expect] addLineToPoint:CGPointMake(1, 1)];
       [drawer addLineToPoint:CGPointMake(1, 1)];
       [secondMock verify];
@@ -117,8 +125,8 @@ context(@"shapes", ^{
     it(@"should fill triangle in the last added mesh", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerTriangularMeshShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerTriangularMeshShape class]];
-      [drawer.shapes addObject:firstMock];
-      [drawer.shapes addObject:secondMock];
+      [drawer.mutableShapes addObject:firstMock];
+      [drawer.mutableShapes addObject:secondMock];
       CGTriangle triangle = CGTriangleMake(CGPointZero, CGPointZero, CGPointZero);
       [[secondMock expect] fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
       [drawer fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
