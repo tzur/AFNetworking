@@ -227,6 +227,14 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   return zoomRect;
 }
 
+/// For some reason, whenever the view is moved to a new window an internal method of UIScrollView
+/// is called the and its gesture recognizers become enabled. Enforce that they'll stay in the state
+/// corresponding with the current mode.
+- (void)didMoveToWindow {
+  [super didMoveToWindow];
+  [self configureNavigationGesturesForCurrentMode];
+}
+
 #pragma mark -
 #pragma mark Animations
 #pragma mark -
