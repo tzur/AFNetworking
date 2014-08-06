@@ -9,6 +9,7 @@
 #import <LTKit/LTEasyBoxing.h>
 #import <LTKit/LTGLKitExtensions.h>
 #import <LTKit/LTGLUtils.h>
+#import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTLogger.h>
 #import <LTKit/LTLoggerMacrosImpl.h>
 #import <LTKit/LTOpenCVExtensions.h>
