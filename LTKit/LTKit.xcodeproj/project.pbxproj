@@ -36,6 +36,7 @@
 		0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */; };
 		0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */; };
 		0367A4B518ACF7AA00B42E34 /* LTProceduralFrame.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */; };
+		03694DD9199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png in Resources */ = {isa = PBXBuildFile; fileRef = 03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */; };
 		03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */; };
 		03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */; };
 		03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */; };
@@ -912,6 +913,7 @@
 		0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrameProcessor.mm; sourceTree = "<group>"; };
 		0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProceduralFrameProcessorSpec.mm; sourceTree = "<group>"; };
 		0367A4B318ACF5CB00B42E34 /* LTProceduralFrame.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTProceduralFrame.fsh; sourceTree = "<group>"; };
+		03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethHueChangeRedsAndBlues.png; path = Resources/MacbethHueChangeRedsAndBlues.png; sourceTree = "<group>"; };
 		03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSeparableImageProcessor.h; sourceTree = "<group>"; };
 		03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessor.mm; sourceTree = "<group>"; };
 		03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoxFilterProcessor.h; sourceTree = "<group>"; };
@@ -2282,6 +2284,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */,
 				280E40D41990C2F6008C5BD9 /* PerspectiveCompound.png */,
 				280E40D51990C2F6008C5BD9 /* PerspectiveHorizontal.png */,
 				280E40D61990C2F6008C5BD9 /* PerspectiveRotation.png */,
@@ -3433,6 +3436,7 @@
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
+				03694DD9199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
