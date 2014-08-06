@@ -59,6 +59,7 @@
 #import <LTKit/LTRGBToHSVProcessor.h>
 #import <LTKit/LTRectCopyProcessor.h>
 #import <LTKit/LTRecomposeProcessor.h>
+#import <LTKit/LTSelectiveAdjustProcessor.h>
 #import <LTKit/LTSplitComplexMat.h>
 
 // Image Processing/Utils.
