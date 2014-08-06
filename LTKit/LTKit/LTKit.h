@@ -17,6 +17,7 @@
 #import <LTKit/LTRotatedRect.h>
 #import <LTKit/LTTimer.h>
 #import <LTKit/LTTypedefs.h>
+#import <LTKit/NSString+Hashing.h>
 #import <LTKit/NSValue+GLKitExtensions.h>
 #import <LTKit/UIColor+Vector.h>
 
