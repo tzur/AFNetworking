@@ -515,6 +515,9 @@
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
 		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
 		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
+		8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA5D6A2199250240093A4FD /* NSString+Hashing.h */; };
+		8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5D6A3199250240093A4FD /* NSString+Hashing.m */; };
+		8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */; };
 		8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */; };
 		8BA82040197E55C800FBE68E /* RectRotated.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203E197E55C800FBE68E /* RectRotated.jpg */; };
 		8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203F197E55C800FBE68E /* RectUp.jpg */; };
@@ -1370,6 +1373,9 @@
 		8BA3E143182A848300FDD95A /* LTProgramSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramSpec.mm; sourceTree = "<group>"; };
 		8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLTexture.h; sourceTree = "<group>"; };
 		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
+		8BA5D6A2199250240093A4FD /* NSString+Hashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hashing.h"; sourceTree = "<group>"; };
+		8BA5D6A3199250240093A4FD /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
+		8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+HashingSpec.mm"; sourceTree = "<group>"; };
 		8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenCVExtensions.h; sourceTree = "<group>"; };
 		8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensions.mm; sourceTree = "<group>"; };
 		8BA8203E197E55C800FBE68E /* RectRotated.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = RectRotated.jpg; path = Resources/RectRotated.jpg; sourceTree = "<group>"; };
@@ -2233,6 +2239,8 @@
 				8B871F97192396BE00517F2E /* NSError+LTKit.m */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
+				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
+				8BA5D6A3199250240093A4FD /* NSString+Hashing.m */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
 				8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */,
 				8BA821B11986846900FBE68E /* NSValue+LTVector.h */,
@@ -2436,9 +2444,10 @@
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
-				8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				280C26BF1976C22E00015616 /* LTBoundedPropertiesSpec.mm */,
+				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
+				8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3116,6 +3125,7 @@
 				8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */,
 				8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */,
 				8B8720471924A76800517F2E /* LTView.h in Headers */,
+				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
 				280C26B61976BEA100015616 /* LTBoundedProperties.h in Headers */,
 				8B8720481924A76800517F2E /* LTViewDelegates.h in Headers */,
 				8B8720491924A76800517F2E /* LTViewNavigationMode.h in Headers */,
@@ -3641,6 +3651,7 @@
 				28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
+				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
 				03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */,
@@ -3795,6 +3806,7 @@
 				8BAE3A3F18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm in Sources */,
 				282AC6A91924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm in Sources */,
 				8B2DAE73184B821000F1623B /* LTGPUQueueSpec.m in Sources */,
+				8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */,
 				03CA15C81965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm in Sources */,
 				288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */,
 				8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */,
