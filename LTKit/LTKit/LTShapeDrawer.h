@@ -115,4 +115,7 @@ LTPropertyDeclare(CGFloat, opacity, Opacity);
 /// the shape queue. Newly added shapes will be added with the parameters at time of addition.
 @property (readonly, nonatomic) LTShapeDrawerParams *drawingParameters;
 
+/// Array of shapes that the shape drawer holds.
+@property (readonly, nonatomic) NSArray *shapes;
+
 @end

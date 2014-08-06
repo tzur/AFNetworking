@@ -14,7 +14,7 @@
 @property (strong, nonatomic) LTShapeDrawerParams *drawingParameters;
 
 /// Queue of shapes drawn by this drawer.
-@property (strong, nonatomic) NSMutableArray *shapes;
+@property (strong, nonatomic) NSMutableArray *mutableShapes;
 
 @end
 
@@ -33,7 +33,7 @@
 
 - (void)setup {
   self.drawingParameters = [[LTShapeDrawerParams alloc] init];
-  self.shapes = [NSMutableArray array];
+  self.mutableShapes = [NSMutableArray array];
 }
 
 #pragma mark -
@@ -47,14 +47,14 @@
 }
 
 - (void)drawInFramebufferWithSize:(CGSize)size {
-  for (id<LTDrawableShape> shape in self.shapes) {
+  for (id<LTDrawableShape> shape in self.mutableShapes) {
     shape.opacity = self.opacity;
     [shape drawInFramebufferWithSize:size];
   }
 }
 
 - (void)removeAllShapes {
-  [self.shapes removeAllObjects];
+  [self.mutableShapes removeAllObjects];
 }
 
 #pragma mark -
@@ -66,7 +66,7 @@
       [[LTShapeDrawerPathShape alloc] initWithParams:self.drawingParameters];
   shape.translation = translation;
   shape.rotationAngle = rotation;
-  [self.shapes addObject:shape];
+  [self.mutableShapes addObject:shape];
   return shape;
 }
 
@@ -91,7 +91,7 @@
       [[LTShapeDrawerTriangularMeshShape alloc] initWithParams:self.drawingParameters];
   shape.translation = translation;
   shape.rotationAngle = rotation;
-  [self.shapes addObject:shape];
+  [self.mutableShapes addObject:shape];
   return shape;
 }
 
@@ -117,7 +117,7 @@
   LTShapeDrawerEllipticShape *shape =
       [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rotatedRect filled:NO
                                                        params:self.drawingParameters];
-  [self.shapes addObject:shape];
+  [self.mutableShapes addObject:shape];
   return shape;
 }
 
@@ -132,7 +132,7 @@
   LTShapeDrawerEllipticShape *shape =
       [[LTShapeDrawerEllipticShape alloc] initWithRotatedRect:rotatedRect filled:YES
                                                        params:self.drawingParameters];
-  [self.shapes addObject:shape];
+  [self.mutableShapes addObject:shape];
   return shape;
 }
 
@@ -142,15 +142,15 @@
 
 - (void)addShape:(id)shape {
   LTParameterAssert([shape conformsToProtocol:@protocol(LTDrawableShape)]);
-  [self.shapes addObject:shape];
+  [self.mutableShapes addObject:shape];
 }
 
 - (void)removeShape:(id)shape {
-  [self.shapes removeObject:shape];
+  [self.mutableShapes removeObject:shape];
 }
 
 - (void)updateShape:(id)shape setTranslation:(CGPoint)translation {
-  if (![self.shapes containsObject:shape]) {
+  if (![self.mutableShapes containsObject:shape]) {
     return;
   }
   
@@ -159,7 +159,7 @@
 }
 
 - (void)updateShape:(id)shape setRotation:(CGFloat)angle {
-  if (![self.shapes containsObject:shape]) {
+  if (![self.mutableShapes containsObject:shape]) {
     return;
   }
   
@@ -170,9 +170,9 @@
 /// Returns the last shape of the given class that exists in the shape queue, or nil if there is no
 /// such shape.
 - (id)lastShapeOfClass:(Class)aClass {
-  for (NSInteger i = self.shapes.count - 1; i >= 0; --i) {
-    if ([self.shapes[i] isKindOfClass:aClass]) {
-      return self.shapes[i];
+  for (NSInteger i = self.mutableShapes.count - 1; i >= 0; --i) {
+    if ([self.mutableShapes[i] isKindOfClass:aClass]) {
+      return self.mutableShapes[i];
     }
   }
   return nil;
@@ -183,5 +183,9 @@
 #pragma mark -
 
 LTProperty(CGFloat, opacity, Opacity, 0, 1, 1);
+
+- (NSArray *)shapes {
+  return [self.mutableShapes copy];
+}
 
 @end
