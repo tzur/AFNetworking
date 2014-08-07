@@ -43,15 +43,16 @@ context(@"properties", ^{
   
   it(@"should return default vignetting properties correctly", ^{
     expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
-    expect(processor.vignettingSpread).to.equal(0);
-    expect(processor.vignettingCorner).to.equal(2);
-    expect(processor.vignettingNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
-    expect(processor.vignettingNoiseAmplitude).to.equal(0);
-    expect(processor.vignettingOpacity).to.equal(0);
+    expect(processor.vignetteSpread).to.equal(0);
+    expect(processor.vignetteCorner).to.equal(2);
+    expect(processor.vignetteNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.vignetteNoiseAmplitude).to.equal(0);
+    expect(processor.vignetteOpacity).to.equal(0);
   });
   
-  it(@"should return default color gradient as identity and its alpha as zero.", ^{
+  it(@"should return default color gradient settings.", ^{
     expect(processor.colorGradientAlpha).to.equal(0);
+    expect(processor.blendMode).to.equal(LTAnalogBlendModeNormal);
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
     expect(LTFuzzyCompareMat(processor.colorGradientTexture.image,
@@ -61,7 +62,7 @@ context(@"properties", ^{
   it(@"should return default noise of grain and vignetting as constant 0.5", ^{
     cv::Mat4b deafultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
     expect(LTFuzzyCompareMat(processor.grainTexture.image, deafultNoise)).to.beTruthy();
-    expect(LTFuzzyCompareMat(processor.vignettingNoise.image, deafultNoise)).to.beTruthy();
+    expect(LTFuzzyCompareMat(processor.vignetteNoise.image, deafultNoise)).to.beTruthy();
   });
   
   it(@"should not fail on correct tone input", ^{
@@ -77,12 +78,12 @@ context(@"properties", ^{
   
   it(@"should not fail on correct vignette input", ^{
     expect(^{
-      processor.vignettingNoise = input;
+      processor.vignetteNoise = input;
       processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
-      processor.vignettingSpread = 15.0;
-      processor.vignettingCorner = 2.0;
-      processor.vignettingNoiseAmplitude = 0.15;
-      processor.vignettingNoiseChannelMixer = GLKVector3Make(1.0, 0.2, 0.4);
+      processor.vignetteSpread = 15.0;
+      processor.vignetteCorner = 2.0;
+      processor.vignetteNoiseAmplitude = 0.15;
+      processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.2, 0.4);
     }).toNot.raiseAny();
   });
   
@@ -90,8 +91,83 @@ context(@"properties", ^{
     expect(^{
       processor.grainTexture = input;
       processor.grainAmplitude = 0.8;
-      processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 2.0);
+      processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 0.9);
     }).toNot.raiseAny();
+  });
+});
+
+context(@"blending modes", ^{
+  beforeEach(^{
+    cv::Mat4b inputMat(1, 1, cv::Vec4b(64, 64, 64, 255));
+    input = [LTTexture textureWithImage:inputMat];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTAnalogFilmProcessor alloc] initWithInput:input output:output];
+    processor.colorGradientTexture =
+        [[LTColorGradient identityGradient] textureWithSamplingPoints:256];
+    processor.colorGradientAlpha = 1.0;
+  });
+  
+  it(@"should process with normal blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTAnalogBlendModeNormal;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with darken blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTAnalogBlendModeDarken;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with multiply blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(16, 16, 16, 255));
+    processor.blendMode = LTAnalogBlendModeMultiply;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with hard light blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(32, 32, 32, 255));
+    processor.blendMode = LTAnalogBlendModeHardLight;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with soft light blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(40, 40, 40, 255));
+    processor.blendMode = LTAnalogBlendModeSoftLight;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with lighten blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTAnalogBlendModeLighten;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with screen blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(112, 112, 112, 255));
+    processor.blendMode = LTAnalogBlendModeScreen;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with color burn blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 0, 255));
+    processor.blendMode = LTAnalogBlendModeColorBurn;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with overlay blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(33, 33, 33, 255));
+    processor.blendMode = LTAnalogBlendModeOverlay;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
   });
 });
 
@@ -202,17 +278,17 @@ context(@"processing", ^{
     processor.structure = -0.1;
     // Vignetting.
     processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
-    processor.vignettingSpread = 45.0;
-    processor.vignettingCorner = 6.0;
-    processor.vignettingOpacity = 0.25;
+    processor.vignetteSpread = 45.0;
+    processor.vignetteCorner = 6.0;
+    processor.vignetteOpacity = 0.25;
     // Grain.
     processor.grainTexture = noise;
-    processor.grainAmplitude = 0.5;
+    processor.grainAmplitude = 0.25;
     processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 0.5);
     // Color gradient.
     processor.colorGradientTexture =
         [[LTColorGradient magentaYellowGradient] textureWithSamplingPoints:256];
-    processor.colorGradientAlpha = 0.55;
+    processor.colorGradientAlpha = 0.275;
     
     [processor process];
     
