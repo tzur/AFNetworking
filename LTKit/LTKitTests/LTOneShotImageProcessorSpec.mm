@@ -3,6 +3,7 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
@@ -21,14 +22,12 @@ __block LTProgram *program;
 static NSString * const kAuxiliaryTextureName = @"auxTexture";
 
 beforeEach(^{
-  input = [LTTexture textureWithSize:CGSizeMake(1, 1)
+  input = [LTTexture textureWithSize:CGSizeMake(16, 16)
                            precision:LTTexturePrecisionByte
                               format:LTTextureFormatRGBA
                       allocateMemory:YES];
 
-  cv::Mat image = cv::Mat4b(1, 1);
-  image.setTo(cv::Vec4b(16, 0, 0, 255));
-  auxTexture = [LTTexture textureWithImage:image];
+  auxTexture = [LTTexture textureWithImage:cv::Mat4b(16, 16, cv::Vec4b(16, 0, 0, 255))];
 
   output = [LTTexture textureWithPropertiesOf:input];
 
@@ -68,37 +67,91 @@ context(@"processing", ^{
   __block LTOneShotImageProcessor *processor;
 
   beforeEach(^{
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:input];
-    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [input clearWithColor:GLKVector4Make(0, 0, 0, 1)];
 
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
     processor = [[LTOneShotImageProcessor alloc]
                  initWithProgram:program sourceTexture:input
                  auxiliaryTextures:auxiliaryTextures
                  andOutput:output];
+
+    processor[@"value"] = @0.5;
   });
 
   afterEach(^{
     processor = nil;
   });
 
-  it(@"should produce correct output", ^{
-    processor[@"value"] = @0.5;
+  context(@"full rect processing", ^{
+    it(@"should produce correct output", ^{
+      [processor process];
 
-    [processor process];
+      cv::Scalar expected(144, 128, 128, 255);
+      expect($([output image])).to.beCloseToScalar($(expected));
+    });
 
-    cv::Scalar expected(144, 128, 128, 255);
-    expect(LTFuzzyCompareMatWithValue(expected, [output image])).to.beTruthy();
+    it(@"should produce correct output twice", ^{
+      [processor process];
+      [processor process];
+
+      cv::Scalar expected(144, 128, 128, 255);
+      expect($([output image])).to.beCloseToScalar($(expected));
+    });
+
   });
 
-  it(@"should produce correct output twice", ^{
-    processor[@"value"] = @0.5;
+  context(@"subrect processing", ^{
+    beforeEach(^{
+      [output clearWithColor:GLKVector4Make(0, 0, 0, 1)];
 
-    [processor process];
-    [processor process];
+      cv::Mat4b image(16, 16, cv::Vec4b(16, 0, 0, 255));
+      image(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(0, 16, 0, 255));
+      [auxTexture load:image];
+    });
 
-    cv::Scalar expected(144, 128, 128, 255);
-    expect(LTFuzzyCompareMatWithValue(expected, [output image])).to.beTruthy();
+    it(@"should process entire rect of output", ^{
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(output.size)];
+      }];
+
+      cv::Mat4b expected(16, 16, cv::Vec4b(144, 128, 128, 255));
+      expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(128, 144, 128, 255));
+
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
+
+    it(@"should process subrect of the output", ^{
+      input.magFilterInterpolation = LTTextureInterpolationNearest;
+      auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
+
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:CGRectMake(7, 7, 4, 4)];
+      }];
+
+      cv::Mat4b expected(16, 16, cv::Vec4b(144, 128, 128, 255));
+      expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(128, 144, 128, 255));
+
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
+
+    it(@"should process subrect when output is of different size", ^{
+      input.magFilterInterpolation = LTTextureInterpolationNearest;
+      auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
+
+      LTTexture *fboTexture = [LTTexture byteRGBATextureWithSize:input.size / 2];
+      [fboTexture clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:fboTexture];
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:CGRectMake(6, 6, 4, 4)];
+      }];
+
+      cv::Mat4b expected(8, 8, cv::Vec4b(144, 128, 128, 255));
+      expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(128, 144, 128, 255));
+
+      expect($([fboTexture image])).to.beCloseToMat($(expected));
+    });
   });
 });
 

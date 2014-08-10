@@ -6,7 +6,7 @@
 /// @class LTOneShotImageProcessor
 ///
 /// Processes a single image input with a single processing iteration, and returns a single output.
-@interface LTOneShotImageProcessor : LTGPUImageProcessor
+@interface LTOneShotImageProcessor : LTGPUImageProcessor <LTSubimageProcessing>
 
 /// Initializes with a program, a single input texture and a single output texture.
 - (instancetype)initWithProgram:(LTProgram *)program input:(LTTexture *)input
