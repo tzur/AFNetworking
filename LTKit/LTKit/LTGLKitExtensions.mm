@@ -15,6 +15,8 @@ const GLKVector3 GLKVector3One = {{1, 1, 1}};
 
 const GLKVector2 GLKVector2One = {{1, 1}};
 
+const GLKMatrix2 GLKMatrix2Identity = {{1, 0, 0, 1}};
+
 GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target) {
   if (source == target) {
     return GLKVector3Zero;
