@@ -26,6 +26,10 @@ context(@"LTVector2", ^{
     LTVector2 v5(GLKVector2Make(7, 8));
     expect(v5.x).to.equal(7);
     expect(v5.y).to.equal(8);
+    
+    LTVector2 v6(9);
+    expect(v6.x).to.equal(9);
+    expect(v6.y).to.equal(9);
   });
 
   it(@"should cast to GLKVector2", ^{
