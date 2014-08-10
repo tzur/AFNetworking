@@ -144,6 +144,8 @@
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.renderingToScreen = renderingToScreen;
+    // New framebuffer is attached, there's no point of keeping the previous scissor tests.
+    context.scissorTestEnabled = NO;
     block();
   }];
 }
@@ -196,5 +198,12 @@
   return self.texture.size;
 }
 
+#pragma mark -
+#pragma mark Debugging
+#pragma mark -
+
+- (id)debugQuickLookObject {
+  return [self.texture performSelector:@selector(debugQuickLookObject)];
+}
 
 @end
