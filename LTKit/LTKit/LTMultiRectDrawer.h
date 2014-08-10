@@ -3,12 +3,20 @@
 
 #import "LTTextureDrawer.h"
 
+@class LTFbo;
+
 /// @protocol LTMultiRectDrawer
 ///
 /// Protocol for drawing rectangular regions from a source texture into a rectangular region
 /// of a target framebuffer, with additional draw methods for drawing an array of rotated rectangles
 /// to a bound framebuffer or screenbuffer.
-@protocol LTMultiRectDrawer <LTProcessingDrawer>
+@protocol LTMultiRectDrawer <NSObject>
+
+/// @see \c drawRect:inFramebuffer:fromRect:, but with \c NSArray of \c LTRotatedRects as arguments.
+///
+/// @note \c targetRects and \c sourceRects must have the same number of elements.
+- (void)drawRotatedRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+        fromRotatedRects:(NSArray *)sourceRects;
 
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target

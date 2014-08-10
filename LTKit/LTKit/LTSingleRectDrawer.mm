@@ -118,7 +118,7 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
     GLKMatrix4 modelview = LTMatrix4ForRect(targetRect);
     self.program[@"modelview"] = $(modelview);
     
-    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kLTSourceTextureUniform] size];
     GLKMatrix3 texture = LTTextureMatrix3ForRect(sourceRect, textureSize);
     self.program[@"texture"] = $(texture);
     
@@ -143,7 +143,7 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
     GLKMatrix4 modelview = LTMatrix4ForRotatedRect(targetRect);
     self.program[@"modelview"] = $(modelview);
     
-    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+    CGSize textureSize = [(LTTexture *)self.uniformToTexture[kLTSourceTextureUniform] size];
     GLKMatrix3 texture = LTTextureMatrix3ForRotatedRect(sourceRect, textureSize);
     self.program[@"texture"] = $(texture);
     

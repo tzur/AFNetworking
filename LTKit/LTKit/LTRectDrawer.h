@@ -7,12 +7,10 @@
 
 @class LTRotatedRect;
 
-/// @class LTRectDrawer
-///
 /// Class for drawing rectangular regions from a source texture into a rectangular region of a
 /// target framebuffer, optimzied for drawing both singe rects and an array of rects (using the
 /// \c LTSingleRectDrawer and \c LTMultiRectDrawer classes.
-@interface LTRectDrawer : NSObject <LTProcessingDrawer, LTMultiRectDrawer, LTSingleRectDrawer>
+@interface LTRectDrawer : NSObject <LTProcessingDrawer>
 
 /// Sets the underlying program's uniform value. Given uniform name cannot be {\c projection, \c
 /// modelview, \c texture}.

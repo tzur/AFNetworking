@@ -3,12 +3,21 @@
 
 #import "LTTextureDrawer.h"
 
+@class LTFbo, LTRotatedRect;
+
 /// @protocol LTSingleRectDrawer
 ///
 /// Protocol for drawing rectangular regions from a source texture into a rectangular region
 /// of a target framebuffer, with additional draw methods for drawing a single rotated rectangle
 /// or an axis-aligned one to a bound framebuffer or screenbuffer.
-@protocol LTSingleRectDrawer <LTProcessingDrawer>
+@protocol LTSingleRectDrawer <NSObject>
+
+/// Draws the \c sourceRect region in the source texture into the \c targetRect region in the given
+/// framebuffer. The rects are defined in the source and target coordinate systems accordingly, in
+/// pixels.
+///
+/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
 
 /// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target
@@ -20,6 +29,10 @@
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
 - (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect;
+
+/// @see \c drawRect:inFramebuffer:fromRect:, but with \c LTRotatedRects as arguments.
+- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
+        fromRotatedRect:(LTRotatedRect *)sourceRect;
 
 /// @see {drawRect:inFramebufferWithSize:fromRect:}, but with \c LTRotatedRects as arguments.
 - (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebufferWithSize:(CGSize)size
