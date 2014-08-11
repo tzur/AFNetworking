@@ -54,7 +54,7 @@ LTPropertyDeclare(GLKVector4, blueColor, BlueColor);
 @property (nonatomic) GLKVector4 redColor;
 LTPropertyDeclare(GLKVector4, redColor, RedColor);
 
-/// Opacity of the result wrt input texture.
+/// Opacity of the result wrt input texture. Should be in [0, 1] range. Default value is 1.
 @property (nonatomic) CGFloat opacity;
 LTPropertyDeclare(CGFloat, opacity, Opacity);
 
