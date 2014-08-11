@@ -87,6 +87,7 @@
 #import <LTKit/LTGPUQueue.h>
 #import <LTKit/LTMMTexture.h>
 #import <LTKit/LTProgram.h>
+#import <LTKit/LTProgramFactory.h>
 #import <LTKit/LTShader.h>
 #import <LTKit/LTTexture.h>
 #import <LTKit/LTTexture+Factory.h>
