@@ -33,18 +33,14 @@ static const CGFloat kMaskDownscalingFactor = 2;
   LTTexture *dualMaskTexture = [LTTexture byteRedTextureWithSize:maskSize];
   self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
   
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:@{[LTDuoFsh dualMaskTexture]: dualMaskTexture}
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTDuoFsh source] sourceTexture:input
+                       auxiliaryTextures:@{[LTDuoFsh dualMaskTexture]: dualMaskTexture}
+                               andOutput:output]) {
     [self setDefaultValues];
     self.needsDualMaskProcessing = YES;
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTDuoFsh source]];
 }
 
 - (void)process {

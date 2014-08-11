@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotProcessingStrategy.h"
+#import "LTProgramFactory.h"
 #import "LTRectDrawer.h"
 
 @interface LTGPUImageProcessor ()
@@ -25,21 +26,39 @@
 
 @implementation LTOneShotImageProcessor
 
-- (instancetype)initWithProgram:(LTProgram *)program input:(LTTexture *)input
-                      andOutput:(LTTexture *)output {
-  return [self initWithProgram:program sourceTexture:input auxiliaryTextures:nil andOutput:output];
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource
+                               input:(LTTexture *)input andOutput:(LTTexture *)output {
+  return [self initWithVertexSource:vertexSource fragmentSource:fragmentSource
+                      sourceTexture:input auxiliaryTextures:nil andOutput:output];
 }
 
-- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
-              auxiliaryTextures:(NSDictionary *)auxiliaryTextures andOutput:(LTTexture *)output {
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource
+                       sourceTexture:(LTTexture *)sourceTexture
+                   auxiliaryTextures:(NSDictionary *)auxiliaryTextures
+                           andOutput:(LTTexture *)output {
   self.inputTexture = sourceTexture;
   self.outputTexture = output;
 
   LTOneShotProcessingStrategy *strategy = [[LTOneShotProcessingStrategy alloc]
                                            initWithInput:sourceTexture andOutput:output];
+  LTProgram *program = [[[self class] programFactory] programWithVertexSource:vertexSource
+                                                               fragmentSource:fragmentSource];
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program
                                                      sourceTexture:sourceTexture];
   return [super initWithDrawer:rectDrawer strategy:strategy andAuxiliaryTextures:auxiliaryTextures];
+}
+
++ (id<LTProgramFactory>)programFactory {
+  static id<LTProgramFactory> factory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    factory = [[LTBasicProgramFactory alloc] init];
+  });
+
+  return factory;
 }
 
 - (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {

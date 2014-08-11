@@ -21,10 +21,9 @@
 @implementation LTPatchBoundaryProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program =
-      [[LTProgram alloc] initWithVertexSource:[LTPatchBoundaryVsh source]
-                               fragmentSource:[LTPatchBoundaryFsh source]];
-  if (self = [super initWithProgram:program input:input andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPatchBoundaryVsh source]
+                          fragmentSource:[LTPatchBoundaryFsh source]
+                                   input:input andOutput:output]) {
     self.input = input;
     self.output = output;
     self.texelOffset = GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height);

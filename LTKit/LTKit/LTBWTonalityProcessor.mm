@@ -26,8 +26,6 @@
 @implementation LTBWTonalityProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[LTBWTonalityFsh source]];
   LTTexture *smoothTexture = [self createSmoothTexture:input];
   // Default color gradient.
   LTColorGradient *identityGradient = [LTColorGradient identityGradient];
@@ -36,8 +34,10 @@
       @{[LTBWTonalityFsh smoothTexture]: smoothTexture,
         [LTBWTonalityFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
         [LTBWTonalityFsh colorGradient]: [identityGradient textureWithSamplingPoints:256]};
-  if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTBWTonalityFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
@@ -61,9 +61,8 @@
 
   CGSize size = std::floor(CGSizeMake(width, height));
   LTTexture *smoothTexture = [LTTexture byteRGBATextureWithSize:size];
-  
-   LTBilateralFilterProcessor *smoother = [[LTBilateralFilterProcessor alloc] initWithInput:input
-                                                                       outputs:@[smoothTexture]];
+  LTBilateralFilterProcessor *smoother = [[LTBilateralFilterProcessor alloc]
+                                          initWithInput:input outputs:@[smoothTexture]];
   smoother.rangeSigma = 0.15;
   smoother.iterationsPerOutput = @[@5];
   [smoother process];

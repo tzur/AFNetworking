@@ -40,8 +40,6 @@ static const CGFloat kTintScaling = 0.3;
 static const CGFloat kDetailsScaling = 2.0;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[LTAdjustFsh source]];
   // TODO:(zeev) Since smooth textures are used for luminance only, it make sense to build a
   // smoother that can leverage that by intermediate results into different RGBA channels. This will
   // reduce the sampling overhead in shaders and YIQ conversion computation.
@@ -51,8 +49,10 @@ static const CGFloat kDetailsScaling = 2.0;
         [LTAdjustFsh coarseTexture]: smoothTextures[1],
         [LTAdjustFsh detailsLUT]: [LTTexture textureWithImage:[LTCurve identity]],
         [LTAdjustFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]]};
-  if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTAdjustFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
     [self setDefaultValues];
   }
   return self;

@@ -49,9 +49,10 @@
                         mask:(LTTexture *)mask output:(LTTexture *)output {
   LTParameterAssert(front.size == mask.size, @"Front size (%g, %g) must equal mask size (%g, %g)",
                     front.size.width, front.size.height, mask.size.width, mask.size.height);
-  if (self = [super initWithProgram:[self createMixerProgram] sourceTexture:front
-                  auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask}
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTMixerVsh source]
+                          fragmentSource:[LTMixerFsh source] sourceTexture:front
+                       auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask}
+                               andOutput:output]) {
     self.front = front;
     self.backCopyProcessor = [self createBackCopyProcessorWithInput:back output:output];
     [self setDefaultValues];
@@ -66,11 +67,6 @@
   self.frontScaling = 1;
   self.frontRotation = 0;
   self.frontOpacity = self.defaultFrontOpacity;
-}
-
-- (LTProgram *)createMixerProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTMixerVsh source]
-                                  fragmentSource:[LTMixerFsh source]];
 }
 
 - (LTRectCopyProcessor *)createBackCopyProcessorWithInput:(LTTexture *)input

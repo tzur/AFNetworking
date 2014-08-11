@@ -32,9 +32,8 @@
 @implementation LTRectCopyProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[LTRectCopyFsh source]];
-  if (self = [super initWithProgram:program input:input andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTRectCopyFsh source] input:input andOutput:output]) {
     self.input = input;
     self.output = output;
     [self setDefaultValues];

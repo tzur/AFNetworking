@@ -12,15 +12,13 @@
 
 @implementation LTProceduralVignetting
 
-- (instancetype)initWithOutput:(LTTexture *)output {
-  LTProgram *program =
-      [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                               fragmentSource:[LTProceduralVignettingFsh source]];
-  
+- (instancetype)initWithOutput:(LTTexture *)output { 
   LTTexture *defaultNoise = [self createNeutralNoise];
   NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
   
-  if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTProceduralVignettingFsh source] sourceTexture:output
+                       auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
     [self setDefaultValues];
     [self precomputeDistanceShift:output.size];

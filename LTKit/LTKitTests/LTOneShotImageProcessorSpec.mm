@@ -17,7 +17,6 @@ SpecGLBegin(LTOneShotImageProcessor)
 __block LTTexture *input;
 __block LTTexture *auxTexture;
 __block LTTexture *output;
-__block LTProgram *program;
 
 static NSString * const kAuxiliaryTextureName = @"auxTexture";
 
@@ -30,24 +29,20 @@ beforeEach(^{
   auxTexture = [LTTexture textureWithImage:cv::Mat4b(16, 16, cv::Vec4b(16, 0, 0, 255))];
 
   output = [LTTexture textureWithPropertiesOf:input];
-
-  program = [[LTProgram alloc]
-             initWithVertexSource:[PassthroughVsh source]
-             fragmentSource:[AdderFsh source]];
 });
 
 afterEach(^{
   input = nil;
   output = nil;
   auxTexture = nil;
-  program = nil;
 });
 
 context(@"intialization", ^{
   it(@"should initialize with no auxiliary textures", ^{
     expect(^{
       __unused LTOneShotImageProcessor *processor = [[LTOneShotImageProcessor alloc]
-                                                     initWithProgram:program input:input
+                                                     initWithVertexSource:[PassthroughVsh source]
+                                                     fragmentSource:[AdderFsh source] input:input
                                                      andOutput:output];
     }).toNot.raiseAny();
   });
@@ -56,7 +51,9 @@ context(@"intialization", ^{
     expect(^{
       NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
       __unused LTOneShotImageProcessor *processor = [[LTOneShotImageProcessor alloc]
-                                                     initWithProgram:program sourceTexture:input
+                                                     initWithVertexSource:[PassthroughVsh source]
+                                                     fragmentSource:[AdderFsh source]
+                                                     sourceTexture:input
                                                      auxiliaryTextures:auxiliaryTextures
                                                      andOutput:output];
     }).toNot.raiseAny();
@@ -71,7 +68,8 @@ context(@"processing", ^{
 
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
     processor = [[LTOneShotImageProcessor alloc]
-                 initWithProgram:program sourceTexture:input
+                 initWithVertexSource:[PassthroughVsh source]
+                 fragmentSource:[AdderFsh source] sourceTexture:input
                  auxiliaryTextures:auxiliaryTextures
                  andOutput:output];
 

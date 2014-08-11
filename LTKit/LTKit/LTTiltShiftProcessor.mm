@@ -40,8 +40,9 @@ static const CGFloat kMaskScalingFactor = 4.0;
       @{[LTTiltShiftFsh fineTexture]: smoothTextures[0],
         [LTTiltShiftFsh coarseTexture]: smoothTextures[1],
         [LTTiltShiftFsh dualMaskTexture]: dualMaskTexture};
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTTiltShiftFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
@@ -51,11 +52,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
   CGSize maskSize = CGSizeMake(MAX(1, std::round(output.size.width / kMaskScalingFactor)),
                                MAX(1, std::round(output.size.height / kMaskScalingFactor)));
   return [LTTexture byteRedTextureWithSize:maskSize];
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTTiltShiftFsh source]];
 }
 
 - (void)initializeSubProcessor {

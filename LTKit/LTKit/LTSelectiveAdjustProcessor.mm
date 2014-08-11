@@ -14,23 +14,20 @@
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   NSDictionary *auxiliaryTextures = [self prepareAuxiliaryTexturesForInput:input output:output];
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTSelectiveAdjustFsh source]
+                           sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTSelectiveAdjustFsh source]];
 }
 
 - (NSDictionary *)prepareAuxiliaryTexturesForInput:(LTTexture *)input output:(LTTexture *)output {
   LTTexture *hsv = [LTTexture textureWithPropertiesOf:output];
   LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:input output:hsv];
   [processor process];
-  
+
   NSDictionary *auxiliaryTextures = @{[LTSelectiveAdjustFsh hsvTexture]: hsv};
   return auxiliaryTextures;
 }

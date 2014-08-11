@@ -48,8 +48,6 @@ static const CGFloat kDefaultVignettingSpread = 0;
 static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTAnalogFilmVsh source]
-                                                fragmentSource:[LTAnalogFilmFsh source]];
   // Setup vignetting.
   LTTexture *vignetteTexture = [self createVignettingTextureWithSize:input.size];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
@@ -61,8 +59,10 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
         [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:kLutSize],
         [LTAnalogFilmFsh grainTexture]: self.grainTexture,
         [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
-  if (self = [super initWithProgram:program sourceTexture:input auxiliaryTextures:auxiliaryTextures
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTAnalogFilmVsh source]
+                          fragmentSource:[LTAnalogFilmFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
     [self setDefaultValues];
     _subProcessorInitialized = NO;
   }

@@ -16,11 +16,11 @@
                               output:(LTTexture *)output {
   LTParameterAssert(first.size == second.size, @"Operand textures must be of the same size");
 
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[LTArithmeticFsh source]];
   NSDictionary *auxiliaryTextures = @{[LTArithmeticFsh secondTexture]: second};
-  return [super initWithProgram:program sourceTexture:first auxiliaryTextures:auxiliaryTextures
-                      andOutput:output];
+  return [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                      fragmentSource:[LTArithmeticFsh source]
+                       sourceTexture:first auxiliaryTextures:auxiliaryTextures
+                           andOutput:output];
 }
 
 - (void)setOperation:(LTArithmeticOperation)operation {

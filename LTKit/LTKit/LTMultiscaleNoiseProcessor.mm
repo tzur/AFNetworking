@@ -12,18 +12,15 @@
 @implementation LTMultiscaleNoiseProcessor
 
 - (instancetype)initWithOutput:(LTTexture *)output {
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:output auxiliaryTextures:nil
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTMultiscaleNoiseFsh source] sourceTexture:output
+                       auxiliaryTextures:nil
+                               andOutput:output]) {
     self.seed = 0.0;
     self.density = 2.0;
     self[@"directionality"] = @(output.size.width / output.size.height);
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTMultiscaleNoiseFsh source]];
 }
 
 - (void)setSeed:(CGFloat)seed {

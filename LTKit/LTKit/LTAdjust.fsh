@@ -59,12 +59,12 @@ void main() {
   // Color: saturation, temperature and tint.
   yiq.g = clamp((yiq.g + temperature) * saturation, -kIMax, kIMax);
   yiq.b = clamp((yiq.b + tint) * saturation, -kQMax, kQMax);
-  color.rgb = YIQtoRGB * yiq;
+  mediump vec4 outputColor = vec4(YIQtoRGB * yiq, color.a);
   
   // Tone, Levels and Curves.
-  color.r = texture2D(toneLUT, vec2(color.r, 0.0)).r;
-  color.g = texture2D(toneLUT, vec2(color.g, 0.0)).g;
-  color.b = texture2D(toneLUT, vec2(color.b, 0.0)).b;
+  outputColor.r = texture2D(toneLUT, vec2(outputColor.r, 0.0)).r;
+  outputColor.g = texture2D(toneLUT, vec2(outputColor.g, 0.0)).g;
+  outputColor.b = texture2D(toneLUT, vec2(outputColor.b, 0.0)).b;
   
-  gl_FragColor = color;
+  gl_FragColor = outputColor;
 }

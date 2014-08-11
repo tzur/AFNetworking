@@ -25,9 +25,8 @@ typedef NS_ENUM(NSUInteger, LTEdgesMode) {
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTParameterAssert(output.format == LTTextureFormatRed || output.format == LTTextureFormatRGBA);
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTEdgesMaskVsh source]
-                                                fragmentSource:[LTEdgesMaskFsh source]];
-  if (self = [super initWithProgram:program input:input andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTEdgesMaskVsh source]
+                          fragmentSource:[LTEdgesMaskFsh source] input:input andOutput:output]) {
     self[[LTEdgesMaskVsh texelOffset]] = $(GLKVector2Make(1.0 / input.size.width,
                                                           1.0 / input.size.height));
     self[[LTEdgesMaskFsh edgesMode]] =
