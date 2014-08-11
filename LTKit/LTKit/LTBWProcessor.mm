@@ -56,8 +56,6 @@
 @synthesize grainTexture = _grainTexture;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTBWProcessorVsh source]
-                                                fragmentSource:[LTBWProcessorFsh source]];
   // Setup tonality.
   LTTexture *toneTexture = [LTTexture textureWithPropertiesOf:output];
   self.toneProcessor = [[LTBWTonalityProcessor alloc] initWithInput:input output:toneTexture];
@@ -79,8 +77,9 @@
         [LTBWProcessorFsh vignettingTexture]: vignetteTexture,
         [LTBWProcessorFsh outerFrameTexture]: outerFrameTexture,
         [LTBWProcessorFsh innerFrameTexture]: innerFrameTexture};
-  if (self = [super initWithProgram:program sourceTexture:toneTexture
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTBWProcessorVsh source]
+                          fragmentSource:[LTBWProcessorFsh source] sourceTexture:toneTexture
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
     [self setNeedsSubProcessing];
   }

@@ -38,6 +38,7 @@
 #import <LTKit/LTOneShotImageProcessor.h>
 #import <LTKit/LTPainterImageProcessor.h>
 #import <LTKit/LTProgressiveImageProcessor.h>
+#import <LTKit/LTSubimageProcessing.h>
 
 // Image Processing/Blocks.
 #import <LTKit/LTAdjustProcessor.h>
@@ -86,6 +87,7 @@
 #import <LTKit/LTGPUQueue.h>
 #import <LTKit/LTMMTexture.h>
 #import <LTKit/LTProgram.h>
+#import <LTKit/LTProgramFactory.h>
 #import <LTKit/LTShader.h>
 #import <LTKit/LTTexture.h>
 #import <LTKit/LTTexture+Factory.h>

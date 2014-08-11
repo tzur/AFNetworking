@@ -5,6 +5,7 @@
 
 #import "LTProgram.h"
 #import "LTDualMaskProcessor.h"
+#import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -14,41 +15,49 @@
 
 @interface LTDuoProcessor ()
 
-@property (nonatomic) BOOL subProcessorInitialized;
+/// \c YES if dual mask needs processing prior to executing this processor.
+@property (nonatomic) BOOL needsDualMaskProcessing;
+
+/// Internal dual mask processor.
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
 
 @end
 
 @implementation LTDuoProcessor
 
+static const CGFloat kMaskDownscalingFactor = 2;
+
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   // Setup dual mask.
-  LTTexture *dualMaskTexture = [LTTexture textureWithPropertiesOf:output];
+  CGSize maskSize = std::ceil(output.size / kMaskDownscalingFactor);
+  LTTexture *dualMaskTexture = [LTTexture byteRedTextureWithSize:maskSize];
   self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
   
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:@{[LTDuoFsh dualMaskTexture]: dualMaskTexture}
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTDuoFsh source] sourceTexture:input
+                       auxiliaryTextures:@{[LTDuoFsh dualMaskTexture]: dualMaskTexture}
+                               andOutput:output]) {
     [self setDefaultValues];
+    self.needsDualMaskProcessing = YES;
   }
   return self;
 }
 
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTDuoFsh source]];
-}
-
-- (void)initializeSubProcessors {
-  [self.dualMaskProcessor process];
-  self.subProcessorInitialized = YES;
-}
-
 - (void)process {
-  if (!self.subProcessorInitialized) {
-    [self initializeSubProcessors];
-  }
+  [self processSubProcessors];
   return [super process];
+}
+
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self processSubProcessors];
+  [super processToFramebufferWithSize:size outputRect:rect];
+}
+
+- (void)processSubProcessors {
+  if (self.needsDualMaskProcessing) {
+    [self.dualMaskProcessor process];
+    self.needsDualMaskProcessing = NO;
+  }
 }
 
 - (void)setDefaultValues {
@@ -63,7 +72,7 @@
 
 - (void)setMaskType:(LTDualMaskType)maskType {
   self.dualMaskProcessor.maskType = maskType;
-  [self.dualMaskProcessor process];
+  self.needsDualMaskProcessing = YES;
 }
 
 - (LTDualMaskType)maskType {
@@ -71,26 +80,26 @@
 }
 
 - (void)setCenter:(GLKVector2)center {
-  self.dualMaskProcessor.center = center;
-  [self.dualMaskProcessor process];
+  self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
+  self.needsDualMaskProcessing = YES;
 }
 
 - (GLKVector2)center {
-  return self.dualMaskProcessor.center;
+  return self.dualMaskProcessor.center * kMaskDownscalingFactor;
 }
 
 - (void)setDiameter:(CGFloat)diameter {
-  self.dualMaskProcessor.diameter = diameter;
-  [self.dualMaskProcessor process];
+  self.dualMaskProcessor.diameter = diameter / kMaskDownscalingFactor;
+  self.needsDualMaskProcessing = YES;
 }
 
 - (CGFloat)diameter {
-  return self.dualMaskProcessor.diameter;
+  return self.dualMaskProcessor.diameter * kMaskDownscalingFactor;
 }
 
 - (void)setSpread:(CGFloat)spread {
   self.dualMaskProcessor.spread = spread;
-  [self.dualMaskProcessor process];
+  self.needsDualMaskProcessing = YES;
 }
 
 - (CGFloat)spread {
@@ -99,7 +108,7 @@
 
 - (void)setAngle:(CGFloat)angle {
   self.dualMaskProcessor.angle = angle;
-  [self.dualMaskProcessor process];
+  self.needsDualMaskProcessing = YES;
 }
 
 - (CGFloat)angle {

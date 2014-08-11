@@ -16,12 +16,11 @@
   LTParameterAssert(first.size == second.size && second.size == mask.size,
                     @"Operands and mask textures must be of the same size");
 
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                fragmentSource:[LTMaskedArithmeticFsh source]];
   NSDictionary *auxiliaryTextures = @{[LTMaskedArithmeticFsh firstTexture]: first,
                                       [LTMaskedArithmeticFsh secondTexture]: second};
-  return [super initWithProgram:program sourceTexture:mask auxiliaryTextures:auxiliaryTextures
-                      andOutput:output];
+  return [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                      fragmentSource:[LTMaskedArithmeticFsh source] sourceTexture:mask
+                   auxiliaryTextures:auxiliaryTextures andOutput:output];
 }
 
 @end

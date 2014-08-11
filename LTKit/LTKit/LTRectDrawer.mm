@@ -3,17 +3,11 @@
 
 #import "LTRectDrawer.h"
 
-#import "LTArrayBuffer.h"
 #import "LTCGExtensions.h"
-#import "LTDrawingContext.h"
 #import "LTFbo.h"
-#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
-#import "LTGPUStruct.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
-#import "LTTexture.h"
-#import "LTVertexArray.h"
 
 #import "LTMultiRectDrawer.h"
 #import "LTSingleRectDrawer.h"
@@ -25,6 +19,7 @@
 
 /// Drawer used for drawing multiple rectangles in a single call.
 @property (strong, nonatomic) LTMultiRectDrawer *multiRectDrawer;
+
 /// Drawer used for drawing single rectangles.
 @property (strong, nonatomic) LTSingleRectDrawer *singleRectDrawer;
 
@@ -127,6 +122,11 @@
 
 - (id)uniformForName:(NSString *)name {
   return self.program[name];
+}
+
+- (NSSet *)mandatoryUniforms {
+  return [self.singleRectDrawer.mandatoryUniforms
+          setByAddingObjectsFromSet:self.multiRectDrawer.mandatoryUniforms];
 }
 
 @end

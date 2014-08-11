@@ -18,17 +18,13 @@
                     frameType:(LTFrameType)frameType {
   NSDictionary *auxiliaryTextures = @{[LTImageFrameFsh frameTexture]: frame};
 
-  if ([super initWithProgram:[self createProgram] sourceTexture:input
-           auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTImageFrameFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
     [self setShaderUniforms:frameType];
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTImageFrameFsh source]];
 }
 
 - (void)setDefaultValues {

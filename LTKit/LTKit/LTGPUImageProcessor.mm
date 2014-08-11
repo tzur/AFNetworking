@@ -32,20 +32,15 @@
 }
 
 - (void)process {
-  [self.strategy processingWillBegin];
-
-  while ([self.strategy hasMoreIterations]) {
-    LTNextIterationPlacement *placement = [self.strategy iterationStarted];
-
+  [self processWithPlacement:^(LTNextIterationPlacement *placement) {
     [self.drawer setSourceTexture:placement.sourceTexture];
     [self drawWithPlacement:placement];
-    [self.strategy iterationEnded];
-  }
+  }];
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  CGRect sourceRect = CGRectFromOriginAndSize(CGPointZero, placement.sourceTexture.size);
-  CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, placement.targetFbo.size);
+  CGRect sourceRect = CGRectFromSize(placement.sourceTexture.size);
+  CGRect targetRect = CGRectFromSize(placement.targetFbo.size);
   [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
 }
 

@@ -22,7 +22,7 @@
 
 @implementation LTTextureDrawer
 
-NSString * const kSourceTextureUniform = @"sourceTexture";
+NSString * const kLTSourceTextureUniform = @"sourceTexture";
 
 #pragma mark -
 #pragma mark Initialization
@@ -61,21 +61,6 @@ NSString * const kSourceTextureUniform = @"sourceTexture";
   LTMethodNotImplemented();
 }
 
-- (void)drawRect:(__unused CGRect)targetRect inFramebuffer:(LTFbo __unused *)fbo
-        fromRect:(__unused CGRect)sourceRect {
-  LTMethodNotImplemented();
-}
-
-- (void)drawRotatedRect:(LTRotatedRect __unused *)targetRect inFramebuffer:(LTFbo __unused *)fbo
-        fromRotatedRect:(LTRotatedRect __unused *)sourceRect {
-  LTMethodNotImplemented();
-}
-
-- (void)drawRotatedRects:(NSArray __unused *)targetRects inFramebuffer:(LTFbo __unused *)fbo
-        fromRotatedRects:(NSArray __unused *)sourceRects {
-  LTMethodNotImplemented();
-}
-
 #pragma mark -
 #pragma mark Uniforms
 #pragma mark -
@@ -89,12 +74,12 @@ NSString * const kSourceTextureUniform = @"sourceTexture";
 
 - (void)setSourceTexture:(LTTexture *)texture {
   LTParameterAssert(texture);
-  [self setTexture:texture withName:kSourceTextureUniform];
+  [self setTexture:texture withName:kLTSourceTextureUniform];
 }
 
 - (void)setAuxiliaryTexture:(LTTexture *)texture withName:(NSString *)name {
   LTParameterAssert(texture);
-  LTParameterAssert(name && ![name isEqualToString:kSourceTextureUniform]);
+  LTParameterAssert(name && ![name isEqualToString:kLTSourceTextureUniform]);
   [self setTexture:texture withName:name];
 }
 
@@ -115,6 +100,10 @@ NSString * const kSourceTextureUniform = @"sourceTexture";
   self.program[name] = value;
 }
 
+- (id)uniformForName:(NSString *)name {
+  return self.program[name];
+}
+
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
   [self setUniform:key withValue:obj];
 }
@@ -123,17 +112,13 @@ NSString * const kSourceTextureUniform = @"sourceTexture";
   return [self uniformForName:key];
 }
 
-- (id)uniformForName:(NSString *)name {
-  return self.program[name];
-}
-
 - (NSSet *)mandatoryUniforms {
   static NSSet *uniforms;
   
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture",
-                                     kSourceTextureUniform]];
+                                     kLTSourceTextureUniform]];
   });
   
   return uniforms;

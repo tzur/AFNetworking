@@ -34,15 +34,14 @@
                         output:(LTTexture *)output {
   LTParameterAssert(target.size == output.size,
                     @"Target and output textures should have the same size");
-  LTProgram *program = [[LTProgram alloc] initWithVertexSource:[LTPatchCompositorVsh source]
-                                                fragmentSource:[LTPatchCompositorFsh source]];
   NSDictionary *auxiliaryTextures = @{
     [LTPatchCompositorFsh targetTexture]: target,
     [LTPatchCompositorFsh membraneTexture]: membrane,
     [LTPatchCompositorFsh maskTexture]: mask
   };
-  if (self = [super initWithProgram:program sourceTexture:source
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPatchCompositorVsh source]
+                          fragmentSource:[LTPatchCompositorFsh source] sourceTexture:source
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     self.source = source;
     self.target = target;
     [self setDefaultValues];

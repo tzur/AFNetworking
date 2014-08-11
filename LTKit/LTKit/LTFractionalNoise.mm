@@ -11,12 +11,9 @@
 @implementation LTFractionalNoise
 
 - (instancetype)initWithOutput:(LTTexture *)output {
-  LTProgram *program =
-    [[LTProgram alloc] initWithVertexSource:[LTFractionalNoiseVsh source]
-                             fragmentSource:[LTFractionalNoiseFsh source]];
-
-  if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:nil
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTFractionalNoiseVsh source]
+                          fragmentSource:[LTFractionalNoiseFsh source] sourceTexture:output
+                       auxiliaryTextures:nil andOutput:output]) {
     self.amplitude = 1.0;
     [self updateSeeds];
   }

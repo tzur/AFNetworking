@@ -17,7 +17,7 @@ void main() {
   // Default NTSC weights for color->luminance conversion.
   const lowp vec3 kColorFilter = vec3(0.299, 0.587, 0.114);
   
-  lowp vec3 color = texture2D(sourceTexture, vTexcoord).rgb;
+  lowp vec4 color = texture2D(sourceTexture, vTexcoord);
   lowp float lum = dot(color.rgb, kColorFilter);
   
   lowp float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
@@ -26,11 +26,11 @@ void main() {
   lowp vec4 redColor = texture2D(redLUT, vec2(lum, 0.0));
   
   // Contribution of the "blue" color.
-  lowp vec3 result = mix(color, blueColor.rgb, dualMask * blueColor.a);
+  lowp vec3 result = mix(color.rgb, blueColor.rgb, dualMask * blueColor.a);
   // Contribution of the "red" color.
   result = mix(result, redColor.rgb, (1.0 - dualMask) * redColor.a);
   // Overal opacity.
-  result = mix(color, result, opacity);
+  result = mix(color.rgb, result, opacity);
   
   gl_FragColor = vec4(result, 1.0);
 }

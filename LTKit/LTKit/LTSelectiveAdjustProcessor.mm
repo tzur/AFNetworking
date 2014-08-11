@@ -10,29 +10,38 @@
 #import "LTShaderStorage+LTSelectiveAdjustFsh.h"
 #import "LTTexture+Factory.h"
 
+@interface LTSelectiveAdjustProcessor ()
+
+/// Generation id of the input texture that was used to create the current HSV texture.
+@property (nonatomic) NSUInteger hsvTextureGenerationID;
+
+@end
+
 @implementation LTSelectiveAdjustProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  NSDictionary *auxiliaryTextures = [self prepareAuxiliaryTexturesForInput:input output:output];
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTSelectiveAdjustFsh source]
+                                   input:input andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
 }
 
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTSelectiveAdjustFsh source]];
-}
+- (void)convertInputToHSVIfNeeded {
+  if (self.auxiliaryTextures[[LTSelectiveAdjustFsh hsvTexture]] &&
+      self.hsvTextureGenerationID == self.inputTexture.generationID) {
+    return;
+  }
 
-- (NSDictionary *)prepareAuxiliaryTexturesForInput:(LTTexture *)input output:(LTTexture *)output {
-  LTTexture *hsv = [LTTexture textureWithPropertiesOf:output];
-  LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:input output:hsv];
+  LTTexture *hsvTexture = [LTTexture textureWithPropertiesOf:self.outputTexture];
+  LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:self.inputTexture
+                                                                       output:hsvTexture];
   [processor process];
-  
-  NSDictionary *auxiliaryTextures = @{[LTSelectiveAdjustFsh hsvTexture]: hsv};
-  return auxiliaryTextures;
+
+  self.hsvTextureGenerationID = self.inputTexture.generationID;
+
+  [self setAuxiliaryTexture:hsvTexture withName:[LTSelectiveAdjustFsh hsvTexture]];
 }
 
 - (void)setDefaultValues {
@@ -59,6 +68,15 @@
   self.blueSaturation = self.defaultBlueSaturation;
   self.blueLuminance = self.defaultBlueLuminance;
   self.blueSaturation = self.defaultBlueSaturation;
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
+
+- (void)process {
+  [self convertInputToHSVIfNeeded];
+  [super process];
 }
 
 #pragma mark -

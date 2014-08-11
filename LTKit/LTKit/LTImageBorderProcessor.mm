@@ -42,16 +42,12 @@ static const CGFloat kFrameMaxDimension = 1024;
   NSDictionary *auxiliaryTextures =
     @{[LTImageBorderFsh outerFrameTexture]: self.outerFrameTexture,
       [LTImageBorderFsh innerFrameTexture]: self.innerFrameTexture};
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:input
-                  auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTImageBorderFsh source] sourceTexture:input
+                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTImageBorderFsh source]];
 }
 
 - (void)initializeFramesWithInput:(LTTexture *)input {

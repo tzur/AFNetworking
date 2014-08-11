@@ -114,7 +114,7 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 - (void)updateArrayBufferWithTargetRects:(NSArray *)targetRects sourceRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count);
 
-  CGSize sourceSize = [(LTTexture *)self.uniformToTexture[kSourceTextureUniform] size];
+  CGSize sourceSize = [(LTTexture *)self.uniformToTexture[kLTSourceTextureUniform] size];
   std::vector<LTMultiRectDrawerVertex> triangles;
   CGFloat z = 0;
   for (NSUInteger i = 0; i < targetRects.count; ++i) {

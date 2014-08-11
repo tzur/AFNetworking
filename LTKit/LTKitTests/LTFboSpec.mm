@@ -115,6 +115,22 @@ context(@"binding", ^{
     return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:fbo],
              kLTResourceExamplesOpenGLParameterName: @GL_FRAMEBUFFER_BINDING};
   });
+
+  it(@"should disable scissor test while bound", ^{
+    [LTGLContext currentContext].scissorTestEnabled = YES;
+    [fbo bindAndExecute:^{
+      expect([LTGLContext currentContext].scissorTestEnabled).to.beFalsy();
+    }];
+    expect([LTGLContext currentContext].scissorTestEnabled).to.beTruthy();
+  });
+
+  it(@"should not render to screen while bound", ^{
+    [LTGLContext currentContext].renderingToScreen = YES;
+    [fbo bindAndExecute:^{
+      expect([LTGLContext currentContext].renderingToScreen).to.beFalsy();
+    }];
+    expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
+  });
 });
 
 SpecGLEnd

@@ -15,15 +15,13 @@
 @implementation LTProceduralFrameProcessor
 
 - (instancetype)initWithOutput:(LTTexture *)output {
-  LTProgram *program =
-    [[LTProgram alloc] initWithVertexSource:[LTProceduralFrameVsh source]
-                             fragmentSource:[LTProceduralFrameFsh source]];
-  
   LTTexture *defaultNoise = [self createNeutralNoise];
   NSDictionary *auxiliaryTextures = @{[LTProceduralFrameFsh noiseTexture]: defaultNoise};
 
-  if (self = [super initWithProgram:program sourceTexture:output auxiliaryTextures:auxiliaryTextures
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTProceduralFrameVsh source]
+                          fragmentSource:[LTProceduralFrameFsh source] sourceTexture:output
+                       auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
     [self setDefaultValues];
     [self precomputeDistanceShift:output.size];
   }

@@ -4,6 +4,7 @@
 #import "LTImageProcessor.h"
 #import "LTProcessingDrawer.h"
 #import "LTProcessingStrategy.h"
+#import "LTSubimageProcessing.h"
 
 /// Concrete image processor for GPU image processing tasks. The processor is defined by two
 /// objects: an \c LTProcessingDrawer that specifies on what geometry the processing is taking place

@@ -8,6 +8,9 @@
 /// Drawer to use while processing.
 @property (strong, nonatomic) id<LTProcessingDrawer> drawer;
 
+/// Strategy which manages the processing execution.
+@property (strong, nonatomic) id<LTProcessingStrategy> strategy;
+
 @end
 
 @implementation LTGPUImageProcessor (Protected)
@@ -27,6 +30,16 @@
                            OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
   [self.drawer setAuxiliaryTexture:texture withName:name];
+}
+
+- (void)processWithPlacement:(LTProcessWithPlacementBlock)block {
+  [self.strategy processingWillBegin];
+
+  while ([self.strategy hasMoreIterations]) {
+    LTNextIterationPlacement *placement = [self.strategy iterationStarted];
+    block(placement);
+    [self.strategy iterationEnded];
+  }
 }
 
 - (NSDictionary *)auxiliaryTextures {

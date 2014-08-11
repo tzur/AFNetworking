@@ -12,16 +12,13 @@
 @implementation LTBicubicResizeProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  if (self = [super initWithProgram:[self createProgram] input:input andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTBicubicResizeFsh source]
+                                   input:input andOutput:output]) {
     self[[LTBicubicResizeFsh texelOffset]] =
         $(GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height));
   }
   return self;
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTBicubicResizeFsh source]];
 }
 
 @end

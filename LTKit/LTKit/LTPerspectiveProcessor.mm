@@ -57,15 +57,12 @@ typedef union {
 - (instancetype)initWithInput:(LTTexture *)input andOutput:(LTTexture *)output {
   LTParameterAssert(input);
   LTParameterAssert(output);
-  if (self = [super initWithProgram:[self createPerspectiveProgram] input:input andOutput:output]) {
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTPerspectiveProcessorFsh source]
+                                   input:input andOutput:output]) {
     [self updateModel];
   }
   return self;
-}
-
-- (LTProgram *)createPerspectiveProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTPerspectiveProcessorFsh source]];
 }
 
 #pragma mark -

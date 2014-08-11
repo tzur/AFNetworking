@@ -10,12 +10,8 @@
 @implementation LTPassthroughProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  return [super initWithProgram:[self createProgram] input:input andOutput:output];
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                  fragmentSource:[LTPassthroughShaderFsh source]];
+  return [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                      fragmentSource:[LTPassthroughShaderFsh source] input:input andOutput:output];
 }
 
 @end
