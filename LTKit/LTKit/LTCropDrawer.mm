@@ -3,6 +3,8 @@
 
 #import "LTCropDrawer.h"
 
+#import <array>
+
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTFbo.h"
@@ -104,7 +106,7 @@ LTGPUStructMake(LTCropDrawerVertex,
         fromRect:(LTCropDrawerRect)sourceRect {
   // In case of a screen framebuffer, we're using a flipped projection matrix so the original order
   // of the vertices will generate a back-faced polygon, as the test is performed on the projected
-  // coordinates. Therefore we use the clockwise front facying polygon mode when drawing to a
+  // coordinates. Therefore we use the clockwise front facing polygon mode when drawing to a
   // \c LTScreenFbo.
   BOOL screenTarget = [LTGLContext currentContext].renderingToScreen;
   [self updateArrayBufferWithTargetRect:targetRect sourceRect:sourceRect];
@@ -122,8 +124,6 @@ LTGPUStructMake(LTCropDrawerVertex,
 
 - (void)updateArrayBufferWithTargetRect:(LTCropDrawerRect)targetRect
                              sourceRect:(LTCropDrawerRect)sourceRect {
-  LTCropDrawerVertex vertices[6];
-  
   GLKVector2 v0 = targetRect.topLeft;
   GLKVector2 v1 = targetRect.topRight;
   GLKVector2 v2 = targetRect.bottomRight;
@@ -135,14 +135,17 @@ LTGPUStructMake(LTCropDrawerVertex,
   GLKVector2 t2 = sourceRect.bottomRight;
   GLKVector2 t3 = sourceRect.bottomLeft;
 
-  vertices[0] = {.position = v0, .texcoord = t0};
-  vertices[1] = {.position = v1, .texcoord = t1};
-  vertices[2] = {.position = v2, .texcoord = t2};
-  vertices[3] = {.position = v2, .texcoord = t2};
-  vertices[4] = {.position = v3, .texcoord = t3};
-  vertices[5] = {.position = v0, .texcoord = t0};
+  std::array<LTCropDrawerVertex, 6> vertices{{
+    {.position = v0, .texcoord = t0},
+    {.position = v1, .texcoord = t1},
+    {.position = v2, .texcoord = t2},
+    {.position = v2, .texcoord = t2},
+    {.position = v3, .texcoord = t3},
+    {.position = v0, .texcoord = t0}
+  }};
 
-  NSData *data = [NSData dataWithBytesNoCopy:vertices length:sizeof(vertices) freeWhenDone:NO];
+  NSData *data = [NSData dataWithBytesNoCopy:vertices.data()
+                                      length:vertices.size() * sizeof(vertices[0]) freeWhenDone:NO];
   [self.arrayBuffer setData:data];
 }
 

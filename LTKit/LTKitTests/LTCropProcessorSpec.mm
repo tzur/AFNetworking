@@ -18,9 +18,9 @@ static cv::Mat LTRotateClockwise(cv::Mat input, NSInteger rotations) {
   cv::Mat output(input.rows, input.cols, input.type());
   input.copyTo(output);
   
-  //0 : flip vertical; 1 flip horizontal
+  // 0 for vertical flip, 1 for horizontal.
   BOOL flipAxis = rotations > 0 ? 1 : 0;
-  for(NSInteger i = 0; i < std::abs(rotations); ++i){
+  for (NSInteger i = 0; i < std::abs(rotations); ++i) {
     cv::transpose(output, output);
     cv::flip(output, output, flipAxis);
   }

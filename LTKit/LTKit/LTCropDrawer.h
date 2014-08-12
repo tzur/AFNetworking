@@ -5,8 +5,6 @@
 
 #import "LTCropDrawerRect.h"
 
-/// @class LTCropDrawer
-///
 /// Class for drawing axis-aligned rectangular regions from a source texture into a rectangular
 /// region of a target framebuffer. This drawer provides a convenient method of drawing rotated and
 /// flipped rectangles by mapping the target and source rectangle corners.

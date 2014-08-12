@@ -20,7 +20,7 @@
 /// Drawer used for processing.
 @property (strong, nonatomic) LTCropDrawer *drawer;
 
-/// Transformation matrix representing the stacked rotations and flippings applied on the
+/// Transformation matrix representing the stacked rotations and flips applied on the
 /// origin-centered normalized input coordinates ([-0.5,0.5] x [-0.5,0.5]);
 ///
 /// @note This origin-centered assumption allows us to easily stack the operations by multiplying
@@ -96,11 +96,7 @@
 }
 
 - (LTCropDrawerRect)uncroppedSourceRectangle {
-  LTCropDrawerRect rect(CGRectMake(0, 0, 1, 1));
-  for (LTVector2 &v : rect.corners) {
-    v = [self transform:GLKMatrix2Transpose(self.transform) vector:v];
-  }
-  return rect;
+  return [self transform:GLKMatrix2Transpose(self.transform) rect:CGRectMake(0, 0, 1, 1)];
 }
 
 - (CGSize)sizeForOutputTexture {
@@ -109,6 +105,13 @@
 
 - (CGSize)rotatedSize:(CGSize)size {
   return (self.rotations % 2) ? CGSizeMake(size.height, size.width) : size;
+}
+
+- (LTCropDrawerRect)transform:(const GLKMatrix2 &)transform rect:(LTCropDrawerRect)rect {
+  for (LTVector2 &v : rect.corners) {
+    v = [self transform:transform vector:v];
+  }
+  return rect;
 }
 
 - (LTVector2)transform:(const GLKMatrix2 &)transform vector:(LTVector2)vector {
@@ -151,11 +154,11 @@
 }
 
 - (GLKMatrix2)rotateMatrix:(GLKMatrix2)matrix from:(NSInteger)rotations to:(NSInteger)newRotations {
-  static GLKMatrix2 rotateClockwise = GLKMatrix2Make(0, 1, -1, 0);
-  static GLKMatrix2 rotateCounterClockwise = GLKMatrix2Make(0, -1, 1, 0);
+  static const GLKMatrix2 kClockwise = GLKMatrix2Make(0, 1, -1, 0);
+  static const GLKMatrix2 kCounterClockwise = GLKMatrix2Make(0, -1, 1, 0);
   NSInteger difference = (newRotations - rotations) % 4;
-  for (NSInteger i = 0; ABS(i) < ABS(difference); ++i) {
-    matrix = GLKMatrix2Multiply(difference > 0 ? rotateClockwise : rotateCounterClockwise, matrix);
+  for (NSInteger i = 0; std::abs(i) < std::abs(difference); ++i) {
+    matrix = GLKMatrix2Multiply(difference > 0 ? kClockwise : kCounterClockwise, matrix);
   }
   return matrix;
 }
@@ -163,18 +166,13 @@
 - (void)setCropRectangle:(CGRect)cropRectangle {
   LTCropDrawerRect rect = cropRectangle;
   rect /= [self rotatedSize:self.inputTexture.size];
-  for (LTVector2 &v : rect.corners) {
-    v = [self transform:GLKMatrix2Transpose(self.transform) vector:v];
-  }
-  self.normalizedCropRectangle = rect;
+  self.normalizedCropRectangle = [self transform:GLKMatrix2Transpose(self.transform) rect:rect];
+  self.cachedTransform = GLKMatrix2();
 }
 
 - (CGRect)cropRectangle {
   if (self.cachedTransform != self.transform) {
-    LTCropDrawerRect rect = self.normalizedCropRectangle;
-    for (LTVector2 &v : rect.corners) {
-      v = [self transform:self.transform vector:v];
-    }
+    LTCropDrawerRect rect = [self transform:self.transform rect:self.normalizedCropRectangle];
     rect *= [self rotatedSize:self.inputTexture.size];
     self.cachedCropRectangle = CGRoundRect(rect);
     self.cachedTransform = self.transform;

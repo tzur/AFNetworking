@@ -3,7 +3,6 @@
 
 /// Struct representing a rectangle used by the crop drawer.
 struct LTCropDrawerRect {
-
   /// Initializes a new \c LTCropDrawerRect with (0,0) for every corner.
   LTCropDrawerRect();
   
