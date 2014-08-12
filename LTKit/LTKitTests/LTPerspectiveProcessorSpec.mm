@@ -97,7 +97,7 @@ context(@"processing", ^{
   });
 
   it(@"should apply rotation", ^{
-    processor.rotationAngle = M_PI / 180 * 20;
+    processor.rotationAngle = -M_PI / 180 * 20;
     [processor process];
     expected = LTLoadMat([self class], @"PerspectiveRotation.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
@@ -106,7 +106,7 @@ context(@"processing", ^{
   it(@"should apply compound projection", ^{
     processor.horizontal = M_PI / 180 * 15;
     processor.vertical = M_PI / 180 * 15;
-    processor.rotationAngle = M_PI / 180 * 20;
+    processor.rotationAngle = -M_PI / 180 * 20;
     [processor process];
     expected = LTLoadMat([self class], @"PerspectiveCompound.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
@@ -122,7 +122,7 @@ context(@"projection data", ^{
     
     processor.horizontal = M_PI / 180 * 15;
     processor.vertical = M_PI / 180 * 15;
-    processor.rotationAngle = M_PI / 180 * 20;
+    processor.rotationAngle = -M_PI / 180 * 20;
   });
   
   it(@"should return the corners mapped to the corners of the projected texture", ^{

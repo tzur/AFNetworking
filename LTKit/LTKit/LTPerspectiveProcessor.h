@@ -27,7 +27,7 @@ LTPropertyDeclare(CGFloat, horizontal, Horizontal);
 @property (nonatomic) CGFloat vertical;
 LTPropertyDeclare(CGFloat, vertical, Vertical);
 
-/// Angle (in radians) of the rotation around the X axis applied by the processor.
+/// Angle (in radians) of the clockwise rotation around the X axis applied by the processor.
 /// Must be in range [-M_PI/6,M_PI/6], default is \c 0.
 @property (nonatomic) CGFloat rotationAngle;
 LTPropertyDeclare(CGFloat, rotationAngle, RotationAngle);
