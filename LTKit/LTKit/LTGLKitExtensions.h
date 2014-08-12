@@ -5,29 +5,53 @@
 #import <cmath>
 #import <opencv2/core/core.hpp>
 
+/// A \c 2x2 identity matrix.
+extern const GLKMatrix2 GLKMatrix2Identity;
+
+/// Returns a \c 2x2 matrix created from individual component values.
 GLK_INLINE GLKMatrix2 GLKMatrix2Make(float m00, float m01, float m10, float m11) {
   GLKMatrix2 m = {{m00, m01,
                    m10, m11}};
   return m;
 }
 
+/// Returns a \c 2x2 matrix that performs a scaling transformation.
+GLK_INLINE GLKMatrix2 GLKMatrix2MakeScale(float sx, float sy) {
+  return GLKMatrix2Make(sx, 0, 0, sy);
+}
+
+/// Returns a \c 2x2 matrix that performs counterclockwise rotation by the given angle (in radians).
 GLK_INLINE GLKMatrix2 GLKMatrix2MakeRotation(float radians) {
   return GLKMatrix2Make(cosf(radians), sinf(radians),
                         -sinf(radians), cosf(radians));
 }
 
+/// Returns the transpose of a \c 2x2 matrix.
 GLK_INLINE GLKMatrix2 GLKMatrix2Transpose(GLKMatrix2 matrix) {
   GLKMatrix2 m = {{matrix.m[0], matrix.m[2],
                    matrix.m[1], matrix.m[3]}};
   return m;
 }
 
+/// Returns the product of two \c 2x2 matrices.
+GLK_INLINE GLKMatrix2 GLKMatrix2Multiply(GLKMatrix2 matrixLeft, GLKMatrix2 matrixRight) {
+  GLKMatrix2 m;
+  m.m[0] = matrixLeft.m[0] * matrixRight.m[0] + matrixLeft.m[2] * matrixRight.m[1];
+  m.m[2] = matrixLeft.m[0] * matrixRight.m[2] + matrixLeft.m[2] * matrixRight.m[3];
+  
+  m.m[1] = matrixLeft.m[1] * matrixRight.m[0] + matrixLeft.m[3] * matrixRight.m[1];
+  m.m[3] = matrixLeft.m[1] * matrixRight.m[2] + matrixLeft.m[3] * matrixRight.m[3];
+  return m;
+}
+
+/// Multiplies a \c 2x2 matrix by a vector.
 GLK_INLINE GLKVector2 GLKMatrix2MultiplyVector2(GLKMatrix2 matrixLeft, GLKVector2 vectorRight) {
   GLKVector2 v = {{matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[2] * vectorRight.v[1],
                    matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[3] * vectorRight.v[1]}};
   return v;
 }
 
+/// Returns a \c 3x3 matrix that performs a translation.
 GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
   return GLKMatrix3Make(1, 0, 0,
                         0, 1, 0,
@@ -106,6 +130,21 @@ GLK_INLINE BOOL operator!=(const GLKVector3 &lhs, const GLKVector3 &rhs) {
 
 /// Returns whether two vectors are not equal.
 GLK_INLINE BOOL operator!=(const GLKVector4 &lhs, const GLKVector4 &rhs) {
+  return !(lhs == rhs);
+}
+
+/// Returns whether two matrices are not equal.
+GLK_INLINE BOOL operator!=(const GLKMatrix2 &lhs, const GLKMatrix2 &rhs) {
+  return !(lhs == rhs);
+}
+
+/// Returns whether two matrices are not equal.
+GLK_INLINE BOOL operator!=(const GLKMatrix3 &lhs, const GLKMatrix3 &rhs) {
+  return !(lhs == rhs);
+}
+
+/// Returns whether two matrices are not equal.
+GLK_INLINE BOOL operator!=(const GLKMatrix4 &lhs, const GLKMatrix4 &rhs) {
   return !(lhs == rhs);
 }
 

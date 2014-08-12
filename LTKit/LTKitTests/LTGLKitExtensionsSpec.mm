@@ -26,6 +26,15 @@ context(@"GLKMatrix2", ^{
     expect(a == c).to.beTruthy();
   });
 
+  it(@"not equal", ^{
+    GLKMatrix2 a = {{1, 2, 3, 4}};
+    GLKMatrix2 b = {{4, 3, 2, 1}};
+    GLKMatrix2 c = {{1, 2, 3, 4}};
+    
+    expect(a != b).to.beTruthy();
+    expect(a != c).to.beFalsy();
+  });
+  
   it(@"should make rotation matrix", ^{
     GLKMatrix2 m = GLKMatrix2MakeRotation(M_PI_4);
 
@@ -34,8 +43,23 @@ context(@"GLKMatrix2", ^{
     expect(m.m01).to.beCloseTo(1 / sqrt(2));
     expect(m.m11).to.beCloseTo(1 / sqrt(2));
   });
+  
+  it(@"should make scale matrix", ^{
+    GLKMatrix2 m = GLKMatrix2MakeScale(3, -2);
+    expect(m.m00).to.beCloseTo(3);
+    expect(m.m10).to.equal(0);
+    expect(m.m01).to.equal(0);
+    expect(m.m11).to.beCloseTo(-2);
+  });
 
-  it(@"should multiply correctly", ^{
+  it(@"should multiply matrixs correctly", ^{
+    GLKMatrix2 m1 = {{1, 2, 3, 4}};
+    GLKMatrix2 m2 = {{5, 6, 7, 8}};
+    
+    expect(GLKMatrix2Multiply(m1, m2) == GLKMatrix2Make(23, 34, 31, 46)).to.beTruthy();
+  });
+  
+  it(@"should multiply vector correctly", ^{
     GLKMatrix2 m = {{1, 2, 3, 4}};
     GLKVector2 v = {{1, 2}};
 
@@ -83,6 +107,15 @@ context(@"GLKMatrix3", ^{
     expect(a == b).to.beFalsy();
     expect(a == c).to.beTruthy();
   });
+  
+  it(@"not equal", ^{
+    GLKMatrix3 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    GLKMatrix3 b = {{9, 8, 7, 6, 5, 4, 3, 2, 1}};
+    GLKMatrix3 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    
+    expect(a != b).to.beTruthy();
+    expect(a != c).to.beFalsy();
+  });
 });
 
 context(@"GLKMatrix4", ^{
@@ -93,6 +126,15 @@ context(@"GLKMatrix4", ^{
 
     expect(a == b).to.beFalsy();
     expect(a == c).to.beTruthy();
+  });
+  
+  it(@"not equal", ^{
+    GLKMatrix4 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
+    GLKMatrix4 b = {{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1}};
+    GLKMatrix4 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
+    
+    expect(a != b).to.beTruthy();
+    expect(a != c).to.beFalsy();
   });
 });
 

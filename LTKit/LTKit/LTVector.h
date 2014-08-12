@@ -12,6 +12,9 @@ struct LTVector2 {
   /// Initializes a new \c LTVector2 with two zero elements.
   LTVector2() : x(0), y(0) {}
 
+  /// Initializes a new \c LTVector2 with \c x and \c y elements equal to the given scalar.
+  LTVector2(float scalar) : x(scalar), y(scalar) {}
+
   /// Initializes a new \c LTVector2 with \c x and \c y elements.
   LTVector2(float x, float y) : x(x), y(y) {}
 
