@@ -121,7 +121,7 @@ typedef union {
   matrix = GLKMatrix3Rotate(matrix, self.horizontal, 0, 1, 0);
   matrix = GLKMatrix3Rotate(matrix, self.vertical, 1, 0, 0);
   matrix = GLKMatrix3Scale(matrix, 1.0 / size.width, 1.0 / size.height, 1);
-  matrix = GLKMatrix3Rotate(matrix, self.rotationAngle, 0, 0, 1);
+  matrix = GLKMatrix3Rotate(matrix, -self.rotationAngle, 0, 0, 1);
   matrix = GLKMatrix3Scale(matrix, size.width, size.height, 1);
   return matrix;
 }
@@ -130,7 +130,7 @@ typedef union {
   CGSize size = self.inputTexture.size;
   GLKMatrix3 matrix = GLKMatrix3Identity;
   matrix = GLKMatrix3Scale(matrix, 1.0 / size.width, 1.0 / size.height, 1);
-  matrix = GLKMatrix3Rotate(matrix, -self.rotationAngle, 0, 0, 1);
+  matrix = GLKMatrix3Rotate(matrix, self.rotationAngle, 0, 0, 1);
   matrix = GLKMatrix3Scale(matrix, size.width, size.height, 1);
   matrix = GLKMatrix3Rotate(matrix, -self.vertical, 1, 0, 0);
   matrix = GLKMatrix3Rotate(matrix, -self.horizontal, 0, 1, 0);
