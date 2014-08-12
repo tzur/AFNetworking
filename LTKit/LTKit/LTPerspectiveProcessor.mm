@@ -223,4 +223,8 @@ LTPropertyWithoutSetter(CGFloat, rotationAngle, RotationAngle, -M_PI / 6, M_PI /
   return self.trapezoid.bottomRight;
 }
 
+- (CGRect)boundingRect {
+  return [self boundingRectForTrapezoid:self.trapezoid];
+}
+
 @end
