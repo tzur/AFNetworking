@@ -3,6 +3,7 @@
 
 #import "LTPerspectiveProcessor.h"
 
+#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
@@ -130,6 +131,13 @@ context(@"projection data", ^{
     expect((CGPoint)processor.topRight).to.beCloseToPointWithin(CGPointMake(0.695, 0.000), 0.01);
     expect((CGPoint)processor.bottomLeft).to.beCloseToPointWithin(CGPointMake(0.197, 0.995), 0.01);
     expect((CGPoint)processor.bottomRight).to.beCloseToPointWithin(CGPointMake(0.803, 0.291), 0.01);
+  });
+  
+  it(@"should return the bounding rect of the projected corners", ^{
+    CGRect boundingRect = processor.boundingRect;
+    expect(boundingRect.origin).to.beCloseToPointWithin(CGPointMake(0.197, 0.000), 0.01);
+    expect(boundingRect.origin + boundingRect.size)
+        .to.beCloseToPointWithin(CGPointMake(0.803, 0.995), 0.01);
   });
   
   it(@"should set scale and translation to fit the projected texture in the output texture", ^{

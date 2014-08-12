@@ -50,4 +50,7 @@ LTPropertyDeclare(CGFloat, rotationAngle, RotationAngle);
 /// Point (in [0,1]x[0,1] coordinates) mapped to the bottom right corner of the texture.
 @property (readonly, nonatomic) LTVector2 bottomRight;
 
+/// Rectangle bounding the \c topLeft, \c topRight, \c bottomLeft, and \c bottomRight properties.
+@property (readonly, nonatomic) CGRect boundingRect;
+
 @end
