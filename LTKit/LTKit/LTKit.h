@@ -49,6 +49,7 @@
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
 #import <LTKit/LTColorGradient.h>
+#import <LTKit/LTCropProcessor.h>
 #import <LTKit/LTDuoProcessor.h>
 #import <LTKit/LTEdgesMaskProcessor.h>
 #import <LTKit/LTFFTConvolutionProcessor.h>
@@ -59,6 +60,7 @@
 #import <LTKit/LTMixerProcessor.h>
 #import <LTKit/LTPatchProcessor.h>
 #import <LTKit/LTPassthroughProcessor.h>
+#import <LTKit/LTPerspectiveProcessor.h>
 #import <LTKit/LTRGBToHSVProcessor.h>
 #import <LTKit/LTRectCopyProcessor.h>
 #import <LTKit/LTRecomposeProcessor.h>
