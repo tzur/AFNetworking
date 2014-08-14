@@ -33,6 +33,7 @@ context(@"properties", ^{
     expect(processor.angle).to.equal(0);
     expect(processor.blueColor).to.equal(GLKVector4Make(0, 0, 1, 1));
     expect(processor.redColor).to.equal(GLKVector4Make(1, 0, 0, 1));
+    expect(processor.blendMode).to.equal(LTDuoBlendModeNormal);
     expect(processor.opacity).to.equal(processor.defaultOpacity);
   });
   
@@ -53,6 +54,81 @@ context(@"properties", ^{
       processor.blueColor = GLKVector4Make(0.2, 0, 0, 0.9);
       processor.redColor = GLKVector4Make(1, 1, 0, 0);
     }).toNot.raiseAny();
+  });
+});
+
+context(@"blending modes", ^{
+  beforeEach(^{
+    cv::Mat4b inputMat(1, 1, cv::Vec4b(64, 64, 64, 255));
+    input = [LTTexture textureWithImage:inputMat];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTDuoProcessor alloc] initWithInput:input output:output];
+    processor.redColor = GLKVector4Make(0.5, 0.5, 0.5, 1.0);
+    processor.blueColor = GLKVector4Make(0.5, 0.5, 0.5, 1.0);
+    processor.opacity = 1;
+  });
+  
+  it(@"should process with normal blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTDuoBlendModeNormal;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with darken blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTDuoBlendModeDarken;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with multiply blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(16, 16, 16, 255));
+    processor.blendMode = LTDuoBlendModeMultiply;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with hard light blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(32, 32, 32, 255));
+    processor.blendMode = LTDuoBlendModeHardLight;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with soft light blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(40, 40, 40, 255));
+    processor.blendMode = LTDuoBlendModeSoftLight;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with lighten blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTDuoBlendModeLighten;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with screen blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(112, 112, 112, 255));
+    processor.blendMode = LTDuoBlendModeScreen;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with color burn blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 0, 255));
+    processor.blendMode = LTDuoBlendModeColorBurn;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should process with overlay blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(33, 33, 33, 255));
+    processor.blendMode = LTDuoBlendModeOverlay;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
   });
 });
 

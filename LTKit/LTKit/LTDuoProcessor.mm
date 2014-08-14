@@ -58,6 +58,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
   self.blueColor = self.defaultBlueColor;
   self.redColor = self.defaultRedColor;
   self.opacity = self.defaultOpacity;
+  self.blendMode = LTDuoBlendModeNormal;
 }
 
 #pragma mark -
@@ -160,7 +161,12 @@ LTPropertyWithoutSetter(GLKVector4, redColor, RedColor,
   [self updateGradientWithColor:redColor uniformName:[LTDuoFsh redLUT]];
 }
 
-LTPropertyWithoutSetter(CGFloat, opacity, Opacity, 0, 1, 1);
+- (void)setBlendMode:(LTDuoBlendMode)blendMode {
+  _blendMode = blendMode;
+  self[[LTDuoFsh blendMode]] = @(blendMode);
+}
+
+LTPropertyWithoutSetter(CGFloat, opacity, Opacity, 0, 1, 0);
 - (void)setOpacity:(CGFloat)opacity {
   [self _verifyAndSetOpacity:opacity];
   self[[LTDuoFsh opacity]] = @(opacity);

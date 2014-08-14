@@ -5,6 +5,19 @@
 
 #import "LTDualMaskProcessor.h"
 
+/// Types of blend modes that are usable in the duo processor.
+typedef NS_ENUM(NSUInteger, LTDuoBlendMode) {
+  LTDuoBlendModeNormal = 0,
+  LTDuoBlendModeDarken,
+  LTDuoBlendModeMultiply,
+  LTDuoBlendModeHardLight,
+  LTDuoBlendModeSoftLight,
+  LTDuoBlendModeLighten,
+  LTDuoBlendModeScreen,
+  LTDuoBlendModeColorBurn,
+  LTDuoBlendModeOverlay
+};
+
 /// By using dual mask, this class applies a different effect in red and blue regions of the mask.
 @interface LTDuoProcessor : LTOneShotImageProcessor
 
@@ -54,7 +67,11 @@ LTPropertyDeclare(GLKVector4, blueColor, BlueColor);
 @property (nonatomic) GLKVector4 redColor;
 LTPropertyDeclare(GLKVector4, redColor, RedColor);
 
-/// Opacity of the result wrt input texture. Should be in [0, 1] range. Default value is 1.
+/// Blend mode used to blend \c blueColor and \c redColor to the input image. The default value is
+/// \c LTDuoBlendModeNormal.
+@property (nonatomic) LTDuoBlendMode blendMode;
+
+/// Opacity of the result wrt input texture. Should be in [0, 1] range. Default value is 0.
 @property (nonatomic) CGFloat opacity;
 LTPropertyDeclare(CGFloat, opacity, Opacity);
 
