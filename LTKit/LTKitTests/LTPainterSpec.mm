@@ -227,14 +227,18 @@ context(@"painting", ^{
           expect(rects[0]).to.equal([LTRotatedRect rect:CGRectCenteredAt(CGPointMake(0.5, 0.5),
                                                                          CGSizeMake(0.5, 0.5))]);
         }] ltPainter:painter didPaintInRotatedRects:OCMOCK_ANY];
+
         [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(kCanvasSize / 2)];
+
+        [delegate verify];
       });
       
-      it(@"should update delegate on stroke end", ^{
+      it(@"should update delegate on stroke begin and end", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];
         [[[delegate stub] andReturnValue:@((CGFloat)1.0)] alternativeZoomScale];
+        [[delegate expect] ltPainterDidBeginStroke:painter];
         [[[delegate expect] andDo:^(NSInvocation *invocation) {
           __unsafe_unretained LTPainterStroke *stroke;
           [invocation getArgument:&stroke atIndex:3];
@@ -242,32 +246,44 @@ context(@"painting", ^{
           expect(stroke.segments.count).to.equal(1);
           expect(stroke).to.beIdenticalTo(painter.strokes.lastObject);
         }] ltPainter:painter didFinishStroke:OCMOCK_ANY];
+
         [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+        [delegate verify];
       });
       
       it(@"should use the alternativeCoordinateSystemTransform", ^{
         CGAffineTransform transform =
             CGAffineTransformScale(CGAffineTransformMakeTranslation(0, kCanvasSize.height), 1, -1);
+
         [[[delegate stub] andReturnValue:$(transform)] alternativeCoordinateSystemTransform];
         [[[delegate stub] andReturnValue:@((CGFloat)1.0)] alternativeZoomScale];
+
         [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 4)];
         [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
         expected(cv::Rect(0, kCanvasSize.height / 2,
                           kCanvasSize.width / 2, kCanvasSize.height / 2)).setTo(kWhite);
         expect($(canvas.image)).to.equalMat($(expected));
+
+        [delegate verify];
       });
       
       it(@"should use the alternativeZoomScale", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];
         [[[delegate stub] andReturnValue:@((CGFloat)2.0)] alternativeZoomScale];
+
         [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
         expected(LTCVRectWithCGRect(CGRectCenteredAt(kCanvasCenter,
                                                      kCanvasSize / 4))).setTo(kWhite);
         expect($(canvas.image)).to.equalMat($(expected));
+
+        [delegate verify];
       });
     });
   });

@@ -132,6 +132,9 @@
                         initWithInterpolationRoutineFactory:self.splineFactory
                         startingPoint:point];
   [self.brush startNewStrokeAtPoint:point];
+  if ([self.delegate respondsToSelector:@selector(ltPainterDidBeginStroke:)]) {
+    [self.delegate ltPainterDidBeginStroke:self];
+  }
 }
 
 - (void)endStroke {
