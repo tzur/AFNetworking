@@ -1402,7 +1402,7 @@
 		8BA5D6A2199250240093A4FD /* NSString+Hashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hashing.h"; sourceTree = "<group>"; };
 		8BA5D6A3199250240093A4FD /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
 		8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+HashingSpec.mm"; sourceTree = "<group>"; };
-		8BA5D74C199378850093A4FD /* LTSubimageProcessing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSubimageProcessing.h; sourceTree = "<group>"; };
+		8BA5D74C199378850093A4FD /* LTScreenProcessing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTScreenProcessing.h; sourceTree = "<group>"; };
 		8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenCVExtensions.h; sourceTree = "<group>"; };
 		8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensions.mm; sourceTree = "<group>"; };
 		8BA8203E197E55C800FBE68E /* RectRotated.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = RectRotated.jpg; path = Resources/RectRotated.jpg; sourceTree = "<group>"; };
@@ -1463,6 +1463,7 @@
 		8BABFD8B188D4C15004163DA /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise.png; path = Resources/Noise.png; sourceTree = "<group>"; };
 		8BABFD8D188D52B4004163DA /* NoiseGoldA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldA.png; path = Resources/NoiseGoldA.png; sourceTree = "<group>"; };
 		8BABFD8E188D52B4004163DA /* NoiseGoldB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldB.png; path = Resources/NoiseGoldB.png; sourceTree = "<group>"; };
+		8BACB32F199CEFAF000F9238 /* LTPartialProcessing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPartialProcessing.h; sourceTree = "<group>"; };
 		8BAD630D18A3D70100482564 /* ValueSetter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ValueSetter.fsh; sourceTree = "<group>"; };
 		8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTRectDrawer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTRectDrawer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2778,7 +2779,8 @@
 				28A6C5AB193B77C300C217CC /* LTProgressiveImageProcessor.h */,
 				28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */,
 				28A6C5AF193B794000C217CC /* LTProgressiveImageProcessor+Protected.h */,
-				8BA5D74C199378850093A4FD /* LTSubimageProcessing.h */,
+				8BACB32F199CEFAF000F9238 /* LTPartialProcessing.h */,
+				8BA5D74C199378850093A4FD /* LTScreenProcessing.h */,
 			);
 			name = Processors;
 			sourceTree = "<group>";

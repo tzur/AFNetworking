@@ -3,12 +3,15 @@
 
 #import "LTGPUImageProcessor.h"
 
+#import "LTPartialProcessing.h"
+#import "LTScreenProcessing.h"
+
 @protocol LTProgramFactory;
 
 /// @class LTOneShotImageProcessor
 ///
 /// Processes a single image input with a single processing iteration, and returns a single output.
-@interface LTOneShotImageProcessor : LTGPUImageProcessor <LTSubimageProcessing>
+@interface LTOneShotImageProcessor : LTGPUImageProcessor <LTPartialProcessing, LTScreenProcessing>
 
 /// Initializes with vertex and fragment shaders sources, a single input texture and a single output
 /// texture.
