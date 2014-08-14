@@ -106,34 +106,36 @@ void main() {
   mediump vec3 Sca0 = blueColor.rgb * Sa0;
   mediump vec3 Sca1 = redColor.rgb * Sa1;
   mediump float Da = 1.0;
+  mediump vec3 outputColor;
+  
   if (blendMode == kBlendModeNormal) {
-    color.rgb = normal(Sca0, color.rgb, Sa0, Da);
-    color.rgb = normal(Sca1, color.rgb, Sa1, Da);
+    outputColor = normal(Sca0, color.rgb, Sa0, Da);
+    outputColor = normal(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeDarken) {
-    color.rgb = darken(Sca0, color.rgb, Sa0, Da);
-    color.rgb = darken(Sca1, color.rgb, Sa1, Da);
+    outputColor = darken(Sca0, color.rgb, Sa0, Da);
+    outputColor = darken(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeMultiply) {
-    color.rgb = multiply(Sca0, color.rgb, Sa0, Da);
-    color.rgb = multiply(Sca1, color.rgb, Sa1, Da);
+    outputColor = multiply(Sca0, color.rgb, Sa0, Da);
+    outputColor = multiply(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeHardLight) {
-    color.rgb = hardLight(Sca0, color.rgb, Sa0, Da);
-    color.rgb = hardLight(Sca1, color.rgb, Sa1, Da);
+    outputColor = hardLight(Sca0, color.rgb, Sa0, Da);
+    outputColor = hardLight(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeSoftLight) {
-    color.rgb = softLight(Sca0, color.rgb, Sa0, Da);
-    color.rgb = softLight(Sca1, color.rgb, Sa1, Da);
+    outputColor = softLight(Sca0, color.rgb, Sa0, Da);
+    outputColor = softLight(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeLighten) {
-    color.rgb = lighten(Sca0, color.rgb, Sa0, Da);
-    color.rgb = lighten(Sca1, color.rgb, Sa1, Da);
+    outputColor = lighten(Sca0, color.rgb, Sa0, Da);
+    outputColor = lighten(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeScreen) {
-    color.rgb = screen(Sca0, color.rgb, Sa0, Da);
-    color.rgb = screen(Sca1, color.rgb, Sa1, Da);
+    outputColor = screen(Sca0, color.rgb, Sa0, Da);
+    outputColor = screen(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeColorBurn) {
-    color.rgb = colorBurn(Sca0, color.rgb, Sa0, Da);
-    color.rgb = colorBurn(Sca1, color.rgb, Sa1, Da);
+    outputColor = colorBurn(Sca0, color.rgb, Sa0, Da);
+    outputColor = colorBurn(Sca1, outputColor, Sa1, Da);
   } else if (blendMode == kBlendModeOverlay) {
-    color.rgb = overlay(Sca0, color.rgb, Sa0, Da);
-    color.rgb = overlay(Sca1, color.rgb, Sa1, Da);
+    outputColor = overlay(Sca0, color.rgb, Sa0, Da);
+    outputColor = overlay(Sca1, outputColor, Sa1, Da);
   }
   
-  gl_FragColor = color;
+  gl_FragColor = vec4(outputColor, color.a);
 }
