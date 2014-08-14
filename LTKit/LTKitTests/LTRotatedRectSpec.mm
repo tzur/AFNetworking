@@ -98,6 +98,14 @@ context(@"properties", ^{
     expect(rotatedRect.transform.tx).to.beCloseToWithin(3.5607, kAcceptedDifference);
     expect(rotatedRect.transform.ty).to.beCloseToWithin(-0.5962, kAcceptedDifference);
   });
+
+  it(@"should return correct bounding rect", ^{
+    CGRect boundingRect = rotatedRect.boundingRect;
+    expect(boundingRect.origin.x).to.beCloseToWithin(0.0251, kAcceptedDifference);
+    expect(boundingRect.origin.y).to.beCloseToWithin(1.5251, kAcceptedDifference);
+    expect(boundingRect.size.width).to.beCloseToWithin(4.9749 - 0.0251, kAcceptedDifference);
+    expect(boundingRect.size.height).to.beCloseToWithin(6.4749 - 1.5251, kAcceptedDifference);
+  });
 });
 
 context(@"equality and hash", ^{

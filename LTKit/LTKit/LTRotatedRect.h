@@ -47,4 +47,7 @@
 /// Affine transform used to rotate the rect around its center.
 @property (readonly, nonatomic) CGAffineTransform transform;
 
+/// Rect that bounds the rotated rect. For non-rotated rects, \c rect will be returned.
+@property (readonly, nonatomic) CGRect boundingRect;
+
 @end

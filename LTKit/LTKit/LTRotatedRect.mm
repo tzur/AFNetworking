@@ -135,6 +135,15 @@
   _angle = std::fmod(angle, 2 * M_PI);
 }
 
+- (CGRect)boundingRect {
+  CGFloat minX = std::min(self.v0.x, std::min(self.v1.x, std::min(self.v2.x, self.v3.x)));
+  CGFloat maxX = std::max(self.v0.x, std::max(self.v1.x, std::max(self.v2.x, self.v3.x)));
+  CGFloat minY = std::min(self.v0.y, std::min(self.v1.y, std::min(self.v2.y, self.v3.y)));
+  CGFloat maxY = std::max(self.v0.y, std::max(self.v1.y, std::max(self.v2.y, self.v3.y)));
+
+  return CGRectFromEdges(minX, minY, maxX, maxY);
+}
+
 - (NSString *)description {
   return [NSString stringWithFormat:@"Origin: (%g,%g), Size: (%g,%g), Center: (%g,%g), Angle: %g",
           self.rect.origin.x, self.rect.origin.y, self.rect.size.width, self.rect.size.height,
