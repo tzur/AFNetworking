@@ -32,6 +32,8 @@
 }
 
 - (void)process {
+  [self preprocess];
+
   [self processWithPlacement:^(LTNextIterationPlacement *placement) {
     [self.drawer setSourceTexture:placement.sourceTexture];
     [self drawWithPlacement:placement];

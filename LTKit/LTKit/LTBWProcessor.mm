@@ -179,14 +179,8 @@
   }
 }
 
-- (void)process {
+- (void)preprocess {
   [self runSubProcessors];
-  [super process];
-}
-
-- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
-  [self runSubProcessors];
-  [super processToFramebufferWithSize:size outputRect:rect];
 }
 
 #pragma mark -

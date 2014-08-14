@@ -74,9 +74,8 @@
 #pragma mark Processing
 #pragma mark -
 
-- (void)process {
+- (void)preprocess {
   [self convertInputToHSVIfNeeded];
-  [super process];
 }
 
 #pragma mark -

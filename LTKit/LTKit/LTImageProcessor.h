@@ -17,6 +17,10 @@
 #pragma mark Processing
 #pragma mark -
 
+/// Overriding point for classes that wish to execute code prior to processing. This method will be
+/// called by processing methods. The default implementation has no effect.
+- (void)preprocess;
+
 /// Generates a new output based on the current image processor inputs. This method blocks until a
 /// result is available. This is an abstract method that must be overridden by subclasses.
 - (void)process;

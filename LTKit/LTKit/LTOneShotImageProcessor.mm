@@ -62,6 +62,8 @@
 }
 
 - (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self preprocess];
+
   [self processWithPlacement:^(LTNextIterationPlacement *placement) {
     [self.drawer setSourceTexture:placement.sourceTexture];
 

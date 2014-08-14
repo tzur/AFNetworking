@@ -9,6 +9,9 @@
 #pragma mark Processing
 #pragma mark -
 
+- (void)preprocess {
+}
+
 - (void)process {
   LTMethodNotImplemented();
 }

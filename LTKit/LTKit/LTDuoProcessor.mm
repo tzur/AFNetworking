@@ -43,14 +43,8 @@ static const CGFloat kMaskDownscalingFactor = 2;
   return self;
 }
 
-- (void)process {
+- (void)preprocess {
   [self processSubProcessors];
-  return [super process];
-}
-
-- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
-  [self processSubProcessors];
-  [super processToFramebufferWithSize:size outputRect:rect];
 }
 
 - (void)processSubProcessors {
