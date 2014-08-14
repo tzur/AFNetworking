@@ -4,6 +4,7 @@
 #import "LTOneShotImageProcessor.h"
 
 #import "LTCGExtensions.h"
+#import "LTGLContext.h"
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotProcessingStrategy.h"
@@ -95,6 +96,19 @@
   CGSize size = framebufferSize * (placement.targetFbo.size / rect.size);
 
   return CGRectFromOriginAndSize(origin, size);
+}
+
+- (void)processInRect:(CGRect)rect {
+  [self preprocess];
+  
+  [self processWithPlacement:^(LTNextIterationPlacement *placement) {
+    [self.drawer setSourceTexture:placement.sourceTexture];
+
+    CGSize ratio = placement.sourceTexture.size / placement.targetFbo.size;
+    CGRect sourceRect = CGRectFromOriginAndSize(rect.origin * ratio, rect.size * ratio);
+
+    [self.drawer drawRect:rect inFramebuffer:placement.targetFbo fromRect:sourceRect];
+  }];
 }
 
 - (CGSize)inputSize {

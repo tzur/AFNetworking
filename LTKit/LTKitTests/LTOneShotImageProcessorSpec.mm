@@ -150,6 +150,15 @@ context(@"processing", ^{
 
       expect($([fboTexture image])).to.beCloseToMat($(expected));
     });
+
+    it(@"should process in rect", ^{
+      [processor processInRect:CGRectMake(0, 0, 8, 8)];
+
+      cv::Mat4b expected(16, 16, cv::Vec4b(0, 0, 0, 255));
+      expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(128, 144, 128, 255));
+
+      expect($([output image])).to.equalMat($(expected));
+    });
   });
 });
 
