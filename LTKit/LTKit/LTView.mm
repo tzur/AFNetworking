@@ -118,10 +118,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)createGlkView {
   LTAssert(self.context, @"Could not set up GLKView when LTGLContext is nil");
   
-  // Remove previous subview, if allocated, and gesture recognizers assigned to it.
-  [self.glkView removeFromSuperview];
-  self.glkView.gestureRecognizers = @[];
-  
   // Allocate the glkView and set it up.
   self.glkView = [[GLKView alloc] initWithFrame:self.bounds];
   self.glkView.contentScaleFactor = self.contentScaleFactor;
@@ -141,7 +137,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)createNavigationViewWithState:(LTViewNavigationState *)state {
-  [self.navigationView removeFromSuperview];
   self.navigationView = [[LTViewNavigationView alloc] initWithFrame:self.bounds
                                                         contentSize:self.contentTexture.size
                                                               state:state];
@@ -214,6 +209,20 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)dealloc {
   [self teardown];
+}
+
+#pragma mark -
+#pragma mark Views
+#pragma mark -
+
+- (void)setGlkView:(GLKView *)glkView {
+  [_glkView removeFromSuperview];
+  _glkView = glkView;
+}
+
+- (void)setNavigationView:(LTViewNavigationView *)navigationView {
+  [_navigationView removeFromSuperview];
+  _navigationView = navigationView;
 }
 
 #pragma mark -
