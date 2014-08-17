@@ -112,47 +112,47 @@ void main() {
   lowp float newLum = clamp(smoothLum + structure * (lum - smoothLum), 0.0, 1.0);
   
   // Local contrast: restore color.
-  color.rgb = (color.rgb / vec3(lum)) * vec3(newLum);
+  lowp vec3 outputColor = (color.rgb / vec3(lum)) * vec3(newLum);
   
   // Add grain and vignette.
   lowp float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
   lowp float vignette = texture2D(vignettingTexture, vTexcoord).r;
-  color.rgb = color.rgb + grainAmplitude * (grain - 0.5);
-  color.rgb = mix(color.rgb, vignetteColor, vignette * vignettingOpacity);
+  outputColor = outputColor + grainAmplitude * (grain - 0.5);
+  outputColor = mix(outputColor, vignetteColor, vignette * vignettingOpacity);
   
   // Tint.
-  mediump vec3 Sca = texture2D(colorGradient, vec2(dot(color.rgb, kColorFilter), 0.0)).rgb *
+  mediump vec3 Sca = texture2D(colorGradient, vec2(dot(outputColor, kColorFilter), 0.0)).rgb *
       colorGradientAlpha;
-  mediump vec3 Dca = color.rgb;
+  mediump vec3 Dca = outputColor;
   mediump float Sa = colorGradientAlpha;
   mediump float Da = 1.0;
   if (blendMode == kBlendModeNormal) {
-    color.rgb = normal(Sca, Dca, Sa, Da);
+    outputColor = normal(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeDarken) {
-    color.rgb = darken(Sca, Dca, Sa, Da);
+    outputColor = darken(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeMultiply) {
-    color.rgb = multiply(Sca, Dca, Sa, Da);
+    outputColor = multiply(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeHardLight) {
-    color.rgb = hardLight(Sca, Dca, Sa, Da);
+    outputColor = hardLight(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeSoftLight) {
-    color.rgb = softLight(Sca, Dca, Sa, Da);
+    outputColor = softLight(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeLighten) {
-    color.rgb = lighten(Sca, Dca, Sa, Da);
+    outputColor = lighten(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeScreen) {
-    color.rgb = screen(Sca, Dca, Sa, Da);
+    outputColor = screen(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeColorBurn) {
-    color.rgb = colorBurn(Sca, Dca, Sa, Da);
+    outputColor = colorBurn(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeOverlay) {
-    color.rgb = overlay(Sca, Dca, Sa, Da);
+    outputColor = overlay(Sca, Dca, Sa, Da);
   }
   
   // Saturation.
-  color.rgb = mix(vec3(newLum), color.rgb, saturation);
+  outputColor = mix(vec3(newLum), outputColor, saturation);
   
   // Tonality: brightness, contrast, exposure and offset.
-  color.r = texture2D(toneLUT, vec2(color.r, 0.0)).r;
-  color.g = texture2D(toneLUT, vec2(color.g, 0.0)).r;
-  color.b = texture2D(toneLUT, vec2(color.b, 0.0)).r;
+  outputColor.r = texture2D(toneLUT, vec2(outputColor.r, 0.0)).r;
+  outputColor.g = texture2D(toneLUT, vec2(outputColor.g, 0.0)).r;
+  outputColor.b = texture2D(toneLUT, vec2(outputColor.b, 0.0)).r;
   
-  gl_FragColor = color;
+  gl_FragColor = vec4(outputColor, color.a);
 }

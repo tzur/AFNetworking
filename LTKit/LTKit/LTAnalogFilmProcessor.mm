@@ -171,10 +171,9 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
   }
 }
 
-- (void)process {
+- (void)preprocess {
   [self runSubProcessors];
   [self updateSmoothTextureIfNecessary];
-  return [super process];
 }
 
 #pragma mark -
