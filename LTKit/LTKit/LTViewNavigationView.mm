@@ -592,9 +592,12 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   }
   
   _contentSize = contentSize;
+  CGFloat previousMinimumZoomscale = self.scrollView.minimumZoomScale;
+  self.scrollView.minimumZoomScale = 1;
   self.scrollView.zoomScale = 1;
   self.scrollView.contentSize = contentSize / self.contentScaleFactor;
   self.contentView.frame = CGRectFromOriginAndSize(CGPointZero, self.scrollView.contentSize);
+  self.scrollView.minimumZoomScale = previousMinimumZoomscale;
   [self configureScrollViewZoomLimits];
   [self navigateToDefaultState];
 }

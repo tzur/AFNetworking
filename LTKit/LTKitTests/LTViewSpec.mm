@@ -364,6 +364,28 @@ context(@"drawing", ^{
     output = [outputTexture image];
     expect(LTCompareMat(newMat, output)).to.beTruthy();
   });
+  
+  it(@"should replace content when minimum zoomscale is greater than 1", ^{
+    CGSize newSize = kViewSize * view.contentScaleFactor / 2;
+    [view replaceContentWith:[[LTGLTexture alloc] initByteRGBAWithSize:newSize]];
+
+    newSize = kViewSize * view.contentScaleFactor / CGSizeMake(4, 2);
+    cv::Mat4b newMat(newSize.height, newSize.width);
+    newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = red;
+    newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = blue;
+    LTTexture *newTexture = [[LTGLTexture alloc] initWithImage:newMat];
+    [view replaceContentWith:newTexture];
+    
+    cv::resize(newMat, newMat, cv::Size(), 2, 2);
+    cv::flip(newMat, newMat, 0);
+    
+    CGSize size = view.framebufferSize;
+    expectedOutput.setTo(0);
+    newMat.copyTo(expectedOutput(cv::Rect(size.width / 4, 0, size.width / 2, size.height)));
+    [view drawToFbo:fbo];
+    output = [outputTexture image];
+    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+  });
 });
 
 context(@"public interface", ^{
