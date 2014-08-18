@@ -41,6 +41,7 @@ context(@"properties", ^{
   });
   
   it(@"should return default vignetting properties correctly", ^{
+    expect(processor.vignetteOpacity).to.equal(0);
     expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
     expect(processor.vignetteSpread).to.equal(0);
     expect(processor.vignetteCorner).to.equal(2);
@@ -149,6 +150,7 @@ context(@"processing", ^{
     processor.offset = 0.2;
     processor.structure = 0.3;
     // Vignetting.
+    processor.vignetteOpacity = 1.0;
     processor.vignetteNoise = noise;
     processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
     processor.vignetteSpread = 25.0;

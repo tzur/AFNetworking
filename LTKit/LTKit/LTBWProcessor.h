@@ -121,6 +121,10 @@ LTPropertyDeclare(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMix
 @property (nonatomic) CGFloat vignetteNoiseAmplitude;
 LTPropertyDeclare(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude);
 
+/// Vignetting opacity. Should be in [0, 1] range. Default amplitude is 0.
+@property (nonatomic) CGFloat vignetteOpacity;
+LTPropertyDeclare(CGFloat, vignetteOpacity, VignetteOpacity);
+
 #pragma mark -
 #pragma mark Outer Frame
 #pragma mark -
@@ -160,7 +164,6 @@ LTPropertyDeclare(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude);
 /// [0, 1] range. Default color is white (1, 1, 1).
 @property (nonatomic) GLKVector3 outerFrameColor;
 LTPropertyDeclare(GLKVector3, outerFrameColor, OuterFrameColor);
-
 
 #pragma mark -
 #pragma mark Inner Frame

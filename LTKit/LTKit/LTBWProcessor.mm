@@ -299,6 +299,12 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmpli
   [self setNeedsVignetteProcessing];
 }
 
+LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
+- (void)setVignetteOpacity:(CGFloat)vignetteOpacity {
+  [self _verifyAndSetVignetteOpacity:vignetteOpacity];
+  self[[LTBWProcessorFsh vignettingOpacity]] = @(vignetteOpacity);
+}
+
 #pragma mark -
 #pragma mark Grain
 #pragma mark -
