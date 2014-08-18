@@ -70,7 +70,7 @@ context(@"processing", ^{
     
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"imageWithNarrowFrame.png")];
-    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+    expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
   });
 
   it(@"should return image with wide frame", ^{
@@ -79,7 +79,7 @@ context(@"processing", ^{
     
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"imageWithWideFrame.png")];
-    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+    expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
   });
 });
 

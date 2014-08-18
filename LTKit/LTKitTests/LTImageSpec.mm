@@ -93,7 +93,7 @@ context(@"loading images", ^{
     expect($(image.mat)).to.equalMat($(expected));
   });
 
-  it(@"should load @2x image", ^{
+  sit(@"should load @2x image", ^{
     UIImage *png = LTLoadImage([self class], @"LTImageNoise@2x.png");
     expect(png.scale).to.equal(2);
 

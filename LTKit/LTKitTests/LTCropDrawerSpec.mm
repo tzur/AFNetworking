@@ -256,8 +256,8 @@ context(@"drawing", ^{
       [fbo bindAndDraw:^{
         [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
         expected = inputTexture.image;
-        expect($(outputTexture.image)).to.equalMat($(expected));
       }];
+      expect($(outputTexture.image)).to.equalMat($(expected));
     });
     
     it(@"should draw to screen", ^{
@@ -265,8 +265,8 @@ context(@"drawing", ^{
         [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
         expected = inputTexture.image;
         cv::flip(expected, expected, 0);
-        expect($(outputTexture.image)).to.equalMat($(expected));
       }];
+      expect($(outputTexture.image)).to.equalMat($(expected));
     });
   });
 });
