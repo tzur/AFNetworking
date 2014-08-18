@@ -60,6 +60,10 @@
   return [(LTTexture *)[textureClass alloc] initWithImage:image];
 }
 
++ (instancetype)textureWithUIImage:(UIImage *)image {
+  return [LTImage textureWithImage:image];
+}
+
 + (instancetype)byteRGBATextureWithSize:(CGSize)size {
   return [[[self textureClass] alloc] initByteRGBAWithSize:size];
 }

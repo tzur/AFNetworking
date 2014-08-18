@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTImage+Texture.h"
 #import "LTTexture.h"
 
 /// Category which adds a factory on top of LTTexture's abstract class. The factory chooses the
@@ -32,6 +33,11 @@
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
 /// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
 + (instancetype)textureWithImage:(const cv::Mat &)image;
+
+/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
+/// image, and loads the \c image to the texture. Throws \c LTGLException with \c
+/// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
++ (instancetype)textureWithUIImage:(UIImage *)image;
 
 /// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
 /// memory. This is a convenience method which is similar to calling:

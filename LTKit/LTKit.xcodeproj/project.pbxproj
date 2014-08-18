@@ -650,6 +650,9 @@
 		8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */; };
 		8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA674118310F92003FCB65 /* libSpecta-iOS.a */; };
 		8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */; };
+		8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD0730C19A247B5005F2C37 /* LTImage+Texture.h */; };
+		8BD0730F19A247B5005F2C37 /* LTImage+Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0730D19A247B5005F2C37 /* LTImage+Texture.mm */; };
+		8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0733919A2604A005F2C37 /* LTImage+TextureSpec.mm */; };
 		8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */; };
 		8BD685FB18854F0200571E75 /* LTBilateralFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685E91885404600571E75 /* LTBilateralFilter.fsh */; };
 		8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */; };
@@ -1565,6 +1568,9 @@
 		8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitBundle-Info.plist"; sourceTree = "<group>"; };
 		8BCFC01F18CF0BF400E612DE /* NSBundle+LTKitBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTKitBundle.h"; sourceTree = "<group>"; };
 		8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+LTKitBundle.m"; sourceTree = "<group>"; };
+		8BD0730C19A247B5005F2C37 /* LTImage+Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTImage+Texture.h"; sourceTree = "<group>"; };
+		8BD0730D19A247B5005F2C37 /* LTImage+Texture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTImage+Texture.mm"; sourceTree = "<group>"; };
+		8BD0733919A2604A005F2C37 /* LTImage+TextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTImage+TextureSpec.mm"; sourceTree = "<group>"; };
 		8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBilateralFilterProcessor.h; sourceTree = "<group>"; };
 		8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTBilateralFilterProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BD685E91885404600571E75 /* LTBilateralFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBilateralFilter.fsh; sourceTree = "<group>"; };
@@ -2689,6 +2695,8 @@
 			children = (
 				8B98517F1868A4CF00D680D0 /* LTImage.h */,
 				8B9851801868A4CF00D680D0 /* LTImage.mm */,
+				8BD0730C19A247B5005F2C37 /* LTImage+Texture.h */,
+				8BD0730D19A247B5005F2C37 /* LTImage+Texture.mm */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -2697,6 +2705,7 @@
 			isa = PBXGroup;
 			children = (
 				8B9C4FE31868BE9300AA8BF6 /* LTImageSpec.mm */,
+				8BD0733919A2604A005F2C37 /* LTImage+TextureSpec.mm */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -3142,6 +3151,7 @@
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
+				8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */,
 				8B87202F1924A76400517F2E /* LTPainter+LTView.h in Headers */,
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
@@ -3706,6 +3716,7 @@
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
 				03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */,
+				8BD0730F19A247B5005F2C37 /* LTImage+Texture.mm in Sources */,
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8BFE1E0818756A69008035BF /* LTOneShotImageProcessor.mm in Sources */,
@@ -3866,6 +3877,7 @@
 				8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */,
 				8BAE3A8818B3B15A00DA79E1 /* LTColorGradientSpec.mm in Sources */,
 				030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */,
+				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
 				282CF092187B034200904F07 /* LTViewSpec.mm in Sources */,
 				8B329025192CC2660010592E /* LTFileManagerSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,

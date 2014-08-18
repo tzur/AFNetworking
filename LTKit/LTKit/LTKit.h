@@ -72,6 +72,7 @@
 
 // Images.
 #import <LTKit/LTImage.h>
+#import <LTKit/LTImage+Texture.h>
 
 // IO.
 #import <LTKit/LTFileManager.h>
