@@ -198,11 +198,10 @@
 }
 
 - (LTTexture *)clone {
-  LTMMTexture *cloned = [[LTMMTexture alloc] initWithSize:self.size precision:self.precision
-                                                   format:self.format allocateMemory:YES];
-  [cloned mappedImageForWriting:^(cv::Mat *image, BOOL) {
-    [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
-  }];
+  LTTexture *cloned = [[LTMMTexture alloc] initWithPropertiesOf:self];
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:cloned];
+
+  [self cloneToFramebuffer:fbo];
 
   return cloned;
 }
@@ -211,15 +210,19 @@
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
 
-  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+  [self cloneToFramebuffer:fbo];
+}
 
-  CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
-  CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
+- (void)cloneToFramebuffer:(LTFbo *)fbo {
+  LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self];
+
   [self executeAndPreserveParameters:^{
     self.minFilterInterpolation = LTTextureInterpolationNearest;
     self.magFilterInterpolation = LTTextureInterpolationNearest;
-    [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+
+    [rectDrawer drawRect:CGRectFromSize(self.size) inFramebuffer:fbo
+                fromRect:CGRectFromSize(fbo.texture.size)];
   }];
 }
 

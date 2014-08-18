@@ -271,13 +271,11 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     });
 
     context(@"cloning", ^{
-      it(@"should clone itself to a new texture", ^{
+      dit(@"should clone itself to a new texture", ^{
         LTTexture *cloned = [texture clone];
 
         expect(cloned.name).toNot.equal(texture.name);
-
-        cv::Mat read = [cloned image];
-        expect(LTCompareMat(image, read)).to.beTruthy();
+        expect($([cloned image])).to.equalMat($(image));
       });
 
       dit(@"should clone itself to an existing texture", ^{
@@ -285,8 +283,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         
         [texture cloneTo:cloned];
         
-        cv::Mat read = [cloned image];
-        expect(LTCompareMat(image, read)).to.beTruthy();
+        expect($([cloned image])).to.equalMat($(image));
       });
 
       it(@"should not clone to a texture with a different size", ^{
