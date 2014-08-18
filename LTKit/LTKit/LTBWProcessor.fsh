@@ -10,6 +10,7 @@ uniform sampler2D innerFrameTexture;
 varying highp vec2 vTexcoord;
 varying highp vec2 vGrainTexcoord;
 
+uniform mediump float vignettingOpacity;
 uniform mediump vec3 vignetteColor;
 uniform mediump vec3 grainChannelMixer;
 uniform mediump float grainAmplitude;
@@ -22,7 +23,7 @@ void main() {
   mediump vec4 outerFrame = texture2D(outerFrameTexture, vTexcoord);
   
   tone.rgb = tone.rgb + grainAmplitude * (grain - 0.5);
-  tone.rgb = mix(tone.rgb, vignetteColor, vignette);
+  tone.rgb = mix(tone.rgb, vignetteColor, vignette * vignettingOpacity);
   
   tone.rgb = innerFrame.rgb + (1.0 - innerFrame.a) * tone.rgb;
   tone.rgb = outerFrame.rgb + (1.0 - outerFrame.a) * tone.rgb;
