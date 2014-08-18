@@ -23,7 +23,8 @@
 
 - (instancetype)initWithImage:(UIImage *)image {
   LTParameterAssert(image);
-  cv::Mat mat = [self loadImageToMat:image];
+  cv::Mat mat = [[self class] allocateMatForImage:image];
+  [[self class] loadImage:image toMat:&mat];
   return [self initWithMat:mat copy:NO];
 }
 
@@ -39,37 +40,38 @@
   return self;
 }
 
-- (cv::Mat)loadImageToMat:(UIImage *)image {
++ (cv::Mat)allocateMatForImage:(UIImage *)image {
   CGSize size = [self imageSizeInPixels:image];
-  CGFloat cols = size.width;
-  CGFloat rows = size.height;
+  return cv::Mat(size.height, size.width, [self matTypeForImage:image]);
+}
 
-  CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
-  LTAssert(colorSpace, @"Received an invalid colorspace");
-
-  cv::Mat mat(rows, cols, [self matTypeForColorSpace:colorSpace]);
-
++ (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat {
   size_t bitsPerComponent = CGImageGetBitsPerComponent(image.CGImage);
-  CGContextRef context = CGBitmapContextCreate(mat.data, cols, rows,
-                                               bitsPerComponent, mat.step[0], colorSpace,
+  CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+  CGContextRef context = CGBitmapContextCreate(mat->data, mat->cols, mat->rows,
+                                               bitsPerComponent, mat->step[0], colorSpace,
                                                [self bitmapFlagsForColorSpace:colorSpace]);
   LTAssert(context, @"Failed to create bitmap context");
 
-  CGContextTranslateCTM(context, 0, size.height);
+  CGContextTranslateCTM(context, 0, mat->rows);
   CGContextScaleCTM(context, 1.0, -1.0);
 
   UIGraphicsPushContext(context);
   // Use kCGBlendModeCopy to make sure the image overwrites the context buffer, which may be
   // uninitialized.
-  [image drawInRect:CGRectFromSize(size) blendMode:kCGBlendModeCopy alpha:1.0];
+  [image drawInRect:CGRectMake(0, 0, mat->cols, mat->rows) blendMode:kCGBlendModeCopy alpha:1.0];
   UIGraphicsPopContext();
   
   CGContextRelease(context);
-
-  return mat;
 }
 
-- (int)matTypeForColorSpace:(CGColorSpaceRef)colorSpace {
++ (int)matTypeForImage:(UIImage *)image {
+  CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+  LTAssert(colorSpace, @"Received an invalid colorspace");
+  return [self matTypeForColorSpace:colorSpace];
+}
+
++ (int)matTypeForColorSpace:(CGColorSpaceRef)colorSpace {
   switch (CGColorSpaceGetModel(colorSpace)) {
     case kCGColorSpaceModelMonochrome:
       return CV_8UC1;
@@ -80,7 +82,7 @@
   }
 }
 
-- (CGBitmapInfo)bitmapFlagsForColorSpace:(CGColorSpaceRef)colorSpace {
++ (CGBitmapInfo)bitmapFlagsForColorSpace:(CGColorSpaceRef)colorSpace {
   switch (CGColorSpaceGetModel(colorSpace)) {
     case kCGColorSpaceModelMonochrome:
       return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
@@ -91,7 +93,7 @@
   }
 }
 
-- (CGSize)imageSizeInPixels:(UIImage *)image {
++ (CGSize)imageSizeInPixels:(UIImage *)image {
   return CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
 }
 
@@ -109,7 +111,7 @@
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
   CGColorSpaceRef colorSpace = [self newColorSpaceForImage];
-  CGBitmapInfo bitmapInfo = [self bitmapFlagsForColorSpace:colorSpace];
+  CGBitmapInfo bitmapInfo = [[self class] bitmapFlagsForColorSpace:colorSpace];
   CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
 
   CGImageRef imageRef = CGImageCreate(self.mat.cols, self.mat.rows,
