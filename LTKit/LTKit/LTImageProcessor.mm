@@ -53,6 +53,16 @@
   return [model copy];
 }
 
+- (NSDictionary *)defaultInputModel {
+  NSMutableDictionary *defaultModel = [NSMutableDictionary dictionary];
+
+  for (NSString *key in [[self class] inputModelPropertyKeys]) {
+    defaultModel[key] = [self valueForKey:[self defaultKeyForKey:key]];
+  }
+
+  return [defaultModel copy];
+}
+
 - (void)resetInputModel {
   [self resetInputModelExceptKeys:nil];
 }
@@ -63,19 +73,21 @@
       continue;
     }
 
-    NSString *defaultKey = [[self class] defaultKeyForKey:key];
-    LTAssert([self respondsToSelector:NSSelectorFromString(defaultKey)],
-             @"Tried to set a default value for %@, but the default key %@ doesn't exist",
-             key, defaultKey);
-
+    NSString *defaultKey = [self defaultKeyForKey:key];
     [self setValue:[self valueForKey:defaultKey] forKey:key];
   }
 }
 
-+ (NSString *)defaultKeyForKey:(NSString *)key {
+- (NSString *)defaultKeyForKey:(NSString *)key {
   NSString *initial = [[key substringToIndex:1] uppercaseString];
   NSString *rest = [key substringFromIndex:1];
-  return [@[@"default", initial, rest] componentsJoinedByString:@""];
+  NSString *defaultKey = [@[@"default", initial, rest] componentsJoinedByString:@""];
+
+  LTAssert([self respondsToSelector:NSSelectorFromString(defaultKey)],
+           @"Tried to fetch a default value for key %@, but the default key %@ doesn't exist",
+           key, defaultKey);
+
+  return defaultKey;
 }
 
 #pragma mark -

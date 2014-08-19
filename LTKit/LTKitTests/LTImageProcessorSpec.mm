@@ -195,6 +195,22 @@ context(@"input model", ^{
       expect(processor.vector3Value).to.equal(processor.defaultVector3Value);
       expect(processor.vector4Value).to.equal(processor.defaultVector4Value);
     });
+
+    it(@"should return default input model", ^{
+      NSDictionary *model = processor.defaultInputModel;
+
+      NSDictionary *expectedModel = @{
+        @keypath(processor.floatValue): @(processor.defaultFloatValue),
+        @keypath(processor.integerValue): @(processor.defaultIntegerValue),
+        @keypath(processor.stringValue): processor.defaultStringValue,
+        @keypath(processor.enumValue): processor.defaultEnumValue,
+        @keypath(processor.vector2Value): $(processor.defaultVector2Value),
+        @keypath(processor.vector3Value): $(processor.defaultVector3Value),
+        @keypath(processor.vector4Value): $(processor.defaultVector4Value),
+      };
+
+      expect(model).to.equal(expectedModel);
+    });
   });
 });
 

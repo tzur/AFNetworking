@@ -41,6 +41,11 @@
 /// is the property name and the value is the property's value.
 - (NSDictionary *)inputModel;
 
+/// Default input model of the processor. The initial state for each input model property is defined
+/// by the value returned from \c -default<property name>. If such selector does not exist, an
+/// assert will be thrown.
+- (NSDictionary *)defaultInputModel;
+
 /// Resets the input model to its initial state. The initial state for each input model property is
 /// defined by the value returned from \c -default<property name>. If such selector does not exist,
 /// an assert will be thrown.
