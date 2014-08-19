@@ -29,19 +29,25 @@
 #pragma mark Input model
 #pragma mark -
 
+/// Keys of the model input properties of this object that are part of the model to load and save.
+/// The default implementation returns \c nil, therefore no properties are part of the input model.
++ (NSSet *)inputModelPropertyKeys;
+
 /// Sets the given input model to the object. Keys set of the \c model must be equal to the
 /// \c modelProperties.
 - (void)setInputModel:(NSDictionary *)model;
 
 /// Returns the input model properties defined in \c modelProperties to a dictionary, where each key
-/// is the property name and the value is the property's value. \c LTEnum values will be
-/// automatically converted to strings.
+/// is the property name and the value is the property's value.
 - (NSDictionary *)inputModel;
 
-/// Keys of the model input properties of this object that are part of the model to load and save.
-/// The default implementation returns \c nil, therefore no properties are part of the input model.
-/// The model can contain \c LTEnum values as enumeration objects (that conform to \c LTEnum) or as
-/// \c NSString, that will be automatically resolved to their representing object.
-+ (NSSet *)inputModelPropertyKeys;
+/// Resets the input model to its initial state. The initial state for each input model property is
+/// defined by the value returned from \c -default<property name>. If such selector does not exist,
+/// an assert will be thrown.
+- (void)resetInputModel;
+
+/// Resets the input model, as defined in \c resetInputModel, but doesn't set the keys given in \c
+/// keys.
+- (void)resetInputModelExceptKeys:(NSSet *)keys;
 
 @end
