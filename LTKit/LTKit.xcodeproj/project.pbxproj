@@ -283,6 +283,8 @@
 		28A6C5AE193B77C300C217CC /* LTProgressiveImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */; };
 		28A6C5B1193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */; };
 		28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */; };
+		28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */ = {isa = PBXBuildFile; fileRef = 28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */; };
+		28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BB81981924DF520071CB0B /* LTShapeDrawer.h */; };
@@ -1248,6 +1250,8 @@
 		28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressiveImageProcessorSpec.mm; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
 		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
+		28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+CGFloat.h"; sourceTree = "<group>"; };
+		28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+CGFloat.mm"; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
 		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
@@ -2276,6 +2280,8 @@
 				8B871F97192396BE00517F2E /* NSError+LTKit.m */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
+				28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */,
+				28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
 				8BA5D6A3199250240093A4FD /* NSString+Hashing.m */,
 				8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */,
@@ -3161,6 +3167,7 @@
 				8B8720D91928951600517F2E /* UIImage+Loading.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
+				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
 				8B328FE0192B598A0010592E /* LTTextureContentsDataArchiver.h in Headers */,
 				8B8720371924A76500517F2E /* LTOpenCVExtensions.h in Headers */,
@@ -3763,6 +3770,7 @@
 				280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */,
 				8B8720CF192521FB00517F2E /* LTTextureContentsBundleArchiver.mm in Sources */,
 				8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */,
+				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				283906B318C4E27300BD21CE /* LTPainter.mm in Sources */,
 				8BABFD69188C5A29004163DA /* LTNextIterationPlacement.mm in Sources */,
 				8BA11AE11831555100A5001D /* LTTexture.mm in Sources */,
