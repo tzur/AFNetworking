@@ -2,6 +2,7 @@
 // Created by Amit Goldstein.
 
 #import "LTImageProcessor.h"
+#import "LTRect.h"
 
 @class LTTexture;
 
@@ -36,6 +37,6 @@
 ///
 /// @note The rectangle will be automatically updated when the \c rotations, \c flipHorizontal, and
 /// \c flipVertical properties are updated, to reflect the same area in the input image.
-@property (nonatomic) CGRect cropRectangle;
+@property (nonatomic) LTRect cropRectangle;
 
 @end

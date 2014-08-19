@@ -137,6 +137,12 @@ context(@"wrapping", ^{
 
     expect([value LTVector4Value]).to.equal(expected);
   });
+  
+  it(@"should box LTRect", ^{
+    LTRect expected(1, 2, 3, 4);
+    NSValue *value = $(expected);
+    expect([value LTRectValue]).to.equal(expected);
+  });
 });
 
 SpecEnd
