@@ -32,7 +32,7 @@
 
 /// Cached version of the crop rectangle, used to avoid recalculating the current rectangle from the
 /// \c normalizedCropRectangle unless the \c transform was updated.
-@property (nonatomic) CGRect cachedCropRectangle;
+@property (nonatomic) LTRect cachedCropRectangle;
 
 /// The transform corresponding to the cached version of the \c cropRectangle.
 @property (nonatomic) GLKMatrix2 cachedTransform;
@@ -163,18 +163,18 @@
   return matrix;
 }
 
-- (void)setCropRectangle:(CGRect)cropRectangle {
-  LTCropDrawerRect rect = cropRectangle;
+- (void)setCropRectangle:(LTRect)cropRectangle {
+  LTCropDrawerRect rect(cropRectangle);
   rect /= [self rotatedSize:self.inputTexture.size];
   self.normalizedCropRectangle = [self transform:GLKMatrix2Transpose(self.transform) rect:rect];
   self.cachedTransform = GLKMatrix2();
 }
 
-- (CGRect)cropRectangle {
+- (LTRect)cropRectangle {
   if (self.cachedTransform != self.transform) {
     LTCropDrawerRect rect = [self transform:self.transform rect:self.normalizedCropRectangle];
     rect *= [self rotatedSize:self.inputTexture.size];
-    self.cachedCropRectangle = rect;
+    self.cachedCropRectangle = (CGRect)rect;
     self.cachedTransform = self.transform;
   }
   
