@@ -23,10 +23,6 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 @property (nonatomic) LTVector3 vector3Value;
 @property (nonatomic) LTVector4 vector4Value;
 
-@property (nonatomic) GLKMatrix2 matrix2Value;
-@property (nonatomic) GLKMatrix3 matrix3Value;
-@property (nonatomic) GLKMatrix4 matrix4Value;
-
 @property (strong, nonatomic) NSString *stringValue;
 
 @property (strong, nonatomic) LTImageProcessorEnum *enumValue;
@@ -49,9 +45,6 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
       @instanceKeypath(LTFakeImageProcessor, vector2Value),
       @instanceKeypath(LTFakeImageProcessor, vector3Value),
       @instanceKeypath(LTFakeImageProcessor, vector4Value),
-      @instanceKeypath(LTFakeImageProcessor, matrix2Value),
-      @instanceKeypath(LTFakeImageProcessor, matrix3Value),
-      @instanceKeypath(LTFakeImageProcessor, matrix4Value),
       @instanceKeypath(LTFakeImageProcessor, stringValue),
       @instanceKeypath(LTFakeImageProcessor, enumValue),
     ]];
@@ -60,42 +53,56 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
   return properties;
 }
 
+- (float)defaultFloatValue {
+  return 1;
+}
+
+- (NSInteger)defaultIntegerValue {
+  return 1337;
+}
+
+- (LTVector2)defaultVector2Value {
+  return LTVector2(2, 1);
+}
+
+- (LTVector3)defaultVector3Value {
+  return LTVector3(3, 2, 1);
+}
+
+- (LTVector4)defaultVector4Value {
+  return LTVector4(4, 3, 2, 1);
+}
+
+- (NSString *)defaultStringValue {
+  return @"foo";
+}
+
+- (LTImageProcessorEnum *)defaultEnumValue {
+  return $(LTImageProcessorEnumB);
+}
+
 @end
 
 SpecBegin(LTImageProcessor)
 
 context(@"input model", ^{
-  GLKMatrix2 matrix2 = {{1, 2,
-                         3, 4}};
-  GLKMatrix3 matrix3 = {{1, 2, 3,
-                         4, 5, 6,
-                         7, 8, 9}};
-  GLKMatrix4 matrix4 = {{1, 2, 3, 4,
-                         5, 6, 7, 8,
-                         9, 10, 11, 12,
-                         14, 15, 16, 17}};
-
   __block LTFakeImageProcessor *processor;
 
   beforeEach(^{
     processor = [[LTFakeImageProcessor alloc] init];
+
+    processor.floatValue = 5.f;
+    processor.integerValue = 7;
+    processor.stringValue = @"hello";
+    processor.enumValue = $(LTImageProcessorEnumB);
+
+    processor.vector2Value = LTVector2(1, 2);
+    processor.vector3Value = LTVector3(1, 2, 3);
+    processor.vector4Value = LTVector4(1, 2, 3, 4);
   });
 
   context(@"getting model", ^{
     it(@"should get input model", ^{
-      processor.floatValue = 5.f;
-      processor.integerValue = 7;
-      processor.stringValue = @"hello";
-      processor.enumValue = $(LTImageProcessorEnumB);
-
-      processor.vector2Value = LTVector2(1, 2);
-      processor.vector3Value = LTVector3(1, 2, 3);
-      processor.vector4Value = LTVector4(1, 2, 3, 4);
-
-      processor.matrix2Value = matrix2;
-      processor.matrix3Value = matrix3;
-      processor.matrix4Value = matrix4;
-
       NSDictionary *model = processor.inputModel;
 
       expect(model[@keypath(processor, floatValue)]).to.equal(processor.floatValue);
@@ -106,10 +113,6 @@ context(@"input model", ^{
       expect(model[@keypath(processor, vector2Value)]).to.equal($(processor.vector2Value));
       expect(model[@keypath(processor, vector3Value)]).to.equal($(processor.vector3Value));
       expect(model[@keypath(processor, vector4Value)]).to.equal($(processor.vector4Value));
-
-      expect(model[@keypath(processor, matrix2Value)]).to.equal($(processor.matrix2Value));
-      expect(model[@keypath(processor, matrix3Value)]).to.equal($(processor.matrix3Value));
-      expect(model[@keypath(processor, matrix4Value)]).to.equal($(processor.matrix4Value));
     });
 
     it(@"should raise when trying to access non-existing key", ^{
@@ -127,10 +130,7 @@ context(@"input model", ^{
       @keypath(processor, enumValue): $(LTImageProcessorEnumB),
       @keypath(processor, vector2Value): $(LTVector2(1, 2)),
       @keypath(processor, vector3Value): $(LTVector3(1, 2, 3)),
-      @keypath(processor, vector4Value): $(LTVector4(1, 2, 3, 4)),
-      @keypath(processor, matrix2Value): $(matrix2),
-      @keypath(processor, matrix3Value): $(matrix3),
-      @keypath(processor, matrix4Value): $(matrix4)
+      @keypath(processor, vector4Value): $(LTVector4(1, 2, 3, 4))
     };
 
     it(@"should set input model", ^{
@@ -145,10 +145,6 @@ context(@"input model", ^{
       expect($(processor.vector2Value)).to.equal(model[@keypath(processor, vector2Value)]);
       expect($(processor.vector3Value)).to.equal(model[@keypath(processor, vector3Value)]);
       expect($(processor.vector4Value)).to.equal(model[@keypath(processor, vector4Value)]);
-
-      expect($(processor.matrix2Value)).to.equal(model[@keypath(processor, matrix2Value)]);
-      expect($(processor.matrix3Value)).to.equal(model[@keypath(processor, matrix3Value)]);
-      expect($(processor.matrix4Value)).to.equal(model[@keypath(processor, matrix4Value)]);
     });
 
     it(@"should raise when setting an incomplete model", ^{
@@ -169,6 +165,51 @@ context(@"input model", ^{
       expect(^{
         [processor setInputModel:overcompleteModel];
       }).to.raise(NSInvalidArgumentException);
+    });
+  });
+
+  context(@"resetting input model", ^{
+    it(@"should reset input model", ^{
+      [processor resetInputModel];
+
+      expect(processor.floatValue).to.equal(processor.defaultFloatValue);
+      expect(processor.integerValue).to.equal(processor.defaultIntegerValue);
+      expect(processor.stringValue).to.equal(processor.defaultStringValue);
+      expect(processor.enumValue).to.equal(processor.defaultEnumValue);
+      expect(processor.vector2Value).to.equal(processor.defaultVector2Value);
+      expect(processor.vector3Value).to.equal(processor.defaultVector3Value);
+      expect(processor.vector4Value).to.equal(processor.defaultVector4Value);
+    });
+
+    it(@"should reset input model without specific keys", ^{
+      NSSet *keys = [NSSet setWithArray:@[@keypath(processor.floatValue),
+                                          @keypath(processor.vector2Value)]];
+      [processor resetInputModelExceptKeys:keys];
+
+      expect(processor.floatValue).to.equal(5.f);
+      expect(processor.vector2Value).to.equal(LTVector2(1, 2));
+
+      expect(processor.integerValue).to.equal(processor.defaultIntegerValue);
+      expect(processor.stringValue).to.equal(processor.defaultStringValue);
+      expect(processor.enumValue).to.equal(processor.defaultEnumValue);
+      expect(processor.vector3Value).to.equal(processor.defaultVector3Value);
+      expect(processor.vector4Value).to.equal(processor.defaultVector4Value);
+    });
+
+    it(@"should return default input model", ^{
+      NSDictionary *model = processor.defaultInputModel;
+
+      NSDictionary *expectedModel = @{
+        @keypath(processor.floatValue): @(processor.defaultFloatValue),
+        @keypath(processor.integerValue): @(processor.defaultIntegerValue),
+        @keypath(processor.stringValue): processor.defaultStringValue,
+        @keypath(processor.enumValue): processor.defaultEnumValue,
+        @keypath(processor.vector2Value): $(processor.defaultVector2Value),
+        @keypath(processor.vector3Value): $(processor.defaultVector3Value),
+        @keypath(processor.vector4Value): $(processor.defaultVector4Value),
+      };
+
+      expect(model).to.equal(expectedModel);
     });
   });
 });

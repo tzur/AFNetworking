@@ -20,6 +20,10 @@
 #pragma mark Load / save
 #pragma mark -
 
++ (NSSet *)inputModelPropertyKeys {
+  return nil;
+}
+
 - (void)setInputModel:(NSDictionary *)model {
   // For an undefined input model, exit gracefully.
   if (![[self class] inputModelPropertyKeys]) {
@@ -49,20 +53,41 @@
   return [model copy];
 }
 
-+ (Class)classForKey:(NSString *)key {
-  ext_propertyAttributes *attributes = [self propertyAttributesForKey:key];
-  @onExit {
-    free(attributes);
-  };
+- (NSDictionary *)defaultInputModel {
+  NSMutableDictionary *defaultModel = [NSMutableDictionary dictionary];
 
-  if (!attributes) {
-    return nil;
+  for (NSString *key in [[self class] inputModelPropertyKeys]) {
+    defaultModel[key] = [self valueForKey:[self defaultKeyForKey:key]];
   }
-  return attributes->objectClass;
+
+  return [defaultModel copy];
 }
 
-+ (NSSet *)inputModelPropertyKeys {
-  return nil;
+- (void)resetInputModel {
+  [self resetInputModelExceptKeys:nil];
+}
+
+- (void)resetInputModelExceptKeys:(NSSet *)keys {
+  for (NSString *key in [[self class] inputModelPropertyKeys]) {
+    if ([keys containsObject:key]) {
+      continue;
+    }
+
+    NSString *defaultKey = [self defaultKeyForKey:key];
+    [self setValue:[self valueForKey:defaultKey] forKey:key];
+  }
+}
+
+- (NSString *)defaultKeyForKey:(NSString *)key {
+  NSString *initial = [[key substringToIndex:1] uppercaseString];
+  NSString *rest = [key substringFromIndex:1];
+  NSString *defaultKey = [@[@"default", initial, rest] componentsJoinedByString:@""];
+
+  LTAssert([self respondsToSelector:NSSelectorFromString(defaultKey)],
+           @"Tried to fetch a default value for key %@, but the default key %@ doesn't exist",
+           key, defaultKey);
+
+  return defaultKey;
 }
 
 #pragma mark -
@@ -71,131 +96,6 @@
 
 + (NSSet *)serializableKeyPaths {
   return [[self class] inputModelPropertyKeys];
-}
-
-#pragma mark -
-#pragma mark Union handling
-#pragma mark -
-
-+ (NSSet *)allowedUnionTypes {
-  static NSSet *allowedTypes;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    allowedTypes = [NSSet setWithArray:@[
-      @(@encode(GLKVector2)), @(@encode(GLKVector3)), @(@encode(GLKVector4)),
-      @(@encode(GLKMatrix2)), @(@encode(GLKMatrix3)), @(@encode(GLKMatrix4))
-    ]];
-  });
-
-  return allowedTypes;
-}
-
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
-  ext_propertyAttributes *attributes = [[self class] propertyAttributesForKey:key];
-  @onExit {
-    free(attributes);
-  };
-
-  if (![[[self class] allowedUnionTypes] containsObject:@(attributes->type)]) {
-    [super setValue:value forUndefinedKey:key];
-  }
-
-  [self setValue:value forProperty:attributes];
-}
-
-- (void)setValue:(id)value forProperty:(ext_propertyAttributes *)attributes {
-  LTAssert([value isKindOfClass:[NSValue class]], @"This method supports only NSValue as an "
-           "argument to set to a property. To set objects or other primitives, use the canonical "
-           "setValue:forKey:");
-
-  NSMethodSignature *signature = [self signatureForSelector:attributes->setter];
-
-  // Arguments should contain self, _cmd and the value to set.
-  LTAssert(signature.numberOfArguments == 3, @"Property setter must have a single input argument");
-
-  NSUInteger size;
-  NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:2], &size, NULL);
-  std::unique_ptr<char[]> argument(new char[size]);
-  [value getValue:argument.get()];
-
-  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-  [invocation setArgument:argument.get() atIndex:2];
-  [invocation setSelector:attributes->setter];
-  [invocation invokeWithTarget:self];
-}
-
-- (id)valueForUndefinedKey:(NSString *)key {
-  ext_propertyAttributes *attributes = [[self class] propertyAttributesForKey:key];
-  @onExit {
-    free(attributes);
-  };
-
-  if (!attributes || ![[[self class] allowedUnionTypes] containsObject:@(attributes->type)]) {
-    [super valueForUndefinedKey:key];
-  }
-
-  return [self valueForProperty:attributes];
-}
-
-- (NSValue *)valueForProperty:(ext_propertyAttributes *)attributes {
-  LTAssert(attributes, @"Given property attributes cannot be NULL");
-
-  NSMethodSignature *signature = [self signatureForSelector:attributes->getter];
-  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-  [invocation setSelector:attributes->getter];
-  [invocation invokeWithTarget:self];
-
-  std::unique_ptr<char[]> value(new char[signature.methodReturnLength]);
-  [invocation getReturnValue:value.get()];
-
-  // Return value with the original type and not the stripped one to preserve \c isEqualToValue:
-  // to matching uniforms.
-  return [NSValue valueWithBytes:value.get() objCType:attributes->type];
-}
-
-+ (ext_propertyAttributes *)propertyAttributesForKey:(NSString *)key {
-  const char *name = [key cStringUsingEncoding:NSUTF8StringEncoding];
-  objc_property_t property = class_getProperty(self.class, name);
-  if (!property) {
-    return nil;
-  }
-
-  return ext_copyPropertyAttributes(property);
-}
-
-- (NSMethodSignature *)signatureForSelector:(SEL)selector {
-  Method method = class_getInstanceMethod([self class], selector);
-  struct objc_method_description *desc = method_getDescription(method);
-
-  NSString *types = [self stripUnionFromTypeEncoding:@(desc->types)];
-  const char *objcTypes = [types cStringUsingEncoding:NSUTF8StringEncoding];
-
-  return [NSMethodSignature signatureWithObjCTypes:objcTypes];
-}
-
-- (NSString *)stripUnionFromTypeEncoding:(NSString *)encoding {
-  NSMutableString *mutableEncoding = [encoding mutableCopy];
-
-  NSRegularExpression *regex = [[self class] stripUnionRegex];
-  [regex replaceMatchesInString:mutableEncoding options:0
-                          range:NSMakeRange(0, encoding.length) withTemplate:@"$1"];
-
-  return [mutableEncoding copy];
-}
-
-+ (NSRegularExpression *)stripUnionRegex {
-  static NSRegularExpression *regex;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    NSError *error;
-    regex = [NSRegularExpression regularExpressionWithPattern:@"\\(.*?=(\\{.*?\\}).*?\\)"
-                                                      options:0 error:&error];
-    LTAssert(!error, @"Encountered error while creating regex: %@", error.description);
-  });
-
-  return regex;
 }
 
 @end
