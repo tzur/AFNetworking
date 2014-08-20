@@ -46,6 +46,11 @@
 /// assert will be thrown.
 - (NSDictionary *)defaultInputModel;
 
+/// Returns the default value for a given input model key, or \c nil if the \c key is not one of the
+/// input model's keys. If no default value exists for a valid property key, an assert will be
+/// thrown.
+- (id)defaultValueForKey:(NSString *)key;
+
 /// Resets the input model to its initial state. The initial state for each input model property is
 /// defined by the value returned from \c -default<property name>. If such selector does not exist,
 /// an assert will be thrown.
