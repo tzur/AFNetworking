@@ -211,6 +211,16 @@ context(@"input model", ^{
 
       expect(model).to.equal(expectedModel);
     });
+
+    it(@"should return default value for key", ^{
+      float defaultFloat = [[processor defaultValueForKey:@keypath(processor.floatValue)]
+                            floatValue];
+      expect(defaultFloat).to.equal(processor.defaultFloatValue);
+
+      LTImageProcessorEnum *defaultEnum =
+          [processor defaultValueForKey:@keypath(processor.enumValue)];
+      expect(defaultEnum).to.equal(processor.defaultEnumValue);
+    });
   });
 });
 

@@ -63,6 +63,13 @@
   return [defaultModel copy];
 }
 
+- (id)defaultValueForKey:(NSString *)key {
+  if (![[[self class] inputModelPropertyKeys] containsObject:key]) {
+    return nil;
+  }
+  return [self valueForKey:[self defaultKeyForKey:key]];
+}
+
 - (void)resetInputModel {
   [self resetInputModelExceptKeys:nil];
 }
