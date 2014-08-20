@@ -700,10 +700,10 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
 		8B8E50EE1861CCEC00821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -712,10 +712,10 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
 		8B8E50F21861CE7600821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -3607,7 +3607,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\ncp -f \"$DERIVED_FILE_DIR\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\ncp -f \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
