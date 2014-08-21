@@ -16,7 +16,9 @@ static const NSUInteger kTestingSeed = 1234;
   [self bind:[UIApplication sharedApplication] toClass:[UIApplication class]];
   [self bind:[UIScreen mainScreen] toClass:[UIScreen class]];
   [self bind:[LTDevice currentDevice] toClass:[LTDevice class]];
-  [self bind:[[LTRandom alloc] initWithSeed:kTestingSeed] toClass:[LTRandom class]];
+  [self bindBlock:^id(JSObjectionInjector __unused *context) {
+    return [[LTRandom alloc] initWithSeed:kTestingSeed];
+  } toClass:[LTRandom class]];
 }
 
 @end
