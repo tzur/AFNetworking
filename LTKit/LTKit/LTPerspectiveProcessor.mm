@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTNextIterationPlacement.h"
+#import "LTOneShotImageProcessor+Protected.h"
 #import "LTProcessingDrawer.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
@@ -26,6 +27,11 @@ typedef union {
 
 @interface LTGPUImageProcessor ()
 @property (strong, nonatomic) id<LTProcessingDrawer> drawer;
+@end
+
+@interface LTOneShotImageProcessor ()
+- (CGRect)targetRectForFramebufferSize:(CGSize)framebufferSize outputRect:(CGRect)rect
+               originalFramebufferSize:(CGSize)originalFramebufferSize;
 @end
 
 @interface LTPerspectiveProcessor ()
@@ -70,15 +76,20 @@ typedef union {
 #pragma mark -
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  CGPoint inputCenter = CGPointMake(0.5, 0.5) + self.translation / self.scale;
-  LTRotatedRect *sourceRect = [LTRotatedRect rectWithCenter:self.inputTexture.size * inputCenter
-                                                       size:self.inputTexture.size / self.scale
-                                                      angle:0];
-  
-  self.drawer[[LTPerspectiveProcessorFsh perspective]] = $(self.matrix);
-  [self.drawer drawRotatedRect:[LTRotatedRect rect:CGRectFromSize(self.outputTexture.size)]
-                 inFramebuffer:placement.targetFbo
-               fromRotatedRect:sourceRect];
+  CGRect sourceRect = [self sourceRectForSourceTextureSize:self.inputTexture.size];
+  CGRect targetRect = CGRectFromSize(self.outputTexture.size);
+  [self.drawer drawRect:targetRect inFramebuffer:placement.targetFbo fromRect:sourceRect];
+}
+
+- (CGRect)sourceRectForFramebufferSize:(__unused CGSize)framebufferSize
+                            outputRect:(__unused CGRect)rect
+                     sourceTextureSize:(CGSize)size {
+  return [self sourceRectForSourceTextureSize:size];
+}
+
+- (CGRect)sourceRectForSourceTextureSize:(CGSize)size {
+  CGPoint center = CGPointMake(0.5, 0.5) + self.translation / self.scale;
+  return CGRectCenteredAt(size * center, size / self.scale);
 }
 
 #pragma mark -
@@ -188,6 +199,15 @@ typedef union {
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (void)setMatrix:(GLKMatrix3)matrix {
+  if (matrix == _matrix) {
+    return;
+  }
+
+  _matrix = matrix;
+  self.drawer[[LTPerspectiveProcessorFsh perspective]] = $(self.matrix);
+}
 
 LTPropertyWithoutSetter(CGFloat, horizontal, Horizontal, -M_PI / 10, M_PI / 10, 0);
 - (void)setHorizontal:(CGFloat)horizontal {
