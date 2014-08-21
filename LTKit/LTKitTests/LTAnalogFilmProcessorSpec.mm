@@ -38,14 +38,14 @@ context(@"properties", ^{
   
   it(@"should return default grain properties correctly", ^{
     expect(processor.grainAmplitude).to.equal(0);
-    expect(processor.grainChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.grainChannelMixer).to.equal(LTVector3(1, 0, 0));
   });
   
   it(@"should return default vignetting properties correctly", ^{
-    expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
+    expect(processor.vignetteColor).to.equal(LTVector3(0, 0, 0));
     expect(processor.vignetteSpread).to.equal(0);
     expect(processor.vignetteCorner).to.equal(2);
-    expect(processor.vignetteNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.vignetteNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.vignetteNoiseAmplitude).to.equal(0);
     expect(processor.vignetteOpacity).to.equal(0);
   });

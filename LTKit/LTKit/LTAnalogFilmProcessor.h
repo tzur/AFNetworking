@@ -91,8 +91,8 @@ LTPropertyDeclare(CGFloat, colorGradientAlpha, ColorGradientAlpha);
 /// Mixes the channels of the grain texture. Default value is (1, 0, 0). Components should be in
 /// [0, 1] range. Input values are normalized, to remove potential interference with noise
 /// amplitude.
-@property (nonatomic) GLKVector3 grainChannelMixer;
-LTPropertyDeclare(GLKVector3, grainChannelMixer, GrainChannelMixer);
+@property (nonatomic) LTVector3 grainChannelMixer;
+LTPropertyDeclare(LTVector3, grainChannelMixer, GrainChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 0.
 @property (nonatomic) CGFloat grainAmplitude;
@@ -104,8 +104,8 @@ LTPropertyDeclare(CGFloat, grainAmplitude, GrainAmplitude);
 
 /// Color of the vignetting pattern. Color components should be in [0, 1] range. Default color is
 /// black (0, 0, 0).
-@property (nonatomic) GLKVector3 vignetteColor;
-LTPropertyDeclare(GLKVector3, vignetteColor, VignetteColor);
+@property (nonatomic) LTVector3 vignetteColor;
+LTPropertyDeclare(LTVector3, vignetteColor, VignetteColor);
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 0.
@@ -131,8 +131,8 @@ LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 /// Mixes the noise channels of the noise texture in order to create the transition noise.
 /// Components should be in [0, 1] range. Default value is (1, 0, 0). Input values are normalized,
 /// to remove potential interference with noise amplitude.
-@property (nonatomic) GLKVector3 vignetteNoiseChannelMixer;
-LTPropertyDeclare(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer);
+@property (nonatomic) LTVector3 vignetteNoiseChannelMixer;
+LTPropertyDeclare(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 0.
 @property (nonatomic) CGFloat vignetteNoiseAmplitude;

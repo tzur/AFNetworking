@@ -42,18 +42,18 @@ LTPropertyDeclare(CGFloat, offset, Offset);
 
 /// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
 /// (0, 0, 0).
-@property (nonatomic) GLKVector3 blackPoint;
-LTPropertyDeclare(GLKVector3, blackPoint, BlackPoint);
+@property (nonatomic) LTVector3 blackPoint;
+LTPropertyDeclare(LTVector3, blackPoint, BlackPoint);
 
 /// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
 /// (1, 1, 1).
-@property (nonatomic) GLKVector3 whitePoint;
-LTPropertyDeclare(GLKVector3, whitePoint, WhitePoint);
+@property (nonatomic) LTVector3 whitePoint;
+LTPropertyDeclare(LTVector3, whitePoint, WhitePoint);
 
 /// Remapes mid-point with power function. Components should be in [-1, 1] range. Default value is
 /// (0, 0, 0).
-@property (nonatomic) GLKVector3 midPoint;
-LTPropertyDeclare(GLKVector3, midPoint, MidPoint);
+@property (nonatomic) LTVector3 midPoint;
+LTPropertyDeclare(LTVector3, midPoint, MidPoint);
 
 #pragma mark -
 #pragma mark Curves

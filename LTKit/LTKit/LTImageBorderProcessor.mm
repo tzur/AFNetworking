@@ -150,12 +150,12 @@ static const CGFloat kNoiseScalingBase = 10;
   return self.outerFrameProcessor.noise;
 }
 
-- (void)setOuterFrameNoiseChannelMixer:(GLKVector3)outerFrameNoiseChannelMixer {
+- (void)setOuterFrameNoiseChannelMixer:(LTVector3)outerFrameNoiseChannelMixer {
   self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
   [self.outerFrameProcessor process];
 }
 
-- (GLKVector3)outerFrameNoiseChannelMixer {
+- (LTVector3)outerFrameNoiseChannelMixer {
   return self.outerFrameProcessor.noiseChannelMixer;
 }
 
@@ -169,12 +169,12 @@ static const CGFloat kNoiseScalingBase = 10;
   return self.outerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
 }
 
-- (void)setOuterFrameColor:(GLKVector3)outerFrameColor {
+- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
   self.outerFrameProcessor.color = outerFrameColor;
   [self.outerFrameProcessor process];
 }
 
-- (GLKVector3)outerFrameColor {
+- (LTVector3)outerFrameColor {
   return self.outerFrameProcessor.color;
 }
 
@@ -217,12 +217,12 @@ static const CGFloat kNoiseScalingBase = 10;
   return self.innerFrameProcessor.noise;
 }
 
-- (void)setInnerFrameNoiseChannelMixer:(GLKVector3)innerFrameNoiseChannelMixer {
+- (void)setInnerFrameNoiseChannelMixer:(LTVector3)innerFrameNoiseChannelMixer {
   self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
   [self.innerFrameProcessor process];
 }
 
-- (GLKVector3)innerFrameNoiseChannelMixer {
+- (LTVector3)innerFrameNoiseChannelMixer {
   return self.innerFrameProcessor.noiseChannelMixer;
 }
 
@@ -236,12 +236,12 @@ static const CGFloat kNoiseScalingBase = 10;
   return self.innerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
 }
 
-- (void)setInnerFrameColor:(GLKVector3)innerFrameColor {
+- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
   self.innerFrameProcessor.color = innerFrameColor;
   [self.innerFrameProcessor process];
 }
 
-- (GLKVector3)innerFrameColor {
+- (LTVector3)innerFrameColor {
   return self.innerFrameProcessor.color;
 }
 
