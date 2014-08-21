@@ -65,8 +65,4 @@
   } toProtocol:protocol];
 }
 
-- (void)bind:(id)instance toClass:(Class)aClass {
-  [super bind:instance toClass:aClass];
-}
-
 @end
