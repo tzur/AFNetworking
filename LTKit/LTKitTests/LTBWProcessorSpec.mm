@@ -9,7 +9,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTBWProcessor)
+LTSpecBegin(LTBWProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -37,15 +37,15 @@ context(@"properties", ^{
   
   it(@"should return default grain properties correctly", ^{
     expect(processor.grainAmplitude).to.equal(1);
-    expect(processor.grainChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.grainChannelMixer).to.equal(LTVector3(1, 0, 0));
   });
   
   it(@"should return default vignetting properties correctly", ^{
     expect(processor.vignetteOpacity).to.equal(0);
-    expect(processor.vignetteColor == GLKVector3Make(0, 0, 0)).to.beTruthy();
+    expect(processor.vignetteColor).to.equal(LTVector3(0, 0, 0));
     expect(processor.vignetteSpread).to.equal(0);
     expect(processor.vignetteCorner).to.equal(2);
-    expect(processor.vignetteNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.vignetteNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.vignetteNoiseAmplitude).to.equal(0);
   });
   
@@ -53,18 +53,18 @@ context(@"properties", ^{
     expect(processor.outerFrameWidth).to.equal(0);
     expect(processor.outerFrameSpread).to.equal(0);
     expect(processor.outerFrameCorner).to.equal(0);
-    expect(processor.outerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.outerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.outerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.outerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
+    expect(processor.outerFrameColor).to.equal(LTVector3(1, 1, 1));
   });
   
   it(@"should return default inner frame properties correctly", ^{
     expect(processor.innerFrameWidth).to.equal(0);
     expect(processor.innerFrameSpread).to.equal(0);
     expect(processor.innerFrameCorner).to.equal(0);
-    expect(processor.innerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.innerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.innerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.innerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
+    expect(processor.innerFrameColor).to.equal(LTVector3(1, 1, 1));
   });
   
   it(@"should return default color gradient as identity", ^{
@@ -231,4 +231,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

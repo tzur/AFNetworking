@@ -8,7 +8,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTImageBorderProcessor)
+LTSpecBegin(LTImageBorderProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -31,18 +31,18 @@ context(@"properties", ^{
     expect(processor.outerFrameWidth).to.equal(0);
     expect(processor.outerFrameSpread).to.equal(0);
     expect(processor.outerFrameCorner).to.equal(0);
-    expect(processor.outerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.outerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.outerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.outerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
+    expect(processor.outerFrameColor).to.equal(LTVector3(1, 1, 1));
   });
   
   it(@"should return default inner frame properties correctly", ^{
     expect(processor.innerFrameWidth).to.equal(0);
     expect(processor.innerFrameSpread).to.equal(0);
     expect(processor.innerFrameCorner).to.equal(0);
-    expect(processor.innerFrameNoiseChannelMixer == GLKVector3Make(1, 0, 0)).to.beTruthy();
+    expect(processor.innerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(processor.innerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.innerFrameColor == GLKVector3Make(1, 1, 1)).to.beTruthy();
+    expect(processor.innerFrameColor).to.equal(LTVector3(1, 1, 1));
   });
   
   it(@"should return default roughness property correctly", ^{
@@ -163,4 +163,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

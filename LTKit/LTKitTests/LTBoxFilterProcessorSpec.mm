@@ -6,7 +6,7 @@
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTBoxFilterProcessor)
+LTSpecBegin(LTBoxFilterProcessor)
 
 __block LTTexture *output;
 __block LTBoxFilterProcessor *processor;
@@ -33,4 +33,4 @@ it(@"should process input image correctly", ^{
   expect(LTFuzzyCompareMat(processedDelta, [output image])).to.beTruthy();
 });
 
-SpecGLEnd
+LTSpecEnd

@@ -9,7 +9,7 @@
 #import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 
-SpecGLBegin(LTFbo)
+LTSpecBegin(LTFbo)
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
@@ -133,4 +133,4 @@ context(@"binding", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

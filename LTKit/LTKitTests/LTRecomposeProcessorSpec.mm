@@ -49,7 +49,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @end
 
-SpecGLBegin(LTRecomposeProcessor)
+LTSpecBegin(LTRecomposeProcessor)
 
 context(@"initialization", ^{
   it(@"should not initialize if input size is different than mask size", ^{
@@ -198,4 +198,4 @@ context(@"properties", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

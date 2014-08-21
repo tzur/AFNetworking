@@ -9,7 +9,7 @@
 #import "LTCGExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTSingleTextureBrush)
+LTSpecBegin(LTSingleTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
@@ -66,4 +66,4 @@ context(@"properties", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

@@ -8,7 +8,7 @@
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 
-SpecGLBegin(LTBicubicResizeProcessor)
+LTSpecBegin(LTBicubicResizeProcessor)
 
 __block LTGLTexture *input;
 __block LTGLTexture *output;
@@ -46,4 +46,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTImageFrameProcessor)
+LTSpecBegin(LTImageFrameProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -133,4 +133,4 @@ context(@"processing frame types", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

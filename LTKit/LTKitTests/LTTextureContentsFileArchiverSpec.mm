@@ -3,6 +3,7 @@
 
 #import "LTTextureContentsFileArchiver.h"
 
+#import "LTObjectionModule.h"
 #import "LTOpenCVExtensions.h"
 #import "LTFileManager.h"
 #import "LTTexture+Factory.h"
@@ -33,13 +34,15 @@
 
 @end
 
-SpecGLBegin(LTTextureContentsFileArchiver)
-
-LTKitTestsUseObjection();
+LTSpecBegin(LTTextureContentsFileArchiver)
 
 __block LTTexture *texture;
+__block LTFakeFileManager *fakeManager;
 
 beforeEach(^{
+  fakeManager = [[LTFakeFileManager alloc] init];
+  LTBindObjectToClass(fakeManager, [LTFileManager class]);
+
   cv::Mat4b image(2, 2);
   image(0, 0) = cv::Vec4b(255, 0, 0, 255);
   image(0, 1) = cv::Vec4b(0, 255, 0, 255);
@@ -55,8 +58,6 @@ afterEach(^{
 
 it(@"should store texture to temporary file", ^{
   LTTextureContentsFileArchiver *archiver = [[LTTextureContentsFileArchiver alloc] init];
-  LTFakeFileManager *fakeManager = [[LTFakeFileManager alloc] init];
-  archiver.fileManager = fakeManager;
 
   expect([archiver archiveTexture:texture error:nil]).toNot.beNil();
   expect(fakeManager.saveCount).to.equal(1);
@@ -67,8 +68,6 @@ it(@"should store texture to given file path", ^{
 
   LTTextureContentsFileArchiver *archiver = [[LTTextureContentsFileArchiver alloc]
                                              initWithFilePath:kFilePath];
-  LTFakeFileManager *fakeManager = [[LTFakeFileManager alloc] init];
-  archiver.fileManager = fakeManager;
 
   expect([archiver archiveTexture:texture error:nil]).toNot.beNil();
   expect(fakeManager.saveCount).to.equal(1);
@@ -93,8 +92,6 @@ it(@"should fail loading and storing unsupported texture format", ^{
   LTTexture *unsupported = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
 
   LTTextureContentsFileArchiver *archiver = [[LTTextureContentsFileArchiver alloc] init];
-  LTFakeFileManager *fakeManager = [[LTFakeFileManager alloc] init];
-  archiver.fileManager = fakeManager;
 
   expect(^{
     [archiver unarchiveData:[NSData data] toTexture:unsupported error:nil];
@@ -116,4 +113,4 @@ context(@"coding", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

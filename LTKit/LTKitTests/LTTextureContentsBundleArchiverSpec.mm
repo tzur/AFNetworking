@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTTextureContentsBundleArchiver)
+LTSpecBegin(LTTextureContentsBundleArchiver)
 
 it(@"should intialize and set properties", ^{
   static NSString * const kName = @"MyTexture";
@@ -56,4 +56,4 @@ it(@"should return yes when archiving texture", ^{
   expect(error).to.beNil();
 });
 
-SpecGLEnd
+LTSpecEnd

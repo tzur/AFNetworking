@@ -29,7 +29,7 @@ static void LTBlendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::V
   }
 }
 
-SpecGLBegin(LTGridDrawerSpec)
+LTSpecBegin(LTGridDrawerSpec)
 
 beforeEach(^{
   LTGLContext *context = [LTGLContext currentContext];
@@ -227,4 +227,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

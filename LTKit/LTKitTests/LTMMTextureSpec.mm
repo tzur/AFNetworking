@@ -37,7 +37,7 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
 @property (nonatomic) GLsync syncObject;
 @end
 
-SpecGLBegin(LTMMTexture)
+LTSpecBegin(LTMMTexture)
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTMMTexture class]});
 
@@ -232,4 +232,4 @@ context(@"cpu gpu memory synchronization", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

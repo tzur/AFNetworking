@@ -10,7 +10,7 @@
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
 @end
 
-SpecGLBegin(LTViewPixelGrid)
+LTSpecBegin(LTViewPixelGrid)
 
 const CGSize contentSize = CGSizeMake(256, 512);
 const CGRect contentBounds = CGRectFromOriginAndSize(CGPointZero, contentSize);
@@ -140,4 +140,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

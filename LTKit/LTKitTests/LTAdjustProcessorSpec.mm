@@ -9,7 +9,7 @@
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTAdjustProcessor)
+LTSpecBegin(LTAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -408,4 +408,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

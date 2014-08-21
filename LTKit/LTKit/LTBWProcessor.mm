@@ -101,7 +101,7 @@
 - (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
   CGFloat xScale = size.width / grain.size.width;
   CGFloat yScale = size.height / grain.size.height;
-  self[[LTBWProcessorVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
+  self[[LTBWProcessorVsh grainScaling]] = $(LTVector2(xScale, yScale));
 }
 
 - (CGSize)findConstrainedSizeWithSize:(CGSize)size maxDimension:(CGFloat)maxDimension {
@@ -187,8 +187,8 @@
 #pragma mark Tone
 #pragma mark -
 
-LTPropertyProxyWithoutSetter(GLKVector3, colorFilter, ColorFilter, self.toneProcessor);
-- (void)setColorFilter:(GLKVector3)colorFilter {
+LTPropertyProxyWithoutSetter(LTVector3, colorFilter, ColorFilter, self.toneProcessor);
+- (void)setColorFilter:(LTVector3)colorFilter {
   self.toneProcessor.colorFilter = colorFilter;
   [self setNeedsToneProcessing];
 }
@@ -255,9 +255,9 @@ LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity,
 #pragma mark Vignette
 #pragma mark -
 
-LTPropertyWithoutSetter(GLKVector3, vignetteColor, VignetteColor,
-                        GLKVector3Zero, GLKVector3One, GLKVector3Zero);
-- (void)setVignetteColor:(GLKVector3)vignetteColor {
+LTPropertyWithoutSetter(LTVector3, vignetteColor, VignetteColor,
+                        LTVector3Zero, LTVector3One, LTVector3Zero);
+- (void)setVignetteColor:(LTVector3)vignetteColor {
   [self _verifyAndSetVignetteColor:vignetteColor];
   self[@"vignetteColor"] = $(vignetteColor);
 }
@@ -285,9 +285,9 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
   return self.vignetteProcessor.noise;
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
+LTPropertyProxyWithoutSetter(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
                              self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setVignetteNoiseChannelMixer:(GLKVector3)vignetteNoiseChannelMixer {
+- (void)setVignetteNoiseChannelMixer:(LTVector3)vignetteNoiseChannelMixer {
   self.vignetteProcessor.noiseChannelMixer = vignetteNoiseChannelMixer;
   [self setNeedsVignetteProcessing];
 }
@@ -330,9 +330,9 @@ LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
   return isTilable || matchesOutputSize;
 }
 
-LTPropertyWithoutSetter(GLKVector3, grainChannelMixer, GrainChannelMixer,
-                        GLKVector3Zero, GLKVector3One, GLKVector3Make(1, 0, 0));
-- (void)setGrainChannelMixer:(GLKVector3)grainChannelMixer {
+LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
+                        LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
+- (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
   [self _verifyAndSetGrainChannelMixer:grainChannelMixer];
   _grainChannelMixer = grainChannelMixer / std::sum(grainChannelMixer);
   self[[LTBWProcessorFsh grainChannelMixer]] = $(_grainChannelMixer);
@@ -382,9 +382,9 @@ LTPropertyProxyWithoutSetter(CGFloat, outerFrameCorner, OuterFrameCorner,
   return self.outerFrameProcessor.noise;
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
+LTPropertyProxyWithoutSetter(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
                              self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setOuterFrameNoiseChannelMixer:(GLKVector3)outerFrameNoiseChannelMixer {
+- (void)setOuterFrameNoiseChannelMixer:(LTVector3)outerFrameNoiseChannelMixer {
   self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
   [self setNeedsOuterFrameProcessing];
 }
@@ -396,9 +396,9 @@ LTPropertyProxyWithoutSetter(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseA
   [self setNeedsOuterFrameProcessing];
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, outerFrameColor, OuterFrameColor,
+LTPropertyProxyWithoutSetter(LTVector3, outerFrameColor, OuterFrameColor,
                              self.outerFrameProcessor, color, Color);
-- (void)setOuterFrameColor:(GLKVector3)outerFrameColor {
+- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
   self.outerFrameProcessor.color = outerFrameColor;
   [self setNeedsOuterFrameProcessing];
 }
@@ -439,9 +439,9 @@ LTPropertyProxyWithoutSetter(CGFloat, innerFrameCorner, InnerFrameCorner,
   return self.innerFrameProcessor.noise;
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
+LTPropertyProxyWithoutSetter(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
                              self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setInnerFrameNoiseChannelMixer:(GLKVector3)innerFrameNoiseChannelMixer {
+- (void)setInnerFrameNoiseChannelMixer:(LTVector3)innerFrameNoiseChannelMixer {
   self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
   [self setNeedsInnerFrameProcessing];
 }
@@ -453,9 +453,9 @@ LTPropertyProxyWithoutSetter(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseA
   [self setNeedsInnerFrameProcessing];
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, innerFrameColor, InnerFrameColor,
+LTPropertyProxyWithoutSetter(LTVector3, innerFrameColor, InnerFrameColor,
                              self.innerFrameProcessor, color, Color);
-- (void)setInnerFrameColor:(GLKVector3)innerFrameColor {
+- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
   self.innerFrameProcessor.color = innerFrameColor;
   [self setNeedsInnerFrameProcessing];
 }

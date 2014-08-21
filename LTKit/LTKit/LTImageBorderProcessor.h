@@ -48,14 +48,14 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// In outer frame, mixes the noise channels of the noise texture in order to create the transition
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
-@property (nonatomic) GLKVector3 outerFrameNoiseChannelMixer;
+@property (nonatomic) LTVector3 outerFrameNoiseChannelMixer;
 
 /// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat outerFrameNoiseAmplitude;
 
 /// In outer frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) GLKVector3 outerFrameColor;
+@property (nonatomic) LTVector3 outerFrameColor;
 
 #pragma mark -
 #pragma mark Inner Frame
@@ -84,13 +84,13 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// In inner frame, mixes the channels of the noise texture in order to create the transition
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
-@property (nonatomic) GLKVector3 innerFrameNoiseChannelMixer;
+@property (nonatomic) LTVector3 innerFrameNoiseChannelMixer;
 
 /// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat innerFrameNoiseAmplitude;
 
 /// In inner frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) GLKVector3 innerFrameColor;
+@property (nonatomic) LTVector3 innerFrameColor;
 
 @end

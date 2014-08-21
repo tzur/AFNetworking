@@ -47,10 +47,10 @@ static const NSUInteger kSmoothTextureIterations = 6;
 static const CGFloat kSaturationScaling = 1.5;
 static const ushort kLutSize = 256;
 static const CGFloat kVignettingMaxDimension = 256;
-static const GLKVector3 kDefaultVignettingColor = GLKVector3Make(0.0, 0.0, 0.0);
+static const LTVector3 kDefaultVignettingColor = LTVector3(0.0, 0.0, 0.0);
 static const CGFloat kDefaultVignettingSpread = 0;
 static const CGFloat kVignetteNoiseScaling = 100;
-static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
+static const LTVector3 kDefaultGrainChannelMixer = LTVector3(1.0, 0.0, 0.0);
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   // Setup vignetting.
@@ -120,7 +120,7 @@ static const GLKVector3 kDefaultGrainChannelMixer = GLKVector3Make(1.0, 0.0, 0.0
 - (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
   CGFloat xScale = size.width / grain.size.width;
   CGFloat yScale = size.height / grain.size.height;
-  self[[LTAnalogFilmVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
+  self[[LTAnalogFilmVsh grainScaling]] = $(LTVector2(xScale, yScale));
 }
 
 - (CGSize)aspectFitSize:(CGSize)size toSize:(CGFloat)maxDimension {
@@ -224,9 +224,9 @@ LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
 #pragma mark Vignetting
 #pragma mark -
 
-LTPropertyWithoutSetter(GLKVector3, vignetteColor, VignetteColor,
-                        GLKVector3Zero, GLKVector3One, GLKVector3Zero);
-- (void)setVignetteColor:(GLKVector3)vignetteColor {
+LTPropertyWithoutSetter(LTVector3, vignetteColor, VignetteColor,
+                        LTVector3Zero, LTVector3One, LTVector3Zero);
+- (void)setVignetteColor:(LTVector3)vignetteColor {
   [self _verifyAndSetVignetteColor:vignetteColor];
   self[[LTAnalogFilmFsh vignetteColor]] = $(vignetteColor);
 }
@@ -254,9 +254,9 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
   return self.vignetteProcessor.noise;
 }
 
-LTPropertyProxyWithoutSetter(GLKVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
+LTPropertyProxyWithoutSetter(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
                              self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setVignetteNoiseChannelMixer:(GLKVector3)vignetteNoiseChannelMixer {
+- (void)setVignetteNoiseChannelMixer:(LTVector3)vignetteNoiseChannelMixer {
   self.vignetteProcessor.noiseChannelMixer = vignetteNoiseChannelMixer;
   [self setNeedsVignetteProcessing];
 }
@@ -299,9 +299,9 @@ LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
   return isTilable || matchesOutputSize;
 }
 
-LTPropertyWithoutSetter(GLKVector3, grainChannelMixer, GrainChannelMixer,
-                        GLKVector3Zero, GLKVector3One, GLKVector3Make(1, 0, 0));
-- (void)setGrainChannelMixer:(GLKVector3)grainChannelMixer {
+LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
+                        LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
+- (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
   [self _verifyAndSetGrainChannelMixer:grainChannelMixer];
   _grainChannelMixer = grainChannelMixer / std::sum(grainChannelMixer);
   self[[LTAnalogFilmFsh grainChannelMixer]] = $(_grainChannelMixer);

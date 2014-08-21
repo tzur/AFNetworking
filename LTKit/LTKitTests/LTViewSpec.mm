@@ -20,7 +20,7 @@
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 @end
 
-SpecGLBegin(LTView)
+LTSpecBegin(LTView)
 
 __block LTTexture *contentTexture;
 __block LTTexture *outputTexture;
@@ -620,4 +620,4 @@ context(@"touch delegate", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

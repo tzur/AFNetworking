@@ -131,23 +131,23 @@ LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
   [self updateToneLUT];
 }
 
-LTPropertyWithoutSetter(GLKVector3, blackPoint, BlackPoint,
-                        -GLKVector3One, GLKVector3One, GLKVector3Zero);
-- (void)setBlackPoint:(GLKVector3)blackPoint {
+LTPropertyWithoutSetter(LTVector3, blackPoint, BlackPoint,
+                        -LTVector3One, LTVector3One, LTVector3Zero);
+- (void)setBlackPoint:(LTVector3)blackPoint {
   [self _verifyAndSetBlackPoint:blackPoint];
   [self updateToneLUT];
 }
 
-LTPropertyWithoutSetter(GLKVector3, whitePoint, WhitePoint,
-                        GLKVector3Zero, GLKVector3Make(2), GLKVector3One);
-- (void)setWhitePoint:(GLKVector3)whitePoint {
+LTPropertyWithoutSetter(LTVector3, whitePoint, WhitePoint,
+                        LTVector3Zero, LTVector3(2, 2, 2), LTVector3One);
+- (void)setWhitePoint:(LTVector3)whitePoint {
   [self _verifyAndSetWhitePoint:whitePoint];
   [self updateToneLUT];
 }
 
-LTPropertyWithoutSetter(GLKVector3, midPoint, MidPoint,
-                        -GLKVector3One, GLKVector3One, GLKVector3Zero);
-- (void)setMidPoint:(GLKVector3)midPoint {
+LTPropertyWithoutSetter(LTVector3, midPoint, MidPoint,
+                        -LTVector3One, LTVector3One, LTVector3Zero);
+- (void)setMidPoint:(LTVector3)midPoint {
   [self _verifyAndSetMidPoint:midPoint];
   [self updateToneLUT];
 }
@@ -298,19 +298,19 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
 typedef std::vector<cv::Mat1b> Channels;
 
 - (Channels)applyLevels:(cv::Mat1b)toneCurve {
-  GLKVector3 midPoint = GLKVector3One + self.midPoint * 0.8;
+  LTVector3 midPoint = LTVector3One + self.midPoint * 0.8;
   
   // Levels: black, white and mid points.
   std::vector<cv::Mat1b> levels = {cv::Mat1b(1, kLutSize), cv::Mat1b(1, kLutSize),
     cv::Mat1b(1, kLutSize)};
   for (int i = 0; i < kLutSize; i++) {
     // Remaps to [-kMinBlackPoint, kMaxWhitePoint].
-    CGFloat red = (std::powf(toneCurve(0, i) / 255.0, midPoint.r) - self.blackPoint.r) /
-        (self.whitePoint.r - self.blackPoint.r);
-    CGFloat green = (std::powf(toneCurve(0, i) / 255.0, midPoint.g)  - self.blackPoint.g) /
-        (self.whitePoint.g - self.blackPoint.g);
-    CGFloat blue = (std::powf(toneCurve(0, i) / 255.0, midPoint.b)  - self.blackPoint.b) /
-        (self.whitePoint.b - self.blackPoint.b);
+    CGFloat red = (std::powf(toneCurve(0, i) / 255.0, midPoint.r()) - self.blackPoint.r()) /
+        (self.whitePoint.r() - self.blackPoint.r());
+    CGFloat green = (std::powf(toneCurve(0, i) / 255.0, midPoint.g())  - self.blackPoint.g()) /
+        (self.whitePoint.g() - self.blackPoint.g());
+    CGFloat blue = (std::powf(toneCurve(0, i) / 255.0, midPoint.b())  - self.blackPoint.b()) /
+        (self.whitePoint.b() - self.blackPoint.b());
     // Back to [0, 255].
     levels[0](0, i) = MIN(MAX(std::round(red * 255), 0), 255);
     levels[1](0, i) = MIN(MAX(std::round(green * 255), 0), 255);

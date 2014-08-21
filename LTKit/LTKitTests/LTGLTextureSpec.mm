@@ -11,7 +11,7 @@
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
 
-SpecGLBegin(LTGLTexture)
+LTSpecBegin(LTGLTexture)
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTGLTexture class]});
 
@@ -188,4 +188,4 @@ context(@"mipmapping", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

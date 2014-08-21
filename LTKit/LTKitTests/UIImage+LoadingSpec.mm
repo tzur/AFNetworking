@@ -4,19 +4,26 @@
 #import "UIImage+Loading.h"
 
 #import "LTDevice.h"
-#import "LTTestModule.h"
 
-SpecBegin(UIImageLoading)
-
-LTKitTestsUseObjection();
+LTSpecBegin(UIImageLoading)
 
 context(@"image names", ^{
+  __block id ltDevice;
+  __block id uiApplication;
+
+  beforeEach(^{
+    LTMockClass([LTDevice class]);
+    LTMockClass([UIApplication class]);
+
+    ltDevice = [JSObjection defaultInjector][[LTDevice class]];
+    uiApplication = [JSObjection defaultInjector][[UIApplication class]];
+  });
+
   it(@"should return names in correct order for 4-inch portrait iphone", ^{
-    [[[module.ltDevice stub] andReturnValue:@YES] has4InchScreen];
-    [[[module.ltDevice stub] andReturnValue:@NO] isPadIdiom];
-    [[[module.ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
-    [[[module.uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)]
-     statusBarOrientation];
+    [[[ltDevice stub] andReturnValue:@YES] has4InchScreen];
+    [[[ltDevice stub] andReturnValue:@NO] isPadIdiom];
+    [[[ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
+    [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
       @"a-568h-Portrait@2x~iphone",
@@ -37,10 +44,10 @@ context(@"image names", ^{
   });
 
   it(@"should return names in correct order for 4-inch landscape iphone", ^{
-    [[[module.ltDevice stub] andReturnValue:@YES] has4InchScreen];
-    [[[module.ltDevice stub] andReturnValue:@NO] isPadIdiom];
-    [[[module.ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
-    [[[module.uiApplication stub] andReturnValue:@(UIInterfaceOrientationLandscapeLeft)]
+    [[[ltDevice stub] andReturnValue:@YES] has4InchScreen];
+    [[[ltDevice stub] andReturnValue:@NO] isPadIdiom];
+    [[[ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
+    [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationLandscapeLeft)]
      statusBarOrientation];
 
     NSArray *expectedNames = @[
@@ -62,11 +69,10 @@ context(@"image names", ^{
   });
 
   it(@"should return names in correct order for 3.5-inch portrait iphone", ^{
-    [[[module.ltDevice stub] andReturnValue:@NO] has4InchScreen];
-    [[[module.ltDevice stub] andReturnValue:@NO] isPadIdiom];
-    [[[module.ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
-    [[[module.uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)]
-     statusBarOrientation];
+    [[[ltDevice stub] andReturnValue:@NO] has4InchScreen];
+    [[[ltDevice stub] andReturnValue:@NO] isPadIdiom];
+    [[[ltDevice stub] andReturnValue:@YES] isPhoneIdiom];
+    [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
       @"a-Portrait@2x~iphone",
@@ -81,11 +87,10 @@ context(@"image names", ^{
   });
 
   it(@"should return names in correct order for ipad", ^{
-    [[[module.ltDevice stub] andReturnValue:@NO] has4InchScreen];
-    [[[module.ltDevice stub] andReturnValue:@YES] isPadIdiom];
-    [[[module.ltDevice stub] andReturnValue:@NO] isPhoneIdiom];
-    [[[module.uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)]
-     statusBarOrientation];
+    [[[ltDevice stub] andReturnValue:@NO] has4InchScreen];
+    [[[ltDevice stub] andReturnValue:@YES] isPadIdiom];
+    [[[ltDevice stub] andReturnValue:@NO] isPhoneIdiom];
+    [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
       @"a-Portrait@2x~ipad",
@@ -138,4 +143,4 @@ context(@"image loading", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

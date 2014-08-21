@@ -11,7 +11,7 @@
 #import "LTRoundBrushSpec.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTEdgeAvoidingBrush)
+LTSpecBegin(LTEdgeAvoidingBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTEdgeAvoidingBrush class]});
 
@@ -391,4 +391,4 @@ context(@"edge avoiding drawing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

@@ -135,7 +135,7 @@ context(@"initialization", ^{
 
 SpecEnd
 
-SpecGLBegin(LTVertexArray)
+LTSpecBegin(LTVertexArray)
 
 it(@"should fail initializing with empty attribute", ^{
   expect(^{
@@ -400,4 +400,4 @@ context(@"vertex attrib configuration", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

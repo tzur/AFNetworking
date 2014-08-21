@@ -64,6 +64,7 @@ context(@"LTVector2", ^{
     expect(v1 - v2).to.equal(LTVector2(5, 4));
     expect(v1 * v2).to.equal(LTVector2(50, 32));
     expect(v1 / v2).to.equal(LTVector2(2, 2));
+    expect(-v1).to.equal(LTVector2(-10, -8));
   });
 
   it(@"should perform equality correctly", ^{
@@ -132,6 +133,7 @@ context(@"LTVector3", ^{
     expect(v1 - v2).to.equal(LTVector3(5, 4, 4));
     expect(v1 * v2).to.equal(LTVector3(50, 32, 12));
     expect(v1 / v2).to.equal(LTVector3(2, 2, 3));
+    expect(-v1).to.equal(LTVector3(-10, -8, -6));
   });
 
   it(@"should perform equality correctly", ^{
@@ -205,6 +207,7 @@ context(@"LTVector4", ^{
     expect(v1 - v2).to.equal(LTVector4(5, 4, 4, 6));
     expect(v1 * v2).to.equal(LTVector4(50, 32, 12, 72));
     expect(v1 / v2).to.equal(LTVector4(2, 2, 3, 2));
+    expect(-v1).to.equal(LTVector4(-10, -8, -6, -12));
   });
 
   it(@"should perform equality correctly", ^{

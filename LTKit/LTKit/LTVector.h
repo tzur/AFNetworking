@@ -91,6 +91,10 @@ inline bool operator!=(LTVector2 lhs, LTVector2 rhs) {
   return !(lhs == rhs);
 }
 
+inline LTVector2 operator-(const LTVector2 &vector) {
+  return LTVector2(-vector.x, -vector.y);
+}
+
 inline LTVector2 operator+(LTVector2 lhs, const LTVector2 &rhs) {
   lhs += rhs;
   return lhs;
@@ -197,6 +201,10 @@ inline bool operator==(const LTVector3 &lhs, const LTVector3 &rhs) {
 
 inline bool operator!=(const LTVector3 &lhs, const LTVector3 &rhs) {
   return !(lhs == rhs);
+}
+
+inline LTVector3 operator-(const LTVector3 &vector) {
+  return LTVector3(-vector.x, -vector.y, -vector.z);
 }
 
 inline LTVector3 operator+(LTVector3 lhs, const LTVector3 &rhs) {
@@ -317,6 +325,10 @@ inline bool operator!=(LTVector4 lhs, LTVector4 rhs) {
   return !(lhs == rhs);
 }
 
+inline LTVector4 operator-(const LTVector4 &vector) {
+  return LTVector4(-vector.x, -vector.y, -vector.z, -vector.w);
+}
+
 inline LTVector4 operator+(LTVector4 lhs, const LTVector4 &rhs) {
   lhs += rhs;
   return lhs;
@@ -344,3 +356,15 @@ NSString *NSStringFromLTVector4(const LTVector4 &vector);
 /// \c @"(%g, %g, %g, %g)". In case an invalid format is given, LTVector4 that is set to all zeroes
 /// will be returned.
 LTVector4 LTVector4FromString(NSString *string);
+
+#pragma mark -
+#pragma mark Constants
+#pragma mark -
+
+static const LTVector2 LTVector2Zero;
+static const LTVector3 LTVector3Zero;
+static const LTVector4 LTVector4Zero;
+
+static const LTVector2 LTVector2One(1, 1);
+static const LTVector3 LTVector3One(1, 1, 1);
+static const LTVector4 LTVector4One(1, 1, 1, 1);

@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTPassthroughProcessor)
+LTSpecBegin(LTPassthroughProcessor)
 
 it(@"should copy input to output", ^{
   cv::Mat4b image(16, 16, cv::Vec4b(128, 64, 32, 255));
@@ -19,4 +19,4 @@ it(@"should copy input to output", ^{
   expect($([output image])).to.beCloseToMat($(image));
 });
 
-SpecGLEnd
+LTSpecEnd

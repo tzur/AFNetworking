@@ -10,7 +10,7 @@
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
 #import "LTVertexArray.h"
 
-SpecGLBegin(LTDrawingContext)
+LTSpecBegin(LTDrawingContext)
 
 context(@"binding program and vertex array", ^{
   it(@"should provide correct attribute to index mapping", ^{
@@ -192,4 +192,4 @@ context(@"texture binding while drawing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

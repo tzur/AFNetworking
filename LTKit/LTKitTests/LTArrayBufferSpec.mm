@@ -5,7 +5,7 @@
 
 #import "LTGPUResourceExamples.h"
 
-SpecGLBegin(LTArrayBuffer)
+LTSpecBegin(LTArrayBuffer)
 
 sharedExamplesFor(@"array buffer that initializes its data", ^(NSDictionary *dict) {
   it(@"should add initial data with a single buffer", ^{
@@ -284,4 +284,4 @@ context(@"binding", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd
