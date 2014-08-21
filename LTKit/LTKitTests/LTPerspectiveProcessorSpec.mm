@@ -20,7 +20,7 @@ static cv::Mat4b LTCheckerboard(NSUInteger rows, NSUInteger cols, NSUInteger cel
   return mat;
 }
 
-SpecGLBegin(LTPerspectiveProcessor)
+LTSpecBegin(LTPerspectiveProcessor)
 
 __block LTTexture *inputTexture;
 __block LTTexture *outputTexture;
@@ -193,4 +193,4 @@ context(@"projection data", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

@@ -11,7 +11,7 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTBasicProgramFactory)
+LTSpecBegin(LTBasicProgramFactory)
 
 it(@"should generate program", ^{
   LTBasicProgramFactory *factory = [[LTBasicProgramFactory alloc] init];
@@ -22,7 +22,7 @@ it(@"should generate program", ^{
   }).toNot.raiseAny();
 });
 
-SpecGLEnd
+LTSpecEnd
 
 @interface LTNoColorInputVariableImageProcessor : LTOneShotImageProcessor
 @end
@@ -46,7 +46,7 @@ SpecGLEnd
 
 @end
 
-SpecGLBegin(LTMaskableProgramFactory)
+LTSpecBegin(LTMaskableProgramFactory)
 
 context(@"construction", ^{
   it(@"should generate compilable program with no input color variable", ^{
@@ -185,4 +185,4 @@ context(@"mixing with color input variable", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

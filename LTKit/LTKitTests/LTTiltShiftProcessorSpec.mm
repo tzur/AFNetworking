@@ -8,7 +8,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTTiltShiftProcessor)
+LTSpecBegin(LTTiltShiftProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -66,4 +66,4 @@ context(@"properties", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

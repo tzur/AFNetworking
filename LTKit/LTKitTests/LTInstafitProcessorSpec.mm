@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTInstafitProcessor)
+LTSpecBegin(LTInstafitProcessor)
 
 context(@"initialization", ^{
   it(@"should not intitialize if output texture is not a square", ^{
@@ -156,4 +156,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

@@ -28,7 +28,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @interface LTPainter () <LTTouchCollectorDelegate>
 @end
 
-SpecGLBegin(LTPainter)
+LTSpecBegin(LTPainter)
 
 const CGSize kCanvasSize = CGSizeMake(64, 64);
 
@@ -328,4 +328,4 @@ context(@"painting", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

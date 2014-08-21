@@ -8,7 +8,7 @@
 #import "LTRandom.h"
 #import "LTRotatedRect.h"
 
-SpecBegin(LTBrushScatterEffect)
+LTSpecBegin(LTBrushScatterEffect)
 
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushScatterEffect class]});
@@ -166,4 +166,4 @@ context(@"effect", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

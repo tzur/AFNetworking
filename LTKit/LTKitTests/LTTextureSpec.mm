@@ -94,7 +94,7 @@
 
 @end
 
-SpecGLBegin(LTTexture)
+LTSpecBegin(LTTexture)
 
 context(@"properties", ^{
   it(@"will not set wrap to repeat on NPOT texture", ^{
@@ -261,4 +261,4 @@ context(@"coding and decoding", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

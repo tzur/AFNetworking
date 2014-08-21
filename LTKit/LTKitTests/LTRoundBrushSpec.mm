@@ -61,7 +61,7 @@ sharedExamplesFor(kLTRoundBrushExamples, ^(NSDictionary *data) {
 
 SharedExamplesEnd
 
-SpecBegin(LTRoundBrush)
+LTSpecBegin(LTRoundBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTRoundBrush class]});
 
@@ -312,4 +312,4 @@ context(@"drawing", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

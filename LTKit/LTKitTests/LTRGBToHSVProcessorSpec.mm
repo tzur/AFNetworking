@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTRGBToHSVProcessor)
+LTSpecBegin(LTRGBToHSVProcessor)
 
 context(@"processing", ^{
   it(@"should process grey correctly", ^{
@@ -58,4 +58,4 @@ context(@"processing", ^{
   });
 });
   
-SpecGLEnd
+LTSpecEnd

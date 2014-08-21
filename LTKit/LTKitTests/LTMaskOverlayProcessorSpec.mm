@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTMaskOverlayProcessorSpec)
+LTSpecBegin(LTMaskOverlayProcessorSpec)
 
 context(@"processing", ^{
   __block LTMaskOverlayProcessor *processor;
@@ -50,4 +50,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

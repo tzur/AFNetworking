@@ -10,7 +10,7 @@ static NSString * const kBasicFragmentSource = @"void main() { gl_FragColor = ve
 static NSString * const kInvalidVertexSource = @"foo;";
 static NSString * const kInvalidFragmentSource = @"foo;";
 
-SpecGLBegin(LTShader)
+LTSpecBegin(LTShader)
 
 context(@"shader compilation", ^{
   it(@"should compile vertex shader with an empty source", ^{
@@ -54,4 +54,4 @@ context(@"shader compilation", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

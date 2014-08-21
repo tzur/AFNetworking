@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTDuoProcessor)
+LTSpecBegin(LTDuoProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -174,4 +174,4 @@ context(@"processing", ^{
   });
 });
   
-SpecGLEnd
+LTSpecEnd

@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture.h"
 
-SpecGLBegin(LTImage_Texture)
+LTSpecBegin(LTImage_Texture)
 
 it(@"should create texture from RGBA image", ^{
   UIImage *image = LTLoadImage([self class], @"RectUp.jpg");
@@ -28,4 +28,4 @@ it(@"should create texture from gray image", ^{
   expect($([texture image])).to.equalMat($(ltImage.mat));
 });
 
-SpecGLEnd
+LTSpecEnd

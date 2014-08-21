@@ -8,7 +8,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTSelectiveAdjustProcessor)
+LTSpecBegin(LTSelectiveAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -190,4 +190,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

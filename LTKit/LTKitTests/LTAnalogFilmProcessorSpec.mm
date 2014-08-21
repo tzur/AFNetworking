@@ -9,7 +9,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTAnalogFilmProcessor)
+LTSpecBegin(LTAnalogFilmProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -299,4 +299,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

@@ -12,7 +12,7 @@
 #import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
-SpecGLBegin(LTOneShotImageProcessor)
+LTSpecBegin(LTOneShotImageProcessor)
 
 __block LTTexture *input;
 __block LTTexture *auxTexture;
@@ -162,4 +162,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd

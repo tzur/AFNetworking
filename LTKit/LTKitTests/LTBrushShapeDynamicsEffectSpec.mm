@@ -8,7 +8,7 @@
 #import "LTRandom.h"
 #import "LTRotatedRect.h"
 
-SpecBegin(LTBrushShapeDynamicsEffect)
+LTSpecBegin(LTBrushShapeDynamicsEffect)
 
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushShapeDynamicsEffect class]});
@@ -251,4 +251,4 @@ context(@"effect", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

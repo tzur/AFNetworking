@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTestUtils.h"
 
-SpecGLBegin(LTFractionalNoise)
+LTSpecBegin(LTFractionalNoise)
 
 __block LTTexture *output;
 
@@ -60,4 +60,4 @@ context(@"processing", ^{
   });
 });
 
-SpecGLEnd
+LTSpecEnd
