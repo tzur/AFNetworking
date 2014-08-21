@@ -1223,6 +1223,7 @@
 		288AB4021835203300A11FA4 /* LTFboSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboSpec.mm; sourceTree = "<group>"; };
 		288AB4041835320200A11FA4 /* LTDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDevice.h; sourceTree = "<group>"; };
 		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
+		288F14D119A61B9500E1C6F9 /* LTOneShotImageProcessor+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTOneShotImageProcessor+Protected.h"; sourceTree = "<group>"; };
 		28907A6518D7274E00DFBE7F /* LTBrushEffectExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushEffectExamples.mm; sourceTree = "<group>"; };
 		28907A7318D7277600DFBE7F /* LTBrushEffectExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTBrushEffectExamples.h; sourceTree = "<group>"; };
 		2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPerspectiveProcessor.h; sourceTree = "<group>"; };
@@ -2802,6 +2803,7 @@
 				8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */,
 				8BFE1E0618756A69008035BF /* LTOneShotImageProcessor.h */,
 				8BFE1E0718756A69008035BF /* LTOneShotImageProcessor.mm */,
+				288F14D119A61B9500E1C6F9 /* LTOneShotImageProcessor+Protected.h */,
 				2868B73A193354A600E1BF0F /* LTPainterImageProcessor.h */,
 				2868B73B193354A600E1BF0F /* LTPainterImageProcessor.mm */,
 				28A6C5AB193B77C300C217CC /* LTProgressiveImageProcessor.h */,
