@@ -223,12 +223,41 @@ GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const float &rhs) {
 }
 
 /// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const double &rhs) {
+  return GLKVector2MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector2 operator*(const GLKVector2 &lhs, const int &rhs) {
+  return GLKVector2MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const float &rhs) {
   return GLKVector3MultiplyScalar(lhs, rhs);
 }
 
 /// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const double &rhs) {
+  return GLKVector3MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector3 operator*(const GLKVector3 &lhs, const int &rhs) {
+  return GLKVector3MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
 GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const float &rhs) {
+  return GLKVector4MultiplyScalar(lhs, rhs);
+}
+
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const int &rhs) {
+  return GLKVector4MultiplyScalar(lhs, rhs);
+}
+
+/// Multiply a vector by a scalar value.
+GLK_INLINE GLKVector4 operator*(const GLKVector4 &lhs, const double &rhs) {
   return GLKVector4MultiplyScalar(lhs, rhs);
 }
 
@@ -268,12 +297,27 @@ GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const float &rhs) {
 }
 
 /// Divide a vector by a scalar value (element wise).
+GLK_INLINE GLKVector2 operator/(const GLKVector2 &lhs, const double &rhs) {
+  return GLKVector2DivideScalar(lhs, rhs);
+}
+
+/// Divide a vector by a scalar value (element wise).
 GLK_INLINE GLKVector3 operator/(const GLKVector3 &lhs, const float &rhs) {
   return GLKVector3DivideScalar(lhs, rhs);
 }
 
 /// Divide a vector by a scalar value (element wise).
+GLK_INLINE GLKVector3 operator/(const GLKVector3 &lhs, const double &rhs) {
+  return GLKVector3DivideScalar(lhs, rhs);
+}
+
+/// Divide a vector by a scalar value (element wise).
 GLK_INLINE GLKVector4 operator/(const GLKVector4 &lhs, const float &rhs)  {
+  return GLKVector4DivideScalar(lhs, rhs);
+}
+
+/// Divide a vector by a scalar value (element wise).
+GLK_INLINE GLKVector4 operator/(const GLKVector4 &lhs, const double &rhs)  {
   return GLKVector4DivideScalar(lhs, rhs);
 }
 
