@@ -26,4 +26,8 @@
   return [NSData dataWithContentsOfFile:path options:options error:error];
 }
 
+- (UIImage *)imageWithContentsOfFile:(NSString *)path {
+  return [UIImage imageWithContentsOfFile:path];
+}
+
 @end

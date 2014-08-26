@@ -27,4 +27,8 @@
 - (NSData *)dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
                              error:(NSError **)error;
 
+/// Creates and returns a \c UIImage from the given \c path, or returns \c nil if the image cannot
+/// be initialized from the given \c path.
+- (UIImage *)imageWithContentsOfFile:(NSString *)path;
+
 @end

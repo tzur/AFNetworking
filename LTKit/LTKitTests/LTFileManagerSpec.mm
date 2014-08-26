@@ -3,6 +3,8 @@
 
 #import "LTFileManager.h"
 
+#import "LTImage.h"
+
 SpecBegin(LTFileManager)
 
 it(@"should write data", ^{
@@ -33,6 +35,17 @@ it(@"should read data from file", ^{
 
   NSData *file = [NSData dataWithContentsOfFile:path];
   expect(data).to.equal(file);
+});
+
+it(@"should read image from file", ^{
+  NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
+
+  UIImage *image = [[LTFileManager sharedManager] imageWithContentsOfFile:path];
+  expect(image).toNot.beNil();
+
+  LTImage *ltImage = [[LTImage alloc] initWithImage:image];
+  LTImage *expectedImage = [[LTImage alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
+  expect($(ltImage.mat)).to.equalMat($(expectedImage.mat));
 });
 
 SpecEnd
