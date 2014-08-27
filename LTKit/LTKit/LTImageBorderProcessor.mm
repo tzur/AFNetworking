@@ -16,8 +16,11 @@
 
 @interface LTImageBorderProcessor ()
 
-// Returns YES if subprocessors used by this class are initialized, NO otherwise.
-@property (nonatomic) BOOL subProcessorsInitialized;
+/// If \c YES, the outer frame processor should run at the next processing round of this processor.
+@property (nonatomic) BOOL outerFrameProcessorInputChanged;
+
+/// If \c YES, the inner frame processor should run at the next processing round of this processor.
+@property (nonatomic) BOOL innerFrameProcessorInputChanged;
 
 // Frame that is used to create an outer part of the image border.
 @property (strong, nonatomic) LTProceduralFrameProcessor *outerFrameProcessor;
@@ -46,6 +49,7 @@ static const CGFloat kFrameMaxDimension = 1024;
                           fragmentSource:[LTImageBorderFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     [self setDefaultValues];
+    [self setNeedsSubProcessing];
   }
   return self;
 }
@@ -62,19 +66,6 @@ static const CGFloat kFrameMaxDimension = 1024;
       [[LTProceduralFrameProcessor alloc] initWithOutput:self.innerFrameTexture];
 }
 
-- (void)initializeSubProcessors {
-  [self.outerFrameProcessor process];
-  [self.innerFrameProcessor process];
-  self.subProcessorsInitialized = YES;
-}
-
-- (void)process {
-  if (!self.subProcessorsInitialized) {
-    [self initializeSubProcessors];
-  }
-  return [super process];
-}
-
 - (void)setDefaultValues {
   // As long as default roughness value is 1, no need to run the setter.
   _roughness = self.defaultRoughness;
@@ -83,6 +74,34 @@ static const CGFloat kFrameMaxDimension = 1024;
 - (LTTexture *)createFrameTextureWithInput:(LTTexture *)input {
   CGSize frameSize = CGScaleDownToDimension(input.size, kFrameMaxDimension);
   return [LTTexture byteRGBATextureWithSize:frameSize];
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
+
+- (void)setNeedsSubProcessing {
+  [self setNeedsOuterFrameProcessing];
+  [self setNeedsInnerFrameProcessing];
+}
+
+- (void)setNeedsOuterFrameProcessing {
+  self.outerFrameProcessorInputChanged = YES;
+}
+
+- (void)setNeedsInnerFrameProcessing {
+  self.innerFrameProcessorInputChanged = YES;
+}
+
+- (void)preprocess {
+  if (self.outerFrameProcessorInputChanged) {
+    [self.outerFrameProcessor process];
+    self.outerFrameProcessorInputChanged = NO;
+  }
+  if (self.innerFrameProcessorInputChanged) {
+    [self.innerFrameProcessor process];
+    self.innerFrameProcessorInputChanged = NO;
+  }
 }
 
 #pragma mark -
@@ -110,139 +129,148 @@ static const CGFloat kNoiseScalingBase = 10;
 #pragma mark Outer Frame
 #pragma mark -
 
+LTPropertyProxyWithoutSetter(CGFloat, outerFrameWidth, OuterFrameWidth,
+                             self.outerFrameProcessor, width, Width);
 - (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
   // Update the dependent inner frame.
   _innerFrameWidth = outerFrameWidth + self.innerFrameWidth - self.outerFrameWidth;
   self.innerFrameProcessor.width = _innerFrameWidth;
-  [self.innerFrameProcessor process];
+  [self setNeedsInnerFrameProcessing];
   // Update outer frame.
   self.outerFrameProcessor.width = outerFrameWidth;
-  [self.outerFrameProcessor process];
+  [self setNeedsOuterFrameProcessing];
 }
 
-- (CGFloat)outerFrameWidth {
-  return self.outerFrameProcessor.width;
-}
-
+LTPropertyProxyWithoutSetter(CGFloat, outerFrameSpread, OuterFrameSpread,
+                             self.outerFrameProcessor, spread, Spread);
 - (void)setOuterFrameSpread:(CGFloat)outerFrameSpread {
   self.outerFrameProcessor.spread = outerFrameSpread;
-  [self.outerFrameProcessor process];
+  [self setNeedsOuterFrameProcessing];
 }
 
-- (CGFloat)outerFrameSpread {
-  return self.outerFrameProcessor.spread;
-}
-
+LTPropertyProxyWithoutSetter(CGFloat, outerFrameCorner, OuterFrameCorner,
+                             self.outerFrameProcessor, corner, Corner);
 - (void)setOuterFrameCorner:(CGFloat)outerFrameCorner {
   self.outerFrameProcessor.corner = outerFrameCorner;
-  [self.outerFrameProcessor process];
-}
-
-- (CGFloat)outerFrameCorner {
-  return self.outerFrameProcessor.corner;
+  [self setNeedsOuterFrameProcessing];
 }
 
 - (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
   self.outerFrameProcessor.noise = outerFrameNoise;
+  [self setNeedsOuterFrameProcessing];
 }
 
 - (LTTexture *)outerFrameNoise {
   return self.outerFrameProcessor.noise;
 }
 
+LTPropertyProxyWithoutSetter(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
+                             self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
 - (void)setOuterFrameNoiseChannelMixer:(LTVector3)outerFrameNoiseChannelMixer {
   self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
-  [self.outerFrameProcessor process];
-}
-
-- (LTVector3)outerFrameNoiseChannelMixer {
-  return self.outerFrameProcessor.noiseChannelMixer;
+  [self setNeedsOuterFrameProcessing];
 }
 
 - (void)setOuterFrameNoiseAmplitude:(CGFloat)outerFrameNoiseAmplitude {
   self.outerFrameProcessor.noiseAmplitude = outerFrameNoiseAmplitude *
       [self noiseScalingWithRoughness:self.roughness];
-  [self.outerFrameProcessor process];
+  [self setNeedsOuterFrameProcessing];
 }
 
 - (CGFloat)outerFrameNoiseAmplitude {
   return self.outerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
 }
 
-- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
-  self.outerFrameProcessor.color = outerFrameColor;
-  [self.outerFrameProcessor process];
+- (CGFloat)minOuterFrameNoiseAmplitude {
+  return 0;
 }
 
-- (LTVector3)outerFrameColor {
-  return self.outerFrameProcessor.color;
+- (CGFloat)maxOuterFrameNoiseAmplitude {
+  return 100;
+}
+
+- (CGFloat)defaultOuterFrameNoiseAmplitude {
+  return 0;
+}
+
+LTPropertyProxyWithoutSetter(LTVector3, outerFrameColor, OuterFrameColor,
+                             self.outerFrameProcessor, color, Color);
+- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
+  self.outerFrameProcessor.color = outerFrameColor;
+  [self setNeedsOuterFrameProcessing];
 }
 
 #pragma mark -
 #pragma mark Inner Frame
 #pragma mark -
 
+LTPropertyWithoutSetter(CGFloat, innerFrameWidth, InnerFrameWidth, 0, 25, 0);
 - (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
   LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,
                     @"Sum of outer and inner width is above maximum value.");
   _innerFrameWidth = self.outerFrameWidth + innerFrameWidth;
   self.innerFrameProcessor.width = _innerFrameWidth;
-  [self.innerFrameProcessor process];
+  [self setNeedsInnerFrameProcessing];
 }
 
+LTPropertyProxyWithoutSetter(CGFloat, innerFrameSpread, InnerFrameSpread,
+                             self.innerFrameProcessor, spread, Spread);
 - (void)setInnerFrameSpread:(CGFloat)innerFrameSpread {
   self.innerFrameProcessor.spread = innerFrameSpread;
-  [self.innerFrameProcessor process];
+  [self setNeedsInnerFrameProcessing];
 }
 
-- (CGFloat)innerFrameSpread {
-  return self.innerFrameProcessor.spread;
-}
-
+LTPropertyProxyWithoutSetter(CGFloat, innerFrameCorner, InnerFrameCorner,
+                             self.innerFrameProcessor, corner, Corner);
 - (void)setInnerFrameCorner:(CGFloat)innerFrameCorner {
   self.innerFrameProcessor.corner = innerFrameCorner;
-  [self.innerFrameProcessor process];
-}
-
-- (CGFloat)innerFrameCorner {
-  return self.innerFrameProcessor.corner;
+  [self setNeedsInnerFrameProcessing];
 }
 
 - (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
   self.innerFrameProcessor.noise = innerFrameNoise;
-  [self.innerFrameProcessor process];
+  [self setNeedsInnerFrameProcessing];
 }
 
 - (LTTexture *)innerFrameNoise {
   return self.innerFrameProcessor.noise;
+  [self setNeedsInnerFrameProcessing];
 }
 
+LTPropertyProxyWithoutSetter(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
+                             self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
 - (void)setInnerFrameNoiseChannelMixer:(LTVector3)innerFrameNoiseChannelMixer {
   self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
   [self.innerFrameProcessor process];
 }
 
-- (LTVector3)innerFrameNoiseChannelMixer {
-  return self.innerFrameProcessor.noiseChannelMixer;
-}
-
 - (void)setInnerFrameNoiseAmplitude:(CGFloat)innerFrameNoiseAmplitude {
   self.innerFrameProcessor.noiseAmplitude = innerFrameNoiseAmplitude *
       [self noiseScalingWithRoughness:self.roughness];
-  [self.innerFrameProcessor process];
+  [self setNeedsInnerFrameProcessing];
 }
 
 - (CGFloat)innerFrameNoiseAmplitude {
   return self.innerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
 }
 
-- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
-  self.innerFrameProcessor.color = innerFrameColor;
-  [self.innerFrameProcessor process];
+- (CGFloat)minInnerFrameNoiseAmplitude {
+  return 0;
 }
 
-- (LTVector3)innerFrameColor {
-  return self.innerFrameProcessor.color;
+- (CGFloat)maxInnerFrameNoiseAmplitude {
+  return 100;
+}
+
+- (CGFloat)defaultInnerFrameNoiseAmplitude {
+  return 0;
+}
+
+LTPropertyProxyWithoutSetter(LTVector3, innerFrameColor, InnerFrameColor,
+                             self.innerFrameProcessor, color, Color);
+- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
+  self.innerFrameProcessor.color = innerFrameColor;
+  [self setNeedsInnerFrameProcessing];
 }
 
 @end

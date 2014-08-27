@@ -14,8 +14,9 @@ void main() {
   lowp vec4 innerFrame = texture2D(innerFrameTexture, vTexcoord);
   lowp vec4 outerFrame = texture2D(outerFrameTexture, vTexcoord);
   
-  color.rgb = innerFrame.rgb + (1.0 - innerFrame.a) * color.rgb;
-  color.rgb = outerFrame.rgb + (1.0 - outerFrame.a) * color.rgb;
-  color.a = min(1.0, color.a + innerFrame.a + outerFrame.a);
-  gl_FragColor = color;
+  lowp vec4 outputColor;
+  outputColor.rgb = innerFrame.rgb + (1.0 - innerFrame.a) * color.rgb;
+  outputColor.rgb = outerFrame.rgb + (1.0 - outerFrame.a) * outputColor.rgb;
+  outputColor.a = min(1.0, color.a + innerFrame.a + outerFrame.a);
+  gl_FragColor = outputColor;
 }
