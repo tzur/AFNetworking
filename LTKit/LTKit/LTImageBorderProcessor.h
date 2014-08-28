@@ -30,16 +30,19 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// Width of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
 /// range. Default value is 0.
 @property (nonatomic) CGFloat outerFrameWidth;
+LTPropertyDeclare(CGFloat, outerFrameWidth, OuterFrameWidth);
 
 /// Spread of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
 /// range. Default value is 0.
 @property (nonatomic) CGFloat outerFrameSpread;
+LTPropertyDeclare(CGFloat, outerFrameSpread, OuterFrameSpread);
 
 /// In outer frame, determines the corner type of the frame by creating an appropriate distance
 /// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
 /// values will create a different degrees of roundness, which stem from the remapping the distance
 /// field values with the power function. Default value is 0.
 @property (nonatomic) CGFloat outerFrameCorner;
+LTPropertyDeclare(CGFloat, outerFrameCorner, OuterFrameCorner);
 
 /// Noise texture that modulates with the outer frame. Default value is a constant 0.5, which
 /// doesn't affect the image.
@@ -49,13 +52,16 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
 @property (nonatomic) LTVector3 outerFrameNoiseChannelMixer;
+LTPropertyDeclare(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer);
 
 /// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat outerFrameNoiseAmplitude;
+LTPropertyDeclare(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude);
 
 /// In outer frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
 @property (nonatomic) LTVector3 outerFrameColor;
+LTPropertyDeclare(LTVector3, outerFrameColor, OuterFrameColor);
 
 #pragma mark -
 #pragma mark Inner Frame
@@ -66,16 +72,19 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// visible, since the inner frame is layered below the outer frame. Should be in [0-25] range.
 /// Default value is 0.
 @property (nonatomic) CGFloat innerFrameWidth;
+LTPropertyDeclare(CGFloat, innerFrameWidth, InnerFrameWidth);
 
 /// Spread of the inner frame, as percentage of the smaller image dimension. Should be in [0-25]
 /// range. Default value is 0.
 @property (nonatomic) CGFloat innerFrameSpread;
+LTPropertyDeclare(CGFloat, innerFrameSpread, InnerFrameSpread);
 
 /// In inner frame, determines the corner type of the frame by creating an appropriate distance
 /// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
 /// values will create a different degrees of roundness, which stem from the remapping the distance
 /// field values with the power function. Default value is 0.
 @property (nonatomic) CGFloat innerFrameCorner;
+LTPropertyDeclare(CGFloat, innerFrameCorner, InnerFrameCorner);
 
 /// Noise texture that modulates with the inner frame. Default value is a constant 0.5, which
 /// doesn't affect the image.
@@ -85,12 +94,15 @@ LTPropertyDeclare(CGFloat, roughness, Roughness);
 /// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
 /// with noise amplitude.
 @property (nonatomic) LTVector3 innerFrameNoiseChannelMixer;
+LTPropertyDeclare(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer);
 
 /// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat innerFrameNoiseAmplitude;
+LTPropertyDeclare(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude);
 
 /// In inner frame, color of the foreground and of the transition area. Components should be in
 /// [0, 1] range. Default color is white (1, 1, 1).
 @property (nonatomic) LTVector3 innerFrameColor;
+LTPropertyDeclare(LTVector3, innerFrameColor, InnerFrameColor);
 
 @end
