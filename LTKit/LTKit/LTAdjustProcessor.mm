@@ -298,7 +298,7 @@ LTPropertyWithoutSetter(CGFloat, highlights, Highlights, 0, 1, 0);
 typedef std::vector<cv::Mat1b> Channels;
 
 - (Channels)applyLevels:(cv::Mat1b)toneCurve {
-  LTVector3 midPoint = LTVector3One + self.midPoint * 0.8;
+  LTVector3 midPoint = LTVector3One + self.midPoint * LTVector3(0.8);
   
   // Levels: black, white and mid points.
   std::vector<cv::Mat1b> levels = {cv::Mat1b(1, kLutSize), cv::Mat1b(1, kLutSize),

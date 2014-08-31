@@ -42,6 +42,10 @@
 		03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */; };
 		03734ABF188E9D81008B4056 /* LTBoxFilter.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */; };
 		03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */; };
+		0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */; };
+		0391099119A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */; };
+		039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */; };
+		039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */; };
 		039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */; };
 		039C95B41897E91700F1E213 /* LTMultiscaleNoise.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */; };
 		03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AD29A218910BF700516D14 /* SimulatorFractionalNoise.png */; };
@@ -943,6 +947,10 @@
 		03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.fsh; sourceTree = "<group>"; };
 		03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBoxFilter.vsh; sourceTree = "<group>"; };
 		03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoxFilterProcessorSpec.mm; sourceTree = "<group>"; };
+		0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorRangeAdjustProcessor.h; sourceTree = "<group>"; };
+		0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorRangeAdjustProcessor.mm; sourceTree = "<group>"; };
+		039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTColorRangeAdjust.fsh; sourceTree = "<group>"; };
+		039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorRangeAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		039C95A11897E4A000F1E213 /* LTMultiscaleNoiseProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMultiscaleNoiseProcessor.h; sourceTree = "<group>"; };
 		039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMultiscaleNoiseProcessor.mm; sourceTree = "<group>"; };
 		039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMultiscaleNoise.fsh; sourceTree = "<group>"; };
@@ -1795,6 +1803,9 @@
 				2897A891197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm */,
 				2829F07D1991007B00DE1072 /* LTCropProcessor.h */,
 				2829F07E1991007B00DE1072 /* LTCropProcessor.mm */,
+				039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */,
+				0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */,
+				0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -1839,6 +1850,7 @@
 				28470F561977B08B0031E500 /* LTImageFrameProcessorSpec.mm */,
 				28A34846198F983E00031866 /* LTPerspectiveProcessorSpec.mm */,
 				2812D56519912B380081478F /* LTCropProcessorSpec.mm */,
+				039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -3079,6 +3091,7 @@
 				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
 				8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */,
 				8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */,
+				0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */,
 				8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */,
 				8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */,
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
@@ -3623,6 +3636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */,
 				28470F551977A9D90031E500 /* LTImageFrame.fsh in Sources */,
 				8B22674019979F450049CF26 /* LTProgramFactory.m in Sources */,
 				2897A8C6197F041E004EE8B5 /* LTPerspectiveProcessor.fsh in Sources */,
@@ -3670,6 +3684,7 @@
 				8BEBF3DD18FA9995005A0DE9 /* LTMixerProcessor.mm in Sources */,
 				8BBB149B194F4799000CF391 /* LTEnumRegistry.m in Sources */,
 				8BEBF3EC18FA9CA5005A0DE9 /* LTMixer.fsh in Sources */,
+				0391099119A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm in Sources */,
 				8BEBF3ED18FA9CA5005A0DE9 /* LTMixer.vsh in Sources */,
 				8BAE3A9E18B4D5A000DA79E1 /* LTArithmetic.fsh in Sources */,
 				03D516B318B3A6850026B56A /* LTProceduralVignetting.fsh in Sources */,
@@ -3898,6 +3913,7 @@
 				8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */,
 				283BD0561922217500B68A90 /* LTShapeDrawerPathShapeSpec.mm in Sources */,
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,
+				039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */,
 				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.m in Sources */,
 				284004D718D8423500403938 /* LTMultiTextureBrushSpec.mm in Sources */,
 				8BAE3A3F18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm in Sources */,

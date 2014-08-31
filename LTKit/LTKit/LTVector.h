@@ -61,11 +61,25 @@ struct LTVector2 {
     y *= rhs.y;
     return *this;
   }
+  
+  /// Multiplies each element of this vector with the given \c rhs.
+  LTVector2 &operator*=(const float rhs) {
+    x *= rhs;
+    y *= rhs;
+    return *this;
+  }
 
   /// Divides the given vector element wise with this vector.
   LTVector2 &operator/=(const LTVector2 &rhs) {
     x /= rhs.x;
     y /= rhs.y;
+    return *this;
+  }
+  
+  /// Divides each element of this vector with the given \c rhs.
+  LTVector2 &operator/=(const float rhs) {
+    x /= rhs;
+    y /= rhs;
     return *this;
   }
 
@@ -79,12 +93,25 @@ struct LTVector2 {
     return y;
   }
 
+  /// Returns the sum of the components.
+  inline float sum() const {
+    return x + y;
+  }
+  
   float x;
   float y;
 };
 
 inline bool operator==(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+inline bool operator>=(const LTVector2 &lhs, const LTVector2 &rhs) {
+  return lhs.x >= rhs.x && lhs.y >= rhs.y;
+}
+
+inline bool operator<=(const LTVector2 &lhs, const LTVector2 &rhs) {
+  return lhs.x <= rhs.x && lhs.y <= rhs.y;
 }
 
 inline bool operator!=(LTVector2 lhs, LTVector2 rhs) {
@@ -110,7 +137,17 @@ inline LTVector2 operator*(LTVector2 lhs, const LTVector2 &rhs) {
   return lhs;
 }
 
+inline LTVector2 operator*(LTVector2 lhs, const float &rhs) {
+  lhs *= rhs;
+  return lhs;
+}
+
 inline LTVector2 operator/(LTVector2 lhs, const LTVector2 &rhs) {
+  lhs /= rhs;
+  return lhs;
+}
+
+inline LTVector2 operator/(LTVector2 lhs, const float &rhs) {
   lhs /= rhs;
   return lhs;
 }
@@ -129,8 +166,11 @@ LTVector2 LTVector2FromString(NSString *string);
 
 /// Represents a 3 element vector.
 struct LTVector3 {
-  /// Initializes a new \c LTVector3 with two zero elements.
+  /// Initializes a new \c LTVector3 with three zero elements.
   LTVector3() : x(0), y(0), z(0) {}
+
+  /// Initializes a new \c LTVector3 with \c x, y and \c z elements equal to the given scalar.
+  explicit LTVector3(float scalar) : x(scalar), y(scalar), z(scalar) {}
 
   /// Initializes a new \c LTVector3 with \c x,\c y and \c z elements.
   LTVector3(float x, float y, float z) : x(x), y(y), z(z) {}
@@ -167,6 +207,14 @@ struct LTVector3 {
     return *this;
   }
 
+  /// Multiplies each element of this vector with the given \c rhs.
+  LTVector3 &operator*=(const float rhs) {
+    x *= rhs;
+    y *= rhs;
+    z *= rhs;
+    return *this;
+  }
+  
   /// Divides the given vector element wise with this vector.
   LTVector3 &operator/=(const LTVector3 &rhs) {
     x /= rhs.x;
@@ -175,6 +223,14 @@ struct LTVector3 {
     return *this;
   }
 
+  /// Divides each element of this vector with the given \c rhs.
+  LTVector3 &operator/=(const float rhs) {
+    x /= rhs;
+    y /= rhs;
+    z /= rhs;
+    return *this;
+  }
+  
   /// Returns the red component (first element).
   inline float &r() {
     return x;
@@ -190,6 +246,11 @@ struct LTVector3 {
     return z;
   }
 
+  /// Returns the sum of the components.
+  inline float sum() const {
+    return x + y + z;
+  }
+  
   float x;
   float y;
   float z;
@@ -197,6 +258,14 @@ struct LTVector3 {
 
 inline bool operator==(const LTVector3 &lhs, const LTVector3 &rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+}
+
+inline bool operator>=(const LTVector3 &lhs, const LTVector3 &rhs) {
+  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z;
+}
+
+inline bool operator<=(const LTVector3 &lhs, const LTVector3 &rhs) {
+  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z;
 }
 
 inline bool operator!=(const LTVector3 &lhs, const LTVector3 &rhs) {
@@ -222,7 +291,17 @@ inline LTVector3 operator*(LTVector3 lhs, const LTVector3 &rhs) {
   return lhs;
 }
 
+inline LTVector3 operator*(LTVector3 lhs, const float &rhs) {
+  lhs *= rhs;
+  return lhs;
+}
+
 inline LTVector3 operator/(LTVector3 lhs, const LTVector3 &rhs) {
+  lhs /= rhs;
+  return lhs;
+}
+
+inline LTVector3 operator/(LTVector3 lhs, const float &rhs) {
   lhs /= rhs;
   return lhs;
 }
@@ -243,6 +322,9 @@ LTVector3 LTVector3FromString(NSString *string);
 struct LTVector4 {
   /// Initializes a new \c LTVector4 with two zero elements.
   LTVector4() : x(0), y(0), z(0), w(0) {}
+  
+  /// Initializes a new \c LTVector4 with \c x, y, z and \c w elements equal to the given scalar.
+  explicit LTVector4(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 
   /// Initializes a new \c LTVector4 with \c x, \c y, \c z, and w elements.
   LTVector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
@@ -281,6 +363,15 @@ struct LTVector4 {
     w *= rhs.w;
     return *this;
   }
+  
+  /// Multiplies each element of this vector with the given \c rhs.
+  LTVector4 &operator*=(const float rhs) {
+    x *= rhs;
+    y *= rhs;
+    z *= rhs;
+    w *= rhs;
+    return *this;
+  }
 
   /// Divides the given vector element wise with this vector.
   LTVector4 &operator/=(const LTVector4 &rhs) {
@@ -288,6 +379,15 @@ struct LTVector4 {
     y /= rhs.y;
     z /= rhs.z;
     w /= rhs.w;
+    return *this;
+  }
+  
+  /// Divides each element of this vector with the given \c rhs.
+  LTVector4 &operator/=(const float rhs) {
+    x /= rhs;
+    y /= rhs;
+    z /= rhs;
+    w /= rhs;
     return *this;
   }
 
@@ -310,6 +410,11 @@ struct LTVector4 {
   inline float &a() {
     return w;
   }
+  
+  /// Returns the sum of the components.
+  inline float sum() const {
+    return x + y + w + z;
+  }
 
   float x;
   float y;
@@ -329,6 +434,14 @@ inline LTVector4 operator-(const LTVector4 &vector) {
   return LTVector4(-vector.x, -vector.y, -vector.z, -vector.w);
 }
 
+inline bool operator>=(const LTVector4 &lhs, const LTVector4 &rhs) {
+  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z && lhs.w >= rhs.w;
+}
+
+inline bool operator<=(const LTVector4 &lhs, const LTVector4 &rhs) {
+  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z && lhs.w <= rhs.w;
+}
+
 inline LTVector4 operator+(LTVector4 lhs, const LTVector4 &rhs) {
   lhs += rhs;
   return lhs;
@@ -344,7 +457,17 @@ inline LTVector4 operator*(LTVector4 lhs, const LTVector4 &rhs) {
   return lhs;
 }
 
+inline LTVector4 operator*(LTVector4 lhs, const float &rhs) {
+  lhs *= rhs;
+  return lhs;
+}
+
 inline LTVector4 operator/(LTVector4 lhs, const LTVector4 &rhs) {
+  lhs /= rhs;
+  return lhs;
+}
+
+inline LTVector4 operator/(LTVector4 lhs, const float &rhs) {
   lhs /= rhs;
   return lhs;
 }

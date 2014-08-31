@@ -24,7 +24,7 @@
 }
 
 - (cv::Vec4b)cvVector {
-  GLKVector4 glkVector = self.glkVector * UCHAR_MAX;
+  GLKVector4 glkVector = self.glkVector * std::numeric_limits<uchar>::max();
   return cv::Vec4b(glkVector.r, glkVector.g, glkVector.b, glkVector.a);
 }
 

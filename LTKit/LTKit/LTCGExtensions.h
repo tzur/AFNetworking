@@ -111,6 +111,11 @@ CG_INLINE BOOL operator!=(const CGPoint &lhs, const CGPoint &rhs) {
   return !(lhs == rhs);
 }
 
+/// Returns the point resulting by adding the right point to the left point.
+CG_INLINE CGPoint operator+(const CGPoint &lhs, const CGPoint &rhs) {
+  return CGPointMake(lhs.x + rhs.x, lhs.y + rhs.y);
+}
+
 /// Returns the point resulting by adding the right size to the left point.
 CG_INLINE CGPoint operator+(const CGPoint &lhs, const CGSize &rhs) {
   return CGPointMake(lhs.x + rhs.width, lhs.y + rhs.height);
@@ -149,6 +154,16 @@ CG_INLINE CGPoint operator/(const CGPoint &lhs, const CGFloat &rhs) {
 /// Multiply a point by a size, component-wise.
 CG_INLINE CGPoint operator*(const CGPoint &lhs, const CGSize &rhs) {
   return CGPointMake(lhs.x * rhs.width, lhs.y * rhs.height);
+}
+
+/// Multiply a size by a point, component-wise.
+CG_INLINE CGPoint operator*(const CGSize &lhs, const CGPoint &rhs) {
+  return CGPointMake(lhs.width * rhs.x, lhs.height * rhs.y);
+}
+
+/// Multiply point by a point, component-wise.
+CG_INLINE CGPoint operator*(const CGPoint &lhs, const CGPoint &rhs) {
+  return CGPointMake(lhs.x * rhs.x, lhs.y * rhs.y);
 }
 
 /// Divide a point by a size, component-wise.

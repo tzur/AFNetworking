@@ -63,7 +63,9 @@ context(@"LTVector2", ^{
     expect(v1 + v2).to.equal(LTVector2(15, 12));
     expect(v1 - v2).to.equal(LTVector2(5, 4));
     expect(v1 * v2).to.equal(LTVector2(50, 32));
+    expect(v1 * 2).to.equal(LTVector2(20, 16));
     expect(v1 / v2).to.equal(LTVector2(2, 2));
+    expect(v1 / 2).to.equal(LTVector2(5, 4));
     expect(-v1).to.equal(LTVector2(-10, -8));
   });
 
@@ -72,6 +74,10 @@ context(@"LTVector2", ^{
     expect(LTVector2(1, 3) == LTVector2(1, 2)).to.beFalsy();
     expect(LTVector2(1, 2) != LTVector2(1, 2)).to.beFalsy();
     expect(LTVector2(1, 3) != LTVector2(1, 2)).to.beTruthy();
+    expect(LTVector2(1, 2) >= LTVector2(1, 2)).to.beTruthy();
+    expect(LTVector2(1, 1) >= LTVector2(1, 2)).to.beFalsy();
+    expect(LTVector2(1, 2) <= LTVector2(1, 2)).to.beTruthy();
+    expect(LTVector2(1, 3) <= LTVector2(1, 2)).to.beFalsy();
   });
 
   it(@"should access rgb values correctly", ^{
@@ -79,6 +85,11 @@ context(@"LTVector2", ^{
     v.r() = 5;
     v.g() = 8;
     expect(v).to.equal(LTVector2(5, 8));
+  });
+  
+  it(@"should sum the vector components correctly", ^{
+    LTVector2 v(1, 2);
+    expect(v.sum()).to.equal(3);
   });
 
   it(@"should convert from string", ^{
@@ -104,16 +115,21 @@ context(@"LTVector3", ^{
     expect(v1.x).to.equal(0);
     expect(v1.y).to.equal(0);
     expect(v1.z).to.equal(0);
-
-    LTVector3 v2(1, 2, 3);
+    
+    LTVector3 v2(1);
     expect(v2.x).to.equal(1);
-    expect(v2.y).to.equal(2);
-    expect(v2.z).to.equal(3);
+    expect(v2.y).to.equal(1);
+    expect(v2.z).to.equal(1);
 
-    LTVector3 v3(GLKVector3Make(3, 4, 5));
-    expect(v3.x).to.equal(3);
-    expect(v3.y).to.equal(4);
-    expect(v3.z).to.equal(5);
+    LTVector3 v3(1, 2, 3);
+    expect(v3.x).to.equal(1);
+    expect(v3.y).to.equal(2);
+    expect(v3.z).to.equal(3);
+
+    LTVector3 v4(GLKVector3Make(3, 4, 5));
+    expect(v4.x).to.equal(3);
+    expect(v4.y).to.equal(4);
+    expect(v4.z).to.equal(5);
   });
 
   it(@"should cast to GLKVector3", ^{
@@ -132,7 +148,9 @@ context(@"LTVector3", ^{
     expect(v1 + v2).to.equal(LTVector3(15, 12, 8));
     expect(v1 - v2).to.equal(LTVector3(5, 4, 4));
     expect(v1 * v2).to.equal(LTVector3(50, 32, 12));
+    expect(v1 * 2).to.equal(LTVector3(20, 16, 12));
     expect(v1 / v2).to.equal(LTVector3(2, 2, 3));
+    expect(v1 / 2).to.equal(LTVector3(5, 4, 3));
     expect(-v1).to.equal(LTVector3(-10, -8, -6));
   });
 
@@ -141,6 +159,10 @@ context(@"LTVector3", ^{
     expect(LTVector3(1, 3, 3) == LTVector3(1, 2, 3)).to.beFalsy();
     expect(LTVector3(1, 2, 3) != LTVector3(1, 2, 3)).to.beFalsy();
     expect(LTVector3(1, 3, 3) != LTVector3(1, 2, 3)).to.beTruthy();
+    expect(LTVector3(1, 2, 3) >= LTVector3(1, 2, 4)).to.beFalsy();
+    expect(LTVector3(1, 2, 3) >= LTVector3(1, 2, 3)).to.beTruthy();
+    expect(LTVector3(1, 2, 3) <= LTVector3(1, 2, 3)).to.beTruthy();
+    expect(LTVector3(1, 3, 3) <= LTVector3(1, 2, 3)).to.beFalsy();
   });
 
   it(@"should access rgb values correctly", ^{
@@ -149,6 +171,11 @@ context(@"LTVector3", ^{
     v.g() = 8;
     v.b() = 2;
     expect(v).to.equal(LTVector3(5, 8, 2));
+  });
+  
+  it(@"should sum the vector components correctly", ^{
+    LTVector3 v(1, 2, 3);
+    expect(v.sum()).to.equal(6);
   });
 
   it(@"should convert from string", ^{
@@ -175,18 +202,24 @@ context(@"LTVector4", ^{
     expect(v1.y).to.equal(0);
     expect(v1.z).to.equal(0);
     expect(v1.w).to.equal(0);
-
-    LTVector4 v2(1, 2, 3, 4);
+    
+    LTVector4 v2(1);
     expect(v2.x).to.equal(1);
-    expect(v2.y).to.equal(2);
-    expect(v2.z).to.equal(3);
-    expect(v2.w).to.equal(4);
+    expect(v2.y).to.equal(1);
+    expect(v2.z).to.equal(1);
+    expect(v2.w).to.equal(1);
 
-    LTVector4 v3(GLKVector4Make(3, 4, 5, 6));
-    expect(v3.x).to.equal(3);
-    expect(v3.y).to.equal(4);
-    expect(v3.z).to.equal(5);
-    expect(v3.w).to.equal(6);
+    LTVector4 v3(1, 2, 3, 4);
+    expect(v3.x).to.equal(1);
+    expect(v3.y).to.equal(2);
+    expect(v3.z).to.equal(3);
+    expect(v3.w).to.equal(4);
+
+    LTVector4 v4(GLKVector4Make(3, 4, 5, 6));
+    expect(v4.x).to.equal(3);
+    expect(v4.y).to.equal(4);
+    expect(v4.z).to.equal(5);
+    expect(v4.w).to.equal(6);
   });
 
   it(@"should cast to GLKVector4", ^{
@@ -206,7 +239,9 @@ context(@"LTVector4", ^{
     expect(v1 + v2).to.equal(LTVector4(15, 12, 8, 18));
     expect(v1 - v2).to.equal(LTVector4(5, 4, 4, 6));
     expect(v1 * v2).to.equal(LTVector4(50, 32, 12, 72));
+    expect(v1 * 2).to.equal(LTVector4(20, 16, 12, 24));
     expect(v1 / v2).to.equal(LTVector4(2, 2, 3, 2));
+    expect(v1 / 2).to.equal(LTVector4(5, 4, 3, 6));
     expect(-v1).to.equal(LTVector4(-10, -8, -6, -12));
   });
 
@@ -226,6 +261,11 @@ context(@"LTVector4", ^{
     expect(v).to.equal(LTVector4(5, 8, 2, 12));
   });
 
+  it(@"should sum the vector components correctly", ^{
+    LTVector4 v(1, 2, 3, 4);
+    expect(v.sum()).to.equal(10);
+  });
+  
   it(@"should convert from string", ^{
     NSString *value = @"(1.5, 2.5, 3, 4)";
     LTVector4 vector = LTVector4FromString(value);
