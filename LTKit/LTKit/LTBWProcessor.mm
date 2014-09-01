@@ -229,7 +229,8 @@ LTPropertyProxyWithoutSetter(CGFloat, structure, Structure, self.toneProcessor);
   }
   _colorGradientTexture = colorGradientTexture;
   self.toneProcessor.colorGradientTexture = [colorGradientTexture clone];
-  self.colorGradientMat = cv::Mat();
+  self.colorGradientMat = [self.colorGradientTexture image];
+  [self processInternalColorGradientTexture];
   [self setNeedsToneProcessing];
 }
 
@@ -241,10 +242,6 @@ LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity,
 }
 
 - (void)processInternalColorGradientTexture {
-  if (self.colorGradientMat.empty()) {
-    self.colorGradientMat = [self.colorGradientTexture image];
-  }
-
   [self.toneProcessor.colorGradientTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     cv::addWeighted(self.identityCurve, 1 - self.colorGradientIntensity, self.colorGradientMat,
                     self.colorGradientIntensity, 0, *mapped);
