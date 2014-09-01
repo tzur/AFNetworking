@@ -3,15 +3,15 @@
 
 #import <UIKit/UIColor.h>
 
-@interface UIColor (GLKVector)
+@interface UIColor (Vector)
 
 /// Returns the \c UIColor generated from the given rgba vector.
-+ (UIColor *)colorWithGLKVector:(GLKVector4)glkVector;
++ (UIColor *)lt_colorWithLTVector:(LTVector4)vector;
 
-/// Returns the \c GLKVector4 representation of the color.
-@property (readonly, nonatomic) GLKVector4 glkVector;
+/// Returns the \c LTVector4 representation of the color.
+@property (readonly, nonatomic) LTVector4 lt_ltVector;
 
 /// Returns the \c cv::Vec4b representation of the color.
-@property (readonly, nonatomic) cv::Vec4b cvVector;
+@property (readonly, nonatomic) cv::Vec4b lt_cvVector;
 
 @end

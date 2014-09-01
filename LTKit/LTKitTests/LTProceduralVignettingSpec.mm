@@ -53,8 +53,8 @@ context(@"properties", ^{
   
   it(@"should return normalized noise channel mixer property", ^{
     LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
-    vignette.noiseChannelMixer = GLKVector3Make(-1.0, 0.0, 0.0);
-    expect(vignette.noiseChannelMixer).to.beCloseToGLKVector(GLKVector3Make(1.0, 0.0, 0.0));
+    vignette.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
+    expect(vignette.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
   });
   
   it(@"should not fail on correct input", ^{
@@ -63,7 +63,7 @@ context(@"properties", ^{
       vignette.spread = 25.0;
       vignette.corner = 2.0;
       vignette.noiseAmplitude = 2.0;
-      vignette.noiseChannelMixer = GLKVector3Make(1.0, 1.0, 1.0);
+      vignette.noiseChannelMixer = LTVector3(1.0, 1.0, 1.0);
     }).toNot.raiseAny();
   });
 });

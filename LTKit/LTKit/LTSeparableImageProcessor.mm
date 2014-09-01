@@ -36,15 +36,15 @@
   if (!iteration) {
     // Horizontal with source width.
     CGFloat width = self.inputSize.width;
-    self[@"texelOffset"] = $(GLKVector2Make(1.0 / width, 0));
+    self[@"texelOffset"] = $(LTVector2(1.0 / width, 0));
   } else if (iteration % 2) {
     // Vertical.
     CGFloat height = self.outputSize.height;
-    self[@"texelOffset"] = $(GLKVector2Make(0, 1.0 / height));
+    self[@"texelOffset"] = $(LTVector2(0, 1.0 / height));
   } else {
     // Horizontal.
     CGFloat width = self.outputSize.width;
-    self[@"texelOffset"] = $(GLKVector2Make(1.0 / width, 0));
+    self[@"texelOffset"] = $(LTVector2(1.0 / width, 0));
   }
 }
 

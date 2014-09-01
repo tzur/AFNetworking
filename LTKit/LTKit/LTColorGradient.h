@@ -12,28 +12,28 @@
 ///
 /// @param position position of the control point. Should be in [0-1] range.
 /// @param color color of the control point with alpha component.
-- (instancetype)initWithPosition:(CGFloat)position colorWithAlpha:(GLKVector4)color;
+- (instancetype)initWithPosition:(CGFloat)position colorWithAlpha:(LTVector4)color;
 
 /// Initializes color gradient control point with position and color.
 ///
 /// @param position position of the control point. Should be in [0-1] range.
 /// @param color color of the control point without alpha component. Alpha is set to 1 in this case.
-- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color;
+- (instancetype)initWithPosition:(CGFloat)position color:(LTVector3)color;
 
 /// Convenience class method that creates a color gradient control point with position and opaque
 /// color.
-+ (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position color:(GLKVector3)color;
++ (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position color:(LTVector3)color;
 
 /// Convenience class method that creates a color gradient control point with position and color
 /// with alpha.
 + (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position
-                                           colorWithAlpha:(GLKVector4)color;
+                                           colorWithAlpha:(LTVector4)color;
 
 /// Position of the point.
 @property (readonly, nonatomic) CGFloat position;
 
 /// Color of the point.
-@property (readonly, nonatomic) GLKVector4 color;
+@property (readonly, nonatomic) LTVector4 color;
 
 @end
 

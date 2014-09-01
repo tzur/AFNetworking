@@ -41,8 +41,8 @@ LTPropertyDeclare(CGFloat, corner, Corner);
 /// Mixes the noise channels of the noise texture in order to create the transition noise.
 /// Components should be in [-1, 1] range. Default value is (1, 0, 0). Input values are normalized,
 /// to remove potential interference with noise amplitude.
-@property (nonatomic) GLKVector3 noiseChannelMixer;
-LTPropertyDeclare(GLKVector3, noiseChannelMixer, NoiseChannelMixer);
+@property (nonatomic) LTVector3 noiseChannelMixer;
+LTPropertyDeclare(LTVector3, noiseChannelMixer, NoiseChannelMixer);
 
 /// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
 @property (nonatomic) CGFloat noiseAmplitude;

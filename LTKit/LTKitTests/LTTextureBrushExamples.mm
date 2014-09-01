@@ -73,7 +73,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
       fbo = [[LTFbo alloc] initWithTexture:output];
-      [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+      [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
       
       expected.create(kOutputSize.height, kOutputSize.width);
       expected = cv::Vec4b(0, 0, 0, 0);
@@ -196,7 +196,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
         
         it(@"should draw with updated intensity", ^{
-          const GLKVector4 kIntensity = GLKVector4Make(0.3125, 0.4375, 0.5625, 0.8);
+          const LTVector4 kIntensity = LTVector4(0.3125, 0.4375, 0.5625, 0.8);
           brush.intensity = kIntensity;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
@@ -210,8 +210,8 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
         
         it(@"blending with zero result opacity should result in zero rgb as well", ^{
-          [fbo clearWithColor:GLKVector4Make(1, 1, 1, 0)];
-          brush.intensity = GLKVector4Make(1, 1, 1, 0);
+          [fbo clearWithColor:LTVector4(1, 1, 1, 0)];
+          brush.intensity = LTVector4(1, 1, 1, 0);
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           expected.setTo(0);
@@ -272,7 +272,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
         
         it(@"should draw with updated intensity", ^{
-          const GLKVector4 kIntensity = GLKVector4Make(0.5, 0.75, 0.5, 1.0);
+          const LTVector4 kIntensity = LTVector4(0.5, 0.75, 0.5, 1.0);
           brush.intensity = kIntensity;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
@@ -286,8 +286,8 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
         
         it(@"blending with zero result opacity should result in zero rgb as well", ^{
-          [fbo clearWithColor:GLKVector4Make(1, 1, 1, 0)];
-          brush.intensity = GLKVector4Make(1, 1, 1, 0);
+          [fbo clearWithColor:LTVector4(1, 1, 1, 0)];
+          brush.intensity = LTVector4(1, 1, 1, 0);
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           expected.setTo(0);

@@ -78,7 +78,7 @@ context(@"processing", ^{
   
   sit(@"should return outer frame with abrupt transition and no noise", ^{
     processor.outerFrameWidth = 25;
-    processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    processor.outerFrameColor = LTVector3(1.0, 0.0, 0.0);
     [processor process];
     
     LTTexture *precomputedResult =
@@ -87,9 +87,9 @@ context(@"processing", ^{
   });
   
   sit(@"should return outer frame with no noise on clear background", ^{
-    [input clearWithColor:GLKVector4Zero];
+    [input clearWithColor:LTVector4Zero];
     processor.outerFrameWidth = 25;
-    processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    processor.outerFrameColor = LTVector3(1.0, 0.0, 0.0);
     [processor process];
     
     LTTexture *precomputedResult =
@@ -100,10 +100,10 @@ context(@"processing", ^{
   sit(@"should return outer + inner frames with rounded corners on both frames", ^{
     processor.outerFrameWidth = 10;
     processor.outerFrameCorner = 15;
-    processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 1.0);
+    processor.outerFrameColor = LTVector3(0.0, 0.0, 1.0);
     processor.innerFrameWidth = 10;
     processor.innerFrameCorner = 15;
-    processor.innerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    processor.innerFrameColor = LTVector3(1.0, 0.0, 0.0);
     [processor process];
     
     LTTexture *precomputedResult =
@@ -114,7 +114,7 @@ context(@"processing", ^{
   sit(@"should return same result on same parameters, but different history", ^{
     // Create thick red frame.
     processor.outerFrameWidth = 25;
-    processor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    processor.outerFrameColor = LTVector3(1.0, 0.0, 0.0);
     [processor process];
     
     LTTexture *alternativeOutput = [LTTexture textureWithPropertiesOf:input];
@@ -122,11 +122,11 @@ context(@"processing", ^{
         [[LTImageBorderProcessor alloc] initWithInput:input output:alternativeOutput];
     // Create thin blue frame.
     anotherProcessor.outerFrameWidth = 10;
-    anotherProcessor.outerFrameColor = GLKVector3Make(0.0, 1.0, 0.0);
+    anotherProcessor.outerFrameColor = LTVector3(0.0, 1.0, 0.0);
     [anotherProcessor process];
     // Create thick red frame.
     anotherProcessor.outerFrameWidth = 25;
-    anotherProcessor.outerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+    anotherProcessor.outerFrameColor = LTVector3(1.0, 0.0, 0.0);
     [anotherProcessor process];
     
     expect($(output.image)).to.beCloseToMat($(alternativeOutput.image));
@@ -140,13 +140,13 @@ context(@"processing", ^{
     processor.outerFrameSpread = 10.0;
     processor.outerFrameNoise = noise;
     processor.outerFrameNoiseAmplitude = 1.0;
-    processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
+    processor.outerFrameColor = LTVector3(0.0, 0.0, 0.0);
     // Inner frame.
     processor.innerFrameWidth = 10.0;
     processor.innerFrameSpread = 5.0;
     processor.innerFrameNoise = noise;
     processor.innerFrameNoiseAmplitude = 1.0;
-    processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
+    processor.innerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
     // Both.
     processor.roughness = 1.0;
     [processor process];

@@ -425,7 +425,8 @@ context(@"colorspace conversion", ^{
     for (const auto rgba : pixels) {
       GLKVector4 hsva = GLKRGBA2HSVA(rgba);
       CGFloat h,s,v;
-      [[UIColor colorWithGLKVector:rgba] getHue:&h saturation:&s brightness:&v alpha:nil];
+      [[UIColor lt_colorWithLTVector:(LTVector4)rgba]
+       getHue:&h saturation:&s brightness:&v alpha:nil];
       expect(hsva).to.beCloseToGLKVectorWithin(GLKVector4Make(h, s, v, rgba.a), 1e-4);
     }
   });

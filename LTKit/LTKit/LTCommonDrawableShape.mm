@@ -16,12 +16,12 @@
 #pragma mark -
 
 LTGPUStructImplement(LTCommonDrawableShapeVertex,
-                     GLKVector2, position,
-                     GLKVector2, offset,
-                     GLKVector4, lineBounds,
-                     GLKVector4, shadowBounds,
-                     GLKVector4, color,
-                     GLKVector4, shadowColor);
+                     LTVector2, position,
+                     LTVector2, offset,
+                     LTVector4, lineBounds,
+                     LTVector4, shadowBounds,
+                     LTVector4, color,
+                     LTVector4, shadowColor);
 
 @interface LTCommonDrawableShape () {
   LTCommonDrawableShapeVertices _strokeVertices;

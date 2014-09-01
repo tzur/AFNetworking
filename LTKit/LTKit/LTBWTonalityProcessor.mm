@@ -70,12 +70,12 @@
   return smoothTexture;
 }
 
-LTPropertyWithoutSetter(GLKVector3, colorFilter, ColorFilter,
-                        GLKVector3Zero, GLKVector3One, GLKVector3Make(0.299, 0.587, 0.114));
-- (void)setColorFilter:(GLKVector3)colorFilter {
+LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter,
+                        LTVector3Zero, LTVector3One, LTVector3(0.299, 0.587, 0.114));
+- (void)setColorFilter:(LTVector3)colorFilter {
   [self _verifyAndSetColorFilter:colorFilter];
-  LTParameterAssert(GLKVector3Length(colorFilter), @"Black is not a valid color filter");
-  _colorFilter = colorFilter / std::sum(colorFilter);
+  LTParameterAssert(colorFilter.sum(), @"Black is not a valid color filter");
+  _colorFilter = colorFilter / colorFilter.sum();
   self[[LTBWTonalityFsh colorFilter]] = $(_colorFilter);
 }
 

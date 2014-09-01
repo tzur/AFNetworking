@@ -88,18 +88,18 @@ context(@"properties", ^{
       processor.contrast = 0.1;
       processor.exposure = 0.1;
       processor.structure = 0.9;
-      processor.colorFilter = GLKVector3Make(1.0, 1.0, 0.0);
+      processor.colorFilter = LTVector3(1.0, 1.0, 0.0);
     }).toNot.raiseAny();
   });
   
   it(@"should not fail on correct vignette input", ^{
     expect(^{
       processor.vignetteNoise = input;
-      processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
+      processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
       processor.vignetteSpread = 15.0;
       processor.vignetteCorner = 6.0;
       processor.vignetteNoiseAmplitude = 0.5;
-      processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.9, 0.2);
+      processor.vignetteNoiseChannelMixer = LTVector3(1.0, 0.9, 0.2);
     }).toNot.raiseAny();
   });
 
@@ -107,7 +107,7 @@ context(@"properties", ^{
     expect(^{
       processor.grainTexture = input;
       processor.grainAmplitude = 1.1;
-      processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 1.0);
+      processor.grainChannelMixer = LTVector3(1.0, 0.0, 1.0);
     }).toNot.raiseAny();
   });
   
@@ -117,8 +117,8 @@ context(@"properties", ^{
       processor.outerFrameSpread = 0.1;
       processor.outerFrameCorner = 0.0;
       processor.outerFrameNoiseAmplitude = 1.0;
-      processor.outerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-      processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
+      processor.outerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
+      processor.outerFrameColor = LTVector3(0.0, 0.0, 0.0);
     }).toNot.raiseAny();
   });
   
@@ -128,8 +128,8 @@ context(@"properties", ^{
       processor.innerFrameSpread = 0.0;
       processor.innerFrameCorner = 0.0;
       processor.innerFrameNoiseAmplitude = 1.0;
-      processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-      processor.innerFrameColor = GLKVector3Make(1.0, 0.0, 0.0);
+      processor.innerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
+      processor.innerFrameColor = LTVector3(1.0, 0.0, 0.0);
     }).toNot.raiseAny();
   });
 });
@@ -144,7 +144,7 @@ context(@"processing", ^{
     noise.wrap = LTTextureWrapRepeat;
     
     // Tone.
-    processor.colorFilter = GLKVector3Make(1.0, 0.0, 1.0);
+    processor.colorFilter = LTVector3(1.0, 0.0, 1.0);
     processor.brightness = 0.1;
     processor.exposure = 0.1;
     processor.offset = 0.2;
@@ -152,43 +152,43 @@ context(@"processing", ^{
     // Vignetting.
     processor.vignetteOpacity = 1.0;
     processor.vignetteNoise = noise;
-    processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
+    processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
     processor.vignetteSpread = 25.0;
     processor.vignetteCorner = 8.0;
     processor.vignetteNoiseAmplitude = 10.0;
-    processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.1, 0.2);
+    processor.vignetteNoiseChannelMixer = LTVector3(1.0, 0.1, 0.2);
     // Grain.
     processor.grainTexture = noise;
     processor.grainAmplitude = 1.1;
-    processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 1.0);
+    processor.grainChannelMixer = LTVector3(1.0, 0.0, 1.0);
     // Outer frame.
     processor.outerFrameWidth = 1.5;
     processor.outerFrameSpread = 1.5;
     processor.outerFrameCorner = 0.0;
     processor.outerFrameNoise = noise;
     processor.outerFrameNoiseAmplitude = 0.0;
-    processor.outerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-    processor.outerFrameColor = GLKVector3Make(0.0, 0.0, 0.0);
+    processor.outerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
+    processor.outerFrameColor = LTVector3(0.0, 0.0, 0.0);
     // Inner frame.
     processor.innerFrameWidth = 2;
     processor.innerFrameSpread = 0.0;
     processor.innerFrameCorner = 0.0;
     processor.innerFrameNoise = noise;
     processor.innerFrameNoiseAmplitude = 0.0;
-    processor.innerFrameNoiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-    processor.innerFrameColor = GLKVector3Make(1.0, 1.0, 1.0);
+    processor.innerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
+    processor.innerFrameColor = LTVector3(1.0, 1.0, 1.0);
     // Scale the red channel slightly to create a "neutral-to-cold" gradient.
     CGFloat redScale = 0.95;
     LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.0 color:GLKVector3Make(0.0, 0.0, 0.0)];
+        initWithPosition:0.0 color:LTVector3(0.0, 0.0, 0.0)];
     LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.25 color:GLKVector3Make(0.25 * redScale, 0.25, 0.25)];
+        initWithPosition:0.25 color:LTVector3(0.25 * redScale, 0.25, 0.25)];
     LTColorGradientControlPoint *controlPoint2 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.5 color:GLKVector3Make(0.5 * redScale, 0.5, 0.5)];
+        initWithPosition:0.5 color:LTVector3(0.5 * redScale, 0.5, 0.5)];
     LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.75 color:GLKVector3Make(0.75 * redScale, 0.75, 0.75)];
+        initWithPosition:0.75 color:LTVector3(0.75 * redScale, 0.75, 0.75)];
     LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:1.0 color:GLKVector3Make(1.0 * redScale, 1.0, 1.0)];
+        initWithPosition:1.0 color:LTVector3(1.0 * redScale, 1.0, 1.0)];
     NSArray *controlPoints = @[controlPoint0, controlPoint1, controlPoint2, controlPoint3,
                                controlPoint4];
     // Color gradient.
@@ -220,7 +220,7 @@ context(@"processing", ^{
     processor.outerFrameWidth = 1.0;
     processor.outerFrameSpread = 2.0;
     processor.outerFrameNoiseAmplitude = 20.0;
-    processor.outerFrameColor = GLKVector3Make(1.0, 1.0, 1.0);
+    processor.outerFrameColor = LTVector3(1.0, 1.0, 1.0);
     // Inner frame.
     processor.innerFrameWidth = 0.0;
     processor.innerFrameSpread = 0.0;

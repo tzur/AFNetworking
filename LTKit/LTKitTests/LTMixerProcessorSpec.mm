@@ -40,7 +40,7 @@ beforeEach(^{
                              format:LTTextureFormatRed allocateMemory:YES];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
-  [mask clearWithColor:GLKVector4Make(maskColor, maskColor, maskColor, maskColor)];
+  [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
 
   processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
 });
@@ -147,7 +147,7 @@ context(@"front placement", ^{
 context(@"tiling", ^{
   it(@"should tile back on output", ^{
     // Front is completely disabled by the mask, only verify back tiling.
-    [mask clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [mask clearWithColor:LTVector4(0, 0, 0, 0)];
 
     // Create square pattern.
     [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {

@@ -38,15 +38,15 @@
 /// the struct name. Struct member follows, with the member type first, then its name. Example:
 /// @code
 /// LTGPUStruct(MyStruct,
-///             GLKVector2, position,
-///             GLKVector4, color,
+///             LTVector2, position,
+///             LTVector4, color,
 ///             float, intensity);
 /// @endcode
 ///
 /// Structs are defined globally, even if their scope is limited. Avoid defining a struct with a
 /// similar name twice.
 ///
-/// @note beware from alignment constraints when creating structs. For example, GLKVector4 is
+/// @note beware from alignment constraints when creating structs. For example, LTVector4 is
 /// 16-byte aligned. Usually, this is not required in such structs. Therefore, consider using
 /// #pragma pack(n) to reduce the total size of the struct.
 #define LTGPUStructMake(STRUCT, ...) \

@@ -37,7 +37,10 @@
   if ([type isEqualToString:@"float"] ||
       [type isEqualToString:@"GLKVector2"] ||
       [type isEqualToString:@"GLKVector3"] ||
-      [type isEqualToString:@"GLKVector4"]) {
+      [type isEqualToString:@"GLKVector4"] ||
+      [type isEqualToString:@"LTVector2"] ||
+      [type isEqualToString:@"LTVector3"] ||
+      [type isEqualToString:@"LTVector4"]) {
     return GL_FLOAT;
   } else if ([type isEqualToString:@"GLushort"]) {
     return GL_UNSIGNED_SHORT;

@@ -7,7 +7,7 @@
 
 @implementation LTColorGradientControlPoint
 
-- (instancetype)initWithPosition:(CGFloat)position colorWithAlpha:(GLKVector4)color {
+- (instancetype)initWithPosition:(CGFloat)position colorWithAlpha:(LTVector4)color {
   LTParameterAssert(position >= 0 && position <= 1, @"Position should be in [0-1] range");
   if (self = [super init]) {
     _position = position;
@@ -17,19 +17,19 @@
 }
 
 + (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position
-                                                    color:(GLKVector3)color {
+                                                    color:(LTVector3)color {
   return [[LTColorGradientControlPoint alloc]
-      initWithPosition:position colorWithAlpha:GLKVector4Make(color.r, color.g, color.b, 1)];
+      initWithPosition:position colorWithAlpha:LTVector4(color.r(), color.g(), color.b(), 1)];
 }
 
 + (LTColorGradientControlPoint *)controlPointWithPosition:(CGFloat)position
-                                           colorWithAlpha:(GLKVector4)color {
+                                           colorWithAlpha:(LTVector4)color {
   return [[LTColorGradientControlPoint alloc] initWithPosition:position colorWithAlpha:color];
 }
 
-- (instancetype)initWithPosition:(CGFloat)position color:(GLKVector3)color {
+- (instancetype)initWithPosition:(CGFloat)position color:(LTVector3)color {
   return [self initWithPosition:position
-                 colorWithAlpha:GLKVector4Make(color.r, color.g, color.b, 1)];
+                 colorWithAlpha:LTVector4(color.r(), color.g(), color.b(), 1)];
 }
 
 @end
@@ -69,13 +69,13 @@
 }
 
 // Linearly interpolate/extrapolate two control points to get the values at position.
-+ (GLKVector4)sampleWithPoint0:(LTColorGradientControlPoint *)p0
-                        point1:(LTColorGradientControlPoint *)p1 atPosition:(CGFloat)position {
++ (LTVector4)sampleWithPoint0:(LTColorGradientControlPoint *)p0
+                       point1:(LTColorGradientControlPoint *)p1 atPosition:(CGFloat)position {
   CGFloat x0 = p0.position;
   CGFloat x1 = p1.position;
-  GLKVector4 y0 = p0.color;
-  GLKVector4 y1 = p1.color;
-  return std::round((y0 + (position - x0)/(x1 - x0) * (y1 - y0)) * 255.0);
+  LTVector4 y0 = p0.color;
+  LTVector4 y1 = p1.color;
+  return std::round((y0 + (y1 - y0) * (position - x0) / (x1 - x0)) * 255.0);
 }
 
 - (cv::Mat4b)matWithSamplingPoints:(NSUInteger)numberOfPoints {
@@ -98,8 +98,8 @@
       p1 = self.controlPoints[rightEdgeIndex];
     }
     // Interpolate/extrapolate the control points to get the in-between values.
-    GLKVector4 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
-    mat(0, col) = cv::Vec4b(color.r, color.g, color.b, color.a);
+    LTVector4 color = [LTColorGradient sampleWithPoint0:p0 point1:p1 atPosition:currentPosition];
+    mat(0, col) = cv::Vec4b(color.r(), color.g(), color.b(), color.a());
   }
 
   return mat;
@@ -113,10 +113,10 @@
 + (LTColorGradient *)identityGradient {
   LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
                                                 initWithPosition:0.0
-                                                color:GLKVector3Make(0.0, 0.0, 0.0)];
+                                                color:LTVector3(0.0, 0.0, 0.0)];
   LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
                                                 initWithPosition:1.0
-                                                color:GLKVector3Make(1.0, 1.0, 1.0)];
+                                                color:LTVector3(1.0, 1.0, 1.0)];
   
   NSArray *controlPoints = @[controlPoint0, controlPoint1];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];

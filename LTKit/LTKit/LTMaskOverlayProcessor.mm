@@ -16,12 +16,12 @@
                            sourceTexture:image
                        auxiliaryTextures:@{[LTMaskOverlayFsh maskTexture]: mask}
                                andOutput:output]) {
-    self.maskColor = GLKVector4Make(1.0, 0.0, 0.0, 0.5);
+    self.maskColor = LTVector4(1.0, 0.0, 0.0, 0.5);
   }
   return self;
 }
 
-- (void)setMaskColor:(GLKVector4)maskColor {
+- (void)setMaskColor:(LTVector4)maskColor {
   _maskColor = maskColor;
   self[[LTMaskOverlayFsh maskColor]] = $(maskColor);
 }

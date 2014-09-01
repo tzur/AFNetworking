@@ -61,7 +61,7 @@ context(@"host memory mapped texture", ^{
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                   fragmentSource:[ColorizeFsh source]];
     drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
-    drawer[[ColorizeFsh color]] = $(GLKVector4Make(1.0, 0.0, 0.0, 1.0));
+    drawer[[ColorizeFsh color]] = $(LTVector4(1.0, 0.0, 0.0, 1.0));
   });
 
   afterEach(^{

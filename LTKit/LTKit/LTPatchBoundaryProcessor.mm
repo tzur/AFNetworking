@@ -14,7 +14,7 @@
 @property (strong, nonatomic) LTTexture *input;
 @property (strong, nonatomic) LTTexture *output;
 
-@property (nonatomic) GLKVector2 texelOffset;
+@property (nonatomic) LTVector2 texelOffset;
 
 @end
 
@@ -26,13 +26,13 @@
                                    input:input andOutput:output]) {
     self.input = input;
     self.output = output;
-    self.texelOffset = GLKVector2Make(1.0 / input.size.width, 1.0 / input.size.height);
+    self.texelOffset = LTVector2(1.0 / input.size.width, 1.0 / input.size.height);
     self.threshold = self.defaultThreshold;
   }
   return self;
 }
 
-- (void)setTexelOffset:(GLKVector2)texelOffset {
+- (void)setTexelOffset:(LTVector2)texelOffset {
   _texelOffset = texelOffset;
   self[[LTPatchBoundaryVsh texelOffset]] = $(texelOffset);
 }

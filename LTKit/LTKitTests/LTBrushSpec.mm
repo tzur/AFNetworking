@@ -140,19 +140,19 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
     });
     
     it(@"should set intensity", ^{
-      const GLKVector4 newValue = GLKVector4Make(0.3, 0.4, 0.5, 0.6);
+      const LTVector4 newValue = LTVector4(0.3, 0.4, 0.5, 0.6);
       expect(brush.intensity).notTo.equal(newValue);
       brush.intensity = newValue;
       expect(brush.intensity).to.equal(newValue);
       
       for (NSUInteger i = 0; i < 4; ++i) {
-        GLKVector4 newValue = brush.minIntensity;
-        newValue.v[i] -= kEpsilon;
+        LTVector4 newValue = brush.minIntensity;
+        newValue.data()[i] -= kEpsilon;
         expect(^{
           brush.intensity = newValue;
         }).to.raise(NSInvalidArgumentException);
         newValue = brush.maxIntensity;
-        newValue.v[i] += kEpsilon;
+        newValue.data()[i] += kEpsilon;
         expect(^{
           brush.intensity = newValue;
         }).to.raise(NSInvalidArgumentException);
@@ -197,7 +197,7 @@ context(@"properties", ^{
     expect(brush.spacing).to.equal(0.05);
     expect(brush.opacity).to.equal(1);
     expect(brush.flow).to.equal(1);
-    expect(brush.intensity).to.equal(GLKVector4Make(1, 1, 1, 1));
+    expect(brush.intensity).to.equal(LTVector4(1, 1, 1, 1));
     cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
   });
@@ -227,7 +227,7 @@ context(@"drawing", ^{
     brush.spacing = 0.5;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
     
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 255);
@@ -307,7 +307,7 @@ context(@"drawing", ^{
   });
   
   it(@"drawing should be additive", ^{
-    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(3);
     }];
@@ -384,8 +384,8 @@ context(@"drawing", ^{
   });
   
   it(@"should draw with updated intensity", ^{
-    [fbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
-    const GLKVector4 kIntensity = GLKVector4Make(0.1, 0.2, 0.3, 0.4);
+    [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
+    const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
     brush.intensity = kIntensity;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);

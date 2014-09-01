@@ -299,22 +299,22 @@
         if (![value isKindOfClass:[NSValue class]]) {
           LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
         }
-        GLKVector2 vector = [value GLKVector2Value];
-        glUniform2fv(object.index, 1, vector.v);
+        LTVector2 vector = [value LTVector2Value];
+        glUniform2fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_VEC3: {
         if (![value isKindOfClass:[NSValue class]]) {
           LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
         }
-        GLKVector3 vector = [value GLKVector3Value];
-        glUniform3fv(object.index, 1, vector.v);
+        LTVector3 vector = [value LTVector3Value];
+        glUniform3fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_VEC4: {
         if (![value isKindOfClass:[NSValue class]]) {
           LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
         }
-        GLKVector4 vector = [value GLKVector4Value];
-        glUniform4fv(object.index, 1, vector.v);
+        LTVector4 vector = [value LTVector4Value];
+        glUniform4fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_MAT2: {
         if (![value isKindOfClass:[NSValue class]]) {
@@ -364,18 +364,18 @@
       return @(value);
     }
     case GL_FLOAT_VEC2: {
-      GLKVector2 value;
-      glGetUniformfv(self.name, object.index, value.v);
+      LTVector2 value;
+      glGetUniformfv(self.name, object.index, value.data());
       return $(value);
     }
     case GL_FLOAT_VEC3: {
-      GLKVector3 value;
-      glGetUniformfv(self.name, object.index, value.v);
+      LTVector3 value;
+      glGetUniformfv(self.name, object.index, value.data());
       return $(value);
     }
     case GL_FLOAT_VEC4: {
-      GLKVector4 value;
-      glGetUniformfv(self.name, object.index, value.v);
+      LTVector4 value;
+      glGetUniformfv(self.name, object.index, value.data());
       return $(value);
     }
     case GL_FLOAT_MAT2: {

@@ -69,14 +69,14 @@ context(@"properties", ^{
   it(@"should fail of negative color filter", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
-      tone.colorFilter = GLKVector3Make(-0.1, 0.1, 1.0);
+      tone.colorFilter = LTVector3(-0.1, 0.1, 1.0);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on black color filter", ^{
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:noise output:output];
     expect(^{
-      tone.colorFilter = GLKVector3Make(0.0, 0.0, 0.0);
+      tone.colorFilter = LTVector3(0.0, 0.0, 0.0);
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -87,7 +87,7 @@ context(@"properties", ^{
       tone.contrast = -0.2;
       tone.exposure = 0.5;
       tone.structure = -0.9;
-      tone.colorFilter = GLKVector3Make(1.0, 1.0, 0.0);
+      tone.colorFilter = LTVector3(1.0, 1.0, 0.0);
     }).toNot.raiseAny();
   });
 });
@@ -122,7 +122,7 @@ context(@"processing", ^{
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
                                                                         output:deltaOutput];
-    tone.colorFilter = GLKVector3Make(0.0, 0.0, 1.0);
+    tone.colorFilter = LTVector3(0.0, 0.0, 1.0);
     [tone process];
 
     expect($([deltaOutput image])).to.beCloseToMat($(greenDeltaOutput));
@@ -151,7 +151,7 @@ context(@"processing", ^{
     tone.structure = 0.5;
     tone.brightness = 0.1;
     tone.contrast = -0.2;
-    tone.colorFilter = GLKVector3Make(0.1, 0.1, 1.0);
+    tone.colorFilter = LTVector3(0.1, 0.1, 1.0);
     tone.colorGradientTexture =
         [[LTColorGradient colderThanNeutralGradient] textureWithSamplingPoints:256];
     [tone process];

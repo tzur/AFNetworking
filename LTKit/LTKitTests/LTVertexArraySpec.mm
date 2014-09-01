@@ -9,11 +9,11 @@
 #import "LTProgram.h"
 
 LTGPUStructMake(SingleFieldStruct,
-                GLKVector4, intensity);
+                LTVector4, intensity);
 
 LTGPUStructMake(MultipleFieldsStruct,
-                GLKVector2, position,
-                GLKVector2, texcoord);
+                LTVector2, position,
+                LTVector2, texcoord);
 
 static LTVertexArrayElement *LTArrayElementForMultipleFieldsStruct() {
   NSDictionary *attributeMap = @{@"position": @"position", @"texcoord": @"texcoord"};

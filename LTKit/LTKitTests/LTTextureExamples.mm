@@ -251,8 +251,8 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       it(@"should return a correct pixel value", ^{
         CGPoint point = CGPointMake(1, 7);
 
-        GLKVector4 actual = [texture pixelValue:point];
-        GLKVector4 expected = LTCVVec4bToGLKVector4(image(point.y, point.x));
+        LTVector4 actual = [texture pixelValue:point];
+        LTVector4 expected = LTCVVec4bToLTVector4(image(point.y, point.x));
 
         expect(expected).to.equal(actual);
       });
@@ -260,10 +260,10 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       it(@"should return correct pixel values", ^{
         CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
 
-        GLKVector4s actual = [texture pixelValues:points];
-        GLKVector4s expected;
+        LTVector4s actual = [texture pixelValues:points];
+        LTVector4s expected;
         for (const CGPoint &point : points) {
-          expected.push_back(LTCVVec4bToGLKVector4(image(point.y, point.x)));
+          expected.push_back(LTCVVec4bToLTVector4(image(point.y, point.x)));
         }
 
         expect(expected == actual).to.equal(YES);
@@ -301,10 +301,10 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
     context(@"clearing texture", ^{
       dit(@"should clear texture with color", ^{
-        GLKVector4 color = GLKVector4Make(1.0, 0.0, 0.0, 1.0);
+        LTVector4 color = LTVector4(1.0, 0.0, 0.0, 1.0);
         [texture clearWithColor:color];
 
-        cv::Scalar expected(color.r * 255, color.g * 255, color.b * 255, color.a * 255);
+        cv::Scalar expected(color.r() * 255, color.g() * 255, color.b() * 255, color.a() * 255);
         expect($([texture image])).to.equalScalar($(expected));
       });
     });
@@ -328,7 +328,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     context(@"generation ID", ^{
       it(@"should produce different generation ID after writing via OpenGL", ^{
         NSUInteger generationID = texture.generationID;
-        [texture clearWithColor:GLKVector4Zero];
+        [texture clearWithColor:LTVector4Zero];
         expect(texture.generationID).toNot.equal(generationID);
       });
 

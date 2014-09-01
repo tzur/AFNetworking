@@ -41,9 +41,9 @@ context(@"properties", ^{
   it(@"should have default properties", ^{
     expect(params.lineWidth).to.equal(1);
     expect(params.shadowWidth).to.equal(0);
-    expect(params.fillColor).to.equal(GLKVector4One);
-    expect(params.strokeColor).to.equal(GLKVector4One);
-    expect(params.shadowColor).to.equal(GLKVector4Make(0, 0, 0, 1));
+    expect(params.fillColor).to.equal(LTVector4One);
+    expect(params.strokeColor).to.equal(LTVector4One);
+    expect(params.shadowColor).to.equal(LTVector4(0, 0, 0, 1));
   });
   
   it(@"should update lineWidth", ^{
@@ -63,7 +63,7 @@ context(@"properties", ^{
   });
   
   it(@"should update fillColor", ^{
-    GLKVector4 newValue = GLKVector4One * 0.5;
+    LTVector4 newValue = LTVector4One * 0.5;
     expect(params.fillColor).notTo.equal(newValue);
     params.fillColor = newValue;
     expect(params.fillColor).to.equal(newValue);
@@ -71,7 +71,7 @@ context(@"properties", ^{
   });
   
   it(@"should update strokeColor", ^{
-    GLKVector4 newValue = GLKVector4One * 0.5;
+    LTVector4 newValue = LTVector4One * 0.5;
     expect(params.strokeColor).notTo.equal(newValue);
     params.strokeColor = newValue;
     expect(params.strokeColor).to.equal(newValue);
@@ -79,7 +79,7 @@ context(@"properties", ^{
   });
   
   it(@"should update shadowColor", ^{
-    GLKVector4 newValue = GLKVector4One * 0.5;
+    LTVector4 newValue = LTVector4One * 0.5;
     expect(params.shadowColor).notTo.equal(newValue);
     params.shadowColor = newValue;
     expect(params.shadowColor).to.equal(newValue);
@@ -96,9 +96,9 @@ context(@"properties", ^{
   it(@"should copy", ^{
     params.lineWidth += 1;
     params.shadowWidth += 1;
-    params.fillColor = GLKVector4One * 0.5;
-    params.strokeColor = GLKVector4One * 0.5;
-    params.shadowColor = GLKVector4One * 0.5;
+    params.fillColor = LTVector4One * 0.5;
+    params.strokeColor = LTVector4One * 0.5;
+    params.shadowColor = LTVector4One * 0.5;
     LTShapeDrawerParams *paramsCopy = [params copy];
     expect(paramsCopy).notTo.beIdenticalTo(params);
     expect(paramsCopy).to.equal(params);

@@ -250,7 +250,7 @@ context(@"drawing", ^{
   it(@"should draw the downsampled content on the center of the framebuffer", ^{
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));
 
     [view drawToFbo:fbo];
@@ -263,7 +263,7 @@ context(@"drawing", ^{
     view.backgroundColor = backgroundColor;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
-    expectedOutput = backgroundColor.cvVector;
+    expectedOutput = backgroundColor.lt_cvVector;
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));
     
     [view drawToFbo:fbo];
@@ -278,7 +278,7 @@ context(@"drawing", ^{
       (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(transparency);
       cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
       cv::flip(resizedContent, resizedContent, 0);
-      expectedOutput = view.backgroundColor.cvVector;
+      expectedOutput = view.backgroundColor.lt_cvVector;
       resizedContent.copyTo(expectedOutput(contentAreaInOutput));
     }];
     
@@ -301,7 +301,7 @@ context(@"drawing", ^{
       resizedContent(cv::Rect(pixels, 0, pixels, pixels)) = blendedWhite;
       resizedContent(cv::Rect(0, pixels, pixels, pixels)) = blendedWhite;
       cv::flip(resizedContent, resizedContent, 0);
-      expectedOutput = view.backgroundColor.cvVector;
+      expectedOutput = view.backgroundColor.lt_cvVector;
       resizedContent.copyTo(expectedOutput(contentAreaInOutput));
     }];
     
@@ -414,7 +414,7 @@ context(@"draw delegate", ^{
       glClear(GL_COLOR_BUFFER_BIT);
     }] ltView:view updateContentInRect:kContentFrame];
     [view setNeedsDisplayContent];
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = green;
     
     [view drawToFbo:fbo];
@@ -455,7 +455,7 @@ context(@"draw delegate", ^{
     }] ltView:view drawOverlayAboveContentWithTransform:CGAffineTransformIdentity];
     
     // The overlay should affect only the visible content rectangle (scissor box).
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = green;
     
     [view drawToFbo:fbo];
@@ -469,7 +469,7 @@ context(@"draw delegate", ^{
     LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:altMat];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = red;
     [view drawToFbo:fbo];
     output = [outputTexture image];
@@ -479,7 +479,7 @@ context(@"draw delegate", ^{
   it(@"should use content texture if alternativeContentTexture returns nil", ^{
     [[[mock stub] andReturn:nil] alternativeContentTexture];
     
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));
@@ -517,7 +517,7 @@ context(@"draw delegate", ^{
       [invocation setReturnValue:&returnValue];
     }] ltView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
     
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = blue;
     [view drawToFbo:fbo];
     output = [outputTexture image];
@@ -528,7 +528,7 @@ context(@"draw delegate", ^{
     [[[[mock stub] ignoringNonObjectArgs] andReturnValue:@NO]
      ltView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
 
-    expectedOutput = view.backgroundColor.cvVector;
+    expectedOutput = view.backgroundColor.lt_cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));

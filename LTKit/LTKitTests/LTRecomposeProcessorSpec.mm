@@ -93,8 +93,8 @@ context(@"processing", ^{
                                format:LTTextureFormatRed allocateMemory:YES];
     output = [LTTexture textureWithPropertiesOf:input];
 
-    [mask clearWithColor:GLKVector4Make(0, 0, 0, 1)];
-    [output clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [mask clearWithColor:LTVector4(0, 0, 0, 1)];
+    [output clearWithColor:LTVector4(0, 0, 0, 0)];
 
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
     processor.samplerFactory = [[LTDegenerateSamplerFactory alloc] init];

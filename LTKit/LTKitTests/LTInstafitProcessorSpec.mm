@@ -51,7 +51,7 @@ context(@"processing", ^{
                                format:LTTextureFormatRed allocateMemory:YES];
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(256, 256)];
 
-    [mask clearWithColor:GLKVector4Make(1, 1, 1, 1)];
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
 
     processor = [[LTInstafitProcessor alloc] initWithInput:input mask:mask output:output];
   });

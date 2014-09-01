@@ -9,6 +9,8 @@
 #import <opencv2/core/core.hpp>
 #import <vector>
 
+#import "LTVector.h"
+
 #pragma mark -
 #pragma mark CoreGraphics
 #pragma mark -
@@ -26,12 +28,23 @@ typedef std::vector<CGSize> CGSizes;
 #pragma mark GLKit
 #pragma mark -
 
-/// A collection of \c GLKVector2.
-typedef std::vector<GLKVector2> GLKVector2s;
+/// A collection of \c LTVector2.
+typedef std::vector<LTVector2> LTVector2s;
 /// A collection of \c GLKVector3.
 typedef std::vector<GLKVector3> GLKVector3s;
 /// A collection of \c GLKVector4.
 typedef std::vector<GLKVector4> GLKVector4s;
+
+#pragma mark -
+#pragma mark LTVector
+#pragma mark -
+
+/// A collection of \c LTVector2.
+typedef std::vector<LTVector2> LTVector2s;
+/// A collection of \c LTVector3.
+typedef std::vector<LTVector3> LTVector3s;
+/// A collection of \c LTVector4.
+typedef std::vector<LTVector4> LTVector4s;
 
 #pragma mark -
 #pragma mark OpenCV

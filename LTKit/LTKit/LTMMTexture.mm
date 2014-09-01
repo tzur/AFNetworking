@@ -11,7 +11,7 @@
 
 @interface LTTexture ()
 
-- (GLKVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
+- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
 - (BOOL)inTextureRect:(CGRect)rect;
 - (void)increaseGenerationID;
 
@@ -251,14 +251,14 @@
 #pragma mark Overridden methods
 #pragma mark -
 
-- (GLKVector4s)pixelValues:(const CGPoints &)locations {
-  __block GLKVector4s values(locations.size());
+- (LTVector4s)pixelValues:(const CGPoints &)locations {
+  __block LTVector4s values(locations.size());
 
   [self mappedImageForReading:^(const cv::Mat &texture, BOOL) {
     for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
       // Use boundary conditions similar to Matlab's 'symmetric'.
-      GLKVector2 location = [LTSymmetricBoundaryCondition
-                             boundaryConditionForPoint:GLKVector2Make(locations[i].x,
+      LTVector2 location = [LTSymmetricBoundaryCondition
+                             boundaryConditionForPoint:LTVector2(locations[i].x,
                                                                       locations[i].y)
                              withSignalSize:cv::Size2i(self.size.width, self.size.height)];
       cv::Point2i point = cv::Point2i(std::floor(location.x), std::floor(location.y));

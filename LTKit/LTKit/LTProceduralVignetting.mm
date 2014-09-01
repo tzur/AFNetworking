@@ -44,11 +44,11 @@
 // of both dimensions is equal. Such strategy (instead of simple scaling) is needed in order to
 // preserve the correct transition behaviour.
 - (void)precomputeDistanceShift:(CGSize)size {
-  GLKVector2 distanceShift;
+  LTVector2 distanceShift;
   if (size.width > size.height) {
-    distanceShift = GLKVector2Make(1.0 - size.height / size.width, 0.0);
+    distanceShift = LTVector2(1.0 - size.height / size.width, 0.0);
   } else {
-    distanceShift = GLKVector2Make(0.0, 1.0 - size.width / size.height);
+    distanceShift = LTVector2(0.0, 1.0 - size.width / size.height);
   }
   self[[LTProceduralVignettingFsh distanceShift]] = $(distanceShift);
 }
@@ -74,12 +74,12 @@ LTPropertyWithoutSetter(CGFloat, corner, Corner, 2, 16, 2);
   [self setAuxiliaryTexture:_noise withName:[LTProceduralVignettingFsh noiseTexture]];
 }
 
-LTPropertyWithoutSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
-                        -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0));
-- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+LTPropertyWithoutSetter(LTVector3, noiseChannelMixer, NoiseChannelMixer,
+                        -LTVector3One, LTVector3One, LTVector3(1, 0, 0));
+- (void)setNoiseChannelMixer:(LTVector3)noiseChannelMixer {
   [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.
-  _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
+  _noiseChannelMixer = noiseChannelMixer / noiseChannelMixer.sum();
   self[[LTProceduralVignettingFsh noiseChannelMixer]] = $(_noiseChannelMixer);
 }
 

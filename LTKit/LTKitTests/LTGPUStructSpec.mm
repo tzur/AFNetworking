@@ -8,9 +8,9 @@ LTGPUStructMake(MySimpleStruct,
 
 #pragma pack(4)
 LTGPUStructMake(MyMediumStruct,
-                GLKVector2, position,
-                GLKVector3, intensity,
-                GLKVector4, color);
+                LTVector2, position,
+                LTVector3, intensity,
+                LTVector4, color);
 
 LTGPUStructMake(MyShortStruct,
                 GLushort, index);
@@ -78,24 +78,24 @@ context(@"struct registration", ^{
     LTGPUStructField *position = gpuStruct.fields[@"position"];
     expect(position.name).to.equal(@"position");
     expect(position.offset).to.equal(0);
-    expect(position.type).to.equal(@"GLKVector2");
-    expect(position.size).to.equal(sizeof(GLKVector2));
+    expect(position.type).to.equal(@"LTVector2");
+    expect(position.size).to.equal(sizeof(LTVector2));
     expect(position.componentType).to.equal(GL_FLOAT);
     expect(position.componentCount).to.equal(2);
 
     LTGPUStructField *intensity = gpuStruct.fields[@"intensity"];
     expect(intensity.name).to.equal(@"intensity");
-    expect(intensity.offset).to.equal(sizeof(GLKVector2));
-    expect(intensity.type).to.equal(@"GLKVector3");
-    expect(intensity.size).to.equal(sizeof(GLKVector3));
+    expect(intensity.offset).to.equal(sizeof(LTVector2));
+    expect(intensity.type).to.equal(@"LTVector3");
+    expect(intensity.size).to.equal(sizeof(LTVector3));
     expect(intensity.componentType).to.equal(GL_FLOAT);
     expect(intensity.componentCount).to.equal(3);
 
     LTGPUStructField *color = gpuStruct.fields[@"color"];
     expect(color.name).to.equal(@"color");
     expect(color.offset).to.equal(intensity.offset + intensity.size);
-    expect(color.type).to.equal(@"GLKVector4");
-    expect(color.size).to.equal(sizeof(GLKVector4));
+    expect(color.type).to.equal(@"LTVector4");
+    expect(color.size).to.equal(sizeof(LTVector4));
     expect(color.componentType).to.equal(GL_FLOAT);
     expect(color.componentCount).to.equal(4);
   });

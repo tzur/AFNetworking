@@ -9,19 +9,19 @@
 SpecBegin(LTColorGradient)
 
 static const LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:0.0 color:GLKVector3Make(0.0, 0.0, 0.0)];
+    initWithPosition:0.0 color:LTVector3(0.0, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:0.25 color:GLKVector3Make(0.25, 0.0, 0.0)];
+    initWithPosition:0.25 color:LTVector3(0.25, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint2 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:0.5 color:GLKVector3Make(0.5, 0.0, 0.0)];
+    initWithPosition:0.5 color:LTVector3(0.5, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:0.75 color:GLKVector3Make(0.75, 0.0, 0.0)];
+    initWithPosition:0.75 color:LTVector3(0.75, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:1.0 color:GLKVector3Make(1.0, 0.0, 0.0)];
+    initWithPosition:1.0 color:LTVector3(1.0, 0.0, 0.0)];
 static const LTColorGradientControlPoint *controlPoint5 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:0.75 color:GLKVector3Make(0.5, 0.0, 0.75)];
+    initWithPosition:0.75 color:LTVector3(0.5, 0.0, 0.75)];
 static const LTColorGradientControlPoint *controlPoint6 = [[LTColorGradientControlPoint alloc]
-    initWithPosition:1.0 color:GLKVector3Make(0.0, 0.0, 1.0)];
+    initWithPosition:1.0 color:LTVector3(0.0, 0.0, 1.0)];
 
 NSArray *oneControlPoint = @[controlPoint0];
 NSArray *twoControlPoints = @[controlPoint0, controlPoint4];
@@ -36,20 +36,20 @@ context(@"LTColorGradientControlPoint intialization", ^{
   it(@"should not initialize on position which is out of range", ^{
     expect(^{
       __unused LTColorGradientControlPoint *controlPoint = [[LTColorGradientControlPoint alloc]
-          initWithPosition:2.0 color:GLKVector3Make(0.0, 0.0, 1.0)];
+          initWithPosition:2.0 color:LTVector3(0.0, 0.0, 1.0)];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should initialize on position within the range", ^{
     expect(^{
       __unused LTColorGradientControlPoint *controlPoint = [[LTColorGradientControlPoint alloc]
-          initWithPosition:0.5 color:GLKVector3Make(0.0, 0.0, 1.0)];
+          initWithPosition:0.5 color:LTVector3(0.0, 0.0, 1.0)];
     }).toNot.raiseAny();
   });
   
   it(@"should initialize using class method on position within the range", ^{
     expect(^{
-      GLKVector3 whiteColor = GLKVector3Make(1.0, 1.0, 1.0);
+      LTVector3 whiteColor = LTVector3(1.0, 1.0, 1.0);
       __unused LTColorGradientControlPoint *controlPoint =
           [LTColorGradientControlPoint controlPointWithPosition:0.5 color:whiteColor];
     }).toNot.raiseAny();
@@ -57,7 +57,7 @@ context(@"LTColorGradientControlPoint intialization", ^{
   
   it(@"should not initialize using class method on position out the range", ^{
     expect(^{
-      GLKVector4 blueColor = GLKVector4Make(0.0, 0.0, 1.0, 1.0);
+      LTVector4 blueColor = LTVector4(0.0, 0.0, 1.0, 1.0);
       __unused LTColorGradientControlPoint *controlPoint =
           [LTColorGradientControlPoint controlPointWithPosition:2.0 colorWithAlpha:blueColor];
     }).to.raise(NSInvalidArgumentException);
@@ -138,9 +138,9 @@ context(@"writing gradient values to mat", ^{
   
   it(@"should be equal to semi-transparent grdient", ^{
     LTColorGradientControlPoint *transparentBlack = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.0 colorWithAlpha:GLKVector4Make(0.0, 0.0, 0.0, 0.0)];
+        initWithPosition:0.0 colorWithAlpha:LTVector4(0.0, 0.0, 0.0, 0.0)];
     LTColorGradientControlPoint *opaqueWhite = [[LTColorGradientControlPoint alloc]
-        initWithPosition:1.0 colorWithAlpha:GLKVector4Make(1.0, 1.0, 1.0, 1.0)];
+        initWithPosition:1.0 colorWithAlpha:LTVector4(1.0, 1.0, 1.0, 1.0)];
     
     NSArray *controlPoints = @[transparentBlack, opaqueWhite];
     

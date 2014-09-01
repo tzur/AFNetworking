@@ -24,18 +24,18 @@
 
 - (void)setDefaultValues {
   self.maskType = LTDualMaskTypeRadial;
-  self.center = GLKVector2Make(self.outputSize.width / 2, self.outputSize.height / 2);
+  self.center = LTVector2(self.outputSize.width / 2, self.outputSize.height / 2);
   self.spread = self.defaultSpread;
   self.diameter = MIN(self.outputSize.width, self.outputSize.height) / 2;
   self.angle = 0.0;
 }
 
 - (void)setAspectRatioCorrectionWithSize:(CGSize)size {
-  GLKVector2 aspectRatioCorrection;
+  LTVector2 aspectRatioCorrection;
   if (size.width > size.height) {
-    aspectRatioCorrection = GLKVector2Make(size.width/size.height, 1);
+    aspectRatioCorrection = LTVector2(size.width/size.height, 1);
   } else {
-    aspectRatioCorrection = GLKVector2Make(1, size.height/size.width);
+    aspectRatioCorrection = LTVector2(1, size.height/size.width);
   }
   self[[LTDualMaskFsh aspectRatioCorrection]] = $(aspectRatioCorrection);
 }
@@ -50,9 +50,9 @@
   [self updateDiameterWith:self.diameter];
 }
 
-- (void)setCenter:(GLKVector2)center {
+- (void)setCenter:(LTVector2)center {
   _center = center;
-  GLKVector2 remap = GLKVector2Make(center.x / self.outputSize.width,
+  LTVector2 remap = LTVector2(center.x / self.outputSize.width,
                                     center.y / self.outputSize.height);
   self[[LTDualMaskFsh center]] = $(remap);
 }
@@ -81,7 +81,7 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 
 - (void)setAngle:(CGFloat)angle {
   _angle = angle;
-  self[[LTDualMaskFsh normal]] = $(GLKVector2Make(cos(angle), sin(angle)));
+  self[[LTDualMaskFsh normal]] = $(LTVector2(cos(angle), sin(angle)));
 }
 
 @end

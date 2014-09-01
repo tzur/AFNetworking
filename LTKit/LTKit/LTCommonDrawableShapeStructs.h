@@ -5,18 +5,22 @@
 
 /// Struct used for vertices of the common drawable shape.
 LTGPUStructDeclare(LTCommonDrawableShapeVertex,
-                   GLKVector2, position,
-                   GLKVector2, offset,
-                   GLKVector4, lineBounds,
-                   GLKVector4, shadowBounds,
-                   GLKVector4, color,
-                   GLKVector4, shadowColor);
+                   LTVector2, position,
+                   LTVector2, offset,
+                   LTVector4, lineBounds,
+                   LTVector4, shadowBounds,
+                   LTVector4, color,
+                   LTVector4, shadowColor);
 
 /// Rectangular segment consisting of four vertices, used to generate two triangles for drawing it.
-typedef union {
-  struct { LTCommonDrawableShapeVertex src0, src1, dst0, dst1; };
+union LTCommonDrawableShapeSegment {
+  LTCommonDrawableShapeSegment() {}
+
+  struct {
+    LTCommonDrawableShapeVertex src0, src1, dst0, dst1;
+  };
   LTCommonDrawableShapeVertex v[4];
-} LTCommonDrawableShapeSegment;
+};
 
 /// A collection of vertices of the common drawable shape.
 typedef std::vector<LTCommonDrawableShapeVertex> LTCommonDrawableShapeVertices;

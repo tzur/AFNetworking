@@ -17,8 +17,8 @@
 
 /// Holds the position and texture coordinate of each of the rect's corners.
 LTGPUStructMake(LTSingleRectDrawerVertex,
-                GLKVector2, position,
-                GLKVector2, texcoord);
+                LTVector2, position,
+                LTVector2, texcoord);
 
 @interface LTTextureDrawer ()
 @property (strong, nonatomic) LTProgram *program;
@@ -69,10 +69,10 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 
 - (LTArrayBuffer *)createArrayBuffer {
   std::vector<LTSingleRectDrawerVertex> vertexData{
-    {.position = {{0, 0}}, .texcoord = {{0, 0}}},
-    {.position = {{1, 0}}, .texcoord = {{1, 0}}},
-    {.position = {{0, 1}}, .texcoord = {{0, 1}}},
-    {.position = {{1, 1}}, .texcoord = {{1, 1}}},
+    {.position = LTVector2(0, 0), .texcoord = LTVector2(0, 0)},
+    {.position = LTVector2(1, 0), .texcoord = LTVector2(1, 0)},
+    {.position = LTVector2(0, 1), .texcoord = LTVector2(0, 1)},
+    {.position = LTVector2(1, 1), .texcoord = LTVector2(1, 1)},
   };
   
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric

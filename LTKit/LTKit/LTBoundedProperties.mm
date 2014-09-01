@@ -208,25 +208,25 @@
 @end
 
 #pragma mark -
-#pragma mark LTBoundedGLKVector3
+#pragma mark LTBoundedLTVector3
 #pragma mark -
 
-@implementation LTBoundedGLKVector3
+@implementation LTBoundedLTVector3
 
-+ (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue {
-  return [[LTBoundedGLKVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
-                                 afterSetterBlock:^(GLKVector3, GLKVector3) {}];
++ (instancetype)min:(LTVector3)minValue max:(LTVector3)maxValue default:(LTVector3)defaultValue {
+  return [[LTBoundedLTVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                 afterSetterBlock:^(LTVector3, LTVector3) {}];
 }
 
-+ (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue
-   afterSetterBlock:(LTBoundedGLKVector3SetterBlock)afterSetterBlock {
-  return [[LTBoundedGLKVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
++ (instancetype)min:(LTVector3)minValue max:(LTVector3)maxValue default:(LTVector3)defaultValue
+   afterSetterBlock:(LTBoundedLTVector3SetterBlock)afterSetterBlock {
+  return [[LTBoundedLTVector3 alloc] initWithMin:minValue max:maxValue default:defaultValue
                                  afterSetterBlock:afterSetterBlock];
 }
 
-- (instancetype)initWithMin:(GLKVector3)minValue max:(GLKVector3)maxValue
-                    default:(GLKVector3)defaultValue
-           afterSetterBlock:(LTBoundedGLKVector3SetterBlock)afterSetterBlock {
+- (instancetype)initWithMin:(LTVector3)minValue max:(LTVector3)maxValue
+                    default:(LTVector3)defaultValue
+           afterSetterBlock:(LTBoundedLTVector3SetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -238,10 +238,10 @@
   return self;
 }
 
-- (void)setValue:(GLKVector3)value {
+- (void)setValue:(LTVector3)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
-  GLKVector3 oldValue = _value;
+  LTVector3 oldValue = _value;
   _value = value;
   if (self.afterSetterBlock) {
     self.afterSetterBlock(value, oldValue);
@@ -255,25 +255,25 @@
 @end
 
 #pragma mark -
-#pragma mark LTBoundedGLKVector4
+#pragma mark LTBoundedLTVector4
 #pragma mark -
 
-@implementation LTBoundedGLKVector4
+@implementation LTBoundedLTVector4
 
-+ (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue {
-  return [[LTBoundedGLKVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
-                                 afterSetterBlock:^(GLKVector4, GLKVector4) {}];
++ (instancetype)min:(LTVector4)minValue max:(LTVector4)maxValue default:(LTVector4)defaultValue {
+  return [[LTBoundedLTVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
+                                 afterSetterBlock:^(LTVector4, LTVector4) {}];
 }
 
-+ (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue
-   afterSetterBlock:(LTBoundedGLKVector4SetterBlock)afterSetterBlock {
-  return [[LTBoundedGLKVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
++ (instancetype)min:(LTVector4)minValue max:(LTVector4)maxValue default:(LTVector4)defaultValue
+   afterSetterBlock:(LTBoundedLTVector4SetterBlock)afterSetterBlock {
+  return [[LTBoundedLTVector4 alloc] initWithMin:minValue max:maxValue default:defaultValue
                                  afterSetterBlock:afterSetterBlock];
 }
 
-- (instancetype)initWithMin:(GLKVector4)minValue max:(GLKVector4)maxValue
-                    default:(GLKVector4)defaultValue
-           afterSetterBlock:(LTBoundedGLKVector4SetterBlock)afterSetterBlock {
+- (instancetype)initWithMin:(LTVector4)minValue max:(LTVector4)maxValue
+                    default:(LTVector4)defaultValue
+           afterSetterBlock:(LTBoundedLTVector4SetterBlock)afterSetterBlock {
   if (self = [super initBoundedType]) {
     LTParameterAssert(minValue <= maxValue);
     _minValue = minValue;
@@ -285,10 +285,10 @@
   return self;
 }
 
-- (void)setValue:(GLKVector4)value {
+- (void)setValue:(LTVector4)value {
   LTParameterAssert(value >= self.minValue);
   LTParameterAssert(value <= self.maxValue);
-  GLKVector4 oldValue = _value;
+  LTVector4 oldValue = _value;
   _value = value;
   if (self.afterSetterBlock) {
     self.afterSetterBlock(value, oldValue);

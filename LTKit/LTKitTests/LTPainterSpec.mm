@@ -137,11 +137,11 @@ context(@"painting", ^{
   });
   
   it(@"should clear with the given color", ^{
-    [painter clearWithColor:GLKVector4Make(1, 1, 1, 1)];
+    [painter clearWithColor:LTVector4(1, 1, 1, 1)];
     expected.setTo(kWhite);
     expect($(canvas.image)).to.equalMat($(expected));
     
-    [painter clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     expected.setTo(kBlack);
     expect($(canvas.image)).to.equalMat($(expected));
   });
@@ -155,7 +155,7 @@ context(@"painting", ^{
       brush = [[LTBrush alloc] init];
       brush.baseDiameter = kCanvasSize.width / 2;
       painter.brush = brush;
-      [painter clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+      [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     });
     
     afterEach(^{
@@ -296,7 +296,7 @@ context(@"painting", ^{
     brush.baseDiameter = kCanvasSize.width / 2;
     painter.brush = brush;
     painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
-    [painter clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     
     painter.airbrush = YES;
     [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 4)];
@@ -321,7 +321,7 @@ context(@"painting", ^{
     painter.airbrush = YES;
     painter.brush = brush;
     painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
-    [painter clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     expect($(canvas.image)).to.equalMat($(background));
     [painter paintStroke:stroke];
     expect($(canvas.image)).to.beCloseToMat($(expected));

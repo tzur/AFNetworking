@@ -46,7 +46,7 @@
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       LTRotatedRect *targetRect = targetRects[i];
       if (targetRect.color) {
-        self.program[[LTBrushFsh intensity]] = $(targetRect.color.glkVector);
+        self.program[[LTBrushFsh intensity]] = $(targetRect.color.lt_ltVector);
       }
       
       uint textureIdx = [self.random randomUnsignedIntegerBelow:(uint)self.textures.count];

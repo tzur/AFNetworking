@@ -5,19 +5,19 @@
 
 #import "LTGLKitExtensions.h"
 
-/// Returns a \c GLKVector3 with epsilon in the i-th component and zeros in the rest.
-GLKVector3 LTVector3Epsilon(NSUInteger i) {
+/// Returns a \c LTVector3 with epsilon in the i-th component and zeros in the rest.
+LTVector3 LTVector3Epsilon(NSUInteger i) {
   LTParameterAssert(i < 3);
-  GLKVector3 v = GLKVector3Zero;
-  v.v[i] = FLT_EPSILON;
+  LTVector3 v = LTVector3Zero;
+  v.data()[i] = FLT_EPSILON;
   return v;
 }
 
-/// Returns a \c GLKVector4 with epsilon in the i-th component and zeros in the rest.
-GLKVector4 LTVector4Epsilon(NSUInteger i) {
+/// Returns a \c LTVector4 with epsilon in the i-th component and zeros in the rest.
+LTVector4 LTVector4Epsilon(NSUInteger i) {
   LTParameterAssert(i < 4);
-  GLKVector4 v = GLKVector4Zero;
-  v.v[i] = FLT_EPSILON;
+  LTVector4 v = LTVector4Zero;
+  v.data()[i] = FLT_EPSILON;
   return v;
 }
 
@@ -376,21 +376,21 @@ context(@"bounded NSUInteger", ^{
 });
 
 #pragma mark -
-#pragma mark LTBoundedGLKVector3
+#pragma mark LTBoundedLTVector3
 #pragma mark -
 
-context(@"bounded GLKVector3", ^{
-  __block LTBoundedGLKVector3 *instance;
-  __block LTBoundedGLKVector3 *instanceWithSetter;
-  __block GLKVector3 setterOldValue;
-  __block GLKVector3 setterNewValue;
+context(@"bounded LTVector3", ^{
+  __block LTBoundedLTVector3 *instance;
+  __block LTBoundedLTVector3 *instanceWithSetter;
+  __block LTVector3 setterOldValue;
+  __block LTVector3 setterNewValue;
   
   beforeEach(^{
     instance =
-        [LTBoundedGLKVector3 min:GLKVector3Zero max:GLKVector3One default:0.5 * GLKVector3One];
-    instanceWithSetter = [LTBoundedGLKVector3 min:-GLKVector3One max:GLKVector3Zero
-                                          default:-0.5 * GLKVector3One
-                                 afterSetterBlock:^(GLKVector3 value, GLKVector3 oldValue) {
+        [LTBoundedLTVector3 min:LTVector3Zero max:LTVector3One default:0.5 * LTVector3One];
+    instanceWithSetter = [LTBoundedLTVector3 min:-LTVector3One max:LTVector3Zero
+                                          default:-0.5 * LTVector3One
+                                 afterSetterBlock:^(LTVector3 value, LTVector3 oldValue) {
       setterOldValue = oldValue;
       setterNewValue = value;
     }];
@@ -398,7 +398,7 @@ context(@"bounded GLKVector3", ^{
   
   it(@"should not initialize with the default initializer", ^{
     expect(^{
-      instance = [[LTBoundedGLKVector3 alloc] init];
+      instance = [[LTBoundedLTVector3 alloc] init];
     }).to.raise(NSInternalInconsistencyException);
   });
   
@@ -406,7 +406,7 @@ context(@"bounded GLKVector3", ^{
     for (NSUInteger i = 0; i < 3; ++i) {
       expect(^{
         instance =
-            [LTBoundedGLKVector3 min:LTVector3Epsilon(i) max:GLKVector3Zero default:GLKVector3Zero];
+            [LTBoundedLTVector3 min:LTVector3Epsilon(i) max:LTVector3Zero default:LTVector3Zero];
       }).to.raise(NSInvalidArgumentException);
     }
   });
@@ -415,26 +415,26 @@ context(@"bounded GLKVector3", ^{
     for (NSUInteger i = 0; i < 3; ++i) {
       expect(^{
         instance =
-            [LTBoundedGLKVector3 min:GLKVector3Zero max:GLKVector3One default:-LTVector3Epsilon(i)];
+            [LTBoundedLTVector3 min:LTVector3Zero max:LTVector3One default:-LTVector3Epsilon(i)];
       }).to.raise(NSInvalidArgumentException);
       
       expect(^{
-        instance = [LTBoundedGLKVector3 min:GLKVector3Zero max:GLKVector3One
-                                    default:GLKVector3One + LTVector3Epsilon(i)];
+        instance = [LTBoundedLTVector3 min:LTVector3Zero max:LTVector3One
+                                    default:LTVector3One + LTVector3Epsilon(i)];
       }).to.raise(NSInvalidArgumentException);
     }
   });
   
   it(@"should have default values", ^{
-    expect(instance.minValue).to.beCloseToGLKVector(GLKVector3Zero);
-    expect(instance.maxValue).to.beCloseToGLKVector(GLKVector3One);
-    expect(instance.defaultValue).to.beCloseToGLKVector(0.5 * GLKVector3One);
-    expect(instance.value).to.beCloseToGLKVector(0.5 * GLKVector3One);
+    expect(instance.minValue).to.beCloseToGLKVector(LTVector3Zero);
+    expect(instance.maxValue).to.beCloseToGLKVector(LTVector3One);
+    expect(instance.defaultValue).to.beCloseToGLKVector(0.5 * LTVector3One);
+    expect(instance.value).to.beCloseToGLKVector(0.5 * LTVector3One);
     
-    expect(instanceWithSetter.minValue).to.beCloseToGLKVector(-GLKVector3One);
-    expect(instanceWithSetter.maxValue).to.beCloseToGLKVector(GLKVector3Zero);
-    expect(instanceWithSetter.defaultValue).to.beCloseToGLKVector(-0.5 * GLKVector3One);
-    expect(instanceWithSetter.value).to.beCloseToGLKVector(-0.5 * GLKVector3One);
+    expect(instanceWithSetter.minValue).to.beCloseToGLKVector(-LTVector3One);
+    expect(instanceWithSetter.maxValue).to.beCloseToGLKVector(LTVector3Zero);
+    expect(instanceWithSetter.defaultValue).to.beCloseToGLKVector(-0.5 * LTVector3One);
+    expect(instanceWithSetter.value).to.beCloseToGLKVector(-0.5 * LTVector3One);
   });
   
   it(@"should set values in range", ^{
@@ -475,21 +475,21 @@ context(@"bounded GLKVector3", ^{
 });
 
 #pragma mark -
-#pragma mark LTBoundedGLKVector4
+#pragma mark LTBoundedLTVector4
 #pragma mark -
 
-context(@"bounded GLKVector4", ^{
-  __block LTBoundedGLKVector4 *instance;
-  __block LTBoundedGLKVector4 *instanceWithSetter;
-  __block GLKVector4 setterOldValue;
-  __block GLKVector4 setterNewValue;
+context(@"bounded LTVector4", ^{
+  __block LTBoundedLTVector4 *instance;
+  __block LTBoundedLTVector4 *instanceWithSetter;
+  __block LTVector4 setterOldValue;
+  __block LTVector4 setterNewValue;
   
   beforeEach(^{
     instance =
-        [LTBoundedGLKVector4 min:GLKVector4Zero max:GLKVector4One default:0.5 * GLKVector4One];
-    instanceWithSetter = [LTBoundedGLKVector4 min:-GLKVector4One max:GLKVector4Zero
-                                          default:-0.5 * GLKVector4One
-                                 afterSetterBlock:^(GLKVector4 value, GLKVector4 oldValue) {
+        [LTBoundedLTVector4 min:LTVector4Zero max:LTVector4One default:0.5 * LTVector4One];
+    instanceWithSetter = [LTBoundedLTVector4 min:-LTVector4One max:LTVector4Zero
+                                          default:-0.5 * LTVector4One
+                                 afterSetterBlock:^(LTVector4 value, LTVector4 oldValue) {
       setterOldValue = oldValue;
       setterNewValue = value;
     }];
@@ -497,7 +497,7 @@ context(@"bounded GLKVector4", ^{
   
   it(@"should not initialize with the default initializer", ^{
     expect(^{
-      instance = [[LTBoundedGLKVector4 alloc] init];
+      instance = [[LTBoundedLTVector4 alloc] init];
     }).to.raise(NSInternalInconsistencyException);
   });
   
@@ -505,7 +505,7 @@ context(@"bounded GLKVector4", ^{
     for (NSUInteger i = 0; i < 4; ++i) {
       expect(^{
         instance =
-            [LTBoundedGLKVector4 min:LTVector4Epsilon(i) max:GLKVector4Zero default:GLKVector4Zero];
+            [LTBoundedLTVector4 min:LTVector4Epsilon(i) max:LTVector4Zero default:LTVector4Zero];
       }).to.raise(NSInvalidArgumentException);
     }
   });
@@ -514,26 +514,26 @@ context(@"bounded GLKVector4", ^{
     for (NSUInteger i = 0; i < 4; ++i) {
       expect(^{
         instance =
-            [LTBoundedGLKVector4 min:GLKVector4Zero max:GLKVector4One default:-LTVector4Epsilon(i)];
+            [LTBoundedLTVector4 min:LTVector4Zero max:LTVector4One default:-LTVector4Epsilon(i)];
       }).to.raise(NSInvalidArgumentException);
       
       expect(^{
-        instance = [LTBoundedGLKVector4 min:GLKVector4Zero max:GLKVector4One
-                                    default:GLKVector4One + LTVector4Epsilon(i)];
+        instance = [LTBoundedLTVector4 min:LTVector4Zero max:LTVector4One
+                                    default:LTVector4One + LTVector4Epsilon(i)];
       }).to.raise(NSInvalidArgumentException);
     }
   });
   
   it(@"should have default values", ^{
-    expect(instance.minValue).to.beCloseToGLKVector(GLKVector4Zero);
-    expect(instance.maxValue).to.beCloseToGLKVector(GLKVector4One);
-    expect(instance.defaultValue).to.beCloseToGLKVector(0.5 * GLKVector4One);
-    expect(instance.value).to.beCloseToGLKVector(0.5 * GLKVector4One);
+    expect(instance.minValue).to.beCloseToGLKVector(LTVector4Zero);
+    expect(instance.maxValue).to.beCloseToGLKVector(LTVector4One);
+    expect(instance.defaultValue).to.beCloseToGLKVector(0.5 * LTVector4One);
+    expect(instance.value).to.beCloseToGLKVector(0.5 * LTVector4One);
     
-    expect(instanceWithSetter.minValue).to.beCloseToGLKVector(-GLKVector4One);
-    expect(instanceWithSetter.maxValue).to.beCloseToGLKVector(GLKVector4Zero);
-    expect(instanceWithSetter.defaultValue).to.beCloseToGLKVector(-0.5 * GLKVector4One);
-    expect(instanceWithSetter.value).to.beCloseToGLKVector(-0.5 * GLKVector4One);
+    expect(instanceWithSetter.minValue).to.beCloseToGLKVector(-LTVector4One);
+    expect(instanceWithSetter.maxValue).to.beCloseToGLKVector(LTVector4Zero);
+    expect(instanceWithSetter.defaultValue).to.beCloseToGLKVector(-0.5 * LTVector4One);
+    expect(instanceWithSetter.value).to.beCloseToGLKVector(-0.5 * LTVector4One);
   });
   
   it(@"should set values in range", ^{

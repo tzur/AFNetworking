@@ -343,7 +343,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)drawToBoundFramebuffer {
   [self updateContent];
   
-  [self.context clearWithColor:self.backgroundColor.glkVector];
+  [self.context clearWithColor:self.backgroundColor.lt_ltVector];
   [self drawBackground];
   
   // Get the visible content rectangle, in pixels.

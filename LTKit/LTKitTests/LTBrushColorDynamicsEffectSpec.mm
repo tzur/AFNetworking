@@ -222,10 +222,10 @@ context(@"effect", ^{
     effect.brightnessJitter = 0;
     effect.baseColorTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(2)];
     [effect.baseColorTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      mapped->at<cv::Vec4b>(0,0) = [UIColor redColor].cvVector;
-      mapped->at<cv::Vec4b>(0,1) = [UIColor greenColor].cvVector;
-      mapped->at<cv::Vec4b>(1,0) = [UIColor blueColor].cvVector;
-      mapped->at<cv::Vec4b>(1,1) = [UIColor yellowColor].cvVector;
+      mapped->at<cv::Vec4b>(0,0) = [UIColor redColor].lt_cvVector;
+      mapped->at<cv::Vec4b>(0,1) = [UIColor greenColor].lt_cvVector;
+      mapped->at<cv::Vec4b>(1,0) = [UIColor blueColor].lt_cvVector;
+      mapped->at<cv::Vec4b>(1,1) = [UIColor yellowColor].lt_cvVector;
     }];
     
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];

@@ -3,6 +3,8 @@
 
 #import "LTPerspectiveProcessor.h"
 
+#import <array>
+
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTNextIterationPlacement.h"
@@ -15,15 +17,31 @@
 #import "LTTexture.h"
 
 /// Represents a trapezoid which is a result of a perspective projection of the input texture.
-typedef union {
-  struct {
-    GLKVector2 topLeft;
-    GLKVector2 topRight;
-    GLKVector2 bottomLeft;
-    GLKVector2 bottomRight;
-  };
-  GLKVector2 corners[4];
-} LTTrapezoid2;
+struct LTTrapezoid2 {
+  LTTrapezoid2() {}
+
+  LTTrapezoid2(const LTVector2 &topLeft, const LTVector2 &topRight,
+               const LTVector2 &bottomLeft, const LTVector2 &bottomRight) :
+      corners{{topLeft, topRight, bottomLeft, bottomRight}} {}
+
+  inline LTVector2 &topLeft() {
+    return corners[0];
+  }
+
+  inline LTVector2 &topRight() {
+    return corners[1];
+  }
+
+  inline LTVector2 &bottomLeft() {
+    return corners[2];
+  }
+
+  inline LTVector2 &bottomRight() {
+    return corners[3];
+  }
+
+  std::array<LTVector2, 4> corners;
+};
 
 @interface LTGPUImageProcessor ()
 @property (strong, nonatomic) id<LTProcessingDrawer> drawer;
@@ -178,16 +196,16 @@ typedef union {
     corner.y = 0.5 + 0.5 * corner.y;
   }
   
-  return {.topLeft = GLKVector2Make(trapezoid[0].x, trapezoid[0].y),
-          .topRight = GLKVector2Make(trapezoid[1].x, trapezoid[1].y),
-          .bottomLeft = GLKVector2Make(trapezoid[2].x, trapezoid[2].y),
-          .bottomRight = GLKVector2Make(trapezoid[3].x, trapezoid[3].y)};
+  return LTTrapezoid2(LTVector2(trapezoid[0].x, trapezoid[0].y),
+                      LTVector2(trapezoid[1].x, trapezoid[1].y),
+                      LTVector2(trapezoid[2].x, trapezoid[2].y),
+                      LTVector2(trapezoid[3].x, trapezoid[3].y));
 }
 
 - (CGRect)boundingRectForTrapezoid:(const LTTrapezoid2 &)trapezoid {
   CGPoint topLeft = CGPointMake(INFINITY, INFINITY);
   CGPoint bottomRight = CGPointMake(-INFINITY, -INFINITY);
-  for (const GLKVector2 &corner : trapezoid.corners) {
+  for (const LTVector2 &corner : trapezoid.corners) {
     topLeft.x = MIN(topLeft.x, corner.x);
     topLeft.y = MIN(topLeft.y, corner.y);
     bottomRight.x = MAX(bottomRight.x, corner.x);
@@ -228,19 +246,19 @@ LTPropertyWithoutSetter(CGFloat, rotationAngle, RotationAngle, -M_PI / 6, M_PI /
 }
 
 - (LTVector2)topLeft {
-  return self.trapezoid.topLeft;
+  return self.trapezoid.topLeft();
 }
 
 - (LTVector2)topRight {
-  return self.trapezoid.topRight;
+  return self.trapezoid.topRight();
 }
 
 - (LTVector2)bottomLeft {
-  return self.trapezoid.bottomLeft;
+  return self.trapezoid.bottomLeft();
 }
 
 - (LTVector2)bottomRight {
-  return self.trapezoid.bottomRight;
+  return self.trapezoid.bottomRight();
 }
 
 - (CGRect)boundingRect {

@@ -79,11 +79,11 @@ context(@"properties", ^{
   it(@"should not fail on correct vignette input", ^{
     expect(^{
       processor.vignetteNoise = input;
-      processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
+      processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
       processor.vignetteSpread = 15.0;
       processor.vignetteCorner = 2.0;
       processor.vignetteNoiseAmplitude = 0.15;
-      processor.vignetteNoiseChannelMixer = GLKVector3Make(1.0, 0.2, 0.4);
+      processor.vignetteNoiseChannelMixer = LTVector3(1.0, 0.2, 0.4);
     }).toNot.raiseAny();
   });
   
@@ -91,7 +91,7 @@ context(@"properties", ^{
     expect(^{
       processor.grainTexture = input;
       processor.grainAmplitude = 0.8;
-      processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 0.9);
+      processor.grainChannelMixer = LTVector3(1.0, 0.0, 0.9);
     }).toNot.raiseAny();
   });
 });
@@ -277,14 +277,14 @@ context(@"processing", ^{
     processor.saturation = 0.2;
     processor.structure = -0.1;
     // Vignetting.
-    processor.vignetteColor = GLKVector3Make(0.0, 0.0, 0.0);
+    processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
     processor.vignetteSpread = 45.0;
     processor.vignetteCorner = 6.0;
     processor.vignetteOpacity = 0.25;
     // Grain.
     processor.grainTexture = noise;
     processor.grainAmplitude = 0.25;
-    processor.grainChannelMixer = GLKVector3Make(1.0, 0.0, 0.5);
+    processor.grainChannelMixer = LTVector3(1.0, 0.0, 0.5);
     // Color gradient.
     processor.colorGradientTexture =
         [[LTColorGradient magentaYellowGradient] textureWithSamplingPoints:256];

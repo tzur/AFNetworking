@@ -24,7 +24,7 @@ afterEach(^{
 context(@"properties", ^{
   it(@"should return default mask properties correctly", ^{
     expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
-    expect(GLKVector2AllEqualToVector2(processor.center, GLKVector2Make(8, 8))).to.beTruthy();
+    expect(processor.center).to.equal(LTVector2(8, 8));
     expect(processor.diameter).to.equal(8);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
@@ -41,7 +41,7 @@ context(@"processing", ^{
   
   it(@"should create corner radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
-    processor.center = GLKVector2Make(0.0, 0.0);
+    processor.center = LTVector2(0.0, 0.0);
     processor.spread = 1.0;
     processor.diameter = 16;
     [processor process];
@@ -51,7 +51,7 @@ context(@"processing", ^{
   
   it(@"should create tilted linear mask correctly", ^{
     processor.maskType = LTDualMaskTypeLinear;
-    processor.center = GLKVector2Make(8, 8);
+    processor.center = LTVector2(8, 8);
     processor.spread = -0.2;
     processor.angle = M_PI_4;
     [processor process];
@@ -61,7 +61,7 @@ context(@"processing", ^{
   
   it(@"should create tilted double mask correctly", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
-    processor.center = GLKVector2Make(16, 16);
+    processor.center = LTVector2(16, 16);
     processor.spread = 0.0;
     processor.diameter = 8;
     processor.angle = -M_PI_4;
@@ -72,7 +72,7 @@ context(@"processing", ^{
   
   it(@"should create tilted double mask correctly", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
-    processor.center = GLKVector2Make(0.0, 8);
+    processor.center = LTVector2(0.0, 8);
     processor.spread = 0.0;
     processor.diameter = 8;
     processor.angle = M_PI_4;

@@ -15,12 +15,12 @@
 #import "LTVertexArray.h"
 
 /// Holds the position and texture coordinate of each of the rect's corners. Notice that the
-/// position attribute is a \c GLKVector3, meaning the z coordinate is set and passed to the shader.
+/// position attribute is a \c LTVector3, meaning the z coordinate is set and passed to the shader.
 /// This allows some GPUs to optimize the drawing of overlapping rectangles, and drawing only the
 /// top one.
 LTGPUStructMake(LTMultiRectDrawerVertex,
-                GLKVector3, position,
-                GLKVector2, texcoord);
+                LTVector3, position,
+                LTVector2, texcoord);
 
 @interface LTTextureDrawer ()
 @property (strong, nonatomic) LTProgram *program;
@@ -141,18 +141,18 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   CGPoint t2 = sourceRect.v2 / sourceSize;
   CGPoint t3 = sourceRect.v3 / sourceSize;
   
-  triangles->push_back({.position = GLKVector3Make(v0.x, v0.y, z),
-                        .texcoord = GLKVector2Make(t0.x, t0.y)});
-  triangles->push_back({.position = GLKVector3Make(v1.x, v1.y, z),
-                        .texcoord = GLKVector2Make(t1.x, t1.y)});
-  triangles->push_back({.position = GLKVector3Make(v2.x, v2.y, z),
-                        .texcoord = GLKVector2Make(t2.x, t2.y)});
-  triangles->push_back({.position = GLKVector3Make(v2.x, v2.y, z),
-                        .texcoord = GLKVector2Make(t2.x, t2.y)});
-  triangles->push_back({.position = GLKVector3Make(v3.x, v3.y, z),
-                        .texcoord = GLKVector2Make(t3.x, t3.y)});
-  triangles->push_back({.position = GLKVector3Make(v0.x, v0.y, z),
-                        .texcoord = GLKVector2Make(t0.x, t0.y)});
+  triangles->push_back({.position = LTVector3(v0.x, v0.y, z),
+                        .texcoord = LTVector2(t0.x, t0.y)});
+  triangles->push_back({.position = LTVector3(v1.x, v1.y, z),
+                        .texcoord = LTVector2(t1.x, t1.y)});
+  triangles->push_back({.position = LTVector3(v2.x, v2.y, z),
+                        .texcoord = LTVector2(t2.x, t2.y)});
+  triangles->push_back({.position = LTVector3(v2.x, v2.y, z),
+                        .texcoord = LTVector2(t2.x, t2.y)});
+  triangles->push_back({.position = LTVector3(v3.x, v3.y, z),
+                        .texcoord = LTVector2(t3.x, t3.y)});
+  triangles->push_back({.position = LTVector3(v0.x, v0.y, z),
+                        .texcoord = LTVector2(t0.x, t0.y)});
 }
 
 #pragma mark -

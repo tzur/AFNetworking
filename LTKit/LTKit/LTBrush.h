@@ -109,7 +109,7 @@ LTPropertyDeclare(CGFloat, opacity, Opacity)
 LTPropertyDeclare(CGFloat, flow, Flow)
 
 /// Per-channel intensity. Each channel must be in range [0,1], default is \c 1.
-@property (nonatomic) GLKVector4 intensity;
-LTPropertyDeclare(GLKVector4, intensity, Intensity);
+@property (nonatomic) LTVector4 intensity;
+LTPropertyDeclare(LTVector4, intensity, Intensity);
 
 @end

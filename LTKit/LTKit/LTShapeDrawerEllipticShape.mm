@@ -64,18 +64,18 @@
   LTCommonDrawableShapeSegment segment;
   CGSize halfSize = self.size / 2;
   for (NSUInteger i = 0; i < 4; ++i) {
-    segment.v[i].lineBounds = GLKVector4Make(halfSize.width, halfSize.height, 0, 0);
-    segment.v[i].shadowBounds = GLKVector4Make(self.params.shadowWidth + 1.0, 0, 0, 0);
+    segment.v[i].lineBounds = LTVector4(halfSize.width, halfSize.height, 0, 0);
+    segment.v[i].shadowBounds = LTVector4(self.params.shadowWidth + 1.0, 0, 0, 0);
     segment.v[i].color = self.params.fillColor;
     segment.v[i].shadowColor = self.params.shadowColor;
   }
 
   CGSize size = self.size + CGSizeMakeUniform(1.0 + 2.0 * self.params.shadowWidth);
   LTRotatedRect *rect = [LTRotatedRect rectWithCenter:CGPointZero size:size angle:0];
-  segment.src0.position = GLKVector2FromCGPoint(rect.v0);
-  segment.src1.position = GLKVector2FromCGPoint(rect.v1);
-  segment.dst0.position = GLKVector2FromCGPoint(rect.v3);
-  segment.dst1.position = GLKVector2FromCGPoint(rect.v2);
+  segment.src0.position = LTVector2(rect.v0);
+  segment.src1.position = LTVector2(rect.v1);
+  segment.dst0.position = LTVector2(rect.v3);
+  segment.dst1.position = LTVector2(rect.v2);
   
   segment.src0.offset = segment.src0.position;
   segment.src1.offset = segment.src1.position;
@@ -96,26 +96,26 @@
   for (NSUInteger i = 0; i < segments - 1; ++i) {
     LTCommonDrawableShapeSegment segment;
     for (NSUInteger i = 0; i < 4; ++i) {
-      segment.v[i].lineBounds = GLKVector4Make(1, self.params.lineRadius,
+      segment.v[i].lineBounds = LTVector4(1, self.params.lineRadius,
                                                1, self.params.lineRadius);
-      segment.v[i].shadowBounds = GLKVector4Make(offset, offset, offset, offset);
+      segment.v[i].shadowBounds = LTVector4(offset, offset, offset, offset);
       segment.v[i].color = self.params.strokeColor;
       segment.v[i].shadowColor = self.params.shadowColor;
     }
     
-    segment.src0.position = GLKVector2Make(cos(i * step) * (radius.width - offset),
+    segment.src0.position = LTVector2(cos(i * step) * (radius.width - offset),
                                            sin(i * step) * (radius.height - offset));
-    segment.src1.position = GLKVector2Make(cos(i * step) * (radius.width + offset),
+    segment.src1.position = LTVector2(cos(i * step) * (radius.width + offset),
                                            sin(i * step) * (radius.height + offset));
-    segment.dst0.position = GLKVector2Make(cos((i + 1) * step) * (radius.width - offset),
+    segment.dst0.position = LTVector2(cos((i + 1) * step) * (radius.width - offset),
                                            sin((i + 1) * step) * (radius.height - offset));
-    segment.dst1.position = GLKVector2Make(cos((i + 1) * step) * (radius.width + offset),
+    segment.dst1.position = LTVector2(cos((i + 1) * step) * (radius.width + offset),
                                            sin((i + 1) * step) * (radius.height + offset));
     
-    segment.src0.offset = GLKVector2Make(0, -offset);
-    segment.src1.offset = GLKVector2Make(0, offset);
-    segment.dst0.offset = GLKVector2Make(0, -offset);
-    segment.dst1.offset = GLKVector2Make(0, offset);
+    segment.src0.offset = LTVector2(0, -offset);
+    segment.src1.offset = LTVector2(0, offset);
+    segment.dst0.offset = LTVector2(0, -offset);
+    segment.dst1.offset = LTVector2(0, offset);
     
     LTAddSegment(segment, &self.strokeVertices, &self.shadowVertices);
   }

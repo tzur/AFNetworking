@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, LTDuoBlendMode) {
 /// Center of the mask in coordinates of the output image, aka "pixel cooridnates". Despite the
 /// relation to pixels, values in this coordinate system don't have to be integers.
 /// Default value of the center is (width/2, height/2). Range is unbounded.
-@property (nonatomic) GLKVector2 center;
+@property (nonatomic) LTVector2 center;
 
 /// Diameter of the mask is the length in pixels of the straight line between two neutral points
 /// through the center. Range is unbounded. Default value is min(width, height)/2, so diameter of
@@ -58,14 +58,14 @@ typedef NS_ENUM(NSUInteger, LTDuoBlendMode) {
 /// The mapping in the blue region is constructed by assigning this color to luminance midrange and
 /// building the gradient around it. Gradient will map black to black and white to white. Default
 /// color is opaque blue (0, 0, 1, 1).
-@property (nonatomic) GLKVector4 blueColor;
-LTPropertyDeclare(GLKVector4, blueColor, BlueColor);
+@property (nonatomic) LTVector4 blueColor;
+LTPropertyDeclare(LTVector4, blueColor, BlueColor);
 
 /// The mapping in the red region is constructed by assigning this color to luminance midrange and
 /// building the gradient around it. Gradient will map black to black and white to white. Default
 /// color is opaque red (1, 0, 0, 1).
-@property (nonatomic) GLKVector4 redColor;
-LTPropertyDeclare(GLKVector4, redColor, RedColor);
+@property (nonatomic) LTVector4 redColor;
+LTPropertyDeclare(LTVector4, redColor, RedColor);
 
 /// Blend mode used to blend \c blueColor and \c redColor to the input image. The default value is
 /// \c LTDuoBlendModeNormal.

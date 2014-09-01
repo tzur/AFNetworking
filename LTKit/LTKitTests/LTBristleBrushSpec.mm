@@ -76,7 +76,7 @@ context(@"drawing", ^{
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
   
-  const GLKVector4 kBackground = GLKVector4Make(0, 0, 0, 1);
+  const LTVector4 kBackground = LTVector4(0, 0, 0, 1);
   const CGFloat kBaseBrushDiameter = 64;
   const CGFloat kTargetBrushDiameter = 64;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
@@ -91,7 +91,7 @@ context(@"drawing", ^{
     [fbo clearWithColor:kBackground];
     
     expected.create(kOutputSize.height, kOutputSize.width);
-    expected = LTGLKVector4ToVec4b(kBackground);
+    expected = LTLTVector4ToVec4b(kBackground);
     
     point = [[LTPainterPoint alloc] init];
     point.zoomScale = 1;

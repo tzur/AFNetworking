@@ -18,8 +18,8 @@
 
 /// Holds the position and texture coordinate of each of the rect's corners.
 LTGPUStructMake(LTCropDrawerVertex,
-                GLKVector2, position,
-                GLKVector2, texcoord);
+                LTVector2, position,
+                LTVector2, texcoord);
 
 @interface LTCropDrawer ()
 
@@ -124,16 +124,16 @@ LTGPUStructMake(LTCropDrawerVertex,
 
 - (void)updateArrayBufferWithTargetRect:(LTCropDrawerRect)targetRect
                              sourceRect:(LTCropDrawerRect)sourceRect {
-  GLKVector2 v0 = targetRect.topLeft;
-  GLKVector2 v1 = targetRect.topRight;
-  GLKVector2 v2 = targetRect.bottomRight;
-  GLKVector2 v3 = targetRect.bottomLeft;
+  LTVector2 v0 = targetRect.topLeft;
+  LTVector2 v1 = targetRect.topRight;
+  LTVector2 v2 = targetRect.bottomRight;
+  LTVector2 v3 = targetRect.bottomLeft;
   
-  sourceRect /= self.texture.size;
-  GLKVector2 t0 = sourceRect.topLeft;
-  GLKVector2 t1 = sourceRect.topRight;
-  GLKVector2 t2 = sourceRect.bottomRight;
-  GLKVector2 t3 = sourceRect.bottomLeft;
+  sourceRect /= LTVector2(self.texture.size);
+  LTVector2 t0 = sourceRect.topLeft;
+  LTVector2 t1 = sourceRect.topRight;
+  LTVector2 t2 = sourceRect.bottomRight;
+  LTVector2 t3 = sourceRect.bottomLeft;
 
   std::array<LTCropDrawerVertex, 6> vertices{{
     {.position = v0, .texcoord = t0},

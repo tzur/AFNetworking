@@ -135,8 +135,8 @@ typedef union {
     vertex.edge01 = edges.ab;
     vertex.edge12 = edges.bc;
     vertex.edge20 = edges.ca;
-    vertex.color = self.params.fillColor;
-    vertex.shadowColor = self.params.shadowColor;
+    vertex.color = (GLKVector4)self.params.fillColor;
+    vertex.shadowColor = (GLKVector4)self.params.shadowColor;
     vertex.shadowMaskAndWidth = GLKVector4Make(mask & CGTriangleEdgeAB ? 1.0 : 0.0,
                                                mask & CGTriangleEdgeBC ? 1.0 : 0.0,
                                                mask & CGTriangleEdgeCA ? 1.0 : 0.0,

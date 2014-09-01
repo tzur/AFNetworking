@@ -38,9 +38,9 @@
 
 LTProperty(CGFloat, lineWidth, LineWidth, 1, CGFLOAT_MAX, 1);
 LTProperty(CGFloat, shadowWidth, ShadowWidth, 0, CGFLOAT_MAX, 0);
-LTProperty(GLKVector4, fillColor, FillColor, GLKVector4Zero, GLKVector4One, GLKVector4One);
-LTProperty(GLKVector4, strokeColor, StrokeColor, GLKVector4Zero, GLKVector4One, GLKVector4One);
-LTProperty(GLKVector4, shadowColor, ShadowColor,
-           GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 0, 1));
+LTProperty(LTVector4, fillColor, FillColor, LTVector4Zero, LTVector4One, LTVector4One);
+LTProperty(LTVector4, strokeColor, StrokeColor, LTVector4Zero, LTVector4One, LTVector4One);
+LTProperty(LTVector4, shadowColor, ShadowColor,
+           LTVector4Zero, LTVector4One, LTVector4(0, 0, 0, 1));
 
 @end

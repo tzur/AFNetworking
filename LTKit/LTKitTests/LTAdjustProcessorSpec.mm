@@ -49,21 +49,21 @@ context(@"properties", ^{
   it(@"should fail on invalid whitePoint parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.whitePoint = GLKVector3Make(1, 1, 4);
+      adjust.whitePoint = LTVector3(1, 1, 4);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid blackPoint parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.blackPoint = GLKVector3Make(4, 0, 0);
+      adjust.blackPoint = LTVector3(4, 0, 0);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid midPoint parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.midPoint = GLKVector3Make(3, 0, 0);
+      adjust.midPoint = LTVector3(3, 0, 0);
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -158,9 +158,9 @@ context(@"properties", ^{
       adjust.exposure = 1.0;
       adjust.offset = 0.9;
       // Levels.
-      adjust.whitePoint = GLKVector3Make(0.9, 1.0, 1.0);
-      adjust.blackPoint = GLKVector3Make(-0.1, 0.0, 0.1);
-      adjust.midPoint = GLKVector3Make(-0.1, 0.9, 0.1);
+      adjust.whitePoint = LTVector3(0.9, 1.0, 1.0);
+      adjust.blackPoint = LTVector3(-0.1, 0.0, 0.1);
+      adjust.midPoint = LTVector3(-0.1, 0.9, 0.1);
       // Curves.
       cv::Mat1b mat = cv::Mat1b::zeros(1, 256);
       adjust.greyCurve = mat;
@@ -242,7 +242,7 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.blackPoint = GLKVector3Make(0.5, 0.5, 0.5);
+    adjust.blackPoint = LTVector3(0.5, 0.5, 0.5);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
@@ -255,7 +255,7 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.whitePoint = GLKVector3Make(0.5, 0.5, 0.5);
+    adjust.whitePoint = LTVector3(0.5, 0.5, 0.5);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
@@ -268,7 +268,7 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.midPoint = GLKVector3Make(0.0, -1.0, 1.0);
+    adjust.midPoint = LTVector3(0.0, -1.0, 1.0);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
@@ -387,8 +387,8 @@ context(@"processing", ^{
     adjust.brightness = -0.1;
     adjust.contrast = 0.1;
     adjust.offset = 0.05;
-    adjust.blackPoint = GLKVector3Make(0.1, 0.1, 0.0);
-    adjust.whitePoint = GLKVector3Make(1.0, 1.0, 1.0);
+    adjust.blackPoint = LTVector3(0.1, 0.1, 0.0);
+    adjust.whitePoint = LTVector3(1.0, 1.0, 1.0);
     // Color.
     adjust.saturation = -0.3;
     adjust.temperature = 0.05;

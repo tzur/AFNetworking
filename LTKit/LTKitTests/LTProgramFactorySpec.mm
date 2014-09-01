@@ -109,21 +109,21 @@ context(@"mixing with no color input variable", ^{
   });
 
   it(@"should show original when mask is black", ^{
-    [mask clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [mask clearWithColor:LTVector4(0, 0, 0, 0)];
     [processor process];
 
     expect($([output image])).to.equalScalar($(cv::Scalar(0, 255, 0, 255)));
   });
 
   it(@"should show fragment shader output when mask is white", ^{
-    [mask clearWithColor:GLKVector4Make(1, 1, 1, 1)];
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
     [processor process];
 
     expect($([output image])).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
   });
 
   it(@"should mix original and fragment shader output", ^{
-    [mask clearWithColor:GLKVector4Make(0.5, 0.5, 0.5, 0.5)];
+    [mask clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
     [processor process];
 
     expect($([output image])).to.beCloseToScalar($(cv::Scalar(128, 128, 0, 255)));
@@ -158,21 +158,21 @@ context(@"mixing with color input variable", ^{
   });
 
   it(@"should show original when mask is black", ^{
-    [mask clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [mask clearWithColor:LTVector4(0, 0, 0, 0)];
     [processor process];
 
     expect($([output image])).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
   });
 
   it(@"should show fragment shader output when mask is white", ^{
-    [mask clearWithColor:GLKVector4Make(1, 1, 1, 1)];
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
     [processor process];
 
     expect($([output image])).to.equalScalar($(cv::Scalar(255, 128, 128, 255)));
   });
 
   it(@"should mix original and fragment shader output", ^{
-    [mask clearWithColor:GLKVector4Make(0.5, 0.5, 0.5, 0.5)];
+    [mask clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
     [processor process];
 
     expect($([output image])).to.beCloseToScalar($(cv::Scalar(255, 64, 64, 255)));

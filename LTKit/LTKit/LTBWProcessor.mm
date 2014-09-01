@@ -331,7 +331,7 @@ LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
                         LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
 - (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
   [self _verifyAndSetGrainChannelMixer:grainChannelMixer];
-  _grainChannelMixer = grainChannelMixer / std::sum(grainChannelMixer);
+  _grainChannelMixer = grainChannelMixer / grainChannelMixer.sum();
   self[[LTBWProcessorFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 

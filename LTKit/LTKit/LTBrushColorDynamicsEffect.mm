@@ -65,10 +65,10 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   return [self colorsFromGLKColors:[self.baseColorTexture pixelValues:targets]];
 }
 
-- (NSArray *)colorsFromGLKColors:(const GLKVector4s &)glkColors {
+- (NSArray *)colorsFromGLKColors:(const LTVector4s &)glkColors {
   NSMutableArray *colors = [NSMutableArray array];
-  for (const GLKVector4 &glkColor : glkColors) {
-    [colors addObject:[UIColor colorWithGLKVector:glkColor]];
+  for (const LTVector4 &glkColor : glkColors) {
+    [colors addObject:[UIColor lt_colorWithLTVector:glkColor]];
   }
   return colors;
 }

@@ -143,7 +143,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   LTParameterAssert(targetRects.count == sourceRects.count);
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
-      self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].glkVector);
+      self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].lt_ltVector);
       [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
                    fromRotatedRect:sourceRects[i]];
     }
@@ -168,7 +168,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   if (self.colorDynamicsEffect) {
     NSArray *normalizedRects = [self normalizedRects:targetRects forSize:size];
     NSArray *colors = [self.colorDynamicsEffect colorsFromRects:normalizedRects
-                          baseColor:[UIColor colorWithGLKVector:self.intensity]];
+                          baseColor:[UIColor lt_colorWithLTVector:self.intensity]];
     [targetRects enumerateObjectsUsingBlock:^(LTRotatedRect *rect, NSUInteger idx, BOOL *) {
       rect.color = colors[idx];
     }];
@@ -224,8 +224,8 @@ LTProperty(CGFloat, scale, Scale, 0.01, 3.0, 1.0)
 LTProperty(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
 LTPropertyUpdatingProgram(CGFloat, opacity, Opacity, 0, 1, 1)
 LTPropertyUpdatingProgram(CGFloat, flow, Flow, 0.01, 1, 1)
-LTPropertyUpdatingProgram(GLKVector4, intensity, Intensity,
-                          GLKVector4Zero, GLKVector4One, GLKVector4One);
+LTPropertyUpdatingProgram(LTVector4, intensity, Intensity,
+                          LTVector4Zero, LTVector4One, LTVector4One);
 
 LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
 - (void)setAngle:(CGFloat)angle {

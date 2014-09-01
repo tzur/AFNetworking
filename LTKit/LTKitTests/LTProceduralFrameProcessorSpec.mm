@@ -29,12 +29,11 @@ context(@"properties", ^{
     expect(frame.width).to.equal(0);
     expect(frame.spread).to.equal(0);
     expect(frame.corner).to.equal(0);
-    expect(GLKVector3AllEqualToVector3(frame.noiseChannelMixer,
-                                       GLKVector3Make(1, 0, 0))).to.beTruthy();
+    expect(frame.noiseChannelMixer).to.equal(LTVector3(1, 0, 0));
     expect(frame.noiseAmplitude).to.equal(0);
     expect(frame.noiseCoordinatesOffset).to.equal(0);
     expect(frame.noiseMapping).to.equal(LTProceduralFrameNoiseMappingStretch);
-    expect(GLKVector3AllEqualToVector3(frame.color, GLKVector3Make(1, 1, 1))).to.beTruthy();
+    expect(frame.color).to.equal(LTVector3(1, 1, 1));
   });
   
   it(@"should return default noise texture correctly", ^{
@@ -88,7 +87,7 @@ context(@"properties", ^{
   it(@"should fail on negative color", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
-      frame.color = GLKVector3Make(-0.1, 0.9, 0.2);
+      frame.color = LTVector3(-0.1, 0.9, 0.2);
     }).to.raise(NSInvalidArgumentException);
   });
   
@@ -103,8 +102,8 @@ context(@"properties", ^{
   
   it(@"should return normalized noise channel mixer property", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
-    frame.noiseChannelMixer = GLKVector3Make(-1.0, 0.0, 0.0);
-    expect(frame.noiseChannelMixer).to.beCloseToGLKVector(GLKVector3Make(1.0, 0.0, 0.0));
+    frame.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
+    expect(frame.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
   });
   
   it(@"should not fail on correct input", ^{
@@ -114,8 +113,8 @@ context(@"properties", ^{
       frame.spread = 25.0;
       frame.corner = 0.0;
       frame.noiseAmplitude = 2.0;
-      frame.noiseChannelMixer = GLKVector3Make(1.0, 1.0, 1.0);
-      frame.color = GLKVector3Make(1.0, 1.0, 1.0);
+      frame.noiseChannelMixer = LTVector3(1.0, 1.0, 1.0);
+      frame.color = LTVector3(1.0, 1.0, 1.0);
     }).toNot.raiseAny();
   });
 });
@@ -129,7 +128,7 @@ context(@"processing", ^{
     frame.spread = 0.0;
     frame.corner = 2;
     frame.noiseAmplitude = 0.0;
-    frame.color = GLKVector3Make(1.0, 1.0, 1.0);
+    frame.color = LTVector3(1.0, 1.0, 1.0);
     [frame process];
     
     LTTexture *precomputedFrame =
@@ -145,7 +144,7 @@ context(@"processing", ^{
     frame.spread = 0.0;
     frame.corner = 0;
     frame.noiseAmplitude = 0.0;
-    frame.color = GLKVector3Make(1.0, 0.0, 0.0);
+    frame.color = LTVector3(1.0, 0.0, 0.0);
     [frame process];
     
     LTTexture *precomputedFrame =
@@ -161,7 +160,7 @@ context(@"processing", ^{
     frame.spread = 0.0;
     frame.corner = 0;
     frame.noiseAmplitude = 0.0;
-    frame.color = GLKVector3Make(0.0, 0.0, 1.0);
+    frame.color = LTVector3(0.0, 0.0, 1.0);
     [frame process];
     
     LTTexture *precomputedFrame =
@@ -177,7 +176,7 @@ context(@"processing", ^{
     frame.spread = 10.0;
     frame.corner = 8;
     frame.noiseAmplitude = 0.0;
-    frame.color = GLKVector3Make(0.0, 0.0, 0.0);
+    frame.color = LTVector3(0.0, 0.0, 0.0);
     [frame process];
     
     LTTexture *precomputedFrame =
@@ -197,8 +196,8 @@ context(@"processing", ^{
     frame.corner = 0.0;
     frame.noise = tiledNoise;
     frame.noiseAmplitude = 1.0;
-    frame.noiseChannelMixer = GLKVector3Make(1.0, 0.0, 0.0);
-    frame.color = GLKVector3Make(0.0, 0.0, 0.0);
+    frame.noiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
+    frame.color = LTVector3(0.0, 0.0, 0.0);
     [frame process];
     
     LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMat([self class],
@@ -219,7 +218,7 @@ context(@"processing", ^{
     frame.noiseAmplitude = 1.0;
     frame.noiseMapping = LTProceduralFrameNoiseMappingTile;
     frame.noiseCoordinatesOffset = 0.25;
-    frame.color = GLKVector3Make(0.0, 0.0, 0.0);
+    frame.color = LTVector3(0.0, 0.0, 0.0);
     [frame process];
     
     LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMat([self class],

@@ -62,28 +62,28 @@ context(@"wrapping", ^{
     expect(CATransform3DEqualToTransform(expected, actual)).to.beTruthy();
   });
 
-  it(@"should box GLKVector2", ^{
-    GLKVector2 expected = GLKVector2Make(1, -1);
+  it(@"should box LTVector2", ^{
+    LTVector2 expected = LTVector2(1, -1);
     NSValue *value = $(expected);
-    GLKVector2 actual = [value GLKVector2Value];
+    LTVector2 actual = [value LTVector2Value];
 
-    expect(GLKVector2AllEqualToVector2(expected, actual)).to.beTruthy();
+    expect(actual).to.equal(expected);
   });
 
-  it(@"should box GLKVector3", ^{
-    GLKVector3 expected = GLKVector3Make(1, -1, 5);
+  it(@"should box LTVector3", ^{
+    LTVector3 expected = LTVector3(1, -1, 5);
     NSValue *value = $(expected);
-    GLKVector3 actual = [value GLKVector3Value];
+    LTVector3 actual = [value LTVector3Value];
 
-    expect(GLKVector3AllEqualToVector3(expected, actual)).to.beTruthy();
+    expect(actual).to.equal(expected);
   });
 
-  it(@"should box GLKVector4", ^{
-    GLKVector4 expected = GLKVector4Make(1, -1, 5, 3);
+  it(@"should box LTVector4", ^{
+    LTVector4 expected = LTVector4(1, -1, 5, 3);
     NSValue *value = $(expected);
-    GLKVector4 actual = [value GLKVector4Value];
+    LTVector4 actual = [value LTVector4Value];
 
-    expect(GLKVector4AllEqualToVector4(expected, actual)).to.beTruthy();
+    expect(actual).to.equal(expected);
   });
 
   it(@"should box GLKMatrix2", ^{

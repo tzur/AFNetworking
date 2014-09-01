@@ -18,7 +18,7 @@ LTCropDrawerRect::LTCropDrawerRect(CGRect rect) :
   bottomRight(rect.origin + rect.size) {}
 
 LTCropDrawerRect::operator CGRect() {
-  return CGRectStandardize(CGRectFromPoints(topLeft, bottomRight));
+  return CGRectStandardize(CGRectFromPoints((CGPoint)topLeft, (CGPoint)bottomRight));
 }
 
 LTCropDrawerRect &LTCropDrawerRect::operator*=(const LTVector2 &rhs) {

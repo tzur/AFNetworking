@@ -309,27 +309,28 @@ context(@"execution", ^{
   it(@"should clear the color buffers", ^{
     cv::Mat4b mat(10, 10);
     cv::Vec4b red(255, 0, 0, 255);
-    cv::Vec4b blue(0, 0, 255, 255);
+    const LTVector4 kBlue(0, 0, 1, 1);
     mat = red;
     LTTexture *texture = [[LTGLTexture alloc] initWithImage:mat];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo bindAndDraw:^{
-      [[LTGLContext currentContext] clearWithColor:GLKVector4FromVec4b(blue)];
+      [[LTGLContext currentContext] clearWithColor:kBlue];
     }];
-    
-    cv::Mat4b expected(mat.rows, mat.cols);
-    expected = blue;
+
+    LTVector4 charBlue(kBlue * 255);
+    cv::Mat4b expected(mat.rows, mat.cols,
+                       cv::Vec4b(charBlue.r(), charBlue.g(), charBlue.b(), charBlue.a()));
     expect(LTFuzzyCompareMat(expected, [texture image])).to.beTruthy();
   });
   
   it(@"should clear the color buffers leaving the clearColor unchanged", ^{
-    const GLKVector4 color1 = GLKVector4Make(1, 0, 0, 1);
-    const GLKVector4 color2 = GLKVector4Make(0, 1, 0, 1);
-    GLKVector4 clearColor;
-    glClearColor(color1.r, color1.g, color1.b, color1.a);
-    [[LTGLContext currentContext] clearWithColor:color2];
-    glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.v);
-    expect(clearColor).to.equal(color1);
+    const LTVector4 kColor1 = LTVector4(1, 0, 0, 1);
+    const LTVector4 kColor2 = LTVector4(0, 1, 0, 1);
+    LTVector4 clearColor;
+    glClearColor(kColor1.r(), kColor1.g(), kColor1.b(), kColor1.a());
+    [[LTGLContext currentContext] clearWithColor:kColor2];
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.data());
+    expect(clearColor).to.equal(kColor1);
   });
 });
 

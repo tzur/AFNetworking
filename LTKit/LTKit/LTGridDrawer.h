@@ -22,7 +22,7 @@
 - (void)drawSubGridInRegion:(CGRect)region inFramebufferWithSize:(CGSize)size;
 
 /// Base color of the grid, rgba with premultiplied alpha. Default is white (1,1,1,1).
-@property (nonatomic) GLKVector4 color;
+@property (nonatomic) LTVector4 color;
 
 /// Opacity of the grid. This stacks together (multiply) with the alpha channel of the color.
 /// Default is 1.

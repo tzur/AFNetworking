@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, LTPainterTargetMode) {
 - (instancetype)initWithMode:(LTPainterTargetMode)mode canvasTexture:(LTTexture *)canvasTexture;
 
 /// Clears the canvas texture with the given color.
-- (void)clearWithColor:(GLKVector4)color;
+- (void)clearWithColor:(LTVector4)color;
 
 /// Paints the given stroke.
 - (void)paintStroke:(LTPainterStroke *)stroke;

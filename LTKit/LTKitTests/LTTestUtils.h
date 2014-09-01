@@ -49,11 +49,11 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor);
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
 
-/// Converts a \c cv::Vec4b to \c GLKVector4.
-GLKVector4 LTCVVec4bToGLKVector4(cv::Vec4b value);
+/// Converts a \c cv::Vec4b to \c LTVector4.
+LTVector4 LTCVVec4bToLTVector4(cv::Vec4b value);
 
-/// Converts a \c GLKVector4 to \c cv::Vec4b.
-cv::Vec4b LTGLKVector4ToVec4b(GLKVector4 value);
+/// Converts a \c LTVector4 to \c cv::Vec4b.
+cv::Vec4b LTLTVector4ToVec4b(LTVector4 value);
 
 /// Rotates (clockwise) the given mat by the given angle (in radians) around its center.
 /// Uses nearest neighbor interpolation.

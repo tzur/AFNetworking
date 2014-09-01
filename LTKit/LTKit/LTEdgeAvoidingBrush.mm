@@ -85,11 +85,11 @@ static const CGFloat kSizeToSamplingFactor = 50;
   CGPoint sample3 = (CGRectCenter(rect) + CGSizeMake(offset.width, -offset.height)) / size;
   CGPoint sample4 = (CGRectCenter(rect) + CGSizeMake(offset.width, offset.height)) / size;
   
-  self.program[[LTEdgeAvoidingBrushFsh samplePoint0]] = $(GLKVector2FromCGPoint(sample0));
-  self.program[[LTEdgeAvoidingBrushFsh samplePoint1]] = $(GLKVector2FromCGPoint(sample1));
-  self.program[[LTEdgeAvoidingBrushFsh samplePoint2]] = $(GLKVector2FromCGPoint(sample2));
-  self.program[[LTEdgeAvoidingBrushFsh samplePoint3]] = $(GLKVector2FromCGPoint(sample3));
-  self.program[[LTEdgeAvoidingBrushFsh samplePoint4]] = $(GLKVector2FromCGPoint(sample4));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint0]] = $(LTVector2(sample0));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint1]] = $(LTVector2(sample1));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint2]] = $(LTVector2(sample2));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint3]] = $(LTVector2(sample3));
+  self.program[[LTEdgeAvoidingBrushFsh samplePoint4]] = $(LTVector2(sample4));
 }
 
 - (void)updateProgramForCurrentProperties {

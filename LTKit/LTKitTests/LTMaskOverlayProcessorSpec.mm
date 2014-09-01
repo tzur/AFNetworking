@@ -40,7 +40,7 @@ context(@"processing", ^{
   });
 
   it(@"should add custom mask color correctly", ^{
-    processor.maskColor = GLKVector4Make(0.5, 0.25, 0.75, 1.0);
+    processor.maskColor = LTVector4(0.5, 0.25, 0.75, 1.0);
     [processor process];
 
     cv::Mat4b expected(input.size.height, input.size.width, cv::Vec4b(128, 64, 112, 255));

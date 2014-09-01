@@ -91,7 +91,7 @@
 - (LTCropDrawerRect)sourceRectangleForDrawer {
   LTCropDrawerRect rect =
       self.applyCrop ? self.normalizedCropRectangle : [self uncroppedSourceRectangle];
-  rect *= self.inputTexture.size;
+  rect *= (LTVector2)self.inputTexture.size;
   return rect;
 }
 
@@ -116,7 +116,7 @@
 
 - (LTVector2)transform:(const GLKMatrix2 &)transform vector:(LTVector2)vector {
   vector -= 0.5;
-  vector = GLKMatrix2MultiplyVector2(transform, vector);
+  vector = (LTVector2)GLKMatrix2MultiplyVector2(transform, (GLKVector2)vector);
   vector += 0.5;
   return vector;
 }
@@ -165,7 +165,7 @@
 
 - (void)setCropRectangle:(LTRect)cropRectangle {
   LTCropDrawerRect rect(cropRectangle);
-  rect /= [self rotatedSize:self.inputTexture.size];
+  rect /= LTVector2([self rotatedSize:self.inputTexture.size]);
   self.normalizedCropRectangle = [self transform:GLKMatrix2Transpose(self.transform) rect:rect];
   self.cachedTransform = GLKMatrix2();
 }
@@ -173,7 +173,7 @@
 - (LTRect)cropRectangle {
   if (self.cachedTransform != self.transform) {
     LTCropDrawerRect rect = [self transform:self.transform rect:self.normalizedCropRectangle];
-    rect *= [self rotatedSize:self.inputTexture.size];
+    rect *= LTVector2([self rotatedSize:self.inputTexture.size]);
     self.cachedCropRectangle = (CGRect)rect;
     self.cachedTransform = self.transform;
   }

@@ -104,13 +104,13 @@ static const NSUInteger kCoarseTextureIterations = 6;
   return self.dualMaskProcessor.maskType;
 }
 
-- (void)setCenter:(GLKVector2)center {
+- (void)setCenter:(LTVector2)center {
   // Scaling transforms from image coordinate system to mask coordinate system.
   self.dualMaskProcessor.center = center / kMaskScalingFactor;
   [self.dualMaskProcessor process];
 }
 
-- (GLKVector2)center {
+- (LTVector2)center {
   // Scaling transforms from mask coordinate system to image coordinate system.
   return self.dualMaskProcessor.center * kMaskScalingFactor;
 }

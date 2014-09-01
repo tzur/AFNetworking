@@ -137,7 +137,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       it(@"should draw all input to subrect of output", ^{
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:subrect]]
                  inFramebufferWithSize:fbo.size
@@ -160,7 +160,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                                          inputSize.width / 4, inputSize.height / 4);
         const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:outRect]]
                  inFramebufferWithSize:fbo.size
@@ -191,7 +191,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         beforeEach(^{
           expectedTexture = [[LTGLTexture alloc] initWithPropertiesOf:output];
           expectedFbo = [[LTFbo alloc] initWithTexture:expectedTexture];
-          [expectedFbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [expectedFbo clearWithColor:LTVector4(0, 0, 0, 1)];
           expected.create(expectedTexture.size.height, expectedTexture.size.width);
         });
         
@@ -202,7 +202,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         
         it(@"should draw an array of rotated subrects of input to an array of subrects of output",
            ^{
-          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
           CGRect targetRect0 = CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2);
           CGRect targetRect1 = CGRectMake(inputSize.width / 2, 0,
                                           inputSize.width / 2, inputSize.height / 2);
@@ -230,7 +230,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         
         it(@"should draw an array of subrects of input to an array of rotated subrects of output",
            ^{
-          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
           CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
                                           inputSize.width / 4, inputSize.height / 4);
           CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,
@@ -259,7 +259,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         
         it(@"should draw an array of rotated subrects of input to an array of rotated subrects of "
            "output", ^{
-          [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
           CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
                                           inputSize.width / 4, inputSize.height / 4);
           CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,

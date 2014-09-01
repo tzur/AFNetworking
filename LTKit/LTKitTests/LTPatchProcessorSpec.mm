@@ -113,10 +113,10 @@ context(@"processing", ^{
     target = [LTTexture byteRGBATextureWithSize:kTargetSize];
     output = [LTTexture byteRGBATextureWithSize:kTargetSize];
 
-    [mask clearWithColor:GLKVector4Make(1, 1, 1, 1)];
-    [source clearWithColor:GLKVector4Make(0.5, 0, 0, 1)];
-    [target clearWithColor:GLKVector4Make(0, 0, 1, 1)];
-    [output clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
+    [target clearWithColor:LTVector4(0, 0, 1, 1)];
+    [output clearWithColor:LTVector4(0, 0, 0, 0)];
 
     processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                         source:source target:target output:output];

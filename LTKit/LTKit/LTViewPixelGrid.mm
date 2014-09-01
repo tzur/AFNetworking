@@ -53,7 +53,7 @@ static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
 
 - (LTGridDrawer *)createGridDrawerWithContentSize:(CGSize)size {
   LTGridDrawer *gridDrawer = [[LTGridDrawer alloc] initWithSize:size];
-  gridDrawer.color = self.color.glkVector;
+  gridDrawer.color = self.color.lt_ltVector;
   return gridDrawer;
 }
 
@@ -90,7 +90,7 @@ static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
 
 - (void)setColor:(UIColor *)color {
   _color = color ?: kDefaultColor;
-  self.gridDrawer.color = _color.glkVector;
+  self.gridDrawer.color = _color.lt_ltVector;
 }
 
 - (void)setMaxOpacity:(CGFloat)maxOpacity {

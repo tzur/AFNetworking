@@ -86,7 +86,7 @@
 - (void)createFbos {
   self.canvasFbo = [[LTFbo alloc] initWithTexture:self.canvasTexture];
   self.strokeFbo = [[LTFbo alloc] initWithTexture:self.strokeTexture];
-  [self.strokeFbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+  [self.strokeFbo clearWithColor:LTVector4(0, 0, 0, 0)];
 }
 
 - (void)createDefaultConfiguration {
@@ -110,11 +110,11 @@
   if (self.mode == LTPainterTargetModeSandboxedStroke) {
     [self.strokeDrawer drawRect:CGRectFromSize(self.canvasFbo.size) inFramebuffer:self.canvasFbo
                        fromRect:CGRectFromSize(self.strokeTexture.size)];
-    [self.strokeFbo clearWithColor:GLKVector4Make(0, 0, 0, 0)];
+    [self.strokeFbo clearWithColor:LTVector4(0, 0, 0, 0)];
   }
 }
 
-- (void)clearWithColor:(GLKVector4)color {
+- (void)clearWithColor:(LTVector4)color {
   [self.canvasFbo clearWithColor:color];
   [self.mutableStrokes removeAllObjects];
 }

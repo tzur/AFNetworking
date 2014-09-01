@@ -52,9 +52,9 @@ context(@"getting and setting uniforms and attributes", ^{
     NSNumber *intValue = @(7);
     NSNumber *floatValue = @(1);
     
-    NSValue *vec2 = $(GLKVector2Make(1.f, 2.f));
-    NSValue *vec3 = $(GLKVector3Make(1.f, 2.f, 3.f));
-    NSValue *vec4 = $(GLKVector4Make(1.f, 2.f, 3.f, 4.f));
+    NSValue *vec2 = $(LTVector2(1.f, 2.f));
+    NSValue *vec3 = $(LTVector3(1.f, 2.f, 3.f));
+    NSValue *vec4 = $(LTVector4(1.f, 2.f, 3.f, 4.f));
     
     GLKMatrix2 m2;
     for (int i = 0; i < 4; ++i) {

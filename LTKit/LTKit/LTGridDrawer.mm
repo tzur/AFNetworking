@@ -16,8 +16,8 @@
 
 /// Holds the position of each grid line vertex.
 LTGPUStructMake(LTGridDrawerVertex,
-                GLKVector2, position,
-                GLKVector2, offset);
+                LTVector2, position,
+                LTVector2, offset);
 
 @interface LTGridDrawer ()
 
@@ -35,7 +35,7 @@ LTGPUStructMake(LTGridDrawerVertex,
 @implementation LTGridDrawer
 
 // Default grid drawer color.
-static const GLKVector4 kDefaultColor = GLKVector4Make(1, 1, 1, 1);
+static const LTVector4 kDefaultColor = LTVector4(1, 1, 1, 1);
 // Default grid drawer opacity.
 static const CGFloat kDefaultOpacity = 1.0;
 // Default width of the grid.
@@ -115,10 +115,18 @@ static const CGFloat kDefaultWidth = 1.0;
   CGFloat gridSpacing = 1.0;
   GLfloat height = self.size.height;
   for (GLfloat x = 0; x <= self.size.width; x += gridSpacing) {
-    LTGridDrawerVertex topLeft = {.position = {{x - 1, 0}}, .offset = {{-1, 0}}};
-    LTGridDrawerVertex topRight = {.position = {{x + 1, 0}}, .offset = {{1, 0}}};
-    LTGridDrawerVertex bottomLeft = {.position = {{x - 1, height}}, .offset = {{-1, 0}}};
-    LTGridDrawerVertex bottomRight = {.position = {{x + 1, height}}, .offset = {{1, 0}}};
+    LTGridDrawerVertex topLeft = {
+      .position = LTVector2(x - 1, 0), .offset = LTVector2(-1, 0)
+    };
+    LTGridDrawerVertex topRight = {
+      .position = LTVector2(x + 1, 0), .offset = LTVector2(1, 0)
+    };
+    LTGridDrawerVertex bottomLeft = {
+      .position = LTVector2(x - 1, height), .offset = LTVector2(-1, 0)
+    };
+    LTGridDrawerVertex bottomRight = {
+      .position = LTVector2(x + 1, height), .offset = LTVector2(1, 0)
+    };
     vertexData.push_back(topLeft);
     vertexData.push_back(topRight);
     vertexData.push_back(bottomLeft);
@@ -136,10 +144,18 @@ static const CGFloat kDefaultWidth = 1.0;
   CGFloat gridSpacing = 1.0;
   GLfloat width = self.size.width;
   for (GLfloat y = 0; y <= self.size.height; y += gridSpacing) {
-    LTGridDrawerVertex topLeft = {.position = {{0, y - 1}}, .offset = {{0, -1}}};
-    LTGridDrawerVertex topRight = {.position = {{width, y - 1}}, .offset = {{0, -1}}};
-    LTGridDrawerVertex bottomLeft = {.position = {{0, y + 1}}, .offset = {{0, 1}}};
-    LTGridDrawerVertex bottomRight = {.position = {{width, y + 1}}, .offset = {{0, 1}}};
+    LTGridDrawerVertex topLeft = {
+      .position = LTVector2(0, y - 1), .offset = LTVector2(0, -1)
+    };
+    LTGridDrawerVertex topRight = {
+      .position = LTVector2(width, y - 1), .offset = LTVector2(0, -1)
+    };
+    LTGridDrawerVertex bottomLeft = {
+      .position = LTVector2(0, y + 1), .offset = LTVector2(0, 1)
+    };
+    LTGridDrawerVertex bottomRight = {
+      .position = LTVector2(width, y + 1), .offset = LTVector2(0, 1)
+    };
     vertexData.push_back(topLeft);
     vertexData.push_back(topRight);
     vertexData.push_back(bottomLeft);
@@ -182,7 +198,7 @@ static const CGFloat kDefaultWidth = 1.0;
 - (void)setProjectionAndPixelSizeForFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1);
   self.program[@"projection"] = $(projection);
-  self.program[@"pixelSize"] = $(GLKVector2Make(2 / size.width, 2 / size.height));
+  self.program[@"pixelSize"] = $(LTVector2(2 / size.width, 2 / size.height));
 }
 
 /// Since we're using a flipped projection matrix, the original order of vertices will generate a
@@ -194,7 +210,7 @@ static const CGFloat kDefaultWidth = 1.0;
 - (void)setProjectionAndPixelSizeForScreenFramebufferWithSize:(CGSize)size {
   GLKMatrix4 projection = GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1);
   self.program[@"projection"] = $(projection);
-  self.program[@"pixelSize"] = $(GLKVector2Make(2 / size.width, -2 / size.height));
+  self.program[@"pixelSize"] = $(LTVector2(2 / size.width, -2 / size.height));
 }
 
 - (void)setUniformsForGridRegion:(CGRect)region framebufferSize:(CGSize)size {

@@ -180,7 +180,7 @@
 #pragma mark Operations
 #pragma mark -
 
-- (void)clearWithColor:(GLKVector4)color {
+- (void)clearWithColor:(LTVector4)color {
   [self bindAndDraw:^{
     [[LTGLContext currentContext] clearWithColor:color];
   }];

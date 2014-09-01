@@ -29,7 +29,7 @@ afterEach(^{
 context(@"properties", ^{
   it(@"should return default mask properties correctly", ^{
     expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
-    expect(GLKVector2AllEqualToVector2(processor.center, GLKVector2Make(8, 8))).to.beTruthy();
+    expect(processor.center).to.equal(LTVector2(8, 8));
     expect(processor.diameter).to.equal(8);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
@@ -44,7 +44,7 @@ context(@"properties", ^{
   });
   
   sit(@"should apply radial tilt-shift pattern", ^{
-    processor.center = GLKVector2Make(output.size.width / 2, output.size.height / 2);
+    processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
     processor.diameter = output.size.width / 2;
     processor.spread = 1.0;
     processor.intensity = 0.8;
@@ -56,7 +56,7 @@ context(@"properties", ^{
   
   sit(@"should apply linear tilt-shift pattern", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
-    processor.center = GLKVector2Make(output.size.width / 2, output.size.height / 2);
+    processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
     processor.diameter = output.size.width / 4;
     processor.spread = 1;
     [processor process];

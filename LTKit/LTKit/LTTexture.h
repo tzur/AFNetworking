@@ -294,14 +294,14 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
-- (GLKVector4)pixelValue:(CGPoint)location;
+- (LTVector4)pixelValue:(CGPoint)location;
 
 /// Returns pixel values at the given locations, with symmetric boundary condition. The returned
 /// value is a vector of RBGA values of the texture pixels at the given locations.
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
-- (GLKVector4s)pixelValues:(const CGPoints &)locations;
+- (LTVector4s)pixelValues:(const CGPoints &)locations;
 
 /// Returns the texture data that is contains in the given rect. The \c rect must be contained
 /// inside the texture's bounds (0, 0, size.width, size.height). The resulting image precision and
@@ -324,7 +324,7 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 - (void)executeAndPreserveParameters:(LTVoidBlock)execute;
 
 /// Clears the texture with the given \c color.
-- (void)clearWithColor:(GLKVector4)color;
+- (void)clearWithColor:(LTVector4)color;
 
 #pragma mark -
 #pragma mark Properties

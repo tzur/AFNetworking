@@ -113,7 +113,7 @@ static const CGFloat kBristleSigma = 0.4;
     [sources addObject:[LTRotatedRect rect:CGRectFromSize(CGSizeMakeUniform(kBristleDiameter))]];
   }
   
-  [self.brushFbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+  [self.brushFbo clearWithColor:LTVector4(0, 0, 0, 1)];
   LTGLContext *context = [LTGLContext currentContext];
   [context executeAndPreserveState:^{
     context.blendEnabled = YES;

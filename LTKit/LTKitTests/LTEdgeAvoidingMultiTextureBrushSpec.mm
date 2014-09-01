@@ -111,7 +111,7 @@ context(@"edge avoiding drawing", ^{
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
   
-  const GLKVector4 kBackgroundColor = GLKVector4Make(0, 0, 0, 0);
+  const LTVector4 kBackgroundColor = LTVector4(0, 0, 0, 0);
   const CGFloat kBaseBrushDiameter = 16;
   const CGFloat kTargetBrushDiameter = 16;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
@@ -150,7 +150,7 @@ context(@"edge avoiding drawing", ^{
   });
   
   it(@"should disable the edge-avoiding effect when setting sigma to 1.0", ^{
-    brush.intensity = GLKVector4One;
+    brush.intensity = LTVector4One;
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -159,7 +159,7 @@ context(@"edge avoiding drawing", ^{
   });
   
   it(@"should have edge avoiding effect when sigma < 1.0", ^{
-    brush.intensity = GLKVector4One;
+    brush.intensity = LTVector4One;
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -178,7 +178,7 @@ context(@"edge avoiding drawing", ^{
 
   it(@"should use the target framebuffer instead when setting the inputTexture to nil", ^{
     brush.sigma = brush.minSigma;
-    brush.intensity = GLKVector4Make(0.5, 0.5, 0.5, 1.0);
+    brush.intensity = LTVector4(0.5, 0.5, 0.5, 1.0);
     brush.inputTexture = nil;
 
     [output mappedImageForWriting:^(cv::Mat *mapped, BOOL) {

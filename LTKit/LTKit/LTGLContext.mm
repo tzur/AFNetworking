@@ -225,13 +225,13 @@ typedef struct {
   self.contextStack.pop();
 }
 
-- (void)clearWithColor:(GLKVector4)color {
-  GLKVector4 previousColor;
-  glGetFloatv(GL_COLOR_CLEAR_VALUE, previousColor.v);
+- (void)clearWithColor:(LTVector4)color {
+  LTVector4 previousColor;
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, previousColor.data());
 
-  glClearColor(color.r, color.g, color.b, color.a);
+  glClearColor(color.r(), color.g(), color.b(), color.a());
   glClear(GL_COLOR_BUFFER_BIT);
-  glClearColor(previousColor.r, previousColor.g, previousColor.b, previousColor.a);
+  glClearColor(previousColor.r(), previousColor.g(), previousColor.b(), previousColor.a());
 }
 
 #pragma mark -

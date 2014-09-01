@@ -118,9 +118,9 @@ void LTPreDivideMat(cv::Mat *mat) {
     if (!color[3]) {
       return cv::Vec4b();
     }
-    GLKVector3 rgb = GLKVector3Make(color[0], color[1], color[2]) / ((color[3] / 255.0) ?: 1.0);
-    rgb = std::min(std::round(rgb), GLKVector3Make(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
-    return cv::Vec4b(rgb.r, rgb.g, rgb.b, color[3]);
+    LTVector3 rgb = LTVector3(color[0], color[1], color[2]) / ((color[3] / 255.0) ?: 1.0);
+    rgb = std::min(std::round(rgb), LTVector3(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
+    return cv::Vec4b(rgb.r(), rgb.g(), rgb.b(), color[3]);
   });
 }
 

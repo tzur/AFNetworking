@@ -269,7 +269,7 @@ context(@"drawing", ^{
   
   static const CGSize kOutputSize = CGSizeMake(128, 256);
   static const CGPoint kOutputCenter = CGPointZero + kOutputSize / 2;;
-  static const GLKVector4 kBackground = GLKVector4Make(0.5, 0.5, 0.5, 1);
+  static const LTVector4 kBackground = LTVector4(0.5, 0.5, 0.5, 1);
 
   beforeEach(^{
     // Prepare drawer.

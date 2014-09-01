@@ -35,7 +35,7 @@
 - (void)bindAndDraw:(LTVoidBlock)block;
 
 /// Fills the texture bound to this FBO with the given color.
-- (void)clearWithColor:(GLKVector4)color;
+- (void)clearWithColor:(LTVector4)color;
 
 /// Size of the texture associated with this framebuffer.
 @property (readonly, nonatomic) CGSize size;

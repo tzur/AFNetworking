@@ -18,16 +18,16 @@ LTPropertyDeclare(CGFloat, lineWidth, LineWidth);
 LTPropertyDeclare(CGFloat, shadowWidth, ShadowWidth);
 
 /// Color of filled shapes. Must be in range [0,1].
-@property (nonatomic) GLKVector4 fillColor;
-LTPropertyDeclare(GLKVector4, fillColor, FillColor);
+@property (nonatomic) LTVector4 fillColor;
+LTPropertyDeclare(LTVector4, fillColor, FillColor);
 
 /// Color of outlined shapes or paths. Must be in range [0,1].
-@property (nonatomic) GLKVector4 strokeColor;
-LTPropertyDeclare(GLKVector4, strokeColor, StrokeColor);
+@property (nonatomic) LTVector4 strokeColor;
+LTPropertyDeclare(LTVector4, strokeColor, StrokeColor);
 
 /// Color of the shadows around filled shapes, outlines, or strokes. Must be in range [0,1].
-@property (nonatomic) GLKVector4 shadowColor;
-LTPropertyDeclare(GLKVector4, shadowColor, ShadowColor);
+@property (nonatomic) LTVector4 shadowColor;
+LTPropertyDeclare(LTVector4, shadowColor, ShadowColor);
 
 /// Half the line width.
 @property (readonly, nonatomic) CGFloat lineRadius;

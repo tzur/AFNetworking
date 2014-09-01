@@ -220,7 +220,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
       
       it(@"should draw all input to subrect of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
@@ -240,7 +240,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
       
       it(@"should draw subrect of input to subrect of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2)];
@@ -258,7 +258,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     
     context(@"rotated rect", ^{
       it(@"should draw a rotated subrect of input to subrect of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect = CGRectMake(inputSize.width / 2, 0,
                                        inputSize.width / 2, inputSize.height / 2);
         CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
@@ -280,7 +280,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
       
       it(@"should draw a subrect of input to a rotated subrect of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
                                        inputSize.width / 2, inputSize.height / 2);
         CGRect sourceRect = CGRectMake(inputSize.width / 2, 0,
@@ -300,7 +300,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
       
       it(@"should draw a rotated subrect of input to a rotated subrect of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
                                        inputSize.width / 2, inputSize.height / 2);
         CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
@@ -325,7 +325,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     
     context(@"array of rotated rects", ^{
       it(@"should draw an array of rotated subrects of input to an array of subrects of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect0 = CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2);
         CGRect targetRect1 = CGRectMake(inputSize.width / 2, 0,
                                         inputSize.width / 2, inputSize.height / 2);
@@ -351,7 +351,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
       
       it(@"should draw an array of subrects of input to an array of rotated subrects of output", ^{
-        [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
                                         inputSize.width / 4, inputSize.height / 4);
         CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,
@@ -386,7 +386,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       
       it(@"should draw an array of rotated subrects of input to an array of rotated subrects of "
          "output", ^{
-           [fbo clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+           [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
            CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
                                            inputSize.width / 4, inputSize.height / 4);
            CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,
@@ -552,7 +552,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     });
     
     it(@"should set and retrieve uniform", ^{
-      GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
+      LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       NSValue *value = $(outputColor);
       drawer[@"outputColor"] = value;
       
@@ -560,14 +560,14 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     });
     
     it(@"should draw given color to target", ^{
-      GLKVector4 outputColor = GLKVector4Make(1, 0, 0, 1);
+      LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       drawer[@"outputColor"] = $(outputColor);
       
       [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
               fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
       
       cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
-      expected.setTo(LTGLKVector4ToVec4b(outputColor));
+      expected.setTo(LTLTVector4ToVec4b(outputColor));
       
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });

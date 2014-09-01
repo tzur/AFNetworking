@@ -500,31 +500,31 @@ static NSString * const kArchiveKey = @"archive";
   [self load:image];
 }
 
-- (GLKVector4)pixelValue:(CGPoint)location {
+- (LTVector4)pixelValue:(CGPoint)location {
   cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
   return [self pixelValueFromImage:image location:{0, 0}];
 }
 
-- (GLKVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location {
+- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location {
   // Reading half-float is currently not supported.
   // TODO: (yaron) implement a half-float <--> float converter when needed.
 
   switch (image.type()) {
     case CV_8U: {
       uchar value = image.at<uchar>(location.y, location.x);
-      return {{value / 255.f, 0.f, 0.f, 0.f}};
+      return LTVector4(value / 255.f, 0, 0, 0);
     }
     case CV_8UC4: {
       cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
-      return {{value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f}};
+      return LTVector4(value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f);
     }
     case CV_32F: {
       float value = image.at<float>(location.y, location.x);
-      return {{value, 0, 0, 0}};
+      return LTVector4(value, 0, 0, 0);
     }
     case CV_32FC4: {
       cv::Vec4f value = image.at<cv::Vec4f>(location.y, location.x);
-      return {{value(0), value(1), value(2), value(3)}};
+      return LTVector4(value(0), value(1), value(2), value(3));
     }
     default:
       [LTGLException raise:kLTTextureUnsupportedFormatException
@@ -533,14 +533,14 @@ static NSString * const kArchiveKey = @"archive";
   }
 }
 
-- (GLKVector4s)pixelValues:(const CGPoints &)locations {
+- (LTVector4s)pixelValues:(const CGPoints &)locations {
   // This is naive implementation which calls -[LTTexture pixelValue:] for each given pixel.
-  GLKVector4s values(locations.size());
+  LTVector4s values(locations.size());
 
   for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
     // Use boundary conditions similar to Matlab's 'symmetric'.
-    GLKVector2 location = [LTSymmetricBoundaryCondition
-                           boundaryConditionForPoint:GLKVector2Make(locations[i].x, locations[i].y)
+    LTVector2 location = [LTSymmetricBoundaryCondition
+                           boundaryConditionForPoint:LTVector2(locations[i].x, locations[i].y)
                            withSignalSize:cv::Size2i(self.size.width, self.size.height)];
     values[i] = [self pixelValue:CGPointMake(floorf(location.x), floorf(location.y))];
   }
@@ -570,7 +570,7 @@ static NSString * const kArchiveKey = @"archive";
   [self setCurrentParameters:parameters];
 }
 
-- (void)clearWithColor:(GLKVector4)color {
+- (void)clearWithColor:(LTVector4)color {
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
   [fbo clearWithColor:color];
 }

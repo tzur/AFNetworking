@@ -130,7 +130,7 @@
   self.targetResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
   self.maskResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
 
-  static const GLKVector4 kBlack = GLKVector4Make(0, 0, 0, 0);
+  static const LTVector4 kBlack = LTVector4(0, 0, 0, 0);
   [self.sourceResized clearWithColor:kBlack];
   [self.targetResized clearWithColor:kBlack];
   [self.maskResized clearWithColor:kBlack];

@@ -113,7 +113,7 @@ context(@"drawing", ^{
   
   static const CGSize kOutputSize = CGSizeMake(64, 128);
   static const CGPoint kOutputCenter = CGPointZero + kOutputSize / 2;;
-  static const GLKVector4 kBackground = GLKVector4Make(0.5, 0.5, 0.5, 1);
+  static const LTVector4 kBackground = LTVector4(0.5, 0.5, 0.5, 1);
   
   /// A large difference is allowed since there might be a difference between the output on the
   /// simulator and on devices. There's no real good solution here, as sometimes there might be 2-3

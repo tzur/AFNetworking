@@ -74,12 +74,12 @@ static const CGFloat kMaskDownscalingFactor = 2;
   return self.dualMaskProcessor.maskType;
 }
 
-- (void)setCenter:(GLKVector2)center {
+- (void)setCenter:(LTVector2)center {
   self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
   self.needsDualMaskProcessing = YES;
 }
 
-- (GLKVector2)center {
+- (LTVector2)center {
   return self.dualMaskProcessor.center * kMaskDownscalingFactor;
 }
 
@@ -116,29 +116,29 @@ static const CGFloat kMaskDownscalingFactor = 2;
 
 static const ushort kGradientSize = 256;
 
-- (GLKVector4)blackWithAlpha:(CGFloat)alpha {
-  return GLKVector4Make(0.0, 0.0, 0.0, alpha);
+- (LTVector4)blackWithAlpha:(CGFloat)alpha {
+  return LTVector4(0.0, 0.0, 0.0, alpha);
 }
 
-- (GLKVector4)whiteWithAlpha:(CGFloat)alpha {
-  return GLKVector4Make(1.0, 1.0, 1.0, alpha);
+- (LTVector4)whiteWithAlpha:(CGFloat)alpha {
+  return LTVector4(1.0, 1.0, 1.0, alpha);
 }
 
 // Given color creates a gradient that maps color to midrange. Black is mapped to black and white
 // to white. Alpha of the gradient is constant and equals to the alpha of the color.
-- (LTColorGradient *)createGradientWithColor:(GLKVector4)color {
+- (LTColorGradient *)createGradientWithColor:(LTVector4)color {
   LTColorGradientControlPoint *blackControlPoint = [[LTColorGradientControlPoint alloc]
-      initWithPosition:0.0 colorWithAlpha:[self blackWithAlpha:color.a]];
+      initWithPosition:0.0 colorWithAlpha:[self blackWithAlpha:color.a()]];
   LTColorGradientControlPoint *midControlPoint = [[LTColorGradientControlPoint alloc]
       initWithPosition:0.5 colorWithAlpha:color];
   LTColorGradientControlPoint *whiteControlPoint = [[LTColorGradientControlPoint alloc]
-      initWithPosition:1.0 colorWithAlpha:[self whiteWithAlpha:color.a]];
+      initWithPosition:1.0 colorWithAlpha:[self whiteWithAlpha:color.a()]];
   
   NSArray *controlPoints = @[blackControlPoint, midControlPoint, whiteControlPoint];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }
 
-- (void)updateGradientWithColor:(GLKVector4)color uniformName:(NSString *)uniformName {
+- (void)updateGradientWithColor:(LTVector4)color uniformName:(NSString *)uniformName {
   // Create a new gradient.
   LTColorGradient *gradient = [self createGradientWithColor:color];
   
@@ -147,16 +147,16 @@ static const ushort kGradientSize = 256;
                    withName:uniformName];
 }
 
-LTPropertyWithoutSetter(GLKVector4, blueColor, BlueColor,
-                        GLKVector4Zero, GLKVector4One, GLKVector4Make(0, 0, 1, 1));
-- (void)setBlueColor:(GLKVector4)blueColor {
+LTPropertyWithoutSetter(LTVector4, blueColor, BlueColor,
+                        LTVector4Zero, LTVector4One, LTVector4(0, 0, 1, 1));
+- (void)setBlueColor:(LTVector4)blueColor {
   [self _verifyAndSetBlueColor:blueColor];
   [self updateGradientWithColor:blueColor uniformName:[LTDuoFsh blueLUT]];
 }
 
-LTPropertyWithoutSetter(GLKVector4, redColor, RedColor,
-                        GLKVector4Zero, GLKVector4One, GLKVector4Make(1, 0, 0, 1));
-- (void)setRedColor:(GLKVector4)redColor {
+LTPropertyWithoutSetter(LTVector4, redColor, RedColor,
+                        LTVector4Zero, LTVector4One, LTVector4(1, 0, 0, 1));
+- (void)setRedColor:(LTVector4)redColor {
   [self _verifyAndSetRedColor:redColor];
   [self updateGradientWithColor:redColor uniformName:[LTDuoFsh redLUT]];
 }

@@ -9,14 +9,14 @@ void LTAddShadowVertex(const LTCommonDrawableShapeVertex &vertex,
                        LTCommonDrawableShapeVertices *shadowVertices) {
   LTParameterAssert(shadowVertices);
   shadowVertices->push_back(vertex);
-  shadowVertices->back().color = GLKVector4Zero;
+  shadowVertices->back().color = LTVector4Zero;
 }
 
 void LTAddStrokeVertex(const LTCommonDrawableShapeVertex &vertex,
                        LTCommonDrawableShapeVertices *strokeVertices) {
   LTParameterAssert(strokeVertices);
   strokeVertices->push_back(vertex);
-  strokeVertices->back().shadowColor = GLKVector4Zero;
+  strokeVertices->back().shadowColor = LTVector4Zero;
 }
 
 void LTAddSegment(const LTCommonDrawableShapeSegment &segment,

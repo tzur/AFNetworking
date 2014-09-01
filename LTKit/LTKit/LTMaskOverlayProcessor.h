@@ -21,6 +21,6 @@
 ///     (mask.r * maskColor.a) * maskColor.rgb
 /// @endcode
 /// The default value is red color with alpha of 0.5: (1, 0, 0, 0.5).
-@property (nonatomic) GLKVector4 maskColor;
+@property (nonatomic) LTVector4 maskColor;
 
 @end

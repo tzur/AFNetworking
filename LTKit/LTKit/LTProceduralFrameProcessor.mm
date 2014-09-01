@@ -50,12 +50,12 @@
 // of both dimensions is equal. Such strategy (instead of simple scaling) is needed in order to
 // preserve the correct transition behaviour.
 - (void)precomputeDistanceShift:(CGSize)size {
-  GLKVector2 distanceShift;
+  LTVector2 distanceShift;
   if (size.width > size.height) {
-    distanceShift = GLKVector2Make(1.0 - size.height / size.width, 0.0);
+    distanceShift = LTVector2(1.0 - size.height / size.width, 0.0);
   }
   else {
-    distanceShift = GLKVector2Make(0.0, 1.0 - size.width / size.height);
+    distanceShift = LTVector2(0.0, 1.0 - size.width / size.height);
   }
   self[[LTProceduralFrameFsh distanceShift]] = $(distanceShift);
 }
@@ -97,8 +97,8 @@ LTPropertyWithoutSetter(CGFloat, corner, Corner, 0, 32, 0);
   self[[LTProceduralFrameFsh corner]] = @(corner);
 }
 
-LTPropertyWithoutSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One, GLKVector3One);
-- (void)setColor:(GLKVector3)color {
+LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3Zero, LTVector3One, LTVector3One);
+- (void)setColor:(LTVector3)color {
   [self _verifyAndSetColor:color];
   self[[LTProceduralFrameFsh color]] = $(color);
 }
@@ -121,12 +121,12 @@ LTPropertyWithoutSetter(GLKVector3, color, Color, GLKVector3Zero, GLKVector3One,
   return isTilable || inStretchMode;
 }
 
-LTPropertyWithoutSetter(GLKVector3, noiseChannelMixer, NoiseChannelMixer,
-                        -GLKVector3One, GLKVector3One, GLKVector3Make(1, 0, 0));
-- (void)setNoiseChannelMixer:(GLKVector3)noiseChannelMixer {
+LTPropertyWithoutSetter(LTVector3, noiseChannelMixer, NoiseChannelMixer,
+                        -LTVector3One, LTVector3One, LTVector3(1, 0, 0));
+- (void)setNoiseChannelMixer:(LTVector3)noiseChannelMixer {
   [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.
-  _noiseChannelMixer = noiseChannelMixer / std::sum(noiseChannelMixer);
+  _noiseChannelMixer = noiseChannelMixer / noiseChannelMixer.sum();
   self[[LTProceduralFrameFsh noiseChannelMixer]] = $(_noiseChannelMixer);
 }
 
@@ -140,12 +140,12 @@ LTPropertyWithoutSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0);
   _noiseMapping = noiseMapping;
   switch (noiseMapping) {
     case LTProceduralFrameNoiseMappingStretch:
-      self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(1, 1));
+      self[[LTProceduralFrameVsh grainScaling]] = $(LTVector2(1, 1));
       break;
     case LTProceduralFrameNoiseMappingTile:
       CGFloat xScale = self.outputSize.width / self.noise.size.width;
       CGFloat yScale = self.outputSize.height / self.noise.size.height;
-      self[[LTProceduralFrameVsh grainScaling]] = $(GLKVector2Make(xScale, yScale));
+      self[[LTProceduralFrameVsh grainScaling]] = $(LTVector2(xScale, yScale));
       break;
   }
 }
@@ -153,7 +153,7 @@ LTPropertyWithoutSetter(CGFloat, noiseAmplitude, NoiseAmplitude, 0, 100, 0);
 LTPropertyWithoutSetter(CGFloat, noiseCoordinatesOffset, NoiseCoordinatesOffset, 0, 1, 0);
 - (void)setNoiseCoordinatesOffset:(CGFloat)noiseCoordinatesOffset {
   [self _verifyAndSetNoiseCoordinatesOffset:noiseCoordinatesOffset];
-  self[[LTProceduralFrameVsh grainOffset]] = $(GLKVector2Make(noiseCoordinatesOffset,
+  self[[LTProceduralFrameVsh grainOffset]] = $(LTVector2(noiseCoordinatesOffset,
                                                               noiseCoordinatesOffset));
 }
 

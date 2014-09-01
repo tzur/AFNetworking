@@ -9,10 +9,10 @@ typedef void (^LTBoundedDoubleSetterBlock)(double value, double oldValue);
 typedef void (^LTBoundedNSIntegerSetterBlock)(NSInteger value, NSInteger oldValue);
 /// Block called after setting the \c LTBoundedNSUInteger's value.
 typedef void (^LTBoundedNSUIntegerSetterBlock)(NSUInteger value, NSUInteger oldValue);
-/// Block called after setting the \c LTBoundedGLKVector3's value.
-typedef void (^LTBoundedGLKVector3SetterBlock)(GLKVector3 value, GLKVector3 oldValue);
-/// Block called after setting the \c LTBoundedGLKVector4's value.
-typedef void (^LTBoundedGLKVector4SetterBlock)(GLKVector4 value, GLKVector4 oldValue);
+/// Block called after setting the \c LTBoundedLTVector3's value.
+typedef void (^LTBoundedLTVector3SetterBlock)(LTVector3 value, LTVector3 oldValue);
+/// Block called after setting the \c LTBoundedLTVector4's value.
+typedef void (^LTBoundedLTVector4SetterBlock)(LTVector4 value, LTVector4 oldValue);
 
 /// Base class for the bounded type objects.
 @interface LTBoundedType : NSObject
@@ -80,34 +80,34 @@ typedef void (^LTBoundedGLKVector4SetterBlock)(GLKVector4 value, GLKVector4 oldV
 
 @end
 
-/// Represents a \c GLKVector3 bounded in the range [minValue,maxValue] with a defined default
+/// Represents a \c LTVector3 bounded in the range [minValue,maxValue] with a defined default
 /// value.
-@interface LTBoundedGLKVector3 : LTBoundedType
+@interface LTBoundedLTVector3 : LTBoundedType
 
-+ (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue;
-+ (instancetype)min:(GLKVector3)minValue max:(GLKVector3)maxValue default:(GLKVector3)defaultValue
-   afterSetterBlock:(LTBoundedGLKVector3SetterBlock)afterSetterBlock;
++ (instancetype)min:(LTVector3)minValue max:(LTVector3)maxValue default:(LTVector3)defaultValue;
++ (instancetype)min:(LTVector3)minValue max:(LTVector3)maxValue default:(LTVector3)defaultValue
+   afterSetterBlock:(LTBoundedLTVector3SetterBlock)afterSetterBlock;
 
-@property (nonatomic) GLKVector3 value;
-@property (readonly, nonatomic) GLKVector3 minValue;
-@property (readonly, nonatomic) GLKVector3 maxValue;
-@property (readonly, nonatomic) GLKVector3 defaultValue;
-@property (copy, nonatomic) LTBoundedGLKVector3SetterBlock afterSetterBlock;
+@property (nonatomic) LTVector3 value;
+@property (readonly, nonatomic) LTVector3 minValue;
+@property (readonly, nonatomic) LTVector3 maxValue;
+@property (readonly, nonatomic) LTVector3 defaultValue;
+@property (copy, nonatomic) LTBoundedLTVector3SetterBlock afterSetterBlock;
 
 @end
 
-/// Represents a \c GLKVector4 bounded in the range [minValue,maxValue] with a defined default
+/// Represents a \c LTVector4 bounded in the range [minValue,maxValue] with a defined default
 /// value.
-@interface LTBoundedGLKVector4 : LTBoundedType
+@interface LTBoundedLTVector4 : LTBoundedType
 
-+ (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue;
-+ (instancetype)min:(GLKVector4)minValue max:(GLKVector4)maxValue default:(GLKVector4)defaultValue
-   afterSetterBlock:(LTBoundedGLKVector4SetterBlock)afterSetterBlock;
++ (instancetype)min:(LTVector4)minValue max:(LTVector4)maxValue default:(LTVector4)defaultValue;
++ (instancetype)min:(LTVector4)minValue max:(LTVector4)maxValue default:(LTVector4)defaultValue
+   afterSetterBlock:(LTBoundedLTVector4SetterBlock)afterSetterBlock;
 
-@property (nonatomic) GLKVector4 value;
-@property (readonly, nonatomic) GLKVector4 minValue;
-@property (readonly, nonatomic) GLKVector4 maxValue;
-@property (readonly, nonatomic) GLKVector4 defaultValue;
-@property (copy, nonatomic) LTBoundedGLKVector4SetterBlock afterSetterBlock;
+@property (nonatomic) LTVector4 value;
+@property (readonly, nonatomic) LTVector4 minValue;
+@property (readonly, nonatomic) LTVector4 maxValue;
+@property (readonly, nonatomic) LTVector4 defaultValue;
+@property (copy, nonatomic) LTBoundedLTVector4SetterBlock afterSetterBlock;
 
 @end

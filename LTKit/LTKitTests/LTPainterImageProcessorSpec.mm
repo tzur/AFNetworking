@@ -100,7 +100,7 @@ context(@"processing", ^{
     const CGSize kBrushSize = CGSizeMakeUniform(16);
     
     output = [LTTexture byteRGBATextureWithSize:kSize];
-    [output clearWithColor:GLKVector4Make(0, 0, 0, 1)];
+    [output clearWithColor:LTVector4(0, 0, 0, 1)];
     processor = [[LTPainterImageProcessor alloc] initWithCanvasTexture:output
                                                       paintingStrategy:strategy];
 
@@ -108,8 +108,8 @@ context(@"processing", ^{
     LTBrush *greenBrush = [[LTTextureBrush alloc] init];
     redBrush.baseDiameter = kBrushSize.width;
     greenBrush.baseDiameter = kBrushSize.width;
-    redBrush.intensity = GLKVector4Make(1, 0, 0, 1);
-    greenBrush.intensity = GLKVector4Make(0, 1, 0, 1);
+    redBrush.intensity = LTVector4(1, 0, 0, 1);
+    greenBrush.intensity = LTVector4(0, 1, 0, 1);
 
     LTPainterPoint *redPoint = [[LTPainterPoint alloc] init];
     LTPainterPoint *greenPoint = [[LTPainterPoint alloc] init];

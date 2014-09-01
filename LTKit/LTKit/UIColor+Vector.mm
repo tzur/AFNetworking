@@ -6,26 +6,25 @@
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 
-@implementation UIColor (GLKVector)
+@implementation UIColor (Vector)
 
-+ (UIColor *)colorWithGLKVector:(GLKVector4)glkVector {
-  return [UIColor colorWithRed:glkVector.r green:glkVector.g blue:glkVector.b alpha:glkVector.a];
++ (UIColor *)lt_colorWithLTVector:(LTVector4)vector {
+  return [UIColor colorWithRed:vector.r() green:vector.g() blue:vector.b() alpha:vector.a()];
 }
 
-- (GLKVector4)glkVector {
+- (LTVector4)lt_ltVector {
   CGFloat r, g, b, a;
   if ([self getRed:&r green:&g blue:&b alpha:&a]) {
-    return GLKVector4Make(r, g, b, a);
+    return LTVector4(r, g, b, a);
   } else if ([self getWhite:&r alpha:&a]) {
-    return GLKVector4Make(r, r, r, a);
+    return LTVector4(r, r, r, a);
   }
-  LTAssert(NO, @"Invalid color for conversion");
-  return GLKVector4();
+  LTAssert(NO, @"Invalid color for conversion: %@", self);
 }
 
-- (cv::Vec4b)cvVector {
-  GLKVector4 glkVector = self.glkVector * std::numeric_limits<uchar>::max();
-  return cv::Vec4b(glkVector.r, glkVector.g, glkVector.b, glkVector.a);
+- (cv::Vec4b)lt_cvVector {
+  LTVector4 ltVector = self.lt_ltVector * std::numeric_limits<uchar>::max();
+  return cv::Vec4b(ltVector.r(), ltVector.g(), ltVector.b(), ltVector.a());
 }
 
 @end

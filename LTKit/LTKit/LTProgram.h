@@ -55,8 +55,8 @@
 /// LTProgram *prog = ...;
 /// prog[@"myUniform"] = @(5);  // Same as glUniform1f().
 ///
-/// GLKVector3 vec = GLKVector3Make(1.f, 2.f, 3.f);
-/// prog[@"myUniform"] = [NSValue valueWithGLKVector3:vec];  // Same as glUniform3f().
+/// LTVector3 vec = LTVector3(1.f, 2.f, 3.f);
+/// prog[@"myUniform"] = [NSValue valueWithLTVector3:vec];  // Same as glUniform3f().
 /// @endcode
 ///
 /// @param obj value to set. The type of \c obj must be either an \c NSNumber or

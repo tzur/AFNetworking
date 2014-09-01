@@ -47,8 +47,8 @@
 
 - (void)addLineToPoint:(CGPoint)point {
   LTCommonDrawableShapeSegment segment =
-      [self verticesForLineFrom:GLKVector2FromCGPoint(self.currentPoint)
-                             to:GLKVector2FromCGPoint(point)];
+      [self verticesForLineFrom:LTVector2(self.currentPoint)
+                             to:LTVector2(point)];
   LTAddSegment(segment, &self.strokeVertices, &self.shadowVertices);
   self.currentPoint = point;
 }
@@ -57,21 +57,21 @@
   [self addLineToPoint:self.startingPoint];
 }
 
-- (LTCommonDrawableShapeSegment)verticesForLineFrom:(GLKVector2)source to:(GLKVector2)target {
+- (LTCommonDrawableShapeSegment)verticesForLineFrom:(LTVector2)source to:(LTVector2)target {
   CGFloat shadowWidth = self.params.shadowWidth;
   CGFloat lineRadius = self.params.lineRadius;
-  GLKVector2 direction = GLKVector2Normalize(target - source);
-  GLKVector2 normal = GLKVector2NormalTo(direction);
-  CGFloat lineLength = GLKVector2Length(target - source);
-  GLKVector4 offset = GLKVector4Make(1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius,
+  LTVector2 direction = (target - source).normalized();
+  LTVector2 normal = LTVector2(GLKVector2NormalTo((GLKVector2)direction));
+  CGFloat lineLength = (target - source).length();
+  LTVector4 offset = LTVector4(1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius,
                                      1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius);
   
   LTCommonDrawableShapeSegment segment;
   for (NSUInteger i = 0; i < 4; ++i) {
     segment.v[i].lineBounds =
-        GLKVector4Make(0.5 * lineLength, lineRadius, 0.5 * lineLength, lineRadius);
+        LTVector4(0.5 * lineLength, lineRadius, 0.5 * lineLength, lineRadius);
     segment.v[i].shadowBounds = segment.v[i].lineBounds +
-        GLKVector4Make(shadowWidth, shadowWidth, shadowWidth, shadowWidth);
+        LTVector4(shadowWidth, shadowWidth, shadowWidth, shadowWidth);
     segment.v[i].color = self.params.strokeColor;
     segment.v[i].shadowColor = self.params.shadowColor;
   }
@@ -84,10 +84,10 @@
   segment.dst0.position = target - normal * offset.y;
   segment.dst1.position = target + normal * offset.w;
   
-  segment.src0.offset = GLKVector2Make(-0.5 * lineLength - offset.x, -offset.y);
-  segment.src1.offset = GLKVector2Make(-0.5 * lineLength - offset.x, offset.w);
-  segment.dst0.offset = GLKVector2Make(0.5 * lineLength + offset.z, -offset.y);
-  segment.dst1.offset = GLKVector2Make(0.5 * lineLength + offset.z, offset.w);
+  segment.src0.offset = LTVector2(-0.5 * lineLength - offset.x, -offset.y);
+  segment.src1.offset = LTVector2(-0.5 * lineLength - offset.x, offset.w);
+  segment.dst0.offset = LTVector2(0.5 * lineLength + offset.z, -offset.y);
+  segment.dst1.offset = LTVector2(0.5 * lineLength + offset.z, offset.w);
   
   return segment;
 }
