@@ -140,9 +140,13 @@
   @implementation NSValue (_ ## NAME) \
   \
   - (_##NAME)NAME ## Value { \
-    _##NAME value; \
-    [self getValue:&value]; \
-    return value; \
+    _LTEnumGetValue(NAME, "i", int) \
+    _LTEnumGetValue(NAME, "l", long) \
+    _LTEnumGetValue(NAME, "q", long long) \
+    _LTEnumGetValue(NAME, "I", unsigned int) \
+    _LTEnumGetValue(NAME, "L", unsigned long) \
+    _LTEnumGetValue(NAME, "Q", unsigned long long) \
+    LTAssert(NO, @"Invalid type encoding for enum value: %s", self.objCType); \
   } \
   \
   + (NSValue *)valueWith ## NAME:(_##NAME)value { \
@@ -150,6 +154,13 @@
   } \
   \
   @end
+
+#define _LTEnumGetValue(NAME, TYPE_ENCODING, TYPE) \
+  if (!strcmp(self.objCType, TYPE_ENCODING))  { \
+    TYPE value; \
+    [self getValue:&value]; \
+    return (_##NAME)value; \
+  }
 
 /// Declares the enum wrapper class.
 #define _LTEnumDeclareClass(NAME) \
@@ -186,6 +197,7 @@
     } \
     return self; \
   } \
+  \
   + (instancetype)enum { \
     return [[[self class] alloc] init]; \
   } \

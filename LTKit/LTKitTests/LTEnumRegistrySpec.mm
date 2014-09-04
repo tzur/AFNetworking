@@ -12,7 +12,7 @@ LTEnumMake(NSUInteger, LTMyName,
 LTEnumMakeWithValues(NSUInteger, LTMyNameWithValues,
   LTMyNameWithValuesA, 5,
   LTMyNameWithValuesB, 7,
-  LTMyNameWithValuesC, 9
+  LTMyNameWithValuesC, 550
 );
 
 SpecBegin(LTEnumRegistry)
@@ -40,7 +40,7 @@ context(@"manual value assignment", ^{
     LTBidirectionalMap *expectedFieldToValue = [LTBidirectionalMap mapWithDictionary:@{
       @"LTMyNameWithValuesA": @5,
       @"LTMyNameWithValuesB": @7,
-      @"LTMyNameWithValuesC": @9,
+      @"LTMyNameWithValuesC": @550,
     }];
 
     expect(fieldToValue).to.equal(expectedFieldToValue);
