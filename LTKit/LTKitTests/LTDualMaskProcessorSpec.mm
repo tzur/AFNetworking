@@ -61,7 +61,7 @@ context(@"processing", ^{
   
   it(@"should create tilted double mask correctly", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
-    processor.center = LTVector2(16, 16);
+    processor.center = LTVector2(8, 8);
     processor.spread = 0.0;
     processor.diameter = 8;
     processor.angle = -M_PI_4;

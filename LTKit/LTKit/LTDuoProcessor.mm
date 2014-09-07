@@ -124,17 +124,15 @@ static const ushort kGradientSize = 256;
   return LTVector4(1.0, 1.0, 1.0, alpha);
 }
 
-// Given color creates a gradient that maps color to midrange. Black is mapped to black and white
-// to white. Alpha of the gradient is constant and equals to the alpha of the color.
+// TODO:(zeev) Decide between the options here. One option is creating a gradient given a color
+// that maps color to midrange, black to black and white to white. It creates better results using
+// normal blending mode, but is more confusing when we introduce over blending modes.
+// Thus for now we try another option and create a constant gradient. If it sticks, we can change
+// the shader to receive a single color instead of the gradient.
 - (LTColorGradient *)createGradientWithColor:(LTVector4)color {
-  LTColorGradientControlPoint *blackControlPoint = [[LTColorGradientControlPoint alloc]
-      initWithPosition:0.0 colorWithAlpha:[self blackWithAlpha:color.a()]];
-  LTColorGradientControlPoint *midControlPoint = [[LTColorGradientControlPoint alloc]
-      initWithPosition:0.5 colorWithAlpha:color];
-  LTColorGradientControlPoint *whiteControlPoint = [[LTColorGradientControlPoint alloc]
-      initWithPosition:1.0 colorWithAlpha:[self whiteWithAlpha:color.a()]];
-  
-  NSArray *controlPoints = @[blackControlPoint, midControlPoint, whiteControlPoint];
+  NSArray *controlPoints =
+      @[[[LTColorGradientControlPoint alloc] initWithPosition:0.0 colorWithAlpha:color],
+        [[LTColorGradientControlPoint alloc] initWithPosition:1.0 colorWithAlpha:color]];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }
 
