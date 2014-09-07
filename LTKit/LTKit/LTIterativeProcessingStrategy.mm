@@ -119,13 +119,13 @@
 
   // Toggle between source -> itermediate, intermediate -> output and output -> intermediate.
   if (iteration == 0) {
-    if (self.totalNumberOfIterations > 1) {
+    if (self.totalNumberOfIterations > 1 && ![self shouldProduceOutputs]) {
       self.targetFbo = self.intermediateFbo;
     } else {
       // For a single iteration, no intermediate texture or framebuffer are needed.
       self.targetFbo = self.outputFbo;
     }
-  } else if (iteration % 2) {
+  } else if (iteration % 2 || [self shouldProduceOutputs]) {
     self.targetFbo = self.outputFbo;
   } else {
     self.targetFbo = self.intermediateFbo;
@@ -176,15 +176,10 @@
 #pragma mark Intermediate buffers
 #pragma mark -
 
-- (LTTexture *)intermediateTexture {
-  if (!_intermediateTexture) {
-    _intermediateTexture = [LTTexture textureWithPropertiesOf:[self.outputs lastObject]];
-  }
-  return _intermediateTexture;
-}
-
 - (LTFbo *)intermediateFbo {
-  if (!_intermediateFbo) {
+  if (!_intermediateFbo || _intermediateFbo.size != [self.outputs[self.nextOutputIndex] size]) {
+    self.intermediateTexture = [LTTexture
+                                textureWithPropertiesOf:self.outputs[self.nextOutputIndex]];
     _intermediateFbo = [[LTFbo alloc] initWithTexture:self.intermediateTexture];
   }
   return _intermediateFbo;
