@@ -6,8 +6,6 @@
 #import "LTPartialProcessing.h"
 #import "LTScreenProcessing.h"
 
-@protocol LTProgramFactory;
-
 /// @class LTOneShotImageProcessor
 ///
 /// Processes a single image input with a single processing iteration, and returns a single output.
@@ -26,11 +24,6 @@
                        sourceTexture:(LTTexture *)sourceTexture
                    auxiliaryTextures:(NSDictionary *)auxiliaryTextures
                            andOutput:(LTTexture *)output;
-
-/// Program factory used when creating the program from the given vertex and fragment sources.
-/// Subclasses can override this factory to modify program's creation. The default factory is \c
-/// LTBasicProgramFactory.
-+ (id<LTProgramFactory>)programFactory;
 
 /// Size of the input texture or the source texture, if there are auxiliary textures available.
 @property (readonly, nonatomic) CGSize inputSize;

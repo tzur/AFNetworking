@@ -13,14 +13,11 @@
 @implementation LTBilateralFilterProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
-  return [super initWithProgram:[self createProgram] sourceTexture:input
-              auxiliaryTextures:@{[LTBilateralFilterFsh originalTexture]: input}
-                        outputs:outputs];
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBilateralFilterVsh source]
-                                  fragmentSource:[LTBilateralFilterFsh source]];
+  return [super initWithVertexSource:[LTBilateralFilterVsh source]
+                      fragmentSource:[LTBilateralFilterFsh source]
+                       sourceTexture:input
+                   auxiliaryTextures:@{[LTBilateralFilterFsh originalTexture]: input}
+                             outputs:outputs];
 }
 
 - (void)setRangeSigma:(float)rangeSigma {

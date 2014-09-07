@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTProgramFactory.h"
 #import "LTTexture.h"
 
 @interface LTGPUImageProcessor ()
@@ -29,6 +30,17 @@
     self.auxiliaryTextures = auxiliaryTextures;
   }
   return self;
+}
+
++ (id<LTProgramFactory>)programFactory {
+  static id<LTProgramFactory> factory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    factory = [[LTBasicProgramFactory alloc] init];
+  });
+
+  return factory;
 }
 
 - (void)process {

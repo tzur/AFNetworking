@@ -5,6 +5,7 @@
 
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
+#import "LTProgramFactory.h"
 #import "LTRectDrawer.h"
 #import "LTTexture.h"
 
@@ -15,21 +16,39 @@
 
 @implementation LTSeparableImageProcessor
 
-- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
-                        outputs:(NSArray *)outputs {
-  return [self initWithProgram:program sourceTexture:sourceTexture
-             auxiliaryTextures:nil outputs:outputs];
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource
+                       sourceTexture:(LTTexture *)sourceTexture
+                             outputs:(NSArray *)outputs {
+  return [self initWithVertexSource:vertexSource fragmentSource:fragmentSource
+                      sourceTexture:sourceTexture
+                  auxiliaryTextures:nil outputs:outputs];
 }
 
-- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)sourceTexture
-              auxiliaryTextures:(NSDictionary *)auxiliaryTextures outputs:(NSArray *)outputs {
-  LTParameterAssert([program containsUniform:@"texelOffset"]);
-  if (self = [super initWithProgram:program sourceTexture:sourceTexture
-                  auxiliaryTextures:auxiliaryTextures outputs:outputs]) {
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource
+                       sourceTexture:(LTTexture *)sourceTexture
+                   auxiliaryTextures:(NSDictionary *)auxiliaryTextures
+                             outputs:(NSArray *)outputs {
+  if (self = [super initWithVertexSource:vertexSource fragmentSource:fragmentSource
+                           sourceTexture:sourceTexture
+                       auxiliaryTextures:auxiliaryTextures outputs:outputs]) {
     self.inputSize = sourceTexture.size;
     self.outputSize = [[outputs firstObject] size];
   }
   return self;
+}
+
++ (id<LTProgramFactory>)programFactory {
+  static id<LTProgramFactory> factory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    factory = [[LTVerifierProgramFactory alloc]
+               initWithRequiredUniforms:[NSSet setWithArray:@[@"texelOffset"]]];
+  });
+
+  return factory;
 }
 
 - (void)iterationStarted:(NSUInteger)iteration {

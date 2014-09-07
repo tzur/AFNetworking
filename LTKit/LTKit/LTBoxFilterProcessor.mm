@@ -11,12 +11,9 @@
 @implementation LTBoxFilterProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
-  return [super initWithProgram:[self createProgram] sourceTexture:input outputs:outputs];
-}
-
-- (LTProgram *)createProgram {
-  return [[LTProgram alloc] initWithVertexSource:[LTBoxFilterVsh source]
-                                  fragmentSource:[LTBoxFilterFsh source]];
+  return [super initWithVertexSource:[LTBoxFilterVsh source]
+                      fragmentSource:[LTBoxFilterFsh source]
+                       sourceTexture:input outputs:outputs];
 }
 
 @end
