@@ -69,7 +69,7 @@ context(@"blending modes", ^{
   });
   
   it(@"should process with normal blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(128, 128, 128, 255));
     processor.blendMode = LTDuoBlendModeNormal;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
@@ -83,35 +83,35 @@ context(@"blending modes", ^{
   });
   
   it(@"should process with multiply blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(16, 16, 16, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(32, 32, 32, 255));
     processor.blendMode = LTDuoBlendModeMultiply;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
   it(@"should process with hard light blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(32, 32, 32, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(65, 65, 65, 255));
     processor.blendMode = LTDuoBlendModeHardLight;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
   it(@"should process with soft light blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(40, 40, 40, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
     processor.blendMode = LTDuoBlendModeSoftLight;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
   it(@"should process with lighten blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(128, 128, 128, 255));
     processor.blendMode = LTDuoBlendModeLighten;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
   it(@"should process with screen blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(112, 112, 112, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(160, 160, 160, 255));
     processor.blendMode = LTDuoBlendModeScreen;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
@@ -125,7 +125,7 @@ context(@"blending modes", ^{
   });
   
   it(@"should process with overlay blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(33, 33, 33, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
     processor.blendMode = LTDuoBlendModeOverlay;
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));

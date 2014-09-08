@@ -52,8 +52,7 @@
 
 - (void)setCenter:(LTVector2)center {
   _center = center;
-  LTVector2 remap = LTVector2(center.x / self.outputSize.width,
-                                    center.y / self.outputSize.height);
+  LTVector2 remap = LTVector2(center.x / self.outputSize.width, center.y / self.outputSize.height);
   self[[LTDualMaskFsh center]] = $(remap);
 }
 
@@ -74,14 +73,22 @@
 LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
-  static const CGFloat kSpreadScaling = 0.45;
-  CGFloat remap = spread * kSpreadScaling;
-  self[[LTDualMaskFsh spread]] = @(remap);
+  self[[LTDualMaskFsh spread]] = @([self remapSpread:spread]);
+}
+
+- (CGFloat)remapSpread:(CGFloat)spread {
+  static const CGFloat kSpreadPositiveScaling = 0.49;
+  static const CGFloat kSpreadNegativeScaling = 2;
+  if (spread > 0) {
+    return spread * kSpreadPositiveScaling;
+  } else {
+    return spread * kSpreadNegativeScaling;
+  }
 }
 
 - (void)setAngle:(CGFloat)angle {
   _angle = angle;
-  self[[LTDualMaskFsh normal]] = $(LTVector2(cos(angle), sin(angle)));
+  self[[LTDualMaskFsh normal]] = $(LTVector2(cos(angle), -sin(angle)));
 }
 
 @end
