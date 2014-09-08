@@ -3,7 +3,7 @@
 
 #import "LTTiltShiftProcessor.h"
 
-#import "LTBoxFilterProcessor.h"
+#import "LTBicubicResizeProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTDualMaskProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -11,6 +11,7 @@
 #import "LTProgram.h"
 #import "LTShaderStorage+LTTiltShiftFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTSmoothPyramidProcessor.h"
 #import "LTTexture+Factory.h"
 
 @interface LTGPUImageProcessor ()
@@ -20,7 +21,11 @@
 @interface LTTiltShiftProcessor ()
 
 @property (nonatomic) BOOL subProcessorInitialized;
+
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
+
+/// The generation id of the input texture that was used to create the current smooth textures.
+@property (nonatomic) NSUInteger smoothTextureGenerationID;
 
 @end
 
@@ -34,15 +39,10 @@ static const CGFloat kMaskScalingFactor = 4.0;
   // Setup dual mask.
   LTTexture *dualMaskTexture = [self createDualMaskTextureWithOutput:output];
   self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
-  // Setup smoothing.
-  NSArray *smoothTextures = [self createSmoothTextures:input];
-  NSDictionary *auxiliaryTextures =
-      @{[LTTiltShiftFsh fineTexture]: smoothTextures[0],
-        [LTTiltShiftFsh coarseTexture]: smoothTextures[1],
-        [LTTiltShiftFsh dualMaskTexture]: dualMaskTexture};
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTTiltShiftFsh source] sourceTexture:input
-                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+                       auxiliaryTextures:@{[LTTiltShiftFsh dualMaskTexture]: dualMaskTexture}
+                               andOutput:output]) {
     [self setDefaultValues];
   }
   return self;
@@ -53,6 +53,59 @@ static const CGFloat kMaskScalingFactor = 4.0;
                                MAX(1, std::round(output.size.height / kMaskScalingFactor)));
   return [LTTexture byteRedTextureWithSize:maskSize];
 }
+
+- (void)setDefaultValues {
+  self.intensity = self.defaultIntensity;
+}
+
+- (NSArray *)createSmoothTextures:(LTTexture *)input {
+  NSArray *pyramidLevels = [LTPyramidProcessor levelsForInput:input];
+  
+  // Pyramid processor bilinearly downsamples the signal.
+  LTPyramidProcessor *pyramidProcessor =
+      [[LTPyramidProcessor alloc] initWithInput:input outputs:pyramidLevels];
+  [pyramidProcessor process];
+  
+  // Second to fifth levels upsampled back with smooth pyramid processor to half of the input image
+  // resolution.
+  static const NSUInteger kNumberOfLevels = 4;
+  NSMutableArray *textures = [NSMutableArray arrayWithCapacity:kNumberOfLevels];
+  for (NSUInteger i = 0; i < kNumberOfLevels; ++i) {
+    @autoreleasepool {
+      NSUInteger index = std::min(i + 1, pyramidLevels.count - 1);
+      if (index) {
+        [textures addObject:[self upsampleWithOutputs:pyramidLevels atIndex:index]];
+      } else {
+        // Highest level of the outputs (largest image) doesn't require upsampling.
+        [textures addObject:pyramidLevels[0]];
+      }
+    }
+  }
+  return textures;
+}
+
+- (LTTexture *)upsampleWithOutputs:(NSArray *)outputs atIndex:(NSUInteger)index {
+  NSArray *upOutputs = [self outputsForTextures:outputs index:index];
+  LTSmoothPyramidProcessor *pyramidProcessor =
+      [[LTSmoothPyramidProcessor alloc] initWithInput:outputs[index] outputs:upOutputs];
+  [pyramidProcessor process];
+  
+  return [upOutputs lastObject];
+}
+
+- (NSArray *)outputsForTextures:(NSArray *)textures index:(NSUInteger)index {
+  NSMutableArray *levels = [NSMutableArray array];
+  
+  for (NSUInteger i = 0; i < index; ++i) {
+    LTTexture *texture = [LTTexture textureWithPropertiesOf:textures[i]];
+    [levels insertObject:texture atIndex:0];
+  }
+  return levels;
+}
+
+#pragma mark -
+#pragma mark LTImageProcessor
+#pragma mark -
 
 - (void)initializeSubProcessor {
   [self.dualMaskProcessor process];
@@ -66,29 +119,24 @@ static const CGFloat kMaskScalingFactor = 4.0;
   return [super process];
 }
 
-- (void)setDefaultValues {
-  self.intensity = self.defaultIntensity;
+- (void)preprocess {
+  [self updateSmoothTexturesIfNecessary];
 }
 
-// Downsampling wrt original image that is used when creating a smooth texture.
-static const CGFloat kSmoothDownsampleFactor = 2.0;
-static const NSUInteger kFineTextureIterations = 2;
-static const NSUInteger kCoarseTextureIterations = 6;
-
-- (NSArray *)createSmoothTextures:(LTTexture *)input {
-  CGFloat width = MAX(1.0, std::round(input.size.width / kSmoothDownsampleFactor));
-  CGFloat height = MAX(1.0, std::round(input.size.height / kSmoothDownsampleFactor));
-  
-  LTTexture *fine = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
-  LTTexture *coarse = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
-  
-  LTBoxFilterProcessor *smoother =
-      [[LTBoxFilterProcessor alloc] initWithInput:input outputs:@[fine, coarse]];
-  
-  smoother.iterationsPerOutput = @[@(kFineTextureIterations), @(kCoarseTextureIterations)];
-  [smoother process];
-  
-  return @[fine, coarse];
+- (void)updateSmoothTexturesIfNecessary {
+  if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTTiltShiftFsh fineTexture]] ||
+      !self.auxiliaryTextures[[LTTiltShiftFsh mediumTexture]] ||
+      !self.auxiliaryTextures[[LTTiltShiftFsh coarseTexture]] ||
+      !self.auxiliaryTextures[[LTTiltShiftFsh veryCoarseTexture]]) {
+    self.smoothTextureGenerationID = self.inputTexture.generationID;
+    
+    NSArray *smoothTextures = [self createSmoothTextures:self.inputTexture];
+    [self setAuxiliaryTexture:smoothTextures[0] withName:[LTTiltShiftFsh fineTexture]];
+    [self setAuxiliaryTexture:smoothTextures[1] withName:[LTTiltShiftFsh mediumTexture]];
+    [self setAuxiliaryTexture:smoothTextures[2] withName:[LTTiltShiftFsh coarseTexture]];
+    [self setAuxiliaryTexture:smoothTextures[3] withName:[LTTiltShiftFsh veryCoarseTexture]];
+  }
 }
 
 #pragma mark -

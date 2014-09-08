@@ -14,6 +14,6 @@ attribute highp vec3 texcoord;
 varying highp vec2 vTexcoord;
 
 void main() {
-  vTexcoord = ((texture * vec3(texcoord.xy, 1.0)).xy + texelOffset) * texelScaling;
+  vTexcoord = (texture * vec3(texcoord.xy, 1.0)).xy * texelScaling + texelOffset;
   gl_Position = projection * modelview * position;
 }

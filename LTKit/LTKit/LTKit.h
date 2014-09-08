@@ -69,6 +69,7 @@
 #import <LTKit/LTRecomposeProcessor.h>
 #import <LTKit/LTSelectiveAdjustProcessor.h>
 #import <LTKit/LTSplitComplexMat.h>
+#import <LTKit/LTTiltShiftProcessor.h>
 
 // Image Processing/Utils.
 #import <LTKit/LTBoundaryCondition.h>

@@ -14,7 +14,7 @@
 // 2. GPU Gems 2, Chapter 20. Excerpt: http://http.download.nvidia.com/developer/SDK/Individual_Samples/DEMOS/OpenGL/src/fast_third_order/docs/Gems2_ch20_SDK.pdf
 
 uniform sampler2D sourceTexture;
-uniform highp vec2 texelOffset;
+uniform highp vec2 texelStep;
 
 varying highp vec2 vTexcoord;
 
@@ -63,5 +63,5 @@ highp vec4 filter(sampler2D texture, highp vec2 texcoord, highp vec2 texscale) {
 }
 
 void main() {
-  gl_FragColor = filter(sourceTexture, vTexcoord * 1.0/texelOffset, texelOffset);
+  gl_FragColor = filter(sourceTexture, vTexcoord * 1.0/texelStep, texelStep);
 }

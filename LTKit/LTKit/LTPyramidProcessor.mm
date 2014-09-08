@@ -26,10 +26,12 @@
   return levels;
 }
 
-- (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
-  if (self = [super initWithVertexSource:[LTPyramidProcessorVsh source]
-                          fragmentSource:[LTPassthroughShaderFsh source]
-                           sourceTexture:input outputs:outputs]) {
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource
+                       sourceTexture:(LTTexture *)sourceTexture
+                             outputs:(NSArray *)outputs {
+  if (self = [super initWithVertexSource:vertexSource fragmentSource:fragmentSource
+                           sourceTexture:sourceTexture outputs:outputs]) {
     NSMutableArray *iterationsPerOutput = [NSMutableArray array];
     for (NSUInteger i = 0; i < outputs.count; ++i) {
       [iterationsPerOutput addObject:@(i + 1)];
@@ -39,17 +41,59 @@
   return self;
 }
 
+- (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
+  return [self initWithVertexSource:[LTPyramidProcessorVsh source]
+                     fragmentSource:[LTPassthroughShaderFsh source]
+                      sourceTexture:input outputs:outputs];
+}
+
 - (void)iterationStarted:(NSUInteger)iteration {
-  CGSize inputSize;
+  LTTexture *inputTexture;
+  LTTexture *outputTexture = self.outputTextures[iteration];
+
   if (iteration == 0) {
-    inputSize = self.inputTexture.size;
+    inputTexture = self.inputTexture;
   } else {
-    inputSize = [self.outputTextures[iteration - 1] size];
+    inputTexture = self.outputTextures[iteration - 1];
   }
 
-  self[[LTPyramidProcessorVsh texelOffset]] = $(LTVector2(CGSizeMakeUniform(-1) / (inputSize * 2)));
-  self[[LTPyramidProcessorVsh texelScaling]] =
-      $(LTVector2([self.outputTextures[iteration] size] * 2 / inputSize));
+  CGSize inputSize = inputTexture.size;
+  
+  // If texture uses a nearest neigbour interpolation, texelOffset and texelScaling are set to
+  // ensure (1:2:end) sampling pattern (in Matlab notation).
+  // In case of bilinear interpolation texelOffset is set to zero and texelScaling to one. This will
+  // result in default OpenGL behavior when writing from input to output texture of different sizes.
+  LTTextureInterpolation inputInterpolation;
+  if (outputTexture.size.width < inputSize.width && outputTexture.size.height < inputSize.height) {
+    inputInterpolation = inputTexture.minFilterInterpolation;
+  } else if (outputTexture.size.width > inputSize.width &&
+             outputTexture.size.height > inputSize.height) {
+    inputInterpolation = inputTexture.magFilterInterpolation;
+  } else {
+    LTAssert(NO, @"Given input with size (%g, %g) is not strictly larger or smaller than current "
+             "output size (%g, %g)", inputSize.width, inputSize.height, outputTexture.size.width,
+             outputTexture.size.height);
+  }
+
+  LTVector2 texelOffset;
+  LTVector2 texelScaling;
+  switch (inputInterpolation) {
+    case LTTextureInterpolationNearest:
+      if (outputTexture.size.width < inputTexture.size.width) {
+        texelScaling = LTVector2([self.outputTextures[iteration] size] * 2 / inputSize);
+      } else {
+        texelScaling = LTVector2([self.outputTextures[iteration] size] / (inputSize * 2));
+      }
+      texelOffset = LTVector2(CGSizeMakeUniform(-1) / (inputSize * 2));
+      break;
+    default:
+      texelScaling = LTVector2One;
+      texelOffset = LTVector2Zero;
+      break;
+  }
+  
+  self[[LTPyramidProcessorVsh texelOffset]] = $(texelOffset);
+  self[[LTPyramidProcessorVsh texelScaling]] = $(texelScaling);
 }
 
 @end
