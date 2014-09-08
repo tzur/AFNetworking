@@ -19,6 +19,15 @@
 @interface LTBasicProgramFactory : NSObject <LTProgramFactory>
 @end
 
+/// Creates a program like \c LTBasicProgramFactory, but verifies that a set of given uniforms exist
+/// in the program prior to returning it.
+@interface LTVerifierProgramFactory : LTBasicProgramFactory
+
+/// Initializes with a set of required uniforms as \c NSString.
+- (instancetype)initWithRequiredUniforms:(NSSet *)uniforms;
+
+@end
+
 /// Creates a program with the given vertex shader and a modified fragment shader that run the
 /// given fragment shader, then mixes between the result and the input texture using a mask
 /// texture. The mix done is via mix(input, result, mask.r), so a white mask will keep the original

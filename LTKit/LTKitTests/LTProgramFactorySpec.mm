@@ -46,6 +46,30 @@ LTSpecEnd
 
 @end
 
+LTSpecBegin(LTVerifierProgramFactory)
+
+it(@"should raise if uniform doesn't exist", ^{
+  NSSet *uniforms = [NSSet setWithArray:@[@"_foo"]];
+  LTVerifierProgramFactory *factory = [[LTVerifierProgramFactory alloc]
+                                       initWithRequiredUniforms:uniforms];
+  expect(^{
+    [factory programWithVertexSource:[PassthroughVsh source]
+                      fragmentSource:[PassthroughFsh source]];
+  }).to.raise(NSInvalidArgumentException);
+});
+
+it(@"should not raise if uniform exists", ^{
+  NSSet *uniforms = [NSSet setWithArray:@[@"modelview"]];
+  LTVerifierProgramFactory *factory = [[LTVerifierProgramFactory alloc]
+                                       initWithRequiredUniforms:uniforms];
+  expect(^{
+    [factory programWithVertexSource:[PassthroughVsh source]
+                      fragmentSource:[PassthroughFsh source]];
+  }).toNot.raiseAny();
+});
+
+LTSpecEnd
+
 LTSpecBegin(LTMaskableProgramFactory)
 
 context(@"construction", ^{

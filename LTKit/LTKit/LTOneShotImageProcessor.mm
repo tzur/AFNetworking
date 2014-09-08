@@ -51,17 +51,6 @@
   return [super initWithDrawer:rectDrawer strategy:strategy andAuxiliaryTextures:auxiliaryTextures];
 }
 
-+ (id<LTProgramFactory>)programFactory {
-  static id<LTProgramFactory> factory;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    factory = [[LTBasicProgramFactory alloc] init];
-  });
-
-  return factory;
-}
-
 - (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
   [self preprocess];
 

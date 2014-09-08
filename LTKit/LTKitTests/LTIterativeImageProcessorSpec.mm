@@ -36,7 +36,6 @@ LTSpecBegin(LTIterativeImageProcessor)
 __block LTTexture *input;
 __block LTTexture *auxInput;
 __block LTTexture *output;
-__block LTProgram *program;
 __block NSDictionary *auxiliaryTextures;
 
 beforeEach(^{
@@ -50,10 +49,6 @@ beforeEach(^{
 
   output = [LTTexture textureWithPropertiesOf:input];
 
-  program = [[LTProgram alloc]
-             initWithVertexSource:[PassthroughVsh source]
-             fragmentSource:[AdderFsh source]];
-
   auxiliaryTextures = @{@"auxTexture": auxInput};
 });
 
@@ -61,14 +56,14 @@ afterEach(^{
   input = nil;
   auxInput = nil;
   output = nil;
-  program = nil;
   auxiliaryTextures = nil;
 });
 
 context(@"initialization", ^{
   it(@"should initialize with single input and output", ^{
     LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                            initWithProgram:program sourceTexture:input
+                                            initWithVertexSource:[PassthroughVsh source]
+                                            fragmentSource:[AdderFsh source] sourceTexture:input
                                             outputs:@[output]];
 
     expect(processor.iterationsPerOutput).to.equal(@[@1]);
@@ -76,7 +71,8 @@ context(@"initialization", ^{
 
   it(@"should initialize with single input and multiple outputs", ^{
     LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                            initWithProgram:program sourceTexture:input
+                                            initWithVertexSource:[PassthroughVsh source]
+                                            fragmentSource:[AdderFsh source] sourceTexture:input
                                             outputs:@[output, output]];
 
     expect(processor.iterationsPerOutput).to.equal(@[@1, @1]);
@@ -84,7 +80,8 @@ context(@"initialization", ^{
 
   it(@"should initialize with auxiliary textures", ^{
     LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                            initWithProgram:program sourceTexture:input
+                                            initWithVertexSource:[PassthroughVsh source]
+                                            fragmentSource:[AdderFsh source] sourceTexture:input
                                             auxiliaryTextures:auxiliaryTextures
                                             outputs:@[output]];
 
@@ -92,14 +89,16 @@ context(@"initialization", ^{
   });
 
   it(@"should not initialize with unsimilar outputs", ^{
-    LTTexture *different = [LTTexture textureWithSize:input.size + 1
-                                            precision:input.precision
+    LTTexture *different = [LTTexture textureWithSize:input.size
+                                            precision:LTTexturePrecisionHalfFloat
                                                format:input.format
                                        allocateMemory:YES];
 
     expect((^{
       __unused LTIterativeImageProcessor *processor = [[LTIterativeImageProcessor alloc]
-                                                       initWithProgram:program sourceTexture:input
+                                                       initWithVertexSource:[PassthroughVsh source]
+                                                       fragmentSource:[AdderFsh source]
+                                                       sourceTexture:input
                                                        outputs:@[output, different]];
     })).to.raise(NSInvalidArgumentException);
   });
@@ -109,8 +108,10 @@ context(@"iterations", ^{
   __block LTIterativeImageProcessor *processor;
 
   beforeEach(^{
-    processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
-                                                           outputs:@[output, output]];
+    processor = [[LTIterativeImageProcessor alloc] initWithVertexSource:[PassthroughVsh source]
+                                                         fragmentSource:[AdderFsh source]
+                                                          sourceTexture:input
+                                                                outputs:@[output, output]];
   });
 
   it(@"should not allow to set zero iterations", ^{
@@ -148,8 +149,10 @@ context(@"iteration block", ^{
   __block LTIterativeImageProcessorStub *processor;
 
   beforeEach(^{
-    processor = [[LTIterativeImageProcessorStub alloc] initWithProgram:program sourceTexture:input
-                                                               outputs:@[output]];
+    processor = [[LTIterativeImageProcessorStub alloc] initWithVertexSource:[PassthroughVsh source]
+                                                             fragmentSource:[AdderFsh source]
+                                                              sourceTexture:input
+                                                                    outputs:@[output]];
   });
 
   it(@"should call iteration block each iteration", ^{
@@ -182,9 +185,11 @@ context(@"processing", ^{
 
   context(@"single output", ^{
     beforeEach(^{
-      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
-                                                   auxiliaryTextures:auxiliaryTextures
-                                                             outputs:@[output]];
+      processor = [[LTIterativeImageProcessor alloc] initWithVertexSource:[PassthroughVsh source]
+                                                           fragmentSource:[AdderFsh source]
+                                                            sourceTexture:input
+                                                        auxiliaryTextures:auxiliaryTextures
+                                                                  outputs:@[output]];
     });
 
     afterEach(^{
@@ -245,9 +250,11 @@ context(@"processing", ^{
     beforeEach(^{
       anotherOutput = [LTTexture textureWithPropertiesOf:input];
 
-      processor = [[LTIterativeImageProcessor alloc] initWithProgram:program sourceTexture:input
-                                                   auxiliaryTextures:@{@"auxTexture": auxInput}
-                                                             outputs:@[output, anotherOutput]];
+      processor = [[LTIterativeImageProcessor alloc] initWithVertexSource:[PassthroughVsh source]
+                                                           fragmentSource:[AdderFsh source]
+                                                            sourceTexture:input
+                                                        auxiliaryTextures:@{@"auxTexture": auxInput}
+                                                                  outputs:@[output, anotherOutput]];
     });
 
     afterEach(^{

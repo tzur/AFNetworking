@@ -61,18 +61,17 @@ context(@"processing", ^{
                                          precision:LTTexturePrecisionHalfFloat
                                             format:LTTextureFormatRGBA allocateMemory:YES];
 
-    [mask clearWithColor:GLKVector4Make(1, 1, 1, 1)];
-    [source clearWithColor:GLKVector4Make(0.75, 0.75, 0.75, 1)];
-    [target clearWithColor:GLKVector4Make(0.5, 0.5, 0.5, 1)];
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [source clearWithColor:LTVector4(0.75, 0.75, 0.75, 1)];
+    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
 
     LTPatchSolverProcessor *processor = [[LTPatchSolverProcessor alloc] initWithMask:mask
                                                                               source:source
                                                                               target:target
                                                                               output:output];
-    LTSingleTextureOutput *result = [processor process];
+    [processor process];
 
-    cv::Mat4hf membrane = [result.texture image];
-    expect($(membrane)).to.beCloseToScalarWithin($(cv::Scalar(-0.25, -0.25, -0.25, 0)), 1e-2);
+    expect($([output image])).to.beCloseToScalarWithin($(cv::Scalar(-0.25, -0.25, -0.25, 0)), 1e-2);
   });
 });
 

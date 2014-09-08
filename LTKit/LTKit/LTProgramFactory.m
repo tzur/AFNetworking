@@ -19,6 +19,40 @@
 @end
 
 #pragma mark -
+#pragma mark LTVerifierProgramFactory
+#pragma mark -
+
+@interface LTVerifierProgramFactory ()
+
+/// Set of uniforms to require.
+@property (strong, nonatomic) NSSet *uniforms;
+
+@end
+
+@implementation LTVerifierProgramFactory
+
+- (instancetype)initWithRequiredUniforms:(NSSet *)uniforms {
+  if (self = [super init]) {
+    self.uniforms = uniforms;
+  }
+  return self;
+}
+
+- (LTProgram *)programWithVertexSource:(NSString *)vertexSource
+                        fragmentSource:(NSString *)fragmentSource {
+  LTProgram *program = [super programWithVertexSource:vertexSource fragmentSource:fragmentSource];
+
+  for (NSString *uniform in self.uniforms) {
+    LTParameterAssert([program containsUniform:uniform], @"Program must contain the uniform '%@'",
+                      uniform);
+  }
+
+  return program;
+}
+
+@end
+
+#pragma mark -
 #pragma mark LTMaskableProgramFactory
 #pragma mark -
 
