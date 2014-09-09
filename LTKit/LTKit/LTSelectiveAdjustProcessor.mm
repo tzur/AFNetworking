@@ -3,9 +3,9 @@
 
 #import "LTSelectiveAdjustProcessor.h"
 
+#import "LTColorConversionProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
-#import "LTRGBToHSVProcessor.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTSelectiveAdjustFsh.h"
 #import "LTTexture+Factory.h"
@@ -35,8 +35,10 @@
   }
 
   LTTexture *hsvTexture = [LTTexture textureWithPropertiesOf:self.outputTexture];
-  LTRGBToHSVProcessor *processor = [[LTRGBToHSVProcessor alloc] initWithInput:self.inputTexture
-                                                                       output:hsvTexture];
+  LTColorConversionProcessor *processor = [[LTColorConversionProcessor alloc]
+                                           initWithInput:self.inputTexture
+                                           output:hsvTexture];
+  processor.mode = LTColorConversionRGBToHSV;
   [processor process];
 
   self.hsvTextureGenerationID = self.inputTexture.generationID;
