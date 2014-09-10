@@ -3,6 +3,8 @@
 
 #import "LTGPUResource.h"
 
+#import <OpenGLES/ES2/glext.h>
+
 #import "LTTextureContentsArchiver.h"
 
 /// Precision of each channel of the texture on the GPU.

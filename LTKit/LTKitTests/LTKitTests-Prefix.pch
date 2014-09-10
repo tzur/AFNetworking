@@ -12,7 +12,7 @@
 extern "C" {
 #endif
   #import "Expecta.h"
-  #import "Specta.h"
+  #import <Specta/Specta.h>
 #ifdef __cplusplus
 }
 #endif
