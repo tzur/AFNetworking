@@ -54,6 +54,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                                          format:LTTextureFormatRGBA allocateMemory:NO];
     [texture load:image];
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
+    texture.minFilterInterpolation = LTTextureInterpolationNearest;
   });
   
   afterEach(^{
