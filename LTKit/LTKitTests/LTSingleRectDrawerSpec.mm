@@ -53,6 +53,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                                          format:LTTextureFormatRGBA allocateMemory:NO];
     [texture load:image];
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
+    texture.minFilterInterpolation = LTTextureInterpolationNearest;
   });
   
   afterEach(^{
@@ -105,8 +106,8 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle]);
         cv::Rect targetRoi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
         subrect.copyTo(expected(targetRoi));
-        
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+
+        expect($(output.image)).to.equalMat($(expected));
       });
       
       it(@"should draw a subrect of input to a rotated subrect of output", ^{
@@ -126,7 +127,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(0, 255, 0, 255));
         expected = LTRotateMat(expected, targetAngle);
         
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+        expect($(output.image)).to.equalMat($(expected));
       });
       
       it(@"should draw a rotated subrect of input to a rotated subrect of output", ^{
@@ -149,7 +150,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         subrect.copyTo(expected(LTCVRectWithCGRect(targetRect)));
         expected = LTRotateMat(expected, targetAngle);
         
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+        expect($(output.image)).to.equalMat($(expected));
       });
     });
     
@@ -191,7 +192,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                     fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
         cv::flip(expectedTexture.image, expected, 0);
         
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+        expect($(output.image)).to.equalMat($(expected));
       });
       
       it(@"should draw a subrect of input to a rotated subrect of output", ^{
@@ -213,7 +214,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                     fromRotatedRect:[LTRotatedRect rect:sourceRect]];
         cv::flip(expectedTexture.image, expected, 0);
         
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+        expect($(output.image)).to.equalMat($(expected));
       });
       
       it(@"should draw a rotated subrect of input to a rotated subrect of output", ^{
@@ -236,7 +237,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
                     fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
         cv::flip(expectedTexture.image, expected, 0);
         
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
+        expect($(output.image)).to.equalMat($(expected));
       });
     });
   });
