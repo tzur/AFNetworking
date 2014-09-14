@@ -6,6 +6,7 @@
 #import "LTArrayBuffer.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
+#import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
@@ -112,8 +113,8 @@ context(@"texture binding while drawing", ^{
     NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
                                  [TwoInputTexturesFsh textureB]: textureB};
     drawingContext = [[LTDrawingContext alloc] initWithProgram:program
-                                            vertexArray:vertexArray
-                                       uniformToTexture:uniformMap];
+                                                   vertexArray:vertexArray
+                                              uniformToTexture:uniformMap];
   });
 
   afterEach(^{
@@ -195,11 +196,10 @@ context(@"texture binding while drawing", ^{
   });
   
   context(@"draw elements with mode", ^{
-    __block id elementsBuffer;
+    __block id indicesArray;
     
     beforeEach(^{
-      elementsBuffer = [OCMockObject mockForClass:[LTArrayBuffer class]];
-      [(LTArrayBuffer *)[[elementsBuffer stub] andReturnValue:@(LTArrayBufferTypeElement)] type];
+      indicesArray = [OCMockObject mockForClass:[LTIndicesArray class]];
     });
     
     it(@"should set unique texture unit values as shader uniforms", ^{
@@ -214,7 +214,7 @@ context(@"texture binding while drawing", ^{
       [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
       
       [fbo bindAndDraw:^{
-        [drawingContext drawElements:elementsBuffer withMode:LTDrawingContextDrawModeTriangles];
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
       [programMock verify];
@@ -228,7 +228,7 @@ context(@"texture binding while drawing", ^{
       [[textureB expect] bind];
       
       [fbo bindAndDraw:^{
-        [drawingContext drawElements:elementsBuffer withMode:LTDrawingContextDrawModeTriangles];
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
       [textureA verify];
@@ -240,7 +240,7 @@ context(@"texture binding while drawing", ^{
       [[textureB expect] unbind];
       
       [fbo bindAndDraw:^{
-        [drawingContext drawElements:elementsBuffer withMode:LTDrawingContextDrawModeTriangles];
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
       [textureA verify];
@@ -252,7 +252,7 @@ context(@"texture binding while drawing", ^{
       [[textureB expect] beginReadFromTexture];
       
       [fbo bindAndDraw:^{
-        [drawingContext drawElements:elementsBuffer withMode:LTDrawingContextDrawModeTriangles];
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
       [textureA verify];
@@ -264,7 +264,7 @@ context(@"texture binding while drawing", ^{
       [[textureB expect] endReadFromTexture];
       
       [fbo bindAndDraw:^{
-        [drawingContext drawElements:elementsBuffer withMode:LTDrawingContextDrawModeTriangles];
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
       [textureA verify];

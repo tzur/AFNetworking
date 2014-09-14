@@ -5,6 +5,7 @@
 
 #import "LTArrayBuffer.h"
 #import "LTGPUStruct.h"
+#import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTTexture.h"
 #import "LTVertexArray.h"
@@ -52,11 +53,11 @@
   }];
 }
 
-- (void)drawElements:(LTArrayBuffer *)indicesBuffer withMode:(LTDrawingContextDrawMode)mode {
-  LTParameterAssert(indicesBuffer && indicesBuffer.type == LTArrayBufferTypeElement);
+- (void)drawElements:(LTIndicesArray *)indices withMode:(LTDrawingContextDrawMode)mode {
+  LTParameterAssert(indices);
   [self drawUsingBlock:^{
-    [indicesBuffer bindAndExecute:^{
-      glDrawElements(mode, (GLsizei)indicesBuffer.size / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+    [indices.arrayBuffer bindAndExecute:^{
+      glDrawElements(mode, (GLsizei)indices.count, indices.type, 0);
     }];
   }];
 }
@@ -77,6 +78,7 @@
 
       // Map sampler to the texture unit.
       self.program[uniform] = @(index);
+      
       [textureStack addObject:texture];
       ++index;
     }
