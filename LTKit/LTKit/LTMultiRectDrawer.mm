@@ -159,20 +159,12 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 #pragma mark Drawing (Single Rect)
 #pragma mark -
 
-- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
+- (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect {
   LogWarning(@"Using LTMultiRectDrawer for drawing a single rect, "
              "consider using LTSingleRectDrawer instead for improved performance, as it uses a "
              "static geometry for drawing");
-  [self drawRotatedRects:@[[LTRotatedRect rect:targetRect]] inFramebuffer:fbo
+  [self drawRotatedRects:@[[LTRotatedRect rect:targetRect]] inFramebufferWithSize:size
         fromRotatedRects:@[[LTRotatedRect rect:sourceRect]]];
-}
-
-- (void)drawRotatedRect:(LTRotatedRect *)targetRect inFramebuffer:(LTFbo *)fbo
-        fromRotatedRect:(LTRotatedRect *)sourceRect {
-  LogWarning(@"Using LTMultiRectDrawer for drawing a single rect, "
-             "consider using LTSingleRectDrawer instead for improved performance, as it uses a "
-             "static geometry for drawing");
-  [self drawRotatedRects:@[targetRect] inFramebuffer:fbo fromRotatedRects:@[sourceRect]];
 }
 
 @end

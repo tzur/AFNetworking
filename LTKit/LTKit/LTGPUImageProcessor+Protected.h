@@ -3,8 +3,6 @@
 
 #import "LTGPUImageProcessor.h"
 
-@protocol LTProcessingDrawer, LTProcessingStrategy;
-
 @class LTNextIterationPlacement;
 
 /// Block for processing a source texture to a target framebuffer defined in the given \c placement.
@@ -29,5 +27,11 @@ typedef void (^LTProcessWithPlacementBlock)(LTNextIterationPlacement *placement)
 
 /// Dictionary of \c NSString to \c LTTexture of axiliary textures to use to assist processing.
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;
+
+/// Drawer to use while processing.
+@property (readonly, nonatomic) id<LTTextureDrawer> drawer;
+
+/// Strategy which manages the processing execution.
+@property (readonly, nonatomic) id<LTProcessingStrategy> strategy;
 
 @end

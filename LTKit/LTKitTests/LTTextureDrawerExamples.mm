@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTProcessingDrawerExamples.h"
+#import "LTTextureDrawerExamples.h"
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
@@ -13,17 +13,15 @@
 #import "LTTestUtils.h"
 #import "NSValue+GLKitExtensions.h"
 
-NSString * const kLTProcessingDrawerExamples = @"LTProcessingDrawerExamples";
-NSString * const kLTProcessingDrawerClass = @"LTProcessingDrawerExamplesClass";
+NSString * const kLTTextureDrawerExamples = @"LTTextureDrawerExamples";
+NSString * const kLTTextureDrawerClass = @"LTTextureDrawerExamplesClass";
 
 #pragma mark -
 #pragma mark Shared Tests
 #pragma mark -
 
-/// Returns a rotated subrect of the given \c cv::Mat.
-///
 /// @see http://answers.opencv.org/question/497/extract-a-rotatedrect-area/
-static cv::Mat4b LTRotatedSubrect(const cv::Mat4b input, LTRotatedRect *subrect) {
+cv::Mat4b LTRotatedSubrect(const cv::Mat4b input, LTRotatedRect *subrect) {
   cv::RotatedRect rect(cv::Point2f(subrect.center.x - 0.5, subrect.center.y - 0.5),
                        cv::Size2f(subrect.rect.size.width, subrect.rect.size.height),
                        subrect.angle * (180 / M_PI));
@@ -70,7 +68,7 @@ static cv::Mat4b LTRotatedSubrect(const cv::Mat4b input, LTRotatedRect *subrect)
   return cropped;
 }
 
-SharedExamplesBegin(LTProcessingDrawerExamples)
+SharedExamplesBegin(LTTextureDrawerExamples)
 
 static NSString * const kMissingVertexSource =
     @"uniform highp mat4 modelview;"
@@ -112,11 +110,11 @@ static NSString * const kFragmentWithThreeSamplersSource =
     "  gl_FragColor = vec4(colorA.xyz - colorB.xyz + colorC.xyz, 0.0);"
     "}";
 
-sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
+sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
   __block Class drawerClass;
   
   beforeEach(^{
-    drawerClass = data[kLTProcessingDrawerClass];
+    drawerClass = data[kLTTextureDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
     
@@ -178,7 +176,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
   
   context(@"drawing", ^{
     __block LTProgram *program;
-    __block id<LTProcessingDrawer> drawer;
+    __block id<LTTextureDrawer> drawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
     
@@ -202,7 +200,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
     });
     
     context(@"framebuffer", ^{
-      it(@"should draw to to target texture of the same size", ^{
+      it(@"should draw to target texture of the same size", ^{
         [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                 fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
         
@@ -256,176 +254,70 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
       });
     });
     
-    context(@"rotated rect", ^{
-      it(@"should draw a rotated subrect of input to subrect of output", ^{
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-        CGRect targetRect = CGRectMake(inputSize.width / 2, 0,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGFloat sourceAngle = M_PI / 6;
-        [drawer drawRotatedRect:[LTRotatedRect rect:targetRect]
-                  inFramebuffer:fbo
-                fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
+    context(@"screen framebuffer", ^{
+      it(@"should draw subrect of input to entire output", ^{
+        const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                          inputSize.width / 2, inputSize.height / 2);
+        [fbo bindAndDrawOnScreen:^{
+          [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
+         inFramebufferWithSize:fbo.size fromRect:subrect];
+        }];
         
-        cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
-        expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
-        cv::Mat subrect =
-            LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle]);
-        cv::Rect targetRoi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
-        subrect.copyTo(expected(targetRoi));
-        
+        // Actual image should be a resized version of the subimage at the given range, flipped
+        // across the x-axis.
+        cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
+        cv::Mat subimage = image(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                          subrect.size.width, subrect.size.height));
+        cv::resize(subimage, expected,
+                   cv::Size(expected.cols, expected.rows), 0, 0, cv::INTER_NEAREST);
+        cv::flip(expected, expected, 0);
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
       
-      it(@"should draw a subrect of input to a rotated subrect of output", ^{
+      it(@"should draw all input to subrect of output", ^{
+        const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                          inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-        CGRect targetRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGRect sourceRect = CGRectMake(inputSize.width / 2, 0,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGFloat targetAngle = M_PI / 6;
-        [drawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
-                  inFramebuffer:fbo
-                fromRotatedRect:[LTRotatedRect rect:sourceRect]];
+        [fbo bindAndDrawOnScreen:^{
+          [drawer drawRect:subrect inFramebufferWithSize:fbo.size
+                      fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
+        }];
         
+        // Actual image should be a resized version positioned at the given subrect.
+        cv::Mat resized;
+        cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_NEAREST);
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
-        expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(0, 255, 0, 255));
-        expected = LTRotateMat(expected, targetAngle);
-        
+        resized.copyTo(expected(cv::Rect(subrect.origin.x, subrect.origin.y,
+                                         subrect.size.width, subrect.size.height)));
+        cv::flip(expected, expected, 0);
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
       
-      it(@"should draw a rotated subrect of input to a rotated subrect of output", ^{
+      it(@"should draw subrect of input to subrect of output", ^{
+        const CGRect inRect = CGRectMake(6 * inputSize.width / 16, 7 * inputSize.height / 16,
+                                         inputSize.width / 4, inputSize.height / 4);
+        const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
+                                          inputSize.width / 2, inputSize.height / 2);
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-        CGRect targetRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGFloat targetAngle = M_PI / 6;
-        CGFloat sourceAngle = M_PI / 6;
-        [drawer drawRotatedRect:[LTRotatedRect rect:targetRect withAngle:targetAngle]
-                  inFramebuffer:fbo
-                fromRotatedRect:[LTRotatedRect rect:sourceRect withAngle:sourceAngle]];
+        [fbo bindAndDrawOnScreen:^{
+          [drawer drawRect:outRect inFramebufferWithSize:fbo.size fromRect:inRect];
+        }];
+        
+        // Actual image should be a resized version of the subimage at inputSubrect positioned at
+        // the given outputSubrect.
+        cv::Mat resized;
+        cv::Mat subimage = image(cv::Rect(inRect.origin.x, inRect.origin.y,
+                                          inRect.size.width, inRect.size.height));
+        cv::resize(subimage, resized,
+                   cv::Size(outRect.size.width, outRect.size.height), 0, 0, cv::INTER_NEAREST);
         
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-
-        cv::Mat subrect =
-            LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle]);
-        subrect.copyTo(expected(LTCVRectWithCGRect(targetRect)));
-        expected = LTRotateMat(expected, targetAngle);
-        
+        resized.copyTo(expected(cv::Rect(outRect.origin.x, outRect.origin.y,
+                                         outRect.size.width, outRect.size.height)));
+        cv::flip(expected, expected, 0);
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
-      });
-    });
-    
-    context(@"array of rotated rects", ^{
-      it(@"should draw an array of rotated subrects of input to an array of subrects of output", ^{
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-        CGRect targetRect0 = CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2);
-        CGRect targetRect1 = CGRectMake(inputSize.width / 2, 0,
-                                        inputSize.width / 2, inputSize.height / 2);
-        CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-        CGFloat sourceAngle = M_PI / 6;
-        [drawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0],
-                                   [LTRotatedRect rect:targetRect1]]
-                  inFramebuffer:fbo
-                fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle],
-                                   [LTRotatedRect rect:sourceRect withAngle:sourceAngle]]];
-        
-        cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
-        expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
-        cv::Mat subrect =
-            LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle]);
-        
-        subrect.copyTo(expected(LTCVRectWithCGRect(targetRect0)));
-        subrect.copyTo(expected(LTCVRectWithCGRect(targetRect1)));
-        
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
-      });
-      
-      it(@"should draw an array of subrects of input to an array of rotated subrects of output", ^{
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-        CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
-                                        inputSize.width / 4, inputSize.height / 4);
-        CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,
-                                        inputSize.width / 4, inputSize.height / 4);
-        CGRect sourceRect = CGRectMake(3 * inputSize.width / 8, 3 * inputSize.height / 8,
-                                       inputSize.width / 4, inputSize.height / 4);
-        CGFloat targetAngle = M_PI / 6;
-        [drawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
-                                   [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
-                   inFramebuffer:fbo
-                fromRotatedRects:@[[LTRotatedRect rect:sourceRect],
-                                   [LTRotatedRect rect:sourceRect]]];
-        
-        cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
-        expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
-        cv::Mat4b tempMat(inputSize.width, inputSize.height);
-        tempMat.setTo(cv::Vec4b(0, 0, 0, 255));
-        image(LTCVRectWithCGRect(sourceRect)).copyTo(tempMat(LTCVRectWithCGRect(sourceRect)));
-        tempMat = LTRotateMat(tempMat, targetAngle);
-
-        CGSize tempSize = inputSize / 2;
-        CGRect tempRoi = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                    inputSize.width / 2, inputSize.height / 2);
-        CGRect targetRoi0 = CGRectFromOriginAndSize(CGPointZero, tempSize);
-        CGRect targetRoi1 = CGRectFromOriginAndSize(CGPointZero + tempSize, tempSize);
-        tempMat(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi0)));
-        tempMat(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi1)));
-        
-        expect(LTCompareMat(expected, output.image)).to.beTruthy();
-      });
-      
-      it(@"should draw an array of rotated subrects of input to an array of rotated subrects of "
-         "output", ^{
-           [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-           CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
-                                           inputSize.width / 4, inputSize.height / 4);
-           CGRect targetRect1 = CGRectMake(5 * inputSize.width / 8, 5 * inputSize.height / 8,
-                                           inputSize.width / 4, inputSize.height / 4);
-           CGRect sourceRect = CGRectMake(3 * inputSize.width / 8, 3 * inputSize.height / 8,
-                                          inputSize.width / 4, inputSize.height / 4);
-           CGFloat targetAngle = M_PI / 6;
-           CGFloat sourceAngle0 = M_PI / 6;
-           CGFloat sourceAngle1 = M_PI + M_PI / 6;
-           [drawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
-                                      [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
-                      inFramebuffer:fbo
-                   fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle0],
-                                      [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]]];
-           
-           cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
-           expected.setTo(cv::Vec4b(0, 0, 0, 255));
-           
-           
-           cv::Mat4b tempMat0(inputSize.width, inputSize.height);
-           cv::Mat4b tempMat1(inputSize.width, inputSize.height);
-           tempMat0.setTo(cv::Vec4b(0, 0, 0, 255));
-           tempMat1.setTo(cv::Vec4b(0, 0, 0, 255));
-           LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle0]).
-              copyTo(tempMat0(LTCVRectWithCGRect(sourceRect)));
-           LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]).
-              copyTo(tempMat1(LTCVRectWithCGRect(sourceRect)));
-           tempMat0 = LTRotateMat(tempMat0, targetAngle);
-           tempMat1 = LTRotateMat(tempMat1, targetAngle);
-           
-           CGSize tempSize = inputSize / 2;
-           CGRect tempRoi = CGRectMake(inputSize.width / 4, inputSize.height / 4,
-                                       inputSize.width / 2, inputSize.height / 2);
-           CGRect targetRoi0 = CGRectFromOriginAndSize(CGPointZero, tempSize);
-           CGRect targetRoi1 = CGRectFromOriginAndSize(CGPointZero + tempSize, tempSize);
-           tempMat0(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi0)));
-           tempMat1(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi1)));
-           
-           expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
     });
     
@@ -453,7 +345,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
   
   context(@"auxiliary texture inputs", ^{
     __block LTProgram *program;
-    __block id<LTProcessingDrawer> drawer;
+    __block id<LTTextureDrawer> drawer;
     __block LTTexture *clearTexture;
     __block LTTexture *output;
     __block LTFbo *fbo;
@@ -528,7 +420,7 @@ sharedExamplesFor(kLTProcessingDrawerExamples, ^(NSDictionary *data) {
   
   context(@"custom uniforms", ^{
     __block LTProgram *program;
-    __block id<LTProcessingDrawer> drawer;
+    __block id<LTTextureDrawer> drawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
     

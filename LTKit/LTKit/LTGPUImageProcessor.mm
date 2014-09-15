@@ -12,7 +12,7 @@
 @interface LTGPUImageProcessor ()
 
 /// Drawer to use while processing.
-@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
+@property (strong, nonatomic) id<LTTextureDrawer> drawer;
 
 /// Strategy which manages the processing execution.
 @property (strong, nonatomic) id<LTProcessingStrategy> strategy;
@@ -21,7 +21,7 @@
 
 @implementation LTGPUImageProcessor
 
-- (instancetype)initWithDrawer:(id<LTProcessingDrawer>)drawer
+- (instancetype)initWithDrawer:(id<LTTextureDrawer>)drawer
                       strategy:(id<LTProcessingStrategy>)strategy
           andAuxiliaryTextures:(NSDictionary *)auxiliaryTextures {
   if (self = [super init]) {

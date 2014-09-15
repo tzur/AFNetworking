@@ -107,12 +107,6 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
   }];
 }
 
-- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
-  [fbo bindAndDraw:^{
-    [self drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
-  }];
-}
-
 - (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect {
   [self framebufferWithSize:size drawBlock:^{
     GLKMatrix4 modelview = LTMatrix4ForRect(targetRect);

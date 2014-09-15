@@ -9,7 +9,6 @@
 #import "LTGLKitExtensions.h"
 #import "LTNextIterationPlacement.h"
 #import "LTOneShotImageProcessor+Protected.h"
-#import "LTProcessingDrawer.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
@@ -42,15 +41,6 @@ struct LTTrapezoid2 {
 
   std::array<LTVector2, 4> corners;
 };
-
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
-@end
-
-@interface LTOneShotImageProcessor ()
-- (CGRect)targetRectForFramebufferSize:(CGSize)framebufferSize outputRect:(CGRect)rect
-               originalFramebufferSize:(CGSize)originalFramebufferSize;
-@end
 
 @interface LTPerspectiveProcessor ()
 

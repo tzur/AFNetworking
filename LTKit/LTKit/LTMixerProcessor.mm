@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTOneShotImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTRectCopyProcessor.h"
 #import "LTRectMapping.h"
@@ -13,15 +14,6 @@
 #import "LTShaderStorage+LTMixerFsh.h"
 #import "LTShaderStorage+LTMixerVsh.h"
 #import "LTTexture.h"
-
-@interface LTGPUImageProcessor ()
-
-- (void)drawWithPlacement:(LTNextIterationPlacement *)placement;
-
-@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
-@property (strong, nonatomic) id<LTProcessingStrategy> strategy;
-
-@end
 
 @interface LTMixerProcessor ()
 

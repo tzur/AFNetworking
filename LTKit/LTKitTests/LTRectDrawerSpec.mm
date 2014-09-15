@@ -4,13 +4,13 @@
 #import "LTRectDrawer.h"
 
 #import "LTMultiRectDrawerSpec.h"
-#import "LTProcessingDrawerExamples.h"
 #import "LTSingleRectDrawerSpec.h"
+#import "LTTextureDrawerExamples.h"
 
 SpecBegin(LTRectDrawer)
 
-itShouldBehaveLike(kLTProcessingDrawerExamples,
-                   @{kLTProcessingDrawerClass: [LTRectDrawer class]});
+itShouldBehaveLike(kLTTextureDrawerExamples,
+                   @{kLTTextureDrawerClass: [LTRectDrawer class]});
 
 itShouldBehaveLike(kLTSingleRectDrawerExamples,
                    @{kLTSingleRectDrawerClass: [LTRectDrawer class]});
