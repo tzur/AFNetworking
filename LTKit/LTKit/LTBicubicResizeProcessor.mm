@@ -15,7 +15,7 @@
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTBicubicResizeFsh source]
                                    input:input andOutput:output]) {
-    self[[LTBicubicResizeFsh texelOffset]] =
+    self[[LTBicubicResizeFsh texelStep]] =
         $(LTVector2(1.0 / input.size.width, 1.0 / input.size.height));
   }
   return self;

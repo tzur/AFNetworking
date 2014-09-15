@@ -6,8 +6,9 @@
 /// Processor for creating an image pyramid out of a large input image. This processor uses the
 /// basic interpolation given by OpenGL: either nearest neighbour or bilinear. This is provided by
 /// the user by setting the min/mag interpolation filters of the input and output textures prior to
-/// processing. For custom interpolations, derive from this class and create your own fragment
-/// shader.
+/// processing. If nearest neighbour interpolation is used, processor will use (1:2:end) sampling
+/// pattern (in Matlab notation).
+/// For custom pyramids, derive from this class and create your own fragment shader.
 @interface LTPyramidProcessor : LTIterativeImageProcessor
 
 /// Creates and returns an array of LTTexture objects with dyadic scaling of level i to level i + 1,

@@ -8,7 +8,9 @@
 
 uniform sampler2D sourceTexture;
 uniform sampler2D fineTexture;
+uniform sampler2D mediumTexture;
 uniform sampler2D coarseTexture;
+uniform sampler2D veryCoarseTexture;
 uniform sampler2D dualMaskTexture;
 
 uniform mediump float intensity;
@@ -16,19 +18,25 @@ uniform mediump float intensity;
 varying highp vec2 vTexcoord;
 
 void main() {
-  lowp vec3 color = texture2D(sourceTexture, vTexcoord).rgb;
+  lowp vec4 color = texture2D(sourceTexture, vTexcoord);
   lowp vec3 fine = texture2D(fineTexture, vTexcoord).rgb;
+  lowp vec3 medium = texture2D(mediumTexture, vTexcoord).rgb;
   lowp vec3 coarse = texture2D(coarseTexture, vTexcoord).rgb;
-
-  // Splitting point between original-fine and fine-coarse regimes.
-  lowp float splittingPoint = 0.4;
-  lowp vec3 blur = mix(mix(color, fine, intensity / splittingPoint),
-                       mix(fine, coarse, (intensity - splittingPoint) / (1.0 - splittingPoint)),
-                       step(splittingPoint, intensity));
+  lowp vec3 veryCoarse = texture2D(veryCoarseTexture, vTexcoord).rgb;
   
-  lowp float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
+  mediump float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
+  dualMask = 1.0 - clamp(dualMask * 2.0, 0.0, 1.0);
+  mediump float alpha = intensity * dualMask;
+  lowp vec3 outputColor;
+  if (alpha >= 0.0 && alpha < 0.25) {
+    outputColor = mix(color.rgb, fine, alpha / 0.25);
+  } else if (alpha >= 0.25 && alpha < 0.5) {
+    outputColor = mix(fine, medium, (alpha - 0.25) / 0.25);
+  } else if (alpha >= 0.5 && alpha < 0.75) {
+    outputColor = mix(medium, coarse, (alpha - 0.5) / 0.25);
+  } else {
+    outputColor = mix(coarse, veryCoarse, (alpha - 0.75) / 0.25);
+  }
   
-  lowp vec3 result = mix(blur, color, dualMask);
-  
-  gl_FragColor = vec4(vec3(result), 1.0);
+  gl_FragColor = vec4(vec3(outputColor), color.a);
 }
