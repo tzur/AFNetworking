@@ -15,6 +15,10 @@ uniform mediump float repetitionFactor;
 // Factor to apply on the frame's width - to resize it.
 uniform mediump float frameWidthFactor;
 uniform int frameType;
+// Changes the color of the frame.
+uniform mediump vec3 frameColor;
+// Determines the color interpolation with the original color of the frame.
+uniform mediump float frameColorAlpha;
 
 varying highp vec2 vTexcoord;
 
@@ -59,11 +63,6 @@ void main() {
     invRatio = 1.0 / ratio;
   }
   
-  // Resize frame's width - move to origin, zoom in and move back.
-  texcoord -= vec2(0.5, 0.5);
-  texcoord *= frameWidthFactor;
-  texcoord += vec2(0.5, 0.5);
-  
   highp float a;
   highp float b;
   
@@ -80,6 +79,12 @@ void main() {
     if (frameType == kFrameTypeRepeat) {
       // Repeat central part.
       factor = repetitionFactor;
+      
+      // Resize frame's width in the case of repeat - move to origin, zoom in and move back. Does
+      // not preserve frame width in image width and height dimensions.
+      texcoord -= vec2(0.5, 0.5);
+      texcoord *= frameWidthFactor;
+      texcoord += vec2(0.5, 0.5);
     }
     
     if (texcoord.x < a) {
@@ -95,7 +100,17 @@ void main() {
     texcoord.xy = texcoord.yx;
   }
   
-  highp vec4 frame = texture2D(frameTexture, texcoord).rgba;
+  // Resize frame's width in the case frame type is not repeat - move to origin, zoom in and move
+  // back.
+  if (frameType != kFrameTypeRepeat) {
+    texcoord -= vec2(0.5, 0.5);
+    texcoord *= frameWidthFactor;
+    texcoord += vec2(0.5, 0.5);
+  }
+  
+  lowp vec4 frame = texture2D(frameTexture, texcoord).rgba;
+  frame.rgb = mix(frame.rgb, frameColor * frame.a, frameColorAlpha);
+  
   // Pre-multiplied alpha blending.
   gl_FragColor = vec4((1.0-frame.a) * color + frame.rgb, 1.0);
 }

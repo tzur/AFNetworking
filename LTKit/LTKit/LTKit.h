@@ -59,6 +59,7 @@
 #import <LTKit/LTFFTConvolutionProcessor.h>
 #import <LTKit/LTFFTProcessor.h>
 #import <LTKit/LTImageBorderProcessor.h>
+#import <LTKit/LTImageFrameProcessor.h>
 #import <LTKit/LTMaskOverlayProcessor.h>
 #import <LTKit/LTMaskedArithmeticProcessor.h>
 #import <LTKit/LTMixerProcessor.h>
