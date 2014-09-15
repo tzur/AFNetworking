@@ -174,13 +174,11 @@ static const CGFloat kMaskScalingFactor = 4.0;
   return self.dualMaskProcessor.diameter * kMaskScalingFactor;
 }
 
+LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
+  [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
   [self.dualMaskProcessor process];
-}
-
-- (CGFloat)spread {
-  return self.dualMaskProcessor.spread;
 }
 
 - (void)setAngle:(CGFloat)angle {
