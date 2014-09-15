@@ -3,8 +3,10 @@
 
 #import "LTDrawingContext.h"
 
+#import "LTArrayBuffer.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
+#import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
@@ -92,7 +94,7 @@ context(@"texture binding while drawing", ^{
   __block LTProgram *program;
   __block id programMock;
 
-  __block LTDrawingContext *context;
+  __block LTDrawingContext *drawingContext;
 
   __block LTFbo *fbo;
 
@@ -110,85 +112,164 @@ context(@"texture binding while drawing", ^{
 
     NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
                                  [TwoInputTexturesFsh textureB]: textureB};
-    context = [[LTDrawingContext alloc] initWithProgram:program
-                                            vertexArray:vertexArray
-                                       uniformToTexture:uniformMap];
+    drawingContext = [[LTDrawingContext alloc] initWithProgram:program
+                                                   vertexArray:vertexArray
+                                              uniformToTexture:uniformMap];
   });
 
   afterEach(^{
     fbo = nil;
-    context = nil;
+    drawingContext = nil;
     program = nil;
     programMock = nil;
   });
 
-  it(@"should set unique texture unit values as shader uniforms", ^{
-    // Record used indices when setting sampler index.
-    __block NSMutableArray *usedIndices = [NSMutableArray array];
-    id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
-      [usedIndices addObject:number];
-      return YES;
-    }];
-
-    [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-    [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-
-    [fbo bindAndDraw:^{
-      [context drawWithMode:LTDrawingContextDrawModeTriangles];
-    }];
-
-    [programMock verify];
-
-    // Verify given indices are unique.
-    expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
+  context(@"draw with mode", ^{
+    it(@"should set unique texture unit values as shader uniforms", ^{
+      // Record used indices when setting sampler index.
+      __block NSMutableArray *usedIndices = [NSMutableArray array];
+      id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+        [usedIndices addObject:number];
+        return YES;
+      }];
+      
+      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [programMock verify];
+      
+      // Verify given indices are unique.
+      expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
+    });
+    
+    it(@"should bind to textures", ^{
+      [[textureA expect] bind];
+      [[textureB expect] bind];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should unbind from textures", ^{
+      [[textureA expect] unbind];
+      [[textureB expect] unbind];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should mark begin read from texture", ^{
+      [[textureA expect] beginReadFromTexture];
+      [[textureB expect] beginReadFromTexture];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should mark end read from texture", ^{
+      [[textureA expect] endReadFromTexture];
+      [[textureB expect] endReadFromTexture];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
   });
-
-  it(@"should bind to textures", ^{
-    [[textureA expect] bind];
-    [[textureB expect] bind];
-
-    [fbo bindAndDraw:^{
-      [context drawWithMode:LTDrawingContextDrawModeTriangles];
-    }];
-
-    [textureA verify];
-    [textureB verify];
-  });
-
-  it(@"should unbind from textures", ^{
-    [[textureA expect] unbind];
-    [[textureB expect] unbind];
-
-    [fbo bindAndDraw:^{
-      [context drawWithMode:LTDrawingContextDrawModeTriangles];
-    }];
-
-    [textureA verify];
-    [textureB verify];
-  });
-
-  it(@"should mark begin read from texture", ^{
-    [[textureA expect] beginReadFromTexture];
-    [[textureB expect] beginReadFromTexture];
-
-    [fbo bindAndDraw:^{
-      [context drawWithMode:LTDrawingContextDrawModeTriangles];
-    }];
-
-    [textureA verify];
-    [textureB verify];
-  });
-
-  it(@"should mark end read from texture", ^{
-    [[textureA expect] endReadFromTexture];
-    [[textureB expect] endReadFromTexture];
-
-    [fbo bindAndDraw:^{
-      [context drawWithMode:LTDrawingContextDrawModeTriangles];
-    }];
-
-    [textureA verify];
-    [textureB verify];
+  
+  context(@"draw elements with mode", ^{
+    __block id indicesArray;
+    
+    beforeEach(^{
+      indicesArray = [OCMockObject mockForClass:[LTIndicesArray class]];
+    });
+    
+    it(@"should set unique texture unit values as shader uniforms", ^{
+      // Record used indices when setting sampler index.
+      __block NSMutableArray *usedIndices = [NSMutableArray array];
+      id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+        [usedIndices addObject:number];
+        return YES;
+      }];
+      
+      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [programMock verify];
+      
+      // Verify given indices are unique.
+      expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
+    });
+    
+    it(@"should bind to textures", ^{
+      [[textureA expect] bind];
+      [[textureB expect] bind];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should unbind from textures", ^{
+      [[textureA expect] unbind];
+      [[textureB expect] unbind];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should mark begin read from texture", ^{
+      [[textureA expect] beginReadFromTexture];
+      [[textureB expect] beginReadFromTexture];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
+    
+    it(@"should mark end read from texture", ^{
+      [[textureA expect] endReadFromTexture];
+      [[textureB expect] endReadFromTexture];
+      
+      [fbo bindAndDraw:^{
+        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+      }];
+      
+      [textureA verify];
+      [textureB verify];
+    });
   });
 });
 

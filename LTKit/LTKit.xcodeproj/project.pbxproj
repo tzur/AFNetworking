@@ -179,6 +179,9 @@
 		282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF08C187B031800904F07 /* UIColor+Vector.mm */; };
 		282CF091187B034200904F07 /* LTViewPixelGridSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */; };
 		282CF092187B034200904F07 /* LTViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 282CF090187B034200904F07 /* LTViewSpec.mm */; };
+		2830B8E619C58CBF00BF4E8E /* LTIndicesArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 2830B8E419C58CBF00BF4E8E /* LTIndicesArray.h */; };
+		2830B8E719C58CBF00BF4E8E /* LTIndicesArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2830B8E519C58CBF00BF4E8E /* LTIndicesArray.mm */; };
+		2830B8F919C594AE00BF4E8E /* LTIndicesArraySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2830B8F819C594AE00BF4E8E /* LTIndicesArraySpec.mm */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
 		2839069418C4D9AA00BD21CE /* LTBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2839068718C4D9AA00BD21CE /* LTBrush.mm */; };
@@ -1143,6 +1146,9 @@
 		282CF08C187B031800904F07 /* UIColor+Vector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Vector.mm"; sourceTree = "<group>"; };
 		282CF08F187B034200904F07 /* LTViewPixelGridSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewPixelGridSpec.mm; sourceTree = "<group>"; };
 		282CF090187B034200904F07 /* LTViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewSpec.mm; sourceTree = "<group>"; };
+		2830B8E419C58CBF00BF4E8E /* LTIndicesArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIndicesArray.h; sourceTree = "<group>"; };
+		2830B8E519C58CBF00BF4E8E /* LTIndicesArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesArray.mm; sourceTree = "<group>"; };
+		2830B8F819C594AE00BF4E8E /* LTIndicesArraySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesArraySpec.mm; sourceTree = "<group>"; };
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
 		2836211F186C58DC00665ED9 /* LTCGExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTCGExtensions.m; sourceTree = "<group>"; };
 		2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGExtensionsSpec.mm; sourceTree = "<group>"; };
@@ -2690,6 +2696,8 @@
 				8BB47159183B602600CA1681 /* LTGPUStructsMacros.h */,
 				8B19621B184B6DA40065A057 /* LTGPUQueue.h */,
 				8B19621C184B6DA40065A057 /* LTGPUQueue.mm */,
+				2830B8E419C58CBF00BF4E8E /* LTIndicesArray.h */,
+				2830B8E519C58CBF00BF4E8E /* LTIndicesArray.mm */,
 				8B3F94D0187C194500FAA265 /* LTMMTexture.h */,
 				8B3F94D1187C194500FAA265 /* LTMMTexture.mm */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
@@ -2765,6 +2773,7 @@
 				8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */,
 				8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */,
 				8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */,
+				2830B8F819C594AE00BF4E8E /* LTIndicesArraySpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -3171,6 +3180,7 @@
 				8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */,
 				8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */,
 				8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */,
+				2830B8E619C58CBF00BF4E8E /* LTIndicesArray.h in Headers */,
 				8B871FE51924A75E00517F2E /* LTInstafitProcessor.h in Headers */,
 				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
 				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
@@ -3728,6 +3738,7 @@
 				282AC6B11924B9F2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh in Sources */,
 				282AC6B01924B9EE006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh in Sources */,
 				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
+				2830B8E719C58CBF00BF4E8E /* LTIndicesArray.mm in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
 				28A6C5AE193B77C300C217CC /* LTProgressiveImageProcessor.mm in Sources */,
 				8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */,
@@ -4053,6 +4064,7 @@
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				2899E33819377EC600281CBB /* LTPaintingStrategySpec.mm in Sources */,
+				2830B8F919C594AE00BF4E8E /* LTIndicesArraySpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */,
 				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,

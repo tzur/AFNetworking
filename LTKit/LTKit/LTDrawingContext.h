@@ -8,7 +8,7 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
   LTDrawingContextDrawModeLines = GL_LINES
 };
 
-@class LTArrayBuffer, LTProgram, LTTexture, LTVertexArray;
+@class LTArrayBuffer, LTIndicesArray, LTProgram, LTTexture, LTVertexArray;
 
 /// @class LTDrawingContext
 ///
@@ -24,12 +24,16 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
 /// @param uniformToTexture maps between uniform name (\c NSString) to its corresponding \c
 /// LTTexture. The given uniforms must be of type \c GL_SAMPLER_2D and a subset of the \c program
 /// uniforms set.
-- (id)initWithProgram:(LTProgram *)program vertexArray:(LTVertexArray *)vertexArray
-     uniformToTexture:(NSDictionary *)uniformToTexture;
+- (instancetype)initWithProgram:(LTProgram *)program vertexArray:(LTVertexArray *)vertexArray
+               uniformToTexture:(NSDictionary *)uniformToTexture;
 
-/// Executes the \c program which uses the data in the \c vertexArray, together with the given
+/// Executes the \c program which uses the data in the \c vertexArray, together with the context's
 /// textures to draw to the bound framebuffer.
 - (void)drawWithMode:(LTDrawingContextDrawMode)mode;
+
+/// Executes the \c program which uses the data in the \c vertexArray according to the given
+/// indices array, together with the context's textures to draw to the bound framebuffer.
+- (void)drawElements:(LTIndicesArray *)indices withMode:(LTDrawingContextDrawMode)mode;
 
 /// Attaches the given uniform name to the given texture, which will be strongly held by the
 /// receiver.

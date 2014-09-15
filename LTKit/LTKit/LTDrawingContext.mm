@@ -5,6 +5,7 @@
 
 #import "LTArrayBuffer.h"
 #import "LTGPUStruct.h"
+#import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTTexture.h"
 #import "LTVertexArray.h"
@@ -23,8 +24,8 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithProgram:(LTProgram *)program vertexArray:(LTVertexArray *)vertexArray
-     uniformToTexture:(NSDictionary *)uniformToTexture {
+- (instancetype)initWithProgram:(LTProgram *)program vertexArray:(LTVertexArray *)vertexArray
+               uniformToTexture:(NSDictionary *)uniformToTexture {
   if (self = [super init]) {
     LTParameterAssert(program);
     LTParameterAssert(vertexArray);
@@ -47,6 +48,22 @@
 #pragma mark -
 
 - (void)drawWithMode:(LTDrawingContextDrawMode)mode {
+  [self drawUsingBlock:^{
+    glDrawArrays(mode, 0, self.vertexArray.count);
+  }];
+}
+
+- (void)drawElements:(LTIndicesArray *)indices withMode:(LTDrawingContextDrawMode)mode {
+  LTParameterAssert(indices);
+  [self drawUsingBlock:^{
+    [indices.arrayBuffer bindAndExecute:^{
+      glDrawElements(mode, (GLsizei)indices.count, indices.type, 0);
+    }];
+  }];
+}
+
+- (void)drawUsingBlock:(LTVoidBlock)block {
+  LTParameterAssert(block);
   [self.program bindAndExecute:^{
     NSMutableArray *textureStack = [NSMutableArray array];
 
@@ -61,16 +78,14 @@
 
       // Map sampler to the texture unit.
       self.program[uniform] = @(index);
-
+      
       [textureStack addObject:texture];
-
       ++index;
     }
 
-    [self.vertexArray bindAndExecute:^{
-      glDrawArrays(mode, 0, self.vertexArray.count);
-    }];
-
+    /// Bind the vertex array, and use the block to draw.
+    [self.vertexArray bindAndExecute:block];
+    
     // Unbind in reverse order.
     for (NSInteger i = textureStack.count - 1; i >= 0; --i) {
       [textureStack[i] endReadFromTexture];
@@ -78,7 +93,7 @@
     }
   }];
 
-  LTGLCheckDbg(@"Error while drawing with mode %lu", (unsigned long)mode);
+  LTGLCheckDbg(@"Error while drawing");
 }
 
 - (void)attachUniform:(NSString *)uniform toTexture:(LTTexture *)texture {
