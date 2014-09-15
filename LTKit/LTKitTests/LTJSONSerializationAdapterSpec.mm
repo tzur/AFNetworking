@@ -79,8 +79,7 @@ it(@"should serialize to json dictionary", ^{
 
   expect(json[@"floatValue"]).to.equal(@(object.floatValue));
   expect(json[@"stringValue"]).to.equal(object.stringValue);
-  expect(json[@"enumValue"]).to.equal(@{@"type": @"LTTestSerializableEnum",
-                                        @"name": @"LTTestSerializableEnumA"});
+  expect(json[@"enumValue"]).to.equal(@"LTTestSerializableEnumA");
   expect(json[@"jsonValue"]).to.equal(object.jsonValue);
   expect(json[@"mantleValue"]).to.equal(@{@"json_field": @"value"});
   expect(json[@"ignoredValue"]).to.beNil();
@@ -90,7 +89,7 @@ it(@"should deserialize from json dictionary", ^{
   NSDictionary *values = @{
     @"floatValue": @5.5,
     @"stringValue": @"foo",
-    @"enumValue": @{@"type": @"LTTestSerializableEnum", @"name": @"LTTestSerializableEnumA"},
+    @"enumValue": @"LTTestSerializableEnumA",
     @"jsonValue": @{@"array": @[@"a", @"b"], @"key": @1},
     @"mantleValue": @{@"json_field": @"value"},
     @"ignoredValue": @1337

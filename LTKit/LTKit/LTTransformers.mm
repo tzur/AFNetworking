@@ -10,7 +10,7 @@
 
 + (NSValueTransformer *)transformerForClass:(Class)objectClass {
   if ([objectClass conformsToProtocol:@protocol(LTEnum)]) {
-    return [self LTEnumTransformer];
+    return [self LTEnumTransformerForClass:objectClass];
   }
   return nil;
 }
@@ -38,18 +38,18 @@
 #pragma mark Transformers
 #pragma mark -
 
-+ (MTLValueTransformer *)LTEnumTransformer {
++ (MTLValueTransformer *)LTEnumTransformerForClass:(Class)objectClass {
   return [MTLValueTransformer
-          reversibleTransformerWithForwardBlock:^id<LTEnum>(id dictionary) {
-            if (![dictionary isKindOfClass:[NSDictionary class]]) {
+          reversibleTransformerWithForwardBlock:^id<LTEnum>(id object) {
+            if ([object isKindOfClass:[NSDictionary class]]) {
+              return [self enumFromDictionary:object];
+            } else if ([object isKindOfClass:[NSString class]]) {
+              return [objectClass enumWithName:object];
+            } else {
               return nil;
             }
-            return [self enumFromDictionary:dictionary];
-          } reverseBlock:^NSDictionary *(id<LTEnum> value) {
-            return @{
-              @"type": NSStringFromClass([value class]),
-              @"name": value.name
-            };
+          } reverseBlock:^NSString *(id<LTEnum> value) {
+            return value.name;
           }];
 }
 
