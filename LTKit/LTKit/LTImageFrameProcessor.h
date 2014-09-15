@@ -18,12 +18,23 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 @interface LTImageFrameProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture, which will have a frame added to it as the output.
-- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output
-                        frame:(LTTexture *)frame frameType:(LTFrameType)frameType;
+- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
-/// Factors the width of the frame. Should be in range of [0.5, 1.5], where 1.0, which is also the
-/// default value, means no change to the input frame's width.
+/// Sets the frame texture and frame type. Frame and frame type always go together.
+- (void)setFrame:(LTTexture *)frame andType:(LTFrameType)frameType;
+
+/// Factors the width of the frame. Should be in [0.75, 1.5] range. The default value is 1.0,
+/// which means no change to the input frame's width.
 @property (nonatomic) CGFloat widthFactor;
 LTPropertyDeclare(CGFloat, widthFactor, WidthFactor);
+
+/// Color of the frame. Components should be in [0, 1] range. Default color is (0, 0, 0).
+@property (nonatomic) LTVector3 color;
+LTPropertyDeclare(LTVector3, color, Color);
+
+/// Determines the color interpolation with the original color of the frame. In the range of
+/// [0.0, 1.0]. The default value is 0.0, which means no change to the input frame's color.
+@property (nonatomic) CGFloat colorAlpha;
+LTPropertyDeclare(CGFloat, colorAlpha, ColorAlpha);
 
 @end
