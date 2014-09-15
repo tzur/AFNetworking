@@ -14,7 +14,7 @@ __block id strategy;
 __block id texture;
 
 beforeEach(^{
-  drawer = [OCMockObject niceMockForProtocol:@protocol(LTProcessingDrawer)];
+  drawer = [OCMockObject niceMockForProtocol:@protocol(LTTextureDrawer)];
   strategy = [OCMockObject niceMockForProtocol:@protocol(LTProcessingStrategy)];
   texture = [OCMockObject niceMockForClass:[LTTexture class]];
 });

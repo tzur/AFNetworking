@@ -8,16 +8,12 @@
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTNextIterationPlacement.h"
+#import "LTOneShotImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTRectCopyFsh.h"
 #import "LTTexture.h"
-
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
-@property (strong, nonatomic) id<LTProcessingStrategy> strategy;
-@end
 
 @interface LTRectCopyProcessor ()
 

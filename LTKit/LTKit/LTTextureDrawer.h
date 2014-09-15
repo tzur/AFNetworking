@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-@class LTProgram, LTTexture;
+@class LTFbo, LTProgram, LTTexture;
 
 /// Uniform name of the source texture, which must be contained in each texture drawer program.
 extern NSString * const kLTSourceTextureUniform;
@@ -55,6 +55,24 @@ extern NSString * const kLTSourceTextureUniform;
 /// Returns the underlying program's uniform value, or throws an exception if the given \c key is
 /// not a valid one.
 - (id)objectForKeyedSubscript:(NSString *)key;
+
+/// Draws the \c sourceRect region in the source texture into the \c targetRect region in the given
+/// framebuffer. The rects are defined in the source and target coordinate systems accordingly, in
+/// pixels.
+///
+/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect;
+
+/// Draws the \c sourceRect region in the source texture into the \c targetRect region in an already
+/// bound offscreen framebuffer with the given size. The rects are defined in the source and target
+/// coordinate systems accordingly, in pixels.
+///
+/// This method is useful when drawing to a renderbuffer managed by a different class, for example
+/// the \c LTView's content fbo.
+///
+/// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
+/// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.
+- (void)drawRect:(CGRect)targetRect inFramebufferWithSize:(CGSize)size fromRect:(CGRect)sourceRect;
 
 /// Set of mandatory uniforms that must exist in the given program.
 @property (readonly, nonatomic) NSSet *mandatoryUniforms;

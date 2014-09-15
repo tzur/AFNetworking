@@ -5,6 +5,7 @@
 
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
+#import "LTFbo.h"
 #import "LTProgram.h"
 
 @interface LTTextureDrawer ()
@@ -58,6 +59,18 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (LTDrawingContext *)createDrawingContext {
+  LTMethodNotImplemented();
+}
+
+- (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
+  LTParameterAssert(fbo);
+  [fbo bindAndDraw:^{
+    [self drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
+  }];
+}
+
+- (void)drawRect:(__unused CGRect)targetRect inFramebufferWithSize:(__unused CGSize)size
+        fromRect:(__unused CGRect)sourceRect {
   LTMethodNotImplemented();
 }
 

@@ -11,10 +11,6 @@
 #import "LTProgramFactory.h"
 #import "LTRectDrawer.h"
 
-@interface LTGPUImageProcessor ()
-@property (strong, nonatomic) id<LTProcessingDrawer> drawer;
-@end
-
 @interface LTOneShotImageProcessor ()
 
 /// Output texture of the processor.
