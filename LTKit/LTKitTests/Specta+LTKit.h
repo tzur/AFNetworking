@@ -4,25 +4,22 @@
 #import "LTGLContext.h"
 #import "LTTestModule.h"
 
-/// Sets the current injector to strictly mock the given class.
+/// Sets the current injector to strictly mock the given class and returns the mocked object.
 #define LTStrictMockClass(CLASS) \
-    [_module mockClass:CLASS]; \
-    [_injector lt_updateModule:_module]
+    _LTStrictMockClass(_module, _injector, CLASS)
 
-/// Sets the current injector to nicely mock the given class.
+/// Sets the current injector to nicely mock the given class and returns the mocked object.
 #define LTMockClass(CLASS) \
-    [_module niceMockClass:CLASS]; \
-    [_injector lt_updateModule:_module]
+    _LTMockClass(_module, _injector, CLASS)
 
-/// Sets the current injector to nicely mock the given protocol.
+/// Sets the current injector to nicely mock the given protocol and returns the mocked protocol.
 #define LTMockProtocol(PROTOCOL) \
-    [_module mockProtocol:PROTOCOL]; \
-    [_injector lt_updateModule:_module]
+    _LTMockProtocol(_module, _injector, PROTOCOL)
 
-/// Sets the current injector to bind the given object instance to the given class name.
+/// Sets the current injector to bind the given object instance to the given class name and returns
+/// it.
 #define LTBindObjectToClass(OBJECT, CLASS) \
-    [_module bind:OBJECT toClass:CLASS]; \
-    [_injector lt_updateModule:_module]
+    _LTBindObjectToClass(_module, _injector, OBJECT, CLASS)
 
 /// Defines a beginning of an LTKit test spec.
 #define LTSpecBegin(name) \
@@ -54,3 +51,9 @@
 
 /// End of spec.
 #define LTSpecEnd SpecEnd
+
+id _LTStrictMockClass(LTTestModule *module, JSObjectionInjector *injector, Class objectClass);
+id _LTMockClass(LTTestModule *module, JSObjectionInjector *injector, Class objectClass);
+id _LTMockProtocol(LTTestModule *module, JSObjectionInjector *injector, Protocol *protocol);
+id _LTBindObjectToClass(LTTestModule *module, JSObjectionInjector *injector, id object,
+                        Class objectClass);

@@ -12,11 +12,8 @@ context(@"image names", ^{
   __block id uiApplication;
 
   beforeEach(^{
-    LTMockClass([LTDevice class]);
-    LTMockClass([UIApplication class]);
-
-    ltDevice = [JSObjection defaultInjector][[LTDevice class]];
-    uiApplication = [JSObjection defaultInjector][[UIApplication class]];
+    ltDevice = LTMockClass([LTDevice class]);
+    uiApplication = LTMockClass([UIApplication class]);
   });
 
   it(@"should return names in correct order for 4-inch portrait iphone", ^{
