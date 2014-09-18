@@ -64,8 +64,7 @@ static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
 - (void)drawContentRegion:(CGRect)region toFramebufferWithSize:(CGSize)size {
   self.gridDrawer.opacity = [self gridOpacityForZoomScale:std::min(size / region.size)];
   if (self.gridDrawer.opacity > 0) {
-    LTGLContext *context = [LTGLContext currentContext];
-    [context executeAndPreserveState:^{
+    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       context.blendEnabled = YES;
       context.blendEquation = kLTGLContextBlendEquationDefault;
       context.blendFunc = kLTGLContextBlendFuncGrid;

@@ -235,8 +235,7 @@ LTGPUStructMake(LTMeshDrawerVertex,
       $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
       $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
   
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.clockwiseFrontFacingPolygons = screenTarget;
     block();
   }];

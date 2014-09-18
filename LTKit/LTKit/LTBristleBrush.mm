@@ -114,8 +114,7 @@ static const CGFloat kBristleSigma = 0.4;
   }
   
   [self.brushFbo clearWithColor:LTVector4(0, 0, 0, 1)];
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.blendEnabled = YES;
     context.blendFunc = kLTGLContextBlendFuncNormal;
     [self.bristleDrawer drawRotatedRects:bristles inFramebuffer:self.brushFbo

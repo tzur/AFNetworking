@@ -168,8 +168,7 @@ typedef union {
 - (void)drawWithClockwiseFrontFacingPolygons:(BOOL)cwffPolygons {
   [self updateBuffer];
   [self setUniforms];
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.clockwiseFrontFacingPolygons = cwffPolygons;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
   }];

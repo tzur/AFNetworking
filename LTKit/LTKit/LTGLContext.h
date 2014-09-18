@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+@class LTGLContext;
+
 /// Supported blending functions.
 typedef NS_ENUM(GLenum, LTGLContextBlendFunc) {
   LTGLContextBlendFuncZero = GL_ZERO,
@@ -42,6 +44,9 @@ typedef struct {
   LTGLContextBlendEquation equationAlpha;
 } LTGLContextBlendEquationArgs;
 
+/// Block used for state-preserving execution.
+typedef void (^LTGLContextBlock)(LTGLContext *context);
+
 /// OpenGL default blend function.
 extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault;
 
@@ -69,7 +74,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
-- (void)executeAndPreserveState:(LTVoidBlock)execute;
+- (void)executeAndPreserveState:(LTGLContextBlock)execute;
 
 /// Fills the currently bound framebuffer with the given color.
 - (void)clearWithColor:(LTVector4)color;

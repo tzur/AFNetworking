@@ -114,8 +114,7 @@ LTGPUStructMake(LTCropDrawerVertex,
       $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
       $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
   
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.faceCullingEnabled = NO;
     context.clockwiseFrontFacingPolygons = screenTarget;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];

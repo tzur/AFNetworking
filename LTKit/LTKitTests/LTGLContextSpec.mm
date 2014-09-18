@@ -81,7 +81,7 @@ context(@"setting context", ^{
     LTGLContext *context = [[LTGLContext alloc] init];
 
     expect(^{
-      [context executeAndPreserveState:^{
+      [context executeAndPreserveState:^(LTGLContext *context) {
         context.blendEnabled = YES;
       }];
     }).to.raise(NSInternalInconsistencyException);
@@ -258,7 +258,7 @@ context(@"execution", ^{
 
   // State preserving.
   itShouldBehaveLike(@"having default opengl values", ^{
-    [context executeAndPreserveState:^{
+    [context executeAndPreserveState:^(LTGLContext *context) {
       LTGLContextBlendFuncArgs blendFunc = {
         LTGLContextBlendFuncOneMinusDstAlpha,
         LTGLContextBlendFuncOneMinusDstAlpha,
@@ -292,10 +292,10 @@ context(@"execution", ^{
   });
 
   it(@"should support recursive execution", ^{
-    [context executeAndPreserveState:^{
+    [context executeAndPreserveState:^(LTGLContext *context) {
       context.blendEnabled = YES;
 
-      [context executeAndPreserveState:^{
+      [context executeAndPreserveState:^(LTGLContext *context) {
         context.blendEnabled = NO;
         expect(context.blendEnabled).to.beFalsy();
       }];
