@@ -141,8 +141,7 @@
 }
 
 - (void)setContextWithRenderingToScreen:(BOOL)renderingToScreen andDraw:(LTVoidBlock)block {
-  LTGLContext *context = [LTGLContext currentContext];
-  [context executeAndPreserveState:^{
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.renderingToScreen = renderingToScreen;
     // New framebuffer is attached, there's no point of keeping the previous scissor tests.
     context.scissorTestEnabled = NO;

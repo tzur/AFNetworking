@@ -159,8 +159,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }
 
   [self readFromTexture:^{
-    LTGLContext *context = [LTGLContext currentContext];
-    [context executeAndPreserveState:^{
+    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       // Since the default pack alignment is 4, it is necessarry to verify there's no special
       // packing of the texture that may effect the representation of the Mat if the number of bytes
       // per row % 4 != 0.
@@ -205,8 +204,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }
 
   [self writeToTexture:^{
-    LTGLContext *context = [LTGLContext currentContext];
-    [context executeAndPreserveState:^{
+    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       // Since the default pack alignment is 4, it is necessarry to verify there's no special
       // packing of the texture that may effect the representation of the Mat if the number of bytes
       // per row % 4 != 0.

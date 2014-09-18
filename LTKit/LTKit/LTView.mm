@@ -261,8 +261,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)glkView:(GLKView __unused *)view drawInRect:(CGRect __unused)rect {
   [LTGLContext setCurrentContext:self.context];
-  [self.context executeAndPreserveState:^{
-    self.context.renderingToScreen = YES;
+  [self.context executeAndPreserveState:^(LTGLContext *context) {
+    context.renderingToScreen = YES;
     [self drawToBoundFramebuffer];
   }];
   
@@ -354,10 +354,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // Draw the shadows surrounding the visible content rect.
   [self drawShadows];
   
-  [self.context executeAndPreserveState:^{
+  [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Set the scissor box to draw only inside the visible content rect.
-    self.context.scissorTestEnabled = YES;
-    self.context.scissorBox = [self scissorBoxForVisibleContentRect:visibleContentRect];
+    context.scissorTestEnabled = YES;
+    context.scissorBox = [self scissorBoxForVisibleContentRect:visibleContentRect];
     
     // Draw the content.
     [self drawContentForVisibleContentRect:visibleContentRect];
@@ -372,8 +372,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)drawToFbo:(LTFbo *)fbo {
   [fbo bindAndExecute:^{
-    LTGLContext *context = [LTGLContext currentContext];
-    [context executeAndPreserveState:^{
+    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       // This method is used for testing, and the goal is to simulate rendering to a screen
       // framebuffer, similar to a call coming from glkView:drawInRect:.
       context.renderingToScreen = YES;
@@ -420,10 +419,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     .destinationAlpha = LTGLContextBlendFuncZero
   };
   
-  [self.context executeAndPreserveState:^{
-    self.context.blendEnabled = YES;
-    self.context.blendFunc = kLTGLContextBlendFuncChecker;
-    self.context.blendEquation = kLTGLContextBlendEquationDefault;
+  [self.context executeAndPreserveState:^(LTGLContext *context) {
+    context.blendEnabled = YES;
+    context.blendFunc = kLTGLContextBlendFuncChecker;
+    context.blendEquation = kLTGLContextBlendEquationDefault;
     
     [self.checkerboardDrawer drawRect:self.framebufferBounds
                 inFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
@@ -447,7 +446,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     textureToDraw.magFilterInterpolation =
         [self textureInterpolationForZoomScale:self.navigationView.zoomScale];
     
-    [self.context executeAndPreserveState:^{
+    [self.context executeAndPreserveState:^(LTGLContext *) {
       // If the draw delegate supports the drawProcessedContent mechanism, use it to draw.
       BOOL didDrawProcessedContent = NO;
       if ([self.drawDelegate respondsToSelector:@selector(ltView:drawProcessedContent:

@@ -215,12 +215,12 @@ typedef struct {
 #pragma mark Execution
 #pragma mark -
 
-- (void)executeAndPreserveState:(LTVoidBlock)execute {
+- (void)executeAndPreserveState:(LTGLContextBlock)execute {
   LTParameterAssert(execute);
   [self assertContextIsCurrentContext];
-
+  
   self.contextStack.emplace([self valuesForCurrentState]);
-  execute();
+  execute(self);
   [self setCurrentStateFromValues:self.contextStack.top()];
   self.contextStack.pop();
 }
