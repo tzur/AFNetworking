@@ -101,6 +101,11 @@ CG_INLINE UIEdgeInsets operator/(const UIEdgeInsets &lhs, const CGFloat &rhs) {
 #pragma mark CGPoint Operations
 #pragma mark -
 
+/// Returns a point with the given size as coordinates.
+CG_INLINE CGPoint CGPointFromSize(const CGSize &size) {
+  return CGPointMake(size.width, size.height);
+}
+
 /// Returns whether two points are equal.
 CG_INLINE BOOL operator==(const CGPoint &lhs, const CGPoint &rhs) {
   return CGPointEqualToPoint(lhs, rhs);

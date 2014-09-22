@@ -52,6 +52,9 @@ cv::Rect LTCVRectWithCGRect(CGRect rect);
 /// Converts a \c cv::Vec4b to \c LTVector4.
 LTVector4 LTCVVec4bToLTVector4(cv::Vec4b value);
 
+/// Converts a \c cv::Vec4hf to \c LTVector4.
+LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value);
+
 /// Converts a \c LTVector4 to \c cv::Vec4b.
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value);
 

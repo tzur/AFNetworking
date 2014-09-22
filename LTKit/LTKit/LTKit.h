@@ -68,6 +68,7 @@
 #import <LTKit/LTPerspectiveProcessor.h>
 #import <LTKit/LTRectCopyProcessor.h>
 #import <LTKit/LTRecomposeProcessor.h>
+#import <LTKit/LTReshapeProcessor.h>
 #import <LTKit/LTSelectiveAdjustProcessor.h>
 #import <LTKit/LTSplitComplexMat.h>
 #import <LTKit/LTTiltShiftProcessor.h>

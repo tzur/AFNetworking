@@ -292,6 +292,7 @@ context(@"LTVector4", ^{
     LTVector4 v2(5, 4, 2, 6);
 
     expect(v1 + v2).to.equal(LTVector4(15, 12, 8, 18));
+    expect(v1 + 1).to.equal(LTVector4(11, 9, 7, 13));
     expect(v1 - v2).to.equal(LTVector4(5, 4, 4, 6));
     expect(v1 * v2).to.equal(LTVector4(50, 32, 12, 72));
     expect(v1 * 2).to.equal(LTVector4(20, 16, 12, 24));

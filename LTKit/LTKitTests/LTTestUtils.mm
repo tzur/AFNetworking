@@ -214,6 +214,14 @@ LTVector4 LTCVVec4bToLTVector4(cv::Vec4b value) {
   return result;
 }
 
+LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value) {
+  LTVector4 result;
+  for (int i = 0; i < value.channels; ++i) {
+    result.data()[i] = (float)value(i);
+  }
+  return result;
+}
+
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value) {
   return cv::Vec4b(value.x * UCHAR_MAX, value.y * UCHAR_MAX,
                    value.z * UCHAR_MAX, value.w * UCHAR_MAX);

@@ -682,6 +682,11 @@ inline LTVector4 operator+(LTVector4 lhs, const LTVector4 &rhs) {
   return lhs;
 }
 
+inline LTVector4 operator+(LTVector4 lhs, const CGFloat rhs) {
+  lhs += rhs;
+  return lhs;
+}
+
 inline LTVector4 operator-(LTVector4 lhs, const LTVector4 &rhs) {
   lhs -= rhs;
   return lhs;
