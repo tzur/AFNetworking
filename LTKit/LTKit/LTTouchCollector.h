@@ -35,6 +35,9 @@
 /// and the newly collected one.
 @interface LTTouchCollector : NSObject <LTViewTouchDelegate>
 
+/// Cancels the currently active stroke, or do nothing in case there is no active stroke.
+- (void)cancelActiveStroke;
+
 /// This delegate will be notified on collected events.
 @property (weak, nonatomic) id<LTTouchCollectorDelegate> delegate;
 
