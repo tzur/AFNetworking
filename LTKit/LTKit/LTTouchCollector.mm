@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTTouchCollectorDistanceFilter.h"
 #import "LTTouchCollectorFilter.h"
+#import "LTTouchCollectorTimeIntervalFilter.h"
 #import "LTPainterPoint.h"
 #import "LTView.h"
 
@@ -29,8 +30,15 @@
 /// @see \c UITouch class reference for more details.
 @property (weak, nonatomic) UITouch *paintingTouch;
 
+/// Instance of the \c LTView being painted on. This is kept througout the stroke to allow timer
+/// events and user cancellation events to access the view if necessary.
+@property (weak, nonatomic) LTView *paintingView;
+
 /// Array with all touch points collected during the current stroke.
 @property (strong, nonatomic) NSMutableArray *strokeTouchPoints;
+
+/// Navigation mode of the LTView prior to the stroke.
+@property (nonatomic) LTViewNavigationMode previousNavigationMode;
 
 @end
 
@@ -39,8 +47,11 @@
 /// Minimal screen distance for the default filter, in case no filter is provided.
 static const CGFloat kMinimalScreenDistanceDuringStroke = 1;
 
-/// Minimal distance from the stroke starting point, for the initial movement touch.
+/// Minimal distance from the stroke starting point, that will trigger the initial movement touch.
 static const CGFloat kMinimalScreenDistanceForInitialMovement = 10;
+
+/// Minimal time interval from the starting touch time, that will trigger the initial timer touch.
+static const CGFloat kMinimalTimeIntervalForInitialMovement = 0.3;
 
 /// Minimal distance from the stroke starting point, for disabling the navigation gestures.
 static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
@@ -53,6 +64,7 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   if (self = [super init]) {
     self.filter = [self createDefaultFilter];
     self.filterForDisablingNavigation = [self createFilterForDisablingNavigation];
+    self.previousNavigationMode = LTViewNavigationNone;
   }
   return self;
 }
@@ -79,10 +91,11 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   // expecting touches to be a subset of [event allTouches].
   LTAssert(touches.count == 1);
   self.paintingTouch = [touches anyObject];
+  self.paintingView = view;
   LTPainterPoint *point = [self pointFromTouch:self.paintingTouch inView:view];
   self.strokeTouchPoints = [NSMutableArray arrayWithObject:point];
   [self.delegate ltTouchCollector:self startedStrokeAt:point];
-  [self startTimerWithView:view];
+  [self startTimer];
 }
 
 - (void)ltView:(LTView *)view touchesMoved:(NSSet __unused *)touches
@@ -101,7 +114,10 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   
   // Disable the two finger navigation if moved enough from the initial touch location.
   if ([self.filterForDisablingNavigation acceptNewPoint:newPoint withOldPoint:self.firstPoint]) {
-    view.navigationMode = LTViewNavigationNone;
+    if (view.navigationMode != LTViewNavigationNone) {
+      self.previousNavigationMode = view.navigationMode;
+      view.navigationMode = LTViewNavigationNone;
+    }
   }
 }
 
@@ -115,17 +131,33 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 }
 
 #pragma mark -
+#pragma mark Public Interface
+#pragma mark -
+
+- (void)cancelActiveStroke {
+  if (self.paintingTouch) {
+    [self finishStroke:YES];
+  }
+}
+
+#pragma mark -
 #pragma mark Painting Utilities
 #pragma mark -
 
-- (void)handlePossibleStrokeEndingTouches:(NSSet *)touches inView:(LTView *)view {
+- (void)handlePossibleStrokeEndingTouches:(NSSet *)touches inView:(LTView __unused *)view {
   if ([touches containsObject:self.paintingTouch]) {
     BOOL cancelled = self.paintingTouch.phase == UITouchPhaseCancelled;
-    self.paintingTouch = nil;
-    [self endTimer];
-    view.navigationMode = LTViewNavigationTwoFingers;
-    [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
+    [self finishStroke:cancelled];
   }
+}
+
+- (void)finishStroke:(BOOL)cancelled {
+  self.paintingTouch = nil;
+  [self endTimer];
+  self.paintingView.navigationMode = self.previousNavigationMode;
+  self.previousNavigationMode = LTViewNavigationNone;
+  self.paintingView = nil;
+  [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
 }
 
 - (id<LTTouchCollectorFilter>)filterForCurrentStrokeState {
@@ -138,10 +170,10 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 
 /// Creates and starts the timer running during the stroke, triggering time-based touch events when
 /// the touches are stationary.
-- (void)startTimerWithView:(LTView *)view {
+- (void)startTimer {
   LTAssert(!self.timer, @"Starting a stroke timer, but timer already exists.");
   self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(touchTimerFired:)
-                                     userInfo:view repeats:YES];
+                                     userInfo:nil repeats:YES];
   [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
 }
 
@@ -151,13 +183,14 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 }
 
 /// Triggered by a timer during a stroke, collects time-based events for stationary toches.
-- (void)touchTimerFired:(NSTimer *)timer {
-  if (!self.paintingTouch || self.paintingTouch.phase != UITouchPhaseStationary) {
+- (void)touchTimerFired:(NSTimer __unused *)timer {
+  if (!self.paintingTouch || !self.paintingView ||
+      self.paintingTouch.phase != UITouchPhaseStationary) {
     return;
   }
   
   // Test the new point with the current filter, and collect it if accepted.
-  LTPainterPoint *newPoint = [self pointFromTouch:self.paintingTouch inView:timer.userInfo];
+  LTPainterPoint *newPoint = [self pointFromTouch:self.paintingTouch inView:self.paintingView];
   LTPainterPoint *oldPoint = self.lastPoint;
   if ([[self filterForCurrentStrokeState] acceptNewPoint:newPoint withOldPoint:oldPoint]) {
     [self.strokeTouchPoints addObject:newPoint];
@@ -197,9 +230,13 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 
 - (id<LTTouchCollectorFilter>)createFilterForInitialMovement {
   LTAssert(self.filter);
-  LTTouchCollectorDistanceFilter *initialMovementFilter =
-  [LTTouchCollectorDistanceFilter
-   filterWithMinimalScreenDistance:kMinimalScreenDistanceForInitialMovement];
+  LTTouchCollectorOrFilter *initialMovementFilter =
+      [[LTTouchCollectorOrFilter alloc] initWithFilters:@[
+          [LTTouchCollectorTimeIntervalFilter
+              filterWithMinimalTimeInterval:kMinimalTimeIntervalForInitialMovement],
+          [LTTouchCollectorDistanceFilter
+              filterWithMinimalScreenDistance:kMinimalScreenDistanceForInitialMovement]]];
+  
   return [[LTTouchCollectorAndFilter alloc] initWithFilters:@[initialMovementFilter, self.filter]];
 }
 
