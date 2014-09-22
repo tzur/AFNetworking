@@ -5,7 +5,6 @@
 
 #import "LTBilateralFilterProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTOneShotImageProcessor.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTEdgesMaskFsh.h"
 #import "LTShaderStorage+LTEdgesMaskVsh.h"
