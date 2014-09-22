@@ -60,6 +60,12 @@ context(@"cgfloat operations", ^{
 });
 
 context(@"cgpoint operations", ^{
+  it(@"construction", ^{
+    expect(CGPointFromSize(CGSizeZero)).to.equal(CGPointZero);
+    expect(CGPointIsNull(CGPointFromSize(CGSizeNull))).to.beTruthy();
+    expect(CGPointFromSize(CGSizeMake(1, 2))).to.equal(CGPointMake(1, 2));
+  });
+  
   it(@"comparison", ^{
     expect(CGPointMake(1, 2) == CGPointMake(1, 2)).to.beTruthy();
     expect(CGPointMake(1, 2) != CGPointMake(1, 2)).to.beFalsy();
