@@ -37,6 +37,10 @@
 /// Array with all touch points collected during the current stroke.
 @property (strong, nonatomic) NSMutableArray *strokeTouchPoints;
 
+/// Indicates that the navigation mode of the \c LTView was set to none, and that it should be
+/// restored when the stroke ends.
+@property (nonatomic) BOOL forcedNavigationMode;
+
 /// Navigation mode of the LTView prior to the stroke.
 @property (nonatomic) LTViewNavigationMode previousNavigationMode;
 
@@ -114,7 +118,8 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   
   // Disable the two finger navigation if moved enough from the initial touch location.
   if ([self.filterForDisablingNavigation acceptNewPoint:newPoint withOldPoint:self.firstPoint]) {
-    if (view.navigationMode != LTViewNavigationNone) {
+    if (!self.forcedNavigationMode) {
+      self.forcedNavigationMode = YES;
       self.previousNavigationMode = view.navigationMode;
       view.navigationMode = LTViewNavigationNone;
     }
@@ -154,8 +159,11 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 - (void)finishStroke:(BOOL)cancelled {
   self.paintingTouch = nil;
   [self endTimer];
-  self.paintingView.navigationMode = self.previousNavigationMode;
-  self.previousNavigationMode = LTViewNavigationNone;
+  if (self.forcedNavigationMode) {
+    self.paintingView.navigationMode = self.previousNavigationMode;
+    self.previousNavigationMode = LTViewNavigationNone;
+    self.forcedNavigationMode = NO;
+  }
   self.paintingView = nil;
   [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
 }
