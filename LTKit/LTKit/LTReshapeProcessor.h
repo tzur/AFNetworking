@@ -29,13 +29,13 @@ typedef struct {
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
 /// Initializes the processor with a passthrough fragment shader, the given \c input texture,
-/// \c mask which indicates areas to freeze while adjusting the mesh texture, and an \c output
-/// texture to write the results into.
+/// \c mask which indicates areas to freeze (values lower than \c 1) while adjusting the mesh
+/// texture, and an \c output texture to write the results into.
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output;
 
 /// Designated initializer: initializes the processor with the given fragment shader, \c input
-/// texture, \c mask which indicates areas to freeze while adjusting the mesh texture, and an
-/// \c output texture to write the results into.
+/// texture, \c mask which indicates areas to freeze (values lower than \c 1) while adjusting the
+/// mesh texture, and an \c output texture to write the results into.
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
                                   mask:(LTTexture *)mask output:(LTTexture *)output;
 

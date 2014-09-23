@@ -167,7 +167,8 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 }
 
 - (LTTexture *)defaultMaskTexture {
-  LTTexture *texture = [LTTexture textureWithImage:cv::Mat1b(1, 1, (uchar)0)];
+  LTTexture *texture = [LTTexture textureWithImage:cv::Mat1b(1, 1)];
+  [texture clearWithColor:LTVector4One];
   texture.minFilterInterpolation = LTTextureInterpolationNearest;
   texture.magFilterInterpolation = LTTextureInterpolationNearest;
   return texture;
