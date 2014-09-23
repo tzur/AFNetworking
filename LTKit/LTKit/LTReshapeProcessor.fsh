@@ -62,15 +62,15 @@ void main() {
   // mask. Repeat to get more accurate results and avoid a step edge in transformed areas near the
   // boundary of the mask.
   highp float maskTarget = texture2D(maskTexture, vTexcoord + lastFrag + delta).r;
-  delta *= 1.0 - 0.5 * maskTarget;
+  delta *= 0.5 + 0.5 * maskTarget;
   maskTarget = texture2D(maskTexture, vTexcoord + lastFrag + delta).r;
-  delta *= 1.0 - 0.5 * maskTarget;
+  delta *= 0.5 + 0.5 * maskTarget;
   maskTarget = texture2D(maskTexture, vTexcoord + lastFrag + delta).r;
-  delta *= 1.0 - 0.5 * maskTarget;
+  delta *= 0.5 + 0.5 * maskTarget;
   
   // Dampen the transformation if the source vertex (before the transformation) is inside the mask.
   highp float maskSource = texture2D(maskTexture, vTexcoord + lastFrag).r;
-  delta *= 1.0 - maskSource;
+  delta *= maskSource;
 
   gl_FragColor = vec4(lastFrag + delta, 0.0, 1.0);
 }

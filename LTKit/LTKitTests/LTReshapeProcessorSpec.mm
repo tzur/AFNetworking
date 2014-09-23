@@ -32,7 +32,7 @@ beforeEach(^{
   output = [LTTexture byteRGBATextureWithSize:kOutputSize];
   mask = [LTTexture textureWithSize:kInputSize precision:LTTexturePrecisionHalfFloat
                                     format:LTTextureFormatRed allocateMemory:YES];
-  [mask clearWithColor:LTVector4Zero];
+  [mask clearWithColor:LTVector4One];
 });
 
 afterEach(^{
@@ -202,6 +202,11 @@ context(@"processing", ^{
     });
     
     context(@"without mask", ^{
+      beforeEach(^{
+        processor = [[LTReshapeProcessor alloc] initWithInput:input output:output];
+        [processor process];
+      });
+      
       it(@"should reset", ^{
         cv::Mat4hf expected = processor.meshDisplacementTexture.image;
         
@@ -246,7 +251,7 @@ context(@"processing", ^{
         [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
           cv::Mat1hf mat = mapped->rowRange(mapped->rows / 2, mapped->rows - 1);
           std::transform(mat.begin(), mat.end(), mat.begin(), [](const half &) {
-            return half(1);
+            return half(0);
           });
         }];
       });
@@ -282,7 +287,7 @@ context(@"processing", ^{
       
       it(@"should unwarp ignoring mask", ^{
         cv::Mat1hf previousMask = mask.image;
-        [mask clearWithColor:LTVector4Zero];
+        [mask clearWithColor:LTVector4One];
         [processor resizeWithCenter:CGPointMake(0.5, 0.5) scale:1.5 brushParams:params];
         [mask load:previousMask];
         [processor unwarpWithCenter:CGPointMake(0.75, 0.75) brushParams:params];
