@@ -15,7 +15,7 @@ context(@"processing", ^{
   beforeEach(^{
     cv::Mat4b inputImage(16, 16, cv::Vec4b(128, 64, 32, 255));
     cv::Mat1b maskImage(inputImage.size(), 128);
-    maskImage(cv::Rect(0, 0, 4, 4)) = 255;
+    maskImage(cv::Rect(0, 0, 4, 4)).setTo(0);
 
     input = [LTTexture textureWithImage:inputImage];
     LTTexture *mask = [LTTexture textureWithImage:maskImage];

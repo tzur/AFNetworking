@@ -10,7 +10,7 @@ varying highp vec2 vTexcoord;
 
 void main() {
   lowp vec4 image = texture2D(sourceTexture, vTexcoord);
-  lowp vec4 mask = texture2D(maskTexture, vTexcoord);
+  lowp vec4 mask = 1.0 - texture2D(maskTexture, vTexcoord);
 
   lowp vec4 color = mix(image, maskColor, mask.r * maskColor.a);
   gl_FragColor = vec4(color.rgb, 1.0);
