@@ -116,6 +116,18 @@ context(@"GLKMatrix3", ^{
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
   });
+
+  it(@"should correctly compute the determinant", ^{
+    static const CGFloat kEpsilon = 1e-5;
+
+    GLKMatrix3 a = GLKMatrix3Identity;
+    GLKMatrix3 b = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    GLKMatrix3 c = {{2.718281, 1.618033, 3.141592, 0.577215, 7, 1, 0, -2, 5}};
+
+    expect(GLKMatrix3Determinant(a)).to.equal(1);
+    expect(GLKMatrix3Determinant(b)).to.equal(0);
+    expect(GLKMatrix3Determinant(c)).to.beCloseToWithin(92.279884, kEpsilon);
+  });
 });
 
 context(@"GLKMatrix4", ^{
