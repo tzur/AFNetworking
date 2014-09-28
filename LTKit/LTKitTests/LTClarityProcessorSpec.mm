@@ -1,0 +1,128 @@
+// Copyright (c) 2014 Lightricks. All rights reserved.
+// Created by Zeev Farbman.
+
+#import "LTClarityProcessor.h"
+
+#import "LTCGExtensions.h"
+#import "LTGLKitExtensions.h"
+#import "LTOpenCVExtensions.h"
+#import "LTTexture+Factory.h"
+
+LTSpecBegin(LTClarityProcessor)
+
+__block LTTexture *input;
+__block LTTexture *output;
+__block LTClarityProcessor *processor;
+
+beforeEach(^{
+  input = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
+  output = [LTTexture textureWithPropertiesOf:input];
+  processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
+});
+
+afterEach(^{
+  processor = nil;
+  input = nil;
+  output = nil;
+});
+
+context(@"properties", ^{
+  it(@"should return default properties correctly", ^{
+    expect(processor.punch).to.equal(0);
+    expect(processor.flatten).to.equal(0);
+    expect(processor.gain).to.equal(0);
+    expect(processor.saturation).to.equal(0);
+  });
+});
+
+context(@"synthetic rendering", ^{
+  it(@"should process punch correctly", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
+    cv::Mat4b output(16, 16, cv::Vec4b(0, 141, 255 ,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.punch = 1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
+  it(@"should process flatten correctly", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
+    cv::Mat4b output(16, 16, cv::Vec4b(28, 124, 219 ,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.flatten = 1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+
+  it(@"should process gain correctly", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
+    cv::Mat4b output(16, 16, cv::Vec4b(0, 223, 255 ,255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.gain = 1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+  
+  it(@"should process saturation correctly", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
+    // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
+    cv::Mat4b output(16, 16, cv::Vec4b(104, 104, 104, 255));
+    
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.saturation = -1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+});
+  
+context(@"real world rendering", ^{
+  beforeEach(^{
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.jpg")];
+    output = [LTTexture textureWithSize:std::round(input.size * 0.1)
+                              precision:LTTexturePrecisionHalfFloat format:LTTextureFormatRGBA
+                         allocateMemory:YES];
+    processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
+  });
+  
+  it(@"should leave image unmodified on default parameters", ^{
+    [processor process];
+    
+    LTTexture *byteOutput = [LTTexture byteRGBATextureWithSize:output.size];
+    [output cloneTo:byteOutput];
+    
+    cv::Mat4b expected(output.size.height, output.size.width);
+    cv::resize(LTLoadMat([self class], @"Island.jpg"), expected, expected.size(), 0, 0,
+               cv::INTER_LINEAR);
+    expect($(byteOutput.image)).to.beCloseToMatWithin($(expected), 1);
+  });
+    
+  sit(@"should apply clarity effect", ^{
+    processor.punch = 0.5;
+    processor.flatten = 0.2;
+    processor.gain = 0.1;
+    processor.saturation = 0.05;
+    [processor process];
+    
+    LTTexture *byteOutput = [LTTexture byteRGBATextureWithSize:output.size];
+    [output cloneTo:byteOutput];
+    cv::Mat image = LTLoadMat([self class], @"IslandClarity.png");
+    expect($(byteOutput.image)).to.beCloseToMatWithin($(image), 1);
+  });
+});
+
+LTSpecEnd

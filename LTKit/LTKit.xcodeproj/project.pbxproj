@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03045C3919C037540075207D /* LTSmoothPyramid.fsh */; };
+		03045D1E19C1711D0075207D /* LTClarityProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03045D1C19C1711D0075207D /* LTClarityProcessor.h */; };
+		03045D1F19C1711D0075207D /* LTClarityProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03045D1D19C1711D0075207D /* LTClarityProcessor.mm */; };
+		03045D3319C1717E0075207D /* LTClarityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03045D3219C1717E0075207D /* LTClarityProcessorSpec.mm */; };
+		03045D3419C176BA0075207D /* LTClarity.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03045D3019C171320075207D /* LTClarity.fsh */; };
 		03045D7919C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png in Resources */ = {isa = PBXBuildFile; fileRef = 03045D7619C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png */; };
 		03045D7A19C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png in Resources */ = {isa = PBXBuildFile; fileRef = 03045D7719C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png */; };
 		03045D7C19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png in Resources */ = {isa = PBXBuildFile; fileRef = 03045D7B19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png */; };
@@ -29,6 +33,7 @@
 		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
 		031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */; };
 		031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */; };
+		03306EEB19C9EE8600262A93 /* IslandClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03306EEA19C9EE8600262A93 /* IslandClarity.png */; };
 		03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */; };
 		03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */; };
 		03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */; };
@@ -967,6 +972,10 @@
 
 /* Begin PBXFileReference section */
 		03045C3919C037540075207D /* LTSmoothPyramid.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSmoothPyramid.fsh; sourceTree = "<group>"; };
+		03045D1C19C1711D0075207D /* LTClarityProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTClarityProcessor.h; sourceTree = "<group>"; };
+		03045D1D19C1711D0075207D /* LTClarityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTClarityProcessor.mm; sourceTree = "<group>"; };
+		03045D3019C171320075207D /* LTClarity.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTClarity.fsh; sourceTree = "<group>"; };
+		03045D3219C1717E0075207D /* LTClarityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTClarityProcessorSpec.mm; sourceTree = "<group>"; };
 		03045D7519C5FBBD0075207D /* SmoothPyramidUpsampleGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleGrid4.png; path = Resources/SmoothPyramidUpsampleGrid4.png; sourceTree = "<group>"; };
 		03045D7619C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleGrid5.png; path = Resources/SmoothPyramidUpsampleGrid5.png; sourceTree = "<group>"; };
 		03045D7719C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleGrid6.png; path = Resources/SmoothPyramidUpsampleGrid6.png; sourceTree = "<group>"; };
@@ -991,6 +1000,7 @@
 		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
 		031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethDesaturatedGreenAndBlue.png; path = Resources/MacbethDesaturatedGreenAndBlue.png; sourceTree = "<group>"; };
 		031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethSaturatedBrightenedRedAndOrange.png; path = Resources/MacbethSaturatedBrightenedRedAndOrange.png; sourceTree = "<group>"; };
+		03306EEA19C9EE8600262A93 /* IslandClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IslandClarity.png; path = Resources/IslandClarity.png; sourceTree = "<group>"; };
 		03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorNoisyFrame.png; path = Resources/MealBWProcessorNoisyFrame.png; sourceTree = "<group>"; };
 		03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnalogFilmProcessor.h; sourceTree = "<group>"; };
 		03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTAnalogFilmProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1831,9 +1841,12 @@
 				03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */,
 				03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */,
 				03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */,
+				030CF74218993594000E9ED0 /* LTBWTonality.fsh */,
 				030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */,
 				030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */,
-				030CF74218993594000E9ED0 /* LTBWTonality.fsh */,
+				03045D3019C171320075207D /* LTClarity.fsh */,
+				03045D1C19C1711D0075207D /* LTClarityProcessor.h */,
+				03045D1D19C1711D0075207D /* LTClarityProcessor.mm */,
 				03C192DB18FAB9B900DC6CA6 /* LTColorConversionProcessor.h */,
 				03C192DC18FAB9B900DC6CA6 /* LTColorConversionProcessor.mm */,
 				03C192EA18FABA0D00DC6CA6 /* LTColorConversionProcessor.fsh */,
@@ -1953,6 +1966,7 @@
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 				03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */,
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
+				03045D3219C1717E0075207D /* LTClarityProcessorSpec.mm */,
 				03C192EC18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm */,
 				8BAE3A8718B3B15A00DA79E1 /* LTColorGradientSpec.mm */,
 				2812D56519912B380081478F /* LTCropProcessorSpec.mm */,
@@ -2493,6 +2507,7 @@
 				28A2546719C9D3C80057E1A3 /* ReshapeProcessorUnwarpWithoutMask.png */,
 				28A2545319C9CDF30057E1A3 /* ReshapeProcessorReshapeWithoutMask.png */,
 				28A2545419C9CDF30057E1A3 /* ReshapeProcessorResizeWithoutMask.png */,
+				03306EEA19C9EE8600262A93 /* IslandClarity.png */,
 				03045D7B19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png */,
 				03045D7519C5FBBD0075207D /* SmoothPyramidUpsampleGrid4.png */,
 				03045D7619C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png */,
@@ -3297,6 +3312,7 @@
 				28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */,
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
+				03045D1E19C1711D0075207D /* LTClarityProcessor.h in Headers */,
 				8B871FF01924A75F00517F2E /* LTColorConversionProcessor.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
@@ -3763,6 +3779,7 @@
 				03AFC1591909608600F17063 /* SanFrancisco.jpg in Resources */,
 				2853684719BDD61300CC9057 /* ImageWithoutFrame.png in Resources */,
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
+				03306EEB19C9EE8600262A93 /* IslandClarity.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
@@ -3846,6 +3863,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */,
+				03045D3419C176BA0075207D /* LTClarity.fsh in Sources */,
 				8BABF1B219BC7D6700AED760 /* LTRedBlackEAWProcessor.fsh in Sources */,
 				8BABF1B319BC7D6700AED760 /* LTRedBlackEAWProcessor.vsh in Sources */,
 				8BABF1AF19BC63EC00AED760 /* LTBlueYellowEAWProcessor.vsh in Sources */,
@@ -4036,6 +4054,7 @@
 				8BABFD69188C5A29004163DA /* LTNextIterationPlacement.mm in Sources */,
 				8BA11AE11831555100A5001D /* LTTexture.mm in Sources */,
 				28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */,
+				03045D1F19C1711D0075207D /* LTClarityProcessor.mm in Sources */,
 				289A87301895158500EB8E86 /* LTInterpolationRoutine.mm in Sources */,
 				8B19621D184B6DA40065A057 /* LTGPUQueue.mm in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
@@ -4164,6 +4183,7 @@
 				287705B518BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm in Sources */,
 				03C1930D18FADC9000DC6CA6 /* LTSelectiveAdjustProcessorSpec.mm in Sources */,
 				28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */,
+				03045D3319C1717E0075207D /* LTClarityProcessorSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */,
 				287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */,
