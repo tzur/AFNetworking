@@ -27,7 +27,7 @@
   if (self = [super init]) {
     self.drawer = drawer;
     self.strategy = strategy;
-    self.auxiliaryTextures = auxiliaryTextures;
+    self.auxiliaryTextures = auxiliaryTextures ?: [NSDictionary dictionary];
   }
   return self;
 }
