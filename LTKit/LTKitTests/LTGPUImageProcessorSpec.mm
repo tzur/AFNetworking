@@ -62,6 +62,18 @@ context(@"drawer", ^{
     [drawer verify];
   });
 
+  it(@"should set auxiliary texture after given nil to auxiliary textures in the initializer", ^{
+    static NSString * const kTextureName = @"MyTexture";
+
+    LTGPUImageProcessor *processor =
+        [[LTGPUImageProcessor alloc] initWithDrawer:drawer strategy:strategy
+                               andAuxiliaryTextures:nil];
+    [processor setAuxiliaryTexture:texture withName:kTextureName];
+    [processor process];
+    
+    expect(processor.auxiliaryTextures[kTextureName]).to.equal(texture);
+  });
+
   it(@"should set auxiliary texture via protected interface", ^{
     static NSString * const kTextureName = @"MyTexture";
 
