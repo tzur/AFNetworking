@@ -3,6 +3,7 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTProcessorFillMode.h"
 #import "LTPropertyMacros.h"
 
 /// Types of blend modes that are usable in the mixer.
@@ -18,14 +19,6 @@ typedef NS_ENUM(NSUInteger, LTBlendMode) {
   LTBlendModeOverlay,
   LTBlendModePlusLighter,
   LTBlendModePlusDarker
-};
-
-/// How to handle the back texture if is has a different size than the output.
-typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
-  /// Stretch the back texture (possibly non-uniformly) to completely fill the output.
-  LTMixerOutputFillModeStretch = 0,
-  /// Tile the back texture to fill the output.
-  LTMixerOutputFillModeTile
 };
 
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
@@ -44,7 +37,7 @@ typedef NS_ENUM(NSUInteger, LTMixerOutputFillMode) {
 
 /// How the output should be filled with the back texture. This only has effect when the size of the
 /// output is different than the back texture. The default value is \c LTMixerOutputFillModeStretch.
-@property (nonatomic) LTMixerOutputFillMode outputFillMode;
+@property (nonatomic) LTProcessorFillMode fillMode;
 
 /// Translation of the front texture on top of the back texture. The default value is \c (0, 0).
 @property (nonatomic) CGPoint frontTranslation;

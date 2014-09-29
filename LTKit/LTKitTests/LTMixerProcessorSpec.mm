@@ -159,7 +159,7 @@ context(@"tiling", ^{
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
 
     processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
-    processor.outputFillMode = LTMixerOutputFillModeTile;
+    processor.fillMode = LTProcessorFillModeTile;
     [processor process];
 
     cv::Mat4b expected(32, 32);
@@ -187,7 +187,7 @@ context(@"tiling", ^{
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
 
     processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
-    processor.outputFillMode = LTMixerOutputFillModeTile;
+    processor.fillMode = LTProcessorFillModeTile;
     processor.frontTranslation = CGPointMake(6, 6);
     processor.frontRotation = M_PI_2;
     processor.frontScaling = 2.0;

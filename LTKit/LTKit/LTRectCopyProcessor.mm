@@ -40,7 +40,7 @@
 - (void)setDefaultValues {
   self.inputRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.input.size)];
   self.outputRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.output.size)];
-  self.texturingMode = LTRectCopyTexturingModeStretch;
+  self.fillMode = LTProcessorFillModeStretch;
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
@@ -49,11 +49,11 @@
 }
 
 - (void)process {
-  switch (self.texturingMode) {
-    case LTRectCopyTexturingModeStretch:
+  switch (self.fillMode) {
+    case LTProcessorFillModeStretch:
       [super process];
       return;
-    case LTRectCopyTexturingModeTile:
+    case LTProcessorFillModeTile:
       [self processTileTexturingMode];
       return;
   }
@@ -90,9 +90,9 @@
   return direction.normalized();
 }
 
-- (void)setTexturingMode:(LTRectCopyTexturingMode)texturingMode {
-  _texturingMode = texturingMode;
-  self[[LTRectCopyFsh texturingMode]] = @(texturingMode);
+- (void)setFillMode:(LTProcessorFillMode)fillMode {
+  _fillMode = fillMode;
+  self[[LTRectCopyFsh fillMode]] = @(fillMode);
 }
 
 @end

@@ -77,7 +77,7 @@
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
       @instanceKeypath(LTMixerProcessor, blendMode),
-      @instanceKeypath(LTMixerProcessor, outputFillMode),
+      @instanceKeypath(LTMixerProcessor, fillMode),
       @instanceKeypath(LTMixerProcessor, frontTranslation),
       @instanceKeypath(LTMixerProcessor, frontScaling),
       @instanceKeypath(LTMixerProcessor, frontRotation),
@@ -113,17 +113,10 @@
   self[[LTMixerFsh blendMode]] = @(blendMode);
 }
 
-- (void)setOutputFillMode:(LTMixerOutputFillMode)outputFillMode {
-  _outputFillMode = outputFillMode;
+- (void)setFillMode:(LTProcessorFillMode)fillMode {
+  _fillMode = fillMode;
 
-  switch (outputFillMode) {
-    case LTMixerOutputFillModeStretch:
-      self.backCopyProcessor.texturingMode = LTRectCopyTexturingModeStretch;
-      break;
-    case LTMixerOutputFillModeTile:
-      self.backCopyProcessor.texturingMode = LTRectCopyTexturingModeTile;
-      break;
-  }
+  self.backCopyProcessor.fillMode = fillMode;
 }
 
 - (void)setFrontTranslation:(CGPoint)frontTranslation {
