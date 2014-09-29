@@ -5,6 +5,7 @@
 
 #import "LTAnimation.h"
 #import "LTCGExtensions.h"
+#import "LTDevice.h"
 #import "NSObject+AddToContainer.h"
 
 #pragma mark -
@@ -95,7 +96,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 - (void)setDefaults {
   self.mode = LTViewNavigationFull;
   self.maxZoomScale = CGFLOAT_MAX;
-  self.contentScaleFactor = [UIScreen mainScreen].scale;
+  self.contentScaleFactor = [LTDevice currentDevice].glkContentScaleFactor;
 }
 
 - (void)createScrollView {

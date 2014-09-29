@@ -149,24 +149,44 @@ context(@"platform info", ^{
     expect(device.deviceTypeString).to.equal(@"LTDeviceTypeIPad1G");
   });
 
+  it(@"should return 3.5 inch screen given correct size", ^{
+    id screen = [OCMockObject mockForClass:[UIScreen class]];
+
+    CGRect bounds = CGRectMake(0, 0, 320, 480);
+    [[[screen stub] andReturnValue:$(bounds)] bounds];
+
+    LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
+                                                 UIScreen:screen
+                                             platformName:nil
+                                               mainBundle:[NSBundle mainBundle]];
+
+    expect(device.has3_5InchScreen).to.beTruthy();
+    expect(device.has4InchScreen).to.beFalsy();
+    expect(device.has4_7InchScreen).to.beFalsy();
+    expect(device.has5_5InchScreen).to.beFalsy();
+  });
+  
   it(@"should return 4 inch screen given correct size", ^{
     id screen = [OCMockObject mockForClass:[UIScreen class]];
     
     CGRect bounds = CGRectMake(0, 0, 320, 568);
     [[[screen stub] andReturnValue:$(bounds)] bounds];
-    
+
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
                                                  UIScreen:screen
                                              platformName:nil
                                                mainBundle:[NSBundle mainBundle]];
-    
+
+    expect(device.has3_5InchScreen).to.beFalsy();
     expect(device.has4InchScreen).to.beTruthy();
+    expect(device.has4_7InchScreen).to.beFalsy();
+    expect(device.has5_5InchScreen).to.beFalsy();
   });
   
-  it(@"should return non 4 inch screen given correct size", ^{
+  it(@"should return 4.7 inch screen given correct size", ^{
     id screen = [OCMockObject mockForClass:[UIScreen class]];
-
-    CGRect bounds = CGRectMake(0, 0, 320, 460);
+    
+    CGRect bounds = CGRectMake(0, 0, 375, 667);
     [[[screen stub] andReturnValue:$(bounds)] bounds];
 
     LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
@@ -174,7 +194,44 @@ context(@"platform info", ^{
                                              platformName:nil
                                                mainBundle:[NSBundle mainBundle]];
     
+    expect(device.has3_5InchScreen).to.beFalsy();
     expect(device.has4InchScreen).to.beFalsy();
+    expect(device.has4_7InchScreen).to.beTruthy();
+    expect(device.has5_5InchScreen).to.beFalsy();
+  });
+  
+  it(@"should return 5.5 inch screen given correct size", ^{
+    id screen = [OCMockObject mockForClass:[UIScreen class]];
+
+    CGRect bounds = CGRectMake(0, 0, 414, 736);
+    [[[screen stub] andReturnValue:$(bounds)] bounds];
+
+    LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
+                                                 UIScreen:screen
+                                             platformName:nil
+                                               mainBundle:[NSBundle mainBundle]];
+    
+    expect(device.has3_5InchScreen).to.beFalsy();
+    expect(device.has4InchScreen).to.beFalsy();
+    expect(device.has4_7InchScreen).to.beFalsy();
+    expect(device.has5_5InchScreen).to.beTruthy();
+  });
+  
+  it(@"should return correct screen size even if given in landscape orientation", ^{
+    id screen = [OCMockObject mockForClass:[UIScreen class]];
+    LTDevice *device = [[LTDevice alloc] initWithUIDevice:[UIDevice currentDevice]
+                                                 UIScreen:screen
+                                             platformName:nil
+                                               mainBundle:[NSBundle mainBundle]];
+
+    [[[screen expect] andReturnValue:$(CGRectMake(0, 0, 480, 320))] bounds];
+    [[[screen expect] andReturnValue:$(CGRectMake(0, 0, 568, 320))] bounds];
+    [[[screen expect] andReturnValue:$(CGRectMake(0, 0, 667, 375))] bounds];
+    [[[screen expect] andReturnValue:$(CGRectMake(0, 0, 736, 414))] bounds];
+    expect(device.has3_5InchScreen).to.beTruthy();
+    expect(device.has4InchScreen).to.beTruthy();
+    expect(device.has4_7InchScreen).to.beTruthy();
+    expect(device.has5_5InchScreen).to.beTruthy();
   });
 });
 

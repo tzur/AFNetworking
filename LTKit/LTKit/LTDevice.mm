@@ -19,8 +19,17 @@ static const CGFloat kPointsPerInchIPadMini = 163.0;
 /// Size of the common finger in inches.
 static const CGFloat kCommonFingerSizeInInches = 0.63;
 
-/// Size in points of tall 4-inch screen (such as iPhone 5's screen).
+/// Size in points of a 3.5 inch screen (such as iPhone 4's screen).
+static const CGFloat k3_5InchScreenHeight = 480;
+
+/// Size in points of a 4 inch screen (such as iPhone 5's screen).
 static const CGFloat k4InchScreenHeight = 568;
+
+/// Size in points of 4.7 inch screen (such as iPhone 6's screen).
+static const CGFloat k4_7InchScreenHeight = 667;
+
+/// Size in points of 5.5 inch screen (such as iPhone 6 Plus' screen).
+static const CGFloat k5_5InchScreenHeight = 736;
 
 // Source: http://theiphonewiki.com/wiki/Models
 static NSDictionary * const kPlatformSubstringToLTDeviceType = @{
@@ -36,6 +45,8 @@ static NSDictionary * const kPlatformSubstringToLTDeviceType = @{
   @"iPhone5,4": @(LTDeviceTypeIPhone5C),
   @"iPhone6,1": @(LTDeviceTypeIPhone5S),
   @"iPhone6,2": @(LTDeviceTypeIPhone5S),
+  @"iPhone7,2": @(LTDeviceTypeIPhone6),
+  @"iPhone7,1": @(LTDeviceTypeIPhone6Plus),
 
   // iPod.
   @"iPod1":     @(LTDeviceTypeIPod1G),
@@ -87,14 +98,16 @@ static NSDictionary * const kUnknownPlatformSubstringToLTDeviceType = @{
 
 static NSDictionary * const kDeviceTypeToString = @{
   // iPhone.
-  @(LTDeviceTypeIPhone1):   @"LTDeviceTypeIPhone1",
-  @(LTDeviceTypeIPhone3G):  @"LTDeviceTypeIPhone3G",
-  @(LTDeviceTypeIPhone3GS): @"LTDeviceTypeIPhone3GS",
-  @(LTDeviceTypeIPhone4):   @"LTDeviceTypeIPhone4",
-  @(LTDeviceTypeIPhone4S):  @"LTDeviceTypeIPhone4S",
-  @(LTDeviceTypeIPhone5):   @"LTDeviceTypeIPhone5",
-  @(LTDeviceTypeIPhone5C):  @"LTDeviceTypeIPhone5C",
-  @(LTDeviceTypeIPhone5S):  @"LTDeviceTypeIPhone5S",
+  @(LTDeviceTypeIPhone1):     @"LTDeviceTypeIPhone1",
+  @(LTDeviceTypeIPhone3G):    @"LTDeviceTypeIPhone3G",
+  @(LTDeviceTypeIPhone3GS):   @"LTDeviceTypeIPhone3GS",
+  @(LTDeviceTypeIPhone4):     @"LTDeviceTypeIPhone4",
+  @(LTDeviceTypeIPhone4S):    @"LTDeviceTypeIPhone4S",
+  @(LTDeviceTypeIPhone5):     @"LTDeviceTypeIPhone5",
+  @(LTDeviceTypeIPhone5C):    @"LTDeviceTypeIPhone5C",
+  @(LTDeviceTypeIPhone5S):    @"LTDeviceTypeIPhone5S",
+  @(LTDeviceTypeIPhone6):     @"LTDeviceTypeIPhone6",
+  @(LTDeviceTypeIPhone6Plus): @"LTDeviceTypeIPhone6Plus",
   
   // iPod.
   @(LTDeviceTypeIPod1G): @"LTDeviceTypeIPod1G",
@@ -139,8 +152,9 @@ static NSDictionary * const kDeviceTypeToString = @{
 @property (strong, nonatomic) EAGLContext *context;
 
 @property (strong, nonatomic) NSSet *supportedExtensions;
-@property (readwrite, nonatomic) GLint maxTextureSize;
-@property (readwrite, nonatomic) GLint maxTextureUnits;
+@property (nonatomic) GLint maxTextureSize;
+@property (nonatomic) GLint maxTextureUnits;
+@property (nonatomic) CGFloat glkContentScaleFactor;
 
 @property (strong, nonatomic) UIScreen *screen;
 @property (strong, nonatomic) UIDevice *device;
@@ -265,8 +279,24 @@ static NSDictionary * const kDeviceTypeToString = @{
   return _deviceTypeString;
 }
 
+- (CGFloat)portraitScreenHeight {
+  return std::max(self.screen.bounds.size);
+}
+
+- (BOOL)has3_5InchScreen {
+  return self.portraitScreenHeight == k3_5InchScreenHeight;
+}
+
 - (BOOL)has4InchScreen {
-  return self.screen.bounds.size.height == k4InchScreenHeight;
+  return self.portraitScreenHeight == k4InchScreenHeight;
+}
+
+- (BOOL)has4_7InchScreen {
+  return self.portraitScreenHeight == k4_7InchScreenHeight;
+}
+
+- (BOOL)has5_5InchScreen {
+  return self.portraitScreenHeight == k5_5InchScreenHeight;
 }
 
 - (CGFloat)pointsPerInch {
@@ -279,6 +309,8 @@ static NSDictionary * const kDeviceTypeToString = @{
     case LTDeviceTypeIPhone5:
     case LTDeviceTypeIPhone5C:
     case LTDeviceTypeIPhone5S:
+    case LTDeviceTypeIPhone6:
+    case LTDeviceTypeIPhone6Plus:
     case LTDeviceTypeUnknownIPhone:
     case LTDeviceTypeSimulatorIPhone:
       return kPointsPerInchIPhone;
@@ -395,6 +427,26 @@ static NSDictionary * const kDeviceTypeToString = @{
   }
 
   return _maxTextureUnits;
+}
+
+- (CGFloat)glkContentScaleFactor {
+  if (!_glkContentScaleFactor) {
+    GLKView *view = [[GLKView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+#ifdef DEBUG
+#if TARGET_IPHONE_SIMULATOR
+    // TODO:(amit) remove this when the simulator returns the same value as the actual device.
+    if (self.has4_7InchScreen) {
+      view.contentScaleFactor = 2.34375;
+      LogDebug(@"Simulating iPhone 6 content scale factor: %g", view.contentScaleFactor);
+    } else if (self.has5_5InchScreen) {
+      view.contentScaleFactor = 2.6087;
+      LogDebug(@"Simulating iPhone 6 Plus content scale factor: %g", view.contentScaleFactor);
+    }
+#endif
+#endif
+    _glkContentScaleFactor = view.contentScaleFactor;
+  }
+  return _glkContentScaleFactor;
 }
 
 - (BOOL)canRenderToHalfFloatTextures {
