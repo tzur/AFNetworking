@@ -65,7 +65,8 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (void)setBrushDefaults {
-  self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice * [UIScreen mainScreen].scale;
+  self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice *
+                      [LTDevice currentDevice].glkContentScaleFactor;
 }
 
 - (LTTexture *)createTexture {

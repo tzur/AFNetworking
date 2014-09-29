@@ -5,6 +5,7 @@
 
 #import "LTAnimation.h"
 #import "LTCGExtensions.h"
+#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
@@ -120,7 +121,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   // Allocate the glkView and set it up.
   self.glkView = [[GLKView alloc] initWithFrame:self.bounds];
-  self.glkView.contentScaleFactor = self.contentScaleFactor;
+#if TARGET_IPHONE_SIMULATOR
+  self.glkView.contentScaleFactor = [LTDevice currentDevice].glkContentScaleFactor;
+#endif
   self.glkView.context = self.context.context;
   self.glkView.drawableDepthFormat = GLKViewDrawableDepthFormatNone;
   self.glkView.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
@@ -317,6 +320,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
          self.navigationMode == LTViewNavigationTwoFingers;
 }
 
+#pragma mark -
+#pragma mark For Testing
+#pragma mark -
+
 - (void)simulateTouchesOfPhase:(UITouchPhase)phase {
   switch (phase) {
   case UITouchPhaseBegan:
@@ -334,6 +341,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   default:
     break;
   }
+}
+
+- (void)forceGLKViewFramebufferAllocation {
+  // TODO:(amit) see if this is necessary after switching to Xcode 6.
+  [self.glkView bindDrawable];
 }
 
 #pragma mark -
@@ -511,7 +523,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (CGSize)framebufferSize {
-  return self.glkView.bounds.size * self.glkView.contentScaleFactor;
+  return CGSizeMake(self.glkView.drawableWidth, self.glkView.drawableHeight);
 }
 
 - (CGRect)framebufferBounds {
@@ -611,11 +623,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (CGFloat)contentScaleFactor {
-  return [UIScreen mainScreen].scale;
+  return [LTDevice currentDevice].glkContentScaleFactor;
 }
 
 - (void)setContentScaleFactor:(CGFloat __unused)contentScaleFactor {
-  [super setContentScaleFactor:[UIScreen mainScreen].scale];
+  [super setContentScaleFactor:[LTDevice currentDevice].glkContentScaleFactor];
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {

@@ -4,6 +4,7 @@
 #import "LTView.h"
 
 #import "LTCGExtensions.h"
+#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTImage.h"
@@ -44,7 +45,7 @@ static const cv::Vec4b blue(0, 0, 255, 255);
 static const cv::Vec4b yellow(255, 255, 0, 255);
 
 beforeEach(^{
-  CGSize framebufferSize = kViewSize * [UIScreen mainScreen].scale;
+  CGSize framebufferSize = kViewSize * [LTDevice currentDevice].glkContentScaleFactor;
   short width = kContentSize.width / 2;
   short height = kContentSize.height / 2;
   inputContent = cv::Mat4b(kContentSize.height, kContentSize.width);
@@ -139,6 +140,7 @@ context(@"properties", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view forceGLKViewFramebufferAllocation];
   });
   
   afterEach(^{
@@ -146,7 +148,7 @@ context(@"properties", ^{
   });
   
   it(@"should have default values", ^{
-    expect(view.contentScaleFactor).to.equal([UIScreen mainScreen].scale);
+    expect(view.contentScaleFactor).to.equal([LTDevice currentDevice].glkContentScaleFactor);
     expect(view.contentSize).to.equal(kContentSize);
     expect(view.framebufferSize).to.equal(view.bounds.size * view.contentScaleFactor);
     expect(view.forwardTouchesToDelegate).to.beFalsy();
@@ -221,6 +223,7 @@ context(@"drawing", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view forceGLKViewFramebufferAllocation];
   });
   
   afterEach(^{
@@ -400,6 +403,7 @@ context(@"draw delegate", ^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTViewDrawDelegate)];
     view = [[LTView alloc] initWithFrame:kViewFrame];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view forceGLKViewFramebufferAllocation];
     view.drawDelegate = mock;
   });
   
@@ -547,6 +551,7 @@ context(@"touch delegate", ^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
     view = [[LTView alloc] initWithFrame:kViewFrame];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view forceGLKViewFramebufferAllocation];
     view.touchDelegate = mock;
     view.forwardTouchesToDelegate = YES;
     view.navigationMode = LTViewNavigationNone;

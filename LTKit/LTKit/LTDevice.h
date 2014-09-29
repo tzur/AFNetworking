@@ -11,6 +11,8 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
   LTDeviceTypeIPhone5,
   LTDeviceTypeIPhone5C,
   LTDeviceTypeIPhone5S,
+  LTDeviceTypeIPhone6,
+  LTDeviceTypeIPhone6Plus,
 
   // iPod.
   LTDeviceTypeIPod1G,
@@ -89,15 +91,27 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 /// Device type the software currently runs on as string.
 @property (readonly, nonatomic) NSString *deviceTypeString;
 
-/// \c YES if the device is an iPhone and has tall 4-inch screen (such as the iPhone 5).
+/// \c YES if the device is an iPhone and has a 3.5 inch screen (such as the iPhone 4/4S).
+@property (readonly, nonatomic) BOOL has3_5InchScreen;
+
+/// \c YES if the device is an iPhone and has a 4 inch screen (such as the iPhone 5/5S).
 @property (readonly, nonatomic) BOOL has4InchScreen;
 
-// The number of screen points per inch on the device.
+/// \c YES if the device is an iPhone and has a 4.7 inch screen (such as the iPhone 6).
+@property (readonly, nonatomic) BOOL has4_7InchScreen;
+
+/// \c YES if the device is an iPhone and has a 5.5 inch screen (such as the iPhone 6 plus).
+@property (readonly, nonatomic) BOOL has5_5InchScreen;
+
+/// The number of screen points per inch on the device.
 @property (readonly, nonatomic) CGFloat pointsPerInch;
 
 /// The typical size (in points) of a finger on the device. This depends on the device's screen
 /// points per inch.
 @property (readonly, nonatomic) CGFloat fingerSizeOnDevice;
+
+/// Default content scale factor of GLKViews created on the device.
+@property (readonly, nonatomic) CGFloat glkContentScaleFactor;
 
 #pragma mark -
 #pragma mark Localization
