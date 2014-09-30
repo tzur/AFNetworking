@@ -59,6 +59,8 @@ context(@"properties", ^{
     expect(processor.horizontal).to.equal(0);
     expect(processor.vertical).to.equal(0);
     expect(processor.rotationAngle).to.equal(0);
+    expect(processor.distortion).to.equal(0);
+    expect(processor.scaleMode).to.equal(LTPerspectiveProcessorScaleModeFit);
   });
   
   it(@"should set horizontal", ^{
@@ -77,6 +79,12 @@ context(@"properties", ^{
     CGFloat newValue = processor.maxRotationAngle / 2;
     processor.rotationAngle = newValue;
     expect(processor.rotationAngle).to.equal(newValue);
+  });
+
+  it(@"should set distortion", ^{
+    CGFloat newValue = processor.maxDistortion / 2;
+    processor.distortion = newValue;
+    expect(processor.distortion).to.equal(newValue);
   });
 });
 
@@ -103,13 +111,51 @@ context(@"processing", ^{
     expected = LTLoadMat([self class], @"PerspectiveRotation.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
   });
-  
+
+  context(@"geometric distortion", ^{
+    const CGSize kSize = CGSizeMake(256, 128);
+
+    beforeEach(^{
+      inputTexture = [LTTexture textureWithImage:LTCheckerboard(kSize.height, kSize.width, 8)];
+      outputTexture = [LTTexture byteRGBATextureWithSize:kSize];
+      processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:outputTexture];
+    });
+
+    it(@"should apply barrel correction", ^{
+      processor.distortion = -0.5;
+      [processor process];
+      expected = LTLoadMat([self class], @"PerspectiveBarrelCorrection.png");
+      expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
+    });
+
+    it(@"should apply pincushion correction", ^{
+      processor.distortion = 0.5;
+      [processor process];
+      expected = LTLoadMat([self class], @"PerspectivePincushionCorrection.png");
+      expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
+    });
+  });
+
   it(@"should apply compound projection", ^{
     processor.horizontal = M_PI / 180 * 15;
     processor.vertical = M_PI / 180 * 15;
     processor.rotationAngle = -M_PI / 180 * 20;
     [processor process];
     expected = LTLoadMat([self class], @"PerspectiveCompound.png");
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
+  });
+  
+  it(@"should scale according to mode", ^{
+    processor.rotationAngle = -M_PI / 180 * 20;
+
+    processor.scaleMode = LTPerspectiveProcessorScaleModeFill;
+    [processor process];
+    expected = LTLoadMat([self class], @"PerspectiveFill.png");
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
+
+    processor.scaleMode = LTPerspectiveProcessorScaleModeFit;
+    [processor process];
+    expected = LTLoadMat([self class], @"PerspectiveFit.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
   });
 });

@@ -392,6 +392,24 @@ context(@"drawing", ^{
 });
 
 context(@"public interface", ^{
+  __block LTView *view;
+
+  beforeEach(^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    [view forceGLKViewFramebufferAllocation];
+  });
+
+  afterEach(^{
+    view = nil;
+  });
+
+  it(@"should return transform mapping the visibleContentRect to the entire framebuffer", ^{
+    CGAffineTransform transform = [view transformForVisibleContentRect:view.visibleContentRect];
+    CGRect transformedRect = CGRectApplyAffineTransform(view.visibleContentRect, transform);
+    expect(transformedRect).to.equal(CGRectFromSize(view.framebufferSize));
+  });
+
   pending(@"should take a snapshot of the view");
 });
 
@@ -507,7 +525,7 @@ context(@"draw delegate", ^{
     [view drawToFbo:fbo];
     [mock verify];
   });
-  
+
   it(@"should use delegate to draw the processed content", ^{
     [[[[mock stub] ignoringNonObjectArgs] andDo:^(NSInvocation *invocation) {
       expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();

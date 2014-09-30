@@ -3,6 +3,17 @@
 
 #import "LTOneShotImageProcessor.h"
 
+/// Possible scaling modes for the perspective processor.
+typedef NS_ENUM(NSUInteger, LTPerspectiveProcessorScaleMode) {
+  /// Scale the content to fit the entire projection of the input texture inside the output texture.
+  LTPerspectiveProcessorScaleModeFit,
+  /// Scale the content to fill the entire output texture, so no "black" areas from outside the
+  /// input texture appear in the output texture.
+  ///
+  /// @note currently supported for rotation adjustments only.
+  LTPerspectiveProcessorScaleModeFill
+};
+
 @class LTTexture;
 
 /// Processor for applying a perspective correction on a texture.
@@ -31,6 +42,14 @@ LTPropertyDeclare(CGFloat, vertical, Vertical);
 /// Must be in range [-M_PI/6,M_PI/6], default is \c 0.
 @property (nonatomic) CGFloat rotationAngle;
 LTPropertyDeclare(CGFloat, rotationAngle, RotationAngle);
+
+/// Amount of geometric distortion to correct. Negative values fix a barrel distortion while
+/// positive values fix a pincushion distortion. Must be in range [-0.5,0.5], default is \c 0.
+@property (nonatomic) CGFloat distortion;
+LTPropertyDeclare(CGFloat, distortion, Distortion);
+
+/// Automatic scaling applied to the projection.
+@property (nonatomic) LTPerspectiveProcessorScaleMode scaleMode;
 
 /// Uniform scale applied on the projection to guarantee that it entirely fits the output texture.
 @property (readonly, nonatomic) CGFloat scale;

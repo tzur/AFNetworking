@@ -115,6 +115,10 @@ context(@"LTVector2", ^{
     it(@"should return minimal component", ^{
       expect(std::min(LTVector2(1, 7))).to.equal(1);
     });
+
+    it(@"should return maximal component", ^{
+      expect(std::max(LTVector2(1, 7))).to.equal(7);
+    });
   });
 
   context(@"conversions", ^{
@@ -229,6 +233,10 @@ context(@"LTVector3", ^{
     it(@"should return minimal component", ^{
       expect(std::min(LTVector3(1, 7, -5))).to.equal(-5);
     });
+
+    it(@"should return maximal component", ^{
+      expect(std::max(LTVector3(1, 7, -5))).to.equal(7);
+    });
   });
 
   context(@"conversions", ^{
@@ -275,6 +283,12 @@ context(@"LTVector4", ^{
     expect(v4.y).to.equal(4);
     expect(v4.z).to.equal(5);
     expect(v4.w).to.equal(6);
+
+    LTVector4 v5(LTVector3(7, 8, 9), 0);
+    expect(v5.x).to.equal(7);
+    expect(v5.y).to.equal(8);
+    expect(v5.z).to.equal(9);
+    expect(v5.w).to.equal(0);
   });
 
   it(@"should cast to LTVector4", ^{
@@ -317,6 +331,7 @@ context(@"LTVector4", ^{
     v.b() = 2;
     v.a() = 12;
     expect(v).to.equal(LTVector4(5, 8, 2, 12));
+    expect(v.rgb()).to.equal(LTVector3(5, 8, 2));
   });
 
   it(@"should sum the vector components correctly", ^{
@@ -346,6 +361,10 @@ context(@"LTVector4", ^{
 
     it(@"should return minimal component", ^{
       expect(std::min(LTVector4(1, 7, -5, 100))).to.equal(-5);
+    });
+
+    it(@"should return maximal component", ^{
+      expect(std::max(LTVector4(1, 7, -5, 100))).to.equal(100);
     });
   });
 

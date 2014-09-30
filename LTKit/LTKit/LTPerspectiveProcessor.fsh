@@ -3,6 +3,10 @@
 
 uniform sampler2D sourceTexture;
 uniform highp mat3 perspective;
+uniform highp vec2 aspectFactor;
+uniform highp vec2 distortionScaleCompensation;
+uniform highp float distortion;
+
 varying highp vec2 vTexcoord;
 
 void main() {
@@ -13,9 +17,14 @@ void main() {
   // Apply the perspective transformation.
   texcoord = perspective * texcoord;
   texcoord.xy /= texcoord.z;
-  
+
+  // Apply the barrel/pincushion distortion.
+  texcoord.xy *= 0.5 * aspectFactor;
+  texcoord.xy *= (1.0 + distortion * dot(texcoord.xy, texcoord.xy));
+  texcoord.xy /= distortionScaleCompensation * aspectFactor;
+
   // Map back to texture coordindates.
-  texcoord.xy = (texcoord.xy + 1.0) / 2.0;
+  texcoord.xy += 0.5;
   gl_FragColor = texture2D(sourceTexture, texcoord.xy);
   
   // Every fragment mapped to a point outside the texture is set to transparent black.
