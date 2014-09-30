@@ -92,10 +92,9 @@ context(@"synthetic rendering", ^{
   
 context(@"real world rendering", ^{
   beforeEach(^{
-    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.jpg")];
-    output = [LTTexture textureWithSize:std::round(input.size * 0.1)
-                              precision:LTTexturePrecisionHalfFloat format:LTTextureFormatRGBA
-                         allocateMemory:YES];
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
+    output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionHalfFloat
+                                 format:LTTextureFormatRGBA allocateMemory:YES];
     processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
   });
   
@@ -106,21 +105,21 @@ context(@"real world rendering", ^{
     [output cloneTo:byteOutput];
     
     cv::Mat4b expected(output.size.height, output.size.width);
-    cv::resize(LTLoadMat([self class], @"Island.jpg"), expected, expected.size(), 0, 0,
+    cv::resize(LTLoadMat([self class], @"Lena128.png"), expected, expected.size(), 0, 0,
                cv::INTER_LINEAR);
     expect($(byteOutput.image)).to.beCloseToMatWithin($(expected), 1);
   });
     
   sit(@"should apply clarity effect", ^{
-    processor.punch = 0.5;
+    processor.punch = 0.65;
     processor.flatten = 0.2;
     processor.gain = 0.1;
-    processor.saturation = 0.05;
+    processor.saturation = -0.15;
     [processor process];
     
     LTTexture *byteOutput = [LTTexture byteRGBATextureWithSize:output.size];
     [output cloneTo:byteOutput];
-    cv::Mat image = LTLoadMat([self class], @"IslandClarity.png");
+    cv::Mat image = LTLoadMat([self class], @"LenaClarity.png");
     expect($(byteOutput.image)).to.beCloseToMatWithin($(image), 1);
   });
 });
