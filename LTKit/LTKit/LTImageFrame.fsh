@@ -1,14 +1,25 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
-// Created by Zeev Farbman.
+// Created by Amit Shabtay.
+
+#extension GL_EXT_shader_framebuffer_fetch : require
 
 const int kFrameTypeStretch = 0;
 const int kFrameTypeRepeat = 1;
 const int kFrameTypeFit = 2;
 
-uniform lowp sampler2D sourceTexture;
-uniform lowp sampler2D frameTexture;
+uniform bool inputEqualsOutput;
 
-uniform mediump float aspectRatio; // Width / Height.
+uniform lowp sampler2D sourceTexture;
+uniform lowp sampler2D baseTexture;
+uniform lowp sampler2D baseMaskTexture;
+uniform lowp sampler2D frameMaskTexture;
+
+// Global alphas.
+uniform mediump float globalBaseMaskAlpha;
+uniform mediump float globalFrameMaskAlpha;
+
+// Width / Height.
+uniform mediump float aspectRatio;
 // In the repetition mode, this factor is the number of times to repeat the central part of the
 // frame to fit the longer dimension of the image.
 uniform mediump float repetitionFactor;
@@ -17,13 +28,18 @@ uniform mediump float frameWidthFactor;
 uniform int frameType;
 // Changes the color of the frame.
 uniform mediump vec3 frameColor;
-// Determines the color interpolation with the original color of the frame.
-uniform mediump float frameColorAlpha;
+
+// Tile related parameters.
+uniform bool isTileable;
+uniform highp vec2 translation;
+uniform highp mat2 rotation;
+uniform highp vec2 scaling;
 
 varying highp vec2 vTexcoord;
 
 // Shader blends a rectangular image with a square, semi-transparent frame.
-// The shader supports 3 following square-to-rectangle mapping modes:
+// It supports tileable and non tileable textures.
+// The shader also supports 3 following square-to-rectangle mapping modes:
 // 1. Stretching the central part of the longer dimension.
 // 2. Repeating the central part of the longer dimension integer number of times.
 // 3. Fitting the square frame in the middle of the image rectangle.
@@ -47,10 +63,24 @@ varying highp vec2 vTexcoord;
 // dependent points where the square starts and finishes. Before a and after b, boundary conditions
 // are used.
 
-void main() {
-  lowp vec3 color = texture2D(sourceTexture, vTexcoord).rgb;
-  
-  highp vec2 texcoord = vTexcoord;
+// Returns tiled texture coordinate given a regular texture coordinate.
+highp vec2 toTiledTexcoord(in highp vec2 texcoord) {
+  texcoord.x = texcoord.x * aspectRatio;
+  // 1. Center texture coordinate around (0, 0).
+  highp vec2 centered = texcoord - 0.5;
+  // 2. Rotate point around center.
+  highp vec2 rotated = rotation * centered;
+  // 3. Return texture coordinate to its previos location.
+  rotated = rotated + 0.5;
+  // 4. Do the tiling and translation.
+  // TODO:(amits) check if removing the LTTextureWrapRepeat and putting here mod will work just as
+  // fast. This will remove the requirement of power of two dimensions.
+  highp vec2 tiled = rotated * scaling + translation;
+  tiled.x = tiled.x / aspectRatio;
+  return tiled;
+}
+
+highp vec2 repositionTexcoordAccoringToType(in highp vec2 texcoord) {
   highp float ratio;
   highp float invRatio;
   
@@ -96,7 +126,8 @@ void main() {
     }
   }
   
-  if (aspectRatio < 1.0) { // Height > Width.
+  // Height > Width.
+  if (aspectRatio < 1.0) {
     texcoord.xy = texcoord.yx;
   }
   
@@ -108,10 +139,50 @@ void main() {
     texcoord += vec2(0.5, 0.5);
   }
   
-  lowp vec4 frame = texture2D(frameTexture, texcoord).rgba;
-  frame.rgb = mix(frame.rgb, frameColor * frame.a, frameColorAlpha);
+  return texcoord;
+}
+
+lowp vec4 normalBlend(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
+                      in mediump float Da) {
+  lowp vec4 normalBlend;
+  normalBlend.rgb = Sa * Sca + (1.0 - Sa) * Dca;
+  normalBlend.a = Sa + Da - Sa * Da;
+  return normalBlend;
+}
+
+void main() {
+  lowp vec3 imageColor;
+
+  // To avoid undefined OpenGL behaviors, read from the input texture using gl_LastFragData instead
+  // of using the sampler, which is forbidden.
+  if (inputEqualsOutput) {
+    imageColor = gl_LastFragData[0].rgb;
+  } else {
+    imageColor = texture2D(sourceTexture , vTexcoord).rgb;
+  }
+  highp vec2 texcoord = repositionTexcoordAccoringToType(vTexcoord);
+  lowp float frameMask = texture2D(frameMaskTexture, texcoord).r;
+  lowp vec4 baseTextureColor;
+  lowp float baseMask;
   
-  // Pre-multiplied alpha blending.
-  gl_FragColor = vec4((1.0-frame.a) * color + frame.rgb, 1.0);
+  if (!isTileable) {
+    baseTextureColor = texture2D(baseTexture, texcoord);
+    baseMask = texture2D(baseMaskTexture, texcoord).r;
+  } else {
+    highp vec2 tiledcoord = toTiledTexcoord(vTexcoord);
+    baseTextureColor = texture2D(baseTexture, tiledcoord);
+    baseMask = texture2D(baseMaskTexture, tiledcoord).r;
+  }
+  baseMask = baseMask * globalBaseMaskAlpha;
+  
+  // Blend baseMask with baseTexture.
+  lowp vec4 coloredBaseMask = vec4(frameColor, baseMask);
+  lowp vec4 coloredBaseTextureWithMask = normalBlend(coloredBaseMask.rgb, baseTextureColor.rgb,
+                                                     coloredBaseMask.a, baseTextureColor.a);
+  
+  // Blend baseTexture+Mask with frameMask.
+  frameMask = frameMask * coloredBaseTextureWithMask.a * globalFrameMaskAlpha;
+  gl_FragColor = vec4((1.0 - frameMask) * imageColor, (1.0 - frameMask)) +
+      vec4(frameMask * coloredBaseTextureWithMask.rgb, frameMask);
 }
 
