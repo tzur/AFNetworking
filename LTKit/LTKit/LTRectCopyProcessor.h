@@ -3,15 +3,9 @@
 
 #import "LTOneShotImageProcessor.h"
 
-@class LTRotatedRect;
+#import "LTProcessorFillMode.h"
 
-/// How to fill the texture on the output rect if is has a different size than the input.
-typedef NS_ENUM(NSUInteger, LTRectCopyTexturingMode) {
-  /// Stretch texture from input rect using the current texture interpolation method.
-  LTRectCopyTexturingModeStretch = 0,
-  /// Tile texture from input rect across the output rect. No stretching is done.
-  LTRectCopyTexturingModeTile
-};
+@class LTRotatedRect;
 
 /// Processor for copying rotated rect from an input texture to an output texture. The rects may be
 /// of different size and rotation, thus an implicit interpolation will be triggered on the GPU
@@ -31,7 +25,7 @@ typedef NS_ENUM(NSUInteger, LTRectCopyTexturingMode) {
 @property (nonatomic) LTRotatedRect *outputRect;
 
 /// How to fill the texture on \c outputRect if it has a different size than \c inputRect. The
-/// default value is \c LTRectCopyTextureModeStretch.
-@property (nonatomic) LTRectCopyTexturingMode texturingMode;
+/// default value is \c LTProcessorFillModeStretch.
+@property (nonatomic) LTProcessorFillMode fillMode;
 
 @end

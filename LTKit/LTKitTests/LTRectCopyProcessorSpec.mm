@@ -80,7 +80,7 @@ context(@"processing", ^{
       image(cv::Rect(4, 0, 4, 4)) = cv::Vec4b(0, 255, 0, 255);
       [input load:image];
 
-      processor.texturingMode = LTRectCopyTexturingModeTile;
+      processor.fillMode = LTProcessorFillModeTile;
     });
 
     it(@"should tile input rect from origin to target rect", ^{

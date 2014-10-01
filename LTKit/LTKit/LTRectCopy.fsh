@@ -1,8 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-const int kTexturingModeStretch = 0;
-const int kTexturingModeTile = 1;
+const int kProcessorFillModeStretch = 0;
+const int kProcessorFillModeTile = 1;
 
 uniform sampler2D sourceTexture;
 
@@ -12,7 +12,7 @@ uniform highp mat2 toRotatedRect;
 uniform highp mat2 fromRotatedRect;
 uniform highp vec2 scaling;
 
-uniform int texturingMode;
+uniform int fillMode;
 
 varying highp vec2 vTexcoord;
 
@@ -31,9 +31,9 @@ highp vec2 toTiledTexCoord(in highp vec2 texCoord) {
 }
 
 void main() {
-  if (texturingMode == kTexturingModeStretch) {
+  if (fillMode == kProcessorFillModeStretch) {
     gl_FragColor = texture2D(sourceTexture, vTexcoord);
-  } else if (texturingMode == kTexturingModeTile) {
+  } else if (fillMode == kProcessorFillModeTile) {
     gl_FragColor = texture2D(sourceTexture, toTiledTexCoord(vTexcoord));
   }
 }

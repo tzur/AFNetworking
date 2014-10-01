@@ -61,6 +61,7 @@
 #import <LTKit/LTFFTProcessor.h>
 #import <LTKit/LTImageBorderProcessor.h>
 #import <LTKit/LTImageFrameProcessor.h>
+#import <LTKit/LTInstafitProcessor.h>
 #import <LTKit/LTMaskOverlayProcessor.h>
 #import <LTKit/LTMaskedArithmeticProcessor.h>
 #import <LTKit/LTMixerProcessor.h>
