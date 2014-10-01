@@ -58,6 +58,12 @@ GLK_INLINE GLKMatrix3 GLKMatrix3MakeTranslation(float tx, float ty) {
                         tx, ty, 1);
 }
 
+/// Returns the determinant of a \c 3x3 matrix.
+GLK_INLINE CGFloat GLKMatrix3Determinant(GLKMatrix3 m) {
+  return (m.m00 * m.m11 * m.m22 + m.m01 * m.m12 * m.m20 + m.m02 * m.m10 * m.m21)
+      - (m.m02 * m.m11 * m.m20 + m.m01 * m.m10 * m.m22 + m.m00 * m.m12 * m.m21);
+}
+
 #ifdef __cplusplus
 
 /// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).

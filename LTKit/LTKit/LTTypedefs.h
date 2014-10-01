@@ -7,6 +7,7 @@
 #ifdef __cplusplus
 
 #import <opencv2/core/core.hpp>
+#import <array>
 #import <vector>
 
 #import "LTVector.h"
