@@ -292,6 +292,10 @@
 		287705B818BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705B718BB97F200D7CEC4 /* LTDegenerateInterpolationRoutine.mm */; };
 		287705BB18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287705BA18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm */; };
 		2881A1A6196BDD2C00E7F523 /* LTRoundBrush.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2881A199196BDCD600E7F523 /* LTRoundBrush.fsh */; };
+		28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */; };
+		28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */; };
+		28842EA519DB347E00BD8FEE /* PerspectiveFill.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842EA319DB347E00BD8FEE /* PerspectiveFill.png */; };
+		28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842EA419DB347E00BD8FEE /* PerspectiveFit.png */; };
 		2888EEA81993BC910008F1C7 /* CropInput.png in Resources */ = {isa = PBXBuildFile; fileRef = 2888EEA71993BC910008F1C7 /* CropInput.png */; };
 		2888EEAB1993D2F70008F1C7 /* LTCropDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2888EEA91993D2F70008F1C7 /* LTCropDrawer.h */; };
 		2888EEAC1993D2F70008F1C7 /* LTCropDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2888EEAA1993D2F70008F1C7 /* LTCropDrawer.mm */; };
@@ -1333,6 +1337,10 @@
 		287705B918BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
 		287705BA18BCE5D800D7CEC4 /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
 		2881A199196BDCD600E7F523 /* LTRoundBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTRoundBrush.fsh; sourceTree = "<group>"; };
+		28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveBarrelCorrection.png; path = Resources/PerspectiveBarrelCorrection.png; sourceTree = "<group>"; };
+		28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectivePincushionCorrection.png; path = Resources/PerspectivePincushionCorrection.png; sourceTree = "<group>"; };
+		28842EA319DB347E00BD8FEE /* PerspectiveFill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveFill.png; path = Resources/PerspectiveFill.png; sourceTree = "<group>"; };
+		28842EA419DB347E00BD8FEE /* PerspectiveFit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveFit.png; path = Resources/PerspectiveFit.png; sourceTree = "<group>"; };
 		2888EEA71993BC910008F1C7 /* CropInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropInput.png; path = Resources/CropInput.png; sourceTree = "<group>"; };
 		2888EEA91993D2F70008F1C7 /* LTCropDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCropDrawer.h; sourceTree = "<group>"; };
 		2888EEAA1993D2F70008F1C7 /* LTCropDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCropDrawer.mm; sourceTree = "<group>"; };
@@ -2561,7 +2569,11 @@
 				2853684019BDD61300CC9057 /* ImageWithWideFrameTypeStretch.png */,
 				03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */,
 				2888EEA71993BC910008F1C7 /* CropInput.png */,
+				28842EA319DB347E00BD8FEE /* PerspectiveFill.png */,
+				28842EA419DB347E00BD8FEE /* PerspectiveFit.png */,
 				280E40D41990C2F6008C5BD9 /* PerspectiveCompound.png */,
+				28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */,
+				28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */,
 				280E40D51990C2F6008C5BD9 /* PerspectiveHorizontal.png */,
 				280E40D61990C2F6008C5BD9 /* PerspectiveRotation.png */,
 				280E40D71990C2F6008C5BD9 /* PerspectiveVertical.png */,
@@ -3721,6 +3733,7 @@
 				282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */,
 				03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */,
 				8BABF18F19BC52C100AED760 /* PyramidGrid4.png in Resources */,
+				28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				2853684819BDD61300CC9057 /* ImageWithRedFrame.png in Resources */,
@@ -3730,6 +3743,7 @@
 				283BD0401922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png in Resources */,
 				282AC6981924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png in Resources */,
 				280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */,
+				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
 				28A2546D19C9D84C0057E1A3 /* ReshapeProcessorResizeWithMask.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
@@ -3758,6 +3772,7 @@
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
 				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
 				03045D7919C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png in Resources */,
+				28842EA519DB347E00BD8FEE /* PerspectiveFill.png in Resources */,
 				03C1929518F3C3A800DC6CA6 /* IslandAnalogFilm.png in Resources */,
 				03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */,
 				2840186819C704730003A064 /* FlowerOutput0.7.png in Resources */,
@@ -3792,6 +3807,7 @@
 				282AC6991924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png in Resources */,
 				03045D7A19C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
+				28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */,
 				8BABF19019BC52C100AED760 /* PyramidGrid5.png in Resources */,
 				2853684219BDD61300CC9057 /* ImageWithFrameTypeRepeat.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,

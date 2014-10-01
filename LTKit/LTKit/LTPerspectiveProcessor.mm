@@ -75,8 +75,15 @@ struct LTTrapezoid2 {
                           fragmentSource:[LTPerspectiveProcessorFsh source]
                                    input:input andOutput:output]) {
     [self updateModel];
+    [self setupDrawerUniforms];
   }
   return self;
+}
+
+- (void)setupDrawerUniforms {
+  self.drawer[[LTPerspectiveProcessorFsh aspectFactor]] = $(self.aspectFactor);
+  self.drawer[[LTPerspectiveProcessorFsh distortionScaleCompensation]] =
+      $(self.scaleCompensationForCurrentDistortion);
 }
 
 #pragma mark -
@@ -157,9 +164,15 @@ struct LTTrapezoid2 {
 }
 
 - (CGFloat)scaleForCurrentMatrix {
+  // TODO:(amit) implement scale mode fill for perspective corrections when LTQuadrilateral will
+  // support boundedRectWithAspectRatio calculation.
+  LTAssert(self.scaleMode == LTPerspectiveProcessorScaleModeFit ||
+           (!self.horizontal && !self.vertical && !self.distortion),
+           @"LTPerspectiveProcessorScaleModeFill currently supports rotation only");
   CGRect rectForScale =
       [self boundingRectForTrapezoid:[self trapezoidForScale:1 translation:CGSizeZero]];
-  return 1.0 / std::max(rectForScale.size);
+  CGFloat scale = std::max(rectForScale.size);
+  return self.scaleMode == LTPerspectiveProcessorScaleModeFill ? scale : 1.0 / scale;
 }
 
 - (CGSize)translationForCurrentMatrixAndScale {
@@ -217,6 +230,11 @@ struct LTTrapezoid2 {
   self.drawer[[LTPerspectiveProcessorFsh perspective]] = $(self.matrix);
 }
 
+- (void)setScaleMode:(LTPerspectiveProcessorScaleMode)scaleMode {
+  _scaleMode = scaleMode;
+  [self updateModel];
+}
+
 LTPropertyWithoutSetter(CGFloat, horizontal, Horizontal, -M_PI / 10, M_PI / 10, 0);
 - (void)setHorizontal:(CGFloat)horizontal {
   [self _verifyAndSetHorizontal:horizontal];
@@ -233,6 +251,30 @@ LTPropertyWithoutSetter(CGFloat, rotationAngle, RotationAngle, -M_PI / 6, M_PI /
 - (void)setRotationAngle:(CGFloat)rotationAngle {
   [self _verifyAndSetRotationAngle:rotationAngle];
   [self updateModel];
+}
+
+LTPropertyWithoutSetter(CGFloat, distortion, Distortion, -0.5, 0.5, 0);
+- (void)setDistortion:(CGFloat)distortion {
+  [self _verifyAndSetDistortion:distortion];
+  self.drawer[[LTPerspectiveProcessorFsh distortion]] = @(self.mappedDistortion);
+  self.drawer[[LTPerspectiveProcessorFsh distortionScaleCompensation]] =
+      $(self.scaleCompensationForCurrentDistortion);
+}
+
+static const CGFloat kPincushionCorrectionFactor = 2;
+
+- (CGFloat)mappedDistortion {
+  return self.distortion < 0 ? self.distortion : self.distortion * kPincushionCorrectionFactor;
+}
+
+- (LTVector2)scaleCompensationForCurrentDistortion {
+  LTVector2 corner(0.5 * self.aspectFactor);
+  corner *= 1 + self.mappedDistortion * corner.dot(corner);
+  return corner / (0.5 * self.aspectFactor);
+}
+
+- (LTVector2)aspectFactor {
+  return LTVector2(self.inputTexture.size / std::max(self.inputTexture.size));
 }
 
 - (LTVector2)topLeft {

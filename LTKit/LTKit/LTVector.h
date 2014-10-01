@@ -230,6 +230,11 @@ namespace std {
   inline float min(const LTVector2 &a) {
     return min(a.x, a.y);
   }
+
+  /// Returns the maximal element of the vector.
+  inline float max(const LTVector2 &a) {
+    return max(a.x, a.y);
+  }
 }
 
 /// Returns an \c NSString representation of the given vector.
@@ -471,6 +476,11 @@ namespace std {
   inline float min(const LTVector3 &a) {
     return min(min(a.x, a.y), a.z);
   }
+
+  /// Returns the maximal element of the vector.
+  inline float max(const LTVector3 &a) {
+    return max(max(a.x, a.y), a.z);
+  }
 }
 
 /// Returns an \c NSString representation of the given vector.
@@ -497,6 +507,9 @@ struct LTVector4 {
   
   /// Initializes a new \c LTVector4 with \c x, y, z and \c w elements equal to the given scalar.
   explicit LTVector4(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
+
+  /// Initializes a new \c LTVector4 with the given \c rgb vector and \c alpha.
+  explicit LTVector4(LTVector3 rgb, float a) : x(rgb.x), y(rgb.y), z(rgb.z), w(a) {}
 
   /// Initializes a new \c LTVector4 from \c GLKVector4.
   explicit LTVector4(GLKVector4 vector) : x(vector.x), y(vector.y), z(vector.z), w(vector.w) {}
@@ -621,6 +634,11 @@ struct LTVector4 {
     return w;
   }
 
+  /// Returns the rgb components (first three elements).
+  inline LTVector3 rgb() const {
+    return LTVector3(x, y, z);
+  }
+
   /// Returns the sum of the components.
   inline float sum() const {
     return x + y + w + z;
@@ -735,6 +753,11 @@ namespace std {
   /// Returns the minimal element of the vector.
   inline float min(const LTVector4 &a) {
     return min(min(min(a.x, a.y), a.z), a.w);
+  }
+
+  /// Returns the maximal element of the vector.
+  inline float max(const LTVector4 &a) {
+    return max(max(max(a.x, a.y), a.z), a.w);
   }
 }
 

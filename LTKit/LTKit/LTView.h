@@ -56,13 +56,17 @@
 /// Takes a snapshot of the view.
 - (LTImage *)snapshotView;
 
-// Notifies the view that it is about to be rotated to the given orientation due to an interface
-// orientation change.
+/// Notifies the view that it is about to be rotated to the given orientation due to an interface
+/// orientation change.
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
-// Notifies the view that the rotation animation is about to start. This is called after the layout
-// has been updated to reflect the new orientation.
+/// Notifies the view that the rotation animation is about to start. This is called after the layout
+/// has been updated to reflect the new orientation.
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation;
+
+/// Returns the affine transform mapping the given visible content rectangle to the entire
+/// framebuffer.
+- (CGAffineTransform)transformForVisibleContentRect:(CGRect)rect;
 
 /// This delegate will be used to update the \c LTView's content.
 @property (weak, nonatomic) id<LTViewDrawDelegate> drawDelegate;
