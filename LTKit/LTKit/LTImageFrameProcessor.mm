@@ -113,7 +113,7 @@
 #pragma mark Properties
 #pragma mark -
 
-LTPropertyWithoutSetter(CGFloat, widthFactor, WidthFactor, 0.75, 1.5, 1);
+LTPropertyWithoutSetter(CGFloat, widthFactor, WidthFactor, 0.85, 1.5, 1);
 - (void)setWidthFactor:(CGFloat)widthFactor {
   [self _verifyAndSetWidthFactor:widthFactor];
   self[[LTImageFrameFsh frameWidthFactor]] = @(widthFactor);
