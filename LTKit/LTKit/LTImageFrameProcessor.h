@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 /// Sets the entire image frame. Verifies constraints of input.
 - (void)setImageFrame:(LTImageFrame *)imageFrame;
 
-/// Factors the width of the frame. Should be in [0.75, 1.5] range. The default value is 1, which
+/// Factors the width of the frame. Should be in [0.85, 1.5] range. The default value is 1, which
 /// means no change to the input frame's width.
 @property (nonatomic) CGFloat widthFactor;
 LTPropertyDeclare(CGFloat, widthFactor, WidthFactor);
