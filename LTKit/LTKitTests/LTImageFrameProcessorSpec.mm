@@ -1,5 +1,5 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
-// Created by Zeev Farbman.
+// Created by Amit Shabtay.
 
 #import "LTImageFrameProcessor.h"
 
@@ -9,34 +9,62 @@
 
 LTSpecBegin(LTImageFrameProcessor)
 
-__block LTTexture *input;
+__block LTTexture *frameMask;
 __block LTTexture *output;
 __block LTImageFrameProcessor *processor;
 
+beforeEach(^{
+  cv::Mat1b originalFrameMask(32, 32, 255);
+  frameMask = [LTTexture textureWithImage:originalFrameMask];
+});
+
+afterEach(^{
+  frameMask = nil;
+});
+
 context(@"properties", ^{
   beforeEach(^{
-    input = [LTTexture textureWithImage:cv::Mat4b(32, 32, cv::Vec4b(128, 64, 255, 255))];
+    LTTexture *input = [LTTexture textureWithImage:cv::Mat4b(32, 32, cv::Vec4b(128, 64, 255, 255))];
     output = [LTTexture textureWithPropertiesOf:input];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
   });
   
   afterEach(^{
     processor = nil;
-    input = nil;
     output = nil;
   });
 
-  it(@"should return default properties correctly", ^{
+  it(@"should return default width factor property correctly", ^{
     expect(processor.widthFactor).to.equal(1.0);
   });
 
-  it(@"should return updated properties correctly", ^{
+  it(@"should return updated width factor property correctly", ^{
     processor.widthFactor = 1.0;
     expect(processor.widthFactor).to.equal(1.0);
     processor.widthFactor = 0.9;
     expect(processor.widthFactor).to.equal(0.90);
   });
   
+  it(@"should return updated color property correctly", ^{
+    LTVector3 color = LTVector3(0.5, 1.0, 0.2);
+    processor.color = color;
+    expect(processor.color).to.equal(color);
+  });
+
+  it(@"should return updated width globalBaseMaskAlpha property correctly", ^{
+    processor.globalBaseMaskAlpha = 1.0;
+    expect(processor.globalBaseMaskAlpha).to.equal(1.0);
+    processor.globalBaseMaskAlpha = 0.3;
+    expect(processor.globalBaseMaskAlpha).to.equal(0.3);
+  });
+
+  it(@"should return updated width globalFrameMaskAlpha property correctly", ^{
+    processor.globalFrameMaskAlpha = 0.0;
+    expect(processor.globalFrameMaskAlpha).to.equal(0.0);
+    processor.globalFrameMaskAlpha = 0.3;
+    expect(processor.globalFrameMaskAlpha).to.equal(0.3);
+  });
+
   it(@"should return image without frame", ^{
     [processor process];
 
@@ -49,17 +77,18 @@ context(@"properties", ^{
 context(@"processing frame type repeat", ^{
   beforeEach(^{
     cv::Mat4b greyPatch(64, 32, cv::Vec4b(128, 128, 128, 255));
-    input = [LTTexture textureWithImage:greyPatch];
+    LTTexture *input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame =
         [LTTexture textureWithImage:LTLoadMat([self class], @"FrameStamp.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setFrame:frame andType:LTFrameTypeRepeat];
+    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
+                                                         frameMask:frameMask
+                                                         frameType:LTFrameTypeRepeat]];
   });
   
   afterEach(^{
     processor = nil;
-    input = nil;
     output = nil;
   });
   
@@ -93,16 +122,17 @@ context(@"processing frame type repeat", ^{
 context(@"processing frame type stretch", ^{
   beforeEach(^{
     cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
-    input = [LTTexture textureWithImage:greyPatch];
+    LTTexture *input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameClassic.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setFrame:frame andType:LTFrameTypeStretch];
+    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
+                                                         frameMask:frameMask
+                                                         frameType:LTFrameTypeStretch]];
   });
   
   afterEach(^{
     processor = nil;
-    input = nil;
     output = nil;
   });
   
@@ -137,16 +167,17 @@ context(@"processing frame type stretch", ^{
 context(@"processing frame type fit", ^{
   beforeEach(^{
     cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
-    input = [LTTexture textureWithImage:greyPatch];
+    LTTexture *input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setFrame:frame andType:LTFrameTypeFit];
+    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
+                                                         frameMask:frameMask
+                                                         frameType:LTFrameTypeFit]];
   });
   
   afterEach(^{
     processor = nil;
-    input = nil;
     output = nil;
   });
   
@@ -174,43 +205,6 @@ context(@"processing frame type fit", ^{
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithWideFrameTypeFit.png")];
     expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
-  });
-});
-
-context(@"processing frame color", ^{
-  beforeEach(^{
-    cv::Mat4b greyPatch(32, 32, cv::Vec4b(128, 128, 128, 255));
-    input = [LTTexture textureWithImage:greyPatch];
-    output = [LTTexture textureWithPropertiesOf:input];
-    LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameClassic.png")];
-    processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setFrame:frame andType:LTFrameTypeStretch];
-  });
-  
-  afterEach(^{
-    processor = nil;
-    input = nil;
-    output = nil;
-  });
-  
-  it(@"should return red framed image", ^{
-    processor.color = LTVector3(1.0, 0.0, 0.0);
-    processor.colorAlpha = 1.0;
-    [processor process];
-    
-    LTTexture *precomputedResult =
-        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithRedFrame.png")];
-    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
-  });
-  
-  it(@"should return red framed image with alpha", ^{
-    processor.color = LTVector3(1.0, 0.0, 0.0);
-    processor.colorAlpha = 0.2;
-    [processor process];
-    
-    LTTexture *precomputedResult =
-        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithRedFrameWithAlpha.png")];
-    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
 });
 
