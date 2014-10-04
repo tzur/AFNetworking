@@ -8,6 +8,9 @@
 /// Returns the default shared instance of the manager.
 + (instancetype)sharedManager;
 
+/// Path to the documents directory of the app.
++ (NSString *)documentsDirectory;
+
 /// Writes the bytes in the receiver to the file specified by a given path.
 ///
 /// @param data Data to write.

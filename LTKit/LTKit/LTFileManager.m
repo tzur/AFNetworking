@@ -3,6 +3,13 @@
 
 #import "LTFileManager.h"
 
+@interface LTFileManager ()
+
+/// Path to the documents directory of the app.
+@property (strong, readwrite, nonatomic) NSString *documentsDirectory;
+
+@end
+
 @implementation LTFileManager
 
 + (instancetype)sharedManager {
@@ -14,6 +21,19 @@
   });
 
   return instance;
+}
+
++ (NSString *)documentsDirectory {
+  static NSString *documentsDirectory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    documentsDirectory = [paths firstObject];
+  });
+
+  return documentsDirectory;
 }
 
 - (BOOL)writeData:(NSData *)data toFile:(NSString *)path options:(NSDataWritingOptions)options
