@@ -38,21 +38,42 @@ static LTImageNamedCallback callback;
   return nil;
 }
 
++ (UIImage *)imageWithContentsOfFile:(NSString *)name {
+  if ([self callback]) {
+    [self callback](name);
+  }
+  return nil;
+}
+
 @end
 
 SpecBegin(LTImageLoader)
 
-it(@"should load image from main bundle", ^{
-  __block NSString *loadedName;
+__block NSString *loadedName;
+__block LTImageLoader *loader;
 
-  LTImageLoader *loader = [LTImageLoader sharedInstance];
+beforeEach(^{
+  loader = [LTImageLoader sharedInstance];
   loader.imageClass = [LTMyImage class];
   [LTMyImage setCallback:^(NSString *name) {
     loadedName = name;
   }];
+});
 
+afterEach(^{
+  loadedName = nil;
+});
+
+it(@"should load image from main bundle", ^{
   static NSString * const kImageName = @"Boo";
   [loader imageNamed:kImageName];
+
+  expect(loadedName).to.equal(kImageName);
+});
+
+it(@"should load image with contents of file", ^{
+  static NSString * const kImageName = @"Boo";
+  [loader imageWithContentsOfFile:kImageName];
 
   expect(loadedName).to.equal(kImageName);
 });

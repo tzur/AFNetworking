@@ -12,4 +12,8 @@
 /// details.
 - (UIImage *)imageNamed:(NSString *)name;
 
+/// Returns the image object generated from the given file path. See
+/// -[UIImage imageWithContentsOfFile:] for more details.
+- (UIImage *)imageWithContentsOfFile:(NSString *)name;
+
 @end

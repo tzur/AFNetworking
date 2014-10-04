@@ -31,4 +31,8 @@
   return [self.imageClass imageNamed:name];
 }
 
+- (UIImage *)imageWithContentsOfFile:(NSString *)name {
+  return [self.imageClass imageWithContentsOfFile:name];
+}
+
 @end
