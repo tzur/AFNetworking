@@ -477,7 +477,6 @@
 		8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BBB373188C0675001E7703 /* LTFractionalNoise.h */; };
 		8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A8418B3B11500DA79E1 /* LTFFTConvolutionProcessor.h */; };
 		8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */; };
-		8B871FE51924A75E00517F2E /* LTInstafitProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFA8F35191002260088310E /* LTInstafitProcessor.h */; };
 		8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB92FAC1906AE5400954124 /* LTMaskOverlayProcessor.h */; };
 		8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */; };
 		8B871FE81924A75F00517F2E /* LTMixerProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BEBF3DB18FA9995005A0DE9 /* LTMixerProcessor.h */; };
@@ -769,8 +768,6 @@
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
 		8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */; };
-		8BFA8F37191002260088310E /* LTInstafitProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F36191002260088310E /* LTInstafitProcessor.mm */; };
-		8BFA8F451910EF7A0088310E /* LTInstafitProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F441910EF7A0088310E /* LTInstafitProcessorSpec.mm */; };
 		8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA8F46191111980088310E /* MixerPlacementRect.png */; };
 		8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */; };
 		8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */; };
@@ -1790,9 +1787,6 @@
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
 		8BFA8F2F190FE64B0088310E /* LTGPUImageProcessor+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTGPUImageProcessor+Protected.h"; sourceTree = "<group>"; };
 		8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTGPUImageProcessor+Protected.mm"; sourceTree = "<group>"; };
-		8BFA8F35191002260088310E /* LTInstafitProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInstafitProcessor.h; sourceTree = "<group>"; };
-		8BFA8F36191002260088310E /* LTInstafitProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTInstafitProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		8BFA8F441910EF7A0088310E /* LTInstafitProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInstafitProcessorSpec.mm; sourceTree = "<group>"; };
 		8BFA8F46191111980088310E /* MixerPlacementRect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MixerPlacementRect.png; path = Resources/MixerPlacementRect.png; sourceTree = "<group>"; };
 		8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMultiscaleNoiseProcessorSpec.mm; sourceTree = "<group>"; };
 		8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTRectCopy.fsh; sourceTree = "<group>"; };
@@ -1923,8 +1917,6 @@
 				8BAE3A8518B3B11500DA79E1 /* LTFFTConvolutionProcessor.mm */,
 				8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */,
 				8BAE3A3618B121E800DA79E1 /* LTFFTProcessor.mm */,
-				8BFA8F35191002260088310E /* LTInstafitProcessor.h */,
-				8BFA8F36191002260088310E /* LTInstafitProcessor.mm */,
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
 				031338D0191279B30095F99B /* LTImageBorderProcessor.h */,
 				031338D1191279B30095F99B /* LTImageBorderProcessor.mm */,
@@ -2024,7 +2016,6 @@
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				8BAE3A8918B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm */,
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
-				8BFA8F441910EF7A0088310E /* LTInstafitProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				28470F561977B08B0031E500 /* LTImageFrameProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
@@ -3360,7 +3351,6 @@
 				8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */,
 				8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */,
 				8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */,
-				8B871FE51924A75E00517F2E /* LTInstafitProcessor.h in Headers */,
 				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
 				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
 				2868B73C193354A600E1BF0F /* LTPainterImageProcessor.h in Headers */,
@@ -4084,7 +4074,6 @@
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8BFE1E0818756A69008035BF /* LTOneShotBaseImageProcessor.mm in Sources */,
 				8BA822331987DB8A00FBE68E /* LTVector.mm in Sources */,
-				8BFA8F37191002260088310E /* LTInstafitProcessor.mm in Sources */,
 				8BC465BE18995C2E0094F7BC /* LTGPUBlock.mm in Sources */,
 				8BAE3A9018B4D35D00DA79E1 /* LTArithmeticProcessor.mm in Sources */,
 				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
@@ -4207,7 +4196,6 @@
 				0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */,
 				0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */,
 				03D516F918B5DBEF0026B56A /* LTAdjustProcessorSpec.mm in Sources */,
-				8BFA8F451910EF7A0088310E /* LTInstafitProcessorSpec.mm in Sources */,
 				8BE51F7418FFF78000E907AE /* LTRecomposeProcessorSpec.mm in Sources */,
 				8B9D3FF418954605001A964D /* LTTextureFactorySpec.mm in Sources */,
 				8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */,
