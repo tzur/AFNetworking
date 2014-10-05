@@ -385,6 +385,9 @@
 		500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 500AB3F819D1B2C7000DC814 /* LTGeometry.h */; };
 		500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3F919D1B2C7000DC814 /* LTGeometry.mm */; };
 		500AB3FD19D1B840000DC814 /* LTGeometrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3FC19D1B840000DC814 /* LTGeometrySpec.mm */; };
+		5096F8F919D337AC00A38223 /* LTTriangle.h in Headers */ = {isa = PBXBuildFile; fileRef = 5096F8F719D337AC00A38223 /* LTTriangle.h */; };
+		5096F8FA19D337AC00A38223 /* LTTriangle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5096F8F819D337AC00A38223 /* LTTriangle.mm */; };
+		5096F90C19D3400800A38223 /* LTTriangleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5096F90B19D3400800A38223 /* LTTriangleSpec.mm */; };
 		50AE95D719D17624000E8086 /* LTQuadrilateralSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50AE95D619D17624000E8086 /* LTQuadrilateralSpec.mm */; };
 		50CF199619D16BB60010D52F /* LTQuadrilateral.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF199419D16BB60010D52F /* LTQuadrilateral.h */; };
 		50CF199719D16BB60010D52F /* LTQuadrilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF199519D16BB60010D52F /* LTQuadrilateral.mm */; };
@@ -1447,6 +1450,9 @@
 		500AB3F819D1B2C7000DC814 /* LTGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGeometry.h; sourceTree = "<group>"; };
 		500AB3F919D1B2C7000DC814 /* LTGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGeometry.mm; sourceTree = "<group>"; };
 		500AB3FC19D1B840000DC814 /* LTGeometrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGeometrySpec.mm; sourceTree = "<group>"; };
+		5096F8F719D337AC00A38223 /* LTTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTriangle.h; sourceTree = "<group>"; };
+		5096F8F819D337AC00A38223 /* LTTriangle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTriangle.mm; sourceTree = "<group>"; };
+		5096F90B19D3400800A38223 /* LTTriangleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTriangleSpec.mm; sourceTree = "<group>"; };
 		50AE95D619D17624000E8086 /* LTQuadrilateralSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadrilateralSpec.mm; sourceTree = "<group>"; };
 		50CF199419D16BB60010D52F /* LTQuadrilateral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadrilateral.h; sourceTree = "<group>"; };
 		50CF199519D16BB60010D52F /* LTQuadrilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadrilateral.mm; sourceTree = "<group>"; };
@@ -2477,6 +2483,8 @@
 				2843B6F718A7E1050044B87A /* LTRotatedRect.mm */,
 				8BF9A53918F684AC00CCA084 /* LTTimer.h */,
 				8BF9A53A18F684AC00CCA084 /* LTTimer.m */,
+				5096F8F719D337AC00A38223 /* LTTriangle.h */,
+				5096F8F819D337AC00A38223 /* LTTriangle.mm */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				50CF199419D16BB60010D52F /* LTQuadrilateral.h */,
 				50CF199519D16BB60010D52F /* LTQuadrilateral.mm */,
@@ -2727,6 +2735,7 @@
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
+				5096F90B19D3400800A38223 /* LTTriangleSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				280C26BF1976C22E00015616 /* LTBoundedPropertiesSpec.mm */,
 				50AE95D619D17624000E8086 /* LTQuadrilateralSpec.mm */,
@@ -3399,6 +3408,7 @@
 				28470F3F19779C3D0031E500 /* LTImageFrameProcessor.h in Headers */,
 				8B8720171924A76200517F2E /* LTBrushShapeDynamicsEffect.h in Headers */,
 				8B8720181924A76200517F2E /* LTBrushColorDynamicsEffect.h in Headers */,
+				5096F8F919D337AC00A38223 /* LTTriangle.h in Headers */,
 				28BBD77F19A0FCCF0062C803 /* LTRect.h in Headers */,
 				2829F07F1991007B00DE1072 /* LTCropProcessor.h in Headers */,
 				8B8720191924A76200517F2E /* LTRotatedRect+UIColor.h in Headers */,
@@ -4052,6 +4062,7 @@
 				8BA822331987DB8A00FBE68E /* LTVector.mm in Sources */,
 				8BFA8F37191002260088310E /* LTInstafitProcessor.mm in Sources */,
 				8BC465BE18995C2E0094F7BC /* LTGPUBlock.mm in Sources */,
+				5096F8FA19D337AC00A38223 /* LTTriangle.mm in Sources */,
 				8BAE3A9018B4D35D00DA79E1 /* LTArithmeticProcessor.mm in Sources */,
 				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
 				28BBD7F619A20AA40062C803 /* NSValue+LTRect.mm in Sources */,
@@ -4226,6 +4237,7 @@
 				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
 				282CF092187B034200904F07 /* LTViewSpec.mm in Sources */,
 				8B329025192CC2660010592E /* LTFileManagerSpec.mm in Sources */,
+				5096F90C19D3400800A38223 /* LTTriangleSpec.mm in Sources */,
 				0368E6D819C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
