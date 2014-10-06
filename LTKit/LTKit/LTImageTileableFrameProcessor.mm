@@ -29,7 +29,14 @@
 }
 
 - (void)setImageFrame:(LTImageFrame *)imageFrame {
+  [self setImageFrame:imageFrame angle:self.defaultAngle translation:self.defaultTranslation];
+}
+
+- (void)setImageFrame:(LTImageFrame *)imageFrame angle:(CGFloat)angle
+          translation:(LTVector2)translation {
   [super setImageFrame:imageFrame];
+  self.angle = angle;
+  self.translation = translation;
   CGSize sizeOfTile = (imageFrame.baseTexture.size != CGSizeMake(1, 1)) ?
       imageFrame.baseTexture.size : imageFrame.baseMask.size;
   [self setScaleUniform:sizeOfTile];

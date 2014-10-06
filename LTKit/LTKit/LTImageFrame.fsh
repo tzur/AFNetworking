@@ -35,6 +35,9 @@ uniform highp vec2 translation;
 uniform highp mat2 rotation;
 uniform highp vec2 scaling;
 
+// Maps baseTexture and baseMask to full image size.
+uniform bool mapBaseToFullImageSize;
+
 varying highp vec2 vTexcoord;
 
 // Shader blends a rectangular image with a square, semi-transparent frame.
@@ -165,13 +168,18 @@ void main() {
   lowp vec4 baseTextureColor;
   lowp float baseMask;
   
-  if (!isTileable) {
-    baseTextureColor = texture2D(baseTexture, texcoord);
-    baseMask = texture2D(baseMaskTexture, texcoord).r;
-  } else {
+  if (isTileable) {
     highp vec2 tiledcoord = toTiledTexcoord(vTexcoord);
     baseTextureColor = texture2D(baseTexture, tiledcoord);
     baseMask = texture2D(baseMaskTexture, tiledcoord).r;
+  } else {
+    if (mapBaseToFullImageSize) {
+      baseTextureColor = texture2D(baseTexture, vTexcoord);
+      baseMask = texture2D(baseMaskTexture, vTexcoord).r;
+    } else {
+      baseTextureColor = texture2D(baseTexture, texcoord);
+      baseMask = texture2D(baseMaskTexture, texcoord).r;
+    }
   }
   baseMask = baseMask * globalBaseMaskAlpha;
   
@@ -185,4 +193,3 @@ void main() {
   gl_FragColor = vec4((1.0 - frameMask) * imageColor, (1.0 - frameMask)) +
       vec4(frameMask * coloredBaseTextureWithMask.rgb, frameMask);
 }
-

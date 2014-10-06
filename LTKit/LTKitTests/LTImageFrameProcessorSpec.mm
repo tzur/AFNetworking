@@ -74,6 +74,47 @@ context(@"properties", ^{
   });
 });
 
+context(@"copy constructor", ^{
+  beforeEach(^{
+    cv::Mat4b greyPatch(64, 32, cv::Vec4b(128, 128, 128, 255));
+    LTTexture *input = [LTTexture textureWithImage:greyPatch];
+    output = [LTTexture textureWithPropertiesOf:input];
+    LTTexture *frame =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"FrameStamp.png")];
+    processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
+    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
+                                                         frameMask:frameMask
+                                                         frameType:LTFrameTypeRepeat]];
+  });
+  
+  afterEach(^{
+    processor = nil;
+    output = nil;
+  });
+  
+  it(@"should return same values for copied textures", ^{
+    LTImageFrameProcessor *copiedProcessor =
+        [[LTImageFrameProcessor alloc] initWithImageFrameProcessor:processor];
+    cv::Mat inputMat = processor.inputTexture.image;
+    expect($(copiedProcessor.inputTexture.image)).to.beCloseToMatWithin($(inputMat), 2);
+    cv::Mat outputMat = processor.outputTexture.image;
+    expect($(copiedProcessor.outputTexture.image)).to.beCloseToMatWithin($(outputMat), 2);
+  });
+
+  it(@"should return same values for copied properties", ^{
+    processor.widthFactor = 1.02;
+    processor.color = LTVector3(0.5, 1, 0.2);
+    processor.globalBaseMaskAlpha = 0.5;
+    processor.globalFrameMaskAlpha = 0.2;
+    LTImageFrameProcessor *copiedProcessor =
+        [[LTImageFrameProcessor alloc] initWithImageFrameProcessor:processor];
+    expect(copiedProcessor.widthFactor).to.equal(processor.widthFactor);
+    expect(copiedProcessor.color).to.equal(processor.color);
+    expect(copiedProcessor.globalBaseMaskAlpha).to.equal(processor.globalBaseMaskAlpha);
+    expect(copiedProcessor.globalFrameMaskAlpha).to.equal(processor.globalFrameMaskAlpha);
+  });
+});
+
 context(@"processing frame type repeat", ^{
   beforeEach(^{
     cv::Mat4b greyPatch(64, 32, cv::Vec4b(128, 128, 128, 255));

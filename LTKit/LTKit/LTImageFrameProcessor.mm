@@ -28,11 +28,19 @@
 
 - (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
                       frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType {
+  return [self initBaseTexture:baseTexture baseMask:baseMask frameMask:frameMask frameType:frameType
+        mapBaseToFullImageSize:NO];
+}
+
+- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
+         mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize {
   if (self = [super init]) {
     _baseTexture = baseTexture ?: [LTTexture textureWithImage:cv::Mat4b::zeros(1, 1)];
     _baseMask = baseMask ?: [LTTexture textureWithImage:cv::Mat1b::zeros(1, 1)];
     _frameMask = frameMask ?: [LTTexture textureWithImage:cv::Mat1b(1, 1, 255)];
     _frameType = frameType;
+    _mapBaseToFullImageSize = mapBaseToFullImageSize;
   }
   return self;
 }
@@ -61,14 +69,26 @@
   return self;
 }
 
+- (instancetype)initWithImageFrameProcessor:(LTImageFrameProcessor *)other {
+  if (self = [self initWithInput:other.inputTexture output:other.outputTexture]) {
+    self.widthFactor = other.widthFactor;
+    self.color = other.color;
+    self.globalBaseMaskAlpha = other.globalBaseMaskAlpha;
+    self.globalFrameMaskAlpha = other.globalFrameMaskAlpha;
+  }
+  return self;
+}
+
 - (void)setImageFrame:(LTImageFrame *)imageFrame {
   [self assertImageFrameCorrectness:imageFrame];
+  _imageFrame = imageFrame;
   NSDictionary *auxiliaryTextures =
       @{[LTImageFrameFsh baseTexture]: imageFrame.baseTexture,
         [LTImageFrameFsh baseMaskTexture]: imageFrame.baseMask,
         [LTImageFrameFsh frameMaskTexture]: imageFrame.frameMask};
   [self setAuxiliaryTextures:auxiliaryTextures];
   self[[LTImageFrameFsh frameType]] = @(imageFrame.frameType);
+  self[[LTImageFrameFsh mapBaseToFullImageSize]] = @(imageFrame.mapBaseToFullImageSize);
 }
 
 - (void)assertImageFrameCorrectness:(LTImageFrame *)imageFrame {

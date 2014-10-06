@@ -22,10 +22,17 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 /// Holds relevant information for creating a frame.
 @interface LTImageFrame : NSObject
 
-/// Sets the \c baseTexture \c baseMask and \c frameMask. \c frameType defines how to map all
+/// Sets the \c baseTexture, \c baseMask and \c frameMask. \c frameType defines how to map all
 /// textures.
 - (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
                       frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType;
+
+/// Sets the \c baseTexture, \c baseMask and \c frameMask. \c frameType defines how to map
+/// textures. \c mapBaseToFullImageSize means that the \c baseTexture and \c baseMask will be mapped
+/// to the full image size.
+- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
+         mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize;
 
 /// Four channeled texture for the frame.
 @property (readonly, strong, nonatomic) LTTexture *baseTexture;
@@ -39,6 +46,8 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 /// Type of frame mapping required.
 @property (readonly, nonatomic) LTFrameType frameType;
 
+/// Maps the \c baseTexture and \c baseMask to full image.
+@property (readonly, nonatomic) BOOL mapBaseToFullImageSize;
 @end
 
 #pragma mark -
@@ -53,8 +62,12 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 /// Initializes the processor with input texture, which will have a frame added to it as the output.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
-/// Sets the entire image frame. Verifies constraints of input.
-- (void)setImageFrame:(LTImageFrame *)imageFrame;
+/// Initializes the processor with another processor. Takes \c inputTexture, \c outputTexture,
+/// \c widthFactor, \c color, \c globalBaseMaskAlpha, \c globalFrameMaskAlpha.
+- (instancetype)initWithImageFrameProcessor:(LTImageFrameProcessor *)other;
+
+// Holds image frame.
+@property (strong, nonatomic) LTImageFrame *imageFrame;
 
 /// Factors the width of the frame. Should be in [0.85, 1.5] range. The default value is 1, which
 /// means no change to the input frame's width.
