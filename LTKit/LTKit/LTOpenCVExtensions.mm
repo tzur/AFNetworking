@@ -185,3 +185,8 @@ cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma) {
   }
   return mat;
 }
+
+cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix) {
+  return cv::Mat1f(3, 3) << matrix.m00, matrix.m01, matrix.m02, matrix.m10, matrix.m11, matrix.m12,
+      matrix.m20, matrix.m21, matrix.m22;
+}

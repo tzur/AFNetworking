@@ -124,7 +124,6 @@ BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
   if (p0 == q0 || p0 == q1 || p1 == q0 || p1 == q1) {
     return NO;
   }
-
   return LTPointLocationRelativeToRay(q0, p0, CGPointFromSize(p1 - p0))
       != LTPointLocationRelativeToRay(q1, p0, CGPointFromSize(p1 - p0))
       && LTPointLocationRelativeToRay(p0, q0, CGPointFromSize(q1 - q0))

@@ -258,4 +258,13 @@ context(@"generate mat", ^{
   });
 });
 
+context(@"GLKMatrix conversion", ^{
+  it(@"should convert a GLKMatrix3 to a mat", ^{
+    expect($(LTMatFromGLKMatrix3(GLKMatrix3Identity))).to.beCloseToMat($(cv::Mat1f::eye(3, 3)));
+    GLKMatrix3 matrix = GLKMatrix3Make(1, 2, 3, -4, -5, -6, M_PI, M_E, M_SQRT2);
+    cv::Mat1f expected = (cv::Mat1f(3, 3) << 1, 2, 3, -4, -5, -6, M_PI, M_E, M_SQRT2);
+    expect($(LTMatFromGLKMatrix3(matrix))).to.beCloseToMat($(expected));
+  });
+});
+
 SpecEnd

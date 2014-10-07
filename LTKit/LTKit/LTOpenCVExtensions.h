@@ -61,6 +61,9 @@ cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide = N
 /// the given sigma.
 cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma);
 
+/// Returns a \c 3x3 float matrix with the entries of the provided GLKMatrix3.
+cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -
