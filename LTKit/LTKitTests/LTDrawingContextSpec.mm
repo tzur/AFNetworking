@@ -29,7 +29,7 @@ context(@"binding program and vertex array", ^{
         [[LTDrawingContext alloc] initWithProgram:program vertexArray:vertexArray
                                  uniformToTexture:nil];
 
-    [vertexArray verify];
+    OCMVerifyAll(vertexArray);
   });
 });
 
@@ -140,7 +140,7 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [programMock verify];
+      OCMVerifyAll(programMock);
       
       // Verify given indices are unique.
       expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
@@ -154,8 +154,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should unbind from textures", ^{
@@ -166,8 +166,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should mark begin read from texture", ^{
@@ -178,8 +178,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should mark end read from texture", ^{
@@ -190,8 +190,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
   });
   
@@ -217,7 +217,7 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [programMock verify];
+      OCMVerifyAll(programMock);
       
       // Verify given indices are unique.
       expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
@@ -231,8 +231,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should unbind from textures", ^{
@@ -243,8 +243,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should mark begin read from texture", ^{
@@ -255,8 +255,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
     
     it(@"should mark end read from texture", ^{
@@ -267,8 +267,8 @@ context(@"texture binding while drawing", ^{
         [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
       }];
       
-      [textureA verify];
-      [textureB verify];
+      OCMVerifyAll(textureA);
+      OCMVerifyAll(textureB);
     });
   });
 });

@@ -73,7 +73,7 @@ context(@"processing", ^{
     [[strategy expect] paintingWillBeginWithPainter:processor.painter];
     processor.targetProgress = 0.5;
     [processor process];
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
   
   it(@"should not notify strategy that painting will begin on consequent processings", ^{
@@ -82,7 +82,7 @@ context(@"processing", ^{
     [[strategy reject] paintingWillBeginWithPainter:OCMOCK_ANY];
     processor.targetProgress = 0.6;
     [processor process];
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
   
   it(@"should ask painting directions from strategy", ^{
@@ -92,7 +92,7 @@ context(@"processing", ^{
     processor.targetProgress = 1.0;
     [[strategy expect] paintingDirectionsForStartingProgress:0.5 endingProgress:1.0];
     [processor process];
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
   
   it(@"should paint according to directions received from strategy", ^{

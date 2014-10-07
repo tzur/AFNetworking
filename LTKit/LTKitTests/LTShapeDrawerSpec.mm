@@ -98,7 +98,7 @@ context(@"shapes", ^{
       [drawer.mutableShapes addObject:secondMock];
       [[secondMock expect] moveToPoint:CGPointMake(1, 1)];
       [drawer moveToPoint:CGPointMake(1, 1)];
-      [secondMock verify];
+      OCMVerifyAll(secondMock);
     });
     
     it(@"should add line to point in the last added path", ^{
@@ -108,7 +108,7 @@ context(@"shapes", ^{
       [drawer.mutableShapes addObject:secondMock];
       [[secondMock expect] addLineToPoint:CGPointMake(1, 1)];
       [drawer addLineToPoint:CGPointMake(1, 1)];
-      [secondMock verify];
+      OCMVerifyAll(secondMock);
     });
   });
   
@@ -130,7 +130,7 @@ context(@"shapes", ^{
       CGTriangle triangle = CGTriangleMake(CGPointZero, CGPointZero, CGPointZero);
       [[secondMock expect] fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
       [drawer fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
-      [secondMock verify];
+      OCMVerifyAll(secondMock);
     });
   });
   
@@ -304,8 +304,8 @@ context(@"drawing", ^{
       [(id<LTDrawableShape>)[firstMock expect] drawInFramebufferWithSize:fbo.size];
       [(id<LTDrawableShape>)[secondMock expect] drawInFramebufferWithSize:fbo.size];
       [drawer drawInFramebuffer:fbo];
-      [firstMock verify];
-      [secondMock verify];
+      OCMVerifyAll(firstMock);
+      OCMVerifyAll(secondMock);
     });
     
     it(@"should draw to bound framebuffer", ^{
@@ -316,8 +316,8 @@ context(@"drawing", ^{
       [fbo bindAndDraw:^{
         [drawer drawInFramebufferWithSize:fbo.size];
       }];
-      [firstMock verify];
-      [secondMock verify];
+      OCMVerifyAll(firstMock);
+      OCMVerifyAll(secondMock);
     });
   });
   

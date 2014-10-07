@@ -49,19 +49,19 @@ context(@"properties", ^{
   it(@"should return correct count for byte indices", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeByte arrayBuffer:buffer];
     expect(array.count).to.equal(16);
-    [buffer verify];
+    OCMVerifyAll(buffer);
  });
   
   it(@"should return correct count for short indices", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeShort arrayBuffer:buffer];
     expect(array.count).to.equal(8);
-    [buffer verify];
+    OCMVerifyAll(buffer);
   });
   
   it(@"should return correct count for integer indices", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeInteger arrayBuffer:buffer];
     expect(array.count).to.equal(4);
-    [buffer verify];
+    OCMVerifyAll(buffer);
   });
   
   it(@"count should reflect the current buffer size", ^{
@@ -69,7 +69,7 @@ context(@"properties", ^{
     expect(array.count).to.equal(16);
     [(LTArrayBuffer *)[[buffer expect] andReturnValue:@(32)] size];
     expect(array.count).to.equal(32);
-    [buffer verify];
+    OCMVerifyAll(buffer);
   });
 });
 
