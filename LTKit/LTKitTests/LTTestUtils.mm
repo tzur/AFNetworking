@@ -3,12 +3,14 @@
 
 #import "LTTestUtils.h"
 
+#import <Specta/SpectaDSL.h>
+#import <Specta/SpectaUtility.h>
+
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTEnumRegistry.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
-#import "SpectaUtility.h"
 
 using half_float::half;
 
@@ -309,7 +311,7 @@ inline BOOL LTCompareMatCell(const half &expected, const half &actual, const hal
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
   static NSMutableDictionary *testCaseCallCount = [NSMutableDictionary dictionary];
 
-  NSString *testCase = [SPTCurrentTestCase description];
+  NSString *testCase = [SPTCurrentSpec description];
   testCaseCallCount[testCase] = @([testCaseCallCount[testCase] unsignedIntegerValue] + 1);
   NSUInteger index = [testCaseCallCount[testCase] unsignedIntegerValue];
 
@@ -319,7 +321,7 @@ static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
 
 static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
   NSString *filename = [NSString stringWithFormat:@"%@-%lu-%@.png",
-                        [SPTCurrentTestCase description], (unsigned long)index, name];
+                        [SPTCurrentSpec description], (unsigned long)index, name];
 
   return [kMatOutputBasedir stringByAppendingPathComponent:filename];
 }

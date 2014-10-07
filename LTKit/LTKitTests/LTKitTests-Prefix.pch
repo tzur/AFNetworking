@@ -5,14 +5,12 @@
 
 #define EXP_SHORTHAND
 
-#import <OCMock/OCMock.h>
-#import <XCTest/XCTest.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
   #import "Expecta.h"
-  #import "Specta.h"
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
 #ifdef __cplusplus
 }
 #endif

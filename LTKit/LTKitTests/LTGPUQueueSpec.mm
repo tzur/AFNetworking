@@ -230,17 +230,19 @@ context(@"opengl", ^{
     expect(context).toNot.beNil();
   });
 
-  it(@"should have valid opengl context for async blocks", ^AsyncBlock {
-    __block EAGLContext *context;
+  it(@"should have valid opengl context for async blocks", ^{
+    waitUntil(^(DoneCallback done) {
+      __block EAGLContext *context;
 
-    [queue runAsync:^{
-      context = [EAGLContext currentContext];
-    } completion:^{
-      dispatch_async(dispatch_get_main_queue(), ^{
-        expect(context).toNot.beNil();
-        done();
-      });
-    }];
+      [queue runAsync:^{
+        context = [EAGLContext currentContext];
+      } completion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          expect(context).toNot.beNil();
+          done();
+        });
+      }];
+    });
   });
 });
 

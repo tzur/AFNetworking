@@ -231,7 +231,7 @@ context(@"painting", ^{
         [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(kCanvasSize / 2)];
 
-        [delegate verify];
+        OCMVerifyAll(delegate);
       });
       
       it(@"should update delegate on stroke begin and end", ^{
@@ -251,7 +251,7 @@ context(@"painting", ^{
         [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(kCanvasSize / 2)];
         [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
 
-        [delegate verify];
+        OCMVerifyAll(delegate);
       });
       
       it(@"should use the alternativeCoordinateSystemTransform", ^{
@@ -268,7 +268,7 @@ context(@"painting", ^{
                           kCanvasSize.width / 2, kCanvasSize.height / 2)).setTo(kWhite);
         expect($(canvas.image)).to.equalMat($(expected));
 
-        [delegate verify];
+        OCMVerifyAll(delegate);
       });
       
       it(@"should use the alternativeZoomScale", ^{
@@ -283,7 +283,7 @@ context(@"painting", ^{
                                                      kCanvasSize / 4))).setTo(kWhite);
         expect($(canvas.image)).to.equalMat($(expected));
 
-        [delegate verify];
+        OCMVerifyAll(delegate);
       });
     });
   });

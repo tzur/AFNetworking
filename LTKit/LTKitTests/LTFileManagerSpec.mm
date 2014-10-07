@@ -22,7 +22,7 @@ it(@"should write data", ^{
   expect(succeeded).to.beTruthy();
   expect(error).to.beNil();
 
-  [data verify];
+  OCMVerifyAll(data);
 });
 
 it(@"should read data from file", ^{

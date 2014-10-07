@@ -19,7 +19,7 @@ it(@"should measure time correctly between start and stop", ^{
 
   [timer start];
   expect([timer stop]).to.equal(1);
-  [timeProvider verify];
+  OCMVerifyAll(timeProvider);
 });
 
 it(@"should measure time correctly between start and splits", ^{
@@ -32,7 +32,7 @@ it(@"should measure time correctly between start and splits", ^{
   [timer start];
   expect([timer split]).to.equal(1);
   expect([timer split]).to.equal(1);
-  [timeProvider verify];
+  OCMVerifyAll(timeProvider);
 });
 
 it(@"should measure time correctly with start, split and stop", ^{
@@ -45,7 +45,7 @@ it(@"should measure time correctly with start, split and stop", ^{
   [timer start];
   expect([timer split]).to.equal(1);
   expect([timer stop]).to.equal(2);
-  [timeProvider verify];
+  OCMVerifyAll(timeProvider);
 });
 
 SpecEnd

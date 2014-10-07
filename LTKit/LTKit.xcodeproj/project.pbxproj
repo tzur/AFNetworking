@@ -748,7 +748,7 @@
 		8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA66F4182FB5E2003FCB65 /* LTGLException.m */; };
 		8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta-iOS.a */; };
 		8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */; };
-		8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA674118310F92003FCB65 /* libSpecta-iOS.a */; };
+		8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCF9AE219E3E5F100228390 /* libSpecta.a */; };
 		8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */; };
 		8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD0730C19A247B5005F2C37 /* LTImage+Texture.h */; };
 		8BD0730F19A247B5005F2C37 /* LTImage+Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0730D19A247B5005F2C37 /* LTImage+Texture.mm */; };
@@ -770,7 +770,6 @@
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
 		8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */; };
-		8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBF518296B6100EA0C1A /* XCTest.framework */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
 		8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */; };
@@ -844,6 +843,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTKit;
+		};
+		8B4D457619C03AA8000B25F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		8B4D457819C03AA8000B25F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		8B4D457A19C03AA8000B25F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		8B4D457C19C03AA8000B25F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
 		};
 		8BA821E4198693B000FBE68E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -957,33 +984,26 @@
 			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
 			remoteInfo = "ExpectaTests-XCTest";
 		};
-		8BCA674018310F92003FCB65 /* PBXContainerItemProxy */ = {
+		8BCF9ADF19E3E5F100228390 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = E9901BFD18205A3500844A05;
-			remoteInfo = "Specta-iOS";
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
 		};
-		8BCA674218310F92003FCB65 /* PBXContainerItemProxy */ = {
+		8BCF9AE119E3E5F100228390 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = E9901C2A18205AB100844A05;
-			remoteInfo = "Specta-OSX";
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
 		};
-		8BCA674418310F92003FCB65 /* PBXContainerItemProxy */ = {
+		8BCF9AE419E3E62400228390 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9901C0D18205A3500844A05;
-			remoteInfo = "SpectaTests-iOS";
-		};
-		8BCA674618310F92003FCB65 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9901C3B18205AB100844A05;
-			remoteInfo = "Specta-OSXTests";
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E917140819DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
 		};
 		8BCFC01D18CF0B6100E612DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1507,7 +1527,6 @@
 		8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKit-Prefix.pch"; sourceTree = "<group>"; };
 		8B3DEBEC18296B6100EA0C1A /* LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTKit.h; sourceTree = "<group>"; };
 		8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B3DEBF518296B6100EA0C1A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8B3DEBFF18296B6100EA0C1A /* LTKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitTests-Info.plist"; sourceTree = "<group>"; };
 		8B3DEC0118296B6100EA0C1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B3DEC0F18296D2200EA0C1A /* LTLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLogger.h; sourceTree = "<group>"; };
@@ -1528,6 +1547,7 @@
 		8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureExamples.mm; sourceTree = "<group>"; };
 		8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Specta+LTKit.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
+		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchSolverProcessor.h; sourceTree = "<group>"; };
 		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
@@ -1761,7 +1781,6 @@
 		8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
 		8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+GLKitExtensions.m"; sourceTree = "<group>"; };
-		8BCA673918310DA8003FCB65 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8BCFBFF318CF0AF000E612DE /* LTKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8BCFBFF818CF0AF100E612DE /* LTKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitBundle-Info.plist"; sourceTree = "<group>"; };
@@ -1845,11 +1864,10 @@
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
-				8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */,
-				8BCA674818310F92003FCB65 /* libSpecta-iOS.a in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
+				8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 				2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */,
 			);
@@ -1909,8 +1927,6 @@
 				03AFC14A19067ED700F17063 /* LTDuo.fsh */,
 				03AFC13B19067EB800F17063 /* LTDuoProcessor.h */,
 				03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */,
-				8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */,
-				8BAAC5B418BB446E00A4B4DA /* LTRectCopyProcessor.mm */,
 				8BABF0CB19B8486500AED760 /* LTEAWProcessor.h */,
 				8BABF0CC19B8486500AED760 /* LTEAWProcessor.mm */,
 				8BABF19B19BC5AF600AED760 /* LTBlueYellowEAWProcessor.fsh */,
@@ -1932,6 +1948,8 @@
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
 				031338D0191279B30095F99B /* LTImageBorderProcessor.h */,
 				031338D1191279B30095F99B /* LTImageBorderProcessor.mm */,
+				2896F65919DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.h */,
+				2896F65A19DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.mm */,
 				8BB92FAF1906AEA900954124 /* LTMaskOverlay.fsh */,
 				8BB92FAC1906AE5400954124 /* LTMaskOverlayProcessor.h */,
 				8BB92FAD1906AE5400954124 /* LTMaskOverlayProcessor.mm */,
@@ -1999,8 +2017,6 @@
 				285A671919AE313400B2CE9E /* LTReshapeProcessor.h */,
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
 				285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */,
-				2896F65919DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.h */,
-				2896F65A19DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -2030,6 +2046,7 @@
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				28470F561977B08B0031E500 /* LTImageFrameProcessorSpec.mm */,
+				2896F66019DAB3CD0042B4A1 /* LTImageTileableFrameProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
 				8BEBF3EE18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm */,
@@ -2050,7 +2067,6 @@
 				28A34846198F983E00031866 /* LTPerspectiveProcessorSpec.mm */,
 				0368E6D719C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm */,
 				28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */,
-				2896F66019DAB3CD0042B4A1 /* LTImageTileableFrameProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -2445,7 +2461,6 @@
 				8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */,
 				8B3DEC1218296D7600EA0C1A /* GLKit.framework */,
 				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
-				8B3DEBF518296B6100EA0C1A /* XCTest.framework */,
 				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
@@ -2729,6 +2744,19 @@
 			name = Shaders;
 			sourceTree = "<group>";
 		};
+		8B4D457019C03AA8000B25F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B4D457719C03AA8000B25F9 /* Specta.framework */,
+				8B4D457919C03AA8000B25F9 /* SpectaTests.xctest */,
+				8B4D457B19C03AA8000B25F9 /* Specta.framework */,
+				8B4D457D19C03AA8000B25F9 /* Specta-iOSTests.xctest */,
+				8BCF9AE019E3E5F100228390 /* libSpecta.a */,
+				8BCF9AE219E3E5F100228390 /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8B85C796182A2EC3004C352E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2775,8 +2803,8 @@
 		8B85C79A182A31C8004C352E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8BCA673918310DA8003FCB65 /* Specta.xcodeproj */,
 				8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */,
+				8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */,
 				28178214187C2E7200548AE4 /* OCMock */,
 			);
 			name = Libraries;
@@ -3211,17 +3239,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8BCA673A18310DA8003FCB65 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BCA674118310F92003FCB65 /* libSpecta-iOS.a */,
-				8BCA674318310F92003FCB65 /* libSpecta-OSX.a */,
-				8BCA674518310F92003FCB65 /* SpectaTests-iOS.xctest */,
-				8BCA674718310F92003FCB65 /* Specta-OSXTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8BCFBFF618CF0AF100E612DE /* LTKitBundle */ = {
 			isa = PBXGroup;
 			children = (
@@ -3552,6 +3569,7 @@
 				8B8E50F21861CE7600821829 /* PBXBuildRule */,
 			);
 			dependencies = (
+				8BCF9AE519E3E62400228390 /* PBXTargetDependency */,
 				8BCA6725182FD8E6003FCB65 /* PBXTargetDependency */,
 				8B3DEBFB18296B6100EA0C1A /* PBXTargetDependency */,
 			);
@@ -3608,8 +3626,8 @@
 					ProjectRef = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
 				},
 				{
-					ProductGroup = 8BCA673A18310DA8003FCB65 /* Products */;
-					ProjectRef = 8BCA673918310DA8003FCB65 /* Specta.xcodeproj */;
+					ProductGroup = 8B4D457019C03AA8000B25F9 /* Products */;
+					ProjectRef = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -3622,6 +3640,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8B4D457719C03AA8000B25F9 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8B4D457619C03AA8000B25F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B4D457919C03AA8000B25F9 /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 8B4D457819C03AA8000B25F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B4D457B19C03AA8000B25F9 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8B4D457A19C03AA8000B25F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B4D457D19C03AA8000B25F9 /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 8B4D457C19C03AA8000B25F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8BA821E5198693B000FBE68E /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3720,32 +3766,18 @@
 			remoteRef = 8BCA6733182FD8EA003FCB65 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BCA674118310F92003FCB65 /* libSpecta-iOS.a */ = {
+		8BCF9AE019E3E5F100228390 /* libSpecta.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libSpecta-iOS.a";
-			remoteRef = 8BCA674018310F92003FCB65 /* PBXContainerItemProxy */;
+			path = libSpecta.a;
+			remoteRef = 8BCF9ADF19E3E5F100228390 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BCA674318310F92003FCB65 /* libSpecta-OSX.a */ = {
+		8BCF9AE219E3E5F100228390 /* libSpecta.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libSpecta-OSX.a";
-			remoteRef = 8BCA674218310F92003FCB65 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BCA674518310F92003FCB65 /* SpectaTests-iOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SpectaTests-iOS.xctest";
-			remoteRef = 8BCA674418310F92003FCB65 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BCA674718310F92003FCB65 /* Specta-OSXTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Specta-OSXTests.xctest";
-			remoteRef = 8BCA674618310F92003FCB65 /* PBXContainerItemProxy */;
+			path = libSpecta.a;
+			remoteRef = 8BCF9AE119E3E5F100228390 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4385,6 +4417,11 @@
 			name = "Expecta-iOS";
 			targetProxy = 8BCA6724182FD8E6003FCB65 /* PBXContainerItemProxy */;
 		};
+		8BCF9AE519E3E62400228390 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libSpecta-iOS";
+			targetProxy = 8BCF9AE419E3E62400228390 /* PBXContainerItemProxy */;
+		};
 		8BCFC01E18CF0B6100E612DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8BCFBFF218CF0AF000E612DE /* LTKitBundle */;
@@ -4422,6 +4459,7 @@
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -4452,7 +4490,7 @@
 					"$(SRCROOT)/../third_party/utils/half",
 					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -4481,6 +4519,7 @@
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4504,7 +4543,7 @@
 					"$(SRCROOT)/../third_party/utils/half",
 					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LTKIT_SHADER_ENCRYPTION_KEY = "performSelector:";
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -4557,7 +4596,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
-					"$(SRCROOT)/../third_party/testing/Specta/src",
+					"$(SRCROOT)/../third_party/testing/Specta/Specta",
 					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
@@ -4584,7 +4623,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
-					"$(SRCROOT)/../third_party/testing/Specta/src",
+					"$(SRCROOT)/../third_party/testing/Specta/Specta",
 					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";

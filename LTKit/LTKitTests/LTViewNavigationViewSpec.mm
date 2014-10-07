@@ -180,14 +180,14 @@ context(@"delegate", ^{
     const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
     [[[delegate expect] ignoringNonObjectArgs] didNavigateToRect:targetRect];
     [view zoomToRect:targetRect animated:NO];
-    [delegate verify];
+    OCMVerifyAll(delegate);
   });
   
   it(@"should not update the delegate on navigation with animation", ^{
     const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
     [[[delegate reject] ignoringNonObjectArgs] didNavigateToRect:targetRect];
     [view zoomToRect:targetRect animated:YES];
-    [delegate verify];
+    OCMVerifyAll(delegate);
   });
   
   if (LTRunningApplicationTests()) {

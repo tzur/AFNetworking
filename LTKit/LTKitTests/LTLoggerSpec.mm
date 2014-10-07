@@ -41,7 +41,7 @@ LTNoFormatWarningBegin
     [logger logWithFormat:message file:file line:line logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
 
-    [mockTarget verify];
+    OCMVerifyAll(mockTarget);
   });
 });
 
@@ -56,7 +56,7 @@ LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
 
-    [mockTarget verify];
+    OCMVerifyAll(mockTarget);
   });
 
   it(@"should not log below minimal log level", ^{
@@ -67,7 +67,7 @@ LTNoFormatWarningBegin
     [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
 LTNoFormatWarningEnd
 
-    [mockTarget verify];
+    OCMVerifyAll(mockTarget);
   });
 });
 

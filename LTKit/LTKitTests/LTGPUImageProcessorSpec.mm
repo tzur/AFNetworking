@@ -7,7 +7,7 @@
 #import "LTNextIterationPlacement.h"
 #import "LTTexture.h"
 
-SpecBegin(LTGPUImageProcessor)
+LTSpecBegin(LTGPUImageProcessor)
 
 __block id drawer;
 __block id strategy;
@@ -45,8 +45,8 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:nil];
     [processor process];
 
-    [drawer verify];
-    [strategy verify];
+    OCMVerifyAll(drawer);
+    OCMVerifyAll(strategy);
   });
 
   it(@"should set auxiliary textures", ^{
@@ -59,7 +59,7 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:@{kTextureName: texture}];
     [processor process];
     
-    [drawer verify];
+    OCMVerifyAll(drawer);
   });
 
   it(@"should set auxiliary texture after given nil to auxiliary textures in the initializer", ^{
@@ -85,7 +85,7 @@ context(@"drawer", ^{
     [processor setAuxiliaryTexture:texture withName:kTextureName];
     [processor process];
 
-    [drawer verify];
+    OCMVerifyAll(drawer);
   });
 
   static NSString * const kUniformName = @"MyUniform";
@@ -99,7 +99,7 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:nil];
     processor[kUniformName] = kUniformValue;
 
-    [drawer verify];
+    OCMVerifyAll(drawer);
   });
 
   it(@"should get uniforms", ^{
@@ -110,7 +110,7 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:nil];
     __unused id value = processor[kUniformName];
 
-    [drawer verify];
+    OCMVerifyAll(drawer);
   });
 });
 
@@ -130,7 +130,7 @@ context(@"strategy", ^{
                                andAuxiliaryTextures:nil];
     [processor process];
 
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
 
   it(@"should run the desired number of iterations", ^{
@@ -148,7 +148,7 @@ context(@"strategy", ^{
 
     [processor process];
 
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
 
   it(@"should produce outputs from strategy", ^{
@@ -159,8 +159,8 @@ context(@"strategy", ^{
                                andAuxiliaryTextures:nil];
     [processor process];
 
-    [strategy verify];
+    OCMVerifyAll(strategy);
   });
 });
 
-SpecEnd
+LTSpecEnd

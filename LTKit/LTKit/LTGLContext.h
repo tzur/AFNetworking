@@ -3,6 +3,8 @@
 
 @class LTGLContext;
 
+#import <OpenGLES/ES2/glext.h>
+
 /// Supported blending functions.
 typedef NS_ENUM(GLenum, LTGLContextBlendFunc) {
   LTGLContextBlendFuncZero = GL_ZERO,

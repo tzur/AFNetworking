@@ -523,7 +523,7 @@ context(@"draw delegate", ^{
     [[mock expect] ltView:view drawProcessedContent:altTexture
                    withVisibleContentRect:view.visibleContentRect];
     [view drawToFbo:fbo];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
 
   it(@"should use delegate to draw the processed content", ^{
@@ -583,25 +583,25 @@ context(@"touch delegate", ^{
   it(@"should forward touchesBegan event", ^{
     [[mock expect] ltView:view touchesBegan:[NSSet set] withEvent:nil];
     [view simulateTouchesOfPhase:UITouchPhaseBegan];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
   
   it(@"should forward touchesMoved event", ^{
     [[mock expect] ltView:view touchesMoved:[NSSet set] withEvent:nil];
     [view simulateTouchesOfPhase:UITouchPhaseMoved];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
   
   it(@"should forward touchesEnded event", ^{
     [[mock expect] ltView:view touchesEnded:[NSSet set] withEvent:nil];
     [view simulateTouchesOfPhase:UITouchPhaseEnded];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
   
   it(@"should forward touchesCancelled event", ^{
     [[mock expect] ltView:view touchesCancelled:[NSSet set] withEvent:nil];
     [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
   
   it (@"should not forward events if property is set to NO", ^{
@@ -614,7 +614,7 @@ context(@"touch delegate", ^{
     [view simulateTouchesOfPhase:UITouchPhaseMoved];
     [view simulateTouchesOfPhase:UITouchPhaseEnded];
     [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-    [mock verify];
+    OCMVerifyAll(mock);
   });
 
   it (@"should only forward events if navigation mode is none or two fingers", ^{
@@ -638,7 +638,7 @@ context(@"touch delegate", ^{
       [view simulateTouchesOfPhase:UITouchPhaseMoved];
       [view simulateTouchesOfPhase:UITouchPhaseEnded];
       [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-      [mock verify];
+      OCMVerifyAll(mock);
     }
   });
 });
