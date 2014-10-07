@@ -440,7 +440,6 @@
 		8B3F94D7187C340D00FAA265 /* LTTextureExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */; };
 		8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */; };
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
-		8B4D45B219C03E59000B25F9 /* Specta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4D457719C03AA8000B25F9 /* Specta.framework */; };
 		8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */; };
 		8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */; };
 		8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */; };
@@ -746,6 +745,7 @@
 		8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA66F4182FB5E2003FCB65 /* LTGLException.m */; };
 		8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta-iOS.a */; };
 		8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA67371830B7AC003FCB65 /* NSValue+GLKitExtensions.m */; };
+		8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCF9AE219E3E5F100228390 /* libSpecta.a */; };
 		8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCFC02018CF0BF400E612DE /* NSBundle+LTKitBundle.m */; };
 		8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD0730C19A247B5005F2C37 /* LTImage+Texture.h */; };
 		8BD0730F19A247B5005F2C37 /* LTImage+Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0730D19A247B5005F2C37 /* LTImage+Texture.mm */; };
@@ -767,7 +767,6 @@
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
 		8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */; };
-		8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBF518296B6100EA0C1A /* XCTest.framework */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
 		8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */; };
@@ -981,6 +980,27 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
 			remoteInfo = "ExpectaTests-XCTest";
+		};
+		8BCF9ADF19E3E5F100228390 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		8BCF9AE119E3E5F100228390 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		8BCF9AE419E3E62400228390 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E917140819DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
 		};
 		8BCFC01D18CF0B6100E612DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1501,7 +1521,6 @@
 		8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKit-Prefix.pch"; sourceTree = "<group>"; };
 		8B3DEBEC18296B6100EA0C1A /* LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTKit.h; sourceTree = "<group>"; };
 		8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B3DEBF518296B6100EA0C1A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8B3DEBFF18296B6100EA0C1A /* LTKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitTests-Info.plist"; sourceTree = "<group>"; };
 		8B3DEC0118296B6100EA0C1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B3DEC0F18296D2200EA0C1A /* LTLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLogger.h; sourceTree = "<group>"; };
@@ -1828,7 +1847,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B4D45B219C03E59000B25F9 /* Specta.framework in Frameworks */,
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
@@ -1840,10 +1858,10 @@
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
-				8BF9476D182A3E5600AA55D8 /* XCTest.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
+				8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 				2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */,
 			);
@@ -1903,8 +1921,6 @@
 				03AFC14A19067ED700F17063 /* LTDuo.fsh */,
 				03AFC13B19067EB800F17063 /* LTDuoProcessor.h */,
 				03AFC13C19067EB800F17063 /* LTDuoProcessor.mm */,
-				8BAAC5B318BB446E00A4B4DA /* LTRectCopyProcessor.h */,
-				8BAAC5B418BB446E00A4B4DA /* LTRectCopyProcessor.mm */,
 				8BABF0CB19B8486500AED760 /* LTEAWProcessor.h */,
 				8BABF0CC19B8486500AED760 /* LTEAWProcessor.mm */,
 				8BABF19B19BC5AF600AED760 /* LTBlueYellowEAWProcessor.fsh */,
@@ -2439,7 +2455,6 @@
 				8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */,
 				8B3DEC1218296D7600EA0C1A /* GLKit.framework */,
 				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
-				8B3DEBF518296B6100EA0C1A /* XCTest.framework */,
 				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
@@ -2728,6 +2743,8 @@
 				8B4D457919C03AA8000B25F9 /* SpectaTests.xctest */,
 				8B4D457B19C03AA8000B25F9 /* Specta.framework */,
 				8B4D457D19C03AA8000B25F9 /* Specta-iOSTests.xctest */,
+				8BCF9AE019E3E5F100228390 /* libSpecta.a */,
+				8BCF9AE219E3E5F100228390 /* libSpecta.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3542,6 +3559,7 @@
 				8B8E50F21861CE7600821829 /* PBXBuildRule */,
 			);
 			dependencies = (
+				8BCF9AE519E3E62400228390 /* PBXTargetDependency */,
 				8BCA6725182FD8E6003FCB65 /* PBXTargetDependency */,
 				8B3DEBFB18296B6100EA0C1A /* PBXTargetDependency */,
 			);
@@ -3736,6 +3754,20 @@
 			fileType = wrapper.cfbundle;
 			path = "ExpectaTests-XCTest.xctest";
 			remoteRef = 8BCA6733182FD8EA003FCB65 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BCF9AE019E3E5F100228390 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BCF9ADF19E3E5F100228390 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BCF9AE219E3E5F100228390 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BCF9AE119E3E5F100228390 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4373,6 +4405,11 @@
 			name = "Expecta-iOS";
 			targetProxy = 8BCA6724182FD8E6003FCB65 /* PBXContainerItemProxy */;
 		};
+		8BCF9AE519E3E62400228390 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libSpecta-iOS";
+			targetProxy = 8BCF9AE419E3E62400228390 /* PBXContainerItemProxy */;
+		};
 		8BCFC01E18CF0B6100E612DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8BCFBFF218CF0AF000E612DE /* LTKitBundle */;
@@ -4410,6 +4447,7 @@
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -4469,6 +4507,7 @@
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
