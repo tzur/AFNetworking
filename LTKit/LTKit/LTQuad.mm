@@ -1,42 +1,48 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTQuadrilateral.h"
+#import "LTQuad.h"
 
 #import "LTGeometry.h"
 #import "LTTriangle.h"
 
-@interface LTQuadrilateral ()
+typedef union {
+  NSUInteger intValue;
+  CGFloat floatValue;
+} LTQuadHashHelperStruct;
 
-@property (nonatomic) LTQuadrilateralCorners corners;
+@interface LTQuad ()
+
+/// The corners of this quad.
+@property (nonatomic) LTQuadCorners corners;
 
 @end
 
-@implementation LTQuadrilateral
+@implementation LTQuad
 
 #pragma mark -
 #pragma mark Factory methods
 #pragma mark -
 
-+ (instancetype)quadrilateralFromRect:(CGRect)rect {
-  return [[self class] quadrilateralFromRectWithOrigin:rect.origin andSize:rect.size];
++ (instancetype)quadFromRect:(CGRect)rect {
+  return [[self class] quadFromRectWithOrigin:rect.origin andSize:rect.size];
 }
 
-+ (instancetype)quadrilateralFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size {
++ (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size {
   CGPoint v0 = origin;
   CGPoint v1 = origin + CGPointMake(size.width, 0);
   CGPoint v2 = v1 + CGPointMake(0, size.height);
   CGPoint v3 = origin + CGPointMake(0, size.height);
 
-  LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-  return [[LTQuadrilateral alloc] initWithCorners:corners];
+  LTQuadCorners corners{{v0, v1, v2, v3}};
+  return [[LTQuad alloc] initWithCorners:corners];
 }
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithCorners:(const LTQuadrilateralCorners &)corners {
+- (instancetype)initWithCorners:(const LTQuadCorners &)corners {
   if (self = [super init]) {
     // Ensure that the given corners are provided in clockwise order. The number of non-left turns
     // of the cyclic polyline constituting a convex quad is 4 if its corners are in clockwise order
@@ -61,21 +67,21 @@
 
 - (BOOL)containsPoint:(CGPoint)point {
   if ([self isConvex]) {
-    return [self convexQuadrilateralContainsPoint:point];
+    return [self convexQuadContainsPoint:point];
   } else {
-    // Quadrilateral is convave.
+    // Quad is convave.
     if (self.isSelfIntersecting) {
-      return [self complexQuadrilateralContainsPoint:point];
+      return [self complexQuadContainsPoint:point];
     } else {
-      // Quadrilateral is concave, but not self-intersecting.
-      return [self simpleConcaveQuadrilateralContainsPoint:point];
+      // Quad is concave, but not self-intersecting.
+      return [self simpleConcaveQuadContainsPoint:point];
     }
   }
 }
 
 /// Assuming that this instance is convex, checks whether the given \c point is contained by this
 /// instance. Throws an exception if the instance is not convex.
-- (BOOL)convexQuadrilateralContainsPoint:(const CGPoint)point {
+- (BOOL)convexQuadContainsPoint:(const CGPoint)point {
   LTAssert([self isConvex], @"Method call is illegal for concave quadrilaterals.");
   NSUInteger size = self.corners.size();
   for (NSUInteger i = 0; i < size; i++) {
@@ -90,7 +96,7 @@
 
 /// Assuming that this instance is simple and concave, checks whether the given \c point is
 /// contained by this instance. Throws an exception if the instance is not simple and concave.
-- (BOOL)simpleConcaveQuadrilateralContainsPoint:(const CGPoint)point {
+- (BOOL)simpleConcaveQuadContainsPoint:(const CGPoint)point {
   LTAssert(![self isConvex], @"Method call is illegal for convex quadrilaterals.");
   LTAssert(![self isSelfIntersecting], @"Method call is illegal for complex quadrilaterals.");
 
@@ -128,7 +134,7 @@
 
 /// Assuming that this instance is complex (and hence concave), checks whether the given \c point is
 /// contained by this instance. Throws an exception if the instance is not complex.
-- (BOOL)complexQuadrilateralContainsPoint:(const CGPoint)point {
+- (BOOL)complexQuadContainsPoint:(const CGPoint)point {
   LTAssert([self isSelfIntersecting], @"Method call is illegal for simple quadrilaterals.");
 
   // Compute intersection point.
@@ -137,8 +143,7 @@
   CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
   LTAssert(intersectionPoints.size() == 1, @"Quadrilaterals can self-intersect at most once.");
 
-  // Compute point inclusion using the two triangles of which the self-intersecting quadrilateral
-  // consists.
+  // Compute point inclusion using the two triangles of which the self-intersecting quad consists.
   LTTriangle *triangle0, *triangle1;
   if (LTPointsAreCollinear(CGPoints{self.corners[0], self.corners[1], intersectionPoints[0]})) {
     LTTriangleCorners corners0{{intersectionPoints[0], self.corners[1], self.corners[2]}};
@@ -172,10 +177,22 @@
   }
 }
 
-- (void)translate:(CGPoint)translation {
-  for (CGPoint &corner : _corners) {
-    corner = corner + translation;
+- (void)translateCorners:(LTQuadCornerRegion)corners
+           byTranslation:(CGPoint)translation {
+  LTQuadCorners translatedCorners = self.corners;
+  if (corners & LTQuadCornerRegionV0) {
+    translatedCorners[0] = translatedCorners[0] + translation;
   }
+  if (corners & LTQuadCornerRegionV1) {
+    translatedCorners[1] = translatedCorners[1] + translation;
+  }
+  if (corners & LTQuadCornerRegionV2) {
+    translatedCorners[2] = translatedCorners[2] + translation;
+  }
+  if (corners & LTQuadCornerRegionV3) {
+    translatedCorners[3] = translatedCorners[3] + translation;
+  }
+  self.corners = translatedCorners;
 }
 
 #pragma mark -
@@ -208,7 +225,7 @@
   return YES;
 }
 
-- (CATransform3D)transform {
+- (GLKMatrix3)transform {
   return [[self class] rectToQuad:CGRectMake(0, 0, 1, 1)
                       quadTopLeft:self.v0
                      quadTopRight:self.v1
@@ -221,23 +238,22 @@
 #pragma mark -
 
 /// @see http://stackoverflow.com/questions/9470493/transforming-a-rectangle-image-into-a-quadrilateral-using-a-catransform3d/12820877#12820877
-+ (CATransform3D)rectToQuad:(CGRect)rect
-                quadTopLeft:(CGPoint)topLeft
-               quadTopRight:(CGPoint)topRight
-            quadBottomRight:(CGPoint)bottomRight
-             quadBottomLeft:(CGPoint)bottomLeft {
-  cv::Mat1f sourceMatrix = [self matWithQuadrilateral:[LTQuadrilateral quadrilateralFromRect:rect]];
++ (GLKMatrix3)rectToQuad:(CGRect)rect
+             quadTopLeft:(CGPoint)topLeft
+            quadTopRight:(CGPoint)topRight
+         quadBottomRight:(CGPoint)bottomRight
+          quadBottomLeft:(CGPoint)bottomLeft {
+  cv::Mat1f sourceMatrix = [self matWithQuad:[LTQuad quadFromRect:rect]];
 
-  LTQuadrilateralCorners corners{{topLeft, topRight, bottomRight, bottomLeft}};
-  cv::Mat destinationMatrix = [self matWithQuadrilateral:[[LTQuadrilateral alloc]
-                                                          initWithCorners:corners]];
+  LTQuadCorners corners{{topLeft, topRight, bottomRight, bottomLeft}};
+  cv::Mat destinationMatrix = [self matWithQuad:[[LTQuad alloc] initWithCorners:corners]];
 
   cv::Mat1f homography = cv::findHomography(sourceMatrix, destinationMatrix);
 
-  return [self transform3DFromMat:homography];
+  return GLKMatrix3MakeWithArray((float *)homography.data);
 }
 
-+ (cv::Mat1f)matWithQuadrilateral:(LTQuadrilateral *)quad {
++ (cv::Mat1f)matWithQuad:(LTQuad *)quad {
   cv::Mat1f result(4, 2);
 
   result(0, 0) = quad.v0.x;
@@ -252,26 +268,7 @@
   return result;
 }
 
-+ (CATransform3D)transform3DFromMat:(cv::Mat1f)mat {
-  LTParameterAssert(mat.rows == 3 && mat.cols == 3);
-  CATransform3D transform = CATransform3DIdentity;
-
-  transform.m11 = mat(0, 0);
-  transform.m21 = mat(0, 1);
-  transform.m41 = mat(0, 2);
-
-  transform.m12 = mat(1, 0);
-  transform.m22 = mat(1, 1);
-  transform.m42 = mat(1, 2);
-
-  transform.m14 = mat(2, 0);
-  transform.m24 = mat(2, 1);
-  transform.m44 = mat(2, 2);
-
-  return transform;
-}
-
-+ (NSUInteger)numberOfNonLeftTurns:(const LTQuadrilateralCorners &)points {
++ (NSUInteger)numberOfNonLeftTurns:(const LTQuadCorners &)points {
   NSUInteger result = 0;
   NSUInteger size = points.size();
   for (NSUInteger i = 0; i < size; i++) {
@@ -283,6 +280,51 @@
     }
   }
   return result;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone {
+  return [[LTQuad allocWithZone:zone] initWithCorners:self.corners];
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"v0 = (%g, %g), v1 = (%g, %g), v2 = (%g, %g), v3 = (%g, %g)",
+          self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x, self.v2.y, self.v3.x, self.v3.y];
+}
+
+- (BOOL)isEqual:(id)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if ([object isKindOfClass:[self class]]) {
+    LTQuad *quad = object;
+    return self.v0 == quad.v0 && self.v1 == quad.v1 && self.v2 == quad.v2 && self.v3 == quad.v3;
+  }
+
+  return NO;
+}
+
+- (NSUInteger)hash {
+  NSUInteger result = 0;
+  LTQuadHashHelperStruct converter;
+  for (const CGPoint &corner : self.corners) {
+    converter.floatValue = corner.x;
+    result ^= converter.intValue;
+    converter.floatValue = corner.y;
+    result ^= converter.intValue;
+  }
+  return result;
+}
+
+- (BOOL)isSimilarTo:(LTQuad *)quad upToDeviation:(CGFloat)deviation {
+  return CGPointDistance(self.v0, quad.v0) <= deviation &&
+      CGPointDistance(self.v1, quad.v1) <= deviation &&
+      CGPointDistance(self.v2, quad.v2) <= deviation &&
+      CGPointDistance(self.v3, quad.v3) <= deviation;
 }
 
 #pragma mark -

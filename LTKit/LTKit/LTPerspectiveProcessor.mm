@@ -164,7 +164,7 @@ struct LTTrapezoid2 {
 }
 
 - (CGFloat)scaleForCurrentMatrix {
-  // TODO:(amit) implement scale mode fill for perspective corrections when LTQuadrilateral will
+  // TODO:(amit) implement scale mode fill for perspective corrections when LTQuad will
   // support boundedRectWithAspectRatio calculation.
   LTAssert(self.scaleMode == LTPerspectiveProcessorScaleModeFit ||
            (!self.horizontal && !self.vertical && !self.distortion),

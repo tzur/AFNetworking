@@ -1,21 +1,23 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTQuadrilateral.h"
+#import "LTQuad.h"
+
+#import "LTOpenCVExtensions.h"
 
 static const CGFloat kEpsilon = 1e-5;
 
-@interface LTQuadrilateral (ForTesting)
+@interface LTQuad (ForTesting)
 - (NSUInteger)indexOfConcavePoint;
-+ (NSUInteger)numberOfNonLeftTurns:(const LTQuadrilateralCorners &)points;
++ (NSUInteger)numberOfNonLeftTurns:(const LTQuadCorners &)points;
 @end
 
 /// Implementation for the sake of correctness checking.
 /// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
-/// its projected corners coincide with the vertices of this quadrilateral.
+/// its projected corners coincide with the vertices of this quad.
 ///
 /// @see http://stackoverflow.com/questions/9470493/transforming-a-rectangle-image-into-a-quadrilateral-using-a-catransform3d/12820877#12820877
-static CATransform3D LTTransformationForQuad(LTQuadrilateral *quad) {
+static GLKMatrix3 LTTransformationForQuad(LTQuad *quad) {
   const CGRect rect = CGRectMake(0, 0, 1, 1);
   const CGFloat x1 = quad.v0.x;
   const CGFloat y1 = quad.v0.y;
@@ -62,10 +64,10 @@ static CATransform3D LTTransformationForQuad(LTQuadrilateral *quad) {
     i = kEpsilon * (i > 0 ? 1 : -1);
   }
 
-  return {a / i, d / i, 0, g / i, b / i, e / i, 0, h / i, 0, 0, 1, 0, c / i, f / i, 0, 1};
+  return GLKMatrix3Make(a / i, b / i, c / i, d / i, e / i, f / i, g / i, h / i, 1);
 }
 
-SpecBegin(LTQuadrilateral)
+SpecBegin(LTQuad)
 
 __block CGPoint v0;
 __block CGPoint v1;
@@ -73,7 +75,7 @@ __block CGPoint v2;
 __block CGPoint v3;
 __block CGPoint w0;
 
-__block LTQuadrilateral *quad;
+__block LTQuad *quad;
 
 beforeAll(^{
   v0 = CGPointMake(0, 0);
@@ -86,8 +88,8 @@ beforeAll(^{
 context(@"initializers and factory methods", ^{
   context(@"initializers", ^{
     it(@"should initialize with corners", ^{
-      LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-      quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+      LTQuadCorners corners{{v0, v1, v2, v3}};
+      quad = [[LTQuad alloc] initWithCorners:corners];
       expect(quad.v0).to.equal(v0);
       expect(quad.v1).to.equal(v1);
       expect(quad.v2).to.equal(v2);
@@ -95,32 +97,32 @@ context(@"initializers and factory methods", ^{
     });
 
     it(@"should fail to initialize if the corners of a convex quad are given in counterclockwise order", ^{
-      LTQuadrilateralCorners cornersOfConvexQuad{{v3, v2, v1, v0}};
+      LTQuadCorners cornersOfConvexQuad{{v3, v2, v1, v0}};
       expect(^{
-        quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConvexQuad];
+        quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
       }).to.raise(NSInternalInconsistencyException);
     });
 
     it(@"should fail to initialize if the corners of a concave quad are given in counterclockwise order", ^{
-      LTQuadrilateralCorners cornersOfConcaveQuad{{v3, w0, v1, v0}};
+      LTQuadCorners cornersOfConcaveQuad{{v3, w0, v1, v0}};
       expect(^{
-        quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConcaveQuad];
+        quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];
       }).to.raise(NSInternalInconsistencyException);
     });
   });
 
   context(@"factory Methods", ^{
-    it(@"should create quadrilateral from rect", ^{
-      quad = [LTQuadrilateral quadrilateralFromRect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
+    it(@"should create quad from rect", ^{
+      quad = [LTQuad quadFromRect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
       expect(quad.v0).to.equal(v0);
       expect(quad.v1).to.equal(v1);
       expect(quad.v2).to.equal(CGPointMake(v1.x, v3.y));
       expect(quad.v3).to.equal(v3);
     });
 
-    it(@"should create quadrilateral with origin and size", ^{
+    it(@"should create quad with origin and size", ^{
       CGRect rect = CGRectMake(v0.x, v0.y, v1.x, v3.y);
-      quad = [LTQuadrilateral quadrilateralFromRectWithOrigin:rect.origin andSize:rect.size];
+      quad = [LTQuad quadFromRectWithOrigin:rect.origin andSize:rect.size];
       expect(quad.v0).to.equal(v0);
       expect(quad.v1).to.equal(v1);
       expect(quad.v2).to.equal(CGPointMake(v1.x, v3.y));
@@ -130,9 +132,9 @@ context(@"initializers and factory methods", ^{
 });
 
 context(@"point inclusion", ^{
-  it(@"should correctly compute point inclusion for a simple convex quadrilateral", ^{
-    LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+  it(@"should correctly compute point inclusion for a simple convex quad", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     expect([quad containsPoint:v0]).to.beTruthy();
     expect([quad containsPoint:(v0 + v1) / 2]).to.beTruthy();
     expect([quad containsPoint:v1]).to.beTruthy();
@@ -144,9 +146,9 @@ context(@"point inclusion", ^{
     expect([quad containsPoint:CGPointMake(1, 1)]).to.beFalsy();
   });
 
-  it(@"should correctly compute point inclusion for a simple concave quadrilateral", ^{
-    LTQuadrilateralCorners corners{{v0, v1, w0, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+  it(@"should correctly compute point inclusion for a simple concave quad", ^{
+    LTQuadCorners corners{{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     expect([quad containsPoint:v0]).to.beTruthy();
     expect([quad containsPoint:(v0 + v1) / 2]).to.beTruthy();
     expect([quad containsPoint:v1]).to.beTruthy();
@@ -158,9 +160,9 @@ context(@"point inclusion", ^{
     expect([quad containsPoint:CGPointMake(1, 1)]).to.beFalsy();
   });
 
-  it(@"should correctly compute point inclusion for a complex quadrilateral", ^{
-    LTQuadrilateralCorners corners{{v0, v1, v3, v2}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+  it(@"should correctly compute point inclusion for a complex quad", ^{
+    LTQuadCorners corners{{v0, v1, v3, v2}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     expect([quad containsPoint:v0]).to.beTruthy();
     expect([quad containsPoint:(v0 + v1) / 2]).to.beTruthy();
     expect([quad containsPoint:v1]).to.beTruthy();
@@ -174,23 +176,23 @@ context(@"point inclusion", ^{
     expect([quad containsPoint:CGPointMake(1, 1)]).to.beFalsy();
   });
 
-  it(@"should correctly compute the concave point of a concave quadrilateral", ^{
-    LTQuadrilateralCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConcaveQuad];
+  it(@"should correctly compute the concave point of a concave quad", ^{
+    LTQuadCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];
     expect([quad indexOfConcavePoint]).to.equal(2);
   });
 
-  it(@"should raise an exception when trying to compute the concave point of a convex quadrilateral", ^{
-    LTQuadrilateralCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConvexQuad];
+  it(@"should raise an exception when trying to compute the concave point of a convex quad", ^{
+    LTQuadCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
     expect(^{
       [quad indexOfConcavePoint];
     }).to.raise(NSInternalInconsistencyException);
   });
 
-  it(@"should raise an exception when trying to compute the concave point of a complex quadrilateral", ^{
-    LTQuadrilateralCorners cornersOfComplexQuad{{v0, v1, v3, v2}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfComplexQuad];
+  it(@"should raise an exception when trying to compute the concave point of a complex quad", ^{
+    LTQuadCorners cornersOfComplexQuad{{v0, v1, v3, v2}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfComplexQuad];
     expect(^{
       [quad indexOfConcavePoint];
     }).to.raise(NSInternalInconsistencyException);
@@ -199,8 +201,8 @@ context(@"point inclusion", ^{
 
 context(@"affine transformations", ^{
   it(@"should correctly rotate", ^{
-    LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     [quad rotateByAngle:13.7 / 180.0 * M_PI aroundPoint:CGPointMake(3, 1)];
     expect(quad.v0).to.beCloseToPointWithin(CGPointMake(0.322191, -0.682064), kEpsilon);
     expect(quad.v1).to.beCloseToPointWithin(CGPointMake(1.29374, -0.445225), kEpsilon);
@@ -213,7 +215,7 @@ context(@"affine transformations", ^{
   });
 
   it(@"should correctly scale", ^{
-    quad = [LTQuadrilateral quadrilateralFromRect:CGRectMake(0, 0, 1, 1)];
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
     [quad scale:2];
     expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
     expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
@@ -223,65 +225,141 @@ context(@"affine transformations", ^{
 
   it(@"should correctly translate", ^{
     CGPoint translation = CGPointMake(2, 5);
-    LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
-    [quad translate:translation];
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    [quad translateCorners:LTQuadCornerRegionAll
+             byTranslation:translation];
     expect(quad.v0).to.beCloseToPoint(v0 + translation);
     expect(quad.v1).to.beCloseToPoint(v1 + translation);
     expect(quad.v2).to.beCloseToPoint(v2 + translation);
     expect(quad.v3).to.beCloseToPoint(v3 + translation);
+
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    [quad translateCorners:LTQuadCornerRegionV0
+             byTranslation:translation];
+    expect(quad.v0).to.beCloseToPoint(v0 + translation);
+    expect(quad.v1).to.beCloseToPoint(v1);
+    expect(quad.v2).to.beCloseToPoint(v2);
+    expect(quad.v3).to.beCloseToPoint(v3);
+
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    [quad translateCorners:LTQuadCornerRegionV2
+             byTranslation:translation];
+    expect(quad.v0).to.beCloseToPoint(v0);
+    expect(quad.v1).to.beCloseToPoint(v1);
+    expect(quad.v2).to.beCloseToPoint(v2 + translation);
+    expect(quad.v3).to.beCloseToPoint(v3);
+  });
+});
+
+context(@"copying", ^{
+  it(@"should correctly copy", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    LTQuad *copiedQuad = quad.copy;
+    expect(copiedQuad).notTo.beIdenticalTo(quad);
+    expect(copiedQuad.v0).to.equal(quad.v0);
+    expect(copiedQuad.v1).to.equal(quad.v1);
+    expect(copiedQuad.v2).to.equal(quad.v2);
+    expect(copiedQuad.v3).to.equal(quad.v3);
+  });
+});
+
+context(@"equality and similarity", ^{
+  __block LTQuad *quad0;
+  __block LTQuad *quad1;
+  __block LTQuad *quad2;
+
+  beforeEach(^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad0 = [[LTQuad alloc] initWithCorners:corners];
+    quad1 = [[LTQuad alloc] initWithCorners:corners];
+    corners = LTQuadCorners{{v0, v1, v2, v3 + CGPointMake(1e-8, 1e-8)}};
+    quad2 = [[LTQuad alloc] initWithCorners:corners];
+  });
+
+  it(@"should correctly compute equality", ^{
+    expect(quad0).toNot.beIdenticalTo(quad1);
+    expect(quad1).toNot.beIdenticalTo(quad2);
+    expect(quad2).toNot.beIdenticalTo(quad0);
+    expect(quad0).to.equal(quad1);
+    expect(quad1).to.equal(quad0);
+    expect(quad1).toNot.equal(quad2);
+    expect(quad2).toNot.equal(quad1);
+    expect(quad2).toNot.equal(quad0);
+    expect(quad0).toNot.equal(quad2);
+  });
+
+  it(@"should compute a correct hash value", ^{
+    expect(quad0.hash).to.equal(quad1.hash);
+    expect(quad0.hash).toNot.equal(quad2.hash);
+  });
+
+  it(@"should correctly compute similarity", ^{
+    expect([quad0 isSimilarTo:quad1 upToDeviation:kEpsilon]).to.beTruthy();
+    expect([quad1 isSimilarTo:quad2 upToDeviation:kEpsilon]).to.beTruthy();
+    expect([quad2 isSimilarTo:quad0 upToDeviation:kEpsilon]).to.beTruthy();
+
+    LTQuadCorners corners{{v0, v1, v2, v3 + CGPointMake(kEpsilon, 0)}};
+    quad1 = [[LTQuad alloc] initWithCorners:corners];
+    expect([quad0 isSimilarTo:quad1 upToDeviation:kEpsilon]).to.beTruthy();
+
+    corners = LTQuadCorners{{v0, v1, v2, v3 + CGPointMake(2 * kEpsilon, 0)}};
+    quad2 = [[LTQuad alloc] initWithCorners:corners];
+    expect([quad0 isSimilarTo:quad2 upToDeviation:kEpsilon]).to.beFalsy();
   });
 });
 
 context(@"properties", ^{
   it(@"should correctly compute the bounding rect", ^{
-    LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     CGRect expectedBoundingRect = CGRectMake(v0.x, v0.y, v1.x, v3.y);
     expect(quad.boundingRect).to.equal(expectedBoundingRect);
   });
 
   it(@"should correctly compute the center", ^{
-    quad = [LTQuadrilateral quadrilateralFromRect:CGRectMake(0, 0, 1, 1)];
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
     expect(quad.center).to.beCloseToPoint(CGPointMake(0.5, 0.5));
-    LTQuadrilateralCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:corners];
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
     expect(quad.center).to.beCloseToPoint((v0 + v1 + v2 + v3) / 4);
   });
 
   it(@"should correctly compute whether it is convex or concave", ^{
-    LTQuadrilateral *convexQuad =
-        [LTQuadrilateral quadrilateralFromRect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
+    LTQuad *convexQuad =
+        [LTQuad quadFromRect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
     expect(convexQuad.isConvex).to.beTruthy();
-    LTQuadrilateralCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
-    convexQuad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConvexQuad];
+    LTQuadCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
+    convexQuad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
     expect(convexQuad.isConvex).to.beTruthy();
-    LTQuadrilateralCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
-    LTQuadrilateral *concaveQuad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConcaveQuad];
+    LTQuadCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
+    LTQuad *concaveQuad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];
     expect(concaveQuad.isConvex).to.beFalsy();
   });
 
   it(@"should correctly compute whether it is self-intersecting or not",^{
-    LTQuadrilateralCorners cornersOfConvexQuadrilateral{{v0, v1, v2, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfConvexQuadrilateral];
+    LTQuadCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
     expect(quad.isSelfIntersecting).to.beFalsy();
-    LTQuadrilateralCorners cornersOfSimpleConcaveQuadrilateral{{v0, v1, w0, v3}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfSimpleConcaveQuadrilateral];
+    LTQuadCorners cornersOfSimpleConcaveQuad{{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfSimpleConcaveQuad];
     expect(quad.isSelfIntersecting).to.beFalsy();
-    LTQuadrilateralCorners cornersOfComplexQuadrilateral{{v0, v1, v3, v2}};
-    quad = [[LTQuadrilateral alloc] initWithCorners:cornersOfComplexQuadrilateral];
+    LTQuadCorners cornersOfComplexQuad{{v0, v1, v3, v2}};
+    quad = [[LTQuad alloc] initWithCorners:cornersOfComplexQuad];
     expect(quad.isSelfIntersecting).to.beTruthy();
   });
 
   context(@"transformation", ^{
-    it(@"should provide the correct transformation for axis-aligned quadrilaterals", ^{
-      quad = [LTQuadrilateral quadrilateralFromRect:CGRectMake(0, 0, 1, 1)];
-      expect($(quad.transform)).to.beCloseToCATransform3DWithin(CATransform3DIdentity, kEpsilon);
-      expect($(LTTransformationForQuad(quad))).to.beCloseToCATransform3DWithin(CATransform3DIdentity,
-                                                                             kEpsilon);
+    it(@"should provide the correct transformation for axis-aligned quads", ^{
+      quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+      cv::Mat1f identity = cv::Mat1f::eye(3, 3);
+      expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(identity), kEpsilon);
+      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.beCloseToMatWithin($(identity),
+                                                                                          kEpsilon);
     });
 
-    it(@"should provide the correct transformation for non-axis-aligned quadrilaterals", ^{
+    it(@"should provide the correct transformation for non-axis-aligned quads", ^{
       // In iOS, negative values mean clockwise rotation, while positive values in OSX.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
       const CGFloat kClockwiseAngle = -45.0 / 180.0 * M_PI;
@@ -289,35 +367,36 @@ context(@"properties", ^{
       const CGFloat kClockwiseAngle = 45.0 / 180.0 * M_PI;
 #endif
 
-      LTQuadrilateralCorners corners0{{CGPointMake(0, 0),
+      LTQuadCorners corners0{{CGPointMake(0, 0),
                                        CGPointMake(M_SQRT1_2, M_SQRT1_2),
                                        CGPointMake(0, M_SQRT2),
                                        CGPointMake(-M_SQRT1_2, M_SQRT1_2)}};
-      quad = [[LTQuadrilateral alloc] initWithCorners:corners0];
-      CATransform3D expectedTransform = CATransform3DMakeRotation(-kClockwiseAngle, 0, 0, 1);
-      expect($(quad.transform)).to.beCloseToCATransform3DWithin(expectedTransform, kEpsilon);
-      expect($(LTTransformationForQuad(quad))).to.beCloseToCATransform3DWithin(expectedTransform,
-                                                                             kEpsilon);
+      quad = [[LTQuad alloc] initWithCorners:corners0];
+      GLKMatrix3 expectedTransform = GLKMatrix3MakeRotation(kClockwiseAngle, 0, 0, 1);
+      expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)),
+                                                                           kEpsilon);
+      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)),
+                                                                                          kEpsilon);
 
-      LTQuadrilateralCorners corners1{{CGPointMake(5.1, -2.7),
-                                       CGPointMake(19.2, 22.2),
-                                       CGPointMake(44.34, 190.2),
-                                       CGPointMake(-29.132, 99.1)}};
-      quad = [[LTQuadrilateral alloc] initWithCorners:corners1];
-      expect($(quad.transform)).to.beCloseToCATransform3DWithin(LTTransformationForQuad(quad),
-                                                                kEpsilon);
+      LTQuadCorners corners1{{CGPointMake(5.1, -2.7),
+                              CGPointMake(19.2, 22.2),
+                              CGPointMake(44.34, 190.2),
+                              CGPointMake(-29.132, 99.1)}};
+      quad = [[LTQuad alloc] initWithCorners:corners1];
+      expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad))),
+                                                                           kEpsilon);
     });
   });
 });
 
 context(@"helper methods", ^{
   it(@"should correctly compute the number of non-left turns", ^{
-    LTQuadrilateralCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
-    expect([LTQuadrilateral numberOfNonLeftTurns:cornersOfConvexQuad]).to.equal(4);
-    LTQuadrilateralCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
-    expect([LTQuadrilateral numberOfNonLeftTurns:cornersOfConcaveQuad]).to.equal(3);
-    LTQuadrilateralCorners cornersOfComplexQuad{{v0, v1, v3, v2}};
-    expect([LTQuadrilateral numberOfNonLeftTurns:cornersOfComplexQuad]).to.equal(2);
+    LTQuadCorners cornersOfConvexQuad{{v0, v1, v2, v3}};
+    expect([LTQuad numberOfNonLeftTurns:cornersOfConvexQuad]).to.equal(4);
+    LTQuadCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
+    expect([LTQuad numberOfNonLeftTurns:cornersOfConcaveQuad]).to.equal(3);
+    LTQuadCorners cornersOfComplexQuad{{v0, v1, v3, v2}};
+    expect([LTQuad numberOfNonLeftTurns:cornersOfComplexQuad]).to.equal(2);
   });
 });
 
