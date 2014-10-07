@@ -18,8 +18,8 @@
 
 @optional
 
-/// Called when the painter has started a new stroke.
-- (void)ltPainterDidBeginStroke:(LTPainter *)painter;
+/// Called when the painer is about to start a new stroke.
+- (void)ltPainterWillBeginStroke:(LTPainter *)painter;
 
 /// Called when the painter finished painting a stroke.
 - (void)ltPainter:(LTPainter *)painter didFinishStroke:(LTPainterStroke *)stroke;

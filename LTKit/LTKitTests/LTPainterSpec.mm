@@ -238,7 +238,7 @@ context(@"painting", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];
         [[[delegate stub] andReturnValue:@((CGFloat)1.0)] alternativeZoomScale];
-        [[delegate expect] ltPainterDidBeginStroke:painter];
+        [[delegate expect] ltPainterWillBeginStroke:painter];
         [[[delegate expect] andDo:^(NSInvocation *invocation) {
           __unsafe_unretained LTPainterStroke *stroke;
           [invocation getArgument:&stroke atIndex:3];
