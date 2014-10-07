@@ -61,8 +61,8 @@ context(@"processing portrait tileable frame", ^{
     baseMask.minFilterInterpolation = LTTextureInterpolationNearest;
     
     processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
-    imageFrame = [[LTImageFrame alloc] initBaseTexture:baseTexture baseMask:baseMask
-                                             frameMask:frameMask frameType:LTFrameTypeStretch];
+    imageFrame = [[LTImageFrame alloc] initWithBaseTexture:baseTexture baseMask:baseMask
+                                                 frameMask:frameMask frameType:LTFrameTypeStretch];
     [processor setImageFrame:imageFrame];
   });
   
@@ -90,7 +90,7 @@ context(@"processing portrait tileable frame", ^{
   });
   
   it(@"should tile input rect from origin to target rect with angle", ^{
-    [processor setImageFrame:imageFrame angle:M_PI_4 translation:LTVector2Zero];
+    [processor setImageFrame:imageFrame angle:M_PI_4 translation:CGPointZero];
     processor.globalBaseMaskAlpha = 0.0;
     [processor process];
     LTTexture *precomputedResult =
@@ -99,7 +99,7 @@ context(@"processing portrait tileable frame", ^{
   });
   
   it(@"should tile input rect from origin to target rect with translation", ^{
-    [processor setImageFrame:imageFrame angle:0 translation:LTVector2(0.2, 0)];
+    [processor setImageFrame:imageFrame angle:0 translation:CGPointMake(0.2, 0)];
     processor.globalBaseMaskAlpha = 0.0;
     [processor process];
     LTTexture *precomputedResult =
@@ -108,7 +108,7 @@ context(@"processing portrait tileable frame", ^{
   });
   
   it(@"should tile input rect from origin to target rect with global frame opacity", ^{
-    [processor setImageFrame:imageFrame angle:M_PI_4 translation:LTVector2Zero];
+    [processor setImageFrame:imageFrame angle:M_PI_4 translation:CGPointZero];
     processor.globalBaseMaskAlpha = 0.0;
     processor.globalFrameMaskAlpha = 0.5;
     processor.color = LTVector3(0, 1, 0);
@@ -119,9 +119,9 @@ context(@"processing portrait tileable frame", ^{
   });
   
   it(@"Should tile mask", ^{
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:nil baseMask:baseMask
-                                                         frameMask:frameMask
-                                                         frameType:LTFrameTypeStretch]];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:nil baseMask:baseMask
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeStretch]];
     processor.color = LTVector3(1, 0, 0);
     [processor process];
     LTTexture *precomputedResult =
@@ -163,10 +163,10 @@ context(@"processing landscape image with tileable frame", ^{
   });
 
   it(@"Should tile translated mask on landscape image", ^{
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:baseTexture baseMask:nil
-                                                        frameMask:frameMask
-                                                        frameType:LTFrameTypeStretch]
-                       angle:0 translation:LTVector2(0.2, 0)];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:baseTexture baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeStretch]
+                       angle:0 translation:CGPointMake(0.2, 0)];
     [processor process];
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"ImageLandscapeWithTiledMask.png")];

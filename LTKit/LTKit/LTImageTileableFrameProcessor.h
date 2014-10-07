@@ -10,16 +10,14 @@
 
 // Sets the image frame with \c angle and \c translation.
 - (void)setImageFrame:(LTImageFrame *)imageFrame angle:(CGFloat)angle
-          translation:(LTVector2)translation;
+          translation:(CGPoint)translation;
 
 /// Angle of the base texture and mask. Should be in [-M_PI, M_PI] range. The default value is 0,
 /// which means no change to the input frame's angle.
 @property (readonly, nonatomic) CGFloat angle;
 LTPropertyDeclare(CGFloat, angle, Angle);
 
-/// Translates the base texture and mask. Components should be in [-1, 1] range. Default value is no
-/// movement (0, 0).
-@property (readonly, nonatomic) LTVector2 translation;
-LTPropertyDeclare(LTVector2, translation, Translation);
+/// Translation of the base texture and mask. The default value is \c (0, 0).
+@property (readonly, nonatomic) CGPoint translation;
 
 @end

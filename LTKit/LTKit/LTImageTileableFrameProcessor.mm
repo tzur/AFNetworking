@@ -33,7 +33,7 @@
 }
 
 - (void)setImageFrame:(LTImageFrame *)imageFrame angle:(CGFloat)angle
-          translation:(LTVector2)translation {
+          translation:(CGPoint)translation {
   [super setImageFrame:imageFrame];
   self.angle = angle;
   self.translation = translation;
@@ -101,11 +101,12 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, -M_PI, M_PI, 0);
   self[[LTImageFrameFsh rotation]] = $(GLKMatrix2MakeRotation(angle));
 }
 
-LTPropertyWithoutSetter(LTVector2, translation, Translation,
-                        -LTVector2One, LTVector2One, LTVector2Zero);
-- (void)setTranslation:(LTVector2)translation {
-  [self _verifyAndSetTranslation:translation];
-  self[[LTImageFrameFsh translation]] = $(translation);
+- (CGPoint)defaultTranslation {
+  return CGPointZero;
+}
+
+- (void)setTranslation:(CGPoint)translation {
+  self[[LTImageFrameFsh translation]] = $(LTVector2(translation.x, translation.y));
 }
 
 @end

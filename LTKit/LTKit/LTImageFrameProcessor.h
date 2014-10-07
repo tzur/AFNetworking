@@ -24,15 +24,15 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 
 /// Sets the \c baseTexture, \c baseMask and \c frameMask. \c frameType defines how to map all
 /// textures.
-- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
-                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType;
+- (instancetype)initWithBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                          frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType;
 
 /// Sets the \c baseTexture, \c baseMask and \c frameMask. \c frameType defines how to map
 /// textures. \c mapBaseToFullImageSize means that the \c baseTexture and \c baseMask will be mapped
 /// to the full image size.
-- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
-                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
-         mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize;
+- (instancetype)initWithBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                          frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
+             mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize;
 
 /// Four channeled texture for the frame.
 @property (readonly, strong, nonatomic) LTTexture *baseTexture;
