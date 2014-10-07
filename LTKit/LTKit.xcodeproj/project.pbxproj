@@ -1942,6 +1942,8 @@
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
 				031338D0191279B30095F99B /* LTImageBorderProcessor.h */,
 				031338D1191279B30095F99B /* LTImageBorderProcessor.mm */,
+				2896F65919DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.h */,
+				2896F65A19DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.mm */,
 				8BB92FAF1906AEA900954124 /* LTMaskOverlay.fsh */,
 				8BB92FAC1906AE5400954124 /* LTMaskOverlayProcessor.h */,
 				8BB92FAD1906AE5400954124 /* LTMaskOverlayProcessor.mm */,
@@ -2009,8 +2011,6 @@
 				285A671919AE313400B2CE9E /* LTReshapeProcessor.h */,
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
 				285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */,
-				2896F65919DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.h */,
-				2896F65A19DAAF3E0042B4A1 /* LTImageTileableFrameProcessor.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -2040,6 +2040,7 @@
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				28470F561977B08B0031E500 /* LTImageFrameProcessorSpec.mm */,
+				2896F66019DAB3CD0042B4A1 /* LTImageTileableFrameProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
 				8BEBF3EE18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm */,
@@ -2060,7 +2061,6 @@
 				28A34846198F983E00031866 /* LTPerspectiveProcessorSpec.mm */,
 				0368E6D719C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm */,
 				28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */,
-				2896F66019DAB3CD0042B4A1 /* LTImageTileableFrameProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";

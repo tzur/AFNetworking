@@ -28,7 +28,7 @@ extern NSString * const kLTBrushEffectExamples;
 
 SharedExamplesBegin(LTBrushEffectExamples)
 
-sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
+sharedExamplesFor(kLTBrushEffectSubclassExamples, ^(NSDictionary *data) {
   __block Class effectClass;
   __block LTBrushEffect *effect;
   
@@ -43,7 +43,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
   });
   
   context(@"initialization", ^{
-    it(@"should initailize with default initializer", ^{
+    it(@"should initialize with default initializer", ^{
       effect = [[effectClass alloc] init];
       expect(effect.random).notTo.beNil();
     });

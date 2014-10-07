@@ -24,7 +24,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     textureClass = data[kLTTextureExamplesTextureClass];
   });
 
-  sharedExamplesFor(@"LTTexture precision and format", ^(NSDictionary *data) {
+  sharedExamplesFor(kLTTexturePrecisionAndFormatExamples, ^(NSDictionary *data) {
     __block LTTexturePrecision precision;
     __block LTTextureFormat format;
     __block int matType;
