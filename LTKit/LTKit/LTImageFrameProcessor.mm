@@ -26,14 +26,14 @@
   return self;
 }
 
-- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
-                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType {
-  return [self initBaseTexture:baseTexture baseMask:baseMask frameMask:frameMask frameType:frameType
-        mapBaseToFullImageSize:NO];
+- (instancetype)initWithBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                          frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType {
+  return [self initWithBaseTexture:baseTexture baseMask:baseMask frameMask:frameMask
+                         frameType:frameType mapBaseToFullImageSize:NO];
 }
 
-- (instancetype)initBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
-                      frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
+- (instancetype)initWithBaseTexture:(LTTexture *)baseTexture baseMask:(LTTexture *)baseMask
+                          frameMask:(LTTexture *)frameMask frameType:(LTFrameType)frameType
          mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize {
   if (self = [super init]) {
     _baseTexture = baseTexture ?: [LTTexture textureWithImage:cv::Mat4b::zeros(1, 1)];

@@ -82,9 +82,9 @@ context(@"copy constructor", ^{
     LTTexture *frame =
         [LTTexture textureWithImage:LTLoadMat([self class], @"FrameStamp.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
-                                                         frameMask:frameMask
-                                                         frameType:LTFrameTypeRepeat]];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeRepeat]];
   });
   
   afterEach(^{
@@ -123,9 +123,9 @@ context(@"processing frame type repeat", ^{
     LTTexture *frame =
         [LTTexture textureWithImage:LTLoadMat([self class], @"FrameStamp.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
-                                                         frameMask:frameMask
-                                                         frameType:LTFrameTypeRepeat]];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeRepeat]];
   });
   
   afterEach(^{
@@ -167,9 +167,9 @@ context(@"processing frame type stretch", ^{
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameClassic.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
-                                                         frameMask:frameMask
-                                                         frameType:LTFrameTypeStretch]];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeStretch]];
   });
   
   afterEach(^{
@@ -212,9 +212,9 @@ context(@"processing frame type fit", ^{
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-    [processor setImageFrame:[[LTImageFrame alloc] initBaseTexture:frame baseMask:nil
-                                                         frameMask:frameMask
-                                                         frameType:LTFrameTypeFit]];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeFit]];
   });
   
   afterEach(^{
