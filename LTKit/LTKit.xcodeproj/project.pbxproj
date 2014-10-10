@@ -30,6 +30,7 @@
 		031338E3191284100095F99B /* LTImageBorder.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 031338DF19127A0C0095F99B /* LTImageBorder.fsh */; };
 		0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */; };
 		0313D5DC188FA2EB006A1846 /* TexelOffset.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */; };
+		0317070519E9317100F4F975 /* Lena128BWProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0317070419E9317100F4F975 /* Lena128BWProcessor.png */; };
 		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
 		031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */; };
 		031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */; };
@@ -145,6 +146,7 @@
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
+		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
@@ -1041,6 +1043,7 @@
 		031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageBorderProcessorSpec.mm; sourceTree = "<group>"; };
 		0313D5D9188FA2EB006A1846 /* TexelOffset.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.fsh; sourceTree = "<group>"; };
 		0313D5DA188FA2EB006A1846 /* TexelOffset.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TexelOffset.vsh; sourceTree = "<group>"; };
+		0317070419E9317100F4F975 /* Lena128BWProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWProcessor.png; path = Resources/Lena128BWProcessor.png; sourceTree = "<group>"; };
 		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
 		031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethDesaturatedGreenAndBlue.png; path = Resources/MacbethDesaturatedGreenAndBlue.png; sourceTree = "<group>"; };
 		031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethSaturatedBrightenedRedAndOrange.png; path = Resources/MacbethSaturatedBrightenedRedAndOrange.png; sourceTree = "<group>"; };
@@ -1174,6 +1177,7 @@
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
+		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
@@ -2574,6 +2578,8 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0317070419E9317100F4F975 /* Lena128BWProcessor.png */,
+				03FDEE3719E1B015002DC735 /* TonalGrain.png */,
 				03FB6B5519DAAC4E00255085 /* LenaClarity.png */,
 				288759DA19DC486C004520DD /* ImageLandscapeWithTiledMask.png */,
 				288759C819DC4548004520DD /* ImageWithTranslatedTiledFrame.png */,
@@ -3812,6 +3818,7 @@
 				28A2546819C9D3C80057E1A3 /* ReshapeProcessorUnwarpWithoutMask.png in Resources */,
 				283BD0401922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png in Resources */,
 				282AC6981924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png in Resources */,
+				0317070519E9317100F4F975 /* Lena128BWProcessor.png in Resources */,
 				288759DB19DC486C004520DD /* ImageLandscapeWithTiledMask.png in Resources */,
 				280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */,
 				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
@@ -3902,6 +3909,7 @@
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				2896F64819DAAEB20042B4A1 /* ImageWithTransparentTiledMask.png in Resources */,
+				03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,

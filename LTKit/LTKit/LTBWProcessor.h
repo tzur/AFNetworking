@@ -9,8 +9,9 @@
 
 /// @class LTBWProcessor
 ///
-/// Converts RGB image to BW (black and white). Controls both the tonal characteristics of the
-/// result and additional content that enables a richer conversion: grain, vignetting and frames.
+/// Converts color RGB image to black and white. Controls both the tonal characteristics of the
+/// result and additional content that enables a richer conversion: grain, vignetting, tint and
+/// frames.
 @interface LTBWProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture to be converted to BW and the output.
@@ -41,22 +42,25 @@ LTPropertyDeclare(CGFloat, offset, Offset);
 LTPropertyDeclare(CGFloat, structure, Structure);
 
 /// Color filter is a triplet that weights the contribution of each color channel during the
-/// conversion process. Color components should be in [0, 1] range. An attempt to pass the black
-/// color (all components are zero) will raise an exception.
-/// Default value is the NTSC conversion triplet (0.299, 0.587, 0.114).
+/// conversion process. Color components should be in [-2, 2] range. The weights are not normalized.
+/// An attempt to pass the black color (all components are zero) will raise an exception. Default
+/// value is the NTSC conversion triplet (0.299, 0.587, 0.114).
 @property (nonatomic) LTVector3 colorFilter;
 LTPropertyDeclare(LTVector3, colorFilter, ColorFilter);
 
-/// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
-/// This LUT is used to colorize (add tint) to the BW conversion. Default value is an identity
-/// mapping. Setting this property to \c nil will restore the default value.
-@property (strong, nonatomic) LTTexture *colorGradientTexture;
+/// Gradient that is used to map luminance to color, adding tint to the image.
+@property (strong, nonatomic) LTColorGradient *colorGradient;
 
 /// Intensity of the color gradient. A value of 0 will effectively use an identity color gradient. A
 /// value of 1 will use the given \c colorGradientTexture. A middle value will linearly interpolate
 /// the two. Should be in [0, 1] range. Default value is 0.
 @property (nonatomic) CGFloat colorGradientIntensity;
 LTPropertyDeclare(CGFloat, colorGradientIntensity, ColorGradientIntensity);
+
+/// Add fade effect to the color gradient mapping. Should be in [0, 1] range. Default value is 0,
+/// when no fade applied.
+@property (nonatomic) CGFloat colorGradientFade;
+LTPropertyDeclare(CGFloat, colorGradientFade, ColorGradientFade);
 
 #pragma mark -
 #pragma mark Grain
@@ -77,7 +81,7 @@ LTPropertyDeclare(CGFloat, colorGradientIntensity, ColorGradientIntensity);
 @property (nonatomic) LTVector3 grainChannelMixer;
 LTPropertyDeclare(LTVector3, grainChannelMixer, GrainChannelMixer);
 
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
+/// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 1.
 @property (nonatomic) CGFloat grainAmplitude;
 LTPropertyDeclare(CGFloat, grainAmplitude, GrainAmplitude);
 
@@ -85,10 +89,10 @@ LTPropertyDeclare(CGFloat, grainAmplitude, GrainAmplitude);
 #pragma mark Vignette
 #pragma mark -
 
-/// Color of the vignetting pattern. Color components should be in [0, 1] range. Default color is
-/// black (0, 0, 0).
-@property (nonatomic) LTVector3 vignetteColor;
-LTPropertyDeclare(LTVector3, vignetteColor, VignetteColor);
+/// Intensity of the vignetting pattern. Should be in [-1, 1] range, where smaller numbers indicate
+/// a darker vignetting. Default is 0, which does not apply any vignetting at all.
+@property (nonatomic) CGFloat vignetteIntensity;
+LTPropertyDeclare(CGFloat, vignetteIntensity, VignetteIntensity);
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 0.
@@ -104,107 +108,19 @@ LTPropertyDeclare(CGFloat, vignetteSpread, VignetteSpread);
 @property (nonatomic) CGFloat vignetteCorner;
 LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 
-/// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
-/// which doesn't affect the image. Set \c noise back to \c nil to restore the default value.
-///
-/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
-/// create a very specific visual result and understand well the underlying frame creation process.
-@property (strong, nonatomic) LTTexture *vignetteNoise;
-
-/// Mixes the noise channels of the noise texture in order to create the transition noise.
-/// Components should be in [0, 1] range. Default value is (1, 0, 0). Input values are normalized,
-/// to remove potential interference with noise amplitude.
-@property (nonatomic) LTVector3 vignetteNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer);
-
-/// Amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat vignetteNoiseAmplitude;
-LTPropertyDeclare(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude);
-
-/// Vignetting opacity. Should be in [0, 1] range. Default amplitude is 0.
-@property (nonatomic) CGFloat vignetteOpacity;
-LTPropertyDeclare(CGFloat, vignetteOpacity, VignetteOpacity);
-
 #pragma mark -
-#pragma mark Outer Frame
+#pragma mark Frame
 #pragma mark -
 
-/// Width of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat outerFrameWidth;
-LTPropertyDeclare(CGFloat, outerFrameWidth, OuterFrameWidth);
+/// Square frame texture. Frame is mapped as bottom texture in overlay mode, were top layer is the
+/// luminance input. Frame is mapped using a "throw-cut" algorithm, where texture center rows or
+/// columns corresponding to the smaller dimension are thrown away and not mapped on the image.
+/// Passing \c nil will add an empty frame.
+@property (strong, nonatomic) LTTexture *frameTexture;
 
-/// Spread of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat outerFrameSpread;
-LTPropertyDeclare(CGFloat, outerFrameSpread, OuterFrameSpread);
-
-/// In outer frame, determines the corner type of the frame by creating an appropriate distance
-/// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
-/// values will create a different degrees of roundness, which stem from the remapping the distance
-/// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat outerFrameCorner;
-LTPropertyDeclare(CGFloat, outerFrameCorner, OuterFrameCorner);
-
-/// Noise texture that modulates with the outer frame. Default value is a constant 0.5, which
-/// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *outerFrameNoise;
-
-/// In outer frame, mixes the noise channels of the noise texture in order to create the transition
-/// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
-/// with noise amplitude.
-@property (nonatomic) LTVector3 outerFrameNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer);
-
-/// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat outerFrameNoiseAmplitude;
-LTPropertyDeclare(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude);
-
-/// In outer frame, color of the foreground and of the transition area. Components should be in
-/// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) LTVector3 outerFrameColor;
-LTPropertyDeclare(LTVector3, outerFrameColor, OuterFrameColor);
-
-#pragma mark -
-#pragma mark Inner Frame
-#pragma mark -
-
-/// Width of the inner frame, as percentage of the smaller image dimension. Inner frame width is
-/// measured from outerFrameWidth inwards. The transition (spread) part of the outer frame is still
-/// visible, since the inner frame is layered below the outer frame. Should be in [0-25] range.
-/// Default value is 0.
-@property (nonatomic) CGFloat innerFrameWidth;
-LTPropertyDeclare(CGFloat, innerFrameWidth, InnerFrameWidth);
-
-/// Spread of the inner frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat innerFrameSpread;
-LTPropertyDeclare(CGFloat, innerFrameSpread, InnerFrameSpread);
-
-/// In inner frame, determines the corner type of the frame by creating an appropriate distance
-/// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
-/// values will create a different degrees of roundness, which stem from the remapping the distance
-/// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat innerFrameCorner;
-LTPropertyDeclare(CGFloat, innerFrameCorner, InnerFrameCorner);
-
-/// Noise texture that modulates with the inner frame. Default value is a constant 0.5, which
-/// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *innerFrameNoise;
-
-/// In inner frame, mixes the noise channels of the noise texture in order to create the transition
-/// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
-/// with noise amplitude.
-@property (nonatomic) LTVector3 innerFrameNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer);
-
-/// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat innerFrameNoiseAmplitude;
-LTPropertyDeclare(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude);
-
-/// In inner frame, color of the foreground and of the transition area. Components should be in
-/// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) LTVector3 innerFrameColor;
-LTPropertyDeclare(LTVector3, innerFrameColor, InnerFrameColor);
+/// Changes the width of the frame. Should be in [-1, 1] range. Default value is 0, which shows the
+/// frame at its original size, corrected for the aspect ratio.
+@property (nonatomic) CGFloat frameWidth;
+LTPropertyDeclare(CGFloat, frameWidth, FrameWidth);
 
 @end

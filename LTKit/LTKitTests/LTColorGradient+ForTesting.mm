@@ -43,4 +43,13 @@
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }
 
++ (LTColorGradient *)redToRedGradient {
+  LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
+      initWithPosition:0.0 color:LTVector3(1.0, 0.0, 0.0)];
+  LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
+      initWithPosition:1.0 color:LTVector3(1.0, 0.0, 0.0)];
+  
+  return [[LTColorGradient alloc] initWithControlPoints:@[controlPoint0, controlPoint1]];
+}
+
 @end
