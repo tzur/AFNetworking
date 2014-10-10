@@ -128,13 +128,13 @@
 #pragma mark -
 
 - (void)startStrokeAt:(LTPainterPoint *)point {
+  if ([self.delegate respondsToSelector:@selector(ltPainterWillBeginStroke:)]) {
+    [self.delegate ltPainterWillBeginStroke:self];
+  }
   self.currentStroke = [[LTPainterStroke alloc]
                         initWithInterpolationRoutineFactory:self.splineFactory
                         startingPoint:point];
   [self.brush startNewStrokeAtPoint:point];
-  if ([self.delegate respondsToSelector:@selector(ltPainterDidBeginStroke:)]) {
-    [self.delegate ltPainterDidBeginStroke:self];
-  }
 }
 
 - (void)endStroke {
