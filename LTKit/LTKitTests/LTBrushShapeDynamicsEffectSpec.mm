@@ -114,7 +114,7 @@ context(@"effect", ^{
   __block NSArray *dynamicRects;
   
   beforeEach(^{
-    LTRandom *random = [[LTRandom alloc] init];
+    LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
     effect = [[LTBrushShapeDynamicsEffect alloc] initWithRandom:random];
     srand48(0);
     sourceRects = [NSMutableArray array];

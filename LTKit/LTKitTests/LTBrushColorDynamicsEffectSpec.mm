@@ -110,7 +110,7 @@ context(@"effect", ^{
   __block CGFloat baseHue, baseSaturation, baseBrightness, baseAlpha;
   
   beforeEach(^{
-    LTRandom *random = [[LTRandom alloc] init];
+    LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
     effect = [[LTBrushColorDynamicsEffect alloc] initWithRandom:random];
     sourceRects = [NSMutableArray array];
     for (NSUInteger i = 0; i < 5000; ++i) {
