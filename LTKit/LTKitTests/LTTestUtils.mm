@@ -229,12 +229,18 @@ cv::Vec4b LTLTVector4ToVec4b(LTVector4 value) {
                    value.z * UCHAR_MAX, value.w * UCHAR_MAX);
 }
 
-cv::Mat4b LTCreateDeltaMat(CGSize size) {
+cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position) {
+  LTParameterAssert(position.x >= 0 && position.y >= 0 && position.x < size.width &&
+                    position.y < size.height, @"Position should be bounded by size");
   cv::Mat4b delta(size.height, size.width);
   delta = cv::Vec4b(0, 0, 0, 255);
-  CGSize middle = std::floor(size / 2);
-  delta(middle.width, middle.height) = cv::Vec4b(255, 255, 255, 255);
+  delta(position.y, position.x) = cv::Vec4b(255, 255, 255, 255);
   return delta;
+}
+
+cv::Mat4b LTCreateDeltaMat(CGSize size) {
+  CGSize middle = std::floor(size / 2);
+  return LTCreateDeltaMat(size, CGPointMake(middle.width, middle.height));
 }
 
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
