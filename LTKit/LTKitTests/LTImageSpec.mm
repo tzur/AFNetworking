@@ -201,4 +201,26 @@ context(@"uiimage conversion", ^{
   });
 });
 
+context(@"saving images", ^{
+  it(@"should write image to path", ^{
+    UIImage *jpeg = LTLoadImage([self class], @"QuadUp.jpg");
+    LTImage *expected = [[LTImage alloc] initWithImage:jpeg];
+
+    NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"_LTImageSaveTest.jpg"];
+    NSError *error;
+    BOOL success = [expected writeToPath:path error:&error];
+
+    expect(error).to.beNil();
+    expect(success).to.beTruthy();
+
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    expect(image).toNot.beNil();
+
+    LTImage *loaded = [[LTImage alloc] initWithImage:image];
+    expect($(loaded.mat)).to.equalMat($(expected.mat));
+
+    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+  });
+});
+
 SpecEnd

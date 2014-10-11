@@ -3,7 +3,11 @@
 
 #import "LTImage.h"
 
+#import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "LTCGExtensions.h"
+#import "NSError+LTKit.h"
 
 @interface LTImage () {
   /// Image contents.
@@ -102,7 +106,7 @@
 }
 
 #pragma mark -
-#pragma mark To UIImage
+#pragma mark Format conversion
 #pragma mark -
 
 - (UIImage *)UIImage {
@@ -112,25 +116,37 @@
 - (UIImage *)UIImageWithScale:(CGFloat)scale copyData:(BOOL)copyData {
   NSData *data = [self dataFromMatWithCopying:copyData];
 
+  __block UIImage *image;
+
+  CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
+  [self createImageWithDataProvider:provider andDo:^(CGImageRef imageRef) {
+    image = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+  }];
+  CGDataProviderRelease(provider);
+
+  return image;
+}
+
+typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
+
+- (void)createImageWithDataProvider:(CGDataProviderRef)dataProvider
+                              andDo:(LTImageCGImageBlock)block {
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
   CGColorSpaceRef colorSpace = [self newColorSpaceForImage];
   CGBitmapInfo bitmapInfo = [[self class] bitmapFlagsForColorSpace:colorSpace];
-  CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
 
-  CGImageRef imageRef = CGImageCreate(self.mat.cols, self.mat.rows,
-                                      bitsPerComponent, bitsPerPixel, self.mat.step.p[0],
-                                      colorSpace, bitmapInfo, provider, NULL, false,
-                                      kCGRenderingIntentDefault);
+  CGImageRef imageRef = CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent, bitsPerPixel,
+                                      self.mat.step.p[0], colorSpace, bitmapInfo, dataProvider,
+                                      NULL, false, kCGRenderingIntentDefault);
   LTAssert(imageRef, @"Failed to create CGImage from LTImage");
 
-  UIImage *image = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+  if (block) {
+    block(imageRef);
+  }
 
   CGImageRelease(imageRef);
-  CGDataProviderRelease(provider);
   CGColorSpaceRelease(colorSpace);
-
-  return image;
 }
 
 - (NSData *)dataFromMatWithCopying:(BOOL)copyData {
@@ -149,6 +165,71 @@
     case LTImageDepthRGBA:
       return CGColorSpaceCreateDeviceRGB();
   }
+}
+
+- (BOOL)writeToPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+  CGDataProviderRef provider = [self newDataProvider];
+  if (!provider) {
+    if (error) {
+      *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeObjectCreationFailed
+                               userInfo:@{kLTInternalErrorMessageKey:
+                                            @"Failed creating data provider"}];
+    }
+    return NO;
+  }
+  @onExit {
+    CGDataProviderRelease(provider);
+  };
+
+  __block BOOL imageWritten = NO;
+  [self createImageWithDataProvider:provider andDo:^(CGImageRef imageRef) {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    CGImageDestinationRef destinationRef = [self newImageDestinationWithURL:url];
+    if (!destinationRef) {
+      if (error) {
+        *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeObjectCreationFailed
+                                 userInfo:@{kLTInternalErrorMessageKey:
+                                              @"Error creating image destination"}];
+      }
+      return;
+    }
+    @onExit {
+      CFRelease(destinationRef);
+    };
+
+    CGImageDestinationAddImage(destinationRef, imageRef, nil);
+
+    NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality:
+                                   @1};
+    CGImageDestinationSetProperties(destinationRef, (CFDictionaryRef)properties);
+
+    BOOL writtenSuccessfully = CGImageDestinationFinalize(destinationRef);
+    if (!writtenSuccessfully) {
+      if (error) {
+        *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileWriteUnknownError
+                                 userInfo:@{kLTInternalErrorMessageKey: @"Error writing image file",
+                                            NSFilePathErrorKey: path}];
+      }
+      return;
+    }
+
+    if (error) {
+      *error = nil;
+    }
+
+    imageWritten = YES;
+  }];
+
+  return imageWritten;
+}
+
+- (CGDataProviderRef)newDataProvider {
+  NSData *data = [self dataFromMatWithCopying:NO];
+  return CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
+}
+
+- (CGImageDestinationRef)newImageDestinationWithURL:(NSURL *)url {
+  return CGImageDestinationCreateWithURL((CFURLRef)url, kUTTypeJPEG, 1, NULL);
 }
 
 #pragma mark -

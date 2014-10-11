@@ -45,6 +45,10 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
 /// contents of the current image.
 - (UIImage *)UIImageWithScale:(CGFloat)scale copyData:(BOOL)copyData;
 
+/// Writes the image to the given path. Returns \c YES if succeeded and sets error to \c nil,
+/// otherwise error is populated with an error object.
+- (BOOL)writeToPath:(NSString *)path error:(NSError **)error;
+
 /// Size of the image.
 @property (readonly, nonatomic) CGSize size;
 

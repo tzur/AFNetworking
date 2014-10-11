@@ -4,3 +4,5 @@
 #import "NSError+LTKit.h"
 
 NSString * const kLTKitErrorDomain = @"com.lightricks.LTKit";
+
+NSString * const kLTInternalErrorMessageKey = @"InternalErrorMessage";

@@ -10,6 +10,8 @@
 		289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884B9188D992000AD338E /* Main-iPad.storyboard */; };
 		289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884BA188D992000AD338E /* Main-iPhone.storyboard */; };
 		8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B329054192CCB640010592E /* libextobjc_iOS.a */; };
+		8B4E493219E94D6F00B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493119E94D6F00B3F55D /* ImageIO.framework */; };
+		8B4E493619E94D7F00B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */; };
 		8B8E512E1868479100821829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512D1868479100821829 /* Foundation.framework */; };
 		8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512F1868479100821829 /* CoreGraphics.framework */; };
 		8B8E51321868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
@@ -66,6 +68,8 @@
 		289884B9188D992000AD338E /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		289884BA188D992000AD338E /* Main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPhone.storyboard"; sourceTree = "<group>"; };
 		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8B4E493119E94D6F00B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B8E512A1868479100821829 /* LTKitUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTKitUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +115,8 @@
 				8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */,
 				8B8E51321868479100821829 /* UIKit.framework in Frameworks */,
 				8B8E512E1868479100821829 /* Foundation.framework in Frameworks */,
+				8B4E493219E94D6F00B3F55D /* ImageIO.framework in Frameworks */,
+				8B4E493619E94D7F00B3F55D /* MobileCoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +144,8 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */,
+				8B4E493119E94D6F00B3F55D /* ImageIO.framework */,
 				8BA821F21986941000FBE68E /* libMantle-iOS.a */,
 				8B329054192CCB640010592E /* libextobjc_iOS.a */,
 				8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */,
