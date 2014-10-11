@@ -20,4 +20,9 @@
 /// @return color gradient that represents a colder-than-neutral manipulation.
 + (LTColorGradient *)magentaYellowGradient;
 
+/// Creates an instance of LTColorGradient that represents a constant red color.
+///
+/// @return color gradient with a constant red color.
++ (LTColorGradient *)redToRedGradient;
+
 @end

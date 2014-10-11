@@ -3,14 +3,11 @@
 
 #import "LTBWProcessor.h"
 
-#import "LTBWTonalityProcessor.h"
-#import "LTCGExtensions.h"
+#import "LTColorConversionProcessor.h"
 #import "LTColorGradient.h"
-#import "LTGLKitExtensions.h"
+#import "LTCurve.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
-#import "LTOpenCVExtensions.h"
-#import "LTProceduralFrameProcessor.h"
 #import "LTProceduralVignetting.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBWProcessorFsh.h"
@@ -19,244 +16,295 @@
 
 @interface LTBWProcessor ()
 
-/// If \c YES, the tone processor should run at the next processing round of this processor.
-@property (nonatomic) BOOL toneProcessorInputChanged;
-
 /// If \c YES, the vignette processor should run at the next processing round of this processor.
 @property (nonatomic) BOOL vignetteProcessorInputChanged;
-
-/// If \c YES, the outer frame processor should run at the next processing round of this processor.
-@property (nonatomic) BOOL outerFrameProcessorInputChanged;
-
-/// If \c YES, the inner frame processor should run at the next processing round of this processor.
-@property (nonatomic) BOOL innerFrameProcessorInputChanged;
-
-/// Processor for tone mapping the input image.
-@property (strong, nonatomic) LTBWTonalityProcessor *toneProcessor;
 
 /// Processor for generating the vignette texture.
 @property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 
-/// Processor for generating the outer frame texture.
-@property (strong, nonatomic) LTProceduralFrameProcessor *outerFrameProcessor;
-
-/// Processor for generating the inner frame texture.
-@property (strong, nonatomic) LTProceduralFrameProcessor *innerFrameProcessor;
-
-/// Identity curve used with colorGradientIntensity.
-@property (nonatomic) cv::Mat4b identityCurve;
-
-/// Mat copy of \c colorGradientTexture.
+/// Mat that stores color gradient in rgb channels. Alpha channel is unused.
 @property (nonatomic) cv::Mat4b colorGradientMat;
+
+/// Identity curve, used to obtain current color gradient mapping by interpolating with
+/// colorGradientMat using colorGradientIntensity as time parameter.
+@property (nonatomic) cv::Mat4b identityColorGradientMat;
+
+/// Tone mapping curve that incapsulated brightness, contrast, exposure and offset adjustments.
+@property (nonatomic) cv::Mat1b toneCurveMat;
+
+/// RGBA texture with one row and 256 columns that defines greyscale to color mapping. RGB part of
+/// this LUT is the current color gradient mapping which adds tint to the image. Alpha channel holds
+/// the tone mapping curve. Default value is an identity mapping across the channels.
+@property (strong, nonatomic) LTTexture *colorGradientTexture;
+
+/// The generation id of the input texture that was used to create the current details textures.
+@property (nonatomic) NSUInteger detailsTextureGenerationID;
 
 @end
 
 @implementation LTBWProcessor
 
 @synthesize grainTexture = _grainTexture;
+@synthesize frameTexture = _frameTexture;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  // Setup tonality.
-  LTTexture *toneTexture = [LTTexture textureWithPropertiesOf:output];
-  self.toneProcessor = [[LTBWTonalityProcessor alloc] initWithInput:input output:toneTexture];
-  
-  // Setup vignetting.
   LTTexture *vignetteTexture = [self createVignettingTextureWithInput:input];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
-  
-  // Setup wide frame.
-  LTTexture *outerFrameTexture = [self createFrameTextureWithInput:input];
-  self.outerFrameProcessor = [[LTProceduralFrameProcessor alloc] initWithOutput:outerFrameTexture];
-  
-  // Setup narrow frame.
-  LTTexture *innerFrameTexture = [self createFrameTextureWithInput:input];
-  self.innerFrameProcessor = [[LTProceduralFrameProcessor alloc] initWithOutput:innerFrameTexture];
-  
   NSDictionary *auxiliaryTextures =
-      @{[LTBWProcessorFsh grainTexture]: self.grainTexture,
+      @{[LTBWProcessorFsh colorGradient]:
+          [[self defaultColorGradient] textureWithSamplingPoints:256],
+        [LTBWProcessorFsh grainTexture]: [self defaultGrainTexture],
         [LTBWProcessorFsh vignettingTexture]: vignetteTexture,
-        [LTBWProcessorFsh outerFrameTexture]: outerFrameTexture,
-        [LTBWProcessorFsh innerFrameTexture]: innerFrameTexture};
+        [LTBWProcessorFsh frameTexture]: [self defaultFrameTexture]};
   if (self = [super initWithVertexSource:[LTBWProcessorVsh source]
-                          fragmentSource:[LTBWProcessorFsh source] sourceTexture:toneTexture
+                          fragmentSource:[LTBWProcessorFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures andOutput:output]) {
-    [self setDefaultValues];
-    [self setNeedsSubProcessing];
+    self[[LTBWProcessorFsh aspectRatio]] = @([self aspectRatio]);
+    self.identityColorGradientMat = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
+    [self resetInputModel];
   }
   return self;
 }
 
-- (void)setDefaultValues {
-  self.grainAmplitude = self.defaultGrainAmplitude;
-  self.grainChannelMixer = self.defaultGrainChannelMixer;
-
-  // Unlike the default LTProceduralVignetting spread, here the default is 0, so no vignetting is
-  // initially seen.
-  self.vignetteSpread = 0;
-
-  self.identityCurve = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
-  self.colorGradientTexture = [LTTexture textureWithImage:self.identityCurve];
+- (LTColorGradient *)defaultColorGradient {
+  return [LTColorGradient identityGradient];
 }
 
-- (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
-  CGFloat xScale = size.width / grain.size.width;
-  CGFloat yScale = size.height / grain.size.height;
-  self[[LTBWProcessorVsh grainScaling]] = $(LTVector2(xScale, yScale));
+- (LTTexture *)defaultGrainTexture {
+  LTTexture *greyTexture = [self greyTexture];
+  greyTexture.wrap = LTTextureWrapRepeat;
+  return greyTexture;
 }
 
-- (CGSize)findConstrainedSizeWithSize:(CGSize)size maxDimension:(CGFloat)maxDimension {
-  CGFloat largerDimension = MAX(size.width, size.height);
-  // Size of the result shouldn't be larger than input size.
-  CGFloat scaleFactor = MIN(1.0, maxDimension / largerDimension);
-  return std::round(CGSizeMake(size.width * scaleFactor, size.height * scaleFactor));
+- (LTTexture *)defaultFrameTexture {
+  return [self greyTexture];
+}
+
+// Grey texture is neutral in overlay blending mode.
+- (LTTexture *)greyTexture {
+  LTTexture *greyTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
+  [greyTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
+  return greyTexture;
 }
 
 - (LTTexture *)createVignettingTextureWithInput:(LTTexture *)input {
   static const CGFloat kVignettingMaxDimension = 256;
-  CGSize vignettingSize = [self findConstrainedSizeWithSize:input.size
-                                               maxDimension:kVignettingMaxDimension];
-  LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:vignettingSize];
+  CGSize vignettingSize = CGScaleDownToDimension(input.size, kVignettingMaxDimension);
+  LTTexture *vignetteTexture = [LTTexture byteRedTextureWithSize:vignettingSize];
   return vignetteTexture;
 }
 
-- (LTTexture *)createFrameTextureWithInput:(LTTexture *)input {
-  static const CGFloat kFrameMaxDimension = 1024;
-  CGSize frameSize = [self findConstrainedSizeWithSize:input.size maxDimension:kFrameMaxDimension];
-  LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:frameSize];
-  return frameTexture;
+- (void)updateDetailsTextureIfNecessary {
+  if (self.detailsTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTBWProcessorFsh detailsTexture]]) {
+    self.detailsTextureGenerationID = self.inputTexture.generationID;
+    [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
+                     withName:[LTBWProcessorFsh detailsTexture]];
+  }
 }
 
-- (LTTexture *)createNeutralNoise {
-  cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
-  LTTexture *neutralNoise = [LTTexture textureWithImage:input];
-  neutralNoise.wrap = LTTextureWrapRepeat;
-  return neutralNoise;
+- (LTTexture *)createDetailsTexture:(LTTexture *)inputTexture {
+  LTTexture *luminanceTexture = [LTTexture byteRedTextureWithSize:inputTexture.size];
+  LTColorConversionProcessor *processor =
+      [[LTColorConversionProcessor alloc] initWithInput:inputTexture output:luminanceTexture];
+  processor.mode = LTColorConversionRGBToYYYY;
+  [processor process];
+  
+  LTTexture *detailsTexture = [LTTexture textureWithPropertiesOf:luminanceTexture];
+
+  [luminanceTexture mappedImageForReading:^(const cv::Mat &mappedTexture, BOOL) {
+    [detailsTexture mappedImageForWriting:^(cv::Mat *mappedSmooth, BOOL) {
+      cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+      clahe->setClipLimit(3);
+      clahe->apply(mappedTexture, *mappedSmooth);
+    }];
+  }];
+  
+  return detailsTexture;
+}
+
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
+- (CGFloat)aspectRatio {
+  return self.inputSize.width / self.inputSize.height;
+}
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTBWProcessor, brightness),
+      @instanceKeypath(LTBWProcessor, contrast),
+      @instanceKeypath(LTBWProcessor, exposure),
+      @instanceKeypath(LTBWProcessor, offset),
+      @instanceKeypath(LTBWProcessor, structure),
+       
+      @instanceKeypath(LTBWProcessor, colorFilter),
+      @instanceKeypath(LTBWProcessor, colorGradient),
+      @instanceKeypath(LTBWProcessor, colorGradientIntensity),
+      @instanceKeypath(LTBWProcessor, colorGradientFade),
+       
+      @instanceKeypath(LTBWProcessor, grainTexture),
+      @instanceKeypath(LTBWProcessor, grainChannelMixer),
+      @instanceKeypath(LTBWProcessor, grainAmplitude),
+       
+      @instanceKeypath(LTBWProcessor, vignetteIntensity),
+      @instanceKeypath(LTBWProcessor, vignetteSpread),
+      @instanceKeypath(LTBWProcessor, vignetteCorner),
+       
+      @instanceKeypath(LTBWProcessor, frameTexture),
+      @instanceKeypath(LTBWProcessor, frameWidth)
+    ]];
+  });
+  
+  return properties;
 }
 
 #pragma mark -
 #pragma mark Processing
 #pragma mark -
 
-- (void)setNeedsSubProcessing {
-  [self setNeedsToneProcessing];
-  [self setNeedsVignetteProcessing];
-  [self setNeedsOuterFrameProcessing];
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (void)setNeedsToneProcessing {
-  self.toneProcessorInputChanged = YES;
+- (void)preprocess {
+  [self updateDetailsTextureIfNecessary];
+  
+  [self runSubProcessors];
 }
 
 - (void)setNeedsVignetteProcessing {
   self.vignetteProcessorInputChanged = YES;
 }
 
-- (void)setNeedsOuterFrameProcessing {
-  self.outerFrameProcessorInputChanged = YES;
-}
-
-- (void)setNeedsInnerFrameProcessing {
-  self.innerFrameProcessorInputChanged = YES;
-}
-
 - (void)runSubProcessors {
-  if (self.toneProcessorInputChanged) {
-    [self.toneProcessor process];
-    self.toneProcessorInputChanged = NO;
-  }
   if (self.vignetteProcessorInputChanged) {
     [self.vignetteProcessor process];
     self.vignetteProcessorInputChanged = NO;
   }
-  if (self.outerFrameProcessorInputChanged) {
-    [self.outerFrameProcessor process];
-    self.outerFrameProcessorInputChanged = NO;
-  }
-  if (self.innerFrameProcessorInputChanged) {
-    [self.innerFrameProcessor process];
-    self.innerFrameProcessorInputChanged = NO;
-  }
-}
-
-- (void)preprocess {
-  [self runSubProcessors];
 }
 
 #pragma mark -
 #pragma mark Tone
 #pragma mark -
 
-LTPropertyProxyWithoutSetter(LTVector3, colorFilter, ColorFilter, self.toneProcessor);
+LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter, -2 * LTVector3One, 2 * LTVector3One,
+                        LTVector3(0.299, 0.587, 0.114));
 - (void)setColorFilter:(LTVector3)colorFilter {
-  self.toneProcessor.colorFilter = colorFilter;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetColorFilter:colorFilter];
+  LTParameterAssert(colorFilter.sum(), @"Black is not a valid color filter");
+  self[[LTBWProcessorFsh colorFilter]] = $(_colorFilter);
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, brightness, Brightness, self.toneProcessor);
+LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
 - (void)setBrightness:(CGFloat)brightness {
-  self.toneProcessor.brightness = brightness;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetBrightness:brightness];
+  [self updateToneLUT];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, contrast, Contrast, self.toneProcessor);
+LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
 - (void)setContrast:(CGFloat)contrast {
-  self.toneProcessor.contrast = contrast;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetContrast:contrast];
+  [self updateToneLUT];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, exposure, Exposure, self.toneProcessor);
+LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
 - (void)setExposure:(CGFloat)exposure {
-  self.toneProcessor.exposure = exposure;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetExposure:exposure];
+  [self updateToneLUT];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, offset, Offset, self.toneProcessor);
+LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
 - (void)setOffset:(CGFloat)offset {
-  self.toneProcessor.offset = offset;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetOffset:offset];
+  [self updateToneLUT];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, structure, Structure, self.toneProcessor);
+LTPropertyWithoutSetter(CGFloat, structure, Structure, 0, 1, 0);
 - (void)setStructure:(CGFloat)structure {
-  self.toneProcessor.structure = structure;
-  [self setNeedsToneProcessing];
+  [self _verifyAndSetStructure:structure];
+  self[[LTBWProcessorFsh structure]] = @(structure);
+}
+
+- (void)setColorGradient:(LTColorGradient *)colorGradient {
+  _colorGradient = colorGradient;
+  self.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
 }
 
 - (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
-  if (!colorGradientTexture) {
-    colorGradientTexture = [LTTexture textureWithImage:self.identityCurve];
-  }
   _colorGradientTexture = colorGradientTexture;
-  self.toneProcessor.colorGradientTexture = [colorGradientTexture clone];
-  self.colorGradientMat = [self.colorGradientTexture image];
-  [self processInternalColorGradientTexture];
-  [self setNeedsToneProcessing];
+  self.colorGradientMat = [_colorGradientTexture image];
+  [self setAuxiliaryTexture:self.colorGradientTexture withName:[LTBWProcessorFsh colorGradient]];
+  
+  [self updateCurve];
 }
 
 LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0, 1, 1);
 - (void)setColorGradientIntensity:(CGFloat)colorGradientIntensity {
   [self _verifyAndSetColorGradientIntensity:colorGradientIntensity];
-  [self processInternalColorGradientTexture];
-  [self setNeedsToneProcessing];
+  [self updateCurve];
 }
 
-- (void)processInternalColorGradientTexture {
-  [self.toneProcessor.colorGradientTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-    cv::addWeighted(self.identityCurve, 1 - self.colorGradientIntensity, self.colorGradientMat,
-                    self.colorGradientIntensity, 0, *mapped);
+- (void)updateToneLUT {
+  static const ushort kLutSize = 256;
+  cv::Mat1b toneCurve(1, kLutSize);
+  cv::Mat1b brightnessCurve(1, kLutSize);
+  
+  if (self.brightness >= self.defaultBrightness) {
+    brightnessCurve = [LTCurve positiveBrightness];
+  } else {
+    brightnessCurve = [LTCurve negativeBrightness];
+  }
+  
+  cv::Mat1b contrastCurve(1, kLutSize);
+  if (self.contrast >= self.defaultContrast) {
+    contrastCurve = [LTCurve positiveContrast];
+  } else {
+    contrastCurve = [LTCurve negativeContrast];
+  }
+  
+  float brightness = std::abs(self.brightness);
+  float contrast = std::abs(self.contrast);
+  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
+          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
+          toneCurve);
+  self.toneCurveMat = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
+  
+  [self updateCurve];
+}
+
+/// Updates curve, by combining color gradient and tone curve. The reason for merging is to use less
+/// texture units.
+- (void)updateCurve {
+  [self.colorGradientTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    cv::Mat4b colorCurve;
+    cv::addWeighted(self.identityColorGradientMat, 1 - self.colorGradientIntensity,
+                    self.colorGradientMat, self.colorGradientIntensity, 0, colorCurve);
+    
+    cv::Mat mixIn[] = {colorCurve, self.toneCurveMat};
+    int fromTo[] = {0, 0, 1, 1, 2, 2, 4, 3};
+  
+    cv::mixChannels(mixIn, 2, mapped, 1, fromTo, 4);
   }];
+}
+
+LTPropertyWithoutSetter(CGFloat, colorGradientFade, ColorGradientFade, 0, 1, 0);
+- (void)setColorGradientFade:(CGFloat)colorGradientFade {
+  [self _verifyAndSetColorGradientFade:colorGradientFade];
+  self[[LTBWProcessorFsh colorGradientFade]] = @(colorGradientFade);
 }
 
 #pragma mark -
 #pragma mark Vignette
 #pragma mark -
 
-LTPropertyWithoutSetter(LTVector3, vignetteColor, VignetteColor,
-                        LTVector3Zero, LTVector3One, LTVector3Zero);
-- (void)setVignetteColor:(LTVector3)vignetteColor {
-  [self _verifyAndSetVignetteColor:vignetteColor];
-  self[@"vignetteColor"] = $(vignetteColor);
+LTPropertyWithoutSetter(CGFloat, vignetteIntensity, VignetteIntensity, -1, 1, 0);
+- (void)setVignetteIntensity:(CGFloat)vignetteIntensity {
+  [self _verifyAndSetVignetteIntensity:vignetteIntensity];
+  // // Remap [-1, 1] -> [0.0 1.0].
+  CGFloat remap = (1.0 + vignetteIntensity) / 2.0;
+  self[[LTBWProcessorFsh vignetteIntensity]] = @(remap);
 }
 
 LTPropertyProxyWithoutSetter(CGFloat, vignetteSpread, VignetteSpread,
@@ -273,42 +321,13 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
   [self setNeedsVignetteProcessing];
 }
 
-- (void)setVignetteNoise:(LTTexture *)vignetteNoise {
-  self.vignetteProcessor.noise = vignetteNoise;
-  [self setNeedsVignetteProcessing];
-}
-
-- (LTTexture *)vignetteNoise {
-  return self.vignetteProcessor.noise;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
-                             self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setVignetteNoiseChannelMixer:(LTVector3)vignetteNoiseChannelMixer {
-  self.vignetteProcessor.noiseChannelMixer = vignetteNoiseChannelMixer;
-  [self setNeedsVignetteProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude,
-                             self.vignetteProcessor, noiseAmplitude, NoiseAmplitude);
-- (void)setVignetteNoiseAmplitude:(CGFloat)vignetteNoiseAmplitude {
-  self.vignetteProcessor.noiseAmplitude = vignetteNoiseAmplitude;
-  [self setNeedsVignetteProcessing];
-}
-
-LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
-- (void)setVignetteOpacity:(CGFloat)vignetteOpacity {
-  [self _verifyAndSetVignetteOpacity:vignetteOpacity];
-  self[[LTBWProcessorFsh vignettingOpacity]] = @(vignetteOpacity);
-}
-
 #pragma mark -
 #pragma mark Grain
 #pragma mark -
 
 - (LTTexture *)grainTexture {
   if (!_grainTexture) {
-    _grainTexture = [self createNeutralNoise];
+    _grainTexture = [self greyTexture];
   }
   return _grainTexture;
 }
@@ -327,6 +346,10 @@ LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
   return isTilable || matchesOutputSize;
 }
 
+- (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
+  self[[LTBWProcessorVsh grainScaling]] = $(LTVector2(size / grain.size));
+}
+
 LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
                         LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
 - (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
@@ -335,126 +358,54 @@ LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
   self[[LTBWProcessorFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 
-LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 100, 1);
+LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 1);
 - (void)setGrainAmplitude:(CGFloat)grainAmplitude {
   [self _verifyAndSetGrainAmplitude:grainAmplitude];
   self[[LTBWProcessorFsh grainAmplitude]] = @(grainAmplitude);
 }
 
 #pragma mark -
-#pragma mark Outer Frame
+#pragma mark Frame
 #pragma mark -
 
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameWidth, OuterFrameWidth,
-                             self.outerFrameProcessor, width, Width);
-- (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
-  self.outerFrameProcessor.width = outerFrameWidth;
-  // Update the dependent inner frame.
-  self.innerFrameProcessor.width = outerFrameWidth + self.innerFrameWidth;
-  [self setNeedsInnerFrameProcessing];
-
-  // Update outer frame.
-  [self setNeedsOuterFrameProcessing];
+- (LTTexture *)frameTexture {
+  if (!_frameTexture) {
+    _frameTexture = [self defaultFrameTexture];
+  }
+  return _frameTexture;
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameSpread, OuterFrameSpread,
-                             self.outerFrameProcessor, spread, Spread);
-- (void)setOuterFrameSpread:(CGFloat)outerFrameSpread {
-  self.outerFrameProcessor.spread = outerFrameSpread;
-  [self setNeedsOuterFrameProcessing];
+- (void)setFrameTexture:(LTTexture *)frameTexture {
+  if (!frameTexture) {
+    frameTexture = [self defaultFrameTexture];
+  }
+  LTParameterAssert([self isValidFrameTexture:frameTexture], @"Frame texture should be square.");
+  _frameTexture = frameTexture;
+  [self setAuxiliaryTexture:frameTexture withName:[LTBWProcessorFsh frameTexture]];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameCorner, OuterFrameCorner,
-                             self.outerFrameProcessor, corner, Corner);
-- (void)setOuterFrameCorner:(CGFloat)outerFrameCorner {
-  self.outerFrameProcessor.corner = outerFrameCorner;
-  [self setNeedsOuterFrameProcessing];
+- (BOOL)isValidFrameTexture:(LTTexture *)texture {
+  return texture.size.width == texture.size.height;
 }
 
-- (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
-  self.outerFrameProcessor.noise = outerFrameNoise;
+LTPropertyWithoutSetter(CGFloat, frameWidth, FrameWidth, -1, 1, 0);
+- (void)setFrameWidth:(CGFloat)frameWidth {
+  [self _verifyAndSetFrameWidth:frameWidth];
+  self[[LTBWProcessorFsh frameWidth]] = $([self remapFrameWidth:frameWidth]);
 }
 
-- (LTTexture *)outerFrameNoise {
-  return self.outerFrameProcessor.noise;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
-                             self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setOuterFrameNoiseChannelMixer:(LTVector3)outerFrameNoiseChannelMixer {
-  self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
-  [self setNeedsOuterFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude,
-                             self.outerFrameProcessor, noiseAmplitude, NoiseAmplitude);
-- (void)setOuterFrameNoiseAmplitude:(CGFloat)outerFrameNoiseAmplitude {
-  self.outerFrameProcessor.noiseAmplitude = outerFrameNoiseAmplitude;
-  [self setNeedsOuterFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, outerFrameColor, OuterFrameColor,
-                             self.outerFrameProcessor, color, Color);
-- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
-  self.outerFrameProcessor.color = outerFrameColor;
-  [self setNeedsOuterFrameProcessing];
-}
-
-#pragma mark -
-#pragma mark Inner Frame
-#pragma mark -
-
-LTPropertyWithoutSetter(CGFloat, innerFrameWidth, InnerFrameWidth, 0, 25, 0);
-- (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
-  [self _verifyAndSetInnerFrameWidth:innerFrameWidth];
-  LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,
-                    @"Sum of outer and inner width is above maximum value.");
-  self.innerFrameProcessor.width = self.outerFrameWidth + innerFrameWidth;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, innerFrameSpread, InnerFrameSpread,
-                             self.innerFrameProcessor, spread, Spread);
-- (void)setInnerFrameSpread:(CGFloat)innerFrameSpread {
-  self.innerFrameProcessor.spread = innerFrameSpread;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, innerFrameCorner, InnerFrameCorner,
-                             self.innerFrameProcessor, corner, Corner);
-- (void)setInnerFrameCorner:(CGFloat)innerFrameCorner {
-  self.innerFrameProcessor.corner = innerFrameCorner;
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
-  self.innerFrameProcessor.noise = innerFrameNoise;
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (LTTexture *)innerFrameNoise {
-  return self.innerFrameProcessor.noise;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
-                             self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setInnerFrameNoiseChannelMixer:(LTVector3)innerFrameNoiseChannelMixer {
-  self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude,
-                             self.innerFrameProcessor, noiseAmplitude, NoiseAmplitude);
-- (void)setInnerFrameNoiseAmplitude:(CGFloat)innerFrameNoiseAmplitude {
-  self.innerFrameProcessor.noiseAmplitude = innerFrameNoiseAmplitude;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, innerFrameColor, InnerFrameColor,
-                             self.innerFrameProcessor, color, Color);
-- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
-  self.innerFrameProcessor.color = innerFrameColor;
-  [self setNeedsInnerFrameProcessing];
+- (LTVector2)remapFrameWidth:(CGFloat)frameWidth {
+  CGFloat ratio = [self aspectRatio];
+  LTVector2 width;
+  if (ratio < 1) {
+    width = LTVector2(frameWidth, frameWidth * ratio);
+  } else {
+    width = LTVector2(frameWidth / ratio, frameWidth);
+  }
+  // This fine-tuning parameter reduces the changes in the width of the frame, so the range of the
+  // movement will feel more natural.
+  static const CGFloat kFrameWidthScaling = 0.07;
+  return width * kFrameWidthScaling;
 }
 
 @end

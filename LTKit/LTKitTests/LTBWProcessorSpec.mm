@@ -4,6 +4,7 @@
 #import "LTBWProcessor.h"
 
 #import "LTColorGradient.h"
+#import "LTColorGradient+ForTesting.h"
 #import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
@@ -11,20 +12,20 @@
 
 LTSpecBegin(LTBWProcessor)
 
-__block LTTexture *input;
-__block LTTexture *output;
+__block LTTexture *inputTexture;
+__block LTTexture *outputTexture;
 __block LTBWProcessor *processor;
 
 beforeEach(^{
-  input = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
-  output = [LTTexture textureWithPropertiesOf:input];
-  processor = [[LTBWProcessor alloc] initWithInput:input output:output];
+  inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
+  outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+  processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
 });
 
 afterEach(^{
   processor = nil;
-  input = nil;
-  output = nil;
+  inputTexture = nil;
+  outputTexture = nil;
 });
 
 context(@"properties", ^{
@@ -32,6 +33,7 @@ context(@"properties", ^{
     expect(processor.brightness).to.equal(0);
     expect(processor.contrast).to.equal(0);
     expect(processor.exposure).to.equal(0);
+    expect(processor.offset).to.equal(0);
     expect(processor.structure).to.equal(0);
   });
   
@@ -41,45 +43,27 @@ context(@"properties", ^{
   });
   
   it(@"should return default vignetting properties correctly", ^{
-    expect(processor.vignetteOpacity).to.equal(0);
-    expect(processor.vignetteColor).to.equal(LTVector3(0, 0, 0));
-    expect(processor.vignetteSpread).to.equal(0);
+    expect(processor.vignetteIntensity).to.equal(0);
+    expect(processor.vignetteSpread).to.equal(100);
     expect(processor.vignetteCorner).to.equal(2);
-    expect(processor.vignetteNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
-    expect(processor.vignetteNoiseAmplitude).to.equal(0);
   });
   
-  it(@"should return default outer frame properties correctly", ^{
-    expect(processor.outerFrameWidth).to.equal(0);
-    expect(processor.outerFrameSpread).to.equal(0);
-    expect(processor.outerFrameCorner).to.equal(0);
-    expect(processor.outerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
-    expect(processor.outerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.outerFrameColor).to.equal(LTVector3(1, 1, 1));
-  });
-  
-  it(@"should return default inner frame properties correctly", ^{
-    expect(processor.innerFrameWidth).to.equal(0);
-    expect(processor.innerFrameSpread).to.equal(0);
-    expect(processor.innerFrameCorner).to.equal(0);
-    expect(processor.innerFrameNoiseChannelMixer).to.equal(LTVector3(1, 0, 0));
-    expect(processor.innerFrameNoiseAmplitude).to.equal(0);
-    expect(processor.innerFrameColor).to.equal(LTVector3(1, 1, 1));
+  it(@"should return default frame properties correctly", ^{
+    expect(processor.frameWidth).to.equal(0);
   });
   
   it(@"should return default color gradient as identity", ^{
+    expect(processor.colorGradientIntensity).to.equal(1);
     LTTexture *identityGradientTexture = [[LTColorGradient identityGradient]
                                           textureWithSamplingPoints:256];
-    expect(LTFuzzyCompareMat(processor.colorGradientTexture.image,
+    expect(LTFuzzyCompareMat([processor.colorGradient matWithSamplingPoints:256],
                              identityGradientTexture.image)).to.beTruthy();
   });
   
-  it(@"should return default noise of grain, vignetting and frames as constant 0.5", ^{
-    cv::Mat4b deafultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
-    expect(LTFuzzyCompareMat(processor.grainTexture.image, deafultNoise)).to.beTruthy();
-    expect(LTFuzzyCompareMat(processor.vignetteNoise.image, deafultNoise)).to.beTruthy();
-    expect(LTFuzzyCompareMat(processor.outerFrameNoise.image, deafultNoise)).to.beTruthy();
-    expect(LTFuzzyCompareMat(processor.innerFrameNoise.image, deafultNoise)).to.beTruthy();
+  it(@"should return default textures of grain and frames as constant 0.5", ^{
+    cv::Mat1b grey(1, 1, 128);
+    expect(LTFuzzyCompareMat(processor.frameTexture.image, grey)).to.beTruthy();
+    expect(LTFuzzyCompareMat(processor.grainTexture.image, grey)).to.beTruthy();
   });
   
   it(@"should not fail on correct tone input", ^{
@@ -94,140 +78,185 @@ context(@"properties", ^{
   
   it(@"should not fail on correct vignette input", ^{
     expect(^{
-      processor.vignetteNoise = input;
-      processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
+      processor.vignetteIntensity = 0;
       processor.vignetteSpread = 15.0;
       processor.vignetteCorner = 6.0;
-      processor.vignetteNoiseAmplitude = 0.5;
-      processor.vignetteNoiseChannelMixer = LTVector3(1.0, 0.9, 0.2);
     }).toNot.raiseAny();
   });
 
   it(@"should not fail on correct grain input", ^{
     expect(^{
-      processor.grainTexture = input;
-      processor.grainAmplitude = 1.1;
-      processor.grainChannelMixer = LTVector3(1.0, 0.0, 1.0);
+      // Either tileable or of the size of the input.
+      LTTexture *texture = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 2)];
+      texture.wrap = LTTextureWrapRepeat;
+      processor.grainTexture = texture;
+      processor.grainTexture = [LTTexture byteRGBATextureWithSize:inputTexture.size];
+      processor.grainAmplitude = 1.0;
+      processor.grainChannelMixer = LTVector3(0.5, 0.5, 0.0);
     }).toNot.raiseAny();
+  });
+  
+  it(@"should fail on invalid grain texture", ^{
+    expect(^{
+      LTTexture *texture = [LTTexture byteRedTextureWithSize:CGSizeMake(3, 1)];
+      texture.wrap = LTTextureWrapRepeat;
+      processor.grainTexture = texture;
+    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should not fail on correct outer frame input", ^{
     expect(^{
-      processor.outerFrameWidth = 1;
-      processor.outerFrameSpread = 0.1;
-      processor.outerFrameCorner = 0.0;
-      processor.outerFrameNoiseAmplitude = 1.0;
-      processor.outerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
-      processor.outerFrameColor = LTVector3(0.0, 0.0, 0.0);
+      processor.frameTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(16, 16)];
+      processor.frameWidth = 0.7;
     }).toNot.raiseAny();
   });
   
-  it(@"should not fail on correct inner frame input", ^{
+  it(@"should fail on non-square frame texture", ^{
     expect(^{
-      processor.innerFrameWidth = 2;
-      processor.innerFrameSpread = 0.0;
-      processor.innerFrameCorner = 0.0;
-      processor.innerFrameNoiseAmplitude = 1.0;
-      processor.innerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
-      processor.innerFrameColor = LTVector3(1.0, 0.0, 0.0);
-    }).toNot.raiseAny();
+      processor.frameTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 1)];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
 context(@"processing", ^{
   beforeEach(^{
-    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
-    output = [LTTexture textureWithPropertiesOf:input];
-    processor = [[LTBWProcessor alloc] initWithInput:input output:output];
-    
-    LTTexture *noise = [LTTexture textureWithImage:LTLoadMat([self class], @"TiledNoise.png")];
-    noise.wrap = LTTextureWrapRepeat;
-    
-    // Tone.
-    processor.colorFilter = LTVector3(1.0, 0.0, 1.0);
-    processor.brightness = 0.1;
-    processor.exposure = 0.1;
-    processor.offset = 0.2;
-    processor.structure = 0.3;
-    // Vignetting.
-    processor.vignetteOpacity = 1.0;
-    processor.vignetteNoise = noise;
-    processor.vignetteColor = LTVector3(0.0, 0.0, 0.0);
-    processor.vignetteSpread = 25.0;
-    processor.vignetteCorner = 8.0;
-    processor.vignetteNoiseAmplitude = 10.0;
-    processor.vignetteNoiseChannelMixer = LTVector3(1.0, 0.1, 0.2);
-    // Grain.
-    processor.grainTexture = noise;
-    processor.grainAmplitude = 1.1;
-    processor.grainChannelMixer = LTVector3(1.0, 0.0, 1.0);
-    // Outer frame.
-    processor.outerFrameWidth = 1.5;
-    processor.outerFrameSpread = 1.5;
-    processor.outerFrameCorner = 0.0;
-    processor.outerFrameNoise = noise;
-    processor.outerFrameNoiseAmplitude = 0.0;
-    processor.outerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
-    processor.outerFrameColor = LTVector3(0.0, 0.0, 0.0);
-    // Inner frame.
-    processor.innerFrameWidth = 2;
-    processor.innerFrameSpread = 0.0;
-    processor.innerFrameCorner = 0.0;
-    processor.innerFrameNoise = noise;
-    processor.innerFrameNoiseAmplitude = 0.0;
-    processor.innerFrameNoiseChannelMixer = LTVector3(1.0, 0.0, 0.0);
-    processor.innerFrameColor = LTVector3(1.0, 1.0, 1.0);
-    // Scale the red channel slightly to create a "neutral-to-cold" gradient.
-    CGFloat redScale = 0.95;
-    LTColorGradientControlPoint *controlPoint0 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.0 color:LTVector3(0.0, 0.0, 0.0)];
-    LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.25 color:LTVector3(0.25 * redScale, 0.25, 0.25)];
-    LTColorGradientControlPoint *controlPoint2 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.5 color:LTVector3(0.5 * redScale, 0.5, 0.5)];
-    LTColorGradientControlPoint *controlPoint3 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:0.75 color:LTVector3(0.75 * redScale, 0.75, 0.75)];
-    LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
-        initWithPosition:1.0 color:LTVector3(1.0 * redScale, 1.0, 1.0)];
-    NSArray *controlPoints = @[controlPoint0, controlPoint1, controlPoint2, controlPoint3,
-                               controlPoint4];
-    // Color gradient.
-    LTColorGradient *colorGradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
-    processor.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0.25, 0.5, 0.75, 1.0)];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
   });
   
   afterEach(^{
-    processor =  nil;
-    input =  nil;
-    output = nil;
+    processor = nil;
+    inputTexture = nil;
+    outputTexture = nil;
   });
   
-  sit(@"should return correct black and white conversion", ^{
+  it(@"should process brightness correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(217, 217, 217, 255));
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    processor.brightness = 1;
     [processor process];
-    cv::Mat image = LTLoadMat([self class], @"MealBWProcessor.png");
-    expect($(output.image)).to.beCloseToMat($(image));
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
-  sit(@"should return the same conversion with a wider outer frame", ^{
-    processor.outerFrameWidth = processor.outerFrameWidth + 5.0;
+  it(@"should process contrast correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(104, 104, 104, 255));
+    processor.contrast = 1;
     [processor process];
-    cv::Mat image = LTLoadMat([self class], @"MealBWProcessorWideFrame.png");
-    expect($(output.image)).to.beCloseToMat($(image));
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
-  sit(@"should return the same conversion with a noisy frame", ^{
-    // Outer frame.
-    processor.outerFrameWidth = 1.0;
-    processor.outerFrameSpread = 2.0;
-    processor.outerFrameNoiseAmplitude = 20.0;
-    processor.outerFrameColor = LTVector3(1.0, 1.0, 1.0);
-    // Inner frame.
-    processor.innerFrameWidth = 0.0;
-    processor.innerFrameSpread = 0.0;
+  it(@"should process offset correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
+    processor.offset = 1;
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process exposure correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(233, 233, 233, 255));
+    processor.exposure = 1;
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process structure correctly", ^{
+    // Histogram equalization should map 0.75 to 1.0.
+    cv::Mat4b input(2, 2, cv::Vec4b(0, 0, 0, 255));
+    input(0, 0) = cv::Vec4b(192, 192, 192, 255);
+    
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    output(0, 0) = cv::Vec4b(255, 255, 255, 255);
+    
+    inputTexture = [LTTexture textureWithImage:input];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    processor.structure = 1;
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process color filter correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(64, 64, 64, 255));
+    processor.colorFilter = LTVector3(1, 0, 0);
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process color gradient correctly", ^{
+    cv::Mat4b output(2, 2, cv::Vec4b(255, 0, 0, 255));
+    processor.colorGradient = [LTColorGradient redToRedGradient];
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process grain correctly", ^{
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    
+    cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
+    [processor.grainTexture clearWithColor:LTVector4(1, 0, 0, 1)];
+    processor.grainAmplitude = 1.0;
+    processor.grainChannelMixer = LTVector3(1, 0, 0);
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+  it(@"should process frame correctly", ^{
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    // Only the first channel should be used.
+    [processor.frameTexture clearWithColor:LTVector4(0, 1, 1, 1)];
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+  
+});
+
+context(@"integration tests", ^{
+  it(@"should render natural image", ^{
+    inputTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    
+    processor.brightness = -0.01;
+    processor.contrast = -0.05;
+    processor.offset = -0.01;
+    processor.exposure = -0.01;
+    processor.structure = 0.5;
+    
+    processor.colorFilter = LTVector3(1.1, -0.125, -0.125);
+    processor.colorGradient = [LTColorGradient magentaYellowGradient];
+    processor.colorGradientFade = 0.1;
+    processor.colorGradientIntensity = 0.2;
+    
+    LTTexture *grain = [LTTexture textureWithImage:LTLoadMat([self class], @"TonalGrain.png")];
+    grain.wrap = LTTextureWrapRepeat;
+    processor.grainTexture = grain;
+    processor.grainChannelMixer = LTVector3(0.0, 0.5, 0.5);
+    processor.grainAmplitude = 0.3;
+    
+    processor.vignetteIntensity = 0.75;
+    processor.vignetteSpread = 25;
+    processor.vignetteCorner = 2;
     
     [processor process];
-    cv::Mat image = LTLoadMat([self class], @"MealBWProcessorNoisyFrame.png");
-    expect($(output.image)).to.beCloseToMat($(image));
+    
+    cv::Mat image = LTLoadMat([self class], @"Lena128BWProcessor.png");
+    expect($([outputTexture image])).to.beCloseToMat($(image));
   });
 });
 
