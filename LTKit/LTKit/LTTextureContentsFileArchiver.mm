@@ -4,16 +4,14 @@
 #import "LTTextureContentsFileArchiver.h"
 
 #import "LTImage.h"
+#import "LTImage+Texture.h"
+#import "LTImageLoader.h"
 #import "LTFileManager.h"
 #import "LTTexture.h"
 
 @interface LTTextureContentsFileArchiver ()
 
 @property (strong, nonatomic) NSString *filePath;
-
-/// File manager used when saving and loading texture storage. The default value is
-/// \c [LTFileManager shareManager].
-@property (strong, nonatomic) LTFileManager *fileManager;
 
 @end
 
@@ -30,7 +28,6 @@
 - (instancetype)initWithFilePath:(NSString *)filePath {
   if (self = [super init]) {
     self.filePath = filePath;
-    self.fileManager = [JSObjection defaultInjector][[LTFileManager class]];
   }
   return self;
 }
@@ -65,16 +62,13 @@
 #pragma mark -
 
 - (NSData *)archiveTexture:(LTTexture *)texture error:(NSError *__autoreleasing *)error {
-  [self verifySupportedTexture:texture];
-
-  __block NSData *png;
+  __block BOOL stored;
   [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTImage *image = [[LTImage alloc] initWithMat:mapped copy:NO];
-    png = UIImagePNGRepresentation([image UIImage]);
+    stored = [image writeToPath:self.filePath error:error];
   }];
 
-  if (![self.fileManager writeData:png toFile:self.filePath options:NSDataWritingAtomic
-                            error:error]) {
+  if (!stored) {
     return nil;
   }
   return [NSData data];
@@ -84,14 +78,8 @@
                 error:(NSError *__autoreleasing *)error {
   LTParameterAssert(data && !data.length, @"Given data must be an empty NSData object");
 
-  [self verifySupportedTexture:texture];
-
-  NSData *png = [self.fileManager dataWithContentsOfFile:self.filePath options:0 error:error];
-  if (!png) {
-    return NO;
-  }
-
-  UIImage *image = [UIImage imageWithData:png];
+  LTImageLoader *imageLoader = [JSObjection defaultInjector][[LTImageLoader class]];
+  UIImage *image = [imageLoader imageWithContentsOfFile:self.filePath];
   if (!image) {
     if (error) {
       *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileReadCorruptFileError
@@ -100,19 +88,12 @@
     return NO;
   }
 
-  // Keep memory footprint low.
-  png = nil;
-  LTImage *ltImage = [[LTImage alloc] initWithImage:image];
-  image = nil;
+  [LTImage loadImage:image toTexture:texture];
 
-  [texture load:ltImage.mat];
-
+  if (error) {
+    *error = nil;
+  }
   return YES;
-}
-
-- (void)verifySupportedTexture:(LTTexture *)texture {
-  LTParameterAssert(texture.precision == LTTexturePrecisionByte &&
-                    texture.format == LTTextureFormatRGBA, @"Only RGBA8 textures are supported");
 }
 
 @end
