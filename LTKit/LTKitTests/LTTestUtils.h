@@ -62,8 +62,10 @@ cv::Vec4b LTLTVector4ToVec4b(LTVector4 value);
 /// Uses nearest neighbor interpolation.
 cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle);
 
-/// Returns a matrix of the given size containing a delta function. Delta function is a matrix with
-/// zeros everywhere, besides the center where it is one.
+/// Returns a matrix of the given \c size containing delta at \c position.
+cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position);
+
+/// Returns a matrix of the given \c size containing delta at the middle.
 cv::Mat4b LTCreateDeltaMat(CGSize size);
 
 /// Loads an image to \c cv::Mat. The name of the image can differ between simulator and device.
