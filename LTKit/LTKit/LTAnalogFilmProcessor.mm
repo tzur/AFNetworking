@@ -3,37 +3,39 @@
 
 #import "LTAnalogFilmProcessor.h"
 
-#import "LTBilateralFilterProcessor.h"
-#import "LTCGExtensions.h"
+#import "LTCLAHEProcessor.h"
+#import "LTColorConversionProcessor.h"
 #import "LTColorGradient.h"
 #import "LTCurve.h"
-#import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
-#import "LTOpenCVExtensions.h"
 #import "LTProceduralVignetting.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTAnalogFilmFsh.h"
 #import "LTShaderStorage+LTAnalogFilmVsh.h"
 #import "LTTexture+Factory.h"
-#import "NSBundle+LTKitBundle.h"
 
 @interface LTAnalogFilmProcessor ()
 
-/// Returns YES is subprocessor used by this class is initialized, NO otherwise.
-@property (nonatomic) BOOL subProcessorInitialized;
+/// Processor for generating the vignette texture.
+@property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
 
 /// If \c YES, the vignette processor should run at the next processing round of this processor.
 @property (nonatomic) BOOL vignetteProcessorInputChanged;
 
-/// Internal vignetting processor.
-@property (strong, nonatomic) LTProceduralVignetting *vignetteProcessor;
+/// RGBA texture with one row and 256 columns that defines greyscale to color mapping. RGB part of
+/// this LUT is the current color gradient mapping which adds tint to the image. Alpha channel holds
+/// the tone mapping curve. Default value is an identity mapping across the channels.
+@property (strong, nonatomic) LTTexture *colorGradientTexture;
 
-/// The generation id of the input texture that was used to create the current smooth texture.
-@property (nonatomic) NSUInteger smoothTextureGenerationID;
+/// Mat that stores color gradient in rgb channels. Alpha channel is unused.
+@property (nonatomic) cv::Mat4b colorGradientMat;
 
-/// Identity curve used with colorGradientIntensity.
-@property (nonatomic) cv::Mat4b identityCurve;
+/// Tone mapping curve that encapsulates brightness, contrast, exposure and offset adjustments.
+@property (nonatomic) cv::Mat1b toneCurveMat;
+
+/// The generation id of the input texture that was used to create the current details textures.
+@property (nonatomic) NSUInteger detailsTextureGenerationID;
 
 @end
 
@@ -41,115 +43,112 @@
 
 @synthesize grainTexture = _grainTexture;
 
-// Downsampling wrt original image that is used when creating a smooth texture.
-static const CGFloat kSmoothDownsampleFactor = 2.0;
-static const NSUInteger kSmoothTextureIterations = 6;
-static const CGFloat kSaturationScaling = 1.5;
-static const ushort kLutSize = 256;
-static const CGFloat kVignettingMaxDimension = 256;
-static const LTVector3 kDefaultVignettingColor = LTVector3(0.0, 0.0, 0.0);
-static const CGFloat kDefaultVignettingSpread = 0;
-static const CGFloat kVignetteNoiseScaling = 100;
-static const LTVector3 kDefaultGrainChannelMixer = LTVector3(1.0, 0.0, 0.0);
-
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  // Setup vignetting.
-  LTTexture *vignetteTexture = [self createVignettingTextureWithSize:input.size];
+  LTTexture *vignetteTexture = [self createVignettingTextureWithInput:input];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
-  // Default color gradient.
-  LTColorGradient *identityGradient = [LTColorGradient identityGradient];
-  
   NSDictionary *auxiliaryTextures =
-      @{[LTAnalogFilmFsh toneLUT]: [LTTexture textureWithImage:[LTCurve identity]],
-        [LTAnalogFilmFsh colorGradient]: [identityGradient textureWithSamplingPoints:kLutSize],
-        [LTAnalogFilmFsh grainTexture]: self.grainTexture,
-        [LTAnalogFilmFsh vignettingTexture]: vignetteTexture};
+      @{[LTAnalogFilmFsh colorGradientTexture]:
+          [[self defaultColorGradient] textureWithSamplingPoints:256],
+        [LTAnalogFilmFsh grainTexture]: [self defaultGrainTexture],
+        [LTAnalogFilmFsh vignettingTexture]: vignetteTexture,
+        [LTAnalogFilmFsh assetTexture]: [self defaultAssetTexture]};
   if (self = [super initWithVertexSource:[LTAnalogFilmVsh source]
                           fragmentSource:[LTAnalogFilmFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures
                                andOutput:output]) {
-    [self setDefaultValues];
-    _subProcessorInitialized = NO;
+    self[[LTAnalogFilmFsh aspectRatio]] = @([self aspectRatio]);
+    [self resetInputModel];
   }
   return self;
 }
 
-- (void)setDefaultValues {
-  // Get default value of the color gradient texture, which was already set in the constructor.
-  _colorGradientTexture = self.auxiliaryTextures[[LTAnalogFilmFsh colorGradient]];
-  
-  // Set values and update the shader using the setter code.
-  self.grainChannelMixer = kDefaultGrainChannelMixer;
-  self.structure = self.defaultStructure;
-  self.saturation = self.defaultSaturation;
-  self.vignetteOpacity = self.defaultVignetteOpacity;
-  self.colorGradientAlpha = self.defaultColorGradientAlpha;
-  self.blendMode = LTAnalogBlendModeNormal;
-  
-  // Initialize the default color gradient curve.
-  self.identityCurve = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
-  
-  // Update vignetting values of the subprocessor.
-  self.vignetteColor = kDefaultVignettingColor;
-  self.vignetteSpread = kDefaultVignettingSpread;
-  
-  // Since these properties are encapsulated by LUT and default LUT is set in the constructor, no
-  // need update the shader after setting the following properties.
-  _brightness = self.defaultBrightness;
-  _contrast = self.defaultContrast;
-  _exposure = self.defaultExposure;
-  _offset = self.defaultOffset;
+- (LTColorGradient *)defaultColorGradient {
+  return [LTColorGradient identityGradient];
 }
 
-- (LTTexture *)createSmoothTexture:(LTTexture *)input {
-  CGFloat width = MAX(1.0, std::round(input.size.width / kSmoothDownsampleFactor));
-  CGFloat height = MAX(1.0, std::round(input.size.height / kSmoothDownsampleFactor));
-  
-  LTTexture *smooth = [LTTexture byteRGBATextureWithSize:CGSizeMake(width, height)];
-  
-  LTBilateralFilterProcessor *smoother =
-    [[LTBilateralFilterProcessor alloc] initWithInput:input outputs:@[smooth]];
-  
-  smoother.iterationsPerOutput = @[@(kSmoothTextureIterations)];
-  smoother.rangeSigma = 0.1;
-  [smoother process];
-  
-  return smooth;
+- (LTTexture *)defaultGrainTexture {
+  LTTexture *greyTexture = [self greyTexture];
+  greyTexture.wrap = LTTextureWrapRepeat;
+  return greyTexture;
 }
 
-- (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
-  CGFloat xScale = size.width / grain.size.width;
-  CGFloat yScale = size.height / grain.size.height;
-  self[[LTAnalogFilmVsh grainScaling]] = $(LTVector2(xScale, yScale));
+// Grey texture is neutral in overlay blending mode.
+- (LTTexture *)greyTexture {
+  LTTexture *greyTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 2)];
+  [greyTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
+  return greyTexture;
 }
 
-- (CGSize)aspectFitSize:(CGSize)size toSize:(CGFloat)maxDimension {
-  CGFloat largerDimension = MAX(size.width, size.height);
-  // Size of the result shouldn't be larger than input size.
-  CGFloat scaleFactor = MIN(1.0, maxDimension / largerDimension);
-  return std::floor(CGSizeMake(size.width * scaleFactor, size.height * scaleFactor));
+- (LTTexture *)defaultAssetTexture {
+  LTTexture *assetTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2048, 2048)];
+  [assetTexture clearWithColor:LTVector4(0.0, 0.0, 0.0, 0.5)];
+  return assetTexture;
 }
 
-- (LTTexture *)createVignettingTextureWithSize:(CGSize)size {
-  CGSize vignettingSize = [self aspectFitSize:size toSize:kVignettingMaxDimension];
-  LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:vignettingSize];
+- (LTTexture *)createVignettingTextureWithInput:(LTTexture *)input {
+  static const CGFloat kVignettingMaxDimension = 256;
+  CGSize vignettingSize = CGScaleDownToDimension(input.size, kVignettingMaxDimension);
+  LTTexture *vignetteTexture = [LTTexture byteRedTextureWithSize:vignettingSize];
   return vignetteTexture;
 }
 
-- (LTTexture *)createNeutralNoise {
-  cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
-  LTTexture *neutralNoise = [LTTexture textureWithImage:input];
-  neutralNoise.wrap = LTTextureWrapRepeat;
-  return neutralNoise;
+- (void)updateDetailsTextureIfNecessary {
+  if (self.detailsTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTAnalogFilmFsh detailsTexture]]) {
+    self.detailsTextureGenerationID = self.inputTexture.generationID;
+    [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
+                     withName:[LTAnalogFilmFsh detailsTexture]];
+  }
 }
 
-- (void)updateSmoothTextureIfNecessary {
-  if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
-      !self.auxiliaryTextures[[LTAnalogFilmFsh smoothTexture]]) {
-    self.smoothTextureGenerationID = self.inputTexture.generationID;
-    [self setAuxiliaryTexture:[self createSmoothTexture:self.inputTexture]
-                     withName:[LTAnalogFilmFsh smoothTexture]];
-  }
+- (LTTexture *)createDetailsTexture:(LTTexture *)inputTexture {
+  LTTexture *detailsTexture = [LTTexture byteRedTextureWithSize:inputTexture.size];
+  LTCLAHEProcessor *processor = [[LTCLAHEProcessor alloc] initWithInputTexture:self.inputTexture
+                                                                 outputTexture:detailsTexture];
+  [processor process];
+  return detailsTexture;
+}
+
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
+- (CGFloat)aspectRatio {
+  return self.inputSize.width / self.inputSize.height;
+}
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTAnalogFilmProcessor, brightness),
+      @instanceKeypath(LTAnalogFilmProcessor, contrast),
+      @instanceKeypath(LTAnalogFilmProcessor, exposure),
+      @instanceKeypath(LTAnalogFilmProcessor, offset),
+      @instanceKeypath(LTAnalogFilmProcessor, structure),
+      @instanceKeypath(LTAnalogFilmProcessor, saturation),
+       
+      @instanceKeypath(LTAnalogFilmProcessor, colorGradient),
+      @instanceKeypath(LTAnalogFilmProcessor, colorGradientIntensity),
+      @instanceKeypath(LTAnalogFilmProcessor, colorGradientFade),
+       
+      @instanceKeypath(LTAnalogFilmProcessor, grainTexture),
+      @instanceKeypath(LTAnalogFilmProcessor, grainChannelMixer),
+      @instanceKeypath(LTAnalogFilmProcessor, grainAmplitude),
+       
+      @instanceKeypath(LTAnalogFilmProcessor, vignetteIntensity),
+      @instanceKeypath(LTAnalogFilmProcessor, vignetteSpread),
+      @instanceKeypath(LTAnalogFilmProcessor, vignetteCorner),
+      
+      @instanceKeypath(LTAnalogFilmProcessor, assetTexture),
+      @instanceKeypath(LTAnalogFilmProcessor, lightLeakIntensity),
+      @instanceKeypath(LTAnalogFilmProcessor, grungeIntensity)
+    ]];
+  });
+  
+  return properties;
 }
 
 #pragma mark -
@@ -172,8 +171,9 @@ static const LTVector3 kDefaultGrainChannelMixer = LTVector3(1.0, 0.0, 0.0);
 }
 
 - (void)preprocess {
+  [self updateDetailsTextureIfNecessary];
+  
   [self runSubProcessors];
-  [self updateSmoothTextureIfNecessary];
 }
 
 #pragma mark -
@@ -207,28 +207,100 @@ LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
 LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
 - (void)setStructure:(CGFloat)structure {
   [self _verifyAndSetStructure:structure];
-  // Remap [-1, 1] -> [0.25, 4].
-  CGFloat remap = std::powf(4.0, structure);
-  self[[LTAnalogFilmFsh structure]] = @(remap);
+  self[[LTAnalogFilmFsh structure]] = @(structure);
 }
 
 LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
 - (void)setSaturation:(CGFloat)saturation {
   [self _verifyAndSetSaturation:saturation];
-  // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 3].
+  // Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 2.5].
+  static const CGFloat kSaturationScaling = 1.5;
   CGFloat remap = saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
   self[[LTAnalogFilmFsh saturation]] = @(remap);
 }
 
 #pragma mark -
-#pragma mark Vignetting
+#pragma mark Color Gradient
 #pragma mark -
 
-LTPropertyWithoutSetter(LTVector3, vignetteColor, VignetteColor,
-                        LTVector3Zero, LTVector3One, LTVector3Zero);
-- (void)setVignetteColor:(LTVector3)vignetteColor {
-  [self _verifyAndSetVignetteColor:vignetteColor];
-  self[[LTAnalogFilmFsh vignetteColor]] = $(vignetteColor);
+- (void)setColorGradient:(LTColorGradient *)colorGradient {
+  _colorGradient = colorGradient;
+  self.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
+}
+
+- (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
+  _colorGradientTexture = colorGradientTexture;
+  self.colorGradientMat = [_colorGradientTexture image];
+  [self setAuxiliaryTexture:self.colorGradientTexture
+                   withName:[LTAnalogFilmFsh colorGradientTexture]];
+  [self updateCurve];
+}
+
+LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0, 1, 0);
+- (void)setColorGradientIntensity:(CGFloat)colorGradientIntensity {
+  [self _verifyAndSetColorGradientIntensity:colorGradientIntensity];
+  self[[LTAnalogFilmFsh colorGradientIntensity]] = @(colorGradientIntensity);
+}
+
+LTPropertyWithoutSetter(CGFloat, colorGradientFade, ColorGradientFade, 0, 1, 0);
+- (void)setColorGradientFade:(CGFloat)colorGradientFade {
+  [self _verifyAndSetColorGradientFade:colorGradientFade];
+  self[[LTAnalogFilmFsh colorGradientFade]] = @(colorGradientFade);
+}
+
+#pragma mark -
+#pragma mark Curve
+#pragma mark -
+
+- (void)updateToneLUT {
+  static const ushort kLutSize = 256;
+  cv::Mat1b toneCurve(1, kLutSize);
+  cv::Mat1b brightnessCurve(1, kLutSize);
+  
+  if (self.brightness >= self.defaultBrightness) {
+    brightnessCurve = [LTCurve positiveBrightness];
+  } else {
+    brightnessCurve = [LTCurve negativeBrightness];
+  }
+  
+  cv::Mat1b contrastCurve(1, kLutSize);
+  if (self.contrast >= self.defaultContrast) {
+    contrastCurve = [LTCurve positiveContrast];
+  } else {
+    contrastCurve = [LTCurve negativeContrast];
+  }
+  
+  float brightness = std::abs(self.brightness);
+  float contrast = std::abs(self.contrast);
+  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
+          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
+          toneCurve);
+  self.toneCurveMat = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
+  
+  [self updateCurve];
+}
+
+/// Updates curve, by combining color gradient and tone curve. The reason for merging is to use less
+/// texture units.
+- (void)updateCurve {
+  [self.colorGradientTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    cv::Mat mixIn[] = {self.colorGradientMat, self.toneCurveMat};
+    int fromTo[] = {0, 0, 1, 1, 2, 2, 4, 3};
+  
+    cv::mixChannels(mixIn, 2, mapped, 1, fromTo, 4);
+  }];
+}
+
+#pragma mark -
+#pragma mark Vignette
+#pragma mark -
+
+LTPropertyWithoutSetter(CGFloat, vignetteIntensity, VignetteIntensity, -1, 1, 0);
+- (void)setVignetteIntensity:(CGFloat)vignetteIntensity {
+  [self _verifyAndSetVignetteIntensity:vignetteIntensity];
+  // // Remap [-1, 1] -> [0.0 1.0].
+  CGFloat remap = (1.0 + vignetteIntensity) / 2.0;
+  self[[LTAnalogFilmFsh vignetteIntensity]] = @(remap);
 }
 
 LTPropertyProxyWithoutSetter(CGFloat, vignetteSpread, VignetteSpread,
@@ -245,42 +317,13 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
   [self setNeedsVignetteProcessing];
 }
 
-- (void)setVignetteNoise:(LTTexture *)vignetteNoise {
-  self.vignetteProcessor.noise = vignetteNoise;
-  [self setNeedsVignetteProcessing];
-}
-
-- (LTTexture *)vignetteNoise {
-  return self.vignetteProcessor.noise;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer,
-                             self.vignetteProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setVignetteNoiseChannelMixer:(LTVector3)vignetteNoiseChannelMixer {
-  self.vignetteProcessor.noiseChannelMixer = vignetteNoiseChannelMixer;
-  [self setNeedsVignetteProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude,
-                             self.vignetteProcessor, noiseAmplitude, NoiseAmplitude);
-- (void)setVignetteNoiseAmplitude:(CGFloat)vignetteNoiseAmplitude {
-  self.vignetteProcessor.noiseAmplitude = vignetteNoiseAmplitude * kVignetteNoiseScaling;
-  [self setNeedsVignetteProcessing];
-}
-
-LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
-- (void)setVignetteOpacity:(CGFloat)vignetteOpacity {
-  [self _verifyAndSetVignetteOpacity:vignetteOpacity];
-  self[[LTAnalogFilmFsh vignettingOpacity]] = @(vignetteOpacity);
-}
-
 #pragma mark -
 #pragma mark Grain
 #pragma mark -
 
 - (LTTexture *)grainTexture {
   if (!_grainTexture) {
-    _grainTexture = [self createNeutralNoise];
+    _grainTexture = [self greyTexture];
   }
   return _grainTexture;
 }
@@ -299,6 +342,10 @@ LTPropertyWithoutSetter(CGFloat, vignetteOpacity, VignetteOpacity, 0, 1, 0);
   return isTilable || matchesOutputSize;
 }
 
+- (void)setupGrainTextureScalingWithOutputSize:(CGSize)size grain:(LTTexture *)grain {
+  self[[LTAnalogFilmVsh grainScaling]] = $(LTVector2(size / grain.size));
+}
+
 LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
                         LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
 - (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
@@ -307,70 +354,41 @@ LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
   self[[LTAnalogFilmFsh grainChannelMixer]] = $(_grainChannelMixer);
 }
 
-LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 0);
+LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 1);
 - (void)setGrainAmplitude:(CGFloat)grainAmplitude {
   [self _verifyAndSetGrainAmplitude:grainAmplitude];
   self[[LTAnalogFilmFsh grainAmplitude]] = @(grainAmplitude);
 }
 
 #pragma mark -
-#pragma mark Gradient Texture
+#pragma mark Asset Texture
 #pragma mark -
 
-- (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
-  if (!colorGradientTexture) {
-    colorGradientTexture = [LTTexture textureWithImage:self.identityCurve];
-  } else {
-    LTParameterAssert(colorGradientTexture.size.height == 1,
-                      @"colorGradientTexture height is not one");
-    LTParameterAssert(colorGradientTexture.size.width <= kLutSize,
-                      @"colorGradientTexture width is larger than kLutSize");
-  }
-  
-  _colorGradientTexture = colorGradientTexture;
-  [self setAuxiliaryTexture:colorGradientTexture withName:[LTAnalogFilmFsh colorGradient]];
+LTPropertyWithoutSetter(CGFloat, lightLeakIntensity, LightLeakIntensity, 0, 1, 0);
+- (void)setLightLeakIntensity:(CGFloat)lightLeakIntensity {
+  [self _verifyAndSetLightLeakIntensity:lightLeakIntensity];
+  self[[LTAnalogFilmFsh lightLeakIntensity]] = @(lightLeakIntensity);
 }
 
-- (void)setBlendMode:(LTAnalogBlendMode)blendMode {
-  _blendMode = blendMode;
-  self[[LTAnalogFilmFsh blendMode]] = @(blendMode);
+- (void)setAssetTexture:(LTTexture *)assetTexture {
+  if (!assetTexture) {
+    assetTexture = [self defaultAssetTexture];
+  }
+  LTParameterAssert([self isValidTexture:assetTexture], @"Asset texture should be 2048x2048.");
+  _assetTexture = assetTexture;
+  [self setAuxiliaryTexture:assetTexture withName:[LTAnalogFilmFsh assetTexture]];
 }
 
-LTPropertyWithoutSetter(CGFloat, colorGradientAlpha, ColorGradientAlpha, 0, 1, 0);
-- (void)setColorGradientAlpha:(CGFloat)colorGradientAlpha {
-  [self _verifyAndSetColorGradientAlpha:colorGradientAlpha];
-  self[[LTAnalogFilmFsh colorGradientAlpha]] = @(colorGradientAlpha);
+- (BOOL)isValidTexture:(LTTexture *)texture {
+  BOOL squareRatio = (texture.size.width == texture.size.height);
+  BOOL correctSize = (texture.size.width == 2048);
+  return squareRatio && correctSize;
 }
 
-#pragma mark -
-#pragma mark Tone LUT
-#pragma mark -
-
-- (void)updateToneLUT {
-  cv::Mat1b toneCurve(1, kLutSize);
-  
-  cv::Mat1b brightnessCurve(1, kLutSize);
-  if (self.brightness >= self.defaultBrightness) {
-    brightnessCurve = [LTCurve positiveBrightness];
-  } else {
-    brightnessCurve = [LTCurve negativeBrightness];
-  }
-  
-  cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= self.defaultContrast) {
-    contrastCurve = [LTCurve positiveContrast];
-  } else {
-    contrastCurve = [LTCurve negativeContrast];
-  }
-  
-  float brightness = std::abs(self.brightness);
-  float contrast = std::abs(self.contrast);
-  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
-          (1.0 - brightness) * [LTCurve identity]  + brightness * brightnessCurve,
-          toneCurve);
-  
-  toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  [(LTTexture *)self.auxiliaryTextures[[LTAnalogFilmFsh toneLUT]] load:toneCurve];
+LTPropertyWithoutSetter(CGFloat, grungeIntensity, GrungeIntensity, 0, 1, 0);
+- (void)setGrungeIntensity:(CGFloat)grungeIntensity {
+  [self _verifyAndSetGrungeIntensity:grungeIntensity];
+  self[[LTAnalogFilmFsh grungeIntensity]] = @(grungeIntensity);
 }
 
 @end

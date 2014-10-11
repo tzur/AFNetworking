@@ -7,19 +7,6 @@
 
 @class LTColorGradient;
 
-/// Types of blend modes that can be used to blend the color gradient with the image.
-typedef NS_ENUM(NSUInteger, LTAnalogBlendMode) {
-  LTAnalogBlendModeNormal = 0,
-  LTAnalogBlendModeDarken,
-  LTAnalogBlendModeMultiply,
-  LTAnalogBlendModeHardLight,
-  LTAnalogBlendModeSoftLight,
-  LTAnalogBlendModeLighten,
-  LTAnalogBlendModeScreen,
-  LTAnalogBlendModeColorBurn,
-  LTAnalogBlendModeOverlay
-};
-
 /// @class LTAnalogFilmProcessor
 ///
 /// Implements analog film effect. Controls the tonal characteristics of the result and additional
@@ -49,7 +36,7 @@ LTPropertyDeclare(CGFloat, exposure, Exposure);
 @property (nonatomic) CGFloat offset;
 LTPropertyDeclare(CGFloat, offset, Offset);
 
-/// Increases the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
+/// Changes the local contrast of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat structure;
 LTPropertyDeclare(CGFloat, structure, Structure);
 
@@ -58,23 +45,22 @@ LTPropertyDeclare(CGFloat, structure, Structure);
 LTPropertyDeclare(CGFloat, saturation, Saturation);
 
 #pragma mark -
-#pragma mark Gradient
+#pragma mark Color Gradient
 #pragma mark -
 
-/// RGBA texture with one row and at most 256 columns that defines greyscale to color mapping.
-/// This LUT is used to add tint to the image. Default value is an identity mapping. Setting this
-/// property to \c nil will restore the default value.
-@property (strong, nonatomic) LTTexture *colorGradientTexture;
+/// Gradient that is used to map luminance to color, adding tint to the image.
+@property (strong, nonatomic) LTColorGradient *colorGradient;
 
-/// Blend mode used to blend tinted image with the processed original image. Tinted image is the
-/// front and processed original image is the back. The default value is \c LTBlendModeNormal.
-@property (nonatomic) LTAnalogBlendMode blendMode;
+/// Intensity of the color gradient. A value of 0 will use the original image. A value of 1 will use
+/// the intensity of the original mapped to color with a given \c colorGradientTexture. A middle
+/// value will interpolate between the two. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat colorGradientIntensity;
+LTPropertyDeclare(CGFloat, colorGradientIntensity, ColorGradientIntensity);
 
-/// Tinted result mixed with the original image according to colorGradientAlpha. Should be in [0, 1]
-/// range. When 0, no tinting will occur. When 1, the result will be completely tinted. Default
-/// value is 0.
-@property (nonatomic) CGFloat colorGradientAlpha;
-LTPropertyDeclare(CGFloat, colorGradientAlpha, ColorGradientAlpha);
+/// Reduces the contrast of color gradient mapping. Should be in [0, 1] range. Default value is 0,
+/// when no fade applied.
+@property (nonatomic) CGFloat colorGradientFade;
+LTPropertyDeclare(CGFloat, colorGradientFade, ColorGradientFade);
 
 #pragma mark -
 #pragma mark Grain
@@ -99,13 +85,13 @@ LTPropertyDeclare(LTVector3, grainChannelMixer, GrainChannelMixer);
 LTPropertyDeclare(CGFloat, grainAmplitude, GrainAmplitude);
 
 #pragma mark -
-#pragma mark Vignetting
+#pragma mark Vignette
 #pragma mark -
 
-/// Color of the vignetting pattern. Color components should be in [0, 1] range. Default color is
-/// black (0, 0, 0).
-@property (nonatomic) LTVector3 vignetteColor;
-LTPropertyDeclare(LTVector3, vignetteColor, VignetteColor);
+/// Intensity of the vignetting pattern. Should be in [-1, 1] range, where smaller numbers indicate
+/// a darker vignetting. Default is 0, which does not apply any vignetting at all.
+@property (nonatomic) CGFloat vignetteIntensity;
+LTPropertyDeclare(CGFloat, vignetteIntensity, VignetteIntensity);
 
 /// Percent of the image diagonal where the vignetting pattern is not zero.
 /// Should be in [0-100] range. Default value is 0.
@@ -121,25 +107,22 @@ LTPropertyDeclare(CGFloat, vignetteSpread, VignetteSpread);
 @property (nonatomic) CGFloat vignetteCorner;
 LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 
-/// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
-/// which doesn't affect the image. Set \c noise back to \c nil to restore the default value.
-///
-/// @attention Noise is assumed to be with 0.5 mean. Stick to this assumption, unless you want to
-/// create a very specific visual result and understand well the underlying frame creation process.
-@property (strong, nonatomic) LTTexture *vignetteNoise;
+#pragma mark -
+#pragma mark Textures
+#pragma mark -
 
-/// Mixes the noise channels of the noise texture in order to create the transition noise.
-/// Components should be in [0, 1] range. Default value is (1, 0, 0). Input values are normalized,
-/// to remove potential interference with noise amplitude.
-@property (nonatomic) LTVector3 vignetteNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, vignetteNoiseChannelMixer, VignetteNoiseChannelMixer);
+/// Square asset texture. RGB channels of this texture are blended using screen mode and intended
+/// to store a light leak. Alpha channel is blended in overlay mode and intended to store a grunge
+/// pattern. The size of the texture should be 2048x2048. Default texture has 0.0 across rgb
+/// channels and 0.5 in alpha channel. Passing \c nil will set \c assetTexture to default texture.
+@property (strong, nonatomic) LTTexture *assetTexture;
 
-/// Amplitude of the noise. Should be in [0, 1] range. Default amplitude is 0.
-@property (nonatomic) CGFloat vignetteNoiseAmplitude;
-LTPropertyDeclare(CGFloat, vignetteNoiseAmplitude, VignetteNoiseAmplitude);
+/// Intensity of the light leak. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat lightLeakIntensity;
+LTPropertyDeclare(CGFloat, lightLeakIntensity, LightLeakIntensity);
 
-/// Vignetting opacity. Should be in [0, 1] range. Default amplitude is 0.
-@property (nonatomic) CGFloat vignetteOpacity;
-LTPropertyDeclare(CGFloat, vignetteOpacity, VignetteOpacity);
+/// Intensity of the grunge. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat grungeIntensity;
+LTPropertyDeclare(CGFloat, grungeIntensity, GrungeIntensity);
 
 @end
