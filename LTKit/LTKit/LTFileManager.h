@@ -5,9 +5,6 @@
 /// testing and mocking.
 @interface LTFileManager : NSObject
 
-/// Returns the default shared instance of the manager.
-+ (instancetype)sharedManager;
-
 /// Path to the documents directory of the app.
 + (NSString *)documentsDirectory;
 
@@ -30,8 +27,9 @@
 - (NSData *)dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
                              error:(NSError **)error;
 
-/// Creates and returns a \c UIImage from the given \c path, or returns \c nil if the image cannot
-/// be initialized from the given \c path.
-- (UIImage *)imageWithContentsOfFile:(NSString *)path;
+/// Creates a directory at the given path with optional intermediate directories. Returns \c YES if
+/// created the directory successfully, otherwise \c error is populated with the failure reason.
+- (BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)recursively
+                        error:(NSError **)error;
 
 @end

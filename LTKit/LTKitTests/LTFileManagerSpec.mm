@@ -5,7 +5,15 @@
 
 #import "LTImage.h"
 
-SpecBegin(LTFileManager)
+LTSpecBegin(LTFileManager)
+
+__block id nsFileManager;
+__block LTFileManager *fileManager;
+
+beforeEach(^{
+  nsFileManager = LTMockClass([NSFileManager class]);
+  fileManager = [[LTFileManager alloc] init];
+});
 
 it(@"should write data", ^{
   id data = [OCMockObject mockForClass:[NSData class]];
@@ -17,8 +25,7 @@ it(@"should write data", ^{
   [[[data expect] andReturnValue:@YES] writeToFile:file options:options
                                              error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
 
-  BOOL succeeded = [[LTFileManager sharedManager] writeData:data toFile:file
-                                                    options:options error:&error];
+  BOOL succeeded = [fileManager writeData:data toFile:file options:options error:&error];
   expect(succeeded).to.beTruthy();
   expect(error).to.beNil();
 
@@ -29,7 +36,7 @@ it(@"should read data from file", ^{
   NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
 
   NSError *error;
-  NSData *data = [[LTFileManager sharedManager] dataWithContentsOfFile:path options:0 error:&error];
+  NSData *data = [fileManager dataWithContentsOfFile:path options:0 error:&error];
 
   expect(error).to.beNil();
 
@@ -37,15 +44,21 @@ it(@"should read data from file", ^{
   expect(data).to.equal(file);
 });
 
-it(@"should read image from file", ^{
-  NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
+it(@"should create directory", ^{
+  static NSString * const kDirectory = @"/foo/bar";
 
-  UIImage *image = [[LTFileManager sharedManager] imageWithContentsOfFile:path];
-  expect(image).toNot.beNil();
+  NSError *error;
 
-  LTImage *ltImage = [[LTImage alloc] initWithImage:image];
-  LTImage *expectedImage = [[LTImage alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
-  expect($(ltImage.mat)).to.equalMat($(expectedImage.mat));
+  OCMExpect([nsFileManager createDirectoryAtPath:kDirectory
+                     withIntermediateDirectories:YES
+                                      attributes:OCMOCK_ANY
+                                           error:[OCMArg anyObjectRef]]).andReturn(YES);
+
+  BOOL result = [fileManager createDirectoryAtPath:kDirectory withIntermediateDirectories:YES
+                                             error:&error];
+
+  expect(result).to.beTruthy();
+  OCMVerifyAll(nsFileManager);
 });
 
-SpecEnd
+LTSpecEnd
