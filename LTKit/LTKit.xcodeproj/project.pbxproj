@@ -443,6 +443,8 @@
 		8B3F94D7187C340D00FAA265 /* LTTextureExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */; };
 		8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */; };
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
+		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
+		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
 		8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */; };
 		8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */; };
 		8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */; };
@@ -1548,6 +1550,8 @@
 		8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Specta+LTKit.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchSolverProcessor.h; sourceTree = "<group>"; };
 		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
@@ -1855,17 +1859,19 @@
 			files = (
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
+				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
+				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
-				8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */,
-				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
-				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
-				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
-				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
-				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
-				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
+				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
+				8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */,
+				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
 				8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */,
+				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
+				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta-iOS.a in Frameworks */,
 				8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
@@ -2448,6 +2454,8 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
+				8B4E493719E950C500B3F55D /* ImageIO.framework */,
 				8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,

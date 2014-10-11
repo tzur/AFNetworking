@@ -12,16 +12,7 @@
 
 @implementation LTFileManager
 
-+ (instancetype)sharedManager {
-  static LTFileManager *instance;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[LTFileManager alloc] init];
-  });
-
-  return instance;
-}
+objection_register_singleton(LTFileManager);
 
 + (NSString *)documentsDirectory {
   static NSString *documentsDirectory;
@@ -44,6 +35,13 @@
 - (NSData *)dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
                              error:(NSError *__autoreleasing *)error {
   return [NSData dataWithContentsOfFile:path options:options error:error];
+}
+
+- (BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)recursively
+                        error:(NSError *__autoreleasing *)error {
+  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
+  return [fileManager createDirectoryAtPath:path withIntermediateDirectories:recursively
+                                 attributes:nil error:error];
 }
 
 - (UIImage *)imageWithContentsOfFile:(NSString *)path {
