@@ -26,11 +26,15 @@
                                            format:LTTextureFormatFromMatType(type)
                                    allocateMemory:YES];
 
+  [self loadImage:image toTexture:texture];
+
+  return texture;
+}
+
++ (void)loadImage:(UIImage *)image toTexture:(LTTexture *)texture {
   [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     [self loadImage:image toMat:mapped];
   }];
-
-  return texture;
 }
 
 @end

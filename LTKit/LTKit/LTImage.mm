@@ -46,6 +46,10 @@
 }
 
 + (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat {
+  LTParameterAssert(mat->type() == [[self class] matTypeForImage:image],
+                    @"Invalid mat type given (%d vs. the required %d)",
+                    [[self class] matTypeForImage:image], mat->type());
+
   size_t bitsPerComponent = CGImageGetBitsPerComponent(image.CGImage);
   CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
   CGContextRef context = CGBitmapContextCreate(mat->data, mat->cols, mat->rows,

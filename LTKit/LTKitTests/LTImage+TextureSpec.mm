@@ -4,7 +4,7 @@
 #import "LTImage+Texture.h"
 
 #import "LTOpenCVExtensions.h"
-#import "LTTexture.h"
+#import "LTTexture+Factory.h"
 
 LTSpecBegin(LTImage_Texture)
 
@@ -26,6 +26,26 @@ it(@"should create texture from gray image", ^{
   expect(texture.precision).to.equal(LTTexturePrecisionByte);
   expect(texture.format).to.equal(LTTextureFormatRed);
   expect($([texture image])).to.equalMat($(ltImage.mat));
+});
+
+it(@"should load image to existing texture", ^{
+  UIImage *image = LTLoadImage([self class], @"Gray.jpg");
+  LTTexture *texture = [LTTexture textureWithSize:image.size precision:LTTexturePrecisionByte
+                                           format:LTTextureFormatRed allocateMemory:YES];
+  [LTImage loadImage:image toTexture:texture];
+
+  LTImage *ltImage = [[LTImage alloc] initWithImage:image];
+
+  expect($([texture image])).to.equalMat($(ltImage.mat));
+});
+
+it(@"should not load image to invalid texture format", ^{
+  UIImage *image = LTLoadImage([self class], @"Gray.jpg");
+  LTTexture *texture = [LTTexture textureWithSize:image.size precision:LTTexturePrecisionByte
+                                           format:LTTextureFormatRGBA allocateMemory:YES];
+  expect(^{
+    [LTImage loadImage:image toTexture:texture];
+  }).to.raise(NSInvalidArgumentException);
 });
 
 LTSpecEnd
