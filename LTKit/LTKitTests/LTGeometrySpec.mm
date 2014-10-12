@@ -3,6 +3,8 @@
 
 #import "LTGeometry.h"
 
+#import "LTGLKitExtensions.h"
+
 SpecBegin(LTGeometry)
 
 static const CGFloat kEpsilon = 1e-6;
@@ -19,7 +21,8 @@ context(@"relative point location in 2D", ^{
         LTPointLocationRelativeToRay(r, q, CGPointFromSize(p - q)) == LTPointLocationLeftOfRay;
     expect(liesOnLeftSide).to.beTruthy();
     BOOL liesOnLineThroughRay =
-        LTPointLocationRelativeToRay(r, r, CGPointFromSize(q - r)) == LTPointLocationOnLineThroughRay;
+        LTPointLocationRelativeToRay(r, r, CGPointFromSize(q - r)) ==
+        LTPointLocationOnLineThroughRay;
     expect(liesOnLineThroughRay).to.beTruthy();
   });
 });
@@ -97,6 +100,24 @@ context(@"intersection", ^{
                                                                                kEpsilon);
     expect(LTIntersectionPointOfEdges(p0, p1, p1, p2)).to.beCloseToPointWithin(p1, kEpsilon);
     expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p2, p1, p3))).to.beTruthy();
+    expect(CGPointIsNull(LTIntersectionPointOfLines(p0, p2, p0, p2))).to.beTruthy();
+  });
+
+  it(@"should correctly compute the intersection point of two lines", ^{
+    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p1 = CGPointMake(1, 0);
+    CGPoint p2 = CGPointMake(0.5, -0.5);
+    CGPoint p3 = CGPointMake(0, 0.5);
+    expect(LTIntersectionPointOfLines(p0, p1, p2, p3)).to.beCloseToPointWithin(CGPointMake(0.25, 0),
+                                                                               kEpsilon);
+    expect(LTIntersectionPointOfLines(p0, p1, p1, p2)).to.beCloseToPointWithin(p1, kEpsilon);
+    expect(LTIntersectionPointOfLines(p0, p2, p1, p3)).to.beCloseToPointWithin(CGPointMake(-1, 1),
+                                                                               kEpsilon);
+    expect(CGPointIsNull(LTIntersectionPointOfLines(p0, p2, p0, p2))).to.beTruthy();
+    CGPoint shift = CGPointMake(0, 1);
+    expect(CGPointIsNull(LTIntersectionPointOfLines(p0, p2, p0 + shift, p2 + shift))).to.beTruthy();
+    CGPoint q0 = CGPointMake(0, 1);
+    expect(CGPointIsNull(LTIntersectionPointOfLines(p0, q0, p0 + shift, q0 + shift))).to.beTruthy();
   });
 
   it(@"it should correctly compute all intersection points of a given polyline", ^{
@@ -110,7 +131,40 @@ context(@"intersection", ^{
     expect(expectedIntersectionPoints.size()).to.equal(3);
     expect(expectedIntersectionPoints[0]).to.beCloseToPointWithin(CGPointMake(0.25, 0), kEpsilon);
     expect(expectedIntersectionPoints[1]).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
-    expect(expectedIntersectionPoints[2]).to.beCloseToPointWithin(CGPointMake(0.75, -0.25), kEpsilon);
+    expect(expectedIntersectionPoints[2]).to.beCloseToPointWithin(CGPointMake(0.75, -0.25),
+                                                                  kEpsilon);
+  });
+});
+
+context(@"distance of point from line", ^{
+  it(@"should correctly compute the distance of a point ON a line", ^{
+    CGPoint a = CGPointMake(0, 0);
+    CGPoint b = CGPointMake(1, 1);
+    CGPoint point = CGPointMake(0.5, 0.5);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+    a = CGPointMake(6, 5);
+    b = CGPointMake(2, 5);
+    point = CGPointMake(-10, 5);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+    a = CGPointMake(5, -2);
+    b = CGPointMake(6, -1);
+    point = CGPointMake(8, 1);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+  });
+
+  it(@"should correctly compute the distance of a general point from a line", ^{
+    CGPoint a = CGPointMake(0, 0);
+    CGPoint b = CGPointMake(1, 1);
+    CGPoint point = CGPointMake(1, 0);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(M_SQRT1_2, kEpsilon);
+    a = CGPointMake(6, 5);
+    b = CGPointMake(2, 5);
+    point = CGPointMake(-29, 3);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(2, kEpsilon);
+    a = CGPointMake(5, -2);
+    b = CGPointMake(5, -1);
+    point = CGPointMake(8.5, 0);
+    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(3.5, kEpsilon);
   });
 });
 

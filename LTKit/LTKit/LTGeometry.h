@@ -29,9 +29,17 @@ BOOL LTIsSelfIntersectingPolyline(const CGPoints &points);
 /// intersection points of the polyline.
 CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points);
 
-/// Returns the intersection point of edge (p0, p1) and (q0, q1), if existing, otherwise
+/// Returns the intersection point of edge (p0, p1) and (q0, q1), if existing. Otherwise, returns
 /// CGPointNull.
 CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
 
+/// Returns the intersection point of the line passing through points \c p0 and \c p1 with the line
+/// passing through \c q0 and \c q1, if existing. Otherwise, returns CGPointNull.
+CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
+
 /// Returns \c YES if the edge (p0, p1) intersects the edge (q0, q1).
 BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
+
+/// Returns the distance of the given \c point from the line passing through \c pointOnLine and
+/// \c anotherPointOnLine.
+CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point);
