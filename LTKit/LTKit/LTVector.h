@@ -142,6 +142,13 @@ struct LTVector2 {
     return *this / length();
   }
 
+  /// Returns a new vector that is perpendicular to the given \c vector.
+  /// The length of the returned vector is equal to the length of the given \c vector, and its
+  /// direction reflects a counter clockwise rotation (in bottom-left origin coordinate system).
+  inline LTVector2 perpendicular() const {
+    return LTVector2(this->y, -this->x);
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
