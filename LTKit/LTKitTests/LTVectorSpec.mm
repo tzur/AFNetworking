@@ -94,6 +94,13 @@ context(@"LTVector2", ^{
     expect(v.sum()).to.equal(3);
   });
 
+  it(@"should return the correct perpendicular vector", ^{
+    LTVector2 v(1, 2);
+    v = v.perpendicular();
+    expect(v.x).to.equal(2);
+    expect(v.y).to.equal(-1);
+  });
+
   it(@"should access data correctly", ^{
     LTVector2 v(1, 2);
     expect(v.data()[0]).to.equal(1);
