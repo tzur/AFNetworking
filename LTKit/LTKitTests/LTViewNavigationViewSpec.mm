@@ -13,6 +13,11 @@
 
 @end
 
+@interface LTViewNavigationState ()
+@property (nonatomic) CGPoint scrollViewContentOffset;
+@property (nonatomic) UIEdgeInsets scrollViewContentInset;
+@end
+
 static CGPoint LTContentCenter(LTViewNavigationView *view) {
   CGRect contentFrame = [view.scrollView convertRect:view.contentView.frame toView:view];
   return std::round(CGRectCenter(CGRectIntersection(contentFrame, view.bounds)));
@@ -46,6 +51,45 @@ context(@"initialization", ^{
     expect(view.frame).to.equal(kViewFrame);
     expect(view.contentSize).to.equal(kContentSize);
     expect(otherView.visibleContentRect).to.equal(view.visibleContentRect);
+  });
+
+  it(@"should initialize with state with fractional offset values", ^{
+    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
+    LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
+                                                                 contentSize:kContentSize];
+    [view zoomToRect:targetRect animated:NO];
+    LTViewNavigationState *beforeState = view.state;
+    beforeState.scrollViewContentOffset = beforeState.scrollViewContentOffset +
+        CGSizeMakeUniform(0.5);
+
+    LTViewNavigationView *otherView = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
+                                                                      contentSize:kContentSize
+                                                                            state:beforeState];
+
+    expect(otherView.state).to.equal(beforeState);
+    expect(otherView.state).notTo.equal(view.state);
+  });
+
+  it(@"should not initialize with state with fractional scrollViewContentInset", ^{
+    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
+    LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
+                                                                 contentSize:kContentSize];
+    [view zoomToRect:targetRect animated:NO];
+    LTViewNavigationState *beforeState = view.state;
+
+    UIEdgeInsets scrollViewContentInset = beforeState.scrollViewContentInset;
+    scrollViewContentInset.top += 0.5;
+    scrollViewContentInset.left += 0.5;
+    scrollViewContentInset.bottom += 0.5;
+    scrollViewContentInset.right += 0.5;
+    beforeState.scrollViewContentInset = scrollViewContentInset;
+
+    expect(^{
+      LTViewNavigationView __unused *otherView =
+          [[LTViewNavigationView alloc] initWithFrame:kViewFrame
+                                          contentSize:kContentSize
+                                                state:beforeState];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

@@ -36,6 +36,18 @@
          self.animationActive == [object animationActive];
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, visibleContentRect: %@, "
+          "scrollViewContentOffset: %@, scrollViewContentInset: %@, "
+          "navigationViewContentInset: %@, zoomScale: %g, animationActive: %d>",
+          [self class], self,
+          NSStringFromCGRect(self.visibleContentRect),
+          NSStringFromCGPoint(self.scrollViewContentOffset),
+          NSStringFromUIEdgeInsets(self.scrollViewContentInset),
+          NSStringFromUIEdgeInsets(self.navigationViewContentInset),
+          self.zoomScale, self.animationActive];
+}
+
 @end
 
 #pragma mark -
@@ -147,9 +159,18 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (void)navigateToState:(LTViewNavigationState *)state {
   LTParameterAssert(state);
+  UIEdgeInsets contentInset = state.scrollViewContentInset;
+  LTParameterAssert(rint(contentInset.top) == contentInset.top &&
+                    rint(contentInset.left) == contentInset.left &&
+                    rint(contentInset.bottom) == contentInset.bottom &&
+                    rint(contentInset.right) == contentInset.right,
+                    @"non-integral content insets are not yet supported");
+
   self.scrollView.zoomScale = state.zoomScale;
   self.contentInset = state.navigationViewContentInset;
-  self.scrollView.contentOffset = state.scrollViewContentOffset;
+  // Setting the contentOffset will round to the nearest integer.
+  self.scrollView.bounds = CGRectFromOriginAndSize(state.scrollViewContentOffset,
+                                                   self.scrollView.bounds.size);
   self.scrollView.contentInset = state.scrollViewContentInset;
   self.visibleContentRect = state.visibleContentRect;
   if (state.animationActive) {
