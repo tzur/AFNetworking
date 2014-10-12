@@ -69,28 +69,6 @@ context(@"initialization", ^{
     expect(otherView.state).to.equal(beforeState);
     expect(otherView.state).notTo.equal(view.state);
   });
-
-  it(@"should not initialize with state with fractional scrollViewContentInset", ^{
-    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
-    LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
-                                                                 contentSize:kContentSize];
-    [view zoomToRect:targetRect animated:NO];
-    LTViewNavigationState *beforeState = view.state;
-
-    UIEdgeInsets scrollViewContentInset = beforeState.scrollViewContentInset;
-    scrollViewContentInset.top += 0.5;
-    scrollViewContentInset.left += 0.5;
-    scrollViewContentInset.bottom += 0.5;
-    scrollViewContentInset.right += 0.5;
-    beforeState.scrollViewContentInset = scrollViewContentInset;
-
-    expect(^{
-      LTViewNavigationView __unused *otherView =
-          [[LTViewNavigationView alloc] initWithFrame:kViewFrame
-                                          contentSize:kContentSize
-                                                state:beforeState];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 context(@"properties", ^{
