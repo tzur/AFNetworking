@@ -100,13 +100,16 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
 }
 
 /// @see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
+static CGPoint LTIntersectionPointOfLinesHelper(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1,
+                                                CGFloat tMin = -CGFLOAT_MAX,
+                                                CGFloat tMax = CGFLOAT_MAX) {
   CGSize r = p1 - p0;
   CGSize s = q1 - q0;
   CGFloat crossProductLength =
       GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(r.width, r.height, 0),
                                               GLKVector3Make(s.width, s.height, 0)));
   if (std::abs(crossProductLength) < kEpsilon) {
+    // Line (segments) are parallel.
     return CGPointNull;
   }
 
@@ -114,10 +117,34 @@ CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
   CGFloat t = GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(qp.width, qp.height, 0),
                                                       GLKVector3Make(s.width, s.height, 0)));
   t /= crossProductLength;
-  if (0 <= t && t <= 1) {
-    return p0 + t * r;
+  if (tMin <= t && t <= tMax) {
+    // Note that the sign of \c t resulting from the previous cross product computation is
+    // meaningless since there is no assumption on the geometric constellation of the vectors \c r
+    // and \c s. Hence, it must be ensured that the sign of \c t is correct such that p0 + t * r
+    // indeed is the intersection point (and not a point lying on line (p0, p1), but not (q0, q1).
+    // The following distance-from-line computation has been chosen to provide a numerically robust,
+    // correct answer. Simply checking collinearity of \c (q0, q1, intersectionPoint<x>), where
+    // <x> in {0, 1} may yield wrong results. Another possibility would be to enforce an invariance
+    // on the geometric constellation of vectors \c r and \c s. However, this might imply edge cases
+    // to deal with.
+    CGPoint intersectionPoint0 = p0 + t * r;
+    CGPoint intersectionPoint1 = p0 + -t * r;
+    CGFloat distance0 = LTDistanceFromLine(q0, q1, intersectionPoint0);
+    CGFloat distance1 = LTDistanceFromLine(q0, q1, intersectionPoint1);
+    if (distance0 < distance1) {
+      return intersectionPoint0;
+    }
+    return intersectionPoint1;
   }
   return CGPointNull;
+}
+
+CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
+  return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1, 0, 1);
+}
+
+CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
+  return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1);
 }
 
 BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
@@ -128,4 +155,12 @@ BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
       != LTPointLocationRelativeToRay(q1, p0, CGPointFromSize(p1 - p0))
       && LTPointLocationRelativeToRay(p0, q0, CGPointFromSize(q1 - q0))
       != LTPointLocationRelativeToRay(p1, q0, CGPointFromSize(q1 - q0));
+}
+
+/// @see: http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
+  LTVector2 a = LTVector2(pointOnLine);
+  LTVector2 n = (LTVector2(anotherPointOnLine) - a).normalized();
+  LTVector2 ap = a - LTVector2(point);
+  return (ap - ((ap).dot(n) * n)).length();
 }
