@@ -90,6 +90,9 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 #pragma mark -
 
 - (void)startNewStrokeAtPoint:(LTPainterPoint __unused *)point {
+  if (self.randomAnglePerStroke) {
+    self.angle = [self.random randomDoubleBetweenMin:0 max:2 * M_PI];
+  }
   [self updateProgramForCurrentProperties];
 }
 

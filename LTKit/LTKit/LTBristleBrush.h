@@ -20,14 +20,11 @@ typedef NS_ENUM(NSUInteger, LTBristleBrushShape) {
 /// Shape of the brush.
 @property (nonatomic) LTBristleBrushShape shape;
 
-/// If set to \c YES, the brush angle will be set to a random angle whenever a stroke starts.
-@property (nonatomic) BOOL randomAnglePerStroke;
-
 /// Number of bristles in the brush. Must be in rane [2,100].
 @property (nonatomic) NSUInteger bristles;
 LTPropertyDeclare(NSUInteger, bristles, Bristles);
 
-/// Thickness of the bristles. Must be in range [0,2]. Default is 0.1.
+/// Thickness of the bristles. Must be in range [0.1,2]. Default is 0.1.
 @property (nonatomic) CGFloat thickness;
 LTPropertyDeclare(CGFloat, thickness, Thickness);
 

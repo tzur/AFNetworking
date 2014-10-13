@@ -95,9 +95,6 @@ static const CGFloat kBristleSigma = 0.4;
 #pragma mark -
 
 - (void)startNewStrokeAtPoint:(LTPainterPoint *)point {
-  if (self.randomAnglePerStroke) {
-    self.angle = [self.random randomDoubleBetweenMin:0 max:2 * M_PI];
-  }
   [super startNewStrokeAtPoint:point];
   if (self.shouldUpdateBrush) {
     [self updateBrushForCurrentProperties];
