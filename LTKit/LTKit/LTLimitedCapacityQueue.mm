@@ -5,8 +5,8 @@
 
 @interface LTLimitedCapacityQueue ()
 
-/// Maximum number of objects allowed to reside simultaneously in the queue.
-@property (nonatomic) NSUInteger maximumCapacity;
+/// Maximal number of objects allowed to reside simultaneously in the queue.
+@property (nonatomic) NSUInteger maximalCapacity;
 
 @end
 
@@ -18,13 +18,12 @@
 
 - (instancetype)init {
   LTMethodNotImplemented();
-  return nil;
 }
 
-- (instancetype)initWithMaximumCapacity:(NSUInteger)capacity {
+- (instancetype)initWithMaximalCapacity:(NSUInteger)capacity {
   if (self = [super init]) {
     LTParameterAssert(capacity > 0);
-    self.maximumCapacity = capacity;
+    self.maximalCapacity = capacity;
   }
   return self;
 }
@@ -34,7 +33,7 @@
 #pragma mark -
 
 - (void)pushObject:(id)object {
-  if (super.count == self.maximumCapacity) {
+  if (self.count == self.maximalCapacity) {
     [self popObject];
   }
   [super pushObject:object];

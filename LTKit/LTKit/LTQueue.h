@@ -11,11 +11,11 @@
 /// empty.
 - (id)popObject;
 
-/// Removes the provided \c object from the queue. If the queue does not contain the \c object,the
+/// Removes the provided \c object from the queue. If the queue does not contain the \c object, the
 /// method has no effect (although it does incur the overhead of searching the contents).
 - (void)removeObject:(id)object;
 
-/// Returns a copy of the queue in form of an NSArray. The first entry of the array is the object
+/// Returns a copy of the queue in form of an \c NSArray. The first entry of the array is the object
 /// which has been pushed to the queue least recently, while the last entry is the object which has
 /// been pushed most recently.
 - (NSArray *)array;

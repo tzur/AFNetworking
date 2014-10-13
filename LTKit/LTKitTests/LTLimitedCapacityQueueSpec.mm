@@ -12,8 +12,8 @@ __block id secondObject;
 __block id thirdObject;
 
 beforeEach(^{
-  singleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximumCapacity:1];
-  multipleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximumCapacity:3];
+  singleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximalCapacity:1];
+  multipleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximalCapacity:3];
   firstObject = [[NSObject alloc] init];
   secondObject = [[NSObject alloc] init];
   thirdObject = [[NSObject alloc] init];

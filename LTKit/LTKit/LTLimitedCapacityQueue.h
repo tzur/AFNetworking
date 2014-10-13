@@ -6,11 +6,12 @@
 /// Implementation of a FIFO queue with limited capacity.
 @interface LTLimitedCapacityQueue : LTQueue
 
-/// Initializes the queue with a maximum \c capacity of objects allowed to be simultaneously in the
+/// Initializes the queue with a maximal \c capacity of objects allowed to be simultaneously in the
 /// queue. Pushing an object to a full queue will discard the least recently added object of the
 /// queue.
-- (instancetype)initWithMaximumCapacity:(NSUInteger)capacity;
+- (instancetype)initWithMaximalCapacity:(NSUInteger)capacity;
 
-@property (readonly, nonatomic) NSUInteger maximumCapacity;
+/// Maximal capacity of the queue.
+@property (readonly, nonatomic) NSUInteger maximalCapacity;
 
 @end

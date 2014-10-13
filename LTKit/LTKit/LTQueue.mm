@@ -68,4 +68,12 @@
   return [self.queue containsObject:object];
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, %@>", [self class], self, self.queue];
+}
+
 @end
