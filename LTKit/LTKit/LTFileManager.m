@@ -37,13 +37,6 @@ objection_register_singleton(LTFileManager);
   return [NSData dataWithContentsOfFile:path options:options error:error];
 }
 
-- (BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)recursively
-                        error:(NSError *__autoreleasing *)error {
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
-  return [fileManager createDirectoryAtPath:path withIntermediateDirectories:recursively
-                                 attributes:nil error:error];
-}
-
 - (UIImage *)imageWithContentsOfFile:(NSString *)path {
   return [UIImage imageWithContentsOfFile:path];
 }

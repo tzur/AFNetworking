@@ -44,21 +44,4 @@ it(@"should read data from file", ^{
   expect(data).to.equal(file);
 });
 
-it(@"should create directory", ^{
-  static NSString * const kDirectory = @"/foo/bar";
-
-  NSError *error;
-
-  OCMExpect([nsFileManager createDirectoryAtPath:kDirectory
-                     withIntermediateDirectories:YES
-                                      attributes:OCMOCK_ANY
-                                           error:[OCMArg anyObjectRef]]).andReturn(YES);
-
-  BOOL result = [fileManager createDirectoryAtPath:kDirectory withIntermediateDirectories:YES
-                                             error:&error];
-
-  expect(result).to.beTruthy();
-  OCMVerifyAll(nsFileManager);
-});
-
 LTSpecEnd
