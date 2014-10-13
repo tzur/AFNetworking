@@ -63,6 +63,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
 #pragma mark Archiving
 #pragma mark -
 
+- (NSData *)archiveTexture:(LTTexture *)texture error:(NSError *__autoreleasing *)error {
   __block BOOL stored;
   [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTImage *image = [[LTImage alloc] initWithMat:mapped copy:NO];
