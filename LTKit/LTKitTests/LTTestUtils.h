@@ -41,10 +41,10 @@ NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position);
 /// Returns a string representation of the \c scalar value.
 NSString *LTScalarAsString(const cv::Scalar &scalar);
 
-/// Blending should match photoshop's "normal" blend mode, assuming input is premultiplied:
+/// Blending should match photoshop's "normal" blend mode:
 /// C_out = C_new + (1-A_new)*C_old;
 /// A_out = A_old + (1-A_old)*A_new;
-cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor);
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied = YES);
 
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);

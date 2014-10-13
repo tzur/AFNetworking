@@ -43,7 +43,7 @@ void main() {
   if (premultiplied) {
     // Apply the flow factor on the alpha channel, and use the opacity as an upper bound.
     // Update the rgb channels with the ratio, since we assume premultiplied alpha.
-    highp float baseA = src.a;
+    highp float baseA = src.a + step(src.a, 0.0);;
     src.a = min(src.a * flow, opacity);
     src.rgb *= src.a / baseA;
     

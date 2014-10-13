@@ -194,12 +194,21 @@ NSString *LTScalarAsString(const cv::Scalar &scalar) {
           scalar[0], scalar[1], scalar[2], scalar[3]];
 }
 
-cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor) {
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied) {
   static const CGFloat inv = 1.0 / UCHAR_MAX;
   cv::Vec4b blended;
   cv::Vec4b blendedAlpha;
-  cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
-  cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
+  if (premultiplied) {
+    cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
+    cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
+  } else {
+    cv::addWeighted(oldColor, (1 - inv * newColor[3]) * inv * oldColor[3],
+                    newColor, inv * newColor[3], 0, blended);
+    cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
+    if (blended[3] == 0) {
+      blended = cv::Vec4b(0, 0, 0, 0);
+    }
+  }
   blended[3] = blendedAlpha[3];
   return blended;
 }

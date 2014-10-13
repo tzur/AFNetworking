@@ -158,6 +158,13 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         }).to.raise(NSInvalidArgumentException);
       }
     });
+
+    it(@"should set randomAnglePerStroke", ^{
+      brush.randomAnglePerStroke = YES;
+      expect(brush.randomAnglePerStroke).to.beTruthy();
+      brush.randomAnglePerStroke = NO;
+      expect(brush.randomAnglePerStroke).to.beFalsy();
+    });
   });
 });
 
@@ -200,6 +207,7 @@ context(@"properties", ^{
     expect(brush.intensity).to.equal(LTVector4(1, 1, 1, 1));
     cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
+    expect(brush.randomAnglePerStroke).to.beFalsy();
   });
 });
 
@@ -393,6 +401,18 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(0.1 * 255, 0.2 * 255,
                                                              0.3 * 255, 0.4 * 255));
     expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  it(@"should use random angles per stroke", ^{
+    brush.randomAnglePerStroke = YES;
+    CGFloat previousAngle = 0;
+    expect(brush.angle).to.equal(previousAngle);
+    previousAngle = brush.angle;
+    [brush startNewStrokeAtPoint:centerPoint];
+    expect(brush.angle).notTo.equal(previousAngle);
+    previousAngle = brush.angle;
+    [brush startNewStrokeAtPoint:centerPoint];
+    expect(brush.angle).notTo.equal(previousAngle);
   });
 });
 

@@ -112,4 +112,7 @@ LTPropertyDeclare(CGFloat, flow, Flow)
 @property (nonatomic) LTVector4 intensity;
 LTPropertyDeclare(LTVector4, intensity, Intensity);
 
+/// If set to \c YES, the brush angle will be set to a random angle whenever a stroke starts.
+@property (nonatomic) BOOL randomAnglePerStroke;
+
 @end

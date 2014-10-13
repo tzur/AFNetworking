@@ -286,7 +286,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
         
         it(@"blending with zero result opacity should result in zero rgb as well", ^{
-          [fbo clearWithColor:LTVector4(1, 1, 1, 0)];
+          [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
           brush.intensity = LTVector4(1, 1, 1, 0);
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];

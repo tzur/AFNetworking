@@ -275,6 +275,62 @@ context(@"non-edge avoiding drawing", ^{
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
+
+    context(@"blending mode", ^{
+      const LTVector4 kColor(0.25, 0.5, 0.75, 1);
+      const cv::Vec4b kCvColor = LTLTVector4ToVec4b(kColor);
+      
+      beforeEach(^{
+        [fbo clearWithColor:kColor];
+        expected.setTo(kCvColor);
+        brush.mode = LTRoundBrushModeBlend;
+      });
+
+      it(@"drawing should be additive", ^{
+        brush.hardness = 0.5;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 36), NO));
+        expected.colRange(1, 3).setTo(LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 36), NO));
+        expected(cv::Rect(1, 1, 2, 2)).setTo(LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 172), NO));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+
+      it(@"should draw with updated opacity", ^{
+        brush.opacity = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        expected.rowRange(1, 3).setTo(LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 26), NO));
+        expected.colRange(1, 3).setTo(LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 26), NO));
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+
+      it(@"should draw with updated flow", ^{
+        brush.flow = 0.1;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        cv::Vec4b blendedOnce = LTBlend(kCvColor, cv::Vec4b(255, 255, 255, 26), NO);
+        expected.rowRange(1, 3).setTo(blendedOnce);
+        expected.colRange(1, 3).setTo(blendedOnce);
+        expect($(output.image)).to.beCloseToMat($(expected));
+        [brush drawPoint:point inFramebuffer:fbo];
+        cv::Vec4b blendedTwice = LTBlend(blendedOnce, cv::Vec4b(255, 255, 255, 26), NO);
+        expected.rowRange(1, 3).setTo(blendedTwice);
+        expected.colRange(1, 3).setTo(blendedTwice);
+        expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
+      });
+
+      it(@"should draw with updated intensity", ^{
+        const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
+        brush.intensity = kIntensity;
+        [brush startNewStrokeAtPoint:point];
+        [brush drawPoint:point inFramebuffer:fbo];
+        cv::Vec4b blended = LTBlend(kCvColor, LTLTVector4ToVec4b(kIntensity), NO);
+        expected.rowRange(1, 3).setTo(blended);
+        expected.colRange(1, 3).setTo(blended);
+        expect($(output.image)).to.beCloseToMat($(expected));
+      });
+    });
   });
 });
 
