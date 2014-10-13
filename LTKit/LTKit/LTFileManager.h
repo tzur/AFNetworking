@@ -27,9 +27,12 @@
 - (NSData *)dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
                              error:(NSError **)error;
 
-/// Creates a directory at the given path with optional intermediate directories. Returns \c YES if
-/// created the directory successfully, otherwise \c error is populated with the failure reason.
-- (BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)recursively
-                        error:(NSError **)error;
+/// Globs the given \c path with optional \c recursion, returning paths of files that match the
+/// given \c predicate (for \c NSString paths). If an error has occurred, the returned array will be
+/// \c nil and the \c error will be populated.
+///
+/// @note returned paths are relative to the given \c path, and are not absolute paths.
+- (NSArray *)globPath:(NSString *)path recursively:(BOOL)recursively
+        withPredicate:(NSPredicate *)predicate error:(NSError **)error;
 
 @end

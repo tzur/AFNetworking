@@ -41,4 +41,44 @@ objection_register_singleton(LTFileManager);
   return [UIImage imageWithContentsOfFile:path];
 }
 
+- (NSArray *)globPath:(NSString *)path recursively:(BOOL)recursively
+        withPredicate:(NSPredicate *)predicate error:(NSError *__autoreleasing *)error {
+  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
+
+  NSURL *url = [NSURL fileURLWithPath:path];
+  NSDirectoryEnumerationOptions options = recursively ?
+      NSDirectoryEnumerationSkipsSubdirectoryDescendants : 0;
+  NSDirectoryEnumerator *enumerator =
+      [fileManager enumeratorAtURL:url
+        includingPropertiesForKeys:@[NSURLNameKey]
+                           options:options
+                      errorHandler:^BOOL(NSURL *url, NSError *enumerationError) {
+                        if (enumerationError) {
+                          if (error) {
+                            *error = [NSError errorWithDomain:kLTKitErrorDomain
+                                                         code:LTErrorFileError
+                                                     userInfo:@{NSFilePathErrorKey: url,
+                                                                NSUnderlyingErrorKey:
+                                                                  enumerationError,
+                                                                }];
+                          }
+                          return NO;
+                        }
+                        return YES;
+                      }];
+
+  NSMutableArray *files = [NSMutableArray array];
+
+  for (NSURL *fileURL in enumerator) {
+    NSString *filename;
+    [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+
+    if ([predicate evaluateWithObject:filename]) {
+      [files addObject:filename];
+    }
+  }
+
+  return [files copy];
+}
+
 @end
