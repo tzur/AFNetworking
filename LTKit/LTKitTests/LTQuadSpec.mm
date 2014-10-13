@@ -96,14 +96,14 @@ context(@"initializers and factory methods", ^{
       expect(quad.v3).to.equal(v3);
     });
 
-    it(@"should fail to initialize if the corners of a convex quad are given in counterclockwise order", ^{
+    it(@"should fail if the corners of a convex quad are given in counterclockwise order", ^{
       LTQuadCorners cornersOfConvexQuad{{v3, v2, v1, v0}};
       expect(^{
         quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
       }).to.raise(NSInternalInconsistencyException);
     });
 
-    it(@"should fail to initialize if the corners of a concave quad are given in counterclockwise order", ^{
+    it(@"should fail if the corners of a concave quad are given in counterclockwise order", ^{
       LTQuadCorners cornersOfConcaveQuad{{v3, w0, v1, v0}};
       expect(^{
         quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];
@@ -355,8 +355,8 @@ context(@"properties", ^{
       quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
       cv::Mat1f identity = cv::Mat1f::eye(3, 3);
       expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(identity), kEpsilon);
-      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.beCloseToMatWithin($(identity),
-                                                                                          kEpsilon);
+      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.
+          beCloseToMatWithin($(identity), kEpsilon);
     });
 
     it(@"should provide the correct transformation for non-axis-aligned quads", ^{
@@ -373,18 +373,18 @@ context(@"properties", ^{
                                        CGPointMake(-M_SQRT1_2, M_SQRT1_2)}};
       quad = [[LTQuad alloc] initWithCorners:corners0];
       GLKMatrix3 expectedTransform = GLKMatrix3MakeRotation(kClockwiseAngle, 0, 0, 1);
-      expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)),
-                                                                           kEpsilon);
-      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)),
-                                                                                          kEpsilon);
+      expect($(LTMatFromGLKMatrix3(quad.transform))).to.
+          beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)), kEpsilon);
+      expect($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad)))).to.
+          beCloseToMatWithin($(LTMatFromGLKMatrix3(expectedTransform)), kEpsilon);
 
       LTQuadCorners corners1{{CGPointMake(5.1, -2.7),
                               CGPointMake(19.2, 22.2),
                               CGPointMake(44.34, 190.2),
                               CGPointMake(-29.132, 99.1)}};
       quad = [[LTQuad alloc] initWithCorners:corners1];
-      expect($(LTMatFromGLKMatrix3(quad.transform))).to.beCloseToMatWithin($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad))),
-                                                                           kEpsilon);
+      expect($(LTMatFromGLKMatrix3(quad.transform))).to.
+          beCloseToMatWithin($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad))), kEpsilon);
     });
   });
 });
