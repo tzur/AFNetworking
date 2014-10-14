@@ -56,6 +56,18 @@
   [self.queue removeObject:object];
 }
 
+- (void)removeAllObjects {
+  [self.queue removeAllObjects];
+}
+
+- (NSUInteger)indexOfObject:(id)object {
+  return [self.queue indexOfObject:object];
+}
+
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object {
+  [self.queue replaceObjectAtIndex:index withObject:object];
+}
+
 #pragma mark -
 #pragma mark Retrieval of information about queue
 #pragma mark -
