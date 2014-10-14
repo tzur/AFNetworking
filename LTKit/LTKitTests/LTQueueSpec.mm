@@ -73,6 +73,37 @@ it(@"should correctly remove an object from the queue", ^{
   expect(poppedObject).to.beIdenticalTo(thirdObject);
 });
 
+it(@"should be possible to remove all objects", ^{
+  [queue pushObject:firstObject];
+  [queue pushObject:secondObject];
+  [queue pushObject:thirdObject];
+  expect(queue.count).to.equal(3);
+  [queue removeAllObjects];
+  expect(queue.count).to.equal(0);
+});
+
+it(@"should return the index of a given element in the queue", ^{
+  [queue pushObject:firstObject];
+  [queue pushObject:secondObject];
+  expect([queue indexOfObject:firstObject]).to.equal(0);
+  expect([queue indexOfObject:secondObject]).to.equal(1);
+  expect([queue indexOfObject:thirdObject]).to.equal((NSInteger)NSNotFound);
+});
+
+it(@"should replace an object at a given index with another object", ^{
+  [queue pushObject:firstObject];
+  [queue pushObject:secondObject];
+  [queue replaceObjectAtIndex:0 withObject:thirdObject];
+  expect(queue.array[0]).to.equal(thirdObject);
+  expect(queue.array[1]).to.equal(secondObject);
+  expect(^{
+    [queue replaceObjectAtIndex:2 withObject:thirdObject];
+  }).to.raise(NSRangeException);
+  expect(^{
+    [queue replaceObjectAtIndex:0 withObject:nil];
+  }).to.raise(NSInvalidArgumentException);
+});
+
 it(@"should return an array containing the objects of the queue in correct order", ^{
   [queue pushObject:firstObject];
   [queue pushObject:secondObject];
