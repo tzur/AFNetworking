@@ -57,7 +57,8 @@ objection_register_singleton(LTFileManager);
                           if (error) {
                             *error = [NSError errorWithDomain:kLTKitErrorDomain
                                                          code:LTErrorFileError
-                                                     userInfo:@{NSFilePathErrorKey: url,
+                                                     userInfo:@{NSFilePathErrorKey:
+                                                                  url ?: [NSNull null],
                                                                 NSUnderlyingErrorKey:
                                                                   enumerationError,
                                                                 }];
