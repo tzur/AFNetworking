@@ -5,6 +5,7 @@
 #import "LTBrushSpec.h"
 
 #import "LTCGExtensions.h"
+#import "LTDegenerateInterpolationRoutine.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
@@ -165,6 +166,19 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       brush.randomAnglePerStroke = NO;
       expect(brush.randomAnglePerStroke).to.beFalsy();
     });
+
+    it(@"should set splineFactory", ^{
+      id<LTInterpolationRoutineFactory> linear = [[LTLinearInterpolationRoutineFactory alloc] init];
+      id<LTInterpolationRoutineFactory> degenerate =
+          [[LTDegenerateInterpolationRoutineFactory alloc] init];
+
+      brush.splineFactory = linear;
+      expect(brush.splineFactory).to.beIdenticalTo(linear);
+      brush.splineFactory = degenerate;
+      expect(brush.splineFactory).to.beIdenticalTo(degenerate);
+      brush.splineFactory = nil;
+      expect(brush.splineFactory).to.beNil();
+    });
   });
 });
 
@@ -208,6 +222,7 @@ context(@"properties", ^{
     cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
     expect(brush.randomAnglePerStroke).to.beFalsy();
+    expect(brush.splineFactory).to.beNil();
   });
 });
 
