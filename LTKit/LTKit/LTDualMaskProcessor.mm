@@ -77,8 +77,8 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 }
 
 - (CGFloat)remapSpread:(CGFloat)spread {
-  static const CGFloat kSpreadPositiveScaling = 0.49;
-  static const CGFloat kSpreadNegativeScaling = 2;
+  static const CGFloat kSpreadPositiveScaling = 1.5;
+  static const CGFloat kSpreadNegativeScaling = 0.49;
   if (spread > 0) {
     return spread * kSpreadPositiveScaling;
   } else {

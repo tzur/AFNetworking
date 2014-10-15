@@ -36,8 +36,8 @@ void main() {
     dist = abs(-normal.y * coords.x - normal.x * coords.y);
   }
   // Mask.
-  dist = max(0.0, dist * 2.0 - shift);
-  dist = smoothstep(1.0 - spread, 0.0 + spread, dist);
+  dist = dist * 2.0 - shift;
+  dist = smoothstep(1.0 + spread, 0.0 - spread, dist);
   
   gl_FragColor = vec4(vec3(dist), 1.0);
 }
