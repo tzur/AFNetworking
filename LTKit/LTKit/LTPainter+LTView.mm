@@ -131,9 +131,10 @@
   if ([self.delegate respondsToSelector:@selector(ltPainterWillBeginStroke:)]) {
     [self.delegate ltPainterWillBeginStroke:self];
   }
-  self.currentStroke = [[LTPainterStroke alloc]
-                        initWithInterpolationRoutineFactory:self.splineFactory
-                        startingPoint:point];
+  self.currentStroke =
+      [[LTPainterStroke alloc]
+       initWithInterpolationRoutineFactory:self.brush.splineFactory ?: self.splineFactory
+       startingPoint:point];
   [self.brush startNewStrokeAtPoint:point];
 }
 

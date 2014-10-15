@@ -28,6 +28,10 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @interface LTPainter () <LTTouchCollectorDelegate>
 @end
 
+@interface LTPainterStroke ()
+@property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+@end
+
 LTSpecBegin(LTPainter)
 
 const CGSize kCanvasSize = CGSizeMake(64, 64);
@@ -206,6 +210,22 @@ context(@"painting", ^{
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
       expected(LTCVRectWithCGRect(kCenterRect)).setTo(kWhite);
       expect($(canvas.image)).to.equalMat($(expected));
+    });
+
+    it(@"should use the brush's spline factory if set", ^{
+      painter.brush.splineFactory = [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+      [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
+      [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
+      [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
+
+      painter.brush.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
+      [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
+      [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
+
+      expect([painter.strokes[0] factory])
+          .to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
+      expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
     });
     
     context(@"delegate", ^{

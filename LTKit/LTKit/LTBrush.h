@@ -10,6 +10,7 @@
     [self updateProgramForCurrentProperties]; \
   }
 
+@protocol LTInterpolationRoutineFactory;
 @class LTBrushColorDynamicsEffect, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
     LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;
 
@@ -71,6 +72,9 @@
 /// Controls the base size of the brush, in pixels. The default value for iOS is the average finger
 /// size on the device.
 @property (nonatomic) NSUInteger baseDiameter;
+
+/// Spline factory that should be used for generating segments when using the brush.
+@property (strong, nonatomic) id<LTInterpolationRoutineFactory> splineFactory;
 
 /// Scattering effect applied during the brush strokes.
 @property (strong, nonatomic) LTBrushScatterEffect *scatterEffect;
