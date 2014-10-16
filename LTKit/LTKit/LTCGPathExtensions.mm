@@ -16,7 +16,7 @@ typedef struct LTPathModificationData {
 static void LTRecomputePoints(void *data, const CGPathElement *element);
 
 /// Returns the result of multiplying the provided \c point with the provided \c transform.
-static CGPoint CGPointApplyTransform(CGPoint point, GLKMatrix3 &transform);
+static CGPoint LTCGPointApplyTransform(CGPoint point, GLKMatrix3 &transform);
 
 /// Returns a path connecting the provided points. The path is closed iff \c closed is YES.
 static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
@@ -50,14 +50,15 @@ static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s
 #pragma mark - Public methods
 #pragma mark -
 
-CGMutablePathRef LTCGPathApplyTransform(CGPathRef path, GLKMatrix3 &transform) {
+CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation) {
   CGMutablePathRef result = CGPathCreateMutable();
 
   LTPathModificationData data;
   data.path = result;
-  data.transform = transform;
+  data.transform = transformation;
 
   CGPathApply(path, &data, &LTRecomputePoints);
+
   return result;
 }
 
@@ -94,23 +95,23 @@ void LTRecomputePoints(void *data, const CGPathElement *element) {
 
   switch (element->type) {
     case kCGPathElementMoveToPoint:
-      points[0] = CGPointApplyTransform(points[0], transform);
+      points[0] = LTCGPointApplyTransform(points[0], transform);
       CGPathMoveToPoint(path, NULL, points[0].x, points[0].y);
       break;
     case kCGPathElementAddLineToPoint:
-      points[0] = CGPointApplyTransform(points[0], transform);
+      points[0] = LTCGPointApplyTransform(points[0], transform);
       CGPathAddLineToPoint(path, NULL, points[0].x, points[0].y);
       break;
     case kCGPathElementAddQuadCurveToPoint:
-      points[0] = CGPointApplyTransform(points[0], transform);
-      points[1] = CGPointApplyTransform(points[1], transform);
+      points[0] = LTCGPointApplyTransform(points[0], transform);
+      points[1] = LTCGPointApplyTransform(points[1], transform);
       CGPathAddQuadCurveToPoint(path, NULL, points[0].x, points[0].y,
                                 points[1].x, points[1].y);
       break;
     case kCGPathElementAddCurveToPoint:
-      points[0] = CGPointApplyTransform(points[0], transform);
-      points[1] = CGPointApplyTransform(points[1], transform);
-      points[2] = CGPointApplyTransform(points[2], transform);
+      points[0] = LTCGPointApplyTransform(points[0], transform);
+      points[1] = LTCGPointApplyTransform(points[1], transform);
+      points[2] = LTCGPointApplyTransform(points[2], transform);
       CGPathAddCurveToPoint(path, NULL, points[0].x, points[0].y,
                             points[1].x, points[1].y,
                             points[2].x, points[2].y);
@@ -123,7 +124,7 @@ void LTRecomputePoints(void *data, const CGPathElement *element) {
   }
 }
 
-static CGPoint CGPointApplyTransform(CGPoint point, GLKMatrix3 &transform) {
+static CGPoint LTCGPointApplyTransform(CGPoint point, GLKMatrix3 &transform) {
   GLKVector3 vector = GLKVector3Make(point.x, point.y, 1);
   vector = GLKMatrix3MultiplyVector3(transform, vector);
   return CGPointMake(vector.x / vector.z, vector.y / vector.z);
