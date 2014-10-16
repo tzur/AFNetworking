@@ -84,12 +84,12 @@ afterEach(^{
 });
 
 context(@"transformation", ^{
-  __block CGMutablePathRef transformedPath;
+  __block CGPathRef transformedPath;
 
   it(@"should correctly compute a translated path", ^{
     CGPoint translation = CGPointMake(1, 2);
     GLKMatrix3 matrix = GLKMatrix3MakeTranslation(translation.x, translation.y);
-    transformedPath = LTCGPathApplyTransform(path, matrix);
+    transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
 
     evaluation.points = CGPoints{initialPoints[0] + translation, initialPoints[1] + translation,
         initialPoints[2] + translation};
@@ -98,6 +98,7 @@ context(@"transformation", ^{
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(transformedPath);
   });
 
   it(@"should correctly compute a rotated path", ^{
@@ -110,7 +111,7 @@ context(@"transformation", ^{
 
     GLKMatrix3 matrix = GLKMatrix3MakeRotation(kClockwiseAngle, 0, 0, 1);
 
-    transformedPath = LTCGPathApplyTransform(path, matrix);
+    transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
 
     evaluation.points = CGPoints{CGPointZero, CGPointMake(1, -1), CGPointMake(0, -2)};
     evaluation.numberOfPointsToExpect = evaluation.points.size();
@@ -118,6 +119,7 @@ context(@"transformation", ^{
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(transformedPath);
   });
 });
 

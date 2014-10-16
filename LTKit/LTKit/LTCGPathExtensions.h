@@ -1,10 +1,12 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-/// Augments every vertex of the provided \c path by a z coordinate of 1, multiplies the vertex with
-/// the provided 3x3 \c transform matrix, projects the point back onto the z plane and returns the
-/// resulting modified path.
-CGMutablePathRef LTCGPathApplyTransform(CGPathRef path, GLKMatrix3 &transform);
+/// Creates an immutable copy of the provided graphics \c path transformed by the provided
+/// \c transformation matrix. The resulting path is computed by augmenting every vertex of the
+/// provided \c path by a z coordinate of 1, multiplying the vertex with the provided 3x3
+/// \c transformation matrix and projecting the point back onto the z plane. The caller is
+/// responsible for releasing the returned path.
+CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation);
 
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c smootheningRadius is greater than 0, additional control points are inserted to create a
