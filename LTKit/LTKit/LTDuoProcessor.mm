@@ -112,8 +112,6 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 #pragma mark Colors
 #pragma mark -
 
-static const ushort kGradientSize = 256;
-
 - (LTVector4)blackWithAlpha:(CGFloat)alpha {
   return LTVector4(0.0, 0.0, 0.0, alpha);
 }
@@ -122,39 +120,18 @@ static const ushort kGradientSize = 256;
   return LTVector4(1.0, 1.0, 1.0, alpha);
 }
 
-// TODO:(zeev) Decide between the options here. One option is creating a gradient given a color
-// that maps color to midrange, black to black and white to white. It creates better results using
-// normal blending mode, but is more confusing when we introduce over blending modes.
-// Thus for now we try another option and create a constant gradient. If it sticks, we can change
-// the shader to receive a single color instead of the gradient.
-- (LTColorGradient *)createGradientWithColor:(LTVector4)color {
-  NSArray *controlPoints =
-      @[[[LTColorGradientControlPoint alloc] initWithPosition:0.0 colorWithAlpha:color],
-        [[LTColorGradientControlPoint alloc] initWithPosition:1.0 colorWithAlpha:color]];
-  return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
-}
-
-- (void)updateGradientWithColor:(LTVector4)color uniformName:(NSString *)uniformName {
-  // Create a new gradient.
-  LTColorGradient *gradient = [self createGradientWithColor:color];
-  
-  // Update gradient texture in auxiliary textures.
-  [self setAuxiliaryTexture:[gradient textureWithSamplingPoints:kGradientSize]
-                   withName:uniformName];
-}
-
 LTPropertyWithoutSetter(LTVector4, blueColor, BlueColor,
                         LTVector4Zero, LTVector4One, LTVector4(0, 0, 1, 1));
 - (void)setBlueColor:(LTVector4)blueColor {
   [self _verifyAndSetBlueColor:blueColor];
-  [self updateGradientWithColor:blueColor uniformName:[LTDuoFsh blueLUT]];
+  self[[LTDuoFsh blueColor]] = $(blueColor);
 }
 
 LTPropertyWithoutSetter(LTVector4, redColor, RedColor,
                         LTVector4Zero, LTVector4One, LTVector4(1, 0, 0, 1));
 - (void)setRedColor:(LTVector4)redColor {
   [self _verifyAndSetRedColor:redColor];
-  [self updateGradientWithColor:redColor uniformName:[LTDuoFsh redLUT]];
+  self[[LTDuoFsh redColor]] = $(redColor);
 }
 
 - (void)setBlendMode:(LTDuoBlendMode)blendMode {

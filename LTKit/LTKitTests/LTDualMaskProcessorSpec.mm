@@ -42,7 +42,7 @@ context(@"processing", ^{
   it(@"should create corner radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     processor.center = LTVector2(0.0, 0.0);
-    processor.spread = 1.0;
+    processor.spread = -1.0;
     processor.diameter = 16;
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"RadialMaskOffCenter.png");
@@ -52,7 +52,7 @@ context(@"processing", ^{
   it(@"should create tilted linear mask correctly", ^{
     processor.maskType = LTDualMaskTypeLinear;
     processor.center = LTVector2(8, 8);
-    processor.spread = -0.2;
+    processor.spread = 0.2;
     processor.angle = M_PI_4;
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"LinearMaskTiltedCenter.png");

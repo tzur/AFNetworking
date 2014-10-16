@@ -147,8 +147,9 @@ context(@"processing", ^{
   });
   
   sit(@"should apply blue and red colors", ^{
-    processor.blueColor = LTVector4(0.6, 0.5, 0.2, 1.0);
-    processor.redColor = LTVector4(0.0, 0.2, 0.3, 1.0);
+    processor.blueColor = LTVector4(0.0, 0.2, 0.3, 1.0);
+    processor.redColor = LTVector4(0.6, 0.5, 0.2, 1.0);
+    processor.blendMode = LTDuoBlendModeOverlay;
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"DuoBlueRed.png");
@@ -156,20 +157,24 @@ context(@"processing", ^{
   });
   
   sit(@"should apply only blue color", ^{
-    processor.blueColor = LTVector4(0.6, 0.5, 0.2, 1.0);
-    processor.redColor = LTVector4(0.0, 0.2, 0.3, 0.0);
+    processor.blueColor = LTVector4(0.0, 0.2, 0.3, 0.0);
+    processor.redColor = LTVector4(0.6, 0.5, 0.2, 0.75);
+    processor.spread = -1.0;
+    processor.angle = -M_PI_4 * 0.15;
     [processor process];
     
-    cv::Mat image = LTLoadMat([self class], @"DuoBlue.png");
+    cv::Mat image = LTLoadMat([self class], @"DuoRed.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
   
   sit(@"should apply only blue color", ^{
-    processor.blueColor = LTVector4(0.6, 0.5, 0.2, 0.0);
-    processor.redColor = LTVector4(0.0, 0.2, 0.3, 1.0);
+    processor.blueColor = LTVector4(0.0, 0.2, 0.3, 0.75);
+    processor.redColor = LTVector4(0.6, 0.5, 0.2, 0.0);
+    processor.spread = -1.0;
+    processor.angle = -M_PI_4 * 0.15;
     [processor process];
     
-    cv::Mat image = LTLoadMat([self class], @"DuoRed.png");
+    cv::Mat image = LTLoadMat([self class], @"DuoBlue.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
 });

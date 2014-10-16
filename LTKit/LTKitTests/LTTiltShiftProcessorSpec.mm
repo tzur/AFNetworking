@@ -46,7 +46,7 @@ context(@"properties", ^{
   sit(@"should apply radial tilt-shift pattern", ^{
     processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
     processor.diameter = output.size.width / 2;
-    processor.spread = 1.0;
+    processor.spread = -1.0;
     processor.intensity = 0.8;
     [processor process];
     
@@ -58,7 +58,7 @@ context(@"properties", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
     processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
     processor.diameter = output.size.width / 4;
-    processor.spread = 1;
+    processor.spread = -1;
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"TiltShiftDoubleLinear.png");

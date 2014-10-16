@@ -17,8 +17,8 @@ const int kBlendModeOverlay = 8;
 uniform sampler2D sourceTexture;
 uniform sampler2D dualMaskTexture;
 
-uniform sampler2D blueLUT;
-uniform sampler2D redLUT;
+uniform mediump vec4 blueColor;
+uniform mediump vec4 redColor;
 uniform int blendMode;
 uniform mediump float opacity;
 
@@ -90,51 +90,37 @@ mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float 
 }
 
 void main() {
-  // Default NTSC weights for color->luminance conversion.
-  const lowp vec3 kColorFilter = vec3(0.299, 0.587, 0.114);
+  mediump vec4 color = texture2D(sourceTexture, vTexcoord);
+  mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
+  mediump vec3 mixedColor = mix(blueColor.rgb, redColor.rgb, mask);
+  mediump float mixedAlpha = mix(blueColor.a, redColor.a, mask);
   
-  lowp vec4 color = texture2D(sourceTexture, vTexcoord);
-  lowp float lum = dot(color.rgb, kColorFilter);
+  mediump float Sa = mixedAlpha * opacity;
+  mediump float Da = color.a;
   
-  lowp float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
-  
-  lowp vec4 blueColor = texture2D(blueLUT, vec2(lum, 0.0));
-  lowp vec4 redColor = texture2D(redLUT, vec2(lum, 0.0));
-  
-  mediump float Sa0 = dualMask * blueColor.a * opacity;
-  mediump float Sa1 = (1.0 - dualMask) * redColor.a * opacity;
-  mediump vec3 Sca0 = blueColor.rgb * Sa0;
-  mediump vec3 Sca1 = redColor.rgb * Sa1;
-  mediump float Da = 1.0;
+  mediump vec3 Sca = mixedColor * Sa;
+  mediump vec3 Dca = color.rgb * Da;
+
   mediump vec3 outputColor;
   
   if (blendMode == kBlendModeNormal) {
-    outputColor = normal(Sca0, color.rgb, Sa0, Da);
-    outputColor = normal(Sca1, outputColor, Sa1, Da);
+    outputColor = normal(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeDarken) {
-    outputColor = darken(Sca0, color.rgb, Sa0, Da);
-    outputColor = darken(Sca1, outputColor, Sa1, Da);
+    outputColor = darken(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeMultiply) {
-    outputColor = multiply(Sca0, color.rgb, Sa0, Da);
-    outputColor = multiply(Sca1, outputColor, Sa1, Da);
+    outputColor = multiply(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeHardLight) {
-    outputColor = hardLight(Sca0, color.rgb, Sa0, Da);
-    outputColor = hardLight(Sca1, outputColor, Sa1, Da);
+    outputColor = hardLight(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeSoftLight) {
-    outputColor = softLight(Sca0, color.rgb, Sa0, Da);
-    outputColor = softLight(Sca1, outputColor, Sa1, Da);
+    outputColor = softLight(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeLighten) {
-    outputColor = lighten(Sca0, color.rgb, Sa0, Da);
-    outputColor = lighten(Sca1, outputColor, Sa1, Da);
+    outputColor = lighten(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeScreen) {
-    outputColor = screen(Sca0, color.rgb, Sa0, Da);
-    outputColor = screen(Sca1, outputColor, Sa1, Da);
+    outputColor = screen(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeColorBurn) {
-    outputColor = colorBurn(Sca0, color.rgb, Sa0, Da);
-    outputColor = colorBurn(Sca1, outputColor, Sa1, Da);
+    outputColor = colorBurn(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeOverlay) {
-    outputColor = overlay(Sca0, color.rgb, Sa0, Da);
-    outputColor = overlay(Sca1, outputColor, Sa1, Da);
+    outputColor = overlay(Sca, Dca, Sa, Da);
   }
   
   gl_FragColor = vec4(outputColor, color.a);
