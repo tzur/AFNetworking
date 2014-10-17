@@ -211,8 +211,8 @@ context(@"properties", ^{
   });
   
   it(@"should have default properties", ^{
-    expect(brush.baseDiameter).to.equal([LTDevice currentDevice].fingerSizeOnDevice *
-                                        [LTDevice currentDevice].glkContentScaleFactor);
+    expect(brush.baseDiameter).to.equal((NSUInteger)([LTDevice currentDevice].fingerSizeOnDevice *
+                                        [LTDevice currentDevice].glkContentScaleFactor));
     expect(brush.scale).to.equal(1);
     expect(brush.angle).to.equal(0);
     expect(brush.spacing).to.equal(0.05);
