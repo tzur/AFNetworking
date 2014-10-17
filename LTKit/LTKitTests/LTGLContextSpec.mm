@@ -66,7 +66,7 @@ context(@"setting context", ^{
     [LTGLContext setCurrentContext:context];
     [LTGLContext setCurrentContext:nil];
 
-    expect([LTGLContext currentContext]).to.beNil;
+    expect([LTGLContext currentContext]).to.beNil();
   });
 
   it(@"should not allow changing properties while context is not set", ^{

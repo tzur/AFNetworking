@@ -44,19 +44,19 @@ context(@"filtering according to screen distance", ^{
   it(@"should accept if screen distance above threshold", ^{
     point0.screenPosition = CGPointZero;
     point1.screenPosition = CGPointMake(1 + FLT_EPSILON, 1 + FLT_EPSILON);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beTruthy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beTruthy();
   });
   
   it(@"should reject if screen distance is lower or equal to threshold", ^{
     point0.screenPosition = CGPointZero;
     point1.screenPosition = CGPointMake(1, 1);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
 
     point1.screenPosition = CGPointMake(1 - FLT_EPSILON, 1 - FLT_EPSILON);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
   });
 });
 
@@ -70,19 +70,19 @@ context(@"filtering according to content distance", ^{
   it(@"should accept if content distance above threshold", ^{
     point0.contentPosition = CGPointZero;
     point1.contentPosition = CGPointMake(1 + FLT_EPSILON, 1 + FLT_EPSILON);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beTruthy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beTruthy();
   });
   
   it(@"should reject if content distance is lower or equal to threshold", ^{
     point0.contentPosition = CGPointZero;
     point1.contentPosition = CGPointMake(1, 1);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
     
     point1.contentPosition = CGPointMake(1 - FLT_EPSILON, 1 - FLT_EPSILON);
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
   });
 });
 

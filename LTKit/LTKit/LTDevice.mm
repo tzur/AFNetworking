@@ -167,15 +167,10 @@ static NSDictionary * const kDeviceTypeToString = @{
 
 @implementation LTDevice
 
+objection_register_singleton(LTDevice)
+
 + (instancetype)currentDevice {
-  static LTDevice *instance;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[LTDevice alloc] init];
-  });
-
-  return instance;
+  return [JSObjection defaultInjector][[LTDevice class]];
 }
 
 #pragma mark -

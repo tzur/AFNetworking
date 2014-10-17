@@ -40,20 +40,20 @@ context(@"filtering", ^{
   
   it(@"should accept if time difference is above threshold", ^{
     point0.timestamp = CACurrentMediaTime();
-    point1.timestamp = point0.timestamp + kThreshold + DBL_EPSILON;
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beFalsy;
+    point1.timestamp = point0.timestamp + kThreshold + FLT_EPSILON;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beTruthy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point1]).to.beFalsy();
   });
   
   it(@"should reject if time difference is lower or equal to threshold", ^{
     point0.timestamp = CACurrentMediaTime();
     point1.timestamp = point0.timestamp + kThreshold;
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
     
-    point1.timestamp = point0.timestamp + kThreshold - DBL_EPSILON;
-    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy;
-    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy;
+    point1.timestamp = point0.timestamp + kThreshold - FLT_EPSILON;
+    expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
+    expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
   });
 });
 
