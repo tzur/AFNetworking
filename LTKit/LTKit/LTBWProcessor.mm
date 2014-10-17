@@ -3,6 +3,7 @@
 
 #import "LTBWProcessor.h"
 
+#import "LTCLAHEProcessor.h"
 #import "LTColorConversionProcessor.h"
 #import "LTColorGradient.h"
 #import "LTCurve.h"
@@ -29,7 +30,7 @@
 /// colorGradientMat using colorGradientIntensity as time parameter.
 @property (nonatomic) cv::Mat4b identityColorGradientMat;
 
-/// Tone mapping curve that incapsulated brightness, contrast, exposure and offset adjustments.
+/// Tone mapping curve that encapsulates brightness, contrast, exposure and offset adjustments.
 @property (nonatomic) cv::Mat1b toneCurveMat;
 
 /// RGBA texture with one row and 256 columns that defines greyscale to color mapping. RGB part of
@@ -104,22 +105,11 @@
 }
 
 - (LTTexture *)createDetailsTexture:(LTTexture *)inputTexture {
-  LTTexture *luminanceTexture = [LTTexture byteRedTextureWithSize:inputTexture.size];
-  LTColorConversionProcessor *processor =
-      [[LTColorConversionProcessor alloc] initWithInput:inputTexture output:luminanceTexture];
-  processor.mode = LTColorConversionRGBToYYYY;
+  LTTexture *detailsTexture = [LTTexture byteRedTextureWithSize:inputTexture.size];
+  LTCLAHEProcessor *processor = [[LTCLAHEProcessor alloc] initWithInputTexture:self.inputTexture
+                                                                 outputTexture:detailsTexture];
+                                 
   [processor process];
-  
-  LTTexture *detailsTexture = [LTTexture textureWithPropertiesOf:luminanceTexture];
-
-  [luminanceTexture mappedImageForReading:^(const cv::Mat &mappedTexture, BOOL) {
-    [detailsTexture mappedImageForWriting:^(cv::Mat *mappedSmooth, BOOL) {
-      cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
-      clahe->setClipLimit(3);
-      clahe->apply(mappedTexture, *mappedSmooth);
-    }];
-  }];
-  
   return detailsTexture;
 }
 
