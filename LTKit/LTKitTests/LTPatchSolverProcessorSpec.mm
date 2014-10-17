@@ -7,16 +7,7 @@
 #import "LTTexture+Factory.h"
 #import "LTTestUtils.h"
 
-SpecBegin(LTPatchSolverProcessor)
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
+LTSpecBegin(LTPatchSolverProcessor)
 
 context(@"initialization", ^{
   it(@"should initialize with a half-float power of two output", ^{
@@ -75,4 +66,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

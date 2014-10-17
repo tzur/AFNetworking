@@ -45,6 +45,11 @@ static const cv::Vec4b blue(0, 0, 255, 255);
 static const cv::Vec4b yellow(255, 255, 0, 255);
 
 beforeEach(^{
+  // avoid fractional content scale factor since the tests were adjusted for pixels to fit without
+  // interpolation.
+  id ltDevice = LTMockClass([LTDevice class]);
+  [[[ltDevice stub] andReturnValue:@2] glkContentScaleFactor];
+
   CGSize framebufferSize = kViewSize * [LTDevice currentDevice].glkContentScaleFactor;
   short width = kContentSize.width / 2;
   short height = kContentSize.height / 2;
@@ -230,7 +235,7 @@ context(@"drawing", ^{
     view = nil;
   });
 
-  it (@"should draw according to the navigation view's visible content rect", ^{
+  it(@"should draw according to the navigation view's visible content rect", ^{
     // Return the bottom right pixel as the visible content rect.
     id mock = [OCMockObject partialMockForObject:view.navigationView];
     CGSize pixelSize = CGSizeMake(1, 1) / view.contentScaleFactor;
@@ -258,7 +263,7 @@ context(@"drawing", ^{
 
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should draw background color outside the content", ^{
@@ -271,7 +276,7 @@ context(@"drawing", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should draw transparent pixels as black if contentTransparency is NO", ^{
@@ -287,7 +292,7 @@ context(@"drawing", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should blend transparent pixels with a checkerboard if contentTransparency is YES", ^{
@@ -333,7 +338,7 @@ context(@"drawing", ^{
       
       [view drawToFbo:fbo];
       output = [outputTexture image];
-      expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+      expect($(output)).to.beCloseToMat($(expectedOutput));
     };
     
     it(@"should use linear interpolation on lower zoom levels", ^{
@@ -441,7 +446,7 @@ context(@"draw delegate", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should call the delegate once per setNeedsDisplayContent", ^{
@@ -482,7 +487,7 @@ context(@"draw delegate", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
 
   it(@"should use delegate to provide an alternative content texture", ^{
@@ -495,7 +500,7 @@ context(@"draw delegate", ^{
     expectedOutput(contentAreaInOutput) = red;
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should use content texture if alternativeContentTexture returns nil", ^{
@@ -508,7 +513,7 @@ context(@"draw delegate", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
 
   it(@"should provide the correct texture and visible content to the drawProcessedContent", ^{
@@ -543,7 +548,7 @@ context(@"draw delegate", ^{
     expectedOutput(contentAreaInOutput) = blue;
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
   it(@"should draw the unprocessed content texture if drawProcessedContent returns NO", ^{
@@ -557,7 +562,7 @@ context(@"draw delegate", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.beCloseToMat($(expectedOutput));
   });
 });
 
