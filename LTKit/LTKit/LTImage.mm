@@ -137,7 +137,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
   CGBitmapInfo bitmapInfo = [[self class] bitmapFlagsForColorSpace:colorSpace];
 
   CGImageRef imageRef = CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent, bitsPerPixel,
-                                      self.mat.step.p[0], colorSpace, bitmapInfo, dataProvider,
+                                      self.mat.step[0], colorSpace, bitmapInfo, dataProvider,
                                       NULL, false, kCGRenderingIntentDefault);
   LTAssert(imageRef, @"Failed to create CGImage from LTImage");
 
@@ -145,12 +145,14 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
     block(imageRef);
   }
 
-  CGImageRelease(imageRef);
   CGColorSpaceRelease(colorSpace);
+  CGImageRelease(imageRef);
 }
 
 - (NSData *)dataFromMatWithCopying:(BOOL)copyData {
-  NSUInteger length = _mat.total() * _mat.elemSize();
+  // Note that the length is not _mat.total() * _mat.elemSize(), as this is not true for
+  // non-continuous matrices. See http://goo.gl/Lmccbg.
+  NSUInteger length = _mat.rows * _mat.step[0];
   if (copyData) {
     return [NSData dataWithBytes:_mat.data length:length];
   } else {
@@ -197,11 +199,9 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
       CFRelease(destinationRef);
     };
 
-    CGImageDestinationAddImage(destinationRef, imageRef, nil);
-
     NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality:
                                    @1};
-    CGImageDestinationSetProperties(destinationRef, (CFDictionaryRef)properties);
+    CGImageDestinationAddImage(destinationRef, imageRef, (CFDictionaryRef)properties);
 
     BOOL writtenSuccessfully = CGImageDestinationFinalize(destinationRef);
     if (!writtenSuccessfully) {

@@ -33,7 +33,7 @@
 - (instancetype)initWithMat:(const cv::Mat &)mat {
   if (self = [super init]) {
     _mat = mat;
-    self.data = [NSData dataWithBytesNoCopy:mat.data length:mat.total() * mat.elemSize()
+    self.data = [NSData dataWithBytesNoCopy:mat.data length:mat.rows * mat.step[0]
                                freeWhenDone:NO];
     self.type = mat.type();
     self.size = CGSizeMake(mat.cols, mat.rows);
@@ -53,7 +53,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-  NSData *data = [NSData dataWithBytesNoCopy:_mat.data length:_mat.total() * _mat.elemSize()
+  NSData *data = [NSData dataWithBytesNoCopy:_mat.data length:_mat.rows * _mat.step[0]
                                 freeWhenDone:NO];
   [aCoder encodeObject:data forKey:@"data"];
   [aCoder encodeCGSize:CGSizeMake(_mat.cols, _mat.rows) forKey:@"size"];

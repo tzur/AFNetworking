@@ -202,11 +202,16 @@ context(@"uiimage conversion", ^{
 });
 
 context(@"saving images", ^{
+  __block NSString *path;
+
+  beforeEach(^{
+    path = [NSTemporaryDirectory() stringByAppendingString:@"_LTImageSaveTest.jpg"];
+  });
+
   it(@"should write image to path", ^{
     UIImage *jpeg = LTLoadImage([self class], @"QuadUp.jpg");
     LTImage *expected = [[LTImage alloc] initWithImage:jpeg];
 
-    NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"_LTImageSaveTest.jpg"];
     NSError *error;
     BOOL success = [expected writeToPath:path error:&error];
 
@@ -220,6 +225,19 @@ context(@"saving images", ^{
     expect($(loaded.mat)).to.equalMat($(expected.mat));
 
     [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+  });
+
+  it(@"should write non contiguous matrices to path", ^{
+    NSMutableData *data = [[NSMutableData dataWithLength:4 * 4] copy];
+    cv::Mat mat(cv::Size(3, 4), CV_8U, (char *)data.bytes, 4);
+    expect(mat.isContinuous()).to.beFalsy();
+
+    LTImage *image = [[LTImage alloc] initWithMat:mat copy:NO];
+    NSError *error;
+    BOOL success = [image writeToPath:path error:&error];
+
+    expect(error).to.beNil();
+    expect(success).to.beTruthy();
   });
 });
 
