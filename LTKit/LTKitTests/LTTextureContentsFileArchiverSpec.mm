@@ -5,8 +5,8 @@
 
 #import "LTObjectionModule.h"
 #import "LTOpenCVExtensions.h"
-#import "LTFileManager.h"
 #import "LTTexture+Factory.h"
+#import "NSFileManager+LTKit.h"
 
 LTSpecBegin(LTTextureContentsFileArchiver)
 

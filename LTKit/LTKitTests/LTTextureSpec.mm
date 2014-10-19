@@ -3,11 +3,11 @@
 
 #import "LTGLTexture.h"
 
-#import "LTFileManager.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
+#import "NSFileManager+LTKit.h"
 
 // LTTexture spec is tested by the concrete class LTGLTexture.
 

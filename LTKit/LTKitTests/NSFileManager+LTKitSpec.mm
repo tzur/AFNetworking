@@ -1,18 +1,16 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTFileManager.h"
+#import "NSFileManager+LTKit.h"
 
 #import "LTImage.h"
 
-LTSpecBegin(LTFileManager)
+LTSpecBegin(NSFileManager_LTKit)
 
-__block id nsFileManager;
-__block LTFileManager *fileManager;
+__block id fileManager;
 
 beforeEach(^{
-  nsFileManager = LTMockClass([NSFileManager class]);
-  fileManager = [[LTFileManager alloc] init];
+  fileManager = [NSFileManager defaultManager];
 });
 
 it(@"should write data", ^{
@@ -25,7 +23,7 @@ it(@"should write data", ^{
   [[[data expect] andReturnValue:@YES] writeToFile:file options:options
                                              error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
 
-  BOOL succeeded = [fileManager writeData:data toFile:file options:options error:&error];
+  BOOL succeeded = [fileManager lt_writeData:data toFile:file options:options error:&error];
   expect(succeeded).to.beTruthy();
   expect(error).to.beNil();
 
@@ -36,7 +34,7 @@ it(@"should read data from file", ^{
   NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
 
   NSError *error;
-  NSData *data = [fileManager dataWithContentsOfFile:path options:0 error:&error];
+  NSData *data = [fileManager lt_dataWithContentsOfFile:path options:0 error:&error];
 
   expect(error).to.beNil();
 

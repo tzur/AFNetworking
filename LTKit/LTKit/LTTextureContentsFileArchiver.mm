@@ -6,7 +6,6 @@
 #import "LTImage.h"
 #import "LTImage+Texture.h"
 #import "LTImageLoader.h"
-#import "LTFileManager.h"
 #import "LTTexture.h"
 
 @interface LTTextureContentsFileArchiver ()

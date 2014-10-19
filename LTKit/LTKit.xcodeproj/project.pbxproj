@@ -425,7 +425,7 @@
 		8B328FE0192B598A0010592E /* LTTextureContentsDataArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B328FDE192B598A0010592E /* LTTextureContentsDataArchiver.h */; };
 		8B329020192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B32901F192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm */; };
 		8B329022192CBBE90010592E /* LTTextureContentsArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329021192CBBE90010592E /* LTTextureContentsArchiver.mm */; };
-		8B329025192CC2660010592E /* LTFileManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* LTFileManagerSpec.mm */; };
+		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
 		8B329070192CDA2C0010592E /* LTTextureContentsDataArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B328FDF192B598A0010592E /* LTTextureContentsDataArchiver.mm */; };
 		8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */; };
 		8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */; };
@@ -467,7 +467,7 @@
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */; };
 		8B871F9019238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */; };
 		8B871F98192396BE00517F2E /* NSError+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.m */; };
-		8B871FAF1923CEF800517F2E /* LTFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* LTFileManager.m */; };
+		8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */; };
 		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B871FC81924A75E00517F2E /* LTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB4041835320200A11FA4 /* LTDevice.h */; };
 		8B871FC91924A75E00517F2E /* LTShaderStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8E50E81861AA8900821829 /* LTShaderStorage.h */; };
@@ -1538,7 +1538,7 @@
 		8B328FDF192B598A0010592E /* LTTextureContentsDataArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsDataArchiver.mm; sourceTree = "<group>"; };
 		8B32901F192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsDataArchiverSpec.mm; sourceTree = "<group>"; };
 		8B329021192CBBE90010592E /* LTTextureContentsArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsArchiver.mm; sourceTree = "<group>"; };
-		8B329024192CC2660010592E /* LTFileManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFileManagerSpec.mm; sourceTree = "<group>"; };
+		8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUResourceExamples.mm; sourceTree = "<group>"; };
 		8B3667F0184757E5002A1833 /* LTGPUResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResource.h; sourceTree = "<group>"; };
 		8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResourceExamples.h; sourceTree = "<group>"; };
@@ -1591,8 +1591,8 @@
 		8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiverSpec.mm; sourceTree = "<group>"; };
 		8B871F96192396BE00517F2E /* NSError+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+LTKit.h"; sourceTree = "<group>"; };
 		8B871F97192396BE00517F2E /* NSError+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+LTKit.m"; sourceTree = "<group>"; };
-		8B871FAD1923CEF800517F2E /* LTFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFileManager.h; sourceTree = "<group>"; };
-		8B871FAE1923CEF800517F2E /* LTFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTFileManager.m; sourceTree = "<group>"; };
+		8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+LTKit.h"; sourceTree = "<group>"; };
+		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+LTKit.m"; sourceTree = "<group>"; };
 		8B8720BF1925167400517F2E /* TextureContentsImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TextureContentsImage.png; path = Resources/TextureContentsImage.png; sourceTree = "<group>"; };
 		8B8720CD192521FB00517F2E /* LTTextureContentsBundleArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureContentsBundleArchiver.h; sourceTree = "<group>"; };
 		8B8720CE192521FB00517F2E /* LTTextureContentsBundleArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsBundleArchiver.mm; sourceTree = "<group>"; };
@@ -2471,7 +2471,7 @@
 		8B329023192CC2590010592E /* IO */ = {
 			isa = PBXGroup;
 			children = (
-				8B329024192CC2660010592E /* LTFileManagerSpec.mm */,
+				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 				8BB01CC119658014002A8609 /* LTImageLoaderSpec.mm */,
 			);
 			name = IO;
@@ -2881,8 +2881,8 @@
 		8B871FAC1923CE2400517F2E /* IO */ = {
 			isa = PBXGroup;
 			children = (
-				8B871FAD1923CEF800517F2E /* LTFileManager.h */,
-				8B871FAE1923CEF800517F2E /* LTFileManager.m */,
+				8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */,
+				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */,
 				8BB01CAD196576D7002A8609 /* LTImageLoader.h */,
 				8BB01CAE196576D7002A8609 /* LTImageLoader.m */,
 			);
@@ -4129,7 +4129,7 @@
 				8BAE3A0D18ACFEF700DA79E1 /* LTPatchBoundaryProcessor.mm in Sources */,
 				280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */,
 				28C61C0218B23D430036D66E /* LTTouchCollectorFilter.mm in Sources */,
-				8B871FAF1923CEF800517F2E /* LTFileManager.m in Sources */,
+				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
 				28A5EAC618D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm in Sources */,
 				03C192DD18FAB9B900DC6CA6 /* LTColorConversionProcessor.mm in Sources */,
@@ -4374,7 +4374,7 @@
 				030A0BD4188EE0FA0012DAD7 /* LTSeparableImageProcessorSpec.mm in Sources */,
 				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
 				282CF092187B034200904F07 /* LTViewSpec.mm in Sources */,
-				8B329025192CC2660010592E /* LTFileManagerSpec.mm in Sources */,
+				8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */,
 				5096F90C19D3400800A38223 /* LTTriangleSpec.mm in Sources */,
 				0368E6D819C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,

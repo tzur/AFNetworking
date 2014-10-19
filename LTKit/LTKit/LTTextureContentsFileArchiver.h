@@ -3,8 +3,6 @@
 
 #import "LTTextureContentsArchiver.h"
 
-@class LTFileManager;
-
 /// Archives texture's contents to a persistent file. This class is commonly for user created
 /// content, or in cases where the contents cannot be loaded from an existing storage.
 ///

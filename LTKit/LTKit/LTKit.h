@@ -83,8 +83,8 @@
 #import <LTKit/LTImage+Texture.h>
 
 // IO.
-#import <LTKit/LTFileManager.h>
 #import <LTKit/LTImageLoader.h>
+#import <LTKit/NSFileManager+LTKit.h>
 
 // GPU/Base.
 #import <LTKit/LTArrayBuffer.h>
