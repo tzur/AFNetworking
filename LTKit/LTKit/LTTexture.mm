@@ -500,6 +500,43 @@ static NSString * const kArchiveKey = @"archive";
   [self load:image];
 }
 
+- (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block {
+  LTParameterAssert(block);
+
+  [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    size_t bitsPerComponent = mapped->elemSize1() * 8;
+    CGColorSpaceRef colorSpace;
+    CGBitmapInfo bitmapInfo;
+    switch (mapped->channels()) {
+      case 1:
+        colorSpace = CGColorSpaceCreateDeviceGray();
+        bitmapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+        break;
+      case 4:
+        colorSpace = CGColorSpaceCreateDeviceRGB();
+        bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+        break;
+      default:
+        LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
+                 mapped->channels());
+    }
+
+    CGContextRef context = CGBitmapContextCreate(mapped->data, self.size.width, self.size.height,
+                                                 bitsPerComponent, mapped->step[0], colorSpace,
+                                                 bitmapInfo);
+
+    // Flip context since CoreGraphics' origin is bottom-left.
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0,
+                                                           self.size.height);
+    CGContextConcatCTM(context, flipVertical);
+
+    block(context);
+
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+  }];
+}
+
 - (LTVector4)pixelValue:(CGPoint)location {
   cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
   return [self pixelValueFromImage:image location:{0, 0}];

@@ -289,6 +289,23 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// @see LTTextureMappedWriteBlock for more information about the \c block.
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block;
 
+/// Block for transferring a core graphics bitmap context which is bound to the texture's data. The
+/// context is only valid in this block and should not be retained. Information about the context
+/// can be queried using the \c CGBitmapContextGet* functions.
+typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
+
+/// Calls the given \c block with a valid \c CGContextRef bound to the texture's memory. Any draw
+/// calls to this context will appear on the texture after the \c block exits.
+///
+/// @note CoreGraphics' origin is bottom-left, but the given context will already have a
+/// transformation attached that will change the origin to be the common top-left.
+///
+/// @note current implementation allows to draw to textures of 1 or 4 channels only. An assert will
+/// be thrown for other types of textures.
+///
+/// @see LTTextureCoreGraphicsBlock for more information about the \c block.
+- (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block;
+
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
 /// value is an RBGA value of the texture pixel at the given location. If the texture is of type
 /// luminance, the single channel will be placed in the first vector element, while the others will

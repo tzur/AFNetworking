@@ -325,6 +325,43 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       });
     });
 
+    context(@"drawing with coregraphics", ^{
+      it(@"should draw with coregraphics to red channel texture", ^{
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(67, 48)
+                                                                   precision:LTTexturePrecisionByte
+                                                                      format:LTTextureFormatRed
+                                                              allocateMemory:YES];
+
+        [texture drawWithCoreGraphics:^(CGContextRef context) {
+          UIGraphicsPushContext(context); {
+            [[UIColor blackColor] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, texture.size));
+            [[UIColor whiteColor] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, CGSizeMake(4, 4)));
+          } UIGraphicsPopContext();
+        }];
+
+        cv::Mat1b expected(image.size(), 0);
+        expected(cv::Rect(0, 0, 4, 4)).setTo(255);
+        expect($([texture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw with coregraphics to 4 channel texture", ^{
+        [texture drawWithCoreGraphics:^(CGContextRef context) {
+          UIGraphicsPushContext(context); {
+            [[UIColor blackColor] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, texture.size));
+            [[UIColor redColor] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, CGSizeMake(4, 4)));
+          } UIGraphicsPopContext();
+        }];
+
+        cv::Mat4b expected(image.size(), cv::Vec4b(0, 0, 0, 255));
+        expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(255, 0, 0, 255));
+        expect($([texture image])).to.equalMat($(expected));
+      });
+    });
+
     context(@"generation ID", ^{
       it(@"should produce different generation ID after writing via OpenGL", ^{
         NSUInteger generationID = texture.generationID;
