@@ -28,21 +28,41 @@
   return curve;
 }
 
-+ (cv::Mat1b)highlights {
++ (cv::Mat1b)positiveHighlights {
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"HighlightsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveHighlightsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
 }
 
-+ (cv::Mat1b)shadows {
++ (cv::Mat1b)negativeHighlights {
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"ShadowsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeHighlightsCurve.png");
+    LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
+  });
+  return curve;
+}
+
++ (cv::Mat1b)positiveShadows {
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveShadowsCurve.png");
+    LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
+  });
+  return curve;
+}
+
++ (cv::Mat1b)negativeShadows {
+  static dispatch_once_t onceToken;
+  static cv::Mat1b curve;
+  dispatch_once(&onceToken, ^{
+    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeShadowsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;

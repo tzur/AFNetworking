@@ -7,10 +7,10 @@
 
 /// @class LTAdjustProcessor
 ///
-/// This class tonally adjusts the image. The manipulations can be categorized into the three
-/// following categories: luminance, color and details.
+/// This class tonally adjusts the image. The manipulations can be categorized into the four
+/// following categories: luminance, color, details and split-tone.
 /// Luminance / color separation is done with YIQ color space.
-/// Base / details separation is done with separable bilateral filter.
+/// Details are boosted using CLAHE (Contrast Limited Adaptive Historgram Equalization).
 @interface LTAdjustProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture to be adjusted and output texture.
@@ -97,8 +97,8 @@ LTPropertyDeclare(CGFloat, tint, Tint);
 @property (nonatomic) CGFloat details;
 LTPropertyDeclare(CGFloat, details, Details);
 
-/// Brightens the shadows, while preserving local contrast. Should be in [0, 1] range. Default value
-/// is 0.
+/// Darkens/lightens the shadows, while preserving local contrast. Should be in [-1, 1] range.
+/// Default value is 0.
 @property (nonatomic) CGFloat shadows;
 LTPropertyDeclare(CGFloat, shadows, Shadows);
 
@@ -107,9 +107,38 @@ LTPropertyDeclare(CGFloat, shadows, Shadows);
 @property (nonatomic) CGFloat fillLight;
 LTPropertyDeclare(CGFloat, fillLight, FillLight);
 
-/// Compresses the highlights, while preserving local contrast. Should be in [0, 1] range. Default
-/// value is 0.
+/// Expands/compresses the highlights, while preserving local contrast. Should be in [-1, 1] range.
+/// Default value is 0.
 @property (nonatomic) CGFloat highlights;
 LTPropertyDeclare(CGFloat, highlights, Highlights);
+
+#pragma mark -
+#pragma mark Split Toning
+#pragma mark -
+
+/// Changes the saturation of the darks. Should be in [0, 1] range. Default value is 0, it
+/// corresponds to grey value, which will not affect the image.
+@property (nonatomic) CGFloat darksSaturation;
+LTPropertyDeclare(CGFloat, darksSaturation, DarksSaturation);
+
+/// Changes the hue of the darks. Should be in [0, 1] range, which is mapped to [0, 360] circle of
+/// hues. Default value is 0.
+@property (nonatomic) CGFloat darksHue;
+LTPropertyDeclare(CGFloat, darksHue, DarksHue);
+
+/// Changes the saturation of the lights. Should be in [0, 1] range. Default value is 0, it
+/// corresponds to grey, which will not affect the image.
+@property (nonatomic) CGFloat lightsSaturation;
+LTPropertyDeclare(CGFloat, lightsSaturation, LightsSaturation);
+
+/// Changes the hue of the lights. Should be in [0, 1] range, which is mapped to [0, 360] circle of
+/// hues. Default value is 0.
+@property (nonatomic) CGFloat lightsHue;
+LTPropertyDeclare(CGFloat, lightsHue, LightsHue);
+
+/// Balances the effect of darks and highs in split-toning. Should be in [-1, 1] range. Default
+/// value is 0.
+@property (nonatomic) CGFloat balance;
+LTPropertyDeclare(CGFloat, balance, Balance);
 
 @end

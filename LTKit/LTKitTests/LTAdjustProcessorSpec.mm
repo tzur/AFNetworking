@@ -115,6 +115,41 @@ context(@"properties", ^{
       adjust.highlights = -2.0;
     }).to.raise(NSInvalidArgumentException);
   });
+
+  it(@"should fail on invalid darksSaturation parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.darksSaturation = 1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid darksHue parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.darksHue = -1.0;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid balance parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.balance = -1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid lightsSaturation parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.lightsSaturation = -1.0;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid lightsHue parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.lightsHue = -1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
   
   it(@"should fail on invalid grey curve", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
@@ -131,8 +166,7 @@ context(@"properties", ^{
       adjust.redCurve = mat;
     }).to.raise(NSInvalidArgumentException);
   });
-  
-  
+
   it(@"should fail on invalid green curve", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
@@ -176,6 +210,12 @@ context(@"properties", ^{
       adjust.shadows = 0.2;
       adjust.fillLight = 0.1;
       adjust.highlights = 0.3;
+      // Split Tone.
+      adjust.darksSaturation = 1.0;
+      adjust.darksHue = 0.2;
+      adjust.balance = 0.1;
+      adjust.lightsSaturation = 0.1;
+      adjust.lightsHue = 0.1;
     }).toNot.raiseAny();
   });
 });
@@ -183,7 +223,7 @@ context(@"properties", ^{
 context(@"processing", ^{
   it(@"should process positive brightness and contrast correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(102, 102, 102, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(98, 98, 98, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -196,8 +236,8 @@ context(@"processing", ^{
   });
   
   it(@"should process negative contrast correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(0, 0, 0,255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b input(1, 1, cv::Vec4b(192, 128, 64, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(174, 134, 88, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -242,20 +282,20 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.blackPoint = LTVector3(0.5, 0.5, 0.5);
+    adjust.blackPoint = -LTVector3(0.5, 0.5, 0.5);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
   
   it(@"should process white point correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(124, 124, 124, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.whitePoint = LTVector3(0.5, 0.5, 0.5);
+    adjust.whitePoint = LTVector3(1.5, 1.5, 1.5);
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
@@ -314,7 +354,7 @@ context(@"processing", ^{
   
   it(@"should process temperature correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(66, 73, 86, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(64, 71, 83, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -350,7 +390,7 @@ context(@"processing", ^{
                                                                   output:outputTexture];
     adjust.brightness = 0.3;
     adjust.contrast = 0.2;
-    adjust.exposure = 0.1;
+    adjust.exposure = 0.05;
     adjust.offset = 0.1;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMat($(output));
@@ -372,18 +412,32 @@ context(@"processing", ^{
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
-  
-  // We run this test only on the simulator. Working assumption is that the smoother (bilateral
-  // filter) causes up to 27 level differences on some pixels near the strong edges.
-  // The overall "feel" of the image should be the same on both the simulator and the devices.
-  sit(@"should create correct conversion of luminance, color and details", ^{
+
+  it(@"should process split tone correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(52, 83, 90, 255));
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.darksSaturation = 0.2;
+    adjust.darksHue = 0.2;
+    adjust.balance = 0.1;
+    adjust.lightsSaturation = 0.5;
+    adjust.lightsHue = 0.5;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  sit(@"should create correct conversion of luminance, color, details and split-tone", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
     LTTexture *output = [LTTexture textureWithPropertiesOf:input];
     
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
-    
+
     // Luminance.
-    adjust.exposure = 0.1;
+    adjust.exposure = 0.05;
     adjust.brightness = -0.1;
     adjust.contrast = 0.1;
     adjust.offset = 0.05;
@@ -398,13 +452,17 @@ context(@"processing", ^{
     adjust.shadows = 0.2;
     adjust.fillLight = 0.4;
     adjust.highlights = 0.3;
-    
+    // Split Tone.
+    adjust.darksSaturation = 0.2;
+    adjust.darksHue = 0.2;
+    adjust.balance = 0.1;
+    adjust.lightsSaturation = 0.5;
+    adjust.lightsHue = 0.5;
+
     [adjust process];
-    
-    // Important: this test heavily depends on the smoother setup and is expected to change after
-    // fine-tuning of the smoother.
+
     cv::Mat image = LTLoadMat([self class], @"MealAdjusted.png");
-    expect($(output.image)).to.beCloseToMat($(image));
+    expect($(output.image)).to.beCloseToMatWithin($(image), 4);
   });
 });
 
