@@ -11,6 +11,9 @@
 /// Returns the \c LTVector4 representation of the color.
 @property (readonly, nonatomic) LTVector4 lt_ltVector;
 
+/// Returns the \c LTVector4 representation of the color in the HSV colorspace.
+@property (readonly, nonatomic) LTVector4 lt_ltVectorHSVA;
+
 /// Returns the \c cv::Vec4b representation of the color.
 @property (readonly, nonatomic) cv::Vec4b lt_cvVector;
 

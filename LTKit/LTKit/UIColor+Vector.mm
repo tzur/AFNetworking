@@ -22,6 +22,16 @@
   LTAssert(NO, @"Invalid color for conversion: %@", self);
 }
 
+- (LTVector4)lt_ltVectorHSVA {
+  CGFloat h, s, b, a;
+  if ([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
+    return LTVector4(h, s, b, a);
+  } else if ([self getWhite:&b alpha:&a]) {
+    return LTVector4(0, 0, b, a);
+  }
+  LTAssert(NO, @"Invalid color for conversion: %@", self);
+}
+
 - (cv::Vec4b)lt_cvVector {
   LTVector4 ltVector = self.lt_ltVector * std::numeric_limits<uchar>::max();
   return cv::Vec4b(ltVector.r(), ltVector.g(), ltVector.b(), ltVector.a());
