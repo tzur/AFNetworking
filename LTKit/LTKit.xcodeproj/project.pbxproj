@@ -235,6 +235,7 @@
 		2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 2840186519C704730003A064 /* FlowerOutput0.5.png */; };
 		2840186819C704730003A064 /* FlowerOutput0.7.png in Resources */ = {isa = PBXBuildFile; fileRef = 2840186619C704730003A064 /* FlowerOutput0.7.png */; };
 		2840187A19C704BF0003A064 /* PyramidGrid1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2840187919C704BF0003A064 /* PyramidGrid1.png */; };
+		2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843721B19F5918C003F3B4A /* UIColor+VectorSpec.mm */; };
 		2843B6F818A7E1050044B87A /* LTRotatedRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B6F718A7E1050044B87A /* LTRotatedRect.mm */; };
 		2843B6FB18A938AF0044B87A /* LTRotatedRectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */; };
 		2843B77618ABBF1F0044B87A /* LTTextureDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B77518ABBF1F0044B87A /* LTTextureDrawer.mm */; };
@@ -1312,6 +1313,7 @@
 		2840186519C704730003A064 /* FlowerOutput0.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FlowerOutput0.5.png; path = Resources/FlowerOutput0.5.png; sourceTree = "<group>"; };
 		2840186619C704730003A064 /* FlowerOutput0.7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FlowerOutput0.7.png; path = Resources/FlowerOutput0.7.png; sourceTree = "<group>"; };
 		2840187919C704BF0003A064 /* PyramidGrid1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PyramidGrid1.png; path = Resources/PyramidGrid1.png; sourceTree = "<group>"; };
+		2843721B19F5918C003F3B4A /* UIColor+VectorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+VectorSpec.mm"; sourceTree = "<group>"; };
 		2843B6F618A7E1050044B87A /* LTRotatedRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRotatedRect.h; sourceTree = "<group>"; };
 		2843B6F718A7E1050044B87A /* LTRotatedRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRotatedRect.mm; sourceTree = "<group>"; };
 		2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRotatedRectSpec.mm; sourceTree = "<group>"; };
@@ -2854,6 +2856,7 @@
 				50AE95D619D17624000E8086 /* LTQuadSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 				8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */,
+				2843721B19F5918C003F3B4A /* UIColor+VectorSpec.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -4468,6 +4471,7 @@
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				28470F571977B08B0031E500 /* LTImageFrameProcessorSpec.mm in Sources */,
+				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
