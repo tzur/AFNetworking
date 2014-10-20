@@ -43,6 +43,10 @@
 
 static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
+/// Minimum actual diameter (in pixels) of the brush. trying to draw rects smaller than 2x2 pixels
+/// may lead to discontinuity of the stroke.
+static const CGFloat kMinimumDiameter = 2;
+
 #pragma mark -
 #pragma mark Initialization.
 #pragma mark -
@@ -197,7 +201,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
 - (CGFloat)diameterForZoomScale:(CGFloat)zoomScale {
   LTParameterAssert(zoomScale > 0);
-  return self.baseDiameter * self.scale / zoomScale;
+  return MAX(self.baseDiameter * self.scale / zoomScale, kMinimumDiameter);
 }
 
 - (NSArray *)normalizedRects:(NSArray *)rects forSize:(CGSize)size {

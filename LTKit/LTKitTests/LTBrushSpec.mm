@@ -279,7 +279,15 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
+  it(@"should always draw a point of at least 2x2 pixels", ^{
+    centerPoint.zoomScale = 1000;
+    [brush drawPoint:centerPoint inFramebuffer:fbo];
+    CGRect targetRect = CGRectCenteredAt(kOutputCenter, CGSizeMakeUniform(2));
+    expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+    expect($(output.image)).to.equalMat($(expected));
+  });
+
   it(@"should draw a segment with no previous point", ^{
     [brush drawStrokeSegment:segment fromPreviousPoint:nil
                inFramebuffer:fbo saveLastDrawnPointTo:nil];
