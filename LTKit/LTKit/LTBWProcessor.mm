@@ -154,6 +154,10 @@
   return properties;
 }
 
++ (BOOL)isPassthroughForDefaultInputModel {
+  return NO;
+}
+
 #pragma mark -
 #pragma mark Processing
 #pragma mark -

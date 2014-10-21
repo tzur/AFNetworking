@@ -65,4 +65,17 @@
   return [files copy];
 }
 
+- (BOOL)lt_skipBackup:(BOOL)skipBackup forItemAtURL:(NSURL *)url
+                error:(NSError *__autoreleasing *)error {
+  if (![self fileExistsAtPath:url.path]) {
+    if (error) {
+      *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileNoSuchFileError
+                               userInfo:@{NSFilePathErrorKey: url ?: [NSNull null]}];
+    }
+    return NO;
+  }
+
+  return [url setResourceValue:@(skipBackup) forKey:NSURLIsExcludedFromBackupKey error:error];
+}
+
 @end

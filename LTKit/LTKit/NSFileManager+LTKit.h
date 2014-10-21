@@ -35,4 +35,9 @@
 - (NSArray *)lt_globPath:(NSString *)path recursively:(BOOL)recursively
            withPredicate:(NSPredicate *)predicate error:(NSError **)error;
 
+/// Sets the given file URL to skip iCloud and iTunes backups or not. Returns \c YES if the
+/// attribute setup completed successfully, otherwise returns \c NO and populates the given \c
+/// error.
+- (BOOL)lt_skipBackup:(BOOL)skipBackup forItemAtURL:(NSURL *)url error:(NSError **)error;
+
 @end

@@ -60,4 +60,8 @@
 /// keys.
 - (void)resetInputModelExceptKeys:(NSSet *)keys;
 
+/// \c YES if the processor, while the input model is the default input model, copies the input
+/// directly to the output (e.g. passthrough mode) without no change. The default value is \c YES.
++ (BOOL)isPassthroughForDefaultInputModel;
+
 @end

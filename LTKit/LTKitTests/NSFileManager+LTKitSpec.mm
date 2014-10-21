@@ -42,4 +42,12 @@ it(@"should read data from file", ^{
   expect(data).to.equal(file);
 });
 
+it(@"should not set backup flag for non existing file", ^{
+  NSURL *url = [NSURL fileURLWithPath:@"/foo/bar"];
+  __block NSError *error;
+
+  expect([fileManager lt_skipBackup:YES forItemAtURL:url error:&error]).to.beFalsy();
+  expect(error).notTo.beNil();
+});
+
 LTSpecEnd
