@@ -97,6 +97,10 @@
   return defaultKey;
 }
 
++ (BOOL)isPassthroughForDefaultInputModel {
+  return YES;
+}
+
 #pragma mark -
 #pragma mark LTJSONSerializing
 #pragma mark -
