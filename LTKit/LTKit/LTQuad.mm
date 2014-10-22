@@ -35,7 +35,7 @@ typedef union {
   CGPoint v3 = origin + CGPointMake(0, size.height);
 
   LTQuadCorners corners{{v0, v1, v2, v3}};
-  return [[LTQuad alloc] initWithCorners:corners];
+  return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
 }
 
 #pragma mark -
