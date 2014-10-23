@@ -221,6 +221,31 @@ context(@"input model", ^{
           [processor defaultValueForKey:@keypath(processor.enumValue)];
       expect(defaultEnum).to.equal(processor.defaultEnumValue);
     });
+
+    it(@"should reset key to its default value", ^{
+      processor.integerValue = 0;
+      processor.floatValue = 0;
+      processor.enumValue = [LTImageProcessorEnum enumWithValue:LTImageProcessorEnumC];
+      processor.stringValue = @"bar";
+      processor.vector2Value = LTVector2One;
+      processor.vector3Value = LTVector3One;
+      processor.vector4Value = LTVector4One;
+
+      [processor resetValueForKey:@keypath(processor, integerValue)];
+      expect(processor.integerValue).to.equal(processor.defaultIntegerValue);
+      [processor resetValueForKey:@keypath(processor, floatValue)];
+      expect(processor.floatValue).to.equal(processor.defaultFloatValue);
+      [processor resetValueForKey:@keypath(processor, enumValue)];
+      expect(processor.enumValue).to.equal(processor.defaultEnumValue);
+      [processor resetValueForKey:@keypath(processor, stringValue)];
+      expect(processor.stringValue).to.equal(processor.defaultStringValue);
+      [processor resetValueForKey:@keypath(processor, vector2Value)];
+      expect(processor.vector2Value).to.equal(processor.defaultVector2Value);
+      [processor resetValueForKey:@keypath(processor, vector3Value)];
+      expect(processor.vector3Value).to.equal(processor.defaultVector3Value);
+      [processor resetValueForKey:@keypath(processor, vector4Value)];
+      expect(processor.vector4Value).to.equal(processor.defaultVector4Value);
+    });
   });
 });
 
