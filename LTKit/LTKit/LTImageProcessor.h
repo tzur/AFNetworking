@@ -60,6 +60,11 @@
 /// keys.
 - (void)resetInputModelExceptKeys:(NSSet *)keys;
 
+/// Resets the input model key specified by \c key to it's default value. If \c key is not one of
+/// the input model's keys nothing is done. If no default value has been found for \c key an assert
+/// will be thrown.
+- (void)resetValueForKey:(NSString *)key;
+
 /// \c YES if the processor, while the input model is the default input model, copies the input
 /// directly to the output (e.g. passthrough mode) without no change. The default value is \c YES.
 + (BOOL)isPassthroughForDefaultInputModel;

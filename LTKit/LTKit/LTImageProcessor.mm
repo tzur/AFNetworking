@@ -85,6 +85,11 @@
   }
 }
 
+- (void)resetValueForKey:(NSString *)key {
+  id defaultValue = [self defaultValueForKey:key];
+  [self setValue:defaultValue forKey:key];
+}
+
 - (NSString *)defaultKeyForKey:(NSString *)key {
   NSString *initial = [[key substringToIndex:1] uppercaseString];
   NSString *rest = [key substringFromIndex:1];
