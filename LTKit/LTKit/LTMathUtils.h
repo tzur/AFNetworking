@@ -11,3 +11,9 @@ NS_INLINE BOOL LTIsPowerOfTwo(CGFloat value) {
 NS_INLINE BOOL LTIsPowerOfTwo(CGSize size) {
   return LTIsPowerOfTwo(size.width) && LTIsPowerOfTwo(size.height);
 }
+
+/// Returns a value which a smooth non-linear interploation of \c min and \c max based on \c x.
+NS_INLINE CGFloat LTSmoothstep(CGFloat min, CGFloat max, CGFloat x) {
+  x = std::clamp((x - min) / (max - min), 0.0, 1.0);
+  return x * x * (3 - 2 * x);
+}
