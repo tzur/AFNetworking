@@ -47,14 +47,14 @@ context(@"smooth step", ^{
   it(@"should interpolate smoothly for x between min and max", ^{
     CGFloat previousDelta = 0.0;
 
-    // Delta should gradualy increase
+    // Delta should gradually increase.
     for (CGFloat i = 0.1; i <= 0.5; i += 0.1) {
       CGFloat delta = LTSmoothstep(0, 1, i) - LTSmoothstep(0, 1, i - 0.1);
       expect(delta).to.beGreaterThan(previousDelta);
       previousDelta = delta;
     }
 
-    // Delta should gradualy decrease
+    // Delta should gradually decrease.
     previousDelta = 1;
     for (CGFloat i = 0.6; i <= 1.0; i += 0.1) {
       CGFloat delta = LTSmoothstep(0, 1, i) - LTSmoothstep(0, 1, i - 0.1);
