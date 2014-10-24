@@ -96,7 +96,7 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
-  [self.dualMaskProcessor process];
+  self.needsDualMaskProcessing = YES;
 }
 
 - (void)setAngle:(CGFloat)angle {
