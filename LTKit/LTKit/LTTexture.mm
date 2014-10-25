@@ -500,26 +500,36 @@ static NSString * const kArchiveKey = @"archive";
   [self load:image];
 }
 
+- (void)mappedCGImage:(LTTextureMappedCGImageBlock)block {
+  LTParameterAssert(block);
+
+  [self mappedImageForReading:^(const cv::Mat &mapped, BOOL isCopy) {
+    NSUInteger length = mapped.rows * mapped.step[0];
+    NSData *data = [NSData dataWithBytesNoCopy:mapped.data length:length freeWhenDone:NO];
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
+
+    CGColorSpaceRef colorSpace = [self newColorSpaceForMat:mapped];
+    CGBitmapInfo bitmapInfo = [self bitmapInfoForMat:mapped];
+
+    CGImageRef imageRef = CGImageCreate(mapped.cols, mapped.rows,
+                                        8 * mapped.elemSize1(), 8 * mapped.elemSize(),
+                                        mapped.step[0], colorSpace, bitmapInfo,
+                                        provider, NULL, YES, kCGRenderingIntentDefault);
+    block(imageRef, isCopy);
+
+    CGImageRelease(imageRef);
+    CGColorSpaceRelease(colorSpace);
+    CGDataProviderRelease(provider);
+  }];
+}
+
 - (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     size_t bitsPerComponent = mapped->elemSize1() * 8;
-    CGColorSpaceRef colorSpace;
-    CGBitmapInfo bitmapInfo;
-    switch (mapped->channels()) {
-      case 1:
-        colorSpace = CGColorSpaceCreateDeviceGray();
-        bitmapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
-        break;
-      case 4:
-        colorSpace = CGColorSpaceCreateDeviceRGB();
-        bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
-        break;
-      default:
-        LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
-                 mapped->channels());
-    }
+    CGColorSpaceRef colorSpace = [self newColorSpaceForMat:*mapped];
+    CGBitmapInfo bitmapInfo = [self bitmapInfoForMat:*mapped];
 
     CGContextRef context = CGBitmapContextCreate(mapped->data, self.size.width, self.size.height,
                                                  bitsPerComponent, mapped->step[0], colorSpace,
@@ -535,6 +545,32 @@ static NSString * const kArchiveKey = @"archive";
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
   }];
+}
+
+- (CGColorSpaceRef)newColorSpaceForMat:(const cv::Mat &)mat {
+  switch (mat.channels()) {
+    case 1:
+      return CGColorSpaceCreateDeviceGray();
+      break;
+    case 4:
+      return CGColorSpaceCreateDeviceRGB();
+      break;
+    default:
+      LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
+               mat.channels());
+  }
+}
+
+- (CGBitmapInfo)bitmapInfoForMat:(const cv::Mat &)mat {
+  switch (mat.channels()) {
+    case 1:
+      return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+    case 4:
+      return kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+    default:
+      LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
+               mat.channels());
+  }
 }
 
 - (LTVector4)pixelValue:(CGPoint)location {
