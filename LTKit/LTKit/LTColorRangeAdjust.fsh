@@ -9,28 +9,30 @@ const int kColorRangeModeMask = 1;
 const int kColorRangeModeMaskOverlay = 2;
 
 uniform sampler2D sourceTexture;
+uniform sampler2D dualMaskTexture;
 
 uniform int mode;
 uniform mediump vec3 rangeColor;
 uniform mediump float edge0;
-uniform mediump float edge1;
 uniform mediump float saturation;
-uniform mediump float luminance;
+uniform mediump float exposure;
+uniform mediump float contrast;
 uniform mediump mat2 rotation;
 
 varying highp vec2 vTexcoord;
 
 void main() {
   mediump vec4 color = texture2D(sourceTexture, vTexcoord);
-  
+  mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
+
   // Convert to NRGB.
   mediump float sum = color.r + color.g + color.b;
   const mediump float kEpsilon = 0.075;
   mediump vec3 nrgb = color.rgb / (sum + kEpsilon);
   
   // Construct mask.
-  mediump float mask = smoothstep(edge0, edge1, distance(color.rgb, rangeColor));
-  
+  mask *= smoothstep(edge0, 0.0, distance(color.rgb, rangeColor));
+
   // Compute luminance.
   const mediump vec3 kRGBToYPrime = vec3(0.299, 0.587, 0.114);
   mediump vec3 lum = vec3(dot(color.rgb, kRGBToYPrime));
@@ -43,7 +45,9 @@ void main() {
   outputColor = clamp(outputColor, 0.0, 1.0);
   
   // Change luminance and saturation.
-  outputColor = mix(lum + luminance, outputColor + luminance, saturation);
+  const mediump float kPivot = 0.45;
+  outputColor = mix(kPivot + contrast * (lum * exposure - kPivot),
+                    kPivot + contrast * (outputColor * exposure - kPivot), saturation);
   outputColor = mix(color.rgb, outputColor, mask);
   
   if (mode == kColorRangeModeImage) {
@@ -51,8 +55,9 @@ void main() {
   } else if (mode == kColorRangeModeMask) {
     gl_FragColor = vec4(vec3(mask), color.a);
   } else if (mode == kColorRangeModeMaskOverlay) {
-    mask = clamp((max(mask, 0.2) - 0.2) * 2.0 + 0.2, 0.0, 1.0);
-    gl_FragColor = vec4(outputColor * mask, mask);
+    /// Mask at full intensity is rendered with a bluish color.
+    const mediump vec3 kMaskColor = vec3(0.2969, 0.5, 0.8984);
+    gl_FragColor = vec4(mix(color.rgb, kMaskColor, mask), color.a);
   } else {
     gl_FragColor = color;
   }

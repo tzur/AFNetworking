@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 @property (strong, nonatomic) LTRectDrawer *adjustmentDrawer;
 
 /// Factor used to reflect the texture's aspect ratio in order to have accurate distance
-/// calculations in normalized cooridnates.
+/// calculations in normalized coordinates.
 @property (readonly, nonatomic) CGSize aspectFactor;
 
 @end
