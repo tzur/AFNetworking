@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+@class LTGLContext;
+
 /// @class LTGPUQueue.
 ///
 /// Serial queue for GPU operations. All tasks submitted to this queue will use the same OpenGL
@@ -17,8 +19,11 @@
 /// This class is thread-safe.
 @interface LTGPUQueue : NSObject
 
-/// Returns the shared, singleton GPU queue.
-+ (instancetype)sharedQueue;
+/// Initializes a new queue with no shared context.
+- (instancetype)init;
+
+/// Initializes a new queue sharing data with the given \c context.
+- (instancetype)initWithSharedContext:(LTGLContext *)context;
 
 #pragma mark -
 #pragma mark Block dispatching

@@ -38,9 +38,13 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 #pragma mark -
 
 - (id)init {
+  return [self initWithSharedContext:nil];
+}
+
+- (instancetype)initWithSharedContext:(LTGLContext *)context {
   if (self = [super init]) {
     [self createQueues];
-    [self createOpenGLContext];
+    [self createOpenGLContextWithSharegroup:context.context.sharegroup];
 
     self.group = dispatch_group_create();
     self.completionQueue = dispatch_get_main_queue();
@@ -73,8 +77,8 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
                               (__bridge void *)(self), NULL);
 }
 
-- (void)createOpenGLContext {
-  self.context = [[LTGLContext alloc] init];
+- (void)createOpenGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
+  self.context = [[LTGLContext alloc] initWithSharegroup:sharegroup];
   if (!self.context) {
     [LTGLException raise:kLTGPUQueueContextCreationFailedException
                   format:@"Failed creating OpenGL ES context"];
