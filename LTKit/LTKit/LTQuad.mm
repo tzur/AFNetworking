@@ -233,6 +233,22 @@ typedef union {
                    quadBottomLeft:self.v3];
 }
 
+- (CGFloat)minimalEdgeLength {
+  std::array<CGFloat, 4> lengths = self.edgeLengths;
+  return *std::min_element(lengths.begin(), lengths.end());
+}
+
+- (CGFloat)maximalEdgeLength {
+  std::array<CGFloat, 4> lengths = self.edgeLengths;
+  return *std::max_element(lengths.begin(), lengths.end());
+}
+
+- (std::array<CGFloat, 4>)edgeLengths {
+  return std::array<CGFloat, 4>{{LTVector2(self.v0 - self.v1).length(),
+      LTVector2(self.v1 - self.v2).length(), LTVector2(self.v2 - self.v3).length(),
+      LTVector2(self.v3 - self.v0).length()}};
+}
+
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -
