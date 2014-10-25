@@ -72,4 +72,10 @@ typedef NS_OPTIONS(NSUInteger, LTQuadCornerRegion) {
 /// its projected corners coincide with the vertices of this quad.
 @property (readonly, nonatomic) GLKMatrix3 transform;
 
+/// Returns the length of the shortest edge of this \c quad.
+@property (readonly, nonatomic) CGFloat minimalEdgeLength;
+
+/// Returns the length of the longest edge of this \c quad.
+@property (readonly, nonatomic) CGFloat maximalEdgeLength;
+
 @end

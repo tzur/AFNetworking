@@ -8,6 +8,7 @@
 static const CGFloat kEpsilon = 1e-5;
 
 @interface LTQuad (ForTesting)
+- (std::array<CGFloat, 4>)edgeLengths;
 - (NSUInteger)indexOfConcavePoint;
 + (NSUInteger)numberOfNonLeftTurns:(const LTQuadCorners &)points;
 @end
@@ -386,6 +387,36 @@ context(@"properties", ^{
       expect($(LTMatFromGLKMatrix3(quad.transform))).to.
           beCloseToMatWithin($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad))), kEpsilon);
     });
+  });
+
+  it(@"should correctly compute the minimal edge length", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    std::array<CGFloat, 4> edgeLengths = [quad edgeLengths];
+    expect(edgeLengths[0]).to.beCloseToWithin(1, kEpsilon);
+    expect(edgeLengths[1]).to.beCloseToWithin(0.8999999761581421, kEpsilon);
+    expect(edgeLengths[2]).to.beCloseToWithin(1.0049875, kEpsilon);
+    expect(edgeLengths[3]).to.beCloseToWithin(1, kEpsilon);
+  });
+
+  it(@"should correctly compute the minimal edge length", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    expect(quad.minimalEdgeLength).to.beCloseToWithin(0.8999999761581421, kEpsilon);
+
+    corners = LTQuadCorners{{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    expect(quad.minimalEdgeLength).to.beCloseToWithin(0.7905694246292114, kEpsilon);
+  });
+
+  it(@"should correctly compute the maximal edge length", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    expect(quad.maximalEdgeLength).to.beCloseToWithin(1.0049875, kEpsilon);
+
+    corners = LTQuadCorners{{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    expect(quad.maximalEdgeLength).to.beCloseToWithin(1, kEpsilon);
   });
 });
 
