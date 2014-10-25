@@ -228,7 +228,7 @@ context(@"processing", ^{
 });
 
 context(@"integration tests", ^{
-  it(@"should render natural image", ^{
+  sit(@"should render natural image", ^{
     inputTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
@@ -257,7 +257,7 @@ context(@"integration tests", ^{
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"Lena128AnalogProcessor.png");
-    expect($([outputTexture image])).to.beCloseToMat($(image));
+    expect($([outputTexture image])).to.beCloseToMatWithin($(image), 4);
   });
 });
 

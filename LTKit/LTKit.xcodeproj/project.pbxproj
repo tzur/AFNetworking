@@ -39,6 +39,10 @@
 		03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */; };
 		03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7F18ED54D000CD61C2 /* LTAnalogFilm.fsh */; };
 		03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8018ED54D000CD61C2 /* LTAnalogFilm.vsh */; };
+		033DCD8719F2B57A004BF795 /* NegativeHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8319F2B57A004BF795 /* NegativeHighlightsCurve.png */; };
+		033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */; };
+		033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */; };
+		033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */; };
 		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
@@ -120,13 +124,11 @@
 		03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */; };
 		03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */; };
 		03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BB18CF124900E728F5 /* FillLightCurve.png */; };
-		03C7B6C418CF124900E728F5 /* HighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */; };
 		03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BD18CF124900E728F5 /* IdentityCurve.png */; };
 		03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */; };
 		03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */; };
 		03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */; };
 		03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */; };
-		03C7B6CA18CF124900E728F5 /* ShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C218CF124900E728F5 /* ShadowsCurve.png */; };
 		03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6D618CF313500E728F5 /* MealAdjusted.png */; };
 		03C7B71118D0579000E728F5 /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B71018D0579000E728F5 /* TiledNoise.png */; };
 		03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CA15C11965492C0040DB07 /* LTEdgesMaskProcessor.h */; };
@@ -1066,6 +1068,10 @@
 		03329F7F18ED54D000CD61C2 /* LTAnalogFilm.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAnalogFilm.fsh; sourceTree = "<group>"; };
 		03329F8018ED54D000CD61C2 /* LTAnalogFilm.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAnalogFilm.vsh; sourceTree = "<group>"; };
 		03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnalogFilmProcessorSpec.mm; sourceTree = "<group>"; };
+		033DCD8319F2B57A004BF795 /* NegativeHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeHighlightsCurve.png; path = Curves/NegativeHighlightsCurve.png; sourceTree = "<group>"; };
+		033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeShadowsCurve.png; path = Curves/NegativeShadowsCurve.png; sourceTree = "<group>"; };
+		033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveHighlightsCurve.png; path = Curves/PositiveHighlightsCurve.png; sourceTree = "<group>"; };
+		033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveShadowsCurve.png; path = Curves/PositiveShadowsCurve.png; sourceTree = "<group>"; };
 		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
@@ -1161,13 +1167,11 @@
 		03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWProcessor.fsh; sourceTree = "<group>"; };
 		03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWProcessor.vsh; sourceTree = "<group>"; };
 		03C7B6BB18CF124900E728F5 /* FillLightCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FillLightCurve.png; path = Curves/FillLightCurve.png; sourceTree = "<group>"; };
-		03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HighlightsCurve.png; path = Curves/HighlightsCurve.png; sourceTree = "<group>"; };
 		03C7B6BD18CF124900E728F5 /* IdentityCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IdentityCurve.png; path = Curves/IdentityCurve.png; sourceTree = "<group>"; };
 		03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeBrightnessCurve.png; path = Curves/NegativeBrightnessCurve.png; sourceTree = "<group>"; };
 		03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeContrastCurve.png; path = Curves/NegativeContrastCurve.png; sourceTree = "<group>"; };
 		03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveBrightnessCurve.png; path = Curves/PositiveBrightnessCurve.png; sourceTree = "<group>"; };
 		03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveContrastCurve.png; path = Curves/PositiveContrastCurve.png; sourceTree = "<group>"; };
-		03C7B6C218CF124900E728F5 /* ShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowsCurve.png; path = Curves/ShadowsCurve.png; sourceTree = "<group>"; };
 		03C7B6D618CF313500E728F5 /* MealAdjusted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealAdjusted.png; path = Resources/MealAdjusted.png; sourceTree = "<group>"; };
 		03C7B71018D0579000E728F5 /* TiledNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiledNoise.png; path = Noise/TiledNoise.png; sourceTree = "<group>"; };
 		03CA15C11965492C0040DB07 /* LTEdgesMaskProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEdgesMaskProcessor.h; sourceTree = "<group>"; };
@@ -2109,14 +2113,16 @@
 		03C7B6BA18CF123900E728F5 /* Curves */ = {
 			isa = PBXGroup;
 			children = (
+				033DCD8319F2B57A004BF795 /* NegativeHighlightsCurve.png */,
+				033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */,
+				033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */,
+				033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */,
 				03C7B6BB18CF124900E728F5 /* FillLightCurve.png */,
-				03C7B6BC18CF124900E728F5 /* HighlightsCurve.png */,
 				03C7B6BD18CF124900E728F5 /* IdentityCurve.png */,
 				03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */,
 				03C7B6BF18CF124900E728F5 /* NegativeContrastCurve.png */,
 				03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */,
 				03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */,
-				03C7B6C218CF124900E728F5 /* ShadowsCurve.png */,
 			);
 			name = Curves;
 			sourceTree = "<group>";
@@ -4017,14 +4023,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */,
 				03C7B71118D0579000E728F5 /* TiledNoise.png in Resources */,
+				033DCD8719F2B57A004BF795 /* NegativeHighlightsCurve.png in Resources */,
 				03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */,
-				03C7B6CA18CF124900E728F5 /* ShadowsCurve.png in Resources */,
+				033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */,
 				03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */,
 				03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */,
-				03C7B6C418CF124900E728F5 /* HighlightsCurve.png in Resources */,
 				03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */,
 				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
+				033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */,
 				03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
