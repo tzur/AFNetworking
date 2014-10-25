@@ -71,8 +71,11 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// \c context is \c nil, the rendering context will be unbound from any context.
 + (void)setCurrentContext:(LTGLContext *)context;
 
-/// Initializes a context with a new \c EAGLContext.
+/// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup.
 - (instancetype)init;
+
+/// Initializes a context with a new \c EAGLContext and the given \c sharegroup.
+- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.

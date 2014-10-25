@@ -72,15 +72,20 @@ typedef struct {
 #pragma mark -
 
 - (instancetype)init {
+  return [self initWithSharegroup:nil];
+}
+
+- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup {
   if (self = [super init]) {
-    self.context = [self createEAGLContext];
+    self.context = [self createEAGLContextWithSharegroup:sharegroup];
   }
   return self;
 }
 
-- (EAGLContext *)createEAGLContext {
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  LTAssert(context, @"EAGLContext creation failed");
+- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
+  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
+                                               sharegroup:sharegroup];
+  LTAssert(context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
   return context;
 }
 

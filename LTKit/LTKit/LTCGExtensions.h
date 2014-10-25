@@ -424,12 +424,21 @@ CG_INLINE CGSize CGScaleDownToDimension(CGSize size, CGFloat maxDimension) {
                                MAX(1.0, size.height * scaleFactor)));
 }
 
-/// Fits \c size to fit in \c sizeToFit.
+/// Aspect fits \c size to \c sizeToFit.
 CG_INLINE CGSize CGSizeAspectFit(CGSize size, CGSize sizeToFit) {
   CGFloat widthRatio = sizeToFit.width / size.width;
   CGFloat heightRatio = sizeToFit.height / size.height;
 
   CGFloat scaleRatio = MIN(widthRatio, heightRatio);
+  return std::round(size * scaleRatio);
+}
+
+/// Aspect fills \c size to \c sizeToFit.
+CG_INLINE CGSize CGSizeAspectFill(CGSize size, CGSize sizeToFit) {
+  CGFloat widthRatio = sizeToFit.width / size.width;
+  CGFloat heightRatio = sizeToFit.height / size.height;
+
+  CGFloat scaleRatio = MAX(widthRatio, heightRatio);
   return std::round(size * scaleRatio);
 }
 

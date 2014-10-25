@@ -362,6 +362,32 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       });
     });
 
+    context(@"reading contents as CGImageRef", ^{
+      it(@"should generate CGImageRef for a red channel texture", ^{
+        cv::Mat1b expected(48, 67, 128);
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:expected];
+
+        __block BOOL mapped = NO;
+        [texture mappedCGImage:^(CGImageRef imageRef, BOOL) {
+          mapped = YES;
+
+          CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
+          CFDataRef data = CGDataProviderCopyData(provider);
+
+          cv::Mat image((int)CGImageGetHeight(imageRef), (int)CGImageGetWidth(imageRef),
+                        CV_8U, (void *)CFDataGetBytePtr(data), CGImageGetBytesPerRow(imageRef));
+
+          expect($(image)).to.beCloseToMat($(expected));
+
+          if (data) {
+            CFRelease(data);
+          }
+        }];
+
+        expect(mapped).to.beTruthy();
+      });
+    });
+
     context(@"generation ID", ^{
       it(@"should produce different generation ID after writing via OpenGL", ^{
         NSUInteger generationID = texture.generationID;

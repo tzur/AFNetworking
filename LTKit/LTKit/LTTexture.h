@@ -289,6 +289,18 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// @see LTTextureMappedWriteBlock for more information about the \c block.
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block;
 
+/// Block for transferring texture contents as a \c CGImageRef for reading. If \c isCopy is \c YES,
+/// the given image is a copy of the texture and its reference can be stored outside the context of
+/// the block. Otherwise, the memory is directly mapped to the texture's memory and \c mapped should
+/// not be referenced outside this block (unless it is duplicated to a new \c CGImageRef).
+typedef void (^LTTextureMappedCGImageBlock)(CGImageRef imageRef, BOOL isCopy);
+
+/// Calls the given \c block with a valid \c CGImageRef as a wrapper for the tetxure's data.
+///
+/// @note current implementation allows to create a image of textures of 1 or 4 channels only. An
+/// assert will be thrown for other types of textures.
+- (void)mappedCGImage:(LTTextureMappedCGImageBlock)block;
+
 /// Block for transferring a core graphics bitmap context which is bound to the texture's data. The
 /// context is only valid in this block and should not be retained. Information about the context
 /// can be queried using the \c CGBitmapContextGet* functions.
