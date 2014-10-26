@@ -48,6 +48,7 @@
 #import <LTKit/LTAnalogFilmProcessor.h>
 #import <LTKit/LTArithmeticProcessor.h>
 #import <LTKit/LTAspectFillResizeProcessor.h>
+#import <LTKit/LTBicubicResizeProcessor.h>
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
