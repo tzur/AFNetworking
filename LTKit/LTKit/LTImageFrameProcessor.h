@@ -3,6 +3,7 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
 #import "LTTexture.h"
 
 /// Supported types of frames, categorized by square-to-rectangle mapping modes:
