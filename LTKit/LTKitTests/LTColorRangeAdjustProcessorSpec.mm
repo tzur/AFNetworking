@@ -8,7 +8,21 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(TColorRangeAdjustProcessor)
+@interface LTColorRangeAdjustProcessor ()
+
+/// \c YES if dual mask needs processing prior to executing this processor.
+//@property (nonatomic) BOOL needsDualMaskProcessing;
+
+/// Internal dual mask processor.
+//@property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
+
+/// Color that is used to construct a mask that defines a color range upon which tonal manipulation
+/// is applied. Components should be in [-1, 1] range. Default value is green (0, 1, 0).
+@property (nonatomic) LTVector3 rangeColor;
+
+@end
+
+LTSpecBegin(LTColorRangeAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -27,18 +41,19 @@ afterEach(^{
 });
 
 context(@"properties", ^{
-  it(@"should return default tone properties correctly", ^{
-    expect(processor.rangeColor).to.equal(LTVector3(0, 1, 0));
+  it(@"should return default properties correctly", ^{
+    expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
+    expect(processor.spread).to.equal(0);
+    expect(processor.angle).to.equal(0);
     expect(processor.fuzziness).to.equal(0);
+    expect(processor.renderingMode).to.equal(LTColorRangeRenderingModeImage);
     expect(processor.saturation).to.equal(0);
-    expect(processor.luminance).to.equal(0);
+    expect(processor.exposure).to.equal(0);
+    expect(processor.contrast).to.equal(0);
     expect(processor.hue).to.equal(0);
   });
   
   it(@"should fail on incorrect input", ^{
-    expect(^{
-      processor.rangeColor = LTVector3(1.1, 0, 0);
-    }).to.raise(NSInvalidArgumentException);
     expect(^{
       processor.fuzziness = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -46,19 +61,28 @@ context(@"properties", ^{
       processor.saturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
     expect(^{
-      processor.luminance = -1.1;
+      processor.hue = 1.1;
     }).to.raise(NSInvalidArgumentException);
     expect(^{
-      processor.hue = 1.1;
+      processor.exposure = -1.1;
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      processor.contrast = -1.1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on out of bounds center", ^{
+    expect(^{
+      processor.center = LTVector2(2, 2);
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should not fail on correct tone input", ^{
     expect(^{
-      processor.rangeColor = LTVector3(1, 0, 0);
       processor.fuzziness = -1.0;
       processor.saturation = -1.0;
-      processor.luminance = -1.0;
+      processor.exposure = -1.0;
+      processor.contrast = -1.0;
       processor.hue = 1.0;
     }).toNot.raiseAny();
   });
@@ -66,14 +90,23 @@ context(@"properties", ^{
 
 context(@"processing", ^{
   beforeEach(^{
-    processor.rangeColor = LTVector3(0.502, 0.251, 1);
+    processor.center = LTVector2(0, 0);
+    processor.diameter = 10;
   });
   
-  it(@"should modify luminance correctly", ^{
+  it(@"should modify exposure correctly", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 255, 255, 255));
-    processor.luminance = 1.0;
+    processor.exposure = 1.0;
     [processor process];
     
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  it(@"should modify contrast correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(155, 0, 255, 255));
+    processor.contrast = 1.0;
+    [processor process];
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
@@ -94,9 +127,10 @@ context(@"processing", ^{
   });
 });
 
-context(@"rendering", ^{
+context(@"masks", ^{
   beforeEach(^{
-    processor.rangeColor = LTVector3(0.502, 0.251, 1);
+    processor.center = LTVector2(0, 0);
+    processor.diameter = 10;
   });
   
   it(@"should render mask correctly", ^{
@@ -108,7 +142,7 @@ context(@"rendering", ^{
   });
   
   it(@"should render mask as overlay correctly ", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(128, 64, 255, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(76, 128, 229, 255));
     processor.renderingMode = LTColorRangeRenderingModeMaskOverlay;
     [processor process];
     

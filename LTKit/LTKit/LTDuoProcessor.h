@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, LTDuoBlendMode) {
 /// Dual mask type to construct. Default is LTDualMaskTypeRadial.
 @property (nonatomic) LTDualMaskType maskType;
 
-/// Center of the mask in coordinates of the output image, aka "pixel cooridnates". Despite the
+/// Center of the mask in coordinates of the output image, aka "pixel coordinates". Despite the
 /// relation to pixels, values in this coordinate system don't have to be integers.
 /// Default value of the center is (width/2, height/2). Range is unbounded.
 @property (nonatomic) LTVector2 center;

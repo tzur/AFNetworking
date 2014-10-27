@@ -23,7 +23,7 @@
 /// Dual mask type to construct. Default is LTDualMaskTypeRadial.
 @property (nonatomic) LTDualMaskType maskType;
 
-/// Center of the mask in coordinates of the output image, aka "pixel cooridnates". Despite the
+/// Center of the mask in coordinates of the output image, aka "pixel coordinates". Despite the
 /// relation to pixels, values in this coordinate system doesn't have to be integer.
 /// Default value is the center (width/2, height/2). Range is unbounded.
 @property (nonatomic) LTVector2 center;
