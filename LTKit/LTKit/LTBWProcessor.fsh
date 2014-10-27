@@ -109,8 +109,14 @@ void main() {
   // 2. Local contrast.
   const mediump vec3 kRGBToYPrime = vec3(0.299, 0.587, 0.114);
   mediump float neutral = dot(color.rgb, kRGBToYPrime) + 0.01;
+  // For positive detailsBoost values, details textures is interpolated with original image. For
+  // negative values, a smooth layer is created assuming the following identity:
+  // details = smooth + boost * (original - smooth)
+  // For CLAHE process that is used to create the details texture, boost = 3.5 is a reasonable
+  // value.
   mediump float details = texture2D(detailsTexture, vTexcoord).r * (lum / neutral);
-  lum = mix(lum, details, structure);
+  lum = mix(lum, mix(-0.4 * (details - 3.5 * lum), details, step(0.0, structure)),
+            abs(structure));
   
   // 3. Tonal adjustment.
   lum = texture2D(colorGradient, vec2(lum, 0.0)).a;
