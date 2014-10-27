@@ -215,7 +215,7 @@ LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
   [self updateToneLUT];
 }
 
-LTPropertyWithoutSetter(CGFloat, structure, Structure, 0, 1, 0);
+LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
 - (void)setStructure:(CGFloat)structure {
   [self _verifyAndSetStructure:structure];
   self[[LTBWProcessorFsh structure]] = @(structure);
