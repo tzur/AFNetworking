@@ -1,9 +1,10 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
-// Created by Yaron Inger.
+// Created by Rouven Strauss.
 
-#import "LTMixerProcessor.h"
+#import "LTQuadMixerProcessor.h"
 
 #import "LTOpenCVExtensions.h"
+#import "LTQuad.h"
 #import "LTTexture+Factory.h"
 
 /// Write plus sign with the given offset and the specified color.
@@ -20,7 +21,7 @@ static void LTPlusSignAt(cv::Mat4b image, const cv::Point &offset, const cv::Vec
   }
 }
 
-LTSpecBegin(LTMixerProcessor)
+LTSpecBegin(LTQuadMixerProcessor)
 
 const cv::Vec4b backColor(cv::Vec4b(128, 64, 255, 255));
 const cv::Vec4b frontColor(cv::Vec4b(64, 128, 32, 255));
@@ -30,7 +31,7 @@ __block LTTexture *back;
 __block LTTexture *front;
 __block LTTexture *mask;
 __block LTTexture *output;
-__block LTMixerProcessor *processor;
+__block LTQuadMixerProcessor *processor;
 
 beforeEach(^{
   back = [LTTexture textureWithImage:cv::Mat4b(16, 16, backColor)];
@@ -42,7 +43,9 @@ beforeEach(^{
 
   [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
 
-  processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+  processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                                maskMode:LTMixerMaskModeFront];
+  processor.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
 });
 
 afterEach(^{
@@ -56,17 +59,18 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should not initialize with front and mask of different sizes if mask is applied to front", ^{
     LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(16, 16)
-                            precision:LTTexturePrecisionHalfFloat
-                               format:LTTextureFormatRed allocateMemory:YES];
+                                       precision:LTTexturePrecisionHalfFloat
+                                          format:LTTextureFormatRed allocateMemory:YES];
     expect(^{
-      LTMixerProcessor __unused *processor =
-          [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+      LTQuadMixerProcessor __unused *processor =
+      [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                        maskMode:LTMixerMaskModeFront];
     }).to.raise(NSInvalidArgumentException);
 
     expect(^{
-      LTMixerProcessor __unused *processor =
-          [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
-                                        maskMode:LTMixerMaskModeFront];
+      LTQuadMixerProcessor __unused *processor =
+      [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                    maskMode:LTMixerMaskModeFront];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -75,9 +79,9 @@ context(@"initialization", ^{
                                        precision:LTTexturePrecisionHalfFloat
                                           format:LTTextureFormatRed allocateMemory:YES];
     expect(^{
-      LTMixerProcessor __unused *processor =
-          [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
-                                        maskMode:LTMixerMaskModeBack];
+      LTQuadMixerProcessor __unused *processor =
+      [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                    maskMode:LTMixerMaskModeBack];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -88,7 +92,8 @@ context(@"initialization", ^{
 
 context(@"front placement", ^{
   it(@"should blend with correct translation placement", ^{
-    processor.frontTranslation = CGPointMake(1.0, 1.0);
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(1.0, 1.0)];
     [processor process];
 
     cv::Vec4b resultColor;
@@ -101,8 +106,9 @@ context(@"front placement", ^{
 
   it(@"should blend with correct scaling placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    processor.frontTranslation = CGPointMake(1.0, 1.0);
-    processor.frontScaling = 0.5;
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(1.0, 1.0)];
+    [processor.frontQuad scale:0.5];
     [processor process];
 
     cv::Vec4b resultColor;
@@ -115,8 +121,9 @@ context(@"front placement", ^{
 
   it(@"should blend with correct rotation placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    processor.frontTranslation = CGPointMake(4.0, 4.0);
-    processor.frontRotation = M_PI_4;
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(4.0, 4.0)];
+    [processor.frontQuad rotateByAngle:M_PI_4 aroundPoint:processor.frontQuad.center];
     [processor process];
 
     cv::Vec4b resultColor;
@@ -132,9 +139,10 @@ context(@"front placement", ^{
     image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
     [front load:image];
 
-    processor.frontTranslation = CGPointMake(4, 4);
-    processor.frontScaling = 1.5;
-    processor.frontRotation = M_PI_4;
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(4.0, 4.0)];
+    [processor.frontQuad scale:1.5];
+    [processor.frontQuad rotateByAngle:M_PI_4 aroundPoint:processor.frontQuad.center];
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementRect.png");
@@ -152,7 +160,8 @@ context(@"front placement", ^{
     backImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
     [back load:backImage];
 
-    processor.frontTranslation = CGPointMake(4, 4);
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(4.0, 4.0)];
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementComplex.png");
@@ -175,7 +184,8 @@ context(@"tiling", ^{
     // Enlarge output to enable tiling.
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
 
-    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                                  maskMode:LTMixerMaskModeFront];
     processor.fillMode = LTProcessorFillModeTile;
     [processor process];
 
@@ -203,11 +213,14 @@ context(@"tiling", ^{
 
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
 
-    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
+    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                                  maskMode:LTMixerMaskModeFront];
     processor.fillMode = LTProcessorFillModeTile;
-    processor.frontTranslation = CGPointMake(6, 6);
-    processor.frontRotation = M_PI_2;
-    processor.frontScaling = 2.0;
+    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
+                            byTranslation:CGPointMake(6.0, 6.0)];
+    [processor.frontQuad scale:2.0];
+    [processor.frontQuad rotateByAngle:M_PI_2 aroundPoint:processor.frontQuad.center];
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerTilingComplex.png");
@@ -255,7 +268,7 @@ context(@"blending", ^{
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 159, 255));
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 
@@ -339,7 +352,7 @@ context(@"opacity", ^{
     cv::addWeighted(frontColor, 0.25, backColor, 0.75, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(resultColor);
-
+    
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });

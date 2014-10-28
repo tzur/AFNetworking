@@ -81,7 +81,7 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 - (void)setAuxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   [uniformToAuxiliaryTexture
    enumerateKeysAndObjectsUsingBlock:^(NSString *key, LTTexture *texture, BOOL *) {
-     [self setTexture:texture withName:key];
+     [self setAuxiliaryTexture:texture withName:key];
    }];
 }
 

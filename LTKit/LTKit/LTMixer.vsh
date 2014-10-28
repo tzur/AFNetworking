@@ -5,6 +5,7 @@ uniform highp mat4 modelview;
 uniform highp mat4 projection;
 
 uniform highp mat3 texture;
+uniform highp mat3 mask;
 
 attribute highp vec4 position;
 attribute highp vec3 texcoord;
@@ -16,7 +17,7 @@ void main() {
   vec3 texcoord3 = vec3(texcoord.xy, 1.0);
 
   vFrontTexcoord = (texture * texcoord3).xy;
-  vMaskTexcoord = texcoord.xy;
+  vMaskTexcoord = (mask * texcoord3).xy;
 
   gl_Position = projection * modelview * position;
 }
