@@ -87,6 +87,27 @@ struct LTTrapezoid2 {
 }
 
 #pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTPerspectiveProcessor, scaleMode),
+      @instanceKeypath(LTPerspectiveProcessor, horizontal),
+      @instanceKeypath(LTPerspectiveProcessor, vertical),
+      @instanceKeypath(LTPerspectiveProcessor, rotationAngle),
+      @instanceKeypath(LTPerspectiveProcessor, distortion),
+    ]];
+  });
+  
+  return properties;
+}
+
+#pragma mark -
 #pragma mark Processing
 #pragma mark -
 
