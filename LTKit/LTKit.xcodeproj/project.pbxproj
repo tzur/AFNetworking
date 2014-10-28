@@ -268,6 +268,7 @@
 		2853684A19BDD61300CC9057 /* ImageWithWideFrameTypeFit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2853683E19BDD61300CC9057 /* ImageWithWideFrameTypeFit.png */; };
 		2853684B19BDD61300CC9057 /* ImageWithWideFrameTypeRepeat.png in Resources */ = {isa = PBXBuildFile; fileRef = 2853683F19BDD61300CC9057 /* ImageWithWideFrameTypeRepeat.png */; };
 		2853684C19BDD61300CC9057 /* ImageWithWideFrameTypeStretch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2853684019BDD61300CC9057 /* ImageWithWideFrameTypeStretch.png */; };
+		2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */; };
 		285A670F19ACDF9100B2CE9E /* LTReshapeProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */; };
 		285A671419AE1C8300B2CE9E /* LTMeshDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 285A671219AE1C7000B2CE9E /* LTMeshDrawer.vsh */; };
 		285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 285A671919AE313400B2CE9E /* LTReshapeProcessor.h */; };
@@ -1378,6 +1379,7 @@
 		2853683E19BDD61300CC9057 /* ImageWithWideFrameTypeFit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithWideFrameTypeFit.png; path = Resources/ImageWithWideFrameTypeFit.png; sourceTree = "<group>"; };
 		2853683F19BDD61300CC9057 /* ImageWithWideFrameTypeRepeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithWideFrameTypeRepeat.png; path = Resources/ImageWithWideFrameTypeRepeat.png; sourceTree = "<group>"; };
 		2853684019BDD61300CC9057 /* ImageWithWideFrameTypeStretch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithWideFrameTypeStretch.png; path = Resources/ImageWithWideFrameTypeStretch.png; sourceTree = "<group>"; };
+		2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveOverflow.png; path = Resources/PerspectiveOverflow.png; sourceTree = "<group>"; };
 		285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTReshapeProcessor.fsh; sourceTree = "<group>"; };
 		285A671219AE1C7000B2CE9E /* LTMeshDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMeshDrawer.vsh; sourceTree = "<group>"; };
 		285A671919AE313400B2CE9E /* LTReshapeProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTReshapeProcessor.h; sourceTree = "<group>"; };
@@ -2737,6 +2739,7 @@
 				28842EA419DB347E00BD8FEE /* PerspectiveFit.png */,
 				280E40D41990C2F6008C5BD9 /* PerspectiveCompound.png */,
 				28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */,
+				2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */,
 				28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */,
 				280E40D51990C2F6008C5BD9 /* PerspectiveHorizontal.png */,
 				280E40D61990C2F6008C5BD9 /* PerspectiveRotation.png */,
@@ -4083,6 +4086,7 @@
 				28647E7819D9362B0026630F /* ImageWithRotatedTiledFrame.png in Resources */,
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,
 				280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */,
+				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

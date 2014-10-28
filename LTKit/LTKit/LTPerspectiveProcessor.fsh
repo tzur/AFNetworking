@@ -19,6 +19,7 @@ void main() {
   texcoord.xy /= texcoord.z;
 
   // Apply the barrel/pincushion distortion.
+  texcoord.xy = clamp(texcoord.xy, -1.5, 1.5);
   texcoord.xy *= 0.5 * aspectFactor;
   texcoord.xy *= (1.0 + distortion * dot(texcoord.xy, texcoord.xy));
   texcoord.xy /= distortionScaleCompensation * aspectFactor;
@@ -29,5 +30,5 @@ void main() {
   
   // Every fragment mapped to a point outside the texture is set to transparent black.
   gl_FragColor *= float(all(bvec4(greaterThanEqual(texcoord.xy, vec2(0.0)),
-                                    lessThanEqual(texcoord.xy, vec2(1.0)))));
+                                  lessThanEqual(texcoord.xy, vec2(1.0)))));
 }
