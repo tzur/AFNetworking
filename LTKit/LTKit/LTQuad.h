@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+@class LTRotatedRect;
+
 /// An array of four \c CGPoint representing the corners of a quadrilateral.
 typedef std::array<CGPoint, 4> LTQuadCorners;
 
@@ -23,6 +25,9 @@ typedef NS_OPTIONS(NSUInteger, LTQuadCornerRegion) {
 
 /// Returns a rectangular quad with the given \c origin and the given \c size.
 + (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size;
+
+/// Returns a rectangular rotated quad defined by the given \c rotatedRect.
++ (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
 
 /// Initializes a general quad defined by the given \c corners. In case of a simple (i.e.
 /// non-self-intersecting) quad, the corners have to be provided in clockwise order.
