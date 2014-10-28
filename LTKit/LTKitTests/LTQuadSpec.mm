@@ -4,6 +4,7 @@
 #import "LTQuad.h"
 
 #import "LTOpenCVExtensions.h"
+#import "LTRotatedRect.h"
 
 static const CGFloat kEpsilon = 1e-5;
 
@@ -128,6 +129,15 @@ context(@"initializers and factory methods", ^{
       expect(quad.v1).to.equal(v1);
       expect(quad.v2).to.equal(CGPointMake(v1.x, v3.y));
       expect(quad.v3).to.equal(v3);
+    });
+
+    it(@"should create quad from rotated rect", ^{
+      LTRotatedRect *rotatedRect = [LTRotatedRect rect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
+      quad = [LTQuad quadFromRotatedRect:rotatedRect];
+      expect(quad.v0).to.equal(rotatedRect.v0);
+      expect(quad.v1).to.equal(rotatedRect.v1);
+      expect(quad.v2).to.equal(rotatedRect.v2);
+      expect(quad.v3).to.equal(rotatedRect.v3);
     });
   });
 });

@@ -3,32 +3,26 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTBlendMode.h"
+#import "LTMixerMaskMode.h"
 #import "LTProcessorFillMode.h"
 #import "LTPropertyMacros.h"
 
-/// Types of blend modes that are usable in the mixer.
-typedef NS_ENUM(NSUInteger, LTBlendMode) {
-  LTBlendModeNormal = 0,
-  LTBlendModeDarken,
-  LTBlendModeMultiply,
-  LTBlendModeHardLight,
-  LTBlendModeSoftLight,
-  LTBlendModeLighten,
-  LTBlendModeScreen,
-  LTBlendModeColorBurn,
-  LTBlendModeOverlay,
-  LTBlendModePlusLighter,
-  LTBlendModePlusDarker
-};
-
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
-/// mask on the front texture. The back texture is fixed, while the front texture can be translated,
-/// rotated and scaled. The mixer takes care of textures with alpha, and incorporates the mask's
-/// alpha to the front texture while creating the blended result.
+/// mask on the front (default) or back texture. The back texture is fixed, while the front texture
+/// can be translated, rotated and scaled. The transformation of the mask texture corresponds to the
+/// transformation of the associated texture. The mixer takes care of textures with alpha, and
+/// incorporates the mask's alpha to the front texture while creating the blended result.
 @interface LTMixerProcessor : LTOneShotImageProcessor
 
 /// Initializes mixer with back and front textures, mask and an output texture. The mask must be of
-/// the size of the \c front texture.
+/// the size of the \c front texture if \c maskMode is \c LTMixerMaskModeFront, and of the size of
+/// the \c back texture if \c maskMode is \c LTMixerMaskModeBack.
+- (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front mask:(LTTexture *)mask
+                      output:(LTTexture *)output maskMode:(LTMixerMaskMode)maskMode;
+
+/// Initializes mixer with back and front textures, mask and an output texture. The mask must be of
+/// the size of the \c front texture. The mask is applied to the front texture.
 - (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front
                         mask:(LTTexture *)mask output:(LTTexture *)output;
 

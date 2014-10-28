@@ -8,6 +8,8 @@
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotImageProcessor+Protected.h"
 #import "LTProgram.h"
+#import "LTQuad.h"
+#import "LTQuadMixerProcessor.h"
 #import "LTRectCopyProcessor.h"
 #import "LTRectMapping.h"
 #import "LTRotatedRect.h"
@@ -17,17 +19,11 @@
 
 @interface LTMixerProcessor ()
 
-/// Processor used to write the back texture to output prior to mixing.
-@property (strong, nonatomic) LTRectCopyProcessor *backCopyProcessor;
+/// Internal mixer processor.
+@property (strong, nonatomic) LTQuadMixerProcessor *internalProcessor;
 
-/// Source rect to draw front texture from.
-@property (strong, nonatomic) LTRotatedRect *frontSourceRect;
-
-/// Target rect to draw front texture to.
-@property (strong, nonatomic) LTRotatedRect *frontTargetRect;
-
-/// Front texture to draw.
-@property (strong, nonatomic) LTTexture *front;
+/// Size of the front texture to draw.
+@property (nonatomic) CGSize frontSize;
 
 @end
 
@@ -39,22 +35,32 @@
 
 - (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front
                         mask:(LTTexture *)mask output:(LTTexture *)output {
-  LTParameterAssert(front.size == mask.size, @"Front size (%g, %g) must equal mask size (%g, %g)",
-                    front.size.width, front.size.height, mask.size.width, mask.size.height);
+  return [self initWithBack:back front:front mask:mask output:output maskMode:LTMixerMaskModeFront];
+}
+
+- (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front mask:(LTTexture *)mask
+                      output:(LTTexture *)output maskMode:(LTMixerMaskMode)maskMode {
+  if (maskMode == LTMixerMaskModeFront) {
+    LTParameterAssert(front.size == mask.size, @"Front size (%g, %g) must equal mask size (%g, %g)",
+                      front.size.width, front.size.height, mask.size.width, mask.size.height);
+  } else {
+    LTParameterAssert(back.size == mask.size, @"Back size (%g, %g) must equal mask size (%g, %g)",
+                      back.size.width, back.size.height, mask.size.width, mask.size.height);
+  }
   if (self = [super initWithVertexSource:[LTMixerVsh source]
                           fragmentSource:[LTMixerFsh source] sourceTexture:front
                        auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask}
                                andOutput:output]) {
-    self.front = front;
-    self.backCopyProcessor = [self createBackCopyProcessorWithInput:back output:output];
+    self.internalProcessor =
+        [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                          maskMode:maskMode];
+    self.frontSize = front.size;
     [self setDefaultValues];
   }
   return self;
 }
 
 - (void)setDefaultValues {
-  self.frontSourceRect = [LTRotatedRect rect:CGRectFromSize(self.front.size)];
-
   self.frontTranslation = CGPointZero;
   self.frontScaling = 1;
   self.frontRotation = 0;
@@ -93,30 +99,27 @@
 #pragma mark -
 
 - (void)process {
-  // TODO:(yaron) this can be improved by processing only the area that needs to be redrawn since
-  // the last processing.
-  [self.backCopyProcessor process];
-  return [super process];
-}
-
-- (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  [self.drawer drawRotatedRect:self.frontTargetRect inFramebuffer:placement.targetFbo
-               fromRotatedRect:self.frontSourceRect];
+  [self.internalProcessor process];
 }
 
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
+- (LTBlendMode)blendMode {
+  return self.internalProcessor.blendMode;
+}
+
 - (void)setBlendMode:(LTBlendMode)blendMode {
-  _blendMode = blendMode;
-  self[[LTMixerFsh blendMode]] = @(blendMode);
+  self.internalProcessor.blendMode = blendMode;
+}
+
+- (LTProcessorFillMode)fillMode {
+  return self.internalProcessor.fillMode;
 }
 
 - (void)setFillMode:(LTProcessorFillMode)fillMode {
-  _fillMode = fillMode;
-
-  self.backCopyProcessor.fillMode = fillMode;
+  self.internalProcessor.fillMode = fillMode;
 }
 
 - (void)setFrontTranslation:(CGPoint)frontTranslation {
@@ -135,16 +138,17 @@
 }
 
 - (void)updateFrontTargetRect {
-  self.frontTargetRect = [LTRotatedRect rectWithSize:self.front.size
-                                         translation:self.frontTranslation
-                                             scaling:self.frontScaling
-                                         andRotation:self.frontRotation];
+  LTQuad *frontQuad;
+  if (self.frontScaling) {
+    LTRotatedRect *frontTargetRect = [LTRotatedRect rectWithSize:self.frontSize
+                                                     translation:self.frontTranslation
+                                                         scaling:self.frontScaling
+                                                     andRotation:self.frontRotation];
+    frontQuad = [LTQuad quadFromRotatedRect:frontTargetRect];
+  }
+  self.internalProcessor.frontQuad = frontQuad;
 }
 
-LTPropertyWithoutSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1);
-- (void)setFrontOpacity:(CGFloat)frontOpacity {
-  [self _verifyAndSetFrontOpacity:frontOpacity];
-  self[[LTMixerFsh opacity]] = @(frontOpacity);
-}
+LTPropertyProxy(CGFloat, frontOpacity, FrontOpacity, self.internalProcessor);
 
 @end

@@ -5,6 +5,7 @@
 
 #import "LTGeometry.h"
 #import "LTTriangle.h"
+#import "LTRotatedRect.h"
 
 typedef union {
   NSUInteger intValue;
@@ -19,6 +20,8 @@ typedef union {
 @end
 
 @implementation LTQuad
+
+static const CGFloat kEpsilon = 1e-10;
 
 #pragma mark -
 #pragma mark Factory methods
@@ -35,6 +38,19 @@ typedef union {
   CGPoint v3 = origin + CGPointMake(0, size.height);
 
   LTQuadCorners corners{{v0, v1, v2, v3}};
+  return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
+}
+
++ (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect {
+  LTParameterAssert(rotatedRect);
+
+  std::array<CGFloat, 4> lengths{{LTVector2(rotatedRect.v0 - rotatedRect.v1).length(),
+    LTVector2(rotatedRect.v1 - rotatedRect.v2).length(), LTVector2(rotatedRect.v2 - rotatedRect.v3).length(),
+    LTVector2(rotatedRect.v3 - rotatedRect.v0).length()}};
+  LTParameterAssert(*std::min_element(lengths.begin(), lengths.end()) > kEpsilon,
+                    @"Edges of provided rotated rect too short.");
+
+  LTQuadCorners corners{{rotatedRect.v0, rotatedRect.v1, rotatedRect.v2, rotatedRect.v3}};
   return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
 }
 
