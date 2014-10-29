@@ -158,6 +158,7 @@ context(@"properties", ^{
     expect(view.framebufferSize).to.equal(view.bounds.size * view.contentScaleFactor);
     expect(view.forwardTouchesToDelegate).to.beFalsy();
     expect(view.contentTransparency).to.beFalsy();
+    expect(view.checkerboardPattern).to.beFalsy();
     expect(view.navigationMode).to.equal(LTViewNavigationFull);
     expect(view.contentInset).to.equal(UIEdgeInsetsZero);
     expect(view.minZoomScaleFactor).to.equal(0);
@@ -172,6 +173,11 @@ context(@"properties", ^{
   it(@"should set contentTransparency", ^{
     view.contentTransparency = YES;
     expect(view.contentTransparency).to.beTruthy();
+  });
+
+  it(@"should set checkerboardPattern", ^{
+    view.checkerboardPattern = YES;
+    expect(view.checkerboardPattern).to.beTruthy();
   });
 
   it(@"should set forwardTouchesToDelegate", ^{
@@ -294,31 +300,53 @@ context(@"drawing", ^{
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
-  it(@"should blend transparent pixels with a checkerboard if contentTransparency is YES", ^{
-    view.contentTransparency = YES;
-    [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      cv::Vec4b semiTransparent(128, 0, 0, 128);
-      cv::Vec4b blendedWhite = LTBlend(cv::Vec4b(255, 255, 255, 255), semiTransparent);
-      cv::Vec4b blendedGray = LTBlend(cv::Vec4b(193, 193, 193, 255), semiTransparent);
-      (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(semiTransparent);
-      cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
-      unsigned int pixels = (unsigned int)view.pixelsPerCheckerboardSquare;
-      resizedContent(cv::Rect(0, 0, pixels, pixels)) = blendedGray;
-      resizedContent(cv::Rect(pixels, pixels, pixels, pixels)) = blendedGray;
-      resizedContent(cv::Rect(pixels, 0, pixels, pixels)) = blendedWhite;
-      resizedContent(cv::Rect(0, pixels, pixels, pixels)) = blendedWhite;
-      cv::flip(resizedContent, resizedContent, 0);
-      expectedOutput = view.backgroundColor.lt_cvVector;
-      resizedContent.copyTo(expectedOutput(contentAreaInOutput));
-    }];
-    
-    [view drawToFbo:fbo];
-    expect($(outputTexture.image)).to.beCloseToMat($(expectedOutput));
+
+  context(@"contentTransparency is YES", ^{
+    it(@"should blend transparent pixels with a checkerboard if checkerboardPattern is YES", ^{
+      view.contentTransparency = YES;
+      view.checkerboardPattern = YES;
+      [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        cv::Vec4b semiTransparent(128, 0, 0, 128);
+        cv::Vec4b blendedWhite = LTBlend(cv::Vec4b(255, 255, 255, 255), semiTransparent);
+        cv::Vec4b blendedGray = LTBlend(cv::Vec4b(193, 193, 193, 255), semiTransparent);
+        (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(semiTransparent);
+        cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
+        unsigned int pixels = (unsigned int)view.pixelsPerCheckerboardSquare;
+        resizedContent(cv::Rect(0, 0, pixels, pixels)) = blendedGray;
+        resizedContent(cv::Rect(pixels, pixels, pixels, pixels)) = blendedGray;
+        resizedContent(cv::Rect(pixels, 0, pixels, pixels)) = blendedWhite;
+        resizedContent(cv::Rect(0, pixels, pixels, pixels)) = blendedWhite;
+        cv::flip(resizedContent, resizedContent, 0);
+        expectedOutput = view.backgroundColor.lt_cvVector;
+        resizedContent.copyTo(expectedOutput(contentAreaInOutput));
+      }];
+
+      [view drawToFbo:fbo];
+      expect($(outputTexture.image)).to.beCloseToMat($(expectedOutput));
+    });
+
+    it(@"should blend transparent pixels with backgroundColor if checkerboardPattern is NO", ^{
+      view.contentTransparency = YES;
+      view.checkerboardPattern = NO;
+      view.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+      [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        cv::Vec4b semiTransparent(128, 0, 0, 128);
+        cv::Vec4b blendedGray = LTBlend(cv::Vec4b(193, 193, 193, 255), semiTransparent);
+        (*mapped)(cv::Rect(0, 0, mapped->cols / 2, mapped->rows / 2)).setTo(semiTransparent);
+        cv::resize(*mapped, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
+        unsigned int pixels = (unsigned int)view.pixelsPerCheckerboardSquare;
+        resizedContent(cv::Rect(0, 0, pixels * 2, pixels * 2)) = blendedGray;
+        cv::flip(resizedContent, resizedContent, 0);
+        expectedOutput = view.backgroundColor.lt_cvVector;
+        resizedContent.copyTo(expectedOutput(contentAreaInOutput));
+      }];
+
+      [view drawToFbo:fbo];
+      expect($(outputTexture.image)).to.beCloseToMat($(expectedOutput));
+    });
   });
-  
+
   context(@"magnifying interpolation", ^{
-    
     // Tests if zooming by the given factor uses the expected interpolation.
     void (^testInterpolation)(CGFloat, int) = ^(CGFloat zoomFactor, int expectedInterpolation) {
       id mock = [OCMockObject partialMockForObject:view.navigationView];

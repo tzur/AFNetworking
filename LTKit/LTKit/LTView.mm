@@ -34,8 +34,11 @@
 /// Dimensions of the squares in the checkerboard used to visualize transparency.
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 
-/// Texture used for visualizing the transparent content pixels.
+/// Texture used for visualizing the transparent pixels when \c checkerboardPattern is \c YES.
 @property (strong, nonatomic) LTTexture *checkerboardTexture;
+
+/// Texture used for visualizing the transparent pixels when checkerboardPattern is \c NO.
+@property (strong, nonatomic) LTTexture *backgroundTexture;
 
 /// Texture used for displaying the content of the LTView.
 @property (strong, nonatomic) LTTexture *contentTexture;
@@ -47,7 +50,7 @@
 @property (strong, nonatomic) LTRectDrawer *rectDrawer;
 
 /// RectDrawer used for drawing the checkerboard background.
-@property (strong, nonatomic) LTRectDrawer *checkerboardDrawer;
+@property (strong, nonatomic) LTRectDrawer *backgroundDrawer;
 
 /// Manages the pixel grid drawn on the LTView on certain zoom levels.
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
@@ -93,7 +96,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.maxZoomScale = kDefaultMaxZoomScale;
   self.doubleTapLevels = kDefaultDoubleTapLevels;
   self.doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
-  self.pixelsPerCheckerboardSquare = kDefaultPixelsPerCheckerboardSquare * self.contentScaleFactor;
+  self.pixelsPerCheckerboardSquare = kDefaultPixelsPerCheckerboardSquare * 2;
 }
 
 - (void)setupWithContext:(LTGLContext *)context contentTexture:(LTTexture *)texture
@@ -110,7 +113,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self createNavigationViewWithState:state];
   [self createContentFbo];
   [self createRectDrawer];
-  [self createCheckerboard];
+  [self createBackgroundDrawer];
   [self createPixelGrid];
   [self registerNotifications];
   [self setNeedsDisplay];
@@ -167,7 +170,12 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self.contentTexture];
 }
 
-- (void)createCheckerboard {
+- (void)createBackgroundDrawer {
+  [self createBackgroundTextures];
+  self.backgroundDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self.textureForBackground];
+}
+
+- (void)createBackgroundTextures {
   cv::Vec4b white(255, 255, 255, 255);
   cv::Vec4b gray(193, 193, 193, 255);
   unsigned int pixels = (unsigned int)self.pixelsPerCheckerboardSquare;
@@ -175,12 +183,15 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   checkerboardMat = white;
   checkerboardMat(cv::Rect(0, 0, pixels, pixels)) = gray;
   checkerboardMat(cv::Rect(pixels, pixels, pixels, pixels)) = gray;
-
   self.checkerboardTexture = [LTTexture textureWithImage:checkerboardMat];
-  self.checkerboardTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-  self.checkerboardTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-  self.checkerboardTexture.wrap = LTTextureWrapRepeat;
-  self.checkerboardDrawer = [[LTRectDrawer alloc] initWithSourceTexture:self.checkerboardTexture];
+  self.backgroundTexture =
+      [LTTexture textureWithImage:cv::Mat4b(1, 1, self.backgroundColor.lt_cvVector)];
+
+  for (LTTexture *texture in @[self.backgroundTexture, self.checkerboardTexture]) {
+    texture.minFilterInterpolation = LTTextureInterpolationNearest;
+    texture.magFilterInterpolation = LTTextureInterpolationNearest;
+    texture.wrap = LTTextureWrapRepeat;
+  }
 }
 
 - (void)createPixelGrid {
@@ -200,7 +211,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kSetNeedsDisplayNotification
                                                 object:self];
   self.pixelGrid = nil;
-  self.checkerboardDrawer = nil;
+  self.backgroundDrawer = nil;
   self.checkerboardTexture = nil;
   self.rectDrawer = nil;
   self.contentFbo = nil;
@@ -374,11 +385,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     // Draw the content.
     [self drawContentForVisibleContentRect:visibleContentRect];
     
-    // Draw the overlays.
-    [self drawOverlayForVisibleContentRect:visibleContentRect];
-    
     // Draw the checkerboard background to visualize transparent content pixels.
     [self drawTransparencyBackground];
+
+    // Draw the overlays.
+    [self drawOverlayForVisibleContentRect:visibleContentRect];
   }];
 }
 
@@ -436,8 +447,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     context.blendFunc = kLTGLContextBlendFuncChecker;
     context.blendEquation = kLTGLContextBlendEquationDefault;
     
-    [self.checkerboardDrawer drawRect:self.framebufferBounds
-                inFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
+    [self.backgroundDrawer drawRect:self.framebufferBounds
+              inFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
   }];
 }
 
@@ -634,6 +645,20 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   _maxZoomScale = MAX(0, maxZoomScale);
   self.pixelGrid.maxZoomScale = maxZoomScale;
   self.navigationView.maxZoomScale = maxZoomScale;
+}
+
+- (LTTexture *)textureForBackground {
+  return self.checkerboardPattern ? self.checkerboardTexture : self.backgroundTexture;
+}
+
+- (void)setCheckerboardPattern:(BOOL)checkerboardPattern {
+  _checkerboardPattern = checkerboardPattern;
+  [self.backgroundDrawer setSourceTexture:self.textureForBackground];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+  [super setBackgroundColor:backgroundColor];
+  [self.backgroundTexture clearWithColor:backgroundColor.lt_ltVector];
 }
 
 #pragma mark -

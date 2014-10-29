@@ -85,6 +85,10 @@
 /// Otherwise, the content texture will be opaque.
 @property (nonatomic) BOOL contentTransparency;
 
+/// If \c YES, a checkerboard pattern will be drawn on the background, to indicate transparent
+/// areas. Otherwise, the background color will be used.
+@property (nonatomic) BOOL checkerboardPattern;
+
 /// If \c YES, the view will forward touch events to the touchDelegate.
 @property (nonatomic) BOOL forwardTouchesToDelegate;
 
