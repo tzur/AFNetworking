@@ -146,8 +146,14 @@ struct LTTrapezoid2 {
   GLKVector3 v = GLKVector3Make(point.x, point.y, 1.0);
   v = GLKMatrix3MultiplyVector3(self.matrix, v);
   v = v / v.z;
-  v = (v + GLKVector3One) / 2.0;
-  return CGPointMake(v.x, v.y);
+
+  LTVector2 v2(v.x, v.y);
+  v2 *= 0.5 * self.aspectFactor;
+  v2 *= (1.0 + self.mappedDistortion * v2.dot(v2));
+  v2 /= self.scaleCompensationForCurrentDistortion * self.aspectFactor;
+
+  v2 += 0.5;
+  return (CGPoint)v2;
 }
 
 #pragma mark -

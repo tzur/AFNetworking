@@ -118,7 +118,8 @@ context(@"processing", ^{
     beforeEach(^{
       inputTexture = [LTTexture textureWithImage:LTCheckerboard(kSize.height, kSize.width, 8)];
       outputTexture = [LTTexture byteRGBATextureWithSize:kSize];
-      processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:outputTexture];
+      processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture
+                                                      andOutput:outputTexture];
     });
 
     it(@"should apply barrel correction", ^{
@@ -132,6 +133,15 @@ context(@"processing", ^{
       processor.distortion = 0.5;
       [processor process];
       expected = LTLoadMat([self class], @"PerspectivePincushionCorrection.png");
+      expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
+    });
+
+    it(@"should not overflow on distortion and excessive projections", ^{
+      processor.distortion = processor.minDistortion;
+      processor.horizontal = processor.maxHorizontal;
+      processor.vertical = processor.maxVertical;
+      [processor process];
+      expected = LTLoadMat([self class], @"PerspectiveOverflow.png");
       expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
     });
   });
