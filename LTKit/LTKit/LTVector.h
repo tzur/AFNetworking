@@ -787,3 +787,7 @@ static const LTVector4 LTVector4Zero;
 static const LTVector2 LTVector2One(1, 1);
 static const LTVector3 LTVector3One(1, 1, 1);
 static const LTVector4 LTVector4One(1, 1, 1, 1);
+
+static const LTVector2 LTVector2Null(NAN);
+static const LTVector3 LTVector3Null(NAN);
+static const LTVector4 LTVector4Null(NAN);
