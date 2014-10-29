@@ -14,7 +14,7 @@
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@interface LTView ()
+@interface LTView () <LTViewNavigationViewDelegate>
 @property (strong, nonatomic) GLKView *glkView;
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
@@ -645,6 +645,35 @@ context(@"touch delegate", ^{
       [view simulateTouchesOfPhase:UITouchPhaseCancelled];
       OCMVerifyAll(mock);
     }
+  });
+});
+
+context(@"navigation delegate", ^{
+  __block id delegate;
+  __block LTViewNavigationView *navView;
+  __block LTView *view;
+  
+  beforeEach(^{
+    delegate = [OCMockObject mockForProtocol:@protocol(LTViewNavigationViewDelegate)];
+    navView = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize];
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    
+    view.navigationView = navView;
+    view.navigationView.delegate = view;
+    view.navigationDelegate = delegate;
+  });
+  
+  afterEach(^{
+    delegate = nil;
+    navView = nil;
+    view = nil;
+  });
+  
+  it(@"should forward event to delegate", ^{
+    const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
+    [[[delegate expect] ignoringNonObjectArgs] didNavigateToRect:targetRect];
+    [view.navigationView zoomToRect:targetRect animated:NO];
+    OCMVerifyAll(delegate);
   });
 });
 

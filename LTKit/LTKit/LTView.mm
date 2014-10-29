@@ -254,7 +254,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark LTViewNavigationViewDelegate
 #pragma mark -
 
-- (void)didNavigateToRect:(CGRect __unused)visibleRect {
+- (void)didNavigateToRect:(CGRect)visibleRect {
+  [self.navigationDelegate didNavigateToRect:visibleRect];
   [self setNeedsDisplay];
 }
 

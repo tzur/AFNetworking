@@ -3,6 +3,7 @@
 
 #import "LTViewDelegates.h"
 #import "LTViewNavigationMode.h"
+#import "LTViewNavigationView.h"
 
 @class LTFbo, LTGLContext, LTImage, LTTexture, LTViewNavigationState;
 
@@ -71,8 +72,13 @@
 /// This delegate will be used to update the \c LTView's content.
 @property (weak, nonatomic) id<LTViewDrawDelegate> drawDelegate;
 
-/// Touch events will be forwarded to this delegate
+/// Touch events will be forwarded to this delegate.
 @property (weak, nonatomic) id<LTViewTouchDelegate> touchDelegate;
+
+/// Navigation events from \c LTViewNavigationView will be forwarded to this delegate.
+///
+/// @see LTViewNavigationView.
+@property (weak, nonatomic) id<LTViewNavigationViewDelegate> navigationDelegate;
 
 /// Size of the \c LTView's content, in pixels.
 @property (readonly, nonatomic) CGSize contentSize;
