@@ -65,3 +65,13 @@
 - (void)ltView:(LTView *)view touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 
 @end
+
+/// This protocol is used to get updates on navigation events from the \c LTView.
+@protocol LTViewNavigationDelegate <NSObject>
+
+@optional
+
+/// Notify the delegate that the LTView scrolled/zoomed to the current visible rectangle.
+- (void)didNavigateToRect:(CGRect)visibleRect;
+
+@end

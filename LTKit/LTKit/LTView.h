@@ -6,8 +6,6 @@
 
 @class LTFbo, LTGLContext, LTImage, LTTexture, LTViewNavigationState;
 
-@protocol LTViewNavigationViewDelegate;
-
 /// The \c LTView class is used for displaying zoomable and scrollable openGL output.
 ///
 /// Uses an \c LTViewDrawDelegate to update the content and control the displayed output (overlays,
@@ -79,7 +77,7 @@
 /// Navigation events from \c LTViewNavigationView will be forwarded to this delegate.
 ///
 /// @see LTViewNavigationView.
-@property (weak, nonatomic) id<LTViewNavigationViewDelegate> navigationDelegate;
+@property (weak, nonatomic) id<LTViewNavigationDelegate> navigationDelegate;
 
 /// Size of the \c LTView's content, in pixels.
 @property (readonly, nonatomic) CGSize contentSize;
