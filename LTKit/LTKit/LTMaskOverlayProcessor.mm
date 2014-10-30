@@ -16,6 +16,7 @@
                            sourceTexture:image
                        auxiliaryTextures:@{[LTMaskOverlayFsh maskTexture]: mask}
                                andOutput:output]) {
+    self[[LTMaskOverlayFsh inputOnFramebuffer]] = @(image == output);
     self.maskColor = LTVector4(1.0, 0.0, 0.0, 0.5);
   }
   return self;

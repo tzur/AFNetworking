@@ -12,6 +12,9 @@
 
 /// Initializes with an image, its mask and an output image that will contain the mask composited
 /// over the image, after processing.
+///
+/// @note In case \c image and \c output are the same texture, the processor will use the current
+/// framebuffer as input during screen processing.
 - (instancetype)initWithImage:(LTTexture *)image mask:(LTTexture *)mask output:(LTTexture *)output;
 
 /// Color of the mask to display on top of the input image. The alpha component is used to control
