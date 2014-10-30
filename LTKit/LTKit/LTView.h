@@ -3,9 +3,10 @@
 
 #import "LTViewDelegates.h"
 #import "LTViewNavigationMode.h"
-#import "LTViewNavigationView.h"
 
 @class LTFbo, LTGLContext, LTImage, LTTexture, LTViewNavigationState;
+
+@protocol LTViewNavigationViewDelegate;
 
 /// The \c LTView class is used for displaying zoomable and scrollable openGL output.
 ///
