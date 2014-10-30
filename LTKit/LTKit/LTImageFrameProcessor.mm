@@ -93,8 +93,7 @@
 
 - (void)assertImageFrameCorrectness:(LTImageFrame *)imageFrame {
   LTParameterAssert((imageFrame.baseTexture.size.width == imageFrame.baseTexture.size.height) &&
-                    (imageFrame.baseMask.size.width == imageFrame.baseMask.size.height) &&
-                    (imageFrame.frameMask.size.width == imageFrame.frameMask.size.height));
+                    (imageFrame.baseMask.size.width == imageFrame.baseMask.size.height));
 }
 
 #pragma mark -

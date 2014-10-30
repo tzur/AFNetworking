@@ -56,8 +56,7 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 #pragma mark -
 
 /// Creates framed image using an input image and \c LTImageFrame.
-/// Constraints on non-nil textures: \c baseTexture, \c baseMask and \c frameMask should be a
-/// rectangle.
+/// Constraints on non-nil textures: \c baseTexture and \c baseMask should be a square.
 @interface LTImageFrameProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture, which will have a frame added to it as the output.

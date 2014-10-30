@@ -13,11 +13,6 @@ __block LTTexture *frameMask;
 __block LTTexture *output;
 __block LTImageTileableFrameProcessor *processor;
 
-beforeEach(^{
-  cv::Mat1b originalFrameMask(32, 32, 255);
-  frameMask = [LTTexture textureWithImage:originalFrameMask];
-});
-
 afterEach(^{
   frameMask = nil;
   output = nil;
@@ -144,8 +139,8 @@ context(@"processing landscape image with tileable frame", ^{
     
     // Set frame mask.
     cv::Mat1b frameMaskMat;
-    frameMaskMat.create(16, 16);
-    frameMaskMat(cv::Rect(0, 0, 16, 16)) = 255;
+    frameMaskMat.create(20, 16);
+    frameMaskMat(cv::Rect(0, 0, 16, 20)) = 255;
     frameMaskMat(cv::Rect(2, 2, 12, 12)) = 0;
     frameMask = [LTTexture textureWithImage:frameMaskMat];
     
