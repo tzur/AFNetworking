@@ -19,7 +19,9 @@ void main() {
   texcoord.xy /= texcoord.z;
 
   // Apply the barrel/pincushion distortion.
-  texcoord.xy = clamp(texcoord.xy, -1.5, 1.5);
+  // Note that on extreme perspective corrections together with high barrel correction an overflow
+  // might occur leading to weird artifacts in the corners. clamping the incoming value doesn't
+  // provide a bullet-proof solution as it sometime causes artifacts in the pincushion correction.
   texcoord.xy *= 0.5 * aspectFactor;
   texcoord.xy *= (1.0 + distortion * dot(texcoord.xy, texcoord.xy));
   texcoord.xy /= distortionScaleCompensation * aspectFactor;
