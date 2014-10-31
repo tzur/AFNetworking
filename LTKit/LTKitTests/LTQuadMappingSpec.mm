@@ -19,7 +19,7 @@ static const GLKVector3 kTopRight = GLKVector3Make(1, 0, 1);
 static const GLKVector3 kBottomLeft = GLKVector3Make(0, 1, 1);
 static const GLKVector3 kBottomRight = GLKVector3Make(1, 1, 1);
 
-static const CGSize kTextureSize = CGSizeMake(1, 1);
+static const CGSize kTextureSize = CGSizeMake(8, 12);
 
 static const CGPoint kQuadTopLeft = CGPointMake(0, 0);
 static const CGPoint kQuadTopRight = CGPointMake(1, 0);

@@ -11,13 +11,13 @@ attribute highp vec4 position;
 attribute highp vec3 texcoord;
 
 varying highp vec2 vFrontTexcoord;
-varying highp vec2 vMaskTexcoord;
+varying highp vec3 vMaskTexcoord;
 
 void main() {
   vec3 texcoord3 = vec3(texcoord.xy, 1.0);
 
   vFrontTexcoord = (texture * texcoord3).xy;
-  vMaskTexcoord = (mask * texcoord3).xy;
+  vMaskTexcoord = mask * texcoord3;
 
   gl_Position = projection * modelview * position;
 }
