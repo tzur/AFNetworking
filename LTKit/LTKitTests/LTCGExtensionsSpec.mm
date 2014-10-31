@@ -106,6 +106,14 @@ context(@"cgpoint operations", ^{
     expect(std::clamp(CGPointMake(0.5, -0.5), 1, 0)).to.equal(CGPointMake(0.5, 0));
     expect(std::clamp(CGPointMake(0.5, -0.5), -1, 0)).to.equal(CGPointMake(0, -0.5));
     expect(std::clamp(CGPointMake(0.5, -0.5), 0, -1)).to.equal(CGPointMake(0, -0.5));
+
+    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(0, 0),
+                      CGPointMake(1, 1))).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(-1, 0),
+                      CGPointMake(1, 1))).to.equal(CGPointMake(0.5, 0));
+    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(-1, -1),
+                      CGPointMake(0, 1))).to.equal(CGPointMake(0, -0.5));
+
     expect(std::clamp(CGPointMake(0.5, -0.5),
                       CGRectMake(0, 0, 1, 1))).to.equal(CGPointMake(0.5, 0));
     expect(std::clamp(CGPointMake(0.5, -0.5),
