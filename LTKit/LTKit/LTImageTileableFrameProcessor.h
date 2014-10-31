@@ -5,7 +5,7 @@
 
 /// Creates framed image using an input image and tileable \c LTImageFrame.
 /// Constraints on non-nil tileable textures: \c baseTexture and \c baseMask should be of the same
-/// size and both dimensions need to be a power of two. \c frameMask should be a rectangle.
+/// size and both dimensions need to be a power of two.
 @interface LTImageTileableFrameProcessor : LTImageFrameProcessor
 
 // Sets the image frame with \c angle and \c translation.

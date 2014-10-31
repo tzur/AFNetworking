@@ -49,7 +49,6 @@
                     (imageFrame.baseTexture.size == imageFrame.baseMask.size));
   LTParameterAssert(LTIsPowerOfTwo(imageFrame.baseTexture.size) &&
                     LTIsPowerOfTwo(imageFrame.baseMask.size));
-  LTParameterAssert(imageFrame.frameMask.size.width == imageFrame.frameMask.size.height);
 }
 
 #pragma mark -

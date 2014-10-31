@@ -211,6 +211,9 @@ context(@"processing frame type fit", ^{
     LTTexture *input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+    cv::Mat1b originalFrameMask(32, 60, 255);
+    frameMask = [LTTexture textureWithImage:originalFrameMask];
+
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
     [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
                                                              frameMask:frameMask
