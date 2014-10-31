@@ -3,6 +3,7 @@
 
 #import "LTMaskOverlayProcessor.h"
 
+#import "LTFbo.h"
 #import "LTTexture+Factory.h"
 
 LTSpecBegin(LTMaskOverlayProcessorSpec)
@@ -10,6 +11,7 @@ LTSpecBegin(LTMaskOverlayProcessorSpec)
 context(@"processing", ^{
   __block LTMaskOverlayProcessor *processor;
   __block LTTexture *input;
+  __block LTTexture *mask;
   __block LTTexture *output;
 
   beforeEach(^{
@@ -18,7 +20,7 @@ context(@"processing", ^{
     maskImage(cv::Rect(0, 0, 4, 4)).setTo(0);
 
     input = [LTTexture textureWithImage:inputImage];
-    LTTexture *mask = [LTTexture textureWithImage:maskImage];
+    mask = [LTTexture textureWithImage:maskImage];
     output = [LTTexture textureWithPropertiesOf:input];
 
     processor = [[LTMaskOverlayProcessor alloc] initWithImage:input mask:mask output:output];
@@ -27,6 +29,7 @@ context(@"processing", ^{
   afterEach(^{
     output = nil;
     input = nil;
+    mask = nil;
     processor = nil;
   });
 
@@ -46,6 +49,21 @@ context(@"processing", ^{
     cv::Mat4b expected(input.size.height, input.size.width, cv::Vec4b(128, 64, 112, 255));
     expected(cv::Rect(0, 0, 4, 4)) = cv::Vec4b(128, 64, 192, 255);
 
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should use framebuffer as input in case the input and output are equal", ^{
+    processor = [[LTMaskOverlayProcessor alloc] initWithImage:input mask:mask output:input];
+    [input cloneTo:output];
+    [input clearWithColor:LTVector4Zero];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+    [fbo bindAndDraw:^{
+      [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
+    }];
+    
+    cv::Mat4b expected(input.size.height, input.size.width, cv::Vec4b(160, 48, 24, 255));
+    expected(cv::Rect(0, 0, 4, 4)) = cv::Vec4b(192, 32, 16, 255);
+    
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });
