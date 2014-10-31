@@ -197,7 +197,12 @@ namespace std {
   CG_INLINE CGPoint clamp(const CGPoint &point, const CGFloat &a, const CGFloat &b) {
     return CGPointMake(clamp(point.x, a, b), clamp(point.y, a, b));
   }
-  
+
+  /// Constrains a point to lie between two points.
+  CG_INLINE CGPoint clamp(const CGPoint &point, const CGPoint &a, const CGPoint &b) {
+    return CGPointMake(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
+  }
+
   /// Constrains a point to lie inside the given rect.
   CG_INLINE CGPoint clamp(const CGPoint &point, const CGRect &rect) {
     return CGPointMake(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
