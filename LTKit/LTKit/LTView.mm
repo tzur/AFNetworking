@@ -266,7 +266,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (void)didNavigateToRect:(CGRect)visibleRect {
-  [self.navigationDelegate didNavigateToRect:visibleRect];
+  if ([self.navigationDelegate respondsToSelector:@selector(didNavigateToRect:)]) {
+    [self.navigationDelegate didNavigateToRect:visibleRect];
+  }
   [self setNeedsDisplay];
 }
 
