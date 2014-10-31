@@ -70,8 +70,10 @@ uniform mediump vec3 grainChannelMixer;
 uniform mediump float grainAmplitude;
 uniform mediump float colorGradientFade;
 uniform mediump vec2 frameWidth;
-// Width / Height.
-uniform mediump float aspectRatio;
+// Combined aspect ratio takes into the account both aspect ratio of the image and of the frame. See
+// LTBWProcessor for the details.
+uniform mediump float combinedAspectRatio;
+uniform mediump float flipFrameCoordinates;
 
 // Sc - scource, top.
 // Dc - destination, bottom.
@@ -128,9 +130,11 @@ void main() {
   lum = mix(soft, harsh, 0.3);
   
   // 5. Frame.
-  mediump vec2 coords = mix(getFrameCoordinates(vTexcoord, frameWidth, aspectRatio),
-                            getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / aspectRatio).yx,
-                            step(1.0, aspectRatio));
+  mediump vec2 coords =
+      mix(getFrameCoordinates(vTexcoord, frameWidth, combinedAspectRatio),
+          getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / combinedAspectRatio).yx,
+          step(1.0, combinedAspectRatio));
+  coords = mix(coords, coords.yx, flipFrameCoordinates);
   lum = overlay(lum, texture2D(frameTexture, coords).r, 1.0, 1.0);
   
   // 6. Grain.

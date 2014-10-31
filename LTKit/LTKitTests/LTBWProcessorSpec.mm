@@ -111,10 +111,10 @@ context(@"properties", ^{
     }).toNot.raiseAny();
   });
   
-  it(@"should fail on non-square frame texture", ^{
+  it(@"should not fail on non-square frame texture", ^{
     expect(^{
       processor.frameTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 1)];
-    }).to.raise(NSInvalidArgumentException);
+    }).toNot.raiseAny();
   });
 });
 
