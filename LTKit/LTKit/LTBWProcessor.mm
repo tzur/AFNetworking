@@ -60,7 +60,6 @@
   if (self = [super initWithVertexSource:[LTBWProcessorVsh source]
                           fragmentSource:[LTBWProcessorFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures andOutput:output]) {
-    self[[LTBWProcessorFsh aspectRatio]] = @([self aspectRatio]);
     self.identityColorGradientMat = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
     [self resetInputModel];
   }
@@ -373,9 +372,26 @@ LTPropertyWithoutSetter(CGFloat, grainAmplitude, GrainAmplitude, 0, 1, 1);
   if (!frameTexture) {
     frameTexture = [self defaultFrameTexture];
   }
-  LTParameterAssert([self isValidFrameTexture:frameTexture], @"Frame texture should be square.");
   _frameTexture = frameTexture;
   [self setAuxiliaryTexture:frameTexture withName:[LTBWProcessorFsh frameTexture]];
+  [self updateAspectRatioWithFrameTexture:frameTexture];
+}
+
+- (void)updateAspectRatioWithFrameTexture:(LTTexture *)frameTexture {
+  CGFloat frameAspectRatio = frameTexture.size.width / frameTexture.size.height;
+  CGFloat imageAspectRatio = [self aspectRatio];
+  CGFloat combinedAspectRatio;
+  CGFloat flipFrameCoordinates;
+  if ((frameAspectRatio > 1 && imageAspectRatio < 1) ||
+      (frameAspectRatio < 1 && imageAspectRatio > 1)) {
+    combinedAspectRatio = imageAspectRatio * frameAspectRatio;
+    flipFrameCoordinates = 1;
+  } else {
+    combinedAspectRatio = imageAspectRatio / frameAspectRatio;
+    flipFrameCoordinates = 0;
+  }
+  self[[LTBWProcessorFsh combinedAspectRatio]] = @(combinedAspectRatio);
+  self[[LTBWProcessorFsh flipFrameCoordinates]] = @(flipFrameCoordinates);
 }
 
 - (BOOL)isValidFrameTexture:(LTTexture *)texture {
