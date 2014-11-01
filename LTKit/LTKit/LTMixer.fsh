@@ -22,7 +22,7 @@ uniform int blendMode;
 uniform mediump float opacity;
 
 varying highp vec2 vFrontTexcoord;
-varying highp vec2 vMaskTexcoord;
+varying highp vec3 vMaskTexcoord;
 
 void normal(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa, in mediump float Da) {
   gl_FragColor.rgb = Sca + Dca * (1.0 - Sa);
@@ -107,7 +107,7 @@ void plusDarker(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
 void main() {
   mediump vec4 back = gl_LastFragData[0];
   mediump vec4 front = texture2D(sourceTexture, vFrontTexcoord);
-  mediump vec4 mask = texture2D(maskTexture, vMaskTexcoord);
+  mediump vec4 mask = texture2D(maskTexture, vMaskTexcoord.xy / vMaskTexcoord.z);
 
   // Calculate new front, including mask alpha value and opacity.
   front = front * mask.r * opacity;

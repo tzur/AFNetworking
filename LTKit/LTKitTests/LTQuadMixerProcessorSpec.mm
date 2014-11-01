@@ -3,6 +3,7 @@
 
 #import "LTQuadMixerProcessor.h"
 
+#import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTQuad.h"
 #import "LTTexture+Factory.h"
@@ -36,9 +37,7 @@ __block LTQuadMixerProcessor *processor;
 beforeEach(^{
   back = [LTTexture textureWithImage:cv::Mat4b(16, 16, backColor)];
   front = [LTTexture textureWithImage:cv::Mat4b(8, 8, frontColor)];
-  mask = [LTTexture textureWithSize:CGSizeMake(8, 8)
-                          precision:LTTexturePrecisionByte
-                             format:LTTextureFormatRed allocateMemory:YES];
+  mask = [LTTexture byteRedTextureWithSize:CGSizeMake(8, 8)];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
   [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
@@ -353,6 +352,80 @@ context(@"opacity", ^{
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(resultColor);
     
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+});
+
+context(@"masking", ^{
+  it(@"should correctly apply the mask to the front", ^{
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->at<cv::Vec4b>(0, 0) = cv::Vec4b(0, 0, 0, 0);
+    }];
+    [processor process];
+
+    cv::Mat expected = cv::Mat4b(16, 16, backColor);
+    for (NSInteger i = 0; i < 8; i++) {
+      for (NSInteger j = 0; j < 8; j++) {
+        if (i == 0 && j < 4) {
+          continue;
+        }
+        expected.at<cv::Vec4b>((int)i, (int)j) = frontColor;
+      }
+    }
+
+    expect($([output image])).to.beCloseToMat($(expected));
+
+    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(1, 1, 8, 8)];
+    [processor process];
+
+    expected = cv::Mat4b(16, 16, backColor);
+    for (NSInteger i = 0; i < 8; i++) {
+      for (NSInteger j = 0; j < 8; j++) {
+        if (i == 0 && j < 4) {
+          continue;
+        }
+        expected.at<cv::Vec4b>((int)i + 1, (int)j + 1) = frontColor;
+      }
+    }
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should correctly apply the mask to the back", ^{
+    mask = [LTTexture byteRedTextureWithSize:CGSizeMake(16, 16)];
+    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                                  maskMode:LTMixerMaskModeBack];
+    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+
+    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->at<cv::Vec4b>(0, 0) = cv::Vec4b(0, 0, 0, 0);
+    }];
+    [processor process];
+
+    cv::Mat expected = cv::Mat4b(16, 16, backColor);
+    for (NSInteger i = 0; i < 8; i++) {
+      for (NSInteger j = 0; j < 8; j++) {
+        if (i == 0 && j < 4) {
+          continue;
+        }
+        expected.at<cv::Vec4b>((int)i, (int)j) = frontColor;
+      }
+    }
+
+    expect($([output image])).to.beCloseToMat($(expected));
+
+    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(1, 1, 8, 8)];
+    [processor process];
+
+    expected = cv::Mat4b(16, 16, backColor);
+    for (NSInteger i = 0; i < 8; i++) {
+      for (NSInteger j = 0; j < 8; j++) {
+        expected.at<cv::Vec4b>((int)i + 1, (int)j + 1) = frontColor;
+      }
+    }
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });
