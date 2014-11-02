@@ -36,12 +36,19 @@
 static const CGFloat kMaskScalingFactor = 4.0;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
+  LTTexture *mask = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
+  [mask clearWithColor:LTVector4(1)];
+  return [self initWithInput:input mask:mask output:output];
+}
+
+- (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output {
   // Setup dual mask.
   LTTexture *dualMaskTexture = [self createDualMaskTextureWithOutput:output];
   self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTTiltShiftFsh source] sourceTexture:input
-                       auxiliaryTextures:@{[LTTiltShiftFsh dualMaskTexture]: dualMaskTexture}
+                       auxiliaryTextures:@{[LTTiltShiftFsh dualMaskTexture]: dualMaskTexture,
+                                           [LTTiltShiftFsh userMaskTexture]: mask}
                                andOutput:output]) {
     [self setDefaultValues];
   }

@@ -12,6 +12,7 @@ uniform sampler2D mediumTexture;
 uniform sampler2D coarseTexture;
 uniform sampler2D veryCoarseTexture;
 uniform sampler2D dualMaskTexture;
+uniform sampler2D userMaskTexture;
 
 uniform mediump float intensity;
 
@@ -26,7 +27,9 @@ void main() {
   
   mediump float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
   dualMask = 1.0 - clamp(dualMask * 2.0, 0.0, 1.0);
-  mediump float alpha = intensity * dualMask;
+  mediump float userMask = texture2D(userMaskTexture, vTexcoord).r;
+  mediump float alpha = intensity * userMask * dualMask;
+
   lowp vec3 outputColor;
   if (alpha >= 0.0 && alpha < 0.25) {
     outputColor = mix(color.rgb, fine, alpha / 0.25);

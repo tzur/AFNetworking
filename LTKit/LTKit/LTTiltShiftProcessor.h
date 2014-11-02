@@ -16,6 +16,11 @@
 /// Initializes the processor with input texture and output texture.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
+/// Initializes the processor with input texture, user mask texture, which controls the blur amount
+/// which is applied to the input texture and an output texture.
+- (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask
+                       output:(LTTexture *)output;
+
 #pragma mark -
 #pragma mark Dual Mask
 #pragma mark -
@@ -41,7 +46,7 @@
 LTPropertyDeclare(CGFloat, spread, Spread);
 
 /// Angle in radians which tilts the mask.
-/// @attention Radial mask is rotationally invariant, thus this parameters doesn't affect the mask.
+/// @attention Radial mask is rotationally invariant, thus this parameter doesn't affect the mask.
 @property (nonatomic) CGFloat angle;
 
 #pragma mark -
