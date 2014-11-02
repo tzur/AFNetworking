@@ -7,7 +7,7 @@ const int kFrameTypeStretch = 0;
 const int kFrameTypeRepeat = 1;
 const int kFrameTypeFit = 2;
 
-uniform bool inputEqualsOutput;
+uniform bool readColorFromOutput;
 
 uniform lowp sampler2D sourceTexture;
 uniform lowp sampler2D baseTexture;
@@ -158,7 +158,7 @@ void main() {
 
   // To avoid undefined OpenGL behaviors, read from the input texture using gl_LastFragData instead
   // of using the sampler, which is forbidden.
-  if (inputEqualsOutput) {
+  if (readColorFromOutput) {
     imageColor = gl_LastFragData[0].rgb;
   } else {
     imageColor = texture2D(sourceTexture , vTexcoord).rgb;

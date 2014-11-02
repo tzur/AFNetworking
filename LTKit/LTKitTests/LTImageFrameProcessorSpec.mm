@@ -3,6 +3,7 @@
 
 #import "LTImageFrameProcessor.h"
 
+#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
@@ -20,6 +21,8 @@ beforeEach(^{
 
 afterEach(^{
   frameMask = nil;
+  processor = nil;
+  output = nil;
 });
 
 context(@"properties", ^{
@@ -27,11 +30,6 @@ context(@"properties", ^{
     LTTexture *input = [LTTexture textureWithImage:cv::Mat4b(32, 32, cv::Vec4b(128, 64, 255, 255))];
     output = [LTTexture textureWithPropertiesOf:input];
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
-  });
-  
-  afterEach(^{
-    processor = nil;
-    output = nil;
   });
 
   it(@"should return default width factor property correctly", ^{
@@ -87,11 +85,6 @@ context(@"copy constructor", ^{
                                                              frameType:LTFrameTypeRepeat]];
   });
   
-  afterEach(^{
-    processor = nil;
-    output = nil;
-  });
-  
   it(@"should return same values for copied textures", ^{
     LTImageFrameProcessor *copiedProcessor =
         [[LTImageFrameProcessor alloc] initWithImageFrameProcessor:processor];
@@ -126,11 +119,6 @@ context(@"processing frame type repeat", ^{
     [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
                                                              frameMask:frameMask
                                                              frameType:LTFrameTypeRepeat]];
-  });
-  
-  afterEach(^{
-    processor = nil;
-    output = nil;
   });
   
   it(@"should return image with repeat frame", ^{
@@ -170,11 +158,6 @@ context(@"processing frame type stretch", ^{
     [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
                                                              frameMask:frameMask
                                                              frameType:LTFrameTypeStretch]];
-  });
-  
-  afterEach(^{
-    processor = nil;
-    output = nil;
   });
   
   it(@"should return image with stretch frame", ^{
@@ -220,11 +203,6 @@ context(@"processing frame type fit", ^{
                                                              frameType:LTFrameTypeFit]];
   });
   
-  afterEach(^{
-    processor = nil;
-    output = nil;
-  });
-  
   it(@"should return image with fit frame", ^{
     [processor process];
     
@@ -249,6 +227,47 @@ context(@"processing frame type fit", ^{
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithWideFrameTypeFit.png")];
     expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
+  });
+});
+
+context(@"reading color from output", ^{
+  __block LTTexture *input;
+  
+  beforeEach(^{
+    cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
+    input = [LTTexture textureWithImage:greyPatch];
+    output = [LTTexture textureWithPropertiesOf:input];
+    [output clearWithColor:LTVector4Zero];
+    LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+    
+    processor = [[LTImageFrameProcessor alloc] initWithInput:input output:input];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeFit]];
+  });
+  
+  afterEach(^{
+    input = nil;
+  });
+  
+  it(@"should not read color from framebuffer when processing to screen", ^{
+    [input cloneTo:output];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+    [fbo bindAndDraw:^{
+      [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
+    }];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithFrameTypeFit.png")];
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+  
+  it(@"should read color from framebuffer when input equals output", ^{
+    [processor process];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithFrameTypeFit.png")];
+    expect($(input.image)).to.beCloseToMat($(precomputedResult.image));
   });
 });
 

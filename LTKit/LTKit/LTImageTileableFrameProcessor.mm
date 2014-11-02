@@ -83,10 +83,25 @@
 #pragma mark -
 
 - (void)process {
-  [self.inputTexture executeAndPreserveParameters:^{
-    [self.auxiliaryTextures[[LTImageFrameFsh baseTexture]] setWrap:LTTextureWrapRepeat];
-    [(self.auxiliaryTextures[[LTImageFrameFsh baseMaskTexture]]) setWrap:LTTextureWrapRepeat];
+  [self setTexturesToRepeatAndExecute:^{
     [super process];
+  }];
+}
+
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self setTexturesToRepeatAndExecute:^{
+    [super processToFramebufferWithSize:size outputRect:rect];
+  }];
+}
+
+- (void)setTexturesToRepeatAndExecute:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self.auxiliaryTextures[[LTImageFrameFsh baseTexture]] executeAndPreserveParameters:^{
+    [self.auxiliaryTextures[[LTImageFrameFsh baseMaskTexture]] executeAndPreserveParameters:^{
+      [self.auxiliaryTextures[[LTImageFrameFsh baseTexture]] setWrap:LTTextureWrapRepeat];
+      [self.auxiliaryTextures[[LTImageFrameFsh baseMaskTexture]] setWrap:LTTextureWrapRepeat];
+      block();
+    }];
   }];
 }
 

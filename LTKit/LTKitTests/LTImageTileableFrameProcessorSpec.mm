@@ -3,6 +3,7 @@
 
 #import "LTImageTileableFrameProcessor.h"
 
+#import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
@@ -166,6 +167,40 @@ context(@"processing landscape image with tileable frame", ^{
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"ImageLandscapeWithTiledMask.png")];
     expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
+  });
+});
+
+context(@"processing to screen", ^{
+  __block LTTexture *input;
+  
+  beforeEach(^{
+    cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
+    input = [LTTexture textureWithImage:greyPatch];
+    output = [LTTexture textureWithPropertiesOf:input];
+    [output clearWithColor:LTVector4Zero];
+    LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+    
+    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:input];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeFit]
+                       angle:0 translation:CGPointZero];
+  });
+  
+  afterEach(^{
+    input = nil;
+  });
+  
+  it(@"should not read color from framebuffer when processing to screen", ^{
+    [input cloneTo:output];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
+    [fbo bindAndDraw:^{
+      [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
+    }];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageTileableProcessedToScreen.png")];
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
   });
 });
 
