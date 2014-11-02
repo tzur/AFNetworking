@@ -3,6 +3,8 @@
 
 #import <GLKit/GLKit.h>
 
+#import "LTCGExtensions.h"
+
 #pragma mark -
 #pragma mark LTVector2
 #pragma mark -
@@ -223,6 +225,22 @@ inline LTVector2 operator/(const CGFloat lhs, LTVector2 rhs) {
 }
 
 namespace std {
+  /// Constrains a point to lie between two values (for both axes).
+  inline LTVector2 clamp(const LTVector2 &point, const float &a, const float &b) {
+    return LTVector2(clamp(point.x, a, b), clamp(point.y, a, b));
+  }
+
+  /// Constrains a point to lie between two points.
+  inline LTVector2 clamp(const LTVector2 &point, const LTVector2 &a, const LTVector2 &b) {
+    return LTVector2(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
+  }
+
+  /// Constrains a point to lie inside the given rect.
+  inline LTVector2 clamp(const LTVector2 &point, const CGRect &rect) {
+    return LTVector2(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
+                     clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
+  }
+
   /// Round the elements.
   inline LTVector2 round(const LTVector2 &v) {
     return LTVector2(round(v.x), round(v.y));

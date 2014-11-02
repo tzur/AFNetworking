@@ -108,6 +108,29 @@ context(@"LTVector2", ^{
   });
 
   context(@"std", ^{
+    it(@"clamping", ^{
+      expect(std::clamp(LTVector2(0.5, -0.5), 0, 1)).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), 1, 0)).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), -1, 0)).to.equal(LTVector2(0, -0.5));
+      expect(std::clamp(LTVector2(0.5, -0.5), 0, -1)).to.equal(LTVector2(0, -0.5));
+
+      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(0, 0),
+                        LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, 0),
+                        LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, -1),
+                        LTVector2(0, 1))).to.equal(LTVector2(0, -0.5));
+
+      expect(std::clamp(LTVector2(0.5, -0.5),
+                        CGRectMake(0, 0, 1, 1))).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5),
+                        CGRectMake(0, 0, 1, 1))).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5),
+                        CGRectMake(0, 0, -1, -1))).to.equal(LTVector2(0, -0.5));
+      expect(std::clamp(LTVector2(0.5, -0.5),
+                        CGRectMake(0, 0, -1, -1))).to.equal(LTVector2(0, -0.5));
+    });
+
     it(@"should return rounded vector", ^{
       LTVector2 v(1.3, 2.7);
       expect(std::round(v)).to.equal(LTVector2(1, 3));
