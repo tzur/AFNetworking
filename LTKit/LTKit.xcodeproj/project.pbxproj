@@ -256,6 +256,7 @@
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
 		2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921B186315D100A70AF5 /* LTGridDrawer.vsh */; };
+		284BF6DA1A04F3B4007FA22F /* ImageTileableProcessedToScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 284BF6D91A04F3B4007FA22F /* ImageTileableProcessedToScreen.png */; };
 		284ED11818954E9B00414A8A /* LTLinearInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED11718954E9B00414A8A /* LTLinearInterpolationRoutine.mm */; };
 		284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12718954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm */; };
 		284ED12C1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12B1895662300414A8A /* LTLinearInterpolationRoutineSpec.mm */; };
@@ -1364,6 +1365,7 @@
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
 		2847921A186315D100A70AF5 /* LTGridDrawer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.fsh; sourceTree = "<group>"; };
 		2847921B186315D100A70AF5 /* LTGridDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.vsh; sourceTree = "<group>"; };
+		284BF6D91A04F3B4007FA22F /* ImageTileableProcessedToScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageTileableProcessedToScreen.png; path = Resources/ImageTileableProcessedToScreen.png; sourceTree = "<group>"; };
 		284ED11618954E9B00414A8A /* LTLinearInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLinearInterpolationRoutine.h; sourceTree = "<group>"; };
 		284ED11718954E9B00414A8A /* LTLinearInterpolationRoutine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLinearInterpolationRoutine.mm; sourceTree = "<group>"; };
 		284ED12618954ECB00414A8A /* LTCatmullRomInterpolationRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCatmullRomInterpolationRoutine.h; sourceTree = "<group>"; };
@@ -2702,6 +2704,7 @@
 				28A2546719C9D3C80057E1A3 /* ReshapeProcessorUnwarpWithoutMask.png */,
 				28A2545319C9CDF30057E1A3 /* ReshapeProcessorReshapeWithoutMask.png */,
 				28A2545419C9CDF30057E1A3 /* ReshapeProcessorResizeWithoutMask.png */,
+				284BF6D91A04F3B4007FA22F /* ImageTileableProcessedToScreen.png */,
 				28B1E80D19D94BD100AC5884 /* ImageWithFrameTypeRepeat.png */,
 				28B1E80E19D94BD100AC5884 /* ImageWithFrameTypeStretch.png */,
 				28647E7519D9362B0026630F /* ImageWithRotatedTiledFrame.png */,
@@ -3999,6 +4002,7 @@
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
+				284BF6DA1A04F3B4007FA22F /* ImageTileableProcessedToScreen.png in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
