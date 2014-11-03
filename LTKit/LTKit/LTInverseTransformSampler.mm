@@ -3,6 +3,8 @@
 
 #import "LTInverseTransformSampler.h"
 
+#import "LTRandom.h"
+
 #import <numeric>
 
 #pragma mark -
@@ -12,21 +14,24 @@
 @interface LTInverseTransformSampler () {
   Floats _cdf;
   Floats _pdf;
+
+  /// Mapping between internal cdf/pdf index -> internal given \c frequencies index.
+  Floats _indexMapping;
 }
 
-/// Mapping between internal cdf/pdf index -> internal given \c distribution index.
-@property (strong, nonatomic) NSDictionary *indexMapping;
+/// The random generator used by the sampler.
+@property (strong, nonatomic) LTRandom *random;
 
 @end
 
 @implementation LTInverseTransformSampler
 
-- (id)initWithFrequencies:(const Floats &)frequencies {
+- (id)initWithFrequencies:(const Floats &)frequencies random:(LTRandom *)random {
   if (self = [super init]) {
     [self verifyFrequencies:frequencies];
     [self createProbabilityDensityFunctionFromFrequencies:frequencies];
     [self createCumulativeDistributionFunction];
-    [self initializePRNG];
+    self.random = random;
   }
   return self;
 }
@@ -46,20 +51,21 @@
 }
 
 - (void)createProbabilityDensityFunctionFromFrequencies:(const Floats &)frequencies {
-  NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
-
   float sum = std::accumulate(frequencies.begin(), frequencies.end(), 0);
 
+  _indexMapping.clear();
   for (Floats::size_type i = 0; i < frequencies.size(); ++i) {
-    indexMapping[@(_pdf.size())] = @(i);
+    if (_indexMapping.size() > _pdf.size()) {
+      _indexMapping.back() = i;
+    } else {
+      _indexMapping.push_back(i);
+    }
 
     float value = frequencies[i];
     if (value) {
       _pdf.push_back(value / sum);
     }
   };
-
-  self.indexMapping = [indexMapping copy];
 }
 
 - (void)createCumulativeDistributionFunction {
@@ -70,24 +76,17 @@
   _cdf.back() = 1.f;
 }
 
-- (void)initializePRNG {
-  srand48(time(0));
-}
-
-- (NSArray *)sample:(NSUInteger)times {
-  NSMutableArray *samples = [NSMutableArray array];
-
+- (Floats)sample:(NSUInteger)times {
+  Floats samples;
   for (NSUInteger i = 0; i < times; ++i) {
-    float random = drand48();
+    float random = [self.random randomDouble];
 
     // Get index and map between internal -> external.
     Floats::difference_type index =
         std::lower_bound(_cdf.cbegin(), _cdf.cend(), random) - _cdf.cbegin();
-    NSNumber *externalIndex = self.indexMapping[@(index)];
-    [samples addObject:externalIndex];
+    samples.push_back(_indexMapping[index]);
   }
-
-  return [samples copy];
+  return samples;
 }
 
 @end
@@ -98,8 +97,9 @@
 
 @implementation LTInverseTransformSamplerFactory
 
-- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies {
-  return [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies
+                                             random:(LTRandom *)random {
+  return [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
 }
 
 @end

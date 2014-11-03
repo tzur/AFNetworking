@@ -16,7 +16,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @implementation LTDegenerateSampler
 
-- (instancetype)initWithFrequencies:(const Floats &)frequencies {
+- (instancetype)initWithFrequencies:(const Floats &)frequencies random:(LTRandom __unused *)random {
   if (self = [super init]) {
     for (Floats::size_type i = 0; i < frequencies.size(); ++i) {
       _pairs.push_back(std::make_pair(i, frequencies[i]));
@@ -28,12 +28,12 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
   return self;
 }
 
-- (NSArray *)sample:(NSUInteger)times {
-  NSMutableArray *values = [NSMutableArray array];
+- (Floats)sample:(NSUInteger)times {
+  Floats samples;
   for (NSUInteger i = 0; i < times; ++i) {
-    [values addObject:@(_pairs[i % _pairs.size()].first)];
+    samples.push_back(_pairs[i % _pairs.size()].first);
   }
-  return [values copy];
+  return samples;
 }
 
 @end
@@ -43,8 +43,9 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @implementation LTDegenerateSamplerFactory
 
-- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies {
-  return [[LTDegenerateSampler alloc] initWithFrequencies:frequencies];
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies
+                                             random:(LTRandom *)random {
+  return [[LTDegenerateSampler alloc] initWithFrequencies:frequencies random:random];
 }
 
 @end
@@ -52,7 +53,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 LTSpecBegin(LTRecomposeProcessor)
 
 context(@"initialization", ^{
-  it(@"should not initialize if input size is different than mask size", ^{
+  it(@"should not initialize if input size is smaller than mask size", ^{
     LTTexture *input = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
     LTTexture *mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(8, 8)];
     LTTexture *output = [LTTexture textureWithPropertiesOf:input];
@@ -78,6 +79,7 @@ context(@"initialization", ^{
 context(@"processing", ^{
   __block LTRecomposeProcessor *processor;
   __block cv::Mat4b image;
+  __block LTTexture *input;
   __block LTTexture *mask;
   __block LTTexture *output;
 
@@ -88,12 +90,11 @@ context(@"processing", ^{
     image(cv::Rect(2, 0, 1, 4)) = cv::Vec4b(0, 0, 255, 255);
     image(cv::Rect(3, 0, 1, 4)) = cv::Vec4b(0, 0, 0, 255);
 
-    LTTexture *input = [LTTexture textureWithImage:image];
-    mask = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionByte
-                               format:LTTextureFormatRed allocateMemory:YES];
+    input = [LTTexture textureWithImage:image];
+    mask = [LTTexture byteRedTextureWithSize:input.size];
     output = [LTTexture textureWithPropertiesOf:input];
 
-    [mask clearWithColor:LTVector4(0, 0, 0, 1)];
+    [mask clearWithColor:LTVector4One];
     [output clearWithColor:LTVector4(0, 0, 0, 0)];
 
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
@@ -103,48 +104,76 @@ context(@"processing", ^{
 
   afterEach(^{
     mask = nil;
+    input = nil;
     output = nil;
     processor = nil;
   });
 
-  it(@"should decimate horizontally", ^{
+  it(@"should decimate and center horizontally", ^{
     processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
     [processor process];
 
     // Take cols 2,3.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
-    image(cv::Rect(2, 0, 1, 4)).copyTo(expected(cv::Rect(0, 0, 1, 4)));
-    image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
+    image(cv::Rect(2, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
+    image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(2, 0, 1, 4)));
 
+    expect(processor.recomposedRect).to.equal(CGRectMake(1, 0, 2, 4));
     expect($([output image])).to.equalMat($(expected));
   });
 
-  it(@"should decimate vertically", ^{
+  it(@"should decimate and center vertically", ^{
     processor.decimationDimension = LTRecomposeDecimationDimensionVertical;
     [processor process];
 
     // Take cols 2,3.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
-    image(cv::Rect(0, 2, 4, 1)).copyTo(expected(cv::Rect(0, 0, 4, 1)));
-    image(cv::Rect(0, 3, 4, 1)).copyTo(expected(cv::Rect(0, 1, 4, 1)));
+    image(cv::Rect(0, 2, 4, 1)).copyTo(expected(cv::Rect(0, 1, 4, 1)));
+    image(cv::Rect(0, 3, 4, 1)).copyTo(expected(cv::Rect(0, 2, 4, 1)));
 
+    expect(processor.recomposedRect).to.equal(CGRectMake(0, 1, 4, 2));
     expect($([output image])).to.equalMat($(expected));
   });
 
-  it(@"should decimate according to mask", ^{
+  it(@"should decimate according to updated mask", ^{
+    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
+    [processor process];
+
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      (*mapped)(cv::Rect(1, 0, 1, 4)).setTo(255);
+      (*mapped)(cv::Rect(1, 0, 1, 4)).setTo(0);
     }];
-    [processor setMaskUpdated];
 
     processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
     [processor process];
 
     // Take cols 1,3, since a mask is blocking column 1 from disappearing.
     cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
-    image(cv::Rect(1, 0, 1, 4)).copyTo(expected(cv::Rect(0, 0, 1, 4)));
-    image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
+    image(cv::Rect(1, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
+    image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(2, 0, 1, 4)));
 
+    expect(processor.recomposedRect).to.equal(CGRectMake(1, 0, 2, 4));
+    expect($([output image])).to.equalMat($(expected));
+  });
+
+  it(@"should decimate according to mask with smaller size", ^{
+    mask = [LTTexture byteRedTextureWithSize:input.size / 2];
+    processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
+    processor.samplerFactory = [[LTDegenerateSamplerFactory alloc] init];
+    processor.linesToDecimate = 2;
+
+    [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      (*mapped)(cv::Rect(1, 0, 1, 2)).setTo(0);
+    }];
+
+    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
+    [processor process];
+
+    // Take cols 3,4, since a mask is blocking columns 1,2 from disappearing.
+    cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
+    image(cv::Rect(2, 0, 1, 4)).copyTo(expected(cv::Rect(1, 0, 1, 4)));
+    image(cv::Rect(3, 0, 1, 4)).copyTo(expected(cv::Rect(2, 0, 1, 4)));
+
+    expect(processor.recomposedRect).to.equal(CGRectMake(1, 0, 2, 4));
     expect($([output image])).to.equalMat($(expected));
   });
 });

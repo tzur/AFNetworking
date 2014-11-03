@@ -5,6 +5,8 @@
 #pragma mark Sampler
 #pragma mark -
 
+@class LTRandom;
+
 typedef std::vector<float> Floats;
 
 /// Protocol for a 1D random sampler given a frequency table.
@@ -14,10 +16,12 @@ typedef std::vector<float> Floats;
 /// The value of each frequency cell is equal to its cell index probability to be returned from
 /// the sampling method. The given \c frequencies can be unnormalized, but must not be empty. Each
 /// fequency must be non-negative and the sum of frequencies must be positive.
-- (instancetype)initWithFrequencies:(const Floats &)frequencies;
+/// The given \c random will be used for generating pseudo random numbers. If \c nil is given, a new
+/// generator will be generated.
+- (instancetype)initWithFrequencies:(const Floats &)frequencies random:(LTRandom *)random;
 
 /// Returns the given number of samples in the range [0, frequencies.count) from the distribution.
-- (NSArray *)sample:(NSUInteger)times;
+- (Floats)sample:(NSUInteger)times;
 
 @end
 
@@ -38,10 +42,11 @@ typedef std::vector<float> Floats;
 /// Protocol for creating distribution sampler.
 @protocol LTDistributionSamplerFactory
 
-/// Returns a sampler initialized with the given \c frequencies.
+/// Returns a sampler initialized with the given \c frequencies and random generator.
 ///
-/// @see -[LTDistributionSampler initWithFrequencies:] for more information.
-- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies;
+/// @see -[LTDistributionSampler initWithFrequencies:random:] for more information.
+- (id<LTDistributionSampler>)samplerWithFrequencies:(const Floats &)frequencies
+                                             random:(LTRandom *)random;
 
 @end
 
