@@ -3,13 +3,29 @@
 
 #import "LTInverseTransformSampler.h"
 
-SpecBegin(LTInverseTransformSampler)
+#import "LTRandom.h"
+
+static NSArray *LTArrayFromFloats(const Floats &floats) {
+  NSMutableArray *array = [NSMutableArray array];
+  for (auto value : floats) {
+    [array addObject:@(value)];
+  }
+  return array;
+}
+
+LTSpecBegin(LTInverseTransformSampler)
+
+__block LTRandom *random;
+
+beforeEach(^{
+  random = [JSObjection defaultInjector][[LTRandom class]];
+});
 
 context(@"initialization", ^{
   it(@"should not initialize on empty distribution", ^{
     expect(^{
       LTInverseTransformSampler __unused *sampler =
-          [[LTInverseTransformSampler alloc] initWithFrequencies:Floats()];
+          [[LTInverseTransformSampler alloc] initWithFrequencies:Floats() random:random];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -17,7 +33,7 @@ context(@"initialization", ^{
     Floats frequencies = {0.f, 0.f, 0.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
-          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
+          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -25,7 +41,7 @@ context(@"initialization", ^{
     Floats frequencies = {2.f, -1.f, 0.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
-          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
+          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -33,7 +49,7 @@ context(@"initialization", ^{
     Floats frequencies = {5.f, 6.f, 1.f};
     expect(^{
       LTInverseTransformSampler __unused *sampler =
-          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
+          [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
     }).toNot.raiseAny();
   });
 });
@@ -45,8 +61,9 @@ context(@"sampling", ^{
     Floats frequencies = {42.f};
 
     LTInverseTransformSampler *sampler =
-        [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
-    NSArray *samples = [sampler sample:kSamples];
+        [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
+    NSArray *samples = LTArrayFromFloats([sampler sample:kSamples]);
+
 
     NSMutableArray *expected = [NSMutableArray array];
     for (NSUInteger i = 0; i < kSamples; ++i) {
@@ -60,8 +77,8 @@ context(@"sampling", ^{
     Floats frequencies = {0.f, 0.f, 42.f, 0.f, 0.f};
 
     LTInverseTransformSampler *sampler =
-        [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies];
-    NSArray *samples = [sampler sample:kSamples];
+        [[LTInverseTransformSampler alloc] initWithFrequencies:frequencies random:random];
+    NSArray *samples = LTArrayFromFloats([sampler sample:kSamples]);
 
     NSMutableArray *expected = [NSMutableArray array];
     for (NSUInteger i = 0; i < kSamples; ++i) {
@@ -78,10 +95,10 @@ context(@"factory", ^{
   it(@"should return inverse transform sampler", ^{
     LTInverseTransformSamplerFactory *factory = [[LTInverseTransformSamplerFactory alloc] init];
 
-    id<LTDistributionSampler> sampler = [factory samplerWithFrequencies:{1.f, 2.f}];
+    id<LTDistributionSampler> sampler = [factory samplerWithFrequencies:{1.f, 2.f} random:random];
 
     expect(sampler).to.beKindOf([LTInverseTransformSampler class]);
   });
 });
 
-SpecEnd
+LTSpecEnd

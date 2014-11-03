@@ -17,13 +17,15 @@
                        auxiliaryTextures:@{[LTMaskOverlayFsh maskTexture]: mask}
                                andOutput:output]) {
     self[[LTMaskOverlayFsh inputOnFramebuffer]] = @(image == output);
-    self.maskColor = LTVector4(1.0, 0.0, 0.0, 0.5);
+    self.maskColor = self.defaultMaskColor;
   }
   return self;
 }
 
+LTPropertyWithoutSetter(LTVector4, maskColor, MaskColor,
+                        LTVector4Zero, LTVector4One, LTVector4(1, 0, 0, 0.5));
 - (void)setMaskColor:(LTVector4)maskColor {
-  _maskColor = maskColor;
+  [self _verifyAndSetMaskColor:maskColor];
   self[[LTMaskOverlayFsh maskColor]] = $(maskColor);
 }
 

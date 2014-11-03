@@ -3,6 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
+#import "LTPropertyMacros.h"
+
 /// Processor used to composite a mask on top of an input image. The mask is assumed to be a single
 /// channel image (where \c 0 marks masked area and \c 1 marks an unmasked area), allowing its
 /// [0,1] grayscale color to be replaced with an RGB color using the \c maskColor property.
@@ -23,7 +25,8 @@
 /// @code
 /// (1 - (1 - mask.r) * maskColor.a) * image.rgb + ((1 - mask.r) * maskColor.a) * maskColor.rgb
 /// @endcode
-/// The default value is red color with alpha of 0.5: (1, 0, 0, 0.5).
+/// Must be in range [0,1], default value is (1, 0, 0, 0.5).
 @property (nonatomic) LTVector4 maskColor;
+LTPropertyDeclare(LTVector4, maskColor, MaskColor);
 
 @end

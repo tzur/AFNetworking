@@ -27,10 +27,6 @@ typedef NS_ENUM(NSUInteger, LTRecomposeDecimationDimension) {
 /// The given mask controls what parts of the image should be kept when decimating the image.
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output;
 
-/// Refreshes the internal mask cache. One must call this method if the mask contents has been
-/// changed after initialization.
-- (void)setMaskUpdated;
-
 /// Dimension the image will be decimated on. The default value is \c
 /// LTRecomposeDecimationDimensionHorizontal if \c input.size.height > input.size.width, otherwise
 /// \c LTRecomposeDecimationDimensionVertical. Setting this value will truncate \c linesToDecimate
@@ -41,6 +37,10 @@ typedef NS_ENUM(NSUInteger, LTRecomposeDecimationDimension) {
 /// \c (0, input.size.[width|height]), where [width|height] is set according to \c
 /// decimationDimension. The default value is \c 0.
 @property (nonatomic) NSUInteger linesToDecimate;
+
+/// Returns the rectangle (in content coordiantes) containing the recomposed image inside the output
+/// texture.
+@property (readonly, nonatomic) CGRect recomposedRect;
 
 @end
 

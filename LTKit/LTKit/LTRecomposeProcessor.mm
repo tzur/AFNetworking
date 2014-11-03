@@ -4,12 +4,14 @@
 #import "LTRecomposeProcessor.h"
 
 #import <objc/runtime.h>
+#import <unordered_set>
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTInverseTransformSampler.h"
 #import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
+#import "LTRandom.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
@@ -45,6 +47,9 @@
 /// Size of the input image of the dimension the processor decimates.
 @property (readonly, nonatomic) CGFloat decimationDimensionSize;
 
+/// The generation id of the mask texture that was used to calculate the decimation order.
+@property (nonatomic) NSUInteger maskTextureGenerationID;
+
 @end
 
 @implementation LTRecomposeProcessor
@@ -55,7 +60,8 @@
 
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output {
   LTParameterAssert(input.size == output.size, @"Input size must be equal to output size");
-  LTParameterAssert(input.size == mask.size, @"Input size must be equal to mask size");
+  LTParameterAssert(input.size.width >= mask.size.width && input.size.height >= mask.size.height,
+                    @"Input size must be greater or equal to mask size");
 
   if (self = [super init]) {
     self.drawer = [[LTMultiRectDrawer alloc] initWithProgram:[self createProgram]
@@ -86,10 +92,6 @@
 #pragma mark Mask
 #pragma mark -
 
-- (void)setMaskUpdated {
-  self.decimationOrder = nil;
-}
-
 - (Floats)calculateMaskFrequencies {
   __block cv::Mat1f sum;
 
@@ -105,12 +107,14 @@
   cv::Mat1f smoothedSum(sum.size());
   cv::GaussianBlur(sum, smoothedSum, cv::Size(0, 0), kBlurSize);
 
-  // Get maximal value.
-  float maxValue = *std::max_element(smoothedSum.begin(), smoothedSum.end());
+  // Resize the smoothed sum to match the target size, in case the mask was smaller than the input.
+  cv::Size targetSize = self.decimationDimension == LTRecomposeDecimationDimensionHorizontal ?
+      cv::Size(self.decimationDimensionSize, 1) : cv::Size(1, self.decimationDimensionSize);
+  cv::resize(smoothedSum, smoothedSum, targetSize);
 
-  // Inverse values so a white mask will cause less throws than black, and make sure that each line
-  // has a minimal small frequency so it will be able to be selected when sampling.
-  smoothedSum = maxValue - smoothedSum + kEpsilon;
+  // Make sure that each line has a minimal small frequency so it will be able to be selected when
+  // sampling.
+  smoothedSum = smoothedSum + kEpsilon;
 
   return Floats(smoothedSum.begin(), smoothedSum.end());
 }
@@ -123,15 +127,19 @@
   [self updateDecimationOrderIfNeeded];
   [self updateRectsForLinesToDecimate];
 
+  [self.fbo clearWithColor:LTVector4Zero];
   [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.fbo
                fromRotatedRects:self.sourceRects];
 }
 
 - (void)updateDecimationOrderIfNeeded {
-  if (!self.decimationOrder) {
-    Floats frequencies = [self calculateMaskFrequencies];
-    self.decimationOrder = [self calculateDecimationOrderUsingFrequencies:&frequencies];
+  if (self.maskTextureGenerationID == self.mask.generationID) {
+    return;
   }
+
+  self.maskTextureGenerationID = self.mask.generationID;
+  Floats frequencies = [self calculateMaskFrequencies];
+  self.decimationOrder = [self calculateDecimationOrderUsingFrequencies:&frequencies];
 }
 
 - (CGFloat)decimationDimensionSize {
@@ -146,23 +154,39 @@
 - (NSArray *)calculateDecimationOrderUsingFrequencies:(Floats *)frequencies {
   NSMutableArray *decimationOrder = [NSMutableArray array];
 
-  // Sample from the distribution with no repetitions.
+  // Sample from the distribution with no repetitions. We're using a constant seed since we prefer
+  // something pseudo-random, that will generate the same decimation under the same parameters.
+  // This is important so users can duplicate a previous result.
+  static const NSUInteger kRandomSeed = 100;
+  LTRandom *random = [[LTRandom alloc] initWithSeed:kRandomSeed];
   while (decimationOrder.count < self.decimationDimensionSize) {
-    id<LTDistributionSampler> sampler = [self.samplerFactory samplerWithFrequencies:*frequencies];
+    id<LTDistributionSampler> sampler =
+        [self.samplerFactory samplerWithFrequencies:*frequencies random:random];
     NSUInteger samplesRequired = self.decimationDimensionSize - decimationOrder.count;
 
-    // NSOrderedSet is used here instead of NSSet to preserve the sampling order, so
-    // high-probability lines for decimation will be decimated first (since they will probably be
-    // sampled first). This also aids testing since the order of samples is not shuffled when using
-    // NSSet's hashing.
-    NSOrderedSet *samples = [NSOrderedSet orderedSetWithArray:[sampler sample:samplesRequired]];
-    [decimationOrder addObjectsFromArray:[samples array]];
-    for (NSNumber *index in samples) {
-      (*frequencies)[[index unsignedIntegerValue]] = 0.f;
+    // The order of the unique samples is preserved, so high-probability lines for decimation will
+    // be decimated first (since they will probably be sampled first). This also aids testing since
+    // the order of samples are not shuffeled.
+    Floats uniqueSamples = [self uniqueSamples:[sampler sample:samplesRequired]];
+    for (const float &sample : uniqueSamples) {
+      [decimationOrder addObject:@(sample)];
+      (*frequencies)[(uint)sample] = 0.f;
     }
   }
 
   return [decimationOrder copy];
+}
+
+- (Floats)uniqueSamples:(const Floats &)samples {
+  Floats uniqueSamples;
+  std::unordered_set<float> set;
+  for (const float &sample : samples) {
+    if (!set.count(sample)) {
+      uniqueSamples.push_back(sample);
+      set.insert(sample);
+    }
+  }
+  return uniqueSamples;
 }
 
 - (void)updateRectsForLinesToDecimate {
@@ -180,9 +204,13 @@
 
   NSMutableArray *sourceRects = [NSMutableArray array];
   NSMutableArray *targetRects = [NSMutableArray array];
+
+  // Start at the origin of the rect with the number of recomposed lines, centered at the center of
+  // the output texture.
+  NSUInteger offset = std::floor((self.decimationDimensionSize - imageCoordinates.count) / 2.0);
   [imageCoordinates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *) {
     [sourceRects addObject:[self sourceRectForIndex:[obj unsignedIntegerValue]]];
-    [targetRects addObject:[self targetRectForIndex:idx]];
+    [targetRects addObject:[self targetRectForIndex:offset + idx]];
   }];
 
   self.sourceRects = [sourceRects copy];
@@ -210,6 +238,17 @@
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (CGRect)recomposedRect {
+  NSUInteger recomposedLines = self.decimationDimensionSize - self.linesToDecimate;
+  NSUInteger offset = std::floor(self.decimationDimensionSize - recomposedLines) / 2.0;
+  switch (self.decimationDimension) {
+    case LTRecomposeDecimationDimensionHorizontal:
+      return CGRectMake(offset, 0, recomposedLines, self.input.size.height);
+    case LTRecomposeDecimationDimensionVertical:
+      return CGRectMake(0, offset, self.input.size.width, recomposedLines);
+  }
+}
 
 - (void)setDecimationDimension:(LTRecomposeDecimationDimension)decimationDimension {
   _decimationDimension = decimationDimension;
