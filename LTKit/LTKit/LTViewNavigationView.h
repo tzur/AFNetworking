@@ -9,6 +9,15 @@
 /// Notify the delegate that the navigation view scrolled/zoomed to the current visible rectangle.
 - (void)didNavigateToRect:(CGRect)visibleRect;
 
+/// Notify the delegate that the \b user performed pan gesture.
+- (void)userPanned;
+
+/// Notify the delegate that the \b user performed pinch gesture.
+- (void)userPinched;
+
+/// Notify the delegate that the \b user performed double tap.
+- (void)userDoubleTapped;
+
 @end
 
 /// This class represents the LTViewNavigationView's state at a given time, and can be used to

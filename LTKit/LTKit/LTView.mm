@@ -266,10 +266,28 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (void)didNavigateToRect:(CGRect)visibleRect {
-  if ([self.navigationDelegate respondsToSelector:@selector(didNavigateToRect:)]) {
-    [self.navigationDelegate didNavigateToRect:visibleRect];
+  if ([self.navigationDelegate respondsToSelector:@selector(ltViewDidNavigateToRect:)]) {
+    [self.navigationDelegate ltViewDidNavigateToRect:visibleRect];
   }
   [self setNeedsDisplay];
+}
+
+- (void)userPanned {
+  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserPanned)]) {
+    [self.navigationDelegate ltViewUserPanned];
+  }
+}
+
+- (void)userPinched {
+  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserPinched)]) {
+    [self.navigationDelegate ltViewUserPinched];
+  }
+}
+
+- (void)userDoubleTapped {
+  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserDoubleTapped)]) {
+    [self.navigationDelegate ltViewUserDoubleTapped];
+  }
 }
 
 #pragma mark -

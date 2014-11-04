@@ -132,7 +132,11 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.backgroundColor = [UIColor clearColor];
   self.scrollView.showsHorizontalScrollIndicator = NO;
   self.scrollView.showsVerticalScrollIndicator = NO;
-  
+
+  // Add actions specifically for user interaction.
+  [self.scrollView.panGestureRecognizer addTarget:self action:@selector(scrollViewUserPanned:)];
+  [self.scrollView.pinchGestureRecognizer addTarget:self action:@selector(scrollViewUserPinched:)];
+
   // Add the scrollview to the current view.
   [self addSubview:self.scrollView];
 }
@@ -249,6 +253,18 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 - (void)didMoveToWindow {
   [super didMoveToWindow];
   [self configureNavigationGesturesForCurrentMode];
+}
+
+- (void)scrollViewUserPanned:(UIPanGestureRecognizer *)panGesture {
+  if (panGesture.state == UIGestureRecognizerStateEnded) {
+    [self.delegate userPanned];
+  }
+}
+
+- (void)scrollViewUserPinched:(UIPinchGestureRecognizer *)pinchGesture {
+  if (pinchGesture.state == UIGestureRecognizerStateEnded) {
+    [self.delegate userPinched];
+  }
 }
 
 #pragma mark -
@@ -373,6 +389,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   CGPoint tap = [gestureRecognizer locationInView:self.contentView];
   CGRect rect = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
   [self.scrollView zoomToRect:rect animated:YES];
+  [self.delegate userDoubleTapped];
 }
 
 /// Returns the next double tap zoom level if the current zoom scale is already one of the levels,

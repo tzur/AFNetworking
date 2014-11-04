@@ -72,6 +72,15 @@
 @optional
 
 /// Notify the delegate that the LTView scrolled/zoomed to the current visible rectangle.
-- (void)didNavigateToRect:(CGRect)visibleRect;
+- (void)ltViewDidNavigateToRect:(CGRect)visibleRect;
+
+/// Notify the delegate that the \b user performed pan gesture.
+- (void)ltViewUserPanned;
+
+/// Notify the delegate that the \b user performed pinch gesture.
+- (void)ltViewUserPinched;
+
+/// Notify the delegate that the \b user performed double tap.
+- (void)ltViewUserDoubleTapped;
 
 @end

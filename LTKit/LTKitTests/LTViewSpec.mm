@@ -682,7 +682,7 @@ context(@"navigation delegate", ^{
   __block LTView *view;
   
   beforeEach(^{
-    delegate = [OCMockObject mockForProtocol:@protocol(LTViewNavigationViewDelegate)];
+    delegate = [OCMockObject mockForProtocol:@protocol(LTViewNavigationDelegate)];
     navView = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize];
     view = [[LTView alloc] initWithFrame:kViewFrame];
     
@@ -699,7 +699,7 @@ context(@"navigation delegate", ^{
   
   it(@"should forward event to delegate", ^{
     const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
-    [[[delegate expect] ignoringNonObjectArgs] didNavigateToRect:targetRect];
+    [[[delegate expect] ignoringNonObjectArgs] ltViewDidNavigateToRect:targetRect];
     [view.navigationView zoomToRect:targetRect animated:NO];
     OCMVerifyAll(delegate);
   });
