@@ -403,6 +403,8 @@
 		28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */; };
 		28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */; };
 		28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */; };
+		5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */; };
+		5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */; };
 		500AB3E719D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 500AB3F819D1B2C7000DC814 /* LTGeometry.h */; };
 		500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3F919D1B2C7000DC814 /* LTGeometry.mm */; };
@@ -414,6 +416,9 @@
 		502B1CC319FA91FB00985F30 /* LTQuadMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 502B1CC119FA91FB00985F30 /* LTQuadMapping.h */; };
 		502B1CC419FA91FB00985F30 /* LTQuadMapping.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502B1CC219FA91FB00985F30 /* LTQuadMapping.mm */; };
 		502B1CC619FA936700985F30 /* LTQuadMappingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502B1CC519FA936700985F30 /* LTQuadMappingSpec.mm */; };
+		505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */; };
+		505B465D1A093F940046C00C /* LTQuadCopy.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 505B465C1A093F940046C00C /* LTQuadCopy.fsh */; };
+		505B465E1A093FF90046C00C /* LTQuadCopy.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 505B465C1A093F940046C00C /* LTQuadCopy.fsh */; };
 		5067221819EA80B5003AF8D2 /* LTLimitedCapacityQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */; };
 		5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */; };
 		5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221619EA80B5003AF8D2 /* LTQueue.h */; };
@@ -1536,6 +1541,8 @@
 		28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBristleBrushSpec.mm; sourceTree = "<group>"; };
 		28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRotatedRect+UIColor.h"; sourceTree = "<group>"; };
 		28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTRotatedRect+UIColor.mm"; sourceTree = "<group>"; };
+		5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadCopyProcessor.h; sourceTree = "<group>"; };
+		5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessor.mm; sourceTree = "<group>"; };
 		500AB3E519D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
 		500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
 		500AB3F819D1B2C7000DC814 /* LTGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGeometry.h; sourceTree = "<group>"; };
@@ -1549,6 +1556,8 @@
 		502B1CC119FA91FB00985F30 /* LTQuadMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadMapping.h; sourceTree = "<group>"; };
 		502B1CC219FA91FB00985F30 /* LTQuadMapping.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMapping.mm; sourceTree = "<group>"; };
 		502B1CC519FA936700985F30 /* LTQuadMappingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMappingSpec.mm; sourceTree = "<group>"; };
+		505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessorSpec.mm; sourceTree = "<group>"; };
+		505B465C1A093F940046C00C /* LTQuadCopy.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTQuadCopy.fsh; sourceTree = "<group>"; };
 		5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLimitedCapacityQueue.h; sourceTree = "<group>"; };
 		5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLimitedCapacityQueue.mm; sourceTree = "<group>"; };
 		5067221619EA80B5003AF8D2 /* LTQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQueue.h; sourceTree = "<group>"; };
@@ -2072,6 +2081,9 @@
 				8BABF16C19BC3AC000AED760 /* LTPyramidProcessor.h */,
 				8BABF16D19BC3AC000AED760 /* LTPyramidProcessor.mm */,
 				8BABF18119BC3AF700AED760 /* LTPyramidProcessor.vsh */,
+				505B465C1A093F940046C00C /* LTQuadCopy.fsh */,
+				5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */,
+				5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */,
 				502B1CA819FA81B200985F30 /* LTQuadMixerProcessor.h */,
 				502B1CA919FA81B200985F30 /* LTQuadMixerProcessor.mm */,
 				8BFA8F4D1911366F0088310E /* LTRectCopy.fsh */,
@@ -2150,6 +2162,7 @@
 				0367A4B118ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm */,
 				03D516B418B3A6DB0026B56A /* LTProceduralVignettingSpec.mm */,
 				8BABF18319BC46D600AED760 /* LTPyramidProcessorSpec.mm */,
+				505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */,
 				5070CA3119FE819800381A36 /* LTQuadMixerProcessorSpec.mm */,
 				03C1930C18FADC9000DC6CA6 /* LTSelectiveAdjustProcessorSpec.mm */,
 				8BAECBB518BDEAAC00315425 /* LTSplitComplexMatSpec.mm */,
@@ -3568,6 +3581,7 @@
 				8B871FFD1924A76000517F2E /* LTGLException.h in Headers */,
 				8B871FFE1924A76000517F2E /* LTGLTexture.h in Headers */,
 				8B871FFF1924A76000517F2E /* LTGPUResource.h in Headers */,
+				5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */,
 				8B8720001924A76000517F2E /* LTGPUStruct.h in Headers */,
 				8B8720011924A76000517F2E /* LTGPUStructsMacros.h in Headers */,
 				8B8720021924A76000517F2E /* LTGPUQueue.h in Headers */,
@@ -4114,6 +4128,7 @@
 				033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */,
 				03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */,
 				03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */,
+				505B465D1A093F940046C00C /* LTQuadCopy.fsh in Resources */,
 				03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */,
 				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
 				033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */,
@@ -4144,6 +4159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505B465E1A093FF90046C00C /* LTQuadCopy.fsh in Sources */,
 				03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */,
 				03045D3419C176BA0075207D /* LTClarity.fsh in Sources */,
 				8BABF1B219BC7D6700AED760 /* LTRedBlackEAWProcessor.fsh in Sources */,
@@ -4314,6 +4330,7 @@
 				280C26B71976BEA100015616 /* LTBoundedProperties.mm in Sources */,
 				8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */,
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
+				5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */,
 				0368E6C619C0270200B99FF5 /* LTSmoothPyramidProcessor.mm in Sources */,
 				28C61C0318B23D430036D66E /* LTTouchCollectorTimeIntervalFilter.m in Sources */,
 				8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */,
@@ -4554,6 +4571,7 @@
 				28B117D619C87DB2007E2F17 /* LTReshapeProcessorSpec.mm in Sources */,
 				50AE95D719D17624000E8086 /* LTQuadSpec.mm in Sources */,
 				8BAE3A1318AD031100DA79E1 /* LTPatchBoundaryProcessorSpec.mm in Sources */,
+				505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */,
 				2843B77E18ACBF710044B87A /* LTSingleRectDrawerSpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
