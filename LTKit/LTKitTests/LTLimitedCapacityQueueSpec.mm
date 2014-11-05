@@ -49,7 +49,22 @@ it(@"should add objects and discard old ones after maximum capacity is reached",
   expect(singleObjectQueue.count).to.equal(1);
   expect(multipleObjectQueue.count).to.equal(3);
   expect(singleObjectQueue.firstObject).to.beIdenticalTo(thirdObject);
-  expect(singleObjectQueue.lastObject).to.beIdenticalTo(thirdObject);
+  expect(multipleObjectQueue.firstObject).to.beIdenticalTo(firstObject);
+  expect(multipleObjectQueue.lastObject).to.beIdenticalTo(thirdObject);
+});
+
+it(@"should add objects and return old ones after maximum capacity is reached if desired", ^{
+  expect([singleObjectQueue pushObjectAndReturnPoppedObject:firstObject]).to.beNil();
+  expect([multipleObjectQueue pushObjectAndReturnPoppedObject:firstObject]).to.beNil();
+  expect([singleObjectQueue
+          pushObjectAndReturnPoppedObject:secondObject]).to.beIdenticalTo(firstObject);
+  expect([multipleObjectQueue pushObjectAndReturnPoppedObject:secondObject]).to.beNil();
+  expect([singleObjectQueue
+          pushObjectAndReturnPoppedObject:thirdObject]).to.beIdenticalTo(secondObject);
+  expect([multipleObjectQueue pushObjectAndReturnPoppedObject:thirdObject]).to.beNil();
+  expect(singleObjectQueue.count).to.equal(1);
+  expect(multipleObjectQueue.count).to.equal(3);
+  expect(singleObjectQueue.firstObject).to.beIdenticalTo(thirdObject);
   expect(multipleObjectQueue.firstObject).to.beIdenticalTo(firstObject);
   expect(multipleObjectQueue.lastObject).to.beIdenticalTo(thirdObject);
 });

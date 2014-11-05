@@ -39,4 +39,10 @@
   [super pushObject:object];
 }
 
+- (id)pushObjectAndReturnPoppedObject:(id)object {
+  id poppedObject = self.count == self.maximalCapacity ? self.firstObject : nil;
+  [self pushObject:object];
+  return poppedObject;
+}
+
 @end
