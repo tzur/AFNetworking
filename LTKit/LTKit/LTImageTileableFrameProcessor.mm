@@ -12,7 +12,7 @@
 @interface LTImageFrameProcessor ()
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 - (void)setImageFrame:(LTImageFrame *)imageFrame;
-- (void)assertImageFrameCorrectness:(LTImageFrame *)imageFrame;
+- (void)assertBaseCorrectnessForImageFrame:(LTImageFrame *)imageFrame;
 @end
 
 @implementation LTImageTileableFrameProcessor
@@ -42,8 +42,8 @@
   [self setScaleUniform:sizeOfTile];
 }
 
-- (void)assertImageFrameCorrectness:(LTImageFrame *)imageFrame {
-  CGSize sizeOfOnePoint = CGSizeMake(0, 0);
+- (void)assertBaseCorrectnessForImageFrame:(LTImageFrame *)imageFrame {
+  CGSize sizeOfOnePoint = CGSizeZero;
   LTParameterAssert(!(imageFrame.baseTexture.size == sizeOfOnePoint &&
                      imageFrame.baseMask.size == sizeOfOnePoint) ||
                     (imageFrame.baseTexture.size == imageFrame.baseMask.size));

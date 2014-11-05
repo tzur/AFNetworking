@@ -6,6 +6,7 @@
 const int kFrameTypeStretch = 0;
 const int kFrameTypeRepeat = 1;
 const int kFrameTypeFit = 2;
+const int kFrameTypeIdentity = 3;
 
 uniform bool readColorFromOutput;
 
@@ -163,7 +164,10 @@ void main() {
   } else {
     imageColor = texture2D(sourceTexture , vTexcoord).rgb;
   }
-  highp vec2 texcoord = repositionTexcoordAccoringToType(vTexcoord);
+  highp vec2 texcoord = vTexcoord;
+  if (frameType != kFrameTypeIdentity) {
+    texcoord = repositionTexcoordAccoringToType(vTexcoord);
+  }
   lowp float frameMask = texture2D(frameMaskTexture, texcoord).r;
   lowp vec4 baseTextureColor;
   lowp float baseMask;
