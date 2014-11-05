@@ -16,11 +16,6 @@
 #import "LTShaderStorage+LTQuadCopyFsh.h"
 #import "LTTexture.h"
 
-@interface LTOneShotBaseImageProcessor ()
-@property (strong, nonatomic) LTTexture *outputTexture;
-@property (strong, nonatomic) LTTexture *inputTexture;
-@end
-
 @implementation LTQuadCopyProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
@@ -31,8 +26,6 @@
   LTQuadDrawer *drawer = [[LTQuadDrawer alloc] initWithProgram:program sourceTexture:input];
   if (self = [super initWithDrawer:drawer sourceTexture:input auxiliaryTextures:nil
                          andOutput:output]) {
-    self.inputTexture = input;
-    self.outputTexture = output;
     [self setDefaultValues];
   }
   return self;

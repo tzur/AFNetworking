@@ -105,12 +105,6 @@ context(@"processing", ^{
       processor = [[LTQuadCopyProcessor alloc] initWithInput:input output:output];
     });
 
-    afterEach(^{
-      input = nil;
-      output = nil;
-      processor = nil;
-    });
-
     it(@"should copy the texture without considering alpha values", ^{
       expect(processor.useAlphaValues).to.beFalsy();
       [processor process];
