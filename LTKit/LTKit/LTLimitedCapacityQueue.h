@@ -11,6 +11,10 @@
 /// queue.
 - (instancetype)initWithMaximalCapacity:(NSUInteger)capacity;
 
+/// Pushes the provided \c object into the queue, discards the least recently added object of the
+/// queue if the queue was full before insertion and returns the discarded object.
+- (id)pushObjectAndReturnPoppedObject:(id)object;
+
 /// Maximal capacity of the queue.
 @property (readonly, nonatomic) NSUInteger maximalCapacity;
 
