@@ -5,7 +5,12 @@
 
 /// Shape of the \c LTBristleBrush.
 typedef NS_ENUM(NSUInteger, LTBristleBrushShape) {
-  LTBristleBrushShapeRound = 0
+  LTBristleBrushShapeRoundBlunt = 0,
+  LTBristleBrushShapeRoundPoint,
+  LTBristleBrushShapeRoundFan,
+  LTBristleBrushShapeFlatBlunt,
+  LTBristleBrushShapeFlatPoint,
+  LTBristleBrushShapeFlatFan,
 };
 
 /// @class LTBristleBrushShape
@@ -20,11 +25,11 @@ typedef NS_ENUM(NSUInteger, LTBristleBrushShape) {
 /// Shape of the brush.
 @property (nonatomic) LTBristleBrushShape shape;
 
-/// Number of bristles in the brush. Must be in rane [2,100].
+/// Number of bristles in the brush. Must be in range [2,30].
 @property (nonatomic) NSUInteger bristles;
 LTPropertyDeclare(NSUInteger, bristles, Bristles);
 
-/// Thickness of the bristles. Must be in range [0.1,2]. Default is 0.1.
+/// Thickness of the bristles. Must be in range [0.1,2]. Default is 0.2.
 @property (nonatomic) CGFloat thickness;
 LTPropertyDeclare(CGFloat, thickness, Thickness);
 

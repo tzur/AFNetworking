@@ -256,6 +256,29 @@ context(@"generate mat", ^{
     cv::Mat expected = LTLoadMat([self class], @"GaussianAnisotropic.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
   });
+
+  it(@"should generate a normalized gaussian mat", ^{
+    const CGSize kTargetSize = CGSizeMake(256, 256);
+    cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3, YES);
+    expect(mat.rows).to.equal(kTargetSize.height);
+    expect(mat.cols).to.equal(kTargetSize.width);
+    expect(mat.type()).to.equal(CV_16U);
+
+    cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
+    cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
+    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+
+    cv::Mat4b expected = LTLoadMat([self class], @"GaussianSquare.png");
+    cv::Mat1b expectedGray(expected.size());
+    cv::cvtColor(expected, expectedGray, CV_RGBA2GRAY);
+    float factor = *std::max_element(expectedGray.begin(), expectedGray.end()) / 255.0;
+    std::transform(expected.begin(), expected.end(), expected.end(),
+                   [factor](const cv::Vec4b &pixel) {
+      return LTLTVector4ToVec4b(LTCVVec4bToLTVector4(pixel) / factor);
+    });
+    expect($(convertedRGB)).to.beCloseToMat($(expected));
+  });
 });
 
 context(@"GLKMatrix conversion", ^{

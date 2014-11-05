@@ -20,7 +20,21 @@
 /// (\c name which is non-zero) and with a precision that is valid as a render target.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
-- (id)initWithTexture:(LTTexture *)texture;
+- (instancetype)initWithTexture:(LTTexture *)texture;
+
+/// Designated initializer: create an FBO with a target texture and mipmap level (without clearing
+/// it in the process). If the given texture is invalid, an \c LTGLException named
+/// \c kLTFboInvalidTextureException will be thrown.
+///
+/// @param texture texture to set as a render target. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a render target.
+///
+/// @param level level of the mipmap texture to set as a render target. For non mipmap textures,
+/// this value must be 0, and for mipmap textures this value must be less than or equal the
+/// texture's \c maxMipmapLevel.
+///
+/// @note The texture will not be cleared. Use \c clear to clear the texture.
+- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level;
 
 /// Executes the given block while the receiver is bound to the active context, while locking the
 /// framebuffer's texture when the block is executed. If the receiver is not already bound, this will
@@ -43,6 +57,10 @@
 /// Texture backed by this framebuffer.
 @property (readonly, nonatomic) LTTexture *texture;
 
+/// Mip map level of the the texture associated with the FBO. In case the texture is not a mipmap
+/// texture, this will be \c 0.
+@property (readonly, nonatomic) GLint level;
+
 @end
 
 #pragma mark -
@@ -61,7 +79,7 @@
 ///
 /// @note The texture will not be cleared. Use \c clearWithColor: to clear the texture with a
 /// specific color.
-- (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device;
+- (instancetype)initWithTexture:(LTTexture *)texture device:(LTDevice *)device;
 
 /// Executes the given block while the receiver is bound to the active context, and \c LTGLContext's
 /// \c renderingToScreen is set to YES. 

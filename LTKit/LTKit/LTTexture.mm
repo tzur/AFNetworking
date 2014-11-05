@@ -644,8 +644,10 @@ static NSString * const kArchiveKey = @"archive";
 }
 
 - (void)clearWithColor:(LTVector4)color {
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
-  [fbo clearWithColor:color];
+  for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
+    [fbo clearWithColor:color];
+  }
 }
 
 #pragma mark -
