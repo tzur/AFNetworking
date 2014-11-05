@@ -91,8 +91,23 @@
 }
 
 - (void)assertImageFrameCorrectness:(LTImageFrame *)imageFrame {
+  [self assertBaseCorrectnessForImageFrame:imageFrame];
+  [self assertFrameMaskCorrectnessForImageFrame:imageFrame];
+}
+
+- (void)assertBaseCorrectnessForImageFrame:(LTImageFrame *)imageFrame {
   LTParameterAssert((imageFrame.baseTexture.size.width == imageFrame.baseTexture.size.height) &&
                     (imageFrame.baseMask.size.width == imageFrame.baseMask.size.height));
+}
+
+- (void)assertFrameMaskCorrectnessForImageFrame:(LTImageFrame *)imageFrame {
+  if (imageFrame.frameType == LTFrameTypeIdentity) {
+    CGFloat outputTextureSizeRatio = self.outputTexture.size.height / self.outputTexture.size.width;
+    CGFloat frameMaskSizeRatio = imageFrame.frameMask.size.height / imageFrame.frameMask.size.width;
+    LTParameterAssert(outputTextureSizeRatio == frameMaskSizeRatio);
+  } else {
+    LTParameterAssert(imageFrame.frameMask.size.width == imageFrame.frameMask.size.height);
+  }
 }
 
 #pragma mark -

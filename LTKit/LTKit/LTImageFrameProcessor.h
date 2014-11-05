@@ -6,14 +6,16 @@
 #import "LTPropertyMacros.h"
 #import "LTTexture.h"
 
-/// Supported types of frames, categorized by square-to-rectangle mapping modes:
-/// 1. Stretching the central part of the longer dimension.
-/// 2. Repeating the central part of the longer dimension integer number of times.
-/// 3. Fitting the square frame in the middle of the image rectangle.
+/// Supported types of frames, categorized by square-to-rectangle mapping modes.
 typedef NS_ENUM(NSUInteger, LTFrameType) {
+  /// Stretching the central part of the longer dimension.
   LTFrameTypeStretch = 0,
+  /// Repeating the central part of the longer dimension integer number of times.
   LTFrameTypeRepeat,
-  LTFrameTypeFit
+  /// Fitting the square frame in the middle of the image rectangle.
+  LTFrameTypeFit,
+  /// One to one mapping between the \c frameMask and the \c output texture.
+  LTFrameTypeIdentity
 };
 
 #pragma mark -
@@ -57,6 +59,8 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
 
 /// Creates framed image using an input image and \c LTImageFrame.
 /// Constraints on non-nil textures: \c baseTexture and \c baseMask should be a square.
+/// \c frameMask must be square as well, unless \c frameType is \c LTFrameTypeIdentity. In that
+/// case, \c frameMask must be with the same aspect ratio as the output image.
 @interface LTImageFrameProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture, which will have a frame added to it as the output.

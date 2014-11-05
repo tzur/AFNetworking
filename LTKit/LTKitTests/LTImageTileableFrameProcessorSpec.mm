@@ -140,8 +140,8 @@ context(@"processing landscape image with tileable frame", ^{
     
     // Set frame mask.
     cv::Mat1b frameMaskMat;
-    frameMaskMat.create(20, 16);
-    frameMaskMat(cv::Rect(0, 0, 16, 20)) = 255;
+    frameMaskMat.create(16, 16);
+    frameMaskMat(cv::Rect(0, 0, 16, 16)) = 255;
     frameMaskMat(cv::Rect(2, 2, 12, 12)) = 0;
     frameMask = [LTTexture textureWithImage:frameMaskMat];
     
@@ -201,6 +201,59 @@ context(@"processing to screen", ^{
     LTTexture *precomputedResult =
         [LTTexture textureWithImage:LTLoadMat([self class], @"ImageTileableProcessedToScreen.png")];
     expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+});
+
+context(@"processing identity type with tileable frame", ^{
+  __block LTTexture *baseTexture;
+  
+  const CGSize kImageSize = CGSizeMake(60, 40);
+
+  beforeEach(^{
+    cv::Mat4b inputMat(kImageSize.height, kImageSize.width, cv::Vec4b(100, 100, 255, 255));
+    LTTexture *input = [LTTexture textureWithImage:inputMat];
+    
+    output = [LTTexture textureWithImage:cv::Mat4b::zeros(kImageSize.height, kImageSize.width)];
+    baseTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"TileableBaseTexture.png")];
+    
+    // Set frame mask.
+    cv::Mat1b frameMaskMat(kImageSize.height / 2, kImageSize.width / 2, 255);
+    frameMaskMat(cv::Rect(2, 5, 20, 10)) = 0;
+    frameMask = [LTTexture textureWithImage:frameMaskMat];
+    
+    // Interpolation scheme.
+    frameMask.magFilterInterpolation = LTTextureInterpolationNearest;
+    frameMask.minFilterInterpolation = LTTextureInterpolationNearest;
+    baseTexture.magFilterInterpolation = LTTextureInterpolationNearest;
+    baseTexture.minFilterInterpolation = LTTextureInterpolationNearest;
+    
+    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
+  });
+  
+  afterEach(^{
+    baseTexture = nil;
+  });
+
+  it(@"should tile base mask with identity frame mask", ^{
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:baseTexture baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeIdentity]
+                       angle:0 translation:CGPointZero];
+    [processor process];
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithTiledMaskIdentityType.png")];
+    expect($(output.image)).to.beCloseToMatWithin($(precomputedResult.image), 2);
+  });
+  
+  it(@"should raise exception for identity type mapping tiled frame with wrong aspect ratio", ^{
+    cv::Mat1b frameMaskMat(kImageSize.height / 2, kImageSize.width, 255);
+    frameMask = [LTTexture textureWithImage:frameMaskMat];
+    expect(^{
+      [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:baseTexture baseMask:nil
+                                                               frameMask:frameMask
+                                                               frameType:LTFrameTypeIdentity]
+                         angle:0 translation:CGPointZero];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

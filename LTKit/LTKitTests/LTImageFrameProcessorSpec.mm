@@ -194,8 +194,6 @@ context(@"processing frame type fit", ^{
     LTTexture *input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
-    cv::Mat1b originalFrameMask(32, 60, 255);
-    frameMask = [LTTexture textureWithImage:originalFrameMask];
 
     processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
     [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
@@ -271,4 +269,43 @@ context(@"reading color from output", ^{
   });
 });
 
+context(@"processing identity frame type", ^{
+  __block LTTexture *frame;
+  
+  beforeEach(^{
+    cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
+    LTTexture *input = [LTTexture textureWithImage:greyPatch];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
+    frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+  });
+
+  afterEach(^{
+    frame = nil;
+  });
+
+  it(@"should return image with identity type mapping frame", ^{
+    cv::Mat1b originalFrameMask(30, 60, 255);
+    originalFrameMask(cv::Rect(2, 5, 55, 25)) = 0;
+    frameMask = [LTTexture textureWithImage:originalFrameMask];
+    [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                             frameMask:frameMask
+                                                             frameType:LTFrameTypeIdentity]];
+    [processor process];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithFrameTypeIdentity.png")];
+    expect($(output.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+
+  it(@"should raise exception for identity type mapping frame with wrong aspect ratio", ^{
+    cv::Mat1b originalFrameMask(60, 60, 255);
+    frameMask = [LTTexture textureWithImage:originalFrameMask];
+    expect(^{
+      [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                               frameMask:frameMask
+                                                               frameType:LTFrameTypeIdentity]];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
 LTSpecEnd

@@ -385,6 +385,8 @@
 		28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0518B23D540036D66E /* LTTouchCollectorFilterSpec.mm */; };
 		28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */; };
 		28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0B18B23D930036D66E /* LTTouchCollector.mm */; };
+		28D18CEC1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D18CEB1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png */; };
+		28D63C7A1A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D63C791A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png */; };
 		28D7C9BC19BEF9AE0077F9B5 /* FrameCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D7C9B919BEF9AE0077F9B5 /* FrameCircle.png */; };
 		28D7C9BD19BEF9AE0077F9B5 /* FrameClassic.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D7C9BA19BEF9AE0077F9B5 /* FrameClassic.png */; };
 		28D7C9BE19BEF9AE0077F9B5 /* FrameStamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D7C9BB19BEF9AE0077F9B5 /* FrameStamp.png */; };
@@ -1512,6 +1514,8 @@
 		28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollectorTimeIntervalFilterSpec.mm; sourceTree = "<group>"; };
 		28C61C0A18B23D930036D66E /* LTTouchCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchCollector.h; sourceTree = "<group>"; };
 		28C61C0B18B23D930036D66E /* LTTouchCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollector.mm; sourceTree = "<group>"; };
+		28D18CEB1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithFrameTypeIdentity.png; path = Resources/ImageWithFrameTypeIdentity.png; sourceTree = "<group>"; };
+		28D63C791A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithTiledMaskIdentityType.png; path = Resources/ImageWithTiledMaskIdentityType.png; sourceTree = "<group>"; };
 		28D7C9B919BEF9AE0077F9B5 /* FrameCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FrameCircle.png; path = Resources/FrameCircle.png; sourceTree = "<group>"; };
 		28D7C9BA19BEF9AE0077F9B5 /* FrameClassic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FrameClassic.png; path = Resources/FrameClassic.png; sourceTree = "<group>"; };
 		28D7C9BB19BEF9AE0077F9B5 /* FrameStamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FrameStamp.png; path = Resources/FrameStamp.png; sourceTree = "<group>"; };
@@ -2705,10 +2709,12 @@
 				28A2545319C9CDF30057E1A3 /* ReshapeProcessorReshapeWithoutMask.png */,
 				28A2545419C9CDF30057E1A3 /* ReshapeProcessorResizeWithoutMask.png */,
 				284BF6D91A04F3B4007FA22F /* ImageTileableProcessedToScreen.png */,
+				28D18CEB1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png */,
 				28B1E80D19D94BD100AC5884 /* ImageWithFrameTypeRepeat.png */,
 				28B1E80E19D94BD100AC5884 /* ImageWithFrameTypeStretch.png */,
 				28647E7519D9362B0026630F /* ImageWithRotatedTiledFrame.png */,
 				28647E7619D9362B0026630F /* ImageWithTiledFrame.png */,
+				28D63C791A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png */,
 				28647E7719D9362B0026630F /* ImageWithTransparentTiledFrame.png */,
 				28647E7319D9361E0026630F /* ImageWithColoredTiledFrame.png */,
 				28647E7119D931740026630F /* TileableBaseTexture.png */,
@@ -3971,6 +3977,7 @@
 				280E40DA1990C2F6008C5BD9 /* PerspectiveRotation.png in Resources */,
 				03BCFD49191FA6E200529AD6 /* NoisyBorder.png in Resources */,
 				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
+				28D63C7A1A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png in Resources */,
 				2853684619BDD61300CC9057 /* ImageWithNarrowFrameTypeStretch.png in Resources */,
 				031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
@@ -4088,6 +4095,7 @@
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 				28647E7819D9362B0026630F /* ImageWithRotatedTiledFrame.png in Resources */,
+				28D18CEC1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png in Resources */,
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,
 				280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */,
 				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
