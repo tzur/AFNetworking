@@ -133,7 +133,7 @@ context(@"processing", ^{
   });
   
   it(@"should process brightness correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(103, 231, 255, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(2, 225, 255, 255));
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
     processor.brightness = 1;
     [processor process];
@@ -142,7 +142,7 @@ context(@"processing", ^{
   });
   
   it(@"should process contrast correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(0, 99, 225, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 135, 255, 255));
     processor.contrast = 1;
     [processor process];
     
@@ -150,7 +150,7 @@ context(@"processing", ^{
   });
   
   it(@"should process offset correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(151, 255, 255, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
     processor.offset = 1;
     [processor process];
     
@@ -158,7 +158,7 @@ context(@"processing", ^{
   });
   
   it(@"should process exposure correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(104, 232, 255, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(1, 255, 255, 255));
     processor.exposure = 1;
     [processor process];
     
@@ -191,7 +191,7 @@ context(@"processing", ^{
   });
   
   it(@"should process color gradient correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(0, 2, 255, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(16, 65, 255, 255));
     processor.colorGradient = [LTColorGradient redToRedGradient];
     processor.colorGradientIntensity = 1.0;
     [processor process];
@@ -219,10 +219,10 @@ context(@"processing", ^{
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
     [processor.assetTexture clearWithColor:LTVector4One * 0.25];
     processor.lightLeakIntensity = 1.0;
-    processor.grungeIntensity = 1.0;
+    processor.frameWidth = 1.0;
     [processor process];
     
-    cv::Mat4b output(2, 2, cv::Vec4b(80, 80, 80, 255));
+    cv::Mat4b output(2, 2, cv::Vec4b(112, 112, 112, 255));
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
 });

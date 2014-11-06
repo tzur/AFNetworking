@@ -32,26 +32,37 @@ uniform mediump float grainAmplitude;
 uniform mediump float colorGradientIntensity;
 uniform mediump float colorGradientFade;
 uniform mediump float lightLeakIntensity;
-uniform mediump float grungeIntensity;
+uniform mediump vec2 frameWidth;
 // Width / Height.
 uniform mediump float aspectRatio;
 
-// Sc - scource, top.
-// Dc - destination, bottom.
-mediump float overlay(in mediump float Sca, in mediump float Dca, in mediump float Sa,
-                      in mediump float Da) {
-  mediump float below = 2.0 * Sca * Dca + Sca * (1.0 - Da) + Dca * (1.0 - Sa);
-  mediump float above = Sca * (1.0 + Da) + Dca * (1.0 + Sa) - 2.0 * Dca * Sca - Da * Sa;
+// Sca - scource, top.
+// Dca - destination, bottom.
+mediump float overlay(in mediump float Sca, in mediump float Dca) {
+  mediump float below = 2.0 * Sca * Dca;
+  mediump float above = Sca * 2.0 + Dca * 2.0 - 2.0 * Dca * Sca - 1.0;
   
-  return mix(below, above, step(0.5 * Da, Dca));
+  return mix(below, above, step(0.5, Dca));
 }
 
-mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
-                     in mediump float Da) {
-  mediump vec3 below = 2.0 * Sca * Dca + Sca * (1.0 - Da) + Dca * (1.0 - Sa);
-  mediump vec3 above = Sca * (1.0 + Da) + Dca * (1.0 + Sa) - 2.0 * Dca * Sca - Da * Sa;
+mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca) {
+  mediump vec3 below = 2.0 * Sca * Dca;
+  mediump vec3 above = Sca * 2.0 + Dca * 2.0 - 2.0 * Dca * Sca - 1.0;
   
-  return mix(below, above, step(0.5 * Da, Dca));
+  return mix(below, above, step(0.5, Dca));
+}
+
+mediump vec3 softLight(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
+                       in mediump float Da) {
+  // safeX = (x <= 0) ? 1 : x;
+  mediump float safeDa = Da + step(Da, 0.0);
+
+  mediump vec3 below = 2.0 * Sca * Dca + Dca * (Dca / safeDa) * (Sa - 2.0 * Sca) + Sca * (1.0 - Da)
+      + Dca * (1.0 - Sa);
+  mediump vec3 above = 2.0 * Dca * (Sa - Sca) + sqrt(Dca * Da) * (2.0 * Sca - Sa) + Sca * (1.0 - Da)
+      + Dca * (1.0 - Sa);
+
+  return mix(below, above, step(0.5, Sca));
 }
 
 mediump vec3 screen(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
@@ -59,8 +70,17 @@ mediump vec3 screen(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float S
   return Sca + Dca - Sca * Dca;
 }
 
-mediump vec2 getTexCoordinates(in mediump vec2 coords, in mediump float ratio) {
+mediump vec2 getLightCoordinates(in mediump vec2 coords, in mediump float ratio) {
   return coords * vec2(ratio, 1.0);
+}
+
+mediump vec2 getFrameCoordinates(in mediump vec2 coords, in mediump vec2 width,
+                                 in mediump float ratio) {
+  highp vec2 frameCoords;
+  frameCoords.y = mix(coords.y - width.y, coords.y + width.y, step(0.5, coords.y));
+  frameCoords.x = mix((coords.x - width.x) * ratio,
+                      1.0 - (1.0 - coords.x - width.x) * ratio, step(0.5, coords.x));
+  return frameCoords;
 }
 
 const mediump mat3 kRGBtoYIQ = mat3(0.299, 0.596, 0.212,
@@ -73,8 +93,20 @@ const mediump mat3 kYIQtoRGB = mat3(1.0, 1.0, 1.0,
 void main() {
   mediump vec4 color = texture2D(sourceTexture, vTexcoord);
   mediump vec3 outputColor = color.rgb;
-  
-  // 1. Local contrast.
+
+  // 1. Textures: light leak and frame.
+  mediump vec2 frameCoords = mix(getFrameCoordinates(vTexcoord, frameWidth, aspectRatio),
+      getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / aspectRatio).yx,
+      step(1.0, aspectRatio));
+
+  mediump vec2 lightCoords = mix(getLightCoordinates(vTexcoord, aspectRatio),
+      getLightCoordinates(vTexcoord.yx, 1.0 / aspectRatio).yx,
+      step(1.0, aspectRatio));
+
+  mediump float frame = texture2D(assetTexture, frameCoords).a;
+  mediump vec3 lightLeak = texture2D(assetTexture, lightCoords).rgb;
+
+  // 2. Local contrast.
   // For positive structure values, details textures is interpolated with original image. For
   // negative values, a smooth layer is created assuming the following identity:
   // details = smooth + boost * (original - smooth)
@@ -85,40 +117,43 @@ void main() {
   mediump float lum = mix(yiq.r, mix(-0.4 * (details - 3.5 * yiq.r), details, step(0.0, structure)),
                           abs(structure));
 
-  // 2. Tonal adjustment.
-  lum = texture2D(colorGradientTexture, vec2(lum, 0.0)).a;
-  
-  // 3. Grain.
-  mediump float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
-  lum = overlay(mix(0.5, grain, grainAmplitude), lum, 1.0, 1.0);
-    
-  // 4. Saturation.
-  outputColor = kYIQtoRGB * vec3(lum, yiq.gb * saturation);
-  
-  // 5. Color gradient.
+  // 3. Saturation.
+  outputColor = clamp(kYIQtoRGB * vec3(lum, yiq.gb * saturation), 0.0, 1.0);
+
+  // 4. Vignetting.
+  mediump float vignette = texture2D(vignettingTexture, vTexcoord).r;
+  mediump vec3 vignetteRGB = vec3(mix(0.5, 0.5 + 1.0 * (vignetteIntensity - 0.5), vignette));
+  mediump vec3 soft = overlay(vignetteRGB, outputColor);
+  mediump vec3 harsh = overlay(outputColor, vignetteRGB);
+  outputColor = mix(soft, harsh, 0.5);
+  outputColor = clamp(outputColor, 0.0, 1.0);
+
+  // 5. Frame.
+  // Frame is applied on both color and luminance, so it is completely transparent for any
+  // configuration of colorGradient.
+  lum = overlay(lum, frame);
+  outputColor = overlay(outputColor, vec3(frame));
+
+  // 6. Color gradient.
   // Suggested method to fine-tune the color gradient mapping is to create an appropriate adjustment
   // layers in Adobe Photoshop.
   mediump vec3 colorGradient = texture2D(colorGradientTexture, vec2(lum)).rgb;
-  colorGradient = overlay(colorGradient * colorGradientIntensity, outputColor,
+  outputColor = mix(outputColor, clamp(outputColor, vec3(0.3), vec3(0.7)), colorGradientFade);
+  outputColor = softLight(colorGradient * colorGradientIntensity, outputColor,
                           colorGradientIntensity, 1.0);
-  outputColor = mix(colorGradient, clamp(colorGradient, vec3(0.3), vec3(1.0)) * 0.6 + 0.3,
-            colorGradientFade);
 
-  // 6. Vignetting.
-  mediump float vignette = texture2D(vignettingTexture, vTexcoord).r;
-  mediump vec3 vignetteRGB = vec3(mix(0.5, vignetteIntensity, vignette));
-  mediump vec3 soft = overlay(vignetteRGB, outputColor, 1.0, 1.0);
-  mediump vec3 harsh = overlay(outputColor, vignetteRGB, 1.0, 1.0);
-  outputColor = mix(soft, harsh, 0.5);
-  
-  // 7. Texture: light leak and grunge.
-  mediump vec2 coords = mix(getTexCoordinates(vTexcoord, aspectRatio),
-                            getTexCoordinates(vTexcoord.yx, 1.0 / aspectRatio).yx,
-                            step(1.0, aspectRatio));
-  mediump vec4 grungeAndLeak = texture2D(assetTexture, coords);
-  mediump vec3 lightLeak = grungeAndLeak.rgb;
+  // 7. Tonal adjustment.
+  outputColor.r = texture2D(colorGradientTexture, vec2(outputColor.r, 0.0)).a;
+  outputColor.g = texture2D(colorGradientTexture, vec2(outputColor.g, 0.0)).a;
+  outputColor.b = texture2D(colorGradientTexture, vec2(outputColor.b, 0.0)).a;
+  outputColor = clamp(outputColor, 0.0, 1.0);
+
+  // 8. Grain.
+  mediump float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
+  outputColor = overlay(vec3(mix(0.5, grain, grainAmplitude)), outputColor);
+
+  // 9. Light Leak
   outputColor = screen(lightLeak * lightLeakIntensity, outputColor, lightLeakIntensity, 1.0);
-  outputColor = overlay(outputColor, vec3(grungeAndLeak.a) * grungeIntensity, 1.0, grungeIntensity);
-  
+
   gl_FragColor = vec4(outputColor, color.a);
 }

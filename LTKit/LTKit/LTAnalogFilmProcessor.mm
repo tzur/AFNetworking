@@ -144,7 +144,7 @@
       
       @instanceKeypath(LTAnalogFilmProcessor, assetTexture),
       @instanceKeypath(LTAnalogFilmProcessor, lightLeakIntensity),
-      @instanceKeypath(LTAnalogFilmProcessor, grungeIntensity)
+      @instanceKeypath(LTAnalogFilmProcessor, frameWidth)
     ]];
   });
   
@@ -385,10 +385,24 @@ LTPropertyWithoutSetter(CGFloat, lightLeakIntensity, LightLeakIntensity, 0, 1, 0
   return squareRatio && correctSize;
 }
 
-LTPropertyWithoutSetter(CGFloat, grungeIntensity, GrungeIntensity, 0, 1, 0);
-- (void)setGrungeIntensity:(CGFloat)grungeIntensity {
-  [self _verifyAndSetGrungeIntensity:grungeIntensity];
-  self[[LTAnalogFilmFsh grungeIntensity]] = @(grungeIntensity);
+LTPropertyWithoutSetter(CGFloat, frameWidth, FrameWidth, -1, 1, 0);
+- (void)setFrameWidth:(CGFloat)frameWidth {
+  [self _verifyAndSetFrameWidth:frameWidth];
+  self[[LTAnalogFilmFsh frameWidth]] = $([self remapFrameWidth:frameWidth]);
+}
+
+- (LTVector2)remapFrameWidth:(CGFloat)frameWidth {
+  CGFloat ratio = [self aspectRatio];
+  LTVector2 width;
+  if (ratio < 1) {
+    width = LTVector2(frameWidth, frameWidth * ratio);
+  } else {
+    width = LTVector2(frameWidth / ratio, frameWidth);
+  }
+  // This fine-tuning parameter reduces the changes in the width of the frame, so the range of the
+  // movement will feel more natural.
+  static const CGFloat kFrameWidthScaling = 0.07;
+  return width * kFrameWidthScaling;
 }
 
 @end

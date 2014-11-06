@@ -112,7 +112,7 @@ LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 #pragma mark -
 
 /// Square asset texture. RGB channels of this texture are blended using screen mode and intended
-/// to store a light leak. Alpha channel is blended in overlay mode and intended to store a grunge
+/// to store a light leak. Alpha channel is blended in overlay mode and intended to store a frame
 /// pattern. The size of the texture should be 2048x2048. Default texture has 0.0 across rgb
 /// channels and 0.5 in alpha channel. Passing \c nil will set \c assetTexture to default texture.
 @property (strong, nonatomic) LTTexture *assetTexture;
@@ -121,8 +121,8 @@ LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 @property (nonatomic) CGFloat lightLeakIntensity;
 LTPropertyDeclare(CGFloat, lightLeakIntensity, LightLeakIntensity);
 
-/// Intensity of the grunge. Should be in [0, 1] range. Default value is 0.
-@property (nonatomic) CGFloat grungeIntensity;
-LTPropertyDeclare(CGFloat, grungeIntensity, GrungeIntensity);
+/// Width of the frame. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat frameWidth;
+LTPropertyDeclare(CGFloat, frameWidth, FrameWidth);
 
 @end
