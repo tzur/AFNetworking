@@ -11,6 +11,9 @@
 /// Texture associated with the FBO.
 @property (strong, nonatomic) LTTexture *texture;
 
+/// Mip map level of the the texture associated with the FBO.
+@property (nonatomic) GLint level;
+
 /// Framebuffer identifier.
 @property (nonatomic) GLuint framebuffer;
 
@@ -31,13 +34,23 @@
 #pragma mark Initialization and Setup
 #pragma mark -
 
-- (id)initWithTexture:(LTTexture *)texture {
-  return [self initWithTexture:texture device:[LTDevice currentDevice]];
+- (instancetype)initWithTexture:(LTTexture *)texture {
+  return [self initWithTexture:texture level:0];
 }
 
-- (id)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
+- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level {
+  return [self initWithTexture:texture level:level device:[LTDevice currentDevice]];
+}
+
+- (instancetype)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
+  return [self initWithTexture:texture level:0 device:device];
+}
+
+- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level
+                         device:(LTDevice *)device {
   if (self = [super init]) {
     LTParameterAssert(texture);
+    LTParameterAssert((GLint)level <= texture.maxMipmapLevel);
 
     if (!texture.name) {
       [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's name is 0"];
@@ -50,6 +63,7 @@
 
     self.previousViewport = CGRectNull;
     self.texture = texture;
+    self.level = (GLint)level;
 
     [self createFramebuffer];
   }
@@ -59,7 +73,7 @@
 - (void)dealloc {
   if (self.framebuffer) {
     [self bindAndExecute:^{
-      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, self.level);
     }];
     glDeleteFramebuffers(1, &_framebuffer);
   }
@@ -92,13 +106,14 @@
 
   [self bindAndExecute:^{
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                           self.texture.name, 0);
+                           self.texture.name, self.level);
     LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.texture);
 
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE) {
       [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
-       "(status: 0x%x, framebuffer: %d texture: %@)", status, self.framebuffer, self.texture];
+       "(status: 0x%x, framebuffer: %d, texture: %@, level: %d)", status, self.framebuffer,
+       self.texture, self.level];
     }
 
     LTGLCheck(@"Error while creating framebuffer");
@@ -120,7 +135,8 @@
   self.previousViewport = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
 
   glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
-  glViewport(0, 0, self.texture.size.width, self.texture.size.height);
+  CGSize size = self.texture.size / std::pow(2, self.level);
+  glViewport(0, 0, size.width, size.height);
   self.bound = YES;
 }
 

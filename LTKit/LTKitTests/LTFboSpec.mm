@@ -74,6 +74,47 @@ context(@"initialization", ^{
       __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
     }).to.raise(kLTFboInvalidTextureException);
   });
+
+  context(@"mipmap", ^{
+    __block LTTexture *texture;
+
+    beforeEach(^{
+      Matrices levels;
+      for (uint diameter = 4; diameter > 0; diameter /= 2) {
+        levels.push_back(cv::Mat4b(diameter, diameter));
+      }
+
+      texture = [[LTGLTexture alloc] initWithMipmapImages:levels];
+    });
+
+    afterEach(^{
+      texture = nil;
+    });
+
+    it(@"should init with a valid mipmap level", ^{
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+      expect(fbo.name).toNot.equal(0);
+      expect(fbo.level).to.equal(0);
+
+      fbo = [[LTFbo alloc] initWithTexture:texture level:0];
+      expect(fbo.name).toNot.equal(0);
+      expect(fbo.level).to.equal(0);
+
+      fbo = [[LTFbo alloc] initWithTexture:texture level:1];
+      expect(fbo.name).toNot.equal(0);
+      expect(fbo.level).to.equal(1);
+
+      fbo = [[LTFbo alloc] initWithTexture:texture level:2];
+      expect(fbo.name).toNot.equal(0);
+      expect(fbo.level).to.equal(2);
+    });
+    
+    it(@"should raise with invalid mipmap level", ^{
+      expect(^{
+        LTFbo __unused *fbo = [[LTFbo alloc] initWithTexture:texture level:3];
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
 });
 
 context(@"clearing", ^{

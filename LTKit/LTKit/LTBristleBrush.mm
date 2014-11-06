@@ -7,10 +7,14 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTRandom.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
+
+/// A pair of \c CGFloats.
+typedef std::pair<CGFloat, CGFloat> CGFloatPair;
 
 @interface LTBrush ()
 @property (strong, nonatomic) LTTexture *texture;
@@ -21,8 +25,8 @@
 /// Indicates that the brush should be updated before drawing.
 @property (nonatomic) BOOL shouldUpdateBrush;
 
-/// Fbo used for updating the brush texture.
-@property (strong, nonatomic) LTFbo *brushFbo;
+/// Fbos used for updating the different mipmap levels of the brush texture.
+@property (strong, nonatomic) NSArray *brushFbos;
 
 /// Drawer used to draw the bristles when updating the brush texture.
 @property (strong, nonatomic) LTRectDrawer *bristleDrawer;
@@ -43,51 +47,51 @@ static const CGFloat kBristleSigma = 0.4;
 - (instancetype)initWithRandom:(LTRandom *)random {
   if (self = [super initWithRandom:random]) {
     [self setBristleBrushDefaults];
-    self.brushFbo = [self createBrushFbo];
+    self.brushFbos = [self createBrushFbos];
     self.bristleDrawer = [self createBristleDrawer];
   }
   return self;
 }
 
 - (void)setBristleBrushDefaults {
-  self.shape = LTBristleBrushShapeRound;
+  self.shape = LTBristleBrushShapeRoundBlunt;
   self.bristles = self.defaultBristles;
   self.thickness = self.defaultThickness;
 }
 
 - (LTTexture *)createTexture {
-  return [LTTexture textureWithSize:CGSizeMakeUniform(kBaseLevelDiameter)
-                          precision:LTTexturePrecisionHalfFloat format:LTTextureFormatRed
-                     allocateMemory:YES];
+  Matrices levels;
+  for (uint diameter = kBaseLevelDiameter; diameter > 0; diameter /= 2) {
+    levels.push_back(cv::Mat1hf(diameter, diameter));
+  }
+
+  LTTexture *texture = [LTTexture textureWithMipmapImages:levels];
+  texture.minFilterInterpolation = LTTextureInterpolationLinearMipmapLinear;
+  texture.magFilterInterpolation = LTTextureInterpolationLinear;
+  return texture;
 }
 
-- (LTFbo *)createBrushFbo {
-  return [[LTFbo alloc] initWithTexture:self.texture];
+- (NSArray *)createBrushFbos {
+  NSMutableArray *fbos = [NSMutableArray array];
+  for (GLint i = 0; i < self.texture.maxMipmapLevel; ++i) {
+    [fbos addObject:[[LTFbo alloc] initWithTexture:self.texture level:i]];
+  }
+  return fbos;
 }
 
 - (LTRectDrawer *)createBristleDrawer {
-  cv::Mat bristleMat = [self createGaussianWithDiameter:kBristleDiameter sigma:kBristleSigma];
-  return [[LTRectDrawer alloc] initWithSourceTexture:[LTTexture textureWithImage:bristleMat]];
-}
-
-- (cv::Mat)createGaussianWithDiameter:(uint)diameter sigma:(CGFloat)sigma {
-  using half_float::half;
-  cv::Mat4hf mat(diameter, diameter);
-  mat = half(0.0);
-  int radius = mat.rows / 2 - 1;
-  CGFloat inv2SigmaSquare = 1.0 / (2.0 * sigma * sigma);
-  for (int i = 0; i < 2 * radius; ++i) {
-    for (int j = 0; j < 2 * radius; ++j) {
-      CGFloat y = (i - radius + 0.5) / radius;
-      CGFloat x = (j - radius + 0.5) / radius;
-      CGFloat squaredDistance = x * x + y * y;
-      CGFloat arg = -squaredDistance * inv2SigmaSquare;
-      CGFloat value = (squaredDistance <= 1.0) ? std::exp(arg) : 0;
-      mat(i+1, j+1) = half(value);
-    }
+  Matrices levels;
+  for (uint diameter = kBristleDiameter; diameter > 0; diameter /= 2) {
+    cv::Mat1hf gaussian = LTCreateGaussianMat(CGSizeMakeUniform(diameter), kBristleSigma, YES);
+    cv::Mat4hf level(gaussian.size());
+    cv::Mat channels[] = {gaussian, gaussian, gaussian, gaussian};
+    cv::merge(channels, 4, level);
+    levels.push_back(level);
   }
-  
-  return mat;
+  LTTexture *gaussian = [LTTexture textureWithMipmapImages:levels];
+  gaussian.minFilterInterpolation = LTTextureInterpolationLinearMipmapLinear;
+  gaussian.magFilterInterpolation = LTTextureInterpolationLinear;
+  return [[LTRectDrawer alloc] initWithSourceTexture:gaussian];
 }
 
 #pragma mark -
@@ -109,13 +113,15 @@ static const CGFloat kBristleSigma = 0.4;
   for (NSUInteger i = 0; i < bristles.count; ++i) {
     [sources addObject:[LTRotatedRect rect:CGRectFromSize(CGSizeMakeUniform(kBristleDiameter))]];
   }
-  
-  [self.brushFbo clearWithColor:LTVector4(0, 0, 0, 1)];
+
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.blendEnabled = YES;
     context.blendFunc = kLTGLContextBlendFuncNormal;
-    [self.bristleDrawer drawRotatedRects:bristles inFramebuffer:self.brushFbo
-                        fromRotatedRects:sources];
+    for (LTFbo *fbo in self.brushFbos) {
+      [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+      [self.bristleDrawer drawRotatedRects:bristles inFramebuffer:fbo
+                          fromRotatedRects:sources];
+    }
   }];
 }
 
@@ -126,21 +132,62 @@ static const CGFloat kBristleSigma = 0.4;
   static const NSUInteger kRandomSeed = 100;
   LTRandom *random = [[LTRandom alloc] initWithSeed:kRandomSeed];
   CGFloat diameter = self.texture.size.width;
+  CGFloatPair bounds = [self radiusBoundsForCurrentShape];
   CGFloat bristleLength = (diameter / self.bristles) * self.thickness / self.maxThickness;
-  CGFloat maxRadius = MAX((diameter - bristleLength) / 2.0, 0.25 * diameter);
-  CGFloat minRadius = MIN(bristleLength, maxRadius / 2.0);
   CGSize bristleSize = CGSizeMakeUniform(bristleLength);
-  
+  CGFloat minRadius = bounds.first;
+  CGFloat maxRadius = bounds.second;
+
   NSMutableArray *bristles = [NSMutableArray array];
   for (NSUInteger i = 0; i < self.bristles; ++i) {
-    CGFloat angle = [random randomDoubleBetweenMin:0 max:2 * M_PI];
+    CGFloat angle = [self randomAngleForCurrentShape:random];
     CGFloat radius = [random randomDoubleBetweenMin:minRadius max:maxRadius];
     CGPoint center = CGPointMake(std::sin(angle), std::cos(angle)) * radius;
-    [bristles addObject:[LTRotatedRect rectWithCenter:center + self.brushFbo.size / 2
+    [bristles addObject:[LTRotatedRect rectWithCenter:center + self.texture.size / 2
                                                  size:bristleSize angle:-angle]];
   }
   
   return bristles;
+}
+
+- (CGFloat)randomAngleForCurrentShape:(LTRandom *)random {
+  static const double kFlatAngle = M_PI / 6.0;
+  switch (self.shape) {
+    case LTBristleBrushShapeRoundBlunt:
+    case LTBristleBrushShapeRoundPoint:
+    case LTBristleBrushShapeRoundFan:
+      return [random randomDoubleBetweenMin:0 max:2 * M_PI];
+    case LTBristleBrushShapeFlatBlunt:
+    case LTBristleBrushShapeFlatPoint:
+    case LTBristleBrushShapeFlatFan:
+      CGFloat angle = [random randomDoubleBetweenMin:-kFlatAngle max:kFlatAngle];
+      return angle + [random randomUnsignedIntegerBelow:2] * M_PI;
+  }
+}
+
+- (CGFloatPair)radiusBoundsForCurrentShape {
+  CGFloat diameter = self.texture.size.width;
+  CGFloat bristleLength = (diameter / self.bristles) * self.thickness / self.maxThickness;
+  CGFloat maxRadius;
+  CGFloat minRadius;
+  switch (self.shape) {
+    case LTBristleBrushShapeRoundBlunt:
+    case LTBristleBrushShapeFlatBlunt:
+      maxRadius = MAX((diameter - bristleLength) / 2.0, 0.25 * diameter);
+      minRadius = MIN(bristleLength, maxRadius / 2.0);
+      break;
+    case LTBristleBrushShapeRoundPoint:
+    case LTBristleBrushShapeFlatPoint:
+      maxRadius = (diameter - bristleLength) / 4.0;
+      minRadius = bristleLength;
+      break;
+    case LTBristleBrushShapeRoundFan:
+    case LTBristleBrushShapeFlatFan:
+      maxRadius = MAX((diameter - bristleLength) / 2.0, 0.25 * diameter);
+      minRadius = maxRadius / 4.0;
+      break;
+  }
+  return CGFloatPair(minRadius, maxRadius);
 }
 
 #pragma mark -
@@ -157,9 +204,14 @@ LTPropertyWithoutSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2);
   self.shouldUpdateBrush = YES;
 }
 
-LTPropertyWithoutSetter(NSUInteger, bristles, Bristles, 2, 20, 5);
+LTPropertyWithoutSetter(NSUInteger, bristles, Bristles, 2, 30, 5);
 - (void)setBristles:(NSUInteger)bristles {
   [self _verifyAndSetBristles:bristles];
+  self.shouldUpdateBrush = YES;
+}
+
+- (void)setShape:(LTBristleBrushShape)shape {
+  _shape = shape;
   self.shouldUpdateBrush = YES;
 }
 

@@ -168,19 +168,32 @@ NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name) {
   return path;
 }
 
-cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma) {
+static double LTNormalizationFactorForGaussianMat(const cv::Mat &mat, double sigma) {
+  CGSize radius = CGSizeMake(mat.cols / 2 - 1, mat.rows / 2 - 1);
+  double x = (mat.cols % 2) ? 0 : 0.5 / radius.width;
+  double y = (mat.rows % 2) ? 0 : 0.5 / radius.height;
+  return std::exp(-(x * x + y * y) * (1.0 / (2.0 * sigma * sigma)));
+}
+
+cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma, BOOL normalized) {
   using half_float::half;
   cv::Mat1hf mat(size.height, size.width);
-  mat = half(0.0);
+  if (mat.rows <= 2 && mat.cols <= 2) {
+    std::fill(mat.begin(), mat.end(), half(1));
+    return mat;
+  }
+
+  std::fill(mat.begin(), mat.end(), half(0));
   CGSize radius = CGSizeMake(mat.cols / 2 - 1, mat.rows / 2 - 1);
   double inv2SigmaSquare = 1.0 / (2.0 * sigma * sigma);
+  double maxValue = normalized ? LTNormalizationFactorForGaussianMat(mat, sigma) : 1;
   for (int i = 0; i < 2 * radius.height; ++i) {
     for (int j = 0; j < 2 * radius.width; ++j) {
       double y = (i - radius.height + 0.5) / radius.height;
       double x = (j - radius.width + 0.5) / radius.width;
       double squaredDistance = x * x + y * y;
       double arg = -squaredDistance * inv2SigmaSquare;
-      mat(i + 1, j + 1) = half(std::exp(arg));
+      mat(i + 1, j + 1) = half(std::exp(arg) / maxValue);
     }
   }
   return mat;

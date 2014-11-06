@@ -11,6 +11,10 @@
 #import "LTTestUtils.h"
 #import "LTTextureExamples.h"
 
+@interface LTGLTexture ()
+- (void)readRect:(CGRect)rect toImage:(cv::Mat *)image;
+@end
+
 LTSpecBegin(LTGLTexture)
 
 itShouldBehaveLike(kLTTextureExamples, @{kLTTextureExamplesTextureClass: [LTGLTexture class]});
@@ -98,18 +102,22 @@ context(@"mipmapping", ^{
     __block LTProgram *program;
     __block LTRectDrawer *drawer;
     __block LTFbo *fbo;
+    __block cv::Mat4b imageA;
+    __block cv::Mat4b imageB;
+    __block cv::Mat4b imageC;
+    __block cv::Mat4b imageD;
 
     beforeEach(^{
-      cv::Mat4b imageA(64, 64);
+      imageA.create(64, 64);
       imageA.setTo(cv::Vec4b(255, 0, 0, 255));
 
-      cv::Mat4b imageB(32, 32);
+      imageB.create(32, 32);
       imageB.setTo(cv::Vec4b(0, 255, 0, 255));
 
-      cv::Mat4b imageC(16, 16);
+      imageC.create(16, 16);
       imageC.setTo(cv::Vec4b(0, 0, 255, 255));
 
-      cv::Mat4b imageD(8, 8);
+      imageD.create(8, 8);
       imageD.setTo(cv::Vec4b(255, 255, 255, 255));
 
       texture = [[LTGLTexture alloc] initWithMipmapImages:{imageA, imageB, imageC, imageD}];
@@ -127,6 +135,22 @@ context(@"mipmapping", ^{
       program = nil;
       drawer = nil;
       fbo = nil;
+    });
+
+    it(@"should return image at level", ^{
+      expect($([texture imageAtLevel:0])).to.equalMat($(imageA));
+      expect($([texture imageAtLevel:1])).to.equalMat($(imageB));
+      expect($([texture imageAtLevel:2])).to.equalMat($(imageC));
+      expect($([texture imageAtLevel:3])).to.equalMat($(imageD));
+    });
+
+    it(@"should clear all levels with color", ^{
+      [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+      for (GLint i = 0; i < texture.maxMipmapLevel; ++i) {
+        cv::Mat4b actual = [texture imageAtLevel:i];
+        cv::Mat4b expected(actual.size(), cv::Vec4b(128, 128, 128, 255));
+        expect($(actual)).to.equalMat($(expected));
+      }
     });
 
     context(@"linear level interpolation", ^{

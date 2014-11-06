@@ -58,8 +58,9 @@ cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide = NO);
 cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide = NO);
 
 /// Generates a single-channel half-float matrix with the given size, containing a gaussian with
-/// the given sigma.
-cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma);
+/// the given sigma. If \c normalized is \c YES, the gaussian will be normalized such that its
+/// maximal value is 1.0 (in odd sizes the center element will be 1.0 even without normalizing).
+cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma, BOOL normalized = NO);
 
 /// Returns a \c 3x3 float matrix with the entries of the provided GLKMatrix3.
 cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix);

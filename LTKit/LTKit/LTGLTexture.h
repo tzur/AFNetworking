@@ -33,4 +33,12 @@
 /// or if image loading has failed.
 - (instancetype)initWithMipmapImages:(const Matrices &)images;
 
+/// Returns a \c Mat object from the given level of the texture. This is a heavy operation since it
+/// requires duplicating the texture to a new memory location. The matrix type and size depends on
+/// the texture's values, but the matrix will always contain 4 channels.
+/// \c level must be less than or equal \c maxMipmapLevel.
+///
+/// @see storeRect:toImage: for more information.
+- (cv::Mat)imageAtLevel:(NSUInteger)level;
+
 @end

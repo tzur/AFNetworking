@@ -130,6 +130,16 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   _name = 0;
 }
 
+- (cv::Mat)imageAtLevel:(NSUInteger)level {
+  LTParameterAssert((GLint)level <= self.maxMipmapLevel);
+  __block cv::Mat image;
+  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:level];
+  [fbo bindAndExecute:^{
+    [self readRect:CGRectFromSize(self.size / std::pow(2, level)) toImage:&image];
+  }];
+  return image;
+}
+
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image {
   // Preconditions.
   LTParameterAssert([self inTextureRect:rect],

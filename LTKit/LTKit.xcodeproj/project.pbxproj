@@ -402,6 +402,12 @@
 		28ED10EB18CC9EFE00EE1633 /* LTBristleBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10EA18CC9EFE00EE1633 /* LTBristleBrush.mm */; };
 		28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */; };
 		28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */; };
+		28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00E71A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png */; };
+		28FB00EE1A0AB46D004490AF /* BristleBrushBristles.FlatFan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00E81A0AB46D004490AF /* BristleBrushBristles.FlatFan.png */; };
+		28FB00EF1A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00E91A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png */; };
+		28FB00F01A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00EA1A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png */; };
+		28FB00F11A0AB46D004490AF /* BristleBrushBristles.RoundFan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00EB1A0AB46D004490AF /* BristleBrushBristles.RoundFan.png */; };
+		28FB00F21A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FB00EC1A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png */; };
 		28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */; };
 		5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */; };
 		5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */; };
@@ -1539,6 +1545,12 @@
 		28ED10F718CCB26C00EE1633 /* LTPainter+LTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTPainter+LTView.h"; sourceTree = "<group>"; };
 		28ED10F818CCB26C00EE1633 /* LTPainter+LTView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTPainter+LTView.mm"; sourceTree = "<group>"; };
 		28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBristleBrushSpec.mm; sourceTree = "<group>"; };
+		28FB00E71A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.FlatBlunt.png; path = Resources/BristleBrushBristles.FlatBlunt.png; sourceTree = "<group>"; };
+		28FB00E81A0AB46D004490AF /* BristleBrushBristles.FlatFan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.FlatFan.png; path = Resources/BristleBrushBristles.FlatFan.png; sourceTree = "<group>"; };
+		28FB00E91A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.FlatPoint.png; path = Resources/BristleBrushBristles.FlatPoint.png; sourceTree = "<group>"; };
+		28FB00EA1A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.RoundBlunt.png; path = Resources/BristleBrushBristles.RoundBlunt.png; sourceTree = "<group>"; };
+		28FB00EB1A0AB46D004490AF /* BristleBrushBristles.RoundFan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.RoundFan.png; path = Resources/BristleBrushBristles.RoundFan.png; sourceTree = "<group>"; };
+		28FB00EC1A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.RoundPoint.png; path = Resources/BristleBrushBristles.RoundPoint.png; sourceTree = "<group>"; };
 		28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRotatedRect+UIColor.h"; sourceTree = "<group>"; };
 		28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTRotatedRect+UIColor.mm"; sourceTree = "<group>"; };
 		5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadCopyProcessor.h; sourceTree = "<group>"; };
@@ -2822,6 +2834,12 @@
 				286A933C18CF743200F203DF /* BristleBrushThickness.0.1.png */,
 				286A933D18CF743200F203DF /* BristleBrushThickness.0.75.png */,
 				286A933E18CF743200F203DF /* BristleBrushThickness.1.5.png */,
+				28FB00E71A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png */,
+				28FB00E81A0AB46D004490AF /* BristleBrushBristles.FlatFan.png */,
+				28FB00E91A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png */,
+				28FB00EA1A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png */,
+				28FB00EB1A0AB46D004490AF /* BristleBrushBristles.RoundFan.png */,
+				28FB00EC1A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png */,
 				8BFA8F46191111980088310E /* MixerPlacementRect.png */,
 				8BFA8F5119179BC70088310E /* MixerPlacementComplex.png */,
 				8BFA8F531917C97B0088310E /* MixerTilingComplex.png */,
@@ -3985,6 +4003,7 @@
 				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
 				28A2546D19C9D84C0057E1A3 /* ReshapeProcessorResizeWithMask.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
+				28FB00F21A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
 				283BD0431922214300B68A90 /* ShapeDrawerPathShapeTranslation.png in Resources */,
@@ -3996,6 +4015,7 @@
 				031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
 				031338C1191216020095F99B /* Checkerboard.png in Resources */,
+				28FB00EE1A0AB46D004490AF /* BristleBrushBristles.FlatFan.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				8BBEE93819FC032300A2FA6B /* AspectFittedFlower.png in Resources */,
 				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
@@ -4003,6 +4023,7 @@
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
+				28FB00F01A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png in Resources */,
 				28647E7219D931740026630F /* TileableBaseTexture.png in Resources */,
 				03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */,
 				03BCFD4A191FA6E200529AD6 /* RedBorder.png in Resources */,
@@ -4037,6 +4058,7 @@
 				03C192B118F67FBA00DC6CA6 /* RadialMaskCenter.png in Resources */,
 				28D7C9BC19BEF9AE0077F9B5 /* FrameCircle.png in Resources */,
 				2853684B19BDD61300CC9057 /* ImageWithWideFrameTypeRepeat.png in Resources */,
+				28FB00F11A0AB46D004490AF /* BristleBrushBristles.RoundFan.png in Resources */,
 				2888EEA81993BC910008F1C7 /* CropInput.png in Resources */,
 				28647E7919D9362B0026630F /* ImageWithTiledFrame.png in Resources */,
 				03C3152C1965986F00F742B1 /* MacbethColorEdges.png in Resources */,
@@ -4091,6 +4113,7 @@
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
 				280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */,
 				2853684A19BDD61300CC9057 /* ImageWithWideFrameTypeFit.png in Resources */,
+				28FB00EF1A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png in Resources */,
 				283BD0421922214300B68A90 /* ShapeDrawerPathShapeRotation.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
@@ -4099,6 +4122,7 @@
 				8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */,
 				03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
+				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
 				28D7C9BE19BEF9AE0077F9B5 /* FrameStamp.png in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,

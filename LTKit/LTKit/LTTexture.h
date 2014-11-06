@@ -354,7 +354,8 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// inside this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveParameters:(LTVoidBlock)execute;
 
-/// Clears the texture with the given \c color.
+/// Clears the texture with the given \c color. In case this is a mipmap texture, all its levels
+/// will be cleared with the given \c color.
 - (void)clearWithColor:(LTVector4)color;
 
 #pragma mark -
