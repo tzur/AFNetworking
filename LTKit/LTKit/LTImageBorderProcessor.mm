@@ -3,274 +3,211 @@
 
 #import "LTImageBorderProcessor.h"
 
-#import "LTCGExtensions.h"
-#import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTMathUtils.h"
-#import "LTOpenCVExtensions.h"
-#import "LTProceduralFrameProcessor.h"
-#import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTImageBorderFsh.h"
 #import "LTTexture+Factory.h"
 
-@interface LTImageBorderProcessor ()
-
-/// If \c YES, the outer frame processor should run at the next processing round of this processor.
-@property (nonatomic) BOOL outerFrameProcessorInputChanged;
-
-/// If \c YES, the inner frame processor should run at the next processing round of this processor.
-@property (nonatomic) BOOL innerFrameProcessorInputChanged;
-
-// Frame that is used to create an outer part of the image border.
-@property (strong, nonatomic) LTProceduralFrameProcessor *outerFrameProcessor;
-
-// Frame that is used to create an inner part of the image border.
-@property (strong, nonatomic) LTProceduralFrameProcessor *innerFrameProcessor;
-
-// Texture that stores the result of outerFrameProcessor.
-@property (strong, nonatomic) LTTexture *outerFrameTexture;
-
-// Texture that stores the result of innerFrameProcessor.
-@property (strong, nonatomic) LTTexture *innerFrameTexture;
-
-@end
-
 @implementation LTImageBorderProcessor
 
-static const CGFloat kFrameMaxDimension = 1024;
-
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  [self initializeFramesWithInput:input];
   NSDictionary *auxiliaryTextures =
-    @{[LTImageBorderFsh outerFrameTexture]: self.outerFrameTexture,
-      [LTImageBorderFsh innerFrameTexture]: self.innerFrameTexture};
+    @{[LTImageBorderFsh frontTexture]: [self defaultFrontTexture],
+      [LTImageBorderFsh backTexture]: [self defaultBackTexture]};
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTImageBorderFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures andOutput:output]) {
-    [self setDefaultValues];
-    [self setNeedsSubProcessing];
+    self[[LTImageBorderFsh aspectRatio]] = @([self aspectRatio]);
+    [self resetInputModel];
   }
   return self;
 }
 
-- (void)initializeFramesWithInput:(LTTexture *)input {
-  // Setup outer frame.
-  self.outerFrameTexture = [self createFrameTextureWithInput:input];
-  self.outerFrameProcessor =
-      [[LTProceduralFrameProcessor alloc] initWithOutput:self.outerFrameTexture];
+- (LTTexture *)defaultFrontTexture {
+  return [self defaultBorderTexture];
+}
+
+- (LTTexture *)defaultBackTexture {
+  return [self defaultBorderTexture];
+}
+
+- (LTTexture *)defaultBorderTexture {
+  LTTexture *greyTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
+  [greyTexture clearWithColor:LTVector4(0.5)];
+  return greyTexture;
+}
+
+- (CGFloat)aspectRatio {
+  return self.inputSize.width / self.inputSize.height;
+}
+
+- (LTSymmetrizationType)defaultFrontSymmetrization {
+  return LTSymmetrizationTypeOriginal;
+}
+
+- (LTSymmetrizationType)defaultBackSymmetrization {
+  return LTSymmetrizationTypeOriginal;
+}
+
+- (BOOL)defaultFrontFlipVertical {
+  return NO;
+}
+
+- (BOOL)defaultFrontFlipHorizontal {
+  return NO;
+}
+
+- (BOOL)defaultBackFlipVertical {
+  return NO;
+}
+
+- (BOOL)defaultBackFlipHorizontal {
+  return NO;
+}
+
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
   
-  // Setup inner frame.
-  self.innerFrameTexture = [self createFrameTextureWithInput:input];
-  self.innerFrameProcessor =
-      [[LTProceduralFrameProcessor alloc] initWithOutput:self.innerFrameTexture];
-}
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTImageBorderProcessor, width),
+      @instanceKeypath(LTImageBorderProcessor, spread),
+      @instanceKeypath(LTImageBorderProcessor, color),
+      @instanceKeypath(LTImageBorderProcessor, opacity),
+       
+      @instanceKeypath(LTImageBorderProcessor, frontTexture),
+      @instanceKeypath(LTImageBorderProcessor, backTexture),
 
-- (void)setDefaultValues {
-  // As long as default roughness value is 1, no need to run the setter.
-  _roughness = self.defaultRoughness;
-}
+      @instanceKeypath(LTImageBorderProcessor, frontSymmetrization),
+      @instanceKeypath(LTImageBorderProcessor, backSymmetrization),
+      @instanceKeypath(LTImageBorderProcessor, edge0),
+      @instanceKeypath(LTImageBorderProcessor, edge1),
 
-- (LTTexture *)createFrameTextureWithInput:(LTTexture *)input {
-  CGSize frameSize = CGScaleDownToDimension(input.size, kFrameMaxDimension);
-  return [LTTexture byteRGBATextureWithSize:frameSize];
+      @instanceKeypath(LTImageBorderProcessor, frontFlipHorizontal),
+      @instanceKeypath(LTImageBorderProcessor, frontFlipVertical),
+      @instanceKeypath(LTImageBorderProcessor, backFlipHorizontal),
+      @instanceKeypath(LTImageBorderProcessor, backFlipVertical)
+    ]];
+  });
+  
+  return properties;
 }
 
 #pragma mark -
-#pragma mark Processing
+#pragma mark Properties
 #pragma mark -
 
-- (void)setNeedsSubProcessing {
-  [self setNeedsOuterFrameProcessing];
-  [self setNeedsInnerFrameProcessing];
+LTPropertyWithoutSetter(CGFloat, width, Width, -1, 1, 0);
+- (void)setWidth:(CGFloat)width {
+  [self _verifyAndSetWidth:width];
+  [self updateWithWidthAndSpread];
 }
 
-- (void)setNeedsOuterFrameProcessing {
-  self.outerFrameProcessorInputChanged = YES;
-}
-
-- (void)setNeedsInnerFrameProcessing {
-  self.innerFrameProcessorInputChanged = YES;
-}
-
-- (void)preprocess {
-  if (self.outerFrameProcessorInputChanged) {
-    [self.outerFrameProcessor process];
-    self.outerFrameProcessorInputChanged = NO;
+- (void)updateWithWidthAndSpread {
+  CGFloat ratio = [self aspectRatio];
+  LTVector2 frontWidth;
+  LTVector2 backWidth;
+  if (ratio < 1) {
+    frontWidth = LTVector2(self.width, self.width * ratio);
+    backWidth = LTVector2(self.width + self.spread, (self.width + self.spread) * ratio);
+  } else {
+    frontWidth = LTVector2(self.width / ratio, self.width);
+    backWidth = LTVector2((self.width + self.spread) / ratio, self.width + self.spread);
   }
-  if (self.innerFrameProcessorInputChanged) {
-    [self.innerFrameProcessor process];
-    self.innerFrameProcessorInputChanged = NO;
+  self[[LTImageBorderFsh frontWidth]] = $(frontWidth);
+  self[[LTImageBorderFsh backWidth]] = $(backWidth);
+}
+
+LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
+- (void)setSpread:(CGFloat)spread {
+  [self _verifyAndSetSpread:spread];
+  [self updateWithWidthAndSpread];
+}
+
+LTPropertyWithoutSetter(CGFloat, opacity, Opacity, 0, 1, 1);
+- (void)setOpacity:(CGFloat)opacity {
+  [self _verifyAndSetOpacity:opacity];
+  self[[LTImageBorderFsh opacity]] = @(opacity);
+}
+
+LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3Zero, LTVector3One, LTVector3One);
+- (void)setColor:(LTVector3)color {
+  [self _verifyAndSetColor:color];
+  self[[LTImageBorderFsh frameColor]] = $(color);
+}
+
+- (void)setFrontTexture:(LTTexture *)frontTexture {
+  if (!frontTexture) {
+    frontTexture = [self defaultBorderTexture];
   }
+  LTParameterAssert([self isValidTexture:frontTexture], @"Front texture should be square.");
+  _frontTexture = frontTexture;
+  [self setAuxiliaryTexture:frontTexture withName:[LTImageBorderFsh frontTexture]];
+}
+
+- (void)setBackTexture:(LTTexture *)backTexture {
+  if (!backTexture) {
+    backTexture = [self defaultBorderTexture];
+  }
+  LTParameterAssert([self isValidTexture:backTexture], @"Back texture should be square.");
+  _backTexture = backTexture;
+  [self setAuxiliaryTexture:backTexture withName:[LTImageBorderFsh backTexture]];
+}
+
+- (BOOL)isValidTexture:(LTTexture *)texture {
+  BOOL squareRatio = (texture.size.width == texture.size.height);
+  return squareRatio;
 }
 
 #pragma mark -
-#pragma mark Both Frames
+#pragma mark Symmetrization
 #pragma mark -
 
-LTPropertyWithoutSetter(CGFloat, roughness, Roughness, -1, 1, 0);
-- (void)setRoughness:(CGFloat)roughness {
-  [self _verifyAndSetRoughness:roughness];
-  // Update outer frame noise amplitude.
-  self.outerFrameProcessor.noiseAmplitude *= [self noiseScalingWithRoughness:roughness];
-  [self.outerFrameProcessor process];
-  // Update inner frame noise amplitude.
-  self.innerFrameProcessor.noiseAmplitude *= [self noiseScalingWithRoughness:roughness];
-  [self.innerFrameProcessor process];
+- (void)setFrontSymmetrization:(LTSymmetrizationType)frontSymmetrization {
+  _frontSymmetrization = frontSymmetrization;
+  self[[LTImageBorderFsh frontSymmetrization]] = @(frontSymmetrization);
 }
 
-static const CGFloat kNoiseScalingBase = 10;
-
-- (CGFloat)noiseScalingWithRoughness:(CGFloat)roughness {
-  return powf(kNoiseScalingBase, roughness);
+- (void)setBackSymmetrization:(LTSymmetrizationType)backSymmetrization {
+  _backSymmetrization = backSymmetrization;
+  self[[LTImageBorderFsh backSymmetrization]] = @(backSymmetrization);
 }
 
-#pragma mark -
-#pragma mark Outer Frame
-#pragma mark -
-
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameWidth, OuterFrameWidth,
-                             self.outerFrameProcessor, width, Width);
-- (void)setOuterFrameWidth:(CGFloat)outerFrameWidth {
-  // Update the dependent inner frame.
-  _innerFrameWidth = outerFrameWidth + self.innerFrameWidth - self.outerFrameWidth;
-  self.innerFrameProcessor.width = _innerFrameWidth;
-  [self setNeedsInnerFrameProcessing];
-  // Update outer frame.
-  self.outerFrameProcessor.width = outerFrameWidth;
-  [self setNeedsOuterFrameProcessing];
+LTPropertyWithoutSetter(CGFloat, edge0, Edge0, 0, 0.5, 0);
+- (void)setEdge0:(CGFloat)edge0 {
+  [self _verifyAndSetEdge0:edge0];
+  self[[LTImageBorderFsh edge0]] = @(edge0);
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameSpread, OuterFrameSpread,
-                             self.outerFrameProcessor, spread, Spread);
-- (void)setOuterFrameSpread:(CGFloat)outerFrameSpread {
-  self.outerFrameProcessor.spread = outerFrameSpread;
-  [self setNeedsOuterFrameProcessing];
+LTPropertyWithoutSetter(CGFloat, edge1, Edge1, 0, 0.5, 0.25);
+- (void)setEdge1:(CGFloat)edge1 {
+  [self _verifyAndSetEdge1:edge1];
+  self[[LTImageBorderFsh edge1]] = @(edge1);
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, outerFrameCorner, OuterFrameCorner,
-                             self.outerFrameProcessor, corner, Corner);
-- (void)setOuterFrameCorner:(CGFloat)outerFrameCorner {
-  self.outerFrameProcessor.corner = outerFrameCorner;
-  [self setNeedsOuterFrameProcessing];
+- (void)setFrontFlipHorizontal:(BOOL)frontFlipHorizontal {
+  _frontFlipHorizontal = frontFlipHorizontal;
+  self[[LTImageBorderFsh frontFlipHorizontal]] = @(frontFlipHorizontal);
 }
 
-- (void)setOuterFrameNoise:(LTTexture *)outerFrameNoise {
-  self.outerFrameProcessor.noise = outerFrameNoise;
-  [self setNeedsOuterFrameProcessing];
+- (void)setFrontFlipVertical:(BOOL)frontFlipVertical {
+  _frontFlipVertical = frontFlipVertical;
+  self[[LTImageBorderFsh frontFlipVertical]] = @(frontFlipVertical);
 }
 
-- (LTTexture *)outerFrameNoise {
-  return self.outerFrameProcessor.noise;
+- (void)setBackFlipHorizontal:(BOOL)backFlipHorizontal {
+  _backFlipHorizontal = backFlipHorizontal;
+  self[[LTImageBorderFsh backFlipHorizontal]] = @(backFlipHorizontal);
 }
 
-LTPropertyProxyWithoutSetter(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer,
-                             self.outerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setOuterFrameNoiseChannelMixer:(LTVector3)outerFrameNoiseChannelMixer {
-  self.outerFrameProcessor.noiseChannelMixer = outerFrameNoiseChannelMixer;
-  [self setNeedsOuterFrameProcessing];
-}
-
-- (void)setOuterFrameNoiseAmplitude:(CGFloat)outerFrameNoiseAmplitude {
-  self.outerFrameProcessor.noiseAmplitude = outerFrameNoiseAmplitude *
-      [self noiseScalingWithRoughness:self.roughness];
-  [self setNeedsOuterFrameProcessing];
-}
-
-- (CGFloat)outerFrameNoiseAmplitude {
-  return self.outerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
-}
-
-- (CGFloat)minOuterFrameNoiseAmplitude {
-  return 0;
-}
-
-- (CGFloat)maxOuterFrameNoiseAmplitude {
-  return 100;
-}
-
-- (CGFloat)defaultOuterFrameNoiseAmplitude {
-  return 0;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, outerFrameColor, OuterFrameColor,
-                             self.outerFrameProcessor, color, Color);
-- (void)setOuterFrameColor:(LTVector3)outerFrameColor {
-  self.outerFrameProcessor.color = outerFrameColor;
-  [self setNeedsOuterFrameProcessing];
-}
-
-#pragma mark -
-#pragma mark Inner Frame
-#pragma mark -
-
-LTPropertyWithoutSetter(CGFloat, innerFrameWidth, InnerFrameWidth, 0, 25, 0);
-- (void)setInnerFrameWidth:(CGFloat)innerFrameWidth {
-  LTParameterAssert(self.outerFrameWidth + innerFrameWidth <= self.innerFrameProcessor.maxWidth,
-                    @"Sum of outer and inner width is above maximum value.");
-  _innerFrameWidth = self.outerFrameWidth + innerFrameWidth;
-  self.innerFrameProcessor.width = _innerFrameWidth;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, innerFrameSpread, InnerFrameSpread,
-                             self.innerFrameProcessor, spread, Spread);
-- (void)setInnerFrameSpread:(CGFloat)innerFrameSpread {
-  self.innerFrameProcessor.spread = innerFrameSpread;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(CGFloat, innerFrameCorner, InnerFrameCorner,
-                             self.innerFrameProcessor, corner, Corner);
-- (void)setInnerFrameCorner:(CGFloat)innerFrameCorner {
-  self.innerFrameProcessor.corner = innerFrameCorner;
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (void)setInnerFrameNoise:(LTTexture *)innerFrameNoise {
-  self.innerFrameProcessor.noise = innerFrameNoise;
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (LTTexture *)innerFrameNoise {
-  return self.innerFrameProcessor.noise;
-  [self setNeedsInnerFrameProcessing];
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer,
-                             self.innerFrameProcessor, noiseChannelMixer, NoiseChannelMixer);
-- (void)setInnerFrameNoiseChannelMixer:(LTVector3)innerFrameNoiseChannelMixer {
-  self.innerFrameProcessor.noiseChannelMixer = innerFrameNoiseChannelMixer;
-  [self.innerFrameProcessor process];
-}
-
-- (void)setInnerFrameNoiseAmplitude:(CGFloat)innerFrameNoiseAmplitude {
-  self.innerFrameProcessor.noiseAmplitude = innerFrameNoiseAmplitude *
-      [self noiseScalingWithRoughness:self.roughness];
-  [self setNeedsInnerFrameProcessing];
-}
-
-- (CGFloat)innerFrameNoiseAmplitude {
-  return self.innerFrameProcessor.noiseAmplitude / [self noiseScalingWithRoughness:self.roughness];
-}
-
-- (CGFloat)minInnerFrameNoiseAmplitude {
-  return 0;
-}
-
-- (CGFloat)maxInnerFrameNoiseAmplitude {
-  return 100;
-}
-
-- (CGFloat)defaultInnerFrameNoiseAmplitude {
-  return 0;
-}
-
-LTPropertyProxyWithoutSetter(LTVector3, innerFrameColor, InnerFrameColor,
-                             self.innerFrameProcessor, color, Color);
-- (void)setInnerFrameColor:(LTVector3)innerFrameColor {
-  self.innerFrameProcessor.color = innerFrameColor;
-  [self setNeedsInnerFrameProcessing];
+- (void)setBackFlipVertical:(BOOL)backFlipVertical {
+  _backFlipVertical = backFlipVertical;
+  self[[LTImageBorderFsh backFlipVertical]] = @(backFlipVertical);
 }
 
 @end

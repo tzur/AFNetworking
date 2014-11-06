@@ -5,104 +5,87 @@
 
 #import "LTPropertyMacros.h"
 
-/// Create image border by combining two LTProceduralFrames.
+/// Available symmetrization strategies. Each strategy consists of flipping the texture around 0,
+/// 1 (x = 0.5 or y = 0.5) or 2 axis (x = 0.5 and y = 0.5). Flipped values are blended with the
+/// original pixels in such a manner that the pixels further away from the seam retain more of their
+/// original value.
+typedef NS_ENUM(NSUInteger, LTSymmetrizationType) {
+  LTSymmetrizationTypeOriginal = 0,
+  LTSymmetrizationTypeTop = 1,
+  LTSymmetrizationTypeBottom = 2,
+  LTSymmetrizationTypeLeft = 3,
+  LTSymmetrizationTypeRight = 4,
+  LTSymmetrizationTypeTopLeft = 5,
+  LTSymmetrizationTypeTopRight = 6,
+  LTSymmetrizationTypeBottomLeft = 7,
+  LTSymmetrizationTypeBottomRight = 8,
+};
+
+/// Add border to the image. Border is constructed out of two frame textures: front and back, which
+/// are blended with the image using overlay blending. Front texture is laid on top of the back
+/// texture and it is possible to move these two elements one with respect to another, control color
+/// and opacity. Mapping of each frame to the input image is done using central cut algorithm and
+/// seam on the cut is mitigated using one of the symmetrization strategies.
 @interface LTImageBorderProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with input texture, which will have a border added to it and the
 /// output.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
-#pragma mark -
-#pragma mark Both Frames
-#pragma mark -
+/// Width of the frame. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat width;
+LTPropertyDeclare(CGFloat, width, Width);
 
-/// Roughness gives a convenient way to control the roughness of both inner and outer frames. It
-/// is used to compute a scaling factor for noise amplitude of outer and inner frames. It does not
-/// change the values outerFrameNoiseAmplitude and innerFrameNoiseAmplitude properties. Should be in
-/// [-1, 1] range. Default value is 0.
-@property (nonatomic) CGFloat roughness;
-LTPropertyDeclare(CGFloat, roughness, Roughness);
+/// Spread of the frame. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat spread;
+LTPropertyDeclare(CGFloat, spread, Spread);
 
-#pragma mark -
-#pragma mark Outer Frame
-#pragma mark -
+/// Color that is used to tint the front element, using multiplication blending. Components should
+/// be in [0, 1] range. Default color is white (1, 1, 1).
+@property (nonatomic) LTVector3 color;
+LTPropertyDeclare(LTVector3, color, Color);
 
-/// Width of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat outerFrameWidth;
-LTPropertyDeclare(CGFloat, outerFrameWidth, OuterFrameWidth);
+/// Opacity of the border. Should be in [0, 1] range. Default value is 1, corresponding to maximum
+/// visibility of the border.
+@property (nonatomic) CGFloat opacity;
+LTPropertyDeclare(CGFloat, opacity, Opacity);
 
-/// Spread of the outer frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat outerFrameSpread;
-LTPropertyDeclare(CGFloat, outerFrameSpread, OuterFrameSpread);
+/// Texture of the front element. Passing \c nil will create a grey texture, which is a neutral
+/// color in overlay mode.
+@property (strong, nonatomic) LTTexture *frontTexture;
 
-/// In outer frame, determines the corner type of the frame by creating an appropriate distance
-/// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
-/// values will create a different degrees of roundness, which stem from the remapping the distance
-/// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat outerFrameCorner;
-LTPropertyDeclare(CGFloat, outerFrameCorner, OuterFrameCorner);
+/// Texture of the back element. Passing \c nil will create a grey texture, which is a neutral
+/// color in overlay mode.
+@property (strong, nonatomic) LTTexture *backTexture;
 
-/// Noise texture that modulates with the outer frame. Default value is a constant 0.5, which
-/// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *outerFrameNoise;
+/// Symmetrization strategy for the front texture. Default value is \c LTSymmetrizationTypeOriginal.
+@property (nonatomic) LTSymmetrizationType frontSymmetrization;
 
-/// In outer frame, mixes the noise channels of the noise texture in order to create the transition
-/// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
-/// with noise amplitude.
-@property (nonatomic) LTVector3 outerFrameNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, outerFrameNoiseChannelMixer, OuterFrameNoiseChannelMixer);
+/// Symmetrization strategy for the back border. Default value is \c LTSymmetrizationTypeOriginal.
+@property (nonatomic) LTSymmetrizationType backSymmetrization;
 
-/// In outer frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat outerFrameNoiseAmplitude;
-LTPropertyDeclare(CGFloat, outerFrameNoiseAmplitude, OuterFrameNoiseAmplitude);
+/// The following parameters control the symmetrization distance mask. Mask is built by measuring
+/// the minimum distance from the seam and using this distance as an input to the smoothstep
+/// function. The following two parameters are the edges of the smoothstep.
 
-/// In outer frame, color of the foreground and of the transition area. Components should be in
-/// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) LTVector3 outerFrameColor;
-LTPropertyDeclare(LTVector3, outerFrameColor, OuterFrameColor);
+/// First edge of symmetrization smoothstep. Should be in [0, 0.5] range. Default value is 0.0.
+@property (nonatomic) CGFloat edge0;
+LTPropertyDeclare(CGFloat, edge0, Edge0);
 
-#pragma mark -
-#pragma mark Inner Frame
-#pragma mark -
+/// Second edge of symmetrization smoothstep. Should be in [0, 0.5] range. Default value is 0.25.
+@property (nonatomic) CGFloat edge1;
+LTPropertyDeclare(CGFloat, edge1, Edge1);
 
-/// Width of the inner frame, as percentage of the smaller image dimension. Inner frame width is
-/// measured from outerFrameWidth inwards. The transition (spread) part of the outer frame is still
-/// visible, since the inner frame is layered below the outer frame. Should be in [0-25] range.
-/// Default value is 0.
-@property (nonatomic) CGFloat innerFrameWidth;
-LTPropertyDeclare(CGFloat, innerFrameWidth, InnerFrameWidth);
+/// Set to \c YES to flip the front texture horizontally. Default value is \c NO.
+@property (nonatomic) BOOL frontFlipHorizontal;
 
-/// Spread of the inner frame, as percentage of the smaller image dimension. Should be in [0-25]
-/// range. Default value is 0.
-@property (nonatomic) CGFloat innerFrameSpread;
-LTPropertyDeclare(CGFloat, innerFrameSpread, InnerFrameSpread);
+/// Set to \c YES to flip the front texture vertically. Default value is \c NO.
+@property (nonatomic) BOOL frontFlipVertical;
 
-/// In inner frame, determines the corner type of the frame by creating an appropriate distance
-/// field. Should be in [0-32] range. At 0 value, the corner will be completely straight. Higher
-/// values will create a different degrees of roundness, which stem from the remapping the distance
-/// field values with the power function. Default value is 0.
-@property (nonatomic) CGFloat innerFrameCorner;
-LTPropertyDeclare(CGFloat, innerFrameCorner, InnerFrameCorner);
+/// Set to \c YES to flip the back texture horizontally. Default value is \c NO.
+@property (nonatomic) BOOL backFlipHorizontal;
 
-/// Noise texture that modulates with the inner frame. Default value is a constant 0.5, which
-/// doesn't affect the image.
-@property (strong, nonatomic) LTTexture *innerFrameNoise;
-
-/// In inner frame, mixes the channels of the noise texture in order to create the transition
-/// noise. Default value is (1, 0, 0). Input values are normalized, to remove potential interference
-/// with noise amplitude.
-@property (nonatomic) LTVector3 innerFrameNoiseChannelMixer;
-LTPropertyDeclare(LTVector3, innerFrameNoiseChannelMixer, InnerFrameNoiseChannelMixer);
-
-/// In inner frame, amplitude of the noise. Should be in [0, 100] range. Default amplitude is 0.
-@property (nonatomic) CGFloat innerFrameNoiseAmplitude;
-LTPropertyDeclare(CGFloat, innerFrameNoiseAmplitude, InnerFrameNoiseAmplitude);
-
-/// In inner frame, color of the foreground and of the transition area. Components should be in
-/// [0, 1] range. Default color is white (1, 1, 1).
-@property (nonatomic) LTVector3 innerFrameColor;
-LTPropertyDeclare(LTVector3, innerFrameColor, InnerFrameColor);
+/// Set to \c YES to flip the back texture vertically. Default value is \c NO.
+@property (nonatomic) BOOL backFlipVertical;
 
 @end
