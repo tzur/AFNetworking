@@ -68,6 +68,9 @@ cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position);
 /// Returns a matrix of the given \c size containing delta at the middle.
 cv::Mat4b LTCreateDeltaMat(CGSize size);
 
+/// Returns a new UIImage with the given size.
+UIImage *LTCreateUIImage(CGSize size);
+
 /// Loads an image to \c cv::Mat. The name of the image can differ between simulator and device.
 /// Loads from the bundle that contains the given class. Throws exception if the image cannot be
 /// found or loaded.

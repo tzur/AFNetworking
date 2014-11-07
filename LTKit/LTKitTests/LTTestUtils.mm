@@ -252,6 +252,13 @@ cv::Mat4b LTCreateDeltaMat(CGSize size) {
   return LTCreateDeltaMat(size, CGPointMake(middle.width, middle.height));
 }
 
+UIImage *LTCreateUIImage(CGSize size) {
+  UIGraphicsBeginImageContext(size);
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return image;
+}
+
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName) {
   cv::Mat mat;
