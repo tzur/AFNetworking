@@ -16,8 +16,9 @@
 /// @note the default value of the spacing property is changed to 2.
 @interface LTTextureBrush : LTBrush
 
-/// If \c YES, treats both the brush and the target canvas as having premultiplied alpha.
-/// If \c NO, treats both the brush and the target canvas as having non-premultiplied alpha.
+/// If \c YES, treats the target canvas as having premultiplied alpha.
+/// If \c NO, treats the target canvas as having non-premultiplied alpha.
+/// The input texture itself is always treated as having premultiplied alpha.
 @property (nonatomic) BOOL premultipliedAlpha;
 
 @end

@@ -144,17 +144,26 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       __block cv::Mat4b brushMat;
       
       context(@"premultipliedAlpha is NO", ^{
+        const cv::Vec4b kTopLeftColor(64, 0, 0, 64);
+        const cv::Vec4b kTopRightColor(0, 64, 0, 191);
+        const cv::Vec4b kBottomLeftColor(0, 0, 64, 64);
+        const cv::Vec4b kBottomRightColor(64, 64, 0, 191);
+        const cv::Vec4b kTopBrushColor(32, 32, 32, 32);
+        const cv::Vec4b kBottomBrushColor(32, 64, 128, 128);
+        const cv::Vec4b kTopBrushColorPremultiplied(4, 4, 4, 32);
+        const cv::Vec4b kBottomBrushColorPremultiplied(16, 32, 64, 128);
+
         beforeEach(^{
           brushMat.create(output.size.height, output.size.width);
-          brushMat.rowRange(0, kHeight).setTo(cv::Vec4b(32, 32, 32, 32));
-          brushMat.rowRange(kHeight, kOutputSize.height).setTo(cv::Vec4b(32, 64, 128, 128));
+          brushMat.rowRange(0, kHeight).setTo(kTopBrushColorPremultiplied);
+          brushMat.rowRange(kHeight, kOutputSize.height).setTo(kBottomBrushColorPremultiplied);
           brush.premultipliedAlpha = NO;
           [brush setSingleTexture:[LTTexture textureWithImage:brushMat]];
           
-          expected(kTopLeft).setTo(cv::Vec4b(64, 0, 0, 64));
-          expected(kTopRight).setTo(cv::Vec4b(0, 64, 0, 191));
-          expected(kBottomLeft).setTo(cv::Vec4b(0, 0, 64, 64));
-          expected(kBottomRight).setTo(cv::Vec4b(64, 64, 0, 191));
+          expected(kTopLeft).setTo(kTopLeftColor);
+          expected(kTopRight).setTo(kTopRightColor);
+          expected(kBottomLeft).setTo(kBottomLeftColor);
+          expected(kBottomRight).setTo(kBottomRightColor);
           [output mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
             expected.copyTo(*mapped);
           }];
@@ -163,11 +172,11 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         it(@"drawing should blend with previous target", ^{
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
-          expected(kTopLeft).setTo(cv::Vec4b(52, 12, 12, 0.35 * 255));
-          expected(kTopRight).setTo(cv::Vec4b(5, 59, 5, 0.78 * 255));
-          expected(kBottomLeft).setTo(cv::Vec4b(26, 51, 115, 0.63 * 255));
-          expected(kBottomRight).setTo(cv::Vec4b(46, 64, 73, 0.88 * 255));
+
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, kTopBrushColor, NO));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, kTopBrushColor, NO));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, kBottomBrushColor, NO));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, kBottomBrushColor, NO));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
@@ -175,11 +184,11 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           brush.opacity = 0.25;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
-          expected(kTopLeft).setTo(cv::Vec4b(52, 12, 12, 0.35 * 255));
-          expected(kTopRight).setTo(cv::Vec4b(5, 59, 5, 0.78 * 255));
-          expected(kBottomLeft).setTo(cv::Vec4b(18, 37, 101, 0.44 * 255));
-          expected(kBottomRight).setTo(cv::Vec4b(54, 64, 40, 0.81 * 255));
+
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, kTopBrushColor, NO));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, kTopBrushColor, NO));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(32, 64, 128, 64), NO));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(32, 64, 128, 64), NO));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
@@ -187,25 +196,24 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           brush.flow = 0.5;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
-          expected(kTopLeft).setTo(cv::Vec4b(58, 6, 6, 0.3 * 255));
-          expected(kTopRight).setTo(cv::Vec4b(3, 61, 3, 0.77 * 255));
-          expected(kBottomLeft).setTo(cv::Vec4b(18, 37, 101, 0.44 * 255));
-          expected(kBottomRight).setTo(cv::Vec4b(54, 64, 40, 0.81 * 255));
+
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, cv::Vec4b(32, 32, 32, 16), NO));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, cv::Vec4b(32, 32, 32, 16), NO));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(32, 64, 128, 64), NO));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(32, 64, 128, 64), NO));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
         it(@"should draw with updated intensity", ^{
-          const LTVector4 kIntensity = LTVector4(0.3125, 0.4375, 0.5625, 0.8);
+          const LTVector4 kIntensity = LTVector4(0.25, 0.25, 0.25, 0.5);
           brush.intensity = kIntensity;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
-          expected(kTopLeft).setTo(cv::Vec4b(49, 4, 5, 0.32 * 255));
-          expected(kTopRight).setTo(cv::Vec4b(1, 58, 2, 0.77 * 255));
-          expected(kBottomLeft).setTo(cv::Vec4b(7, 20, 70, 0.55 * 255));
-          expected(kBottomRight).setTo(cv::Vec4b(39, 47, 34, 0.85 * 255));
-          
+
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, cv::Vec4b(16, 16, 16, 16), NO));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, cv::Vec4b(16, 16, 16, 16), NO));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(16, 32, 64, 64), NO));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(16, 32, 64, 64), NO));
           expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
         });
         
@@ -220,17 +228,24 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       });
       
       context(@"premultipliedAlpha is YES", ^{
+        const cv::Vec4b kTopLeftColor(16, 0, 0, 64);
+        const cv::Vec4b kTopRightColor(0, 48, 0, 191);
+        const cv::Vec4b kBottomLeftColor(0, 0, 16, 64);
+        const cv::Vec4b kBottomRightColor(48, 48, 0, 191);
+        const cv::Vec4b kTopBrushColor(4, 4, 4, 32);
+        const cv::Vec4b kBottomBrushColor(16, 32, 64, 128);
+
         beforeEach(^{
           brushMat.create(output.size.height, output.size.width);
-          brushMat.rowRange(0, kHeight).setTo(cv::Vec4b(4, 4, 4, 32));
-          brushMat.rowRange(kHeight, kOutputSize.height).setTo(cv::Vec4b(16, 32, 64, 128));
+          brushMat.rowRange(0, kHeight).setTo(kTopBrushColor);
+          brushMat.rowRange(kHeight, kOutputSize.height).setTo(kBottomBrushColor);
           brush.premultipliedAlpha = YES;
           [brush setSingleTexture:[LTTexture textureWithImage:brushMat]];
           
-          expected(kTopLeft).setTo(cv::Vec4b(16, 0, 0, 64));
-          expected(kTopRight).setTo(cv::Vec4b(0, 48, 0, 191));
-          expected(kBottomLeft).setTo(cv::Vec4b(0, 0, 16, 64));
-          expected(kBottomRight).setTo(cv::Vec4b(48, 48, 0, 191));
+          expected(kTopLeft).setTo(kTopLeftColor);
+          expected(kTopRight).setTo(kTopRightColor);
+          expected(kBottomLeft).setTo(kBottomLeftColor);
+          expected(kBottomRight).setTo(kBottomRightColor);
           [output mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
             expected.copyTo(*mapped);
           }];
@@ -240,10 +255,10 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           
-          expected(kTopLeft).setTo(cv::Vec4b(52, 12, 12, 255) * 0.35);
-          expected(kTopRight).setTo(cv::Vec4b(5, 59, 5, 255) * 0.78);
-          expected(kBottomLeft).setTo(cv::Vec4b(26, 51, 115, 255) * 0.63);
-          expected(kBottomRight).setTo(cv::Vec4b(46, 64, 73, 255) * 0.88);
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, kTopBrushColor, YES));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, kTopBrushColor, YES));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, kBottomBrushColor, YES));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, kBottomBrushColor, YES));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
@@ -252,10 +267,10 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           
-          expected(kTopLeft).setTo(cv::Vec4b(52, 12, 12, 255) * 0.35);
-          expected(kTopRight).setTo(cv::Vec4b(5, 59, 5, 255) * 0.78);
-          expected(kBottomLeft).setTo(cv::Vec4b(18, 37, 101, 255) * 0.44);
-          expected(kBottomRight).setTo(cv::Vec4b(54, 64, 40, 255) * 0.81);
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, kTopBrushColor, YES));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, kTopBrushColor, YES));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(8, 16, 32, 64), YES));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(8, 16, 32, 64), YES));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
@@ -264,24 +279,23 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           
-          expected(kTopLeft).setTo(cv::Vec4b(58, 6, 6, 255) * 0.3);
-          expected(kTopRight).setTo(cv::Vec4b(3, 61, 3, 255) * 0.77);
-          expected(kBottomLeft).setTo(cv::Vec4b(18, 37, 101, 255) * 0.44);
-          expected(kBottomRight).setTo(cv::Vec4b(54, 64, 40, 255) * 0.81);
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, cv::Vec4b(2, 2, 2, 16), YES));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, cv::Vec4b(2, 2, 2, 16), YES));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(8, 16, 32, 64), YES));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(8, 16, 32, 64), YES));
           expect($(output.image)).to.beCloseToMat($(expected));
         });
         
         it(@"should draw with updated intensity", ^{
-          const LTVector4 kIntensity = LTVector4(0.5, 0.75, 0.5, 1.0);
+          const LTVector4 kIntensity = LTVector4(0.25, 0.25, 0.25, 0.5);
           brush.intensity = kIntensity;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
           
-          expected(kTopLeft).setTo(cv::Vec4b(47, 9, 6, 255) * 0.34);
-          expected(kTopRight).setTo(cv::Vec4b(3, 58, 3, 255) * 0.78);
-          expected(kBottomLeft).setTo(cv::Vec4b(13, 38, 64, 255) * 0.63);
-          expected(kBottomRight).setTo(cv::Vec4b(37, 55, 37, 255) * 0.87);
-          
+          expected(kTopLeft).setTo(LTBlend(kTopLeftColor, cv::Vec4b(1, 1, 1, 16), YES));
+          expected(kTopRight).setTo(LTBlend(kTopRightColor, cv::Vec4b(1, 1, 1, 16), YES));
+          expected(kBottomLeft).setTo(LTBlend(kBottomLeftColor, cv::Vec4b(4, 8, 16, 64), YES));
+          expected(kBottomRight).setTo(LTBlend(kBottomRightColor, cv::Vec4b(4, 8, 16, 64), YES));
           expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
         });
         

@@ -21,14 +21,14 @@ varying highp vec2 vTexcoord;
 // Blend the source and the target according to the normal alpha blending formula:
 // http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
 void normalNonPremultiplied(in highp vec4 src, in highp vec4 dst) {
-  highp float a = dst.a + (1.0 - dst.a) * src.a;
+  highp float a = src.a + dst.a - src.a * dst.a;
   highp vec3 rgb = src.rgb * src.a + (1.0 - src.a) * dst.a * dst.rgb;
 
   // If the result alpha is 0, the result rgb should be 0 as well.
   // safeA = (a <= 0) ? 1 : a;
   // gl_FragColor = (a <= 0) ? 0 : vec4(rgb / a, a);
   highp float safeA = a + (step(a, 0.0));
-  gl_FragColor = (1.0 - step(a, 0.0)) * vec4(rgb / safeA, a);
+  gl_FragColor = clamp((1.0 - step(a, 0.0)) * vec4(rgb / safeA, a), 0.0, 1.0);
 }
 
 void main() {
