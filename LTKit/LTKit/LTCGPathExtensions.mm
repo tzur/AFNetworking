@@ -3,6 +3,10 @@
 
 #import "LTCGPathExtensions.h"
 
+#import <CoreFoundation/CoreFoundation.h>
+#import <CoreText/CoreText.h>
+
+#import "LTCFExtensions.h"
 #import "LTGLKitExtensions.h"
 
 /// Structure wrapping the data required for computing the modified path.
@@ -21,6 +25,12 @@ static CGPoint LTCGPointApplyTransform(CGPoint point, GLKMatrix3 &transform);
 /// Returns a path connecting the provided points. The path is closed iff \c closed is YES.
 static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
                                                               BOOL closed);
+
+/// Auxiliary method inserting the glyphs of a given string into a path.
+static void LTCGPathCreateWithStringAuxiliaryMethod(CGRect rect,
+                                                    CGMutablePathRef combinedGlyphsPathRef,
+                                                    UIFont *font, CGPoint basePoint,
+                                                    CTFrameRef frameRef);
 
 /// Computes the additional control points used for a smoothened path. Please refer to the header
 /// file for a detailed description of the smoothening mechanism.
@@ -58,8 +68,23 @@ CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &trans
   data.transform = transformation;
 
   CGPathApply(path, &data, &LTRecomputePoints);
-
   return result;
+}
+
+CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect) {
+  CGRect boundingBox = CGPathGetBoundingBox(path);
+  CGAffineTransform translateToPointZero = CGAffineTransformMakeTranslation(-boundingBox.origin.x,
+                                                                            -boundingBox.origin.y);
+  CGAffineTransform scaleToDesiredSize =
+      CGAffineTransformMakeScale(rect.size.width / boundingBox.size.width,
+                                 rect.size.height / boundingBox.size.height);
+  CGAffineTransform translateToDesiredOrigin = CGAffineTransformMakeTranslation(rect.origin.x,
+                                                                                rect.origin.y);
+  CGAffineTransform transformation =
+      CGAffineTransformConcat(CGAffineTransformConcat(translateToPointZero, scaleToDesiredSize),
+                              translateToDesiredOrigin);
+
+  return CGPathCreateCopyByTransformingPath(path, &transformation);
 }
 
 CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
@@ -79,6 +104,46 @@ CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
   next.reserve(kNumberOfCorners);
   LTComputeSmootheningControlPoints(polyline, &prev, &next, smootheningRadius);
   return LTCreateSmoothenedPathWithControlPoints(polyline, prev, next, closed);
+}
+
+// @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
+CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font) {
+  CTFramesetterRef frameSetterRef = NULL;
+  CTFrameRef frameRef = NULL;
+
+  @onExit {
+    LTCFSafeRelease(frameSetterRef);
+    LTCFSafeRelease(frameRef);
+  };
+
+  CGRect rect = CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX);
+  CGMutablePathRef combinedGlyphsPathRef = CGPathCreateMutable();
+
+  // It would be easy to wrap the text into a different shape, including arbitrary bezier paths,
+  // if needed.
+  UIBezierPath *frameShape = [UIBezierPath bezierPathWithRect:rect];
+
+  CGPoint basePoint = CGPointMake(0, CTFontGetAscent((__bridge CTFontRef)font));
+  NSDictionary *attributes = @{NSFontAttributeName: font};
+
+  NSAttributedString *attributedString =
+      [[NSAttributedString alloc] initWithString:string attributes:attributes];
+
+  frameSetterRef =
+      CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+  if (!frameSetterRef) {
+    return NULL;
+  }
+
+  frameRef = CTFramesetterCreateFrame(frameSetterRef, CFRangeMake(0,0), [frameShape CGPath], NULL);
+  if (!frameRef) {
+    return NULL;
+  }
+
+  LTCGPathCreateWithStringAuxiliaryMethod(rect, combinedGlyphsPathRef, font, basePoint,
+                                          frameRef);
+
+  return combinedGlyphsPathRef;
 }
 
 #pragma mark -
@@ -202,4 +267,65 @@ static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s
   }
 
   return path;
+}
+
+// @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
+static void LTCGPathCreateWithStringAuxiliaryMethod(CGRect rect,
+                                                    CGMutablePathRef combinedGlyphsPathRef,
+                                                    UIFont *font, CGPoint basePoint,
+                                                    CTFrameRef frameRef) {
+  CFArrayRef lines = CTFrameGetLines(frameRef);
+  CFIndex lineCount = CFArrayGetCount(lines);
+  CGPoint lineOrigins[lineCount];
+  CTFrameGetLineOrigins(frameRef, CFRangeMake(0, lineCount), lineOrigins);
+
+  for (CFIndex lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+    CTLineRef lineRef = (CTLineRef)CFArrayGetValueAtIndex(lines, lineIndex);
+    CGPoint lineOrigin = lineOrigins[lineIndex];
+
+    CFArrayRef runs = CTLineGetGlyphRuns(lineRef);
+
+    CFIndex runCount = CFArrayGetCount(runs);
+    for (CFIndex runIndex = 0; runIndex < runCount; ++runIndex) {
+      CTRunRef runRef = (CTRunRef)CFArrayGetValueAtIndex(runs, runIndex);
+
+      CFIndex glyphCount = CTRunGetGlyphCount(runRef);
+      CGGlyph glyphs[glyphCount];
+      CGSize glyphAdvances[glyphCount];
+      CGPoint glyphPositions[glyphCount];
+
+      CFRange runRange = CFRangeMake(0, glyphCount);
+      CTRunGetGlyphs(runRef, CFRangeMake(0, glyphCount), glyphs);
+      CTRunGetPositions(runRef, runRange, glyphPositions);
+
+      CTFontGetAdvancesForGlyphs((__bridge CTFontRef)font, kCTFontDefaultOrientation, glyphs,
+                                 glyphAdvances, glyphCount);
+
+      for (CFIndex glyphIndex = 0; glyphIndex < glyphCount; ++glyphIndex) {
+        CGGlyph glyph = glyphs[glyphIndex];
+
+        // For regular UIBezierPath drawing, we need to invert around the y axis.
+        CGAffineTransform glyphTransform =
+            CGAffineTransformMakeTranslation(lineOrigin.x + glyphPositions[glyphIndex].x,
+                                             rect.size.height - lineOrigin.y -
+                                             glyphPositions[glyphIndex].y);
+        glyphTransform = CGAffineTransformScale(glyphTransform, 1, -1);
+
+        CGPathRef glyphPathRef = CTFontCreatePathForGlyph((__bridge CTFontRef)font, glyph, &glyphTransform);
+        // Carry out the appending.
+        CGPathAddPath(combinedGlyphsPathRef, NULL, glyphPathRef);
+        @onExit {
+          if (glyphPathRef) {
+            CGPathRelease(glyphPathRef);
+          }
+        };
+
+        basePoint.x += glyphAdvances[glyphIndex].width;
+        basePoint.y += glyphAdvances[glyphIndex].height;
+      }
+    }
+    basePoint.x = 0;
+    basePoint.y += CTFontGetAscent((__bridge CTFontRef)font) +
+        CTFontGetDescent((__bridge CTFontRef)font) + CTFontGetLeading((__bridge CTFontRef)font);
+  }
 }

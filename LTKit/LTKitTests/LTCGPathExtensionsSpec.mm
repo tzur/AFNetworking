@@ -86,7 +86,7 @@ afterEach(^{
 context(@"transformation", ^{
   __block CGPathRef transformedPath;
 
-  it(@"should correctly compute a translated path", ^{
+  it(@"should correctly create a translated copy of a path", ^{
     CGPoint translation = CGPointMake(1, 2);
     GLKMatrix3 matrix = GLKMatrix3MakeTranslation(translation.x, translation.y);
     transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
@@ -101,7 +101,7 @@ context(@"transformation", ^{
     CGPathRelease(transformedPath);
   });
 
-  it(@"should correctly compute a rotated path", ^{
+  it(@"should correctly create a rotated copy of a path", ^{
     // In iOS, negative values mean clockwise rotation, while positive values in OSX.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     const CGFloat kClockwiseAngle = -M_PI / 2;
@@ -121,6 +121,17 @@ context(@"transformation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
     CGPathRelease(transformedPath);
   });
+
+  it(@"should correctly create a copy of a path in a given rect", ^{
+    CGPathRef originalPath = CGPathCreateWithEllipseInRect(CGRectMake(1, 2, 3, 4), NULL);
+    CGPathRef expectedTransformedPath = CGPathCreateWithEllipseInRect(CGRectMake(2, 3, 4, 5), NULL);
+    CGPathRef actualTransformedPath =
+        LTCGPathCreateCopyInRect(originalPath, CGRectMake(2, 3, 4, 5));
+    expect(CGPathEqualToPath(expectedTransformedPath, actualTransformedPath)).to.beTruthy();
+    CGPathRelease(originalPath);
+    CGPathRelease(expectedTransformedPath);
+    CGPathRelease(actualTransformedPath);
+  });
 });
 
 static const BOOL kClosed = YES;
@@ -128,11 +139,12 @@ static const BOOL kClosed = YES;
 context(@"creation", ^{
   __block CGFloat smootheningRadius;
 
-  it(@"should compute the correct path of an acyclic unsmoothened polyline", ^{
+  it(@"should correctly create a path for a given acyclic unsmoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
     std::vector<LTVector2> inputData{LTVector2(points[0]), LTVector2(points[1]),
         LTVector2(points[2])};
     smootheningRadius = 0;
+    CGPathRelease(path);
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
 
     evaluation.points = points;
@@ -143,11 +155,12 @@ context(@"creation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
 
-  it(@"should compute the correct path of a cyclic unsmoothened polyline", ^{
+  it(@"should correctly create a path for a given cyclic unsmoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1), CGPointMake(2, 3)};
     std::vector<LTVector2> inputData{LTVector2(points[0]), LTVector2(points[1]),
         LTVector2(points[2]), LTVector2(points[3])};
     smootheningRadius = 0;
+    CGPathRelease(path);
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, kClosed);
 
     evaluation.points = points;
@@ -159,12 +172,13 @@ context(@"creation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
 
-  it(@"should compute the correct path of an acyclic smoothened polyline", ^{
+  it(@"should correctly create a path for a given acyclic smoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(0.75, 0), CGPointMake(1, 0),
         CGPointMake(1 + M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(2, 1)};
     std::vector<LTVector2> inputData{LTVector2(points[0]), LTVector2(points[2]),
         LTVector2(points[4])};
     smootheningRadius = 0.25;
+    CGPathRelease(path);
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
 
     evaluation.points = points;
@@ -176,7 +190,7 @@ context(@"creation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
 
-  it(@"should compute the correct path of an cyclic smoothened polyline", ^{
+  it(@"should correctly create a path for a given cyclic smoothened polyline", ^{
     CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0),
         CGPointMake(2, 0.25), CGPointMake(2, 1.85), CGPointMake(2, 1.9), CGPointMake(2, 1.95),
         CGPointMake(2, 1.95), CGPointMake(2, 2),
@@ -186,12 +200,32 @@ context(@"creation", ^{
     std::vector<LTVector2> inputData{LTVector2(points[11]), LTVector2(points[2]),
         LTVector2(points[5]), LTVector2(points[8])};
     smootheningRadius = 0.25;
+    CGPathRelease(path);
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
     CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+  });
+
+  it(@"should correctly create a path for a given string", ^{
+    CGPathRelease(path);
+    CAShapeLayer *layer = [CAShapeLayer layer];
+    layer.path = LTCGPathCreateWithString(@"L", [UIFont fontWithName:@"Helvetica" size:10]);
+
+    CGPoints points{CGPointMake(0.76171875, -7.1728515625),
+      CGPointMake(1.7333984375, -7.1728515625), CGPointMake(1.7333984375, -0.8544921875),
+      CGPointMake(5.3662109375, -0.8544921875), CGPointMake(5.3662109375, 0),
+      CGPointMake(0.76171875, 0)};
+
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 1;
+    CGPathApply(layer.path, &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
