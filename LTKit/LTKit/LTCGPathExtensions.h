@@ -8,6 +8,10 @@
 /// responsible for releasing the returned path.
 CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation);
 
+/// Creates a copy of the provided \c path such that its bounding box corresponds to the given
+/// \c rect. The caller is responsible for releasing the returned path.
+CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
+
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c smootheningRadius is greater than 0, additional control points are inserted to create a
 /// smoother curve in the following way: Given two adjacent edges (v0, v1) and (v1, v2), two
@@ -15,6 +19,11 @@ CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &trans
 /// (v0, w0), appends a quadratic curve from w0 to w1 with control point v1, and finally appends
 /// edge (w1, v2). w0 and w1 lie on edges (v0, v1) and (v1, v2), respectively. The distance of w0
 /// and w1 from v1 is min(smootheningRadius, length(v0, v1) / 2, length(v1, v2) / 2). This corner
-/// smoothening is applied to every non-end joint of the provided \c polyline.
+/// smoothening is applied to every non-end joint of the provided \c polyline. The caller is
+/// responsible for releasing the returned path.
 CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
                                                  CGFloat smootheningRadius, BOOL closed);
+
+/// Creates a path from the provided \c string, using the provided \c font. The caller is
+/// responsible for releasing the returned path.
+CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font);
