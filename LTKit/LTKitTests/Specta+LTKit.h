@@ -21,16 +21,24 @@
 #define LTBindObjectToClass(OBJECT, CLASS) \
     _LTBindObjectToClass(_module, _injector, OBJECT, CLASS)
 
+/// Defines the concrete class to use as Objection module in tests. If \c LTKIT_TEST_MODULE_CLASS
+/// macro is defined this class will be used. The default module class is \c LTTestModule.
+#ifdef LTKIT_TEST_MODULE_CLASS
+  #define _LTTestModule LTKIT_TEST_MODULE_CLASS
+#else
+  #define _LTTestModule LTTestModule
+#endif
+
 /// Defines a beginning of an LTKit test spec.
 #define LTSpecBegin(name) \
     SpecBegin(name) \
     \
     __block JSObjectionInjector *_lastUsedInjector; \
     __block JSObjectionInjector *_injector; \
-    __block LTTestModule *_module; \
+    __block _LTTestModule *_module; \
     \
     beforeEach(^{ \
-      _module = [[LTTestModule alloc] init]; \
+      _module = [[_LTTestModule alloc] init]; \
       \
       _lastUsedInjector = [JSObjection defaultInjector]; \
       _injector = [JSObjection createInjector:_module]; \
