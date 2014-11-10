@@ -195,22 +195,26 @@ NSString *LTScalarAsString(const cv::Scalar &scalar) {
 }
 
 cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied) {
-  static const CGFloat inv = 1.0 / UCHAR_MAX;
-  cv::Vec4b blended;
-  cv::Vec4b blendedAlpha;
+  LTVector4 src = LTCVVec4bToLTVector4(newColor);
+  LTVector4 dst = LTCVVec4bToLTVector4(oldColor);
+
+  LTVector4 blended;
   if (premultiplied) {
-    cv::addWeighted(oldColor, 1 - inv * newColor[3], newColor, 1, 0, blended);
-    cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
+    CGFloat a = src.a() + dst.a() - src.a() * dst.a();
+    LTVector3 rgb = src.rgb() + dst.rgb() * (1 - src.a());
+    blended = LTVector4(rgb, a);
   } else {
-    cv::addWeighted(oldColor, (1 - inv * newColor[3]) * inv * oldColor[3],
-                    newColor, inv * newColor[3], 0, blended);
-    cv::addWeighted(oldColor, 1, newColor, 1 - inv * oldColor[3], 0, blendedAlpha);
-    if (blended[3] == 0) {
-      blended = cv::Vec4b(0, 0, 0, 0);
+    CGFloat a = src.a() + dst.a() - src.a() * dst.a();
+    LTVector3 rgb = src.rgb() * src.a() + dst.rgb() * dst.a() * (1 - src.a());
+    if (a > 0) {
+      blended = LTVector4(rgb / a, a);
+    } else {
+      blended = LTVector4Zero;
     }
   }
-  blended[3] = blendedAlpha[3];
-  return blended;
+
+  blended = std::round(blended * UCHAR_MAX) / UCHAR_MAX;
+  return LTLTVector4ToVec4b(blended.a() > 0 ? blended : LTVector4Zero);
 }
 
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
