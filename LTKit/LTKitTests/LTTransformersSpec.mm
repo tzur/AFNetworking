@@ -56,4 +56,17 @@ context(@"transformers for class", ^{
   });
 });
 
+context(@"transformers for array", ^{
+  it(@"should transform an array by applying transform to each item", ^{
+    NSArray *input = @[@1, @2, @3, @4, @5];
+
+    NSValueTransformer *transformer = [LTTransformers transformerForArrayByApplying:^id(id item) {
+      NSInteger value = [item integerValue];
+      return @(value * value);
+    }];
+
+    expect([transformer transformedValue:input]).to.equal(@[@1, @4, @9, @16, @25]);
+  });
+});
+
 SpecEnd
