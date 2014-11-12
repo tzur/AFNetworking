@@ -32,9 +32,9 @@ uniform mediump vec3 frameColor;
 
 // Tile related parameters.
 uniform bool isTileable;
-uniform highp vec2 translation;
-uniform highp mat2 rotation;
-uniform highp vec2 scaling;
+uniform mediump vec2 translation;
+uniform mediump mat2 rotation;
+uniform mediump vec2 scaling;
 
 // Maps baseTexture and baseMask to full image size.
 uniform bool mapBaseToFullImageSize;
@@ -68,25 +68,25 @@ varying highp vec2 vTexcoord;
 // are used.
 
 // Returns tiled texture coordinate given a regular texture coordinate.
-highp vec2 toTiledTexcoord(in highp vec2 texcoord) {
+mediump vec2 toTiledTexcoord(in mediump vec2 texcoord) {
   texcoord.x = texcoord.x * aspectRatio;
   // 1. Center texture coordinate around (0, 0).
-  highp vec2 centered = texcoord - 0.5;
+  mediump vec2 centered = texcoord - 0.5;
   // 2. Rotate point around center.
-  highp vec2 rotated = rotation * centered;
+  mediump vec2 rotated = rotation * centered;
   // 3. Return texture coordinate to its previos location.
   rotated = rotated + 0.5;
   // 4. Do the tiling and translation.
   // TODO:(amits) check if removing the LTTextureWrapRepeat and putting here mod will work just as
   // fast. This will remove the requirement of power of two dimensions.
-  highp vec2 tiled = rotated * scaling + translation;
+  mediump vec2 tiled = rotated * scaling + translation;
   tiled.x = tiled.x / aspectRatio;
   return tiled;
 }
 
-highp vec2 repositionTexcoordAccoringToType(in highp vec2 texcoord) {
-  highp float ratio;
-  highp float invRatio;
+mediump vec2 repositionTexcoordAccoringToType(in mediump vec2 texcoord) {
+  mediump float ratio;
+  mediump float invRatio;
   
   if (aspectRatio < 1.0) { // Height > Width.
     texcoord.xy = texcoord.yx;
@@ -97,8 +97,8 @@ highp vec2 repositionTexcoordAccoringToType(in highp vec2 texcoord) {
     invRatio = 1.0 / ratio;
   }
   
-  highp float a;
-  highp float b;
+  mediump float a;
+  mediump float b;
   
   if (frameType == kFrameTypeFit) {
     a = (ratio - 1.0) * (0.5 * invRatio);
@@ -109,7 +109,7 @@ highp vec2 repositionTexcoordAccoringToType(in highp vec2 texcoord) {
     b = 1.0 - (0.3333 * invRatio);
     
     // Stretch (1.0) the central part - for kFrameTypeStretch.
-    highp float factor = 1.0;
+    mediump float factor = 1.0;
     if (frameType == kFrameTypeRepeat) {
       // Repeat central part.
       factor = repetitionFactor;
@@ -121,13 +121,10 @@ highp vec2 repositionTexcoordAccoringToType(in highp vec2 texcoord) {
       texcoord += vec2(0.5, 0.5);
     }
     
-    if (texcoord.x < a) {
-      texcoord.x = texcoord.x * ratio;
-    } else if (texcoord.x > b) {
-      texcoord.x = 1.0 - 0.3333 * ratio + (texcoord.x - 0.6667) * ratio;
-    } else {
-      texcoord.x = mod((texcoord.x - a) / (b - a) * factor, 1.0) * 0.3333 + 0.3333;
-    }
+    texcoord.x = mix(texcoord.x * ratio,
+                     mix(1.0 - 0.3333 * ratio + (texcoord.x - 0.6667) * ratio,
+                         mod((texcoord.x - a) / (b - a) * factor, 1.0) * 0.3333 + 0.3333,
+                         step(texcoord.x, b)), step(a, texcoord.x));
   }
   
   // Height > Width.
@@ -173,7 +170,7 @@ void main() {
   lowp float baseMask;
   
   if (isTileable) {
-    highp vec2 tiledcoord = toTiledTexcoord(vTexcoord);
+    mediump vec2 tiledcoord = toTiledTexcoord(vTexcoord);
     baseTextureColor = texture2D(baseTexture, tiledcoord);
     baseMask = texture2D(baseMaskTexture, tiledcoord).r;
   } else {
