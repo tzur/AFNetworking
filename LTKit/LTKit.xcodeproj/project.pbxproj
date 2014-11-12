@@ -377,6 +377,8 @@
 		28BBD79219A109D80062C803 /* LTRectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD79119A109D80062C803 /* LTRectSpec.mm */; };
 		28BBD7F519A20AA40062C803 /* NSValue+LTRect.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BBD7F319A20AA40062C803 /* NSValue+LTRect.h */; };
 		28BBD7F619A20AA40062C803 /* NSValue+LTRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD7F419A20AA40062C803 /* NSValue+LTRect.mm */; };
+		28BBD9F31A12685D00354965 /* ImageWithFrameWithoutOutputColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BBD9F11A12685D00354965 /* ImageWithFrameWithoutOutputColor.png */; };
+		28BBD9F41A12685D00354965 /* ImageWithFrameWithOutputColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BBD9F21A12685D00354965 /* ImageWithFrameWithOutputColor.png */; };
 		28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */; };
 		28C61C0118B23D430036D66E /* LTTouchCollectorDistanceFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BFC18B23D430036D66E /* LTTouchCollectorDistanceFilter.mm */; };
 		28C61C0218B23D430036D66E /* LTTouchCollectorFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61BFE18B23D430036D66E /* LTTouchCollectorFilter.mm */; };
@@ -1515,6 +1517,8 @@
 		28BBD79119A109D80062C803 /* LTRectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRectSpec.mm; sourceTree = "<group>"; };
 		28BBD7F319A20AA40062C803 /* NSValue+LTRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+LTRect.h"; sourceTree = "<group>"; };
 		28BBD7F419A20AA40062C803 /* NSValue+LTRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+LTRect.mm"; sourceTree = "<group>"; };
+		28BBD9F11A12685D00354965 /* ImageWithFrameWithoutOutputColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithFrameWithoutOutputColor.png; path = Resources/ImageWithFrameWithoutOutputColor.png; sourceTree = "<group>"; };
+		28BBD9F21A12685D00354965 /* ImageWithFrameWithOutputColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageWithFrameWithOutputColor.png; path = Resources/ImageWithFrameWithOutputColor.png; sourceTree = "<group>"; };
 		28C61BEA18B23CD10036D66E /* LTPainterPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterPoint.h; sourceTree = "<group>"; };
 		28C61BEB18B23CD10036D66E /* LTPainterPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPoint.mm; sourceTree = "<group>"; };
 		28C61BFB18B23D430036D66E /* LTTouchCollectorDistanceFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchCollectorDistanceFilter.h; sourceTree = "<group>"; };
@@ -2745,6 +2749,8 @@
 				28D18CEB1A069F59007B5F85 /* ImageWithFrameTypeIdentity.png */,
 				28B1E80D19D94BD100AC5884 /* ImageWithFrameTypeRepeat.png */,
 				28B1E80E19D94BD100AC5884 /* ImageWithFrameTypeStretch.png */,
+				28BBD9F11A12685D00354965 /* ImageWithFrameWithoutOutputColor.png */,
+				28BBD9F21A12685D00354965 /* ImageWithFrameWithOutputColor.png */,
 				28647E7519D9362B0026630F /* ImageWithRotatedTiledFrame.png */,
 				28647E7619D9362B0026630F /* ImageWithTiledFrame.png */,
 				28D63C791A06AAE800FD1AC2 /* ImageWithTiledMaskIdentityType.png */,
@@ -4124,6 +4130,8 @@
 				280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */,
 				2853684A19BDD61300CC9057 /* ImageWithWideFrameTypeFit.png in Resources */,
 				28FB00EF1A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png in Resources */,
+				28BBD9F31A12685D00354965 /* ImageWithFrameWithoutOutputColor.png in Resources */,
+				28BBD9F41A12685D00354965 /* ImageWithFrameWithOutputColor.png in Resources */,
 				283BD0421922214300B68A90 /* ShapeDrawerPathShapeRotation.png in Resources */,
 				8BAB99E01869F73400D79554 /* QuadLeft.jpg in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
