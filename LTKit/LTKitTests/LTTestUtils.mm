@@ -194,27 +194,42 @@ NSString *LTScalarAsString(const cv::Scalar &scalar) {
           scalar[0], scalar[1], scalar[2], scalar[3]];
 }
 
-cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied) {
+LTVector4 LTBlendNormal(const LTVector4 &src, const LTVector4 &dst) {
+  CGFloat a = src.a() + dst.a() - src.a() * dst.a();
+  LTVector3 rgb = src.rgb() + dst.rgb() * (1 - src.a());
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendMultiply(const LTVector4 &src, const LTVector4 &dst) {
+  CGFloat a = src.a() + dst.a() - src.a() * dst.a();
+  LTVector3 rgb = src.rgb() * dst.rgb() + src.rgb() * (1 - dst.a()) + dst.rgb() * (1 - src.a());
+  return LTVector4(rgb, a);
+}
+
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied,
+                  LTBlendMode mode) {
   LTVector4 src = LTCVVec4bToLTVector4(newColor);
   LTVector4 dst = LTCVVec4bToLTVector4(oldColor);
-
   LTVector4 blended;
-  if (premultiplied) {
-    CGFloat a = src.a() + dst.a() - src.a() * dst.a();
-    LTVector3 rgb = src.rgb() + dst.rgb() * (1 - src.a());
-    blended = LTVector4(rgb, a);
-  } else {
-    CGFloat a = src.a() + dst.a() - src.a() * dst.a();
-    LTVector3 rgb = src.rgb() * src.a() + dst.rgb() * dst.a() * (1 - src.a());
-    if (a > 0) {
-      blended = LTVector4(rgb / a, a);
-    } else {
-      blended = LTVector4Zero;
-    }
+  if (!premultiplied) {
+    src = LTVector4(src.rgb() * src.a(), src.a());
+    dst = LTVector4(dst.rgb() * dst.a(), dst.a());
   }
-
+  switch (mode) {
+    case LTBlendModeNormal:
+      blended = LTBlendNormal(src, dst);
+      break;
+    case LTBlendModeMultiply:
+      blended = LTBlendMultiply(src, dst);
+      break;
+    default:
+      LTMethodNotImplemented();
+  }
+  if (!premultiplied) {
+    blended = blended.a() > 0 ? LTVector4(blended.rgb() / blended.a(), blended.a()) : LTVector4Zero;
+  }
   blended = std::round(blended * UCHAR_MAX) / UCHAR_MAX;
-  return LTLTVector4ToVec4b(blended.a() > 0 ? blended : LTVector4Zero);
+  return LTLTVector4ToVec4b(blended);
 }
 
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
