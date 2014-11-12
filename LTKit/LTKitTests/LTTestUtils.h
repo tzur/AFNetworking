@@ -3,6 +3,8 @@
 
 #import <numeric>
 
+#import "LTBlendMode.h"
+
 // This file contains various testing utilities for \c LTKit.
 
 /// Executes the given test if running on the simulator.
@@ -41,10 +43,10 @@ NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position);
 /// Returns a string representation of the \c scalar value.
 NSString *LTScalarAsString(const cv::Scalar &scalar);
 
-/// Blending should match photoshop's "normal" blend mode:
-/// C_out = C_new + (1-A_new)*C_old;
-/// A_out = A_old + (1-A_old)*A_new;
-cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied = YES);
+/// Blends the given colors according to the given \c LTBlendMode. The \c premultiplied flag
+/// indicates whether the input is given with premultipled alpha or not, and the output will match.
+cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied = YES,
+                  LTBlendMode mode = LTBlendModeNormal);
 
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
