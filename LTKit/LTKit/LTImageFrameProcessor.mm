@@ -64,6 +64,7 @@
     [self setImageFrame:[[LTImageFrame alloc] init]];
     [self setAspectRatioUniforms];
     self[[LTImageFrameFsh isTileable]] = @NO;
+    self[[LTImageFrameFsh readColorFromOutput]] = @(self.inputTexture == self.outputTexture);
   }
   return self;
 }
@@ -140,22 +141,6 @@
   CGFloat repetitionFactor = std::round((aspectRatioLongerApect - 2.0 / 3.0) * 3.0);
   self[[LTImageFrameFsh aspectRatio]] = @(aspectRatio);
   self[[LTImageFrameFsh repetitionFactor]] = @(repetitionFactor);
-}
-
-#pragma mark -
-#pragma mark Processing
-#pragma mark -
-
-- (void)process {
-  self[[LTImageFrameFsh readColorFromOutput]] = @(self.inputTexture == self.outputTexture);
-  [super process];
-}
-
-- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
-  // When processing to screen we do not want to read color from the framebuffer, but rather from
-  // the input texture, since the framebuffer does not have the relevant data on it.
-  self[[LTImageFrameFsh readColorFromOutput]] = @NO;
-  [super processToFramebufferWithSize:size outputRect:rect];
 }
 
 #pragma mark -

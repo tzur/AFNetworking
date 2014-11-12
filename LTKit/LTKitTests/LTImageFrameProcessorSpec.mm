@@ -308,4 +308,63 @@ context(@"processing identity frame type", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 });
+
+context(@"processing to frame buffer", ^{
+  __block LTFbo *fbo;
+  __block LTTexture *input;
+  __block LTTexture *output;
+  __block LTTexture *outputFBO;
+  __block LTImageFrame *imageFrame;
+  
+  beforeEach(^{
+    input = [LTTexture textureWithImage:cv::Mat4b(32, 64, cv::Vec4b(128, 128, 128, 255))];
+    output = [LTTexture textureWithImage:cv::Mat4b(32, 64, cv::Vec4b(0, 128, 128, 255))];
+    outputFBO = [LTTexture textureWithImage:cv::Mat4b(32, 64, cv::Vec4b(255, 0, 0, 255))];
+    fbo = [[LTFbo alloc] initWithTexture:outputFBO];
+
+    LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+    cv::Mat1b originalFrameMask(30, 60, 255);
+    originalFrameMask(cv::Rect(2, 5, 55, 25)) = 0;
+    frameMask = [LTTexture textureWithImage:originalFrameMask];
+    imageFrame = [[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
+                                                 frameMask:frameMask
+                                                 frameType:LTFrameTypeIdentity];
+});
+
+  afterEach(^{
+    fbo = nil;
+    input = nil;
+    output = nil;
+    outputFBO = nil;
+    imageFrame = nil;
+  });
+
+  it(@"should return image with frame on frame buffer", ^{
+    processor = [[LTImageFrameProcessor alloc] initWithInput:input output:output];
+    [processor setImageFrame:imageFrame];
+    
+    [fbo bindAndDraw:^{
+      [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
+    }];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class],
+                                              @"ImageWithFrameWithoutOutputColor.png")];
+    expect($(outputFBO.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+
+  it(@"should return image with frame on frame buffer", ^{
+    processor = [[LTImageFrameProcessor alloc] initWithInput:output output:output];
+    [processor setImageFrame:imageFrame];
+
+    [fbo bindAndDraw:^{
+      [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
+    }];
+    
+    LTTexture *precomputedResult =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"ImageWithFrameWithOutputColor.png")];
+    expect($(outputFBO.image)).to.beCloseToMat($(precomputedResult.image));
+  });
+});
+
 LTSpecEnd
