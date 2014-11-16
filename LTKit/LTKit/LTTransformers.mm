@@ -34,6 +34,17 @@
   return mapping;
 }
 
++ (NSValueTransformer *)transformerForArrayByApplying:(LTTransformerBlock)itemTransform {
+  LTParameterAssert(itemTransform, @"Block transform must be non-nil");
+  return [MTLValueTransformer transformerWithBlock:^NSArray *(NSArray *input) {
+    NSMutableArray *output = [NSMutableArray arrayWithCapacity:input.count];
+    for (id item in input) {
+      [output addObject:itemTransform(item)];
+    }
+    return [output copy];
+  }];
+}
+
 #pragma mark -
 #pragma mark Transformers
 #pragma mark -
