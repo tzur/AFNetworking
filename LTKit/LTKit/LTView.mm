@@ -248,6 +248,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.contentTexture = texture;
   [self createContentFbo];
   [self createRectDrawer];
+  [self createPixelGrid];
   self.navigationView.contentSize = self.contentTexture.size;
 }
 

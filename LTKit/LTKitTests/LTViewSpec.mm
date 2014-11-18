@@ -7,6 +7,7 @@
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
+#import "LTGridDrawer.h"
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTestUtils.h"
@@ -19,6 +20,14 @@
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
+@end
+
+@interface LTViewPixelGrid ()
+@property (strong, nonatomic) LTGridDrawer *gridDrawer;
+@end
+
+@interface LTGridDrawer ()
+@property (nonatomic) CGSize size;
 @end
 
 LTSpecBegin(LTView)
@@ -421,6 +430,12 @@ context(@"drawing", ^{
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+  });
+
+  it(@"should update pixel grid when replacing content", ^{
+    CGSize newSize = view.contentSize * 2;
+    [view replaceContentWith:[[LTGLTexture alloc] initByteRGBAWithSize:newSize]];
+    expect(view.pixelGrid.gridDrawer.size).to.equal(newSize);
   });
 });
 
