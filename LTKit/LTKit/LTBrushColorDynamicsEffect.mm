@@ -38,6 +38,10 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   CGFloat randomBrightnessJitter =
       [self.random randomDoubleBetweenMin:-self.brightnessJitter max:self.brightnessJitter];
 
+  if (self.secondaryColor && [self.random randomDouble] < 0.5 * self.secondaryColorJitter) {
+    color = self.secondaryColor;
+  }
+
   CGFloat h, s, b, a;
   if (![color getHue:&h saturation:&s brightness:&b alpha:&a]) {
     return color;
@@ -77,9 +81,10 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
 #pragma mark Properties
 #pragma mark -
 
-LTProperty(CGFloat, hueJitter, HueJitter, 0, 1, 1);
-LTProperty(CGFloat, saturationJitter, SaturationJitter, 0, 1, 1);
-LTProperty(CGFloat, brightnessJitter, BrightnessJitter, 0, 1, 1);
+LTProperty(CGFloat, hueJitter, HueJitter, 0, 1, 0);
+LTProperty(CGFloat, saturationJitter, SaturationJitter, 0, 1, 0);
+LTProperty(CGFloat, brightnessJitter, BrightnessJitter, 0, 1, 0);
+LTProperty(CGFloat, secondaryColorJitter, SecondaryColorJitter, 0, 1, 0);
 
 - (void)setBaseColorTexture:(LTTexture *)baseColorTexture {
   LTParameterAssert(!baseColorTexture || baseColorTexture.format == LTTextureFormatRGBA);

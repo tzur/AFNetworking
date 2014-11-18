@@ -23,19 +23,29 @@
 - (NSArray *)colorsFromRects:(NSArray *)rects baseColor:(UIColor *)baseColor;
 
 /// Specifies a percentage by which the hue of the paint can vary in stroke.
-/// Must be in range [0,1], default is 1.
+/// Must be in range [0,1], default is \c 0.
 @property (nonatomic) CGFloat hueJitter;
 LTPropertyDeclare(CGFloat, hueJitter, HueJitter);
 
 /// Specifies a percentage by which the saturation of the paint can vary in stroke.
-/// Must be in range [0,1], default is 1.
+/// Must be in range [0,1], default is \c 0.
 @property (nonatomic) CGFloat saturationJitter;
 LTPropertyDeclare(CGFloat, saturationJitter, SaturationJitter);
 
 /// Specifies a percentage by which the brightness of the paint can vary in stroke.
-/// Must be in range [0,1], default is 1.
+/// Must be in range [0,1], default is \c 0.
 @property (nonatomic) CGFloat brightnessJitter;
 LTPropertyDeclare(CGFloat, brightnessJitter, BrightnessJitter);
+
+/// Specifies a percentage by which the secondary color can be used instead of the base color.
+/// When set to \c 0, the base color will always be used. When set to \c 1, the secondary color
+/// will be used approximately at 50% of the occurrences. Must be in range [0,1], default is \c 0.
+@property (nonatomic) CGFloat secondaryColorJitter;
+LTPropertyDeclare(CGFloat, secondaryColorJitter, SecondaryColorJitter);
+
+/// Secondary color to use instead of the base color according to the \c secondaryColorJitter
+/// property. When set to \c nil, the base color will always be used.
+@property (strong, nonatomic) UIColor *secondaryColor;
 
 /// When set, the effect will sample the base color from this texture according to the center of
 /// each rect. When set to \nil, the base color will be used.
