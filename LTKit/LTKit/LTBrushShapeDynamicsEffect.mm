@@ -42,9 +42,9 @@
 #pragma mark Properties
 #pragma mark -
 
-LTProperty(CGFloat, sizeJitter, SizeJitter, 0, 1, 1);
+LTProperty(CGFloat, sizeJitter, SizeJitter, 0, 1, 0);
 LTProperty(CGFloat, minimumDiameter, MinimumDiameter, 0, 1, 0.5);
-LTProperty(CGFloat, angleJitter, AngleJitter, 0, 1, 1);
+LTProperty(CGFloat, angleJitter, AngleJitter, 0, 1, 0);
 LTProperty(CGFloat, roundnessJitter, RoundnessJitter, 0, 1, 0);
 LTProperty(CGFloat, minimumRoundness, MinimumRoundness, 0, 1, 0.25);
 

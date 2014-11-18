@@ -31,7 +31,7 @@ context(@"properties", ^{
   });
   
   it(@"should have default properties", ^{
-    expect(effect.scatter).to.equal(1);
+    expect(effect.scatter).to.equal(0);
     expect(effect.count).to.equal(1);
     expect(effect.countJitter).to.equal(0);
   });
@@ -41,13 +41,6 @@ context(@"properties", ^{
     expect(effect.scatter).notTo.equal(newValue);
     effect.scatter = newValue;
     expect(effect.scatter).to.equal(newValue);
-    
-    expect(^{
-      effect.scatter = effect.minScatter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.scatter = effect.maxScatter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set count", ^{
@@ -55,13 +48,6 @@ context(@"properties", ^{
     expect(effect.count).notTo.equal(newValue);
     effect.count = newValue;
     expect(effect.count).to.equal(newValue);
-    
-    expect(^{
-      effect.count = effect.minCount - 1;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.count = effect.maxCount + 1;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set countJitter", ^{
@@ -69,13 +55,6 @@ context(@"properties", ^{
     expect(effect.countJitter).notTo.equal(newValue);
     effect.countJitter = newValue;
     expect(effect.countJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.countJitter = effect.minCountJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.countJitter = effect.maxCountJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
 });
 
@@ -97,9 +76,7 @@ context(@"effect", ^{
   });
   
   it(@"should return the same rects when scatter is 0, count is 1, and countJitter is 0", ^{
-    effect.scatter = 0;
     effect.count = 1;
-    effect.countJitter = 0;
     scatteredRects = [effect scatteredRectsFromRects:sourceRects];
     expect(scatteredRects.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -110,7 +87,6 @@ context(@"effect", ^{
   it(@"should return scattered rects according to the scatter property", ^{
     effect.scatter = 1;
     effect.count = 1;
-    effect.countJitter = 0;
     scatteredRects = [effect scatteredRectsFromRects:sourceRects];
     expect(scatteredRects.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -127,9 +103,7 @@ context(@"effect", ^{
   });
   
   it(@"should return scattered rects according to the count property", ^{
-    effect.scatter = 0;
     effect.count = 10;
-    effect.countJitter = 0;
     scatteredRects = [effect scatteredRectsFromRects:sourceRects];
     expect(scatteredRects.count).to.equal(effect.count * sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -140,7 +114,6 @@ context(@"effect", ^{
   });
   
   it(@"should return scattered rects according to the countJitter property", ^{
-    effect.scatter = 0;
     effect.count = 10;
     NSMutableArray *manyRects = [NSMutableArray array];
     for (NSUInteger i = 0; i < 1000; ++i) {
