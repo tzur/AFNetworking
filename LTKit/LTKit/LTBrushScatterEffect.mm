@@ -43,7 +43,7 @@
 #pragma mark -
 
 LTProperty(NSUInteger, count, Count, 1, 16, 1);
-LTProperty(CGFloat, scatter, Scatter, 0, 10, 1);
+LTProperty(CGFloat, scatter, Scatter, 0, 10, 0);
 LTProperty(CGFloat, countJitter, CountJitter, 0, 1, 0);
 
 @end

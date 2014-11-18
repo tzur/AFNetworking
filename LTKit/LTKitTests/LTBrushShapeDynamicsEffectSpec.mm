@@ -31,9 +31,9 @@ context(@"properties", ^{
   });
   
   it(@"should have default properties", ^{
-    expect(effect.sizeJitter).to.equal(1);
+    expect(effect.sizeJitter).to.equal(0);
     expect(effect.minimumDiameter).to.equal(0.5);
-    expect(effect.angleJitter).to.equal(1);
+    expect(effect.angleJitter).to.equal(0);
     expect(effect.roundnessJitter).to.equal(0);
     expect(effect.minimumRoundness).to.equal(0.25);
   });
@@ -43,13 +43,6 @@ context(@"properties", ^{
     expect(effect.sizeJitter).notTo.equal(newValue);
     effect.sizeJitter = newValue;
     expect(effect.sizeJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.sizeJitter = effect.minSizeJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.sizeJitter = effect.maxSizeJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set minimumDiameter", ^{
@@ -57,13 +50,6 @@ context(@"properties", ^{
     expect(effect.minimumDiameter).notTo.equal(newValue);
     effect.minimumDiameter = newValue;
     expect(effect.minimumDiameter).to.equal(newValue);
-    
-    expect(^{
-      effect.minimumDiameter = effect.minMinimumDiameter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.minimumDiameter = effect.maxMinimumDiameter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set angleJitter", ^{
@@ -71,13 +57,6 @@ context(@"properties", ^{
     expect(effect.angleJitter).notTo.equal(newValue);
     effect.angleJitter = newValue;
     expect(effect.angleJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.angleJitter = effect.minAngleJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.angleJitter = effect.maxAngleJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set roundnessJitter", ^{
@@ -85,13 +64,6 @@ context(@"properties", ^{
     expect(effect.roundnessJitter).notTo.equal(newValue);
     effect.roundnessJitter = newValue;
     expect(effect.roundnessJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.roundnessJitter = effect.minRoundnessJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.roundnessJitter = effect.maxRoundnessJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set minimumRoundness", ^{
@@ -99,13 +71,6 @@ context(@"properties", ^{
     expect(effect.minimumRoundness).notTo.equal(newValue);
     effect.minimumRoundness = newValue;
     expect(effect.minimumRoundness).to.equal(newValue);
-    
-    expect(^{
-      effect.minimumRoundness = effect.minMinimumRoundness - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.minimumRoundness = effect.maxMinimumRoundness + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
 });
 
@@ -132,9 +97,6 @@ context(@"effect", ^{
   });
   
   it(@"should return the same rects when sizeJitter, angleJitter, roundnessJitter are all 0", ^{
-    effect.sizeJitter = 0;
-    effect.angleJitter = 0;
-    effect.roundnessJitter = 0;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -144,8 +106,6 @@ context(@"effect", ^{
   
   it(@"should return dynamic rects according to the sizeJitter property", ^{
     effect.sizeJitter = 1;
-    effect.angleJitter = 0;
-    effect.roundnessJitter = 0;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -163,9 +123,6 @@ context(@"effect", ^{
   
   it(@"should return dynamic rects according to the minimumDiameter property", ^{
     effect.sizeJitter = 1;
-    effect.angleJitter = 0;
-    effect.roundnessJitter = 0;
-    
     effect.minimumDiameter = 1;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
@@ -191,9 +148,7 @@ context(@"effect", ^{
   });
 
   it(@"should return dynamic rects according to the angleJitter property", ^{
-    effect.sizeJitter = 0;
     effect.angleJitter = 0.1;
-    effect.roundnessJitter = 0;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -209,8 +164,6 @@ context(@"effect", ^{
   });
   
   it(@"should return dynamic rects according to the roundnessJitter property", ^{
-    effect.sizeJitter = 0;
-    effect.angleJitter = 0;
     effect.roundnessJitter = 1;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
@@ -225,10 +178,7 @@ context(@"effect", ^{
   });
   
   it(@"should return dynamic rects according to the minimumRoundness property", ^{
-    effect.sizeJitter = 0;
-    effect.angleJitter = 0;
     effect.roundnessJitter = 1;
-    
     effect.minimumRoundness = 1;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
