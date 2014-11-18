@@ -15,8 +15,6 @@ LTSpecBegin(LTBrushColorDynamicsEffect)
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushColorDynamicsEffect class]});
 
-const CGFloat kEpsilon = 1e-6;
-
 __block LTBrushColorDynamicsEffect *effect;
 
 context(@"initialization", ^{
@@ -33,9 +31,11 @@ context(@"properties", ^{
   });
   
   it(@"should have default properties", ^{
-    expect(effect.hueJitter).to.equal(1);
-    expect(effect.saturationJitter).to.equal(1);
-    expect(effect.brightnessJitter).to.equal(1);
+    expect(effect.hueJitter).to.equal(0);
+    expect(effect.saturationJitter).to.equal(0);
+    expect(effect.brightnessJitter).to.equal(0);
+    expect(effect.secondaryColorJitter).to.equal(0);
+    expect(effect.secondaryColor).to.beNil();
     expect(effect.baseColorTexture).beNil();
   });
   
@@ -44,13 +44,6 @@ context(@"properties", ^{
     expect(effect.hueJitter).notTo.equal(newValue);
     effect.hueJitter = newValue;
     expect(effect.hueJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.hueJitter = effect.minHueJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.hueJitter = effect.maxHueJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should set saturationJitter", ^{
@@ -58,13 +51,6 @@ context(@"properties", ^{
     expect(effect.saturationJitter).notTo.equal(newValue);
     effect.saturationJitter = newValue;
     expect(effect.saturationJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.saturationJitter = effect.minSaturationJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.saturationJitter = effect.maxSaturationJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should set brightnessJitter", ^{
@@ -72,13 +58,21 @@ context(@"properties", ^{
     expect(effect.brightnessJitter).notTo.equal(newValue);
     effect.brightnessJitter = newValue;
     expect(effect.brightnessJitter).to.equal(newValue);
-    
-    expect(^{
-      effect.brightnessJitter = effect.minBrightnessJitter - kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
-    expect(^{
-      effect.brightnessJitter = effect.maxBrightnessJitter + kEpsilon;
-    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should set secondaryColorJitter", ^{
+    CGFloat newValue = 0.5;
+    expect(effect.secondaryColorJitter).notTo.equal(newValue);
+    effect.secondaryColorJitter = newValue;
+    expect(effect.secondaryColorJitter).to.equal(newValue);
+  });
+
+  it(@"should set secondaryColor", ^{
+    UIColor *newColor = [UIColor redColor];
+    effect.secondaryColor = newColor;
+    expect(effect.secondaryColor).to.equal(newColor);
+    effect.secondaryColor = nil;
+    expect(effect.secondaryColor).to.beNil();
   });
 
   it(@"should set baseColorTexture", ^{
@@ -134,9 +128,6 @@ context(@"effect", ^{
   });
   
   it(@"should return the baseColor when hueJitter, saturationJitter, brightnessJitter are all 0", ^{
-    effect.hueJitter = 0;
-    effect.saturationJitter = 0;
-    effect.brightnessJitter = 0;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
     for (UIColor *color in colors) {
@@ -146,8 +137,6 @@ context(@"effect", ^{
   
   it(@"should return colors according to the hueJitter property", ^{
     effect.hueJitter = 0.5;
-    effect.saturationJitter = 0;
-    effect.brightnessJitter = 0;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
     CGFloat maxDistance = 0;
@@ -168,9 +157,7 @@ context(@"effect", ^{
   });
   
   it(@"should return colors according to the saturationJitter property", ^{
-    effect.hueJitter = 0;
     effect.saturationJitter = 0.5;
-    effect.brightnessJitter = 0;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
     CGFloat maxDistance = 0;
@@ -190,8 +177,6 @@ context(@"effect", ^{
   });
   
   it(@"should return colors according to the brightnessJitter property", ^{
-    effect.hueJitter = 0;
-    effect.saturationJitter = 0;
     effect.brightnessJitter = 0.5;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
@@ -210,16 +195,71 @@ context(@"effect", ^{
     expect(maxDistance).to.beCloseToWithin(effect.brightnessJitter, 1e-2);
     expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.brightnessJitter / 2, 5e-2);
   });
-  
+
+  context(@"secondary color", ^{
+    it(@"should always use base color when secondaryColor is nil", ^{
+      effect.secondaryColor = nil;
+      effect.secondaryColorJitter = 1;
+      colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
+      expect(colors.count).to.equal(sourceRects.count);
+      for (UIColor *color in colors) {
+        expect(color).to.equal(baseColor);
+      }
+    });
+
+    it(@"should always use base color when secondaryColorJitter is 0", ^{
+      effect.secondaryColor = [UIColor greenColor];;
+      effect.secondaryColorJitter = 0;
+      colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
+      expect(colors.count).to.equal(sourceRects.count);
+      for (UIColor *color in colors) {
+        expect(color).to.equal(baseColor);
+      }
+    });
+
+    it(@"should use secondary color according to secondaryColorJitter", ^{
+      effect.secondaryColor = [UIColor greenColor];;
+      effect.secondaryColorJitter = 0.5;
+      colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
+      expect(colors.count).to.equal(sourceRects.count);
+      NSUInteger numBase = 0;
+      NSUInteger numSecondary = 0;
+      for (UIColor *color in colors) {
+        if ([color isEqual:baseColor]) {
+          numBase++;
+        } else if ([color isEqual:effect.secondaryColor]) {
+          numSecondary++;
+        }
+      }
+      expect(numBase + numSecondary).to.equal(colors.count);
+      expect(numSecondary).to.beCloseToWithin(colors.count / 4, 1e-2 * colors.count);
+    });
+
+    it(@"should apply additional color dynamics on secondary color", ^{
+      effect.secondaryColor = [UIColor greenColor];;
+      effect.secondaryColorJitter = 0.5;
+      effect.hueJitter = 0.1;
+      colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
+      expect(colors.count).to.equal(sourceRects.count);
+      NSUInteger numBase = 0;
+      NSUInteger numSecondary = 0;
+      for (UIColor *color in colors) {
+        if ([color isEqual:baseColor]) {
+          numBase++;
+        } else if ([color isEqual:effect.secondaryColor]) {
+          numSecondary++;
+        }
+      }
+      expect(numSecondary).notTo.beCloseToWithin(colors.count / 4, 1e-2 * colors.count);
+    });
+  });
+
   it(@"should sample the base color from the baseColorTexture when set", ^{
     const CGFloat kRedHue = 0;
     const CGFloat kGreenHue = 1.0 / 3;
     const CGFloat kBlueHue = 2.0 / 3;
     const CGFloat kYellowHue = 1.0 / 6;
     
-    effect.hueJitter = 0;
-    effect.saturationJitter = 0;
-    effect.brightnessJitter = 0;
     effect.baseColorTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(2)];
     [effect.baseColorTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->at<cv::Vec4b>(0,0) = [UIColor redColor].lt_cvVector;
