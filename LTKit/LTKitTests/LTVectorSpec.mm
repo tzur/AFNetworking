@@ -82,6 +82,15 @@ context(@"LTVector2", ^{
     expect(LTVector2(1, 3) <= LTVector2(1, 2)).to.beFalsy();
   });
 
+  it(@"should return if the null vector correctly", ^{
+    LTVector2 v1(LTVector2Null);
+    LTVector2 v2(1, NAN);
+    LTVector2 v3(1, 2);
+    expect(v1.isNull()).to.beTruthy();
+    expect(v2.isNull()).to.beFalsy();
+    expect(v3.isNull()).to.beFalsy();
+  });
+
   it(@"should access rgb values correctly", ^{
     LTVector2 v(1, 2);
     v.r() = 5;
@@ -228,6 +237,15 @@ context(@"LTVector3", ^{
     expect(LTVector3(1, 3, 3) <= LTVector3(1, 2, 3)).to.beFalsy();
   });
 
+  it(@"should return if the null vector correctly", ^{
+    LTVector3 v1(LTVector3Null);
+    LTVector3 v2(1, NAN, NAN);
+    LTVector3 v3(1, 2, 3);
+    expect(v1.isNull()).to.beTruthy();
+    expect(v2.isNull()).to.beFalsy();
+    expect(v3.isNull()).to.beFalsy();
+  });
+
   it(@"should access rgb values correctly", ^{
     LTVector3 v(1, 2, 3);
     v.r() = 5;
@@ -352,6 +370,15 @@ context(@"LTVector4", ^{
     expect(LTVector4(1, 3, 3, 1) == LTVector4(1, 2, 3, 1)).to.beFalsy();
     expect(LTVector4(1, 2, 3, 1) != LTVector4(1, 2, 3, 1)).to.beFalsy();
     expect(LTVector4(1, 3, 3, 1) != LTVector4(1, 2, 3, 1)).to.beTruthy();
+  });
+
+  it(@"should return if the null vector correctly", ^{
+    LTVector4 v1(LTVector4Null);
+    LTVector4 v2(1, NAN, NAN, NAN);
+    LTVector4 v3(1, 2, 3, 4);
+    expect(v1.isNull()).to.beTruthy();
+    expect(v2.isNull()).to.beFalsy();
+    expect(v3.isNull()).to.beFalsy();
   });
 
   it(@"should access rgb values correctly", ^{

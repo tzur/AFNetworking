@@ -104,6 +104,11 @@ struct LTVector2 {
     return *this;
   }
 
+  /// Returns YES if the vector is \c LTVector2Null.
+  inline bool isNull() const {
+    return isnan(x) && isnan(y);
+  }
+
   /// Returns the red component (first element).
   inline float &r() {
     return x;
@@ -362,6 +367,11 @@ struct LTVector3 {
     return *this;
   }
   
+  /// Returns YES if the vector is \c LTVector3Null.
+  inline bool isNull() const {
+    return isnan(x) && isnan(y) && isnan(z);
+  }
+
   /// Returns the red component (first element).
   inline float &r() {
     return x;
@@ -617,6 +627,11 @@ struct LTVector4 {
     z /= rhs;
     w /= rhs;
     return *this;
+  }
+
+  /// Returns YES if the vector is \c LTVector4Null.
+  inline bool isNull() const {
+    return isnan(x) && isnan(y) && isnan(z) && isnan(w);
   }
 
   /// Returns the red component (first element).
