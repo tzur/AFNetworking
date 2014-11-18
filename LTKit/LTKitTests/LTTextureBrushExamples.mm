@@ -225,6 +225,23 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           expected.setTo(0);
           expect($(output.image)).to.equalMat($(expected));
         });
+        
+        it(@"should blend with single channel target", ^{
+          LTTexture *singleOutput = [LTTexture byteRedTextureWithSize:output.size];
+          LTFbo *singleFbo = [[LTFbo alloc] initWithTexture:singleOutput];
+          [singleFbo clearWithColor:LTVector4(0.5)];
+
+          cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
+          [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];
+          brush.intensity = LTVector4One;
+          brush.flow = 0.2;
+          [brush startNewStrokeAtPoint:point];
+          [brush drawPoint:point inFramebuffer:singleFbo];
+
+          cv::Mat1b expected(output.size.height, output.size.width);
+          expected.setTo(128 * 0.9 + 255 * 0.1);
+          expect($(singleOutput.image)).to.beCloseToMat($(expected));
+        });
       });
       
       context(@"premultipliedAlpha is YES", ^{
@@ -306,6 +323,23 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
           [brush drawPoint:point inFramebuffer:fbo];
           expected.setTo(0);
           expect($(output.image)).to.equalMat($(expected));
+        });
+
+        it(@"should blend with single channel target", ^{
+          LTTexture *singleOutput = [LTTexture byteRedTextureWithSize:output.size];
+          LTFbo *singleFbo = [[LTFbo alloc] initWithTexture:singleOutput];
+          [singleFbo clearWithColor:LTVector4(0.5)];
+
+          cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
+          [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];
+          brush.intensity = LTVector4One;
+          brush.flow = 0.2;
+          [brush startNewStrokeAtPoint:point];
+          [brush drawPoint:point inFramebuffer:singleFbo];
+
+          cv::Mat1b expected(output.size.height, output.size.width);
+          expected.setTo(128 * 0.9 + 255 * 0.1);
+          expect($(singleOutput.image)).to.beCloseToMat($(expected));
         });
       });
     });
