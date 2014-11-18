@@ -3,6 +3,7 @@
 
 #import "LTTextureBrush.h"
 
+#import "LTFbo.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTBrushVsh.h"
@@ -10,8 +11,13 @@
 #import "LTTexture+Factory.h"
 
 @interface LTBrush ()
+
+- (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+        fromRects:(NSArray *)sourceRects;
+
 @property (strong, nonatomic) LTProgram *program;
 @property (strong, nonatomic) LTRectDrawer *drawer;
+
 @end
 
 @interface LTTextureBrush ()
@@ -42,6 +48,12 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   self.program[[LTTextureBrushFsh flow]] = @(self.flow);
   self.program[[LTTextureBrushFsh opacity]] = @(self.opacity);
   self.program[[LTTextureBrushFsh intensity]] = $(self.intensity);
+}
+
+- (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
+        fromRects:(NSArray *)sourceRects {
+  self.program[[LTTextureBrushFsh singleChannelTarget]] = @(fbo.texture.channels == 1);
+  [super drawRects:targetRects inFramebuffer:fbo fromRects:sourceRects];
 }
 
 #pragma mark -

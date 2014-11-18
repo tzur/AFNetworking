@@ -9,7 +9,7 @@
 #import "LTRectDrawer.h"
 #import "LTRandom.h"
 #import "LTRotatedRect+UIColor.h"
-#import "LTShaderStorage+LTBrushFsh.h"
+#import "LTShaderStorage+LTTextureBrushFsh.h"
 #import "UIColor+Vector.h"
 
 @interface LTBrush ()
@@ -42,11 +42,12 @@
 - (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count == sourceRects.count);
+  self.program[[LTTextureBrushFsh singleChannelTarget]] = @(fbo.texture.channels == 1);
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       LTRotatedRect *targetRect = targetRects[i];
       if (targetRect.color) {
-        self.program[[LTBrushFsh intensity]] = $(targetRect.color.lt_ltVector);
+        self.program[[LTTextureBrushFsh intensity]] = $(targetRect.color.lt_ltVector);
       }
       
       uint textureIdx = [self.random randomUnsignedIntegerBelow:(uint)self.textures.count];
