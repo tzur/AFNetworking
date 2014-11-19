@@ -67,7 +67,7 @@ __block EvaluationStruct evaluation;
 
 beforeEach(^{
   path = CGPathCreateMutable();
-  initialPoints = CGPoints{CGPointZero, CGPointMake(1, 1), CGPointMake(2, 0)};
+  initialPoints = {CGPointZero, CGPointMake(1, 1), CGPointMake(2, 0)};
   CGPathMoveToPoint(path, nil, initialPoints[0].x, initialPoints[0].y);
   CGPathAddLineToPoint(path, nil, initialPoints[1].x, initialPoints[1].y);
   CGPathAddLineToPoint(path, nil, initialPoints[2].x, initialPoints[2].y);
@@ -91,7 +91,7 @@ context(@"transformation", ^{
     GLKMatrix3 matrix = GLKMatrix3MakeTranslation(translation.x, translation.y);
     transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
 
-    evaluation.points = CGPoints{initialPoints[0] + translation, initialPoints[1] + translation,
+    evaluation.points = {initialPoints[0] + translation, initialPoints[1] + translation,
         initialPoints[2] + translation};
     evaluation.numberOfPointsToExpect = evaluation.points.size();
     CGPathApply(transformedPath, &evaluation, &LTCheckCorrectnessOfPath);
@@ -113,7 +113,7 @@ context(@"transformation", ^{
 
     transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
 
-    evaluation.points = CGPoints{CGPointZero, CGPointMake(1, -1), CGPointMake(0, -2)};
+    evaluation.points = {CGPointZero, CGPointMake(1, -1), CGPointMake(0, -2)};
     evaluation.numberOfPointsToExpect = evaluation.points.size();
     CGPathApply(transformedPath, &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
@@ -212,23 +212,150 @@ context(@"creation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
 
-  it(@"should correctly create a path for a given string", ^{
-    CGPathRelease(path);
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.path = LTCGPathCreateWithString(@"L", [UIFont fontWithName:@"Helvetica" size:10]);
+  context(@"string to path conversion", ^{
+    __block CGFloat advancementFactor;
+    __block CGFloat lineHeightFactor;
+    __block CGPoints pointsForSingleL;
+    __block CGPoints pointsForDoubleL;
+    __block CGPoints pointsForTripleL;
+    __block CGPoints pointsForTripleLWithLineHeightFactor;
 
-    CGPoints points{CGPointMake(0.76171875, -7.1728515625),
-      CGPointMake(1.7333984375, -7.1728515625), CGPointMake(1.7333984375, -0.8544921875),
-      CGPointMake(5.3662109375, -0.8544921875), CGPointMake(5.3662109375, 0),
-      CGPointMake(0.76171875, 0)};
+    beforeAll(^{
+      pointsForSingleL = {CGPointZero, CGPointMake(0.9716796875, 0),
+        CGPointMake(0.9716796875, 6.318359375), CGPointMake(4.6044921875, 6.318359375),
+        CGPointMake(4.6044921875, 7.1728515625), CGPointMake(0, 7.1728515625)
+      };
 
-    evaluation.points = points;
-    evaluation.numberOfPointsToExpect = points.size();
-    evaluation.numberOfClosedSubPathsToExpect = 1;
-    CGPathApply(layer.path, &evaluation, &LTCheckCorrectnessOfPath);
-    expect(evaluation.failure).to.beFalsy();
-    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
-    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+      advancementFactor = 2;
+
+      CGPoint horizontalTranslation = CGPointMake(5.5615234375 * advancementFactor, 0);
+
+      pointsForDoubleL = {pointsForSingleL[0], pointsForSingleL[1], pointsForSingleL[2],
+        pointsForSingleL[3], pointsForSingleL[4], pointsForSingleL[5],
+        pointsForSingleL[0] + horizontalTranslation, pointsForSingleL[1] + horizontalTranslation,
+        pointsForSingleL[2] + horizontalTranslation, pointsForSingleL[3] + horizontalTranslation,
+        pointsForSingleL[4] + horizontalTranslation, pointsForSingleL[5] + horizontalTranslation
+      };
+
+      CGPoint verticalTranslation0 = CGPointMake(0, 10);
+      CGPoint verticalTranslation1 = CGPointMake(0, 20);
+
+      pointsForTripleL = {pointsForSingleL[0], pointsForSingleL[1], pointsForSingleL[2],
+        pointsForSingleL[3], pointsForSingleL[4], pointsForSingleL[5],
+        pointsForSingleL[0] + verticalTranslation0, pointsForSingleL[1] + verticalTranslation0,
+        pointsForSingleL[2] + verticalTranslation0, pointsForSingleL[3] + verticalTranslation0,
+        pointsForSingleL[4] + verticalTranslation0, pointsForSingleL[5] + verticalTranslation0,
+        pointsForSingleL[0] + verticalTranslation1, pointsForSingleL[1] + verticalTranslation1,
+        pointsForSingleL[2] + verticalTranslation1, pointsForSingleL[3] + verticalTranslation1,
+        pointsForSingleL[4] + verticalTranslation1, pointsForSingleL[5] + verticalTranslation1
+      };
+
+      lineHeightFactor = 1.5;
+
+      pointsForTripleLWithLineHeightFactor = {pointsForSingleL[0], pointsForSingleL[1],
+        pointsForSingleL[2], pointsForSingleL[3], pointsForSingleL[4], pointsForSingleL[5],
+        pointsForSingleL[0] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[1] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[2] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[3] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[4] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[5] + lineHeightFactor * verticalTranslation0,
+        pointsForSingleL[0] + lineHeightFactor * verticalTranslation1,
+        pointsForSingleL[1] + lineHeightFactor * verticalTranslation1,
+        pointsForSingleL[2] + lineHeightFactor * verticalTranslation1,
+        pointsForSingleL[3] + lineHeightFactor * verticalTranslation1,
+        pointsForSingleL[4] + lineHeightFactor * verticalTranslation1,
+        pointsForSingleL[5] + lineHeightFactor * verticalTranslation1
+      };
+    });
+
+    it(@"should correctly create a path for a given string", ^{
+      CGPathRelease(path);
+      path = LTCGPathCreateWithString(@"L\n", [UIFont fontWithName:@"Helvetica" size:10]);
+
+      evaluation.points = pointsForSingleL;
+      evaluation.numberOfPointsToExpect = pointsForSingleL.size();
+      evaluation.numberOfClosedSubPathsToExpect = 1;
+      CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    });
+
+    it(@"should correctly create a path for a given single line attributed string", ^{
+      CGPathRelease(path);
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSAttributedString *attributedString =
+          [[NSAttributedString alloc] initWithString:@"L\n"
+                                          attributes:@{NSFontAttributeName: font}];
+      CGPathRef immutablePath = LTCGPathCreateWithAttributedString(attributedString);
+
+      evaluation.points = pointsForSingleL;
+      evaluation.numberOfPointsToExpect = pointsForSingleL.size();
+      evaluation.numberOfClosedSubPathsToExpect = 1;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
+
+    it(@"should correctly create a path for a given multiple line attributed string", ^{
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSAttributedString *attributedString =
+      [[NSAttributedString alloc] initWithString:@"L\nL\nL\n"
+                                      attributes:@{NSFontAttributeName: font}];
+      CGPathRef immutablePath = LTCGPathCreateWithAttributedString(attributedString);
+
+      evaluation.points = pointsForTripleL;
+      evaluation.numberOfPointsToExpect = pointsForTripleL.size();
+      evaluation.numberOfClosedSubPathsToExpect = 3;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
+
+    it(@"should correctly create a path for a given attributed string with extra advancement", ^{
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSAttributedString *attributedString =
+      [[NSAttributedString alloc] initWithString:@"LL"
+                                      attributes:@{NSFontAttributeName: font}];
+      CGPathRef immutablePath =
+          LTCGPathCreateWithAttributedString(attributedString, 1, advancementFactor);
+
+      evaluation.points = pointsForDoubleL;
+      evaluation.numberOfPointsToExpect = pointsForDoubleL.size();
+      evaluation.numberOfClosedSubPathsToExpect = 2;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
+
+    it(@"should correctly create a path for a given attributed string with line height factor", ^{
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSAttributedString *attributedString =
+      [[NSAttributedString alloc] initWithString:@"L\nL\nL\n"
+                                      attributes:@{NSFontAttributeName: font}];
+      CGPathRef immutablePath =
+          LTCGPathCreateWithAttributedString(attributedString, lineHeightFactor);
+
+      evaluation.points = pointsForTripleLWithLineHeightFactor;
+      evaluation.numberOfPointsToExpect = pointsForTripleLWithLineHeightFactor.size();
+      evaluation.numberOfClosedSubPathsToExpect = 3;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
   });
 });
 

@@ -24,6 +24,15 @@ CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
 CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
                                                  CGFloat smootheningRadius, BOOL closed);
 
-/// Creates a path from the provided \c string, using the provided \c font. The caller is
-/// responsible for releasing the returned path.
+/// Creates a path from the provided \c string, using the provided \c font. The top-left corner of
+/// the bounding box of the returned path is \c CGPointZero. The caller is responsible for releasing
+/// the returned path.
 CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font);
+
+/// Creates a path from the provided \c attributedString. The regular line heights are multiplied
+/// with the given \c lineHeightFactor. The regular glyph advancement is multiplied with the given
+/// \c advancementFactor. The top-left corner of the bounding box of the returned path is
+/// \c CGPointZero. The caller is responsible for releasing the returned path.
+CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedString,
+                                             CGFloat lineHeightFactor = 1,
+                                             CGFloat advancementFactor = 1);
