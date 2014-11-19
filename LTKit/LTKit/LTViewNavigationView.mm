@@ -466,6 +466,17 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   }
 }
 
+- (void)cancelBogusScrollviewPanGesture {
+  if (self.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan &&
+      self.scrollView.panGestureRecognizer.numberOfTouches == 1 &&
+      self.scrollView.panGestureRecognizer.minimumNumberOfTouches == 2 &&
+      self.mode == LTViewNavigationTwoFingers) {
+    LogDebug(@"Detected a bogus iphone 6 plus scrolling gesture, discarding it");
+    self.scrollView.panGestureRecognizer.enabled = NO;
+    self.scrollView.panGestureRecognizer.enabled = YES;
+  }
+}
+
 #pragma mark -
 #pragma mark Rotation
 #pragma mark -

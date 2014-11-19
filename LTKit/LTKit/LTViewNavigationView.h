@@ -49,6 +49,13 @@
 // has been updated to reflect the new orientation.
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
+/// For some reason on the iPhone 6 Plus (and possibly on the iPhone 6) the scrollview's pan gesture
+/// triggers even while its numberOfTouches is less than its minimumNumberOfTouches. This triggers a
+/// call to touchesCancelled, which prevents any touch functionality from happening.
+/// This hack detects this scenario, when in two fingers navigation mode, and cancels the pan
+/// gesture by disabling and re-enabling the recoginzer.
+- (void)cancelBogusScrollviewPanGesture;
+
 /// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
