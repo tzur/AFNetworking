@@ -312,7 +312,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark Touch events
 #pragma mark -
 
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  // Workaround for the iPhone 6 Plus bogus detection of pan gesture.
+  [self.navigationView cancelBogusScrollviewPanGesture];
+
   [super touchesBegan:touches withEvent:event];
   if (self.forwardTouchesToDelegate && [self shouldForwardTouchEventsOnCurrentNavigationMode]) {
     if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesBegan:withEvent:)]) {
