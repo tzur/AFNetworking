@@ -34,6 +34,8 @@
 		031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 031DF21218FEB18E003FA627 /* Macbeth.jpg */; };
 		031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */; };
 		031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */; };
+		032DFC501A1A50FB002A4F69 /* Lena128BasicOilPainting.png in Resources */ = {isa = PBXBuildFile; fileRef = 032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */; };
+		032DFC511A1A50FB002A4F69 /* MealBasicOilPainting.png in Resources */ = {isa = PBXBuildFile; fileRef = 032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */; };
 		03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */; };
 		03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */; };
 		03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */; };
@@ -43,6 +45,9 @@
 		033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */; };
 		033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */; };
 		033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */; };
+		0352FA8D1A1889C70046E002 /* LTBasicOilPaintingProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */; };
+		0352FA8E1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */; };
+		0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */; };
 		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
@@ -1101,6 +1106,8 @@
 		031DF21218FEB18E003FA627 /* Macbeth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Macbeth.jpg; path = Resources/Macbeth.jpg; sourceTree = "<group>"; };
 		031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethDesaturatedGreenAndBlue.png; path = Resources/MacbethDesaturatedGreenAndBlue.png; sourceTree = "<group>"; };
 		031DF22A18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethSaturatedBrightenedRedAndOrange.png; path = Resources/MacbethSaturatedBrightenedRedAndOrange.png; sourceTree = "<group>"; };
+		032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BasicOilPainting.png; path = Resources/Lena128BasicOilPainting.png; sourceTree = "<group>"; };
+		032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBasicOilPainting.png; path = Resources/MealBasicOilPainting.png; sourceTree = "<group>"; };
 		03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorNoisyFrame.png; path = Resources/MealBWProcessorNoisyFrame.png; sourceTree = "<group>"; };
 		03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnalogFilmProcessor.h; sourceTree = "<group>"; };
 		03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTAnalogFilmProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1111,6 +1118,9 @@
 		033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeShadowsCurve.png; path = Curves/NegativeShadowsCurve.png; sourceTree = "<group>"; };
 		033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveHighlightsCurve.png; path = Curves/PositiveHighlightsCurve.png; sourceTree = "<group>"; };
 		033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveShadowsCurve.png; path = Curves/PositiveShadowsCurve.png; sourceTree = "<group>"; };
+		0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBasicOilPaintingProcessor.h; sourceTree = "<group>"; };
+		0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessor.mm; sourceTree = "<group>"; };
+		0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessorSpec.mm; sourceTree = "<group>"; };
 		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
@@ -2142,6 +2152,8 @@
 				285A671919AE313400B2CE9E /* LTReshapeProcessor.h */,
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
 				285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */,
+				0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */,
+				0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -2196,6 +2208,7 @@
 				0368E6D719C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm */,
 				28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */,
 				038DDD7F19EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm */,
+				0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -2729,6 +2742,8 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */,
+				032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */,
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
 				038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */,
 				03A094FB19ED453600BB542A /* Lena128AnalogProcessor.png */,
@@ -3597,6 +3612,7 @@
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
 				50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */,
 				03045D1E19C1711D0075207D /* LTClarityProcessor.h in Headers */,
+				0352FA8D1A1889C70046E002 /* LTBasicOilPaintingProcessor.h in Headers */,
 				8B871FF01924A75F00517F2E /* LTColorConversionProcessor.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
@@ -3986,6 +4002,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */,
+				032DFC511A1A50FB002A4F69 /* MealBasicOilPainting.png in Resources */,
 				03D5169818B2768D0026B56A /* TiledNoise.png in Resources */,
 				28B1E81019D94BD100AC5884 /* ImageWithFrameTypeStretch.png in Resources */,
 				8BABF18D19BC52C100AED760 /* PyramidGrid2.png in Resources */,
@@ -4016,6 +4033,7 @@
 				0317070519E9317100F4F975 /* Lena128BWProcessor.png in Resources */,
 				288759DB19DC486C004520DD /* ImageLandscapeWithTiledMask.png in Resources */,
 				280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */,
+				032DFC501A1A50FB002A4F69 /* Lena128BasicOilPainting.png in Resources */,
 				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
 				28A2546D19C9D84C0057E1A3 /* ReshapeProcessorResizeWithMask.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
@@ -4287,6 +4305,7 @@
 				506F826919FE5CFA00A15D9D /* LTQuadDrawer.mm in Sources */,
 				03BBB387188CF732001E7703 /* LTFractionalNoise.vsh in Sources */,
 				28A5EAC618D1DCB3007E80C9 /* LTBrushColorDynamicsEffect.mm in Sources */,
+				0352FA8E1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm in Sources */,
 				03C192DD18FAB9B900DC6CA6 /* LTColorConversionProcessor.mm in Sources */,
 				8BB14D8318BF490700701A1B /* LTPatchKernel.mm in Sources */,
 				03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */,
@@ -4546,6 +4565,7 @@
 				287705B518BB75CC00D7CEC4 /* LTPainterStrokeSpec.mm in Sources */,
 				03C1930D18FADC9000DC6CA6 /* LTSelectiveAdjustProcessorSpec.mm in Sources */,
 				28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */,
+				0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */,
 				03045D3319C1717E0075207D /* LTClarityProcessorSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
 				8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */,
