@@ -33,11 +33,20 @@
 /// output is different than the back texture. The default value is \c LTMixerOutputFillModeStretch.
 @property (nonatomic) LTProcessorFillMode fillMode;
 
+/// Default front translation value (\c (0, 0)).
+@property (readonly, nonatomic) CGPoint defaultFrontTranslation;
+
 /// Translation of the front texture on top of the back texture. The default value is \c (0, 0).
 @property (nonatomic) CGPoint frontTranslation;
 
+/// Default front scaling value (\c 1).
+@property (readonly, nonatomic) float defaultFrontScaling;
+
 /// Uniform scaling of the front texture around its center. The default value is \c 1.
 @property (nonatomic) float frontScaling;
+
+/// Default front rotation value (\c 0).
+@property (readonly, nonatomic) float defaultFrontRotation;
 
 /// Rotation, in radians, of the front texture on top of the back texture. The default value is
 /// \c 0.
