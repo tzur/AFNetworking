@@ -38,7 +38,8 @@
 
   for (NSString *key in model) {
     // TODO: (yaron) Since setValue:forKeyPath: doesn't have type-safety, add type validation here.
-    [self setValue:model[key] forKeyPath:key];
+    id value = model[key] != [NSNull null] ? model[key] : nil;
+    [self setValue:value forKeyPath:key];
   }
 }
 
@@ -57,7 +58,7 @@
   NSMutableDictionary *defaultModel = [NSMutableDictionary dictionary];
 
   for (NSString *key in [[self class] inputModelPropertyKeys]) {
-    defaultModel[key] = [self valueForKey:[self defaultKeyForKey:key]];
+    defaultModel[key] = [self valueForKey:[self defaultKeyForKey:key]] ?: [NSNull null];
   }
 
   return [defaultModel copy];

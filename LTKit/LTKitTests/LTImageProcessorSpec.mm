@@ -74,7 +74,7 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 }
 
 - (NSString *)defaultStringValue {
-  return @"foo";
+  return nil;
 }
 
 - (LTImageProcessorEnum *)defaultEnumValue {
@@ -127,7 +127,7 @@ context(@"input model", ^{
       @keypath(processor, floatValue): @(5.f),
       @keypath(processor, integerValue): @(7),
       @keypath(processor, stringValue): @"hello",
-      @keypath(processor, enumValue): $(LTImageProcessorEnumB),
+      @keypath(processor, enumValue): [NSNull null],
       @keypath(processor, vector2Value): $(LTVector2(1, 2)),
       @keypath(processor, vector3Value): $(LTVector3(1, 2, 3)),
       @keypath(processor, vector4Value): $(LTVector4(1, 2, 3, 4))
@@ -140,7 +140,7 @@ context(@"input model", ^{
       expect(processor.integerValue).to.equal([model[@keypath(processor, integerValue)]
                                                integerValue]);
       expect(processor.stringValue).to.equal(model[@keypath(processor, stringValue)]);
-      expect(processor.enumValue).to.equal(model[@keypath(processor, enumValue)]);
+      expect(processor.enumValue).to.beNil();
 
       expect($(processor.vector2Value)).to.equal(model[@keypath(processor, vector2Value)]);
       expect($(processor.vector3Value)).to.equal(model[@keypath(processor, vector3Value)]);
@@ -202,7 +202,7 @@ context(@"input model", ^{
       NSDictionary *expectedModel = @{
         @keypath(processor.floatValue): @(processor.defaultFloatValue),
         @keypath(processor.integerValue): @(processor.defaultIntegerValue),
-        @keypath(processor.stringValue): processor.defaultStringValue,
+        @keypath(processor.stringValue): [NSNull null],
         @keypath(processor.enumValue): processor.defaultEnumValue,
         @keypath(processor.vector2Value): $(processor.defaultVector2Value),
         @keypath(processor.vector3Value): $(processor.defaultVector3Value),
