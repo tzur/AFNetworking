@@ -55,16 +55,9 @@
         [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
                                           maskMode:maskMode];
     self.frontSize = front.size;
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
-}
-
-- (void)setDefaultValues {
-  self.frontTranslation = CGPointZero;
-  self.frontScaling = 1;
-  self.frontRotation = 0;
-  self.frontOpacity = self.defaultFrontOpacity;
 }
 
 - (LTRectCopyProcessor *)createBackCopyProcessorWithInput:(LTTexture *)input
@@ -92,6 +85,26 @@
   });
 
   return properties;
+}
+
+- (LTBlendMode)defaultBlendMode {
+  return LTBlendModeNormal;
+}
+
+- (LTProcessorFillMode)defaultFillMode {
+  return LTProcessorFillModeStretch;
+}
+
+- (CGPoint)defaultFrontTranslation {
+  return CGPointZero;
+}
+
+- (float)defaultFrontScaling {
+  return 1;
+}
+
+- (float)defaultFrontRotation {
+  return 0;
 }
 
 #pragma mark -
