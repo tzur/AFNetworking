@@ -23,9 +23,7 @@ context(@"initialization", ^{
   });
 });
 
-context(@"properties", ^{
-  const CGFloat kEpsilon = 1e-6;
-  
+context(@"properties", ^{  
   beforeEach(^{
     effect = [[LTBrushShapeDynamicsEffect alloc] init];
   });
