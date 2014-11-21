@@ -23,7 +23,7 @@ LTPropertyDeclare(NSUInteger, quantization, Quantization);
 
 /// Radius is equal to half of the sliding window size that is used for computing the neighborhood
 /// statistics in the algorithm. Higher values will result in more coarse appearance and will have a
-/// significant impact on the processing time of the algorithm. Should be in [1, 100] range. Default
+/// significant impact on the processing time of the algorithm. Should be in [1, 10] range. Default
 /// value is 3.
 @property (nonatomic) NSUInteger radius;
 LTPropertyDeclare(NSUInteger, radius, Radius);

@@ -5,22 +5,6 @@
 
 #import "LTTexture+Factory.h"
 
-typedef struct {
-  uchar r;
-  uchar g;
-  uchar b;
-  uchar a;
-} LTVector4u;
-
-typedef struct {
-  int r;
-  int g;
-  int b;
-  int histogram;
-} LTVector4i;
-
-typedef std::vector<LTVector4i> LTHistogram;
-
 @interface LTBasicOilPaintingProcessor ()
 
 /// Input texture of the processor.
@@ -68,114 +52,175 @@ typedef std::vector<LTVector4i> LTHistogram;
 #pragma mark Processing
 #pragma mark -
 
-/// In order to improve the runnning time of the algorithm, update the local histogram instead to
-/// recompute it for every pixel. Update is done by adding the rightmost column of the sliding
-/// window and subtracting the column that comes before the leftmost column of the sliding window.
+/// This algorithm is based on Huang's O(r) median filtering algorithm (Two-Dimensional Signal
+/// Processing II: Transforms and Median Filters. Berlin: Springer-Verlag, pp. 209-211) and OpenCV's
+/// cv::medianBlur implementation. Since here the purpose is to find the maximal value and not the
+/// median, a compelete sweep over the histogram is required, instead of a cumulative sum up to when
+/// the window size / 2 is encountered.
+///
+/// Futher optimization strategies: there are two additional papers that implement an O(log(r)) and
+/// O(1) median filtering:
+/// - B. Weiss, “Fast Median and Bilateral Filtering,” ACM Transactions on Graphics (TOG), vol. 25,
+///   no. 3, pp. 519–526, 2006.
+/// - S. Perreault and P. Hebert. Median filtering in constant time. TIP, pages 2389-2394, 2007.
+///
+/// For small radiuses, it seems that the O(log(r)) will be significantly faster because of the
+/// large constant of the O(1) algorithm and relatively bad cache coherency.
+///
 /// Notice: since the performance of this algorithm is critical and underwent a considerable
 /// optimization process, make sure that the performance is not degraded after the code is modified.
-inline void LTBasicOilProcess(const cv::Mat &transposedImage, int startRow, int endRow,
-                              int halfWindowSize, int numberOfBins, cv::Mat *outputImage) {
-  int windowSize = halfWindowSize * 2;
+static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, int radius,
+                                      int numBins) {
+  int histogram[4][256];
 
-  LTHistogram sums(numberOfBins);
+  cv::Size size = dstMat.size();
+  const uchar *src = srcMat.ptr();
+  uchar *dst = dstMat.ptr();
 
-  for (int row = startRow; row < endRow; ++row) {
-    LTVector4u *outputRow = outputImage->ptr<LTVector4u>(row);
-    std::fill(sums.begin(), sums.end(), LTVector4i({.r = 0, .g = 0, .b = 0, .histogram = 0}));
+  int srcStep = (int)srcMat.step;
+  int dstStep = (int)dstMat.step;
 
-    int minSlidingRow = std::max(0, row - halfWindowSize);
-    int maxSlidingRow = std::min(row + halfWindowSize + 1, transposedImage.cols);
+  const uchar *srcMax = src + size.height * srcStep;
 
-    // To traverse the columns, go over the rows of the transposed image. This moderately improves
-    // the memory access pattern.
-    for (int column = 0; column < transposedImage.rows; ++column) {
-      const LTVector4u *prevCol = nil;
-      const LTVector4u *nextCol = nil;
+  // Sweep the image in a snail form: start from top left (0, 0), go down till the bottom, and then
+  // move one column to the right. Go up to the top, move one column to the right and continue this
+  // process for the entire image.
+  for (int x = 0; x < size.width; ++x, src += 4, dst += 4) {
+    uchar *currentDst = dst;
+    const uchar *srcTop = src;
+    const uchar *srcBottom = src;
 
-      if (column + halfWindowSize < transposedImage.rows) {
-        nextCol = transposedImage.ptr<LTVector4u>(column + halfWindowSize);
-      }
+    int srcStep1 = srcStep;
+    int dstStep1 = dstStep;
 
-      if (column > windowSize) {
-        prevCol = transposedImage.ptr<LTVector4u>(column - halfWindowSize - 1);
-      }
+    // Sweep top->bottom for even columns and bottom->top for odd columns.
+    if (x % 2 != 0) {
+      srcBottom = srcTop += srcStep * (size.height - 1);
+      currentDst += dstStep * (size.height - 1);
+      srcStep1 = -srcStep1;
+      dstStep1 = -dstStep1;
+    }
 
-      // Add column statistics to the histogram.
-      if (column + halfWindowSize < transposedImage.rows) {
-        for (int slidingRow = minSlidingRow; slidingRow < maxSlidingRow; ++slidingRow) {
-          LTVector4u pixel = *(nextCol + slidingRow);
-          int intensity = pixel.a;
-          LTVector4i sum = sums[intensity];
-          sum.histogram++;
-          sum.r += pixel.r;
-          sum.g += pixel.g;
-          sum.b += pixel.b;
-          sums[intensity] = sum;
+    // Zero histogram.
+    memset(histogram, 0, sizeof(histogram[0]) * 4);
+
+    for (int y = 0; y <= radius / 2; ++y) {
+      if (y > 0) {
+        for (int i = 0; i < radius * 4; i += 4) {
+          int value = srcBottom[i + 3];
+
+          histogram[0][value] += srcBottom[i + 0];
+          histogram[1][value] += srcBottom[i + 1];
+          histogram[2][value] += srcBottom[i + 2];
+          histogram[3][value]++;
+        }
+      } else {
+        // Boundary - add values of bottom or top row replicated as half the window size.
+        for (int i = 0; i < radius * 4; i += 4) {
+          int value = srcBottom[i + 3];
+          int factor = radius / 2 + 1;
+          histogram[0][value] += factor * srcBottom[i + 0];
+          histogram[1][value] += factor * srcBottom[i + 1];
+          histogram[2][value] += factor * srcBottom[i + 2];
+          histogram[3][value] += factor;
         }
       }
 
-      // Remove column statistics from the histogram.
-      if (column > windowSize) {
-        for (int slidingRow = minSlidingRow; slidingRow < maxSlidingRow; ++slidingRow) {
-          LTVector4u pixel = *(prevCol + slidingRow);
-          int intensity = pixel.a;
-          LTVector4i sum = sums[intensity];
-          sum.histogram--;
-          sum.r -= pixel.r;
-          sum.g -= pixel.g;
-          sum.b -= pixel.b;
-          sums[intensity] = sum;
+      if ((srcStep1 > 0 && y < size.height - 1) || (srcStep1 < 0 && size.height - y - 1 > 0)) {
+        srcBottom += srcStep1;
+      }
+    }
+
+    for (int y = 0; y < size.height; y++, currentDst += dstStep1) {
+      // Find maximal bin.
+      int maxValue = 0;
+      int maxBin = 0;
+
+      for (int i = 0; i < numBins; ++i) {
+        if (histogram[3][i] > maxValue) {
+          maxValue = histogram[3][i];
+          maxBin = i;
         }
       }
 
-      auto maxValue = std::max_element(sums.begin(), sums.end(), [](const LTVector4i &a,
-                                                                    const LTVector4i &b) {
-        return a.histogram < b.histogram;
-      });
-      auto maxIndex = std::distance(sums.begin(), maxValue);
-      LTVector4i sum = sums[maxIndex];
-      *outputRow = {
-        .r = (uchar)(sum.r / maxValue->histogram),
-        .g = (uchar)(sum.g / maxValue->histogram),
-        .b = (uchar)(sum.b / maxValue->histogram),
-        .a = 255
-      };
-      ++outputRow;
+      // Write values to destination.
+      currentDst[0] = histogram[0][maxBin] / histogram[3][maxBin];
+      currentDst[1] = histogram[1][maxBin] / histogram[3][maxBin];
+      currentDst[2] = histogram[2][maxBin] / histogram[3][maxBin];
+      currentDst[3] = 255;
+
+      if (y + 1 == size.height) {
+        break;
+      }
+
+      for (int i = 0; i < radius * 4; i += 4) {
+        int valueToRemove = srcTop[i + 3];
+        histogram[0][valueToRemove] -= srcTop[i + 0];
+        histogram[1][valueToRemove] -= srcTop[i + 1];
+        histogram[2][valueToRemove] -= srcTop[i + 2];
+        histogram[3][valueToRemove]--;
+
+        int valueToAdd = srcBottom[i + 3];
+        histogram[0][valueToAdd] += srcBottom[i + 0];
+        histogram[1][valueToAdd] += srcBottom[i + 1];
+        histogram[2][valueToAdd] += srcBottom[i + 2];
+        histogram[3][valueToAdd]++;
+      }
+
+      if ((srcStep1 > 0 && srcBottom + srcStep1 < srcMax) ||
+          (srcStep1 < 0 && srcBottom + srcStep1 >= src)) {
+        srcBottom += srcStep1;
+      }
+
+      if (y >= radius / 2) {
+        srcTop += srcStep1;
+      }
     }
   }
 }
 
-- (void)process {
+static void LTBasicOilPainting(const cv::Mat &src, cv::Mat *dst, int kernelSize, int numberOfBins) {
+  LTParameterAssert(src.channels() == dst->channels(),
+                    @"Source and destination channel count must be equal");
+  LTParameterAssert(src.type() == CV_8UC4, @"Oil painting works only on byte RGBA images");
+
+  cv::Mat4b srcWithBorder;
+  cv::copyMakeBorder(src, srcWithBorder, 0, 0, kernelSize / 2, kernelSize / 2,
+                     cv::BORDER_REPLICATE);
+
+  std::transform(srcWithBorder.begin(), srcWithBorder.end(), srcWithBorder.begin(),
+                 [numberOfBins](const cv::Vec4b &v) {
+    return cv::Vec4b(v[0], v[1], v[2], (v[0] + v[1] + v[2]) / 3.0 * ((numberOfBins - 1) / 255.0));
+  });
+
   // TODO:(yaron) Figure out multithreading interface for image processors.
   dispatch_queue_t queue = dispatch_queue_create("com.lightricks.LTKit.oil-painting",
                                                  DISPATCH_QUEUE_CONCURRENT);
   dispatch_group_t group = dispatch_group_create();
 
-  int numberOfBins = (int)self.quantization;
-  int halfWindowSize = (int)self.radius;
+  int shards = (int)[NSProcessInfo processInfo].processorCount;
+  int colsPerShard = dst->cols / shards;
+  int borderSize = srcWithBorder.cols - src.cols;
 
-  [self.inputTexture mappedImageForReading:^(const cv::Mat &inputImage, BOOL) {
-    cv::Mat4b transposedImage(inputImage.cols, inputImage.rows);
-    cv::transpose(inputImage, transposedImage);
-    std::transform(transposedImage.begin(), transposedImage.end(), transposedImage.begin(),
-                   [numberOfBins](const cv::Vec4b &v) {
-      return cv::Vec4b(v[0], v[1], v[2], (v[0] + v[1] + v[2]) / 3.0 * ((numberOfBins - 1) / 255.0));
+  for (int i = 0; i < shards; ++i) {
+    dispatch_group_async(group, queue, ^{
+      int startCol = i * colsPerShard;
+      int endCol = (i == shards - 1) ? dst->cols : (i + 1) * colsPerShard;
+
+      cv::Mat srcPart = srcWithBorder(cv::Rect(startCol, 0,
+                                               endCol - startCol + borderSize, src.rows));
+      cv::Mat dstPart = (*dst)(cv::Rect(startCol, 0, endCol - startCol, dst->rows));
+      LTBasicOilProcessInternal(srcPart, dstPart, kernelSize, numberOfBins);
     });
+  }
 
+  dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+}
+
+- (void)process {
+  [self.inputTexture mappedImageForReading:^(const cv::Mat &inputImage, BOOL) {
     [self.outputTexture mappedImageForWriting:^(cv::Mat *outputImage, BOOL) {
-      int shards = (int)[NSProcessInfo processInfo].processorCount;
-      int rowsPerShard = outputImage->rows / shards;
-
-      for (int i = 0; i < shards; ++i) {
-        int endRow = (i == shards - 1) ? outputImage->rows : (i + 1) * rowsPerShard;
-
-        dispatch_group_async(group, queue, ^{
-          LTBasicOilProcess(transposedImage, i * rowsPerShard, endRow, halfWindowSize, numberOfBins,
-                            outputImage);
-        });
-      }
-
-      dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+      LTBasicOilPainting(inputImage, outputImage, (int)self.radius * 2 + 1, (int)self.quantization);
     }];
   }];
 }
@@ -186,6 +231,6 @@ inline void LTBasicOilProcess(const cv::Mat &transposedImage, int startRow, int 
 
 LTProperty(NSUInteger, quantization, Quantization, 2, 255, 20);
 
-LTProperty(NSUInteger, radius, Radius, 1, 100, 3);
+LTProperty(NSUInteger, radius, Radius, 1, 10, 3);
 
 @end
