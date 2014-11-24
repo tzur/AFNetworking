@@ -177,6 +177,15 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
   return result;
 }
 
+CGPathRef LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius, CGFloat startAngle,
+                                           CGFloat endAngle, BOOL clockwise) {
+  CGMutablePathRef path = CGPathCreateMutable();
+  CGPathMoveToPoint(path, NULL, center.x, center.y);
+  CGPathAddArc(path, NULL, center.x, center.y, radius, startAngle, endAngle, clockwise);
+  CGPathCloseSubpath(path);
+  return path;
+}
+
 #pragma mark -
 #pragma mark - Static methods
 #pragma mark -

@@ -212,6 +212,42 @@ context(@"creation", ^{
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
 
+  it(@"should correctly create a path for a circular sector", ^{
+    const CGFloat controlPointCoordinate = 0.5522847;
+
+    CGPoints points{CGPointZero, CGPointMake(1, 0), CGPointMake(1, -controlPointCoordinate),
+        CGPointMake(controlPointCoordinate, -1), CGPointMake(0, -1),
+        CGPointMake(-controlPointCoordinate, -1), CGPointMake(-1, -controlPointCoordinate),
+        CGPointMake(-1, 0)};
+
+    CGPathRef circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2Zero, 1, 0, M_PI, YES);
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 1;
+    CGPathApply(circularSectorPath, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(circularSectorPath);
+
+    evaluation.points.clear();
+    evaluation.numberOfPoints = 0;
+    evaluation.numberOfClosedSubPaths = 0;
+
+    points = CGPoints{CGPointZero, CGPointMake(0, 1), CGPointMake(0.26521644, 1),
+        CGPointMake(0.51957041, 0.894643127), CGPointMake(M_SQRT1_2, M_SQRT1_2)};
+
+    circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2Zero, 1, M_PI_2, M_PI_4, YES);
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 1;
+    CGPathApply(circularSectorPath, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(circularSectorPath);
+  });
+
   context(@"string to path conversion", ^{
     __block CGFloat advancementFactor;
     __block CGFloat lineHeightFactor;
