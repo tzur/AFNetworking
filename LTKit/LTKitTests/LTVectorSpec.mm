@@ -5,6 +5,8 @@
 
 SpecBegin(LTVector)
 
+static const CGFloat kEpsilon = 1e-5;
+
 context(@"LTVector2", ^{
   it(@"should initialize correctly", ^{
     LTVector2 v1;
@@ -101,6 +103,36 @@ context(@"LTVector2", ^{
   it(@"should sum the vector components correctly", ^{
     LTVector2 v(1, 2);
     expect(v.sum()).to.equal(3);
+  });
+
+  it(@"should return the correct angle", ^{
+    LTVector2 v(1, 0);
+    CGFloat angle = v.angle(LTVector2(1, 0));
+    expect(angle).to.equal(0);
+    angle = v.angle(LTVector2(0.5, 0.5));
+    expect(angle).to.beCloseToWithin(0.5 * M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(0, 1));
+    expect(angle).to.beCloseToWithin(M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(-0.5, 0.5));
+    expect(angle).to.beCloseToWithin(1.5 * M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(-1, 0));
+    expect(angle).to.beCloseToWithin(M_PI, kEpsilon);
+    angle = v.angle(LTVector2(-0.5, -0.5));
+    expect(angle).to.beCloseToWithin(2.5 * M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(0, -1));
+    expect(angle).to.beCloseToWithin(3 * M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(0.5, -0.5));
+    expect(angle).to.beCloseToWithin(3.5 * M_PI_2, kEpsilon);
+
+    v = LTVector2(0.5, 0.5);
+    angle = v.angle(LTVector2(0.5, 0.5));
+    expect(angle).to.equal(0);
+    angle = v.angle(LTVector2(-0.5, 0.5));
+    expect(angle).to.beCloseToWithin(M_PI_2, kEpsilon);
+    angle = v.angle(LTVector2(-0.5, -0.5));
+    expect(angle).to.beCloseToWithin(M_PI, kEpsilon);
+    angle = v.angle(LTVector2(0.5, -0.5));
+    expect(angle).to.beCloseToWithin(3 * M_PI_2, kEpsilon);
   });
 
   it(@"should return the correct perpendicular vector", ^{
