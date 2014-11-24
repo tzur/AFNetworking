@@ -166,18 +166,14 @@
 #define _LTEnumDeclareClass(NAME) \
   @interface NAME : NSObject <LTEnum> \
   \
-  - (instancetype)initWithName:(NSString *)name; \
   - (instancetype)initWithValue:(_##NAME)value; \
   \
-  + (instancetype)enum; \
-  + (instancetype)enumWithName:(NSString *)name; \
   + (instancetype)enumWithValue:(_##NAME)value; \
   \
   + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block; \
   + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block; \
   \
   @property (nonatomic) _##NAME value; \
-  @property (readonly, nonatomic) NSString *name; \
   \
   @end
 
@@ -196,6 +192,18 @@
       self.value = value; \
     } \
     return self; \
+  } \
+  \
+  - (instancetype)enumWithNextValue { \
+    LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
+        enumFieldToValueForName:@#NAME]; \
+    NSArray *enumValues = mapping.allValues; \
+    NSUInteger selfIndex = [enumValues indexOfObject:@(self.value)]; \
+    LTAssert(selfIndex != NSNotFound, @"Could not find mapping for enum value %@", self); \
+    if (selfIndex == enumValues.count - 1) { \
+      return nil; \
+    } \
+    return [[self class] enumWithValue:[enumValues[selfIndex + 1] NAME ## Value]]; \
   } \
   \
   + (instancetype)enum { \
