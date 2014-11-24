@@ -38,13 +38,13 @@ typedef NS_ENUM(NSUInteger, LTFrameType) {
              mapBaseToFullImageSize:(BOOL)mapBaseToFullImageSize;
 
 /// Four channeled texture for the frame.
-@property (readonly, strong, nonatomic) LTTexture *baseTexture;
+@property (readonly, nonatomic) LTTexture *baseTexture;
 
 /// One channel mask for \c baseTexture.
-@property (readonly, strong, nonatomic) LTTexture *baseMask;
+@property (readonly, nonatomic) LTTexture *baseMask;
 
 /// One channel mask for the frame.
-@property (readonly, strong, nonatomic) LTTexture *frameMask;
+@property (readonly, nonatomic) LTTexture *frameMask;
 
 /// Type of frame mapping required.
 @property (readonly, nonatomic) LTFrameType frameType;
