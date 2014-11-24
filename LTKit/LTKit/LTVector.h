@@ -144,6 +144,18 @@ struct LTVector2 {
     return (*this * vector).sum();
   }
 
+  /// Returns the determinant of this vector and the given \c vector.
+  inline float determinant(const LTVector2 &vector) const {
+    return this->x * vector.y - this->y * vector.x;
+  }
+
+  /// Returns the counter-clockwise angle (in bottom-left origin coordinate system) between this
+  /// vector and the given \c vector. The result is guaranteed to be in the range [0, 2 * PI).
+  inline float angle(const LTVector2 &vector) const {
+    CGFloat angle = std::atan2(this->determinant(vector), this->dot(vector));
+    return angle >= 0 ? angle : 2 * M_PI + angle;
+  }
+
   /// Returns a new vector which is a normalized copy of this vector.
   inline LTVector2 normalized() const {
     return *this / length();
