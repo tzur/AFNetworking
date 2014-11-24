@@ -92,6 +92,17 @@ context(@"enum objects", ^{
     expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
       @[$(LTMyNameWithValuesA), $(LTMyNameWithValuesB), $(LTMyNameWithValuesC)]
     );
+
+    it(@"should return new enum object with next value", ^{
+      NSMutableArray *nextValues = [NSMutableArray array];
+      [LTMyNameWithValues enumerateEnumUsingBlock:^(LTMyNameWithValues *value) {
+        LTMyNameWithValues *nextValue = [value enumWithNextValue];
+        [nextValues addObject:nextValue ? nextValue : [NSNull null]];
+      }];
+
+      expect([nextValues sortedArrayUsingSelector:@selector(compare:)]).to.equal(
+          @[@(LTMyNameWithValuesB), @(LTMyNameWithValuesC), [NSNull null]]);
+    });
   });
 });
 

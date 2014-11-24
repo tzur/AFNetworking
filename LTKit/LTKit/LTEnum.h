@@ -18,6 +18,10 @@
 /// Initializes a new enum with the given field name.
 + (instancetype)enumWithName:(NSString *)name;
 
+/// Returns a new enum object with the following value or \c nil if the receiving object is the last
+/// value of the enum.
+- (instancetype)enumWithNextValue;
+
 /// Name of the currently value set.
 @property (readonly, nonatomic) NSString *name;
 
