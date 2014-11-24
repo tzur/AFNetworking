@@ -36,3 +36,13 @@ CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font);
 CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedString,
                                              CGFloat lineHeightFactor = 1,
                                              CGFloat advancementFactor = 1);
+
+/// Creates an immutable path constituting a sector of a circle with the given \c center and the
+/// given \c radius. The arc of the sector is defined by the given \c startAngle and \c endAngle and
+/// the \c clockwise parameter. Both \c startAngle and \c endAngle are measured in counter-clockwise
+/// direction from the x-axis in the current user space. If \c clockwise is YES, the arc of the
+/// sector is the arc between the starting point defined by \c startAngle and the ending point
+/// defined by the \c endAngle in clockwise direction. Otherwise, the arc is the complementary arc.
+/// The caller is responsible for releasing the returned path.
+CGPathRef LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius, CGFloat startAngle,
+                                           CGFloat endAngle, BOOL clockwise = NO);
