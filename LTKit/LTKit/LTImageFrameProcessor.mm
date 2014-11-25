@@ -14,14 +14,30 @@
 #pragma mark LTImageFrame
 #pragma mark -
 
+@interface LTImageFrame ()
+
+/// Four channeled texture for the frame.
+@property (strong, readwrite, nonatomic) LTTexture *baseTexture;
+
+/// One channel mask for \c baseTexture.
+@property (strong, readwrite, nonatomic) LTTexture *baseMask;
+
+/// One channel mask for the frame.
+@property (strong, readwrite, nonatomic) LTTexture *frameMask;
+
+/// Type of frame mapping required.
+@property (readwrite, nonatomic) LTFrameType frameType;
+
+@end
+
 @implementation LTImageFrame
 
 - (instancetype)init {
   if (self = [super init]) {
-    _baseTexture = [LTTexture textureWithImage:cv::Mat4b::zeros(1, 1)];
-    _baseMask = [LTTexture textureWithImage:cv::Mat1b::zeros(1, 1)];
-    _frameMask = [LTTexture textureWithImage:cv::Mat1b(1, 1, 255)];
-    _frameType = LTFrameTypeStretch;
+    self.baseTexture = [LTTexture textureWithImage:cv::Mat4b::zeros(1, 1)];
+    self.baseMask = [LTTexture textureWithImage:cv::Mat1b::zeros(1, 1)];
+    self.frameMask = [LTTexture textureWithImage:cv::Mat1b(1, 1, 255)];
+    self.frameType = LTFrameTypeStretch;
   }
   return self;
 }
