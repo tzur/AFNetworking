@@ -359,6 +359,32 @@ static const CGFloat kEpsilon = 1e-10;
       CGPointDistance(self.v3, quad.v3) <= deviation;
 }
 
+- (BOOL)isTransformableToQuad:(LTQuad *)quad withDeviation:(CGFloat)deviation
+                  translation:(CGPoint *)translation rotation:(CGFloat *)rotation
+                      scaling:(CGFloat *)scaling {
+  LTParameterAssert(quad);
+  LTParameterAssert(translation);
+  LTParameterAssert(rotation);
+  LTParameterAssert(scaling);
+  *translation = CGPointFromSize(quad.center - self.center);
+  LTQuad *centeredQuad = [self copy];
+  [centeredQuad translateCorners:LTQuadCornerRegionAll byTranslation:*translation];
+
+  for (const CGPoint &corner : quad.corners) {
+    *rotation =
+        LTVector2(centeredQuad.v0 - centeredQuad.center).angle(LTVector2(corner - quad.center));
+    LTQuad *rotatedQuad = [centeredQuad copy];
+    [rotatedQuad rotateByAngle:*rotation aroundPoint:rotatedQuad.center];
+    *scaling = LTVector2(corner - rotatedQuad.center).length() /
+        LTVector2(rotatedQuad.v0 - rotatedQuad.center).length();
+    [rotatedQuad scale:*scaling];
+    if ([rotatedQuad isSimilarTo:quad upToDeviation:deviation]) {
+      return YES;
+    }
+  }
+  return NO;
+}
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -

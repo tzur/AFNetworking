@@ -47,9 +47,20 @@ typedef NS_OPTIONS(NSUInteger, LTQuadCornerRegion) {
 - (void)translateCorners:(LTQuadCornerRegion)corners
            byTranslation:(CGPoint)translation;
 
-/// Returns YES, if each corner of \c quad equals the corresponding corner of this
-/// instance, up to the given \c deviation. Returns NO, otherwise.
+/// Returns YES if each corner of \c quad equals the corresponding corner of this instance, up to
+/// the given \c deviation.
 - (BOOL)isSimilarTo:(LTQuad *)quad upToDeviation:(CGFloat)deviation;
+
+/// Returns YES if it is possible to transform this instance using translation, rotation and scaling
+/// such that this instance's corners after the transformation coincide with the corners of the
+/// given \c quad, up to the given deviation in distance. If the transformation is possible,
+/// \c translation, \c scaling and \c rotation contain the appropriate values required for the
+/// transformation (consisting of first translating, then rotating in clockwise order around quad
+/// center and finally scaling). Otherwise, the values of \c translation, \c scaling and \c rotation
+/// are undefined. \c translation, \c scaling and \c rotation must not be NULL.
+- (BOOL)isTransformableToQuad:(LTQuad *)quad withDeviation:(CGFloat)deviation
+                  translation:(CGPoint *)translation rotation:(CGFloat *)rotation
+                      scaling:(CGFloat *)scaling;
 
 /// First vertex of the quad.
 @property (readonly, nonatomic) CGPoint v0;
