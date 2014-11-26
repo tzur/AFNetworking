@@ -197,7 +197,7 @@
   - (instancetype)enumWithNextValue { \
     LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
         enumFieldToValueForName:@#NAME]; \
-    NSArray *enumValues = mapping.allValues; \
+    NSArray *enumValues = [mapping.allValues sortedArrayUsingSelector:@selector(compare:)]; \
     NSUInteger selfIndex = [enumValues indexOfObject:@(self.value)]; \
     LTAssert(selfIndex != NSNotFound, @"Could not find mapping for enum value %@", self); \
     if (selfIndex == enumValues.count - 1) { \

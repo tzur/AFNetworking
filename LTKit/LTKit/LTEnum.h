@@ -18,8 +18,11 @@
 /// Initializes a new enum with the given field name.
 + (instancetype)enumWithName:(NSString *)name;
 
-/// Returns a new enum object with the following value or \c nil if the receiving object is the last
-/// value of the enum.
+/// Returns a new enum object with a lowest value greater than the receiving object, or \c nil if
+/// the receiving object is the greatest enum value.
+///
+/// @note The order in which enum items were defined does not affect the objects provided by this
+/// method.
 - (instancetype)enumWithNextValue;
 
 /// Name of the currently value set.
