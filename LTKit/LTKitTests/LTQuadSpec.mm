@@ -261,6 +261,97 @@ context(@"affine transformations", ^{
     expect(quad.v2).to.beCloseToPoint(v2 + translation);
     expect(quad.v3).to.beCloseToPoint(v3);
   });
+
+  context(@"transformability", ^{
+    __block CGPoint translation;
+    __block CGFloat rotation;
+    __block CGFloat scaling;
+
+    beforeEach(^{
+      LTQuadCorners corners{{10 * v0, 10 * v1, 10 * v2, 10 * v3}};
+      quad = [[LTQuad alloc] initWithCorners:corners];
+    });
+
+    static const CGFloat kDeviation = 1e-2;
+
+    context(@"correctness of input parameters", ^{
+      it(@"should raise when not providing quad", ^{
+        expect(^{
+          [quad isTransformableToQuad:nil withDeviation:kDeviation translation:&translation
+                             rotation:&rotation scaling:&scaling];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when providing NULL address for translation", ^{
+        expect(^{
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
+                          translation:NULL rotation:&rotation scaling:&scaling];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when providing NULL address for rotation", ^{
+        expect(^{
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
+                          translation:&translation rotation:NULL scaling:&scaling];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when providing NULL address for scaling", ^{
+        expect(^{
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
+                          translation:&translation rotation:&rotation scaling:NULL];
+        }).to.raise(NSInvalidArgumentException);
+      });
+    });
+
+    it(@"should correctly compute whether a quad is affinely transformable to another quad", ^{
+      LTQuad *secondQuad = [quad copy];
+      [secondQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(7, 8)];
+      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                             translation:&translation rotation:&rotation
+                                 scaling:&scaling]).to.beTruthy();
+      expect(translation).to.beCloseToPointWithin(CGPointMake(7, 8), kEpsilon);
+      expect(rotation).to.beCloseToWithin(0, kEpsilon);
+      expect(scaling).to.beCloseToWithin(1, kEpsilon);
+
+      secondQuad = [quad copy];
+      [secondQuad rotateByAngle:M_PI_2 aroundPoint:CGPointZero];
+      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                             translation:&translation rotation:&rotation
+                                 scaling:&scaling]).to.beTruthy();
+      expect(translation).to.beCloseToPointWithin(CGPointMake(-9.75000023, 0.25000006), kEpsilon);
+      expect(rotation).to.beCloseToWithin(M_PI_2, kEpsilon);
+      expect(scaling).to.beCloseToWithin(1, kEpsilon);
+
+      secondQuad = [quad copy];
+      [secondQuad scale:2];
+      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                             translation:&translation rotation:&rotation
+                                 scaling:&scaling]).to.beTruthy();
+      expect(translation).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+      expect(rotation).to.beCloseToWithin(0, kEpsilon);
+      expect(scaling).to.beCloseToWithin(2, kEpsilon);
+
+      LTQuadCorners corners{{v0, v1, w0, v3}};
+      secondQuad = [[LTQuad alloc] initWithCorners:corners];
+      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                             translation:&translation rotation:&rotation
+                                 scaling:&scaling]).to.beFalsy();
+
+      secondQuad = [quad copy];
+      [secondQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(7, 8)];
+      [secondQuad rotateByAngle:M_PI_4 aroundPoint:CGPointZero];
+      [secondQuad scale:2];
+      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                             translation:&translation rotation:&rotation
+                                 scaling:&scaling]).to.beTruthy();
+      LTQuad *testQuad = [quad copy];
+      [testQuad translateCorners:LTQuadCornerRegionAll byTranslation:translation];
+      [testQuad rotateByAngle:rotation aroundPoint:testQuad.center];
+      [testQuad scale:scaling];
+      expect([secondQuad isSimilarTo:testQuad upToDeviation:kDeviation]).to.beTruthy();
+    });
+  });
 });
 
 context(@"copying", ^{
