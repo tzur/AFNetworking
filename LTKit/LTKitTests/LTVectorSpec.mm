@@ -369,16 +369,32 @@ context(@"LTVector4", ^{
     expect(v5.y).to.equal(8);
     expect(v5.z).to.equal(9);
     expect(v5.w).to.equal(0);
+
+    LTVector4 v6(cv::Vec4b(7.0, 8.0, 9.0, 10.0));
+    expect(v6.x).to.equal(7.0 / UCHAR_MAX);
+    expect(v6.y).to.equal(8.0 / UCHAR_MAX);
+    expect(v6.z).to.equal(9.0 / UCHAR_MAX);
+    expect(v6.w).to.equal(10.0 / UCHAR_MAX);
+});
+
+  it(@"should cast to GLKVector4", ^{
+    LTVector4 ltVector(5, 7, 9, 11);
+    GLKVector4 glkVector = (GLKVector4)ltVector;
+
+    expect(glkVector.x).to.equal(ltVector.x);
+    expect(glkVector.y).to.equal(ltVector.y);
+    expect(glkVector.z).to.equal(ltVector.z);
+    expect(glkVector.w).to.equal(ltVector.w);
   });
 
-  it(@"should cast to LTVector4", ^{
-    LTVector4 ltVector(5, 7, 9, 11);
-    LTVector4 glkVector(ltVector);
+  it(@"should cast to cv::Vec4", ^{
+    LTVector4 ltVector = LTVector4(5, 7, 9, 11);
+    cv::Vec4b cvVector = (cv::Vec4b)(ltVector / UCHAR_MAX);
 
-    expect(ltVector.x).to.equal(glkVector.x);
-    expect(ltVector.y).to.equal(glkVector.y);
-    expect(ltVector.z).to.equal(glkVector.z);
-    expect(ltVector.w).to.equal(glkVector.w);
+    expect(cvVector[0]).to.equal(ltVector.x);
+    expect(cvVector[1]).to.equal(ltVector.y);
+    expect(cvVector[2]).to.equal(ltVector.z);
+    expect(cvVector[3]).to.equal(ltVector.w);
   });
 
   it(@"should perform math operations correctly", ^{
