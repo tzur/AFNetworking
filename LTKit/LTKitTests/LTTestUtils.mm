@@ -253,8 +253,7 @@ LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value) {
 }
 
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value) {
-  return cv::Vec4b(value.x * UCHAR_MAX, value.y * UCHAR_MAX,
-                   value.z * UCHAR_MAX, value.w * UCHAR_MAX);
+  return (cv::Vec4b)value;
 }
 
 cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position) {

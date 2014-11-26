@@ -2,6 +2,7 @@
 // Created by Yaron Inger.
 
 #import <GLKit/GLKit.h>
+#import <opencv2/core/core.hpp>
 
 #import "LTCGExtensions.h"
 
@@ -561,11 +562,22 @@ struct LTVector4 {
   /// Initializes a new \c LTVector4 from \c GLKVector4.
   explicit LTVector4(GLKVector4 vector) : x(vector.x), y(vector.y), z(vector.z), w(vector.w) {}
 
+  /// Initializes a new \c LTVector4 from \c cv::Vec4b, normalized to values in \c [0,1].
+  explicit LTVector4(cv::Vec4b vector) : x(vector[0]), y(vector[1]), z(vector[2]), w(vector[3]) {
+    *this /= UCHAR_MAX;
+  }
+
   /// Cast operator to \c GLKVector4.
   explicit operator GLKVector4() const {
     return GLKVector4Make(x, y, z, w);
   }
   
+  /// Cast operator to \c cv::Vec4b, mapping range \c [0,1] to \c [0,255].
+  explicit operator cv::Vec4b() const {
+    return cv::Vec4b(std::round(x * UCHAR_MAX), std::round(y * UCHAR_MAX),
+                     std::round(z * UCHAR_MAX), std::round(w * UCHAR_MAX));
+  }
+
   /// Initializes a new \c LTVector4 with \c x, \c y, \c z, and w elements.
   LTVector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
