@@ -54,10 +54,23 @@ static void LTCGPathAppendLine(CGMutablePathRef combinedGlyphsPathRef, CTLineRef
 /// v3next             v2prev
 /// |                       |
 /// v3 - v3prev - v2next - v2
-static void LTComputeSmootheningControlPoints(const LTVector2s &polyline,
-                                              LTVector2s *prev,
-                                              LTVector2s *next,
-                                              CGFloat smootheningRadius);
+static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVector2s *prev,
+                                              LTVector2s *next, CGFloat smootheningRadius);
+
+/// Computes the additional control points used for a path with gaps. Please refer to the header
+/// file for a detailed description of the gap mechanism.
+/// Example for the added control points used for gaps in case of four original control points
+/// v0, v1, v2, v3:
+///
+/// v0 - v0start - v1end - v1
+/// |                       |
+/// v0end             v1start
+/// |                       |
+/// v3start             v2end
+/// |                       |
+/// v3 - v3end - v2start - v2
+static void LTComputeGapControlPoints(const LTVector2s &polyline, LTVector2s *start,
+                                      LTVector2s *end, CGFloat gapSize);
 
 /// Returns a smoothened path from the provided control points. The path is closed iff \c closed is
 /// YES.
@@ -114,6 +127,35 @@ CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
   next.reserve(kNumberOfCorners);
   LTComputeSmootheningControlPoints(polyline, &prev, &next, smootheningRadius);
   return LTCreateSmoothenedPathWithControlPoints(polyline, prev, next, closed);
+}
+
+static const CGFloat kEpsilon = 1e-8;
+
+CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
+                                                               CGFloat gapSize, BOOL closed) {
+  LTParameterAssert(polyline.size() > 1);
+  LTParameterAssert(gapSize >= 0);
+  const NSUInteger kNumberOfCorners = polyline.size();
+  const NSUInteger kNumberOfEdges = closed ? kNumberOfCorners : kNumberOfCorners - 1;
+
+  if (gapSize == 0) {
+    return LTCreatePolylinePathWithControlPoints(polyline, closed);
+  }
+
+  LTVector2s start(kNumberOfCorners);
+  LTVector2s end(kNumberOfCorners);
+  LTComputeGapControlPoints(polyline, &start, &end, gapSize);
+
+  CGMutablePathRef path = CGPathCreateMutable();
+  for (NSUInteger i = 0; i < kNumberOfEdges; ++i) {
+    if ((start[i] - end[i]).length() < kEpsilon) {
+      continue;
+    }
+    CGPathMoveToPoint(path, NULL, start[i].x, start[i].y);
+    CGPathAddLineToPoint(path, NULL, end[i].x, end[i].y);
+    CGPathCloseSubpath(path);
+  }
+  return path;
 }
 
 // @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
@@ -250,10 +292,8 @@ static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &
   return path;
 }
 
-static void LTComputeSmootheningControlPoints(const LTVector2s &polyline,
-                                              LTVector2s *prev,
-                                              LTVector2s *next,
-                                              CGFloat smootheningRadius) {
+static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVector2s *prev,
+                                              LTVector2s *next, CGFloat smootheningRadius) {
   const NSUInteger kNumberOfCorners = polyline.size();
   LTParameterAssert(!prev->size());
   LTParameterAssert(!next->size());
@@ -307,6 +347,22 @@ static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s
   }
 
   return path;
+}
+
+static void LTComputeGapControlPoints(const LTVector2s &polyline, LTVector2s *start,
+                                      LTVector2s *end, CGFloat gapSize) {
+  const NSUInteger kNumberOfCorners = polyline.size();
+  LTParameterAssert(start->size() == kNumberOfCorners);
+  LTParameterAssert(end->size() == kNumberOfCorners);
+
+  for (NSUInteger i = 0; i < kNumberOfCorners; ++i) {
+    NSUInteger nextIndex = (i + 1) % kNumberOfCorners;
+    LTVector2 currentDirection = polyline[nextIndex] - polyline[i];
+    CGFloat minGapSize = MIN(currentDirection.length() / 2, gapSize);
+    LTVector2 normalizedCurrentDirection = (currentDirection).normalized();
+    start->at(i) = polyline[i] + (minGapSize * normalizedCurrentDirection);
+    end->at(i) = polyline[nextIndex] - (minGapSize * normalizedCurrentDirection);
+  }
 }
 
 // @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
