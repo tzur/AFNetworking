@@ -24,6 +24,16 @@ CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
 CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
                                                  CGFloat smootheningRadius, BOOL closed);
 
+/// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
+/// If \c gapSize is greater than 0, the returned path contains gaps in the following way: Given an
+/// edge (v0, v1), two additional control points w0 and w1 are inserted such that w0 and w1 lie on
+/// (v0, v1) and the lengths of (v0, w0) and (w1, v1) equal \c min(gapSize, length(v0, v1) / 2). The
+/// resulting path contains a line from w0 to w1, but no lines from v0 to w0 or from w1 to v1. This
+/// procedure is applied to every edge of the polyline. The caller is responsible for releasing the
+/// returned path.
+CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
+                                                               CGFloat gapSize, BOOL closed);
+
 /// Creates a path from the provided \c string, using the provided \c font. The top-left corner of
 /// the bounding box of the returned path is \c CGPointZero. The caller is responsible for releasing
 /// the returned path.
