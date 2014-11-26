@@ -250,7 +250,7 @@ context(@"input model", ^{
 });
 
 context(@"default values", ^{
-  it(@"should have defaultInputModelModifiesInput set to NO", ^{
+  it(@"should have isPassthroughForDefaultInputModel set to NO", ^{
     expect([LTFakeImageProcessor isPassthroughForDefaultInputModel]).to.beTruthy();
   });
 });
