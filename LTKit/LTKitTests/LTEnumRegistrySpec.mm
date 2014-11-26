@@ -15,6 +15,12 @@ LTEnumMakeWithValues(NSUInteger, LTMyNameWithValues,
   LTMyNameWithValuesC, 550
 );
 
+LTEnumMakeWithValues(NSUInteger, LTMyNameWithUnorderedValues,
+  LTMyNameWithUnorderedValuesA, 2,
+  LTMyNameWithUnorderedValuesB, 1,
+  LTMyNameWithUnorderedValuesC, 3
+);
+
 SpecBegin(LTEnumRegistry)
 
 it(@"should register enum", ^{
@@ -92,17 +98,19 @@ context(@"enum objects", ^{
     expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
       @[$(LTMyNameWithValuesA), $(LTMyNameWithValuesB), $(LTMyNameWithValuesC)]
     );
+  });
 
-    it(@"should return new enum object with next value", ^{
-      NSMutableArray *nextValues = [NSMutableArray array];
-      [LTMyNameWithValues enumerateEnumUsingBlock:^(LTMyNameWithValues *value) {
-        LTMyNameWithValues *nextValue = [value enumWithNextValue];
-        [nextValues addObject:nextValue ? nextValue : [NSNull null]];
-      }];
+  it(@"should return new enum object with next value", ^{
+    LTMyNameWithUnorderedValues *value =
+      [LTMyNameWithUnorderedValues enumWithValue:LTMyNameWithUnorderedValuesB];
+    value = [value enumWithNextValue];
+    expect(value.value).to.equal(LTMyNameWithUnorderedValuesA);
 
-      expect([nextValues sortedArrayUsingSelector:@selector(compare:)]).to.equal(
-          @[@(LTMyNameWithValuesB), @(LTMyNameWithValuesC), [NSNull null]]);
-    });
+    value = [value enumWithNextValue];
+    expect(value.value).to.equal(LTMyNameWithUnorderedValuesC);
+
+    value = [value enumWithNextValue];
+    expect(value).to.beNil();
   });
 });
 
