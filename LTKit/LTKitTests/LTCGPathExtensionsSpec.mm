@@ -139,6 +139,7 @@ static const BOOL kClosed = YES;
 context(@"creation", ^{
   __block CGFloat smootheningRadius;
   __block CGFloat gapSize;
+  __block CGFloat circleSize;
 
   it(@"should correctly create a path for a given acyclic unsmoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
@@ -243,6 +244,80 @@ context(@"creation", ^{
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 3;
+    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(immutablePath);
+  });
+
+  it(@"should correctly create a closed path with circles around vertices", ^{
+    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+        CGPointMake(2, 1.75), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
+        CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25),
+        CGPointMake(0.25, 0), CGPointMake(0.25, 0.13807118745769834),
+        CGPointMake(0.1380711874576983, 0.25), CGPointMake(0, 0.25),
+        CGPointMake(-0.1380711874576983, 0.25), CGPointMake(-0.25, 0.13807118745769834),
+        CGPointMake(-0.25, 0), CGPointMake(-0.25, -0.13807118745769834),
+        CGPointMake(-0.1380711874576983, -0.25), CGPointMake(0, -0.25),
+        CGPointMake(0.1380711874576983, -0.25), CGPointMake(0.25, -0.13807118745769834),
+        CGPointMake(0.25, 0), CGPointMake(2.25, 0), CGPointMake(2.25, 0.13807118745769834),
+        CGPointMake(2.1380711874576983, 0.25), CGPointMake(2, 0.25),
+        CGPointMake(1.8619288125423, 0.25), CGPointMake(1.75, 0.13807118745769834),
+        CGPointMake(1.75, 0), CGPointMake(1.75, -0.13807118745769834),
+        CGPointMake(1.8619288125423, -0.25), CGPointMake(2, -0.25),
+        CGPointMake(2.1380711874576983, -0.25), CGPointMake(2.25, -0.13807118745769834),
+        CGPointMake(2.25, 0), CGPointMake(2.25, 2), CGPointMake(2.25, 2.13807118745769834),
+        CGPointMake(2.1380711874576983, 2.25), CGPointMake(2, 2.25),
+        CGPointMake(1.8619288125423, 2.25), CGPointMake(1.75, 2.13807118745769834),
+        CGPointMake(1.75, 2), CGPointMake(1.75, 1.8619288125423),
+        CGPointMake(1.8619288125423, 1.75), CGPointMake(2, 1.75),
+        CGPointMake(2.1380711874576983, 1.75), CGPointMake(2.25, 1.8619288125423),
+        CGPointMake(2.25, 2)};
+    LTVector2s inputData{LTVector2Zero, LTVector2(2, 0), LTVector2(2, 2)};
+    circleSize = 0.25;
+    CGPathRef immutablePath =
+        LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, kClosed);
+
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 6;
+    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+    CGPathRelease(immutablePath);
+  });
+
+  it(@"should correctly create an open path with circles around vertices", ^{
+    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+        CGPointMake(2, 1.75), CGPointMake(0.25, 0), CGPointMake(0.25, 0.13807118745769834),
+        CGPointMake(0.1380711874576983, 0.25), CGPointMake(0, 0.25),
+        CGPointMake(-0.1380711874576983, 0.25), CGPointMake(-0.25, 0.13807118745769834),
+        CGPointMake(-0.25, 0), CGPointMake(-0.25, -0.13807118745769834),
+        CGPointMake(-0.1380711874576983, -0.25), CGPointMake(0, -0.25),
+        CGPointMake(0.1380711874576983, -0.25), CGPointMake(0.25, -0.13807118745769834),
+        CGPointMake(0.25, 0), CGPointMake(2.25, 0), CGPointMake(2.25, 0.13807118745769834),
+        CGPointMake(2.1380711874576983, 0.25), CGPointMake(2, 0.25),
+        CGPointMake(1.8619288125423, 0.25), CGPointMake(1.75, 0.13807118745769834),
+        CGPointMake(1.75, 0), CGPointMake(1.75, -0.13807118745769834),
+        CGPointMake(1.8619288125423, -0.25), CGPointMake(2, -0.25),
+        CGPointMake(2.1380711874576983, -0.25), CGPointMake(2.25, -0.13807118745769834),
+        CGPointMake(2.25, 0), CGPointMake(2.25, 2), CGPointMake(2.25, 2.13807118745769834),
+        CGPointMake(2.1380711874576983, 2.25), CGPointMake(2, 2.25),
+        CGPointMake(1.8619288125423, 2.25), CGPointMake(1.75, 2.13807118745769834),
+        CGPointMake(1.75, 2), CGPointMake(1.75, 1.8619288125423),
+        CGPointMake(1.8619288125423, 1.75), CGPointMake(2, 1.75),
+        CGPointMake(2.1380711874576983, 1.75), CGPointMake(2.25, 1.8619288125423),
+        CGPointMake(2.25, 2)};
+    LTVector2s inputData{LTVector2Zero, LTVector2(2, 0), LTVector2(2, 2)};
+    circleSize = 0.25;
+    CGPathRef immutablePath =
+        LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, !kClosed);
+
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 5;
     CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
