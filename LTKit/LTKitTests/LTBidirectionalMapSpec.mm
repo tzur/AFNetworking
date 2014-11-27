@@ -124,6 +124,19 @@ context(@"retrieving keys and values", ^{
 });
 
 context(@"memory management", ^{
+  it(@"should persist objects that are stored in the map", ^{
+    LTBidirectionalMap *map = [LTBidirectionalMap map];
+    LTBidirectionalMapObject *object = [[LTBidirectionalMapObject alloc] init];
+
+    @autoreleasepool {
+      NSString *key = [@"a" mutableCopy];
+      map[key] = object;
+    }
+
+    expect([map keyForObject:object]).to.equal(@"a");
+    expect(map[@"a"]).to.equal(object);
+  });
+
   it(@"should deallocate object when removed from map", ^{
     LTBidirectionalMap *map = [LTBidirectionalMap map];
 
