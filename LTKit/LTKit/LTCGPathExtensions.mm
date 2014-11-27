@@ -158,6 +158,29 @@ CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s 
   return path;
 }
 
+CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector2s &polyline,
+                                                                  CGFloat circleRadius,
+                                                                  BOOL closed) {
+  LTParameterAssert(polyline.size() > 1);
+  LTParameterAssert(circleRadius >= 0);
+
+  if (circleRadius == 0) {
+    return LTCreatePolylinePathWithControlPoints(polyline, closed);
+  }
+
+  CGPathRef pathWithGaps =
+      LTCGPathCreateWithControlPointsAndGapsAroundVertices(polyline, circleRadius, closed);
+  CGMutablePathRef mutablePathWithGaps = CGPathCreateMutableCopy(pathWithGaps);
+  CGPathRelease(pathWithGaps);
+
+  for (NSUInteger i = 0; i < polyline.size(); ++i) {
+    CGPathAddEllipseInRect(mutablePathWithGaps, NULL,
+                           CGRectCenteredAt((CGPoint)polyline[i],
+                                            CGSizeMakeUniform(2 * circleRadius)));
+  }
+  return mutablePathWithGaps;
+}
+
 // @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
 CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font) {
   NSAttributedString *attributedString =

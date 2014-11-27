@@ -34,6 +34,13 @@ CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
 CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
                                                                CGFloat gapSize, BOOL closed);
 
+/// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
+/// If \c circleRadius is greater than 0, the returned path contains empty circles of radius
+/// \c circleRadius around its vertices. The caller is responsible for releasing the returned path.
+CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector2s &polyline,
+                                                                  CGFloat circleRadius,
+                                                                  BOOL closed);
+
 /// Creates a path from the provided \c string, using the provided \c font. The top-left corner of
 /// the bounding box of the returned path is \c CGPointZero. The caller is responsible for releasing
 /// the returned path.
