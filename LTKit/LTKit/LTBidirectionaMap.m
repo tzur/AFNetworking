@@ -32,7 +32,7 @@
   if (self = [super init]) {
     self.keysToValues = [dictionary mutableCopy];
     self.valuesToKeys = [NSMapTable mapTableWithKeyOptions:NSMapTableWeakMemory
-                                              valueOptions:NSMapTableWeakMemory];
+                                              valueOptions:NSMapTableStrongMemory];
     [self createValuesToKeysMapping];
   }
   return self;
