@@ -98,17 +98,50 @@ context(@"initializers and factory methods", ^{
       expect(quad.v3).to.equal(v3);
     });
 
-    it(@"should fail if the corners of a convex quad are given in counterclockwise order", ^{
-      LTQuadCorners cornersOfConvexQuad{{v3, v2, v1, v0}};
-      expect(^{
-        quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuad];
-      }).to.raise(NSInternalInconsistencyException);
+    it(@"should distinguish between valid and invalid input corners", ^{
+      LTQuadCorners nonDegenerateCorners{{v0, v1, v2, v3}};
+      expect([LTQuad validityOfCorners:nonDegenerateCorners]).to.equal(LTQuadCornersValidityValid);
+
+      LTQuadCorners cornersOfConvexQuadInCounterClockWiseOrder{{v3, v2, v1, v0}};
+      expect([LTQuad validityOfCorners:cornersOfConvexQuadInCounterClockWiseOrder]).to.
+          equal(LTQuadCornersValidityInvalidDueToOrder);
+
+      LTQuadCorners cornersOfConcaveQuadInCounterClockWiseOrder{{v3, w0, v1, v0}};
+      expect([LTQuad validityOfCorners:cornersOfConcaveQuadInCounterClockWiseOrder]).to.
+          equal(LTQuadCornersValidityInvalidDueToOrder);
+
+      LTQuadCorners threeCollinearCorners{{v0, v0 + CGPointMake(1, 0), v0 + CGPointMake(2, 0),
+        v0 + CGPointMake(1, 1)}};
+      expect([LTQuad validityOfCorners:threeCollinearCorners]).to.equal(LTQuadCornersValidityValid);
+
+      LTQuadCorners fourCollinearCorners{{v0, v0 + CGPointMake(1, 0), v0 + CGPointMake(2, 0),
+          v0 + CGPointMake(3, 0)}};
+      expect([LTQuad validityOfCorners:fourCollinearCorners]).to.
+          equal(LTQuadCornersValidityInvalidDueToCollinearity);
+
+      LTQuadCorners fourCollinearCorners2{{v0, v0 + CGPointMake(1, 0), v0 + CGPointMake(2, 0),
+        v0 + CGPointMake(1.5, 0)}};
+      expect([LTQuad validityOfCorners:fourCollinearCorners2]).to.
+          equal(LTQuadCornersValidityInvalidDueToCollinearity);
+
+      LTQuadCorners closeButNotTooCloseCorners{{v0, v0 + CGPointMake(1e-7, 0), v1, v2}};
+      expect([LTQuad validityOfCorners:closeButNotTooCloseCorners]).to.
+          equal(LTQuadCornersValidityValid);
+
+      LTQuadCorners tooCloseCorners{{v0, v0 + CGPointMake(1e-12, 0), v1, v2}};
+      expect([LTQuad validityOfCorners:tooCloseCorners]).to.
+          equal(LTQuadCornersValidityInvalidDueToProximity);
     });
 
-    it(@"should fail if the corners of a concave quad are given in counterclockwise order", ^{
-      LTQuadCorners cornersOfConcaveQuad{{v3, w0, v1, v0}};
+    it(@"should fail if corners are given in counterclockwise order", ^{
+      LTQuadCorners cornersOfConvexQuadInCounterClockWiseOrder{{v3, v2, v1, v0}};
       expect(^{
-        quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];
+        quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuadInCounterClockWiseOrder];
+      }).to.raise(NSInternalInconsistencyException);
+
+      LTQuadCorners cornersOfConcaveQuadInCounterClockWiseOrder{{v3, w0, v1, v0}};
+      expect(^{
+        quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuadInCounterClockWiseOrder];
       }).to.raise(NSInternalInconsistencyException);
     });
   });
@@ -139,6 +172,18 @@ context(@"initializers and factory methods", ^{
       expect(quad.v2).to.equal(rotatedRect.v2);
       expect(quad.v3).to.equal(rotatedRect.v3);
     });
+  });
+});
+
+context(@"updating", ^{
+  it(@"should be possible to update the corners", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    [quad updateWithCorners:LTQuadCorners{{v1, v2, v3, w0}}];
+    expect(quad.v0).to.equal(v1);
+    expect(quad.v1).to.equal(v2);
+    expect(quad.v2).to.equal(v3);
+    expect(quad.v3).to.equal(w0);
   });
 });
 
@@ -284,22 +329,25 @@ context(@"affine transformations", ^{
 
       it(@"should raise when providing NULL address for translation", ^{
         expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
-                          translation:NULL rotation:&rotation scaling:&scaling];
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                        withDeviation:kDeviation translation:NULL rotation:&rotation
+                              scaling:&scaling];
         }).to.raise(NSInvalidArgumentException);
       });
 
       it(@"should raise when providing NULL address for rotation", ^{
         expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
-                          translation:&translation rotation:NULL scaling:&scaling];
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                        withDeviation:kDeviation translation:&translation rotation:NULL
+                              scaling:&scaling];
         }).to.raise(NSInvalidArgumentException);
       });
 
       it(@"should raise when providing NULL address for scaling", ^{
         expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectZero] withDeviation:kDeviation
-                          translation:&translation rotation:&rotation scaling:NULL];
+          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                        withDeviation:kDeviation translation:&translation rotation:&rotation
+                              scaling:NULL];
         }).to.raise(NSInvalidArgumentException);
       });
     });
