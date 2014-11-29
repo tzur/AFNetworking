@@ -60,21 +60,44 @@ static const CGFloat kEpsilon = 1e-10;
 
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners {
   if (self = [super init]) {
-    // Ensure that the given corners are provided in clockwise order. The number of non-left turns
-    // of the cyclic polyline constituting a convex quad is 4 if its corners are in clockwise order
-    // and 0 if they are in counterclockwise order. Analogously, the number of non-left turns of the
-    // cyclic polyline constituting a concave quad is 3 if its corners are in clockwise order and 1
-    // if they are in counterclockwise order. The number of non-left turns of the cyclic polyline
-    // constituting a complex quad always is 2. The notion of clockwise/counterclockwise order is
-    // not well-defined for complex quadrilaterals due to the self-intersection.
-    NSUInteger numberOfNonLeftTurns = [[self class] numberOfNonLeftTurns:corners];
-    LTAssert(numberOfNonLeftTurns != 0,
-             @"Quadrilateral is convex, but corners are given in counterclockwise direction.");
-    LTAssert(numberOfNonLeftTurns != 1,
-             @"Quadrilateral is concave, but corners are given in counterclockwise direction.");
-    self.corners = corners;
+    [self updateWithCorners:corners];
   }
   return self;
+}
+
++ (LTQuadCornersValidity)validityOfCorners:(const LTQuadCorners &)corners {
+  // Ensure that the given corners are not too close to each other.
+  if ([[self class] minimalDistanceOfPoints:corners] < kEpsilon) {
+    return LTQuadCornersValidityInvalidDueToProximity;
+  }
+
+  // Ensure that the given corners are provided in clockwise order. The number of non-left turns
+  // of the cyclic polyline constituting a convex quad is 4 if its corners are in clockwise order
+  // and 0 if they are in counterclockwise order. Analogously, the number of non-left turns of the
+  // cyclic polyline constituting a concave quad is 3 if its corners are in clockwise order and 1
+  // if they are in counterclockwise order. The number of non-left turns of the cyclic polyline
+  // constituting a complex quad always is 2. The notion of clockwise/counterclockwise order is
+  // not well-defined for complex quadrilaterals due to the self-intersection.
+  if ([[self class] numberOfNonLeftTurns:corners] < 2) {
+    return LTQuadCornersValidityInvalidDueToOrder;
+  }
+
+  // Ensure that at least one corner is not collinear with the other corners.
+  if ([[self class] onlyCollinearPoints:corners]) {
+    return LTQuadCornersValidityInvalidDueToCollinearity;
+  }
+
+  return LTQuadCornersValidityValid;
+}
+
+#pragma mark -
+#pragma mark Updating
+#pragma mark -
+
+- (void)updateWithCorners:(const LTQuadCorners &)corners {
+  LTAssert([[self class] validityOfCorners:corners] == LTQuadCornersValidityValid,
+           @"Invalid corners provided.");
+  self.corners = corners;
 }
 
 #pragma mark -
@@ -312,6 +335,35 @@ static const CGFloat kEpsilon = 1e-10;
     }
   }
   return result;
+}
+
++ (NSUInteger)onlyCollinearPoints:(const LTQuadCorners &)points {
+  NSUInteger result = 0;
+  NSUInteger size = points.size();
+  for (NSUInteger i = 0; i < size; i++) {
+    CGPoint origin = points[i];
+    CGPoint direction = CGPointFromSize(points[(i + 1) % size] - origin);
+    if (LTPointLocationRelativeToRay(points[(i + 2) % size], origin, direction) ==
+        LTPointLocationOnLineThroughRay) {
+      result++;
+    }
+  }
+  return result == points.size();
+}
+
++ (CGFloat)minimalDistanceOfPoints:(const LTQuadCorners &)points {
+  NSUInteger size = points.size();
+  CGFloats distances((size * (size - 1)) / 2);
+  NSUInteger currentIndex = 0;
+  for (NSUInteger i = 0; i < size; ++i) {
+    for (NSUInteger j = 0; j < i; ++j) {
+      if (i != j) {
+        distances[currentIndex] = LTVector2(points[i] - points[j]).length();
+      }
+      ++currentIndex;
+    }
+  }
+  return *std::min_element(distances.begin(), distances.end());
 }
 
 #pragma mark -
