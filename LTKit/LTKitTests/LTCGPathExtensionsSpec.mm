@@ -368,6 +368,8 @@ context(@"creation", ^{
     __block CGPoints pointsForDoubleL;
     __block CGPoints pointsForTripleL;
     __block CGPoints pointsForTripleLWithLineHeightFactor;
+    __block CGPoints pointsForCenterAlignment;
+    __block CGPoints pointsForRightAlignment;
 
     beforeAll(^{
       pointsForSingleL = {CGPointZero, CGPointMake(0.9716796875, 0),
@@ -415,6 +417,38 @@ context(@"creation", ^{
         pointsForSingleL[3] + lineHeightFactor * verticalTranslation1,
         pointsForSingleL[4] + lineHeightFactor * verticalTranslation1,
         pointsForSingleL[5] + lineHeightFactor * verticalTranslation1
+      };
+
+      CGPoint firstGlyphTranslation = CGPointMake(2.78076171875, 0);
+      CGPoint secondGlyphTranslation = CGPointMake(0, 10);
+      CGPoint thirdGlyphTranslation = CGPointMake(5.5615234375, 10);
+
+      pointsForCenterAlignment = {pointsForSingleL[0] + firstGlyphTranslation,
+        pointsForSingleL[1] + firstGlyphTranslation, pointsForSingleL[2] + firstGlyphTranslation,
+        pointsForSingleL[3] + firstGlyphTranslation, pointsForSingleL[4] + firstGlyphTranslation,
+        pointsForSingleL[5] + firstGlyphTranslation,
+        pointsForSingleL[0] + secondGlyphTranslation, pointsForSingleL[1] + secondGlyphTranslation,
+        pointsForSingleL[2] + secondGlyphTranslation, pointsForSingleL[3] + secondGlyphTranslation,
+        pointsForSingleL[4] + secondGlyphTranslation, pointsForSingleL[5] + secondGlyphTranslation,
+        pointsForSingleL[0] + thirdGlyphTranslation, pointsForSingleL[1] + thirdGlyphTranslation,
+        pointsForSingleL[2] + thirdGlyphTranslation, pointsForSingleL[3] + thirdGlyphTranslation,
+        pointsForSingleL[4] + thirdGlyphTranslation, pointsForSingleL[5] + thirdGlyphTranslation
+      };
+
+      firstGlyphTranslation = CGPointMake(5.5615234375, 0);
+      secondGlyphTranslation = CGPointMake(0, 10);
+      thirdGlyphTranslation = CGPointMake(5.5615234375, 10);
+
+      pointsForRightAlignment = {pointsForSingleL[0] + firstGlyphTranslation,
+        pointsForSingleL[1] + firstGlyphTranslation, pointsForSingleL[2] + firstGlyphTranslation,
+        pointsForSingleL[3] + firstGlyphTranslation, pointsForSingleL[4] + firstGlyphTranslation,
+        pointsForSingleL[5] + firstGlyphTranslation,
+        pointsForSingleL[0] + secondGlyphTranslation, pointsForSingleL[1] + secondGlyphTranslation,
+        pointsForSingleL[2] + secondGlyphTranslation, pointsForSingleL[3] + secondGlyphTranslation,
+        pointsForSingleL[4] + secondGlyphTranslation, pointsForSingleL[5] + secondGlyphTranslation,
+        pointsForSingleL[0] + thirdGlyphTranslation, pointsForSingleL[1] + thirdGlyphTranslation,
+        pointsForSingleL[2] + thirdGlyphTranslation, pointsForSingleL[3] + thirdGlyphTranslation,
+        pointsForSingleL[4] + thirdGlyphTranslation, pointsForSingleL[5] + thirdGlyphTranslation
       };
     });
 
@@ -497,6 +531,50 @@ context(@"creation", ^{
 
       evaluation.points = pointsForTripleLWithLineHeightFactor;
       evaluation.numberOfPointsToExpect = pointsForTripleLWithLineHeightFactor.size();
+      evaluation.numberOfClosedSubPathsToExpect = 3;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
+
+    it(@"should create a path for a given center-aligned attributed string", ^{
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.alignment = NSTextAlignmentCenter;
+      NSAttributedString *attributedString =
+          [[NSAttributedString alloc] initWithString:@"L\nLL"
+                                          attributes:@{NSFontAttributeName: font,
+                                                       NSParagraphStyleAttributeName:
+                                                         paragraphStyle}];
+      CGPathRef immutablePath = LTCGPathCreateWithAttributedString(attributedString);
+
+      evaluation.points = pointsForCenterAlignment;
+      evaluation.numberOfPointsToExpect = pointsForCenterAlignment.size();
+      evaluation.numberOfClosedSubPathsToExpect = 3;
+      CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+      expect(evaluation.failure).to.beFalsy();
+      expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+      expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+
+      CGPathRelease(immutablePath);
+    });
+
+    it(@"should create a path for a given right-aligned attributed string", ^{
+      UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
+      NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.alignment = NSTextAlignmentRight;
+      NSAttributedString *attributedString =
+          [[NSAttributedString alloc] initWithString:@"L\nLL"
+                                          attributes:@{NSFontAttributeName: font,
+                                                       NSParagraphStyleAttributeName:
+                                                         paragraphStyle}];
+      CGPathRef immutablePath = LTCGPathCreateWithAttributedString(attributedString);
+
+      evaluation.points = pointsForRightAlignment;
+      evaluation.numberOfPointsToExpect = pointsForRightAlignment.size();
       evaluation.numberOfClosedSubPathsToExpect = 3;
       CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
       expect(evaluation.failure).to.beFalsy();
