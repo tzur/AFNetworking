@@ -54,6 +54,32 @@ static const CGFloat kEpsilon = 1e-10;
   return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
 }
 
++ (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad {
+  LTParameterAssert(!CGRectIsNull(rect));
+  LTParameterAssert(quad);
+  GLKMatrix3 transform = GLKMatrix3Transpose(quad.transform);
+  GLKVector3 topLeft = GLKVector3Make(rect.origin.x, rect.origin.y, 1);
+  GLKVector3 projectedTopLeft = GLKMatrix3MultiplyVector3(transform, topLeft);
+  GLKVector3 projectedTopRight =
+      GLKMatrix3MultiplyVector3(transform, GLKVector3Add(topLeft,
+                                                         GLKVector3Make(rect.size.width, 0, 0)));
+  GLKVector3 projectedBottomRight =
+      GLKMatrix3MultiplyVector3(transform, GLKVector3Add(topLeft,
+                                                         GLKVector3Make(rect.size.width,
+                                                                        rect.size.height, 0)));
+  GLKVector3 projectedBottomLeft =
+      GLKMatrix3MultiplyVector3(transform, GLKVector3Add(topLeft,
+                                                         GLKVector3Make(0, rect.size.height, 0)));
+  LTQuadCorners corners{{
+    CGPointMake(projectedTopLeft.x, projectedTopLeft.y) / projectedTopLeft.z,
+    CGPointMake(projectedTopRight.x, projectedTopRight.y) / projectedTopRight.z,
+    CGPointMake(projectedBottomRight.x, projectedBottomRight.y) / projectedBottomRight.z,
+    CGPointMake(projectedBottomLeft.x, projectedBottomLeft.y) / projectedBottomLeft.z,
+  }};
+
+  return [[LTQuad alloc]initWithCorners:corners];
+}
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
