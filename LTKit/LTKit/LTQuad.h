@@ -42,6 +42,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Returns a rectangular rotated quad defined by the given \c rotatedRect.
 + (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
 
+/// Returns a quad whose corners correspond to those of the given \c rect after transforming them
+/// using the \c transform of the given \c quad. The given \c quad must not be \c nil.
++ (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
+
 /// Initializes a general quad defined by the given \c corners. In case of a simple (i.e.
 /// non-self-intersecting) quad, the corners have to be provided in clockwise order. The provided
 /// corners must not be degenerated (refer to \c LTQuadCornersValidity for more details). Checking

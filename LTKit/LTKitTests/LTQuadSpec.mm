@@ -172,6 +172,53 @@ context(@"initializers and factory methods", ^{
       expect(quad.v2).to.equal(rotatedRect.v2);
       expect(quad.v3).to.equal(rotatedRect.v3);
     });
+
+    it(@"should create quad from a given rect transformed by the transform of a given quad", ^{
+      // Canonical 1x1 square.
+      LTQuad *transformQuad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(1))];
+      quad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(1))
+              transformedByTransformOfQuad:transformQuad];
+      expect([quad isSimilarTo:transformQuad upToDeviation:kEpsilon]).to.beTruthy();
+
+      // Axis-aligned rect scaled in x-direction.
+      transformQuad = [LTQuad quadFromRect:CGRectMake(-0.5, 0, 2, 1)];
+      quad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(1))
+              transformedByTransformOfQuad:transformQuad];
+      expect([quad isSimilarTo:transformQuad upToDeviation:kEpsilon]).to.beTruthy();
+
+      // Axis-aligned square scaled uniformly.
+      transformQuad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(2))];
+      quad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(2))
+              transformedByTransformOfQuad:transformQuad];
+      LTQuad *expectedQuad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(4))];
+      expect([quad isSimilarTo:expectedQuad upToDeviation:kEpsilon]).to.beTruthy();
+
+      // Rotated square.
+      LTQuadCorners corners{{CGPointMake(-1, 0), CGPointMake(0, -1), CGPointMake(1, 0),
+        CGPointMake(0, 1)
+      }};
+      transformQuad = [[LTQuad alloc] initWithCorners:corners];
+      quad = [LTQuad quadFromRect:CGRectMake(0, 0, 2, 1)
+              transformedByTransformOfQuad:transformQuad];
+      corners = LTQuadCorners{{CGPointMake(-1, 0), CGPointMake(1, -2), CGPointMake(2, -1),
+        CGPointMake(0, 1)
+      }};
+      expectedQuad = [[LTQuad alloc] initWithCorners:corners];
+      expect([quad isSimilarTo:expectedQuad upToDeviation:kEpsilon]).to.beTruthy();
+
+      // Non-rectangular quad.
+      corners = LTQuadCorners{{CGPointZero, CGPointMake(1, 0), CGPointMake(0.75, 1),
+        CGPointMake(0.25, 1)
+      }};
+      transformQuad = [[LTQuad alloc] initWithCorners:corners];
+      quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 0.5)
+              transformedByTransformOfQuad:transformQuad];
+      corners = LTQuadCorners{{CGPointZero, CGPointMake(1, 0), CGPointMake(0.833333, 0.666667),
+        CGPointMake(0.166667, 0.666667)
+      }};
+      expectedQuad = [[LTQuad alloc] initWithCorners:corners];
+      expect([quad isSimilarTo:expectedQuad upToDeviation:kEpsilon]).to.beTruthy();
+    });
   });
 });
 
