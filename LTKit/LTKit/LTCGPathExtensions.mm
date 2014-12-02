@@ -29,10 +29,10 @@ static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &
 /// Auxiliary method inserting the glyphs in the provided \c frameRef into the given
 /// \c combinedGlyphsPathRef path. The regular line heights are multiplied with the given
 /// \c lineHeightFactor. The regular glyph advancement is multiplied with the given
-/// \c advancementFactor.
+/// \c advancementFactor. The lines are aligned according to the given \c alignment.
 static void LTCGPathAppendGlyphsFromFrame(CGMutablePathRef combinedGlyphsPathRef,
                                           CTFrameRef frameRef, CGFloat lineHeightFactor,
-                                          CGFloat advancementFactor);
+                                          CGFloat advancementFactor, NSTextAlignment alignment);
 
 /// Returns the maximum height for all runs in the given \c lineRef.
 static CGFloat LTCTLineMaxHeight(CTLineRef lineRef);
@@ -220,8 +220,11 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
     return NULL;
   }
 
+  NSParagraphStyle *paragraphStyle = [attributedString attribute:NSParagraphStyleAttributeName
+                                                         atIndex:0 effectiveRange:NULL];
+  NSTextAlignment alignment = paragraphStyle ? paragraphStyle.alignment : NSTextAlignmentLeft;
   LTCGPathAppendGlyphsFromFrame(combinedGlyphsPathRef, frameRef, lineHeightFactor,
-                                advancementFactor);
+                                advancementFactor, alignment);
 
   // Mirror the path around the y-axis and translate it such that the top left bounding box corner
   // of the path corresponds to \c CGPointZero.
@@ -391,9 +394,13 @@ static void LTComputeGapControlPoints(const LTVector2s &polyline, LTVector2s *st
 // @see: http://stackoverflow.com/questions/10152574/catextlayer-blurry-text-after-rotation
 static void LTCGPathAppendGlyphsFromFrame(CGMutablePathRef combinedGlyphsPathRef,
                                           CTFrameRef frameRef, CGFloat lineHeightFactor,
-                                          CGFloat advancementFactor) {
-  BOOL framePathHasInfiniteHeight =
-      CGPathGetBoundingBox(CTFrameGetPath(frameRef)).size.height == CGFLOAT_MAX;
+                                          CGFloat advancementFactor, NSTextAlignment alignment) {
+  // From the documentation of \c CTFramesetterSuggestFrameSizeWithConstraints:
+  // A value of CGFLOAT_MAX for either dimension [of the frame size] indicates that it should be
+  // treated as unconstrained.
+  CGRect rect = CGPathGetBoundingBox(CTFrameGetPath(frameRef));
+  BOOL framePathHasInfiniteWidth = rect.size.width == CGFLOAT_MAX;
+  BOOL framePathHasInfiniteHeight = rect.size.height == CGFLOAT_MAX;
   CGFloat currentLineOriginY = 0;
 
   CFArrayRef lines = CTFrameGetLines(frameRef);
@@ -405,6 +412,9 @@ static void LTCGPathAppendGlyphsFromFrame(CGMutablePathRef combinedGlyphsPathRef
     CTLineRef lineRef = (CTLineRef)CFArrayGetValueAtIndex(lines, lineIndex);
     CGPoint lineOrigin = lineOrigins[lineIndex];
 
+    if (framePathHasInfiniteWidth) {
+      lineOrigin.x = 0;
+    }
     if (framePathHasInfiniteHeight) {
       lineOrigin.y = currentLineOriginY;
       currentLineOriginY -= LTCTLineMaxHeight(lineRef);
@@ -412,7 +422,31 @@ static void LTCGPathAppendGlyphsFromFrame(CGMutablePathRef combinedGlyphsPathRef
 
     lineOrigin.y *= lineHeightFactor;
 
-    LTCGPathAppendLine(combinedGlyphsPathRef, lineRef, lineOrigin, advancementFactor);
+    CGMutablePathRef linePathRef = CGPathCreateMutable();
+    @onExit {
+      if (linePathRef) {
+        CGPathRelease(linePathRef);
+      }
+    };
+    LTCGPathAppendLine(linePathRef, lineRef, lineOrigin, advancementFactor);
+    CGRect linePathBoundingBox = CGPathGetBoundingBox(linePathRef);
+
+    // Align text.
+    CGAffineTransform transform;
+    if (alignment == NSTextAlignmentCenter) {
+      transform = CGAffineTransformMakeTranslation(-linePathBoundingBox.size.width / 2, 0);
+    } else if (alignment == NSTextAlignmentRight) {
+      transform = CGAffineTransformMakeTranslation(-linePathBoundingBox.size.width, 0);
+    } else {
+      transform = CGAffineTransformIdentity;
+    }
+    CGPathRef alignedLinePathRef = CGPathCreateCopyByTransformingPath(linePathRef, &transform);
+    @onExit {
+      if (alignedLinePathRef) {
+        CGPathRelease(alignedLinePathRef);
+      }
+    };
+    CGPathAddPath(combinedGlyphsPathRef, NULL, alignedLinePathRef);
   }
 }
 
@@ -459,13 +493,14 @@ static void LTCGPathAppendLine(CGMutablePathRef combinedGlyphsPathRef, CTLineRef
                                            glyphPositions[glyphPerRunIndex].x * advancementFactor,
                                            lineOrigin.y + glyphPositions[glyphPerRunIndex].y);
       CGPathRef glyphPathRef = CTFontCreatePathForGlyph(runFontRef, glyph, &glyphTransform);
-      // Carry out the appending.
-      CGPathAddPath(combinedGlyphsPathRef, NULL, glyphPathRef);
       @onExit {
         if (glyphPathRef) {
           CGPathRelease(glyphPathRef);
         }
       };
+
+      // Carry out the appending.
+      CGPathAddPath(combinedGlyphsPathRef, NULL, glyphPathRef);
       ++glyphIndex;
     }
   }
