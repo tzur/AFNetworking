@@ -76,6 +76,10 @@ LTPropertyDeclare(LTVector3, midPoint, MidPoint);
 #pragma mark Color
 #pragma mark -
 
+/// Changes the hue of the image. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat hue;
+LTPropertyDeclare(CGFloat, hue, Hue);
+
 /// Changes the saturation of the image. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat saturation;
 LTPropertyDeclare(CGFloat, saturation, Saturation);

@@ -67,6 +67,13 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
+  it(@"should fail on invalid hue parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.hue = -1.5;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
   it(@"should fail on invalid saturation parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
@@ -202,6 +209,7 @@ context(@"properties", ^{
       adjust.greenCurve = mat;
       adjust.blueCurve = mat;
       // Color.
+      adjust.hue = -0.2;
       adjust.saturation = 0.2;
       adjust.temperature = 0.5;
       adjust.tint = 0.9;
@@ -337,11 +345,37 @@ context(@"processing", ^{
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
-  
+
+  it(@"should leave greyscale input unchanged on hue modification", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.hue = 0.5;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+
+  it(@"should process hue correctly", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(128, 0, 0, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(0, 73, 73, 255));
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.hue = 1.0;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+
   it(@"should process saturation correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 128, 255, 255));
     // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
-    cv::Mat4b output(1, 1, cv::Vec4b(104,104,104,255));
+    cv::Mat4b output(1, 1, cv::Vec4b(104, 104, 104, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];

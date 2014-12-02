@@ -11,43 +11,24 @@
 // Source texture and its smoothed versions.
 uniform sampler2D sourceTexture;
 uniform sampler2D detailsTexture;
-// RGB channels hold luminance-to-color mapping, while alpha channel hold luminance-to-luminance
-// mapping.
-uniform sampler2D colorGradientTexture;
-
 // Tone and details LUTs.
 uniform sampler2D toneLUT;
 uniform sampler2D detailsLUT;
-
+// RGB channels hold luminance-to-color mapping, while alpha channel hold luminance-to-luminance
+// mapping.
+uniform sampler2D colorGradientTexture;
 // Details control.
 uniform mediump float detailsBoost;
-
 // Color control.
-uniform mediump float saturation;
-uniform mediump float temperature;
-uniform mediump float tint;
+uniform mediump mat4 tonalTransform;
 
 varying highp vec2 vTexcoord;
 
 void main() {
-  const mediump vec3 kRGBToYPrime = vec3(0.299, 0.587, 0.114);
-  
-  const mediump mat3 RGBtoYIQ = mat3(0.299, 0.596, 0.212,
-                                     0.587, -0.274, -0.523,
-                                     0.114, -0.322, 0.311);
-  const mediump mat3 YIQtoRGB = mat3(1.0, 1.0, 1.0,
-                                     0.9563, -0.2721, -1.107,
-                                     0.621, -0.6474, 1.7046);
-  const mediump float kIMax = 0.596;
-  const mediump float kQMax = 0.523;
-  const mediump float kEps = 0.01;
-  
-  // Read textures and compute YIQ values.
+  // Read image and apply tonal transformation that encapsulates hue, tint, temperature and
+  // saturation.
   mediump vec4 color = texture2D(sourceTexture, vTexcoord);
-  mediump float details = texture2D(detailsTexture, vTexcoord).r;
-  
-  mediump vec3 yiq = RGBtoYIQ * color.rgb;
-  mediump float lum = yiq.r;
+  mediump vec4 outputColor = tonalTransform * color;
 
   // Details, shadows, highlights and fillLight.
   // For positive detailsBoost values, details textures is interpolated with original image. For
@@ -55,19 +36,17 @@ void main() {
   // details = smooth + boost * (original - smooth)
   // For CLAHE process that is used to create the details texture, boost = 3.5 is a reasonable
   // value.
-  lum = texture2D(detailsLUT, vec2(lum, 0.0)).r;
+  const mediump vec3 kRGBToYPrime = vec3(0.299, 0.587, 0.114);
+  mediump float originalLum = dot(color.rgb, kRGBToYPrime);
+  mediump float details = texture2D(detailsTexture, vTexcoord).r;
+  mediump float lum = texture2D(detailsLUT, vec2(originalLum, 0.0)).r;
   details = texture2D(detailsLUT, vec2(details, 0.0)).r;
   lum = mix(lum, mix(-0.4 * (details - 3.5 * lum), details, step(0.0, detailsBoost)),
                           abs(detailsBoost));
 
-  // Color: saturation, temperature and tint.
-  yiq.g = clamp((yiq.g + temperature) * saturation, -kIMax, kIMax);
-  yiq.b = clamp((yiq.b + tint) * saturation, -kQMax, kQMax);
-  mediump vec4 outputColor = vec4(YIQtoRGB * yiq, color.a);
-
   // Luminance rgb conversion and split tone.
   mediump vec3 colorGradient = texture2D(colorGradientTexture, vec2(lum)).rgb;
-  outputColor.rgb = colorGradient * (outputColor.rgb / vec3(yiq.r + 0.004));
+  outputColor.rgb = colorGradient * (outputColor.rgb / vec3(originalLum + 0.004));
 
   // Tone, Levels and Curves.
   outputColor.r = texture2D(toneLUT, vec2(outputColor.r, 0.0)).r;
