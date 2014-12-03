@@ -56,7 +56,7 @@ context(@"properties", ^{
   });
   
   it(@"should return default grain texture as constant 0.5", ^{
-    cv::Mat1b grey(2, 2, 128);
+    cv::Mat1b grey(1, 1, 128);
     expect(LTFuzzyCompareMat(processor.grainTexture.image, grey)).to.beTruthy();
   });
   
@@ -105,15 +105,15 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on square asset texture of incorrect size", ^{
+  it(@"should fail on square asset texture with incorrect number of channels", ^{
     expect(^{
-      processor.assetTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 2)];
+      processor.assetTexture = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(2)];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should not fail on square asset texture of correct size", ^{
     expect(^{
-      processor.assetTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(2048, 2048)];
+      processor.assetTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
     }).toNot.raiseAny();
   });
 });
@@ -174,7 +174,6 @@ context(@"processing", ^{
   });
   
   it(@"should process structure correctly", ^{
-    // Histogram equalization should map 0.75 to 1.0.
     cv::Mat4b input(32, 32, cv::Vec4b(0, 0, 0, 255));
     input(0, 0) = cv::Vec4b(192, 192, 192, 255);
     
