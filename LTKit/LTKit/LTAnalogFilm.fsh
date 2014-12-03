@@ -95,13 +95,15 @@ void main() {
   mediump vec3 outputColor = color.rgb;
 
   // 1. Textures: light leak and frame.
-  mediump vec2 frameCoords = mix(getFrameCoordinates(vTexcoord, frameWidth, aspectRatio),
-      getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / aspectRatio).yx,
-      step(1.0, aspectRatio));
-
-  mediump vec2 lightCoords = mix(getLightCoordinates(vTexcoord, aspectRatio),
-      getLightCoordinates(vTexcoord.yx, 1.0 / aspectRatio).yx,
-      step(1.0, aspectRatio));
+  mediump vec2 frameCoords;
+  mediump vec2 lightCoords;
+  if (aspectRatio < 1.0) {
+    frameCoords = getFrameCoordinates(vTexcoord, frameWidth, aspectRatio);
+    lightCoords = getLightCoordinates(vTexcoord, aspectRatio);
+  } else {
+    frameCoords = getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / aspectRatio).yx;
+    lightCoords = getLightCoordinates(vTexcoord.yx, 1.0 / aspectRatio).yx;
+  }
 
   mediump float frame = texture2D(assetTexture, frameCoords).a;
   mediump vec3 lightLeak = texture2D(assetTexture, lightCoords).rgb;
