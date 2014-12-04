@@ -40,20 +40,13 @@ LTPropertyDeclare(CGFloat, offset, Offset);
 #pragma mark Levels
 #pragma mark -
 
-/// Remapes black to blackPoint. Components should be in [-1, 1] range. Default value is black
-/// (0, 0, 0).
-@property (nonatomic) LTVector3 blackPoint;
-LTPropertyDeclare(LTVector3, blackPoint, BlackPoint);
+/// Shifts black by blackPointShift. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat blackPointShift;
+LTPropertyDeclare(CGFloat, blackPointShift, BlackPointShift);
 
-/// Remapes white to whitePoint. Components should be in [0, 2] range. Default value is white
-/// (1, 1, 1).
-@property (nonatomic) LTVector3 whitePoint;
-LTPropertyDeclare(LTVector3, whitePoint, WhitePoint);
-
-/// Remapes mid-point with power function. Components should be in [-1, 1] range. Default value is
-/// (0, 0, 0).
-@property (nonatomic) LTVector3 midPoint;
-LTPropertyDeclare(LTVector3, midPoint, MidPoint);
+/// Shifts white by whitePointShift. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat whitePointShift;
+LTPropertyDeclare(CGFloat, whitePointShift, WhitePointShift);
 
 #pragma mark -
 #pragma mark Curves
