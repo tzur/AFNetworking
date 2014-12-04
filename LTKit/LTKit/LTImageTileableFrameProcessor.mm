@@ -37,9 +37,7 @@
   [super setImageFrame:imageFrame];
   self.angle = angle;
   self.translation = translation;
-  CGSize sizeOfTile = (imageFrame.baseTexture.size != CGSizeMake(1, 1)) ?
-      imageFrame.baseTexture.size : imageFrame.baseMask.size;
-  [self setScaleUniform:sizeOfTile];
+  [self setScaleUniform];
 }
 
 - (void)assertBaseCorrectnessForImageFrame:(LTImageFrame *)imageFrame {
@@ -73,9 +71,17 @@
 #pragma mark Uniforms
 #pragma mark -
 
-- (void)setScaleUniform:(CGSize)baseTextureSize {
-  CGSize scalingFactor = self.outputSize / baseTextureSize;
-  self[[LTImageFrameFsh scaling]] = $(LTVector2(scalingFactor.width, scalingFactor.height));
+- (void)setScaleUniform {
+  CGFloat sizeRatio = self.outputSize.height / self.outputSize.width;
+  CGSize scaling = CGSizeMake(self.defaultTileScaling, sizeRatio * self.defaultTileScaling);
+  self[[LTImageFrameFsh scaling]] = $(LTVector2(scaling.width, scaling.height));
+}
+
+/// Default scaling for tile.
+static const CGFloat kDefaultTileScaling = 16;
+
+- (CGFloat)defaultTileScaling {
+  return kDefaultTileScaling;
 }
 
 #pragma mark -

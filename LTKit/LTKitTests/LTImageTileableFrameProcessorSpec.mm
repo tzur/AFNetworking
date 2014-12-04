@@ -8,6 +8,19 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
+/// Changes the \c defaultTileScaling so using small tileable texture for testing will not be scaled
+/// too much.
+@interface LTImageTileableFrameProcessorForTesting : LTImageTileableFrameProcessor
+@end
+
+@implementation LTImageTileableFrameProcessorForTesting
+
+- (CGFloat)defaultTileScaling {
+  return 2;
+}
+
+@end
+
 LTSpecBegin(LTImageTileableFrameProcessor)
 
 __block LTTexture *frameMask;
@@ -56,7 +69,7 @@ context(@"processing portrait tileable frame", ^{
     baseMask.magFilterInterpolation = LTTextureInterpolationNearest;
     baseMask.minFilterInterpolation = LTTextureInterpolationNearest;
     
-    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
+    processor = [[LTImageTileableFrameProcessorForTesting alloc] initWithInput:input output:output];
     imageFrame = [[LTImageFrame alloc] initWithBaseTexture:baseTexture baseMask:baseMask
                                                  frameMask:frameMask frameType:LTFrameTypeStretch];
     [processor setImageFrame:imageFrame];
@@ -151,7 +164,7 @@ context(@"processing landscape image with tileable frame", ^{
     baseTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     baseTexture.minFilterInterpolation = LTTextureInterpolationNearest;
     
-    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
+    processor = [[LTImageTileableFrameProcessorForTesting alloc] initWithInput:input output:output];
   });
   
   afterEach(^{
@@ -174,13 +187,14 @@ context(@"processing to screen", ^{
   __block LTTexture *input;
   
   beforeEach(^{
-    cv::Mat4b greyPatch(32, 64, cv::Vec4b(128, 128, 128, 255));
+    cv::Mat4b greyPatch(64, 128, cv::Vec4b(128, 128, 128, 255));
     input = [LTTexture textureWithImage:greyPatch];
     output = [LTTexture textureWithPropertiesOf:input];
     [output clearWithColor:LTVector4Zero];
-    LTTexture *frame = [LTTexture textureWithImage:LTLoadMat([self class], @"FrameCircle.png")];
+    LTTexture *frame =
+        [LTTexture textureWithImage:LTLoadMat([self class], @"TileableBaseTexture.png")];
     
-    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:input];
+    processor = [[LTImageTileableFrameProcessorForTesting alloc] initWithInput:input output:input];
     [processor setImageFrame:[[LTImageFrame alloc] initWithBaseTexture:frame baseMask:nil
                                                              frameMask:frameMask
                                                              frameType:LTFrameTypeFit]
@@ -227,7 +241,7 @@ context(@"processing identity type with tileable frame", ^{
     baseTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     baseTexture.minFilterInterpolation = LTTextureInterpolationNearest;
     
-    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
+    processor = [[LTImageTileableFrameProcessorForTesting alloc] initWithInput:input output:output];
   });
   
   afterEach(^{
