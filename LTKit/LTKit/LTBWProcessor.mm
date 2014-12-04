@@ -30,13 +30,23 @@
 /// colorGradientMat using colorGradientIntensity as time parameter.
 @property (nonatomic) cv::Mat4b identityColorGradientMat;
 
-/// Tone mapping curve that encapsulates brightness, contrast, exposure and offset adjustments.
-@property (nonatomic) cv::Mat1b toneCurveMat;
+/// RGBA textures with one row and 256 columns that defines greyscale to color mapping. RGB part of
+/// these LUT is the current color gradient mapping which adds tint to the image. Alpha channel
+/// holds the tone mapping curve. Default value is an identity mapping across the channels. Two
+/// textures are used for ping-pong rendering that improves the performance.
 
-/// RGBA texture with one row and 256 columns that defines greyscale to color mapping. RGB part of
-/// this LUT is the current color gradient mapping which adds tint to the image. Alpha channel holds
-/// the tone mapping curve. Default value is an identity mapping across the channels.
-@property (strong, nonatomic) LTTexture *colorGradientTexture;
+/// First color gradient texture.
+@property (strong, nonatomic) LTTexture *colorGradientTextureA;
+
+/// Second color gradient texture.
+@property (strong, nonatomic) LTTexture *colorGradientTextureB;
+
+/// If \c YES, \c colorGradientTextureB will be used during the next rendering pass,
+/// \c colorGradientTextureA otherwise.
+@property (nonatomic) BOOL shouldUseColorGradientTextureB;
+
+/// If \c YES, tone LUT update should run at the next processing round of this processor.
+@property (nonatomic) BOOL shouldUpdateToneLUT;
 
 /// The generation id of the input texture that was used to create the current details textures.
 @property (nonatomic) NSUInteger detailsTextureGenerationID;
@@ -52,18 +62,22 @@
   LTTexture *vignetteTexture = [self createVignettingTextureWithInput:input];
   self.vignetteProcessor = [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
   NSDictionary *auxiliaryTextures =
-      @{[LTBWProcessorFsh colorGradient]:
-          [[self defaultColorGradient] textureWithSamplingPoints:256],
-        [LTBWProcessorFsh grainTexture]: [self defaultGrainTexture],
+      @{[LTBWProcessorFsh grainTexture]: [self defaultGrainTexture],
         [LTBWProcessorFsh vignettingTexture]: vignetteTexture,
         [LTBWProcessorFsh frameTexture]: [self defaultFrameTexture]};
   if (self = [super initWithVertexSource:[LTBWProcessorVsh source]
                           fragmentSource:[LTBWProcessorFsh source] sourceTexture:input
                        auxiliaryTextures:auxiliaryTextures andOutput:output]) {
     self.identityColorGradientMat = [[LTColorGradient identityGradient] matWithSamplingPoints:256];
+    [self createColorGradientTextures];
     [self resetInputModel];
   }
   return self;
+}
+
+- (void)createColorGradientTextures {
+  self.colorGradientTextureA = [[self defaultColorGradient] textureWithSamplingPoints:256];
+  self.colorGradientTextureB = [[self defaultColorGradient] textureWithSamplingPoints:256];
 }
 
 - (LTColorGradient *)defaultColorGradient {
@@ -165,6 +179,7 @@
   [self updateDetailsTextureIfNecessary];
   
   [self runSubProcessors];
+  [self updateLUT];
 }
 
 - (void)setNeedsVignetteProcessing {
@@ -175,6 +190,17 @@
   if (self.vignetteProcessorInputChanged) {
     [self.vignetteProcessor process];
     self.vignetteProcessorInputChanged = NO;
+  }
+}
+
+- (void)setNeedsToneLUTUpdate {
+  self.shouldUpdateToneLUT = YES;
+}
+
+- (void)updateLUT {
+  if (self.shouldUpdateToneLUT) {
+    [self updateToneLUT];
+    self.shouldUpdateToneLUT = NO;
   }
 }
 
@@ -193,25 +219,25 @@ LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter, -2 * LTVector3One, 
 LTPropertyWithoutSetter(CGFloat, brightness, Brightness, -1, 1, 0);
 - (void)setBrightness:(CGFloat)brightness {
   [self _verifyAndSetBrightness:brightness];
-  [self updateToneLUT];
+  [self setNeedsToneLUTUpdate];
 }
 
 LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
 - (void)setContrast:(CGFloat)contrast {
   [self _verifyAndSetContrast:contrast];
-  [self updateToneLUT];
+  [self setNeedsToneLUTUpdate];
 }
 
 LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
 - (void)setExposure:(CGFloat)exposure {
   [self _verifyAndSetExposure:exposure];
-  [self updateToneLUT];
+  [self setNeedsToneLUTUpdate];
 }
 
 LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
 - (void)setOffset:(CGFloat)offset {
   [self _verifyAndSetOffset:offset];
-  [self updateToneLUT];
+  [self setNeedsToneLUTUpdate];
 }
 
 LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
@@ -220,30 +246,30 @@ LTPropertyWithoutSetter(CGFloat, structure, Structure, -1, 1, 0);
   self[[LTBWProcessorFsh structure]] = @(structure);
 }
 
+#pragma mark -
+#pragma mark Color Gradient
+#pragma mark -
+
 - (void)setColorGradient:(LTColorGradient *)colorGradient {
   _colorGradient = colorGradient;
-  self.colorGradientTexture = [colorGradient textureWithSamplingPoints:256];
-}
-
-- (void)setColorGradientTexture:(LTTexture *)colorGradientTexture {
-  _colorGradientTexture = colorGradientTexture;
-  self.colorGradientMat = [_colorGradientTexture image];
-  [self setAuxiliaryTexture:self.colorGradientTexture withName:[LTBWProcessorFsh colorGradient]];
-  
-  [self updateCurve];
+  self.colorGradientMat = [colorGradient matWithSamplingPoints:256];
+  [self setNeedsToneLUTUpdate];
 }
 
 LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity, 0, 1, 1);
 - (void)setColorGradientIntensity:(CGFloat)colorGradientIntensity {
   [self _verifyAndSetColorGradientIntensity:colorGradientIntensity];
-  [self updateCurve];
+  [self setNeedsToneLUTUpdate];
 }
+
+#pragma mark -
+#pragma mark Curve
+#pragma mark -
 
 - (void)updateToneLUT {
   static const ushort kLutSize = 256;
-  cv::Mat1b toneCurve(1, kLutSize);
+
   cv::Mat1b brightnessCurve(1, kLutSize);
-  
   if (self.brightness >= self.defaultBrightness) {
     brightnessCurve = [LTCurve positiveBrightness];
   } else {
@@ -259,27 +285,28 @@ LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity,
   
   float brightness = std::abs(self.brightness);
   float contrast = std::abs(self.contrast);
+
+  cv::Mat1b toneCurve(1, kLutSize);
   cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
           (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
           toneCurve);
-  self.toneCurveMat = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
-  
-  [self updateCurve];
-}
+  toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
 
-/// Updates curve, by combining color gradient and tone curve. The reason for merging is to use less
-/// texture units.
-- (void)updateCurve {
-  [self.colorGradientTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+  LTTexture *target = self.shouldUseColorGradientTextureB ?
+      self.colorGradientTextureB : self.colorGradientTextureA;
+  [target mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     cv::Mat4b colorCurve;
     cv::addWeighted(self.identityColorGradientMat, 1 - self.colorGradientIntensity,
                     self.colorGradientMat, self.colorGradientIntensity, 0, colorCurve);
     
-    cv::Mat mixIn[] = {colorCurve, self.toneCurveMat};
+    cv::Mat mixIn[] = {colorCurve, toneCurve};
     int fromTo[] = {0, 0, 1, 1, 2, 2, 4, 3};
   
     cv::mixChannels(mixIn, 2, mapped, 1, fromTo, 4);
   }];
+
+  [self setAuxiliaryTexture:target withName:[LTBWProcessorFsh colorGradient]];
+  self.shouldUseColorGradientTextureB = !self.shouldUseColorGradientTextureB;
 }
 
 LTPropertyWithoutSetter(CGFloat, colorGradientFade, ColorGradientFade, 0, 1, 0);

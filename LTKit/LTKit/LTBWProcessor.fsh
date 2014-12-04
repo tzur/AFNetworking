@@ -130,12 +130,14 @@ void main() {
   lum = mix(soft, harsh, 0.3);
   
   // 5. Frame.
-  mediump vec2 coords =
-      mix(getFrameCoordinates(vTexcoord, frameWidth, combinedAspectRatio),
-          getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / combinedAspectRatio).yx,
-          step(1.0, combinedAspectRatio));
-  coords = mix(coords, coords.yx, flipFrameCoordinates);
-  lum = overlay(lum, texture2D(frameTexture, coords).r, 1.0, 1.0);
+  mediump vec2 frameCoords;
+  if (combinedAspectRatio < 1.0) {
+    frameCoords = getFrameCoordinates(vTexcoord, frameWidth, combinedAspectRatio);
+  } else {
+    frameCoords = getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / combinedAspectRatio).yx;
+  }
+  frameCoords = mix(frameCoords, frameCoords.yx, flipFrameCoordinates);
+  lum = overlay(lum, texture2D(frameTexture, frameCoords).r, 1.0, 1.0);
   
   // 6. Grain.
   mediump float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
