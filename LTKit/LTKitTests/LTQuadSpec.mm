@@ -137,12 +137,12 @@ context(@"initializers and factory methods", ^{
       LTQuadCorners cornersOfConvexQuadInCounterClockWiseOrder{{v3, v2, v1, v0}};
       expect(^{
         quad = [[LTQuad alloc] initWithCorners:cornersOfConvexQuadInCounterClockWiseOrder];
-      }).to.raise(NSInternalInconsistencyException);
+      }).to.raise(NSInvalidArgumentException);
 
       LTQuadCorners cornersOfConcaveQuadInCounterClockWiseOrder{{v3, w0, v1, v0}};
       expect(^{
         quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuadInCounterClockWiseOrder];
-      }).to.raise(NSInternalInconsistencyException);
+      }).to.raise(NSInvalidArgumentException);
     });
   });
 
@@ -155,6 +155,12 @@ context(@"initializers and factory methods", ^{
       expect(quad.v3).to.equal(v3);
     });
 
+    it(@"should return nil when creating quad from rect invalid for initialization", ^{
+      CGFloat edgeLength = 1e-12;
+      quad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMakeUniform(edgeLength))];
+      expect(quad).to.beNil();
+    });
+
     it(@"should create quad with origin and size", ^{
       CGRect rect = CGRectMake(v0.x, v0.y, v1.x, v3.y);
       quad = [LTQuad quadFromRectWithOrigin:rect.origin andSize:rect.size];
@@ -164,6 +170,12 @@ context(@"initializers and factory methods", ^{
       expect(quad.v3).to.equal(v3);
     });
 
+    it(@"should return nil when creating quad with origin and size invalid for initialization", ^{
+      CGFloat edgeLength = 1e-12;
+      quad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:CGSizeMakeUniform(edgeLength)];
+      expect(quad).to.beNil();
+    });
+
     it(@"should create quad from rotated rect", ^{
       LTRotatedRect *rotatedRect = [LTRotatedRect rect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
       quad = [LTQuad quadFromRotatedRect:rotatedRect];
@@ -171,6 +183,14 @@ context(@"initializers and factory methods", ^{
       expect(quad.v1).to.equal(rotatedRect.v1);
       expect(quad.v2).to.equal(rotatedRect.v2);
       expect(quad.v3).to.equal(rotatedRect.v3);
+    });
+
+    it(@"should return nil when creating quad from rotated rect invalid for initialization", ^{
+      CGFloat edgeLength = 1e-12;
+      LTRotatedRect *rotatedRect =
+          [LTRotatedRect rect:CGRectFromSize(CGSizeMakeUniform(edgeLength)) withAngle:M_PI_4];
+      quad = [LTQuad quadFromRotatedRect:rotatedRect];
+      expect(quad).to.beNil();
     });
 
     it(@"should create quad from a given rect transformed by the transform of a given quad", ^{
@@ -231,6 +251,14 @@ context(@"updating", ^{
     expect(quad.v1).to.equal(v2);
     expect(quad.v2).to.equal(v3);
     expect(quad.v3).to.equal(w0);
+  });
+
+  it(@"should raise when trying to update with invalid corners", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    expect(^{
+      [quad updateWithCorners:LTQuadCorners{{v0, v0 + CGPointMake(1e-12, 0), v2, v3}}];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

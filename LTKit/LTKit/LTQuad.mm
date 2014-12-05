@@ -38,20 +38,13 @@ static const CGFloat kEpsilon = 1e-10;
   CGPoint v3 = origin + CGPointMake(0, size.height);
 
   LTQuadCorners corners{{v0, v1, v2, v3}};
-  return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
+  return [[self class] safeQuadWithCorners:corners];
 }
 
 + (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect {
   LTParameterAssert(rotatedRect);
-
-  std::array<CGFloat, 4> lengths{{LTVector2(rotatedRect.v0 - rotatedRect.v1).length(),
-    LTVector2(rotatedRect.v1 - rotatedRect.v2).length(), LTVector2(rotatedRect.v2 - rotatedRect.v3).length(),
-    LTVector2(rotatedRect.v3 - rotatedRect.v0).length()}};
-  LTParameterAssert(*std::min_element(lengths.begin(), lengths.end()) > kEpsilon,
-                    @"Edges of provided rotated rect too short.");
-
   LTQuadCorners corners{{rotatedRect.v0, rotatedRect.v1, rotatedRect.v2, rotatedRect.v3}};
-  return [(LTQuad *)[[self class] alloc] initWithCorners:corners];
+  return [[self class] safeQuadWithCorners:corners];
 }
 
 + (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad {
@@ -77,7 +70,12 @@ static const CGFloat kEpsilon = 1e-10;
     CGPointMake(projectedBottomLeft.x, projectedBottomLeft.y) / projectedBottomLeft.z,
   }};
 
-  return [[LTQuad alloc]initWithCorners:corners];
+  return [[self class] safeQuadWithCorners:corners];
+}
+
++ (instancetype)safeQuadWithCorners:(LTQuadCorners)corners {
+  return [LTQuad validityOfCorners:corners] == LTQuadCornersValidityValid ?
+      [(LTQuad *)[[self class] alloc] initWithCorners:corners] : nil;
 }
 
 #pragma mark -
@@ -121,8 +119,8 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark -
 
 - (void)updateWithCorners:(const LTQuadCorners &)corners {
-  LTAssert([[self class] validityOfCorners:corners] == LTQuadCornersValidityValid,
-           @"Invalid corners provided.");
+  LTParameterAssert([[self class] validityOfCorners:corners] == LTQuadCornersValidityValid,
+                    @"Invalid corners provided.");
   self.corners = corners;
 }
 

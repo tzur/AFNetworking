@@ -33,23 +33,28 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Represents a quadrilateral in the XY plane.
 @interface LTQuad : NSObject
 
-/// Returns a rectangular quad defined by the given \c rect.
+/// Returns a rectangular quad defined by the given \c rect. Returns \c nil if the resulting quad
+/// would be invalid (refer to \c LTQuadCornersValidity for more details).
 + (instancetype)quadFromRect:(CGRect)rect;
 
-/// Returns a rectangular quad with the given \c origin and the given \c size.
+/// Returns a rectangular quad with the given \c origin and the given \c size. Returns \c nil if the
+/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details).
 + (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size;
 
-/// Returns a rectangular rotated quad defined by the given \c rotatedRect.
+/// Returns a rectangular rotated quad defined by the given \c rotatedRect. Returns \c nil if the
+/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details).
 + (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
 
 /// Returns a quad whose corners correspond to those of the given \c rect after transforming them
-/// using the \c transform of the given \c quad. The given \c quad must not be \c nil.
+/// using the \c transform of the given \c quad. The given \c quad must not be \c nil. Returns
+/// \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for more
+/// details).
 + (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
 
 /// Initializes a general quad defined by the given \c corners. In case of a simple (i.e.
 /// non-self-intersecting) quad, the corners have to be provided in clockwise order. The provided
-/// corners must not be degenerated (refer to \c LTQuadCornersValidity for more details). Checking
-/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
+/// corners must valid (refer to \c LTQuadCornersValidity for more details). Checking whether
+/// corners are valid for initialization can be done using the \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
 
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
