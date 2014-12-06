@@ -17,9 +17,18 @@
 
 @interface LTAdjustProcessor ()
 
-/// Texture that holds LUT that encapsulates brightess, contrast, exposure, offset, black point and
-/// white point adjustments.
-@property (strong, nonatomic) LTTexture *toneLUT;
+/// RGBA textures with one row and 256 columns that encapsulates channel-to-channel mapping:
+/// brightness, contrast, exposure, offset and curves. Default value is an identity mapping across
+/// the channels. Two textures are used for ping-pong rendering that improves the performance.
+
+/// First tone LUT texture.
+@property (strong, nonatomic) LTTexture *toneLUTA;
+
+/// Second tone LUT texture.
+@property (strong, nonatomic) LTTexture *toneLUTB;
+
+/// If \c YES, \c toneLUTA will be used during the next rendering pass, \c toneLUTB otherwise.
+@property (nonatomic) BOOL shouldUseToneLUTTextureB;
 
 /// If \c YES, tone LUT update should run at the next processing round of this processor.
 @property (nonatomic) BOOL shouldUpdateToneLUT;
@@ -56,6 +65,7 @@ static const CGFloat kTintScaling = 0.3;
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTAdjustFsh source] input:input andOutput:output]) {
+    [self createColorGradientTextures];
     [self setDefaultCurves];
     NSSet *keys = [NSSet setWithArray:@[@keypath(self.redCurve),
                                         @keypath(self.greenCurve),
@@ -64,6 +74,11 @@ static const CGFloat kTintScaling = 0.3;
     [self resetInputModelExceptKeys:keys];
   }
   return self;
+}
+
+- (void)createColorGradientTextures {
+  self.toneLUTA = [[self defaultColorGradient] textureWithSamplingPoints:kLutSize];
+  self.toneLUTB = [[self defaultColorGradient] textureWithSamplingPoints:kLutSize];
 }
 
 - (void)setDefaultCurves {
@@ -132,11 +147,10 @@ static const CGFloat kTintScaling = 0.3;
       @instanceKeypath(LTAdjustProcessor, contrast),
       @instanceKeypath(LTAdjustProcessor, exposure),
       @instanceKeypath(LTAdjustProcessor, offset),
-       
-      @instanceKeypath(LTAdjustProcessor, blackPoint),
-      @instanceKeypath(LTAdjustProcessor, whitePoint),
-      @instanceKeypath(LTAdjustProcessor, midPoint),
-       
+
+      @instanceKeypath(LTAdjustProcessor, blackPointShift),
+      @instanceKeypath(LTAdjustProcessor, whitePointShift),
+
       @instanceKeypath(LTAdjustProcessor, redCurve),
       @instanceKeypath(LTAdjustProcessor, greenCurve),
       @instanceKeypath(LTAdjustProcessor, blueCurve),
@@ -236,29 +250,8 @@ LTPropertyWithoutSetter(CGFloat, offset, Offset, -1, 1, 0);
   [self setNeedsToneLUTUpdate];
 }
 
-LTPropertyWithoutSetter(LTVector3, blackPoint, BlackPoint,
-                        -LTVector3One, LTVector3One, LTVector3Zero);
-- (void)setBlackPoint:(LTVector3)blackPoint {
-  [self _verifyAndSetBlackPoint:blackPoint];
-  [self setNeedsToneLUTUpdate];
-}
-
-LTPropertyWithoutSetter(LTVector3, whitePoint, WhitePoint,
-                        LTVector3Zero, LTVector3(2, 2, 2), LTVector3One);
-- (void)setWhitePoint:(LTVector3)whitePoint {
-  [self _verifyAndSetWhitePoint:whitePoint];
-  [self setNeedsToneLUTUpdate];
-}
-
-LTPropertyWithoutSetter(LTVector3, midPoint, MidPoint,
-                        -LTVector3One, LTVector3One, LTVector3Zero);
-- (void)setMidPoint:(LTVector3)midPoint {
-  [self _verifyAndSetMidPoint:midPoint];
-  [self setNeedsToneLUTUpdate];
-}
-
 - (BOOL)validateCurve:(cv::Mat1b)curve {
-  return curve.rows == 1 && curve.cols == 256 && curve.type() == CV_8U;
+  return curve.rows == 1 && curve.cols == kLutSize && curve.type() == CV_8U;
 }
 
 - (void)setGreyCurve:(cv::Mat1b)greyCurve {
@@ -283,6 +276,22 @@ LTPropertyWithoutSetter(LTVector3, midPoint, MidPoint,
   LTParameterAssert([self validateCurve:blueCurve], @"Blue curve should be 1x256 CV_8U matrix");
   _blueCurve = blueCurve.clone();
   [self setNeedsToneLUTUpdate];
+}
+
+#pragma mark -
+#pragma mark Levels
+#pragma mark -
+
+LTPropertyWithoutSetter(CGFloat, blackPointShift, BlackPointShift, -1, 1, 0);
+- (void)setBlackPointShift:(CGFloat)blackPointShift {
+  [self _verifyAndSetBlackPointShift:blackPointShift];
+  self[[LTAdjustFsh blackPoint]] = @(blackPointShift);
+}
+
+LTPropertyWithoutSetter(CGFloat, whitePointShift, WhitePointShift, -1, 1, 0);
+- (void)setWhitePointShift:(CGFloat)whitePointShift {
+  [self _verifyAndSetWhitePointShift:whitePointShift];
+  self[[LTAdjustFsh whitePoint]] = @(1 + whitePointShift);
 }
 
 #pragma mark -
@@ -337,9 +346,9 @@ LTPropertyWithoutSetter(CGFloat, hue, Hue, -1, 1, 0);
 
   GLKMatrix4 hue = GLKMatrix4MakeXRotation(self.hue * M_PI);
 
-  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(temperatureAndTint, kRGBtoYIQ);
-  tonalTranform = GLKMatrix4Multiply(saturation, tonalTranform);
+  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(saturation, kRGBtoYIQ);
   tonalTranform = GLKMatrix4Multiply(hue, tonalTranform);
+  tonalTranform = GLKMatrix4Multiply(temperatureAndTint, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
 
   self[[LTAdjustFsh tonalTransform]] = $(tonalTranform);
@@ -461,7 +470,7 @@ static const CGFloat kBalanceShift = 0.15;
 
   self.colorGradientTexture =
       [[[LTColorGradient alloc] initWithControlPoints:@[blacks, darks, lights, whites]]
-       textureWithSamplingPoints:256];
+       textureWithSamplingPoints:kLutSize];
   [self setAuxiliaryTexture:self.colorGradientTexture withName:[LTAdjustFsh colorGradientTexture]];
 }
 
@@ -485,18 +494,9 @@ static const CGFloat kBalanceShift = 0.15;
   return _detailsLUT;
 }
 
-- (LTTexture *)toneLUT {
-  if (!_toneLUT) {
-    cv::Mat4b tone(1, kLutSize, cv::Vec4b(0, 0, 0, 255));
-    _toneLUT = [LTTexture textureWithImage:tone];
-    [self setAuxiliaryTexture:_toneLUT withName:[LTAdjustFsh toneLUT]];
-  }
-  return _toneLUT;
-}
-
 - (LTTexture *)colorGradientTexture {
   if (!_colorGradientTexture) {
-    _colorGradientTexture = [[self defaultColorGradient] textureWithSamplingPoints:256];
+    _colorGradientTexture = [[self defaultColorGradient] textureWithSamplingPoints:kLutSize];
     [self setAuxiliaryTexture:_colorGradientTexture withName:[LTAdjustFsh colorGradientTexture]];
   }
   return _colorGradientTexture;
@@ -530,8 +530,6 @@ static const CGFloat kBalanceShift = 0.15;
 // Update brightness, contrast, exposure and offset.
 // Since these manipulations do not differ across RGB channels, they only require luminance update.
 - (cv::Mat1b)applyTone {
-  cv::Mat1b toneCurve(1, kLutSize);
-  
   cv::Mat1b brightnessCurve(1, kLutSize);
   if (self.brightness >= self.defaultBrightness) {
     brightnessCurve = [LTCurve positiveBrightness];
@@ -548,49 +546,24 @@ static const CGFloat kBalanceShift = 0.15;
   
   float brightness = std::abs(self.brightness);
   float contrast = std::abs(self.contrast);
+
+  cv::Mat1b toneCurve(1, kLutSize);
   cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
           (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
           toneCurve);
   
   toneCurve = toneCurve * std::pow(4.0, self.exposure) + self.offset * 255;
-  
+
   return toneCurve;
-}
-
-typedef std::vector<cv::Mat1b> Channels;
-
-- (Channels)applyLevels:(cv::Mat1b)toneCurve {
-  LTVector3 midPoint = LTVector3One + self.midPoint * LTVector3(0.8);
-  LTVector3 blackPoint = -self.blackPoint;
-  LTVector3 whitePoint = 2.0 * LTVector3One - self.whitePoint;
-
-  // Levels: black, white and mid points.
-  std::vector<cv::Mat1b> levels = {cv::Mat1b(1, kLutSize), cv::Mat1b(1, kLutSize),
-    cv::Mat1b(1, kLutSize)};
-  for (int i = 0; i < kLutSize; i++) {
-    // Remaps to [-kMinBlackPoint, kMaxWhitePoint].
-    CGFloat red = (std::powf(toneCurve(0, i) / 255.0, midPoint.r()) - blackPoint.r()) /
-        (whitePoint.r() - blackPoint.r());
-    CGFloat green = (std::powf(toneCurve(0, i) / 255.0, midPoint.g()) - blackPoint.g()) /
-        (whitePoint.g() - blackPoint.g());
-    CGFloat blue = (std::powf(toneCurve(0, i) / 255.0, midPoint.b()) - blackPoint.b()) /
-        (whitePoint.b() - blackPoint.b());
-    // Back to [0, 255].
-    levels[0](0, i) = MIN(MAX(std::round(red * 255), 0), 255);
-    levels[1](0, i) = MIN(MAX(std::round(green * 255), 0), 255);
-    levels[2](0, i) = MIN(MAX(std::round(blue * 255), 0), 255);
-  }
-  return levels;
 }
 
 - (void)updateToneLUT {
   cv::Mat1b toneCurve = [self applyTone];
-  Channels levels = [self applyLevels:toneCurve];
 
   std::vector<cv::Mat1b> colorChannels(3);
-  cv::LUT(levels[0], self.redCurve, colorChannels[0]);
-  cv::LUT(levels[1], self.greenCurve, colorChannels[1]);
-  cv::LUT(levels[2], self.blueCurve, colorChannels[2]);
+  cv::LUT(toneCurve, self.redCurve, colorChannels[0]);
+  cv::LUT(toneCurve, self.greenCurve, colorChannels[1]);
+  cv::LUT(toneCurve, self.blueCurve, colorChannels[2]);
   
   // Apply grey (luminance) curve across the channels.
   std::vector<cv::Mat1b> channels(4);
@@ -599,9 +572,13 @@ typedef std::vector<cv::Mat1b> Channels;
   }
   channels[3] = cv::Mat1b(1, kLutSize, 255);
 
-  [self.toneLUT mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+  LTTexture *target = self.shouldUseToneLUTTextureB ? self.toneLUTB : self.toneLUTA;
+  [target mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     cv::merge(channels, *mapped);
   }];
+  [self setAuxiliaryTexture:target withName:[LTAdjustFsh toneLUT]];
+
+  self.shouldUseToneLUTTextureB = !self.shouldUseToneLUTTextureB;
 }
 
 @end

@@ -46,24 +46,17 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on invalid whitePoint parameter", ^{
+  it(@"should fail on invalid whitePointShift parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.whitePoint = LTVector3(1, 1, 4);
+      adjust.whitePointShift = 4;
     }).to.raise(NSInvalidArgumentException);
   });
   
-  it(@"should fail on invalid blackPoint parameter", ^{
+  it(@"should fail on invalid blackPointShift parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.blackPoint = LTVector3(4, 0, 0);
-    }).to.raise(NSInvalidArgumentException);
-  });
-  
-  it(@"should fail on invalid midPoint parameter", ^{
-    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
-    expect(^{
-      adjust.midPoint = LTVector3(3, 0, 0);
+      adjust.blackPointShift = 4;
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -199,9 +192,8 @@ context(@"properties", ^{
       adjust.exposure = 1.0;
       adjust.offset = 0.9;
       // Levels.
-      adjust.whitePoint = LTVector3(0.9, 1.0, 1.0);
-      adjust.blackPoint = LTVector3(-0.1, 0.0, 0.1);
-      adjust.midPoint = LTVector3(-0.1, 0.9, 0.1);
+      adjust.whitePointShift = 0.8;
+      adjust.blackPointShift = -0.1;
       // Curves.
       cv::Mat1b mat = cv::Mat1b::zeros(1, 256);
       adjust.greyCurve = mat;
@@ -290,7 +282,7 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.blackPoint = -LTVector3(0.5, 0.5, 0.5);
+    adjust.blackPointShift = 0.5;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
   });
@@ -303,24 +295,11 @@ context(@"processing", ^{
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
                                                                   output:outputTexture];
-    adjust.whitePoint = LTVector3(1.5, 1.5, 1.5);
+    adjust.whitePointShift = -0.5;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
-  
-  it(@"should process mid point correctly", ^{
-    cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(128, 222, 74, 255));
-    
-    LTTexture *inputTexture = [LTTexture textureWithImage:input];
-    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
-    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
-                                                                  output:outputTexture];
-    adjust.midPoint = LTVector3(0.0, -1.0, 1.0);
-    [adjust process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
-  });
-  
+
   it(@"should process curves correctly", ^{
     cv::Mat4b input(11, 11, cv::Vec4b(64, 64, 64, 255));
     cv::Mat4b output(11, 11, cv::Vec4b(1, 65, 129, 255));
@@ -434,7 +413,7 @@ context(@"processing", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
     // See lightricks-research/enlight/Adjust/runmeAdjustColorTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
-    cv::Mat4b output(1, 1, cv::Vec4b(59, 79, 73, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(53, 78, 79, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -444,7 +423,7 @@ context(@"processing", ^{
     adjust.temperature = 0.2;
     adjust.tint = -0.1;
     [adjust process];
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 3);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
 
   it(@"should process split tone correctly", ^{
@@ -475,8 +454,8 @@ context(@"processing", ^{
     adjust.brightness = -0.1;
     adjust.contrast = 0.1;
     adjust.offset = 0.05;
-    adjust.blackPoint = LTVector3(0.1, 0.1, 0.0);
-    adjust.whitePoint = LTVector3(1.0, 1.0, 1.0);
+    adjust.blackPointShift = 0.1;
+    adjust.whitePointShift = 0.0;
     // Color.
     adjust.saturation = -0.3;
     adjust.temperature = 0.05;
