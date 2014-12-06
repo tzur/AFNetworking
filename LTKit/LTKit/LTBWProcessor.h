@@ -52,8 +52,8 @@ LTPropertyDeclare(LTVector3, colorFilter, ColorFilter);
 @property (strong, nonatomic) LTColorGradient *colorGradient;
 
 /// Intensity of the color gradient. A value of 0 will effectively use an identity color gradient. A
-/// value of 1 will use the given \c colorGradientTexture. A middle value will linearly interpolate
-/// the two. Should be in [0, 1] range. Default value is 0.
+/// value of 1 will use the given \c colorGradient. A middle value will linearly interpolate the
+/// two. Should be in [0, 1] range. Default value is 0.
 @property (nonatomic) CGFloat colorGradientIntensity;
 LTPropertyDeclare(CGFloat, colorGradientIntensity, ColorGradientIntensity);
 
