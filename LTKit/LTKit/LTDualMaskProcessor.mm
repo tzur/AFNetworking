@@ -52,8 +52,11 @@
 
 - (void)setCenter:(LTVector2)center {
   _center = center;
-  LTVector2 remap = LTVector2(center.x / self.outputSize.width, center.y / self.outputSize.height);
-  self[[LTDualMaskFsh center]] = $(remap);
+  if (!center.isNull()) {
+    LTVector2 remap = LTVector2(center.x / self.outputSize.width,
+                                center.y / self.outputSize.height);
+    self[[LTDualMaskFsh center]] = $(remap);
+  }
 }
 
 - (void)updateDiameterWith:(CGFloat)diameter {
