@@ -33,6 +33,47 @@ afterEach(^{
   processor = nil;
 });
 
+context(@"properties", ^{
+  beforeEach(^{
+    LTTexture *input = [LTTexture textureWithImage:cv::Mat4b(32, 32, cv::Vec4b(128, 64, 255, 255))];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTImageTileableFrameProcessor alloc] initWithInput:input output:output];
+  });
+
+  it(@"should return default angle property correctly", ^{
+    expect(processor.angle).to.equal(processor.defaultAngle);
+  });
+
+  it(@"should return default translation property correctly", ^{
+    expect(processor.translation).to.equal(CGPointZero);
+  });
+
+  it(@"should return updated angle and translation properties correctly", ^{
+    LTImageFrame *imageFrame = [[LTImageFrame alloc] initWithBaseTexture:nil baseMask:nil
+                                                               frameMask:nil
+                                                               frameType:LTFrameTypeStretch];
+    
+    CGFloat angle = 1.0;
+    CGPoint translation = CGPointMake(10, 20);
+    [processor setImageFrame:imageFrame angle:angle translation:translation];
+    expect(processor.angle).to.equal(angle);
+    expect(processor.translation).to.equal(translation);
+  });
+  
+  it(@"should reset angle and translation properties correctly", ^{
+    LTImageFrame *imageFrame = [[LTImageFrame alloc] initWithBaseTexture:nil baseMask:nil
+                                                               frameMask:nil
+                                                               frameType:LTFrameTypeStretch];
+    
+    CGFloat angle = 1.0;
+    CGPoint translation = CGPointMake(10, 20);
+    [processor setImageFrame:imageFrame angle:angle translation:translation];
+    [processor resetInputModel];
+    expect(processor.angle).to.equal(processor.defaultAngle);
+    expect(processor.translation).to.equal(CGPointZero);
+  });
+});
+
 context(@"processing portrait tileable frame", ^{
   __block LTTexture *baseTexture;
   __block LTTexture *baseMask;

@@ -24,6 +24,7 @@
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithInput:input output:output]) {
     self[[LTImageFrameFsh isTileable]] = @YES;
+    [self resetInputModel];
   }
   return self;
 }
@@ -126,6 +127,7 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, -M_PI, M_PI, 0);
 }
 
 - (void)setTranslation:(CGPoint)translation {
+  _translation = translation;
   self[[LTImageFrameFsh translation]] = $(LTVector2(translation.x, translation.y));
 }
 
