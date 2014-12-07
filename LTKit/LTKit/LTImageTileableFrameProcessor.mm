@@ -79,7 +79,7 @@
 }
 
 /// Default scaling for tile.
-static const CGFloat kDefaultTileScaling = 16;
+static const CGFloat kDefaultTileScaling = 1;
 
 - (CGFloat)defaultTileScaling {
   return kDefaultTileScaling;
