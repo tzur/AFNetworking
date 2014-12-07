@@ -82,6 +82,9 @@
 /// Size of the \c LTView's content, in pixels.
 @property (readonly, nonatomic) CGSize contentSize;
 
+/// Delegate informed about framebuffer changes.
+@property (weak, nonatomic) id<LTViewFramebufferDelegate> framebufferDelegate;
+
 /// Size of the \c LTView's framebuffer, in pixels.
 @property (readonly, nonatomic) CGSize framebufferSize;
 

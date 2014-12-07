@@ -55,6 +55,10 @@
 /// Manages the pixel grid drawn on the LTView on certain zoom levels.
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 
+/// Size of the \c LTView's framebuffer, in pixels, before the next redrawing of the underlying
+/// \c GLKView.
+@property (nonatomic) CGSize previousFramebufferSize;
+
 @end
 
 @implementation LTView
@@ -296,6 +300,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (void)glkView:(GLKView __unused *)view drawInRect:(CGRect __unused)rect {
+  [self informAboutFramebufferChangesIfRequired];
+
   [LTGLContext setCurrentContext:self.context];
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     context.renderingToScreen = YES;
@@ -306,6 +312,16 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // (Since we clear the buffers at the beginning of each draw cycle).
   const GLenum discards[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
   glDiscardFramebufferEXT(GL_FRAMEBUFFER, 2, discards);
+}
+
+- (void)informAboutFramebufferChangesIfRequired {
+  CGSize currentFramebufferSize = self.framebufferSize;
+  if (currentFramebufferSize != self.previousFramebufferSize) {
+    self.previousFramebufferSize = currentFramebufferSize;
+    if ([self.framebufferDelegate respondsToSelector:@selector(ltView:framebufferChangedToSize:)]) {
+      [self.framebufferDelegate ltView:self framebufferChangedToSize:currentFramebufferSize];
+    }
+  }
 }
 
 #pragma mark -
