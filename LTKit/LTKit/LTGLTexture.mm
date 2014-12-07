@@ -123,6 +123,9 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)destroy {
+  if (!self.name) {
+    return;
+  }
   [self unbind];
 
   glDeleteTextures(1, &_name);
