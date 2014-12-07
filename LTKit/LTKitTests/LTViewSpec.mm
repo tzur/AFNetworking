@@ -720,4 +720,32 @@ context(@"navigation delegate", ^{
   });
 });
 
+context(@"framebuffer delegate", ^{
+  __block id delegateMock;
+  __block id glkViewMock;
+  __block LTView *view;
+
+  beforeEach(^{
+    delegateMock = [OCMockObject mockForProtocol:@protocol(LTViewFramebufferDelegate)];
+    glkViewMock = [OCMockObject mockForClass:[GLKView class]];
+    [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(20)] drawableWidth];
+    [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(10)] drawableHeight];
+
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view.glkView = glkViewMock;
+    view.framebufferDelegate = delegateMock;
+  });
+
+  afterEach(^{
+    delegateMock = nil;
+    view = nil;
+  });
+
+  it(@"should forward event to delegate", ^{
+    [[delegateMock expect] ltView:view framebufferChangedToSize:CGSizeMake(20, 10)];
+    [((id<GLKViewDelegate>)view) glkView:glkViewMock drawInRect:CGRectMake(0, 0, 1, 1)];
+    OCMVerifyAll(delegateMock);
+  });
+});
+
 LTSpecEnd

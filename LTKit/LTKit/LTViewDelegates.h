@@ -84,3 +84,13 @@
 - (void)ltViewUserDoubleTapped;
 
 @end
+
+/// Protocol used to get updates on changes of the \c LTView's framebuffer.
+@protocol LTViewFramebufferDelegate <NSObject>
+
+@optional
+
+/// Notify the delegate that the \c ltView's framebuffer size has changed.
+- (void)ltView:(LTView *)view framebufferChangedToSize:(CGSize)size;
+
+@end
