@@ -143,6 +143,10 @@
 }
 
 - (void)destroy {
+  if (!self.name) {
+    return;
+  }
+
   [self lockTextureAndExecute:^{
     if (self.pixelBufferRef) {
       CVPixelBufferRelease(self.pixelBufferRef);
