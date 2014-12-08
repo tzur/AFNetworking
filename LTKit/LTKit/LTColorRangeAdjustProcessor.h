@@ -8,7 +8,7 @@
 
 /// Rendering modes of the processor.
 typedef NS_ENUM(NSUInteger, LTColorRangeRenderingMode) {
-  /// Render the image with the manipulation allied.
+  /// Render the image with the manipulation applied.
   LTColorRangeRenderingModeImage = 0,
   /// Render selection mask.
   LTColorRangeRenderingModeMask,
@@ -67,6 +67,11 @@ LTPropertyDeclare(CGFloat, fuzziness, Fuzziness);
 
 /// Sets the rendering mode of the processor. Default value is \c LTColorRangeRenderingModeImage.
 @property (nonatomic) LTColorRangeRenderingMode renderingMode;
+
+/// Color of the mask when \c renderingMode is \c LTColorRangeRenderingModeMaskOverlay. Components
+/// should be in [0, 1] range. Default value is (1, 0, 0).
+@property (nonatomic) LTVector3 maskColor;
+LTPropertyDeclare(LTVector3, maskColor, MaskColor);
 
 #pragma mark -
 #pragma mark Adjustment

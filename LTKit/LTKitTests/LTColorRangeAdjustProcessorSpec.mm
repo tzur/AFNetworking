@@ -95,7 +95,7 @@ context(@"processing", ^{
   });
   
   it(@"should modify exposure correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(255, 255, 255, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(255, 157, 255, 255));
     processor.exposure = 1.0;
     [processor process];
     
@@ -103,15 +103,15 @@ context(@"processing", ^{
   });
 
   it(@"should modify contrast correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(155, 0, 255, 255));
     processor.contrast = 1.0;
     [processor process];
 
-    expect($(output.image)).to.beCloseToMat($(expected));
+    // Contrast is pivoted around \c rangeColor and should leave the constant input unchanged.
+    expect($(output.image)).to.beCloseToMat($(input.image));
   });
   
   it(@"should modify saturation correctly ", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(105, 105, 105, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(121, 121, 121, 255));
     processor.saturation = -1.0;
     [processor process];
     
@@ -119,7 +119,7 @@ context(@"processing", ^{
   });
   
   it(@"should modify hue correctly ", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(247, 128, 72, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(114, 159, 0, 255));
     processor.hue = 1.0;
     [processor process];
     
@@ -142,7 +142,7 @@ context(@"masks", ^{
   });
   
   it(@"should render mask as overlay correctly ", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(76, 128, 229, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(255, 0, 0, 255));
     processor.renderingMode = LTColorRangeRenderingModeMaskOverlay;
     [processor process];
     
