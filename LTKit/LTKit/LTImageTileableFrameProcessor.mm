@@ -73,13 +73,19 @@
 #pragma mark -
 
 - (void)setScaleUniform {
-  CGFloat sizeRatio = self.outputSize.height / self.outputSize.width;
-  CGSize scaling = CGSizeMake(self.defaultTileScaling, sizeRatio * self.defaultTileScaling);
+  CGSize scaling;
+  if (self.outputSize.width > self.outputSize.height) {
+    CGFloat sizeRatio = self.outputSize.height / self.outputSize.width;
+    scaling = CGSizeMake(self.defaultTileScaling, sizeRatio * self.defaultTileScaling);
+  } else {
+    CGFloat sizeRatio = self.outputSize.width / self.outputSize.height;
+    scaling = CGSizeMake(sizeRatio * self.defaultTileScaling, self.defaultTileScaling);
+  }
   self[[LTImageFrameFsh scaling]] = $(LTVector2(scaling.width, scaling.height));
 }
 
 /// Default scaling for tile.
-static const CGFloat kDefaultTileScaling = 1;
+static const CGFloat kDefaultTileScaling = 2;
 
 - (CGFloat)defaultTileScaling {
   return kDefaultTileScaling;
