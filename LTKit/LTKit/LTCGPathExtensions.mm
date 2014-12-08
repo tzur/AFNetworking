@@ -204,6 +204,12 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
 
   CGMutablePathRef combinedGlyphsPathRef = CGPathCreateMutable();
 
+  @onExit {
+    if (combinedGlyphsPathRef) {
+      CGPathRelease(combinedGlyphsPathRef);
+    }
+  };
+
   // It would be easy to wrap the text into a different shape, including arbitrary bezier paths,
   // if needed.
   UIBezierPath *frameShape =
@@ -241,7 +247,6 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
                               CGAffineTransformConcat(mirrorAroundYAxis,
                                                       translateTopLeftCornerToPointZero));
   CGPathRef result = CGPathCreateCopyByTransformingPath(combinedGlyphsPathRef, &transform);
-  CGPathRelease(combinedGlyphsPathRef);
   return result;
 }
 
