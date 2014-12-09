@@ -3,6 +3,7 @@
 
 #import "LTColorRangeAdjustProcessor.h"
 
+#import "LTCLAHEProcessor.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
@@ -26,6 +27,9 @@ LTPropertyDeclare(LTVector3, rangeColor, RangeColor);
 /// If \c YES, tonal transform update should run at the next processing round of this processor.
 @property (nonatomic) BOOL shouldUpdateTonalTransform;
 
+/// The generation id of the input texture that was used to create the current details textures.
+@property (nonatomic) NSUInteger inputTextureGenerationID;
+
 @end
 
 @implementation LTColorRangeAdjustProcessor
@@ -47,8 +51,27 @@ static const CGFloat kMaskDownscalingFactor = 4;
   return self;
 }
 
+- (void)updateDetailsTextureIfNecessary {
+  if (self.inputTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTColorRangeAdjustFsh detailsTexture]]) {
+    self.inputTextureGenerationID = self.inputTexture.generationID;
+    [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
+                     withName:[LTColorRangeAdjustFsh detailsTexture]];
+  }
+}
+
+- (LTTexture *)createDetailsTexture:(LTTexture *)inputTexture {
+  LTTexture *detailsTexture = [LTTexture byteRedTextureWithSize:inputTexture.size];
+  LTCLAHEProcessor *processor = [[LTCLAHEProcessor alloc] initWithInputTexture:self.inputTexture
+                                                                 outputTexture:detailsTexture];
+  [processor process];
+  return detailsTexture;
+}
+
 - (void)preprocess {
   [super preprocess];
+
+  [self updateDetailsTextureIfNecessary];
 
   if (self.needsDualMaskProcessing) {
     [self.dualMaskProcessor process];
@@ -176,14 +199,14 @@ LTPropertyWithoutSetter(CGFloat, exposure, Exposure, -1, 1, 0);
 LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
 - (void)setContrast:(CGFloat)contrast {
   [self _verifyAndSetContrast:contrast];
-  [self setNeedsTonalTransformUpdate];
+  self[[LTColorRangeAdjustFsh detailsBoost]] = @(contrast);
 }
 
 /// This method passes to the shader a 4x4 matrix that encapsulated the following tonal adjustments:
-/// Hue, saturation, exposure and contrast.
+/// Hue, saturation and exposure.
 /// Using the formalism of the affine transformations, conversion to and from YIQ color space is
-/// a rotation. Saturation is a scaling of y and z axis. Hue is a rotation around x axis. Contrast
-/// is scaling and translation of x axis. Exposure is formulated as scaling in RGB color space.
+/// a rotation. Saturation is a scaling of y and z axis. Hue is a rotation around x axis. Exposure
+/// is formulated as scaling in RGB color space.
 - (void)updateTonalTransform {
   static const GLKMatrix4 kRGBtoYIQ = GLKMatrix4Make(0.299, 0.596, 0.212, 0,
                                                      0.587, -0.274, -0.523, 0,
@@ -205,16 +228,8 @@ LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
   exposure.m11 = [self remapExposure:self.exposure];
   exposure.m22 = [self remapExposure:self.exposure];
 
-  GLKMatrix4 contrast = GLKMatrix4Identity;
-  CGFloat remappedContrast = [self remapContrast:self.contrast];
-  contrast.m00 = remappedContrast;
-  static const LTVector3 kYPrime = LTVector3(0.299, 0.587, 0.114);
-  // Shader uses cheap square linearization, pivot should undergo the same transformation.
-  contrast.m30 = (1 - remappedContrast) * kYPrime.dot(self.rangeColor * self.rangeColor);
-
   GLKMatrix4 tonalTranform = GLKMatrix4Multiply(saturation, kRGBtoYIQ);
   tonalTranform = GLKMatrix4Multiply(hue, tonalTranform);
-  tonalTranform = GLKMatrix4Multiply(contrast, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(exposure, tonalTranform);
 
@@ -222,17 +237,11 @@ LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
 }
 
 static const CGFloat kSaturationScaling = 1.5;
-static const CGFloat kContrastScaling = 2.5;
 static const CGFloat kExposureBase = 6.0;
 
 /// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, kSaturationScaling].
 - (CGFloat)remapSaturation:(CGFloat)saturation {
   return saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
-}
-
-/// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, kSaturationScaling].
-- (CGFloat)remapContrast:(CGFloat)contrast {
-  return contrast < 0 ? contrast + 1 : 1 + contrast * kContrastScaling;
 }
 
 - (CGFloat)remapExposure:(CGFloat)exposure {
