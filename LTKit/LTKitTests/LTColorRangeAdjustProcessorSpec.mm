@@ -94,8 +94,22 @@ context(@"processing", ^{
     processor.diameter = 10;
   });
   
+  it(@"should update internal state if input texture is changed", ^{
+    [input clearWithColor:LTVector4(1, 1, 1, 1)];
+    processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+    processor.contrast = 1;
+    processor.center = LTVector2Zero;
+    processor.diameter = 10;
+    [processor process];
+    [input clearWithColor:LTVector4(0, 0, 0, 1)];
+    [processor process];
+    // If details texture is not updated, the result will not be zero.
+    cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 0, 255));
+    expect($(processor.outputTexture.image)).to.beCloseToMat($(expected));
+  });
+
   it(@"should modify exposure correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(255, 157, 255, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(252, 155, 252, 255));
     processor.exposure = 1.0;
     [processor process];
     
@@ -103,10 +117,12 @@ context(@"processing", ^{
   });
 
   it(@"should modify contrast correctly", ^{
+    [input clearWithColor:LTVector4(1, 1, 1, 1)];
     processor.contrast = 1.0;
     [processor process];
 
-    // Contrast is pivoted around \c rangeColor and should leave the constant input unchanged.
+    // Local contrast is pivoted around the content of image and should leave the constant input
+    // unchanged.
     expect($(output.image)).to.beCloseToMat($(input.image));
   });
   
