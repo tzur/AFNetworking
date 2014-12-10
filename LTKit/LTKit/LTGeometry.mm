@@ -56,6 +56,11 @@ BOOL LTPointsAreCollinear(const CGPoints &points) {
   return YES;
 }
 
+
+#pragma mark -
+#pragma mark - Rotation
+#pragma mark -
+
 CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
   point = point + (-1 * anchor);
   CGPoint result;
@@ -63,6 +68,10 @@ CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
   result.y = std::sin(angle) * point.x + std::cos(angle) * point.y;
   return result + anchor;
 }
+
+#pragma mark -
+#pragma mark - Intersection
+#pragma mark -
 
 // TODO:(Rouven) This method implements a naive O(n^2) approach. More efficient algorithms are
 // possible and should be implemented if required. E.g. the Bentley Ottmann sweep line algorithm
@@ -157,10 +166,40 @@ BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
       != LTPointLocationRelativeToRay(p1, q0, CGPointFromSize(q1 - q0));
 }
 
+#pragma mark -
+#pragma mark - Point to line/edge relation
+#pragma mark -
+
 /// @see: http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
+LTVector2 LTVectorFromPointToClosestPointOnLine(CGPoint point, CGPoint pointOnLine,
+                                                CGPoint anotherPointOnLine) {
+  LTParameterAssert(pointOnLine != anotherPointOnLine);
   LTVector2 a = LTVector2(pointOnLine);
   LTVector2 n = (LTVector2(anotherPointOnLine) - a).normalized();
   LTVector2 ap = a - LTVector2(point);
-  return (ap - ((ap).dot(n) * n)).length();
+  return ap - ((ap).dot(n) * n);
+}
+
+CGPoint LTPointOnLineClosestToPoint(CGPoint pointOnLine, CGPoint anotherPointOnLine,
+                                    CGPoint point) {
+  return point + (CGPoint)LTVectorFromPointToClosestPointOnLine(point, pointOnLine,
+                                                                anotherPointOnLine);
+}
+
+CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point) {
+  LTParameterAssert(p0 != p1);
+  CGPoint pointOnLine = LTPointOnLineClosestToPoint(p0, p1, point);
+  CGFloat distanceP0P1 = LTVector2(p0 - p1).length();
+  CGFloat distanceP0PointOnLine = LTVector2(p0 - pointOnLine).length();
+  CGFloat distanceP1PointOnLine = LTVector2(p1 - pointOnLine).length();
+  if (distanceP0PointOnLine <= distanceP0P1 && distanceP1PointOnLine <= distanceP0P1) {
+    return pointOnLine;
+  } else if (distanceP0PointOnLine <= distanceP0P1) {
+    return p0;
+  }
+  return p1;
+}
+
+CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
+  return LTVectorFromPointToClosestPointOnLine(point, pointOnLine, anotherPointOnLine).length();
 }

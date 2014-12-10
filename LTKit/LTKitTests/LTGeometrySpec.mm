@@ -12,7 +12,7 @@ static const CGFloat kEpsilon = 1e-6;
 context(@"relative point location in 2D", ^{
   it(@"should correctly compute the location of a point in relation to a ray", ^{
     const CGPoint p = CGPointMake(0.5, 1);
-    const CGPoint q = CGPointMake(0, 0);
+    const CGPoint q = CGPointZero;
     const CGPoint r = CGPointMake(1, 0);
     BOOL liesOnRightSide =
         LTPointLocationRelativeToRay(p, q, CGPointFromSize(r - q)) == LTPointLocationRightOfRay;
@@ -35,7 +35,7 @@ context(@"collinearity", ^{
     expect(LTPointsAreCollinear(points1)).to.beTruthy();
     CGPoints points2{CGPointZero, CGPointMake(1, 1)};
     expect(LTPointsAreCollinear(points2)).to.beTruthy();
-    CGPoints points3{CGPointMake(0, 0), CGPointMake(1, 1), CGPointMake(0.5, 0.5)};
+    CGPoints points3{CGPointZero, CGPointMake(1, 1), CGPointMake(0.5, 0.5)};
     expect(LTPointsAreCollinear(points3)).to.beTruthy();
     CGPoints points4{CGPointMake(1, 1), CGPointMake(M_PI, M_PI), CGPointMake(M_PI_2, M_PI_2)};
     expect(LTPointsAreCollinear(points4)).to.beTruthy();
@@ -71,7 +71,7 @@ context(@"affine transformations", ^{
 
 context(@"intersection", ^{
   it(@"should correctly compute whether two edges intersect", ^{
-    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint q0 = CGPointMake(0.5, -0.5);
     CGPoint q1 = CGPointMake(0.5, 0.5);
@@ -81,7 +81,7 @@ context(@"intersection", ^{
   });
 
   it(@"it should correctly compute whether a given polyline intersects itself", ^{
-    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0.5, 0.5);
@@ -92,7 +92,7 @@ context(@"intersection", ^{
   });
 
   it(@"should correctly compute the intersection point of two edges", ^{
-    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0, 0.5);
@@ -104,7 +104,7 @@ context(@"intersection", ^{
   });
 
   it(@"should correctly compute the intersection point of two lines", ^{
-    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0, 0.5);
@@ -121,7 +121,7 @@ context(@"intersection", ^{
   });
 
   it(@"it should correctly compute all intersection points of a given polyline", ^{
-    CGPoint p0 = CGPointMake(0, 0);
+    CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0, 0.5);
@@ -136,9 +136,47 @@ context(@"intersection", ^{
   });
 });
 
-context(@"distance of point from line", ^{
+context(@"relationship point and line/edge", ^{
+  it(@"should correctly compute the closest point on a line from a given point", ^{
+    CGPoint a = CGPointZero;
+    CGPoint b = CGPointMake(1, 0);
+    CGPoint point = CGPointMake(0.5, 0.5);
+    expect(LTPointOnLineClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointMake(0.5, 0),
+                                                                             kEpsilon);
+
+    a = CGPointZero;
+    b = CGPointMake(1, 1);
+    point = CGPointMake(0.5, 0.5);
+    expect(LTPointOnLineClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointMake(0.5, 0.5),
+                                                                             kEpsilon);
+
+    a = CGPointZero;
+    b = CGPointMake(0, 1);
+    point = CGPointMake(2, 0);
+    expect(LTPointOnLineClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+  });
+
+  it(@"should correctly compute the closest point on an edge from a given point", ^{
+    CGPoint a = CGPointZero;
+    CGPoint b = CGPointMake(1, 0);
+    CGPoint point = CGPointMake(0.5, 0.5);
+    expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointMake(0.5, 0),
+                                                                             kEpsilon);
+
+    a = CGPointZero;
+    b = CGPointMake(1, 1);
+    point = CGPointMake(1.5, 0.5);
+    expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointMake(1, 1),
+                                                                             kEpsilon);
+
+    a = CGPointZero;
+    b = CGPointMake(0, 1);
+    point = CGPointMake(-2, -1);
+    expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+  });
+
   it(@"should correctly compute the distance of a point ON a line", ^{
-    CGPoint a = CGPointMake(0, 0);
+    CGPoint a = CGPointZero;
     CGPoint b = CGPointMake(1, 1);
     CGPoint point = CGPointMake(0.5, 0.5);
     expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
@@ -153,7 +191,7 @@ context(@"distance of point from line", ^{
   });
 
   it(@"should correctly compute the distance of a general point from a line", ^{
-    CGPoint a = CGPointMake(0, 0);
+    CGPoint a = CGPointZero;
     CGPoint b = CGPointMake(1, 1);
     CGPoint point = CGPointMake(1, 0);
     expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(M_SQRT1_2, kEpsilon);
