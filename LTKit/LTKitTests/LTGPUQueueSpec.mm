@@ -128,30 +128,14 @@ context(@"pause and resume", ^{
   });
 
   it(@"should support pausing", ^{
-    __block BOOL paused = NO;
-
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-    [queue pauseWithCompletion:^{
-      paused = YES;
-      dispatch_semaphore_signal(semaphore);
-    }];
-
-    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
+    [queue pauseWhileBlocking];
 
     expect(queue.isPaused).to.beTruthy();
-    expect(paused).to.beTruthy();
   });
 
   it(@"should support resuming", ^{
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-    [queue pauseWithCompletion:^{
-      [queue resume];
-      dispatch_semaphore_signal(semaphore);
-    }];
-
-    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
+    [queue pauseWhileBlocking];
+    [queue resume];
 
     expect(queue.isPaused).to.beFalsy();
   });
@@ -165,13 +149,12 @@ context(@"pause and resume", ^{
     [queue runAsync:^{
       ranFirstTask = YES;
     } completion:^{
-      [queue pauseWithCompletion:^{
-        [queue runAsync:^{
-          ranSecondTask = YES;
-        } completion:nil];
-        
-        dispatch_semaphore_signal(semaphore);
-      }];
+      [queue pauseWhileBlocking];
+      [queue runAsync:^{
+        ranSecondTask = YES;
+      } completion:nil];
+
+      dispatch_semaphore_signal(semaphore);
     }];
 
     dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
@@ -183,20 +166,14 @@ context(@"pause and resume", ^{
   it(@"should execute pending task when resuming", ^{
     __block BOOL ranTask = NO;
 
-    dispatch_semaphore_t pauseSemaphore = dispatch_semaphore_create(0);
     dispatch_semaphore_t taskSemaphore = dispatch_semaphore_create(0);
 
-    [queue pauseWithCompletion:^{
-      [queue runAsync:^{
-        ranTask = YES;
-      } completion:^{
-        dispatch_semaphore_signal(taskSemaphore);
-      }];
-
-      dispatch_semaphore_signal(pauseSemaphore);
+    [queue pauseWhileBlocking];
+    [queue runAsync:^{
+      ranTask = YES;
+    } completion:^{
+      dispatch_semaphore_signal(taskSemaphore);
     }];
-
-    dispatch_semaphore_wait(pauseSemaphore, semaphoreWaitTime);
 
     expect(ranTask).to.beFalsy();
 

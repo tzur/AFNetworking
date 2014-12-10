@@ -334,11 +334,11 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)waitForGPU {
-  GLint64 max_timeout;
-  glGetInteger64vAPPLE(GL_MAX_SERVER_WAIT_TIMEOUT_APPLE, &max_timeout);
+  GLint64 maxTimeout;
+  glGetInteger64vAPPLE(GL_MAX_SERVER_WAIT_TIMEOUT_APPLE, &maxTimeout);
   GLenum waitResult = glClientWaitSyncAPPLE(self.syncObject,
                                             GL_SYNC_FLUSH_COMMANDS_BIT_APPLE,
-                                            max_timeout);
+                                            maxTimeout);
   self.syncObject = nil;
 
   LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");

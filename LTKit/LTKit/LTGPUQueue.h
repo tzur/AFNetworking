@@ -88,11 +88,11 @@ typedef BOOL (^LTGPUQueueFailureBlock)(NSError *error);
 #pragma mark -
 
 /// Pauses the queue. This is not an immediate process, and will take effect only after the current
-/// executing block and all queued synchonous blocks will be finish executing.
+/// executing block and all queued synchronous blocks will finish executing. Any dispatches made
+/// after this method has returned will not run until the corresponding \c resume message is sent.
 ///
-/// @param completion completion block to call once the queue is paused. Any dispatches made after
-/// this block has been called will not run until the corresponding \c resume message is sent.
-- (void)pauseWithCompletion:(LTCompletionBlock)completion;
+/// This method blocks until the queue is paused.
+- (void)pauseWhileBlocking;
 
 /// Resumes the queue. Any pending tasks will start executing immediately.
 - (void)resume;
