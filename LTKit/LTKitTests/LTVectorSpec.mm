@@ -320,6 +320,16 @@ context(@"LTVector3", ^{
   });
 
   context(@"conversions", ^{
+    it(@"should convert from rgb to hsv", ^{
+      LTVector3 expected = LTVector3(0, 1, 1);
+      expect((LTVector3(1, 0, 0).rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from hsv to rgb", ^{
+      LTVector3 expected = LTVector3(1, 0, 0);
+      expect((LTVector3(0, 1, 1).hsvToRgb() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
     it(@"should convert from string", ^{
       NSString *value = @"(1.5, 2.5, 3)";
       LTVector3 vector = LTVector3FromString(value);
@@ -474,6 +484,16 @@ context(@"LTVector4", ^{
   });
 
   context(@"conversions", ^{
+    it(@"should convert from rgb to hsv, while leaving last coordinate unchanged", ^{
+      LTVector4 expected = LTVector4(0, 1, 1, 2);
+      expect((LTVector4(1, 0, 0, 2).rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from hsv to rgb, while leaving last coordinate unchanged", ^{
+      LTVector4 expected = LTVector4(1, 0, 0, 2);
+      expect((LTVector4(0, 1, 1, 2).hsvToRgb() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
     it(@"should convert from string", ^{
       NSString *value = @"(1.5, 2.5, 3, 4)";
       LTVector4 vector = LTVector4FromString(value);

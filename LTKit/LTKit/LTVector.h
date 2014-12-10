@@ -445,6 +445,12 @@ struct LTVector3 {
     return reinterpret_cast<const float *>(this);
   }
 
+  /// Converts from RGB to HSV color space.
+  LTVector3 rgbToHsv() const;
+
+  /// Converts from HSV to RGB color space.
+  LTVector3 hsvToRgb() const;
+
   float x;
   float y;
   float z;
@@ -732,6 +738,12 @@ struct LTVector4 {
   inline const float *data() const {
     return reinterpret_cast<const float *>(this);
   }
+
+  /// Converts from RGB to HSV color space, leaving last coordinate unchanged.
+  LTVector4 rgbToHsv() const;
+
+  /// Converts from HSV to RGB color space, leaving last coordinate unchanged.
+  LTVector4 hsvToRgb() const;
 
   float x;
   float y;

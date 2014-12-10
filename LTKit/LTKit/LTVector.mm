@@ -44,6 +44,19 @@ LTVector3 LTVector3FromString(NSString *string) {
   if (![scanner isAtEnd]) return LTVector3();
   return LTVector3(x, y, z);
 }
+ LTVector3 LTVector3::rgbToHsv() const {
+  cv::Mat3f rgbMat(1, 1, cv::Vec3f(x, y, z));
+  cv::Mat3f hsvMat(1, 1);
+  cv::cvtColor(rgbMat, hsvMat, CV_RGB2HSV);
+  return LTVector3(hsvMat(0, 0)[0] / 360, hsvMat(0, 0)[1], hsvMat(0, 0)[2]);
+}
+
+LTVector3 LTVector3::hsvToRgb() const {
+  cv::Mat3f hsvMat(1, 1, cv::Vec3f(x * 360, y, z));
+  cv::Mat3f rgbMat(1, 1);
+  cv::cvtColor(hsvMat, rgbMat, CV_HSV2RGB);
+  return LTVector3(rgbMat(0, 0)[0], rgbMat(0, 0)[1], rgbMat(0, 0)[2]);
+}
 
 #pragma mark -
 #pragma mark LTVector4
@@ -67,4 +80,12 @@ LTVector4 LTVector4FromString(NSString *string) {
   if (![scanner scanString:@")" intoString:nil]) return LTVector4();
   if (![scanner isAtEnd]) return LTVector4();
   return LTVector4(x, y, z, w);
+}
+
+LTVector4 LTVector4::rgbToHsv() const {
+  return LTVector4(rgb().rgbToHsv(), w);
+}
+
+LTVector4 LTVector4::hsvToRgb() const {
+  return LTVector4(rgb().hsvToRgb(), w);
 }
