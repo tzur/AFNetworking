@@ -7,6 +7,14 @@
 
 @class LTColorGradient;
 
+/// Types of rotations available for lightleak textures.
+typedef NS_ENUM(NSUInteger, LTLightLeakRotation) {
+  LTLightLeakRotation0 = 0,
+  LTLightLeakRotation90,
+  LTLightLeakRotation180,
+  LTLightLeakRotation270
+};
+
 /// @class LTAnalogFilmProcessor
 ///
 /// Implements analog film effect. Controls the tonal characteristics of the result and additional
@@ -120,6 +128,9 @@ LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 /// Intensity of the light leak. Should be in [0, 1] range. Default value is 0.
 @property (nonatomic) CGFloat lightLeakIntensity;
 LTPropertyDeclare(CGFloat, lightLeakIntensity, LightLeakIntensity);
+
+/// Rotation of the light leak. Default value is \c LTLightLeakRotation0.
+@property (nonatomic) LTLightLeakRotation lightLeakRotation;
 
 /// Width of the frame. Should be in [-1, 1] range. Default value is 0.
 @property (nonatomic) CGFloat frameWidth;

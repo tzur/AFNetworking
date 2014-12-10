@@ -7,6 +7,7 @@
 #import "LTColorConversionProcessor.h"
 #import "LTColorGradient.h"
 #import "LTCurve.h"
+#import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTProceduralVignetting.h"
@@ -96,6 +97,10 @@
   return assetTexture;
 }
 
+- (LTLightLeakRotation)defaultLightLeakRotation {
+  return LTLightLeakRotation0;
+}
+
 - (LTTexture *)createVignettingTextureWithInput:(LTTexture *)input {
   static const CGFloat kVignettingMaxDimension = 256;
   CGSize vignettingSize = CGScaleDownToDimension(input.size, kVignettingMaxDimension);
@@ -155,6 +160,7 @@
       
       @instanceKeypath(LTAnalogFilmProcessor, assetTexture),
       @instanceKeypath(LTAnalogFilmProcessor, lightLeakIntensity),
+      @instanceKeypath(LTAnalogFilmProcessor, lightLeakRotation),
       @instanceKeypath(LTAnalogFilmProcessor, frameWidth)
     ]];
   });
@@ -414,6 +420,27 @@ LTPropertyWithoutSetter(CGFloat, frameWidth, FrameWidth, -1, 1, 0);
   // movement will feel more natural.
   static const CGFloat kFrameWidthScaling = 0.07;
   return width * kFrameWidthScaling;
+}
+
+- (void)setLightLeakRotation:(LTLightLeakRotation)lightLeakRotation {
+  _lightLeakRotation = lightLeakRotation;
+  CGFloat rotation;
+  switch (lightLeakRotation) {
+    case LTLightLeakRotation0:
+      rotation = 0;
+      break;
+    case LTLightLeakRotation90:
+      rotation = M_PI_2;
+      break;
+    case LTLightLeakRotation180:
+      rotation = M_PI;
+      break;
+    case LTLightLeakRotation270:
+      rotation = M_PI + M_PI_2;
+      break;
+  }
+  GLKMatrix2 rotationMatrix = GLKMatrix2MakeRotation(-rotation);
+  self[[LTAnalogFilmVsh lightLeakRotation]] = $(rotationMatrix);
 }
 
 @end

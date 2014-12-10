@@ -22,6 +22,7 @@ uniform sampler2D assetTexture;
 uniform sampler2D colorGradientTexture;
 
 varying highp vec2 vTexcoord;
+varying highp vec2 vLightLeakTexcoord;
 varying highp vec2 vGrainTexcoord;
 
 uniform mediump float structure;
@@ -99,10 +100,10 @@ void main() {
   mediump vec2 lightCoords;
   if (aspectRatio < 1.0) {
     frameCoords = getFrameCoordinates(vTexcoord, frameWidth, aspectRatio);
-    lightCoords = getLightCoordinates(vTexcoord, aspectRatio);
+    lightCoords = getLightCoordinates(vLightLeakTexcoord, aspectRatio);
   } else {
     frameCoords = getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / aspectRatio).yx;
-    lightCoords = getLightCoordinates(vTexcoord.yx, 1.0 / aspectRatio).yx;
+    lightCoords = getLightCoordinates(vLightLeakTexcoord.yx, 1.0 / aspectRatio).yx;
   }
 
   mediump float frame = texture2D(assetTexture, frameCoords).a;

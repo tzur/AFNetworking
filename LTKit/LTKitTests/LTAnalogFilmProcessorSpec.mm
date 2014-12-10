@@ -60,6 +60,10 @@ context(@"properties", ^{
     expect(LTFuzzyCompareMat(processor.grainTexture.image, grey)).to.beTruthy();
   });
   
+  it(@"should return default light leak rotation as 0 degrees rotation", ^{
+    expect(processor.lightLeakRotation).to.equal(LTLightLeakRotation0);
+  });
+
   it(@"should not fail on correct tone input", ^{
     expect(^{
       processor.brightness = 0.1;
@@ -222,6 +226,64 @@ context(@"processing", ^{
     [processor process];
     
     cv::Mat4b output(2, 2, cv::Vec4b(112, 112, 112, 255));
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+});
+
+context(@"light leak rotations", ^{
+  beforeEach(^{
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0, 0, 0, 1)];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
+
+    cv::Mat4b assetImage(2, 2, cv::Vec4b(0, 0, 0, 128));
+    assetImage(0, 0) = cv::Vec4b(255, 0, 0, 128);
+    LTTexture *assetTexture = [LTTexture textureWithImage:assetImage];
+
+    processor.assetTexture = assetTexture;
+    processor.lightLeakIntensity = 1.0;
+  });
+
+  afterEach(^{
+    processor = nil;
+    inputTexture = nil;
+    outputTexture = nil;
+  });
+
+  it(@"should rotate light leak by 90 degrees correctly", ^{
+    processor.lightLeakRotation = LTLightLeakRotation0;
+    [processor process];
+
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    output(0, 0) = cv::Vec4b(255, 0, 0, 255);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  it(@"should rotate light leak by 90 degrees correctly", ^{
+    processor.lightLeakRotation = LTLightLeakRotation90;
+    [processor process];
+
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    output(0, 1) = cv::Vec4b(255, 0, 0, 255);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  it(@"should rotate light leak by 90 degrees correctly", ^{
+    processor.lightLeakRotation = LTLightLeakRotation180;
+    [processor process];
+
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    output(1, 1) = cv::Vec4b(255, 0, 0, 255);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  it(@"should rotate light leak by 90 degrees correctly", ^{
+    processor.lightLeakRotation = LTLightLeakRotation270;
+    [processor process];
+
+    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    output(1, 0) = cv::Vec4b(255, 0, 0, 255);
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
 });
