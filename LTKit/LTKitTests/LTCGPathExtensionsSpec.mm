@@ -466,7 +466,6 @@ context(@"creation", ^{
     });
 
     it(@"should correctly create a path for a given single line attributed string", ^{
-      CGPathRelease(path);
       UIFont *font = [UIFont fontWithName:@"Helvetica" size:10];
       NSAttributedString *attributedString =
           [[NSAttributedString alloc] initWithString:@"L\n"

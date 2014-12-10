@@ -197,11 +197,6 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
   CTFramesetterRef frameSetterRef = NULL;
   CTFrameRef frameRef = NULL;
 
-  @onExit {
-    LTCFSafeRelease(frameSetterRef);
-    LTCFSafeRelease(frameRef);
-  };
-
   CGMutablePathRef combinedGlyphsPathRef = CGPathCreateMutable();
 
   @onExit {
@@ -210,6 +205,10 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
     }
   };
 
+  if (!combinedGlyphsPathRef) {
+    return NULL;
+  }
+
   // It would be easy to wrap the text into a different shape, including arbitrary bezier paths,
   // if needed.
   UIBezierPath *frameShape =
@@ -217,11 +216,21 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
 
   frameSetterRef =
       CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+
+  @onExit {
+    LTCFSafeRelease(frameSetterRef);
+  };
+
   if (!frameSetterRef) {
     return NULL;
   }
 
   frameRef = CTFramesetterCreateFrame(frameSetterRef, CFRangeMake(0,0), [frameShape CGPath], NULL);
+
+  @onExit {
+    LTCFSafeRelease(frameRef);
+  };
+
   if (!frameRef) {
     return NULL;
   }
