@@ -33,6 +33,8 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 
 @implementation LTGPUQueue
 
+objection_register_singleton([LTGPUQueue class]);
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -238,22 +240,23 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
 #pragma mark Flow control
 #pragma mark -
 
-- (void)pauseWithCompletion:(LTCompletionBlock)completion {
+- (void)pauseWhileBlocking {
   @synchronized(self) {
     if (self.isPaused) {
       return;
     }
 
-    dispatch_async(self.highPriorityQueue, ^{
+    // Suspend the low priority queue. This will stop sending enqueued blocks from the low priority
+    // queue to the high priority queue.
+    dispatch_suspend(self.lowPriorityQueue);
+
+    // Dispatch a suspending block to the high priority block. Once this block finishes execution,
+    // no more blocks will be executing in the high priority queue. Since the high priority queue is
+    // the target of the low priority queue, nothing will be executed on the queue until \c resume
+    // is called.
+    dispatch_sync(self.highPriorityQueue, ^{
       dispatch_suspend(self.highPriorityQueue);
-
       self.isPaused = YES;
-
-      if (completion) {
-        dispatch_async(self.completionQueue, ^{
-          completion();
-        });
-      }
     });
   }
 }
@@ -264,6 +267,7 @@ static void *kLTGPUHighPriorityQueueKey = &kLTGPUHighPriorityQueueKey;
       return;
     }
 
+    dispatch_resume(self.lowPriorityQueue);
     dispatch_resume(self.highPriorityQueue);
     self.isPaused = NO;
   }
