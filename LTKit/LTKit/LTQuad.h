@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 };
 
 /// Represents a quadrilateral in the XY plane.
-@interface LTQuad : NSObject
+@interface LTQuad : NSObject <NSCopying>
 
 /// Returns a rectangular quad defined by the given \c rect. Returns \c nil if the resulting quad
 /// would be invalid (refer to \c LTQuadCornersValidity for more details).
