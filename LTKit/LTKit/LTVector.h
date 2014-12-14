@@ -752,7 +752,7 @@ struct LTVector4 {
 };
 
 inline bool operator==(LTVector4 lhs, LTVector4 rhs) {
-  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z && lhs.w == rhs.w;
 }
 
 inline bool operator!=(LTVector4 lhs, LTVector4 rhs) {
