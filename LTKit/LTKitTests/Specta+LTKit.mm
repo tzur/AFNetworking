@@ -27,3 +27,9 @@ id _LTBindObjectToClass(LTTestModule *module, JSObjectionInjector *injector, id 
   [injector lt_updateModule:module];
   return object;
 }
+
+void _LTBindBlockToClass(LTTestModule *module, JSObjectionInjector *injector,
+                         JSObjectionBindBlock block, Class objectClass) {
+  [module bindBlock:block toClass:objectClass];
+  [injector lt_updateModule:module];
+}

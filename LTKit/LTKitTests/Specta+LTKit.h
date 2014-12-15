@@ -21,6 +21,10 @@
 #define LTBindObjectToClass(OBJECT, CLASS) \
     _LTBindObjectToClass(_module, _injector, OBJECT, CLASS)
 
+/// Sets the current injector to bind the given block to the given class name.
+#define LTBindBlockToClass(BLOCK, CLASS) \
+    _LTBindBlockToClass(_module, _injector, BLOCK, CLASS)
+
 /// Defines the concrete class to use as Objection module in tests. If \c LTKIT_TEST_MODULE_CLASS
 /// macro is defined this class will be used. The default module class is \c LTTestModule.
 #ifdef LTKIT_TEST_MODULE_CLASS
@@ -60,8 +64,12 @@
 /// End of spec.
 #define LTSpecEnd SpecEnd
 
+typedef id (^JSObjectionBindBlock)(JSObjectionInjector *context);
+
 id _LTStrictMockClass(LTTestModule *module, JSObjectionInjector *injector, Class objectClass);
 id _LTMockClass(LTTestModule *module, JSObjectionInjector *injector, Class objectClass);
 id _LTMockProtocol(LTTestModule *module, JSObjectionInjector *injector, Protocol *protocol);
 id _LTBindObjectToClass(LTTestModule *module, JSObjectionInjector *injector, id object,
                         Class objectClass);
+void _LTBindBlockToClass(LTTestModule *module, JSObjectionInjector *injector,
+                         JSObjectionBindBlock block, Class objectClass);
