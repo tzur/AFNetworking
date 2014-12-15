@@ -428,6 +428,7 @@ context(@"LTVector4", ^{
     expect(LTVector4(1, 3, 3, 1) == LTVector4(1, 2, 3, 1)).to.beFalsy();
     expect(LTVector4(1, 2, 3, 1) != LTVector4(1, 2, 3, 1)).to.beFalsy();
     expect(LTVector4(1, 3, 3, 1) != LTVector4(1, 2, 3, 1)).to.beTruthy();
+    expect(LTVector4(1, 2, 3, 0) != LTVector4(1, 2, 3, 1)).to.beTruthy();
   });
 
   it(@"should return if the null vector correctly", ^{
