@@ -13,7 +13,27 @@
 typedef BOOL (^LTAnimationBlock)(CFTimeInterval timeSinceLastFrame,
                                  CFTimeInterval totalAnimationTime);
 
-/// Starts an animation calling the given animation block on each frame.
+/// Starts an animation calling the given animation block on each frame. The animation is retained
+/// by an internal object, so you can avoid retaining it by yourself. However, the animation will
+/// run until \c NO is returned from the animation block. Therefore, you should make sure that the
+/// animation either returns \c NO in a timely fashion, or \c stopAnimation is explictly called to
+/// destroy it.
+///
+/// Additionally, beware of retain cycles inside the animation block. A possible solution which will
+/// also stop the animation when it's creator object is deallocated is:
+///
+/// @code
+/// @weakify(self);
+/// [LTAnimation animationWithBlock:^(CFTimeInterval timeSinceLastFrame,
+///                                   CFTimeInterval totalAnimationTime) {
+///   @strongify(self);
+///   if (!self) {
+///     return NO;
+///   }
+///
+///   // Animation code.
+/// }];
+/// @endcode
 + (instancetype)animationWithBlock:(LTAnimationBlock)block;
 
 /// returns YES if there's an animation that is currently running.
