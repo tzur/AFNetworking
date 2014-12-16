@@ -74,9 +74,16 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Scales this instance by \c scaleFactor.
 - (void)scale:(CGFloat)scaleFactor;
 
+/// Scales this instance by \c scaleFactor around the provided \c anchorPoint.
+- (void)scale:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint;
+
 /// Translates the specified \c corners by \c translation.
 - (void)translateCorners:(LTQuadCornerRegion)corners
            byTranslation:(CGPoint)translation;
+
+/// Returns the point on any edge of this quad which has the smallest distance to the given
+/// \c point.
+- (CGPoint)pointOnEdgeClosestToPoint:(CGPoint)point;
 
 /// Returns YES if each corner of \c quad equals the corresponding corner of this instance, up to
 /// the given \c deviation.

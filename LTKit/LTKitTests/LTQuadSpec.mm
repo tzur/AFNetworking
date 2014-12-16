@@ -328,6 +328,29 @@ context(@"point inclusion", ^{
       [quad indexOfConcavePoint];
     }).to.raise(NSInternalInconsistencyException);
   });
+
+  it(@"should correctly compute the closest point on any of its edges from a given point", ^{
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+    CGPoint point = CGPointMake(-0.5, -0.5);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(quad.v0, kEpsilon);
+
+    point = CGPointMake(0.75, -0.5);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(CGPointMake(0.75, 0),
+                                                                           kEpsilon);
+
+    point = CGPointMake(1.5, -0.5);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(quad.v1, kEpsilon);
+
+    point = CGPointMake(0.9, 0.1);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(CGPointMake(0.9, 0),
+                                                                           kEpsilon);
+
+    point = CGPointMake(100, 1);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(quad.v2, kEpsilon);
+
+    point = CGPointMake(-0.4, 1);
+    expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(quad.v3, kEpsilon);
+  });
 });
 
 context(@"affine transformations", ^{
@@ -352,6 +375,29 @@ context(@"affine transformations", ^{
     expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
     expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
     expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
+  });
+
+  it(@"should correctly scale around an anchor point", ^{
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+    [quad scale:2 aroundPoint:CGPointZero];
+    expect(quad.v0).to.beCloseToPoint(CGPointZero);
+    expect(quad.v1).to.beCloseToPoint(CGPointMake(2, 0));
+    expect(quad.v2).to.beCloseToPoint(CGPointMake(2, 2));
+    expect(quad.v3).to.beCloseToPoint(CGPointMake(0, 2));
+
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+    [quad scale:2 aroundPoint:CGPointMake(0.5, 0.5)];
+    expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
+    expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
+    expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
+    expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
+
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+    [quad scale:2 aroundPoint:CGPointMake(0.5, 0)];
+    expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, 0));
+    expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, 0));
+    expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 2));
+    expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 2));
   });
 
   it(@"should correctly translate", ^{

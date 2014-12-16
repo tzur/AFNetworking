@@ -240,6 +240,12 @@ static const CGFloat kEpsilon = 1e-10;
   }
 }
 
+- (void)scale:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint {
+  for (CGPoint &corner : _corners) {
+    corner = anchorPoint + scaleFactor * (corner - anchorPoint);
+  }
+}
+
 - (void)translateCorners:(LTQuadCornerRegion)corners
            byTranslation:(CGPoint)translation {
   LTQuadCorners translatedCorners = self.corners;
@@ -256,6 +262,26 @@ static const CGFloat kEpsilon = 1e-10;
     translatedCorners[3] = translatedCorners[3] + translation;
   }
   self.corners = translatedCorners;
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (CGPoint)pointOnEdgeClosestToPoint:(CGPoint)point {
+  NSUInteger size = self.corners.size();
+  CGPoint closestPoint = CGPointNull;
+  CGFloat minimalDistance = CGFLOAT_MAX;
+  for (NSUInteger i = 0; i < size; ++i) {
+    CGPoint pointOnLine =
+        LTPointOnEdgeClosestToPoint(self.corners[i], self.corners[(i + 1) % size], point);
+    CGFloat distance = LTVector2(pointOnLine - point).length();
+    if (distance < minimalDistance) {
+      minimalDistance = distance;
+      closestPoint = pointOnLine;
+    }
+  }
+  return closestPoint;
 }
 
 #pragma mark -
