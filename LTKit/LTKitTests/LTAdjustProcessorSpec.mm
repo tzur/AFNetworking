@@ -223,7 +223,7 @@ context(@"properties", ^{
 context(@"processing", ^{
   it(@"should process positive brightness and contrast correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(98, 98, 98, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(101, 101, 101, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -289,7 +289,7 @@ context(@"processing", ^{
   
   it(@"should process white point correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(124, 124, 124, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(127, 127, 127, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -340,7 +340,7 @@ context(@"processing", ^{
 
   it(@"should process hue correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(128, 0, 0, 255));
-    cv::Mat4b output(1, 1, cv::Vec4b(0, 73, 73, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(0, 75, 75, 255));
 
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -441,6 +441,18 @@ context(@"processing", ^{
     adjust.lightsHue = 0.5;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  it(@"should leave input unchanged on default parameters", ^{
+    LTColorGradient *identityGradient = [LTColorGradient identityGradient];
+    cv::Mat4b gradient = [identityGradient matWithSamplingPoints:256];
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:gradient];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMat($(gradient));
   });
 
   sit(@"should create correct conversion of luminance, color, details and split-tone", ^{
