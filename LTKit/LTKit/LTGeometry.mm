@@ -112,19 +112,19 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
 static CGPoint LTIntersectionPointOfLinesHelper(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1,
                                                 CGFloat tMin = -CGFLOAT_MAX,
                                                 CGFloat tMax = CGFLOAT_MAX) {
-  CGSize r = p1 - p0;
-  CGSize s = q1 - q0;
+  CGPoint r = p1 - p0;
+  CGPoint s = q1 - q0;
   CGFloat crossProductLength =
-      GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(r.width, r.height, 0),
-                                              GLKVector3Make(s.width, s.height, 0)));
+      GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(r.x, r.y, 0),
+                                              GLKVector3Make(s.x, s.y, 0)));
   if (std::abs(crossProductLength) < kEpsilon) {
     // Line (segments) are parallel.
     return CGPointNull;
   }
 
-  CGSize qp = q0 - p0;
-  CGFloat t = GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(qp.width, qp.height, 0),
-                                                      GLKVector3Make(s.width, s.height, 0)));
+  CGPoint qp = q0 - p0;
+  CGFloat t = GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(qp.x, qp.y, 0),
+                                                      GLKVector3Make(s.x, s.y, 0)));
   t /= crossProductLength;
   if (tMin <= t && t <= tMax) {
     // Note that the sign of \c t resulting from the previous cross product computation is
@@ -160,10 +160,10 @@ BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
   if (p0 == q0 || p0 == q1 || p1 == q0 || p1 == q1) {
     return NO;
   }
-  return LTPointLocationRelativeToRay(q0, p0, CGPointFromSize(p1 - p0))
-      != LTPointLocationRelativeToRay(q1, p0, CGPointFromSize(p1 - p0))
-      && LTPointLocationRelativeToRay(p0, q0, CGPointFromSize(q1 - q0))
-      != LTPointLocationRelativeToRay(p1, q0, CGPointFromSize(q1 - q0));
+  return LTPointLocationRelativeToRay(q0, p0, p1 - p0)
+      != LTPointLocationRelativeToRay(q1, p0, p1 - p0)
+      && LTPointLocationRelativeToRay(p0, q0, q1 - q0)
+      != LTPointLocationRelativeToRay(p1, q0, q1 - q0);
 }
 
 #pragma mark -

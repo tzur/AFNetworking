@@ -106,6 +106,11 @@ CG_INLINE CGPoint CGPointFromSize(const CGSize &size) {
   return CGPointMake(size.width, size.height);
 }
 
+/// Returns size from the given point.
+CG_INLINE CGSize CGSizeFromPoint(const CGPoint &point) {
+  return CGSizeMake(point.x, point.y);
+}
+
 /// Returns whether two points are equal.
 CG_INLINE BOOL operator==(const CGPoint &lhs, const CGPoint &rhs) {
   return CGPointEqualToPoint(lhs, rhs);
@@ -137,8 +142,8 @@ CG_INLINE CGPoint operator-(const CGPoint &lhs, const CGSize &rhs) {
 }
 
 /// Returns the size resulting from subtracting the right point from the left one.
-CG_INLINE CGSize operator-(const CGPoint &lhs, const CGPoint &rhs) {
-  return CGSizeMake(lhs.x - rhs.x, lhs.y - rhs.y);
+CG_INLINE CGPoint operator-(const CGPoint &lhs, const CGPoint &rhs) {
+  return CGPointMake(lhs.x - rhs.x, lhs.y - rhs.y);
 }
 
 /// Multiply a point by a scalar value.
@@ -314,7 +319,7 @@ CG_INLINE CGRect CGRectFromOriginAndSize(const CGPoint &origin, const CGSize &si
 
 /// Returns a CGRect with the given corners.
 CG_INLINE CGRect CGRectFromPoints(const CGPoint &topLeft, const CGPoint &bottomRight) {
-  return CGRectFromOriginAndSize(topLeft, bottomRight - topLeft);
+  return CGRectFromOriginAndSize(topLeft, CGSizeFromPoint(bottomRight - topLeft));
 }
 
 /// Returns a CGRect with the given edge coordiantes.
@@ -347,8 +352,8 @@ CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
 
 /// Returns the squared euclidean distance between two points.
 CG_INLINE CGFloat CGPointDistanceSquared(const CGPoint &a, const CGPoint &b) {
-  CGSize d = a - b;
-  return d.width * d.width + d.height * d.height;
+  CGPoint d = a - b;
+  return d.x * d.x + d.y * d.y;
 }
 
 /// Returns the euclidean distance between two points.

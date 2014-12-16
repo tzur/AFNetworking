@@ -82,7 +82,7 @@ context(@"cgpoint operations", ^{
     expect(CGPointMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGPointMake(4, 6));
     expect(CGSizeMake(3, 4) + CGPointMake(1, 2)).to.equal(CGPointMake(4, 6));
     expect(CGPointMake(3, 4) - CGSizeMake(1, 2)).to.equal(CGPointMake(2, 2));
-    expect(CGPointMake(3, 4) - CGPointMake(1, 2)).to.equal(CGSizeMake(2, 2));
+    expect(CGPointMake(3, 4) - CGPointMake(1, 2)).to.equal(CGPointMake(2, 2));
     expect(CGPointMake(1, 2) * 2).to.equal(CGPointMake(2, 4));
     expect(CGPointMake(1, 2) * CGPointMake(1, 2)).to.equal(CGPointMake(1, 4));
     expect(0.5 * CGPointMake(1, 2)).to.equal(CGPointMake(0.5, 1));
