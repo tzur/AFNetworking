@@ -16,7 +16,7 @@ struct LTRect {
   
   /// Initializes a new \c LTRect from the given corners.
   LTRect(const CGPoint &topLeft, const CGPoint &bottomRight) :
-    origin(topLeft), size(bottomRight - topLeft) {}
+    origin(topLeft), size(CGSizeFromPoint(bottomRight - topLeft)) {}
   
   /// Initializes a new \c LTRect with the given (x, y) as origin and (width, height) as size.
   LTRect(CGFloat x, CGFloat y, CGFloat width, CGFloat height) :

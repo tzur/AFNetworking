@@ -205,7 +205,7 @@ struct LTTrapezoid2 {
 - (CGSize)translationForCurrentMatrixAndScale {
   CGRect rectForTranslation =
       [self boundingRectForTrapezoid:[self trapezoidForScale:self.scale translation:CGSizeZero]];
-  return (CGRectCenter(rectForTranslation) - CGPointMake(0.5, 0.5));
+  return CGSizeFromPoint(CGRectCenter(rectForTranslation) - CGPointMake(0.5, 0.5));
 }
 
 - (LTTrapezoid2)trapezoidForScale:(CGFloat)scale translation:(CGSize)translation {

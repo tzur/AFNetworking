@@ -20,7 +20,7 @@
 - (instancetype)initWithCorners:(const LTTriangleCorners &)corners {
   if (self = [super init]) {
     self.corners = corners;
-    CGPoint direction = CGPointFromSize(self.corners[2] - self.corners[1]);
+    CGPoint direction = self.corners[2] - self.corners[1];
     BOOL cornersAreGivenInClockwiseOrientation =
         LTPointLocationRelativeToRay(self.corners[0], self.corners[1], direction) ==
         LTPointLocationRightOfRay;
@@ -39,7 +39,7 @@
   NSUInteger size = self.corners.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = self.corners[i];
-    CGPoint direction = CGPointFromSize(self.corners[(i + 1) % size] - origin);
+    CGPoint direction = self.corners[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(point, origin, direction) == LTPointLocationLeftOfRay) {
       return NO;
     }

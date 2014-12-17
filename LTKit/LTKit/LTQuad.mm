@@ -149,7 +149,7 @@ static const CGFloat kEpsilon = 1e-10;
   NSUInteger size = self.corners.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = self.corners[i];
-    CGPoint direction = CGPointFromSize(self.corners[(i + 1) % size] - origin);
+    CGPoint direction = self.corners[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(point, origin, direction) == LTPointLocationLeftOfRay) {
       return NO;
     }
@@ -185,7 +185,7 @@ static const CGFloat kEpsilon = 1e-10;
   NSUInteger size = self.corners.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = self.corners[i];
-    CGPoint direction = CGPointFromSize(self.corners[(i + 1) % size] - origin);
+    CGPoint direction = self.corners[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(self.corners[(i + 2) % size], origin, direction) ==
         LTPointLocationLeftOfRay) {
       return (i + 1) % size;
@@ -305,7 +305,7 @@ static const CGFloat kEpsilon = 1e-10;
   NSUInteger size = self.corners.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = self.corners[i];
-    CGPoint direction = CGPointFromSize(self.corners[(i + 1) % size] - origin);
+    CGPoint direction = self.corners[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(self.corners[(i + 2) % size], origin, direction) ==
         LTPointLocationLeftOfRay) {
       return NO;
@@ -378,7 +378,7 @@ static const CGFloat kEpsilon = 1e-10;
   NSUInteger size = points.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = points[i];
-    CGPoint direction = CGPointFromSize(points[(i + 1) % size] - origin);
+    CGPoint direction = points[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(points[(i + 2) % size], origin, direction) !=
         LTPointLocationLeftOfRay) {
       result++;
@@ -392,7 +392,7 @@ static const CGFloat kEpsilon = 1e-10;
   NSUInteger size = points.size();
   for (NSUInteger i = 0; i < size; i++) {
     CGPoint origin = points[i];
-    CGPoint direction = CGPointFromSize(points[(i + 1) % size] - origin);
+    CGPoint direction = points[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(points[(i + 2) % size], origin, direction) ==
         LTPointLocationOnLineThroughRay) {
       result++;
@@ -468,7 +468,7 @@ static const CGFloat kEpsilon = 1e-10;
   LTParameterAssert(translation);
   LTParameterAssert(rotation);
   LTParameterAssert(scaling);
-  *translation = CGPointFromSize(quad.center - self.center);
+  *translation = quad.center - self.center;
   LTQuad *centeredQuad = [self copy];
   [centeredQuad translateCorners:LTQuadCornerRegionAll byTranslation:*translation];
 

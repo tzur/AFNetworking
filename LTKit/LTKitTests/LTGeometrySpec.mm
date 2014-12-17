@@ -14,15 +14,12 @@ context(@"relative point location in 2D", ^{
     const CGPoint p = CGPointMake(0.5, 1);
     const CGPoint q = CGPointZero;
     const CGPoint r = CGPointMake(1, 0);
-    BOOL liesOnRightSide =
-        LTPointLocationRelativeToRay(p, q, CGPointFromSize(r - q)) == LTPointLocationRightOfRay;
+    BOOL liesOnRightSide = LTPointLocationRelativeToRay(p, q, r - q) == LTPointLocationRightOfRay;
     expect(liesOnRightSide).to.beTruthy();
-    BOOL liesOnLeftSide =
-        LTPointLocationRelativeToRay(r, q, CGPointFromSize(p - q)) == LTPointLocationLeftOfRay;
+    BOOL liesOnLeftSide = LTPointLocationRelativeToRay(r, q, p - q) == LTPointLocationLeftOfRay;
     expect(liesOnLeftSide).to.beTruthy();
     BOOL liesOnLineThroughRay =
-        LTPointLocationRelativeToRay(r, r, CGPointFromSize(q - r)) ==
-        LTPointLocationOnLineThroughRay;
+        LTPointLocationRelativeToRay(r, r, q - r) == LTPointLocationOnLineThroughRay;
     expect(liesOnLineThroughRay).to.beTruthy();
   });
 });
