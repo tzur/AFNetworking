@@ -49,6 +49,8 @@
 		0352FA8E1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */; };
 		0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */; };
 		0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0366BA4018CCA51A002E6BA1 /* Meal.jpg */; };
+		03676D091A4097B100072966 /* LTHistogramProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03676D071A4097B100072966 /* LTHistogramProcessor.h */; };
+		03676D0A1A4097B100072966 /* LTHistogramProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03676D081A4097B100072966 /* LTHistogramProcessor.mm */; };
 		0367A47918A9FD3500B42E34 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A47818A9FD3500B42E34 /* Lena128.png */; };
 		0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */ = {isa = PBXBuildFile; fileRef = 0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */; };
 		0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367A4AF18ACF45700B42E34 /* LTProceduralFrameProcessor.mm */; };
@@ -153,6 +155,7 @@
 		03D516E918B5DB780026B56A /* LTAdjustProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */; };
 		03D516F918B5DBEF0026B56A /* LTAdjustProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */; };
 		03D516FA18B5DC280026B56A /* LTAdjust.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03D516F618B5DBBD0026B56A /* LTAdjust.fsh */; };
+		03E638D31A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E638D21A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm */; };
 		03F99DB61895447100B77136 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB51895447100B77136 /* Lena.png */; };
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
@@ -1092,6 +1095,8 @@
 		0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessor.mm; sourceTree = "<group>"; };
 		0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessorSpec.mm; sourceTree = "<group>"; };
 		0366BA4018CCA51A002E6BA1 /* Meal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Meal.jpg; path = Resources/Meal.jpg; sourceTree = "<group>"; };
+		03676D071A4097B100072966 /* LTHistogramProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHistogramProcessor.h; sourceTree = "<group>"; };
+		03676D081A4097B100072966 /* LTHistogramProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHistogramProcessor.mm; sourceTree = "<group>"; };
 		0367A47818A9FD3500B42E34 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
 		0367A48618AA02ED00B42E34 /* Lena128BWTonality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BWTonality.png; path = Resources/Lena128BWTonality.png; sourceTree = "<group>"; };
 		0367A4AE18ACF45700B42E34 /* LTProceduralFrameProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProceduralFrameProcessor.h; sourceTree = "<group>"; };
@@ -1213,6 +1218,7 @@
 		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessor.mm; sourceTree = "<group>"; };
 		03D516F618B5DBBD0026B56A /* LTAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAdjust.fsh; sourceTree = "<group>"; };
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
+		03E638D21A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHistogramProcessorSpec.mm; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
@@ -2014,6 +2020,8 @@
 				8BAE3A8518B3B11500DA79E1 /* LTFFTConvolutionProcessor.mm */,
 				8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */,
 				8BAE3A3618B121E800DA79E1 /* LTFFTProcessor.mm */,
+				03676D071A4097B100072966 /* LTHistogramProcessor.h */,
+				03676D081A4097B100072966 /* LTHistogramProcessor.mm */,
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
 				031338D0191279B30095F99B /* LTImageBorderProcessor.h */,
 				031338D1191279B30095F99B /* LTImageBorderProcessor.mm */,
@@ -2142,6 +2150,7 @@
 				28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */,
 				038DDD7F19EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm */,
 				0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */,
+				03E638D21A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -3517,6 +3526,7 @@
 				8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */,
 				8BA821B31986846900FBE68E /* NSValue+LTVector.h in Headers */,
 				28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */,
+				03676D091A4097B100072966 /* LTHistogramProcessor.h in Headers */,
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
 				50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */,
@@ -4284,6 +4294,7 @@
 				0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				8BCFC02118CF0BF400E612DE /* NSBundle+LTKitBundle.m in Sources */,
+				03676D0A1A4097B100072966 /* LTHistogramProcessor.mm in Sources */,
 				03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */,
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
 				03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */,
@@ -4401,6 +4412,7 @@
 				280B3D9418BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
 				2843B6FB18A938AF0044B87A /* LTRotatedRectSpec.mm in Sources */,
+				03E638D31A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm in Sources */,
 				28A5EAC318D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm in Sources */,
 				8BB14D8518BF54B900701A1B /* LTPatchKernelSpec.mm in Sources */,
 				031338E219127A640095F99B /* LTImageBorderProcessorSpec.mm in Sources */,
