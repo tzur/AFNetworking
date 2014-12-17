@@ -108,7 +108,7 @@
 + (id)deserializeObject:(id)object toClass:(Class)classObj {
   // No deserialization required.
   // TODO:(yaron) should this be isMemberOfClass: instead?
-  if ([object isKindOfClass:classObj]) {
+  if ([object isKindOfClass:classObj] || object == [NSNull null]) {
     return object;
   }
 

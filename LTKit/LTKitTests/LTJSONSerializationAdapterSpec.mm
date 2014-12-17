@@ -107,6 +107,20 @@ it(@"should deserialize from json dictionary", ^{
   expect(deserialized[@"ignoredValue"]).to.beNil();
 });
 
+it(@"should keep null values from json dictionary", ^{
+  NSDictionary *values = @{
+    @"stringValue": [NSNull null],
+    @"mantleValue": [NSNull null]
+  };
+
+  NSDictionary *deserialized = [LTJSONSerializationAdapter
+                                dictionaryFromJSONDictionary:values
+                                forClass:[LTTestSerializableObject class]];
+
+  expect(deserialized[@"stringValue"]).to.equal([NSNull null]);
+  expect(deserialized[@"mantleValue"]).to.equal([NSNull null]);
+});
+
 it(@"should merge json values to object", ^{
   NSDictionary *values = @{
     @"floatValue": @10.5,
