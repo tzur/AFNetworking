@@ -27,6 +27,8 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 
 @property (strong, nonatomic) LTImageProcessorEnum *enumValue;
 
+@property (nonatomic) float nonInputModelProperty;
+
 @end
 
 @implementation LTFakeImageProcessor
@@ -222,6 +224,12 @@ context(@"input model", ^{
       expect(defaultEnum).to.equal(processor.defaultEnumValue);
     });
 
+    it(@"should raise if the specified key is invalid", ^{
+      expect(^{
+        [processor defaultValueForKey:@keypath(processor, nonInputModelProperty)];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
     it(@"should reset key to its default value", ^{
       processor.integerValue = 0;
       processor.floatValue = 0;
@@ -246,6 +254,12 @@ context(@"input model", ^{
       [processor resetValueForKey:@keypath(processor, vector4Value)];
       expect(processor.vector4Value).to.equal(processor.defaultVector4Value);
     });
+  });
+
+  it(@"should raise on reset of non input model property", ^{
+    expect(^{
+      [processor resetValueForKey:@keypath(processor, nonInputModelProperty)];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
