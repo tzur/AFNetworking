@@ -339,15 +339,17 @@ static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVect
   LTParameterAssert(!next->size());
   NSUInteger prevIndex = kNumberOfCorners - 1;
   LTVector2 prevDirection = polyline[0] - polyline[prevIndex];
-  LTVector2 normalizedPrevDirection = (polyline[0] - polyline[prevIndex]).normalized();
+  LTVector2 normalizedPrevDirection =
+      prevDirection.length() < kEpsilon ? LTVector2Zero : prevDirection.normalized();
 
   for (NSUInteger i = 0; i < kNumberOfCorners; ++i) {
     NSUInteger nextIndex = (i + 1) % kNumberOfCorners;
     LTVector2 currentDirection = polyline[nextIndex] - polyline[i];
     CGFloat minRadius = MIN(MIN(prevDirection.length(), currentDirection.length()) / 2,
                             smootheningRadius);
-    LTVector2 normalizedCurrentDirection = (currentDirection).normalized();
     prev->push_back(polyline[i] - (minRadius * normalizedPrevDirection));
+    LTVector2 normalizedCurrentDirection =
+        currentDirection.length() < kEpsilon ? LTVector2Zero : currentDirection.normalized();
     next->push_back(polyline[i] + (minRadius * normalizedCurrentDirection));
     prevDirection = currentDirection;
     normalizedPrevDirection = normalizedCurrentDirection;
