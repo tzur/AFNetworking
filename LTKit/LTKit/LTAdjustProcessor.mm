@@ -346,9 +346,9 @@ LTPropertyWithoutSetter(CGFloat, hue, Hue, -1, 1, 0);
 
   GLKMatrix4 hue = GLKMatrix4MakeXRotation(self.hue * M_PI);
 
-  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(saturation, kRGBtoYIQ);
-  tonalTranform = GLKMatrix4Multiply(hue, tonalTranform);
+  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(hue, kRGBtoYIQ);
   tonalTranform = GLKMatrix4Multiply(temperatureAndTint, tonalTranform);
+  tonalTranform = GLKMatrix4Multiply(saturation, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
 
   self[[LTAdjustFsh tonalTransform]] = $(tonalTranform);
