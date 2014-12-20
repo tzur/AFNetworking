@@ -413,7 +413,7 @@ context(@"processing", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
     // See lightricks-research/enlight/Adjust/runmeAdjustColorTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
-    cv::Mat4b output(1, 1, cv::Vec4b(53, 78, 79, 255));
+    cv::Mat4b output(1, 1, cv::Vec4b(57, 79, 71, 255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
