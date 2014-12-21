@@ -189,6 +189,24 @@ context(@"creation", ^{
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
+  
+  it(@"should create path for given acyclic smoothened polyline with coinciding points", ^{
+    CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0),
+        CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
+    LTVector2s inputData{LTVector2(points[0]), LTVector2(points[2]), LTVector2(points[5]),
+        LTVector2(points[7])};
+    smootheningRadius = 0.25;
+    CGPathRelease(path);
+    path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
+    
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 0;
+    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+  });
 
   it(@"should correctly create a path for a given cyclic smoothened polyline", ^{
     CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0),
