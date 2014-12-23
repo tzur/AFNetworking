@@ -93,17 +93,11 @@
 #pragma mark -
 
 - (Floats)calculateMaskFrequencies {
-  __block cv::Mat1f sum;
-
-  // Sum the mask to get a 1D signal.
-  [self.mask mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    cv::reduce(mapped, sum, self.decimationDimension, CV_REDUCE_SUM, CV_32F);
-  }];
-
   static const double kBlurSize = 21;
-  static const float kEpsilon = 1;
+  static const float kGamma = 1.8;
 
   // Smooth the summed mask.
+  cv::Mat1f sum = [self reducedSumOfMask];
   cv::Mat1f smoothedSum(sum.size());
   cv::GaussianBlur(sum, smoothedSum, cv::Size(0, 0), kBlurSize);
 
@@ -112,11 +106,38 @@
       cv::Size(self.decimationDimensionSize, 1) : cv::Size(1, self.decimationDimensionSize);
   cv::resize(smoothedSum, smoothedSum, targetSize);
 
-  // Make sure that each line has a minimal small frequency so it will be able to be selected when
-  // sampling.
-  smoothedSum = smoothedSum + kEpsilon;
+  // Inverse values so a white mask will cause less throws than black, and make sure that each line
+  // has a minimal small frequency so it will be able to be selected when sampling.
+  float maxValue = *std::max_element(smoothedSum.begin(), smoothedSum.end()) + 1;
+  smoothedSum = maxValue - smoothedSum;
+
+  /// Apply a gamma to make selected areas stronger.
+  std::transform(smoothedSum.begin(), smoothedSum.end(), smoothedSum.begin(), [maxValue](float v) {
+    return std::pow(v / maxValue, kGamma) * maxValue;
+  });
 
   return Floats(smoothedSum.begin(), smoothedSum.end());
+}
+
+- (cv::Mat1f)reducedSumOfMask {
+  // Sum the mask to get a 1D signal.
+  __block cv::Mat1f sum;
+  [self.mask mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+    cv::reduce(mapped, sum, self.decimationDimension, CV_REDUCE_SUM, CV_32F);
+  }];
+
+  // "Invert" the sum, to correspond to an inverted mask. Note that in case the mask is of byte
+  // precision, the reduce-sum will sum float values in range [0,255], so it is necessary to divide
+  // by 255 in order to have similar behaviors for all mask precision types.
+  float maxMaskPixelValue = (self.mask.precision == LTTexturePrecisionByte) ? UCHAR_MAX : 1;
+  float maxReducedCellValue = self.decimationDimension == LTRecomposeDecimationDimensionHorizontal ?
+      self.mask.size.height : self.mask.size.width;
+  std::transform(sum.begin(), sum.end(), sum.begin(),
+                 [maxReducedCellValue, maxMaskPixelValue](float value) {
+    return maxReducedCellValue - value / maxMaskPixelValue;
+  });
+
+  return sum;
 }
 
 #pragma mark -
