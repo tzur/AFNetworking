@@ -176,6 +176,19 @@ context(@"processing", ^{
     expect(processor.recomposedRect).to.equal(CGRectMake(1, 0, 2, 4));
     expect($([output image])).to.equalMat($(expected));
   });
+
+  it(@"should normalize frequencies correctly", ^{
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"RecomposeInput.png")];
+    cv::Mat1b maskMat = LTLoadMat([self class], @"RecomposeMask.png");
+    mask = [LTTexture textureWithImage:maskMat];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
+    processor.linesToDecimate = input.size.width * 0.4;
+    [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"RecomposeOutput.png");
+    expect($(output.image)).beCloseToMat($(expected));
+  });
 });
 
 context(@"properties", ^{

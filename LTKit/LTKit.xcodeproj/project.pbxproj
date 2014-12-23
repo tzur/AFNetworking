@@ -370,6 +370,9 @@
 		28C61C0818B23D540036D66E /* LTTouchCollectorFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0518B23D540036D66E /* LTTouchCollectorFilterSpec.mm */; };
 		28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */; };
 		28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C61C0B18B23D930036D66E /* LTTouchCollector.mm */; };
+		28C709CB1A49B33700489FA1 /* RecomposeInput.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C709C91A49B33700489FA1 /* RecomposeInput.png */; };
+		28C709CC1A49B33700489FA1 /* RecomposeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C709CA1A49B33700489FA1 /* RecomposeMask.png */; };
+		28C709DF1A49B44F00489FA1 /* RecomposeOutput.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C709DE1A49B44F00489FA1 /* RecomposeOutput.png */; };
 		28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D86F551962AB8C00145674 /* LTRandomSpec.mm */; };
 		28D86F651962DB0D00145674 /* LTBrushEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D86F631962DB0D00145674 /* LTBrushEffect.h */; };
 		28D86F661962DB0D00145674 /* LTBrushEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D86F641962DB0D00145674 /* LTBrushEffect.mm */; };
@@ -1493,6 +1496,9 @@
 		28C61C0618B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollectorTimeIntervalFilterSpec.mm; sourceTree = "<group>"; };
 		28C61C0A18B23D930036D66E /* LTTouchCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchCollector.h; sourceTree = "<group>"; };
 		28C61C0B18B23D930036D66E /* LTTouchCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchCollector.mm; sourceTree = "<group>"; };
+		28C709C91A49B33700489FA1 /* RecomposeInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RecomposeInput.png; path = Resources/RecomposeInput.png; sourceTree = "<group>"; };
+		28C709CA1A49B33700489FA1 /* RecomposeMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RecomposeMask.png; path = Resources/RecomposeMask.png; sourceTree = "<group>"; };
+		28C709DE1A49B44F00489FA1 /* RecomposeOutput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RecomposeOutput.png; path = Resources/RecomposeOutput.png; sourceTree = "<group>"; };
 		28D86F551962AB8C00145674 /* LTRandomSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRandomSpec.mm; sourceTree = "<group>"; };
 		28D86F631962DB0D00145674 /* LTBrushEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushEffect.h; sourceTree = "<group>"; };
 		28D86F641962DB0D00145674 /* LTBrushEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushEffect.mm; sourceTree = "<group>"; };
@@ -2733,6 +2739,9 @@
 				28A366A219754475009F0A4D /* SemiTransparentGray.png */,
 				28A612941934F15D00D005D8 /* GaussianAnisotropic.png */,
 				28A612951934F15D00D005D8 /* GaussianSquare.png */,
+				28C709C91A49B33700489FA1 /* RecomposeInput.png */,
+				28C709CA1A49B33700489FA1 /* RecomposeMask.png */,
+				28C709DE1A49B44F00489FA1 /* RecomposeOutput.png */,
 				28BB81AA192509450071CB0B /* ShapeDrawerActualDrawingOriginal.png */,
 				28BB81AB192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png */,
 				280F5A29191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png */,
@@ -3974,6 +3983,7 @@
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
 				28FB00F01A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png in Resources */,
 				03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */,
+				28C709CB1A49B33700489FA1 /* RecomposeInput.png in Resources */,
 				03BCFD4A191FA6E200529AD6 /* RedBorder.png in Resources */,
 				28A2545619C9CDF30057E1A3 /* ReshapeProcessorResizeWithoutMask.png in Resources */,
 				0367A47918A9FD3500B42E34 /* Lena128.png in Resources */,
@@ -4004,6 +4014,7 @@
 				28FB00F11A0AB46D004490AF /* BristleBrushBristles.RoundFan.png in Resources */,
 				2888EEA81993BC910008F1C7 /* CropInput.png in Resources */,
 				03C3152C1965986F00F742B1 /* MacbethColorEdges.png in Resources */,
+				28C709CC1A49B33700489FA1 /* RecomposeMask.png in Resources */,
 				03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */,
 				28A2546C19C9D84C0057E1A3 /* ReshapeProcessorReshapeWithMask.png in Resources */,
 				280E40D91990C2F6008C5BD9 /* PerspectiveHorizontal.png in Resources */,
@@ -4030,6 +4041,7 @@
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */,
+				28C709DF1A49B44F00489FA1 /* RecomposeOutput.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
