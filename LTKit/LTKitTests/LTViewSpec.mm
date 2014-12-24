@@ -452,6 +452,17 @@ context(@"public interface", ^{
     view = nil;
   });
 
+  it(@"should navigate to state of other view", ^{
+    LTView *other = [[LTView alloc] initWithFrame:kViewFrame];
+    [other setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    const CGRect targetRect = CGRectFromSize(kViewSize);
+    [other.navigationView zoomToRect:targetRect animated:NO];
+
+    expect(view.visibleContentRect).notTo.equal(other.visibleContentRect);
+    [view navigateToStateOfView:other];
+    expect(view.visibleContentRect).to.equal(other.visibleContentRect);
+  });
+
   it(@"should return transform mapping the visibleContentRect to the entire framebuffer", ^{
     CGAffineTransform transform = [view transformForVisibleContentRect:view.visibleContentRect];
     CGRect transformedRect = CGRectApplyAffineTransform(view.visibleContentRect, transform);

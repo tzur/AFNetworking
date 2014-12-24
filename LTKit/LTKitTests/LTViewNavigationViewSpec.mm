@@ -183,6 +183,36 @@ context(@"properties", ^{
   });
 });
 
+context(@"navigate", ^{
+  const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
+  const CGSize kContentSize = CGSizeMake(12, 8) * kScale;
+  const CGRect kViewFrame = CGRectFromOriginAndSize(CGPointZero, kViewSize);
+
+  __block LTViewNavigationView *view;
+
+  beforeEach(^{
+    view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize];
+  });
+
+  afterEach(^{
+    view = nil;
+  });
+
+  it(@"should navigate to state", ^{
+    LTViewNavigationView *otherView = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
+                                                                      contentSize:kContentSize];
+
+    expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
+
+    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
+    [otherView zoomToRect:targetRect animated:NO];
+    expect(view.visibleContentRect).notTo.equal(otherView.visibleContentRect);
+
+    [view navigateToState:otherView.state];
+    expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
+  });
+});
+
 context(@"delegate", ^{
   __block LTViewNavigationView *view;
   __block id delegate;

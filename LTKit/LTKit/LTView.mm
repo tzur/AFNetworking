@@ -735,6 +735,12 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   return self.navigationView.state;
 }
 
+- (void)navigateToStateOfView:(LTView *)view {
+  if (view.bounds.size == self.bounds.size && view.contentSize == self.contentSize) {
+    [self.navigationView navigateToState:view.navigationState];
+  }
+}
+
 - (CGRect)visibleContentRect {
   CGRect visibleContentRect = self.navigationView.visibleContentRect;
   visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
