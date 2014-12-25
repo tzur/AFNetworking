@@ -99,7 +99,6 @@ context(@"processing", ^{
 
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
     processor.samplerFactory = [[LTDegenerateSamplerFactory alloc] init];
-    processor.linesToDecimate = 2;
   });
 
   afterEach(^{
@@ -110,7 +109,7 @@ context(@"processing", ^{
   });
 
   it(@"should decimate and center horizontally", ^{
-    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
+    processor.colsToDecimate = 2;
     [processor process];
 
     // Take cols 2,3.
@@ -123,7 +122,7 @@ context(@"processing", ^{
   });
 
   it(@"should decimate and center vertically", ^{
-    processor.decimationDimension = LTRecomposeDecimationDimensionVertical;
+    processor.rowsToDecimate = 2;
     [processor process];
 
     // Take cols 2,3.
@@ -135,15 +134,27 @@ context(@"processing", ^{
     expect($([output image])).to.equalMat($(expected));
   });
 
+  it(@"should decimate and center on both dimensions", ^{
+    processor.rowsToDecimate = 2;
+    processor.colsToDecimate = 2;
+    [processor process];
+
+    // Take rect (2,2)-(3,3).
+    cv::Mat4b expected(4, 4, cv::Vec4b(0, 0, 0, 0));
+    image(cv::Rect(2, 2, 2, 2)).copyTo(expected(cv::Rect(1, 1, 2, 2)));
+
+    expect(processor.recomposedRect).to.equal(CGRectMake(1, 1, 2, 2));
+    expect($([output image])).to.equalMat($(expected));
+  });
+
   it(@"should decimate according to updated mask", ^{
-    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
+    processor.colsToDecimate = 2;
     [processor process];
 
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       (*mapped)(cv::Rect(1, 0, 1, 4)).setTo(0);
     }];
 
-    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
     [processor process];
 
     // Take cols 1,3, since a mask is blocking column 1 from disappearing.
@@ -159,13 +170,12 @@ context(@"processing", ^{
     mask = [LTTexture byteRedTextureWithSize:input.size / 2];
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
     processor.samplerFactory = [[LTDegenerateSamplerFactory alloc] init];
-    processor.linesToDecimate = 2;
 
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       (*mapped)(cv::Rect(1, 0, 1, 2)).setTo(0);
     }];
 
-    processor.decimationDimension = LTRecomposeDecimationDimensionHorizontal;
+    processor.colsToDecimate = 2;
     [processor process];
 
     // Take cols 3,4, since a mask is blocking columns 1,2 from disappearing.
@@ -183,7 +193,7 @@ context(@"processing", ^{
     mask = [LTTexture textureWithImage:maskMat];
     output = [LTTexture textureWithPropertiesOf:input];
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
-    processor.linesToDecimate = input.size.width * 0.4;
+    processor.colsToDecimate = input.size.width * 0.4;
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"RecomposeOutput.png");
@@ -202,41 +212,16 @@ context(@"properties", ^{
                                                                            output:output];
 
     expect(^{
-      processor.linesToDecimate = 4;
+      processor.colsToDecimate = 4;
     }).toNot.raiseAny();
 
     expect(^{
-      processor.linesToDecimate = 5;
+      processor.colsToDecimate = 5;
     }).to.raise(NSInvalidArgumentException);
 
-    processor.decimationDimension = LTRecomposeDecimationDimensionVertical;
     expect(^{
-      processor.linesToDecimate = 3;
+      processor.rowsToDecimate = 3;
     }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should have correct default decimationDimension value for wide images", ^{
-    LTTexture *input = [LTTexture textureWithImage:cv::Mat4b(2, 4)];
-    LTTexture *mask = [LTTexture textureWithPropertiesOf:input];
-    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
-
-    LTRecomposeProcessor *processor = [[LTRecomposeProcessor alloc] initWithInput:input
-                                                                             mask:mask
-                                                                           output:output];
-
-    expect(processor.decimationDimension).to.equal(LTRecomposeDecimationDimensionHorizontal);
-  });
-
-  it(@"should have correct default decimationDimension value for tall images", ^{
-    LTTexture *input = [LTTexture textureWithImage:cv::Mat4b(4, 2)];
-    LTTexture *mask = [LTTexture textureWithPropertiesOf:input];
-    LTTexture *output = [LTTexture textureWithPropertiesOf:input];
-
-    LTRecomposeProcessor *processor = [[LTRecomposeProcessor alloc] initWithInput:input
-                                                                             mask:mask
-                                                                           output:output];
-
-    expect(processor.decimationDimension).to.equal(LTRecomposeDecimationDimensionVertical);
   });
 });
 

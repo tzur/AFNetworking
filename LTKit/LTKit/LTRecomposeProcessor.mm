@@ -17,13 +17,22 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
+/// Dimension to recompose across.
+typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
+  LTDecimationDimensionHorizontal = 0,
+  LTDecimationDimensionVertical,
+};
+
 @interface LTRecomposeProcessor ()
 
 /// Drawer used to draw multiple rects (pixel rows) into the target.
 @property (strong, nonatomic) LTMultiRectDrawer *drawer;
 
 /// Framebuffer referencing the output texture.
-@property (strong, nonatomic) LTFbo *fbo;
+@property (strong, nonatomic) LTFbo *outputFbo;
+
+/// Framebuffer referencing the auxiliary texture.
+@property (strong, nonatomic) LTFbo *auxiliaryFbo;
 
 /// Input image.
 @property (strong, nonatomic) LTTexture *input;
@@ -34,18 +43,20 @@
 /// Output image.
 @property (strong, nonatomic) LTTexture *output;
 
+/// Auxiliary texture used to store the intermediate result of recomposing the first dimension.
+@property (strong, nonatomic) LTTexture *auxiliary;
+
 /// Source rects (pixel lines) in input texture coordinates.
 @property (strong, nonatomic) NSArray *sourceRects;
 
 /// Target rects (pixel lines) in output texture coordinates.
 @property (strong, nonatomic) NSArray *targetRects;
 
-/// Ordered (first to last) indices of lines (vertical or horizontal, depending on \c
-/// decimationDimensionSize) to remove.
-@property (strong, nonatomic) NSArray *decimationOrder;
+/// Ordered (first to last) indices of rows to remove.
+@property (strong, nonatomic) NSArray *rowsDecimationOrder;
 
-/// Size of the input image of the dimension the processor decimates.
-@property (readonly, nonatomic) CGFloat decimationDimensionSize;
+/// Ordered (first to last) indices of columns to remove.
+@property (strong, nonatomic) NSArray *colsDecimationOrder;
 
 /// The generation id of the mask texture that was used to calculate the decimation order.
 @property (nonatomic) NSUInteger maskTextureGenerationID;
@@ -66,14 +77,16 @@
   if (self = [super init]) {
     self.drawer = [[LTMultiRectDrawer alloc] initWithProgram:[self createProgram]
                                                sourceTexture:input];
-    self.fbo = [[LTFbo alloc] initWithTexture:output];
 
     self.input = input;
     self.mask = mask;
     self.output = output;
+    self.auxiliary = [LTTexture textureWithPropertiesOf:output];
+
+    self.outputFbo = [[LTFbo alloc] initWithTexture:output];
+    self.auxiliaryFbo = [[LTFbo alloc] initWithTexture:self.auxiliary];
 
     self.samplerFactory = [[LTInverseTransformSamplerFactory alloc] init];
-    self.decimationDimension = [self defaultDecimationDimension];
   }
   return self;
 }
@@ -83,27 +96,23 @@
                                   fragmentSource:[LTPassthroughShaderFsh source]];
 }
 
-- (LTRecomposeDecimationDimension)defaultDecimationDimension {
-  return self.input.size.width > self.input.size.height ?
-      LTRecomposeDecimationDimensionHorizontal : LTRecomposeDecimationDimensionVertical;
-}
-
 #pragma mark -
 #pragma mark Mask
 #pragma mark -
 
-- (Floats)calculateMaskFrequencies {
+- (Floats)calculateMaskFrequenciesForDimension:(LTDecimationDimension)dimension {
   static const double kBlurSize = 21;
   static const float kGamma = 1.8;
 
   // Smooth the summed mask.
-  cv::Mat1f sum = [self reducedSumOfMask];
+  cv::Mat1f sum = [self reducedSumOfMaskForDimension:dimension];
   cv::Mat1f smoothedSum(sum.size());
   cv::GaussianBlur(sum, smoothedSum, cv::Size(0, 0), kBlurSize);
 
   // Resize the smoothed sum to match the target size, in case the mask was smaller than the input.
-  cv::Size targetSize = self.decimationDimension == LTRecomposeDecimationDimensionHorizontal ?
-      cv::Size(self.decimationDimensionSize, 1) : cv::Size(1, self.decimationDimensionSize);
+  CGFloat reducedSize = [self reducedInputSizeForDecimationDimension:dimension];
+  cv::Size targetSize = dimension == LTDecimationDimensionHorizontal ?
+      cv::Size(reducedSize, 1) : cv::Size(1, reducedSize);
   cv::resize(smoothedSum, smoothedSum, targetSize);
 
   // Inverse values so a white mask will cause less throws than black, and make sure that each line
@@ -119,18 +128,18 @@
   return Floats(smoothedSum.begin(), smoothedSum.end());
 }
 
-- (cv::Mat1f)reducedSumOfMask {
+- (cv::Mat1f)reducedSumOfMaskForDimension:(LTDecimationDimension)dimension {
   // Sum the mask to get a 1D signal.
   __block cv::Mat1f sum;
   [self.mask mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    cv::reduce(mapped, sum, self.decimationDimension, CV_REDUCE_SUM, CV_32F);
+    cv::reduce(mapped, sum, dimension, CV_REDUCE_SUM, CV_32F);
   }];
 
   // "Invert" the sum, to correspond to an inverted mask. Note that in case the mask is of byte
   // precision, the reduce-sum will sum float values in range [0,255], so it is necessary to divide
   // by 255 in order to have similar behaviors for all mask precision types.
   float maxMaskPixelValue = (self.mask.precision == LTTexturePrecisionByte) ? UCHAR_MAX : 1;
-  float maxReducedCellValue = self.decimationDimension == LTRecomposeDecimationDimensionHorizontal ?
+  float maxReducedCellValue = dimension == LTDecimationDimensionHorizontal ?
       self.mask.size.height : self.mask.size.width;
   std::transform(sum.begin(), sum.end(), sum.begin(),
                  [maxReducedCellValue, maxMaskPixelValue](float value) {
@@ -146,10 +155,17 @@
 
 - (void)process {
   [self updateDecimationOrderIfNeeded];
-  [self updateRectsForLinesToDecimate];
 
-  [self.fbo clearWithColor:LTVector4Zero];
-  [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.fbo
+  [self updateRectsForLinesToDecimateInDimension:LTDecimationDimensionHorizontal];
+  [self.auxiliaryFbo clearWithColor:LTVector4Zero];
+  [self.drawer setSourceTexture:self.input];
+  [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.auxiliaryFbo
+               fromRotatedRects:self.sourceRects];
+
+  [self updateRectsForLinesToDecimateInDimension:LTDecimationDimensionVertical];
+  [self.outputFbo clearWithColor:LTVector4Zero];
+  [self.drawer setSourceTexture:self.auxiliary];
+  [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.outputFbo
                fromRotatedRects:self.sourceRects];
 }
 
@@ -159,31 +175,31 @@
   }
 
   self.maskTextureGenerationID = self.mask.generationID;
-  Floats frequencies = [self calculateMaskFrequencies];
-  self.decimationOrder = [self calculateDecimationOrderUsingFrequencies:&frequencies];
+  self.rowsDecimationOrder =
+      [self calculateDecimationOrderForDimension:LTDecimationDimensionVertical];
+  self.colsDecimationOrder =
+      [self calculateDecimationOrderForDimension:LTDecimationDimensionHorizontal];
 }
 
-- (CGFloat)decimationDimensionSize {
-  switch (self.decimationDimension) {
-    case LTRecomposeDecimationDimensionHorizontal:
-      return self.input.size.width;
-    case LTRecomposeDecimationDimensionVertical:
-      return self.input.size.height;
-  }
+- (NSArray *)calculateDecimationOrderForDimension:(LTDecimationDimension)dimension {
+  Floats frequencies = [self calculateMaskFrequenciesForDimension:dimension];
+  return [self calculateDecimationOrderForDimension:dimension usingFrequencies:&frequencies];
 }
 
-- (NSArray *)calculateDecimationOrderUsingFrequencies:(Floats *)frequencies {
+- (NSArray *)calculateDecimationOrderForDimension:(LTDecimationDimension)dimension
+                                 usingFrequencies:(Floats *)frequencies {
   NSMutableArray *decimationOrder = [NSMutableArray array];
 
   // Sample from the distribution with no repetitions. We're using a constant seed since we prefer
   // something pseudo-random, that will generate the same decimation under the same parameters.
   // This is important so users can duplicate a previous result.
+  CGFloat reducedSize = [self reducedInputSizeForDecimationDimension:dimension];
   static const NSUInteger kRandomSeed = 100;
   LTRandom *random = [[LTRandom alloc] initWithSeed:kRandomSeed];
-  while (decimationOrder.count < self.decimationDimensionSize) {
+  while (decimationOrder.count < reducedSize) {
     id<LTDistributionSampler> sampler =
         [self.samplerFactory samplerWithFrequencies:*frequencies random:random];
-    NSUInteger samplesRequired = self.decimationDimensionSize - decimationOrder.count;
+    NSUInteger samplesRequired = reducedSize - decimationOrder.count;
 
     // The order of the unique samples is preserved, so high-probability lines for decimation will
     // be decimated first (since they will probably be sampled first). This also aids testing since
@@ -210,13 +226,15 @@
   return uniqueSamples;
 }
 
-- (void)updateRectsForLinesToDecimate {
-  NSSet *linesToThrow = [NSSet setWithArray:[self.decimationOrder
-                                             subarrayWithRange:NSMakeRange(0,
-                                                                           self.linesToDecimate)]];
+- (void)updateRectsForLinesToDecimateInDimension:(LTDecimationDimension)dimension {
+  NSRange decimationRange = NSMakeRange(0, [self linesToDecimateForDimension:dimension]);
+  NSArray *decimationOrder =
+      [[self decimationOrderForDimension:dimension] subarrayWithRange:decimationRange];
+  NSSet *linesToThrow = [NSSet setWithArray:decimationOrder];
 
   NSMutableArray *imageCoordinates = [NSMutableArray array];
-  for (NSUInteger i = 0; i < self.decimationDimensionSize; ++i) {
+  CGFloat reducedInputSize = [self reducedInputSizeForDecimationDimension:dimension];
+  for (NSUInteger i = 0; i < reducedInputSize; ++i) {
     if ([linesToThrow containsObject:@(i)]) {
       continue;
     }
@@ -228,31 +246,62 @@
 
   // Start at the origin of the rect with the number of recomposed lines, centered at the center of
   // the output texture.
-  NSUInteger offset = std::floor((self.decimationDimensionSize - imageCoordinates.count) / 2.0);
-  [imageCoordinates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *) {
-    [sourceRects addObject:[self sourceRectForIndex:[obj unsignedIntegerValue]]];
-    [targetRects addObject:[self targetRectForIndex:offset + idx]];
+  NSUInteger offset = std::floor((reducedInputSize - imageCoordinates.count) / 2.0);
+  [imageCoordinates enumerateObjectsUsingBlock:^(NSNumber *obj, NSUInteger idx, BOOL *) {
+    [sourceRects addObject:[self sourceRectForIndex:obj.unsignedIntegerValue dimension:dimension]];
+    [targetRects addObject:[self targetRectForIndex:offset + idx dimension:dimension]];
   }];
 
   self.sourceRects = [sourceRects copy];
   self.targetRects = [targetRects copy];
 }
 
-- (LTRotatedRect *)sourceRectForIndex:(NSUInteger)index {
-  switch (self.decimationDimension) {
-    case LTRecomposeDecimationDimensionHorizontal:
+- (LTRotatedRect *)sourceRectForIndex:(NSUInteger)index dimension:(LTDecimationDimension)dimension {
+  switch (dimension) {
+    case LTDecimationDimensionHorizontal:
       return [LTRotatedRect rect:CGRectMake(index, 0, 1, self.input.size.height)];
-    case LTRecomposeDecimationDimensionVertical:
+    case LTDecimationDimensionVertical:
       return [LTRotatedRect rect:CGRectMake(0, index, self.input.size.width, 1)];
   }
 }
 
-- (LTRotatedRect *)targetRectForIndex:(NSUInteger)index {
-  switch (self.decimationDimension) {
-    case LTRecomposeDecimationDimensionHorizontal:
+- (LTRotatedRect *)targetRectForIndex:(NSUInteger)index dimension:(LTDecimationDimension)dimension {
+  switch (dimension) {
+    case LTDecimationDimensionHorizontal:
       return [LTRotatedRect rect:CGRectMake(index, 0, 1, self.input.size.height)];
-    case LTRecomposeDecimationDimensionVertical:
+    case LTDecimationDimensionVertical:
       return [LTRotatedRect rect:CGRectMake(0, index, self.input.size.width, 1)];
+  }
+}
+
+#pragma mark -
+#pragma mark Dimension-Specific Properties
+#pragma mark -
+
+- (NSArray *)decimationOrderForDimension:(LTDecimationDimension)dimension {
+  switch (dimension) {
+    case LTDecimationDimensionHorizontal:
+      return self.colsDecimationOrder;
+    case LTDecimationDimensionVertical:
+      return self.rowsDecimationOrder;
+  }
+}
+
+- (NSUInteger)linesToDecimateForDimension:(LTDecimationDimension)dimension {
+  switch (dimension) {
+    case LTDecimationDimensionHorizontal:
+      return self.colsToDecimate;
+    case LTDecimationDimensionVertical:
+      return self.rowsToDecimate;
+  }
+}
+
+- (CGFloat)reducedInputSizeForDecimationDimension:(LTDecimationDimension)dimension {
+  switch (dimension) {
+    case LTDecimationDimensionHorizontal:
+      return self.input.size.width;
+    case LTDecimationDimensionVertical:
+      return self.input.size.height;
   }
 }
 
@@ -261,26 +310,21 @@
 #pragma mark -
 
 - (CGRect)recomposedRect {
-  NSUInteger recomposedLines = self.decimationDimensionSize - self.linesToDecimate;
-  NSUInteger offset = std::floor(self.decimationDimensionSize - recomposedLines) / 2.0;
-  switch (self.decimationDimension) {
-    case LTRecomposeDecimationDimensionHorizontal:
-      return CGRectMake(offset, 0, recomposedLines, self.input.size.height);
-    case LTRecomposeDecimationDimensionVertical:
-      return CGRectMake(0, offset, self.input.size.width, recomposedLines);
-  }
+  NSUInteger recomposedRows = self.input.size.height - self.rowsToDecimate;
+  NSUInteger recomposedCols = self.input.size.width - self.colsToDecimate;
+  NSUInteger rowOffset = std::floor(self.input.size.height - recomposedRows) / 2.0;
+  NSUInteger colOffset = std::floor(self.input.size.width - recomposedCols) / 2.0;
+  return CGRectMake(colOffset, rowOffset, recomposedCols, recomposedRows);
 }
 
-- (void)setDecimationDimension:(LTRecomposeDecimationDimension)decimationDimension {
-  _decimationDimension = decimationDimension;
-  self.linesToDecimate = std::min(self.linesToDecimate,
-                                  (NSUInteger)self.decimationDimensionSize);
-  self.decimationOrder = nil;
+- (void)setRowsToDecimate:(NSUInteger)rowsToDecimate {
+  LTParameterAssert(rowsToDecimate <= self.input.size.height);
+  _rowsToDecimate = rowsToDecimate;
 }
 
-- (void)setLinesToDecimate:(NSUInteger)linesToDecimate {
-  LTParameterAssert(linesToDecimate <= self.decimationDimensionSize);
-  _linesToDecimate = linesToDecimate;
+- (void)setColsToDecimate:(NSUInteger)colsToDecimate {
+  LTParameterAssert(colsToDecimate <= self.input.size.width);
+  _colsToDecimate = colsToDecimate;
 }
 
 @end
