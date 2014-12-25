@@ -195,6 +195,10 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)dealloc {
+  // Setting the delegate to nil is necessary to avoid crashing in case the view is deallocated
+  // while the user is in a state that will cause a zoom bounce.
+  self.scrollView.delegate = nil;
+  
   [self unregisterAnimationNotification];
   [self.scrollView removeFromSuperview];
   [self.contentView removeFromSuperview];

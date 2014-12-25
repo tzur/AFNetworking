@@ -68,6 +68,10 @@
 /// framebuffer.
 - (CGAffineTransform)transformForVisibleContentRect:(CGRect)rect;
 
+/// Navigates to the navigation state of the given \c LTView. The \c LTView must have similar
+/// properties (bounds, content size, etc.), otherwise it'll be silently ignored.
+- (void)navigateToStateOfView:(LTView *)view;
+
 /// This delegate will be used to update the \c LTView's content.
 @property (weak, nonatomic) id<LTViewDrawDelegate> drawDelegate;
 

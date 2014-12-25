@@ -56,6 +56,9 @@
 /// gesture by disabling and re-enabling the recoginzer.
 - (void)cancelBogusScrollviewPanGesture;
 
+/// Navigates to the given navigation state. The state must be of an LTView with similar properties.
+- (void)navigateToState:(LTViewNavigationState *)state;
+
 /// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
