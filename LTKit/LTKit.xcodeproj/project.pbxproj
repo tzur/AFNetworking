@@ -853,8 +853,8 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
-				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
 			);
 			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
@@ -865,8 +865,8 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
-				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
 			);
 			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
