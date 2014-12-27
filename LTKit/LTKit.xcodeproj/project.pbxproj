@@ -409,7 +409,6 @@
 		503442BB1A0FB930008E0ED3 /* LTCFExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503442BA1A0FB930008E0ED3 /* LTCFExtensions.mm */; };
 		503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */; };
 		505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */; };
-		505B465D1A093F940046C00C /* LTQuadCopy.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 505B465C1A093F940046C00C /* LTQuadCopy.fsh */; };
 		505B465E1A093FF90046C00C /* LTQuadCopy.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 505B465C1A093F940046C00C /* LTQuadCopy.fsh */; };
 		5067221819EA80B5003AF8D2 /* LTLimitedCapacityQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */; };
 		5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */; };
@@ -854,10 +853,10 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
 		8B8E50F31861CE7700821829 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -866,10 +865,10 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
-				"$(DERIVED_FILE_DIR)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/($arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
 			);
-			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\"";
+			script = "\"$PROJECT_DIR/../build/EncryptShader.py\" $LTKIT_SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
 		};
 /* End PBXBuildRule section */
 
@@ -4093,7 +4092,6 @@
 				033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */,
 				03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */,
 				03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */,
-				505B465D1A093F940046C00C /* LTQuadCopy.fsh in Resources */,
 				03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */,
 				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
 				033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */,
@@ -4115,7 +4113,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\ncp -f \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
