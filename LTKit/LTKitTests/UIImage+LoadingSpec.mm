@@ -17,16 +17,10 @@ context(@"image names", ^{
   beforeEach(^{
     ltDevice = LTMockClass([LTDevice class]);
     uiApplication = LTMockClass([UIApplication class]);
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    iphoneSuffix =
-        [[numberFormatter stringFromNumber:@([UIScreen mainScreen].scale)]
-         stringByAppendingString:@"x~iphone"];
-    ipadSuffix =
-        [[numberFormatter stringFromNumber:@([UIScreen mainScreen].scale)]
-         stringByAppendingString:@"x~ipad"];
-    suffix =
-        [[numberFormatter stringFromNumber:@([UIScreen mainScreen].scale)]
-         stringByAppendingString:@"x"];
+    NSUInteger scale = std::round([UIScreen mainScreen].scale);
+    iphoneSuffix = [NSString stringWithFormat:@"%lux~iphone", scale];
+    ipadSuffix = [NSString stringWithFormat:@"%lux~ipad", scale];
+    suffix = [NSString stringWithFormat:@"%lux", scale];
   });
 
   it(@"should return names in correct order for 4-inch portrait iphone", ^{
