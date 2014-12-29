@@ -147,6 +147,15 @@ context(@"initializers and factory methods", ^{
   });
 
   context(@"factory Methods", ^{
+    it(@"should create quad from vertices of given quad", ^{
+      quad = [[LTQuad alloc] initWithCorners:{{v0, v1, v2, v3}}];
+      LTQuad *newQuad = [LTQuad quadWithVerticesOfQuad:quad];
+      expect(newQuad.v0).to.equal(quad.v0);
+      expect(newQuad.v1).to.equal(quad.v1);
+      expect(newQuad.v2).to.equal(quad.v2);
+      expect(newQuad.v3).to.equal(quad.v3);
+    });
+
     it(@"should create quad from rect", ^{
       quad = [LTQuad quadFromRect:CGRectMake(v0.x, v0.y, v1.x, v3.y)];
       expect(quad.v0).to.equal(v0);

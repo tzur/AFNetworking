@@ -33,28 +33,40 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Represents a quadrilateral in the XY plane.
 @interface LTQuad : NSObject <NSCopying>
 
+/// Returns a quad with the vertices of the given \c quad. You may call this method using a subclass
+/// of \c LTQuad to receive an instance of the desired type, however, only if the subclass has the
+/// same designated initializer as \c LTQuad.
++ (instancetype)quadWithVerticesOfQuad:(LTQuad *)quad;
+
 /// Returns a rectangular quad defined by the given \c rect. Returns \c nil if the resulting quad
-/// would be invalid (refer to \c LTQuadCornersValidity for more details).
+/// would be invalid (refer to \c LTQuadCornersValidity for more details). You may call this method
+/// using a subclass of \c LTQuad to receive an instance of the desired type, however, only if the
+/// subclass has the same designated initializer as \c LTQuad.
 + (instancetype)quadFromRect:(CGRect)rect;
 
 /// Returns a rectangular quad with the given \c origin and the given \c size. Returns \c nil if the
-/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details).
+/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details). You may
+/// call this method using a subclass of \c LTQuad to receive an instance of the desired type,
+/// however, only if the subclass has the same designated initializer as \c LTQuad.
 + (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size;
 
 /// Returns a rectangular rotated quad defined by the given \c rotatedRect. Returns \c nil if the
-/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details).
+/// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details). You may
+/// call this method using a subclass of \c LTQuad to receive an instance of the desired type,
+/// however, only if the subclass has the same designated initializer as \c LTQuad.
 + (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
 
 /// Returns a quad whose corners correspond to those of the given \c rect after transforming them
 /// using the \c transform of the given \c quad. The given \c quad must not be \c nil. Returns
 /// \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for more
-/// details).
+/// details). You may call this method using a subclass of \c LTQuad to receive an instance of the
+/// desired type, however, only if the subclass has the same designated initializer as \c LTQuad.
 + (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
 
-/// Initializes a general quad defined by the given \c corners. In case of a simple (i.e.
-/// non-self-intersecting) quad, the corners have to be provided in clockwise order. The provided
-/// corners must valid (refer to \c LTQuadCornersValidity for more details). Checking whether
-/// corners are valid for initialization can be done using the \c validityOfCorners: method.
+/// Designated initializer: initializes a general quad defined by the given \c corners. In case of a
+/// simple (i.e. non-self-intersecting) quad, the corners have to be provided in clockwise order.
+/// The provided corners must valid (refer to \c LTQuadCornersValidity for more details). Checking
+/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
 
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
