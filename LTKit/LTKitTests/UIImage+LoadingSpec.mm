@@ -10,10 +10,17 @@ LTSpecBegin(UIImageLoading)
 context(@"image names", ^{
   __block id ltDevice;
   __block id uiApplication;
+  __block NSString *iphoneSuffix;
+  __block NSString *ipadSuffix;
+  __block NSString *suffix;
 
   beforeEach(^{
     ltDevice = LTMockClass([LTDevice class]);
     uiApplication = LTMockClass([UIApplication class]);
+    NSUInteger scale = std::round([UIScreen mainScreen].scale);
+    iphoneSuffix = [NSString stringWithFormat:@"%lux~iphone", scale];
+    ipadSuffix = [NSString stringWithFormat:@"%lux~ipad", scale];
+    suffix = [NSString stringWithFormat:@"%lux", scale];
   });
 
   it(@"should return names in correct order for 4-inch portrait iphone", ^{
@@ -23,12 +30,12 @@ context(@"image names", ^{
     [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
-      @"a-568h-Portrait@2x~iphone",
-      @"a-568h@2x~iphone",
-      @"a-Portrait@2x~iphone",
-      @"a@2x~iphone",
-      @"a-568h@2x",
-      @"a@2x",
+      [@"a-568h-Portrait@" stringByAppendingString:iphoneSuffix],
+      [@"a-568h@" stringByAppendingString:iphoneSuffix],
+      [@"a-Portrait@" stringByAppendingString:iphoneSuffix],
+      [@"a@" stringByAppendingString:iphoneSuffix],
+      [@"a-568h@" stringByAppendingString:suffix],
+      [@"a@" stringByAppendingString:suffix],
       @"a-568h-Portrait~iphone",
       @"a-568h~iphone",
       @"a-Portrait~iphone",
@@ -48,12 +55,12 @@ context(@"image names", ^{
      statusBarOrientation];
 
     NSArray *expectedNames = @[
-      @"a-568h-Landscape@2x~iphone",
-      @"a-568h@2x~iphone",
-      @"a-Landscape@2x~iphone",
-      @"a@2x~iphone",
-      @"a-568h@2x",
-      @"a@2x",
+      [@"a-568h-Landscape@" stringByAppendingString:iphoneSuffix],
+      [@"a-568h@" stringByAppendingString:iphoneSuffix],
+      [@"a-Landscape@" stringByAppendingString:iphoneSuffix],
+      [@"a@" stringByAppendingString:iphoneSuffix],
+      [@"a-568h@" stringByAppendingString:suffix],
+      [@"a@" stringByAppendingString:suffix],
       @"a-568h-Landscape~iphone",
       @"a-568h~iphone",
       @"a-Landscape~iphone",
@@ -72,9 +79,9 @@ context(@"image names", ^{
     [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
-      @"a-Portrait@2x~iphone",
-      @"a@2x~iphone",
-      @"a@2x",
+      [@"a-Portrait@" stringByAppendingString:iphoneSuffix],
+      [@"a@" stringByAppendingString:iphoneSuffix],
+      [@"a@" stringByAppendingString:suffix],
       @"a-Portrait~iphone",
       @"a~iphone",
       @"a"
@@ -90,9 +97,9 @@ context(@"image names", ^{
     [[[uiApplication stub] andReturnValue:@(UIInterfaceOrientationPortrait)] statusBarOrientation];
 
     NSArray *expectedNames = @[
-      @"a-Portrait@2x~ipad",
-      @"a@2x~ipad",
-      @"a@2x",
+      [@"a-Portrait@" stringByAppendingString:ipadSuffix],
+      [@"a@" stringByAppendingString:ipadSuffix],
+      [@"a@" stringByAppendingString:suffix],
       @"a-Portrait~ipad",
       @"a~ipad",
       @"a"
