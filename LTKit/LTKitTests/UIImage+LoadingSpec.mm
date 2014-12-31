@@ -18,9 +18,9 @@ context(@"image names", ^{
     ltDevice = LTMockClass([LTDevice class]);
     uiApplication = LTMockClass([UIApplication class]);
     NSUInteger scale = std::round([UIScreen mainScreen].scale);
-    iphoneSuffix = [NSString stringWithFormat:@"%lux~iphone", scale];
-    ipadSuffix = [NSString stringWithFormat:@"%lux~ipad", scale];
-    suffix = [NSString stringWithFormat:@"%lux", scale];
+    iphoneSuffix = [NSString stringWithFormat:@"%lux~iphone", (unsigned long)scale];
+    ipadSuffix = [NSString stringWithFormat:@"%lux~ipad", (unsigned long)scale];
+    suffix = [NSString stringWithFormat:@"%lux", (unsigned long)scale];
   });
 
   it(@"should return names in correct order for 4-inch portrait iphone", ^{
