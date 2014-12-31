@@ -27,6 +27,11 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark Factory methods
 #pragma mark -
 
++ (instancetype)quadWithVerticesOfQuad:(LTQuad *)quad {
+  LTParameterAssert(quad);
+  return [((LTQuad *)[[self class] alloc]) initWithCorners:{{quad.v0, quad.v1, quad.v2, quad.v3}}];
+}
+
 + (instancetype)quadFromRect:(CGRect)rect {
   return [[self class] quadFromRectWithOrigin:rect.origin andSize:rect.size];
 }
@@ -421,7 +426,7 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark -
 
 - (id)copyWithZone:(NSZone *)zone {
-  return [[LTQuad allocWithZone:zone] initWithCorners:self.corners];
+  return [((LTQuad *)[[self class] allocWithZone:zone]) initWithCorners:self.corners];
 }
 
 - (NSString *)description {
