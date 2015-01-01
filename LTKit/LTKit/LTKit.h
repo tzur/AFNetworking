@@ -31,6 +31,7 @@
 
 // Data Structures.
 #import <LTKit/LTBidirectionalMap.h>
+#import <LTKit/LTQuad.h>
 #import <LTKit/LTRect.h>
 #import <LTKit/LTVector.h>
 
