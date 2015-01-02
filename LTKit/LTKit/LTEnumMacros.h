@@ -194,6 +194,14 @@
     return self; \
   } \
   \
+  - (id)initWithCoder:(NSCoder *)aDecoder {\
+    return [self initWithValue:[[aDecoder decodeObjectForKey:@"value"] NAME##Value]]; \
+  } \
+  \
+  - (void)encodeWithCoder:(NSCoder *)aCoder { \
+    [aCoder encodeObject:[NSValue valueWith##NAME:self.value] forKey:@"value"]; \
+  } \
+  \
   - (instancetype)enumWithNextValue { \
     LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
         enumFieldToValueForName:@#NAME]; \

@@ -112,6 +112,15 @@ context(@"enum objects", ^{
     value = [value enumWithNextValue];
     expect(value).to.beNil();
   });
+
+  it(@"should encode and decode enum", ^{
+    LTMyName *value1 = $(LTMyNameA);
+    LTMyName *value2 = $(LTMyNameB);
+    NSData *data1 = [NSKeyedArchiver archivedDataWithRootObject:value1];
+    NSData *data2 = [NSKeyedArchiver archivedDataWithRootObject:value2];
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:data1]).to.equal(value1);
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:data2]).to.equal(value2);
+  });
 });
 
 SpecEnd
