@@ -113,6 +113,12 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 /// Default content scale factor of GLKViews created on the device.
 @property (readonly, nonatomic) CGFloat glkContentScaleFactor;
 
+/// Total storage (in bytes) on the device.
+@property (readonly, nonatomic) uint64_t totalStorage;
+
+/// Free storage (in bytes) on the device.
+@property (readonly, nonatomic) uint64_t freeStorage;
+
 #pragma mark -
 #pragma mark Localization
 #pragma mark -

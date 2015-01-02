@@ -3,7 +3,7 @@
 
 #import "LTDevice.h"
 
-SpecBegin(LTDevice)
+LTSpecBegin(LTDevice)
 
 context(@"device idioms", ^{
   context(@"ipad devices", ^{
@@ -249,4 +249,30 @@ context(@"localization", ^{
   });
 });
 
-SpecEnd
+context(@"storage", ^{
+  __block id fileManager;
+  __block LTDevice *device;
+
+  beforeEach(^{
+    fileManager = LTMockClass([NSFileManager class]);
+    device = [LTDevice currentDevice];
+  });
+
+  it(@"should return correct total storage", ^{
+    static const uint64_t kExpectedBytes = 123456;
+    [[[[fileManager stub] andReturn:@{NSFileSystemSize: @(kExpectedBytes)}] ignoringNonObjectArgs]
+        attributesOfFileSystemForPath:OCMOCK_ANY error:nil];
+    uint64_t totalBytes = device.totalStorage;
+    expect(totalBytes).to.equal(kExpectedBytes);
+  });
+
+  it(@"should return correct free storage", ^{
+    static const uint64_t kExpectedBytes = 123456;
+    [[[fileManager stub] andReturn:@{NSFileSystemFreeSize: @(kExpectedBytes)}]
+     attributesOfFileSystemForPath:OCMOCK_ANY error:[OCMArg anyObjectRef]];
+    uint64_t freeBytes = device.freeStorage;
+    expect(freeBytes).to.equal(kExpectedBytes);
+  });
+});
+
+LTSpecEnd

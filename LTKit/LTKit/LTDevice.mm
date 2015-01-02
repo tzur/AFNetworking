@@ -5,6 +5,8 @@
 
 #import <sys/utsname.h>
 
+#import "NSFileManager+LTKit.h"
+
 /// Points per inch for the various devices. This is according to the specs, and can't be be found
 /// in code.
 ///
@@ -159,6 +161,7 @@ static NSDictionary * const kDeviceTypeToString = @{
 @property (strong, nonatomic) UIScreen *screen;
 @property (strong, nonatomic) UIDevice *device;
 @property (strong, nonatomic) NSBundle *mainBundle;
+@property (strong, nonatomic) NSFileManager *fileManager;
 
 @property (readwrite, nonatomic) BOOL isPadIdiom;
 @property (readwrite, nonatomic) BOOL isPhoneIdiom;
@@ -168,6 +171,8 @@ static NSDictionary * const kDeviceTypeToString = @{
 @implementation LTDevice
 
 objection_register_singleton(LTDevice)
+
+objection_requires_sel(@selector(fileManager));
 
 + (instancetype)currentDevice {
   return [JSObjection defaultInjector][[LTDevice class]];
@@ -338,6 +343,28 @@ objection_register_singleton(LTDevice)
 
 - (CGFloat)fingerSizeOnDevice {
   return std::round(self.pointsPerInch * kCommonFingerSizeInInches);
+}
+
+- (uint64_t)totalStorage {
+  return [[[self storageDictionary] objectForKey:NSFileSystemSize] unsignedLongLongValue];
+}
+
+- (uint64_t)freeStorage {
+  return [[[self storageDictionary] objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+}
+
+- (NSDictionary *)storageDictionary {
+  NSError *error = nil;
+  NSDictionary *dictionary =
+      [self.fileManager attributesOfFileSystemForPath:[NSFileManager lt_documentsDirectory]
+                                                error:&error];
+
+  if (error) {
+    LogError(@"Error retrieving device storage information: %@", error.description);
+    return nil;
+  }
+
+  return dictionary;
 }
 
 #pragma mark -
