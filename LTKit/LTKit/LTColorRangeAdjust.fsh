@@ -39,11 +39,13 @@ void main() {
   mediump float details = texture2D(detailsTexture, vTexcoord).r;
   details = mix(originalLum, mix(-0.4 * (details - 3.5 * originalLum), details,
                                  step(0.0, detailsBoost)), abs(detailsBoost));
-  outputColor.rgb = details * (outputColor.rgb / vec3(originalLum + 0.004));
+  // If originalLum is 0, set it to 1.
+  originalLum = originalLum + step(originalLum, 0.0);
+  outputColor.rgb = details * (outputColor.rgb / originalLum);
 
   // Construct mask and mix with the original image.
   mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
-  mask *= smoothstep(edge0, 0.0, distance(color.rgb, rangeColor));
+  mask *= smoothstep(edge0, 0.0, distance(sqrt(color.rgb), rangeColor));
   outputColor = mix(color, outputColor, mask);
 
   if (mode == kColorRangeModeImage) {

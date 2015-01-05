@@ -154,17 +154,22 @@ LTPropertyWithoutSetter(LTVector3, rangeColor, RangeColor, LTVector3Zero, LTVect
                         LTVector3(1, 0, 0));
 - (void)setRangeColor:(LTVector3)rangeColor {
   [self _verifyAndSetRangeColor:rangeColor];
-  self[[LTColorRangeAdjustFsh rangeColor]] = $(rangeColor);
+  self[[LTColorRangeAdjustFsh rangeColor]] = $(std::sqrt(rangeColor));
   [self updateTonalTransform];
 }
-
-static const CGFloat kDefaultEdge0 = 1.0;
-static const CGFloat kEdge0Step = 0.35;
 
 LTPropertyWithoutSetter(CGFloat, fuzziness, Fuzziness, -1, 1, 0);
 - (void)setFuzziness:(CGFloat)fuzziness {
   [self _verifyAndSetFuzziness:fuzziness];
-  self[[LTColorRangeAdjustFsh edge0]] = @(kDefaultEdge0 + kEdge0Step * fuzziness);
+  self[[LTColorRangeAdjustFsh edge0]] = @([self remapFuzziness:fuzziness]);
+}
+
+static const CGFloat kEdge0PositiveStep = 1.0;
+static const CGFloat kEdge0NegativeStep = 0.75;
+
+- (CGFloat)remapFuzziness:(CGFloat)fuzziness {
+  CGFloat step = fuzziness > 0 ? kEdge0PositiveStep : kEdge0NegativeStep;
+  return 1.0 + step * fuzziness;
 }
 
 LTPropertyWithoutSetter(LTVector3, maskColor, MaskColor, LTVector3Zero, LTVector3One,
@@ -236,8 +241,8 @@ LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
   self[[LTColorRangeAdjustFsh tonalTransform]] = $(tonalTranform);
 }
 
-static const CGFloat kSaturationScaling = 1.5;
-static const CGFloat kExposureBase = 6.0;
+static const CGFloat kSaturationScaling = 2.0;
+static const CGFloat kExposureBase = 7.0;
 
 /// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, kSaturationScaling].
 - (CGFloat)remapSaturation:(CGFloat)saturation {
