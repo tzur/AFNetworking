@@ -109,7 +109,7 @@ context(@"processing", ^{
   });
 
   it(@"should modify exposure correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(252, 155, 252, 255));
+    cv::Mat4b expected(1, 1, cv::Vec4b(255, 170, 255, 255));
     processor.exposure = 1.0;
     [processor process];
     
