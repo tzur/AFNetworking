@@ -33,6 +33,7 @@ context(@"properties", ^{
     expect(processor.diameter).to.equal(8);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
+    expect(processor.invertMask).to.beFalsy();
   });
 });
 
@@ -51,6 +52,18 @@ context(@"properties", ^{
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"TiltShiftRadial.png");
+    expect($(output.image)).to.beCloseToMatWithin($(image), 1);
+  });
+
+  sit(@"should apply inverse radial tilt-shift pattern", ^{
+    processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
+    processor.diameter = output.size.width / 2;
+    processor.spread = -1.0;
+    processor.intensity = 0.8;
+    processor.invertMask = YES;
+    [processor process];
+    
+    cv::Mat image = LTLoadMat([self class], @"TiltShiftRadialInverse.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
   

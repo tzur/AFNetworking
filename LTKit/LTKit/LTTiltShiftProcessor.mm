@@ -198,13 +198,18 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 }
 
 #pragma mark -
-#pragma mark Blue
+#pragma mark Blur
 #pragma mark -
 
 LTPropertyWithoutSetter(CGFloat, intensity, Intensity, 0, 1, 1);
 - (void)setIntensity:(CGFloat)intensity {
   [self _verifyAndSetIntensity:intensity];
   self[[LTTiltShiftFsh intensity]] = @(intensity);
+}
+
+- (void)setInvertMask:(BOOL)invertMask {
+  _invertMask = invertMask;
+  self[[LTTiltShiftFsh invertMask]] = @(invertMask);
 }
 
 @end
