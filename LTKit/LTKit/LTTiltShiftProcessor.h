@@ -49,6 +49,11 @@ LTPropertyDeclare(CGFloat, spread, Spread);
 /// @attention Radial mask is rotationally invariant, thus this parameter doesn't affect the mask.
 @property (nonatomic) CGFloat angle;
 
+/// \c YES switches between blurred and unblurred regions. For example, if \c maskType is
+/// \c LTDualMaskTypeRadial, the region inside the circle will be blurred. Default value is \c NO.
+@property (nonatomic) BOOL invertMask;
+LTPropertyDeclare(BOOL, invertMask, InvertMask);
+
 #pragma mark -
 #pragma mark Blur
 #pragma mark -

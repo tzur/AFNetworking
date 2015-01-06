@@ -45,6 +45,7 @@
 		033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */; };
 		033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */; };
 		033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */; };
+		034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */ = {isa = PBXBuildFile; fileRef = 034871881A5C1ED000B25EF5 /* TiltShiftRadialInverse.png */; };
 		0352FA8D1A1889C70046E002 /* LTBasicOilPaintingProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */; };
 		0352FA8E1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */; };
 		0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */; };
@@ -1093,6 +1094,7 @@
 		033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeShadowsCurve.png; path = Curves/NegativeShadowsCurve.png; sourceTree = "<group>"; };
 		033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveHighlightsCurve.png; path = Curves/PositiveHighlightsCurve.png; sourceTree = "<group>"; };
 		033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveShadowsCurve.png; path = Curves/PositiveShadowsCurve.png; sourceTree = "<group>"; };
+		034871881A5C1ED000B25EF5 /* TiltShiftRadialInverse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftRadialInverse.png; path = Resources/TiltShiftRadialInverse.png; sourceTree = "<group>"; };
 		0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBasicOilPaintingProcessor.h; sourceTree = "<group>"; };
 		0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessor.mm; sourceTree = "<group>"; };
 		0352FAA01A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBasicOilPaintingProcessorSpec.mm; sourceTree = "<group>"; };
@@ -2764,6 +2766,7 @@
 				03BCFD48191FA6E200529AD6 /* SmoothBorder.png */,
 				0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */,
 				0313388E190FD0240095F99B /* TiltShiftRadial.png */,
+				034871881A5C1ED000B25EF5 /* TiltShiftRadialInverse.png */,
 				031338C0191216020095F99B /* Checkerboard.png */,
 				031338C2191238050095F99B /* ShiftedTiledFrame.png */,
 				031DF22918FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png */,
@@ -3950,6 +3953,7 @@
 				8BABF18F19BC52C100AED760 /* PyramidGrid4.png in Resources */,
 				28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
+				034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BABF19119BC52C100AED760 /* PyramidGrid6.png in Resources */,
