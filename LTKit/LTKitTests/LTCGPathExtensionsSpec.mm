@@ -600,6 +600,33 @@ context(@"creation", ^{
 
       CGPathRelease(immutablePath);
     });
+
+    context(@"string exclusively consisting of whitespace characters", ^{
+      it(@"should return NULL for string consisting of whitespace characters", ^{
+        UIFont *font = [UIFont fontWithName:@"Arial" size:10];
+        expect(LTCGPathCreateWithString(@" ", font)).to.beNil();
+        expect(LTCGPathCreateWithString(@"  ", font)).to.beNil();
+        expect(LTCGPathCreateWithString(@" \n", font)).to.beNil();
+        expect(LTCGPathCreateWithString(@"\t", font)).to.beNil();
+        expect(LTCGPathCreateWithString(@"\t\n", font)).to.beNil();
+        expect(LTCGPathCreateWithString(@"\t \n ", font)).to.beNil();
+      });
+
+      it(@"should return NULL for attributed string consisting of whitespace characters", ^{
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@" "])).to.beNil();
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@"  "])).to.beNil();
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@" \n"])).to.beNil();
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@"\t"])).to.beNil();
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@"\t\n"])).to.beNil();
+        expect(LTCGPathCreateWithAttributedString([[NSAttributedString alloc]
+                                                   initWithString:@"\t \n "])).to.beNil();
+      });
+    });
   });
 });
 

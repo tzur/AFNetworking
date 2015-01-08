@@ -245,6 +245,10 @@ CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedStrin
   // of the path corresponds to \c CGPointZero.
   CGRect boundingBox = CGPathGetBoundingBox(combinedGlyphsPathRef);
 
+  if (std::min(boundingBox.size) == 0) {
+    return NULL;
+  }
+
   CGAffineTransform translateToPointZero = CGAffineTransformMakeTranslation(-boundingBox.origin.x,
                                                                             -boundingBox.origin.y);
   CGAffineTransform mirrorAroundYAxis = CGAffineTransformMakeScale(1, -1);

@@ -42,14 +42,16 @@ CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector
                                                                   BOOL closed);
 
 /// Creates a path from the provided \c string, using the provided \c font. The top-left corner of
-/// the bounding box of the returned path is \c CGPointZero. The caller is responsible for releasing
+/// the bounding box of the returned path is \c CGPointZero. The method returns \c NULL if the given
+/// \c string exclusively consists of whitespace characters. The caller is responsible for releasing
 /// the returned path.
 CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font);
 
 /// Creates a path from the provided \c attributedString. The regular line heights are multiplied
 /// with the given \c lineHeightFactor. The regular glyph advancement is multiplied with the given
 /// \c advancementFactor. The top-left corner of the bounding box of the returned path is
-/// \c CGPointZero. The caller is responsible for releasing the returned path.
+/// \c CGPointZero. The method returns \c NULL if the given \c string exclusively consists of
+/// whitespace characters. The caller is responsible for releasing the returned path.
 CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedString,
                                              CGFloat lineHeightFactor = 1,
                                              CGFloat advancementFactor = 1);
