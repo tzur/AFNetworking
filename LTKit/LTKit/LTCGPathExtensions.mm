@@ -194,8 +194,8 @@ CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font) {
 CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedString,
                                              CGFloat lineHeightFactor,
                                              CGFloat advancementFactor) {
-  CTFramesetterRef frameSetterRef = NULL;
-  CTFrameRef frameRef = NULL;
+  __block CTFramesetterRef frameSetterRef = NULL;
+  __block CTFrameRef frameRef = NULL;
 
   CGMutablePathRef combinedGlyphsPathRef = CGPathCreateMutable();
 

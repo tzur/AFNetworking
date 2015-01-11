@@ -1,5 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-/// Releases a given \c CFTypeRef if it is not NULL.
-void LTCFSafeRelease(CFTypeRef referenceToRelease);
+/// Macro releasing a given \c CFTypeRef if it is not \c NULL and setting it to \c NULL afterwards.
+#define LTCFSafeRelease(referenceToRelease) \
+  if (referenceToRelease) { \
+    CFRelease(referenceToRelease); \
+  } \
+  referenceToRelease = NULL;
