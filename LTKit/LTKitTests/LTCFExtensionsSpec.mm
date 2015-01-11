@@ -9,17 +9,29 @@ context(@"memory deallocation", ^{
   it(@"should release an existing reference", ^{
     UniChar character = 'a';
     CFMutableStringRef string = CFStringCreateMutableCopy(NULL, 0, CFSTR("abc"));
-    CFStringAppendCharacters(string, &character, 1);
+    CFTypeRef stringCopy = CFRetain(string);
     expect(string).toNot.equal(NULL);
+    expect(stringCopy).toNot.equal(NULL);
+    CFStringAppendCharacters(string, &character, 1);
+    expect(CFGetRetainCount(string)).to.equal(2);
+    expect(CFGetRetainCount(stringCopy)).to.equal(2);
     LTCFSafeRelease(string);
-    expect(^{
-      CFStringAppendCharacters(string, &character, 1);
-    }).to.raise(NSInvalidArgumentException);
+    expect(CFGetRetainCount(stringCopy)).to.equal(1);
+    LTCFSafeRelease(stringCopy);
   });
 
+  it(@"should set an existing reference to NULL", ^{
+    UniChar character = 'a';
+    CFMutableStringRef string = CFStringCreateMutableCopy(NULL, 0, CFSTR("abc"));
+    CFStringAppendCharacters(string, &character, 1);
+    LTCFSafeRelease(string);
+    expect(string).to.beNil();
+  });
+  
   it(@"should silently ignore a NULL reference", ^{
     expect(^{
-      LTCFSafeRelease(NULL);
+      CFTypeRef ref = NULL;
+      LTCFSafeRelease(ref);
     }).notTo.raiseAny();
   });
 });
