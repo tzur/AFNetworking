@@ -228,6 +228,11 @@ static const CGFloat kEpsilon = 1e-10;
   return [triangle0 containsPoint:point] || [triangle1 containsPoint:point];
 }
 
+- (BOOL)containsVertexOfQuad:(LTQuad *)quad {
+  return ([self containsPoint:quad.v0] || [self containsPoint:quad.v1] ||
+          [self containsPoint:quad.v2] || [self containsPoint:quad.v3]);
+}
+
 #pragma mark -
 #pragma mark Affine transformations
 #pragma mark -
