@@ -316,6 +316,28 @@ context(@"point inclusion", ^{
     expect([quad containsPoint:CGPointMake(1, 1)]).to.beFalsy();
   });
 
+  it(@"should correctly compute vertex inclusion", ^{
+    quad = [[LTQuad alloc] initWithCorners:{{v0, v1, v3, v2}}];
+    LTQuad *anotherQuad = [LTQuad quadFromRect:CGRectMake(-1, -1, 1, 1)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beTruthy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(0.5, 0.5, 0.2, 0.2)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beTruthy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-1, -1, 0.5, 0.5)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beFalsy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-1, -1, 2, 2)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beFalsy();
+
+    quad = [[LTQuad alloc] initWithCorners:{{v0, v1, w0, v2}}];
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-1, -1, 1, 1)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beTruthy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-0.1, -0.2, 0.3, 0.3)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beTruthy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(0.1, -0.5, 10, 1)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beFalsy();
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-1, -1, 3, 3)];
+    expect([quad containsVertexOfQuad:anotherQuad]).to.beFalsy();
+  });
+
   it(@"should correctly compute the concave point of a concave quad", ^{
     LTQuadCorners cornersOfConcaveQuad{{v0, v1, w0, v3}};
     quad = [[LTQuad alloc] initWithCorners:cornersOfConcaveQuad];

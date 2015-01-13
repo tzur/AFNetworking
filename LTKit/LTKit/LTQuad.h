@@ -79,6 +79,9 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Returns \c YES if the given \c point is contained by this quad.
 - (BOOL)containsPoint:(CGPoint)point;
 
+/// Returns \c YES if this instance contains at least one of the vertices of the given \c quad.
+- (BOOL)containsVertexOfQuad:(LTQuad *)quad;
+
 /// Rotates this instance by \c angle (which is provided in radians) in the XY plane around the
 /// provided \c anchorPoint, in clockwise direction.
 - (void)rotateByAngle:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint;
