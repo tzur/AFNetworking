@@ -89,6 +89,10 @@ LTPropertyDeclare(CGFloat, tint, Tint);
 #pragma mark Details
 #pragma mark -
 
+/// Sharpens the image. Should be in [0, 1] range. Default value is 0.
+@property (nonatomic) CGFloat sharpen;
+LTPropertyDeclare(CGFloat, sharpen, Sharpen);
+
 /// Controls the local contrast by changing the amplitude of the image details. Should be in [-1, 1]
 /// range. Default value is 0.
 @property (nonatomic) CGFloat details;

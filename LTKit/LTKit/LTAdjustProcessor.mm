@@ -3,6 +3,7 @@
 
 #import "LTAdjustProcessor.h"
 
+#import "LTBicubicResizeProcessor.h"
 #import "LTCLAHEProcessor.h"
 #import "LTColorGradient.h"
 #import "LTCurve.h"
@@ -49,8 +50,9 @@
 /// If \c YES, tonal transform update should run at the next processing round of this processor.
 @property (nonatomic) BOOL shouldUpdateTonalTransform;
 
-/// The generation id of the input texture that was used to create the current details textures.
-@property (nonatomic) NSUInteger detailsTextureGenerationID;
+/// The generation id of the input texture that was used to create the current details and smooth
+/// textures.
+@property (nonatomic) NSUInteger inputTextureGenerationID;
 
 @end
 
@@ -116,12 +118,15 @@ static const CGFloat kTintScaling = 0.3;
   return [LTColorGradient identityGradient];
 }
 
-- (void)updateDetailsTextureIfNecessary {
-  if (self.detailsTextureGenerationID != self.inputTexture.generationID ||
-      !self.auxiliaryTextures[[LTAdjustFsh detailsTexture]]) {
-    self.detailsTextureGenerationID = self.inputTexture.generationID;
+- (void)updateInputDerivedTexturesIfNecessary {
+  if (self.inputTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTAdjustFsh detailsTexture]] ||
+      !self.auxiliaryTextures[[LTAdjustFsh lowResolutionSourceTexture]]) {
+    self.inputTextureGenerationID = self.inputTexture.generationID;
     [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
                      withName:[LTAdjustFsh detailsTexture]];
+    [self setAuxiliaryTexture:[self createLowResolutionTexture:self.inputTexture]
+                     withName:[LTAdjustFsh lowResolutionSourceTexture]];
   }
 }
 
@@ -131,6 +136,13 @@ static const CGFloat kTintScaling = 0.3;
                                                                  outputTexture:detailsTexture];
   [processor process];
   return detailsTexture;
+}
+
+- (LTTexture *)createLowResolutionTexture:(LTTexture *)texture {
+  LTTexture *lowResolutionTexture =
+      [LTTexture byteRGBATextureWithSize:std::ceil(texture.size / 2)];
+  [[[LTBicubicResizeProcessor alloc] initWithInput:texture output:lowResolutionTexture] process];
+  return lowResolutionTexture;
 }
 
 #pragma mark -
@@ -160,7 +172,8 @@ static const CGFloat kTintScaling = 0.3;
       @instanceKeypath(LTAdjustProcessor, saturation),
       @instanceKeypath(LTAdjustProcessor, temperature),
       @instanceKeypath(LTAdjustProcessor, tint),
-       
+
+      @instanceKeypath(LTAdjustProcessor, sharpen),
       @instanceKeypath(LTAdjustProcessor, details),
       @instanceKeypath(LTAdjustProcessor, shadows),
       @instanceKeypath(LTAdjustProcessor, fillLight),
@@ -182,7 +195,7 @@ static const CGFloat kTintScaling = 0.3;
 #pragma mark -
 
 - (void)preprocess {
-  [self updateDetailsTextureIfNecessary];
+  [self updateInputDerivedTexturesIfNecessary];
 
   [self updateLUTs];
 }
@@ -380,6 +393,12 @@ LTPropertyWithoutSetter(CGFloat, hue, Hue, -1, 1, 0);
 #pragma mark -
 #pragma mark Details
 #pragma mark -
+
+LTPropertyWithoutSetter(CGFloat, sharpen, Sharpen, 0, 1, 0);
+- (void)setSharpen:(CGFloat)sharpen {
+  [self _verifyAndSetSharpen:sharpen];
+  self[[LTAdjustFsh sharpen]] = @(sharpen * 4);
+}
 
 LTPropertyWithoutSetter(CGFloat, details, Details, -1, 1, 0);
 - (void)setDetails:(CGFloat)details {
