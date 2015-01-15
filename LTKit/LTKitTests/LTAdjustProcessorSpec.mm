@@ -112,7 +112,14 @@ context(@"properties", ^{
   it(@"should fail on invalid details parameter", ^{
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
     expect(^{
-      adjust.highlights = -2.0;
+      adjust.details = -2.0;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid sharpen parameter", ^{
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
+    expect(^{
+      adjust.sharpen = 2.0;
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -206,6 +213,7 @@ context(@"properties", ^{
       adjust.temperature = 0.5;
       adjust.tint = 0.9;
       // Details.
+      adjust.sharpen = 1.0;
       adjust.details = 1.0;
       adjust.shadows = 0.2;
       adjust.fillLight = 0.1;
@@ -441,6 +449,20 @@ context(@"processing", ^{
     adjust.lightsHue = 0.5;
     [adjust process];
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+  });
+
+  it(@"should process sharpen correctly", ^{
+    // Sharpening will increase the amplitude of the centered delta function on 3x3 grid.
+    cv::Mat4b delta = LTCreateDeltaMat(CGSizeMakeUniform(3));
+    cv::Mat4b input = delta.clone();
+    input(1, 1) = cv::Vec4b(128, 128, 128, 255);
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
+                                                                  output:outputTexture];
+    adjust.sharpen = 1;
+    [adjust process];
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(delta), 2);
   });
 
   it(@"should leave input unchanged on default parameters", ^{
