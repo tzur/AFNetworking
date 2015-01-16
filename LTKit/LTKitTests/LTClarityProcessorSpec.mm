@@ -28,7 +28,9 @@ afterEach(^{
 
 context(@"properties", ^{
   it(@"should return default properties correctly", ^{
-    expect(processor.punch).to.equal(0);
+    expect(processor.sharpen).to.equal(0);
+    expect(processor.fineContrast).to.equal(0);
+    expect(processor.mediumContrast).to.equal(0);
     expect(processor.flatten).to.equal(0);
     expect(processor.gain).to.equal(0);
     expect(processor.saturation).to.equal(0);
@@ -36,22 +38,32 @@ context(@"properties", ^{
 });
 
 context(@"synthetic rendering", ^{
-  it(@"should process punch correctly", ^{
-    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
-    cv::Mat4b output(16, 16, cv::Vec4b(0, 141, 255 ,255));
-    
+  it(@"should return original image on default input", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(64, 128, 192, 255));
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
                                                                        output:outputTexture];
-    processor.punch = 1.0;
     [processor process];
-    expect($(outputTexture.image)).to.beCloseToMat($(output));
+    expect($(outputTexture.image)).to.beCloseToMat($(input));
   });
-  
+
+  it(@"should not change constant image with sharpen", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(64, 128, 192, 255));
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.sharpen = 1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(input));
+  });
+
   it(@"should process flatten correctly", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
-    cv::Mat4b output(16, 16, cv::Vec4b(28, 124, 219 ,255));
+    cv::Mat4b output(16, 16, cv::Vec4b(0, 130, 255 ,255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -111,7 +123,9 @@ context(@"real world rendering", ^{
   });
     
   sit(@"should apply clarity effect", ^{
-    processor.punch = 0.65;
+    processor.sharpen = 0.5;
+    processor.fineContrast = -0.2;
+    processor.mediumContrast = 0.1;
     processor.flatten = 0.2;
     processor.gain = 0.1;
     processor.saturation = -0.15;

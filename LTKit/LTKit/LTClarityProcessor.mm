@@ -3,6 +3,8 @@
 
 #import "LTClarityProcessor.h"
 
+#import "LTBicubicResizeProcessor.h"
+#import "LTBilateralFilterProcessor.h"
 #import "LTCGExtensions.h"
 #import "LTEAWProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -18,8 +20,8 @@
 
 @interface LTClarityProcessor ()
 
-/// The generation id of the input texture that was used to create the current smooth texture.
-@property (nonatomic) NSUInteger smoothTextureGenerationID;
+/// The generation id of the input texture that was used to create the current smooth textures.
+@property (nonatomic) NSUInteger inputTextureGenerationID;
 
 @end
 
@@ -33,28 +35,62 @@
   return self;
 }
 
-- (LTTexture *)createSmoothTexture:(LTTexture *)input {
-  LTTexture *output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRG allocateMemory:YES];
-  LTEAWProcessor *processor = [[LTEAWProcessor alloc] initWithInput:input output:output];
-  processor.compressionFactor = LTVector4(0.8, 0.95, 0, 0);
-  [processor process];
-  
-  return output;
-}
-
 - (void)setDefaultValues {
+  self.sharpen = self.defaultSharpen;
+  self.fineContrast = self.defaultFineContrast;
+  self.mediumContrast = self.defaultMediumContrast;
+  self.flatten = self.defaultFlatten;
   self.gain = self.defaultGain;
   self.saturation = self.defaultSaturation;
 }
 
 - (void)updateSmoothTextureIfNecessary {
-  if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
-      !self.auxiliaryTextures[[LTClarityFsh smoothTexture]]) {
-    self.smoothTextureGenerationID = self.inputTexture.generationID;
-    [self setAuxiliaryTexture:[self createSmoothTexture:self.inputTexture]
-                     withName:[LTClarityFsh smoothTexture]];
+  if (self.inputTextureGenerationID != self.inputTexture.generationID ||
+      !self.auxiliaryTextures[[LTClarityFsh downsampledTexture]] ||
+      !self.auxiliaryTextures[[LTClarityFsh bilateralTexture]] ||
+      !self.auxiliaryTextures[[LTClarityFsh eawTexture]]) {
+    self.inputTextureGenerationID = self.inputTexture.generationID;
+    [self createImageDecomposition];
   }
+}
+
+- (void)createImageDecomposition {
+  LTTexture *downsampledTexture = [self createDownsampledTexture:self.inputTexture];
+  [self setAuxiliaryTexture:downsampledTexture withName:[LTClarityFsh downsampledTexture]];
+
+  LTTexture *bilateralTexture = [self createBilateralTexture:downsampledTexture];
+  [self setAuxiliaryTexture:bilateralTexture withName:[LTClarityFsh bilateralTexture]];
+
+  LTTexture *eawTexture = [self createEAWTexture:bilateralTexture];
+  [self setAuxiliaryTexture:eawTexture withName:[LTClarityFsh eawTexture]];
+}
+
+- (LTTexture *)createDownsampledTexture:(LTTexture *)texture {
+  LTTexture *output =
+      [LTTexture byteRGBATextureWithSize:std::ceil(texture.size / 2)];
+  [[[LTBicubicResizeProcessor alloc] initWithInput:texture output:output] process];
+  return output;
+}
+
+- (LTTexture *)createBilateralTexture:(LTTexture *)texture {
+  LTTexture *output = [LTTexture byteRGBATextureWithSize:texture.size];
+  LTBilateralFilterProcessor *processor =
+      [[LTBilateralFilterProcessor alloc] initWithInput:texture outputs:@[output]];
+  processor.rangeSigma = 0.05;
+  processor.iterationsPerOutput = @[@8];
+  [processor process];
+
+  return output;
+}
+
+- (LTTexture *)createEAWTexture:(LTTexture *)input {
+  LTTexture *output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionHalfFloat
+                                          format:LTTextureFormatRed allocateMemory:YES];
+  LTEAWProcessor *processor = [[LTEAWProcessor alloc] initWithInput:input output:output];
+  processor.compressionFactor = LTVector4(0.8, 0, 0, 0);
+  [processor process];
+
+  return output;
 }
 
 #pragma mark -
@@ -69,16 +105,22 @@
 #pragma mark Properties
 #pragma mark -
 
-static const CGFloat kPunchExponent = 1.5;
+LTPropertyWithoutSetter(CGFloat, sharpen, Sharpen, -1, 1, 0);
+- (void)setSharpen:(CGFloat)sharpen {
+  [self _verifyAndSetSharpen:sharpen];
+  self[[LTClarityFsh sharpen]] = @([self remap:sharpen withScale:2]);
+}
 
-LTPropertyWithoutSetter(CGFloat, punch, Punch, 0, 1, 0);
-- (void)setPunch:(CGFloat)punch {
-  [self _verifyAndSetPunch:punch];
-  CGFloat remap = std::pow(punch, kPunchExponent);
-  self[[LTClarityFsh punch]] = @(remap);
-  self[[LTClarityFsh punchBlend]] = @([LTClarityProcessor smoothstepWithEdge0:0 edge1:1
-                                                                        value:remap]);
-  [self updateSaturation];
+LTPropertyWithoutSetter(CGFloat, fineContrast, FineContrast, -1, 1, 0);
+- (void)setFineContrast:(CGFloat)fineContrast {
+  [self _verifyAndSetFineContrast:fineContrast];
+  self[[LTClarityFsh fineContrast]] = @([self remap:fineContrast withScale:1.5]);
+}
+
+LTPropertyWithoutSetter(CGFloat, mediumContrast, MediumContrast, -1, 1, 0);
+- (void)setMediumContrast:(CGFloat)mediumContrast {
+  [self _verifyAndSetMediumContrast:mediumContrast];
+  self[[LTClarityFsh mediumContrast]] = @([self remap:mediumContrast withScale:1.5]);
 }
 
 static const CGFloat kFlattenSigmaScaling = 0.9;
@@ -90,7 +132,6 @@ LTPropertyWithoutSetter(CGFloat, flatten, Flatten, 0, 1, 0);
   CGFloat flattenBlend = [LTClarityProcessor smoothstepWithEdge0:0 edge1:0.1 value:flatten];
   self[[LTClarityFsh flattenA]] = @(flattenA);
   self[[LTClarityFsh flattenBlend]] = @(flattenBlend);
-  [self updateSaturation];
 }
 
 + (CGFloat)smoothstepWithEdge0:(CGFloat)edge0 edge1:(CGFloat)edge1 value:(CGFloat)value {
@@ -104,22 +145,14 @@ LTPropertyWithoutSetter(CGFloat, gain, Gain, 0, 1, 0);
   self[[LTClarityFsh gain]] = @(gain);
 }
 
-static const CGFloat kSaturationScaling = 1.0;
-static const CGFloat kSaturationPunchScaling = 0.5;
-static const CGFloat kSaturationFlattenScaling = 0.25;
-
 LTPropertyWithoutSetter(CGFloat, saturation, Saturation, -1, 1, 0);
 - (void)setSaturation:(CGFloat)saturation {
   [self _verifyAndSetSaturation:saturation];
-  [self updateSaturation];
+  self[[LTClarityFsh saturation]] = @([self remap:saturation withScale:1]);
 }
 
-- (void)updateSaturation {
-  // Remap [-1, 1] -> [0, 2.5].
-  CGFloat remap = 1 + self.saturation * kSaturationScaling + self.punch * kSaturationPunchScaling -
-      self.flatten * kSaturationFlattenScaling;
-  remap = MAX(0, remap);
-  self[[LTClarityFsh saturation]] = @(remap);
+- (CGFloat)remap:(CGFloat)input withScale:(CGFloat)scale {
+  return input < 0 ? input + 1 : 1 + input * scale;
 }
 
 @end
