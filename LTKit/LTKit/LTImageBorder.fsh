@@ -182,11 +182,12 @@ void main() {
   back = mix(symmetrizedBack, back, mask);
   front = mix(symmetrizedFront, front, mask);
 
-  mediump float border = 0.5 + opacity * (overlay(back, front) - 0.5);
-  mediump vec3 outputColor = overlay(color.rgb, vec3(border));
+  mediump vec3 outputColor = overlay(color.rgb, vec3(back));
+  outputColor = overlay(outputColor, vec3(front));
 
   // 4. Add color using multiply blending on the front frame.
+  mediump float border = overlay(back, front);
   outputColor = mix(outputColor, outputColor * frameColor, 2.0 * abs(border - 0.5));
 
-  gl_FragColor = vec4(outputColor, color.a);
+  gl_FragColor = vec4(mix(color.rgb, outputColor, opacity), color.a);
 }
