@@ -131,6 +131,19 @@ context(@"intersection", ^{
     expect(expectedIntersectionPoints[2]).to.beCloseToPointWithin(CGPointMake(0.75, -0.25),
                                                                   kEpsilon);
   });
+
+  it(@"it should correctly compute all intersection points of two given polylines", ^{
+    CGPoints polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
+        CGPointMake(2, 1), CGPointMake(1, 2)};
+    CGPoints polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5), CGPointMake(1.5, 0.5),
+        CGPointMake(1.5, 2)};
+    CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
+    expect(intersectionPoints.size()).to.equal(4);
+    expect(intersectionPoints[0]).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(intersectionPoints[1]).to.beCloseToPointWithin(CGPointMake(1, 0.5), kEpsilon);
+    expect(intersectionPoints[2]).to.beCloseToPointWithin(CGPointMake(1.5, 1), kEpsilon);
+    expect(intersectionPoints[3]).to.beCloseToPointWithin(CGPointMake(1.5, 1.5), kEpsilon);
+  });
 });
 
 context(@"relationship point and line/edge", ^{

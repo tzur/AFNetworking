@@ -20,14 +20,19 @@ BOOL LTPointsAreCollinear(const CGPoints &points);
 /// provided \c anchor point. The \c angle has to be given in radians.
 CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor = CGPointZero);
 
-/// Given a collection of CGPoints, returns \c YES if the polyline with edges
+/// Given a collection of \c CGPoints, returns \c YES if the polyline with edges
 /// \c (points[0], points[1]), \c (points[1], points[2]), ... is self-intersecting. The provided
 /// polyline is not required to be cyclic.
 BOOL LTIsSelfIntersectingPolyline(const CGPoints &points);
 
-/// Given a collection of CGPoint's representing a polyline, returns a collection containing all the
-/// intersection points of the polyline.
+/// Given a collection of \c CGPoints representing a polyline, returns a collection containing all
+/// the intersection points of the polyline.
 CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points);
+
+/// Given two collections of \c CGPoints representing two polylines \c polyline0 and \c polyline1,
+/// returns a collection containing all the intersection points of \c polyline0 with \polyline1.
+CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
+                                                const CGPoints &polyline1);
 
 /// Returns the intersection point of edge (p0, p1) and (q0, q1), if existing. Otherwise, returns
 /// CGPointNull.

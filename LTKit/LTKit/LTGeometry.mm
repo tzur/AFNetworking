@@ -108,6 +108,24 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
   return result;
 }
 
+// TODO:(Rouven) See comment about efficiency of LTIsSelfIntersectingPolyline.
+CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
+                                                const CGPoints &polyline1) {
+  CGPoints result;
+  for (CGPoints::size_type i = 0; i + 1 < polyline0.size(); ++i) {
+    CGPoint p0 = polyline0[i];
+    CGPoint p1 = polyline0[i + 1];
+    for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
+      CGPoint q0 = polyline1[j];
+      CGPoint q1 = polyline1[j + 1];
+      if (LTEdgesIntersect(p0, p1, q0, q1)) {
+        result.push_back(LTIntersectionPointOfEdges(p0, p1, q0, q1));
+      }
+    }
+  }
+  return result;
+}
+
 /// @see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 static CGPoint LTIntersectionPointOfLinesHelper(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1,
                                                 CGFloat tMin = -CGFLOAT_MAX,
