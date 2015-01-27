@@ -108,6 +108,24 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
   return result;
 }
 
+// TODO:(Rouven) See comment about efficiency of LTIsSelfIntersectingPolyline.
+CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
+                                                const CGPoints &polyline1) {
+  CGPoints result;
+  for (CGPoints::size_type i = 0; i + 1 < polyline0.size(); ++i) {
+    CGPoint p0 = polyline0[i];
+    CGPoint p1 = polyline0[i + 1];
+    for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
+      CGPoint q0 = polyline1[j];
+      CGPoint q1 = polyline1[j + 1];
+      if (LTEdgesIntersect(p0, p1, q0, q1)) {
+        result.push_back(LTIntersectionPointOfEdges(p0, p1, q0, q1));
+      }
+    }
+  }
+  return result;
+}
+
 /// @see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 static CGPoint LTIntersectionPointOfLinesHelper(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1,
                                                 CGFloat tMin = -CGFLOAT_MAX,
@@ -198,6 +216,109 @@ CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point) {
     return p0;
   }
   return p1;
+}
+
+/// @see http://web.archive.org/web/20141117113118/http://geomalgorithms.com/a07-_distance.html for
+/// more details.
+CGPointPair LTPointOnEdgeNearestToPointOnEdge(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
+  if (LTEdgesIntersect(p0, p1, q0, q1)) {
+    CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+    return {intersectionPoint, intersectionPoint};
+  }
+
+  LTVector2 u = LTVector2(p1 - p0);
+  LTVector2 v = LTVector2(q1 - q0);
+  LTVector2 w = LTVector2(p0 - q0);
+  CGFloat a = u.dot(u);
+  CGFloat b = u.dot(v);
+  CGFloat c = v.dot(v);
+  CGFloat d = u.dot(w);
+  CGFloat e = v.dot(w);
+  CGFloat m = a * c - b * b;
+  CGFloat s, s0, s1 = m;
+  CGFloat t, t0, t1 = m;
+
+  if (m < kEpsilon) {
+    s0 = 0;
+    s1 = 1;
+    t0 = e;
+    t1 = c;
+  } else {
+    s0 = (b * e - c * d);
+    t0 = (a * e - b * d);
+
+    if (s0 < 0) {
+      s0 = 0;
+      t0 = e;
+      t1 = c;
+    } else if (s0 > s1) {
+      s0 = s1;
+      t0 = e + b;
+      t1 = c;
+    }
+  }
+
+  if (t0 < 0) {
+    t0 = 0;
+
+    if (-d < 0) {
+      s0 = 0;
+    } else if (-d > a) {
+      s0 = s1;
+    } else {
+      s0 = -d;
+      s1 = a;
+    }
+  } else if (t0 > t1) {
+    t0 = t1;
+
+    if ((-d + b) < 0) {
+      s0 = 0;
+    } else if ((-d + b) > a) {
+      s0 = s1;
+    } else {
+      s0 = (-d +  b);
+      s1 = a;
+    }
+  }
+
+  s = (std::abs(s0) < kEpsilon ? 0 : s0 / s1);
+  t = (std::abs(t0) < kEpsilon ? 0 : t0 / t1);
+
+  return {(p0 + (CGPoint)(s * u)), (q0 + (CGPoint)(t * v))};
+}
+
+CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
+                                                      const CGPoints &polyline1) {
+  CGPointPair result;
+  CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
+  if (intersectionPoints.size()) {
+    result.first = intersectionPoints[0];
+    result.second = intersectionPoints[0];
+    return result;
+  }
+
+  CGFloat minDistance = CGFLOAT_MAX;
+
+  for (CGPoints::size_type i = 0; i + 1 < polyline0.size(); ++i) {
+    CGPoint p0 = polyline0[i];
+    CGPoint p1 = polyline0[i + 1];
+    for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
+      CGPoint q0 = polyline1[j];
+      CGPoint q1 = polyline1[j + 1];
+
+      CGPointPair closestPoints = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+
+      CGFloat distance = CGPointDistance(closestPoints.first, closestPoints.second);
+
+      if (distance < minDistance) {
+        result = closestPoints;
+        minDistance = distance;
+      }
+    }
+  }
+
+  return result;
 }
 
 CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
