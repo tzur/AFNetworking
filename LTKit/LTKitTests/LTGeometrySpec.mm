@@ -4,10 +4,54 @@
 #import "LTGeometry.h"
 
 #import "LTGLKitExtensions.h"
+#import "LTRandom.h"
 
-SpecBegin(LTGeometry)
+static CGFloat LTScalarProjection(CGPoint p, CGPoint q, CGPoint r) {
+  return LTVector2(p - r).dot(LTVector2(q - r).normalized());
+}
+
+static CGPointPair LTPointOnEdgeNearestToPointOnEdgeTest(CGPoint p0, CGPoint p1,
+                                                         CGPoint q0, CGPoint q1) {
+  CGPointPair result;
+
+  CGPoint p0p1Normalized = (CGPoint)(LTVector2(p1 - p0).normalized());
+  CGPoint q0q1Normalized = (CGPoint)(LTVector2(q1 - q0).normalized());
+
+  CGFloat p0p1Length = CGPointDistance(p0, p1);
+  CGFloat q0q1Length = CGPointDistance(q0, q1);
+
+  CGPoints pCandidates{p0, p1,
+      p0 + std::clamp(LTScalarProjection(q0, p1, p0), 0, p0p1Length) * p0p1Normalized,
+      p0 + std::clamp(LTScalarProjection(q1, p1, p0), 0, p0p1Length) * p0p1Normalized};
+  CGPoints qCandidates{q0, q1,
+    q0 + std::clamp(LTScalarProjection(p0, q1, q0), 0, q0q1Length) * q0q1Normalized,
+    q0 + std::clamp(LTScalarProjection(p1, q1, q0), 0, q0q1Length) * q0q1Normalized};
+
+  CGFloat minDistance = CGFLOAT_MAX;
+
+  for (const CGPoint &p : pCandidates) {
+    for (const CGPoint &q : qCandidates) {
+      CGFloat distance = CGPointDistance(p, q);
+      if (distance < minDistance) {
+        minDistance = distance;
+        result.first = p;
+        result.second = q;
+      }
+    }
+  }
+
+  return result;
+}
+
+static NSInteger LTRandomSign(LTRandom *random) {
+  return [random randomIntegerBetweenMin:0 max:1] ?: -1;
+}
+
+LTSpecBegin(LTGeometry)
 
 static const CGFloat kEpsilon = 1e-6;
+static const CGFloat kNumberOfEdgePointTests = 1000;
+static const CGFloat kEdgePointTestsEpsilon = 1e-4;
 
 context(@"relative point location in 2D", ^{
   it(@"should correctly compute the location of a point in relation to a ray", ^{
@@ -185,6 +229,133 @@ context(@"relationship point and line/edge", ^{
     expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointZero, kEpsilon);
   });
 
+  it(@"should correctly compute the two closest points on two given edges", ^{
+    CGPoint p0 = CGPointZero;
+    CGPoint p1 = CGPointMake(1, 0);
+    CGPoint q0 = CGPointMake(0, 1);
+    CGPoint q1 = CGPointMake(1, 1);
+    CGPointPair result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    CGPointPair expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(p0, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q0, kEpsilon);
+
+    q0 = CGPointMake(2, -1);
+    q1 = CGPointMake(2, 1);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(p1, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(CGPointMake(2, 0), kEpsilon);
+
+    q0 = p0;
+    q1 = p1;
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(p0, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q0, kEpsilon);
+
+    q0 = CGPointMake(0.5, -1);
+    q1 = CGPointMake(0.5, 1);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+
+    q0 = CGPointMake(0.5, 1);
+    q1 = CGPointMake(2, 2);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q0, kEpsilon);
+
+    q0 = CGPointMake(0.5, 1);
+    q1 = CGPointMake(2, 2);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q0, kEpsilon);
+
+    q0 = CGPointMake(0.8, 1);
+    q1 = CGPointMake(0.4, 0.2);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.4, 0), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q1, kEpsilon);
+
+    p0 = CGPointZero;
+    p1 = CGPointMake(1, 1);
+    q0 = CGPointMake(1, 0);
+    q1 = CGPointMake(2, -1);
+    result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+    expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+    expect(result.first).to.beCloseToPointWithin(expectedResult.first, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(expectedResult.second, kEpsilon);
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.5, 0.5), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(q0, kEpsilon);
+
+    LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
+
+    for (NSUInteger i = 0; i < kNumberOfEdgePointTests; i++) {
+      p0 = CGPointMake([random randomDoubleBetweenMin:-1e5 max:1e5],
+                       [random randomDoubleBetweenMin:-1e5 max:1e5]);
+
+      CGFloat distance = [random randomDoubleBetweenMin:0.1 max:1e5];
+      CGFloat a = [random randomDoubleBetweenMin:0 max:1];
+      CGFloat b = std::sqrt(1 - a * a);
+
+      p1 = p0 + CGPointMake(LTRandomSign(random) * a * distance,
+                            LTRandomSign(random) * b * distance);
+
+      q0 = p0 + CGPointMake([random randomDoubleBetweenMin:100 * -distance max:100 * distance],
+                            [random randomDoubleBetweenMin:100 * -distance max:100 * distance]);
+
+      distance = [random randomDoubleBetweenMin:0.01 * distance max:100 * distance];
+      a = [random randomDoubleBetweenMin:0 max:1];
+      b = std::sqrt(1 - a * a);
+
+      q1 = q0 + CGPointMake(LTRandomSign(random) * a * distance,
+                            LTRandomSign(random) * b * distance);
+
+      result = LTPointOnEdgeNearestToPointOnEdge(p0, p1, q0, q1);
+      expectedResult = LTPointOnEdgeNearestToPointOnEdgeTest(p0, p1, q0, q1);
+      CGFloat expectedDistance = CGPointDistance(expectedResult.first, expectedResult.second);
+      expect(result.first).to.beCloseToPointWithin(expectedResult.first,
+                                                   expectedDistance * kEdgePointTestsEpsilon);
+      expect(result.second).to.beCloseToPointWithin(expectedResult.second,
+                                                    expectedDistance * kEdgePointTestsEpsilon);
+    }
+  });
+
+  it(@"should correctly compute the two closest points on two given polylines", ^{
+    CGPoints polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
+        CGPointMake(2, 1), CGPointMake(1, 2)};
+    CGPoints polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5), CGPointMake(1.5, 0.5),
+        CGPointMake(1.5, 2)};
+    CGPointPair result = LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
+    expect(result.first).to.equal(CGPointMake(0.5, 0));
+    expect(result.second).to.equal(CGPointMake(0.5, 0));
+
+    polyline0 = CGPoints{CGPointMake(-0.5, -0.5), CGPointZero, CGPointMake(1, 0),
+        CGPointMake(1.5, -0.5)};
+    polyline1 = CGPoints{CGPointMake(0, 2), CGPointMake(0.5, 1), CGPointMake(1, 2)};
+    result = LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
+    expect(result.first).to.equal(CGPointMake(0.5, 0));
+    expect(result.second).to.equal(CGPointMake(0.5, 1));
+  });
+
   it(@"should correctly compute the distance of a point ON a line", ^{
     CGPoint a = CGPointZero;
     CGPoint b = CGPointMake(1, 1);
@@ -216,4 +387,4 @@ context(@"relationship point and line/edge", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd
