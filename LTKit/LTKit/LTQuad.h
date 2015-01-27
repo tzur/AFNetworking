@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import "LTGeometry.h"
+
 @class LTRotatedRect;
 
 /// An array of four \c CGPoint representing the corners of a quadrilateral.
@@ -99,6 +101,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Returns the point on any edge of this quad which has the smallest distance to the given
 /// \c point.
 - (CGPoint)pointOnEdgeClosestToPoint:(CGPoint)point;
+
+/// Returns a pair (\c p, \c q) of points, such that (I) \c p lies on an edge of this instance and
+/// \c q lies on an edge of the given \c quad and (II) \c p and \c q have minimum distance.
+- (CGPointPair)nearestPoints:(LTQuad *)quad;
 
 /// Returns YES if each corner of \c quad equals the corresponding corner of this instance, up to
 /// the given \c deviation.

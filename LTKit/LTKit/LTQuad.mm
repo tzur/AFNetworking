@@ -3,7 +3,6 @@
 
 #import "LTQuad.h"
 
-#import "LTGeometry.h"
 #import "LTTriangle.h"
 #import "LTRotatedRect.h"
 
@@ -275,7 +274,7 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 #pragma mark -
-#pragma mark Properties
+#pragma mark Point location
 #pragma mark -
 
 - (CGPoint)pointOnEdgeClosestToPoint:(CGPoint)point {
@@ -292,6 +291,13 @@ static const CGFloat kEpsilon = 1e-10;
     }
   }
   return closestPoint;
+}
+
+- (CGPointPair)nearestPoints:(LTQuad *)quad {
+  CGPoints polyline0{{self.v0, self.v1, self.v2, self.v3, self.v0}};
+  CGPoints polyline1{{quad.v0, quad.v1, quad.v2, quad.v3, quad.v0}};
+
+  return LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
 }
 
 #pragma mark -

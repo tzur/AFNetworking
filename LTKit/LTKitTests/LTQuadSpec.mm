@@ -382,6 +382,26 @@ context(@"point inclusion", ^{
     point = CGPointMake(-0.4, 1);
     expect([quad pointOnEdgeClosestToPoint:point]).to.beCloseToPointWithin(quad.v3, kEpsilon);
   });
+
+  it(@"should correctly compute the points with minimum distance located on edges of two quads", ^{
+    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
+    LTQuad *anotherQuad = [LTQuad quadFromRect:CGRectMake(0.5, 1.5, 1, 1)];
+    CGPointPair result = [quad nearestPoints:anotherQuad];
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(1, 1), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(CGPointMake(1, 1.5), kEpsilon);
+
+    quad = [[LTQuad alloc] initWithCorners:LTQuadCorners{{CGPointZero, CGPointMake(1, 0),
+        CGPointMake(1.5, 0.5), CGPointMake(1.5, 1)}}];
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(0, 2, 1, 1)];
+    result = [quad nearestPoints:anotherQuad];
+    expect(result.first).to.beCloseToPointWithin(quad.v3, kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(anotherQuad.v1, kEpsilon);
+
+    anotherQuad = [LTQuad quadFromRect:CGRectMake(-0.5, -0.5, 1, 1)];
+    result = [quad nearestPoints:anotherQuad];
+    expect(result.first).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(result.second).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+  });
 });
 
 context(@"affine transformations", ^{
