@@ -71,3 +71,6 @@ CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
 /// Returns the distance of the given \c point from the line passing through \c pointOnLine and
 /// \c anotherPointOnLine.
 CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point);
+
+/// Returns the distance of the given \c point from the edge (\c p0, \c p1).
+CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point);

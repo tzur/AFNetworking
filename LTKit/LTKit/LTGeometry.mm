@@ -324,3 +324,7 @@ CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
 CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
   return LTVectorFromPointToClosestPointOnLine(point, pointOnLine, anotherPointOnLine).length();
 }
+
+CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point) {
+  return CGPointDistance(point, LTPointOnEdgeClosestToPoint(p0, p1, point));
+}
