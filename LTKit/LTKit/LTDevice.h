@@ -26,11 +26,13 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
   LTDeviceTypeIPad2G,
   LTDeviceTypeIPad3G,
   LTDeviceTypeIPad4G,
-  LTDeviceTypeIPadAir,
+  LTDeviceTypeIPadAir1G,
+  LTDeviceTypeIPadAir2G,
 
   // iPad mini.
   LTDeviceTypeIPadMini1G,
   LTDeviceTypeIPadMini2G,
+  LTDeviceTypeIPadMini3G,
 
   // Apple TV.
   LTDeviceTypeAppleTV2,

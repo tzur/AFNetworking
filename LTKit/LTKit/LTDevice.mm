@@ -11,7 +11,7 @@
 /// in code.
 ///
 /// @see http://www.apple.com/ipad/compare/
-/// @see http://www.apple.com/iPhone/compare/
+/// @see http://www.apple.com/iphone/compare/
 static const CGFloat kPointsPerInchDefault = 163.0;
 static const CGFloat kPointsPerInchIPhone = 163.0;
 static const CGFloat kPointsPerInchIPod = 163.0;
@@ -69,17 +69,22 @@ static NSDictionary * const kPlatformSubstringToLTDeviceType = @{
   @"iPad3,4":   @(LTDeviceTypeIPad4G),
   @"iPad3,5":   @(LTDeviceTypeIPad4G),
   @"iPad3,6":   @(LTDeviceTypeIPad4G),
-  @"iPad4,1":   @(LTDeviceTypeIPadAir),
-  @"iPad4,2":   @(LTDeviceTypeIPadAir),
-  @"iPad4,3":   @(LTDeviceTypeIPadAir), // Speculation: CDMA model.
+  @"iPad4,1":   @(LTDeviceTypeIPadAir1G), // iPad Air WiFi.
+  @"iPad4,2":   @(LTDeviceTypeIPadAir1G), // iPad Air WiFi + Cellular.
+  @"iPad4,3":   @(LTDeviceTypeIPadAir1G), // iPad Air WiFi + Cellular (China).
+  @"iPad5,3":   @(LTDeviceTypeIPadAir2G), // iPad Air 2 WiFi.
+  @"iPad5,4":   @(LTDeviceTypeIPadAir2G), // iPad Air 2 WiFi + Cellular.
 
   // iPad mini.
-  @"iPad2,5":   @(LTDeviceTypeIPadMini1G), // iPad mini WIFI
-  @"iPad2,6":   @(LTDeviceTypeIPadMini1G), // iPad mini WIFI + GSM
-  @"iPad2,7":   @(LTDeviceTypeIPadMini1G), // iPad mini WIFI + CDMA
-  @"iPad4,4":   @(LTDeviceTypeIPadMini2G),
-  @"iPad4,5":   @(LTDeviceTypeIPadMini2G),
-  @"iPad4,6":   @(LTDeviceTypeIPadMini2G), // Speculation: CDMA model.
+  @"iPad2,5":   @(LTDeviceTypeIPadMini1G), // iPad mini WiFi.
+  @"iPad2,6":   @(LTDeviceTypeIPadMini1G), // iPad mini WiFi + GSM.
+  @"iPad2,7":   @(LTDeviceTypeIPadMini1G), // iPad mini WiFi + CDMA.
+  @"iPad4,4":   @(LTDeviceTypeIPadMini2G), // iPad mini 2 WiFi.
+  @"iPad4,5":   @(LTDeviceTypeIPadMini2G), // iPad mini 2 WiFi + Cellular.
+  @"iPad4,6":   @(LTDeviceTypeIPadMini2G), // iPad mini 2 WiFi + Cellular (China).
+  @"iPad4,7":   @(LTDeviceTypeIPadMini3G), // iPad mini 3 WiFi.
+  @"iPad4,8":   @(LTDeviceTypeIPadMini3G), // iPad mini 3 WiFi + Cellular.
+  @"iPad4,9":   @(LTDeviceTypeIPadMini3G), // iPad mini 3 WiFi + Cellular (China).
 
   // Apple TV.
   @"AppleTV2":  @(LTDeviceTypeAppleTV2),
@@ -110,33 +115,35 @@ static NSDictionary * const kDeviceTypeToString = @{
   @(LTDeviceTypeIPhone5S):    @"LTDeviceTypeIPhone5S",
   @(LTDeviceTypeIPhone6):     @"LTDeviceTypeIPhone6",
   @(LTDeviceTypeIPhone6Plus): @"LTDeviceTypeIPhone6Plus",
-  
+
   // iPod.
   @(LTDeviceTypeIPod1G): @"LTDeviceTypeIPod1G",
   @(LTDeviceTypeIPod2G): @"LTDeviceTypeIPod2G",
   @(LTDeviceTypeIPod3G): @"LTDeviceTypeIPod3G",
   @(LTDeviceTypeIPod4G): @"LTDeviceTypeIPod4G",
   @(LTDeviceTypeIPod5G): @"LTDeviceTypeIPod5G",
-  
+
   // iPad.
   @(LTDeviceTypeIPad1G):  @"LTDeviceTypeIPad1G",
   @(LTDeviceTypeIPad2G):  @"LTDeviceTypeIPad2G",
   @(LTDeviceTypeIPad3G):  @"LTDeviceTypeIPad3G",
   @(LTDeviceTypeIPad4G):  @"LTDeviceTypeIPad4G",
-  @(LTDeviceTypeIPadAir): @"LTDeviceTypeIPadAir",
-  
+  @(LTDeviceTypeIPadAir1G): @"LTDeviceTypeIPadAir1G",
+  @(LTDeviceTypeIPadAir2G): @"LTDeviceTypeIPadAir2G",
+
   // iPad mini.
   @(LTDeviceTypeIPadMini1G): @"LTDeviceTypeIPadMini1G",
   @(LTDeviceTypeIPadMini2G): @"LTDeviceTypeIPadMini2G",
+  @(LTDeviceTypeIPadMini3G): @"LTDeviceTypeIPadMini3G",
 
   // Apple TV.
   @(LTDeviceTypeAppleTV2): @"LTDeviceTypeAppleTV2",
   @(LTDeviceTypeAppleTV3): @"LTDeviceTypeAppleTV3",
-  
+
   // Simulator
   @(LTDeviceTypeSimulatorIPhone): @"LTDeviceTypeSimulatorIPhone",
   @(LTDeviceTypeSimulatorIPad):   @"LTDeviceTypeSimulatorIPad",
-  
+
   // Unknowns.
   @(LTDeviceTypeUnknownIPhone):   @"LTDeviceTypeUnknownIPhone",
   @(LTDeviceTypeUnknownIPod):     @"LTDeviceTypeUnknownIPod",
@@ -327,13 +334,15 @@ objection_requires_sel(@selector(fileManager));
     case LTDeviceTypeIPad2G:
     case LTDeviceTypeIPad3G:
     case LTDeviceTypeIPad4G:
-    case LTDeviceTypeIPadAir:
+    case LTDeviceTypeIPadAir1G:
+    case LTDeviceTypeIPadAir2G:
     case LTDeviceTypeUnknownIPad:
     case LTDeviceTypeSimulatorIPad:
       return kPointsPerInchIPad;
 
     case LTDeviceTypeIPadMini1G:
     case LTDeviceTypeIPadMini2G:
+    case LTDeviceTypeIPadMini3G:
       return kPointsPerInchIPadMini;
 
     default:
