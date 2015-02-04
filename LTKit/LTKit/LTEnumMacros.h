@@ -278,6 +278,10 @@
         self.name, (unsigned long)self.value]; \
   } \
   \
+  - (id)copyWithZone:(NSZone __unused *)zone { \
+    return [NAME enumWithValue:self.value]; \
+  } \
+  \
   @end
 
 /// Declare easy boxing method.
