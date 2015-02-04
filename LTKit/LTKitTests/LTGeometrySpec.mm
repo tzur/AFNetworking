@@ -356,34 +356,78 @@ context(@"relationship point and line/edge", ^{
     expect(result.second).to.equal(CGPointMake(0.5, 1));
   });
 
-  it(@"should correctly compute the distance of a point ON a line", ^{
-    CGPoint a = CGPointZero;
-    CGPoint b = CGPointMake(1, 1);
-    CGPoint point = CGPointMake(0.5, 0.5);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
-    a = CGPointMake(6, 5);
-    b = CGPointMake(2, 5);
-    point = CGPointMake(-10, 5);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
-    a = CGPointMake(5, -2);
-    b = CGPointMake(6, -1);
-    point = CGPointMake(8, 1);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
-  });
+  context(@"distance", ^{
+    context(@"distance of point from line", ^{
+      it(@"should correctly compute the distance of a point ON a line", ^{
+        CGPoint a = CGPointZero;
+        CGPoint b = CGPointMake(1, 1);
+        CGPoint point = CGPointMake(0.5, 0.5);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+        a = CGPointMake(6, 5);
+        b = CGPointMake(2, 5);
+        point = CGPointMake(-10, 5);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+        a = CGPointMake(5, -2);
+        b = CGPointMake(6, -1);
+        point = CGPointMake(8, 1);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+      });
 
-  it(@"should correctly compute the distance of a general point from a line", ^{
-    CGPoint a = CGPointZero;
-    CGPoint b = CGPointMake(1, 1);
-    CGPoint point = CGPointMake(1, 0);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(M_SQRT1_2, kEpsilon);
-    a = CGPointMake(6, 5);
-    b = CGPointMake(2, 5);
-    point = CGPointMake(-29, 3);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(2, kEpsilon);
-    a = CGPointMake(5, -2);
-    b = CGPointMake(5, -1);
-    point = CGPointMake(8.5, 0);
-    expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(3.5, kEpsilon);
+      it(@"should correctly compute the distance of a general point from a line", ^{
+        CGPoint a = CGPointZero;
+        CGPoint b = CGPointMake(1, 1);
+        CGPoint point = CGPointMake(1, 0);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(M_SQRT1_2, kEpsilon);
+        a = CGPointMake(6, 5);
+        b = CGPointMake(2, 5);
+        point = CGPointMake(-29, 3);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(2, kEpsilon);
+        a = CGPointMake(5, -2);
+        b = CGPointMake(5, -1);
+        point = CGPointMake(8.5, 0);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(3.5, kEpsilon);
+      });
+    });
+
+    context(@"distance of point from edge", ^{
+      it(@"should correctly compute the distance of a point ON an edge", ^{
+        CGPoint a = CGPointZero;
+        CGPoint b = CGPointMake(1, 1);
+        CGPoint point = CGPointMake(0.5, 0.5);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+        a = CGPointMake(6, 5);
+        b = CGPointMake(2, 5);
+        point = CGPointMake(4, 5);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+        point = a;
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+        point = b;
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(0, kEpsilon);
+      });
+
+      it(@"should correctly compute the distance of a general point from an edge", ^{
+        CGPoint a = CGPointZero;
+        CGPoint b = CGPointMake(1, 1);
+        CGPoint point = CGPointMake(1, 0);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(M_SQRT1_2, kEpsilon);
+        a = CGPointMake(6, 5);
+        b = CGPointMake(2, 5);
+        point = CGPointMake(-10, 5);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(12, kEpsilon);
+        a = CGPointMake(5, -2);
+        b = CGPointMake(6, -1);
+        point = CGPointMake(8, 1);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(2 * M_SQRT2, kEpsilon);
+        a = CGPointMake(6, 5);
+        b = CGPointMake(2, 5);
+        point = CGPointMake(-29, 3);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(31.06444913401813, kEpsilon);
+        a = CGPointMake(5, -2);
+        b = CGPointMake(5, -1);
+        point = CGPointMake(8.5, 0);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(3.640054944640259, kEpsilon);
+      });
+    });
   });
 });
 
