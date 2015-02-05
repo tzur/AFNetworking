@@ -121,6 +121,23 @@ context(@"enum objects", ^{
     expect([NSKeyedUnarchiver unarchiveObjectWithData:data1]).to.equal(value1);
     expect([NSKeyedUnarchiver unarchiveObjectWithData:data2]).to.equal(value2);
   });
+
+  it(@"should copy", ^{
+    LTMyName *value1 = $(LTMyNameB);
+    LTMyName *copy1 = [value1 copy];
+    expect(copy1).to.equal(value1);
+    expect(copy1).toNot.beIdenticalTo(value1);
+
+    LTMyNameWithValues *value2 = $(LTMyNameWithValuesA);
+    LTMyNameWithValues *copy2 = [value2 copy];
+    expect(copy2).to.equal(value2);
+    expect(copy2).toNot.beIdenticalTo(value2);
+
+    LTMyNameWithUnorderedValues *value3 = $(LTMyNameWithUnorderedValuesC);
+    LTMyNameWithUnorderedValues *copy3 = [value3 copy];
+    expect(copy3).to.equal(value3);
+    expect(copy3).toNot.beIdenticalTo(value3);
+  });
 });
 
 SpecEnd
