@@ -61,7 +61,26 @@ LTPropertyProxyWithoutSetter(CGFloat, customProxyProperty, CustomProxyProperty,
 
 @end
 
-SpecBegin(LTPropertyMarcros)
+@interface TestClass (TestCategory)
+@property (strong, nonatomic) NSString *categoryString;
+@property (nonatomic) BOOL categoryBool;
+@property (nonatomic) CGFloat categoryFloat;
+@property (nonatomic) NSInteger categoryInteger;
+@property (nonatomic) NSUInteger categoryUnsignedInteger;
+@property (nonatomic) LTVector4 categoryVector;
+@end
+
+@implementation TestClass (TestCategory)
+LTCategoryProperty(NSString *, categoryString, CategoryString);
+LTCategoryBoolProperty(categoryBool, CategoryBool);
+LTCategoryCGFloatProperty(categoryFloat, CategoryFloat);
+LTCategoryIntegerProperty(categoryInteger, CategoryInteger);
+LTCategoryUnsignedIntegerProperty(categoryUnsignedInteger, CategoryUnsignedInteger);
+LTCategoryStructProperty(LTVector4, categoryVector, CategoryVector);
+@end
+
+LTSpecBegin(LTPropertyMarcros)
+
 __block TestClass *testObject;
 __block ContainerClass *containerObject;
 
@@ -195,4 +214,54 @@ it(@"should perform custom setter", ^{
   expect(containerObject.didCallProxySetter).to.beTruthy();
 });
 
-SpecEnd
+context(@"category properties", ^{
+  it(@"should set and get string property", ^{
+    expect(testObject.categoryString).to.beNil();
+    testObject.categoryString = @"1";
+    expect(testObject.categoryString).to.equal(@"1");
+    testObject.categoryString = nil;
+    expect(testObject.categoryString).to.beNil();
+  });
+
+  it(@"should set and get boolean property", ^{
+    expect(testObject.categoryBool).to.beFalsy();
+    testObject.categoryBool = YES;
+    expect(testObject.categoryBool).to.beTruthy();
+    testObject.categoryBool = NO;
+    expect(testObject.categoryBool).to.beFalsy();
+  });
+
+  it(@"should set and get float property", ^{
+    expect(testObject.categoryFloat).to.equal(0);
+    testObject.categoryFloat = 0.5;
+    expect(testObject.categoryFloat).to.equal(0.5);
+    testObject.categoryFloat = 0;
+    expect(testObject.categoryFloat).to.equal(0);
+  });
+
+  it(@"should set and get integer property", ^{
+    expect(testObject.categoryInteger).to.equal(0);
+    testObject.categoryInteger = -1;
+    expect(testObject.categoryInteger).to.equal(-1);
+    testObject.categoryInteger = 0;
+    expect(testObject.categoryInteger).to.equal(0);
+  });
+
+  it(@"should set and get unsigned integer property", ^{
+    expect(testObject.categoryUnsignedInteger).to.equal(0);
+    testObject.categoryUnsignedInteger = 1;
+    expect(testObject.categoryUnsignedInteger).to.equal(1);
+    testObject.categoryUnsignedInteger = 0;
+    expect(testObject.categoryUnsignedInteger).to.equal(0);
+  });
+
+  it(@"should set and get vector property", ^{
+    expect(testObject.categoryVector).to.equal(LTVector4Zero);
+    testObject.categoryVector = LTVector4One;
+    expect(testObject.categoryVector).to.equal(LTVector4One);
+    testObject.categoryVector = LTVector4Zero;
+    expect(testObject.categoryVector).to.equal(LTVector4Zero);
+  });
+});
+
+LTSpecEnd
