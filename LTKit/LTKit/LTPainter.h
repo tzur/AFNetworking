@@ -32,11 +32,15 @@ typedef NS_ENUM(NSUInteger, LTPainterTargetMode) {
 /// @note Texture must be compatible as a rendering target for the current device.
 - (instancetype)initWithMode:(LTPainterTargetMode)mode canvasTexture:(LTTexture *)canvasTexture;
 
-/// Clears the canvas texture with the given color.
+/// Clears the canvas texture with the given color, and removes all strokes from the \c strokes
+/// array.
 - (void)clearWithColor:(LTVector4)color;
 
 /// Paints the given stroke.
 - (void)paintStroke:(LTPainterStroke *)stroke;
+
+/// Removes all strokes from the \c strokes array.
+- (void)clearStrokes;
 
 /// Target mode for the painter, see \c LTPainterTargetMode.
 @property (readonly, nonatomic) LTPainterTargetMode mode;
@@ -51,6 +55,10 @@ typedef NS_ENUM(NSUInteger, LTPainterTargetMode) {
 /// Array of the painter strokes since the last clear, excluding a currently active stroke, if
 /// exists.
 @property (readonly, nonatomic) NSArray *strokes;
+
+/// The last stroke that was completed by the painter. If there's a currently active stroke, the one
+/// prior to it will be returned.
+@property (readonly, nonatomic) LTPainterStroke *lastStroke;
 
 #pragma mark -
 #pragma mark Painter Customization Properties
