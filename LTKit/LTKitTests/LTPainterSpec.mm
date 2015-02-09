@@ -323,44 +323,94 @@ context(@"painting", ^{
       });
     });
   });
-  
-  it(@"should paint a given stroke", ^{
-    id touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
-    LTBrush *brush = [[LTBrush alloc] init];
-    brush.flow = 0.5;
-    brush.spacing = 0.99;
-    brush.baseDiameter = kCanvasSize.width / 2;
-    painter.brush = brush;
-    painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
-    [painter clearWithColor:LTVector4(0, 0, 0, 1)];
-    
-    painter.airbrush = YES;
-    [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 4)];
-    [painter ltTouchCollector:touchCollector
-         collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
-    [painter ltTouchCollector:touchCollector
-          collectedTimerTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
-    [painter ltTouchCollector:touchCollector
-         collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.75))];
-    [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
-    
-    expected.rowRange(0, kCanvasSize.height / 2).setTo(cv::Vec4b(128, 128, 128, 255));
-    expected.colRange(kCanvasSize.width / 2,
-                      kCanvasSize.width).setTo(cv::Vec4b(128, 128, 128, 255));
-    expected(cv::Rect(kCanvasSize.width / 2, 0,
-                      kCanvasSize.width / 2, kCanvasSize.height / 2)).setTo(kWhite);
-    expect($(canvas.image)).to.beCloseToMat($(expected));
-    
-    LTPainterStroke *stroke = painter.strokes.lastObject;
-    painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
-                                canvasTexture:canvas];
-    painter.airbrush = YES;
-    painter.brush = brush;
-    painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
-    [painter clearWithColor:LTVector4(0, 0, 0, 1)];
-    expect($(canvas.image)).to.equalMat($(background));
-    [painter paintStroke:stroke];
-    expect($(canvas.image)).to.beCloseToMat($(expected));
+
+  context(@"painting existing strokes", ^{
+    __block LTBrush *brush;
+    __block LTPainterStroke *stroke;
+
+    beforeEach(^{
+      id touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
+      brush = [[LTBrush alloc] init];
+      brush.flow = 0.5;
+      brush.spacing = 0.99;
+      brush.baseDiameter = kCanvasSize.width / 2;
+      painter.brush = brush;
+      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      [painter clearWithColor:LTVector4(0, 0, 0, 1)];
+
+      painter.airbrush = YES;
+      [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 4)];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
+      [painter ltTouchCollector:touchCollector
+            collectedTimerTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.75))];
+      [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+      expected.rowRange(0, kCanvasSize.height / 2).setTo(cv::Vec4b(128, 128, 128, 255));
+      expected.colRange(kCanvasSize.width / 2,
+                        kCanvasSize.width).setTo(cv::Vec4b(128, 128, 128, 255));
+      expected(cv::Rect(kCanvasSize.width / 2, 0,
+                        kCanvasSize.width / 2, kCanvasSize.height / 2)).setTo(kWhite);
+      expect($(canvas.image)).to.beCloseToMat($(expected));
+
+      stroke = painter.lastStroke;
+      painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
+                                  canvasTexture:canvas];
+      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      [painter clearWithColor:LTVector4(0, 0, 0, 1)];
+      expect($(canvas.image)).to.equalMat($(background));
+    });
+
+    afterEach(^{
+      brush = nil;
+      stroke = nil;
+    });
+
+    it(@"should paint a given stroke", ^{
+      painter.brush = brush;
+      painter.airbrush = YES;
+      [painter paintStroke:stroke];
+      expect($(canvas.image)).to.beCloseToMat($(expected));
+    });
+
+    it(@"should call the brush startStrokeAt when painting a given stroke", ^{
+      id brushMock = OCMClassMock([LTBrush class]);
+      painter.brush = brushMock;
+      [painter paintStroke:stroke];
+      OCMVerify([brushMock startNewStrokeAtPoint:OCMOCK_ANY]);
+    });
+
+    it(@"should paint stroke with large spacing", ^{
+      brush.baseDiameter = kCanvasSize.width / 32;
+      brush.spacing = 8;
+      painter.brush = brush;
+
+      id touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
+      [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 4)];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
+      [painter ltTouchCollector:touchCollector
+            collectedTimerTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.25))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.35))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.45))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.55))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.65))];
+      [painter ltTouchCollector:touchCollector
+           collectedStrokeTouch:LTPointAt(kCanvasSize * CGSizeMake(0.75, 0.75))];
+      [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+      stroke = painter.lastStroke;
+      expected = canvas.image;
+
+      [painter clearWithColor:LTVector4(0, 0, 0, 1)];
+      [painter paintStroke:stroke];
+      expect($(canvas.image)).to.beCloseToMat($(expected));
+    });
   });
 });
 
