@@ -1,11 +1,52 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#import "NSNumber+CGFloat.h"
+
 /// Useful property declaration and implementation macros.
 
 #pragma mark -
 #pragma mark Interface
 #pragma mark -
+
+/// Implement a \c (strong, \c nonatomic) property in a category, using \c objc/runtime.
+///
+/// @note This macro cannot be used for primitive types.
+#define LTCategoryProperty(type, name, Name) \
+  - (type)name { \
+    return objc_getAssociatedObject(self, @selector(name)); \
+  } \
+  - (void)set##Name:(type)name { \
+    objc_setAssociatedObject(self, @selector(name), name, OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
+  }
+
+/// Implement a struct primitive property in a category, using \c objc/runtime.
+#define LTCategoryStructProperty(type, name, Name) \
+  - (type)name { \
+    NSValue *valueObject = objc_getAssociatedObject(self, @selector(name)); \
+    type value; \
+    [valueObject getValue:&value]; \
+    return value; \
+  } \
+  - (void)set##Name:(type)name { \
+    NSValue *value = [NSValue valueWithBytes:&name objCType:@encode(type)]; \
+    objc_setAssociatedObject(self, @selector(name), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
+  }
+
+/// Implement a \c BOOL property in a category, using \c objc/runtime.
+#define LTCategoryBoolProperty(name, Name) LTCategoryNumberProperty(BOOL, name, Name, boolValue)
+
+/// Implement a \c CGFloat primitive property in a category, using \c objc/runtime.
+#define LTCategoryCGFloatProperty(name, Name) \
+  LTCategoryNumberProperty(CGFloat, name, Name, CGFloatValue)
+
+/// Implement an \c NSInteger primitive property in a category, using \c objc/runtime.
+#define LTCategoryIntegerProperty(name, Name) \
+  LTCategoryNumberProperty(NSInteger, name, Name, integerValue)
+
+/// Implement an \c NSUInteger primitive property in a category, using \c objc/runtime.
+#define LTCategoryUnsignedIntegerProperty(name, Name) \
+  LTCategoryNumberProperty(NSUInteger, name, Name, unsignedIntegerValue)
 
 /// Define the readonly min/max/default properties of a primitive property.
 #define LTPropertyDeclare(type, name, Name) \
@@ -109,4 +150,14 @@
   } \
   - (type)name { \
     return proxyBase.customName; \
+  }
+
+/// Implement the category for primitives boxed by \c NSNumber, accepting the name of the selector
+/// used for unboxing them.
+#define LTCategoryNumberProperty(type, name, Name, valueSelector) \
+  - (type)name { \
+    return [objc_getAssociatedObject(self, @selector(name)) valueSelector]; \
+  } \
+  - (void)set##Name:(type)name { \
+    objc_setAssociatedObject(self, @selector(name), @(name), OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
   }
