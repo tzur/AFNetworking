@@ -128,16 +128,20 @@
   if (!stroke.segments.count) {
     return;
   }
-  
-  LTPainterPoint *lastDrawnPoint;
+
+  [self.brush startNewStrokeAtPoint:stroke.startingPoint];
+
+  LTPainterPoint *lastDrawnPointInStroke;
   for (id segment in stroke.segments) {
     if ([segment isKindOfClass:[LTPainterPoint class]]) {
       [self.brush drawPoint:segment inFramebuffer:self.fboForPainting];
-      lastDrawnPoint = segment;
+      lastDrawnPointInStroke = segment;
     } else if ([segment isKindOfClass:[LTPainterStrokeSegment class]]) {
-      [self.brush drawStrokeSegment:segment fromPreviousPoint:lastDrawnPoint
+      LTPainterPoint *lastDrawnPoint;
+      [self.brush drawStrokeSegment:segment fromPreviousPoint:lastDrawnPointInStroke
                       inFramebuffer:self.fboForPainting
                saveLastDrawnPointTo:&lastDrawnPoint];
+      lastDrawnPointInStroke = lastDrawnPoint ?: lastDrawnPointInStroke;
     } else {
       LTAssert(NO, @"Unsupported segment type");
     }
