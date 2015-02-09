@@ -56,6 +56,22 @@
   [self.queue removeObject:object];
 }
 
+- (void)removeFirstObject {
+  if (!self.queue.count) {
+    return;
+  }
+
+  [self.queue removeObjectAtIndex:0];
+}
+
+- (void)removeLastObject {
+  if (!self.queue.count) {
+    return;
+  }
+
+  [self.queue removeObjectAtIndex:self.queue.count - 1];
+}
+
 - (void)removeAllObjects {
   [self.queue removeAllObjects];
 }

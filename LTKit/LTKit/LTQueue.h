@@ -15,6 +15,12 @@
 /// method has no effect (although it does incur the overhead of searching the contents).
 - (void)removeObject:(id)object;
 
+/// Removes the last recently added object from the queue. Does nothing if the queue is empty.
+- (void)removeFirstObject;
+
+/// Removes the most recently added object from the queue. Does nothing if the queue is empty.
+- (void)removeLastObject;
+
 /// Removes all objects from the queue.
 - (void)removeAllObjects;
 

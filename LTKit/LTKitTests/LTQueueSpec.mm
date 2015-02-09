@@ -73,6 +73,40 @@ it(@"should correctly remove an object from the queue", ^{
   expect(poppedObject).to.beIdenticalTo(thirdObject);
 });
 
+it(@"should remove first object from the queue", ^{
+  [queue pushObject:firstObject];
+  [queue pushObject:secondObject];
+  [queue pushObject:thirdObject];
+  expect(queue.count).to.equal(3);
+  [queue removeFirstObject];
+  expect(queue.count).to.equal(2);
+  expect(queue.firstObject).to.beIdenticalTo(secondObject);
+  [queue removeFirstObject];
+  expect(queue.count).to.equal(1);
+  expect(queue.firstObject).to.beIdenticalTo(thirdObject);
+  [queue removeFirstObject];
+  expect(queue.count).to.equal(0);
+  [queue removeFirstObject];
+  expect(queue.count).to.equal(0);
+});
+
+it(@"should remove last object from the queue", ^{
+  [queue pushObject:firstObject];
+  [queue pushObject:secondObject];
+  [queue pushObject:thirdObject];
+  expect(queue.count).to.equal(3);
+  [queue removeLastObject];
+  expect(queue.count).to.equal(2);
+  expect(queue.lastObject).to.beIdenticalTo(secondObject);
+  [queue removeLastObject];
+  expect(queue.count).to.equal(1);
+  expect(queue.lastObject).to.beIdenticalTo(firstObject);
+  [queue removeLastObject];
+  expect(queue.count).to.equal(0);
+  [queue removeLastObject];
+  expect(queue.count).to.equal(0);
+});
+
 it(@"should be possible to remove all objects", ^{
   [queue pushObject:firstObject];
   [queue pushObject:secondObject];
