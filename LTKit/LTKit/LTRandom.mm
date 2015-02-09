@@ -5,6 +5,16 @@
 
 #import <random>
 
+@interface LTRandomState ()
+
+/// The internal state of the \c default_random_engine.
+@property (strong, nonatomic) NSString *engineState;
+
+@end
+
+@implementation LTRandomState
+@end
+
 @interface LTRandom () {
   /// Random engine used by the instance.
   std::default_random_engine _engine;
@@ -37,6 +47,20 @@
   std::default_random_engine::result_type seed =
       self.seed % std::numeric_limits<std::default_random_engine::result_type>::max();
   _engine = std::default_random_engine(seed);
+}
+
+- (void)resetToState:(LTRandomState *)state {
+  LTParameterAssert(state.engineState);
+  std::stringstream stream(std::string(state.engineState.UTF8String));
+  stream >> _engine;
+}
+
+- (LTRandomState *)engineState {
+  std::stringstream stream;
+  stream << _engine;
+  LTRandomState *state = [[LTRandomState alloc] init];
+  state.engineState = [NSString stringWithUTF8String:stream.str().data()];
+  return state;
 }
 
 - (double)randomDouble {

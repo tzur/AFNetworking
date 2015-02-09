@@ -89,6 +89,30 @@ context(@"random", ^{
     expect(std::equal(first.begin(), first.end(), second.begin())).to.beTruthy();
 #pragma pop_macro("equal")
   });
+
+  it(@"should generate identical random sequence after calling reset to state", ^{
+    LTRandom *random1 = [[LTRandom alloc] init];
+    for (NSInteger i = 0; i < 5; ++i) {
+      [random1 randomDouble];
+    }
+
+    LTRandom *random2 = [[LTRandom alloc] init];
+    for (NSInteger i = 0; i < 11; ++i) {
+      [random2 randomDouble];
+    }
+
+    [random2 resetToState:random1.engineState];
+    std::vector<double> first, second;
+    for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
+      first.push_back([random1 randomDouble]);
+      second.push_back([random2 randomDouble]);
+    }
+
+#pragma push_macro("equal")
+#undef equal
+    expect(std::equal(first.begin(), first.end(), second.begin())).to.beTruthy();
+#pragma pop_macro("equal")
+  });
   
   it(@"should generate identical random sequence when using same seed", ^{
     random = [[LTRandom alloc] init];

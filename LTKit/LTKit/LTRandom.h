@@ -1,6 +1,12 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+/// Represents the internal state of the random generator. Reseting the generator to a given state
+/// will yield the same sequence of random numbers (assuming the same sequence of methods are
+/// called).
+@interface LTRandomState : MTLModel
+@end
+
 /// @class LTRandom
 ///
 /// A random number generator class that can be shared between mutiple places, allowing generating
@@ -23,6 +29,9 @@
 /// Resets the random generator to its original seed.
 - (void)reset;
 
+/// Resets the random generator to the given state.
+- (void)resetToState:(LTRandomState *)state;
+
 /// Returns a uniformly distributed random double in range [0,1].
 - (double)randomDouble;
 
@@ -37,5 +46,8 @@
 
 /// Seed used to initialize the random generator.
 @property (readonly, nonatomic) NSUInteger seed;
+
+/// Returns the internal state of the random generator.
+@property (readonly, nonatomic) LTRandomState *engineState;
 
 @end
