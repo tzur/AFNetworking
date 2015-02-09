@@ -150,6 +150,22 @@ context(@"painting", ^{
     expect($(canvas.image)).to.equalMat($(expected));
   });
   
+  it(@"should clear array of strokes", ^{
+    id touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
+    [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero)];
+    [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(CGPointZero)];
+    [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+    expect(painter.strokes.count).to.equal(1);
+    [painter clearStrokes];
+    expect(painter.strokes.count).to.equal(0);
+    [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero)];
+    [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(CGPointZero)];
+    [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+    expect(painter.strokes.count).to.equal(1);
+    [painter clearWithColor:LTVector4Zero];
+    expect(painter.strokes.count).to.equal(0);
+  });
+
   context(@"paint according to touch collector events", ^{
     __block id touchCollector;
     __block LTBrush *brush;

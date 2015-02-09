@@ -116,6 +116,10 @@
 
 - (void)clearWithColor:(LTVector4)color {
   [self.canvasFbo clearWithColor:color];
+  [self clearStrokes];
+}
+
+- (void)clearStrokes {
   [self.mutableStrokes removeAllObjects];
 }
 
@@ -155,6 +159,10 @@
 
 - (NSArray *)strokes {
   return [self.mutableStrokes copy];
+}
+
+- (LTPainterStroke *)lastStroke {
+  return self.mutableStrokes.lastObject;
 }
 
 - (LTFbo *)fboForPainting {
