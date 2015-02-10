@@ -36,28 +36,76 @@ static const CGFloat kMaskDownscalingFactor = 2;
                           fragmentSource:[LTDuoFsh source] sourceTexture:input
                        auxiliaryTextures:@{[LTDuoFsh dualMaskTexture]: dualMaskTexture}
                                andOutput:output]) {
-    [self setDefaultValues];
-    self.needsDualMaskProcessing = YES;
+    [self resetInputModel];
+    [self setNeedsDualMaskUpdate];
   }
   return self;
 }
 
-- (void)preprocess {
-  [self processSubProcessors];
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTDuoProcessor, maskType),
+      @instanceKeypath(LTDuoProcessor, center),
+      @instanceKeypath(LTDuoProcessor, diameter),
+      @instanceKeypath(LTDuoProcessor, spread),
+      @instanceKeypath(LTDuoProcessor, angle),
+      @instanceKeypath(LTDuoProcessor, blueColor),
+      @instanceKeypath(LTDuoProcessor, redColor),
+      @instanceKeypath(LTDuoProcessor, blendMode),
+      @instanceKeypath(LTDuoProcessor, opacity)
+    ]];
+  });
+  
+  return properties;
 }
 
-- (void)processSubProcessors {
++ (BOOL)isPassthroughForDefaultInputModel {
+  return NO;
+}
+
+- (LTDualMaskType)defaultMaskType {
+  return LTDualMaskTypeRadial;
+}
+
+- (LTVector2)defaultCenter {
+  return LTVector2Zero;
+}
+
+- (CGFloat)defaultDiameter {
+  return 0;
+}
+
+- (CGFloat)defaultAngle {
+  return 0;
+}
+
+- (LTDuoBlendMode)defaultBlendMode {
+  return LTDuoBlendModeNormal;
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
+
+- (void)preprocess {
+  [super preprocess];
+
   if (self.needsDualMaskProcessing) {
     [self.dualMaskProcessor process];
     self.needsDualMaskProcessing = NO;
   }
 }
 
-- (void)setDefaultValues {
-  self.blueColor = self.defaultBlueColor;
-  self.redColor = self.defaultRedColor;
-  self.opacity = self.defaultOpacity;
-  self.blendMode = LTDuoBlendModeNormal;
+- (void)setNeedsDualMaskUpdate {
+  self.needsDualMaskProcessing = YES;
 }
 
 #pragma mark -
@@ -66,7 +114,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
 
 - (void)setMaskType:(LTDualMaskType)maskType {
   self.dualMaskProcessor.maskType = maskType;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (LTDualMaskType)maskType {
@@ -75,7 +123,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
 
 - (void)setCenter:(LTVector2)center {
   self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (LTVector2)center {
@@ -84,7 +132,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
 
 - (void)setDiameter:(CGFloat)diameter {
   self.dualMaskProcessor.diameter = diameter / kMaskDownscalingFactor;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)diameter {
@@ -95,12 +143,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (void)setAngle:(CGFloat)angle {
   self.dualMaskProcessor.angle = angle;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)angle {

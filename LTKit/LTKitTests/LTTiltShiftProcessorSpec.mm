@@ -29,8 +29,8 @@ afterEach(^{
 context(@"properties", ^{
   it(@"should return default mask properties correctly", ^{
     expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
-    expect(processor.center).to.equal(LTVector2(8, 8));
-    expect(processor.diameter).to.equal(8);
+    expect(processor.center).to.equal(LTVector2Zero);
+    expect(processor.diameter).to.equal(0);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
     expect(processor.invertMask).to.beFalsy();
@@ -64,6 +64,8 @@ context(@"properties", ^{
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"TiltShiftRadialInverse.png");
+    processor.center = LTVector2(8, 8);
+    processor.diameter = 8;
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
   

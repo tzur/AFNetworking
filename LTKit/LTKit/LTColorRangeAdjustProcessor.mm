@@ -46,7 +46,7 @@ static const CGFloat kMaskDownscalingFactor = 4;
                           fragmentSource:[LTColorRangeAdjustFsh source] sourceTexture:input
                        auxiliaryTextures:@{[LTColorRangeAdjustFsh dualMaskTexture]: dualMaskTexture}
                                andOutput:output]) {
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
 }
@@ -68,6 +68,64 @@ static const CGFloat kMaskDownscalingFactor = 4;
   return detailsTexture;
 }
 
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTColorRangeAdjustProcessor, maskType),
+      @instanceKeypath(LTColorRangeAdjustProcessor, center),
+      @instanceKeypath(LTColorRangeAdjustProcessor, diameter),
+      @instanceKeypath(LTColorRangeAdjustProcessor, spread),
+      @instanceKeypath(LTColorRangeAdjustProcessor, angle),
+      @instanceKeypath(LTColorRangeAdjustProcessor, rangeColor),
+      @instanceKeypath(LTColorRangeAdjustProcessor, fuzziness),
+      @instanceKeypath(LTColorRangeAdjustProcessor, hue),
+      @instanceKeypath(LTColorRangeAdjustProcessor, saturation),
+      @instanceKeypath(LTColorRangeAdjustProcessor, exposure),
+      @instanceKeypath(LTColorRangeAdjustProcessor, contrast),
+      @instanceKeypath(LTColorRangeAdjustProcessor, maskColor),
+      @instanceKeypath(LTColorRangeAdjustProcessor, renderingMode),
+      @instanceKeypath(LTColorRangeAdjustProcessor, disableRangeAttenuation)
+    ]];
+  });
+  
+  return properties;
+}
+
+- (LTDualMaskType)defaultMaskType {
+  return LTDualMaskTypeRadial;
+}
+
+- (LTVector2)defaultCenter {
+  return LTVector2Zero;
+}
+
+- (CGFloat)defaultDiameter {
+  return 0;
+}
+
+- (CGFloat)defaultAngle {
+  return 0;
+}
+
+- (LTColorRangeRenderingMode)defaultRenderingMode {
+  return LTColorRangeRenderingModeImage;
+}
+
+- (BOOL)defaultDisableRangeAttenuation {
+  return NO;
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
+
 - (void)preprocess {
   [super preprocess];
 
@@ -87,15 +145,8 @@ static const CGFloat kMaskDownscalingFactor = 4;
   self.shouldUpdateTonalTransform = YES;
 }
 
-- (void)setDefaultValues {
-  self.rangeColor = self.defaultRangeColor;
-  self.fuzziness = self.defaultFuzziness;
-  self.hue = self.defaultHue;
-  self.saturation = self.defaultSaturation;
-  self.exposure = self.defaultExposure;
-  self.contrast = self.defaultContrast;
-  self.renderingMode = LTColorRangeRenderingModeImage;
-  self.maskColor = self.defaultMaskColor;
+- (void)setNeedsDualMaskUpdate {
+  self.needsDualMaskProcessing = YES;
 }
 
 #pragma mark -
@@ -104,7 +155,7 @@ static const CGFloat kMaskDownscalingFactor = 4;
 
 - (void)setMaskType:(LTDualMaskType)maskType {
   self.dualMaskProcessor.maskType = maskType;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (LTDualMaskType)maskType {
@@ -121,13 +172,13 @@ static const CGFloat kMaskDownscalingFactor = 4;
                     @"Center should be inside the bounds of the input texture");
   _center = center;
   self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
   self.rangeColor = [self.inputTexture pixelValue:(CGPoint)center].rgb();
 }
 
 - (void)setDiameter:(CGFloat)diameter {
   self.dualMaskProcessor.diameter = diameter / kMaskDownscalingFactor;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)diameter {
@@ -138,12 +189,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (void)setAngle:(CGFloat)angle {
   self.dualMaskProcessor.angle = angle;
-  self.needsDualMaskProcessing = YES;
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)angle {
@@ -170,6 +221,11 @@ static const CGFloat kEdge0NegativeStep = 0.75;
 - (CGFloat)remapFuzziness:(CGFloat)fuzziness {
   CGFloat step = fuzziness > 0 ? kEdge0PositiveStep : kEdge0NegativeStep;
   return 1.0 + step * fuzziness;
+}
+
+- (void)setDisableRangeAttenuation:(BOOL)disableRangeAttenuation {
+  _disableRangeAttenuation = disableRangeAttenuation;
+  self[[LTColorRangeAdjustFsh disableRangeAttenuation]] = @(disableRangeAttenuation);
 }
 
 LTPropertyWithoutSetter(LTVector3, maskColor, MaskColor, LTVector3Zero, LTVector3One,

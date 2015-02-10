@@ -156,6 +156,7 @@
 		03D516E918B5DB780026B56A /* LTAdjustProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */; };
 		03D516F918B5DBEF0026B56A /* LTAdjustProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */; };
 		03D516FA18B5DC280026B56A /* LTAdjust.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03D516F618B5DBBD0026B56A /* LTAdjust.fsh */; };
+		03DDFC591A8A2D9500D120B3 /* RadialMaskCenterInverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */; };
 		03E638D31A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E638D21A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm */; };
 		03F99DB61895447100B77136 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB51895447100B77136 /* Lena.png */; };
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
@@ -1221,6 +1222,7 @@
 		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessor.mm; sourceTree = "<group>"; };
 		03D516F618B5DBBD0026B56A /* LTAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAdjust.fsh; sourceTree = "<group>"; };
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
+		03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterInverted.png; path = Resources/RadialMaskCenterInverted.png; sourceTree = "<group>"; };
 		03E638D21A41BFF400D7BE14 /* LTHistogramProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHistogramProcessorSpec.mm; sourceTree = "<group>"; };
 		03F99DB51895447100B77136 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = Resources/Lena.png; sourceTree = "<group>"; };
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
@@ -2690,6 +2692,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */,
 				032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */,
 				032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */,
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
@@ -3962,6 +3965,7 @@
 				032DFC501A1A50FB002A4F69 /* Lena128BasicOilPainting.png in Resources */,
 				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
 				28A2546D19C9D84C0057E1A3 /* ReshapeProcessorResizeWithMask.png in Resources */,
+				03DDFC591A8A2D9500D120B3 /* RadialMaskCenterInverted.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				28FB00F21A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,

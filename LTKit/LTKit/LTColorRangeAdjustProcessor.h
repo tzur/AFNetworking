@@ -32,12 +32,11 @@ typedef NS_ENUM(NSUInteger, LTColorRangeRenderingMode) {
 
 /// Center of the mask in coordinates of the output image, aka "pixel coordinates". Despite the
 /// relation to pixels, values in this coordinate system don't have to be integers.
-/// Default value of the center is (width/2, height/2). Range is unbounded.
+/// Default value of the center is (0, 0). Range is unbounded.
 @property (nonatomic) LTVector2 center;
 
 /// Diameter of the mask is the length in pixels of the straight line between two neutral points
-/// through the center. Range is unbounded. Default value is min(width, height)/2, so diameter of
-/// the red part is half the of the smaller image dimension when corrected for aspect ratio.
+/// through the center. Range is unbounded. Default value is 0.
 /// @attention In case of linear mask type the width is zero by construction and this property
 /// doesn't affect the mask.
 @property (nonatomic) CGFloat diameter;
@@ -64,6 +63,10 @@ LTPropertyDeclare(CGFloat, spread, Spread);
 /// value is 0.
 @property (nonatomic) CGFloat fuzziness;
 LTPropertyDeclare(CGFloat, fuzziness, Fuzziness);
+
+/// \c YES if range attenuation should be disabled. In this case the result is completely determined
+/// by the spatial attenuation controlled by the spatial mask parameters. Default value is \c NO.
+@property (nonatomic) BOOL disableRangeAttenuation;
 
 /// Sets the rendering mode of the processor. Default value is \c LTColorRangeRenderingModeImage.
 @property (nonatomic) LTColorRangeRenderingMode renderingMode;

@@ -17,7 +17,7 @@
                        auxiliaryTextures:nil
                                andOutput:output]) {
     [self setAspectRatioCorrectionWithSize:output.size];
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
 }
@@ -38,6 +38,48 @@
     aspectRatioCorrection = LTVector2(1, size.height/size.width);
   }
   self[[LTDualMaskFsh aspectRatioCorrection]] = $(aspectRatioCorrection);
+}
+
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTDualMaskProcessor, maskType),
+      @instanceKeypath(LTDualMaskProcessor, center),
+      @instanceKeypath(LTDualMaskProcessor, diameter),
+      @instanceKeypath(LTDualMaskProcessor, spread),
+      @instanceKeypath(LTDualMaskProcessor, angle),
+      @instanceKeypath(LTDualMaskProcessor, invert)
+    ]];
+  });
+  
+  return properties;
+}
+
++ (BOOL)isPassthroughForDefaultInputModel {
+  return NO;
+}
+
+- (LTDualMaskType)defaultMaskType {
+  return LTDualMaskTypeRadial;
+}
+
+- (LTVector2)defaultCenter {
+  return LTVector2Zero;
+}
+
+- (CGFloat)defaultDiameter {
+  return 0;
+}
+
+- (CGFloat)defaultAngle {
+  return 0;
 }
 
 #pragma mark -
@@ -92,6 +134,11 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setAngle:(CGFloat)angle {
   _angle = angle;
   self[[LTDualMaskFsh normal]] = $(LTVector2(cos(angle), -sin(angle)));
+}
+
+- (void)setInvert:(BOOL)invert {
+  _invert = invert;
+  self[[LTDualMaskFsh invert]] = @(invert);
 }
 
 @end

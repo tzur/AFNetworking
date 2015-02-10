@@ -10,6 +10,7 @@ typedef NS_ENUM(NSUInteger, LTDualMaskType) {
   LTDualMaskTypeRadial = 0,
   LTDualMaskTypeLinear = 1,
   LTDualMaskTypeDoubleLinear = 2,
+  LTDualMaskTypeConstant = 3,
 };
 
 /// @class LTDualMaskProcessor
@@ -28,8 +29,9 @@ typedef NS_ENUM(NSUInteger, LTDualMaskType) {
 /// It is not uncommon to use dual masks where either Red or Blue adjustment is identity, since this
 /// gives the opportunity to customize the transition pattern.
 ///
-/// Dual mask can be either radial, linear or double-linear. Center is neutral in linear and red in
-/// radial and double linear.
+/// Dual mask can be either radial, linear, double-linear or constant. Center is neutral in linear
+/// and red in radial and double linear. Constant is a special mode where the entire mask is red (or
+/// blue (if \c invert is \c YES).
 @interface LTDualMaskProcessor : LTOneShotImageProcessor
 
 /// Initializes the processor with output texture.
@@ -39,13 +41,12 @@ typedef NS_ENUM(NSUInteger, LTDualMaskType) {
 @property (nonatomic) LTDualMaskType maskType;
 
 /// Center of the mask in coordinates of the output image, aka "pixel coordinates". Despite the
-/// relation to pixels, values in this coordinate system doesn't have to be integer.
-/// Default value is the center (width/2, height/2). Range is unbounded.
+/// relation to pixels, values in this coordinate system doesn't have to be integer. Default value
+/// is (0, 0). Range is unbounded.
 @property (nonatomic) LTVector2 center;
 
 /// Diameter of the mask is the length in pixels of the straight line between two neutral points
-/// through the center. Range is unbounded. Default value is min(width, height) / 2, so diameter of
-/// the red part is half the of the smaller image dimension when corrected for aspect ratio.
+/// through the center. Range is unbounded. Default value is 0.
 /// @attention In case of linear mask type the width is zero by construction and this property
 /// doesn't affect the mask.
 @property (nonatomic) CGFloat diameter;
@@ -58,5 +59,9 @@ LTPropertyDeclare(CGFloat, spread, Spread);
 /// Counterclockwise rotation angle in radians which tilts the mask. Default value is 0.
 /// @attention Radial mask is rotationally invariant, thus this parameters doesn't affect the mask.
 @property (nonatomic) CGFloat angle;
+
+/// \c YES if the mask should be inverted. Default value is \c NO.
+@property (nonatomic) BOOL invert;
+LTPropertyDeclare(BOOL, invert, Invert);
 
 @end
