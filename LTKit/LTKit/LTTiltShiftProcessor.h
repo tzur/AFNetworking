@@ -30,12 +30,11 @@
 
 /// Center of the mask in coordinates of the output image, aka "pixel coordinates". Despite the
 /// relation to pixels, values in this coordinate system doesn't have to be integer.
-/// Default value is the center (width/2, height/2). Range is unbounded.
+/// Default value is the center is (0, 0). Range is unbounded.
 @property (nonatomic) LTVector2 center;
 
 /// Diameter of the mask is the length in pixels of the straight line between two neutral points
-/// through the center. Range is unbounded. Default value is min(width, height) / 2, so diameter of
-/// the red part is half the of the smaller image dimension when corrected for aspect ratio.
+/// through the center. Range is unbounded. Default value is 0.
 /// @attention In case of linear mask type the width is zero by construction and this property
 /// doesn't affect the mask.
 @property (nonatomic) CGFloat diameter;

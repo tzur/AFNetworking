@@ -21,6 +21,8 @@ uniform mediump float edge0;
 uniform mediump mat4 tonalTransform;
 uniform mediump vec3 maskColor;
 
+uniform bool disableRangeAttenuation;
+
 varying highp vec2 vTexcoord;
 
 void main() {
@@ -45,7 +47,9 @@ void main() {
 
   // Construct mask and mix with the original image.
   mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
-  mask *= smoothstep(edge0, 0.0, distance(sqrt(color.rgb), rangeColor));
+  if (!disableRangeAttenuation) {
+    mask *= smoothstep(edge0, 0.0, distance(sqrt(color.rgb), rangeColor));
+  }
   outputColor = mix(color, outputColor, mask);
 
   if (mode == kColorRangeModeImage) {

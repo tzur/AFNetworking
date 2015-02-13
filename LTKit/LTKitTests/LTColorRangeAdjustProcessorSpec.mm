@@ -46,6 +46,7 @@ context(@"properties", ^{
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
     expect(processor.fuzziness).to.equal(0);
+    expect(processor.disableRangeAttenuation).to.beFalsy();
     expect(processor.renderingMode).to.equal(LTColorRangeRenderingModeImage);
     expect(processor.saturation).to.equal(0);
     expect(processor.exposure).to.equal(0);
@@ -140,6 +141,25 @@ context(@"processing", ^{
     [processor process];
     
     expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  it(@"should disable range attenuation", ^{
+    cv::Mat4b inputImage(1, 2, cv::Vec4b(0, 0, 0, 255));
+    inputImage(0, 1) = cv::Vec4b(255, 255, 64, 255);
+    input = [LTTexture textureWithImage:inputImage];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+
+    /// Despite the dissimilarity between the first and the second pixels, saturation on the second
+    /// should be completely removed.
+    cv::Mat4b expected(1, 2, cv::Vec4b(0, 0, 0, 255));
+    expected(0, 1) = cv::Vec4b(241, 241, 241, 255);
+    processor.saturation = -1.0;
+    processor.diameter = 10;
+    processor.disableRangeAttenuation = YES;
+    [processor process];
+
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
   });
 });
 

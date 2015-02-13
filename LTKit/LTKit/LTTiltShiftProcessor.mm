@@ -20,8 +20,10 @@
 
 @interface LTTiltShiftProcessor ()
 
-@property (nonatomic) BOOL subProcessorInitialized;
+/// \c YES if dual mask needs processing prior to executing this processor.
+@property (nonatomic) BOOL needsDualMaskProcessing;
 
+/// Internal dual mask processor.
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
 
 /// The generation id of the input texture that was used to create the current smooth textures.
@@ -50,7 +52,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
                        auxiliaryTextures:@{[LTTiltShiftFsh dualMaskTexture]: dualMaskTexture,
                                            [LTTiltShiftFsh userMaskTexture]: mask}
                                andOutput:output]) {
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
 }
@@ -59,10 +61,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
   CGSize maskSize = CGSizeMake(MAX(1, std::round(output.size.width / kMaskScalingFactor)),
                                MAX(1, std::round(output.size.height / kMaskScalingFactor)));
   return [LTTexture byteRedTextureWithSize:maskSize];
-}
-
-- (void)setDefaultValues {
-  self.intensity = self.defaultIntensity;
 }
 
 - (NSArray *)createSmoothTextures:(LTTexture *)input {
@@ -110,26 +108,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
   return levels;
 }
 
-#pragma mark -
-#pragma mark LTImageProcessor
-#pragma mark -
-
-- (void)initializeSubProcessor {
-  [self.dualMaskProcessor process];
-  self.subProcessorInitialized = YES;
-}
-
-- (void)process {
-  if (!self.subProcessorInitialized) {
-    [self initializeSubProcessor];
-  }
-  return [super process];
-}
-
-- (void)preprocess {
-  [self updateSmoothTexturesIfNecessary];
-}
-
 - (void)updateSmoothTexturesIfNecessary {
   if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
       !self.auxiliaryTextures[[LTTiltShiftFsh fineTexture]] ||
@@ -147,12 +125,74 @@ static const CGFloat kMaskScalingFactor = 4.0;
 }
 
 #pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTTiltShiftProcessor, maskType),
+      @instanceKeypath(LTTiltShiftProcessor, center),
+      @instanceKeypath(LTTiltShiftProcessor, diameter),
+      @instanceKeypath(LTTiltShiftProcessor, spread),
+      @instanceKeypath(LTTiltShiftProcessor, angle),
+      @instanceKeypath(LTTiltShiftProcessor, invertMask),
+      @instanceKeypath(LTTiltShiftProcessor, intensity)
+    ]];
+  });
+  
+  return properties;
+}
+
++ (BOOL)isPassthroughForDefaultInputModel {
+  return NO;
+}
+
+- (LTDualMaskType)defaultMaskType {
+  return LTDualMaskTypeRadial;
+}
+
+- (LTVector2)defaultCenter {
+  return LTVector2Zero;
+}
+
+- (CGFloat)defaultDiameter {
+  return 0;
+}
+
+- (CGFloat)defaultAngle {
+  return 0;
+}
+
+#pragma mark -
+#pragma mark Processing
+#pragma mark -
+
+- (void)preprocess {
+  [super preprocess];
+
+  [self updateSmoothTexturesIfNecessary];
+
+  if (self.needsDualMaskProcessing) {
+    [self.dualMaskProcessor process];
+    self.needsDualMaskProcessing = NO;
+  }
+}
+
+- (void)setNeedsDualMaskUpdate {
+  self.needsDualMaskProcessing = YES;
+}
+
+#pragma mark -
 #pragma mark Dual Mask
 #pragma mark -
 
 - (void)setMaskType:(LTDualMaskType)maskType {
   self.dualMaskProcessor.maskType = maskType;
-  [self.dualMaskProcessor process];
+  [self setNeedsDualMaskUpdate];
 }
 
 - (LTDualMaskType)maskType {
@@ -162,7 +202,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 - (void)setCenter:(LTVector2)center {
   // Scaling transforms from image coordinate system to mask coordinate system.
   self.dualMaskProcessor.center = center / kMaskScalingFactor;
-  [self.dualMaskProcessor process];
+  [self setNeedsDualMaskUpdate];
 }
 
 - (LTVector2)center {
@@ -173,7 +213,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 - (void)setDiameter:(CGFloat)diameter {
   // Scaling transforms from image coordinate system to mask coordinate system.
   self.dualMaskProcessor.diameter = diameter / kMaskScalingFactor;
-  [self.dualMaskProcessor process];
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)diameter {
@@ -185,12 +225,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
-  [self.dualMaskProcessor process];
+  [self setNeedsDualMaskUpdate];
 }
 
 - (void)setAngle:(CGFloat)angle {
   self.dualMaskProcessor.angle = angle;
-  [self.dualMaskProcessor process];
+  [self setNeedsDualMaskUpdate];
 }
 
 - (CGFloat)angle {
@@ -209,7 +249,8 @@ LTPropertyWithoutSetter(CGFloat, intensity, Intensity, 0, 1, 1);
 
 - (void)setInvertMask:(BOOL)invertMask {
   _invertMask = invertMask;
-  self[[LTTiltShiftFsh invertMask]] = @(invertMask);
+  self.dualMaskProcessor.invert = invertMask;
+  [self setNeedsDualMaskUpdate];
 }
 
 @end

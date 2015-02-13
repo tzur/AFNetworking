@@ -15,7 +15,6 @@ uniform sampler2D dualMaskTexture;
 uniform sampler2D userMaskTexture;
 
 uniform mediump float intensity;
-uniform bool invertMask;
 
 varying highp vec2 vTexcoord;
 
@@ -27,10 +26,8 @@ void main() {
   lowp vec3 veryCoarse = texture2D(veryCoarseTexture, vTexcoord).rgb;
   
   mediump float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
-  dualMask = clamp(dualMask * 2.0, 0.0, 1.0);
-  if (!invertMask) {
-    dualMask = 1.0 - dualMask;
-  }
+  dualMask = 1.0 - clamp(dualMask * 2.0, 0.0, 1.0);
+
   mediump float userMask = texture2D(userMaskTexture, vTexcoord).r;
   mediump float alpha = intensity * userMask * dualMask;
 
