@@ -25,6 +25,11 @@
 #define LTBindBlockToClass(BLOCK, CLASS) \
     _LTBindBlockToClass(_module, _injector, BLOCK, CLASS)
 
+/// Adds the given view to the key window. This will, among other things, set the view's
+/// \c traitCollection property, needed for tests involving Auto Layout.
+#define LTAddViewToWindow(VIEW) \
+    [_keyWindowView addSubview:VIEW];
+
 /// Defines the concrete class to use as Objection module in tests. If \c LTKIT_TEST_MODULE_CLASS
 /// macro is defined this class will be used. The default module class is \c LTTestModule.
 #ifdef LTKIT_TEST_MODULE_CLASS
@@ -40,6 +45,7 @@
     __block JSObjectionInjector *_lastUsedInjector; \
     __block JSObjectionInjector *_injector; \
     __block _LTTestModule *_module; \
+    __block UIView *_keyWindowView; \
     \
     beforeEach(^{ \
       _module = [[_LTTestModule alloc] init]; \
@@ -50,6 +56,9 @@
       \
       LTGLContext *context = [[LTGLContext alloc] init]; \
       [LTGLContext setCurrentContext:context]; \
+      \
+      _keyWindowView = [[UIView alloc] initWithFrame:CGRectZero]; \
+      [[UIApplication sharedApplication].keyWindow addSubview:_keyWindowView]; \
     }); \
     \
     afterEach(^{ \
@@ -59,6 +68,9 @@
       _module = nil; \
       \
       [LTGLContext setCurrentContext:nil]; \
+      \
+      [_keyWindowView removeFromSuperview]; \
+      _keyWindowView = nil; \
     });
 
 /// End of spec.
