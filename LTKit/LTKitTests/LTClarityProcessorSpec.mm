@@ -33,6 +33,7 @@ context(@"properties", ^{
     expect(processor.mediumContrast).to.equal(0);
     expect(processor.flatten).to.equal(0);
     expect(processor.gain).to.equal(0);
+    expect(processor.blackPointShift).to.equal(0);
     expect(processor.saturation).to.equal(0);
   });
 });
@@ -63,7 +64,7 @@ context(@"synthetic rendering", ^{
 
   it(@"should process flatten correctly", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
-    cv::Mat4b output(16, 16, cv::Vec4b(0, 130, 255 ,255));
+    cv::Mat4b output(16, 16, cv::Vec4b(79, 118, 143 ,255));
     
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -83,6 +84,19 @@ context(@"synthetic rendering", ^{
     LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
                                                                        output:outputTexture];
     processor.gain = 1.0;
+    [processor process];
+    expect($(outputTexture.image)).to.beCloseToMat($(output));
+  });
+
+  it(@"should process black point shift correctly", ^{
+    cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
+    cv::Mat4b output(16, 16, cv::Vec4b(0, 43, 255 ,255));
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    processor.blackPointShift = 0.5;
     [processor process];
     expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
@@ -128,6 +142,7 @@ context(@"real world rendering", ^{
     processor.mediumContrast = 0.1;
     processor.flatten = 0.2;
     processor.gain = 0.1;
+    processor.blackPointShift = -0.1;
     processor.saturation = -0.15;
     [processor process];
     

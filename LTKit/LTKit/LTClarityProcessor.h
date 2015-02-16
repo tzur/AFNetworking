@@ -34,6 +34,10 @@ LTPropertyDeclare(CGFloat, fineContrast, FineContrast);
 @property (nonatomic) CGFloat mediumContrast;
 LTPropertyDeclare(CGFloat, mediumContrast, MediumContrast);
 
+/// Shifts black by blackPointShift. Should be in [-1, 1] range. Default value is 0.
+@property (nonatomic) CGFloat blackPointShift;
+LTPropertyDeclare(CGFloat, blackPointShift, BlackPointShift);
+
 /// Reduce local contrast at coarse scale. Should be in [0, 1] range. Default value is 0.
 @property (nonatomic) CGFloat flatten;
 LTPropertyDeclare(CGFloat, flatten, Flatten);
