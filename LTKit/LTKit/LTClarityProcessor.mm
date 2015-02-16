@@ -6,10 +6,10 @@
 #import "LTBicubicResizeProcessor.h"
 #import "LTBilateralFilterProcessor.h"
 #import "LTCGExtensions.h"
-#import "LTEAWProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
+#import "LTRectCopyProcessor.h"
 #import "LTShaderStorage+LTClarityFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
@@ -30,25 +30,16 @@
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTClarityFsh source] input:input andOutput:output]) {
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
-}
-
-- (void)setDefaultValues {
-  self.sharpen = self.defaultSharpen;
-  self.fineContrast = self.defaultFineContrast;
-  self.mediumContrast = self.defaultMediumContrast;
-  self.flatten = self.defaultFlatten;
-  self.gain = self.defaultGain;
-  self.saturation = self.defaultSaturation;
 }
 
 - (void)updateSmoothTextureIfNecessary {
   if (self.inputTextureGenerationID != self.inputTexture.generationID ||
       !self.auxiliaryTextures[[LTClarityFsh downsampledTexture]] ||
       !self.auxiliaryTextures[[LTClarityFsh bilateralTexture]] ||
-      !self.auxiliaryTextures[[LTClarityFsh eawTexture]]) {
+      !self.auxiliaryTextures[[LTClarityFsh smoothTexture]]) {
     self.inputTextureGenerationID = self.inputTexture.generationID;
     [self createImageDecomposition];
   }
@@ -61,8 +52,8 @@
   LTTexture *bilateralTexture = [self createBilateralTexture:downsampledTexture];
   [self setAuxiliaryTexture:bilateralTexture withName:[LTClarityFsh bilateralTexture]];
 
-  LTTexture *eawTexture = [self createEAWTexture:bilateralTexture];
-  [self setAuxiliaryTexture:eawTexture withName:[LTClarityFsh eawTexture]];
+  LTTexture *smoothTexture = [self createSmoothTexture:bilateralTexture];
+  [self setAuxiliaryTexture:smoothTexture withName:[LTClarityFsh smoothTexture]];
 }
 
 - (LTTexture *)createDownsampledTexture:(LTTexture *)texture {
@@ -77,20 +68,44 @@
   LTBilateralFilterProcessor *processor =
       [[LTBilateralFilterProcessor alloc] initWithInput:texture outputs:@[output]];
   processor.rangeSigma = 0.05;
-  processor.iterationsPerOutput = @[@8];
+  processor.iterationsPerOutput = @[@10];
   [processor process];
 
   return output;
 }
 
-- (LTTexture *)createEAWTexture:(LTTexture *)input {
-  LTTexture *output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
-  LTEAWProcessor *processor = [[LTEAWProcessor alloc] initWithInput:input output:output];
-  processor.compressionFactor = LTVector4(0.8, 0, 0, 0);
-  [processor process];
+- (LTTexture *)createSmoothTexture:(LTTexture *)texture {
+  CGSize size = CGSizeAspectFit(self.outputSize, CGSizeMakeUniform(64));
+  LTTexture *output = [LTTexture byteRGBATextureWithSize:size];
+  [[[LTRectCopyProcessor alloc] initWithInput:texture output:output] process];
+  [output mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    cv::GaussianBlur(*mapped, *mapped, cv::Size(25, 25), 5);
+  }];
 
   return output;
+}
+
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTClarityProcessor, sharpen),
+      @instanceKeypath(LTClarityProcessor, fineContrast),
+      @instanceKeypath(LTClarityProcessor, mediumContrast),
+      @instanceKeypath(LTClarityProcessor, blackPointShift),
+      @instanceKeypath(LTClarityProcessor, flatten),
+      @instanceKeypath(LTClarityProcessor, gain),
+      @instanceKeypath(LTClarityProcessor, saturation)
+    ]];
+  });
+  
+  return properties;
 }
 
 #pragma mark -
@@ -137,6 +152,12 @@ LTPropertyWithoutSetter(CGFloat, flatten, Flatten, 0, 1, 0);
 + (CGFloat)smoothstepWithEdge0:(CGFloat)edge0 edge1:(CGFloat)edge1 value:(CGFloat)value {
   CGFloat x = std::clamp((value - edge0) / (edge1 - edge0), 0, 1);
   return x * x * (3 - 2 * x);
+}
+
+LTPropertyWithoutSetter(CGFloat, blackPointShift, BlackPointShift, -1, 1, 0);
+- (void)setBlackPointShift:(CGFloat)blackPointShift {
+  [self _verifyAndSetBlackPointShift:blackPointShift];
+  self[[LTClarityFsh blackPoint]] = @(blackPointShift * 0.8);
 }
 
 LTPropertyWithoutSetter(CGFloat, gain, Gain, 0, 1, 0);
