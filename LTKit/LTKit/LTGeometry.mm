@@ -170,6 +170,18 @@ CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
   return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1, 0, 1);
 }
 
+CGPoint LTIntersectionPointOfEdgeAndLine(CGPoint edgePoint0, CGPoint edgePoint1,
+                                         CGPoint lineOnPoint0, CGPoint lineOnPoint1) {
+  CGPoint result = LTIntersectionPointOfLines(edgePoint0, edgePoint1, lineOnPoint0, lineOnPoint1);
+  if (CGPointIsNull(result)) {
+    return result;
+  }
+
+  CGFloat edgeLength = CGPointDistance(edgePoint0, edgePoint1);
+  return (CGPointDistance(result, edgePoint0) <= edgeLength &&
+          CGPointDistance(result, edgePoint1) <= edgeLength) ? result : CGPointNull;
+}
+
 CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
   return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1);
 }

@@ -144,6 +144,22 @@ context(@"intersection", ^{
     expect(CGPointIsNull(LTIntersectionPointOfLines(p0, p2, p0, p2))).to.beTruthy();
   });
 
+  it(@"should correctly compute the intersection point of an edge and a line", ^{
+    CGPoint p0 = CGPointZero;
+    CGPoint p1 = CGPointMake(1, 0);
+    CGPoint p2 = CGPointMake(0.5, -1.5);
+    CGPoint p3 = CGPointMake(0.5, -0.5);
+    expect(LTIntersectionPointOfEdgeAndLine(p0, p1, p2, p3)).to.
+        beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+    expect(CGPointIsNull(LTIntersectionPointOfEdgeAndLine(p2, p3, p0, p1))).to.beTruthy();
+
+    p2 = CGPointMake(0.5, -0.5);
+    p3 = CGPointMake(0, 0.5);
+
+    expect(LTIntersectionPointOfEdgeAndLine(p0, p1, p2, p3)).to.
+        beCloseToPointWithin(CGPointMake(0.25, 0), kEpsilon);
+  });
+
   it(@"should correctly compute the intersection point of two lines", ^{
     CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
