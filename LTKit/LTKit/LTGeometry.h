@@ -41,6 +41,12 @@ CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
 /// CGPointNull.
 CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
 
+/// Returns the intersection point of the edge (\c edgePoint0, \c edgePoint1) and the line passing
+/// through points \c lineOnPoint0 and \c lineOnPoint1, if existing. Otherwise, returns
+/// \c CGPointNull.
+CGPoint LTIntersectionPointOfEdgeAndLine(CGPoint edgePoint0, CGPoint edgePoint1,
+                                         CGPoint lineOnPoint0, CGPoint lineOnPoint1);
+
 /// Returns the intersection point of the line passing through points \c p0 and \c p1 with the line
 /// passing through \c q0 and \c q1, if existing. Otherwise, returns CGPointNull.
 CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
