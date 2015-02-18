@@ -21,8 +21,8 @@ uniform sampler2D colorGradientTexture;
 // Details control.
 uniform mediump float detailsBoost;
 uniform mediump float sharpen;
-// Color control.
-uniform mediump mat4 tonalTransform;
+// Color control. High precision is required on iPhone 5S to avoiding salt artifacts.
+uniform highp mat4 tonalTransform;
 // Black and white points.
 uniform mediump float blackPoint;
 uniform mediump float whitePoint;
@@ -65,7 +65,7 @@ void main() {
   outputColor.r = texture2D(toneLUT, vec2(outputColor.r, 0.0)).r;
   outputColor.g = texture2D(toneLUT, vec2(outputColor.g, 0.0)).g;
   outputColor.b = texture2D(toneLUT, vec2(outputColor.b, 0.0)).b;
-  outputColor = (outputColor - blackPoint) / (whitePoint - blackPoint);
+  outputColor.rgb = (outputColor.rgb - blackPoint) / (whitePoint - blackPoint);
 
-  gl_FragColor = outputColor;
+  gl_FragColor = vec4(clamp(outputColor.rgb, 0.0, 1.0), color.a);
 }
