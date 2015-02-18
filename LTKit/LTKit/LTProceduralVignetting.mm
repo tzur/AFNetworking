@@ -15,23 +15,48 @@
 - (instancetype)initWithOutput:(LTTexture *)output { 
   LTTexture *defaultNoise = [self createNeutralNoise];
   NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
-  
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTProceduralVignettingFsh source] sourceTexture:output
                        auxiliaryTextures:auxiliaryTextures
                           andOutput:output]) {
-    [self setDefaultValues];
+    [self resetInputModel];
     [self precomputeDistanceShift:output.size];
   }
   return self;
 }
 
-- (void)setDefaultValues {
-  self.corner = self.defaultCorner;
-  self.spread = self.defaultSpread;
-  self.noiseAmplitude = self.defaultNoiseAmplitude;
-  self.noiseChannelMixer = self.defaultNoiseChannelMixer;
-  self.noise = nil;
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
+- (CGFloat)aspectRatio {
+  return self.inputSize.width / self.inputSize.height;
+}
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTProceduralVignetting, corner),
+      @instanceKeypath(LTProceduralVignetting, spread),
+      @instanceKeypath(LTProceduralVignetting, transition),
+      @instanceKeypath(LTProceduralVignetting, noise),
+      @instanceKeypath(LTProceduralVignetting, noiseChannelMixer),
+      @instanceKeypath(LTProceduralVignetting, noiseAmplitude)
+    ]];
+  });
+  
+  return properties;
+}
+
++ (BOOL)isPassthroughForDefaultInputModel {
+  return NO;
+}
+
+- (LTTexture *)defaultNoise {
+  return [self createNeutralNoise];
 }
 
 - (LTTexture *)createNeutralNoise {
@@ -63,6 +88,12 @@ LTPropertyWithoutSetter(CGFloat, corner, Corner, 2, 16, 2);
 - (void)setCorner:(CGFloat)corner {
   [self _verifyAndSetCorner:corner];
   self[[LTProceduralVignettingFsh corner]] = @(corner);
+}
+
+LTPropertyWithoutSetter(CGFloat, transition, Transition, 0, 1, 0);
+- (void)setTransition:(CGFloat)transition {
+  [self _verifyAndSetTransition:transition];
+  self[[LTProceduralVignettingFsh transition]] = @(transition * 0.45);
 }
 
 - (void)setNoise:(LTTexture *)noise {

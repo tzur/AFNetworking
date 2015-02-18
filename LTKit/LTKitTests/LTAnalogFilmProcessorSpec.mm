@@ -34,17 +34,12 @@ context(@"properties", ^{
     expect(processor.exposure).to.equal(0);
     expect(processor.structure).to.equal(0);
     expect(processor.saturation).to.equal(0);
-  });
-  
-  it(@"should return default grain properties correctly", ^{
     expect(processor.grainAmplitude).to.equal(1);
     expect(processor.grainChannelMixer).to.equal(LTVector3(1, 0, 0));
-  });
-  
-  it(@"should return default vignetting properties correctly", ^{
     expect(processor.vignetteIntensity).to.equal(0);
     expect(processor.vignetteSpread).to.equal(100);
     expect(processor.vignetteCorner).to.equal(2);
+    expect(processor.vignetteTransition).to.equal(0);
   });
   
   it(@"should return default color gradient as identity", ^{
@@ -80,6 +75,7 @@ context(@"properties", ^{
       processor.vignetteIntensity = 0;
       processor.vignetteSpread = 15.0;
       processor.vignetteCorner = 6.0;
+      processor.vignetteTransition = 0.75;
     }).toNot.raiseAny();
   });
   
@@ -314,7 +310,8 @@ context(@"integration tests", ^{
     processor.vignetteIntensity = 0.75;
     processor.vignetteSpread = 25;
     processor.vignetteCorner = 2;
-    
+    processor.vignetteTransition = 0.1;
+
     [processor process];
     
     cv::Mat image = LTLoadMat([self class], @"Lena128AnalogProcessor.png");

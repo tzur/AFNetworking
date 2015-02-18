@@ -13,6 +13,7 @@ uniform sampler2D noiseTexture;
 uniform highp float spread;
 // Value in [2, 16] range. 2 - circle, 16 - rounded rect.
 uniform highp float corner;
+uniform highp float transition;
 uniform highp float noiseAmplitude;
 uniform highp vec3 noiseChannelMixer;
 // Shifts and normalizes the distance field, in order to create the same width and spread in both
@@ -48,6 +49,8 @@ void main() {
   // using mix-and-step statement.
   highp float vignettingMask = mix(dist + noise * contrastScalingFactor, dist, step(1.0, dist));
   vignettingMask = mix(vignettingMask, 0.0, step(dist, 0.0));
+
+  vignettingMask = smoothstep(transition, 1.0 - transition, vignettingMask);
   
   gl_FragColor = vec4(vec3(vignettingMask), 1.0);
 }

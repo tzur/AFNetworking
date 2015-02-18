@@ -158,7 +158,8 @@
       @instanceKeypath(LTBWProcessor, vignetteIntensity),
       @instanceKeypath(LTBWProcessor, vignetteSpread),
       @instanceKeypath(LTBWProcessor, vignetteCorner),
-       
+      @instanceKeypath(LTBWProcessor, vignetteTransition),
+
       @instanceKeypath(LTBWProcessor, frameTexture),
       @instanceKeypath(LTBWProcessor, frameWidth)
     ]];
@@ -338,6 +339,13 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteCorner, VignetteCorner,
                              self.vignetteProcessor, corner, Corner);
 - (void)setVignetteCorner:(CGFloat)vignetteCorner {
   self.vignetteProcessor.corner = vignetteCorner;
+  [self setNeedsVignetteProcessing];
+}
+
+LTPropertyProxyWithoutSetter(CGFloat, vignetteTransition, VignetteTransition,
+                             self.vignetteProcessor, transition, Transition);
+- (void)setVignetteTransition:(CGFloat)vignetteTransition {
+  self.vignetteProcessor.transition = vignetteTransition;
   [self setNeedsVignetteProcessing];
 }
 
