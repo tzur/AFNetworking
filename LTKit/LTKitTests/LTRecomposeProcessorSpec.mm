@@ -168,6 +168,7 @@ context(@"processing", ^{
 
   it(@"should decimate according to mask with smaller size", ^{
     mask = [LTTexture byteRedTextureWithSize:input.size / 2];
+    [mask clearWithColor:LTVector4One];
     processor = [[LTRecomposeProcessor alloc] initWithInput:input mask:mask output:output];
     processor.samplerFactory = [[LTDegenerateSamplerFactory alloc] init];
 
