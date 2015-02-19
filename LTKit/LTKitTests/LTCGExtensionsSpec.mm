@@ -407,4 +407,28 @@ context(@"fitting cgsizes", ^{
   });
 });
 
+static const CGFloat kAllowedAngleDeviation = 5e-7;
+
+it(@"should convert a given angle to the canonical range [0, 2 * M_PI)", ^{
+  expect(CGNormalizedAngle(-2 * M_PI)).to.equal(0);
+  expect(CGNormalizedAngle(-3 * M_PI_2)).to.beCloseToWithin(M_PI_2, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(-M_PI)).to.beCloseToWithin(M_PI, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(-M_PI_2)).to.beCloseToWithin(3 * M_PI_2, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(-M_PI_4)).to.beCloseToWithin(2 * M_PI - M_PI_4,
+                                                        kAllowedAngleDeviation);
+
+  expect(CGNormalizedAngle(0)).to.equal(0);
+  expect(CGNormalizedAngle(M_PI_4)).to.equal(M_PI_4);
+  expect(CGNormalizedAngle(M_PI_2)).to.equal(M_PI_2);
+  expect(CGNormalizedAngle(M_PI)).to.equal(M_PI);
+  expect(CGNormalizedAngle(3 * M_PI_2)).to.equal(3 * M_PI_2);
+
+  expect(CGNormalizedAngle(2 * M_PI)).to.beCloseToWithin(0, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(2 * M_PI + M_PI_4)).to.beCloseToWithin(M_PI_4, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(2 * M_PI + M_PI_2)).to.beCloseToWithin(M_PI_2, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(3 * M_PI)).to.beCloseToWithin(M_PI, kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(2 * M_PI + 3 * M_PI_2)).to.beCloseToWithin(3 * M_PI_2,
+                                                                      kAllowedAngleDeviation);
+});
+
 SpecEnd
