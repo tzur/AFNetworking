@@ -31,6 +31,11 @@ LTPropertyDeclare(CGFloat, spread, Spread);
 @property (nonatomic) CGFloat corner;
 LTPropertyDeclare(CGFloat, corner, Corner);
 
+/// Controls how abrupt the transition of the vignetting pattern is. Should be in [0, 1] range.
+/// Default value is 0. Higher values correspond to more abrupt transition.
+@property (nonatomic) CGFloat transition;
+LTPropertyDeclare(CGFloat, transition, Transition);
+
 /// Noise textures that modulates with the vignetting pattern. Default value is a constant 0.5,
 /// which doesn't affect the image. Set \c noise back to \c nil to restore the default value.
 ///

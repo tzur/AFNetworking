@@ -12,58 +12,71 @@ LTSpecBegin(LTProceduralVignetting)
 
 __block LTTexture *noise;
 __block LTTexture *output;
+__block LTProceduralVignetting *processor;
 
 beforeEach(^{
   noise = [LTTexture textureWithImage:LTLoadMat([self class], @"Noise.png")];
   output = [LTTexture textureWithPropertiesOf:noise];
+  processor = [[LTProceduralVignetting alloc] initWithOutput:output];
 });
 
 afterEach(^{
   noise =  nil;
   output = nil;
+  processor = nil;
 });
 
 context(@"properties", ^{
+  it(@"should retun default values", ^{
+    expect(processor.spread).to.equal(100);
+    expect(processor.corner).to.equal(2);
+    expect(processor.transition).to.equal(0);
+    expect(processor.noiseChannelMixer).to.equal(LTVector3(1, 0, 0));
+    expect(processor.noiseAmplitude).to.equal(0);
+  });
+
   it(@"should return default noise texture correctly", ^{
     cv::Mat4b defaultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
-    expect(LTFuzzyCompareMat(vignette.noise.image, defaultNoise)).to.beTruthy();
+
+    expect(LTFuzzyCompareMat(processor.noise.image, defaultNoise)).to.beTruthy();
   });
   
   it(@"should fail on invalid spread parameter", ^{
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
     expect(^{
-      vignette.spread = 1000;
+      processor.spread = 1000;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid corner parameter", ^{
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
     expect(^{
-      vignette.corner = 1.5;
+      processor.corner = 1.5;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should fail on invalid transition", ^{
+    expect(^{
+      processor.transition = -0.1;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should fail on invalid noise amplitude", ^{
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
     expect(^{
-      vignette.noiseAmplitude = -1;
+      processor.noiseAmplitude = -1;
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should return normalized noise channel mixer property", ^{
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
-    vignette.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
-    expect(vignette.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
+    processor.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
+    expect(processor.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
   });
   
   it(@"should not fail on correct input", ^{
-    LTProceduralVignetting *vignette = [[LTProceduralVignetting alloc] initWithOutput:output];
     expect(^{
-      vignette.spread = 25.0;
-      vignette.corner = 2.0;
-      vignette.noiseAmplitude = 2.0;
-      vignette.noiseChannelMixer = LTVector3(1.0, 1.0, 1.0);
+      processor.spread = 25.0;
+      processor.corner = 2.0;
+      processor.transition = 0.75;
+      processor.noiseAmplitude = 2.0;
+      processor.noiseChannelMixer = LTVector3(1.0, 1.0, 1.0);
     }).toNot.raiseAny();
   });
 });
@@ -71,10 +84,10 @@ context(@"properties", ^{
 context(@"processing", ^{
   it(@"should return round vignetting pattern", ^{
     LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
-    LTProceduralVignetting *vignette =
+    LTProceduralVignetting *processor =
         [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
-    vignette.corner = 2;
-    [vignette process];
+    processor.corner = 2;
+    [processor process];
     
     LTTexture *precomputedVignette =
         [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWideVignetting.png")];
@@ -83,10 +96,10 @@ context(@"processing", ^{
   
   it(@"should return rounded rect vignetting pattern", ^{
     LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
-    LTProceduralVignetting *vignette =
+    LTProceduralVignetting *processor =
         [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
-    vignette.corner = 16;
-    [vignette process];
+    processor.corner = 16;
+    [processor process];
     
     LTTexture *precomputedVignette =
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightWideVignetting.png")];

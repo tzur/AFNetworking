@@ -115,6 +115,11 @@ LTPropertyDeclare(CGFloat, vignetteSpread, VignetteSpread);
 @property (nonatomic) CGFloat vignetteCorner;
 LTPropertyDeclare(CGFloat, vignetteCorner, VignetteCorner);
 
+/// Controls how abrupt the transition of the vignetting pattern is. Should be in [0, 1] range.
+/// Default value is 0. Higher values correspond to more abrupt transition.
+@property (nonatomic) CGFloat vignetteTransition;
+LTPropertyDeclare(CGFloat, vignetteTransition, VignetteTransition);
+
 #pragma mark -
 #pragma mark Textures
 #pragma mark -
