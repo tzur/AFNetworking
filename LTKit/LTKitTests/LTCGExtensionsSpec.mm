@@ -429,6 +429,8 @@ it(@"should convert a given angle to the canonical range [0, 2 * M_PI)", ^{
   expect(CGNormalizedAngle(3 * M_PI)).to.beCloseToWithin(M_PI, kAllowedAngleDeviation);
   expect(CGNormalizedAngle(2 * M_PI + 3 * M_PI_2)).to.beCloseToWithin(3 * M_PI_2,
                                                                       kAllowedAngleDeviation);
+  expect(CGNormalizedAngle(-0.000000042136203859399756765924394130706787109375))
+      .to.beLessThan(2 * M_PI);
 });
 
 SpecEnd

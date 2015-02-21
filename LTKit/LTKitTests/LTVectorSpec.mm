@@ -133,6 +133,10 @@ context(@"LTVector2", ^{
     expect(angle).to.beCloseToWithin(M_PI, kEpsilon);
     angle = v.angle(LTVector2(0.5, -0.5));
     expect(angle).to.beCloseToWithin(3 * M_PI_2, kEpsilon);
+
+    angle = (LTVector2(948.0838623046875, 198.879669189453125) -
+             LTVector2(223.8236083984375, 198.879638671875)).angle(LTVector2(1, 0));
+    expect(angle).to.beLessThan(2 * M_PI);
   });
 
   it(@"should return the correct perpendicular vector", ^{

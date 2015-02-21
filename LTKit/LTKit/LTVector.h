@@ -152,9 +152,8 @@ struct LTVector2 {
 
   /// Returns the counter-clockwise angle (in bottom-left origin coordinate system) between this
   /// vector and the given \c vector. The result is guaranteed to be in the range [0, 2 * PI).
-  inline float angle(const LTVector2 &vector) const {
-    CGFloat angle = std::atan2(this->determinant(vector), this->dot(vector));
-    return angle >= 0 ? angle : 2 * M_PI + angle;
+  inline CGFloat angle(const LTVector2 &vector) const {
+    return CGNormalizedAngle(std::atan2(this->determinant(vector), this->dot(vector)));
   }
 
   /// Returns a new vector which is a normalized copy of this vector.
