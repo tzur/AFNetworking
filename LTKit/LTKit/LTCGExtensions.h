@@ -470,8 +470,9 @@ CG_INLINE CGSize CGSizeAspectFill(CGSize size, CGSize sizeToFit) {
 
 /// Returns the given \c angle normalized to the canonical range [0, 2 * PI).
 CG_INLINE CGFloat CGNormalizedAngle(CGFloat angle) {
-  angle = std::fmod(angle, (CGFloat)2 * (CGFloat)M_PI);
-  return angle + ((angle < 0) ? 2 * M_PI : 0);
+  CGFloat pi2 = (CGFloat)M_PI * (CGFloat)2;
+  angle = std::fmod(angle, pi2);
+  return std::clamp(angle + ((angle < 0) ? 2 * M_PI : 0), 0, std::nextafter(pi2, (CGFloat)M_PI));
 }
 
 #endif
