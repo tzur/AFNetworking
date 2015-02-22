@@ -38,6 +38,26 @@ context(@"properties", ^{
   });
 });
 
+context(@"small inputs", ^{
+  it(@"should initialize and process 1x1 image", ^{
+    expect(^{
+      input = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+      output = [LTTexture textureWithPropertiesOf:input];
+      processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
+      [processor process];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should initialize and process 4x3 image", ^{
+    expect(^{
+      input = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 3)];
+      output = [LTTexture textureWithPropertiesOf:input];
+      processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
+      [processor process];
+    }).toNot.raiseAny();
+  });
+});
+
 context(@"synthetic rendering", ^{
   it(@"should return original image on default input", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(64, 128, 192, 255));
