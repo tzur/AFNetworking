@@ -756,4 +756,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   return self.navigationView.viewForContentCoordinates;
 }
 
+- (UITapGestureRecognizer *)doubleTapRecognizer {
+  return self.navigationView.doubleTapRecognizer;
+}
+
 @end

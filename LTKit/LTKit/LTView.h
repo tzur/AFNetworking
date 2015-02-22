@@ -143,6 +143,9 @@
 /// @endcode
 @property (readonly, nonatomic) UIView *viewForContentCoordinates;
 
+/// Gesture recognizer used for detecting double taps on the view.
+@property (readonly, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
+
 @end
 
 #pragma mark -
