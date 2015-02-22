@@ -12,8 +12,8 @@
 @interface LTPyramidProcessor : LTIterativeImageProcessor
 
 /// Creates and returns an array of LTTexture objects with dyadic scaling of level i to level i + 1,
-/// where the number of levels is ceil(log2(min(input.size))) - 1. The textures will be created
-/// with the same precision and format of the input texture.
+/// where the number of levels is max(1, ceil(log2(min(input.size))) - 1). The textures will be
+/// created with the same precision and format of the input texture.
 ///
 /// For example, for input size (15, 13) the outputs will be [(8, 7), (4, 4)].
 + (NSArray *)levelsForInput:(LTTexture *)input;

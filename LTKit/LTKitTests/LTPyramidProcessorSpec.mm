@@ -88,4 +88,27 @@ it(@"should create correct pyramid", ^{
   }
 });
 
+context(@"small inputs", ^{
+  it(@"should create correct pyramid for 1x1 image", ^{
+    LTTexture *input = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+    NSArray *outputs = [LTPyramidProcessor levelsForInput:input];
+    expect(outputs.count).to.equal(1);
+    expect([outputs[0] size]).to.equal(CGSizeMakeUniform(1));
+  });
+
+  it(@"should create correct pyramid for 2x3 image", ^{
+    LTTexture *input = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 3)];
+    NSArray *outputs = [LTPyramidProcessor levelsForInput:input];
+    expect(outputs.count).to.equal(1);
+    expect([outputs[0] size]).to.equal(CGSizeMake(1, 2));
+  });
+
+  it(@"should create correct pyramid for 5x4 image", ^{
+    LTTexture *input = [LTTexture byteRGBATextureWithSize:CGSizeMake(5, 4)];
+    NSArray *outputs = [LTPyramidProcessor levelsForInput:input];
+    expect(outputs.count).to.equal(1);
+    expect([outputs[0] size]).to.equal(CGSizeMake(3, 2));
+  });
+});
+
 LTSpecEnd

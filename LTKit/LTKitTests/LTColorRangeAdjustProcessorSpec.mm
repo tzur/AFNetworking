@@ -89,6 +89,26 @@ context(@"properties", ^{
   });
 });
 
+context(@"small inputs", ^{
+  it(@"should initialize and process 1x1 image", ^{
+    expect(^{
+      input = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+      output = [LTTexture textureWithPropertiesOf:input];
+      processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+      [processor process];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should initialize and process 4x3 image", ^{
+    expect(^{
+      input = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 3)];
+      output = [LTTexture textureWithPropertiesOf:input];
+      processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+      [processor process];
+    }).toNot.raiseAny();
+  });
+});
+
 context(@"processing", ^{
   beforeEach(^{
     processor.center = LTVector2(0, 0);

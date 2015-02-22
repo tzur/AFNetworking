@@ -12,7 +12,7 @@
 @implementation LTPyramidProcessor
 
 + (NSArray *)levelsForInput:(LTTexture *)input {
-  NSUInteger levelCount = std::floor(std::log2(std::min(input.size))) - 1;
+  NSUInteger levelCount = MAX(1, std::floor(std::log2(std::min(input.size))) - 1);
 
   NSMutableArray *levels = [NSMutableArray array];
   for (NSUInteger i = 0; i < levelCount; ++i) {
@@ -66,13 +66,8 @@
   LTTextureInterpolation inputInterpolation;
   if (outputTexture.size.width < inputSize.width && outputTexture.size.height < inputSize.height) {
     inputInterpolation = inputTexture.minFilterInterpolation;
-  } else if (outputTexture.size.width > inputSize.width &&
-             outputTexture.size.height > inputSize.height) {
-    inputInterpolation = inputTexture.magFilterInterpolation;
   } else {
-    LTAssert(NO, @"Given input with size (%g, %g) is not strictly larger or smaller than current "
-             "output size (%g, %g)", inputSize.width, inputSize.height, outputTexture.size.width,
-             outputTexture.size.height);
+    inputInterpolation = inputTexture.magFilterInterpolation;
   }
 
   LTVector2 texelOffset;
