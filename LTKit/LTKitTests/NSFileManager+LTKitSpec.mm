@@ -13,6 +13,22 @@ beforeEach(^{
   fileManager = [NSFileManager defaultManager];
 });
 
+it(@"should write dictionary", ^{
+  NSString *path = @"MyFile";
+  id dictionary = OCMClassMock([NSDictionary class]);
+  [fileManager lt_writeDictionary:dictionary toFile:path];
+  OCMVerify([(NSDictionary *)dictionary writeToFile:path atomically:YES]);
+});
+
+it(@"should read dictionary", ^{
+  NSString *path = @"MyFile";
+  NSDictionary *dictionary = @{@"a": @"b"};
+  id mock = OCMClassMock([NSDictionary class]);
+  OCMExpect([mock dictionaryWithContentsOfFile:path]).andReturn(dictionary);
+  expect([fileManager lt_dictionaryWithContentsOfFile:path]).to.equal(dictionary);
+  OCMVerifyAll(mock);
+});
+
 it(@"should write data", ^{
   id data = [OCMockObject mockForClass:[NSData class]];
 
