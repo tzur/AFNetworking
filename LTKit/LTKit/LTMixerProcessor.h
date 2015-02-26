@@ -5,7 +5,6 @@
 
 #import "LTBlendMode.h"
 #import "LTMixerMaskMode.h"
-#import "LTProcessorFillMode.h"
 #import "LTPropertyMacros.h"
 
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
@@ -21,17 +20,14 @@
 - (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front mask:(LTTexture *)mask
                       output:(LTTexture *)output maskMode:(LTMixerMaskMode)maskMode;
 
-/// Initializes mixer with back and front textures, mask and an output texture. The mask must be of
-/// the size of the \c front texture. The mask is applied to the front texture.
-- (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front
-                        mask:(LTTexture *)mask output:(LTTexture *)output;
+/// Initializes mixer with \c back and \c front textures, \c mask and \c output texture. The \c mask
+/// must be of the size of the \c front texture, while the \c back must be of the size of the
+/// \c output. The mask is applied to the front texture.
+- (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front mask:(LTTexture *)mask
+                      output:(LTTexture *)output;
 
 /// Blend mode used to blend \c front to \c back. The default value is \c LTBlendModeNormal.
 @property (nonatomic) LTBlendMode blendMode;
-
-/// How the output should be filled with the back texture. This only has effect when the size of the
-/// output is different than the back texture. The default value is \c LTMixerOutputFillModeStretch.
-@property (nonatomic) LTProcessorFillMode fillMode;
 
 /// Default front translation value (\c (0, 0)).
 @property (readonly, nonatomic) CGPoint defaultFrontTranslation;

@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#extension GL_EXT_shader_framebuffer_fetch : require
-
 const int kBlendModeNormal = 0;
 const int kBlendModeDarken = 1;
 const int kBlendModeMultiply = 2;
@@ -15,14 +13,18 @@ const int kBlendModeOverlay = 8;
 const int kBlendModePlusLighter = 9;
 const int kBlendModePlusDarker = 10;
 
+/// Source texture is back texture.
 uniform lowp sampler2D sourceTexture;
+uniform lowp sampler2D frontTexture;
 uniform mediump sampler2D maskTexture;
 
 uniform int blendMode;
 uniform mediump float opacity;
+uniform highp mat3 frontMatrix;
+uniform highp mat3 maskMatrix;
 
-varying highp vec2 vFrontTexcoord;
-varying highp vec3 vMaskTexcoord;
+varying highp vec2 vTexcoord;
+varying highp vec2 vBackTexcoord;
 
 void normal(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa, in mediump float Da) {
   gl_FragColor.rgb = Sca + Dca * (1.0 - Sa);
@@ -105,9 +107,19 @@ void plusDarker(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
 }
 
 void main() {
-  mediump vec4 back = gl_LastFragData[0];
-  mediump vec4 front = texture2D(sourceTexture, vFrontTexcoord);
-  mediump vec4 mask = texture2D(maskTexture, vMaskTexcoord.xy / vMaskTexcoord.z);
+  mediump vec4 back = texture2D(sourceTexture, vBackTexcoord);
+
+  highp vec3 frontTexcoord = frontMatrix * vec3(vTexcoord, 1.0);
+  highp vec2 projectedFrontTexCoord = frontTexcoord.xy / frontTexcoord.z;
+  lowp float insideFrontBounds = float((all(greaterThanEqual(projectedFrontTexCoord, vec2(0.0))) &&
+                                        all(lessThanEqual(projectedFrontTexCoord, vec2(1.0)))));
+  mediump vec4 front = float(insideFrontBounds) * texture2D(frontTexture, projectedFrontTexCoord);
+
+  highp vec3 maskTexcoord = maskMatrix * vec3(vTexcoord, 1.0);
+  highp vec2 projectedMaskTexCoord = maskTexcoord.xy / maskTexcoord.z;
+  bool insideMaskBounds = (all(greaterThanEqual(projectedMaskTexCoord, vec2(0.0))) &&
+                           all(lessThanEqual(projectedMaskTexCoord, vec2(1.0))));
+  mediump vec4 mask = float(insideMaskBounds) * texture2D(maskTexture, projectedMaskTexCoord);
 
   // Calculate new front, including mask alpha value and opacity.
   front = front * mask.r * opacity;
@@ -143,4 +155,6 @@ void main() {
   } else {
     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
   }
+
+  gl_FragColor = mix(back, gl_FragColor, insideFrontBounds);
 }

@@ -90,9 +90,15 @@ context(@"initialization", ^{
 });
 
 context(@"front placement", ^{
+  __block LTQuad *frontQuad;
+
+  beforeEach(^{
+    frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+  });
+
   it(@"should blend with correct translation placement", ^{
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(1.0, 1.0)];
+    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(1.0, 1.0)];
+    processor.frontQuad = frontQuad;
     [processor process];
 
     cv::Vec4b resultColor;
@@ -105,9 +111,9 @@ context(@"front placement", ^{
 
   it(@"should blend with correct scaling placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(1.0, 1.0)];
-    [processor.frontQuad scale:0.5];
+    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(1.0, 1.0)];
+    [frontQuad scale:0.5];
+    processor.frontQuad = frontQuad;
     [processor process];
 
     cv::Vec4b resultColor;
@@ -120,9 +126,9 @@ context(@"front placement", ^{
 
   it(@"should blend with correct rotation placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(4.0, 4.0)];
-    [processor.frontQuad rotateByAngle:M_PI_4 aroundPoint:processor.frontQuad.center];
+    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
+    [frontQuad rotateByAngle:M_PI_4 aroundPoint:frontQuad.center];
+    processor.frontQuad = frontQuad;
     [processor process];
 
     cv::Vec4b resultColor;
@@ -138,10 +144,10 @@ context(@"front placement", ^{
     image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
     [front load:image];
 
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(4.0, 4.0)];
-    [processor.frontQuad scale:1.5];
-    [processor.frontQuad rotateByAngle:M_PI_4 aroundPoint:processor.frontQuad.center];
+    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
+    [frontQuad scale:1.5];
+    [frontQuad rotateByAngle:M_PI_4 aroundPoint:frontQuad.center];
+    processor.frontQuad = frontQuad;
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementRect.png");
@@ -159,70 +165,11 @@ context(@"front placement", ^{
     backImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
     [back load:backImage];
 
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(4.0, 4.0)];
+    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
+    processor.frontQuad = frontQuad;
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"MixerPlacementComplex.png");
-
-    expect($([output image])).to.beCloseToMat($(expected));
-  });
-});
-
-context(@"tiling", ^{
-  it(@"should tile back on output", ^{
-    // Front is completely disabled by the mask, only verify back tiling.
-    [mask clearWithColor:LTVector4(0, 0, 0, 0)];
-
-    // Create square pattern.
-    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-    }];
-
-    // Enlarge output to enable tiling.
-    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
-
-    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
-                                                  maskMode:LTMixerMaskModeFront];
-    processor.fillMode = LTProcessorFillModeTile;
-    [processor process];
-
-    cv::Mat4b expected(32, 32);
-    [back mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-      mapped.copyTo(expected(cv::Rect(0, 0, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(0, 16, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(16, 0, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(16, 16, 16, 16)));
-    }];
-
-    expect($([output image])).to.beCloseToMat($(expected));
-  });
-
-  it(@"should blend tiled back image with translation, scaling and rotation", ^{
-    cv::Mat4b frontImage(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
-    frontImage(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(255, 255, 0, 255);
-    [front load:frontImage];
-    front.magFilterInterpolation = LTTextureInterpolationNearest;
-
-    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-    }];
-
-    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
-
-    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
-                                                  maskMode:LTMixerMaskModeFront];
-    processor.fillMode = LTProcessorFillModeTile;
-    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
-    [processor.frontQuad translateCorners:LTQuadCornerRegionAll
-                            byTranslation:CGPointMake(6.0, 6.0)];
-    [processor.frontQuad scale:2.0];
-    [processor.frontQuad rotateByAngle:M_PI_2 aroundPoint:processor.frontQuad.center];
-    [processor process];
-
-    cv::Mat4b expected = LTLoadMat([self class], @"MixerTilingComplex.png");
 
     expect($([output image])).to.beCloseToMat($(expected));
   });

@@ -76,7 +76,6 @@
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
       @instanceKeypath(LTMixerProcessor, blendMode),
-      @instanceKeypath(LTMixerProcessor, fillMode),
       @instanceKeypath(LTMixerProcessor, frontTranslation),
       @instanceKeypath(LTMixerProcessor, frontScaling),
       @instanceKeypath(LTMixerProcessor, frontRotation),
@@ -89,10 +88,6 @@
 
 - (LTBlendMode)defaultBlendMode {
   return LTBlendModeNormal;
-}
-
-- (LTProcessorFillMode)defaultFillMode {
-  return LTProcessorFillModeStretch;
 }
 
 - (CGPoint)defaultFrontTranslation {
@@ -111,6 +106,10 @@
 #pragma mark Processing
 #pragma mark -
 
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self.internalProcessor processToFramebufferWithSize:size outputRect:rect];
+}
+
 - (void)process {
   [self.internalProcessor process];
 }
@@ -125,14 +124,6 @@
 
 - (void)setBlendMode:(LTBlendMode)blendMode {
   self.internalProcessor.blendMode = blendMode;
-}
-
-- (LTProcessorFillMode)fillMode {
-  return self.internalProcessor.fillMode;
-}
-
-- (void)setFillMode:(LTProcessorFillMode)fillMode {
-  self.internalProcessor.fillMode = fillMode;
 }
 
 - (void)setFrontTranslation:(CGPoint)frontTranslation {
