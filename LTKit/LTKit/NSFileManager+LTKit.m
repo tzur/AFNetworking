@@ -18,6 +18,14 @@
   return documentsDirectory;
 }
 
+- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path {
+  return [dictionary writeToFile:path atomically:YES];
+}
+
+- (NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path {
+  return [NSDictionary dictionaryWithContentsOfFile:path];
+}
+
 - (BOOL)lt_writeData:(NSData *)data toFile:(NSString *)path options:(NSDataWritingOptions)options
                error:(NSError *__autoreleasing *)error {
   return [data writeToFile:path options:options error:error];
