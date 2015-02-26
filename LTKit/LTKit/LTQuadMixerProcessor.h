@@ -5,7 +5,6 @@
 
 #import "LTBlendMode.h"
 #import "LTMixerMaskMode.h"
-#import "LTProcessorFillMode.h"
 #import "LTPropertyMacros.h"
 
 @class LTQuad;
@@ -25,11 +24,6 @@
 
 /// Blend mode used to blend \c front to \c back. The default value is \c LTBlendModeNormal.
 @property (nonatomic) LTBlendMode blendMode;
-
-/// Fill mode describing how the output should be filled with the back texture. This only has effect
-/// when the size of the output is different than the back texture. The default value is
-/// \c LTMixerOutputFillModeStretch.
-@property (nonatomic) LTProcessorFillMode fillMode;
 
 /// Quad into which the front texture is drawn.
 @property (strong, nonatomic) LTQuad *frontQuad;

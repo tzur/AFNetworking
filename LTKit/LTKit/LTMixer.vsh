@@ -5,19 +5,17 @@ uniform highp mat4 modelview;
 uniform highp mat4 projection;
 
 uniform highp mat3 texture;
-uniform highp mat3 mask;
+uniform highp mat3 frontMatrix;
+uniform highp mat3 maskMatrix;
 
 attribute highp vec4 position;
 attribute highp vec3 texcoord;
 
-varying highp vec2 vFrontTexcoord;
-varying highp vec3 vMaskTexcoord;
+varying highp vec2 vTexcoord;
+varying highp vec2 vBackTexcoord;
 
 void main() {
-  vec3 texcoord3 = vec3(texcoord.xy, 1.0);
-
-  vFrontTexcoord = (texture * texcoord3).xy;
-  vMaskTexcoord = mask * texcoord3;
-
+  vTexcoord = texcoord.xy;
+  vBackTexcoord = (texture * texcoord).xy;
   gl_Position = projection * modelview * position;
 }

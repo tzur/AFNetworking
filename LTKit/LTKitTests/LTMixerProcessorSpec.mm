@@ -161,61 +161,6 @@ context(@"front placement", ^{
   });
 });
 
-context(@"tiling", ^{
-  it(@"should tile back on output", ^{
-    // Front is completely disabled by the mask, only verify back tiling.
-    [mask clearWithColor:LTVector4(0, 0, 0, 0)];
-
-    // Create square pattern.
-    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-    }];
-
-    // Enlarge output to enable tiling.
-    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
-
-    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
-    processor.fillMode = LTProcessorFillModeTile;
-    [processor process];
-
-    cv::Mat4b expected(32, 32);
-    [back mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-      mapped.copyTo(expected(cv::Rect(0, 0, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(0, 16, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(16, 0, 16, 16)));
-      mapped.copyTo(expected(cv::Rect(16, 16, 16, 16)));
-    }];
-
-    expect($([output image])).to.beCloseToMat($(expected));
-  });
-
-  it(@"should blend tiled back image with translation, scaling and rotation", ^{
-    cv::Mat4b frontImage(front.size.height, front.size.width, cv::Vec4b(255, 0, 0, 255));
-    frontImage(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(255, 255, 0, 255);
-    [front load:frontImage];
-    front.magFilterInterpolation = LTTextureInterpolationNearest;
-
-    [back mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      (*mapped)(cv::Rect(0, 0, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-      (*mapped)(cv::Rect(8, 8, 8, 8)) = cv::Scalar(0, 255, 0, 255);
-    }];
-
-    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
-
-    processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
-    processor.fillMode = LTProcessorFillModeTile;
-    processor.frontTranslation = CGPointMake(6, 6);
-    processor.frontRotation = M_PI_2;
-    processor.frontScaling = 2.0;
-    [processor process];
-
-    cv::Mat4b expected = LTLoadMat([self class], @"MixerTilingComplex.png");
-
-    expect($([output image])).to.beCloseToMat($(expected));
-  });
-});
-
 context(@"blending", ^{
   it(@"should mix with normal blending mode", ^{
     processor.blendMode = LTBlendModeNormal;

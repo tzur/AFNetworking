@@ -14,6 +14,17 @@ GLKMatrix3 LTMatrix3ForQuad(LTQuad *quad) {
   return GLKMatrix3Transpose(quad.transform);
 }
 
+GLKMatrix3 LTInvertedTextureMatrix3ForQuad(LTQuad *quad, CGSize textureSize) {
+  bool invertible;
+  GLKMatrix3 result =
+      GLKMatrix3Multiply(GLKMatrix3Invert(LTMatrix3ForQuad(quad), &invertible),
+                         GLKMatrix3MakeScale(textureSize.width, textureSize.height, 1));
+  if (!invertible) {
+    result = GLKMatrix3Make(0, 0, 0, 0, 0, 0, 0, 0, 0);
+  }
+  return result;
+}
+
 GLKMatrix4 LTMatrix4ForQuad(LTQuad *quad) {
   GLKMatrix3 matrix3D = LTMatrix3ForQuad(quad);
   return GLKMatrix4Make(matrix3D.m00, matrix3D.m01, 0, matrix3D.m02,

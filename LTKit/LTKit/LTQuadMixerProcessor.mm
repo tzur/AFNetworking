@@ -24,22 +24,25 @@
 
 @interface LTQuadMixerProcessor ()
 
-/// Processor used to write the back texture to output prior to mixing.
-@property (strong, nonatomic) LTRectCopyProcessor *backCopyProcessor;
-
 @property (strong, nonatomic) LTQuadDrawer *quadDrawer;
-
-/// Source quad to draw front texture from.
-@property (strong, nonatomic) LTQuad *frontSourceQuad;
 
 /// Mask mode used to mix the front and the back texture.
 @property (nonatomic) LTMixerMaskMode maskMode;
+
+/// Size of back texture.
+@property (nonatomic) CGSize backSize;
 
 /// Size of front texture to draw.
 @property (nonatomic) CGSize frontSize;
 
 /// Size of the applied mask.
 @property (nonatomic) CGSize maskSize;
+
+/// Matrix determining the transformation applied to the front texture before mixing.
+@property (nonatomic) GLKMatrix3 frontMatrix;
+
+/// Matrix determining the transformation applied to the mask texture before mixing.
+@property (nonatomic) GLKMatrix3 maskMatrix;
 
 @end
 
@@ -61,27 +64,17 @@
   LTProgram *program = [[[self class] programFactory] programWithVertexSource:[LTMixerVsh source]
                                                                fragmentSource:[LTMixerFsh source]];
   LTQuadDrawer *drawer = [[LTQuadDrawer alloc] initWithProgram:program sourceTexture:front];
-  if (self = [super initWithDrawer:drawer sourceTexture:front
-                 auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask} andOutput:output]) {
-    self[[LTMixerVsh mask]] = $(GLKMatrix3Identity);
+  if (self = [super initWithDrawer:drawer sourceTexture:back
+                 auxiliaryTextures:@{[LTMixerFsh maskTexture]: mask,
+                                     [LTMixerFsh frontTexture]: front} andOutput:output]) {
+    self.maskMatrix = GLKMatrix3Identity;
     self.maskMode = maskMode;
+    self.backSize = back.size;
     self.frontSize = front.size;
     self.maskSize = mask.size;
-    self.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
-    self.backCopyProcessor = [self createBackCopyProcessorWithInput:back output:output];
-    [self setDefaultValues];
+    [self resetInputModel];
   }
   return self;
-}
-
-- (void)setDefaultValues {
-  self.frontSourceQuad = [LTQuad quadFromRect:CGRectFromSize(self.frontSize)];
-  self.frontOpacity = self.defaultFrontOpacity;
-}
-
-- (LTRectCopyProcessor *)createBackCopyProcessorWithInput:(LTTexture *)input
-                                                   output:(LTTexture *)output {
-  return [[LTRectCopyProcessor alloc] initWithInput:input output:output];
 }
 
 #pragma mark -
@@ -95,7 +88,6 @@
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
       @instanceKeypath(LTQuadMixerProcessor, blendMode),
-      @instanceKeypath(LTQuadMixerProcessor, fillMode),
       @instanceKeypath(LTQuadMixerProcessor, frontOpacity),
       @instanceKeypath(LTQuadMixerProcessor, frontQuad),
     ]]; 
@@ -104,20 +96,12 @@
   return properties;
 }
 
-#pragma mark -
-#pragma mark Processing
-#pragma mark -
-
-- (void)process {
-  // TODO:(Yaron/Rouven) this can be improved by processing only the area that needs to be redrawn
-  // since the last processing.
-  [self.backCopyProcessor process];
-  return [super process];
+- (LTBlendMode)defaultBlendMode {
+  return LTBlendModeNormal;
 }
 
-- (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  [((LTQuadDrawer *)self.drawer) drawQuad:self.frontQuad inFramebuffer:placement.targetFbo
-                                 fromQuad:self.frontSourceQuad];
+- (LTQuad *)defaultFrontQuad {
+  return [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
 }
 
 #pragma mark -
@@ -129,15 +113,12 @@
   self[[LTMixerFsh blendMode]] = @(blendMode);
 }
 
-- (void)setFillMode:(LTProcessorFillMode)fillMode {
-  _fillMode = fillMode;
-  self.backCopyProcessor.fillMode = fillMode;
-}
-
 - (void)setFrontQuad:(LTQuad *)frontQuad {
   _frontQuad = frontQuad;
-  if (self.maskMode == LTMixerMaskModeBack) {
-    self[[LTMixerVsh mask]] = $(LTTextureMatrix3ForQuad(frontQuad, self.maskSize));
+  GLKMatrix3 matrix = LTInvertedTextureMatrix3ForQuad(frontQuad, self.backSize);
+  self.frontMatrix = matrix;
+  if (self.maskMode == LTMixerMaskModeFront) {
+    self.maskMatrix = matrix;
   }
 }
 
@@ -145,6 +126,16 @@ LTPropertyWithoutSetter(CGFloat, frontOpacity, FrontOpacity, 0, 1, 1);
 - (void)setFrontOpacity:(CGFloat)frontOpacity {
   [self _verifyAndSetFrontOpacity:frontOpacity];
   self[[LTMixerFsh opacity]] = @(frontOpacity);
+}
+
+- (void)setFrontMatrix:(GLKMatrix3)frontMatrix {
+  _frontMatrix = frontMatrix;
+  self[[LTMixerVsh frontMatrix]] = $(frontMatrix);
+}
+
+- (void)setMaskMatrix:(GLKMatrix3)maskMatrix {
+  _maskMatrix = maskMatrix;
+  self[[LTMixerVsh maskMatrix]] = $(maskMatrix);
 }
 
 @end
