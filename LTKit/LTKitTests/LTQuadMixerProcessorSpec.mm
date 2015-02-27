@@ -377,4 +377,62 @@ context(@"masking", ^{
   });
 });
 
+context(@"output size different than back size", ^{
+  const cv::Vec4b secondBackColor(cv::Vec4b(255, 0, 0, 255));
+
+  beforeEach(^{
+    back = [LTTexture textureWithImage:cv::Mat4b(16, 16, backColor)];
+    front = [LTTexture textureWithImage:cv::Mat4b(8, 8, frontColor)];
+    mask = [LTTexture byteRedTextureWithSize:CGSizeMake(16, 16)];
+    output = [LTTexture byteRGBATextureWithSize:CGSizeMake(12, 12)];
+
+    [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
+
+    processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
+                                                  maskMode:LTMixerMaskModeBack];
+    processor.frontQuad = [LTQuad quadFromRect:CGRectMake(6, 6, 6, 6)];
+
+    cv::Mat4b backImage(back.size.height, back.size.width, backColor);
+    backImage(cv::Rect(0, 0, back.size.width / 2, back.size.height / 2)) = secondBackColor;
+    [back load:backImage];
+  });
+
+  afterEach(^{
+    back = nil;
+    front = nil;
+    mask = nil;
+    output = nil;
+    processor = nil;
+  });
+
+  it(@"should accept output and back textures of different size", ^{
+    expect(^{
+      processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask
+                                                      output:output maskMode:LTMixerMaskModeBack];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should stretch the back texture onto the output texture", ^{
+    [mask clearWithColor:LTVector4Zero];
+
+    cv::Mat4b expected(output.size.height, output.size.width, backColor);
+    expected(cv::Rect(0, 0, output.size.width / 2, output.size.height / 2)) = secondBackColor;
+
+    [processor process];
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should consider the front quad to be in the coordinate system of the output texture", ^{
+    cv::Mat4b expected(output.size.height, output.size.width, backColor);
+    CGFloat outputWidth = output.size.width;
+    CGFloat outputHeight = output.size.height;
+    expected(cv::Rect(0, 0, outputWidth / 2, outputHeight / 2)) = secondBackColor;
+    expected(cv::Rect(outputWidth / 2, outputHeight / 2, outputWidth / 2, outputHeight / 2)) =
+        (1 - maskColor) * backColor + maskColor * frontColor;
+
+    [processor process];
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+});
+
 LTSpecEnd

@@ -29,15 +29,6 @@
 /// Mask mode used to mix the front and the back texture.
 @property (nonatomic) LTMixerMaskMode maskMode;
 
-/// Size of back texture.
-@property (nonatomic) CGSize backSize;
-
-/// Size of front texture to draw.
-@property (nonatomic) CGSize frontSize;
-
-/// Size of the applied mask.
-@property (nonatomic) CGSize maskSize;
-
 /// Matrix determining the transformation applied to the front texture before mixing.
 @property (nonatomic) GLKMatrix3 frontMatrix;
 
@@ -69,9 +60,6 @@
                                      [LTMixerFsh frontTexture]: front} andOutput:output]) {
     self.maskMatrix = GLKMatrix3Identity;
     self.maskMode = maskMode;
-    self.backSize = back.size;
-    self.frontSize = front.size;
-    self.maskSize = mask.size;
     [self resetInputModel];
   }
   return self;
@@ -115,7 +103,7 @@
 
 - (void)setFrontQuad:(LTQuad *)frontQuad {
   _frontQuad = frontQuad;
-  GLKMatrix3 matrix = LTInvertedTextureMatrix3ForQuad(frontQuad, self.backSize);
+  GLKMatrix3 matrix = LTInvertedTextureMatrix3ForQuad(frontQuad, self.outputSize);
   self.frontMatrix = matrix;
   if (self.maskMode == LTMixerMaskModeFront) {
     self.maskMatrix = matrix;
