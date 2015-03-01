@@ -55,7 +55,8 @@
                     [[self class] matTypeForImage:image], mat->type());
 
   size_t bitsPerComponent = CGImageGetBitsPerComponent(image.CGImage);
-  CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+  CGColorSpaceRef colorSpace =
+      [self newBitmapColorSpaceFromColorSpace:CGImageGetColorSpace(image.CGImage)];
   CGContextRef context = CGBitmapContextCreate(mat->data, mat->cols, mat->rows,
                                                bitsPerComponent, mat->step[0], colorSpace,
                                                [self bitmapFlagsForColorSpace:colorSpace]);
@@ -71,6 +72,19 @@
   UIGraphicsPopContext();
   
   CGContextRelease(context);
+  CGColorSpaceRelease(colorSpace);
+}
+
++ (CGColorSpaceRef)newBitmapColorSpaceFromColorSpace:(CGColorSpaceRef)colorSpace {
+  switch (CGColorSpaceGetModel(colorSpace)) {
+    case kCGColorSpaceModelMonochrome:
+      return CGColorSpaceCreateDeviceGray();
+    case kCGColorSpaceModelRGB:
+    case kCGColorSpaceModelIndexed:
+      return CGColorSpaceCreateDeviceRGB();
+    default:
+      LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
+  }
 }
 
 + (int)matTypeForImage:(UIImage *)image {
@@ -84,6 +98,7 @@
     case kCGColorSpaceModelMonochrome:
       return CV_8UC1;
     case kCGColorSpaceModelRGB:
+    case kCGColorSpaceModelIndexed:
       return CV_8UC4;
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
@@ -95,6 +110,7 @@
     case kCGColorSpaceModelMonochrome:
       return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
     case kCGColorSpaceModelRGB:
+    case kCGColorSpaceModelIndexed:
       return kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
