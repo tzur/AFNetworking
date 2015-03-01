@@ -61,6 +61,8 @@
 		0368E6C619C0270200B99FF5 /* LTSmoothPyramidProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0368E6C419C0270200B99FF5 /* LTSmoothPyramidProcessor.mm */; };
 		0368E6D819C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0368E6D719C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm */; };
 		03694DD9199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png in Resources */ = {isa = PBXBuildFile; fileRef = 03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */; };
+		037238391AA317F000937EAA /* Indexed.png in Resources */ = {isa = PBXBuildFile; fileRef = 037238371AA317F000937EAA /* Indexed.png */; };
+		0372383A1AA317F000937EAA /* IndexedWithAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 037238381AA317F000937EAA /* IndexedWithAlpha.png */; };
 		03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */; };
 		03734ABB188E98AB008B4056 /* LTBoxFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */; };
 		03734ABE188E9D81008B4056 /* LTBoxFilter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03734ABC188E98B9008B4056 /* LTBoxFilter.fsh */; };
@@ -1111,6 +1113,8 @@
 		0368E6C419C0270200B99FF5 /* LTSmoothPyramidProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSmoothPyramidProcessor.mm; sourceTree = "<group>"; };
 		0368E6D719C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSmoothPyramidProcessorSpec.mm; sourceTree = "<group>"; };
 		03694DD8199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethHueChangeRedsAndBlues.png; path = Resources/MacbethHueChangeRedsAndBlues.png; sourceTree = "<group>"; };
+		037238371AA317F000937EAA /* Indexed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Indexed.png; path = Resources/Indexed.png; sourceTree = "<group>"; };
+		037238381AA317F000937EAA /* IndexedWithAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IndexedWithAlpha.png; path = Resources/IndexedWithAlpha.png; sourceTree = "<group>"; };
 		03734AB6188E7CF1008B4056 /* LTSeparableImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSeparableImageProcessor.h; sourceTree = "<group>"; };
 		03734AB7188E7CF1008B4056 /* LTSeparableImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessor.mm; sourceTree = "<group>"; };
 		03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoxFilterProcessor.h; sourceTree = "<group>"; };
@@ -2692,6 +2696,8 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				037238371AA317F000937EAA /* Indexed.png */,
+				037238381AA317F000937EAA /* IndexedWithAlpha.png */,
 				03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */,
 				032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */,
 				032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */,
@@ -3957,6 +3963,7 @@
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BABF19119BC52C100AED760 /* PyramidGrid6.png in Resources */,
+				0372383A1AA317F000937EAA /* IndexedWithAlpha.png in Resources */,
 				28A2546819C9D3C80057E1A3 /* ReshapeProcessorUnwarpWithoutMask.png in Resources */,
 				283BD0401922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png in Resources */,
 				282AC6981924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeRotation.png in Resources */,
@@ -4005,6 +4012,7 @@
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
+				037238391AA317F000937EAA /* Indexed.png in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,

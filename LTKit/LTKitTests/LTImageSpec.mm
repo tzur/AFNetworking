@@ -93,6 +93,28 @@ context(@"loading images", ^{
     expect($(image.mat)).to.equalMat($(expected));
   });
 
+  it(@"should load indexed png image", ^{
+    UIImage *png = LTLoadImage([self class], @"Indexed.png");
+
+    LTImage *image = [[LTImage alloc] initWithImage:png];
+
+    cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
+    expected.setTo(cv::Vec4b(0, 128, 255, 255));
+
+    expect($(image.mat)).to.equalMat($(expected));
+  });
+
+  it(@"should load indexed png image with alpha", ^{
+    UIImage *png = LTLoadImage([self class], @"IndexedWithAlpha.png");
+
+    LTImage *image = [[LTImage alloc] initWithImage:png];
+
+    cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
+    expected.setTo(cv::Vec4b(0, 64, 128, 128));
+
+    expect($(image.mat)).to.equalMat($(expected));
+  });
+
   sit(@"should load @2x image", ^{
     UIImage *png = LTLoadImage([self class], @"LTImageNoise@2x.png");
     expect(png.scale).to.equal(2);
