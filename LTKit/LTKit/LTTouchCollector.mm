@@ -87,6 +87,14 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 #pragma mark LTViewTouchDelegate
 #pragma mark -
 
+- (void)ltViewAttachedToDelegate:(LTView __unused *)view {
+  [self cancelActiveStroke];
+}
+
+- (void)ltViewDetachedFromDelegate:(LTView __unused *)view {
+  [self cancelActiveStroke];
+}
+
 - (void)ltView:(LTView *)view touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
   if (self.paintingTouch || [event allTouches].count != 1)  {
     return;
@@ -159,7 +167,7 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 - (void)finishStroke:(BOOL)cancelled {
   self.paintingTouch = nil;
   [self endTimer];
-  if (self.forcedNavigationMode) {
+  if (self.forcedNavigationMode && self.paintingView.navigationMode == LTViewNavigationNone) {
     self.paintingView.navigationMode = self.previousNavigationMode;
     self.previousNavigationMode = LTViewNavigationNone;
     self.forcedNavigationMode = NO;

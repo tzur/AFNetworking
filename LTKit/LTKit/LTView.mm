@@ -59,6 +59,15 @@
 /// \c GLKView.
 @property (nonatomic) CGSize previousFramebufferSize;
 
+/// When set to \c YES, the \c LTView will forward touch events to its delegate.
+@property (nonatomic) BOOL forwardCallsToTouchDelegate;
+
+/// While set to \c YES, the \c navigationMode property will not be updated.
+@property (nonatomic) BOOL isNavigationModeLocked;
+
+/// While set to \c YES, the \c forwardTouchesToDelegate property will not be updated.
+@property (nonatomic) BOOL isForwardTouchesToDelegateLocked;
+
 @end
 
 @implementation LTView
@@ -333,7 +342,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self.navigationView cancelBogusScrollviewPanGesture];
 
   [super touchesBegan:touches withEvent:event];
-  if (self.forwardTouchesToDelegate && [self shouldForwardTouchEventsOnCurrentNavigationMode]) {
+  if (self.forwardCallsToTouchDelegate) {
     if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesBegan:withEvent:)]) {
       [self.touchDelegate ltView:self touchesBegan:touches withEvent:event];
     }
@@ -342,7 +351,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
   [super touchesMoved:touches withEvent:event];
-  if (self.forwardTouchesToDelegate && [self shouldForwardTouchEventsOnCurrentNavigationMode]) {
+  if (self.forwardCallsToTouchDelegate) {
     if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesMoved:withEvent:)]) {
       [self.touchDelegate ltView:self touchesMoved:touches withEvent:event];
     }
@@ -351,7 +360,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
   [super touchesEnded:touches withEvent:event];
-  if (self.forwardTouchesToDelegate && [self shouldForwardTouchEventsOnCurrentNavigationMode]) {
+  if (self.forwardCallsToTouchDelegate) {
     if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesEnded:withEvent:)]) {
       [self.touchDelegate ltView:self touchesEnded:touches withEvent:event];
     }
@@ -360,16 +369,70 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
   [super touchesCancelled:touches withEvent:event];
-  if (self.forwardTouchesToDelegate && [self shouldForwardTouchEventsOnCurrentNavigationMode]) {
+  if (self.forwardCallsToTouchDelegate) {
     if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesCancelled:withEvent:)]) {
       [self.touchDelegate ltView:self touchesCancelled:touches withEvent:event];
     }
   }
 }
 
+- (void)setTouchDelegate:(id<LTViewTouchDelegate>)touchDelegate {
+  if (touchDelegate == _touchDelegate) {
+    return;
+  }
+
+  if (self.forwardCallsToTouchDelegate) {
+    [_touchDelegate ltViewDetachedFromDelegate:self];
+  }
+  _touchDelegate = touchDelegate;
+  if (self.forwardCallsToTouchDelegate) {
+    [_touchDelegate ltViewAttachedToDelegate:self];
+  }
+}
+
+- (void)setForwardTouchesToDelegate:(BOOL)forwardTouchesToDelegate {
+  if (self.isForwardTouchesToDelegateLocked) {
+    return;
+  }
+
+  self.isForwardTouchesToDelegateLocked = YES;
+  _forwardTouchesToDelegate = forwardTouchesToDelegate;
+  self.forwardCallsToTouchDelegate = [self shouldForwardTouchEvents];
+  self.isForwardTouchesToDelegateLocked = NO;
+}
+
+- (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
+  if (self.isNavigationModeLocked) {
+    return;
+  }
+
+  self.isNavigationModeLocked = YES;
+  _navigationMode = navigationMode;
+  self.navigationView.mode = navigationMode;
+  self.forwardCallsToTouchDelegate = [self shouldForwardTouchEvents];
+  self.isNavigationModeLocked = NO;
+}
+
+- (BOOL)shouldForwardTouchEvents {
+  return self.forwardTouchesToDelegate && self.shouldForwardTouchEventsOnCurrentNavigationMode;
+}
+
 - (BOOL)shouldForwardTouchEventsOnCurrentNavigationMode {
   return self.navigationMode == LTViewNavigationNone ||
          self.navigationMode == LTViewNavigationTwoFingers;
+}
+
+- (void)setForwardCallsToTouchDelegate:(BOOL)forwardCallsToTouchDelegate {
+  if (forwardCallsToTouchDelegate == _forwardCallsToTouchDelegate) {
+    return;
+  }
+
+  _forwardCallsToTouchDelegate = forwardCallsToTouchDelegate;
+  if (forwardCallsToTouchDelegate) {
+    [self.touchDelegate ltViewAttachedToDelegate:self];
+  } else {
+    [self.touchDelegate ltViewDetachedFromDelegate:self];
+  }
 }
 
 #pragma mark -
@@ -709,11 +772,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)setContentInset:(UIEdgeInsets)contentInset {
   _contentInset = contentInset;
   self.navigationView.contentInset = contentInset;
-}
-
-- (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
-  _navigationMode = navigationMode;
-  self.navigationView.mode = navigationMode;
 }
 
 - (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
