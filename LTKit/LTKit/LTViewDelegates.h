@@ -49,6 +49,14 @@
 /// the protocol.
 @protocol LTViewTouchDelegate <NSObject>
 
+/// Sent to the receiver when it is attached to the \c LTView, or when it starts forwarding events
+/// to it.
+- (void)ltViewAttachedToDelegate:(LTView *)view;
+
+/// Sent to the receiver when it is detached from the \c LTView, or when it stops forwarding events
+/// to it.
+- (void)ltViewDetachedFromDelegate:(LTView *)view;
+
 @optional
 
 /// Tells the receiver when one or more fingers touch down in the \c LTView.

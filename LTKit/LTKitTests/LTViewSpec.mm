@@ -625,13 +625,16 @@ context(@"touch delegate", ^{
   __block id mock;
   
   beforeEach(^{
-    mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
     view = [[LTView alloc] initWithFrame:kViewFrame];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
-    view.touchDelegate = mock;
     view.forwardTouchesToDelegate = YES;
     view.navigationMode = LTViewNavigationNone;
+
+    mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
+    OCMStub([mock ltViewAttachedToDelegate:view]);
+    OCMStub([mock ltViewDetachedFromDelegate:view]);
+    view.touchDelegate = mock;
   });
   
   afterEach(^{
@@ -680,6 +683,9 @@ context(@"touch delegate", ^{
     NSArray *validModes = @[@(LTViewNavigationNone), @(LTViewNavigationTwoFingers)];
     for (NSUInteger i = 0; i < LTViewNavigationNone; ++i) {
       mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
+      OCMStub([mock ltViewAttachedToDelegate:view]);
+      OCMStub([mock ltViewDetachedFromDelegate:view]);
+
       view.touchDelegate = mock;
       view.navigationMode = (LTViewNavigationMode)i;
       if ([validModes containsObject:@(i)]) {
@@ -699,6 +705,132 @@ context(@"touch delegate", ^{
       [view simulateTouchesOfPhase:UITouchPhaseCancelled];
       OCMVerifyAll(mock);
     }
+  });
+
+  context(@"attach and detach", ^{
+    __block id mock;
+    __block id otherMock;
+    __block BOOL attached;
+    __block BOOL otherAttached;
+
+    beforeEach(^{
+      attached = NO;
+      otherAttached = NO;
+      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
+      otherMock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
+
+      OCMStub([mock ltViewAttachedToDelegate:view]).andDo(^(NSInvocation *) {
+        attached = YES;
+      });
+      OCMStub([mock ltViewDetachedFromDelegate:view]).andDo(^(NSInvocation *) {
+        attached = NO;
+      });
+
+      OCMStub([otherMock ltViewAttachedToDelegate:view]).andDo(^(NSInvocation *) {
+        otherAttached = YES;
+      });
+      OCMStub([otherMock ltViewDetachedFromDelegate:view]).andDo(^(NSInvocation *) {
+        otherAttached = NO;
+      });
+    });
+
+    afterEach(^{
+      mock = nil;
+      otherMock = nil;
+    });
+    
+    it(@"updating forwardTouchesToDelegate should trigger attach or detach", ^{
+      view.forwardTouchesToDelegate = NO;
+      view.touchDelegate = mock;
+      view.navigationMode = LTViewNavigationNone;
+      expect(attached).to.beFalsy();
+      view.forwardTouchesToDelegate = YES;
+      expect(attached).to.beTruthy();
+      view.forwardTouchesToDelegate = NO;
+      expect(attached).to.beFalsy();
+    });
+
+    it(@"updating navigationMode should trigger attach or detach", ^{
+      view.navigationMode = LTViewNavigationFull;
+      view.touchDelegate = mock;
+      view.forwardTouchesToDelegate = YES;
+      expect(attached).to.beFalsy();
+      view.navigationMode = LTViewNavigationNone;
+      expect(attached).to.beTruthy();
+      view.navigationMode = LTViewNavigationFull;
+      expect(attached).to.beFalsy();
+      view.navigationMode = LTViewNavigationTwoFingers;
+      expect(attached).to.beTruthy();
+      view.navigationMode = LTViewNavigationBounceToMinimalScale;
+      expect(attached).to.beFalsy();
+    });
+
+    it(@"should detach from previous if replacing attached delegate", ^{
+      view.navigationMode = LTViewNavigationNone;
+      view.forwardTouchesToDelegate = YES;
+      view.touchDelegate = mock;
+      expect(attached).to.beTruthy();
+      view.touchDelegate = otherMock;
+      expect(attached).to.beFalsy();
+    });
+
+    it(@"should attach to new delegate if replacing attached delegate", ^{
+      view.navigationMode = LTViewNavigationNone;
+      view.forwardTouchesToDelegate = YES;
+      view.touchDelegate = mock;
+      expect(attached).to.beTruthy();
+      expect(otherAttached).to.beFalsy();
+      view.touchDelegate = otherMock;
+      expect(otherAttached).to.beTruthy();
+    });
+
+    it(@"should not detach if replacing a detached delegate", ^{
+      view.navigationMode = LTViewNavigationNone;
+      view.forwardTouchesToDelegate = NO;
+      view.touchDelegate = mock;
+      expect(attached).to.beFalsy();
+      [[mock reject] ltViewDetachedFromDelegate:[OCMArg any]];
+      view.touchDelegate = otherMock;
+      OCMVerifyAll(mock);
+    });
+
+    it(@"should not attach if replacing a detached delegate", ^{
+      view.navigationMode = LTViewNavigationNone;
+      view.forwardTouchesToDelegate = NO;
+      view.touchDelegate = mock;
+      expect(attached).to.beFalsy();
+      [[otherMock reject] ltViewAttachedToDelegate:[OCMArg any]];
+      view.touchDelegate = otherMock;
+      OCMVerifyAll(otherMock);
+    });
+
+    it(@"should not be able to change navigation mode from detach due to such change", ^{
+      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
+      view.touchDelegate = mock;
+
+      OCMExpect([mock ltViewDetachedFromDelegate:[OCMArg checkWithBlock:^BOOL(LTView *view) {
+        view.navigationMode = LTViewNavigationBounceToMinimalScale;
+        return YES;
+      }]]);
+
+      view.navigationMode = LTViewNavigationFull;
+      OCMVerifyAll(mock);
+      expect(view.navigationMode).to.equal(LTViewNavigationFull);
+    });
+
+    it(@"should not be able to change forwardTouchesToDelegate from detach due to such change", ^{
+      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
+      view.touchDelegate = mock;
+
+      OCMExpect([mock ltViewDetachedFromDelegate:[OCMArg checkWithBlock:^BOOL(LTView *view) {
+        view.forwardTouchesToDelegate = YES;
+        return YES;
+      }]]);
+
+      view.forwardTouchesToDelegate = NO;
+      OCMVerifyAll(mock);
+      expect(view.forwardTouchesToDelegate).beFalsy();
+    });
   });
 });
 

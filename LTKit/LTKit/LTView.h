@@ -101,11 +101,13 @@
 /// areas. Otherwise, the background color will be used.
 @property (nonatomic) BOOL checkerboardPattern;
 
-/// If \c YES, the view will forward touch events to the touchDelegate.
+/// If \c YES, the view will forward touch events to the \c touchDelegate (assuming the navigation
+/// mode permits).
 @property (nonatomic) BOOL forwardTouchesToDelegate;
 
 /// Controls which navigation gestures are currently enabled, and the navigation behavior of the
-/// view.
+/// view, if mode other than \c LTViewNavigationNone or \c LTViewNavigationTwoFingers, touch events
+/// will not be forwarded to the \c touchDelegate.
 @property (nonatomic) LTViewNavigationMode navigationMode;
 
 /// The distance between the content and the enclosing view.
