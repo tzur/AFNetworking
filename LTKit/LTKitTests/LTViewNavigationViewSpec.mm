@@ -23,6 +23,17 @@ static CGPoint LTContentCenter(LTViewNavigationView *view) {
   return std::round(CGRectCenter(CGRectIntersection(contentFrame, view.bounds)));
 }
 
+static BOOL LTSetHasSubclasses(NSSet *set, NSArray *classes) {
+  for (Class aClass in classes) {
+    if (![set objectsPassingTest:^BOOL(id obj, BOOL *) {
+      return [obj isKindOfClass:aClass];
+    }].count) {
+      return NO;
+    }
+  }
+  return YES;
+}
+
 SpecBegin(LTViewNavigationView)
 
 const CGFloat kScale = 100;
@@ -253,6 +264,203 @@ context(@"delegate", ^{
       expect(delegateUpdated).will.beTruthy();
     });
   }
+
+  context(@"gesture recognizers change", ^{
+    beforeEach(^{
+      [[[delegate stub] ignoringNonObjectArgs] didNavigateToRect:CGRectZero];
+    });
+
+    context(@"mocked changes", ^{
+      __block id scrollView;
+      __block UIPanGestureRecognizer *panRecognizer;
+      __block UIPinchGestureRecognizer *pinchRecognizer;
+
+      beforeEach(^{
+        panRecognizer = view.scrollView.panGestureRecognizer;
+        pinchRecognizer = view.scrollView.pinchGestureRecognizer;
+
+        id scrollView = OCMPartialMock(view.scrollView);
+        OCMStub([scrollView panGestureRecognizer]).andDo(^(NSInvocation *invocation) {
+          UIPanGestureRecognizer *recognizer = panRecognizer;
+          [invocation setReturnValue:&recognizer];
+        });
+        OCMStub([scrollView pinchGestureRecognizer]).andDo(^(NSInvocation *invocation) {
+          UIPinchGestureRecognizer *recognizer = pinchRecognizer;
+          [invocation setReturnValue:&recognizer];
+        });
+      });
+
+      afterEach(^{
+        scrollView = nil;
+        panRecognizer = nil;
+        pinchRecognizer = nil;
+      });
+
+      it(@"should update delegate when scrollview pan recognizer is changed", ^{
+        __block UIPanGestureRecognizer *oldRecognizer = panRecognizer;
+        panRecognizer = [[UIPanGestureRecognizer alloc] init];
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:oldRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+        OCMVerifyAll(delegate);
+      });
+
+      it(@"should update delegate when scrollview pan recognizer is changed to/from nil", ^{
+        __block UIPanGestureRecognizer *oldRecognizer = panRecognizer;
+        panRecognizer = nil;
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:oldRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+
+        panRecognizer = [[UIPanGestureRecognizer alloc] init];
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+        OCMVerifyAll(delegate);
+      });
+
+      it(@"should update delegate when scrollview pinch recognizer is changed", ^{
+        __block UIPinchGestureRecognizer *oldRecognizer = pinchRecognizer;
+        pinchRecognizer = [[UIPinchGestureRecognizer alloc] init];
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:oldRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+        OCMVerifyAll(delegate);
+      });
+
+      it(@"should update delegate when scrollview pinch recognizer is changed from/to nil", ^{
+        __block UIPinchGestureRecognizer *oldRecognizer = pinchRecognizer;
+        pinchRecognizer = nil;
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:oldRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+
+        pinchRecognizer = [[UIPinchGestureRecognizer alloc] init];
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 [recognizers containsObject:panRecognizer] &&
+                 [recognizers containsObject:pinchRecognizer] &&
+                 [recognizers containsObject:view.doubleTapGestureRecognizer];
+        }]]);
+
+        view.contentSize = CGSizeMake(view.contentSize.height, view.contentSize.width);
+        OCMVerifyAll(delegate);
+      });
+    });
+
+    context(@"actual changes", ^{
+      it(@"should update delegate when content size changes and disables zoom", ^{
+        view.maxZoomScale = 20;
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UIPinchGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }]]);
+
+        view.contentSize = CGSizeMake(2, 2);
+        OCMVerifyAll(delegate);
+      });
+
+      it(@"should update delegate when content size changes and enables zoom", ^{
+        view.maxZoomScale = 20;
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UIPinchGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }]]);
+
+        view.contentSize = CGSizeMake(2, 2);
+
+        OCMExpect([delegate navigationGestureRecognizersDidChangeFrom:
+                  [OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 2 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }] to:[OCMArg checkWithBlock:^BOOL(NSSet *recognizers) {
+          return recognizers.count == 3 &&
+                 LTSetHasSubclasses(recognizers, @[[UIPanGestureRecognizer class],
+                                                   [UIPinchGestureRecognizer class],
+                                                   [UITapGestureRecognizer class]]);
+        }]]);
+
+        view.contentSize = kContentSize;
+        OCMVerifyAll(delegate);
+      });
+    });
+  });
 });
 
 SpecEnd

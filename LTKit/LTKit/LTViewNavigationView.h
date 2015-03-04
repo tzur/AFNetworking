@@ -18,6 +18,10 @@
 /// Notify the delegate that the \b user performed double tap.
 - (void)userDoubleTapped;
 
+/// Notify the delegate that the \c navigationGestureRecognizers were updated.
+- (void)navigationGestureRecognizersDidChangeFrom:(NSSet *)oldRecognizers
+                                               to:(NSSet *)newRecognizers;
+
 @end
 
 /// This class represents the LTViewNavigationView's state at a given time, and can be used to
@@ -62,9 +66,6 @@
 /// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
-/// Returns an array of the gesture recognizers used for navgiation.
-@property (readonly, nonatomic) NSArray *navigationGestureRecognizers;
-
 /// The size (in pixels) of the content.
 @property (nonatomic) CGSize contentSize;
 
@@ -107,8 +108,15 @@
 /// @endcode
 @property (readonly, nonatomic) UIView *viewForContentCoordinates;
 
-/// Gesture recognizer used for detecting double taps on the view.
-@property (readonly, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
+/// The underlying gesture recognizer for pinch gestures.
+@property (readonly, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+
+/// The underlying gesture recognizer for pinch gestures. Will return \c nil when zooming is
+/// disabled.
+@property (readonly, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
+/// The underlying gesture recognizer for double tap gestures.
+@property (readonly, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @end
 
