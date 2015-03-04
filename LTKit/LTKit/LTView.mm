@@ -68,6 +68,16 @@
 /// While set to \c YES, the \c forwardTouchesToDelegate property will not be updated.
 @property (nonatomic) BOOL isForwardTouchesToDelegateLocked;
 
+/// The underlying gesture recognizer for pinch gestures. KVO compliant.
+@property (strong, readwrite, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+
+/// The underlying gesture recognizer for pinch gestures. Will return \c nil when zooming is
+/// disabled. KVO compliant.
+@property (strong, readwrite, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
+/// The underlying gesture recognizer for double tap gestures. KVO compliant.
+@property (strong, readwrite, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
+
 @end
 
 @implementation LTView
@@ -170,9 +180,13 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
   [self insertSubview:self.navigationView belowSubview:self.glkView];
-  for (UIGestureRecognizer *recognizer in self.navigationView.navigationGestureRecognizers) {
-    [self.glkView addGestureRecognizer:recognizer];
-  }
+  [self updateNavigationGestureRecognizers];
+}
+
+- (void)updateNavigationGestureRecognizers {
+  self.panGestureRecognizer = self.navigationView.panGestureRecognizer;
+  self.pinchGestureRecognizer = self.navigationView.pinchGestureRecognizer;
+  self.doubleTapGestureRecognizer = self.navigationView.doubleTapGestureRecognizer;
 }
 
 - (void)createContentFbo {
@@ -302,6 +316,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserDoubleTapped)]) {
     [self.navigationDelegate ltViewUserDoubleTapped];
   }
+}
+
+- (void)navigationGestureRecognizersDidChangeFrom:(NSArray __unused *)oldRecognizers
+                                               to:(NSArray __unused *)newRecognizers {
+  [self updateNavigationGestureRecognizers];
 }
 
 #pragma mark -
@@ -734,6 +753,52 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
+#pragma mark Navigation Gesture Recognizers
+#pragma mark -
+
+- (void)setPanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
+  if (panGestureRecognizer == _panGestureRecognizer) {
+    return;
+  }
+
+  if (_panGestureRecognizer) {
+    [self.glkView removeGestureRecognizer:_panGestureRecognizer];
+  }
+  _panGestureRecognizer = panGestureRecognizer;
+  if (_panGestureRecognizer) {
+    [self.glkView addGestureRecognizer:_panGestureRecognizer];
+  }
+}
+
+- (void)setPinchGestureRecognizer:(UIPinchGestureRecognizer *)pinchGestureRecognizer {
+  if (pinchGestureRecognizer == _pinchGestureRecognizer) {
+    return;
+  }
+
+  if (_pinchGestureRecognizer) {
+    [self.glkView removeGestureRecognizer:_pinchGestureRecognizer];
+  }
+  _pinchGestureRecognizer = pinchGestureRecognizer;
+  if (_pinchGestureRecognizer) {
+    [self.glkView addGestureRecognizer:_pinchGestureRecognizer];
+  }
+}
+
+- (void)setDoubleTapGestureRecognizer:(UITapGestureRecognizer *)doubleTapGestureRecognizer {
+  if (doubleTapGestureRecognizer == _doubleTapGestureRecognizer) {
+    return;
+  }
+
+  if (_doubleTapGestureRecognizer) {
+    [self.glkView removeGestureRecognizer:_doubleTapGestureRecognizer];
+  }
+  _doubleTapGestureRecognizer = doubleTapGestureRecognizer;
+  if (_doubleTapGestureRecognizer) {
+    [self.glkView addGestureRecognizer:_doubleTapGestureRecognizer];
+  }
+}
+
+#pragma mark -
 #pragma mark Properties
 #pragma mark -
 
@@ -812,10 +877,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (UIView *)viewForContentCoordinates {
   return self.navigationView.viewForContentCoordinates;
-}
-
-- (UITapGestureRecognizer *)doubleTapRecognizer {
-  return self.navigationView.doubleTapRecognizer;
 }
 
 @end

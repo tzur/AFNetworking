@@ -58,7 +58,9 @@
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *contentView;
-@property (strong, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
+@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+@property (strong, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (strong, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @property (strong, nonatomic) LTAnimation *animation;
 
@@ -95,6 +97,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     [self createScrollView];
     [self createContentView];
     [self createDoubleTapRecognizer];
+    [self updateNavigationGestureRecognizers];
     [self registerAnimationNotification];
     if (state) {
       [self navigateToState:state];
@@ -132,10 +135,6 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.backgroundColor = [UIColor clearColor];
   self.scrollView.showsHorizontalScrollIndicator = NO;
   self.scrollView.showsVerticalScrollIndicator = NO;
-
-  // Add actions specifically for user interaction.
-  [self.scrollView.panGestureRecognizer addTarget:self action:@selector(scrollViewUserPanned:)];
-  [self.scrollView.pinchGestureRecognizer addTarget:self action:@selector(scrollViewUserPinched:)];
 
   // Add the scrollview to the current view.
   [self addSubview:self.scrollView];
@@ -184,14 +183,38 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 /// Creates the double tap gesture recognizer for easy zoom in/out.
 - (void)createDoubleTapRecognizer {
-  self.doubleTapRecognizer = [[UITapGestureRecognizer alloc]
-                              initWithTarget:self
-                              action:@selector(handleDoubleTapGesture:)];
-  self.doubleTapRecognizer.numberOfTapsRequired = 2;
-  self.doubleTapRecognizer.delaysTouchesBegan = NO;
-  self.doubleTapRecognizer.delaysTouchesEnded = NO;
-  self.doubleTapRecognizer.cancelsTouchesInView = YES;
-  self.doubleTapRecognizer.delegate = self;
+  self.doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                     initWithTarget:self
+                                     action:@selector(handleDoubleTapGesture:)];
+  self.doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+  self.doubleTapGestureRecognizer.delaysTouchesBegan = NO;
+  self.doubleTapGestureRecognizer.delaysTouchesEnded = NO;
+  self.doubleTapGestureRecognizer.cancelsTouchesInView = YES;
+  self.doubleTapGestureRecognizer.delegate = self;
+}
+
+- (void)updateNavigationGestureRecognizers {
+  // Safely add the recognizers, as some of the gesture recognizers might not exist (for example,
+  // the pinchGestureRecognizer might be nil if the image is too small as the minimalZoom and
+  // maximalZoom will be equal, invalidating the zoom functionality).
+  NSMutableArray *oldRecognizers = [NSMutableArray array];
+  [self.panGestureRecognizer addToArray:oldRecognizers];
+  [self.pinchGestureRecognizer addToArray:oldRecognizers];
+  [self.doubleTapGestureRecognizer addToArray:oldRecognizers];
+
+  // Update the recognizers that might have changed.
+  self.panGestureRecognizer = self.scrollView.panGestureRecognizer;
+  self.pinchGestureRecognizer = self.scrollView.pinchGestureRecognizer;
+
+  NSMutableArray *newRecognizers = [NSMutableArray array];
+  [self.panGestureRecognizer addToArray:newRecognizers];
+  [self.pinchGestureRecognizer addToArray:newRecognizers];
+  [self.doubleTapGestureRecognizer addToArray:newRecognizers];
+
+  if (![newRecognizers isEqual:oldRecognizers]) {
+    [self.delegate navigationGestureRecognizersDidChangeFrom:[NSSet setWithArray:oldRecognizers]
+                                                          to:[NSSet setWithArray:newRecognizers]];
+  }
 }
 
 - (void)dealloc {
@@ -231,6 +254,10 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.maximumZoomScale = maximumZoomScale;
   self.scrollView.zoomScale =
       MIN(MAX(self.scrollView.zoomScale, minimumZoomScale), maximumZoomScale);
+
+  // Changing the zoom limits might cause the gesture recognizers to be updated in case zooming
+  // becomes enabled or disabled.
+  [self updateNavigationGestureRecognizers];
 }
 
 /// Borrowed from Apple's ScrollViewSuite:
@@ -337,7 +364,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer __unused *)gestureRecognizer
        shouldReceiveTouch:(UITouch __unused *)touch {
-  return gestureRecognizer == self.doubleTapRecognizer;
+  return gestureRecognizer == self.doubleTapGestureRecognizer;
 }
 
 #pragma mark -
@@ -447,7 +474,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
       break;
   }
   
-  self.doubleTapRecognizer.enabled = (self.mode == LTViewNavigationFull);
+  self.doubleTapGestureRecognizer.enabled = (self.mode == LTViewNavigationFull);
   self.scrollView.delaysContentTouches = (self.mode != LTViewNavigationNone);
   self.scrollView.canCancelContentTouches = (self.mode != LTViewNavigationNone);
   self.scrollView.panGestureRecognizer.enabled = (self.mode != LTViewNavigationNone);
@@ -608,17 +635,6 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark Properties
 #pragma mark -
 
-- (NSArray *)navigationGestureRecognizers {
-  // Safely add the recognizers, as some of the gesture recognizers might not exist (for example,
-  // the pinchGestureRecognizer might be nil if the image is too small as the minimalZoom and
-  // maximalZoom will be equal, invalidating the zoom functionality).
-  NSMutableArray *recognizers = [NSMutableArray array];
-  [self.scrollView.panGestureRecognizer addToArray:recognizers];
-  [self.scrollView.pinchGestureRecognizer addToArray:recognizers];
-  [self.doubleTapRecognizer addToArray:recognizers];
-  return recognizers;
-}
-
 - (LTViewNavigationState *)state {
   LTViewNavigationState *state = [[LTViewNavigationState alloc] init];
   state.visibleContentRect = self.visibleContentRect;
@@ -677,6 +693,26 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (void)setDoubleTapZoomFactor:(CGFloat)doubleTapZoomFactor {
   _doubleTapZoomFactor = MAX(0, doubleTapZoomFactor);
+}
+
+- (void)setPanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
+  if (panGestureRecognizer == _panGestureRecognizer) {
+    return;
+  }
+
+  [_panGestureRecognizer removeTarget:self action:@selector(scrollViewUserPanned:)];
+  _panGestureRecognizer = panGestureRecognizer;
+  [_panGestureRecognizer addTarget:self action:@selector(scrollViewUserPanned:)];
+}
+
+- (void)setPinchGestureRecognizer:(UIPinchGestureRecognizer *)pinchGestureRecognizer {
+  if (pinchGestureRecognizer == _pinchGestureRecognizer) {
+    return;
+  }
+
+  [_pinchGestureRecognizer removeTarget:self action:@selector(scrollViewUserPinched:)];
+  _pinchGestureRecognizer = pinchGestureRecognizer;
+  [pinchGestureRecognizer addTarget:self action:@selector(scrollViewUserPinched:)];
 }
 
 @end

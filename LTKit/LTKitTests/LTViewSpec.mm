@@ -834,6 +834,123 @@ context(@"touch delegate", ^{
   });
 });
 
+context(@"navigation gesture recognizers", ^{
+  __block id navView;
+  __block LTView *view;
+  
+  beforeEach(^{
+    view = [[LTView alloc] initWithFrame:kViewFrame];
+    [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
+    navView = OCMPartialMock(view.navigationView);
+  });
+
+  afterEach(^{
+    navView = nil;
+    view = nil;
+  });
+
+  it(@"should add the initial recognizers to the glkview", ^{
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.glkView.gestureRecognizers).to.contain([navView panGestureRecognizer]);
+    expect(view.glkView.gestureRecognizers).to.contain([navView pinchGestureRecognizer]);
+    expect(view.glkView.gestureRecognizers).to.contain([navView doubleTapGestureRecognizer]);
+
+    expect(view.panGestureRecognizer).to.beIdenticalTo([navView panGestureRecognizer]);
+    expect(view.pinchGestureRecognizer).to.beIdenticalTo([navView pinchGestureRecognizer]);
+    expect(view.doubleTapGestureRecognizer).to.beIdenticalTo([navView doubleTapGestureRecognizer]);
+  });
+
+  it(@"should correctly update pan recognizer on change", ^{
+    id oldRecognizer = [navView panGestureRecognizer];
+    id newRecognizer = [[UIPanGestureRecognizer alloc] init];
+    OCMStub([navView panGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.panGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+
+  it(@"should correctly update pan recognizer on change from/to nil", ^{
+    id oldRecognizer = [navView panGestureRecognizer];
+    OCMExpect([navView panGestureRecognizer]);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.panGestureRecognizer).to.beNil;
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+
+    id newRecognizer = [[UIPanGestureRecognizer alloc] init];
+    OCMExpect([navView panGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.panGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+
+  it(@"should correctly update pinch recognizer on change", ^{
+    id oldRecognizer = [navView pinchGestureRecognizer];
+    id newRecognizer = [[UIPinchGestureRecognizer alloc] init];
+    OCMStub([navView pinchGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.pinchGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+
+  it(@"should correctly update pinch recognizer on change from/to nil", ^{
+    id oldRecognizer = [navView pinchGestureRecognizer];
+    OCMExpect([navView pinchGestureRecognizer]);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.pinchGestureRecognizer).to.beNil;
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+
+    id newRecognizer = [[UIPinchGestureRecognizer alloc] init];
+    OCMExpect([navView pinchGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.pinchGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+
+  it(@"should correctly update double tap recognizer on change", ^{
+    id oldRecognizer = [navView doubleTapGestureRecognizer];
+    id newRecognizer = [[UITapGestureRecognizer alloc] init];
+    OCMStub([navView doubleTapGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.doubleTapGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+
+  it(@"should correctly update double tap recognizer on change from/to nil", ^{
+    id oldRecognizer = [navView doubleTapGestureRecognizer];
+    OCMExpect([navView doubleTapGestureRecognizer]);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.doubleTapGestureRecognizer).to.beNil;
+    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+
+    id newRecognizer = [[UITapGestureRecognizer alloc] init];
+    OCMExpect([navView doubleTapGestureRecognizer]).andReturn(newRecognizer);
+
+    [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
+    expect(view.doubleTapGestureRecognizer).to.beIdenticalTo(newRecognizer);
+    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+  });
+});
+
 context(@"navigation delegate", ^{
   __block id delegate;
   __block LTViewNavigationView *navView;
