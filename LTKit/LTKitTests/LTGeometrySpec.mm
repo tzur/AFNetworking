@@ -111,16 +111,6 @@ context(@"affine transformations", ^{
 });
 
 context(@"intersection", ^{
-  it(@"should correctly compute whether two edges intersect", ^{
-    CGPoint p0 = CGPointZero;
-    CGPoint p1 = CGPointMake(1, 0);
-    CGPoint q0 = CGPointMake(0.5, -0.5);
-    CGPoint q1 = CGPointMake(0.5, 0.5);
-    expect(LTEdgesIntersect(p0, p1, q0, q1)).to.beTruthy();
-    expect(LTEdgesIntersect(p0, q0, p1, q1)).to.beFalsy();
-    expect(LTEdgesIntersect(p0, q0, CGPointMake(2, -1), CGPointMake(2, 1))).to.beFalsy();
-  });
-
   it(@"it should correctly compute whether a given polyline intersects itself", ^{
     CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);

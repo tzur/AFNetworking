@@ -83,7 +83,8 @@ BOOL LTIsSelfIntersectingPolyline(const CGPoints &points) {
     for (CGPoints::size_type j = i + 1; j + 1 < points.size(); ++j) {
       CGPoint q0 = points[j];
       CGPoint q1 = points[j + 1];
-      if (LTEdgesIntersect(p0, p1, q0, q1)) {
+      CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+      if (!CGPointIsNull(intersectionPoint)) {
         return YES;
       }
     }
@@ -100,8 +101,9 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
     for (CGPoints::size_type j = i + 1; j + 1 < points.size(); ++j) {
       CGPoint q0 = points[j];
       CGPoint q1 = points[j + 1];
-      if (LTEdgesIntersect(p0, p1, q0, q1)) {
-        result.push_back(LTIntersectionPointOfEdges(p0, p1, q0, q1));
+      CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+      if (!CGPointIsNull(intersectionPoint)) {
+        result.push_back(intersectionPoint);
       }
     }
   }
@@ -118,8 +120,9 @@ CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
     for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
       CGPoint q0 = polyline1[j];
       CGPoint q1 = polyline1[j + 1];
-      if (LTEdgesIntersect(p0, p1, q0, q1)) {
-        result.push_back(LTIntersectionPointOfEdges(p0, p1, q0, q1));
+      CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+      if (!CGPointIsNull(intersectionPoint)) {
+        result.push_back(intersectionPoint);
       }
     }
   }
@@ -173,16 +176,6 @@ CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
   return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1);
 }
 
-BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
-  if (p0 == q0 || p0 == q1 || p1 == q0 || p1 == q1) {
-    return NO;
-  }
-  return LTPointLocationRelativeToRay(q0, p0, p1 - p0)
-      != LTPointLocationRelativeToRay(q1, p0, p1 - p0)
-      && LTPointLocationRelativeToRay(p0, q0, q1 - q0)
-      != LTPointLocationRelativeToRay(p1, q0, q1 - q0);
-}
-
 #pragma mark -
 #pragma mark - Point to line/edge relation
 #pragma mark -
@@ -220,8 +213,8 @@ CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point) {
 /// @see http://web.archive.org/web/20141117113118/http://geomalgorithms.com/a07-_distance.html for
 /// more details.
 CGPointPair LTPointOnEdgeNearestToPointOnEdge(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
-  if (LTEdgesIntersect(p0, p1, q0, q1)) {
-    CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+  CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
+  if (!CGPointIsNull(intersectionPoint)) {
     return {intersectionPoint, intersectionPoint};
   }
 

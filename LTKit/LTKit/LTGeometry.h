@@ -51,9 +51,6 @@ CGPoint LTIntersectionPointOfEdgeAndLine(CGPoint edgePoint0, CGPoint edgePoint1,
 /// passing through \c q0 and \c q1, if existing. Otherwise, returns CGPointNull.
 CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
 
-/// Returns \c YES if the edge (p0, p1) intersects the edge (q0, q1).
-BOOL LTEdgesIntersect(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1);
-
 /// Returns the point on the line passing through \c pointOnLine and \c anotherPointOnLine with the
 /// smallest distance to the given \c point.
 CGPoint LTPointOnLineClosestToPoint(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point);
