@@ -132,16 +132,83 @@ context(@"intersection", ^{
     expect(LTIsSelfIntersectingPolyline(pointsToCheck2)).to.beFalsy();
   });
 
-  it(@"should correctly compute the intersection point of two edges", ^{
-    CGPoint p0 = CGPointZero;
-    CGPoint p1 = CGPointMake(1, 0);
-    CGPoint p2 = CGPointMake(0.5, -0.5);
-    CGPoint p3 = CGPointMake(0, 0.5);
-    expect(LTIntersectionPointOfEdges(p0, p1, p2, p3)).to.beCloseToPointWithin(CGPointMake(0.25, 0),
-                                                                               kEpsilon);
-    expect(LTIntersectionPointOfEdges(p0, p1, p1, p2)).to.beCloseToPointWithin(p1, kEpsilon);
-    expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p2, p1, p3))).to.beTruthy();
-    expect(CGPointIsNull(LTIntersectionPointOfLines(p0, p2, p0, p2))).to.beTruthy();
+  context(@"intersection point of two edges", ^{
+    __block CGPoint p0;
+    __block CGPoint p1;
+    __block CGPoint p2;
+    __block CGPoint p3;
+
+    beforeEach(^{
+      p0 = CGPointZero;
+      p1 = CGPointMake(1, 1);
+      p2 = CGPointMake(0, -1);
+      p3 = CGPointMake(1, 2);
+    });
+
+    context(@"overlapping edges", ^{
+      it(@"should correctly compute the intersection point of two intersecting edges", ^{
+        expect(LTIntersectionPointOfEdges(p0, p1, p2, p3))
+            .to.beCloseToPointWithin(CGPointMake(0.5, 0.5), kEpsilon);
+
+        p0 = CGPointZero;
+        p1 = CGPointMake(1, 0);
+        p2 = CGPointMake(0.5, -0.5);
+        p3 = CGPointMake(0, 0.5);
+        expect(LTIntersectionPointOfEdges(p0, p1, p2, p3))
+            .to.beCloseToPointWithin(CGPointMake(0.25, 0), kEpsilon);
+      });
+
+      it(@"should return CGPointNull for collinear overlapping edges", ^{
+        p2 = CGPointMake(0.5, 0.5);
+        p3 = CGPointMake(2, 2);
+
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p3, p2))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p3, p2))).to.beTruthy();
+      });
+    });
+
+    context(@"disjoint edges", ^{
+      it(@"should return CGPointNull for adjacent edges", ^{
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p1, p2))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p2, p2, p1))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p0, p2))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p2, p1, p0))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p2, p0, p0, p1))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p2, p1, p1, p0))).to.beTruthy();
+      });
+
+      it(@"should return CGPointNull for non-collinear but parallel edges", ^{
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p2, p1, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p2, p0, p1, p3))).to.beTruthy();
+      });
+
+      it(@"should return CGPointNull for non-overlapping but collinear edges", ^{
+        p2 = CGPointMake(2, 2);
+        p3 = CGPointMake(8, 8);
+
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p3, p2))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p3, p2))).to.beTruthy();
+      });
+
+      it(@"should return CGPointNull for non-intersecting non-parallel edges", ^{
+        p1 = CGPointMake(0, 1);
+        p2 = CGPointMake(0.5, 0.5);
+        p3 = CGPointMake(1, 0.5);
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p2, p3))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p3, p2))).to.beTruthy();
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p1, p0, p3, p2))).to.beTruthy();
+
+        p1 = CGPointMake(0, 1);
+        p2 = CGPointMake(0.5, 0.5);
+        p3 = CGPointMake(1, 0.6);
+        expect(CGPointIsNull(LTIntersectionPointOfEdges(p0, p1, p2, p3))).to.beTruthy();
+      });
+    });
   });
 
   it(@"should correctly compute the intersection point of an edge and a line", ^{

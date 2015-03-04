@@ -132,41 +132,28 @@ static CGPoint LTIntersectionPointOfLinesHelper(CGPoint p0, CGPoint p1, CGPoint 
                                                 CGFloat tMax = CGFLOAT_MAX) {
   CGPoint r = p1 - p0;
   CGPoint s = q1 - q0;
-  CGFloat crossProductLength =
-      GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(r.x, r.y, 0),
-                                              GLKVector3Make(s.x, s.y, 0)));
-  if (std::abs(crossProductLength) < kEpsilon) {
-    // Line (segments) are parallel.
+  CGFloat denominator =
+      GLKVector3CrossProduct(GLKVector3Make(r.x, r.y, 0), GLKVector3Make(s.x, s.y, 0)).z;
+  if (std::abs(denominator) < kEpsilon) {
+    // Lines/segments are parallel.
     return CGPointNull;
   }
 
   CGPoint qp = q0 - p0;
-  CGFloat t = GLKVector3Length(GLKVector3CrossProduct(GLKVector3Make(qp.x, qp.y, 0),
-                                                      GLKVector3Make(s.x, s.y, 0)));
-  t /= crossProductLength;
-  if (tMin <= t && t <= tMax) {
-    // Note that the sign of \c t resulting from the previous cross product computation is
-    // meaningless since there is no assumption on the geometric constellation of the vectors \c r
-    // and \c s. Hence, it must be ensured that the sign of \c t is correct such that p0 + t * r
-    // indeed is the intersection point (and not a point lying on line (p0, p1), but not (q0, q1).
-    // The following distance-from-line computation has been chosen to provide a numerically robust,
-    // correct answer. Simply checking collinearity of \c (q0, q1, intersectionPoint<x>), where
-    // <x> in {0, 1} may yield wrong results. Another possibility would be to enforce an invariance
-    // on the geometric constellation of vectors \c r and \c s. However, this might imply edge cases
-    // to deal with.
-    CGPoint intersectionPoint0 = p0 + t * r;
-    CGPoint intersectionPoint1 = p0 + -t * r;
-    CGFloat distance0 = LTDistanceFromLine(q0, q1, intersectionPoint0);
-    CGFloat distance1 = LTDistanceFromLine(q0, q1, intersectionPoint1);
-    if (distance0 < distance1) {
-      return intersectionPoint0;
-    }
-    return intersectionPoint1;
+  CGFloat t = GLKVector3CrossProduct(GLKVector3Make(qp.x, qp.y, 0), GLKVector3Make(s.x, s.y, 0)).z;
+  t /= denominator;
+  CGFloat u = GLKVector3CrossProduct(GLKVector3Make(qp.x, qp.y, 0), GLKVector3Make(r.x, r.y, 0)).z;
+  u /= denominator;
+  if (tMin <= t && t <= tMax && tMin <= u && u <= tMax) {
+    return p0 + t * r;
   }
   return CGPointNull;
 }
 
 CGPoint LTIntersectionPointOfEdges(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q1) {
+  if (p0 == q0 || p0 == q1 || p1 == q0 || p1 == q1) {
+    return CGPointNull;
+  }
   return LTIntersectionPointOfLinesHelper(p0, p1, q0, q1, 0, 1);
 }
 
