@@ -96,7 +96,11 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
         if (idx > 0) {
           key = idx - 1 + ((nextDistance - prevDistance) / (distance - prevDistance));
         }
-        LTPainterPoint *point = [self.routine valueAtKey:MIN(1, key / self.distances.size())];
+
+        // TODO:(amit) find out why the unclamped value might be negative in certain scenarios for
+        // brushes with very small scale and spacing.
+        LTPainterPoint *point =
+            [self.routine valueAtKey:std::clamp(key / self.distances.size(), 0, 1)];
         point.distanceFromStart = self.distanceFromStart + nextDistance;
         [points addObject:point];
         nextDistance = nextDistance + interval;
