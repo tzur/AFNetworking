@@ -184,6 +184,12 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 /// modified. This can be used as an efficient way to check if a texture has changed.
 @property (readwrite, nonatomic) NSUInteger generationID;
 
+/// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
+/// that the texture is filled with a single color. This property is updated when the texture is
+/// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
+/// any other method.
+@property (readwrite, nonatomic) LTVector4 fillColor;
+
 @end
 
 @implementation LTTexture
@@ -206,6 +212,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
     _format = format;
     _channels = LTTextureChannelsFromFormat(format);
     _size = size;
+    _fillColor = LTVector4Null;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
     [self setDefaultValues];
@@ -498,6 +505,7 @@ static NSString * const kArchiveKey = @"archive";
 
   // User wrote data to image, so it must be uploaded back to the GPU.
   [self load:image];
+  self.fillColor = LTVector4Null;
 }
 
 - (void)mappedCGImage:(LTTextureMappedCGImageBlock)block {

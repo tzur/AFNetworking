@@ -6,6 +6,10 @@
 #import "LTDevice.h"
 #import "LTGLContext.h"
 
+@interface LTTexture ()
+@property (readwrite, nonatomic) LTVector4 fillColor;
+@end
+
 @interface LTFbo ()
 
 /// Texture associated with the FBO.
@@ -183,6 +187,12 @@
       block();
     }];
   }];
+
+  // Set the texture's fill color to uncertain since it is no longer guaranteed that it is filled
+  // with a single color.
+  if (!self.level) {
+    self.texture.fillColor = LTVector4Null;
+  }
 }
 
 - (void)bindAndDrawOnScreen:(LTVoidBlock)block {
@@ -196,9 +206,16 @@
 #pragma mark -
 
 - (void)clearWithColor:(LTVector4)color {
-  [self bindAndDraw:^{
-    [[LTGLContext currentContext] clearWithColor:color];
+  [self bindAndExecute:^{
+    [self.texture writeToTexture:^{
+      [[LTGLContext currentContext] clearWithColor:color];
+    }];
   }];
+
+  // Adjust the texture's fill color in case this is the top (or single) mipmap level.
+  if (!self.level) {
+    self.texture.fillColor = color;
+  }
 }
 
 #pragma mark -

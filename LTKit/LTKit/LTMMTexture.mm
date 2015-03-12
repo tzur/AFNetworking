@@ -16,6 +16,7 @@
 - (void)increaseGenerationID;
 
 @property (readonly, nonatomic) int matType;
+@property (readwrite, nonatomic) LTVector4 fillColor;
 
 @end
 
@@ -203,10 +204,7 @@
 
 - (LTTexture *)clone {
   LTTexture *cloned = [[LTMMTexture alloc] initWithPropertiesOf:self];
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:cloned];
-
-  [self cloneToFramebuffer:fbo];
-
+  [self cloneTo:cloned];
   return cloned;
 }
 
@@ -214,8 +212,12 @@
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
 
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-  [self cloneToFramebuffer:fbo];
+  if (!self.fillColor.isNull()) {
+    [texture clearWithColor:self.fillColor];
+  } else {
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    [self cloneToFramebuffer:fbo];
+  }
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
@@ -311,6 +313,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
   [self mappedImageWithBlock:block];
   [self increaseGenerationID];
+  self.fillColor = LTVector4Null;
 }
 
 - (void)mappedImageWithBlock:(LTTextureMappedBlock)block {

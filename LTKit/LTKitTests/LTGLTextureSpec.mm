@@ -94,6 +94,19 @@ context(@"mipmapping", ^{
 
       expect(texture.maxMipmapLevel).to.equal(2);
     });
+
+    it(@"should initialize with properties of other texture", ^{
+      LTGLTexture *texture = [[LTGLTexture alloc]
+                              initWithMipmapImages:{cv::Mat4b(128, 64), cv::Mat4b(64, 32)}];
+      LTGLTexture *other = [[LTGLTexture alloc] initWithPropertiesOf:texture];
+      expect(other.size).to.equal(texture.size);
+      expect(other.precision).to.equal(texture.precision);
+      expect(other.format).to.equal(texture.format);
+      expect(other.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
+      expect(^{
+        [other clearWithColor:LTVector4Zero];
+      }).notTo.raiseAny();
+    });
   });
 
   context(@"drawing", ^{
@@ -151,6 +164,35 @@ context(@"mipmapping", ^{
         cv::Mat4b expected(actual.size(), cv::Vec4b(128, 128, 128, 255));
         expect($(actual)).to.equalMat($(expected));
       }
+    });
+
+    it(@"should clone texture", ^{
+      LTGLTexture *cloned = (LTGLTexture *)[texture clone];
+      expect(cloned).to.beKindOf(texture.class);
+      expect(cloned.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
+      for (GLint i = 0; i < texture.maxMipmapLevel; ++i) {
+        cv::Mat4b actual = [cloned imageAtLevel:i];
+        cv::Mat4b expected = [texture imageAtLevel:i];
+        expect($(actual)).to.equalMat($(expected));
+      }
+    });
+
+    it(@"should clone to texture", ^{
+      LTGLTexture *cloned = (LTGLTexture *)[texture clone];
+      [cloned clearWithColor:LTVector4Zero];
+      [texture cloneTo:cloned];
+      for (GLint i = 0; i < texture.maxMipmapLevel; ++i) {
+        cv::Mat4b actual = [cloned imageAtLevel:i];
+        cv::Mat4b expected = [texture imageAtLevel:i];
+        expect($(actual)).to.equalMat($(expected));
+      }
+    });
+
+    it(@"should raise if trying to clone to a texture with different number of mipmap levels", ^{
+      LTGLTexture *other = [[LTGLTexture alloc] initWithMipmapImages:{imageA, imageB, imageC}];
+      expect(^{
+        [texture cloneTo:other];
+      }).to.raise(NSInvalidArgumentException);
     });
 
     context(@"linear level interpolation", ^{

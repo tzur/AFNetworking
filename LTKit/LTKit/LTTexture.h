@@ -281,7 +281,7 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 
 /// Calls the given \c block with an image with the texture's contents, which can be modified inside
 /// the block. When the method returns, the texture's contents will contain the updated image
-/// contents.
+/// contents. The texture's \c fillColor will be set to \c LTVector4Null after this method is done.
 ///
 /// @note if \c isCopy is set to \c YES, the \c mapped mat can be retained. Otherwise, no copies of
 /// it should be made outside the block.
@@ -355,7 +355,8 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 - (void)executeAndPreserveParameters:(LTVoidBlock)execute;
 
 /// Clears the texture with the given \c color. In case this is a mipmap texture, all its levels
-/// will be cleared with the given \c color.
+/// will be cleared with the given \c color. This will set the texture's \c fillColor to the given
+/// color.
 - (void)clearWithColor:(LTVector4)color;
 
 #pragma mark -
@@ -403,6 +404,12 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// Current generation ID of this texture. The generation ID changes whenever the texture is
 /// modified. This can be used as an efficient way to check if a texture has changed.
 @property (readonly, nonatomic) NSUInteger generationID;
+
+/// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
+/// that the texture is filled with a single color. This property is updated when the texture is
+/// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
+/// any other method.
+@property (readonly, nonatomic) LTVector4 fillColor;
 
 /// Archiver used to store the texture's contents while coding and decoding. The default archiver is
 /// the \c LTTextureContentsDataArchiver.

@@ -26,10 +26,19 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (void)increaseGenerationID;
 
 @property (readonly, nonatomic) int matType;
+@property (readwrite, nonatomic) LTVector4 fillColor;
 
 @end
 
 @implementation LTGLTexture
+
+- (instancetype)initWithPropertiesOf:(LTTexture *)texture {
+  if (self = [super initWithSize:texture.size precision:texture.precision
+                          format:texture.format allocateMemory:NO]) {
+    [self allocateMipmapLevels:texture.maxMipmapLevel forTexture:self];
+  }
+  return self;
+}
 
 #pragma mark -
 #pragma mark Mipmaps
@@ -71,8 +80,8 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                       currentLevelSize.height * 2 == previousLevelSize.height,
                       @"Given image at level %lu doesn't has a size of (%g, %g), which is not a"
                       "dyadic downsampling from its parent of size (%g, %g)", i,
-                      currentLevelSize.width, currentLevelSize.height, previousLevelSize.width,
-                      previousLevelSize.height);
+                      currentLevelSize.width, currentLevelSize.height,
+                      previousLevelSize.width, previousLevelSize.height);
   }
 }
 
@@ -113,8 +122,12 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
     if (allocateMemory) {
       [self writeToTexture:^{
-        glTexImage2D(GL_TEXTURE_2D, 0, self.format, self.size.width, self.size.height, 0,
-                     self.format, self.precision, NULL);
+        CGSize size = self.size;
+        for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+          glTexImage2D(GL_TEXTURE_2D, i, self.format, size.width, size.height, 0,
+                       self.format, self.precision, NULL);
+          size = std::round(size / 2);
+        }
       }];
     }
   }];
@@ -206,6 +219,8 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self bindAndExecute:^{
     [self writeRect:rect fromImage:image];
   }];
+  
+  self.fillColor = LTVector4Null;
 }
 
 - (void)writeRect:(CGRect)rect fromImage:(const cv::Mat &)image {
@@ -239,21 +254,46 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (LTTexture *)clone {
-  LTTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size precision:self.precision
-                                                 format:self.format allocateMemory:YES];
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:cloned];
+  LTGLTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size precision:self.precision
+                                                   format:self.format allocateMemory:NO];
+  [cloned allocateMipmapLevels:self.maxMipmapLevel forTexture:cloned];
 
-  [self cloneToFramebuffer:fbo];
-
+  [self cloneTo:cloned];
   return cloned;
+}
+
+- (void)allocateMipmapLevels:(GLint)levels forTexture:(LTGLTexture *)texture {
+  LTParameterAssert(levels >= 0);
+  LTParameterAssert(texture);
+  texture.maxMipmapLevel = levels;
+  [texture bindAndExecute:^{
+    [texture writeToTexture:^{
+      CGSize size = texture.size;
+      for (GLint i = 0; i <= texture.maxMipmapLevel; ++i) {
+        glTexImage2D(GL_TEXTURE_2D, i, texture.format, size.width, size.height, 0,
+                     texture.format, texture.precision, NULL);
+        size = std::round(size / 2);
+      }
+    }];
+  }];
+
+  LTGLCheck(@"Error allocating mipmap levels");
 }
 
 - (void)cloneTo:(LTTexture *)texture {
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
+  LTParameterAssert(texture.maxMipmapLevel == self.maxMipmapLevel,
+                    @"Cloned texture must have the same number of mipmap levels");
 
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-  [self cloneToFramebuffer:fbo];
+  if (!self.fillColor.isNull()) {
+    [texture clearWithColor:self.fillColor];
+  } else {
+    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture level:i];
+      [self cloneToFramebuffer:fbo];
+    }
+  }
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
@@ -265,8 +305,9 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
   CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
   [self executeAndPreserveParameters:^{
-    self.minFilterInterpolation = LTTextureInterpolationNearest;
     self.magFilterInterpolation = LTTextureInterpolationNearest;
+    self.minFilterInterpolation = self.maxMipmapLevel ?
+        LTTextureInterpolationNearestMipmapNearest : LTTextureInterpolationNearest;
     [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
   }];
 }
