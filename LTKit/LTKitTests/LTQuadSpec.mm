@@ -251,26 +251,6 @@ context(@"initializers and factory methods", ^{
   });
 });
 
-context(@"updating", ^{
-  it(@"should be possible to update the corners", ^{
-    LTQuadCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad updateWithCorners:LTQuadCorners{{v1, v2, v3, w0}}];
-    expect(quad.v0).to.equal(v1);
-    expect(quad.v1).to.equal(v2);
-    expect(quad.v2).to.equal(v3);
-    expect(quad.v3).to.equal(w0);
-  });
-
-  it(@"should raise when trying to update with invalid corners", ^{
-    LTQuadCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    expect(^{
-      [quad updateWithCorners:LTQuadCorners{{v0, v0 + CGPointMake(1e-12, 0), v2, v3}}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
 context(@"point inclusion", ^{
   it(@"should correctly compute point inclusion for a simple convex quad", ^{
     LTQuadCorners corners{{v0, v1, v2, v3}};

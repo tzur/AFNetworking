@@ -79,10 +79,6 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
 + (LTQuadCornersValidity)validityOfCorners:(const LTQuadCorners &)corners;
 
-/// Updates the corners of this instance using the given \c corners. The provided \c corners must be
-/// valid.
-- (void)updateWithCorners:(const LTQuadCorners &)corners;
-
 /// Returns \c YES if the given \c point is contained by this quad.
 - (BOOL)containsPoint:(CGPoint)point;
 
