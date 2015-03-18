@@ -67,8 +67,9 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 
 /// Designated initializer: initializes a general quad defined by the given \c corners. In case of a
 /// simple (i.e. non-self-intersecting) quad, the corners have to be provided in clockwise order.
-/// The provided corners must valid (refer to \c LTQuadCornersValidity for more details). Checking
-/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
+/// The provided corners must be valid (refer to \c LTQuadCornersValidity for more details).
+/// Checking whether corners are valid for initialization can be done using the
+/// \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
 
 /// Creates a copy of this instance with identical properties except for the given \c corners. The
