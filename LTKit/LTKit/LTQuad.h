@@ -71,6 +71,11 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
 
+/// Creates a copy of this instance with identical properties except for the given \c corners. The
+/// provided corners must be valid (refer to \c LTQuadCornersValidity for more details). Checking
+/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
+- (instancetype)copyWithCorners:(const LTQuadCorners &)corners;
+
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
 + (LTQuadCornersValidity)validityOfCorners:(const LTQuadCorners &)corners;
 

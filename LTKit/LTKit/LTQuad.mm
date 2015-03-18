@@ -119,6 +119,16 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 #pragma mark -
+#pragma mark Copying
+#pragma mark -
+
+- (instancetype)copyWithCorners:(const LTQuadCorners &)corners {
+  LTQuad *copy = [self copy];
+  [copy updateWithCorners:corners];
+  return copy;
+}
+
+#pragma mark -
 #pragma mark Updating
 #pragma mark -
 
