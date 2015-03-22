@@ -67,16 +67,18 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 
 /// Designated initializer: initializes a general quad defined by the given \c corners. In case of a
 /// simple (i.e. non-self-intersecting) quad, the corners have to be provided in clockwise order.
-/// The provided corners must valid (refer to \c LTQuadCornersValidity for more details). Checking
-/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
+/// The provided corners must be valid (refer to \c LTQuadCornersValidity for more details).
+/// Checking whether corners are valid for initialization can be done using the
+/// \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
+
+/// Creates a copy of this instance with identical properties except for the given \c corners. The
+/// provided corners must be valid (refer to \c LTQuadCornersValidity for more details). Checking
+/// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
+- (instancetype)copyWithCorners:(const LTQuadCorners &)corners;
 
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
 + (LTQuadCornersValidity)validityOfCorners:(const LTQuadCorners &)corners;
-
-/// Updates the corners of this instance using the given \c corners. The provided \c corners must be
-/// valid.
-- (void)updateWithCorners:(const LTQuadCorners &)corners;
 
 /// Returns \c YES if the given \c point is contained by this quad.
 - (BOOL)containsPoint:(CGPoint)point;

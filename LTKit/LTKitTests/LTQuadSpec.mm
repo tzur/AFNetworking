@@ -251,26 +251,6 @@ context(@"initializers and factory methods", ^{
   });
 });
 
-context(@"updating", ^{
-  it(@"should be possible to update the corners", ^{
-    LTQuadCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad updateWithCorners:LTQuadCorners{{v1, v2, v3, w0}}];
-    expect(quad.v0).to.equal(v1);
-    expect(quad.v1).to.equal(v2);
-    expect(quad.v2).to.equal(v3);
-    expect(quad.v3).to.equal(w0);
-  });
-
-  it(@"should raise when trying to update with invalid corners", ^{
-    LTQuadCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    expect(^{
-      [quad updateWithCorners:LTQuadCorners{{v0, v0 + CGPointMake(1e-12, 0), v2, v3}}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
 context(@"point inclusion", ^{
   it(@"should correctly compute point inclusion for a simple convex quad", ^{
     LTQuadCorners corners{{v0, v1, v2, v3}};
@@ -575,15 +555,28 @@ context(@"affine transformations", ^{
 });
 
 context(@"copying", ^{
-  it(@"should correctly copy", ^{
+  beforeEach(^{
     LTQuadCorners corners{{v0, v1, v2, v3}};
     quad = [[LTQuad alloc] initWithCorners:corners];
-    LTQuad *copiedQuad = quad.copy;
+  });
+
+  it(@"should correctly copy", ^{
+    LTQuad *copiedQuad = [quad copy];
     expect(copiedQuad).notTo.beIdenticalTo(quad);
     expect(copiedQuad.v0).to.equal(quad.v0);
     expect(copiedQuad.v1).to.equal(quad.v1);
     expect(copiedQuad.v2).to.equal(quad.v2);
     expect(copiedQuad.v3).to.equal(quad.v3);
+  });
+
+  it(@"should correctly copy with given corners", ^{
+    LTQuadCorners corners{{v0, v1, w0, v2}};
+    LTQuad *result = [quad copyWithCorners:corners];
+    expect(result).notTo.beIdenticalTo(quad);
+    expect(result.v0).to.equal(v0);
+    expect(result.v1).to.equal(v1);
+    expect(result.v2).to.equal(w0);
+    expect(result.v3).to.equal(v2);
   });
 });
 
