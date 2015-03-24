@@ -3,7 +3,7 @@
 
 #import "LTCommonDrawableShapeStructs.h"
 
-#import "LTGLKitExtensions.mm"
+#import "LTGLKitExtensions.h"
 
 void LTAddShadowVertex(const LTCommonDrawableShapeVertex &vertex,
                        LTCommonDrawableShapeVertices *shadowVertices) {
