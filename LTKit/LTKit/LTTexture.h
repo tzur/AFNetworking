@@ -405,10 +405,10 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// modified. This can be used as an efficient way to check if a texture has changed.
 @property (readonly, nonatomic) NSUInteger generationID;
 
-/// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
-/// that the texture is filled with a single color. This property is updated when the texture is
-/// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
-/// any other method.
+/// Returns the color the entire texture (and all its levels for mipmap textures) is filled with,
+/// or \c LTVector4Null in case it is uncertain that the texture is filled with a single color.
+/// This property is updated when the texture is cleared using \c clearWithColor, and set to
+/// \c LTVector4Null whenever the texture is updated by any other method.
 @property (readonly, nonatomic) LTVector4 fillColor;
 
 /// Archiver used to store the texture's contents while coding and decoding. The default archiver is

@@ -14,21 +14,12 @@
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTTexture+Protected.h"
 
 /// Returns the \c CGSize of the given \c mat.
-CGSize LTCGSizeOfMat(const cv::Mat &mat) {
+static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   return CGSizeMake(mat.cols, mat.rows);
 }
-
-@interface LTTexture ()
-
-- (BOOL)inTextureRect:(CGRect)rect;
-- (void)increaseGenerationID;
-
-@property (readonly, nonatomic) int matType;
-@property (readwrite, nonatomic) LTVector4 fillColor;
-
-@end
 
 @implementation LTGLTexture
 
@@ -121,18 +112,22 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
     [self setMaxMipmapLevel:self.maxMipmapLevel];
 
     if (allocateMemory) {
-      [self writeToTexture:^{
-        CGSize size = self.size;
-        for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-          glTexImage2D(GL_TEXTURE_2D, i, self.format, size.width, size.height, 0,
-                       self.format, self.precision, NULL);
-          size = std::round(size / 2);
-        }
-      }];
+      [self allocateMemoryForAllLevels];
     }
   }];
 
   LTGLCheck(@"Error applying texture parameters");
+}
+
+- (void)allocateMemoryForAllLevels {
+  [self writeToTexture:^{
+    CGSize size = self.size;
+    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+      glTexImage2D(GL_TEXTURE_2D, i, self.format, size.width, size.height, 0, self.format,
+                   self.precision, NULL);
+      size = std::round(size / 2);
+    }
+  }];
 }
 
 - (void)destroy {
@@ -219,8 +214,6 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self bindAndExecute:^{
     [self writeRect:rect fromImage:image];
   }];
-  
-  self.fillColor = LTVector4Null;
 }
 
 - (void)writeRect:(CGRect)rect fromImage:(const cv::Mat &)image {
@@ -265,16 +258,10 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (void)allocateMipmapLevels:(GLint)levels forTexture:(LTGLTexture *)texture {
   LTParameterAssert(levels >= 0);
   LTParameterAssert(texture);
+
   texture.maxMipmapLevel = levels;
   [texture bindAndExecute:^{
-    [texture writeToTexture:^{
-      CGSize size = texture.size;
-      for (GLint i = 0; i <= texture.maxMipmapLevel; ++i) {
-        glTexImage2D(GL_TEXTURE_2D, i, texture.format, size.width, size.height, 0,
-                     texture.format, texture.precision, NULL);
-        size = std::round(size / 2);
-      }
-    }];
+    [texture allocateMemoryForAllLevels];
   }];
 
   LTGLCheck(@"Error allocating mipmap levels");
@@ -323,6 +310,7 @@ CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)beginWriteToTexture {
+  self.fillColor = LTVector4Null;
 }
 
 - (void)endWriteToTexture {

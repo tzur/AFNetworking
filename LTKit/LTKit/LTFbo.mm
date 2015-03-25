@@ -5,10 +5,7 @@
 
 #import "LTDevice.h"
 #import "LTGLContext.h"
-
-@interface LTTexture ()
-@property (readwrite, nonatomic) LTVector4 fillColor;
-@end
+#import "LTTexture+Protected.h"
 
 @interface LTFbo ()
 
@@ -187,12 +184,6 @@
       block();
     }];
   }];
-
-  // Set the texture's fill color to uncertain since it is no longer guaranteed that it is filled
-  // with a single color.
-  if (!self.level) {
-    self.texture.fillColor = LTVector4Null;
-  }
 }
 
 - (void)bindAndDrawOnScreen:(LTVoidBlock)block {
@@ -206,16 +197,20 @@
 #pragma mark -
 
 - (void)clearWithColor:(LTVector4)color {
+  // Adjust the texture's fill color in case this it has only a single level.
+  if (!self.texture.maxMipmapLevel) {
+    self.texture.fillColor = color;
+  } else if (self.texture.fillColor != color) {
+    self.texture.fillColor = LTVector4Null;
+  }
+
   [self bindAndExecute:^{
-    [self.texture writeToTexture:^{
-      [[LTGLContext currentContext] clearWithColor:color];
+    [self.texture performWithoutUpdatingFillColor:^{
+      [self.texture writeToTexture:^{
+        [[LTGLContext currentContext] clearWithColor:color];
+      }];
     }];
   }];
-
-  // Adjust the texture's fill color in case this is the top (or single) mipmap level.
-  if (!self.level) {
-    self.texture.fillColor = color;
-  }
 }
 
 #pragma mark -

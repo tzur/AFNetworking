@@ -8,16 +8,10 @@
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
+#import "LTTexture+Protected.h"
 
 @interface LTTexture ()
-
 - (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
-- (BOOL)inTextureRect:(CGRect)rect;
-- (void)increaseGenerationID;
-
-@property (readonly, nonatomic) int matType;
-@property (readwrite, nonatomic) LTVector4 fillColor;
-
 @end
 
 @interface LTMMTexture ()
@@ -242,6 +236,7 @@
 
 - (void)beginWriteToTexture {
   [self.lock lock];
+  self.fillColor = LTVector4Null;
 }
 
 - (void)endWriteToTexture {
@@ -311,9 +306,9 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+  self.fillColor = LTVector4Null;
   [self mappedImageWithBlock:block];
   [self increaseGenerationID];
-  self.fillColor = LTVector4Null;
 }
 
 - (void)mappedImageWithBlock:(LTTextureMappedBlock)block {

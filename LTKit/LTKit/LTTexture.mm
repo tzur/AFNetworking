@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTexture.h"
+#import "LTTexture+Protected.h"
 
 #import "LTBoundaryCondition.h"
 #import "LTCGExtensions.h"
@@ -174,9 +174,6 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 /// Stack which holds the bind state of the texture, for each active bind.
 @property (nonatomic) NSMutableArray *bindStateStack;
 
-/// Type of \c cv::Mat according to the current \c precision of the texture.
-@property (readonly, nonatomic) int matType;
-
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
@@ -184,11 +181,8 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 /// modified. This can be used as an efficient way to check if a texture has changed.
 @property (readwrite, nonatomic) NSUInteger generationID;
 
-/// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
-/// that the texture is filled with a single color. This property is updated when the texture is
-/// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
-/// any other method.
-@property (readwrite, nonatomic) LTVector4 fillColor;
+/// While \c YES, the \c fillColor property will not be updated.
+@property (nonatomic) BOOL isFillColorLocked;
 
 @end
 
@@ -501,11 +495,11 @@ static NSString * const kArchiveKey = @"archive";
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
+  self.fillColor = LTVector4Null;
   block(&image, YES);
 
   // User wrote data to image, so it must be uploaded back to the GPU.
   [self load:image];
-  self.fillColor = LTVector4Null;
 }
 
 - (void)mappedCGImage:(LTTextureMappedCGImageBlock)block {
@@ -652,10 +646,13 @@ static NSString * const kArchiveKey = @"archive";
 }
 
 - (void)clearWithColor:(LTVector4)color {
-  for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
-    [fbo clearWithColor:color];
-  }
+  self.fillColor = color;
+  [self performWithoutUpdatingFillColor:^{
+    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
+      [fbo clearWithColor:color];
+    }
+  }];
 }
 
 #pragma mark -
@@ -691,11 +688,27 @@ static NSString * const kArchiveKey = @"archive";
 
 - (void)increaseGenerationID {
   self.generationID += 1;
+
+- (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
+  BOOL locked = self.isFillColorLocked;
+  self.isFillColorLocked = YES;
+  if (block) {
+    block();
+  }
+  self.isFillColorLocked = locked;
 }
 
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (void)setFillColor:(LTVector4)fillColor {
+  if (_fillColor == fillColor || self.isFillColorLocked) {
+    return;
+  }
+
+  _fillColor = fillColor;
+}
 
 - (void)setMinFilterInterpolation:(LTTextureInterpolation)minFilterInterpolation {
   if (!self.name) {
