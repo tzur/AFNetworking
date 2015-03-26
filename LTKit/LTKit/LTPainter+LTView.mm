@@ -82,14 +82,17 @@
 - (void)ltTouchCollector:(LTTouchCollector __unused *)touchCollector
      collectedTimerTouch:(LTPainterPoint *)touch {
   LTAssert(self.currentStroke, @"collected timer touch, but no stroke in progress");
-  LTPainterPoint *point = [self pointForTargetCoordinateSystem:touch];
   if (!self.airbrush) {
     return;
   }
-  
+
+  LTPainterPoint *point = [self pointForTargetCoordinateSystem:touch];
   point.distanceFromStart = self.lastDrawnPoint.distanceFromStart +
-  CGPointDistance(point.contentPosition, self.lastDrawnPoint.contentPosition);
-  
+      CGPointDistance(point.contentPosition, self.lastDrawnPoint.contentPosition);
+  [self drawSinglePoint:point];
+}
+
+- (void)drawSinglePoint:(LTPainterPoint *)point {
   [self.currentStroke addPointAt:point];
   NSArray *paintedRects = [self.brush drawPoint:point inFramebuffer:self.fboForPainting];
   self.lastDrawnPoint = point;
@@ -99,11 +102,10 @@
 - (void)ltTouchCollectorFinishedStroke:(LTTouchCollector __unused *)touchCollector
                              cancelled:(BOOL)cancelled {
   LTAssert(self.currentStroke, @"finished a stroke, but no stroke in progress");
+
   // Identify a tap gesture and draw a point for it.
   if (!cancelled && !self.lastDrawnPoint) {
-    NSArray *paintedRects = [self.brush drawPoint:self.currentStroke.startingPoint
-                                    inFramebuffer:self.fboForPainting];
-    [self.delegate ltPainter:self didPaintInRotatedRects:paintedRects];
+    [self drawSinglePoint:self.currentStroke.startingPoint];
   }
   [self endStroke];
 }

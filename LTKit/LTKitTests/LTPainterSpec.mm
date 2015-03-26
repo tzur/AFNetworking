@@ -187,12 +187,16 @@ context(@"painting", ^{
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
       expected(LTCVRectWithCGRect(kCenterRect)).setTo(kWhite);
       expect($(canvas.image)).to.equalMat($(expected));
+      expect(painter.lastStroke.segments.count).to.equal(1);
+      expect([painter.lastStroke.segments.firstObject contentPosition])
+          .to.equal(painter.lastStroke.startingPoint.contentPosition);
     });
     
     it(@"should not paint on cancelled tap", ^{
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
       expect($(canvas.image)).to.equalMat($(background));
+      expect(painter.lastStroke.segments).to.beEmpty();
     });
     
     it(@"should paint on gesture", ^{
@@ -210,6 +214,7 @@ context(@"painting", ^{
       expected.setTo(kBlack);
       expected.rowRange(0, kCanvasSize.height / 2).setTo(kWhite);
       expect($(canvas.image)).to.equalMat($(expected));
+      expect(painter.lastStroke.segments.count).to.equal(1);
     });
     
     it(@"should not paint on timer events when airbush property is NO", ^{
@@ -217,6 +222,7 @@ context(@"painting", ^{
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
       expect($(canvas.image)).to.equalMat($(background));
+      expect(painter.lastStroke.segments.count).to.equal(0);
     });
     
     it(@"should paint on timer events in airbrush property is YES", ^{
@@ -226,6 +232,7 @@ context(@"painting", ^{
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
       expected(LTCVRectWithCGRect(kCenterRect)).setTo(kWhite);
       expect($(canvas.image)).to.equalMat($(expected));
+      expect(painter.lastStroke.segments.count).to.equal(1);
     });
 
     it(@"should use the brush's spline factory if set", ^{
