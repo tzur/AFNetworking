@@ -517,13 +517,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)drawToFbo:(LTFbo *)fbo {
-  [fbo bindAndExecute:^{
-    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
-      // This method is used for testing, and the goal is to simulate rendering to a screen
-      // framebuffer, similar to a call coming from glkView:drawInRect:.
-      context.renderingToScreen = YES;
-      [self drawToBoundFramebuffer];
-    }];
+  [fbo bindAndDrawOnScreen:^{
+    [self drawToBoundFramebuffer];
   }];
 }
 
@@ -746,7 +741,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // LTImage).
   LTTexture *texture = [LTTexture byteRGBATextureWithSize:self.framebufferSize];
   LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-  [fbo bindAndExecute:^{
+  [fbo bindAndDraw:^{
     [self drawToBoundFramebuffer];
   }];
   return [[LTImage alloc] initWithMat:[texture image] copy:NO];
