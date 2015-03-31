@@ -1072,7 +1072,7 @@
 /* Begin PBXFileReference section */
 		03045C3919C037540075207D /* LTSmoothPyramid.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSmoothPyramid.fsh; sourceTree = "<group>"; };
 		03045D1C19C1711D0075207D /* LTClarityProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTClarityProcessor.h; sourceTree = "<group>"; };
-		03045D1D19C1711D0075207D /* LTClarityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTClarityProcessor.mm; sourceTree = "<group>"; };
+		03045D1D19C1711D0075207D /* LTClarityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTClarityProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03045D3019C171320075207D /* LTClarity.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTClarity.fsh; sourceTree = "<group>"; };
 		03045D3219C1717E0075207D /* LTClarityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTClarityProcessorSpec.mm; sourceTree = "<group>"; };
 		03045D7519C5FBBD0075207D /* SmoothPyramidUpsampleGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleGrid4.png; path = Resources/SmoothPyramidUpsampleGrid4.png; sourceTree = "<group>"; };
@@ -1142,7 +1142,7 @@
 		038DDD7F19EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCLAHEProcessorSpec.mm; sourceTree = "<group>"; };
 		038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128CLAHE.png; path = Resources/Lena128CLAHE.png; sourceTree = "<group>"; };
 		0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorRangeAdjustProcessor.h; sourceTree = "<group>"; };
-		0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorRangeAdjustProcessor.mm; sourceTree = "<group>"; };
+		0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTColorRangeAdjustProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTColorRangeAdjust.fsh; sourceTree = "<group>"; };
 		039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorRangeAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		039C95A11897E4A000F1E213 /* LTMultiscaleNoiseProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMultiscaleNoiseProcessor.h; sourceTree = "<group>"; };
@@ -1199,7 +1199,7 @@
 		03C192EA18FABA0D00DC6CA6 /* LTColorConversionProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTColorConversionProcessor.fsh; sourceTree = "<group>"; };
 		03C192EC18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorConversionProcessorSpec.mm; sourceTree = "<group>"; };
 		03C192FB18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSelectiveAdjustProcessor.h; sourceTree = "<group>"; };
-		03C192FC18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSelectiveAdjustProcessor.mm; sourceTree = "<group>"; };
+		03C192FC18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTSelectiveAdjustProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03C1930A18FADC7300DC6CA6 /* LTSelectiveAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSelectiveAdjust.fsh; sourceTree = "<group>"; };
 		03C1930C18FADC9000DC6CA6 /* LTSelectiveAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSelectiveAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		03C1933018FE530A00DC6CA6 /* LTColorGradient+ForTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTColorGradient+ForTesting.h"; sourceTree = "<group>"; };
@@ -1238,7 +1238,7 @@
 		03D516C918B4A9E10026B56A /* RoundWideVignetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundWideVignetting.png; path = Resources/RoundWideVignetting.png; sourceTree = "<group>"; };
 		03D516CB18B4AB840026B56A /* StraightWideVignetting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = StraightWideVignetting.png; path = Resources/StraightWideVignetting.png; sourceTree = "<group>"; };
 		03D516E718B5DB780026B56A /* LTAdjustProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAdjustProcessor.h; sourceTree = "<group>"; };
-		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessor.mm; sourceTree = "<group>"; };
+		03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTAdjustProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03D516F618B5DBBD0026B56A /* LTAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAdjust.fsh; sourceTree = "<group>"; };
 		03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterInverted.png; path = Resources/RadialMaskCenterInverted.png; sourceTree = "<group>"; };
@@ -1643,14 +1643,14 @@
 		8B3F94D1187C194500FAA265 /* LTMMTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTexture.mm; sourceTree = "<group>"; };
 		8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTextureSpec.mm; sourceTree = "<group>"; };
 		8B3F94D5187C340D00FAA265 /* LTTextureExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureExamples.h; sourceTree = "<group>"; };
-		8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureExamples.mm; sourceTree = "<group>"; };
+		8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTextureExamples.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Specta+LTKit.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchSolverProcessor.h; sourceTree = "<group>"; };
-		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; };
+		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
 		8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLoggerMacrosImpl.h; sourceTree = "<group>"; };
 		8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInverseTransformSampler.h; sourceTree = "<group>"; };
@@ -1693,7 +1693,7 @@
 		8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureFactorySpec.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11ADF1831555100A5001D /* LTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTexture.h; sourceTree = "<group>"; };
-		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTexture.mm; sourceTree = "<group>"; };
+		8BA11AE01831555100A5001D /* LTTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTexture.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E11A182A437300FDD95A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8BA3E139182A602F00FDD95A /* LTProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProgram.h; sourceTree = "<group>"; };

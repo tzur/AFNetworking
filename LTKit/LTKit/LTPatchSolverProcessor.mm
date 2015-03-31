@@ -48,7 +48,7 @@
 @property (strong, nonatomic) LTTexture *maskResized;
 
 /// Last generation ID of the mask texture that was processed.
-@property (nonatomic) NSUInteger lastProcessedMaskGenerationID;
+@property (nonatomic) id lastProcessedMaskGenerationID;
 
 /// Resizer of source to working size.
 @property (strong, nonatomic) LTRectCopyProcessor *sourceResizer;
@@ -108,7 +108,7 @@
 }
 
 - (void)processMaskIfNeeded {
-  if (_chi.empty() || self.lastProcessedMaskGenerationID != self.mask.generationID) {
+  if (_chi.empty() || ![self.lastProcessedMaskGenerationID isEqual:self.mask.generationID]) {
     [self createBoundary];
     [self calculateChi];
     self.lastProcessedMaskGenerationID = self.mask.generationID;

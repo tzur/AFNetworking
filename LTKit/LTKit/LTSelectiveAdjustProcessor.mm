@@ -13,7 +13,7 @@
 @interface LTSelectiveAdjustProcessor ()
 
 /// Generation id of the input texture that was used to create the current HSV texture.
-@property (nonatomic) NSUInteger hsvTextureGenerationID;
+@property (nonatomic) id hsvTextureGenerationID;
 
 @end
 
@@ -30,7 +30,7 @@
 
 - (void)convertInputToHSVIfNeeded {
   if (self.auxiliaryTextures[[LTSelectiveAdjustFsh hsvTexture]] &&
-      self.hsvTextureGenerationID == self.inputTexture.generationID) {
+      [self.hsvTextureGenerationID isEqual:self.inputTexture.generationID]) {
     return;
   }
 

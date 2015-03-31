@@ -227,4 +227,3 @@ LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
       LTParameterAssert(NO, @"Unsupported matrix type: %d", image.type());
   }
 }
-

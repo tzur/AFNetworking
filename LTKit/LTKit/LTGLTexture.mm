@@ -273,14 +273,17 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTParameterAssert(texture.maxMipmapLevel == self.maxMipmapLevel,
                     @"Cloned texture must have the same number of mipmap levels");
 
-  if (!self.fillColor.isNull()) {
-    [texture clearWithColor:self.fillColor];
-  } else {
-    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-      LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture level:i];
-      [self cloneToFramebuffer:fbo];
+  [texture performWithoutUpdatingGenerationID:^{
+    if (!self.fillColor.isNull()) {
+      [texture clearWithColor:self.fillColor];
+    } else {
+      for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+        LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture level:i];
+        [self cloneToFramebuffer:fbo];
+      }
     }
-  }
+  }];
+  texture.generationID = self.generationID;
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
@@ -314,7 +317,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)endWriteToTexture {
-  [self increaseGenerationID];
+  [self updateGenerationID];
 }
 
 #pragma mark -

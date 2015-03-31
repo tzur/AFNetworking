@@ -21,7 +21,7 @@
 @interface LTClarityProcessor ()
 
 /// The generation id of the input texture that was used to create the current smooth textures.
-@property (nonatomic) NSUInteger inputTextureGenerationID;
+@property (nonatomic) id inputTextureGenerationID;
 
 @end
 
@@ -36,7 +36,7 @@
 }
 
 - (void)updateSmoothTextureIfNecessary {
-  if (self.inputTextureGenerationID != self.inputTexture.generationID ||
+  if (![self.inputTextureGenerationID isEqual:self.inputTexture.generationID] ||
       !self.auxiliaryTextures[[LTClarityFsh downsampledTexture]] ||
       !self.auxiliaryTextures[[LTClarityFsh bilateralTexture]] ||
       !self.auxiliaryTextures[[LTClarityFsh smoothTexture]]) {

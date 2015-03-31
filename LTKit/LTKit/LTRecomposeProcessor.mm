@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
 @property (strong, nonatomic) NSArray *colsDecimationOrder;
 
 /// The generation id of the mask texture that was used to calculate the decimation order.
-@property (nonatomic) NSUInteger maskTextureGenerationID;
+@property (nonatomic) id maskTextureGenerationID;
 
 @end
 
@@ -170,7 +170,7 @@ typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
 }
 
 - (void)updateDecimationOrderIfNeeded {
-  if (self.maskTextureGenerationID == self.mask.generationID) {
+  if ([self.maskTextureGenerationID isEqual:self.mask.generationID]) {
     return;
   }
 

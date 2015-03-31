@@ -203,12 +203,15 @@
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
 
-  if (!self.fillColor.isNull()) {
-    [texture clearWithColor:self.fillColor];
-  } else {
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-    [self cloneToFramebuffer:fbo];
-  }
+  [texture performWithoutUpdatingGenerationID:^{
+    if (!self.fillColor.isNull()) {
+      [texture clearWithColor:self.fillColor];
+    } else {
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+      [self cloneToFramebuffer:fbo];
+    }
+  }];
+  texture.generationID = self.generationID;
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
@@ -241,7 +244,7 @@
   // texture in the GPU queue.
   self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
 
-  [self increaseGenerationID];
+  [self updateGenerationID];
   [self.lock unlock];
 }
 
@@ -305,7 +308,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
   self.fillColor = LTVector4Null;
   [self mappedImageWithBlock:block];
-  [self increaseGenerationID];
+  [self updateGenerationID];
 }
 
 - (void)mappedImageWithBlock:(LTTextureMappedBlock)block {
