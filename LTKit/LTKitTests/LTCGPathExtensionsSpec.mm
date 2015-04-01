@@ -59,7 +59,7 @@ static void LTCheckCorrectnessOfPath(void *data, const CGPathElement *element) {
   }
 }
 
-SpecBegin(LTCGPathExtensions)
+LTSpecBegin(LTCGPathExtensions)
 
 __block CGMutablePathRef path;
 __block CGPoints initialPoints;
@@ -81,6 +81,100 @@ beforeEach(^{
 
 afterEach(^{
   CGPathRelease(path);
+});
+
+context(@"path inspection", ^{
+  it(@"should correctly inspect a rectangular path", ^{
+    CGPathRef pathToInspect = CGPathCreateWithRect(CGRectMake(1, 2, 3, 4), NULL);
+    __block NSUInteger i = 0;
+    LTCGPathInspectWithBlock(pathToInspect, ^(CGPathElementType type, CGPoints points) {
+      switch (i) {
+        case 0: {
+          expect(type).to.equal(kCGPathElementMoveToPoint);
+          expect(points.size()).to.equal(1);
+          expect(points[0]).to.equal(CGPointMake(1, 2));
+          break;
+        }
+        case 1: {
+          expect(type).to.equal(kCGPathElementAddLineToPoint);
+          expect(points.size()).to.equal(1);
+          expect(points[0]).to.equal(CGPointMake(4, 2));
+          break;
+        }
+        case 2: {
+          expect(type).to.equal(kCGPathElementAddLineToPoint);
+          expect(points.size()).to.equal(1);
+          expect(points[0]).to.equal(CGPointMake(4, 6));
+          break;
+        }
+        case 3: {
+          expect(type).to.equal(kCGPathElementAddLineToPoint);
+          expect(points.size()).to.equal(1);
+          expect(points[0]).to.equal(CGPointMake(1, 6));
+          break;
+        }
+        case 4: {
+          expect(type).to.equal(kCGPathElementCloseSubpath);
+          expect(points.size()).to.equal(0);
+          break;
+        }
+      }
+      ++i;
+    });
+  });
+
+  it(@"should correctly inspect a circular path", ^{
+    CGPathRef pathToInspect = CGPathCreateWithEllipseInRect(CGRectMake(0, 0, 1, 1), NULL);
+    __block NSUInteger i = 0;
+    LTCGPathInspectWithBlock(pathToInspect, ^(CGPathElementType type, CGPoints points) {
+      switch (i) {
+        case 0: {
+          expect(type).to.equal(kCGPathElementMoveToPoint);
+          expect(points.size()).to.equal(1);
+          expect(points[0]).to.equal(CGPointMake(1, 0.5));
+          break;
+        }
+        case 1: {
+          expect(type).to.equal(kCGPathElementAddCurveToPoint);
+          expect(points.size()).to.equal(3);
+          expect(points[0]).to.beCloseToPointWithin(CGPointMake(1, 0.77614237491539662), kEpsilon);
+          expect(points[1]).to.beCloseToPointWithin(CGPointMake(0.77614237491539662, 1), kEpsilon);
+          expect(points[2]).to.beCloseToPointWithin(CGPointMake(0.5, 1), kEpsilon);
+          break;
+        }
+        case 2: {
+          expect(type).to.equal(kCGPathElementAddCurveToPoint);
+          expect(points.size()).to.equal(3);
+          expect(points[0]).to.beCloseToPointWithin(CGPointMake(0.22385762508460333, 1), kEpsilon);
+          expect(points[1]).to.beCloseToPointWithin(CGPointMake(0, 0.77614237491539662), kEpsilon);
+          expect(points[2]).to.beCloseToPointWithin(CGPointMake(0, 0.5), kEpsilon);
+          break;
+        }
+        case 3: {
+          expect(type).to.equal(kCGPathElementAddCurveToPoint);
+          expect(points.size()).to.equal(3);
+          expect(points[0]).to.beCloseToPointWithin(CGPointMake(0, 0.22385762508460333), kEpsilon);
+          expect(points[1]).to.beCloseToPointWithin(CGPointMake(0.22385762508460333, 0), kEpsilon);
+          expect(points[2]).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
+          break;
+        }
+        case 4: {
+          expect(type).to.equal(kCGPathElementAddCurveToPoint);
+          expect(points.size()).to.equal(3);
+          expect(points[0]).to.beCloseToPointWithin(CGPointMake(0.77614237491539662, 0), kEpsilon);
+          expect(points[1]).to.beCloseToPointWithin(CGPointMake(1, 0.22385762508460333), kEpsilon);
+          expect(points[2]).to.beCloseToPointWithin(CGPointMake(1, 0.5), kEpsilon);
+          break;
+        }
+        case 5: {
+          expect(type).to.equal(kCGPathElementCloseSubpath);
+          expect(points.size()).to.equal(0);
+          break;
+        }
+      }
+      ++i;
+    });
+  });
 });
 
 context(@"transformation", ^{
@@ -630,4 +724,4 @@ context(@"creation", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd

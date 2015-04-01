@@ -1,6 +1,14 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+/// Block used for sequentially inspecting the elements of a path.
+typedef void (^LTPathInspectionBlock)(CGPathElementType type, CGPoints points);
+
+/// Iterates over the control points of the given \c path and executes the given \c block for every
+/// path element with the appropriate parameters. The given \c path must not be \c NULL. The given
+/// \c block must not be \c nil.
+void LTCGPathInspectWithBlock(CGPathRef path, LTPathInspectionBlock block);
+
 /// Creates an immutable copy of the provided graphics \c path transformed by the provided
 /// \c transformation matrix. The resulting path is computed by augmenting every vertex of the
 /// provided \c path by a z coordinate of 1, multiplying the vertex with the provided 3x3

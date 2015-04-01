@@ -15,6 +15,33 @@ typedef struct LTPathModificationData {
   GLKMatrix3 transform;
 } LTPathModificationData;
 
+/// Auxiliary method informing the delegate passed using the given \c delegateInfo about the given
+/// path \c element.
+static void LTCGPathIteration(void *info, const CGPathElement *element) {
+  LTPathInspectionBlock block = (__bridge LTPathInspectionBlock)info;
+  CGPoint *points = element->points;
+
+  switch (element->type) {
+    case kCGPathElementMoveToPoint:
+      block(element->type, {points[0]});
+      break;
+    case kCGPathElementAddLineToPoint:
+      block(element->type, {points[0]});
+      break;
+    case kCGPathElementAddQuadCurveToPoint:
+      block(element->type, {points[0], points[1]});
+      break;
+    case kCGPathElementAddCurveToPoint:
+      block(element->type, {points[0], points[1], points[2]});
+      break;
+    case kCGPathElementCloseSubpath:
+      block(element->type, {});
+      break;
+    default:
+      LTAssert(NO, @"Invalid element type.");
+  }
+}
+
 /// Adds the provided \c element to the path wrapped in the given \c data, after multiplying the
 /// points of the \c element with the transform wrapped in the given \c data.
 static void LTRecomputePoints(void *data, const CGPathElement *element);
@@ -82,6 +109,12 @@ static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s
 #pragma mark -
 #pragma mark - Public methods
 #pragma mark -
+
+void LTCGPathInspectWithBlock(CGPathRef path, LTPathInspectionBlock block) {
+  LTParameterAssert(path);
+  LTParameterAssert(block);
+  CGPathApply(path, (__bridge void *)block, &LTCGPathIteration);
+}
 
 CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation) {
   CGMutablePathRef result = CGPathCreateMutable();
