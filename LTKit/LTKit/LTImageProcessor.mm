@@ -65,8 +65,6 @@
 }
 
 - (id)defaultValueForKey:(NSString *)key {
-  LTParameterAssert([[[self class] inputModelPropertyKeys] containsObject:key], @"Key '%@' is not "
-                    "one of the %@'s input model keys", key, [self class]);
   return [self valueForKey:[self defaultKeyForKey:key]];
 }
 

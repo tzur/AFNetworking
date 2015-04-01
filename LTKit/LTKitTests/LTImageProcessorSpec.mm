@@ -27,7 +27,9 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 
 @property (strong, nonatomic) LTImageProcessorEnum *enumValue;
 
-@property (nonatomic) float nonInputModelProperty;
+@property (nonatomic) CGFloat nonInputModelProperty;
+
+@property (nonatomic) CGFloat propertyWithoutDefaultValue;
 
 @end
 
@@ -81,6 +83,10 @@ LTEnumMake(NSUInteger, LTImageProcessorEnum,
 
 - (LTImageProcessorEnum *)defaultEnumValue {
   return $(LTImageProcessorEnumB);
+}
+
+- (CGFloat)defaultNonInputModelProperty {
+  return 7;
 }
 
 @end
@@ -224,10 +230,14 @@ context(@"input model", ^{
       expect(defaultEnum).to.equal(processor.defaultEnumValue);
     });
 
-    it(@"should raise if the specified key is invalid", ^{
+    it(@"should return default value for key which is not part of the input model", ^{
+      expect([processor defaultValueForKey:@keypath(processor, nonInputModelProperty)]).to.equal(7);
+    });
+
+    it(@"should raise if the specified key does not provide a default value", ^{
       expect(^{
-        [processor defaultValueForKey:@keypath(processor, nonInputModelProperty)];
-      }).to.raise(NSInvalidArgumentException);
+        [processor defaultValueForKey:@keypath(processor, propertyWithoutDefaultValue)];
+      }).to.raise(NSInternalInconsistencyException);
     });
 
     it(@"should reset key to its default value", ^{
@@ -256,10 +266,16 @@ context(@"input model", ^{
     });
   });
 
-  it(@"should raise on reset of non input model property", ^{
+  it(@"should not raise on reset of non input model property with default value", ^{
     expect(^{
       [processor resetValueForKey:@keypath(processor, nonInputModelProperty)];
-    }).to.raise(NSInvalidArgumentException);
+    }).toNot.raiseAny();
+  });
+
+  it(@"should raise on reset of property not providing a default value", ^{
+    expect(^{
+      [processor resetValueForKey:@keypath(processor, propertyWithoutDefaultValue)];
+    }).raise(NSInternalInconsistencyException);
   });
 });
 
