@@ -14,7 +14,7 @@ typedef union {
 @interface LTQuad ()
 
 /// The corners of this quad.
-@property (nonatomic) LTQuadCorners corners;
+@property (readwrite, nonatomic) LTQuadCorners corners;
 
 @end
 
