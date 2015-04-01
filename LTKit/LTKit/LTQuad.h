@@ -123,13 +123,16 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
                   translation:(CGPoint *)translation rotation:(CGFloat *)rotation
                       scaling:(CGFloat *)scaling;
 
-/// First vertex of the quad.
+/// The corners of this quad.
+@property (readonly, nonatomic) LTQuadCorners corners;
+
+/// First vertex of the quad. Corresponds to \c corners[0].
 @property (readonly, nonatomic) CGPoint v0;
-/// Second vertex of the quad.
+/// Second vertex of the quad. Corresponds to \c corners[1].
 @property (readonly, nonatomic) CGPoint v1;
-/// Third vertex of the quad.
+/// Third vertex of the quad. Corresponds to \c corners[2].
 @property (readonly, nonatomic) CGPoint v2;
-/// Fourth vertex of the quad.
+/// Fourth vertex of the quad. Corresponds to \c corners[3].
 @property (readonly, nonatomic) CGPoint v3;
 
 /// Rect that bounds the quad.
