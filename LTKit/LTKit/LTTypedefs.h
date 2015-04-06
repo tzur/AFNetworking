@@ -37,6 +37,13 @@ typedef std::vector<GLKVector3> GLKVector3s;
 typedef std::vector<GLKVector4> GLKVector4s;
 
 #pragma mark -
+#pragma mark Scalar
+#pragma mark -
+
+/// A collection of \c GLuint.
+typedef std::vector<GLuint> GLuints;
+
+#pragma mark -
 #pragma mark LTVector
 #pragma mark -
 
