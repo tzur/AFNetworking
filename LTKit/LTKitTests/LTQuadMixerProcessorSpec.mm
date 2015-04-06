@@ -97,7 +97,7 @@ context(@"front placement", ^{
   });
 
   it(@"should blend with correct translation placement", ^{
-    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(1.0, 1.0)];
+    frontQuad = [frontQuad copyWithTranslation:CGPointMake(1.0, 1.0)];
     processor.frontQuad = frontQuad;
     [processor process];
 
@@ -111,8 +111,8 @@ context(@"front placement", ^{
 
   it(@"should blend with correct scaling placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(1.0, 1.0)];
-    [frontQuad scale:0.5];
+    frontQuad = [frontQuad copyWithTranslation:CGPointMake(1.0, 1.0)];
+    frontQuad = [frontQuad copyWithScaling:0.5];
     processor.frontQuad = frontQuad;
     [processor process];
 
@@ -126,8 +126,8 @@ context(@"front placement", ^{
 
   it(@"should blend with correct rotation placement", ^{
     // Must configure translation to make sure scaling is done from the rect's center.
-    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
-    [frontQuad rotateByAngle:M_PI_4 aroundPoint:frontQuad.center];
+    frontQuad = [frontQuad copyWithTranslation:CGPointMake(4.0, 4.0)];
+    frontQuad = [frontQuad copyWithRotation:M_PI_4 aroundPoint:frontQuad.center];
     processor.frontQuad = frontQuad;
     [processor process];
 
@@ -144,9 +144,9 @@ context(@"front placement", ^{
     image(cv::Rect(0, 0, 2, 2)) = cv::Vec4b(0, 255, 0, 255);
     [front load:image];
 
-    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
-    [frontQuad scale:1.5];
-    [frontQuad rotateByAngle:M_PI_4 aroundPoint:frontQuad.center];
+    frontQuad = [frontQuad copyWithTranslation:CGPointMake(4.0, 4.0)];
+    frontQuad = [frontQuad copyWithScaling:1.5];
+    frontQuad = [frontQuad copyWithRotation:M_PI_4 aroundPoint:frontQuad.center];
     processor.frontQuad = frontQuad;
     [processor process];
 
@@ -165,7 +165,7 @@ context(@"front placement", ^{
     backImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 0, 255, 255);
     [back load:backImage];
 
-    [frontQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(4.0, 4.0)];
+    frontQuad = [frontQuad copyWithTranslation:CGPointMake(4.0, 4.0)];
     processor.frontQuad = frontQuad;
     [processor process];
 

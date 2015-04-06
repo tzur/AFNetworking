@@ -128,6 +128,49 @@ static const CGFloat kEpsilon = 1e-10;
   return copy;
 }
 
+- (instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint {
+  return [self copyWithCorners:{{
+    LTRotatePoint(self.v0, angle, anchorPoint),
+    LTRotatePoint(self.v1, angle, anchorPoint),
+    LTRotatePoint(self.v2, angle, anchorPoint),
+    LTRotatePoint(self.v3, angle, anchorPoint)
+  }}];
+}
+
+- (instancetype)copyWithScaling:(CGFloat)scaleFactor {
+  return [self copyWithScaling:scaleFactor aroundPoint:self.center];
+}
+
+- (instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint {
+  return [self copyWithCorners:{{
+    anchorPoint + scaleFactor * (self.v0 - anchorPoint),
+    anchorPoint + scaleFactor * (self.v1 - anchorPoint),
+    anchorPoint + scaleFactor * (self.v2 - anchorPoint),
+    anchorPoint + scaleFactor * (self.v3 - anchorPoint)
+  }}];
+}
+
+- (instancetype)copyWithTranslation:(CGPoint)translation ofCorners:(LTQuadCornerRegion)corners {
+  LTQuadCorners translatedCorners = self.corners;
+  if (corners & LTQuadCornerRegionV0) {
+    translatedCorners[0] = translatedCorners[0] + translation;
+  }
+  if (corners & LTQuadCornerRegionV1) {
+    translatedCorners[1] = translatedCorners[1] + translation;
+  }
+  if (corners & LTQuadCornerRegionV2) {
+    translatedCorners[2] = translatedCorners[2] + translation;
+  }
+  if (corners & LTQuadCornerRegionV3) {
+    translatedCorners[3] = translatedCorners[3] + translation;
+  }
+  return [self copyWithCorners:translatedCorners];
+}
+
+- (instancetype)copyWithTranslation:(CGPoint)translation {
+  return [self copyWithTranslation:translation ofCorners:LTQuadCornerRegionAll];
+}
+
 #pragma mark -
 #pragma mark Updating
 #pragma mark -
@@ -240,47 +283,6 @@ static const CGFloat kEpsilon = 1e-10;
 - (BOOL)containsVertexOfQuad:(LTQuad *)quad {
   return ([self containsPoint:quad.v0] || [self containsPoint:quad.v1] ||
           [self containsPoint:quad.v2] || [self containsPoint:quad.v3]);
-}
-
-#pragma mark -
-#pragma mark Affine transformations
-#pragma mark -
-
-- (void)rotateByAngle:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint {
-  for (CGPoint &corner : _corners) {
-    corner = LTRotatePoint(corner, angle, anchorPoint);
-  }
-}
-
-- (void)scale:(CGFloat)scaleFactor {
-  CGPoint currentCenter = self.center;
-  for (CGPoint &corner : _corners) {
-    corner = currentCenter + scaleFactor * (corner - currentCenter);
-  }
-}
-
-- (void)scale:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint {
-  for (CGPoint &corner : _corners) {
-    corner = anchorPoint + scaleFactor * (corner - anchorPoint);
-  }
-}
-
-- (void)translateCorners:(LTQuadCornerRegion)corners
-           byTranslation:(CGPoint)translation {
-  LTQuadCorners translatedCorners = self.corners;
-  if (corners & LTQuadCornerRegionV0) {
-    translatedCorners[0] = translatedCorners[0] + translation;
-  }
-  if (corners & LTQuadCornerRegionV1) {
-    translatedCorners[1] = translatedCorners[1] + translation;
-  }
-  if (corners & LTQuadCornerRegionV2) {
-    translatedCorners[2] = translatedCorners[2] + translation;
-  }
-  if (corners & LTQuadCornerRegionV3) {
-    translatedCorners[3] = translatedCorners[3] + translation;
-  }
-  self.corners = translatedCorners;
 }
 
 #pragma mark -
@@ -495,18 +497,16 @@ static const CGFloat kEpsilon = 1e-10;
   LTParameterAssert(rotation);
   LTParameterAssert(scaling);
   *translation = quad.center - self.center;
-  LTQuad *centeredQuad = [self copy];
-  [centeredQuad translateCorners:LTQuadCornerRegionAll byTranslation:*translation];
+  LTQuad *centeredQuad = [self copyWithTranslation:*translation];
 
   for (const CGPoint &corner : quad.corners) {
     *rotation =
         LTVector2(centeredQuad.v0 - centeredQuad.center).angle(LTVector2(corner - quad.center));
-    LTQuad *rotatedQuad = [centeredQuad copy];
-    [rotatedQuad rotateByAngle:*rotation aroundPoint:rotatedQuad.center];
+    LTQuad *rotatedQuad = [centeredQuad copyWithRotation:*rotation aroundPoint:centeredQuad.center];
     *scaling = LTVector2(corner - rotatedQuad.center).length() /
         LTVector2(rotatedQuad.v0 - rotatedQuad.center).length();
-    [rotatedQuad scale:*scaling];
-    if ([rotatedQuad isSimilarTo:quad upToDeviation:deviation]) {
+    LTQuad *scaledQuad = [rotatedQuad copyWithScaling:*scaling];
+    if ([scaledQuad isSimilarTo:quad upToDeviation:deviation]) {
       return YES;
     }
   }

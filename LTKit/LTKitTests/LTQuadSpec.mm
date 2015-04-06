@@ -69,7 +69,7 @@ static GLKMatrix3 LTTransformationForQuad(LTQuad *quad) {
   return GLKMatrix3Make(a / i, b / i, c / i, d / i, e / i, f / i, g / i, h / i, 1);
 }
 
-SpecBegin(LTQuad)
+LTSpecBegin(LTQuad)
 
 __block CGPoint v0;
 __block CGPoint v1;
@@ -384,173 +384,92 @@ context(@"point inclusion", ^{
   });
 });
 
-context(@"affine transformations", ^{
-  it(@"should correctly rotate", ^{
-    LTQuadCorners corners{{v0, v1, v2, v3}};
+context(@"transformability", ^{
+  __block CGPoint translation;
+  __block CGFloat rotation;
+  __block CGFloat scaling;
+
+  beforeEach(^{
+    LTQuadCorners corners{{10 * v0, 10 * v1, 10 * v2, 10 * v3}};
     quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad rotateByAngle:13.7 / 180.0 * M_PI aroundPoint:CGPointMake(3, 1)];
-    expect(quad.v0).to.beCloseToPointWithin(CGPointMake(0.322191, -0.682064), kEpsilon);
-    expect(quad.v1).to.beCloseToPointWithin(CGPointMake(1.29374, -0.445225), kEpsilon);
-    expect(quad.v2).to.beCloseToPointWithin(CGPointMake(1.08059, 0.429169), kEpsilon);
-    expect(quad.v3).to.beCloseToPointWithin(CGPointMake(0.0853527, 0.289486), kEpsilon);
-    expect(CGPointDistance(quad.v0, quad.v1)).to.beCloseToWithin(CGPointDistance(v0, v1), kEpsilon);
-    expect(CGPointDistance(quad.v1, quad.v2)).to.beCloseToWithin(CGPointDistance(v1, v2), kEpsilon);
-    expect(CGPointDistance(quad.v2, quad.v3)).to.beCloseToWithin(CGPointDistance(v2, v3), kEpsilon);
-    expect(CGPointDistance(quad.v3, quad.v0)).to.beCloseToWithin(CGPointDistance(v3, v0), kEpsilon);
   });
 
-  it(@"should correctly scale", ^{
-    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
-    [quad scale:2];
-    expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
-    expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
-    expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
-    expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
-  });
+  static const CGFloat kDeviation = 1e-2;
 
-  it(@"should correctly scale around an anchor point", ^{
-    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
-    [quad scale:2 aroundPoint:CGPointZero];
-    expect(quad.v0).to.beCloseToPoint(CGPointZero);
-    expect(quad.v1).to.beCloseToPoint(CGPointMake(2, 0));
-    expect(quad.v2).to.beCloseToPoint(CGPointMake(2, 2));
-    expect(quad.v3).to.beCloseToPoint(CGPointMake(0, 2));
-
-    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
-    [quad scale:2 aroundPoint:CGPointMake(0.5, 0.5)];
-    expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
-    expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
-    expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
-    expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
-
-    quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
-    [quad scale:2 aroundPoint:CGPointMake(0.5, 0)];
-    expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, 0));
-    expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, 0));
-    expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 2));
-    expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 2));
-  });
-
-  it(@"should correctly translate", ^{
-    CGPoint translation = CGPointMake(2, 5);
-    LTQuadCorners corners{{v0, v1, v2, v3}};
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad translateCorners:LTQuadCornerRegionAll
-             byTranslation:translation];
-    expect(quad.v0).to.beCloseToPoint(v0 + translation);
-    expect(quad.v1).to.beCloseToPoint(v1 + translation);
-    expect(quad.v2).to.beCloseToPoint(v2 + translation);
-    expect(quad.v3).to.beCloseToPoint(v3 + translation);
-
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad translateCorners:LTQuadCornerRegionV0
-             byTranslation:translation];
-    expect(quad.v0).to.beCloseToPoint(v0 + translation);
-    expect(quad.v1).to.beCloseToPoint(v1);
-    expect(quad.v2).to.beCloseToPoint(v2);
-    expect(quad.v3).to.beCloseToPoint(v3);
-
-    quad = [[LTQuad alloc] initWithCorners:corners];
-    [quad translateCorners:LTQuadCornerRegionV2
-             byTranslation:translation];
-    expect(quad.v0).to.beCloseToPoint(v0);
-    expect(quad.v1).to.beCloseToPoint(v1);
-    expect(quad.v2).to.beCloseToPoint(v2 + translation);
-    expect(quad.v3).to.beCloseToPoint(v3);
-  });
-
-  context(@"transformability", ^{
-    __block CGPoint translation;
-    __block CGFloat rotation;
-    __block CGFloat scaling;
-
-    beforeEach(^{
-      LTQuadCorners corners{{10 * v0, 10 * v1, 10 * v2, 10 * v3}};
-      quad = [[LTQuad alloc] initWithCorners:corners];
+  context(@"correctness of input parameters", ^{
+    it(@"should raise when not providing quad", ^{
+      expect(^{
+        [quad isTransformableToQuad:nil withDeviation:kDeviation translation:&translation
+                           rotation:&rotation scaling:&scaling];
+      }).to.raise(NSInvalidArgumentException);
     });
 
-    static const CGFloat kDeviation = 1e-2;
-
-    context(@"correctness of input parameters", ^{
-      it(@"should raise when not providing quad", ^{
-        expect(^{
-          [quad isTransformableToQuad:nil withDeviation:kDeviation translation:&translation
-                             rotation:&rotation scaling:&scaling];
-        }).to.raise(NSInvalidArgumentException);
-      });
-
-      it(@"should raise when providing NULL address for translation", ^{
-        expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
-                        withDeviation:kDeviation translation:NULL rotation:&rotation
-                              scaling:&scaling];
-        }).to.raise(NSInvalidArgumentException);
-      });
-
-      it(@"should raise when providing NULL address for rotation", ^{
-        expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
-                        withDeviation:kDeviation translation:&translation rotation:NULL
-                              scaling:&scaling];
-        }).to.raise(NSInvalidArgumentException);
-      });
-
-      it(@"should raise when providing NULL address for scaling", ^{
-        expect(^{
-          [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
-                        withDeviation:kDeviation translation:&translation rotation:&rotation
-                              scaling:NULL];
-        }).to.raise(NSInvalidArgumentException);
-      });
+    it(@"should raise when providing NULL address for translation", ^{
+      expect(^{
+        [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                      withDeviation:kDeviation translation:NULL rotation:&rotation
+                            scaling:&scaling];
+      }).to.raise(NSInvalidArgumentException);
     });
 
-    it(@"should correctly compute whether a quad is affinely transformable to another quad", ^{
-      LTQuad *secondQuad = [quad copy];
-      [secondQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(7, 8)];
-      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
-                             translation:&translation rotation:&rotation
-                                 scaling:&scaling]).to.beTruthy();
-      expect(translation).to.beCloseToPointWithin(CGPointMake(7, 8), kEpsilon);
-      expect(rotation).to.beCloseToWithin(0, kEpsilon);
-      expect(scaling).to.beCloseToWithin(1, kEpsilon);
-
-      secondQuad = [quad copy];
-      [secondQuad rotateByAngle:M_PI_2 aroundPoint:CGPointZero];
-      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
-                             translation:&translation rotation:&rotation
-                                 scaling:&scaling]).to.beTruthy();
-      expect(translation).to.beCloseToPointWithin(CGPointMake(-9.75000023, 0.25000006), kEpsilon);
-      expect(rotation).to.beCloseToWithin(M_PI_2, kEpsilon);
-      expect(scaling).to.beCloseToWithin(1, kEpsilon);
-
-      secondQuad = [quad copy];
-      [secondQuad scale:2];
-      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
-                             translation:&translation rotation:&rotation
-                                 scaling:&scaling]).to.beTruthy();
-      expect(translation).to.beCloseToPointWithin(CGPointZero, kEpsilon);
-      expect(rotation).to.beCloseToWithin(0, kEpsilon);
-      expect(scaling).to.beCloseToWithin(2, kEpsilon);
-
-      LTQuadCorners corners{{v0, v1, w0, v3}};
-      secondQuad = [[LTQuad alloc] initWithCorners:corners];
-      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
-                             translation:&translation rotation:&rotation
-                                 scaling:&scaling]).to.beFalsy();
-
-      secondQuad = [quad copy];
-      [secondQuad translateCorners:LTQuadCornerRegionAll byTranslation:CGPointMake(7, 8)];
-      [secondQuad rotateByAngle:M_PI_4 aroundPoint:CGPointZero];
-      [secondQuad scale:2];
-      expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
-                             translation:&translation rotation:&rotation
-                                 scaling:&scaling]).to.beTruthy();
-      LTQuad *testQuad = [quad copy];
-      [testQuad translateCorners:LTQuadCornerRegionAll byTranslation:translation];
-      [testQuad rotateByAngle:rotation aroundPoint:testQuad.center];
-      [testQuad scale:scaling];
-      expect([secondQuad isSimilarTo:testQuad upToDeviation:kDeviation]).to.beTruthy();
+    it(@"should raise when providing NULL address for rotation", ^{
+      expect(^{
+        [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                      withDeviation:kDeviation translation:&translation rotation:NULL
+                            scaling:&scaling];
+      }).to.raise(NSInvalidArgumentException);
     });
+
+    it(@"should raise when providing NULL address for scaling", ^{
+      expect(^{
+        [quad isTransformableToQuad:[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)]
+                      withDeviation:kDeviation translation:&translation rotation:&rotation
+                            scaling:NULL];
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
+
+  it(@"should correctly compute whether a quad is affinely transformable to another quad", ^{
+    LTQuad *secondQuad = [quad copyWithTranslation:CGPointMake(7, 8)];
+    expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                           translation:&translation rotation:&rotation
+                               scaling:&scaling]).to.beTruthy();
+    expect(translation).to.beCloseToPointWithin(CGPointMake(7, 8), kEpsilon);
+    expect(rotation).to.beCloseToWithin(0, kEpsilon);
+    expect(scaling).to.beCloseToWithin(1, kEpsilon);
+
+    secondQuad = [quad copyWithRotation:M_PI_2 aroundPoint:CGPointZero];
+    expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                           translation:&translation rotation:&rotation
+                               scaling:&scaling]).to.beTruthy();
+    expect(translation).to.beCloseToPointWithin(CGPointMake(-9.75000023, 0.25000006), kEpsilon);
+    expect(rotation).to.beCloseToWithin(M_PI_2, kEpsilon);
+    expect(scaling).to.beCloseToWithin(1, kEpsilon);
+
+    secondQuad = [quad copyWithScaling:2];
+    expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                           translation:&translation rotation:&rotation
+                               scaling:&scaling]).to.beTruthy();
+    expect(translation).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+    expect(rotation).to.beCloseToWithin(0, kEpsilon);
+    expect(scaling).to.beCloseToWithin(2, kEpsilon);
+
+    LTQuadCorners corners{{v0, v1, w0, v3}};
+    secondQuad = [[LTQuad alloc] initWithCorners:corners];
+    expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                           translation:&translation rotation:&rotation
+                               scaling:&scaling]).to.beFalsy();
+
+    secondQuad = [quad copyWithTranslation:CGPointMake(7, 8)];
+    secondQuad = [secondQuad copyWithRotation:M_PI_4 aroundPoint:CGPointZero];
+    secondQuad = [secondQuad copyWithScaling:2];
+    expect([quad isTransformableToQuad:secondQuad withDeviation:kDeviation
+                           translation:&translation rotation:&rotation
+                               scaling:&scaling]).to.beTruthy();
+    LTQuad *testQuad = [quad copyWithTranslation:translation];
+    testQuad = [testQuad copyWithRotation:rotation aroundPoint:testQuad.center];
+    testQuad = [testQuad copyWithScaling:scaling];
+    expect([secondQuad isSimilarTo:testQuad upToDeviation:kDeviation]).to.beTruthy();
   });
 });
 
@@ -560,7 +479,7 @@ context(@"copying", ^{
     quad = [[LTQuad alloc] initWithCorners:corners];
   });
 
-  it(@"should correctly copy", ^{
+  it(@"should create copy", ^{
     LTQuad *copiedQuad = [quad copy];
     expect(copiedQuad).notTo.beIdenticalTo(quad);
     expect(copiedQuad.v0).to.equal(quad.v0);
@@ -569,7 +488,7 @@ context(@"copying", ^{
     expect(copiedQuad.v3).to.equal(quad.v3);
   });
 
-  it(@"should correctly copy with given corners", ^{
+  it(@"should create copy with given corners", ^{
     LTQuadCorners corners{{v0, v1, w0, v2}};
     LTQuad *result = [quad copyWithCorners:corners];
     expect(result).notTo.beIdenticalTo(quad);
@@ -577,6 +496,91 @@ context(@"copying", ^{
     expect(result.v1).to.equal(v1);
     expect(result.v2).to.equal(w0);
     expect(result.v3).to.equal(v2);
+  });
+
+  context(@"affine transformations", ^{
+    it(@"should create copy with rotated corners", ^{
+      LTQuadCorners corners{{v0, v1, v2, v3}};
+      quad = [[[LTQuad alloc] initWithCorners:corners] copyWithRotation:13.7 / 180.0 * M_PI
+                                                            aroundPoint:CGPointMake(3, 1)];
+      expect(quad.v0).to.beCloseToPointWithin(CGPointMake(0.322191, -0.682064), kEpsilon);
+      expect(quad.v1).to.beCloseToPointWithin(CGPointMake(1.29374, -0.445225), kEpsilon);
+      expect(quad.v2).to.beCloseToPointWithin(CGPointMake(1.08059, 0.429169), kEpsilon);
+      expect(quad.v3).to.beCloseToPointWithin(CGPointMake(0.0853527, 0.289486), kEpsilon);
+      expect(CGPointDistance(quad.v0, quad.v1)).to.beCloseToWithin(CGPointDistance(v0, v1),
+                                                                   kEpsilon);
+      expect(CGPointDistance(quad.v1, quad.v2)).to.beCloseToWithin(CGPointDistance(v1, v2),
+                                                                   kEpsilon);
+      expect(CGPointDistance(quad.v2, quad.v3)).to.beCloseToWithin(CGPointDistance(v2, v3),
+                                                                   kEpsilon);
+      expect(CGPointDistance(quad.v3, quad.v0)).to.beCloseToWithin(CGPointDistance(v3, v0),
+                                                                   kEpsilon);
+    });
+
+    it(@"should create copy with scaled corners", ^{
+      quad = [[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:2];
+      expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
+      expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
+      expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
+      expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
+    });
+
+    it(@"should create copy with corners scaled around an anchor point", ^{
+      quad = [[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:2
+                                                               aroundPoint:CGPointZero];
+      expect(quad.v0).to.beCloseToPoint(CGPointZero);
+      expect(quad.v1).to.beCloseToPoint(CGPointMake(2, 0));
+      expect(quad.v2).to.beCloseToPoint(CGPointMake(2, 2));
+      expect(quad.v3).to.beCloseToPoint(CGPointMake(0, 2));
+
+      quad = [[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:2
+                                                               aroundPoint:CGPointMake(0.5, 0.5)];
+      expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, -0.5));
+      expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, -0.5));
+      expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 1.5));
+      expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
+
+      quad = [[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:2
+                                                               aroundPoint:CGPointMake(0.5, 0)];
+      expect(quad.v0).to.beCloseToPoint(CGPointMake(-0.5, 0));
+      expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, 0));
+      expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 2));
+      expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 2));
+    });
+
+    it(@"should create copy with translated corners", ^{
+      CGPoint translation = CGPointMake(2, 5);
+      LTQuadCorners corners{{v0, v1, v2, v3}};
+      quad = [[[LTQuad alloc] initWithCorners:corners] copyWithTranslation:translation
+                                                                 ofCorners:LTQuadCornerRegionAll];
+      expect(quad.v0).to.beCloseToPoint(v0 + translation);
+      expect(quad.v1).to.beCloseToPoint(v1 + translation);
+      expect(quad.v2).to.beCloseToPoint(v2 + translation);
+      expect(quad.v3).to.beCloseToPoint(v3 + translation);
+
+      quad = [[[LTQuad alloc] initWithCorners:corners] copyWithTranslation:translation
+                                                                 ofCorners:LTQuadCornerRegionV1];
+      expect(quad.v0).to.beCloseToPoint(v0);
+      expect(quad.v1).to.beCloseToPoint(v1 + translation);
+      expect(quad.v2).to.beCloseToPoint(v2);
+      expect(quad.v3).to.beCloseToPoint(v3);
+
+      quad = [[[LTQuad alloc] initWithCorners:corners] copyWithTranslation:translation
+                                                                 ofCorners:LTQuadCornerRegionV2];
+      expect(quad.v0).to.beCloseToPoint(v0);
+      expect(quad.v1).to.beCloseToPoint(v1);
+      expect(quad.v2).to.beCloseToPoint(v2 + translation);
+      expect(quad.v3).to.beCloseToPoint(v3);
+    });
+
+    it(@"should create translated copy", ^{
+      CGPoint translation = CGPointMake(2, 5);
+      quad = [quad copyWithTranslation:translation];
+      expect(quad.v0).to.beCloseToPoint(v0 + translation);
+      expect(quad.v1).to.beCloseToPoint(v1 + translation);
+      expect(quad.v2).to.beCloseToPoint(v2 + translation);
+      expect(quad.v3).to.beCloseToPoint(v3 + translation);
+    });
   });
 });
 
@@ -745,4 +749,4 @@ context(@"helper methods", ^{
   });
 });
 
-SpecEnd
+LTSpecEnd
