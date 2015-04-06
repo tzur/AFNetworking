@@ -35,6 +35,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Represents a quadrilateral in the XY plane.
 @interface LTQuad : NSObject <NSCopying>
 
+#pragma mark -
+#pragma mark Initialization - Factory methods
+#pragma mark -
+
 /// Returns a quad with the vertices of the given \c quad. You may call this method using a subclass
 /// of \c LTQuad to receive an instance of the desired type, however, only if the subclass has the
 /// same designated initializer as \c LTQuad.
@@ -65,6 +69,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// desired type, however, only if the subclass has the same designated initializer as \c LTQuad.
 + (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 /// Designated initializer: initializes a general quad defined by the given \c corners. In case of a
 /// simple (i.e. non-self-intersecting) quad, the corners have to be provided in clockwise order.
 /// The provided corners must be valid (refer to \c LTQuadCornersValidity for more details).
@@ -72,33 +80,66 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// \c validityOfCorners: method.
 - (instancetype)initWithCorners:(const LTQuadCorners &)corners;
 
-/// Creates a copy of this instance with identical properties except for the given \c corners. The
+#pragma mark -
+#pragma mark Copying
+#pragma mark -
+
+/// Returns a copy of this instance with identical properties except for the given \c corners. The
 /// provided corners must be valid (refer to \c LTQuadCornersValidity for more details). Checking
 /// whether corners are valid for initialization can be done using the \c validityOfCorners: method.
 - (instancetype)copyWithCorners:(const LTQuadCorners &)corners;
 
+/// Returns a copy of this instance with identical properties with the exception that the corners of
+/// the returned instance correspond to the corners of this instance rotated in clockwise direction
+/// by the given \c angle, which is to be provided in radians, around the given \c anchorPoint.
+/// Returns \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for
+/// more details).
+- (instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint;
+
+/// Returns a copy of this instance with identical properties with the exception that the corners of
+/// the returned instance correspond to the corners of this instance scaled by the given
+/// \c scaleFactor around the center of this instance. Returns \c nil if the resulting quad would
+/// be invalid (refer to \c LTQuadCornersValidity for more details).
+- (instancetype)copyWithScaling:(CGFloat)scaleFactor;
+
+/// Returns a copy of this instance with identical properties with the exception that the corners of
+/// the returned instance correspond to the corners of this instance scaled by the given
+/// \c scaleFactor around the given \c anchorPoint. Returns \c nil if the resulting quad would be
+/// invalid (refer to \c LTQuadCornersValidity for more details).
+- (instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint;
+
+/// Returns a copy of this instance with identical properties with the exception that the \c corners
+/// of the returned instance correspond to the \c corners of this instance translated by the given
+/// \c translation. The quad corners not among the given \c corners are copied without translation.
+/// Returns \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for
+/// more details).
+- (instancetype)copyWithTranslation:(CGPoint)translation ofCorners:(LTQuadCornerRegion)corners;
+
+/// Returns a copy of this instance with identical properties with the exception that the corners of
+/// the returned instance correspond to the corners of this instance translated by the given
+/// \c translation. Returns \c nil if the resulting quad would be invalid (refer to
+/// \c LTQuadCornersValidity for more details). Calling this method on a \c quad is identical to
+/// @code
+/// [quad copyWithTranslation:translation ofCorners:LTQuadCornerRegionAll]
+/// @endcode
+- (instancetype)copyWithTranslation:(CGPoint)translation;
+
+#pragma mark -
+#pragma mark Corner validity
+#pragma mark -
+
 /// Returns a value of \c LTQuadCornersValidity indicating the validity of the provided corners.
 + (LTQuadCornersValidity)validityOfCorners:(const LTQuadCorners &)corners;
+
+#pragma mark -
+#pragma mark Point containment/relation
+#pragma mark -
 
 /// Returns \c YES if the given \c point is contained by this quad.
 - (BOOL)containsPoint:(CGPoint)point;
 
 /// Returns \c YES if this instance contains at least one of the vertices of the given \c quad.
 - (BOOL)containsVertexOfQuad:(LTQuad *)quad;
-
-/// Rotates this instance by \c angle (which is provided in radians) in the XY plane around the
-/// provided \c anchorPoint, in clockwise direction.
-- (void)rotateByAngle:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint;
-
-/// Scales this instance by \c scaleFactor.
-- (void)scale:(CGFloat)scaleFactor;
-
-/// Scales this instance by \c scaleFactor around the provided \c anchorPoint.
-- (void)scale:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint;
-
-/// Translates the specified \c corners by \c translation.
-- (void)translateCorners:(LTQuadCornerRegion)corners
-           byTranslation:(CGPoint)translation;
 
 /// Returns the point on any edge of this quad which has the smallest distance to the given
 /// \c point.
@@ -107,6 +148,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Returns a pair (\c p, \c q) of points, such that (I) \c p lies on an edge of this instance and
 /// \c q lies on an edge of the given \c quad and (II) \c p and \c q have minimum distance.
 - (CGPointPair)nearestPoints:(LTQuad *)quad;
+
+#pragma mark -
+#pragma mark Similarity/transformability
+#pragma mark -
 
 /// Returns YES if each corner of \c quad equals the corresponding corner of this instance, up to
 /// the given \c deviation.
@@ -122,6 +167,10 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 - (BOOL)isTransformableToQuad:(LTQuad *)quad withDeviation:(CGFloat)deviation
                   translation:(CGPoint *)translation rotation:(CGFloat *)rotation
                       scaling:(CGFloat *)scaling;
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
 
 /// The corners of this quad.
 @property (readonly, nonatomic) LTQuadCorners corners;
