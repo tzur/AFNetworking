@@ -40,7 +40,9 @@
 #pragma mark -
 
 - (void)pushObject:(id)object {
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue addObject:object];
+  [self didChangeValueForKey:@keypath(self, count)];
 }
 
 - (id)popObject {
@@ -48,12 +50,16 @@
     return nil;
   }
   id result = self.queue.firstObject;
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeObjectAtIndex:0];
+  [self didChangeValueForKey:@keypath(self, count)];
   return result;
 }
 
 - (void)removeObject:(id)object {
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeObject:object];
+  [self didChangeValueForKey:@keypath(self, count)];
 }
 
 - (void)removeFirstObject {
@@ -61,7 +67,9 @@
     return;
   }
 
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeObjectAtIndex:0];
+  [self didChangeValueForKey:@keypath(self, count)];
 }
 
 - (void)removeLastObject {
@@ -69,11 +77,19 @@
     return;
   }
 
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeObjectAtIndex:self.queue.count - 1];
+  [self didChangeValueForKey:@keypath(self, count)];
 }
 
 - (void)removeAllObjects {
+  if (!self.queue.count) {
+    return;
+  }
+
+  [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeAllObjects];
+  [self didChangeValueForKey:@keypath(self, count)];
 }
 
 - (NSUInteger)indexOfObject:(id)object {

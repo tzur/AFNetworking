@@ -47,7 +47,7 @@
 /// The most recently added object in the queue. Returns \c nil if the queue is empty.
 @property (readonly, nonatomic) id lastObject;
 
-/// Number of objects in queue.
+/// Number of objects in queue. KVO-compatible.
 @property (readonly, nonatomic) NSUInteger count;
 
 @end
