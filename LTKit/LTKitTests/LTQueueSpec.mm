@@ -3,7 +3,26 @@
 
 #import "LTQueue.h"
 
-SpecBegin(LTQueue)
+#import "LTKeyPathCoding.h"
+
+@interface LTQueueTestObserver : NSObject
+@property (nonatomic) NSUInteger count;
+@end
+
+@implementation LTQueueTestObserver
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+  LTAssert([keyPath isEqualToString:@instanceKeypath(LTQueue, count)]);
+  LTAssert([object isKindOfClass:[LTQueue class]]);
+  self.count = [change[@"new"] unsignedIntegerValue];
+}
+
+@end
+
+LTSpecBegin(LTQueue)
 
 __block LTQueue *queue;
 __block id firstObject;
@@ -169,4 +188,38 @@ it(@"should provide access to the most recently added object", ^{
   expect(queue.lastObject).to.beIdenticalTo(thirdObject);
 });
 
-SpecEnd
+context(@"KVO compatibility", ^{
+  it(@"should have a KVO-compatible count", ^{
+    LTQueueTestObserver *observer = [[LTQueueTestObserver alloc] init];
+    [queue addObserver:observer forKeyPath:@keypath(queue, count)
+               options:NSKeyValueObservingOptionNew context:NULL];
+
+    expect(observer.count).to.equal(0);
+    [queue pushObject:@1];
+    expect(observer.count).to.equal(1);
+    [queue popObject];
+    expect(observer.count).to.equal(0);
+    [queue pushObject:@1];
+    expect(observer.count).to.equal(1);
+    [queue pushObject:@2];
+    expect(observer.count).to.equal(2);
+    [queue replaceObjectAtIndex:0 withObject:@1];
+    expect(observer.count).to.equal(2);
+    [queue removeFirstObject];
+    expect(observer.count).to.equal(1);
+    [queue removeLastObject];
+    expect(observer.count).to.equal(0);
+    [queue pushObject:@1];
+    expect(observer.count).to.equal(1);
+    [queue pushObject:@2];
+    expect(observer.count).to.equal(2);
+    [queue removeObject:queue.lastObject];
+    expect(observer.count).to.equal(1);
+    [queue removeAllObjects];
+    expect(observer.count).to.equal(0);
+
+    [queue removeObserver:observer forKeyPath:@keypath(queue, count)];
+  });
+});
+
+LTSpecEnd
