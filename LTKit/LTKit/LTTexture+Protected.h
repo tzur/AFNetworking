@@ -5,7 +5,7 @@
 
 @interface LTTexture ()
 
-/// Increases the generation id of the texture.
+/// Increases the generation ID of the texture.
 - (void)increaseGenerationID;
 
 /// Executes the given block while ignoring all automatic updates to the texture's \c fillColor.

@@ -7,12 +7,9 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Protected.h"
-
-@interface LTTexture ()
-- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
-@end
 
 @interface LTMMTexture ()
 
@@ -264,7 +261,7 @@
                              withSignalSize:cv::Size2i(self.size.width, self.size.height)];
       cv::Point2i point = cv::Point2i(std::floor(location.x), std::floor(location.y));
 
-      values[i] = [self pixelValueFromImage:texture location:point];
+      values[i] = LTPixelValueFromImage(texture, point);
     }
   }];
 

@@ -203,3 +203,30 @@ cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix) {
   return cv::Mat1f(3, 3) << matrix.m00, matrix.m01, matrix.m02, matrix.m10, matrix.m11, matrix.m12,
       matrix.m20, matrix.m21, matrix.m22;
 }
+
+LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
+  // TODO: (yaron) implement a half-float <--> float converter when needed.
+  switch (image.type()) {
+    case CV_8U: {
+      uchar value = image.at<uchar>(location.y, location.x);
+      return LTVector4(value / 255.f, 0, 0, 0);
+    }
+    case CV_8UC4: {
+      cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
+      return LTVector4(value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f);
+    }
+    case CV_32F: {
+      float value = image.at<float>(location.y, location.x);
+      return LTVector4(value, 0, 0, 0);
+    }
+    case CV_32FC4: {
+      cv::Vec4f value = image.at<cv::Vec4f>(location.y, location.x);
+      return LTVector4(value(0), value(1), value(2), value(3));
+    }
+    default:
+      [LTGLException raise:kLTTextureUnsupportedFormatException
+                    format:@"Unsupported matrix type: %d", image.type()];
+      __builtin_unreachable();
+  }
+}
+

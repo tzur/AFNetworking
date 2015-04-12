@@ -4,6 +4,7 @@
 #import <opencv2/core/core.hpp>
 
 #import "LTOpenCVHalfFloat.h"
+#import "LTVector.h"
 
 /// Converts the given \c input mat to a \c mat with the given \c type, and writes the result to
 /// \c type. The \c output matrix will be created with the corresponding type.
@@ -64,6 +65,11 @@ cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma, BOOL normalized = NO);
 
 /// Returns a \c 3x3 float matrix with the entries of the provided GLKMatrix3.
 cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix);
+
+/// Returns the value of the given pixel in the given image.
+///
+/// @note Half-float images are not supported.
+LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location);
 
 #pragma mark -
 #pragma mark Details

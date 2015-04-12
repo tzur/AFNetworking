@@ -197,7 +197,7 @@
 #pragma mark -
 
 - (void)clearWithColor:(LTVector4)color {
-  // Adjust the texture's fill color in case this it has only a single level.
+  // Adjust the texture's fill color in case it has only a single level.
   if (!self.texture.maxMipmapLevel) {
     self.texture.fillColor = color;
   } else if (self.texture.fillColor != color) {

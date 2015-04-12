@@ -9,6 +9,7 @@
 #import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 #import "LTMathUtils.h"
 #import "LTTextureContentsDataArchiver.h"
 
@@ -577,35 +578,7 @@ static NSString * const kArchiveKey = @"archive";
 
 - (LTVector4)pixelValue:(CGPoint)location {
   cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
-  return [self pixelValueFromImage:image location:{0, 0}];
-}
-
-- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location {
-  // Reading half-float is currently not supported.
-  // TODO: (yaron) implement a half-float <--> float converter when needed.
-
-  switch (image.type()) {
-    case CV_8U: {
-      uchar value = image.at<uchar>(location.y, location.x);
-      return LTVector4(value / 255.f, 0, 0, 0);
-    }
-    case CV_8UC4: {
-      cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
-      return LTVector4(value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f);
-    }
-    case CV_32F: {
-      float value = image.at<float>(location.y, location.x);
-      return LTVector4(value, 0, 0, 0);
-    }
-    case CV_32FC4: {
-      cv::Vec4f value = image.at<cv::Vec4f>(location.y, location.x);
-      return LTVector4(value(0), value(1), value(2), value(3));
-    }
-    default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Unsupported matrix type: %d", image.type()];
-      __builtin_unreachable();
-  }
+  return LTPixelValueFromImage(image, {0, 0});
 }
 
 - (LTVector4s)pixelValues:(const CGPoints &)locations {
@@ -688,6 +661,7 @@ static NSString * const kArchiveKey = @"archive";
 
 - (void)increaseGenerationID {
   self.generationID += 1;
+}
 
 - (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
   BOOL locked = self.isFillColorLocked;
