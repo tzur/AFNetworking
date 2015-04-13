@@ -224,9 +224,7 @@ LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
       return LTVector4(value(0), value(1), value(2), value(3));
     }
     default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Unsupported matrix type: %d", image.type()];
-      __builtin_unreachable();
+      LTParameterAssert(NO, @"Unsupported matrix type: %d", image.type());
   }
 }
 
