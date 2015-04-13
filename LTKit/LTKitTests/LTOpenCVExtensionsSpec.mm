@@ -290,4 +290,56 @@ context(@"GLKMatrix conversion", ^{
   });
 });
 
+context(@"pixel value", ^{
+  static const cv::Point2i kPoint(1, 0);
+
+  it(@"should return a correct pixel value on a single channel byte mat", ^{
+    cv::Mat1b mat(2, 2);
+    mat(0, 0) = 0;
+    mat(0, 1) = 50;
+    mat(1, 0) = 100;
+    mat(1, 1) = 150;
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(cv::Vec4b(50, 0, 0, 0));
+    expect(expected).to.equal(actual);
+  });
+
+  it(@"should return a correct pixel value on a single channel float mat", ^{
+    cv::Mat1f mat(2, 2);
+    mat(0, 0) = 0.0;
+    mat(0, 1) = 0.25;
+    mat(1, 0) = 0.5;
+    mat(1, 1) = 0.75;
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(0.25, 0, 0, 0);
+    expect(expected).to.equal(actual);
+  });
+
+  it(@"should return a correct pixel value on a multi channel byte mat", ^{
+    cv::Mat4b mat(2, 2);
+    mat(0, 0) = cv::Vec4b(10, 20, 30, 40);
+    mat(0, 1) = cv::Vec4b(50, 60, 70, 80);
+    mat(1, 0) = cv::Vec4b(90, 100, 110, 120);
+    mat(1, 1) = cv::Vec4b(130, 140, 150, 160);
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(cv::Vec4b(50, 60, 70, 80));
+    expect(expected).to.equal(actual);
+  });
+
+  it(@"should return a correct pixel value on a multi channel float mat", ^{
+    cv::Mat4f mat(2, 2);
+    mat(0, 0) = cv::Vec4f(0.1, 0.2, 0.3, 0.4);
+    mat(0, 1) = cv::Vec4f(0.2, 0.3, 0.4, 0.5);
+    mat(1, 0) = cv::Vec4f(0.3, 0.4, 0.5, 0.6);
+    mat(1, 1) = cv::Vec4f(0.4, 0.5, 0.6, 0.7);
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(0.2, 0.3, 0.4, 0.5);
+    expect(expected).to.equal(actual);
+  });
+});
+
 SpecEnd

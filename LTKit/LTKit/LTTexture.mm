@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTexture.h"
+#import "LTTexture+Protected.h"
 
 #import "LTBoundaryCondition.h"
 #import "LTCGExtensions.h"
@@ -9,6 +9,7 @@
 #import "LTFbo.h"
 #import "LTGLException.h"
 #import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 #import "LTMathUtils.h"
 #import "LTTextureContentsDataArchiver.h"
 
@@ -174,15 +175,15 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 /// Stack which holds the bind state of the texture, for each active bind.
 @property (nonatomic) NSMutableArray *bindStateStack;
 
-/// Type of \c cv::Mat according to the current \c precision of the texture.
-@property (readonly, nonatomic) int matType;
-
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
 /// Current generation ID of this texture. The generation ID changes whenever the texture is
 /// modified. This can be used as an efficient way to check if a texture has changed.
 @property (readwrite, nonatomic) NSUInteger generationID;
+
+/// While \c YES, the \c fillColor property will not be updated.
+@property (nonatomic) BOOL isFillColorLocked;
 
 @end
 
@@ -206,6 +207,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
     _format = format;
     _channels = LTTextureChannelsFromFormat(format);
     _size = size;
+    _fillColor = LTVector4Null;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
     [self setDefaultValues];
@@ -494,6 +496,7 @@ static NSString * const kArchiveKey = @"archive";
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
+  self.fillColor = LTVector4Null;
   block(&image, YES);
 
   // User wrote data to image, so it must be uploaded back to the GPU.
@@ -575,35 +578,7 @@ static NSString * const kArchiveKey = @"archive";
 
 - (LTVector4)pixelValue:(CGPoint)location {
   cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
-  return [self pixelValueFromImage:image location:{0, 0}];
-}
-
-- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location {
-  // Reading half-float is currently not supported.
-  // TODO: (yaron) implement a half-float <--> float converter when needed.
-
-  switch (image.type()) {
-    case CV_8U: {
-      uchar value = image.at<uchar>(location.y, location.x);
-      return LTVector4(value / 255.f, 0, 0, 0);
-    }
-    case CV_8UC4: {
-      cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
-      return LTVector4(value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f);
-    }
-    case CV_32F: {
-      float value = image.at<float>(location.y, location.x);
-      return LTVector4(value, 0, 0, 0);
-    }
-    case CV_32FC4: {
-      cv::Vec4f value = image.at<cv::Vec4f>(location.y, location.x);
-      return LTVector4(value(0), value(1), value(2), value(3));
-    }
-    default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Unsupported matrix type: %d", image.type()];
-      __builtin_unreachable();
-  }
+  return LTPixelValueFromImage(image, {0, 0});
 }
 
 - (LTVector4s)pixelValues:(const CGPoints &)locations {
@@ -644,10 +619,13 @@ static NSString * const kArchiveKey = @"archive";
 }
 
 - (void)clearWithColor:(LTVector4)color {
-  for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
-    [fbo clearWithColor:color];
-  }
+  self.fillColor = color;
+  [self performWithoutUpdatingFillColor:^{
+    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
+      [fbo clearWithColor:color];
+    }
+  }];
 }
 
 #pragma mark -
@@ -685,9 +663,26 @@ static NSString * const kArchiveKey = @"archive";
   self.generationID += 1;
 }
 
+- (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
+  BOOL locked = self.isFillColorLocked;
+  self.isFillColorLocked = YES;
+  if (block) {
+    block();
+  }
+  self.isFillColorLocked = locked;
+}
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (void)setFillColor:(LTVector4)fillColor {
+  if (_fillColor == fillColor || self.isFillColorLocked) {
+    return;
+  }
+
+  _fillColor = fillColor;
+}
 
 - (void)setMinFilterInterpolation:(LTTextureInterpolation)minFilterInterpolation {
   if (!self.name) {

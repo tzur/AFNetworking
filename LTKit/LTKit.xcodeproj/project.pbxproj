@@ -1480,6 +1480,7 @@
 		28A488A418D0C027006BD8CF /* LTBrushShapeDynamicsEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushShapeDynamicsEffect.h; sourceTree = "<group>"; };
 		28A488A518D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffect.mm; sourceTree = "<group>"; };
 		28A4C9351973E3EA00CDA935 /* RedBorderOnClearBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedBorderOnClearBackground.png; path = Resources/RedBorderOnClearBackground.png; sourceTree = "<group>"; };
+		28A5AE251AC298A6003594C0 /* LTTexture+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Protected.h"; sourceTree = "<group>"; };
 		28A5EABE18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushScatterEffectSpec.mm; sourceTree = "<group>"; };
 		28A5EAC018D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushShapeDynamicsEffectSpec.mm; sourceTree = "<group>"; };
 		28A5EAC218D1DC9F007E80C9 /* LTBrushColorDynamicsEffectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushColorDynamicsEffectSpec.mm; sourceTree = "<group>"; };
@@ -3112,6 +3113,7 @@
 				8BA11AE01831555100A5001D /* LTTexture.mm */,
 				8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */,
 				8B9D3FE5189541F0001A964D /* LTTexture+Factory.mm */,
+				28A5AE251AC298A6003594C0 /* LTTexture+Protected.h */,
 				8BB4713F183A470400CA1681 /* LTVertexArray.h */,
 				8BB47140183A470400CA1681 /* LTVertexArray.mm */,
 			);

@@ -7,17 +7,9 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
-
-@interface LTTexture ()
-
-- (LTVector4)pixelValueFromImage:(const cv::Mat &)image location:(cv::Point2i)location;
-- (BOOL)inTextureRect:(CGRect)rect;
-- (void)increaseGenerationID;
-
-@property (readonly, nonatomic) int matType;
-
-@end
+#import "LTTexture+Protected.h"
 
 @interface LTMMTexture ()
 
@@ -203,10 +195,7 @@
 
 - (LTTexture *)clone {
   LTTexture *cloned = [[LTMMTexture alloc] initWithPropertiesOf:self];
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:cloned];
-
-  [self cloneToFramebuffer:fbo];
-
+  [self cloneTo:cloned];
   return cloned;
 }
 
@@ -214,8 +203,12 @@
   LTParameterAssert(texture.size == self.size,
                     @"Cloned texture size must be equal to this texture size");
 
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-  [self cloneToFramebuffer:fbo];
+  if (!self.fillColor.isNull()) {
+    [texture clearWithColor:self.fillColor];
+  } else {
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    [self cloneToFramebuffer:fbo];
+  }
 }
 
 - (void)cloneToFramebuffer:(LTFbo *)fbo {
@@ -240,6 +233,7 @@
 
 - (void)beginWriteToTexture {
   [self.lock lock];
+  self.fillColor = LTVector4Null;
 }
 
 - (void)endWriteToTexture {
@@ -267,7 +261,7 @@
                              withSignalSize:cv::Size2i(self.size.width, self.size.height)];
       cv::Point2i point = cv::Point2i(std::floor(location.x), std::floor(location.y));
 
-      values[i] = [self pixelValueFromImage:texture location:point];
+      values[i] = LTPixelValueFromImage(texture, point);
     }
   }];
 
@@ -309,6 +303,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+  self.fillColor = LTVector4Null;
   [self mappedImageWithBlock:block];
   [self increaseGenerationID];
 }

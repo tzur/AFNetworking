@@ -135,6 +135,16 @@ context(@"clearing", ^{
 
     expect(LTFuzzyCompareMat(expected, image)).to.beTruthy();
   });
+
+  it(@"should set texture fillColor when clearing with color", ^{
+    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMakeUniform(16)
+                                                 precision:LTTexturePrecisionByte
+                                                    format:LTTextureFormatRGBA allocateMemory:YES];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+    expect(texture.fillColor.isNull()).to.beTruthy();
+    [fbo clearWithColor:LTVector4Zero];
+    expect(texture.fillColor).to.equal(LTVector4Zero);
+  });
 });
 
 context(@"binding", ^{
@@ -171,6 +181,13 @@ context(@"binding", ^{
       expect([LTGLContext currentContext].renderingToScreen).to.beFalsy();
     }];
     expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
+  });
+
+  it(@"should set texture fillColor to null on bindAndDraw", ^{
+    [fbo clearWithColor:LTVector4One];
+    expect(fbo.texture.fillColor.isNull()).to.beFalsy();
+    [fbo bindAndDraw:^{}];
+    expect(fbo.texture.fillColor.isNull()).to.beTruthy();
   });
 });
 
