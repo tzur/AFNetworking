@@ -26,13 +26,6 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 @property (strong, nonatomic) NSMutableDictionary *uniformToTexture;
 @end
 
-@interface LTSingleRectDrawer ()
-
-/// Context holding the geometry and program.
-@property (strong, nonatomic) LTDrawingContext *context;
-
-@end
-
 @implementation LTSingleRectDrawer
 
 #pragma mark -
