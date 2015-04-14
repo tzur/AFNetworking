@@ -14,7 +14,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
-                       context:(void *)context {
+                       context:(void __unused *)context {
   LTAssert([keyPath isEqualToString:@instanceKeypath(LTQueue, count)]);
   LTAssert([object isKindOfClass:[LTQueue class]]);
   self.count = [change[@"new"] unsignedIntegerValue];
