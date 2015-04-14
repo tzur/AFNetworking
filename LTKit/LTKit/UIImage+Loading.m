@@ -79,7 +79,7 @@
 
   // Orientation modifier.
   NSString *orientationModifier;
-  if (UIDeviceOrientationIsPortrait((UIDeviceOrientation)self.uiApplication.statusBarOrientation)) {
+  if (UIInterfaceOrientationIsPortrait(self.uiApplication.statusBarOrientation)) {
     orientationModifier = @"-Portrait";
   } else {
     orientationModifier = @"-Landscape";

@@ -66,18 +66,18 @@
     free(attributes);
   };
 
+  // If property is an object deserialize using property class.
   if (attributes->objectClass) {
     id deserialized = [self deserializeObject:object toClass:attributes->objectClass];
     LTParameterAssert(deserialized, @"Got nil deserialized object from %@, for class %@", object,
                       attributes->objectClass);
     return deserialized;
-  } else if (attributes->type) {
+  } else {
+    // Otherwise, use property type encoding.
     id deserialized = [self deserializeObject:object toTypeEncoding:@(attributes->type)];
     LTParameterAssert(deserialized, @"Got nil deserialized object from %@, for type encoding %@",
                       object, @(attributes->type));
     return deserialized;
-  } else {
-    LTAssert(NO, @"Target property doesn't have objectClass or type");
   }
 }
 
