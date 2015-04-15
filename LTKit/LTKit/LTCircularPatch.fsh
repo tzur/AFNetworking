@@ -22,9 +22,9 @@ mediump float boundaryConditionForPosition(mediump float location) {
 
 mediump vec2 boundaryConditionForCoordinate(mediump vec2 coord) {
   coord.x =
-      mix(coord.x, boundaryConditionForPosition(coord.x), float(coord.x < 0.0 || coord.x >= 1.0));
+      mix(coord.x, boundaryConditionForPosition(coord.x), float(coord.x < 0.0 || coord.x > 1.0));
   coord.y =
-      mix(coord.y, boundaryConditionForPosition(coord.y), float(coord.y < 0.0 || coord.y >= 1.0));
+      mix(coord.y, boundaryConditionForPosition(coord.y), float(coord.y < 0.0 || coord.y > 1.0));
   return coord;
 }
 
