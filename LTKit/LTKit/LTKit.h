@@ -53,6 +53,7 @@
 #import <LTKit/LTBilateralFilterProcessor.h>
 #import <LTKit/LTBoxFilterProcessor.h>
 #import <LTKit/LTBWProcessor.h>
+#import <LTKit/LTCircularPatchProcessor.h>
 #import <LTKit/LTClarityProcessor.h>
 #import <LTKit/LTColorConversionProcessor.h>
 #import <LTKit/LTColorGradient.h>
