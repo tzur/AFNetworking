@@ -178,9 +178,8 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
-/// Current generation ID of this texture. The generation ID changes whenever the texture is
-/// modified. This can be used as an efficient way to check if a texture has changed.
-@property (readwrite, nonatomic) NSUInteger generationID;
+/// While \c YES, the \c generationID property will not be updated.
+@property (nonatomic) BOOL isGenerationIDLocked;
 
 /// While \c YES, the \c fillColor property will not be updated.
 @property (nonatomic) BOOL isFillColorLocked;
@@ -208,6 +207,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
     _channels = LTTextureChannelsFromFormat(format);
     _size = size;
     _fillColor = LTVector4Null;
+    _generationID = [NSUUID UUID];
 
     self.bindStateStack = [[NSMutableArray alloc] init];
     [self setDefaultValues];
@@ -659,8 +659,17 @@ static NSString * const kArchiveKey = @"archive";
   return CGRectContainsRect(texture, rect);
 }
 
-- (void)increaseGenerationID {
-  self.generationID += 1;
+- (void)updateGenerationID {
+  self.generationID = [NSUUID UUID];
+}
+
+- (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block {
+  BOOL locked = self.isGenerationIDLocked;
+  self.isGenerationIDLocked = YES;
+  if (block) {
+    block();
+  }
+  self.isGenerationIDLocked = locked;
 }
 
 - (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
@@ -675,6 +684,15 @@ static NSString * const kArchiveKey = @"archive";
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (void)setGenerationID:(id)generationID {
+  if (_generationID == generationID || [_generationID isEqual:generationID] ||
+      self.isGenerationIDLocked) {
+    return;
+  }
+
+  _generationID = generationID;
+}
 
 - (void)setFillColor:(LTVector4)fillColor {
   if (_fillColor == fillColor || self.isFillColorLocked) {

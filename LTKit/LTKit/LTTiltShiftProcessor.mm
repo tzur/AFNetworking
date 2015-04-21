@@ -27,7 +27,7 @@
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
 
 /// The generation id of the input texture that was used to create the current smooth textures.
-@property (nonatomic) NSUInteger smoothTextureGenerationID;
+@property (nonatomic) id smoothTextureGenerationID;
 
 @end
 
@@ -109,7 +109,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 }
 
 - (void)updateSmoothTexturesIfNecessary {
-  if (self.smoothTextureGenerationID != self.inputTexture.generationID ||
+  if (![self.smoothTextureGenerationID isEqual:self.inputTexture.generationID] ||
       !self.auxiliaryTextures[[LTTiltShiftFsh fineTexture]] ||
       !self.auxiliaryTextures[[LTTiltShiftFsh mediumTexture]] ||
       !self.auxiliaryTextures[[LTTiltShiftFsh coarseTexture]] ||

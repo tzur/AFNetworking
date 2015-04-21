@@ -402,8 +402,13 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 @property (nonatomic) GLint maxMipmapLevel;
 
 /// Current generation ID of this texture. The generation ID changes whenever the texture is
-/// modified. This can be used as an efficient way to check if a texture has changed.
-@property (readonly, nonatomic) NSUInteger generationID;
+/// modified, and is copied when a texture is cloned. This can be used as an efficient way to check
+/// if a texture has changed or if two textures have the same content.
+///
+/// @note While two textures having equal \c generationID implies that they have the same
+/// content, the other direction is not necessarily true as two textures can have the same content
+/// with different \c generationID.
+@property (readonly, nonatomic) id generationID;
 
 /// Returns the color the entire texture (and all its levels for mipmap textures) is filled with,
 /// or \c LTVector4Null in case it is uncertain that the texture is filled with a single color.

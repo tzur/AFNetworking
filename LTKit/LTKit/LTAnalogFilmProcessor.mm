@@ -43,7 +43,7 @@
 @property (nonatomic) BOOL shouldUpdateToneLUT;
 
 /// The generation id of the input texture that was used to create the current details textures.
-@property (nonatomic) NSUInteger detailsTextureGenerationID;
+@property (nonatomic) id detailsTextureGenerationID;
 
 @end
 
@@ -109,12 +109,14 @@
 }
 
 - (void)updateDetailsTextureIfNecessary {
-  if (self.detailsTextureGenerationID != self.inputTexture.generationID ||
-      !self.auxiliaryTextures[[LTAnalogFilmFsh detailsTexture]]) {
-    self.detailsTextureGenerationID = self.inputTexture.generationID;
-    [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
-                     withName:[LTAnalogFilmFsh detailsTexture]];
+  if ([self.detailsTextureGenerationID isEqual:self.inputTexture.generationID] &&
+      self.auxiliaryTextures[[LTAnalogFilmFsh detailsTexture]]) {
+    return;
   }
+
+  self.detailsTextureGenerationID = self.inputTexture.generationID;
+  [self setAuxiliaryTexture:[self createDetailsTexture:self.inputTexture]
+                   withName:[LTAnalogFilmFsh detailsTexture]];
 }
 
 - (LTTexture *)createDetailsTexture:(LTTexture *)inputTexture {

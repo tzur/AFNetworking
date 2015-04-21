@@ -52,7 +52,7 @@
 
 /// The generation id of the input texture that was used to create the current details and smooth
 /// textures.
-@property (nonatomic) NSUInteger inputTextureGenerationID;
+@property (nonatomic) id inputTextureGenerationID;
 
 @end
 
@@ -119,7 +119,7 @@ static const CGFloat kTintScaling = 0.3;
 }
 
 - (void)updateInputDerivedTexturesIfNecessary {
-  if (self.inputTextureGenerationID != self.inputTexture.generationID ||
+  if (![self.inputTextureGenerationID isEqual:self.inputTexture.generationID] ||
       !self.auxiliaryTextures[[LTAdjustFsh detailsTexture]] ||
       !self.auxiliaryTextures[[LTAdjustFsh lowResolutionSourceTexture]]) {
     self.inputTextureGenerationID = self.inputTexture.generationID;

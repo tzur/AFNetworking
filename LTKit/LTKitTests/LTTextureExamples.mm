@@ -5,7 +5,7 @@
 
 #import "LTGLKitExtensions.h"
 #import "LTTestUtils.h"
-#import "LTTexture.h"
+#import "LTTexture+Protected.h"
 
 NSString * const kLTTextureExamples = @"LTTextureExamples";
 NSString * const kLTTextureExamplesTextureClass = @"LTTextureExamplesTextureClass";
@@ -276,6 +276,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
 
         expect(cloned.name).toNot.equal(texture.name);
         expect($([cloned image])).to.equalMat($(image));
+        expect(cloned.generationID).to.equal(texture.generationID);
       });
 
       dit(@"should clone itself to an existing texture", ^{
@@ -284,6 +285,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
         [texture cloneTo:cloned];
         
         expect($([cloned image])).to.equalMat($(image));
+        expect(cloned.generationID).to.equal(texture.generationID);
       });
 
       it(@"should not clone to a texture with a different size", ^{
@@ -462,28 +464,88 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     });
 
     context(@"generation ID", ^{
-      it(@"should produce different generation ID after writing via OpenGL", ^{
-        NSUInteger generationID = texture.generationID;
-        [texture clearWithColor:LTVector4Zero];
+      __block id generationID;
+
+      beforeEach(^{
+        generationID = texture.generationID;
+      });
+
+      afterEach(^{
+        generationID = nil;
+      });
+
+      it(@"should change generation ID after writing via writeToTexture", ^{
+        [texture writeToTexture:^{
+        }];
         expect(texture.generationID).toNot.equal(generationID);
       });
 
-      it(@"should not produce different generation ID after reading via OpenGL", ^{
-        NSUInteger generationID = texture.generationID;
+      it(@"should change generation ID after writing via begin/end writeToTexture", ^{
+        [texture beginWriteToTexture];
+        [texture endWriteToTexture];
+        expect(texture.generationID).toNot.equal(generationID);
+      });
+
+      it(@"should not change generation ID after reading via readFromTexture", ^{
+        [texture readFromTexture:^{
+        }];
+        expect(texture.generationID).to.equal(generationID);
+      });
+
+      it(@"should not change generation ID after reading via begin/end readFromTexture", ^{
+        [texture beginReadFromTexture];
+        [texture endReadFromTexture];
+        expect(texture.generationID).to.equal(generationID);
+      });
+
+      it(@"should not change generation ID after reading via OpenGL", ^{
         cv::Mat image(texture.image);
         expect(texture.generationID).to.equal(generationID);
       });
 
-      it(@"should produce different generation ID after writing via mapping", ^{
-        NSUInteger generationID = texture.generationID;
+      it(@"should change generation ID after writing via mapping", ^{
         [texture mappedImageForWriting:^(cv::Mat *, BOOL) {
         }];
         expect(texture.generationID).toNot.equal(generationID);
       });
 
-      it(@"should not produce different generation ID after reading via mapping", ^{
-        NSUInteger generationID = texture.generationID;
+      it(@"should not change generation ID after reading via mapping", ^{
         [texture mappedImageForReading:^(const cv::Mat &, BOOL) {
+        }];
+        expect(texture.generationID).to.equal(generationID);
+      });
+
+      it(@"should change generation ID after load", ^{
+        cv::Mat mat(texture.size.height, texture.size.width, texture.matType);
+        [texture load:mat];
+        expect(texture.generationID).toNot.equal(generationID);
+      });
+
+      it(@"should change generation ID after loadRect", ^{
+        cv::Mat mat(1, 1, texture.matType);
+        [texture loadRect:CGRectFromSize(CGSizeMakeUniform(1)) fromImage:mat];
+        expect(texture.generationID).toNot.equal(generationID);
+      });
+
+      it(@"should not change generation ID after storeRect", ^{
+        cv::Mat mat(1, 1, texture.matType);
+        [texture storeRect:CGRectFromSize(CGSizeMakeUniform(1)) toImage:&mat];
+        expect(texture.generationID).to.equal(generationID);
+      });
+
+      it(@"should change generation ID after clearWithColor", ^{
+        [texture clearWithColor:LTVector4Zero];
+        expect(texture.generationID).notTo.equal(generationID);
+      });
+
+      it(@"should change generation ID after drawing with core graphics", ^{
+        [texture drawWithCoreGraphics:^(CGContextRef __unused context) {
+        }];
+        expect(texture.generationID).notTo.equal(generationID);
+      });
+
+      it(@"should not change generation ID after reading via mappedCGImage", ^{
+        [texture mappedCGImage:^(CGImageRef, BOOL) {
         }];
         expect(texture.generationID).to.equal(generationID);
       });
