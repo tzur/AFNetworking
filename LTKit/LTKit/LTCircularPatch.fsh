@@ -4,6 +4,7 @@
 varying mediump vec4 vMembraneColor;
 varying mediump vec2 vSourceCoord;
 varying mediump vec2 vTargetCoord;
+varying mediump vec2 vTexcoord;
 
 uniform sampler2D sourceTexture;
 

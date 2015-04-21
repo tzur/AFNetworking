@@ -330,6 +330,7 @@
 		288F154919A63C7A00E1C6F9 /* LTMeshDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 288F154719A63C7A00E1C6F9 /* LTMeshDrawer.h */; };
 		288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288F154819A63C7A00E1C6F9 /* LTMeshDrawer.mm */; };
 		28907A6618D7274E00DFBE7F /* LTBrushEffectExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28907A6518D7274E00DFBE7F /* LTBrushEffectExamples.mm */; };
+		2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */ = {isa = PBXBuildFile; fileRef = 289757991AE66EE900A44594 /* CircularPatchDrawerMasked.png */; };
 		2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */; };
 		2897A893197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2897A891197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm */; };
 		2897A8C6197F041E004EE8B5 /* LTPerspectiveProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2897A8B8197F040F004EE8B5 /* LTPerspectiveProcessor.fsh */; };
@@ -1482,6 +1483,7 @@
 		288F154819A63C7A00E1C6F9 /* LTMeshDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshDrawer.mm; sourceTree = "<group>"; };
 		28907A6518D7274E00DFBE7F /* LTBrushEffectExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushEffectExamples.mm; sourceTree = "<group>"; };
 		28907A7318D7277600DFBE7F /* LTBrushEffectExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTBrushEffectExamples.h; sourceTree = "<group>"; };
+		289757991AE66EE900A44594 /* CircularPatchDrawerMasked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerMasked.png; path = Resources/CircularPatchDrawerMasked.png; sourceTree = "<group>"; };
 		2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPerspectiveProcessor.h; sourceTree = "<group>"; };
 		2897A891197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPerspectiveProcessor.mm; sourceTree = "<group>"; };
 		2897A8B8197F040F004EE8B5 /* LTPerspectiveProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPerspectiveProcessor.fsh; sourceTree = "<group>"; };
@@ -2942,6 +2944,7 @@
 				A8BDC6381AC9DA64005FC392 /* CircularPatchDrawerColors.png */,
 				A8BDC6391AC9DA64005FC392 /* CircularPatchDrawerDefault.png */,
 				A8BDC63A1AC9DA64005FC392 /* CircularPatchDrawerHeal.png */,
+				289757991AE66EE900A44594 /* CircularPatchDrawerMasked.png */,
 				A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */,
 				A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */,
 				A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */,
@@ -4074,6 +4077,7 @@
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
 				283BD0441922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png in Resources */,
 				A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */,
+				2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */,
 				284AA2B91AC99DD1007F86DB /* CircularPatchDoubleMirror.png in Resources */,
 				280E40D81990C2F6008C5BD9 /* PerspectiveCompound.png in Resources */,
 				284AA2B01AC99DD1007F86DB /* CircularCloneAlpha.png in Resources */,

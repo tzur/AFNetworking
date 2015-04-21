@@ -10,6 +10,7 @@ uniform highp mat3 texture;
 varying mediump vec4 vMembraneColor;
 varying mediump vec2 vSourceCoord;
 varying mediump vec2 vTargetCoord;
+varying mediump vec2 vTexcoord;
 
 attribute vec4 position;
 attribute vec2 texcoord;
@@ -21,5 +22,6 @@ void main() {
   vMembraneColor = color;
   vSourceCoord = (sourceModelview * vec3(texcoord, 1.0)).xy;
   vTargetCoord = (targetModelview * vec3(texcoord, 1.0)).xy;
+  vTexcoord = (targetModelview * vec3(texcoord, 1.0)).xy;
   gl_Position = projection * modelview * position;
 }

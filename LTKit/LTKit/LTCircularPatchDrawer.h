@@ -5,6 +5,8 @@
 
 #import "LTGPUStruct.h"
 
+@protocol LTProgramFactory;
+
 @class LTCircularMeshModel;
 
 /// Types of circular patch modes.
@@ -22,8 +24,9 @@ typedef NS_ENUM(NSUInteger, LTCircularPatchMode) {
 /// smoothing membrane) and clone (source to target). Before drawing, \c membraneColors must be set.
 @interface LTCircularPatchDrawer : LTTextureDrawer
 
-/// Initializes a new circular patch drawer using \c sourceTexture.
-- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture;
+/// Initializes a new circular patch drawer using \c programFactory and \c sourceTexture.
+- (instancetype)initWithProgramFactory:(id<LTProgramFactory>)programFactory
+                         sourceTexture:(LTTexture *)sourceTexture;
 
 /// Updates array describing circular patch membrane color for each vertex. The given
 /// \c membranceColors must have the same number of elements as the number of vertices.
