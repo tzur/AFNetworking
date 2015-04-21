@@ -7,6 +7,7 @@
 #import "LTCircularMeshModel.h"
 #import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
+#import "LTProgramFactory.h"
 #import "LTTexture+Factory.h"
 
 LTSpecBegin(LTCircularPatchDrawer)
@@ -19,7 +20,9 @@ beforeEach(^{
   inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
   inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
   
-  drawer = [[LTCircularPatchDrawer alloc] initWithSourceTexture:inputTexture];
+  drawer =
+      [[LTCircularPatchDrawer alloc] initWithProgramFactory:[[LTBasicProgramFactory alloc] init]
+                                              sourceTexture:inputTexture];
 });
 
 afterEach(^{
@@ -167,6 +170,32 @@ context(@"drawing", ^{
       [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
     }];
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerScreen.png");
+    expect($(outputTexture.image)).to.equalMat($(expected));
+  });
+
+  it(@"should draw with mask", ^{
+    const NSUInteger kWhite = 255;
+    const NSUInteger kBlack = 0;
+
+    drawer = [[LTCircularPatchDrawer alloc]
+              initWithProgramFactory:[[LTMaskableProgramFactory alloc] init]
+              sourceTexture:inputTexture];
+
+    CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.3, textureSize.height * 0.3);
+    CGPoint targetOrigin = CGPointMake(textureSize.width * 0.2, textureSize.height * 0.2);
+    CGSize size = textureSize / 2;
+    CGRect sourceRect = CGRectFromOriginAndSize(sourceOrigin, size);
+    CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
+
+    cv::Mat1b maskMat(textureSize.height, textureSize.width, kBlack);
+    maskMat(cv::Rect(0, 0, textureSize.width / 2, textureSize.height)).setTo(kWhite);
+    LTTexture *maskTexture = [LTTexture textureWithImage:maskMat];
+
+    [drawer setAuxiliaryTexture:maskTexture withName:kLTMaskableProgramMaskUniformName];
+    [drawer setAuxiliaryTexture:inputTexture withName:kLTMaskableProgramInputUniformName];
+
+    [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+    cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerMasked.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
 });

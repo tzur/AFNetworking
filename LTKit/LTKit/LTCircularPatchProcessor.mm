@@ -25,8 +25,10 @@
   LTParameterAssert(input);
   LTParameterAssert(output);
   LTParameterAssert(input.size == output.size);
-
-  LTCircularPatchDrawer *drawer = [[LTCircularPatchDrawer alloc] initWithSourceTexture:input];
+  
+  LTCircularPatchDrawer *drawer =
+      [[LTCircularPatchDrawer alloc] initWithProgramFactory:[[self class] programFactory]
+                                              sourceTexture:input];
   return [super initWithDrawer:drawer sourceTexture:input auxiliaryTextures:nil andOutput:output];
 }
 
@@ -179,7 +181,7 @@ static const NSUInteger kInLevelAveragingCount = 5;
 - (LTVector4s)colorUsingVerticesWithRotation:(const LTVector2s &)vertices center:(CGPoint)center {
   CGPoints verticesAsPoints(vertices.size());
   CGAffineTransform translateTransform = CGAffineTransformMakeTranslation(center.x, center.y);
-  CGAffineTransform rotationTransform = CGAffineTransformMakeRotation(self.rotation);
+  CGAffineTransform rotationTransform = CGAffineTransformMakeRotation(-self.rotation);
   CGAffineTransform rotationAroundPointTransform =
       CGAffineTransformConcat(CGAffineTransformConcat(
       CGAffineTransformInvert(translateTransform), rotationTransform), translateTransform);

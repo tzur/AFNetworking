@@ -65,8 +65,12 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture {
-  if (self = [super initWithProgram:[self createProgram] sourceTexture:sourceTexture]) {
+- (instancetype)initWithProgramFactory:(id<LTProgramFactory>)programFactory
+                         sourceTexture:(LTTexture *)sourceTexture {
+  LTParameterAssert(programFactory);
+
+  if (self = [super initWithProgram:[self createProgramWithFactory:programFactory]
+                      sourceTexture:sourceTexture]) {
     self.indicesArray = [self createIndicesArray];
     self[[LTCircularPatchFsh alpha]] = @(self.defaultAlpha);
     self.program[[LTCircularPatchFsh isCircularPatchModeHeal]] = @NO;
@@ -74,10 +78,9 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
   return self;
 }
 
-- (LTProgram *)createProgram {
-  LTBasicProgramFactory *factory = [[LTBasicProgramFactory alloc] init];
-  return [factory programWithVertexSource:[LTCircularPatchVsh source]
-                           fragmentSource:[LTCircularPatchFsh source]];
+- (LTProgram *)createProgramWithFactory:(id<LTProgramFactory>)programFactory {
+  return [programFactory programWithVertexSource:[LTCircularPatchVsh source]
+                                  fragmentSource:[LTCircularPatchFsh source]];
 }
 
 - (LTDrawingContext *)createDrawingContext {
