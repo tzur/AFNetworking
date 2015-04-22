@@ -164,6 +164,29 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17341AD50BE00055E664 /* LTVGGlyph.h */; };
+		25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17351AD50BE00055E664 /* LTVGGlyph.mm */; };
+		25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */; };
+		25AF17491AD50BE00055E664 /* LTVGGlyphRun.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17371AD50BE00055E664 /* LTVGGlyphRun.mm */; };
+		25AF174A1AD50BE00055E664 /* LTVGLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17381AD50BE00055E664 /* LTVGLine.h */; };
+		25AF174B1AD50BE00055E664 /* LTVGLine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17391AD50BE00055E664 /* LTVGLine.mm */; };
+		25AF174C1AD50BE00055E664 /* LTVGLines.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF173A1AD50BE00055E664 /* LTVGLines.h */; };
+		25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF173B1AD50BE00055E664 /* LTVGLines.mm */; };
+		25AF17561AD50BE00055E664 /* LTVGTypesetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17441AD50BE00055E664 /* LTVGTypesetter.h */; };
+		25AF17571AD50BE00055E664 /* LTVGTypesetter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17451AD50BE00055E664 /* LTVGTypesetter.mm */; };
+		25AF17641AD50C250055E664 /* LTVGGlyphRunSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF175B1AD50C250055E664 /* LTVGGlyphRunSpec.mm */; };
+		25AF17651AD50C250055E664 /* LTVGGlyphSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF175C1AD50C250055E664 /* LTVGGlyphSpec.mm */; };
+		25AF17661AD50C250055E664 /* LTVGLineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF175D1AD50C250055E664 /* LTVGLineSpec.mm */; };
+		25AF17671AD50C250055E664 /* LTVGLinesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF175E1AD50C250055E664 /* LTVGLinesSpec.mm */; };
+		25AF176C1AD50C250055E664 /* LTVGTypesetterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17631AD50C250055E664 /* LTVGTypesetterSpec.mm */; };
+		25AF17831AD50CB60055E664 /* LinesLeadingTrackingTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF177F1AD50CB60055E664 /* LinesLeadingTrackingTest.png */; };
+		25AF17841AD50CB60055E664 /* LinesTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17801AD50CB60055E664 /* LinesTest.png */; };
+		25AF17851AD50CB60055E664 /* LineTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17811AD50CB60055E664 /* LineTest.png */; };
+		25AF17861AD50CB60055E664 /* LineTrackingTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17821AD50CB60055E664 /* LineTrackingTest.png */; };
+		25AF178A1AD50CBF0055E664 /* GlyphRunTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17871AD50CBF0055E664 /* GlyphRunTest.png */; };
+		25AF178B1AD50CBF0055E664 /* GlyphRunTrackingTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17881AD50CBF0055E664 /* GlyphRunTrackingTest.png */; };
+		25AF178C1AD50CBF0055E664 /* GlyphTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17891AD50CBF0055E664 /* GlyphTest.png */; };
+		25AF178E1AD50CCB0055E664 /* FramesetterTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF178D1AD50CCB0055E664 /* FramesetterTest.png */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
@@ -1266,6 +1289,29 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
+		25AF17351AD50BE00055E664 /* LTVGGlyph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyph.mm; sourceTree = "<group>"; };
+		25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyphRun.h; sourceTree = "<group>"; };
+		25AF17371AD50BE00055E664 /* LTVGGlyphRun.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyphRun.mm; sourceTree = "<group>"; };
+		25AF17381AD50BE00055E664 /* LTVGLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGLine.h; sourceTree = "<group>"; };
+		25AF17391AD50BE00055E664 /* LTVGLine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGLine.mm; sourceTree = "<group>"; };
+		25AF173A1AD50BE00055E664 /* LTVGLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGLines.h; sourceTree = "<group>"; };
+		25AF173B1AD50BE00055E664 /* LTVGLines.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGLines.mm; sourceTree = "<group>"; };
+		25AF17441AD50BE00055E664 /* LTVGTypesetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGTypesetter.h; sourceTree = "<group>"; };
+		25AF17451AD50BE00055E664 /* LTVGTypesetter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGTypesetter.mm; sourceTree = "<group>"; };
+		25AF175B1AD50C250055E664 /* LTVGGlyphRunSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyphRunSpec.mm; sourceTree = "<group>"; };
+		25AF175C1AD50C250055E664 /* LTVGGlyphSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyphSpec.mm; sourceTree = "<group>"; };
+		25AF175D1AD50C250055E664 /* LTVGLineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGLineSpec.mm; sourceTree = "<group>"; };
+		25AF175E1AD50C250055E664 /* LTVGLinesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGLinesSpec.mm; sourceTree = "<group>"; };
+		25AF17631AD50C250055E664 /* LTVGTypesetterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGTypesetterSpec.mm; sourceTree = "<group>"; };
+		25AF177F1AD50CB60055E664 /* LinesLeadingTrackingTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesLeadingTrackingTest.png; path = Resources/LinesLeadingTrackingTest.png; sourceTree = "<group>"; };
+		25AF17801AD50CB60055E664 /* LinesTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTest.png; path = Resources/LinesTest.png; sourceTree = "<group>"; };
+		25AF17811AD50CB60055E664 /* LineTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LineTest.png; path = Resources/LineTest.png; sourceTree = "<group>"; };
+		25AF17821AD50CB60055E664 /* LineTrackingTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LineTrackingTest.png; path = Resources/LineTrackingTest.png; sourceTree = "<group>"; };
+		25AF17871AD50CBF0055E664 /* GlyphRunTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphRunTest.png; path = Resources/GlyphRunTest.png; sourceTree = "<group>"; };
+		25AF17881AD50CBF0055E664 /* GlyphRunTrackingTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphRunTrackingTest.png; path = Resources/GlyphRunTrackingTest.png; sourceTree = "<group>"; };
+		25AF17891AD50CBF0055E664 /* GlyphTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphTest.png; path = Resources/GlyphTest.png; sourceTree = "<group>"; };
+		25AF178D1AD50CCB0055E664 /* FramesetterTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FramesetterTest.png; path = Resources/FramesetterTest.png; sourceTree = "<group>"; };
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
@@ -2263,6 +2309,74 @@
 			name = Noise;
 			sourceTree = "<group>";
 		};
+		25AF17221AD50B4A0055E664 /* Typography */ = {
+			isa = PBXGroup;
+			children = (
+				25AF17341AD50BE00055E664 /* LTVGGlyph.h */,
+				25AF17351AD50BE00055E664 /* LTVGGlyph.mm */,
+				25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */,
+				25AF17371AD50BE00055E664 /* LTVGGlyphRun.mm */,
+				25AF17381AD50BE00055E664 /* LTVGLine.h */,
+				25AF17391AD50BE00055E664 /* LTVGLine.mm */,
+				25AF173A1AD50BE00055E664 /* LTVGLines.h */,
+				25AF173B1AD50BE00055E664 /* LTVGLines.mm */,
+				25AF17441AD50BE00055E664 /* LTVGTypesetter.h */,
+				25AF17451AD50BE00055E664 /* LTVGTypesetter.mm */,
+			);
+			name = Typography;
+			sourceTree = "<group>";
+		};
+		25AF17581AD50BE50055E664 /* Vector Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				25AF17221AD50B4A0055E664 /* Typography */,
+			);
+			name = "Vector Graphics";
+			sourceTree = "<group>";
+		};
+		25AF17591AD50C150055E664 /* Vector Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				25AF175A1AD50C1C0055E664 /* Typography */,
+			);
+			name = "Vector Graphics";
+			sourceTree = "<group>";
+		};
+		25AF175A1AD50C1C0055E664 /* Typography */ = {
+			isa = PBXGroup;
+			children = (
+				25AF175C1AD50C250055E664 /* LTVGGlyphSpec.mm */,
+				25AF175B1AD50C250055E664 /* LTVGGlyphRunSpec.mm */,
+				25AF175D1AD50C250055E664 /* LTVGLineSpec.mm */,
+				25AF175E1AD50C250055E664 /* LTVGLinesSpec.mm */,
+				25AF17631AD50C250055E664 /* LTVGTypesetterSpec.mm */,
+			);
+			name = Typography;
+			sourceTree = "<group>";
+		};
+		25AF176D1AD50C4A0055E664 /* Vector Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				25AF176E1AD50C4F0055E664 /* Typography */,
+			);
+			name = "Vector Graphics";
+			sourceTree = "<group>";
+		};
+		25AF176E1AD50C4F0055E664 /* Typography */ = {
+			isa = PBXGroup;
+			children = (
+				25AF17871AD50CBF0055E664 /* GlyphRunTest.png */,
+				25AF17881AD50CBF0055E664 /* GlyphRunTrackingTest.png */,
+				25AF17891AD50CBF0055E664 /* GlyphTest.png */,
+				25AF178D1AD50CCB0055E664 /* FramesetterTest.png */,
+				25AF177F1AD50CB60055E664 /* LinesLeadingTrackingTest.png */,
+				25AF17801AD50CB60055E664 /* LinesTest.png */,
+				25AF17811AD50CB60055E664 /* LineTest.png */,
+				25AF17821AD50CB60055E664 /* LineTrackingTest.png */,
+			);
+			name = Typography;
+			sourceTree = "<group>";
+		};
 		280F5A11191A8CC700F9F80B /* Shape Drawer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2694,6 +2808,7 @@
 				8BA822091987885900FBE68E /* Serialization */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 				28ABDFF618715394005A5DEC /* UI */,
+				25AF17581AD50BE50055E664 /* Vector Graphics */,
 			);
 			path = LTKit;
 			sourceTree = "<group>";
@@ -2790,6 +2905,7 @@
 		8B3F94991879A77500FAA265 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				25AF176D1AD50C4A0055E664 /* Vector Graphics */,
 				037238371AA317F000937EAA /* Indexed.png */,
 				037238381AA317F000937EAA /* IndexedWithAlpha.png */,
 				03DDFC581A8A2D9500D120B3 /* RadialMaskCenterInverted.png */,
@@ -3009,6 +3125,7 @@
 				8BA82289198805BC00FBE68E /* Serialization */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 				28ABE00618715514005A5DEC /* UI */,
+				25AF17591AD50C150055E664 /* Vector Graphics */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -3638,6 +3755,7 @@
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
 				03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */,
 				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
+				25AF17561AD50BE00055E664 /* LTVGTypesetter.h in Headers */,
 				8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */,
 				28D86F651962DB0D00145674 /* LTBrushEffect.h in Headers */,
 				282AC6AE1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.h in Headers */,
@@ -3696,6 +3814,7 @@
 				8B8720031924A76000517F2E /* LTMMTexture.h in Headers */,
 				8B8720041924A76000517F2E /* LTProgram.h in Headers */,
 				8B8720051924A76000517F2E /* LTShader.h in Headers */,
+				25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */,
 				8B8720061924A76000517F2E /* LTTexture.h in Headers */,
 				8B8720071924A76000517F2E /* LTTexture+Factory.h in Headers */,
 				8B8720081924A76000517F2E /* LTVertexArray.h in Headers */,
@@ -3724,6 +3843,7 @@
 				28BBD77F19A0FCCF0062C803 /* LTRect.h in Headers */,
 				2829F07F1991007B00DE1072 /* LTCropProcessor.h in Headers */,
 				8B8720191924A76200517F2E /* LTRotatedRect+UIColor.h in Headers */,
+				25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */,
 				8B87201A1924A76200517F2E /* LTEdgeAvoidingBrush.h in Headers */,
 				8B87201C1924A76200517F2E /* LTRoundBrush.h in Headers */,
 				8B87201D1924A76200517F2E /* LTTextureBrush.h in Headers */,
@@ -3751,6 +3871,7 @@
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
+				25AF174A1AD50BE00055E664 /* LTVGLine.h in Headers */,
 				8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */,
 				8B87202F1924A76400517F2E /* LTPainter+LTView.h in Headers */,
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
@@ -3784,6 +3905,7 @@
 				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
 				8B8720431924A76700517F2E /* LTTypedefs.h in Headers */,
 				8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */,
+				25AF174C1AD50BE00055E664 /* LTVGLines.h in Headers */,
 				8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */,
 				8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */,
 				8B8720471924A76800517F2E /* LTView.h in Headers */,
@@ -4087,6 +4209,7 @@
 				03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */,
 				A8BDC63F1AC9DA64005FC392 /* CircularPatchDrawerColors.png in Resources */,
 				8BABF18F19BC52C100AED760 /* PyramidGrid4.png in Resources */,
+				25AF178E1AD50CCB0055E664 /* FramesetterTest.png in Resources */,
 				28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */,
@@ -4103,11 +4226,13 @@
 				284AA2B41AC99DD1007F86DB /* CircularHealAlpha.png in Resources */,
 				032DFC501A1A50FB002A4F69 /* Lena128BasicOilPainting.png in Resources */,
 				28842EA619DB347E00BD8FEE /* PerspectiveFit.png in Resources */,
+				25AF17851AD50CB60055E664 /* LineTest.png in Resources */,
 				2810938F1ACC5DCD00BDBD0C /* CircularPatchDrawerScreen.png in Resources */,
 				28A2546D19C9D84C0057E1A3 /* ReshapeProcessorResizeWithMask.png in Resources */,
 				03DDFC591A8A2D9500D120B3 /* RadialMaskCenterInverted.png in Resources */,
 				A8BDC6421AC9DA64005FC392 /* CircularPatchDrawerMirror.png in Resources */,
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
+				25AF17831AD50CB60055E664 /* LinesLeadingTrackingTest.png in Resources */,
 				28FB00F21A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
@@ -4153,6 +4278,7 @@
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				284AA2B61AC99DD1007F86DB /* CircularHealFeathering.png in Resources */,
 				28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */,
+				25AF17861AD50CB60055E664 /* LineTrackingTest.png in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
 				03694DD9199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png in Resources */,
 				03045D7C19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png in Resources */,
@@ -4196,6 +4322,7 @@
 				03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */,
 				28C709DF1A49B44F00489FA1 /* RecomposeOutput.png in Resources */,
 				0367A48718AA02ED00B42E34 /* Lena128BWTonality.png in Resources */,
+				25AF178B1AD50CBF0055E664 /* GlyphRunTrackingTest.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
 				8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */,
@@ -4205,12 +4332,14 @@
 				03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */,
 				8BA8204F197E5CAD00FBE68E /* LTImageNoise@2x.png in Resources */,
 				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,
+				25AF178A1AD50CBF0055E664 /* GlyphRunTest.png in Resources */,
 				28A366A319754475009F0A4D /* SemiTransparentGray.png in Resources */,
 				A8BDC6411AC9DA64005FC392 /* CircularPatchDrawerHeal.png in Resources */,
 				28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */,
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				8BA82040197E55C800FBE68E /* RectRotated.jpg in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
+				25AF17841AD50CB60055E664 /* LinesTest.png in Resources */,
 				280F5A2D191A975500F9F80B /* ShapeDrawerEllipticShapeCircle.png in Resources */,
 				A8BDC6431AC9DA64005FC392 /* CircularPatchDrawerPatch.png in Resources */,
 				28FB00EF1A0AB46D004490AF /* BristleBrushBristles.FlatPoint.png in Resources */,
@@ -4230,6 +4359,7 @@
 				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				283BD03F1922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png in Resources */,
 				284AA2B71AC99DD1007F86DB /* CircularPatchAlpha.png in Resources */,
+				25AF178C1AD50CBF0055E664 /* GlyphTest.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
@@ -4310,6 +4440,7 @@
 				8BA821B41986846900FBE68E /* NSValue+LTVector.mm in Sources */,
 				8BC1C9E719FA5A0800107580 /* LTAspectFillResizeProcessor.mm in Sources */,
 				28E8AF121997AB4700C2DD22 /* LTCropDrawerRect.mm in Sources */,
+				25AF17491AD50BE00055E664 /* LTVGGlyphRun.mm in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
@@ -4423,6 +4554,7 @@
 				5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				28B3346919C826D3004B6191 /* LTOneShotImageProcessor.mm in Sources */,
+				25AF17571AD50BE00055E664 /* LTVGTypesetter.mm in Sources */,
 				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
@@ -4444,6 +4576,7 @@
 				031338D2191279B30095F99B /* LTImageBorderProcessor.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
+				25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */,
 				2843B6F818A7E1050044B87A /* LTRotatedRect.mm in Sources */,
 				2888EEAC1993D2F70008F1C7 /* LTCropDrawer.mm in Sources */,
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
@@ -4474,6 +4607,7 @@
 				8BC465B31899267C0094F7BC /* LTForegroundOperation.mm in Sources */,
 				284ED12818954ECB00414A8A /* LTCatmullRomInterpolationRoutine.mm in Sources */,
 				280F5A1E191A8D1E00F9F80B /* LTCommonDrawableShape.mm in Sources */,
+				25AF174B1AD50BE00055E664 /* LTVGLine.mm in Sources */,
 				284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */,
 				28BB819B1924DF520071CB0B /* LTShapeDrawer.mm in Sources */,
 				2839069518C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm in Sources */,
@@ -4482,6 +4616,7 @@
 				280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */,
 				8BABF16F19BC3AC000AED760 /* LTPyramidProcessor.mm in Sources */,
 				8B8720CF192521FB00517F2E /* LTTextureContentsBundleArchiver.mm in Sources */,
+				25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */,
 				8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				283906B318C4E27300BD21CE /* LTPainter.mm in Sources */,
@@ -4567,6 +4702,7 @@
 				03D516F918B5DBEF0026B56A /* LTAdjustProcessorSpec.mm in Sources */,
 				8BE51F7418FFF78000E907AE /* LTRecomposeProcessorSpec.mm in Sources */,
 				8B9D3FF418954605001A964D /* LTTextureFactorySpec.mm in Sources */,
+				25AF17661AD50C250055E664 /* LTVGLineSpec.mm in Sources */,
 				8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm in Sources */,
@@ -4618,6 +4754,7 @@
 				288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */,
 				8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */,
 				8BAE3A8818B3B15A00DA79E1 /* LTColorGradientSpec.mm in Sources */,
+				25AF176C1AD50C250055E664 /* LTVGTypesetterSpec.mm in Sources */,
 				500AB3FD19D1B840000DC814 /* LTGeometrySpec.mm in Sources */,
 				506F826B19FE5DD700A15D9D /* LTQuadDrawerSpec.mm in Sources */,
 				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
@@ -4634,6 +4771,7 @@
 				0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */,
 				03045D3319C1717E0075207D /* LTClarityProcessorSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
+				25AF17651AD50C250055E664 /* LTVGGlyphSpec.mm in Sources */,
 				8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */,
 				287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */,
 				8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */,
@@ -4705,6 +4843,7 @@
 				50AE95D719D17624000E8086 /* LTQuadSpec.mm in Sources */,
 				8BAE3A1318AD031100DA79E1 /* LTPatchBoundaryProcessorSpec.mm in Sources */,
 				505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */,
+				25AF17671AD50C250055E664 /* LTVGLinesSpec.mm in Sources */,
 				2843B77E18ACBF710044B87A /* LTSingleRectDrawerSpec.mm in Sources */,
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
@@ -4724,6 +4863,7 @@
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,
+				25AF17641AD50C250055E664 /* LTVGGlyphRunSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
