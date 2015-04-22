@@ -56,9 +56,61 @@ BOOL LTPointsAreCollinear(const CGPoints &points) {
   return YES;
 }
 
+#pragma mark -
+#pragma mark Convex hull
+#pragma mark -
+
+/// Method used for comparison of points during convex hull computation
+static bool LTConvexHullPointComparison(CGPoint p, CGPoint q) {
+  return p.x < q.x || (p.x == q.x && p.y < q.y);
+}
+
+/// For implementation details, @see http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain.
+CGPoints LTConvexHull(const CGPoints &points) {
+  NSUInteger n = points.size();
+  CGPoints result(2 * n);
+  CGPoints sortedPoints = points;
+  std::sort(sortedPoints.begin(), sortedPoints.end(), LTConvexHullPointComparison);
+
+  // Construct lower hull.
+  NSUInteger k = 0;
+  for (NSUInteger i = 0; i < n; ++i) {
+    while (k >= 2 && LTPointLocationLeftOfRay !=
+           LTPointLocationRelativeToRay(sortedPoints[i], result[k - 2],
+                                        result[k - 1] - result[k - 2])) {
+      --k;
+    }
+    if (k == 0 || result[k - 1] != sortedPoints[i]) {
+      result[k] = sortedPoints[i];
+      ++k;
+    }
+  }
+
+  // Construct upper hull.
+  NSUInteger t = k + 1;
+  for (NSInteger i = n - 2; i >= 0; --i) {
+    while (k >= t && LTPointLocationLeftOfRay !=
+           LTPointLocationRelativeToRay(sortedPoints[i], result[k - 2],
+                                        result[k - 1] - result[k - 2])) {
+      --k;
+    }
+    if (result[k - 1] != sortedPoints[i]) {
+      result[k] = sortedPoints[i];
+      ++k;
+    }
+  }
+
+  // Remove endpoint if it conindices with the start point.
+  if (k > 1 && result[0] == result[k - 1]) {
+    result.resize(k - 1);
+  } else {
+    result.resize(k);
+  }
+  return result;
+}
 
 #pragma mark -
-#pragma mark - Rotation
+#pragma mark Rotation
 #pragma mark -
 
 CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
@@ -70,7 +122,7 @@ CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
 }
 
 #pragma mark -
-#pragma mark - Intersection
+#pragma mark Intersection
 #pragma mark -
 
 // TODO:(Rouven) This method implements a naive O(n^2) approach. More efficient algorithms are
@@ -177,7 +229,7 @@ CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
 }
 
 #pragma mark -
-#pragma mark - Point to line/edge relation
+#pragma mark Point to line/edge relation
 #pragma mark -
 
 /// @see: http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line

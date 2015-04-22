@@ -89,6 +89,114 @@ context(@"collinearity", ^{
   });
 });
 
+context(@"convex hull", ^{
+  it(@"should correctly compute the convex hull of an empty set of points", ^{
+    CGPoints convexHull = LTConvexHull({});
+    expect(convexHull.size()).to.equal(0);
+  });
+
+  it(@"should correctly compute the convex hull of a set of points consisting of a single point", ^{
+    CGPoints convexHull = LTConvexHull({CGPointMake(1, 2)});
+    expect(convexHull.size()).to.equal(1);
+    expect(convexHull[0]).to.equal(CGPointMake(1, 2));
+  });
+
+  context(@"two points", ^{
+    it(@"should correctly compute the convex hull of a set of two points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2)});
+      expect(convexHull.size()).to.equal(2);
+      expect(convexHull[0]).to.equal(CGPointMake(1, 2));
+      expect(convexHull[1]).to.equal(CGPointMake(2, 3));
+    });
+
+    it(@"should correctly compute the convex hull of a set of two identical points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(1, 2), CGPointMake(1, 2)});
+      expect(convexHull.size()).to.equal(1);
+      expect(convexHull[0]).to.equal(CGPointMake(1, 2));
+    });
+  });
+
+  context(@"three points", ^{
+    it(@"should correctly compute the convex hull of a set of three non-collinear points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0, 1)});
+      expect(convexHull.size()).to.equal(3);
+      expect(convexHull[0]).to.equal(CGPointMake(0, 1));
+      expect(convexHull[1]).to.equal(CGPointMake(2, 3));
+      expect(convexHull[2]).to.equal(CGPointMake(1, 1));
+    });
+
+    it(@"should correctly compute the convex hull of a set of three collinear points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0, 1)});
+      expect(convexHull.size()).to.equal(2);
+      expect(convexHull[0]).to.equal(CGPointMake(0, 1));
+      expect(convexHull[1]).to.equal(CGPointMake(2, 3));
+    });
+  });
+
+  context(@"four points", ^{
+    it(@"should correctly compute the convex hull of a set of four non-collinear points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0.5, 7),
+        CGPointMake(0, 1)});
+      expect(convexHull.size()).to.equal(4);
+      expect(convexHull[0]).to.equal(CGPointMake(0, 1));
+      expect(convexHull[1]).to.equal(CGPointMake(0.5, 7));
+      expect(convexHull[2]).to.equal(CGPointMake(2, 3));
+      expect(convexHull[3]).to.equal(CGPointMake(1, 1));
+    });
+
+    it(@"should correctly compute the convex hull of a set of four partially collinear points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0.5, 7),
+        CGPointMake(0, 1)});
+      expect(convexHull.size()).to.equal(3);
+      expect(convexHull[0]).to.equal(CGPointMake(0, 1));
+      expect(convexHull[1]).to.equal(CGPointMake(0.5, 7));
+      expect(convexHull[2]).to.equal(CGPointMake(2, 3));
+    });
+
+    it(@"should correctly compute the convex hull of a set of four collinear points", ^{
+      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(3, 4),
+        CGPointMake(0, 1)});
+      expect(convexHull.size()).to.equal(2);
+      expect(convexHull[0]).to.equal(CGPointMake(0, 1));
+      expect(convexHull[1]).to.equal(CGPointMake(3, 4));
+    });
+  });
+
+  context(@"arbitary number of points", ^{
+    it(@"should correctly compute the convex hull of a set of points", ^{
+      LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
+
+      CGPoints points;
+      NSUInteger size = 1000;
+
+      for (NSUInteger i = 0; i < size; ++i) {
+        points.push_back(CGPointMake([random randomDoubleBetweenMin:0 max:1],
+                                     [random randomDoubleBetweenMin:0 max:1]));
+      }
+
+      CGPoints convexHull = LTConvexHull(points);
+      NSUInteger n = convexHull.size();
+      expect(n).to.beGreaterThan(0);
+
+      // Check that resulting points constitute a convex polygon.
+      for (NSUInteger i = 0; i < n; ++i) {
+        expect(LTPointLocationRelativeToRay(convexHull[(i + 2) % n], convexHull[i],
+                                            convexHull[(i + 1) % n] - convexHull[i]))
+            .toNot.equal(LTPointLocationRightOfRay);
+      }
+
+      // Check that all points lie inside the polygon.
+      for (const CGPoint &p : points) {
+        for (NSUInteger j = 0; j < n; ++j) {
+          expect(LTPointLocationRelativeToRay(p, convexHull[j],
+                                              convexHull[(j + 1) % n] - convexHull[j]))
+              .toNot.equal(LTPointLocationRightOfRay);
+        }
+      }
+    });
+  });
+});
+
 context(@"affine transformations", ^{
   it(@"should correctly rotate a given point", ^{
     CGPoint point = LTRotatePoint(CGPointMake(1, 0), M_PI_2);

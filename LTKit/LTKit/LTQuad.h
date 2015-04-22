@@ -187,6 +187,9 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// Rect that bounds the quad.
 @property (readonly, nonatomic) CGRect boundingRect;
 
+/// Points representing the convex hull of this quad.
+@property (readonly, nonatomic) CGPoints convexHull;
+
 /// Center of this quad. The center is defined to be the average of the coordinates of the corner
 /// points.
 @property (readonly, nonatomic) CGPoint center;

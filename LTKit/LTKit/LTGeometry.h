@@ -19,9 +19,25 @@ LTPointLocation LTPointLocationRelativeToRay (CGPoint point, CGPoint origin, CGP
 /// Returns \c YES if the provided points are collinear.
 BOOL LTPointsAreCollinear(const CGPoints &points);
 
+#pragma mark -
+#pragma mark Convex hull
+#pragma mark -
+
+/// Returns the subset of the given \c points constituting the convex hull of the given \c points.
+/// Time complexity is O\c n \c log \c n), where \c n is the number of given \c points.
+CGPoints LTConvexHull(const CGPoints &points);
+
+#pragma mark -
+#pragma mark Rotation
+#pragma mark -
+
 /// Returns the result of rotating the given \c point in clockwise direction by \c angle around the
 /// provided \c anchor point. The \c angle has to be given in radians.
 CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor = CGPointZero);
+
+#pragma mark -
+#pragma mark Intersection
+#pragma mark -
 
 /// Given a collection of \c CGPoints, returns \c YES if the polyline with edges
 /// \c (points[0], points[1]), \c (points[1], points[2]), ... is self-intersecting. The provided
@@ -57,6 +73,10 @@ CGPoint LTPointOnLineClosestToPoint(CGPoint pointOnLine, CGPoint anotherPointOnL
 
 /// Returns the point on the edge (\c p0, \c p1) with the smallest distance to the given \c point.
 CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point);
+
+#pragma mark -
+#pragma mark Point to line/edge relation
+#pragma mark -
 
 /// Returns a pair (\c p, \c q) of points, s.t. \c p and \c q, respectively, are the points on edge
 /// (\c p0, \c p1) and edge (\c q0, \c q1), respectively, with the minimum distance. If the given
