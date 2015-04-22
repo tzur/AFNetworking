@@ -325,6 +325,10 @@ static const CGFloat kEpsilon = 1e-10;
   return CGRectFromEdges(minX, minY, maxX, maxY);
 }
 
+- (CGPoints)convexHull {
+  return LTConvexHull({self.v0, self.v1, self.v2, self.v3});
+}
+
 - (CGPoint)center {
   return (self.v0 + self.v1 + self.v2 + self.v3) / 4;
 }

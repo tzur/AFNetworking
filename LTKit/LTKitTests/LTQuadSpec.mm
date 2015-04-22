@@ -637,6 +637,25 @@ context(@"properties", ^{
     expect(quad.boundingRect).to.equal(expectedBoundingRect);
   });
 
+  it(@"should correctly compute its convex hull", ^{
+    LTQuadCorners corners{{v0, v1, v2, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    CGPoints convexHull = quad.convexHull;
+    expect(convexHull.size()).to.equal(4);
+    expect(convexHull[0]).to.equal(v0);
+    expect(convexHull[1]).to.equal(v3);
+    expect(convexHull[2]).to.equal(v2);
+    expect(convexHull[3]).to.equal(v1);
+
+    corners = {{v0, v1, w0, v3}};
+    quad = [[LTQuad alloc] initWithCorners:corners];
+    convexHull = quad.convexHull;
+    expect(convexHull.size()).to.equal(3);
+    expect(convexHull[0]).to.equal(v0);
+    expect(convexHull[1]).to.equal(v3);
+    expect(convexHull[2]).to.equal(v1);
+  });
+
   it(@"should correctly compute the center", ^{
     quad = [LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)];
     expect(quad.center).to.beCloseToPoint(CGPointMake(0.5, 0.5));
