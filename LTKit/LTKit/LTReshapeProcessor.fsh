@@ -29,7 +29,7 @@ void main() {
   sourceTexture;
   
   // Multiply the point with the aspect ratio to get accurate euclidean distances based on the real
-  // texture dimensions (since we're working with noramlized coordinates here).
+  // texture dimensions (since we're working with normalized coordinates here).
   highp vec2 lastFrag = gl_LastFragData[0].rg;
   highp vec2 currentPointWithOffset = (vTexcoord + lastFrag) * aspectFactor;
   
