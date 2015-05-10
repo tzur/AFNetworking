@@ -126,15 +126,6 @@ context(@"properties", ^{
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationNearest);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationNearest);
   });
-
-  it(@"will set maximal mipmap level", ^{
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRGBA allocateMemory:NO];
-    texture.maxMipmapLevel = 1000;
-
-    expect(texture.maxMipmapLevel).to.equal(1000);
-  });
 });
 
 context(@"binding and execution", ^{
@@ -235,7 +226,6 @@ context(@"coding and decoding", ^{
 
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
     texture.usingAlphaChannel = YES;
-    texture.usingHighPrecisionByte = YES;
 
     cv::Mat1b image(texture.size.height, texture.size.width);
     for (int y = 0; y < image.rows; ++y) {
@@ -252,7 +242,6 @@ context(@"coding and decoding", ^{
     expect(decoded.channels).to.equal(texture.channels);
     expect(decoded.format).to.equal(texture.format);
     expect(decoded.usingAlphaChannel).to.equal(texture.usingAlphaChannel);
-    expect(decoded.usingHighPrecisionByte).to.equal(texture.usingHighPrecisionByte);
     expect(decoded.minFilterInterpolation).to.equal(texture.minFilterInterpolation);
     expect(decoded.magFilterInterpolation).to.equal(texture.magFilterInterpolation);
     expect(decoded.wrap).to.equal(texture.wrap);

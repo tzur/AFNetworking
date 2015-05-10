@@ -142,7 +142,6 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 @property (nonatomic) LTTextureInterpolation minFilterInterpolation;
 @property (nonatomic) LTTextureInterpolation magFilterInterpolation;
 @property (nonatomic) LTTextureWrap wrap;
-@property (nonatomic) GLint maxMipmapLevel;
 
 @end
 
@@ -207,7 +206,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
     _channels = LTTextureChannelsFromFormat(format);
     _size = size;
     _fillColor = LTVector4Null;
-    _generationID = [NSUUID UUID];
+    _generationID = [NSUUID UUID].UUIDString;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
     [self setDefaultValues];
@@ -329,8 +328,6 @@ static NSString * const kArchiveKey = @"archive";
     [self unarchiveWithCoder:aDecoder];
 
     self.usingAlphaChannel = [aDecoder decodeBoolForKey:@keypath(self, usingAlphaChannel)];
-    self.usingHighPrecisionByte =
-        [aDecoder decodeBoolForKey:@keypath(self, usingHighPrecisionByte)];
 
     self.minFilterInterpolation =
         (LTTextureInterpolation)[[aDecoder
@@ -370,7 +367,6 @@ static NSString * const kArchiveKey = @"archive";
   [aCoder encodeObject:@(self.format) forKey:@keypath(self, format)];
 
   [aCoder encodeBool:self.usingAlphaChannel forKey:@keypath(self, usingAlphaChannel)];
-  [aCoder encodeBool:self.usingHighPrecisionByte forKey:@keypath(self, usingHighPrecisionByte)];
 
   [aCoder encodeObject:@(self.minFilterInterpolation)
                 forKey:@keypath(self, minFilterInterpolation)];
@@ -637,7 +633,6 @@ static NSString * const kArchiveKey = @"archive";
   parameters.minFilterInterpolation = self.minFilterInterpolation;
   parameters.magFilterInterpolation = self.magFilterInterpolation;
   parameters.wrap = self.wrap;
-  parameters.maxMipmapLevel = self.maxMipmapLevel;
   return parameters;
 }
 
@@ -646,7 +641,6 @@ static NSString * const kArchiveKey = @"archive";
     self.minFilterInterpolation = parameters.minFilterInterpolation;
     self.magFilterInterpolation = parameters.magFilterInterpolation;
     self.wrap = parameters.wrap;
-    self.maxMipmapLevel = parameters.maxMipmapLevel;
   }];
 }
 
@@ -660,7 +654,7 @@ static NSString * const kArchiveKey = @"archive";
 }
 
 - (void)updateGenerationID {
-  self.generationID = [NSUUID UUID];
+  self.generationID = [NSUUID UUID].UUIDString;
 }
 
 - (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block {

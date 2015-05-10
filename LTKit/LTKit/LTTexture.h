@@ -375,16 +375,15 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// Format the texture is stored with on the GPU.
 @property (readonly, nonatomic) LTTextureFormat format;
 
+/// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
+/// value is \c 0.
+@property (readonly, nonatomic) GLint maxMipmapLevel;
+
 /// Set to \c YES if the texture is using its alpha channel. This cannot be inferred from the
 /// texture data itself, and should be set to \c YES when needed. Setting this value to \c YES will
 /// enable texture processing algorithms to avoid running computations on the alpha channel, saving
 /// time and/or memory.  The default value is \c NO.
 @property (nonatomic) BOOL usingAlphaChannel;
-
-/// Returns \c YES if the texture is using multiple byte channels to encode higher precision values.
-/// This cannot be inferred from the texture data itself, and should be set to \c YES when needed.
-/// The default value is \c NO.
-@property (nonatomic) BOOL usingHighPrecisionByte;
 
 /// Interpolation of the texture when downsampling. Default is \c LTTextureInterpolationLinear.
 @property (nonatomic) LTTextureInterpolation minFilterInterpolation;
@@ -397,10 +396,6 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// condition doesn't hold, the property will not change.
 @property (nonatomic) LTTextureWrap wrap;
 
-/// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
-/// value is \c 0.
-@property (nonatomic) GLint maxMipmapLevel;
-
 /// Current generation ID of this texture. The generation ID changes whenever the texture is
 /// modified, and is copied when a texture is cloned. This can be used as an efficient way to check
 /// if a texture has changed or if two textures have the same content.
@@ -408,7 +403,7 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// @note While two textures having equal \c generationID implies that they have the same
 /// content, the other direction is not necessarily true as two textures can have the same content
 /// with different \c generationID.
-@property (readonly, nonatomic) id generationID;
+@property (readonly, nonatomic) NSString *generationID;
 
 /// Returns the color the entire texture (and all its levels for mipmap textures) is filled with,
 /// or \c LTVector4Null in case it is uncertain that the texture is filled with a single color.

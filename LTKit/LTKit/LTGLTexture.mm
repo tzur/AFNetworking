@@ -24,9 +24,14 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 @implementation LTGLTexture
 
 - (instancetype)initWithPropertiesOf:(LTTexture *)texture {
-  if (self = [super initWithSize:texture.size precision:texture.precision
-                          format:texture.format allocateMemory:NO]) {
-    [self allocateMipmapLevels:texture.maxMipmapLevel forTexture:self];
+  return [self initWithSize:texture.size precision:texture.precision
+                     format:texture.format maxMipmapLevel:texture.maxMipmapLevel];
+}
+
+- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
+                      format:(LTTextureFormat)format maxMipmapLevel:(GLint)maxMipmapLevel {
+  if (self = [super initWithSize:size precision:precision format:format allocateMemory:NO]) {
+    [self allocateMipmapLevels:maxMipmapLevel forTexture:self];
   }
   return self;
 }
