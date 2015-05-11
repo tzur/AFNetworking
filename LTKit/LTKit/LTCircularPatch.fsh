@@ -11,6 +11,7 @@ uniform sampler2D sourceTexture;
 // True if circular patch mode is heal.
 uniform bool isCircularPatchModeHeal;
 uniform mediump float alpha;
+uniform mediump float smoothingAlpha;
 
 mediump float boundaryConditionForPosition(mediump float location) {
   mediump float base = mod(location, 1.0);
@@ -31,13 +32,15 @@ mediump vec2 boundaryConditionForCoordinate(mediump vec2 coord) {
 
 void main() {
   lowp vec4 sourceColor;
+  mediump float membraneAlpha = smoothingAlpha;
   if (isCircularPatchModeHeal) {
     sourceColor = vec4(0.0, 0.0, 0.0, 1.0);
+    membraneAlpha = 1.0;
   } else {
     sourceColor = texture2D(sourceTexture, boundaryConditionForCoordinate(vSourceCoord));
   }
   
   lowp vec4 targetColor = texture2D(sourceTexture, boundaryConditionForCoordinate(vTargetCoord));
-  gl_FragColor = vec4(mix(targetColor.rgb, vMembraneColor.rgb + sourceColor.rgb,
+  gl_FragColor = vec4(mix(targetColor.rgb, vMembraneColor.rgb * membraneAlpha + sourceColor.rgb,
                           vMembraneColor.a * alpha), 1.0);
 }

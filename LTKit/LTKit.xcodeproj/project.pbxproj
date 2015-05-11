@@ -256,6 +256,7 @@
 		283906B318C4E27300BD21CE /* LTPainter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283906B218C4E27300BD21CE /* LTPainter.mm */; };
 		283906C918C6217A00BD21CE /* LTPainterMergeShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 283906C718C620DB00BD21CE /* LTPainterMergeShader.fsh */; };
 		283906CB18C71DF500BD21CE /* LTPainterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283906CA18C71DF500BD21CE /* LTPainterSpec.mm */; };
+		2839AA991AF10E030019EEE6 /* CircularPatchFlipped.png in Resources */ = {isa = PBXBuildFile; fileRef = 2839AA981AF10E030019EEE6 /* CircularPatchFlipped.png */; };
 		283BD03F1922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BD0391922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png */; };
 		283BD0401922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BD03A1922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png */; };
 		283BD0411922214300B68A90 /* ShapeDrawerPathShapeLineFromOrigin.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BD03B1922214300B68A90 /* ShapeDrawerPathShapeLineFromOrigin.png */; };
@@ -339,6 +340,8 @@
 		287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */ = {isa = PBXBuildFile; fileRef = 287A96F21A3320F200A609CD /* NSValue+Type.h */; };
 		287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287A96F31A3320F200A609CD /* NSValue+Type.mm */; };
 		2881A1A6196BDD2C00E7F523 /* LTRoundBrush.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2881A199196BDCD600E7F523 /* LTRoundBrush.fsh */; };
+		2881CDA61AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 2881CDA51AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png */; };
+		2881CDB91AF107BC0080847C /* CircularPatchDrawerFlipped.png in Resources */ = {isa = PBXBuildFile; fileRef = 2881CDB81AF107BC0080847C /* CircularPatchDrawerFlipped.png */; };
 		28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */; };
 		28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */; };
 		28842EA519DB347E00BD8FEE /* PerspectiveFill.png in Resources */ = {isa = PBXBuildFile; fileRef = 28842EA319DB347E00BD8FEE /* PerspectiveFill.png */; };
@@ -1411,6 +1414,7 @@
 		283906B218C4E27300BD21CE /* LTPainter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainter.mm; sourceTree = "<group>"; };
 		283906C718C620DB00BD21CE /* LTPainterMergeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPainterMergeShader.fsh; sourceTree = "<group>"; };
 		283906CA18C71DF500BD21CE /* LTPainterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterSpec.mm; sourceTree = "<group>"; };
+		2839AA981AF10E030019EEE6 /* CircularPatchFlipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchFlipped.png; path = Resources/CircularPatchFlipped.png; sourceTree = "<group>"; };
 		283BD0391922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeCloseSubpath.png; path = Resources/ShapeDrawerPathShapeCloseSubpath.png; sourceTree = "<group>"; };
 		283BD03A1922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeLineFromCenter.png; path = Resources/ShapeDrawerPathShapeLineFromCenter.png; sourceTree = "<group>"; };
 		283BD03B1922214300B68A90 /* ShapeDrawerPathShapeLineFromOrigin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeLineFromOrigin.png; path = Resources/ShapeDrawerPathShapeLineFromOrigin.png; sourceTree = "<group>"; };
@@ -1512,6 +1516,8 @@
 		287A96F21A3320F200A609CD /* NSValue+Type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+Type.h"; sourceTree = "<group>"; };
 		287A96F31A3320F200A609CD /* NSValue+Type.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+Type.mm"; sourceTree = "<group>"; };
 		2881A199196BDCD600E7F523 /* LTRoundBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTRoundBrush.fsh; sourceTree = "<group>"; };
+		2881CDA51AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerSmoothingAlpha.png; path = Resources/CircularPatchDrawerSmoothingAlpha.png; sourceTree = "<group>"; };
+		2881CDB81AF107BC0080847C /* CircularPatchDrawerFlipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerFlipped.png; path = Resources/CircularPatchDrawerFlipped.png; sourceTree = "<group>"; };
 		28842E8F19DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveBarrelCorrection.png; path = Resources/PerspectiveBarrelCorrection.png; sourceTree = "<group>"; };
 		28842E9019DB2E4900BD8FEE /* PerspectivePincushionCorrection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectivePincushionCorrection.png; path = Resources/PerspectivePincushionCorrection.png; sourceTree = "<group>"; };
 		28842EA319DB347E00BD8FEE /* PerspectiveFill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveFill.png; path = Resources/PerspectiveFill.png; sourceTree = "<group>"; };
@@ -3059,12 +3065,14 @@
 				A8BDC6371AC9DA64005FC392 /* CircularPatchDrawerAlpha.png */,
 				A8BDC6381AC9DA64005FC392 /* CircularPatchDrawerColors.png */,
 				A8BDC6391AC9DA64005FC392 /* CircularPatchDrawerDefault.png */,
+				2881CDB81AF107BC0080847C /* CircularPatchDrawerFlipped.png */,
 				A8BDC63A1AC9DA64005FC392 /* CircularPatchDrawerHeal.png */,
 				289757991AE66EE900A44594 /* CircularPatchDrawerMasked.png */,
 				A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */,
 				A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */,
 				A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */,
 				2810938E1ACC5DCD00BDBD0C /* CircularPatchDrawerScreen.png */,
+				2881CDA51AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png */,
 				284AA2A21AC99DD1007F86DB /* CircularCloneAlpha.png */,
 				284AA2A31AC99DD1007F86DB /* CircularCloneDefault.png */,
 				284AA2A41AC99DD1007F86DB /* CircularCloneFeathering.png */,
@@ -3076,6 +3084,7 @@
 				284AA2AA1AC99DD1007F86DB /* CircularPatchDefault.png */,
 				284AA2AB1AC99DD1007F86DB /* CircularPatchDoubleMirror.png */,
 				284AA2AC1AC99DD1007F86DB /* CircularPatchFeathering.png */,
+				2839AA981AF10E030019EEE6 /* CircularPatchFlipped.png */,
 				284AA2AD1AC99DD1007F86DB /* CircularPatchMirror.png */,
 				284AA2AE1AC99DD1007F86DB /* CircularPatchRotation.png */,
 				284AA2AF1AC99DD1007F86DB /* CircularPatchVisibleTarget.png */,
@@ -4190,6 +4199,7 @@
 				0366BA4118CCA51A002E6BA1 /* Meal.jpg in Resources */,
 				03BCFD4B191FA6E200529AD6 /* SmoothBorder.png in Resources */,
 				03A094FC19ED453600BB542A /* Lena128AnalogProcessor.png in Resources */,
+				2839AA991AF10E030019EEE6 /* CircularPatchFlipped.png in Resources */,
 				03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */,
 				8BABF11019B8914F00AED760 /* Flower.png in Resources */,
 				284AA2B11AC99DD1007F86DB /* CircularCloneDefault.png in Resources */,
@@ -4198,6 +4208,7 @@
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
 				283BD0441922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png in Resources */,
+				2881CDA61AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png in Resources */,
 				A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */,
 				2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */,
 				284AA2B91AC99DD1007F86DB /* CircularPatchDoubleMirror.png in Resources */,
@@ -4284,6 +4295,7 @@
 				03045D7C19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
+				2881CDB91AF107BC0080847C /* CircularPatchDrawerFlipped.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
 				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
 				03C192B118F67FBA00DC6CA6 /* RadialMaskCenter.png in Resources */,

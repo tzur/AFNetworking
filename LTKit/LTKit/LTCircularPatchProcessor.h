@@ -36,8 +36,11 @@ LTPropertyDeclare(CGFloat, radius, Radius);
 @property (nonatomic) CGFloat rotation;
 LTPropertyDeclare(CGFloat, rotation, Rotation);
 
-/// Controls the amount of feathering of the membrane. Default value is \c 1, which means light
-/// feathering. Lower alpha value means target patch will have higher weight.
+/// Flips horizontally the source patch.
+@property (nonatomic) BOOL flip;
+
+/// Controls the amount of feathering of the membrane. Default value is \c 0, which means light
+/// feathering. Higher alpha value means stronger feathering.
 @property (nonatomic) CGFloat featheringAlpha;
 LTPropertyDeclare(CGFloat, featheringAlpha, FeatheringAlpha);
 
@@ -45,5 +48,11 @@ LTPropertyDeclare(CGFloat, featheringAlpha, FeatheringAlpha);
 /// blended.
 @property (nonatomic) CGFloat alpha;
 LTPropertyDeclare(CGFloat, alpha, Alpha);
+
+/// Modulates the source smoothing. Value of \c 1 means fully smoothed, which gives seamless
+/// patching effect. Value of \c 0 means pixels from the source are simply copied without any
+/// smoothing. Default value is \c 1.
+@property (nonatomic) CGFloat smoothingAlpha;
+LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 
 @end

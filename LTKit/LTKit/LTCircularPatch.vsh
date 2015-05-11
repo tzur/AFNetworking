@@ -6,6 +6,7 @@ uniform highp mat3 sourceModelview;
 uniform highp mat3 targetModelview;
 uniform highp mat4 projection;
 uniform highp mat3 texture;
+uniform bool flip;
 
 varying mediump vec4 vMembraneColor;
 varying mediump vec2 vSourceCoord;
@@ -20,7 +21,9 @@ void main() {
   texture;
 
   vMembraneColor = color;
-  vSourceCoord = (sourceModelview * vec3(texcoord, 1.0)).xy;
+  mediump vec3 flippedTexCoord = vec3(texcoord.xy, 1.0);
+  flippedTexCoord.x = !flip ? flippedTexCoord.x : 1.0 - flippedTexCoord.x;
+  vSourceCoord = (sourceModelview * flippedTexCoord).xy;
   vTargetCoord = (targetModelview * vec3(texcoord, 1.0)).xy;
   vTexcoord = (targetModelview * vec3(texcoord, 1.0)).xy;
   gl_Position = projection * modelview * position;
