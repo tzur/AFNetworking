@@ -97,6 +97,17 @@ context(@"process patch", ^{
     cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFeathering.png");;
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
+
+  it(@"should patch with flip", ^{
+    processor.sourceCenter = CGPointMake(textureSize.width * 0.6, textureSize.height * 0.6);
+    processor.targetCenter = CGPointMake(textureSize.width * 0.3, textureSize.height * 0.3);
+    processor.radius = textureSize.width / 4;
+    processor.flip = YES;
+    [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFlipped.png");;
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
+  });
 });
 
 context(@"process heal", ^{
@@ -256,12 +267,7 @@ context(@"synthetic input texture", ^{
     inputMat(cv::Rect(textureSize.width / 2, textureSize.height / 2, textureSize.width / 2,
                       textureSize.height / 2)).setTo(kBlack);
     inputTexture = [LTTexture textureWithImage:inputMat];
-    inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-    inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-
     outputTexture = [LTTexture textureWithImage:inputMat];
-    outputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-    outputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
 
     processor = [[LTCircularPatchProcessor alloc] initWithInput:inputTexture output:outputTexture];
   });

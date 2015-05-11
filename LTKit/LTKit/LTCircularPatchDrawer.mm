@@ -72,10 +72,15 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
   if (self = [super initWithProgram:[self createProgramWithFactory:programFactory]
                       sourceTexture:sourceTexture]) {
     self.indicesArray = [self createIndicesArray];
-    self[[LTCircularPatchFsh alpha]] = @(self.defaultAlpha);
-    self.program[[LTCircularPatchFsh isCircularPatchModeHeal]] = @NO;
+    [self setDefaultUniforms];
   }
   return self;
+}
+
+- (void)setDefaultUniforms {
+  self.program[[LTCircularPatchFsh alpha]] = @(self.defaultAlpha);
+  self.program[[LTCircularPatchFsh smoothingAlpha]] = @(self.defaultSmoothingAlpha);
+  self.program[[LTCircularPatchFsh isCircularPatchModeHeal]] = @NO;
 }
 
 - (LTProgram *)createProgramWithFactory:(id<LTProgramFactory>)programFactory {
@@ -218,6 +223,17 @@ LTPropertyWithoutSetter(CGFloat, alpha, Alpha, 0, 1, 1);
 - (void)setAlpha:(CGFloat)alpha {
   [self _verifyAndSetAlpha:alpha];
   self.program[[LTCircularPatchFsh alpha]] = @(alpha);
+}
+
+LTPropertyWithoutSetter(CGFloat, smoothingAlpha, SmoothingAlpha, 0, 1, 1);
+- (void)setSmoothingAlpha:(CGFloat)smoothingAlpha {
+  [self _verifyAndSetSmoothingAlpha:smoothingAlpha];
+  self.program[[LTCircularPatchFsh smoothingAlpha]] = @(smoothingAlpha);
+}
+
+- (void)setFlip:(BOOL)flip {
+  _flip = flip;
+  self.program[[LTCircularPatchVsh flip]] = @(flip);
 }
 
 - (LTCircularMeshModel *)circularMeshModel {

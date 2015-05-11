@@ -42,9 +42,18 @@ typedef NS_ENUM(NSUInteger, LTCircularPatchMode) {
 @property (nonatomic) CGFloat rotation;
 LTPropertyDeclare(CGFloat, rotation, Rotation);
 
+/// Flips horizontally the source patch.
+@property (nonatomic) BOOL flip;
+
 /// Blends source and target patches using \c alpha in the range of [0, 1]. Default value is \c 1,
 /// which means fully blended.
 @property (nonatomic) CGFloat alpha;
 LTPropertyDeclare(CGFloat, alpha, Alpha);
+
+/// Modulates the source smoothing. Value of \c 1 means fully smoothed, which gives seamless
+/// patching effect. Value of \c 0 means pixels from the source are simply copied without any
+/// smoothing. Default value is \c 1.
+@property (nonatomic) CGFloat smoothingAlpha;
+LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 
 @end

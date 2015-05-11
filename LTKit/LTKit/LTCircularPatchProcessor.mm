@@ -38,10 +38,16 @@
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
   [self updateDrawerColors];
-  CGPoint sourceCenter = self.circularPatchMode != LTCircularPatchModeHeal ?
-      self.sourceCenter : self.targetCenter;
-  [self.drawer drawRect:[self rectFromCenter:self.targetCenter] inFramebuffer:placement.targetFbo
-               fromRect:[self rectFromCenter:sourceCenter]];
+
+  [self.inputTexture executeAndPreserveParameters:^{
+    self.inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
+    self.inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
+
+    CGPoint sourceCenter = self.circularPatchMode != LTCircularPatchModeHeal ?
+        self.sourceCenter : self.targetCenter;
+    [self.drawer drawRect:[self rectFromCenter:self.targetCenter] inFramebuffer:placement.targetFbo
+                 fromRect:[self rectFromCenter:sourceCenter]];
+  }];
 }
 
 - (CGRect)rectFromCenter:(CGPoint)center {
@@ -89,7 +95,7 @@
   LTVector4s boundaryTargetVerticesColor =
       [self colorUsingVertices:boundaryVertices center:self.targetCenter];
   LTVector4s boundarySourceVerticesColor =
-      [self colorUsingVerticesWithRotation:boundaryVertices center:self.sourceCenter];
+      [self colorUsingVerticesWithRotationAndFlip:boundaryVertices center:self.sourceCenter];
   for (LTVector4s::size_type index = 0; index < boundaryVertices.size(); ++index) {
     membraneColors[self.model.firstBoundaryVertexIndex + index] =
         boundaryTargetVerticesColor[index] - boundarySourceVerticesColor[index];
@@ -178,13 +184,16 @@ static const NSUInteger kInLevelAveragingCount = 5;
   return [self.inputTexture pixelValues:verticesAsPoints];
 }
 
-- (LTVector4s)colorUsingVerticesWithRotation:(const LTVector2s &)vertices center:(CGPoint)center {
+- (LTVector4s)colorUsingVerticesWithRotationAndFlip:(const LTVector2s &)vertices
+                                             center:(CGPoint)center {
   CGPoints verticesAsPoints(vertices.size());
   CGAffineTransform translateTransform = CGAffineTransformMakeTranslation(center.x, center.y);
   CGAffineTransform rotationTransform = CGAffineTransformMakeRotation(-self.rotation);
+  CGAffineTransform flipTransform = CGAffineTransformMakeScale(self.flip ? -1 : 1, 1);
   CGAffineTransform rotationAroundPointTransform =
       CGAffineTransformConcat(CGAffineTransformConcat(
-      CGAffineTransformInvert(translateTransform), rotationTransform), translateTransform);
+      CGAffineTransformInvert(translateTransform),
+      CGAffineTransformConcat(flipTransform, rotationTransform)), translateTransform);
 
   for (CGPoints::size_type index = 0; index < vertices.size(); ++index) {
     CGPoint vertex = center + (CGPoint)vertices[index] * self.radius;
@@ -194,13 +203,15 @@ static const NSUInteger kInLevelAveragingCount = 5;
 }
 
 // All vertices above this level are constrained to have alpha = 1.
-static const NSUInteger kMaxLevelOfNonOpaqueVertex = 6;
+static const CGFloat kMaxLevelOfNonOpaqueVertex = 6;
 
 // Alpha for boundary vertices.
 static const CGFloat kBoundaryAlpha = 0.1;
 
 - (void)updateMembraneColorsAlpha:(LTVector4s &)membraneColors {
-  CGFloat featheringNonOpaqueVertex = (1 - self.featheringAlpha) * kMaxLevelOfNonOpaqueVertex;
+  CGFloat featheringNonOpaqueVertex =
+      kMaxLevelOfNonOpaqueVertex * (1 - self.featheringAlpha) + self.featheringAlpha;
+
   for (NSUInteger level = self.model.numberOfVertexLevels - 1; level > 0; --level) {
     CGFloat t = (level - featheringNonOpaqueVertex) /
         (self.model.numberOfVertexLevels - 1 - featheringNonOpaqueVertex);
@@ -237,7 +248,7 @@ static const CGFloat kBoundaryAlpha = 0.1;
   NSUInteger minErrorIndex = NSNotFound;
   for (CGPoints::size_type i = 0; i < sourceCenters.size(); ++i) {
     LTVector4s boundarySourceColors =
-        [self colorUsingVerticesWithRotation:boundaryVertices center:sourceCenters[i]];
+        [self colorUsingVerticesWithRotationAndFlip:boundaryVertices center:sourceCenters[i]];
     CGFloat error = [self boundaryErrorForBoundarySourceColors:boundarySourceColors
                                           boundaryTargetColors:boundaryTargetColors];
     if (error < minError) {
@@ -265,9 +276,19 @@ static const CGFloat kBoundaryAlpha = 0.1;
 #pragma mark -
 
 LTProperty(CGFloat, radius, Radius, 0, CGFLOAT_MAX, 0);
-LTProperty(CGFloat, featheringAlpha, FeatheringAlpha, 0, 1, 1);
+LTProperty(CGFloat, featheringAlpha, FeatheringAlpha, 0, 1, 0);
 LTPropertyProxy(CGFloat, alpha, Alpha, self.drawer, alpha, Alpha);
+LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.drawer, smoothingAlpha,
+                SmoothingAlpha);
 LTPropertyProxy(CGFloat, rotation, Rotation, self.drawer, rotation, Rotation);
+
+- (BOOL)flip {
+  return self.drawer.flip;
+}
+
+- (void)setFlip:(BOOL)flip {
+  self.drawer.flip = flip;
+}
 
 - (LTCircularPatchMode)circularPatchMode {
   return self.drawer.circularPatchMode;

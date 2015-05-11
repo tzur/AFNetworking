@@ -109,6 +109,19 @@ context(@"drawing", ^{
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
 
+  it(@"should draw flipped", ^{
+    CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.25, textureSize.height * 0.25);
+    CGPoint targetOrigin = CGPointMake(textureSize.width * 0.5, textureSize.height * 0.5);
+    CGSize size = textureSize / 4;
+    CGRect sourceRect = CGRectFromOriginAndSize(sourceOrigin, size);
+    CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
+    drawer.flip = YES;
+    [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+    
+    cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerFlipped.png");
+    expect($(outputTexture.image)).to.equalMat($(expected));
+  });
+
   it(@"should draw with colors", ^{
     CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.3, textureSize.height * 0.3);
     CGPoint targetOrigin = CGPointMake(textureSize.width * 0.6, textureSize.height * 0.6);
@@ -119,7 +132,24 @@ context(@"drawing", ^{
     std::fill(colors.begin(), colors.end(), LTVector4(1, 0, 0, 1));
     drawer.membraneColors = colors;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerColors.png");
+    expect($(outputTexture.image)).to.equalMat($(expected));
+  });
+
+  it(@"should draw with smoothing alpha", ^{
+    CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.3, textureSize.height * 0.3);
+    CGPoint targetOrigin = CGPointMake(textureSize.width * 0.6, textureSize.height * 0.6);
+    CGSize size = textureSize / 3;
+    CGRect sourceRect = CGRectFromOriginAndSize(sourceOrigin, size);
+    CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
+    LTVector4s colors(drawer.circularMeshModel.numberOfVertices);
+    std::fill(colors.begin(), colors.end(), LTVector4(1, 0, 0, 1));
+    drawer.membraneColors = colors;
+    drawer.smoothingAlpha = 0.2;
+    [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
+
+    cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerSmoothingAlpha.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
 
