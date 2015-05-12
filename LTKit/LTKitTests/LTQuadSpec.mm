@@ -498,6 +498,13 @@ context(@"copying", ^{
     expect(result.v3).to.equal(v2);
   });
 
+  it(@"should raise when trying to create copy with invalid corners", ^{
+    LTQuadCorners corners{{v0, v0, v0, v0}};
+    expect(^{
+      [quad copyWithCorners:corners];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
   context(@"affine transformations", ^{
     it(@"should create copy with rotated corners", ^{
       LTQuadCorners corners{{v0, v1, v2, v3}};
@@ -525,6 +532,10 @@ context(@"copying", ^{
       expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 1.5));
     });
 
+    it(@"should return nil when trying to create copy with invalid scaling", ^{
+      expect([[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:0]).to.beNil();
+    });
+
     it(@"should create copy with corners scaled around an anchor point", ^{
       quad = [[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:2
                                                                aroundPoint:CGPointZero];
@@ -546,6 +557,11 @@ context(@"copying", ^{
       expect(quad.v1).to.beCloseToPoint(CGPointMake(1.5, 0));
       expect(quad.v2).to.beCloseToPoint(CGPointMake(1.5, 2));
       expect(quad.v3).to.beCloseToPoint(CGPointMake(-0.5, 2));
+    });
+
+    it(@"should return nil when trying to create copy with invalid scaling around anchor point", ^{
+      expect([[LTQuad quadFromRect:CGRectMake(0, 0, 1, 1)] copyWithScaling:0
+                                                               aroundPoint:CGPointZero]).to.beNil();
     });
 
     it(@"should create copy with translated corners", ^{
@@ -571,6 +587,15 @@ context(@"copying", ^{
       expect(quad.v1).to.beCloseToPoint(v1);
       expect(quad.v2).to.beCloseToPoint(v2 + translation);
       expect(quad.v3).to.beCloseToPoint(v3);
+    });
+
+    it(@"should return nil when trying to create copy with invalid translated corners", ^{
+      LTQuadCorners corners{{CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2),
+        CGPointMake(-1, 1.5)
+      }};
+      quad = [[LTQuad alloc] initWithCorners:corners];
+      expect([quad copyWithTranslation:CGPointMake(1, 0)
+                             ofCorners:LTQuadCornerRegionV3]).to.beNil();
     });
 
     it(@"should create translated copy", ^{
