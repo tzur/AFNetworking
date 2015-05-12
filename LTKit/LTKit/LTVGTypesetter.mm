@@ -21,6 +21,11 @@
 + (LTVGLines *)linesFromAttributedString:(NSAttributedString *)attributedString {
   LTParameterAssert(attributedString);
 
+  if ([attributedString.string isEqualToString:@""]) {
+    return [[LTVGLines alloc] initWithLines:@[[[LTVGLine alloc] initWithGlyphRuns:@[]]]
+                           attributedString:attributedString];
+  }
+
   __block CTFrameRef frameRef = [self frameForAttributedString:attributedString];
 
   @onExit {

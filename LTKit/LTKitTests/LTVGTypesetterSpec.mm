@@ -45,6 +45,33 @@ it(@"should create lines", ^{
   expect(lines.attributedString).to.equal(attributedString);
 });
 
+it(@"should create lines from empty attributed string", ^{
+  lines =
+      [LTVGTypesetter linesFromAttributedString:[[NSAttributedString alloc] initWithString:@""]];
+  expect(lines.lines.count).to.equal(1);
+  expect(((LTVGLine *)lines.lines.firstObject).glyphRuns.count).to.equal(0);
+});
+
+it(@"should create lines from attributed string containing only white-space characters", ^{
+  lines =
+      [LTVGTypesetter linesFromAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+  expect(lines.lines.count).to.equal(1);
+  expect(((LTVGLine *)lines.lines.firstObject).glyphRuns.count).to.equal(1);
+  LTVGGlyphRun *run = ((LTVGLine *)lines.lines.firstObject).glyphRuns.firstObject;
+  expect(run.glyphs.count).to.equal(1);
+  expect(((LTVGGlyph *)run.glyphs.firstObject).glyphIndex).to.equal(2);
+
+  lines = [LTVGTypesetter linesFromAttributedString:[[NSAttributedString alloc]
+                                                     initWithString:@" \n\t"]];
+  expect(lines.lines.count).to.equal(2);
+  expect(((LTVGLine *)lines.lines[0]).glyphRuns.count).to.equal(1);
+  expect(((LTVGGlyphRun *)((LTVGLine *)lines.lines[0]).glyphRuns.firstObject).glyphs.count)
+      .to.equal(2);
+  expect(((LTVGLine *)lines.lines[1]).glyphRuns.count).to.equal(1);
+  expect(((LTVGGlyphRun *)((LTVGLine *)lines.lines[1]).glyphRuns.firstObject).glyphs.count)
+      .to.equal(1);
+});
+
 context(@"path", ^{
   __block CAShapeLayer *shapeLayer;
 
