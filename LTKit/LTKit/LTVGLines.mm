@@ -44,15 +44,30 @@
 #pragma mark Public methods
 #pragma mark -
 
-- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor trackingFactor:(CGFloat)trackingFactor {
+- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor
+                       trackingFactor:(CGFloat)trackingFactor {
+  NSParagraphStyle *paragraphStyle = [self.attributedString attribute:NSParagraphStyleAttributeName
+                                                              atIndex:0 effectiveRange:NULL];
+  NSTextAlignment alignment = paragraphStyle ? paragraphStyle.alignment : NSTextAlignmentLeft;
+
+  return [self newPathWithLeadingFactor:leadingFactor trackingFactor:trackingFactor
+                              alignment:alignment];
+}
+
+- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor
+                       trackingFactor:(CGFloat)trackingFactor alignment:(NSTextAlignment)alignment {
   CGMutablePathRef path = CGPathCreateMutable();
 
   CGFloat leading = 0;
 
   for (LTVGLine *line in self.lines) {
     CGPathRef linePath = [line newPathWithTrackingFactor:trackingFactor];
-    CGAffineTransform transformation = CGAffineTransformMakeTranslation(0, leading);
-    CGPathAddPath(path, &transformation, linePath);
+    CGAffineTransform alignmentTransformation = [self transformationForPath:linePath
+                                                               andAlignment:alignment];
+    CGAffineTransform finalTransformation =
+        CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, leading),
+                                alignmentTransformation);
+    CGPathAddPath(path, &finalTransformation, linePath);
     CGPathRelease(linePath);
 
     leading += leadingFactor * line.lineHeight;
@@ -69,6 +84,20 @@
 
   for (id object in lines) {
     LTParameterAssert([object isKindOfClass:[LTVGLine class]]);
+  }
+}
+
+/// Returns the transformation required to align the given \c path according to the given
+/// \c aligment.
+- (CGAffineTransform)transformationForPath:(CGPathRef)path andAlignment:(NSTextAlignment)alignment {
+  CGRect pathBoundingBox = CGPathGetBoundingBox(path);
+
+  if (alignment == NSTextAlignmentCenter) {
+    return CGAffineTransformMakeTranslation(-pathBoundingBox.size.width / 2, 0);
+  } else if (alignment == NSTextAlignmentRight) {
+    return CGAffineTransformMakeTranslation(-pathBoundingBox.size.width, 0);
+  } else {
+    return CGAffineTransformIdentity;
   }
 }
 

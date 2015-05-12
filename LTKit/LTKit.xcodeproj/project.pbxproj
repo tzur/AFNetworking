@@ -164,6 +164,8 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
+		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
 		25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17341AD50BE00055E664 /* LTVGGlyph.h */; };
 		25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17351AD50BE00055E664 /* LTVGGlyph.mm */; };
 		25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */; };
@@ -1292,6 +1294,8 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
+		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
 		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
 		25AF17351AD50BE00055E664 /* LTVGGlyph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyph.mm; sourceTree = "<group>"; };
 		25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyphRun.h; sourceTree = "<group>"; };
@@ -2377,6 +2381,8 @@
 				25AF178D1AD50CCB0055E664 /* FramesetterTest.png */,
 				25AF177F1AD50CB60055E664 /* LinesLeadingTrackingTest.png */,
 				25AF17801AD50CB60055E664 /* LinesTest.png */,
+				253512E61AE78DCD00766C5D /* LinesTestCenter.png */,
+				253512E71AE78DCD00766C5D /* LinesTestRight.png */,
 				25AF17811AD50CB60055E664 /* LineTest.png */,
 				25AF17821AD50CB60055E664 /* LineTrackingTest.png */,
 			);
@@ -4245,6 +4251,7 @@
 				8BA8C68D1869AC2700E6F486 /* BlueTransparentPremultiplied.png in Resources */,
 				25AF17831AD50CB60055E664 /* LinesLeadingTrackingTest.png in Resources */,
 				28FB00F21A0AB46D004490AF /* BristleBrushBristles.RoundPoint.png in Resources */,
+				253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */,
 				03C1928718F3BF3C00DC6CA6 /* Island.jpg in Resources */,
 				8BFA8F5219179BC70088310E /* MixerPlacementComplex.png in Resources */,
 				283BD0431922214300B68A90 /* ShapeDrawerPathShapeTranslation.png in Resources */,
@@ -4376,6 +4383,7 @@
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,
+				253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */,
 				280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */,
 				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
