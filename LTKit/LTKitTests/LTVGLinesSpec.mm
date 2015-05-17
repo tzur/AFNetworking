@@ -137,6 +137,50 @@ context(@"path", ^{
 
     expect($(mat)).to.beCloseToMatWithin($(expectedMat), 0);
   });
+
+  it(@"should create a correctly aligned path", ^{
+    NSArray *alignments =
+        @[@(NSTextAlignmentLeft), @(NSTextAlignmentCenter), @(NSTextAlignmentRight)];
+    NSArray *fileNames = @[@"LinesTest.png", @"LinesTestCenter.png", @"LinesTestRight.png"];
+
+    for (NSUInteger i = 0; i < alignments.count; ++i) {
+      NSTextAlignment alignment = (NSTextAlignment)[alignments[i] unsignedIntegerValue];
+      NSString *fileName = fileNames[i];
+
+      NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.alignment = alignment;
+      attributedString = [[NSAttributedString alloc] initWithString:@"Test"
+                                                         attributes:@{NSParagraphStyleAttributeName:
+                                                                        paragraphStyle}];
+
+      lines = [[LTVGLines alloc] initWithLines:linesArray attributedString:attributedString];
+
+      CGPathRef path = [lines newPathWithLeadingFactor:0 trackingFactor:0];
+      CGAffineTransform translation;
+      if (i == 0) {
+        translation = CGAffineTransformIdentity;
+      } else if (i == 1) {
+        translation = CGAffineTransformMakeTranslation(7, 0);
+      } else {
+        translation = CGAffineTransformMakeTranslation(14, 0);
+      }
+
+      CGPathRef translatedPath = CGPathCreateCopyByTransformingPath(path, &translation);
+      CGPathRelease(path);
+      shapeLayer.path = translatedPath;
+      CGPathRelease(translatedPath);
+
+      UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 19), YES, 2.0);
+      [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];
+      UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+      UIGraphicsEndImageContext();
+
+      cv::Mat mat = [[LTImage alloc] initWithImage:image].mat;
+      cv::Mat expectedMat = LTLoadMat([self class], fileName);
+
+      expect($(mat)).to.beCloseToMatWithin($(expectedMat), 0);
+    }
+  });
 });
 
 LTSpecEnd
