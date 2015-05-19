@@ -51,7 +51,7 @@ context(@"fetching album by identifier", ^{
     it(@"should fetch initial results of an album", ^{
       OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
 
-      RACSignal *albumSignal = [manager albumWithURL:url];
+      RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
       id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithAssets:assets];
       expect(albumSignal).will.sendValues(@[album]);
@@ -78,27 +78,27 @@ context(@"fetching album by identifier", ^{
     });
 
     it(@"should send new album upon update", ^{
-      expect([manager albumWithURL:url]).will.sendValues(@[firstAlbum, secondAlbum]);
+      expect([manager fetchAlbumWithURL:url]).will.sendValues(@[firstAlbum, secondAlbum]);
     });
 
     it(@"should send latest album when album observation is already in place", ^{
-      RACSignal *albumSignal = [manager albumWithURL:url];
+      RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
       // Trigger first fetch and wait until two values are returned.
       expect(albumSignal).will.sendValues(@[firstAlbum, secondAlbum]);
 
-      expect([manager albumWithURL:url]).will.sendValues(@[secondAlbum]);
+      expect([manager fetchAlbumWithURL:url]).will.sendValues(@[secondAlbum]);
     });
 
     it(@"should send latest album after all signals have been destroyed", ^{
       @autoreleasepool {
-        RACSignal *albumSignal = [manager albumWithURL:url];
+        RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
         // Trigger first fetch and wait until two values are returned.
         expect(albumSignal).will.sendValues(@[firstAlbum, secondAlbum]);
       }
 
-      expect([manager albumWithURL:url]).will.sendValues(@[secondAlbum]);
+      expect([manager fetchAlbumWithURL:url]).will.sendValues(@[secondAlbum]);
     });
   });
 });
@@ -127,7 +127,7 @@ context(@"fetching album by type", ^{
     it(@"should fetch initial results of an album", ^{
       OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
 
-      RACSignal *albumSignal = [manager albumWithURL:url];
+      RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
       id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithAlbums:albums];
       expect(albumSignal).will.sendValues(@[album]);
@@ -155,7 +155,7 @@ context(@"fetching album by type", ^{
     });
 
     it(@"should send new album upon update", ^{
-      expect([manager albumWithURL:url]).will.sendValues(@[firstAlbum, secondAlbum]);
+      expect([manager fetchAlbumWithURL:url]).will.sendValues(@[firstAlbum, secondAlbum]);
     });
   });
 });
@@ -168,7 +168,7 @@ context(@"fetching errors", ^{
   it(@"should error on invalid URL", ^{
     NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
     
-    expect([manager albumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -179,7 +179,7 @@ context(@"fetching errors", ^{
 
     NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
 
-    expect([manager albumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAlbumNotFound;
     });
   });

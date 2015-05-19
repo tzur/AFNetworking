@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Operations
 #pragma mark -
 
-- (RACSignal *)albumWithURL:(NSURL *)url {
+- (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
   if (self.albumSignals[url]) {
     return self.albumSignals[url];
   }
