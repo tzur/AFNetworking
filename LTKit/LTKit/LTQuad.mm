@@ -128,8 +128,13 @@ static const CGFloat kEpsilon = 1e-10;
   return copy;
 }
 
+- (instancetype)safelyCopyWithCorners:(const LTQuadCorners &)corners {
+  return [LTQuad validityOfCorners:corners] == LTQuadCornersValidityValid ?
+      [self copyWithCorners:corners] : nil;
+}
+
 - (instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint {
-  return [self copyWithCorners:{{
+  return [self safelyCopyWithCorners:{{
     LTRotatePoint(self.v0, angle, anchorPoint),
     LTRotatePoint(self.v1, angle, anchorPoint),
     LTRotatePoint(self.v2, angle, anchorPoint),
@@ -142,7 +147,7 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint {
-  return [self copyWithCorners:{{
+  return [self safelyCopyWithCorners:{{
     anchorPoint + scaleFactor * (self.v0 - anchorPoint),
     anchorPoint + scaleFactor * (self.v1 - anchorPoint),
     anchorPoint + scaleFactor * (self.v2 - anchorPoint),
@@ -164,7 +169,7 @@ static const CGFloat kEpsilon = 1e-10;
   if (corners & LTQuadCornerRegionV3) {
     translatedCorners[3] = translatedCorners[3] + translation;
   }
-  return [self copyWithCorners:translatedCorners];
+  return [self safelyCopyWithCorners:translatedCorners];
 }
 
 - (instancetype)copyWithTranslation:(CGPoint)translation {
