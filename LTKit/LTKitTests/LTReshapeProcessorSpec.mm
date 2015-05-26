@@ -47,6 +47,10 @@ context(@"initialization", ^{
     expect(^{
       processor = [[LTReshapeProcessor alloc] initWithInput:input output:output];
     }).notTo.raiseAny();
+    expect(processor.inputSize).to.equal(input.size);
+    expect(processor.outputSize).to.equal(output.size);
+    expect(processor.inputTexture).to.beIdenticalTo(input);
+    expect(processor.outputTexture).to.beIdenticalTo(output);
   });
   
   it(@"should initialize with input, mask and output", ^{

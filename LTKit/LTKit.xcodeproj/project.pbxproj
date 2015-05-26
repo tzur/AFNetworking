@@ -166,6 +166,8 @@
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
 		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
+		256392541B0B453D00DA934F /* LTMeshProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 256392531B0B453D00DA934F /* LTMeshProcessor.h */; };
+		256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256392551B0B4B3400DA934F /* LTMeshProcessor.mm */; };
 		25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17341AD50BE00055E664 /* LTVGGlyph.h */; };
 		25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17351AD50BE00055E664 /* LTVGGlyph.mm */; };
 		25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */; };
@@ -189,6 +191,7 @@
 		25AF178B1AD50CBF0055E664 /* GlyphRunTrackingTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17881AD50CBF0055E664 /* GlyphRunTrackingTest.png */; };
 		25AF178C1AD50CBF0055E664 /* GlyphTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17891AD50CBF0055E664 /* GlyphTest.png */; };
 		25AF178E1AD50CCB0055E664 /* FramesetterTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF178D1AD50CCB0055E664 /* FramesetterTest.png */; };
+		25CDE1761B0B5EF000BC3532 /* LTMeshProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25CDE1751B0B5EF000BC3532 /* LTMeshProcessorSpec.mm */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
@@ -1296,6 +1299,8 @@
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
 		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
+		256392531B0B453D00DA934F /* LTMeshProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeshProcessor.h; sourceTree = "<group>"; };
+		256392551B0B4B3400DA934F /* LTMeshProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessor.mm; sourceTree = "<group>"; };
 		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
 		25AF17351AD50BE00055E664 /* LTVGGlyph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyph.mm; sourceTree = "<group>"; };
 		25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyphRun.h; sourceTree = "<group>"; };
@@ -1319,6 +1324,7 @@
 		25AF17881AD50CBF0055E664 /* GlyphRunTrackingTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphRunTrackingTest.png; path = Resources/GlyphRunTrackingTest.png; sourceTree = "<group>"; };
 		25AF17891AD50CBF0055E664 /* GlyphTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphTest.png; path = Resources/GlyphTest.png; sourceTree = "<group>"; };
 		25AF178D1AD50CCB0055E664 /* FramesetterTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FramesetterTest.png; path = Resources/FramesetterTest.png; sourceTree = "<group>"; };
+		25CDE1751B0B5EF000BC3532 /* LTMeshProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessorSpec.mm; sourceTree = "<group>"; };
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
@@ -2169,6 +2175,8 @@
 				8BAE3A3018AD24CE00DA79E1 /* LTMaskedArithmetic.fsh */,
 				8BAE3A2D18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.h */,
 				8BAE3A2E18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm */,
+				256392531B0B453D00DA934F /* LTMeshProcessor.h */,
+				256392551B0B4B3400DA934F /* LTMeshProcessor.mm */,
 				8BEBF3EA18FA9ABA005A0DE9 /* LTMixer.fsh */,
 				8BEBF3EB18FA9ABA005A0DE9 /* LTMixer.vsh */,
 				50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */,
@@ -2267,6 +2275,7 @@
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
+				25CDE1751B0B5EF000BC3532 /* LTMeshProcessorSpec.mm */,
 				8BEBF3EE18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm */,
 				8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */,
 				8BAE3A1218AD031100DA79E1 /* LTPatchBoundaryProcessorSpec.mm */,
@@ -3813,6 +3822,7 @@
 				8B871FF81924A75F00517F2E /* LTPatchKernel.h in Headers */,
 				8B871FF91924A75F00517F2E /* LTArrayBuffer.h in Headers */,
 				8B871FFA1924A75F00517F2E /* LTDrawingContext.h in Headers */,
+				256392541B0B453D00DA934F /* LTMeshProcessor.h in Headers */,
 				8B871FFB1924A75F00517F2E /* LTFbo.h in Headers */,
 				8B871FFC1924A76000517F2E /* LTGLContext.h in Headers */,
 				28A0C7011AC00C3500FBC803 /* LTCircularPatchDrawer.h in Headers */,
@@ -4439,6 +4449,7 @@
 				8BABF1AF19BC63EC00AED760 /* LTBlueYellowEAWProcessor.vsh in Sources */,
 				8BABF1AD19BC5B6B00AED760 /* LTBlueYellowEAWProcessor.fsh in Sources */,
 				039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */,
+				256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */,
 				8BABF18219BC3EC400AED760 /* LTPyramidProcessor.vsh in Sources */,
 				285A671419AE1C8300B2CE9E /* LTMeshDrawer.vsh in Sources */,
 				285A670F19ACDF9100B2CE9E /* LTReshapeProcessor.fsh in Sources */,
@@ -4868,6 +4879,7 @@
 				8BAA727718437BD0007B5F9A /* LTDrawingContextSpec.mm in Sources */,
 				8B9C4FE41868BE9300AA8BF6 /* LTImageSpec.mm in Sources */,
 				50FEAFBF19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm in Sources */,
+				25CDE1761B0B5EF000BC3532 /* LTMeshProcessorSpec.mm in Sources */,
 				28C61C0718B23D540036D66E /* LTTouchCollectorDistanceFilterSpec.mm in Sources */,
 				8BB01CC219658014002A8609 /* LTImageLoaderSpec.mm in Sources */,
 				8BEBF3EF18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm in Sources */,
