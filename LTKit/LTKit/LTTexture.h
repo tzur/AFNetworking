@@ -5,8 +5,6 @@
 
 #import <OpenGLES/ES2/glext.h>
 
-#import "LTTextureContentsArchiver.h"
-
 /// Precision of each channel of the texture on the GPU.
 typedef NS_ENUM(GLenum, LTTexturePrecision) {
   LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
@@ -107,7 +105,7 @@ namespace cv {
 ///
 /// @note The currently supported \c cv::Mat types are \c CV_32F (grayscale), \c CV32F_C4 (four
 /// channel float), CV_16C4 (four channel half-float) and \c CV_8UC4 (RGBA).
-@interface LTTexture : NSObject <NSSecureCoding, LTGPUResource> {
+@interface LTTexture : NSObject <LTGPUResource> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
   GLuint _name;
@@ -410,9 +408,5 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// This property is updated when the texture is cleared using \c clearWithColor, and set to
 /// \c LTVector4Null whenever the texture is updated by any other method.
 @property (readonly, nonatomic) LTVector4 fillColor;
-
-/// Archiver used to store the texture's contents while coding and decoding. The default archiver is
-/// the \c LTTextureContentsDataArchiver.
-@property (strong, nonatomic) id<LTTextureContentsArchiver> contentsArchiver;
 
 @end
