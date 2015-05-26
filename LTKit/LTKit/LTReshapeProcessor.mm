@@ -3,10 +3,9 @@
 
 #import "LTReshapeProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTMeshDrawer.h"
+#import "LTMeshProcessor.h"
 #import "LTProgramFactory.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+LTReshapeProcessorFsh.h"
@@ -23,14 +22,14 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 
 @interface LTReshapeProcessor ()
 
-/// Mesh displacement texture.
-@property (strong, nonatomic) LTTexture *meshTexture;
-
 /// Mask texture used for freezing certain areas while making adjustments to the mesh texture.
 @property (strong, nonatomic) LTTexture *maskTexture;
 
 /// Framebuffer object used to update the mesh texture.
 @property (strong, nonatomic) LTFbo *meshFbo;
+
+/// Internally used mesh processor.
+@property (strong, nonatomic) LTMeshProcessor *meshProcessor;
 
 /// Used for adjusting the mesh displacement texture.
 @property (strong, nonatomic) LTRectDrawer *adjustmentDrawer;
@@ -57,36 +56,32 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
   LTParameterAssert(fragmentSource);
   LTParameterAssert(input);
   LTParameterAssert(output);
-  LTTexture *meshTexture = [self createMeshTextureForInput:input];
-  LTMeshDrawer *drawer = [[LTMeshDrawer alloc] initWithSourceTexture:input meshTexture:meshTexture
-                                                      fragmentSource:fragmentSource];
-  if (self = [super initWithDrawer:drawer sourceTexture:input
-                 auxiliaryTextures:nil andOutput:output]) {
+  if (self = [super init]) {
+    self.meshProcessor =
+        [[LTMeshProcessor alloc] initWithFragmentSource:fragmentSource input:input
+                                               meshSize:[self meshTextureSizeForInput:input]
+                                                 output:output];
     self.maskTexture = mask ?: self.defaultMaskTexture;
-    self.meshTexture = meshTexture;
-    self.meshFbo = [[LTFbo alloc] initWithTexture:self.meshTexture];
-    [self.meshFbo clearWithColor:LTVector4Zero];
+    self.meshFbo = [[LTFbo alloc] initWithTexture:self.meshDisplacementTexture];
     [self createAdjustmentDrawer];
   }
   return self;
 }
 
-- (LTTexture *)createMeshTextureForInput:(LTTexture *)input {
+- (CGSize)meshTextureSizeForInput:(LTTexture *)input {
   LTParameterAssert(input);
   // TODO:(amit) add a device-dependant logic to determine the maximum size.
-  CGSize size = std::ceil(input.size / 8) + CGSizeMakeUniform(1);
-  return [LTTexture textureWithSize:size precision:LTTexturePrecisionHalfFloat
-                             format:LTTextureFormatRGBA allocateMemory:YES];
+  return std::ceil(input.size / 8) + CGSizeMakeUniform(1);
 }
 
 - (void)createAdjustmentDrawer {
-  LTParameterAssert(self.meshTexture);
+  LTParameterAssert(self.meshDisplacementTexture);
   LTParameterAssert(self.maskTexture);
   LTBasicProgramFactory *factory = [[LTBasicProgramFactory alloc] init];
   LTProgram *program = [factory programWithVertexSource:[LTPassthroughShaderVsh source]
                                          fragmentSource:[LTReshapeProcessorFsh source]];
   self.adjustmentDrawer =
-      [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self.meshTexture
+      [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self.meshDisplacementTexture
         auxiliaryTextures:@{[LTReshapeProcessorFsh maskTexture]: self.maskTexture}];
 }
 
@@ -96,7 +91,15 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 
 - (void)process {
   [self.outputTexture clearWithColor:LTVector4Zero];
-  [super process];
+  [self.meshProcessor process];
+}
+
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self.meshProcessor processToFramebufferWithSize:size outputRect:rect];
+}
+
+- (void)processInRect:(CGRect)rect {
+  [self.meshProcessor processInRect:rect];
 }
 
 #pragma mark -
@@ -104,7 +107,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 #pragma mark -
 
 - (void)resetMesh {
-  [self.meshFbo clearWithColor:LTVector4Zero];
+  [self.meshProcessor resetMesh];
 }
 
 #pragma mark -
@@ -120,10 +123,10 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
   [self.meshFbo bindAndDraw:^{
     [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       context.scissorTestEnabled = YES;
-      context.scissorBox = CGRectInset(CGRectFromSize(self.meshTexture.size), 1, 1);
-      [self.adjustmentDrawer drawRect:CGRectFromSize(self.meshTexture.size)
+      context.scissorBox = CGRectInset(CGRectFromSize(self.meshDisplacementTexture.size), 1, 1);
+      [self.adjustmentDrawer drawRect:CGRectFromSize(self.meshDisplacementTexture.size)
                 inFramebufferWithSize:self.meshFbo.size
-                             fromRect:CGRectFromSize(self.meshTexture.size)];
+                             fromRect:CGRectFromSize(self.meshDisplacementTexture.size)];
     }];
   }];
 }
@@ -160,6 +163,14 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 #pragma mark Properties
 #pragma mark -
 
+- (LTTexture *)inputTexture {
+  return self.meshProcessor.inputTexture;
+}
+
+- (LTTexture *)outputTexture {
+  return self.meshProcessor.outputTexture;
+}
+
 - (CGSize)aspectFactor {
   return self.inputSize.width > self.inputSize.height ?
       CGSizeMake(1.0, self.inputSize.height / self.inputSize.width) :
@@ -174,8 +185,20 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
   return texture;
 }
 
+- (CGSize)inputSize {
+  return self.meshProcessor.inputSize;
+}
+
+- (CGSize)outputSize {
+  return self.meshProcessor.outputSize;
+}
+
+#pragma mark -
+#pragma mark Auxiliary methods
+#pragma mark -
+
 - (LTTexture *)meshDisplacementTexture {
-  return self.meshTexture;
+  return self.meshProcessor.meshDisplacementTexture;
 }
 
 @end

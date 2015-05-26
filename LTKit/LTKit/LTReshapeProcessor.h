@@ -1,7 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTOneShotBaseImageProcessor.h"
+#import "LTImageProcessor.h"
+#import "LTPartialProcessing.h"
+#import "LTScreenProcessing.h"
 
 @class LTTexture;
 
@@ -22,7 +24,7 @@ typedef struct {
 /// Processor for reshaping a texture placed on a grid mesh. The processor provides an interface for
 /// applying common reshape operations on the mesh, performed on GPU. Additionally, by accessing and
 /// updating its \c meshDisplacementTexture any custom displacement map can be set.
-@interface LTReshapeProcessor : LTOneShotBaseImageProcessor
+@interface LTReshapeProcessor : LTImageProcessor <LTPartialProcessing, LTScreenProcessing>
 
 /// Initializes the processor with with a given \c input texture and \c output texture, and without
 /// a freeze mask support.
@@ -68,5 +70,17 @@ typedef struct {
 ///
 /// @see \c LTMeshDrawer.
 @property (readonly, nonatomic) LTTexture *meshDisplacementTexture;
+
+/// Size of the input texture.
+@property (readonly, nonatomic) CGSize inputSize;
+
+/// Size of the output texture.
+@property (readonly, nonatomic) CGSize outputSize;
+
+/// Input texture of the processor.
+@property (readonly, nonatomic) LTTexture *inputTexture;
+
+/// Output texture of the processor.
+@property (readonly, nonatomic) LTTexture *outputTexture;
 
 @end
