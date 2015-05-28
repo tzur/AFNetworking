@@ -288,8 +288,8 @@ namespace std {
 NSString *NSStringFromLTVector2(const LTVector2 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
-/// \c @"(%g, %g)". In case an invalid format is given, LTVector2 that is set to all zeroes will be
-/// returned.
+/// \c @"(%g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
+/// \c LTVector2 that is set to all zeroes will be returned.
 LTVector2 LTVector2FromString(NSString *string);
 
 #pragma mark -
@@ -550,8 +550,8 @@ namespace std {
 NSString *NSStringFromLTVector3(const LTVector3 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
-/// \c @"(%g, %g, %g)". In case an invalid format is given, LTVector3 that is set to all zeroes will
-/// be returned.
+/// \c @"(%g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
+/// \c LTVector3 that is set to all zeroes will be returned.
 LTVector3 LTVector3FromString(NSString *string);
 
 #pragma mark -
@@ -855,8 +855,8 @@ namespace std {
 NSString *NSStringFromLTVector4(const LTVector4 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
-/// \c @"(%g, %g, %g, %g)". In case an invalid format is given, LTVector4 that is set to all zeroes
-/// will be returned.
+/// \c @"(%g, %g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given,
+/// an \c LTVector4 that is set to all zeroes will be returned.
 LTVector4 LTVector4FromString(NSString *string);
 
 #pragma mark -
