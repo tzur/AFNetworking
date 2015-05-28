@@ -566,7 +566,6 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
 
   it(@"should have default model property values", ^{
     expect(texture.usingAlphaChannel).to.equal(NO);
-    expect(texture.usingHighPrecisionByte).to.equal(NO);
     expect(texture.wrap).to.equal(LTTextureWrapClamp);
     expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
     expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationLinear);

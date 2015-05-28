@@ -20,6 +20,10 @@
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
 
+/// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
+/// value is \c 0.
+@property (readwrite, nonatomic) GLint maxMipmapLevel;
+
 /// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
 /// that the texture is filled with a single color. This property is updated when the texture is
 /// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
@@ -33,6 +37,6 @@
 /// @note While two textures having equal \c generationID implies that they have the same
 /// content, the other direction is not necessarily true as two textures can have the same content
 /// with different \c generationID.
-@property (readwrite, strong, nonatomic) id generationID;
+@property (readwrite, strong, nonatomic) NSString *generationID;
 
 @end

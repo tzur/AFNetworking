@@ -107,6 +107,20 @@ context(@"mipmapping", ^{
         [other clearWithColor:LTVector4Zero];
       }).notTo.raiseAny();
     });
+
+    it(@"should initialize with properties", ^{
+      LTGLTexture *texture = [[LTGLTexture alloc]
+                              initWithSize:CGSizeMake(64, 128) precision:LTTexturePrecisionByte
+                              format:LTTextureFormatRGBA maxMipmapLevel:3];
+
+      expect(texture.size).to.equal(CGSizeMake(64, 128));
+      expect(texture.precision).to.equal(LTTexturePrecisionByte);
+      expect(texture.format).to.equal(LTTextureFormatRGBA);
+      expect(texture.maxMipmapLevel).to.equal(3);
+      expect(^{
+        [texture clearWithColor:LTVector4Zero];
+      }).notTo.raiseAny();
+    });
   });
 
   context(@"drawing", ^{
