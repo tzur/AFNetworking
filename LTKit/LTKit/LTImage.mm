@@ -50,6 +50,7 @@
 }
 
 + (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat {
+  LTParameterAssert(CGSizeMake(mat->cols, mat->rows) == [self imageSizeInPixels:image]);
   LTParameterAssert(mat->type() == [[self class] matTypeForImage:image],
                     @"Invalid mat type given (%d vs. the required %d)",
                     [[self class] matTypeForImage:image], mat->type());
@@ -117,8 +118,12 @@
   }
 }
 
+/// Returns the actual size (in pixels) of the image. This is calculated by
+/// @code round(image.size * image.scale) @endcode \c round is used instead of \c floor/ceil to
+/// prevent a scenario where due to floating precision the result size will be different from the
+/// size of the underlying buffer of the \c UIImage, which must be of integer size.
 + (CGSize)imageSizeInPixels:(UIImage *)image {
-  return CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
+  return std::round(CGSizeMake(image.size.width * image.scale, image.size.height * image.scale));
 }
 
 #pragma mark -

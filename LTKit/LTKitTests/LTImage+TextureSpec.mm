@@ -48,4 +48,13 @@ it(@"should not load image to invalid texture format", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
+it(@"should not load image to inavlid texture size", ^{
+  UIImage *image = LTLoadImage([self class], @"Gray.jpg");
+  LTTexture *texture = [LTTexture textureWithSize:image.size * 2 precision:LTTexturePrecisionByte
+                                           format:LTTextureFormatRed allocateMemory:YES];
+  expect(^{
+    [LTImage loadImage:image toTexture:texture];
+  }).to.raise(NSInvalidArgumentException);
+});
+
 LTSpecEnd
