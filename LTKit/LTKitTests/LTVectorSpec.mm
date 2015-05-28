@@ -202,11 +202,20 @@ context(@"LTVector2", ^{
 
   context(@"conversions", ^{
     it(@"should convert from string", ^{
-      NSString *value = @"(1.5, 2.5, 3)";
-      LTVector3 vector = LTVector3FromString(value);
+      NSString *value = @"(1.5, 2.5)";
+      LTVector2 vector = LTVector2FromString(value);
       expect(vector.x).to.equal(1.5);
       expect(vector.y).to.equal(2.5);
-      expect(vector.z).to.equal(3);
+    });
+
+    it(@"should convert from string with non-numeric values", ^{
+      LTVector2 vector = LTVector2FromString(@"(nan, inf)");
+      expect(std::isnan(vector.x)).to.beTruthy();
+      expect(std::isinf(vector.y) && vector.y > 0).to.beTruthy();
+
+      vector = LTVector2FromString(@"(-inf, nan)");
+      expect(std::isinf(vector.x) && vector.x < 0).to.beTruthy();
+      expect(std::isnan(vector.y)).to.beTruthy();
     });
 
     it(@"should return zero vector on invalid string", ^{
@@ -350,6 +359,13 @@ context(@"LTVector3", ^{
       expect(vector.z).to.equal(3);
     });
 
+    it(@"should convert from string with non-numeric values", ^{
+      LTVector3 vector = LTVector3FromString(@"(nan, inf, -inf)");
+      expect(std::isnan(vector.x)).to.beTruthy();
+      expect(std::isinf(vector.y) && vector.y > 0).to.beTruthy();
+      expect(std::isinf(vector.z) && vector.z < 0).to.beTruthy();
+    });
+    
     it(@"should return zero vector on invalid string", ^{
       expect(LTVector3FromString(@"(1.5, 2.5)")).to.equal(LTVector3());
       expect(LTVector3FromString(@"(1.5, 2.5, 3")).to.equal(LTVector3());
@@ -518,6 +534,14 @@ context(@"LTVector4", ^{
       expect(vector.y).to.equal(2.5);
       expect(vector.z).to.equal(3);
       expect(vector.w).to.equal(4);
+    });
+
+    it(@"should convert from string with non-numeric values", ^{
+      LTVector4 vector = LTVector4FromString(@"(nan, inf, -inf, nan)");
+      expect(std::isnan(vector.x)).to.beTruthy();
+      expect(std::isinf(vector.y) && vector.y > 0).to.beTruthy();
+      expect(std::isinf(vector.z) && vector.z < 0).to.beTruthy();
+      expect(std::isnan(vector.w)).to.beTruthy();
     });
 
     it(@"should return zero vector on invalid string", ^{

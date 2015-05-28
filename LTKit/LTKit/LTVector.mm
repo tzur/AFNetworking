@@ -4,6 +4,41 @@
 #import "LTVector.h"
 
 #pragma mark -
+#pragma mark NSScanner (NonNumberFloats)
+#pragma mark -
+
+/// Category adding the ability to scan floats while correctly handling valid non-numeric values.
+@interface NSScanner (NonNumberFloats)
+@end
+
+@implementation NSScanner (NonNumberFloats)
+
+/// Scans for a float value, returning a found value by reference. This method correctly handles
+/// non-numeric values such as NaN, Infinity and -Infinity.
+- (BOOL)lt_scanFloat:(float *)result {
+  if ([self scanString:@"nan" intoString:NULL]) {
+    if (result) {
+      *result = NAN;
+    }
+    return YES;
+  } else if ([self scanString:@"inf" intoString:NULL]) {
+    if (result) {
+      *result = INFINITY;
+    }
+    return YES;
+  } else if ([self scanString:@"-inf" intoString:NULL]) {
+    if (result) {
+      *result = -INFINITY;
+    }
+    return YES;
+  }
+
+  return [self scanFloat:result];
+}
+
+@end
+
+#pragma mark -
 #pragma mark LTVector2
 #pragma mark -
 
@@ -15,9 +50,9 @@ LTVector2 LTVector2FromString(NSString *string) {
   NSScanner *scanner = [NSScanner scannerWithString:string];
   float x, y;
   if (![scanner scanString:@"(" intoString:nil]) return LTVector2();
-  if (![scanner scanFloat:&x]) return LTVector2();
+  if (![scanner lt_scanFloat:&x]) return LTVector2();
   if (![scanner scanString:@"," intoString:nil]) return LTVector2();
-  if (![scanner scanFloat:&y]) return LTVector2();
+  if (![scanner lt_scanFloat:&y]) return LTVector2();
   if (![scanner scanString:@")" intoString:nil]) return LTVector2();
   if (![scanner isAtEnd]) return LTVector2();
   return LTVector2(x, y);
@@ -35,11 +70,11 @@ LTVector3 LTVector3FromString(NSString *string) {
   NSScanner *scanner = [NSScanner scannerWithString:string];
   float x, y, z;
   if (![scanner scanString:@"(" intoString:nil]) return LTVector3();
-  if (![scanner scanFloat:&x]) return LTVector3();
+  if (![scanner lt_scanFloat:&x]) return LTVector3();
   if (![scanner scanString:@"," intoString:nil]) return LTVector3();
-  if (![scanner scanFloat:&y]) return LTVector3();
+  if (![scanner lt_scanFloat:&y]) return LTVector3();
   if (![scanner scanString:@"," intoString:nil]) return LTVector3();
-  if (![scanner scanFloat:&z]) return LTVector3();
+  if (![scanner lt_scanFloat:&z]) return LTVector3();
   if (![scanner scanString:@")" intoString:nil]) return LTVector3();
   if (![scanner isAtEnd]) return LTVector3();
   return LTVector3(x, y, z);
@@ -70,13 +105,13 @@ LTVector4 LTVector4FromString(NSString *string) {
   NSScanner *scanner = [NSScanner scannerWithString:string];
   float x, y, z, w;
   if (![scanner scanString:@"(" intoString:nil]) return LTVector4();
-  if (![scanner scanFloat:&x]) return LTVector4();
+  if (![scanner lt_scanFloat:&x]) return LTVector4();
   if (![scanner scanString:@"," intoString:nil]) return LTVector4();
-  if (![scanner scanFloat:&y]) return LTVector4();
+  if (![scanner lt_scanFloat:&y]) return LTVector4();
   if (![scanner scanString:@"," intoString:nil]) return LTVector4();
-  if (![scanner scanFloat:&z]) return LTVector4();
+  if (![scanner lt_scanFloat:&z]) return LTVector4();
   if (![scanner scanString:@"," intoString:nil]) return LTVector4();
-  if (![scanner scanFloat:&w]) return LTVector4();
+  if (![scanner lt_scanFloat:&w]) return LTVector4();
   if (![scanner scanString:@")" intoString:nil]) return LTVector4();
   if (![scanner isAtEnd]) return LTVector4();
   return LTVector4(x, y, z, w);
