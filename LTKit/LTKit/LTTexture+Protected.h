@@ -3,6 +3,8 @@
 
 #import "LTTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTTexture ()
 
 /// Updates the generation ID of the texture to a new random identifier.
@@ -40,3 +42,5 @@
 @property (readwrite, strong, nonatomic) NSString *generationID;
 
 @end
+
+NS_ASSUME_NONNULL_END

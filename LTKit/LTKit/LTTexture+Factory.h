@@ -4,6 +4,8 @@
 #import "LTImage+Texture.h"
 #import "LTTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Category which adds a factory on top of LTTexture's abstract class. The factory chooses the
 /// appropriate \c LTTexture subclass to instantiate, based on hardware compatabilities and
 /// performance considerations.
@@ -92,3 +94,5 @@
 + (instancetype)textureWithMipmapImages:(const Matrices &)images;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -9,4 +9,7 @@
 // Add the object to the given mutable array.
 - (void)addToArray:(NSMutableArray *)array;
 
+/// Sets the object for the given key in the given \c dictionary.
+- (void)setInDictionary:(NSMutableDictionary *)dictionary forKey:(id<NSCopying>)aKey;
+
 @end

@@ -9,7 +9,9 @@
 #import "LTTexture+Protected.h"
 #import "LTTransformers.h"
 
-@interface LTTextureMetadata () <MTLJSONSerializing>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface LTTextureMetadata ()
 
 /// @see \c LTTexture.size.
 @property (readwrite, nonatomic) CGSize size;
@@ -113,3 +115,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

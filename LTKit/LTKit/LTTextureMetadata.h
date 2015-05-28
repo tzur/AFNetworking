@@ -3,8 +3,10 @@
 
 #import "LTTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Metadata of an \c LTTexture.
-@interface LTTextureMetadata : MTLModel
+@interface LTTextureMetadata : MTLModel <MTLJSONSerializing>
 
 /// @see \c LTTexture.size.
 @property (readonly, nonatomic) CGSize size;
@@ -58,3 +60,5 @@
 - (LTTextureMetadata *)metadata;
 
 @end
+
+NS_ASSUME_NONNULL_END
