@@ -6,11 +6,9 @@
 #import "LTTexture+Factory.h"
 
 @interface LTImage ()
-
 + (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat;
 + (int)matTypeForImage:(UIImage *)image;
 + (CGSize)imageSizeInPixels:(UIImage *)image;
-
 @end
 
 @implementation LTImage (Texture)
