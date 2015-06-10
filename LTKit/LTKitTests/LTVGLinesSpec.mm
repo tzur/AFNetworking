@@ -13,23 +13,29 @@
 LTSpecBegin(LTVGLines)
 
 __block NSArray *linesArray;
-__block LTVGLine *line;
 __block LTVGLines *lines;
+__block LTVGLine *line0;
+__block LTVGGlyphRun *run0;
+__block LTVGGlyph *glyph0;
+__block LTVGGlyph *glyph1;
+__block LTVGLine *line1;
+__block LTVGGlyphRun *run1;
+__block LTVGGlyph *glyph2;
 __block NSAttributedString *attributedString;
 
 beforeEach(^{
   CGPoint baselineOrigin = CGPointMake(0, 8);
   UIFont *font = [UIFont fontWithName:@"Arial" size:10];
-  LTVGGlyph *glyph = [LTVGTypesetter glyphWithIndex:7 font:font baselineOrigin:baselineOrigin];
-  LTVGGlyph *anotherGlyph =
-      [LTVGTypesetter glyphWithIndex:8 font:font baselineOrigin:baselineOrigin + CGPointMake(6, 0)];
-  LTVGGlyphRun *run = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph, anotherGlyph]];
-  line = [[LTVGLine alloc] initWithGlyphRuns:@[run]];
-  anotherGlyph =
-      [LTVGTypesetter glyphWithIndex:8 font:font baselineOrigin:baselineOrigin + CGPointMake(0, 9)];
-  run = [[LTVGGlyphRun alloc] initWithGlyphs:@[anotherGlyph]];
-  LTVGLine *anotherLine = [[LTVGLine alloc] initWithGlyphRuns:@[run]];
-  linesArray = @[line, anotherLine];
+  glyph0 = [LTVGTypesetter glyphWithIndex:7 font:font baselineOrigin:baselineOrigin];
+  glyph1 = [LTVGTypesetter glyphWithIndex:8 font:font
+                           baselineOrigin:baselineOrigin + CGPointMake(6, 0)];
+  run0 = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph0, glyph1]];
+  line0 = [[LTVGLine alloc] initWithGlyphRuns:@[run0]];
+  glyph2 = [LTVGTypesetter glyphWithIndex:8 font:font
+                           baselineOrigin:baselineOrigin + CGPointMake(0, 9)];
+  run1 = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph2]];
+  line1 = [[LTVGLine alloc] initWithGlyphRuns:@[run1]];
+  linesArray = @[line0, line1];
   attributedString = [[NSAttributedString alloc] init];
   lines = [[LTVGLines alloc] initWithLines:linesArray attributedString:attributedString];
 });
@@ -87,7 +93,7 @@ context(@"NSObject", ^{
                                             attributedString:[[NSAttributedString alloc] init]];
     expect([lines isEqual:equalLines]).to.beTruthy();
 
-    LTVGLines *differentLines = [[LTVGLines alloc] initWithLines:@[line]
+    LTVGLines *differentLines = [[LTVGLines alloc] initWithLines:@[line0]
                                                 attributedString:[[NSAttributedString alloc] init]];
     expect([lines isEqual:differentLines]).to.beFalsy();
 
@@ -180,6 +186,28 @@ context(@"path", ^{
 
       expect($(mat)).to.beCloseToMatWithin($(expectedMat), 0);
     }
+  });
+});
+
+context(@"glyph modification", ^{
+  it(@"should create new lines by iterating over given glyphs", ^{
+    __block NSUInteger count = 0;
+    
+    NSArray *expectedObjects = @[glyph0, glyph1, glyph2];
+
+    LTVGLines *result =
+        [lines linesWithGlyphsTransformedUsingBlock:^LTVGGlyph *(LTVGGlyph *glyph) {
+          expect(glyph).to.beIdenticalTo(expectedObjects[count]);
+          ++count;
+          return glyph;
+        }];
+    expect(result).to.equal(lines);
+  });
+  
+  it(@"should raise if no block is provided", ^{
+    expect(^{
+      [lines linesWithGlyphsTransformedUsingBlock:nil];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

@@ -1,6 +1,11 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+@class LTVGGlyph, LTVGGlyphRun, LTVGLine, LTVGLines;
+
+/// Callback for returning a possibly transformed glyph for a given \c glyph.
+typedef LTVGGlyph *(^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
+
 /// Class representing a collection of consecutive \c LTVGLine objects along with the
 /// \c NSAttributedString which is represented by these lines.
 @interface LTVGLines : NSObject
@@ -17,6 +22,10 @@
 /// the given \c trackingFactor and the point size of the font of each run. It is the responsibility
 /// of the caller to release the returned path.
 - (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor trackingFactor:(CGFloat)trackingFactor;
+
+/// Returns a new \c LTVGLines object, created by transforming each glyph of this instance using the
+/// given \c block.
+- (LTVGLines *)linesWithGlyphsTransformedUsingBlock:(LTVGGlyphTransformBlock)block;
 
 /// Ordered collection of \c LTVGLine objects constituting the lines of this instance.
 @property (readonly, nonatomic) NSArray *lines;
