@@ -3,6 +3,7 @@
 
 #import "LTVGLines.h"
 
+#import "LTVGGlyphRun.h"
 #import "LTVGLine.h"
 
 @implementation LTVGLines
@@ -73,6 +74,25 @@
     leading += leadingFactor * line.lineHeight;
   }
   return path;
+}
+
+- (LTVGLines *)linesWithGlyphsTransformedUsingBlock:(LTVGGlyph *(^)(LTVGGlyph *glyph))block {
+  LTParameterAssert(block);
+  NSMutableArray *correctedLines = [NSMutableArray array];
+  
+  for (LTVGLine *line in self.lines) {
+    NSMutableArray *updatedRuns = [NSMutableArray array];
+    for (LTVGGlyphRun *run in line.glyphRuns) {
+      NSMutableArray *updatedGlyphs = [NSMutableArray array];
+      for (LTVGGlyph *glyph in run.glyphs) {
+        [updatedGlyphs addObject:block(glyph)];
+      }
+      [updatedRuns addObject:[[LTVGGlyphRun alloc] initWithGlyphs:updatedGlyphs]];
+    }
+    [correctedLines addObject:[[LTVGLine alloc] initWithGlyphRuns:updatedRuns]];
+  }
+  
+  return [[LTVGLines alloc] initWithLines:correctedLines attributedString:self.attributedString];
 }
 
 #pragma mark -
