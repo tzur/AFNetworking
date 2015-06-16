@@ -302,16 +302,16 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   [self mappedImageWithBlock:^(cv::Mat *mapped, BOOL isCopy) {
     block(*mapped, isCopy);
-  }];
+  } withFlags:kCVPixelBufferLock_ReadOnly];
 }
 
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
   self.fillColor = LTVector4Null;
-  [self mappedImageWithBlock:block];
+  [self mappedImageWithBlock:block withFlags:0];
   [self updateGenerationID];
 }
 
-- (void)mappedImageWithBlock:(LTTextureMappedBlock)block {
+- (void)mappedImageWithBlock:(LTTextureMappedBlock)block withFlags:(CVOptionFlags)lockFlags {
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
@@ -327,7 +327,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
       cv::Mat mat(self.size.height, self.size.width, self.matType, base,
                   CVPixelBufferGetBytesPerRow(self.pixelBufferRef));
       block(&mat, NO);
-    }];
+    } withFlags:lockFlags];
   }];
 }
 
@@ -343,12 +343,8 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   LTAssert(waitResult != GL_WAIT_FAILED_APPLE, @"Failed waiting on sync object");
 }
 
-- (void)lockBufferAndExecute:(LTVoidBlock)block {
-  // Theoretically, this should be set to \c kCVPixelBufferLock_ReadOnly if \c a write lock is not
-  // required. However, it seems that this flag avoids the locked buffer from being updated with the
-  // latest data from the GPU.
-  const CVOptionFlags kOptions = 0;
-  CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, kOptions);
+- (void)lockBufferAndExecute:(LTVoidBlock)block withFlags:(CVOptionFlags)lockFlags {
+  CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, lockFlags);
   if (kCVReturnSuccess != lockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed locking base address of buffer with error %d", lockResult];
@@ -356,7 +352,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   if (block) block();
 
-  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(self.pixelBufferRef, kOptions);
+  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(self.pixelBufferRef, lockFlags);
   if (kCVReturnSuccess != unlockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed unlocking base address of buffer with error %d", unlockResult];
