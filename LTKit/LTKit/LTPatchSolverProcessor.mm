@@ -23,7 +23,7 @@
   /// 4-channel float boundary. This is a duplicated 4-channel version of \c _boundarySingle.
   cv::Mat4f _boundaryRGBA;
   /// Boundary convoluted with the kernel.
-  cv::Mat1f _chi;
+  cv::Mat1f _paddedChi;
 }
 
 /// Mask used to select part of \c sourceRect to copy.
@@ -59,8 +59,8 @@
 /// Resizer of mask to working size.
 @property (strong, nonatomic) LTRectCopyProcessor *maskResizer;
 
-/// FFT result of the kernel.
-@property (strong, nonatomic) LTSplitComplexMat *transformedKernel;
+/// FFT result of the padded kernel.
+@property (strong, nonatomic) LTSplitComplexMat *paddedTransformedKernel;
 
 /// Size that the patch calculations is done at. Making this size smaller will give a boost in
 /// performance, but will yield a less accurate result. Both dimensions must be a power of two.
@@ -108,7 +108,7 @@
 }
 
 - (void)processMaskIfNeeded {
-  if (_chi.empty() || ![self.lastProcessedMaskGenerationID isEqual:self.mask.generationID]) {
+  if (_paddedChi.empty() || ![self.lastProcessedMaskGenerationID isEqual:self.mask.generationID]) {
     [self createBoundary];
     [self calculateChi];
     self.lastProcessedMaskGenerationID = self.mask.generationID;
@@ -116,12 +116,11 @@
 }
 
 - (void)createTransformedKernel {
-  cv::Mat1f kernel = LTPatchKernelCreate(cv::Size(self.workingSize.width,
-                                                  self.workingSize.height));
+  cv::Mat1f paddedKernel = LTPatchKernelCreate(self.paddedWorkingSize);
 
-  self.transformedKernel = [[LTSplitComplexMat alloc] init];
-  LTFFTProcessor *processor = [[LTFFTProcessor alloc] initWithRealInput:kernel
-                                                                 output:self.transformedKernel];
+  self.paddedTransformedKernel = [[LTSplitComplexMat alloc] init];
+  LTFFTProcessor *processor =
+      [[LTFFTProcessor alloc] initWithRealInput:paddedKernel output:self.paddedTransformedKernel];
   [processor process];
 }
 
@@ -172,7 +171,10 @@
 }
 
 - (void)calculateChi {
-  _chi = [self convolveKernelWith:_boundarySingle];
+  cv::Mat1f paddedBoundarySingle = cv::Mat1f::zeros(self.paddedWorkingSize);
+  _boundarySingle.copyTo(paddedBoundarySingle(self.unpaddedRect));
+
+  _paddedChi = [self convolveKernelWith:paddedBoundarySingle];
 }
 
 #pragma mark -
@@ -222,38 +224,43 @@
 }
 
 - (cv::Mat4f)membraneForBoundaryDifference:(const cv::Mat4f &)diff {
+  cv::Mat4f paddedDiff = cv::Mat4f::zeros(self.paddedWorkingSize);
+  diff.copyTo(paddedDiff(self.unpaddedRect));
+
   // Calculate diff (*) kernel.
-  Matrices diffChannels;
-  cv::split(diff, diffChannels);
+  Matrices paddedDiffChannels;
+  cv::split(paddedDiff, paddedDiffChannels);
   Matrices membraneChannels;
-  cv::Mat1f erf(diff.size());
+  cv::Mat1f paddedErf(paddedDiff.size());
 
   for (int i = 0; i < 3; ++i) {
     @autoreleasepool {
-      cv::Mat1f erf([self convolveKernelWith:diffChannels[i]]);
-
+      cv::Mat1f paddedErf([self convolveKernelWith:paddedDiffChannels[i]]);
       cv::Mat1f membrane;
-      cv::divide(erf, _chi, membrane);
-      LTInPlaceFFTShift(&membrane);
+      cv::divide(paddedErf(self.unpaddedRect), _paddedChi(self.unpaddedRect), membrane);
+
       membraneChannels.push_back(membrane);
     }
   }
 
-  membraneChannels.push_back(cv::Mat1f::zeros(erf.size()));
+  membraneChannels.push_back(cv::Mat1f::zeros(self.unpaddedRect.size()));
   cv::Mat4f membrane;
   cv::merge(membraneChannels, membrane);
 
   return membrane;
 }
 
-- (cv::Mat1f)convolveKernelWith:(const cv::Mat1f &)mat {
-  cv::Mat1f result(mat.size());
-
-  LTFFTConvolutionProcessor *processor = [[LTFFTConvolutionProcessor alloc]
-                                          initWithFirstTransformedOperand:self.transformedKernel
-                                          secondOperand:mat
-                                          output:&result];
-  processor.shiftResult = NO;
+/// Assumes the paddedMat has the relevant mat centered in a zero-padded mat. The size of the padded
+/// mat is twice the size of the mat holding the relevant information. This is required since the
+/// convolution is cyclic, meaning it will take information from the other side of the mat for some
+/// pixels. With zeros-padded mat, this information will not have any effect on the actual data we
+/// want to convolve.
+- (cv::Mat1f)convolveKernelWith:(const cv::Mat1f &)paddedMat {
+  cv::Mat1f result(paddedMat.size());
+  LTFFTConvolutionProcessor *processor =
+      [[LTFFTConvolutionProcessor alloc]
+       initWithFirstTransformedOperand:self.paddedTransformedKernel secondOperand:paddedMat
+       output:&result];
   [processor process];
 
   return result;
@@ -277,12 +284,17 @@
 #pragma mark Working rects
 #pragma mark -
 
-- (CGRect)workingRect {
-  return CGRectFromOriginAndSize(CGPointZero, self.workingSize);
-}
-
 - (CGRect)maskWorkingRect {
   return CGRectFromOriginAndSize(CGPointZero, self.output.size);
+}
+
+- (cv::Size)paddedWorkingSize {
+  return cv::Size(self.workingSize.width * 2, self.workingSize.height * 2);
+}
+
+- (cv::Rect)unpaddedRect {
+  return cv::Rect(self.workingSize.width / 2, self.workingSize.height / 2,
+                  self.workingSize.width, self.workingSize.height);
 }
 
 @end
