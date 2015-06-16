@@ -221,6 +221,7 @@
 		2810938F1ACC5DCD00BDBD0C /* CircularPatchDrawerScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 2810938E1ACC5DCD00BDBD0C /* CircularPatchDrawerScreen.png */; };
 		2812D56619912B380081478F /* LTCropProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2812D56519912B380081478F /* LTCropProcessorSpec.mm */; };
 		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
+		2828016B1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */; };
 		2829F07F1991007B00DE1072 /* LTCropProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2829F07D1991007B00DE1072 /* LTCropProcessor.h */; };
 		2829F0801991007B00DE1072 /* LTCropProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2829F07E1991007B00DE1072 /* LTCropProcessor.mm */; };
 		282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */ = {isa = PBXBuildFile; fileRef = 282AC6921924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png */; };
@@ -1398,6 +1399,7 @@
 		2817821A187C2E7200548AE4 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchSolverProcessorSolution.png; path = Resources/LTPatchSolverProcessorSolution.png; sourceTree = "<group>"; };
 		2829F07D1991007B00DE1072 /* LTCropProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCropProcessor.h; sourceTree = "<group>"; };
 		2829F07E1991007B00DE1072 /* LTCropProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCropProcessor.mm; sourceTree = "<group>"; };
 		282AC6851924A49C006CAA2B /* LTCommonDrawableShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCommonDrawableShape.h; sourceTree = "<group>"; };
@@ -3097,6 +3099,7 @@
 				280E40D71990C2F6008C5BD9 /* PerspectiveVertical.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
 				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
+				2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */,
 				8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */,
 				8BA8203E197E55C800FBE68E /* RectRotated.jpg */,
 				8BA8203F197E55C800FBE68E /* RectUp.jpg */,
@@ -4484,6 +4487,7 @@
 				031DF22B18FFFC3C003FA627 /* MacbethDesaturatedGreenAndBlue.png in Resources */,
 				288C9B7419C6FF1200CDFF50 /* SmoothPyramidUpsampleGrid4.png in Resources */,
 				28BB81AC192509450071CB0B /* ShapeDrawerActualDrawingOriginal.png in Resources */,
+				2828016B1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png in Resources */,
 				03AFC1591909608600F17063 /* SanFrancisco.jpg in Resources */,
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
