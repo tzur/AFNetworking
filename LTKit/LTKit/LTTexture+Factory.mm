@@ -7,6 +7,8 @@
 #import "LTGLTexture.h"
 #import "LTMMTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTTexture (Factory)
 
 + (Class)textureClass {
@@ -87,3 +89,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

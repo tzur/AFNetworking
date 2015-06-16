@@ -5,6 +5,8 @@
 
 #import <OpenGLES/ES2/glext.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Precision of each channel of the texture on the GPU.
 typedef NS_ENUM(GLenum, LTTexturePrecision) {
   LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
@@ -410,3 +412,5 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 @property (readonly, nonatomic) LTVector4 fillColor;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -5,7 +5,10 @@
 
 #import "LTBlendMode.h"
 
-// This file contains various testing utilities for \c LTKit.
+#define LTTemporaryPath(...) _LTTemporaryPath(0, ##__VA_ARGS__)
+
+#define LTFileExistsInTemporaryPath(relativePath) \
+    [[NSFileManager defaultManager] fileExistsAtPath:LTTemporaryPath(relativePath)]
 
 /// Executes the given test if running on the simulator.
 void sit(NSString *name, id block);
@@ -93,3 +96,12 @@ double LTVariance(const Container &container) {
   double squareSum = std::inner_product(container.begin(), container.end(), container.begin(), 0.0);
   return squareSum / container.size() - mean * mean;
 }
+
+#define _LTTemporaryPath(...) \
+  metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \
+  (_LTTemporaryPath1(0, @""))(_LTTemporaryPath1(__VA_ARGS__))
+
+#define _LTTemporaryPath1(unused, relativePath, ...) \
+  [[NSTemporaryDirectory() \
+    stringByAppendingPathComponent:[[@__FILE__ lastPathComponent] stringByDeletingPathExtension]] \
+    stringByAppendingPathComponent:relativePath]

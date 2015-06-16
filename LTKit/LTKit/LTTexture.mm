@@ -13,6 +13,8 @@
 #import "LTMathUtils.h"
 #import "LTTextureContentsDataArchiver.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
   switch (CV_MAT_DEPTH(type)) {
     case CV_8U:
@@ -571,20 +573,18 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 }
 
 - (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block {
+  LTParameterAssert(block);
   BOOL locked = self.isGenerationIDLocked;
   self.isGenerationIDLocked = YES;
-  if (block) {
-    block();
-  }
+  block();
   self.isGenerationIDLocked = locked;
 }
 
 - (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
+  LTParameterAssert(block);
   BOOL locked = self.isFillColorLocked;
   self.isFillColorLocked = YES;
-  if (block) {
-    block();
-  }
+  block();
   self.isFillColorLocked = locked;
 }
 
@@ -694,3 +694,5 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

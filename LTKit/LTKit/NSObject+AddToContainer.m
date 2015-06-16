@@ -13,4 +13,8 @@
   [array addObject:self];
 }
 
+- (void)setInDictionary:(NSMutableDictionary *)dictionary forKey:(id<NSCopying>)aKey {
+  [dictionary setObject:self forKey:aKey];
+}
+
 @end

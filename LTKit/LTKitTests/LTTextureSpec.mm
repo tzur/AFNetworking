@@ -120,9 +120,12 @@ context(@"binding and execution", ^{
     });
     
     it(@"should raise exception when trying to execute a nil block", ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
       expect(^{
         [texture executeAndPreserveParameters:nil];
       }).to.raise(NSInvalidArgumentException);
+#pragma clang diagnostic pop
     });
 
     itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{

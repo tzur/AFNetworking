@@ -47,7 +47,7 @@
                  if (enumerationError) {
                    if (error) {
                      *error = [NSError errorWithDomain:kLTKitErrorDomain
-                                                  code:LTErrorFileError
+                                                  code:LTErrorCodeFileUnknownError
                                               userInfo:@{NSFilePathErrorKey:
                                                            url ?: [NSNull null],
                                                          NSUnderlyingErrorKey:
