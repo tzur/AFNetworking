@@ -11,6 +11,9 @@ typedef NS_ENUM(NSUInteger, LTPointLocation) {
 /// A pair of \c CGPoint.
 typedef std::pair<CGPoint, CGPoint> CGPointPair;
 
+/// A vector of \c CGPointPair.
+typedef std::vector<CGPointPair> CGPointPairs;
+
 /// Returns \c LTPointLocationRightOfRay if the given \c point lies on the right side of the ray
 /// with the given \c origin and \c direction, \c LTPointLocationLeftOfRay if it lies on the left
 /// side, and \c LTPointLocationOnLineThroughRay, otherwise.
