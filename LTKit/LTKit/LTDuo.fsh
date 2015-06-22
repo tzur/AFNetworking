@@ -13,6 +13,8 @@ const int kBlendModeLighten = 5;
 const int kBlendModeScreen = 6;
 const int kBlendModeColorBurn = 7;
 const int kBlendModeOverlay = 8;
+const int kBlendModePlusLighter = 9;
+const int kBlendModePlusDarker = 10;
 
 uniform sampler2D sourceTexture;
 uniform sampler2D dualMaskTexture;
@@ -89,6 +91,16 @@ mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float 
   return mix(below, above, step(0.5 * Da, Dca));
 }
 
+mediump vec3 plusLighter(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
+                         in mediump float Da) {
+  return Sca + Dca;
+}
+
+mediump vec3 plusDarker(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
+                        in mediump float Da) {
+  return Sca + Dca - 1.0;
+}
+
 void main() {
   mediump vec4 color = texture2D(sourceTexture, vTexcoord);
   mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
@@ -121,7 +133,11 @@ void main() {
     outputColor = colorBurn(Sca, Dca, Sa, Da);
   } else if (blendMode == kBlendModeOverlay) {
     outputColor = overlay(Sca, Dca, Sa, Da);
+  } else if (blendMode == kBlendModePlusLighter) {
+    outputColor = plusLighter(Sca, Dca, Sa, Da);
+  } else if (blendMode == kBlendModePlusDarker) {
+    outputColor = plusDarker(Sca, Dca, Sa, Da);
   }
-  
+
   gl_FragColor = vec4(outputColor, color.a);
 }

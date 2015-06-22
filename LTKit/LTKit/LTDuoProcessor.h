@@ -15,7 +15,9 @@ typedef NS_ENUM(NSUInteger, LTDuoBlendMode) {
   LTDuoBlendModeLighten,
   LTDuoBlendModeScreen,
   LTDuoBlendModeColorBurn,
-  LTDuoBlendModeOverlay
+  LTDuoBlendModeOverlay,
+  LTDuoBlendModePlusLighter,
+  LTDuoBlendModePlusDarker
 };
 
 /// By using dual mask, this class applies a different effect in red and blue regions of the mask.

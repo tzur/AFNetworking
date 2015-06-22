@@ -130,6 +130,20 @@ context(@"blending modes", ^{
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
+
+  it(@"should process with plus lighter blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTDuoBlendModeOverlay;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  it(@"should process with plus darker blending mode correctly", ^{
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    processor.blendMode = LTDuoBlendModeOverlay;
+    [processor process];
+    expect($(output.image)).to.beCloseToMat($(expected));
+  });
 });
 
 context(@"processing", ^{
