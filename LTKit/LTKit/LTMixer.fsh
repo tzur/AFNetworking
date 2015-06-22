@@ -101,7 +101,7 @@ void plusLighter(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
 
 void plusDarker(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
                 in mediump float Da) {
-  gl_FragColor.rgb = 1.0 - ((1.0 - Sca) + (1.0 - Dca));
+  gl_FragColor.rgb = Sca + Dca - 1.0;
   // TODO:(yaron) not sure about this. It's not documented anywhere, and in the SVG.
   gl_FragColor.a = Sa + Da;
 }
