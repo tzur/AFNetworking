@@ -40,9 +40,6 @@
   [self updateDrawerColors];
 
   [self.inputTexture executeAndPreserveParameters:^{
-    self.inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-    self.inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-
     CGPoint sourceCenter = self.circularPatchMode != LTCircularPatchModeHeal ?
         self.sourceCenter : self.targetCenter;
     [self.drawer drawRect:[self rectFromCenter:self.targetCenter] inFramebuffer:placement.targetFbo
