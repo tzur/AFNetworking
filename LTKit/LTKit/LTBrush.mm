@@ -4,12 +4,14 @@
 #import "LTBrush.h"
 
 #import "LTBrushColorDynamicsEffect.h"
+#import "LTBrushRandomState.h"
 #import "LTBrushScatterEffect.h"
 #import "LTBrushShapeDynamicsEffect.h"
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTKeyPathCoding.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
@@ -242,6 +244,32 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
   [self _verifyAndSetAngle:angle];
 }
 
+- (LTBrushRandomState *)randomState {
+  NSMutableDictionary *randomStates = [NSMutableDictionary dictionary];
+  for (NSString *keyPath in [[self class] keyPathsForRandomState]) {
+    LTRandom *random = [self valueForKeyPath:keyPath];
+    if (random) {
+      LTAssert([random isKindOfClass:[LTRandom class]]);
+      randomStates[keyPath] = [random engineState];
+    }
+  }
+
+  NSDictionary *result = @{@instanceKeypath(LTBrushRandomState, states): [randomStates copy]};
+  return [LTBrushRandomState modelWithDictionary:result error:nil];
+}
+
+- (void)setRandomState:(LTBrushRandomState *)randomState {
+  [randomState.states enumerateKeysAndObjectsUsingBlock:^(NSString *keyPath,
+                                                          LTRandomState *randomState, BOOL *) {
+    LTParameterAssert([keyPath isKindOfClass:[NSString class]]);
+    LTRandom *random = [self valueForKeyPath:keyPath];
+    LTParameterAssert(!random || [random isKindOfClass:[LTRandom class]]);
+    LTParameterAssert([randomState isKindOfClass:[LTRandomState class]]);
+
+    [random resetToState:randomState];
+  }];
+}
+
 - (void)setTexture:(LTTexture *)texture {
   LTParameterAssert(texture.format == LTTextureFormatRed);
   _texture = texture;
@@ -250,6 +278,19 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
 
 - (NSArray *)adjustableProperties {
   return @[@"scale", @"angle", @"spacing", @"opacity", @"flow"];
+}
+
+#pragma mark -
+#pragma mark Auxiliary methods
+#pragma mark -
+
++ (NSSet *)keyPathsForRandomState {
+  return [NSSet setWithArray:@[
+    @instanceKeypath(LTBrush, random),
+    @instanceKeypath(LTBrush, colorDynamicsEffect.random),
+    @instanceKeypath(LTBrush, scatterEffect.random),
+    @instanceKeypath(LTBrush, shapeDynamicsEffect.random)
+  ]];
 }
 
 @end
