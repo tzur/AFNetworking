@@ -164,8 +164,11 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */; };
 		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
+		253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */ = {isa = PBXBuildFile; fileRef = 253F60781B3FC979009C6A5F /* LTBrushRandomState.h */; };
+		253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */; };
 		256392541B0B453D00DA934F /* LTMeshProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 256392531B0B453D00DA934F /* LTMeshProcessor.h */; };
 		256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256392551B0B4B3400DA934F /* LTMeshProcessor.mm */; };
 		25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17341AD50BE00055E664 /* LTVGGlyph.h */; };
@@ -1327,8 +1330,11 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomStateSpec.mm; sourceTree = "<group>"; };
 		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
+		253F60781B3FC979009C6A5F /* LTBrushRandomState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushRandomState.h; sourceTree = "<group>"; };
+		253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomState.mm; sourceTree = "<group>"; };
 		256392531B0B453D00DA934F /* LTMeshProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeshProcessor.h; sourceTree = "<group>"; };
 		256392551B0B4B3400DA934F /* LTMeshProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessor.mm; sourceTree = "<group>"; };
 		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
@@ -2575,6 +2581,8 @@
 				2839068718C4D9AA00BD21CE /* LTBrush.mm */,
 				2839068818C4D9AA00BD21CE /* LTBrush.fsh */,
 				2839068918C4D9AA00BD21CE /* LTBrush.vsh */,
+				253F60781B3FC979009C6A5F /* LTBrushRandomState.h */,
+				253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */,
 			);
 			name = Brushes;
 			sourceTree = "<group>";
@@ -2586,6 +2594,7 @@
 				28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */,
 				2839069818C4DB0A00BD21CE /* LTBrushSpec.h */,
 				2839069918C4DB0A00BD21CE /* LTBrushSpec.mm */,
+				2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */,
 				2839069A18C4DB0A00BD21CE /* LTEdgeAvoidingBrushSpec.mm */,
 				28A612861934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm */,
 				284004D618D8423500403938 /* LTMultiTextureBrushSpec.mm */,
@@ -3892,6 +3901,7 @@
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,
 				8BA822C0198954AE00FBE68E /* LTTransformers.h in Headers */,
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
+				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
 				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
 				8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */,
@@ -4731,6 +4741,7 @@
 				5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */,
 				28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */,
 				285EEA591B15C541002D10EE /* LTImagePNGCompressor.m in Sources */,
+				253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */,
 				500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
 				5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */,
@@ -4897,6 +4908,7 @@
 				28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */,
 				8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */,
 				03BBB383188C0B98001E7703 /* LTFractionalNoiseSpec.mm in Sources */,
+				2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */,
 				28BBD79219A109D80062C803 /* LTRectSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
