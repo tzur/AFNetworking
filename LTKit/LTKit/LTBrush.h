@@ -11,7 +11,7 @@
   }
 
 @protocol LTInterpolationRoutineFactory;
-@class LTBrushColorDynamicsEffect, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
+@class LTBrushColorDynamicsEffect, LTBrushRandomState, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
     LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;
 
 /// @class LTBrush
@@ -68,6 +68,10 @@
 
 /// The random generator used by the brush.
 @property (readonly, nonatomic) LTRandom *random;
+
+/// The random states of the random generators of this brush and its elements exhibiting random
+/// behavior. Setting this property updates the state of the relevant random generators.
+@property (nonatomic) LTBrushRandomState *randomState;
 
 /// Controls the base size of the brush, in pixels. The default value for iOS is the average finger
 /// size on the device.

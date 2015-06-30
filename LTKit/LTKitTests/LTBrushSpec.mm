@@ -4,11 +4,16 @@
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
+#import "LTBrushColorDynamicsEffect.h"
+#import "LTBrushRandomState.h"
+#import "LTBrushScatterEffect.h"
+#import "LTBrushShapeDynamicsEffect.h"
 #import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTKeyPathCoding.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
@@ -178,6 +183,91 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.splineFactory).to.beIdenticalTo(degenerate);
       brush.splineFactory = nil;
       expect(brush.splineFactory).to.beNil();
+    });
+
+    context(@"random state", ^{
+      __block id partialBrushMock;
+      __block id niceColorDynamicsEffectMock;
+      __block id niceScatterEffectMock;
+      __block id niceShapeDynamicsEffectMock;
+      __block id niceColorDynamicsEffectRandomMock;
+      __block id niceScatterEffectRandomMock;
+      __block id niceShapeDynamicsEffectRandomMock;
+      __block id niceColorDynamicsEffectRandomStateMock;
+      __block id niceScatterEffectRandomStateMock;
+      __block id niceShapeDynamicsEffectRandomStateMock;
+
+      beforeEach(^{
+        partialBrushMock = OCMPartialMock(brush);
+        niceColorDynamicsEffectRandomMock = OCMClassMock([LTRandom class]);
+        niceScatterEffectRandomMock = OCMClassMock([LTRandom class]);
+        niceShapeDynamicsEffectRandomMock = OCMClassMock([LTRandom class]);
+        niceColorDynamicsEffectRandomStateMock = OCMClassMock([LTRandomState class]);
+        niceScatterEffectRandomStateMock = OCMClassMock([LTRandomState class]);
+        niceShapeDynamicsEffectRandomStateMock = OCMClassMock([LTRandomState class]);
+        OCMStub([partialBrushMock valueForKeyPath:@instanceKeypath(LTBrush,
+                                                                   colorDynamicsEffect.random)])
+            .andReturn(niceColorDynamicsEffectRandomMock);
+        OCMStub([partialBrushMock valueForKeyPath:@instanceKeypath(LTBrush,
+                                                                   scatterEffect.random)])
+            .andReturn(niceScatterEffectRandomMock);
+        OCMStub([partialBrushMock valueForKeyPath:@instanceKeypath(LTBrush,
+                                                                   shapeDynamicsEffect.random)])
+            .andReturn(niceShapeDynamicsEffectRandomMock);
+      });
+
+      it(@"should retrieve random state", ^{
+        OCMExpect([niceColorDynamicsEffectRandomMock engineState])
+            .andReturn(niceColorDynamicsEffectRandomStateMock);
+        OCMExpect([niceScatterEffectRandomMock engineState])
+            .andReturn(niceScatterEffectRandomStateMock);
+        OCMExpect([niceShapeDynamicsEffectRandomMock engineState])
+            .andReturn(niceShapeDynamicsEffectRandomStateMock);
+
+        LTBrushRandomState *randomState = brush.randomState;
+
+        expect(randomState.states).toNot.beNil();
+        expect(randomState.states[@instanceKeypath(LTBrush, random)])
+            .to.equal(brush.random.engineState);
+        expect(randomState.states[@instanceKeypath(LTBrush, colorDynamicsEffect.random)])
+            .to.beIdenticalTo(niceColorDynamicsEffectRandomStateMock);
+        expect(randomState.states[@instanceKeypath(LTBrush, scatterEffect.random)])
+            .to.beIdenticalTo(niceScatterEffectRandomStateMock);
+        expect(randomState.states[@instanceKeypath(LTBrush, shapeDynamicsEffect.random)])
+            .to.beIdenticalTo(niceShapeDynamicsEffectRandomStateMock);
+        OCMVerifyAll(niceColorDynamicsEffectMock);
+        OCMVerifyAll(niceScatterEffectMock);
+        OCMVerifyAll(niceShapeDynamicsEffectMock);
+      });
+
+      it(@"should set random state", ^{
+        OCMExpect([niceColorDynamicsEffectRandomMock
+                   resetToState:niceColorDynamicsEffectRandomStateMock]);
+        OCMExpect([niceScatterEffectRandomMock resetToState:niceScatterEffectRandomStateMock]);
+        OCMExpect([niceShapeDynamicsEffectRandomMock
+                   resetToState:niceShapeDynamicsEffectRandomStateMock]);
+
+        LTRandomState *randomState = [[LTRandom alloc] initWithSeed:0].engineState;
+        NSDictionary *dictionary = @{
+          @instanceKeypath(LTBrush, random): randomState,
+          @instanceKeypath(LTBrush, colorDynamicsEffect.random):
+             niceColorDynamicsEffectRandomStateMock,
+          @instanceKeypath(LTBrush, scatterEffect.random):
+             niceScatterEffectRandomStateMock,
+          @instanceKeypath(LTBrush, shapeDynamicsEffect.random):
+             niceShapeDynamicsEffectRandomStateMock,
+        };
+        dictionary = @{@instanceKeypath(LTBrushRandomState, states): dictionary};
+        LTBrushRandomState *brushRandomState =
+            [LTBrushRandomState modelWithDictionary:dictionary error:nil];
+
+        brush.randomState = brushRandomState;
+
+        expect(brush.random.engineState).to.equal(randomState);
+        OCMVerifyAll(niceColorDynamicsEffectMock);
+        OCMVerifyAll(niceScatterEffectMock);
+        OCMVerifyAll(niceShapeDynamicsEffectMock);
+      });
     });
   });
 });
