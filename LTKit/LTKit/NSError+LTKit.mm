@@ -17,6 +17,14 @@ NSString * const kLTSystemErrorKey = @"SystemError";
 
 NSString * const kLTSystemErrorMessageKey = @"SystemErrorMessage";
 
+NSString *LTSystemErrorMessageForError(int error) {
+  std::vector<char> message(1024);
+  while (strerror_r(error, message.data(), message.size()) == ERANGE) {
+    message.resize(message.size() * 2);
+  }
+  return @(message.data());
+}
+
 @implementation NSError (LTKit)
 
 #pragma mark -
@@ -80,7 +88,7 @@ NSString * const kLTSystemErrorMessageKey = @"SystemErrorMessage";
 + (instancetype)lt_errorWithSystemError {
   return [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodePOSIX userInfo:@{
     kLTSystemErrorKey: @(errno),
-    kLTSystemErrorMessageKey: @(strerror(errno))
+    kLTSystemErrorMessageKey: LTSystemErrorMessageForError(errno)
   }];
 }
 

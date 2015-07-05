@@ -42,6 +42,10 @@ typedef NS_ENUM(NSInteger, LTErrorCode) {
   LTErrorCodeBadHeader = 8
 };
 
+/// Returns the system error message related to the given \c error. \c error is usually the current
+/// \c errno value.
+NSString *LTSystemErrorMessageForError(int error);
+
 @interface NSError (LTKit)
 
 /// Creates an error with LTKit's domain and given error code.

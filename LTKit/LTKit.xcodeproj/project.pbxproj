@@ -573,12 +573,19 @@
 		8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */; };
 		8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
+		8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */; };
+		8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */; };
+		8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7C6C9B1B52829100B90DBE /* LTMMInputFile.h */; };
+		8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7C6C9D1B52829100B90DBE /* LTMMOutputFile.h */; };
+		8B7C6CA51B5282AC00B90DBE /* NSFileManager+LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */; };
+		8B7C6CA81B52832600B90DBE /* LTMMInputFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */; };
+		8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */; };
 		8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */; };
 		8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */; };
 		8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EAA21187C5D960004A57A /* Colorize.fsh */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */; };
 		8B871F9019238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */; };
-		8B871F98192396BE00517F2E /* NSError+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.m */; };
+		8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.mm */; };
 		8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */; };
 		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B871FC81924A75E00517F2E /* LTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB4041835320200A11FA4 /* LTDevice.h */; };
@@ -1822,6 +1829,12 @@
 		8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInverseTransformSampler.h; sourceTree = "<group>"; };
 		8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInverseTransformSampler.mm; sourceTree = "<group>"; };
 		8B78CFDC197654A900684B1D /* LTEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEnum.h; sourceTree = "<group>"; };
+		8B7C6C9B1B52829100B90DBE /* LTMMInputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMMInputFile.h; sourceTree = "<group>"; };
+		8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMInputFile.mm; sourceTree = "<group>"; };
+		8B7C6C9D1B52829100B90DBE /* LTMMOutputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMMOutputFile.h; sourceTree = "<group>"; };
+		8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMOutputFile.mm; sourceTree = "<group>"; };
+		8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMInputFileSpec.mm; sourceTree = "<group>"; };
+		8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMOutputFileSpec.mm; sourceTree = "<group>"; };
 		8B7DC39B18328063008D004B /* LTBoundaryCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoundaryCondition.h; sourceTree = "<group>"; };
 		8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryCondition.mm; sourceTree = "<group>"; };
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
@@ -1829,7 +1842,7 @@
 		8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLoggerSpec.mm; sourceTree = "<group>"; };
 		8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiverSpec.mm; sourceTree = "<group>"; };
 		8B871F96192396BE00517F2E /* NSError+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+LTKit.h"; sourceTree = "<group>"; };
-		8B871F97192396BE00517F2E /* NSError+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+LTKit.m"; sourceTree = "<group>"; };
+		8B871F97192396BE00517F2E /* NSError+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+LTKit.mm"; sourceTree = "<group>"; };
 		8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+LTKit.h"; sourceTree = "<group>"; };
 		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+LTKit.m"; sourceTree = "<group>"; };
 		8B8720BF1925167400517F2E /* TextureContentsImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TextureContentsImage.png; path = Resources/TextureContentsImage.png; sourceTree = "<group>"; };
@@ -2883,6 +2896,8 @@
 				8BB01CC119658014002A8609 /* LTImageLoaderSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
 				2884CDAB1B176EC200A58EE4 /* LTImageTIFFCompressorSpec.mm */,
+				8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */,
+				8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */,
 				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 			);
 			name = IO;
@@ -3352,6 +3367,10 @@
 				28EC23881B0CE9ED0099946A /* Image Compression */,
 				8BB01CAD196576D7002A8609 /* LTImageLoader.h */,
 				8BB01CAE196576D7002A8609 /* LTImageLoader.m */,
+				8B7C6C9B1B52829100B90DBE /* LTMMInputFile.h */,
+				8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */,
+				8B7C6C9D1B52829100B90DBE /* LTMMOutputFile.h */,
+				8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */,
 				8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */,
 				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */,
 			);
@@ -3483,7 +3502,7 @@
 				8BF9A53A18F684AC00CCA084 /* LTTimer.m */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
-				8B871F97192396BE00517F2E /* NSError+LTKit.m */,
+				8B871F97192396BE00517F2E /* NSError+LTKit.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -3967,6 +3986,7 @@
 				8B871FE21924A75E00517F2E /* LTFractionalNoise.h in Headers */,
 				8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */,
 				8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */,
+				8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */,
 				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
 				28C2074F1AE67DAB007214A5 /* LTTextureMetadata.h in Headers */,
 				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
@@ -4027,6 +4047,7 @@
 				8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */,
 				8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */,
 				2868B7851933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h in Headers */,
+				8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */,
 				8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */,
 				8B87200C1924A76100517F2E /* LTDrawableShape.h in Headers */,
 				8B87200D1924A76100517F2E /* LTCommonDrawableShapeStructs.h in Headers */,
@@ -4104,6 +4125,7 @@
 				8B8720391924A76600517F2E /* LTGLKitExtensions.h in Headers */,
 				8B87203A1924A76600517F2E /* LTGLUtils.h in Headers */,
 				8B87203B1924A76600517F2E /* LTInverseTransformSampler.h in Headers */,
+				8B7C6CA51B5282AC00B90DBE /* NSFileManager+LTKit.h in Headers */,
 				8B87203C1924A76600517F2E /* LTLogger.h in Headers */,
 				8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */,
 				28A6C5AD193B77C300C217CC /* LTProgressiveImageProcessor.h in Headers */,
@@ -4658,6 +4680,7 @@
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				8B329022192CBBE90010592E /* LTTextureContentsArchiver.mm in Sources */,
 				031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */,
+				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
 				8BA821B41986846900FBE68E /* NSValue+LTVector.mm in Sources */,
 				8BC1C9E719FA5A0800107580 /* LTAspectFillResizeProcessor.mm in Sources */,
 				28E8AF121997AB4700C2DD22 /* LTCropDrawerRect.mm in Sources */,
@@ -4764,7 +4787,7 @@
 				2839069418C4D9AA00BD21CE /* LTBrush.mm in Sources */,
 				8BB47141183A470400CA1681 /* LTVertexArray.mm in Sources */,
 				28C2079E1AECC5CD007214A5 /* LTTextureUncompressedMatArchiver.mm in Sources */,
-				8B871F98192396BE00517F2E /* NSError+LTKit.m in Sources */,
+				8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */,
 				8B329070192CDA2C0010592E /* LTTextureContentsDataArchiver.mm in Sources */,
 				280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */,
 				8B98516D186884F300D680D0 /* LTPassthroughShader.fsh in Sources */,
@@ -4842,6 +4865,7 @@
 				2839069518C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm in Sources */,
 				282AC6AF1924B9E2006CAA2B /* LTShapeDrawerTriangularMeshShape.mm in Sources */,
 				039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */,
+				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */,
 				8BABF16F19BC3AC000AED760 /* LTPyramidProcessor.mm in Sources */,
 				8B8720CF192521FB00517F2E /* LTTextureContentsBundleArchiver.mm in Sources */,
@@ -5034,6 +5058,7 @@
 				8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */,
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
+				8B7C6CA81B52832600B90DBE /* LTMMInputFileSpec.mm in Sources */,
 				285660221B1761A800807A4F /* LTImageJPGCompressorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
 				8BABF0D019B8491800AED760 /* LTEAWProcessorSpec.mm in Sources */,
@@ -5056,6 +5081,7 @@
 				03C192A918F5117E00DC6CA6 /* LTDualMaskProcessorSpec.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				2899E3101937300000281CBB /* LTPainterImageProcessorSpec.mm in Sources */,
+				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
 				8BAECBB618BDEAAC00315425 /* LTSplitComplexMatSpec.mm in Sources */,
 				28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */,
