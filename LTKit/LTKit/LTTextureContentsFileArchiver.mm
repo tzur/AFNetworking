@@ -113,10 +113,10 @@ objection_initializer_sel(@selector(initWithFilePath:));
     success = [self unarchiveToNonByteTexture:texture error:error];
   }
 
-  if (error) {
+  if (success && error) {
     *error = nil;
   }
-  return YES;
+  return success;
 }
 
 - (BOOL)unarchiveToByteTexture:(LTTexture *)texture error:(NSError *__autoreleasing *)error {
