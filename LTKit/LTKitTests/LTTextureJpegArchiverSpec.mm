@@ -222,7 +222,7 @@ context(@"removing", ^{
     expect(result).to.beFalsy();
     expect(error).notTo.beNil();
     expect(error.code).to.equal(LTErrorCodeFileRemovalFailed);
-    expect(error.userInfo[kLTInternalErrorMessageKey]).to.equal(kFakeError);
+    expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
     OCMVerifyAll(fileManager);
   });
 });

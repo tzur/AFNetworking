@@ -304,7 +304,7 @@ context(@"unarchiving", ^{
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
       expect(error.code).to.equal(LTErrorCodeFileReadFailed);
-      expect(error.userInfo[kLTInternalErrorMessageKey]).to.equal(kFakeError);
+      expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
     });
   });
 
@@ -343,7 +343,7 @@ context(@"unarchiving", ^{
                             withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
       expect(texture).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.userInfo[kLTInternalErrorMessageKey]).to.equal(kFakeError);
+      expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
     });
   });
 

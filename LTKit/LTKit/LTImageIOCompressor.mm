@@ -52,9 +52,9 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL finalized = CGImageDestinationFinalize(destination);
   if (!finalized) {
     if (error) {
-      NSString * const kNSErrorReasonValue = @"Error when writing the image during compression";
       *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileWriteUnknownError
-                               userInfo:@{kLTInternalErrorMessageKey: kNSErrorReasonValue}];
+                               userInfo:@{kLTErrorDescriptionKey:
+                                            @"Error while writing image during compression"}];
     }
     return nil;
   }

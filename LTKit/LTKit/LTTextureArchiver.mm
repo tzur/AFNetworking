@@ -229,7 +229,7 @@ objection_requires_sel(@selector(fileManager));
 
   if (errors.count && error) {
     *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeFileRemovalFailed
-                             userInfo:@{kLTInternalErrorMessageKey: errors}];
+                             userInfo:@{NSUnderlyingErrorKey: errors}];
   }
 
   NSString *storageKey = [self storageKeyForTextureMetadata:metadata archiveType:type];

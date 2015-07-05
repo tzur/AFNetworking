@@ -6,11 +6,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Error domain for LTKit.
 extern NSString * const kLTKitErrorDomain;
 
-/// Key for placing internal error message in the \c userInfo dictionary of an \c NSError object.
-extern NSString * const kLTInternalErrorMessageKey;
+/// Key in the \c userInfo dictionary for \c NSString value holding an error description.
+extern NSString * const kLTErrorDescriptionKey;
 
-/// Key for placing the file path of the error in the \c userInfo dictionary of an \c NSError.
+/// Key in the \c userInfo dictionary for placing the file path related to the error.
 extern NSString * const kLTFilePathErrorKey;
+
+/// Key in the \c userInfo dictionary for \c NSNumber value holding the errno value.
+extern NSString * const kLTErrnoErrorKey;
+
+/// Key in the \c userInfo dictionary for \c NSString value holding the errno message.
+extern NSString * const kLTErrnoErrorMessageKey;
 
 /// All error codes available in LTKit.
 typedef NS_ENUM(NSInteger, LTErrorCode) {
@@ -28,6 +34,10 @@ typedef NS_ENUM(NSInteger, LTErrorCode) {
   LTErrorCodeFileWriteFailed = 5,
   /// Caused when failed to remove a file.
   LTErrorCodeFileRemovalFailed = 6,
+  /// Marks a POSIX error created from the current value of \c errno.
+  LTErrorCodePOSIX = 7,
+  /// Caused when bad file header has been read.
+  LTErrorCodeBadHeader = 8
 };
 
 @interface NSError (LTKit)
@@ -55,6 +65,13 @@ typedef NS_ENUM(NSInteger, LTErrorCode) {
 /// underlying \c error, if provided.
 + (instancetype)lt_fileRemovalFailedErrorWithPath:(nullable NSString *)path
                                   underlyingError:(nullable NSError *)error;
+
+/// Returns an error with the current value of \c errno and its string representation.
++ (instancetype)lt_errorWithSystemErrno;
+
+/// Returns an error after reading bad file header with its \c path and additional \c description.
++ (instancetype)lt_badFileHeaderErrorWithPath:(nullable NSString *)path
+                                  description:(nullable NSString *)description;
 
 @end
 

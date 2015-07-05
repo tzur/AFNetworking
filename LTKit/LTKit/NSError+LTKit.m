@@ -9,9 +9,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kLTKitErrorDomain = @"com.lightricks.LTKit";
 
-NSString * const kLTInternalErrorMessageKey = @"InternalErrorMessage";
+NSString * const kLTErrorDescriptionKey = @"ErrorDescription";
 
 NSString * const kLTFilePathErrorKey = @"FilePath";
+
+NSString * const kLTErrnoErrorKey = @"Errno";
+
+NSString * const kLTErrnoErrorMessageKey = @"ErrnoMessage";
 
 @implementation NSError (LTKit)
 
@@ -51,8 +55,23 @@ NSString * const kLTFilePathErrorKey = @"FilePath";
                      underlyingError:(nullable NSError *)error {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   [path setInDictionary:userInfo forKey:kLTFilePathErrorKey];
-  [error setInDictionary:userInfo forKey:kLTInternalErrorMessageKey];
+  [error setInDictionary:userInfo forKey:NSUnderlyingErrorKey];
   return [NSError errorWithDomain:kLTKitErrorDomain code:code userInfo:userInfo];
+}
+
++ (instancetype)lt_errorWithSystemErrno {
+  return [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodePOSIX userInfo:@{
+    kLTErrnoErrorKey: @(errno),
+    kLTErrnoErrorMessageKey: @(strerror(errno))
+  }];
+}
+
++ (instancetype)lt_badFileHeaderErrorWithPath:(nullable NSString *)path
+                                  description:(nullable NSString *)description {
+  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  [path setInDictionary:userInfo forKey:kLTFilePathErrorKey];
+  [description setInDictionary:userInfo forKey:kLTErrorDescriptionKey];
+  return [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeBadHeader userInfo:userInfo];
 }
 
 @end
