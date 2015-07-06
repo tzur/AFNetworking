@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTCropDrawer.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLKitExtensions.h"
 #import "LTTexture+Factory.h"
 
@@ -68,7 +69,7 @@
 - (void)process {
   [self prepareOutputTexture];
   
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self.outputTexture];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
   [self.inputTexture executeAndPreserveParameters:^{
     self.inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
     self.inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;

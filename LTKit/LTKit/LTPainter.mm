@@ -6,6 +6,7 @@
 #import "LTCatmullRomInterpolationRoutine.h"
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
@@ -84,8 +85,8 @@
 }
 
 - (void)createFbos {
-  self.canvasFbo = [[LTFbo alloc] initWithTexture:self.canvasTexture];
-  self.strokeFbo = [[LTFbo alloc] initWithTexture:self.strokeTexture];
+  self.canvasFbo = [[LTFboPool currentPool] fboWithTexture:self.canvasTexture];
+  self.strokeFbo = [[LTFboPool currentPool] fboWithTexture:self.strokeTexture];
   [self.strokeFbo clearWithColor:LTVector4(0, 0, 0, 0)];
 }
 

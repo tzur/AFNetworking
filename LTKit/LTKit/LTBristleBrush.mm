@@ -5,6 +5,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
@@ -74,7 +75,7 @@ static const CGFloat kBristleSigma = 0.4;
 - (NSArray *)createBrushFbos {
   NSMutableArray *fbos = [NSMutableArray array];
   for (GLint i = 0; i < self.texture.maxMipmapLevel; ++i) {
-    [fbos addObject:[[LTFbo alloc] initWithTexture:self.texture level:i]];
+    [fbos addObject:[[LTFboPool currentPool] fboWithTexture:self.texture level:i]];
   }
   return fbos;
 }

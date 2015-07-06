@@ -4,6 +4,7 @@
 #import "LTIterativeProcessingStrategy.h"
 
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTTexture+Factory.h"
 
 @interface LTIterativeProcessingStrategy ()
@@ -111,7 +112,7 @@
 
 - (void)prepareNextOutput {
   LTTexture *outputTexture = self.outputs[self.nextOutputIndex];
-  self.outputFbo = [[LTFbo alloc] initWithTexture:outputTexture];
+  self.outputFbo = [[LTFboPool currentPool] fboWithTexture:outputTexture];
 }
 
 - (void)setSourceTextureAndTargetFboForIteration:(NSUInteger)iteration {
@@ -180,7 +181,7 @@
   if (!_intermediateFbo || _intermediateFbo.size != [self.outputs[self.nextOutputIndex] size]) {
     self.intermediateTexture = [LTTexture
                                 textureWithPropertiesOf:self.outputs[self.nextOutputIndex]];
-    _intermediateFbo = [[LTFbo alloc] initWithTexture:self.intermediateTexture];
+    _intermediateFbo = [[LTFboPool currentPool] fboWithTexture:self.intermediateTexture];
   }
   return _intermediateFbo;
 }

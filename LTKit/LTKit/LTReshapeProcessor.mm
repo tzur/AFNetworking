@@ -4,6 +4,7 @@
 #import "LTReshapeProcessor.h"
 
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTMeshProcessor.h"
 #import "LTProgramFactory.h"
@@ -62,7 +63,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
                                                meshSize:[self meshTextureSizeForInput:input]
                                                  output:output];
     self.maskTexture = mask ?: self.defaultMaskTexture;
-    self.meshFbo = [[LTFbo alloc] initWithTexture:self.meshDisplacementTexture];
+    self.meshFbo = [[LTFboPool currentPool] fboWithTexture:self.meshDisplacementTexture];
     [self createAdjustmentDrawer];
   }
   return self;

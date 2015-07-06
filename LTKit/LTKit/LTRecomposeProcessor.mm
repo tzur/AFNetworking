@@ -8,6 +8,7 @@
 
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTInverseTransformSampler.h"
 #import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
@@ -83,8 +84,8 @@ typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
     self.output = output;
     self.auxiliary = [LTTexture textureWithPropertiesOf:output];
 
-    self.outputFbo = [[LTFbo alloc] initWithTexture:output];
-    self.auxiliaryFbo = [[LTFbo alloc] initWithTexture:self.auxiliary];
+    self.outputFbo = [[LTFboPool currentPool] fboWithTexture:output];
+    self.auxiliaryFbo = [[LTFboPool currentPool] fboWithTexture:self.auxiliary];
 
     self.samplerFactory = [[LTInverseTransformSamplerFactory alloc] init];
   }
