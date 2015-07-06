@@ -6,6 +6,7 @@
 #import <stack>
 
 #import "LTCGExtensions.h"
+#import "LTFboPool.h"
 
 /// OpenGL default blend function.
 LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
@@ -59,6 +60,9 @@ typedef struct {
 /// Underlying \c EAGLContext.
 @property (strong, nonatomic) EAGLContext *context;
 
+/// Framebuffer pool associated with this context.
+@property (strong, nonatomic) LTFboPool *fboPool;
+
 /// Holds \c LTGLContextValues objects for each \c executeAndRestoreState: call. Note that this is
 /// a stack since it's possible to have recursive calls to \c executeAndRestoreState:.
 @property (readonly, nonatomic) std::stack<LTGLContextValues> &contextStack;
@@ -78,6 +82,7 @@ typedef struct {
 - (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup {
   if (self = [super init]) {
     self.context = [self createEAGLContextWithSharegroup:sharegroup];
+    self.fboPool = [[LTFboPool alloc] init];
   }
   return self;
 }

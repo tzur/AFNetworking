@@ -42,10 +42,32 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
 });
 
 context(@"initialization", ^{
-  it(@"should initialize with no context", ^{
-    LTGLContext *context = [[LTGLContext alloc] init];
+  __block LTGLContext *context;
 
+  beforeEach(^{
+    context = [[LTGLContext alloc] init];
+  });
+
+  afterEach(^{
+    context = nil;
+  });
+
+  it(@"should initialize correctly without sharegroup", ^{
     expect(context.context).toNot.beNil();
+    expect(context.fboPool).toNot.beNil();
+  });
+
+  it(@"should initialize correctly with sharegroup", ^{
+    LTGLContext *sharedContext = [[LTGLContext alloc]
+                                  initWithSharegroup:context.context.sharegroup];
+    expect(sharedContext.context).toNot.beNil();
+    expect(sharedContext.context.sharegroup).to.equal(sharedContext.context.sharegroup);
+    expect(sharedContext.fboPool).toNot.beNil();
+  });
+
+  it(@"should initialize with nil sharegroup", ^{
+    LTGLContext *contextWithNilSharegrop = [[LTGLContext alloc] initWithSharegroup:nil];
+    expect(contextWithNilSharegrop.context).toNot.beNil();
   });
 });
 
