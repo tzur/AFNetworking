@@ -527,6 +527,7 @@
 		50FEAFAD19DC0510009C6E22 /* LTCGPathExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */; };
 		50FEAFBF19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
+		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
 		8B18BB7819235F4200DA4B64 /* LTTextureContentsFileArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B18BB7719235F4200DA4B64 /* LTTextureContentsFileArchiver.mm */; };
 		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B19621D184B6DA40065A057 /* LTGPUQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19621C184B6DA40065A057 /* LTGPUQueue.mm */; };
@@ -569,6 +570,8 @@
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
+		8B539FF41B4A882600036743 /* LTFboPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B539FF21B4A882600036743 /* LTFboPool.h */; };
+		8B539FF51B4A882600036743 /* LTFboPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B539FF31B4A882600036743 /* LTFboPool.mm */; };
 		8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */; };
 		8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */; };
 		8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */; };
@@ -1761,6 +1764,7 @@
 		50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensions.mm; sourceTree = "<group>"; };
 		50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensionsSpec.mm; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
+		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
 		8B18BB751922771C00DA4B64 /* LTTextureContentsArchiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTextureContentsArchiver.h; sourceTree = "<group>"; };
 		8B18BB7619235F4200DA4B64 /* LTTextureContentsFileArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureContentsFileArchiver.h; sourceTree = "<group>"; };
@@ -1814,6 +1818,8 @@
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8B539FF21B4A882600036743 /* LTFboPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboPool.h; sourceTree = "<group>"; };
+		8B539FF31B4A882600036743 /* LTFboPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPool.mm; sourceTree = "<group>"; };
 		8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchSolverProcessor.h; sourceTree = "<group>"; };
 		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
@@ -3423,6 +3429,8 @@
 				8BB47135183A438300CA1681 /* LTDrawingContext.mm */,
 				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
 				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
+				8B539FF21B4A882600036743 /* LTFboPool.h */,
+				8B539FF31B4A882600036743 /* LTFboPool.mm */,
 				8B8E51031861F54600821829 /* LTGLContext.h */,
 				8B8E51041861F54600821829 /* LTGLContext.mm */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
@@ -3496,8 +3504,9 @@
 			isa = PBXGroup;
 			children = (
 				8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */,
-				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
 				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
+				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
+				6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */,
 				8B8E510D1863216E00821829 /* LTGLContextSpec.mm */,
 				8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */,
 				8BB4715A183B63D000CA1681 /* LTGPUStructSpec.mm */,
@@ -4099,6 +4108,7 @@
 				8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */,
 				8B87204C1924A76800517F2E /* LTAnimation.h in Headers */,
 				8B87204D1924A76800517F2E /* NSBundle+LTKitBundle.h in Headers */,
+				8B539FF41B4A882600036743 /* LTFboPool.h in Headers */,
 				8BBB149A194F4799000CF391 /* LTEnumRegistry.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4634,6 +4644,7 @@
 				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,
 				03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */,
 				03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */,
+				8B539FF51B4A882600036743 /* LTFboPool.mm in Sources */,
 				03C192EE18FABDFE00DC6CA6 /* LTColorConversionProcessor.fsh in Sources */,
 				03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */,
 				03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */,
@@ -5043,6 +5054,7 @@
 				8BD0748319A614DF005F2C37 /* LTTestModule.m in Sources */,
 				03C1933218FE530A00DC6CA6 /* LTColorGradient+ForTesting.mm in Sources */,
 				28B117D619C87DB2007E2F17 /* LTReshapeProcessorSpec.mm in Sources */,
+				6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */,
 				50AE95D719D17624000E8086 /* LTQuadSpec.mm in Sources */,
 				8BAE3A1318AD031100DA79E1 /* LTPatchBoundaryProcessorSpec.mm in Sources */,
 				505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */,

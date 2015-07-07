@@ -7,6 +7,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTImage.h"
@@ -190,7 +191,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)createContentFbo {
-  self.contentFbo = [[LTFbo alloc] initWithTexture:self.contentTexture];
+  self.contentFbo = [[LTFboPool currentPool] fboWithTexture:self.contentTexture];
 }
 
 - (void)createRectDrawer {
@@ -740,7 +741,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // so there will be no need to create two duplicate images in memory (one of a texture and one of
   // LTImage).
   LTTexture *texture = [LTTexture byteRGBATextureWithSize:self.framebufferSize];
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture];
   [fbo bindAndDraw:^{
     [self drawToBoundFramebuffer];
   }];

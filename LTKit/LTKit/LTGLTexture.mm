@@ -6,6 +6,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTMathUtils.h"
@@ -149,7 +150,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (cv::Mat)imageAtLevel:(NSUInteger)level {
   LTParameterAssert((GLint)level <= self.maxMipmapLevel);
   __block cv::Mat image;
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:level];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:level];
   [fbo bindAndExecute:^{
     [self readRect:CGRectFromSize(self.size / std::pow(2, level)) toImage:&image];
   }];
@@ -163,7 +164,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
                     rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   // \c glReadPixels requires framebuffer object that is bound to the texture that is being read.
-  LTFbo *fbo = [[LTFbo alloc] initWithTexture:self];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self];
   [fbo bindAndExecute:^{
     [self readRect:rect toImage:image];
   }];
@@ -283,7 +284,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       [texture clearWithColor:self.fillColor];
     } else {
       for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-        LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture level:i];
+        LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture level:i];
         [self cloneToFramebuffer:fbo];
       }
     }

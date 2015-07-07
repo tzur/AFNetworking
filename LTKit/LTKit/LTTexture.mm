@@ -7,6 +7,7 @@
 #import "LTCGExtensions.h"
 #import "LTDevice.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLException.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
@@ -533,7 +534,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   self.fillColor = color;
   [self performWithoutUpdatingFillColor:^{
     for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-      LTFbo *fbo = [[LTFbo alloc] initWithTexture:self level:i];
+      LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:i];
       [fbo clearWithColor:color];
     }
   }];

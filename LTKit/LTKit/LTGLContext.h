@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@class LTGLContext;
+@class LTFboPool, LTGLContext;
 
 #import <OpenGLES/ES2/glext.h>
 
@@ -86,6 +86,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;
+
+/// Framebuffer pool associated with this context.
+@property (readonly, nonatomic) LTFboPool *fboPool;
 
 /// Blend function.
 @property (nonatomic) LTGLContextBlendFuncArgs blendFunc;

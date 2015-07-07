@@ -6,6 +6,7 @@
 #import "LTBoundaryCondition.h"
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
@@ -207,7 +208,7 @@
     if (!self.fillColor.isNull()) {
       [texture clearWithColor:self.fillColor];
     } else {
-      LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
+      LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture];
       [self cloneToFramebuffer:fbo];
     }
   }];
