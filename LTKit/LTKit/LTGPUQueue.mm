@@ -146,7 +146,7 @@ objection_register_singleton([LTGPUQueue class]);
   } @catch (LTGLException *exception) {
     LogError(@"Encountered LTGLException while running on the GPU Queue: %@",
              exception.description);
-    [self handleAsyncError:[NSError errorWithLTGLException:exception] failure:failure];
+    [self handleAsyncError:[NSError lt_errorWithLTGLException:exception] failure:failure];
     return;
   } @finally {
     [self clearContext];
@@ -218,7 +218,7 @@ objection_register_singleton([LTGPUQueue class]);
   } @catch (LTGLException *exception) {
     LogError(@"Encountered LTGLException while running on the GPU Queue: %@",
              exception.description);
-    *error = [NSError errorWithLTGLException:exception];
+    *error = [NSError lt_errorWithLTGLException:exception];
   } @finally {
     [self clearContext];
   }

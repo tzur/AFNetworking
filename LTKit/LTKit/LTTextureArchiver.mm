@@ -88,7 +88,7 @@ objection_requires_sel(@selector(fileManager));
 
   if ([self.fileManager fileExistsAtPath:contentPath]) {
     if (error) {
-      *error = [NSError lt_fileAlreadyExistsErrorWithPath:contentPath];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:contentPath];
     }
     return NO;
   }
@@ -228,8 +228,7 @@ objection_requires_sel(@selector(fileManager));
   }
 
   if (errors.count && error) {
-    *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeFileRemovalFailed
-                             userInfo:@{NSUnderlyingErrorKey: errors}];
+    *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed underlyingErrors:errors];
   }
 
   NSString *storageKey = [self storageKeyForTextureMetadata:metadata archiveType:type];
@@ -240,7 +239,7 @@ objection_requires_sel(@selector(fileManager));
 - (BOOL)verifyFileInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
   if (![self.fileManager fileExistsAtPath:path]) {
     if (error) {
-      *error = [NSError lt_fileNotFoundErrorWithPath:path];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:path];
     }
     return NO;
   }
@@ -290,7 +289,7 @@ objection_requires_sel(@selector(fileManager));
 
   if ([self.fileManager fileExistsAtPath:path]) {
     if (error) {
-      *error = [NSError lt_fileAlreadyExistsErrorWithPath:path];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:path];
     }
     return NO;
   }
@@ -298,7 +297,7 @@ objection_requires_sel(@selector(fileManager));
   NSDictionary *json = [MTLJSONAdapter JSONDictionaryFromModel:metadata];
   if (!json || ![self.fileManager lt_writeDictionary:json toFile:path]) {
     if (error) {
-      *error = [NSError lt_fileWriteFailedErrorWithPath:path underlyingError:nil];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed];
     }
     return NO;
   }
@@ -311,7 +310,7 @@ objection_requires_sel(@selector(fileManager));
 
   if (![self.fileManager fileExistsAtPath:path]) {
     if (error) {
-      *error = [NSError lt_fileNotFoundErrorWithPath:path];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:path];
     }
     return nil;
   }
@@ -319,7 +318,7 @@ objection_requires_sel(@selector(fileManager));
   NSDictionary *jsonDictionary = [self.fileManager lt_dictionaryWithContentsOfFile:path];
   if (!jsonDictionary) {
     if (error) {
-      *error = [NSError lt_fileReadFailedErrorWithPath:path underlyingError:nil];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
     }
     return nil;
   }
@@ -328,7 +327,7 @@ objection_requires_sel(@selector(fileManager));
   LTTextureMetadata *metadata = [MTLJSONAdapter modelOfClass:[LTTextureMetadata class]
                                           fromJSONDictionary:jsonDictionary error:&mantleError];
   if (!metadata && error) {
-    *error = [NSError lt_fileReadFailedErrorWithPath:path underlyingError:mantleError];
+    *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed underlyingError:mantleError];
   }
   return metadata;
 }

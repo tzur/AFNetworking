@@ -84,6 +84,6 @@ extern NSString * const kNSErrorLTGLExceptionReasonKey;
 @interface NSError (LTGLException)
 
 /// Builds an \c NSError which corresponds to the exception name and reason.
-+ (NSError *)errorWithLTGLException:(LTGLException *)exception;
++ (instancetype)lt_errorWithLTGLException:(LTGLException *)exception;
 
 @end

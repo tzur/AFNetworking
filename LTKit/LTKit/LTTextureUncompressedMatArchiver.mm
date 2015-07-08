@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (![fileManager lt_writeData:data toFile:path
                            options:NSDataWritingAtomic error:&writeError]) {
       if (error) {
-        *error = [NSError lt_fileWriteFailedErrorWithPath:path underlyingError:writeError];
+        *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed underlyingError:writeError];
       }
       success = NO;
     } else {
@@ -55,7 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                 options:NSDataReadingUncached error:&dataError];
   if (!data) {
     if (error) {
-      *error = [NSError lt_fileReadFailedErrorWithPath:path underlyingError:dataError];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path
+                         underlyingError:dataError];
     }
     return NO;
   }
@@ -74,7 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *removalError;
   if (![fileManager removeItemAtPath:path error:&removalError]) {
     if (error) {
-      *error = [NSError lt_fileRemovalFailedErrorWithPath:path underlyingError:removalError];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
+                         underlyingError:removalError];
     }
     return NO;
   }

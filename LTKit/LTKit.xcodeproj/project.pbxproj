@@ -865,6 +865,7 @@
 		8BB92FE4190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */; };
 		8BBB149A194F4799000CF391 /* LTEnumRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBB1498194F4799000CF391 /* LTEnumRegistry.h */; };
 		8BBB149B194F4799000CF391 /* LTEnumRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB1499194F4799000CF391 /* LTEnumRegistry.m */; };
+		8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */; };
 		8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */; };
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE89501838CA2C006C58AA /* LTArrayBuffer.mm */; };
@@ -2034,6 +2035,7 @@
 		8BBB1498194F4799000CF391 /* LTEnumRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEnumRegistry.h; sourceTree = "<group>"; };
 		8BBB1499194F4799000CF391 /* LTEnumRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTEnumRegistry.m; sourceTree = "<group>"; };
 		8BBB14A8194F489B000CF391 /* LTEnumMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEnumMacros.h; sourceTree = "<group>"; };
+		8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureSpec.mm; sourceTree = "<group>"; };
 		8BBE8941183503CD006C58AA /* LTTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTestUtils.h; sourceTree = "<group>"; };
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
@@ -3321,6 +3323,7 @@
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				280C26BF1976C22E00015616 /* LTBoundedPropertiesSpec.mm */,
 				50AE95D619D17624000E8086 /* LTQuadSpec.mm */,
+				8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 				284EBBD01A33ABF600D36688 /* NSValue+TypeSpec.mm */,
 				8BB22AA31928CE9E00ACE1D5 /* UIImage+LoadingSpec.mm */,
@@ -5078,6 +5081,7 @@
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
 				030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
+				8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */,
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,

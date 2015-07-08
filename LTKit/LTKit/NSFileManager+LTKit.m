@@ -46,13 +46,9 @@
                errorHandler:^BOOL(NSURL *url, NSError *enumerationError) {
                  if (enumerationError) {
                    if (error) {
-                     *error = [NSError errorWithDomain:kLTKitErrorDomain
-                                                  code:LTErrorCodeFileUnknownError
-                                              userInfo:@{NSFilePathErrorKey:
-                                                           url ?: [NSNull null],
-                                                         NSUnderlyingErrorKey:
-                                                           enumerationError,
-                                                         }];
+                     *error = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError
+                                                    url:url
+                                        underlyingError:enumerationError];
                    }
                    return NO;
                  }
@@ -77,8 +73,7 @@
                 error:(NSError *__autoreleasing *)error {
   if (![self fileExistsAtPath:url.path]) {
     if (error) {
-      *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileNoSuchFileError
-                               userInfo:@{NSFilePathErrorKey: url ?: [NSNull null]}];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:url];
     }
     return NO;
   }

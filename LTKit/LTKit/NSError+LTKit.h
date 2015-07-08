@@ -6,17 +6,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// Error domain for LTKit.
 extern NSString * const kLTKitErrorDomain;
 
-/// Key in the \c userInfo dictionary for \c NSString value holding an error description.
+/// Key in the \c userInfo dictionary for \c NSArray of \c NSError objects holding the underlying
+/// errors causing this error.
+extern NSString * const kLTUnderlyingErrorsKey;
+
+/// Key in the \c userInfo dictionary for \c NSString value holding an non-localized error
+/// description. This description should not be shown to the user.
 extern NSString * const kLTErrorDescriptionKey;
 
-/// Key in the \c userInfo dictionary for placing the file path related to the error.
-extern NSString * const kLTFilePathErrorKey;
+/// Key in the \c userInfo dictionary for \c NSNumber value holding the system error value.
+extern NSString * const kLTSystemErrorKey;
 
-/// Key in the \c userInfo dictionary for \c NSNumber value holding the errno value.
-extern NSString * const kLTErrnoErrorKey;
-
-/// Key in the \c userInfo dictionary for \c NSString value holding the errno message.
-extern NSString * const kLTErrnoErrorMessageKey;
+/// Key in the \c userInfo dictionary for \c NSString value holding the system error message.
+extern NSString * const kLTSystemErrorMessageKey;
 
 /// All error codes available in LTKit.
 typedef NS_ENUM(NSInteger, LTErrorCode) {
@@ -42,36 +44,59 @@ typedef NS_ENUM(NSInteger, LTErrorCode) {
 
 @interface NSError (LTKit)
 
-/// Returns an unknown file error related to the file at the given \c path, with the given
-/// underlying \c error, if provided.
-+ (instancetype)lt_fileUknownErrorWithPath:(nullable NSString *)path
-                           underlyingError:(nullable NSError *)error;
+/// Creates an error with LTKit's domain and given error code.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code;
 
-/// Returns an error due to a missing file at the given \c path.
-+ (instancetype)lt_fileNotFoundErrorWithPath:(nullable NSString *)path;
+/// Creates an error with LTKit's domain, given error code and \c userInfo dictionary.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code userInfo:(nullable NSDictionary *)userInfo;
 
-/// Returns an error after the file at the given path already existed.
-+ (instancetype)lt_fileAlreadyExistsErrorWithPath:(nullable NSString *)path;
+/// Creates an error with LTKit's domain, given error code and the given underlying error.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingError:(NSError *)underlyingError;
 
-/// Returns an error after failing to read or deserialize the file at the given \c path.
-+ (instancetype)lt_fileReadFailedErrorWithPath:(nullable NSString *)path
-                               underlyingError:(nullable NSError *)error;
+/// Creates an error with LTKit's domain, given error code and the given underlying errors.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingErrors:(NSArray *)underlyingErrors;
 
-/// Returns an error after failing to write or serialize to a file at the given \c path.
-+ (instancetype)lt_fileWriteFailedErrorWithPath:(nullable NSString *)path
-                                underlyingError:(nullable NSError *)error;
+/// Creates an error with LTKit's domain, given error code and the given error description.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code description:(NSString *)description;
 
-/// Returns an error after failing to remove the file at the given \c path, with the given
-/// underlying \c error, if provided.
-+ (instancetype)lt_fileRemovalFailedErrorWithPath:(nullable NSString *)path
-                                  underlyingError:(nullable NSError *)error;
+/// Creates an error with LTKit's domain, given error code and the given related file path.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code path:(NSString *)path;
 
-/// Returns an error with the current value of \c errno and its string representation.
-+ (instancetype)lt_errorWithSystemErrno;
+/// Creates an error with LTKit's domain, given error code, related file path and underlying error.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code path:(NSString *)path
+                 underlyingError:(NSError *)underlyingError;
 
-/// Returns an error after reading bad file header with its \c path and additional \c description.
-+ (instancetype)lt_badFileHeaderErrorWithPath:(nullable NSString *)path
-                                  description:(nullable NSString *)description;
+/// Creates an error with LTKit's domain, given error code and the given related URL.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code url:(NSURL *)url;
+
+/// Creates an error with LTKit's domain, given error code, related URL and underlying error.
++ (instancetype)lt_errorWithCode:(LTErrorCode)code url:(NSURL *)url
+                 underlyingError:(NSError *)underlyingError;
+
+/// Returns an error with the current system error and its string representation. An error will be
+/// returned even if the current system error variable indicates that there's no error.
++ (instancetype)lt_errorWithSystemError;
+
+/// Underlying error.
+@property (readonly, nonatomic, nullable) NSError *lt_underlyingError;
+
+/// Underlying errors.
+@property (readonly, nonatomic, nullable) NSArray *lt_underlyingErrors;
+
+/// Non-localized error description. This description should not be shown to the user.
+@property (readonly, nonatomic, nullable) NSString *lt_description;
+
+/// Path related to the error.
+@property (readonly, nonatomic, nullable) NSString *lt_path;
+
+/// URL related to the error.
+@property (readonly, nonatomic, nullable) NSURL *lt_url;
+
+/// System error value.
+@property (readonly, nonatomic, nullable) NSNumber *lt_systemError;
+
+/// System error message.
+@property (readonly, nonatomic, nullable) NSString *lt_systemErrorMessage;
 
 @end
 

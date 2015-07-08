@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
   UIImage *image = [imageLoader imageWithContentsOfFile:path];
   if (!image) {
     if (error) {
-      *error = [NSError lt_fileReadFailedErrorWithPath:path underlyingError:nil];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
     }
     return NO;
   }
@@ -56,7 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *removalError;
   if (![fileManager removeItemAtPath:path error:&removalError]) {
     if (error) {
-      *error = [NSError lt_fileRemovalFailedErrorWithPath:path underlyingError:removalError];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
+                         underlyingError:removalError];
     }
     return NO;
   }
