@@ -194,9 +194,8 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
   CGDataProviderRef provider = [self newDataProvider];
   if (!provider) {
     if (error) {
-      *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeObjectCreationFailed
-                               userInfo:@{kLTErrorDescriptionKey:
-                                            @"Failed creating data provider"}];
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                             description:@"Failed creating data provider"];
     }
     return NO;
   }
@@ -210,9 +209,8 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
     CGImageDestinationRef destinationRef = [self newImageDestinationWithURL:url];
     if (!destinationRef) {
       if (error) {
-        *error = [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodeObjectCreationFailed
-                                 userInfo:@{kLTErrorDescriptionKey:
-                                              @"Error creating image destination"}];
+        *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                               description:@"Failed creating image destination"];
       }
       return;
     }
@@ -227,9 +225,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
     BOOL writtenSuccessfully = CGImageDestinationFinalize(destinationRef);
     if (!writtenSuccessfully) {
       if (error) {
-        *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileWriteUnknownError
-                                 userInfo:@{kLTErrorDescriptionKey: @"Error writing image file",
-                                            NSFilePathErrorKey: path}];
+        *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path];
       }
       return;
     }

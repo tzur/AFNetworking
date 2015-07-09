@@ -79,7 +79,7 @@ NSString * const kNSErrorLTGLExceptionReasonKey = @"Exception Reason";
 
 @implementation NSError (LTGLException)
 
-+ (NSError *)errorWithLTGLException:(LTGLException *)exception {
++ (instancetype)lt_errorWithLTGLException:(LTGLException *)exception {
   return [NSError errorWithDomain:kNSErrorLTGLExceptionDomain
                              code:kNSErrorLTGLExceptionCode
                          userInfo:@{kNSErrorLTGLExceptionNameKey: exception.name,
