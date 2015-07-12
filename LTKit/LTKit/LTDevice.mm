@@ -189,13 +189,13 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Initialization
 #pragma mark -
 
-- (id)init {
+- (instancetype)init {
   return [self initWithUIDevice:[UIDevice currentDevice] UIScreen:[UIScreen mainScreen]
                    platformName:nil mainBundle:[NSBundle mainBundle]];
 }
 
-- (id)initWithUIDevice:(UIDevice *)device UIScreen:(UIScreen *)screen
-          platformName:(NSString *)platformName mainBundle:(NSBundle *)mainBundle {
+- (instancetype)initWithUIDevice:(UIDevice *)device UIScreen:(UIScreen *)screen
+                    platformName:(NSString *)platformName mainBundle:(NSBundle *)mainBundle {
   if (self = [super init]) {
     self.device = device;
     self.screen = screen;

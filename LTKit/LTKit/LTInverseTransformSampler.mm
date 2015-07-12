@@ -26,7 +26,7 @@
 
 @implementation LTInverseTransformSampler
 
-- (id)initWithFrequencies:(const Floats &)frequencies random:(LTRandom *)random {
+- (instancetype)initWithFrequencies:(const Floats &)frequencies random:(LTRandom *)random {
   if (self = [super init]) {
     [self verifyFrequencies:frequencies];
     [self createProbabilityDensityFunctionFromFrequencies:frequencies];

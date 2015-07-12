@@ -20,7 +20,7 @@
 
 @implementation LTGPUStructField
 
-- (id)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
          andOffset:(size_t)offset {
   if (self = [super init]) {
     self.name = name;
@@ -80,7 +80,7 @@
 
 @implementation LTGPUStruct
 
-- (id)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields {
+- (instancetype)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields {
   if (self = [super init]) {
     if (size % 4 != 0) {
       LogWarning(@"For best performance, struct size must be a multiple of 4 bytes");
@@ -118,7 +118,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)init {
+- (instancetype)init {
   if (self = [super init]) {
     self.structs = [NSMutableDictionary dictionary];
   }

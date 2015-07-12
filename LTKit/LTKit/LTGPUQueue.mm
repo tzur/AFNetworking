@@ -39,7 +39,7 @@ objection_register_singleton([LTGPUQueue class]);
 #pragma mark Initialization
 #pragma mark -
 
-- (id)init {
+- (instancetype)init {
   return [self initWithSharedContext:nil];
 }
 

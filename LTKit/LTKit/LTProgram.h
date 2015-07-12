@@ -20,7 +20,8 @@
 ///
 /// @param vertexSource GLSL source of the vertex shader.
 /// @param fragmentSource GLSL source of the fragment shader.
-- (id)initWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource;
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource;
 
 /// Returns true if the program is valid. See \c glValidateProgram for more information on when
 /// programs are valid or not.

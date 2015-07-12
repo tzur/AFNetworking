@@ -32,7 +32,7 @@
 
 @implementation LTTimer
 
-- (id)init {
+- (instancetype)init {
   return [self initWithTimeProvider:[[LTDefaultTimeProvider alloc] init]];
 }
 

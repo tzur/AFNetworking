@@ -25,7 +25,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)init {
+- (instancetype)init {
   if (self = [super init]) {
     self.targets = [NSMutableSet set];
     self.lock = [[NSLock alloc] init];

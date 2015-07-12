@@ -13,7 +13,8 @@
 /// Represents an object of a GL program (attribute / uniform).
 @interface LTProgramObject : NSObject
 
-- (id)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size type:(GLenum)type;
+- (instancetype)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size
+                         type:(GLenum)type;
 
 @property (readonly, nonatomic) GLuint index;
 @property (strong, nonatomic) NSString *name;
@@ -24,7 +25,8 @@
 
 @implementation LTProgramObject
 
-- (id)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size type:(GLenum)type {
+- (instancetype)initWithIndex:(GLuint)index name:(NSString *)name size:(GLint)size
+                         type:(GLenum)type {
   if (self = [super init]) {
     _index = index;
     _name = name;
@@ -67,7 +69,8 @@
 #pragma mark Initialization and destruction
 #pragma mark -
 
-- (id)initWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource {
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource {
   if (self = [super init]) {
     self.attributeToObject = [NSMutableDictionary dictionary];
     self.uniformToObject = [NSMutableDictionary dictionary];

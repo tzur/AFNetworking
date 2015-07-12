@@ -17,7 +17,7 @@ static NSUInteger instanceCount = 0;
   return instanceCount;
 }
 
-- (id)init {
+- (instancetype)init {
   if (self = [super init]) {
     ++instanceCount;
   }

@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 @interface LTDevice : NSObject
 
 /// Default initializer. Will be called when the singleton creates its instance.
-- (id)init;
+- (instancetype)init;
 
 /// The current device the app is running on.
 + (instancetype)currentDevice;
@@ -176,7 +176,7 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 /// @param screen \c UIScreen instance for screen querying.
 /// @param platformName name of the platform taken from \c uname.
 /// @param mainBundle main bundle of the app.
-- (id)initWithUIDevice:(UIDevice *)device UIScreen:(UIScreen *)screen
-          platformName:(NSString *)platformName mainBundle:(NSBundle *)mainBundle;
+- (instancetype)initWithUIDevice:(UIDevice *)device UIScreen:(UIScreen *)screen
+                    platformName:(NSString *)platformName mainBundle:(NSBundle *)mainBundle;
 
 @end

@@ -29,12 +29,12 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
   return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
 }
 
-- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
-    auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
+              auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   if (self = [super init]) {
     LTParameterAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of "
                       "the required uniforms %@ doesn't exist in the given program",

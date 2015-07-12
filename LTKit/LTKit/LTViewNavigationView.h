@@ -38,12 +38,12 @@
 /// Initialize the navigation view with the given frame for a content with the given size (in
 /// pixels), starting centered at the largest zoom level allowing the whole content to be visible
 /// inside the scrollview.
-- (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize;
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize;
 
 /// Designated initializer: initialize the navigation view with the given frame for a content with
 /// the given size (in pixels), starting at the given navigation state.
-- (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
-              state:(LTViewNavigationState *)state;
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
+                        state:(LTViewNavigationState *)state;
 
 // Notifies the view that it is about to be rotated to the given orientation due to an interface
 // orientation change.

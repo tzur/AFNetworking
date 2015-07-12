@@ -24,7 +24,7 @@
 #pragma mark Initialization and destruction
 #pragma mark -
 
-- (id)initWithType:(LTShaderType)type andSource:(NSString *)source {
+- (instancetype)initWithType:(LTShaderType)type andSource:(NSString *)source {
   if (self = [super init]) {
     self.type = type;
     [self compileSource:source];

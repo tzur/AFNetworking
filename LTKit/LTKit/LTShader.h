@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, LTShaderType) {
 ///
 /// Throws \c LTGLexception with \c kLTShaderCreationFailedException if the shader failed to create
 /// or \c kLTShaderCompilationFailedException if the shader failed to compile.
-- (id)initWithType:(LTShaderType)type andSource:(NSString *)source;
+- (instancetype)initWithType:(LTShaderType)type andSource:(NSString *)source;
 
 /// Attaches the shader to the given program name. If shader is already attached to a program, the
 /// call is ignored.

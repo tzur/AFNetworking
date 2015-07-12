@@ -34,7 +34,7 @@
 #pragma mark NSCoding
 #pragma mark -
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   if (self = [super init]) {
     self.name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@keypath(self, name)];
     self.bundle = [NSBundle bundleWithURL:[aDecoder decodeObjectForKey:@keypath(self, bundle)]];

@@ -21,8 +21,8 @@
 
 @implementation LTVertexArrayElement
 
-- (id)initWithStructName:(NSString *)structName arrayBuffer:(LTArrayBuffer *)arrayBuffer
-            attributeMap:(NSDictionary *)attributeMap {
+- (instancetype)initWithStructName:(NSString *)structName arrayBuffer:(LTArrayBuffer *)arrayBuffer
+                      attributeMap:(NSDictionary *)attributeMap {
   if (self = [super init]) {
     LTAssert(arrayBuffer.type == LTArrayBufferTypeGeneric, @"Vertex array element can be only "
              "composed from generic array buffers");
@@ -84,7 +84,7 @@
 #pragma mark Initialization and destruction
 #pragma mark -
 
-- (id)initWithAttributes:(NSArray *)attributes {
+- (instancetype)initWithAttributes:(NSArray *)attributes {
   if (self = [super init]) {
     LTAssert(attributes.count, @"Given attributes set must contain at least one attribute");
     

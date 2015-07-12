@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
 
 /// Initiailizes a new OpenGL buffer with a given type and buffer usage hint. The buffer will not
 /// occupy memory on the GPU until the initial \c updateWithData: is called.
-- (id)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage;
+- (instancetype)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage;
 
 /// Updates the buffer with the given data. If the size of the data is different than current size
 /// of the buffer, the buffer will be re-allocated.

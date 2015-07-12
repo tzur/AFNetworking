@@ -9,8 +9,8 @@
 @interface LTGPUStructField : NSObject
 
 /// Initializes with field name, offset in struct, type as string and the field's size.
-- (id)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
-         andOffset:(size_t)offset;
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
+                   andOffset:(size_t)offset;
 
 /// Name of the field.
 @property (readonly, nonatomic) NSString *name;
@@ -38,7 +38,7 @@
 @interface LTGPUStruct : NSObject
 
 /// Initializes with struct name, size in bytes and \c NSArray of \c LTGPUStructField objects.
-- (id)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields;
+- (instancetype)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields;
 
 /// Name of the struct.
 @property (readonly, nonatomic) NSString *name;

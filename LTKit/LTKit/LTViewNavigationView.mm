@@ -85,12 +85,12 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize {
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize {
   return [self initWithFrame:frame contentSize:contentSize state:nil];
 }
 
-- (id)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
-              state:(LTViewNavigationState *)state{
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
+                        state:(LTViewNavigationState *)state{
   if (self = [super initWithFrame:frame]) {
     self.contentSize = contentSize;
     [self setDefaults];

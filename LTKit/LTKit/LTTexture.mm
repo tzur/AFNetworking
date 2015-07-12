@@ -194,8 +194,8 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 #pragma mark Abstract methods
 #pragma mark -
 
-- (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-            format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
+- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
+                      format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
   if (self = [super init]) {
     LTParameterAssert([self formatSupported:format],
                       @"Given texture format %d is not supported in this system", format);
@@ -218,7 +218,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   return self;
 }
 
-- (id)initWithImage:(const cv::Mat &)image {
+- (instancetype)initWithImage:(const cv::Mat &)image {
   if (self = [self initWithSize:CGSizeMake(image.cols, image.rows)
                       precision:LTTexturePrecisionFromMat(image)
                          format:LTTextureFormatFromMat(image)
@@ -228,12 +228,12 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   return self;
 }
 
-- (id)initByteRGBAWithSize:(CGSize)size {
+- (instancetype)initByteRGBAWithSize:(CGSize)size {
   return [self initWithSize:size precision:LTTexturePrecisionByte
                      format:LTTextureFormatRGBA allocateMemory:YES];
 }
 
-- (id)initWithPropertiesOf:(LTTexture *)texture {
+- (instancetype)initWithPropertiesOf:(LTTexture *)texture {
   return [self initWithSize:texture.size precision:texture.precision
                      format:texture.format allocateMemory:YES];
 }

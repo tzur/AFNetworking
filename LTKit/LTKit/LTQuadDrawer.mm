@@ -23,12 +23,12 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
   return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
 }
 
-- (id)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
-    auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
+              auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture {
   if (self = [super init]) {
     self.singleQuadDrawer = [[LTSingleQuadDrawer alloc] initWithProgram:program
                                                           sourceTexture:texture

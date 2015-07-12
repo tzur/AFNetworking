@@ -102,14 +102,14 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 /// Number of pixels per checkerboard square, must be a power of two.
 static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     [self setDefaults];
   }
   return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   if (self = [super initWithCoder:aDecoder]) {
     [self setDefaults];
   }

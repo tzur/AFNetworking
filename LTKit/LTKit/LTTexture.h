@@ -135,13 +135,13 @@ namespace cv {
 /// an uninitialized rect will return an undefined result.
 ///
 /// @note Designated initializer.
-- (id)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-            format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
+- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
+                      format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
 /// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
-- (id)initWithImage:(const cv::Mat &)image;
+- (instancetype)initWithImage:(const cv::Mat &)image;
 
 /// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
 /// memory. This is a convenience method which is similar to calling:
@@ -150,7 +150,7 @@ namespace cv {
 /// [initWithSize:size precision:LTTexturePrecisionByte
 ///      channels:LTTextureChannelsRGBA allocateMemory:YES]
 /// @endcode
-- (id)initByteRGBAWithSize:(CGSize)size;
+- (instancetype)initByteRGBAWithSize:(CGSize)size;
 
 /// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
 /// \c texture. This is a convenience method which is similar to calling:
@@ -159,7 +159,7 @@ namespace cv {
 /// [initWithSize:texture.size precision:texture.precision
 ///      channels:texture.channels allocateMemory:YES]
 /// @endcode
-- (id)initWithPropertiesOf:(LTTexture *)texture;
+- (instancetype)initWithPropertiesOf:(LTTexture *)texture;
 
 #pragma mark -
 #pragma mark Abstract methods

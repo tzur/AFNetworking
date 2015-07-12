@@ -30,9 +30,9 @@
 /// buffer must be of type \c LTArrayBufferTypeGeneric.
 /// @param attributeMap mapping between attribute name (\c NSString) to \c LTGPUStruct field name
 /// (\c NSString)
-- (id)initWithStructName:(NSString *)structName
-             arrayBuffer:(LTArrayBuffer *)arrayBuffer
-            attributeMap:(NSDictionary *)attributeMap;
+- (instancetype)initWithStructName:(NSString *)structName
+                       arrayBuffer:(LTArrayBuffer *)arrayBuffer
+                      attributeMap:(NSDictionary *)attributeMap;
 
 /// GPU struct that composes the element.
 @property (readonly, nonatomic) LTGPUStruct *gpuStruct;
@@ -56,7 +56,7 @@
 /// Initializes a vertex array with a set of attributes. The array should contain at least one
 /// attribute. Duplicate attributes will be ignored. Before drawing, all the given attributes must
 /// be defined using \c addElement:.
-- (id)initWithAttributes:(NSArray *)attributes;
+- (instancetype)initWithAttributes:(NSArray *)attributes;
 
 /// Adds the given \c LTVertexArrayElement as an element in this vertex array. The element must
 /// contain a GPU struct that don't exist in this vertex array, and attributes that are defined in

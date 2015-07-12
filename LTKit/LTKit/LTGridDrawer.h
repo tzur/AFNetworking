@@ -9,7 +9,7 @@
 @interface LTGridDrawer : NSObject
 
 /// Initializes the grid drawer for a grid with the given number of cells in each dimension.
-- (id)initWithSize:(CGSize)size;
+- (instancetype)initWithSize:(CGSize)size;
 
 /// Draws the subgrid \c region into the given framebuffer. The region is defined in the grid's
 /// coordinate system.

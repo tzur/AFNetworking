@@ -45,7 +45,7 @@ static const CGFloat kDefaultWidth = 1.0;
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithSize:(CGSize)size {
+- (instancetype)initWithSize:(CGSize)size {
   if (self = [super init]) {
     [self setDefaults];
     self.size = size;

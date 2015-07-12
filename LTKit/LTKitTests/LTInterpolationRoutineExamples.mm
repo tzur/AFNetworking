@@ -87,7 +87,7 @@ static BOOL LTEqualWhithin(double a, double b, double withinValue = FLT_EPSILON)
 
 @implementation InterpolatedObjectWithOptionalInitializer
 
-- (id)initWithInterpolatedProperties:(NSDictionary __unused *)properties {
+- (instancetype)initWithInterpolatedProperties:(NSDictionary __unused *)properties {
   if (self = [super init]) {
     self.didUseInitWithInterpolatedProperties = YES;
   }

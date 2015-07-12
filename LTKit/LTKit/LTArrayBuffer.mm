@@ -32,7 +32,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (id)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage {
+- (instancetype)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage {
   if (self = [super init]) {
     LTAssert(usage == GL_STATIC_DRAW || usage == GL_STREAM_DRAW || usage == GL_DYNAMIC_DRAW,
              @"Usage is not one of {GL_STATIC_DRAW, GL_STREAM_DRAW, GL_DYNAMIC_DRAW}");

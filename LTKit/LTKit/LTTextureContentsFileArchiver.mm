@@ -44,7 +44,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
 #pragma mark NSCoding
 #pragma mark -
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   if (self = [super init]) {
     self.filePath = [aDecoder decodeObjectOfClass:[NSString class] forKey:@keypath(self, filePath)];
   }

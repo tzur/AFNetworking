@@ -194,7 +194,7 @@
     return self; \
   } \
   \
-  - (id)initWithCoder:(NSCoder *)aDecoder {\
+  - (instancetype)initWithCoder:(NSCoder *)aDecoder {\
     return [self initWithValue:[[aDecoder decodeObjectForKey:@"value"] NAME##Value]]; \
   } \
   \

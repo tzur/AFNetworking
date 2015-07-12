@@ -13,7 +13,7 @@
 #pragma mark NSCoding
 #pragma mark -
 
-- (id)initWithCoder:(NSCoder __unused *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder __unused *)aDecoder {
   return [super init];
 }
 
