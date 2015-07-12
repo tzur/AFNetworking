@@ -5,10 +5,21 @@
 
 #import "LTBlendMode.h"
 
+/// Returns an absolute path to the given file name. The path depends on the specific spec currently
+/// running, so there's no concern for files overwriting each other. If no argument is given, the
+/// directory itself is returned.
 #define LTTemporaryPath(...) _LTTemporaryPath(0, ##__VA_ARGS__)
 
+/// Returns \c YES if the given \c relativePath to the spec temporary base directory exists.
 #define LTFileExistsInTemporaryPath(relativePath) \
-    [[NSFileManager defaultManager] fileExistsAtPath:LTTemporaryPath(relativePath)]
+  [[NSFileManager defaultManager] fileExistsAtPath:LTTemporaryPath(relativePath)]
+
+/// Creates the temporary directory specific to the currently running spec. If the file already
+/// exists, the call has no effect.
+#define LTCreateTemporaryDirectory() \
+  [[NSFileManager defaultManager] createDirectoryAtPath:LTTemporaryPath() \
+                            withIntermediateDirectories:YES \
+                                             attributes:nil error:nil]
 
 /// Executes the given test if running on the simulator.
 void sit(NSString *name, id block);
