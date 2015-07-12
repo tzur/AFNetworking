@@ -7,8 +7,6 @@
 
 @class LTDevice;
 
-/// @class LTFbo
-///
 /// Object for encapsulating an OpenGL framebuffer, used for drawing to a texture and reading from
 /// it.
 @interface LTFbo : NSObject <LTGPUResource>

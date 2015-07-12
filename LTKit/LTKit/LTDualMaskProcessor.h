@@ -13,8 +13,6 @@ typedef NS_ENUM(NSUInteger, LTDualMaskType) {
   LTDualMaskTypeConstant = 3,
 };
 
-/// @class LTDualMaskProcessor
-///
 /// This class creates dual masks. Dual mask is useful in scenarios where two adjustments have to
 /// be applied in the same time. Regular mask conventionally apply maximum adjustment at 1 and
 /// minimum at 0. Conversely, dual mask apply a maximum amount of the first adjustment (Blue) at 0

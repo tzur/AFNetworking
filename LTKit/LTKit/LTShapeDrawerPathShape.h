@@ -4,8 +4,6 @@
 #import "LTCommonDrawableShape.h"
 #import "LTDrawableShape.h"
 
-/// @class LTShapeDrawerPathShape
-///
 /// A class used for drawing smooth anti-aliased pathes.
 @interface LTShapeDrawerPathShape : LTCommonDrawableShape <LTDrawableShape>
 

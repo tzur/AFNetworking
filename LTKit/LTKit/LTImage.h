@@ -11,8 +11,6 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
   LTImageDepthRGBA
 };
 
-/// @class LTImage
-///
 /// Represents a CPU-based image. This class makes it easier to load an image to an accessible
 /// bitmap, and export them back to disk  or to parallel \c UIKit objects.
 ///

@@ -5,8 +5,6 @@
 
 @class LTTexture;
 
-/// @class LTEdgeAvoidingBrush
-///
 /// A class representing a round edge-avoiding brush used by the \c LTPainter, using an input
 /// texture for determining a factor based on the color similarity of each pixel to the area at the
 /// center of the brush, and applying this factor on the brush intensity.

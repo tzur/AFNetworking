@@ -21,8 +21,6 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
   LTArrayBufferUsageStreamDraw = GL_STREAM_DRAW
 };
 
-/// @class LTArrayBuffer
-///
 /// A class representing a GPU array buffer. There are two supported buffer types: array buffer,
 /// which is a generic buffer for vertex attribute data such as position, color and normals, and an
 /// element buffer, which is a buffer that holds vertex indices, useful for faster drawing of

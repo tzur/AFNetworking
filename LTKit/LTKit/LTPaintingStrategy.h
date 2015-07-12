@@ -3,8 +3,6 @@
 
 @class LTBrush, LTPainter, LTPainterPoint, LTPainterStroke;
 
-/// @class LTPaintingDirections
-///
 /// Container class for holding a pair of \c LTBrush and \c LTPainterStroke, used as painting
 /// directions by the \c LTPaintingStrategy protocol.
 @interface LTPaintingDirections : NSObject
@@ -26,8 +24,6 @@
 
 @end
 
-/// @protocol LTPaintingStrategy
-///
 /// Protocol for defining a strategy for painting using an \c LTPaintingImageProcessor. The strategy
 /// provides directions for painting in a given progress interval, and prepares the painter for
 /// painting.

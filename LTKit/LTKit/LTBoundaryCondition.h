@@ -25,8 +25,6 @@
 
 @end
 
-/// @class LTSymmetricBoundaryCondition
-///
 /// Returns a location with a symmetric boundary condition.
 /// Example: Given signal [1, 2, 3, 4]  with signal values at indices \c 0..3, the values of the
 /// boundary conditions for locations -3..5 will be: [4, 3, 2, 1, 2, 3, 4, 3, 2]. This is similar

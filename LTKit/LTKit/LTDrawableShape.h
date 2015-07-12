@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-/// @protocol LTDrawableShape
-///
 /// By implementing this protocol, a class can be drawn by the \c LTShapeDrawer.
 /// The protocol contains two parts: the draw methods are used by the \c LTShapeDrawer to perform
 /// the actual drawing, depending on the target (texture or screen).

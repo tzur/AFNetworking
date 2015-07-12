@@ -7,8 +7,6 @@
 
 @class LTColorGradient;
 
-/// @class LTBWProcessor
-///
 /// Converts color RGB image to black and white. Controls both the tonal characteristics of the
 /// result and additional content that enables a richer conversion: grain, vignetting, tint and
 /// frames.

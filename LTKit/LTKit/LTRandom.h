@@ -7,8 +7,6 @@
 @interface LTRandomState : MTLModel
 @end
 
-/// @class LTRandom
-///
 /// A random number generator class that can be shared between mutiple places, allowing generating
 /// random sequences independent of other calls to random number generators throughout the system.
 /// This is important since this class can be used to replay a random sequence by calling reset or

@@ -5,8 +5,6 @@
 
 #import "LTBrushEffect.h"
 
-/// @class LTBrushScatterEffect
-///
 /// A class representing a dynamic brush effect used by the \c LTBrush.
 /// This class implements the scattering effect, allowing to scatter multiple copies of the brush
 /// tip along each brush strokes. This creates the illusion that we're "spraying" the brush.

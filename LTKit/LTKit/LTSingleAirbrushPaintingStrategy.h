@@ -29,8 +29,6 @@ typedef std::vector<LTSingleAirbrushPoint> LTSingleAirbrushPoints;
 
 @end
 
-/// @protocol LTSingleAirbrushPaintingStrategy
-///
 /// Protocol for defining a strategy for painting, one point at a time. A key attribute of this
 /// type of painting is that the array of \c LTPainterPoints to be drawn is generated prior to
 /// painting (for example, in the \c paintingWillBeginWithPainter: method).
@@ -42,8 +40,6 @@ typedef std::vector<LTSingleAirbrushPoint> LTSingleAirbrushPoints;
 
 @end
 
-/// @class LTSingleAirbrushPaintingStrategy
-///
 /// Basic class defining a strategy for painting, one point at a time, using a single \c LTBrush
 /// on an \c LTPaintingImageProcessor. This class implements the \c paintingWillBeginWithPainter:
 /// method by generating an evenly spread points on the canvas, according to its \c fillFactor and

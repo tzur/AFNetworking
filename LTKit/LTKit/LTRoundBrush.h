@@ -23,8 +23,6 @@ typedef NS_ENUM(NSUInteger, LTRoundBrushMode) {
   LTRoundBrushModeBlend
 };
 
-/// @class LTRoundBrush
-///
 /// A class representing a round brush used by the \c LTPainter, with hardness level controlling
 /// whether the brush is solid / fuzzy (gaussian).
 @interface LTRoundBrush : LTBrush

@@ -5,8 +5,6 @@
 
 #import "LTBrushEffect.h"
 
-/// @class LTBrushShapeDynamicsEffect
-///
 /// A class representing a dynamic brush effect used by the \c LTBrush.
 /// This class implements the shape dynamics effect, allowing to dynamically control the size, angle
 /// and roundness of the brush as we paint.

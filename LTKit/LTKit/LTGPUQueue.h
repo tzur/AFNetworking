@@ -3,8 +3,6 @@
 
 @class LTGLContext;
 
-/// @class LTGPUQueue.
-///
 /// Serial queue for GPU operations. All tasks submitted to this queue will use the same OpenGL
 /// context, and since the queue is serial there are no concurrency issues with dispatching multiple
 /// operations to the queue.

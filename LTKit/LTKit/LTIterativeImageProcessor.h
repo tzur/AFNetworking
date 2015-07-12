@@ -3,8 +3,6 @@
 
 #import "LTGPUImageProcessor.h"
 
-/// @class LTIterativeImageProcessor
-///
 /// Processor that can run the processing phase more than once. Users of this class can define the
 /// number of iterations per output, and a configuration step prior to each iteration.
 @interface LTIterativeImageProcessor : LTGPUImageProcessor

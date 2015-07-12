@@ -3,8 +3,6 @@
 
 #import "LTTexture.h"
 
-/// @class LTTexture
-///
 /// A texture class representing an OpenGL based texture.
 @interface LTGLTexture : LTTexture
 

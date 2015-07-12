@@ -13,8 +13,6 @@ typedef NS_ENUM(NSUInteger, LTBristleBrushShape) {
   LTBristleBrushShapeFlatFan,
 };
 
-/// @class LTBristleBrushShape
-///
 /// A class representing a brush with bristles tip, used by the \c LTPainter.
 /// The brush shape, the number of bristles, their thickness, and their intensity are configurable.
 ///

@@ -3,8 +3,6 @@
 
 #import "LTMultiTextureBrush.h"
 
-/// @class LTEdgeAvoidingMultiTextureBrush
-///
 /// An class representing a texture brush used by the \c LTPainter, for edge-avoiding painting using
 /// a texture randomally picked from an array of RGBA texture. The texture is blended to the target
 /// canvas according to the brush flow and opacity properties.

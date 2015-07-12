@@ -5,8 +5,6 @@
 
 @class LTFbo, LTRotatedRect;
 
-/// @protocol LTSingleRectDrawer
-///
 /// Protocol for drawing rectangular regions from a source texture into a rectangular region
 /// of a target framebuffer, with additional draw methods for drawing a single rotated rectangle
 /// or an axis-aligned one to a bound framebuffer or screenbuffer.
@@ -22,8 +20,6 @@
 
 @end
 
-/// @class LTSingleRectDrawer
-///
 /// Class for drawing rectangular regions from a source texture into a rectangular region
 /// of a target framebuffer, optimized for drawing one rectangle at a time.
 @interface LTSingleRectDrawer : LTTextureDrawer <LTSingleRectDrawer>

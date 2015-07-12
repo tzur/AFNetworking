@@ -5,8 +5,6 @@
 #import "LTCommonDrawableShape.h"
 #import "LTDrawableShape.h"
 
-/// @class LTShapeDrawerTriangularMeshShape
-///
 /// A class used for drawing filled 2D triangular meshes. This is usually used when drawing custom
 /// shapes like arrows, rectangles, etc.
 @interface LTShapeDrawerTriangularMeshShape : LTCommonDrawableShape <LTDrawableShape>

@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class LTFractionalNoise
-///
 /// Creates high-frequency pseudo-noise by exploiting numerical issues of trigonometric functions.
 @interface LTFractionalNoise : LTOneShotImageProcessor
 

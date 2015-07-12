@@ -11,8 +11,6 @@ typedef NS_ENUM(GLenum, LTProceduralFrameNoiseMapping) {
   LTProceduralFrameNoiseMappingTile,
 };
 
-/// @class LTProceduralFrame
-///
 /// Creates a procedural frame. The frame consists of three regions: foreground, background and
 /// transition area. Foreground is shaded with the solid color, background is left untouched by
 /// setting alpha to zero and the transition area is modulated with noise to create a visually

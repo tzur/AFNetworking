@@ -7,8 +7,6 @@
 
 @class LTTexture;
 
-/// @class LTBrushColorDynamicsEffect
-///
 /// A class representing a dynamic brush effect used by the \c LTBrush.
 /// This class implements the color dynamics effect, allowing to dynamically control the color of
 /// the brush as we paint.

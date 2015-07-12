@@ -3,8 +3,6 @@
 
 #import "LTPropertyMacros.h"
 
-/// @class LTShapeDrawerParams
-///
 /// Holds the configurable parameters controlling the appearance of the shapes drawn by the
 /// \c LTShapeDrawer.
 @interface LTShapeDrawerParams : NSObject <NSCopying>

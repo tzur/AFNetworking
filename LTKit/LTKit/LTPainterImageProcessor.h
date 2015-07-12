@@ -6,8 +6,6 @@
 @protocol LTPaintingStrategy;
 @class LTTexture;
 
-/// @class LTPainterImageProcessor
-///
 /// Concrete image processor for \c LTPainter based image processing tasks. The processor is defined
 /// by a canvas texture, and an \c LTPainterStrategy that specifies how the processor will paint on
 /// given canvas. This processor is built on the \c LTProgressiveProcessor interface. This allows

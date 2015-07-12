@@ -7,8 +7,6 @@
 
 @class LTArrayBuffer, LTDrawingContext, LTProgram, LTShapeDrawerParams;
 
-/// @class LTCommonDrawableShape
-///
 /// Abstract class sharing common funcionality shared between the different shapes.
 ///
 /// @note While not mandatory, most of the \c LTDrawableShape implementations are likely to inherit

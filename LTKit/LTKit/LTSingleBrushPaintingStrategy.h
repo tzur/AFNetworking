@@ -5,8 +5,6 @@
 
 @class LTBrush, LTRandom;
 
-/// @class LTSingleBrushPaintingStrategy
-///
 /// Abstract class defining a strategy for painting using a single \c LTBrush on an
 /// \c LTPaintingImageProcessor. Subclasses must implement the methods required by the
 /// \c LTPaintingStrategy protocol.

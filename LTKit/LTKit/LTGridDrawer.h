@@ -3,8 +3,6 @@
 
 @class LTFbo;
 
-/// @class LTGridDrawer
-///
 /// Class for efficiently drawing grids (when the maximal size of grid is known).
 @interface LTGridDrawer : NSObject
 

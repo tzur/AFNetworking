@@ -3,8 +3,6 @@
 
 #import "LTGPUStructsMacros.h"
 
-/// @class LTGPUStructField
-///
 /// Holds data about a single member of a GPU struct.
 @interface LTGPUStructField : NSObject
 
@@ -32,8 +30,6 @@
 
 @end
 
-/// @class LTGPUStruct
-///
 /// Holds data about a struct that can be placed on the GPU.
 @interface LTGPUStruct : NSObject
 
@@ -51,8 +47,6 @@
 
 @end
 
-/// @class LTGPUStructRegistry
-///
 /// Registry of all structs that need to be represented on the GPU using LTKit.
 @interface LTGPUStructRegistry : NSObject
 

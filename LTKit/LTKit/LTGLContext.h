@@ -58,8 +58,6 @@ extern LTGLContextBlendFuncArgs kLTGLContextBlendFuncNormal;
 /// OpenGL default blend equation (Additive).
 extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
-/// @class LTGLContext
-///
 /// Wrapper class for \c EAGLContext, supplying abilities to set OpenGL capabilities which are not
 /// specific to a single geometry or program, such as blending, depth test, face culling and more.
 @interface LTGLContext : NSObject

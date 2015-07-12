@@ -10,8 +10,6 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
 
 @class LTArrayBuffer, LTIndicesArray, LTProgram, LTTexture, LTVertexArray;
 
-/// @class LTDrawingContext
-///
 /// Context for drawing using the GPU. The context is responsible for binding a vertex array to a
 /// program, and to manage resource binding before and after the drawing operation.
 @interface LTDrawingContext : NSObject

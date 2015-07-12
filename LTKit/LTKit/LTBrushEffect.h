@@ -3,8 +3,6 @@
 
 @class LTRandom;
 
-/// @class LTBrushEffect
-///
 /// Abstract class implementing shared functionality of the different \c LTBrushXXXEffects.
 @interface LTBrushEffect : NSObject
 

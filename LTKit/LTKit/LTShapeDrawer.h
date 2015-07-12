@@ -8,8 +8,6 @@
 
 @class LTFbo, LTRotatedRect;
 
-/// @class LTShapeDrawer
-///
 /// Class for efficiently drawing simple vector graphics used for overlays. This tries to give a
 /// similar interface to the Core Graphics drawing (CGContextDoSomething functions) with the
 /// necessary optimization of trying to reduce the amount of buffers copied between the cpu and gpu.

@@ -3,8 +3,6 @@
 
 #import "LTTextureBrush.h"
 
-/// @class LTMultiTextureBrush
-///
 /// An class representing a texture brush used by the \c LTPainter, for painting using a texture
 /// randomally picked from an array of RGBA texture. The texture is blended to the target canvas
 /// according to the brush flow and opacity properties.

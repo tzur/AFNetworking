@@ -4,11 +4,9 @@
 #import "LTCommonDrawableShape.h"
 #import "LTDrawableShape.h"
 
-/// @class LTShapeDrawerEllipticShape
-///
-/// A class used for drawing (and filling) anti-aliased elliptic shapes.
 @class LTRotatedRect;
 
+/// A class used for drawing (and filling) anti-aliased elliptic shapes.
 @interface LTShapeDrawerEllipticShape : LTCommonDrawableShape <LTDrawableShape>
 
 /// Initializes an ellipse fitting the given rotated rect. The generated ellipse is centered at the

@@ -5,8 +5,6 @@
 
 #import "LTPropertyMacros.h"
 
-/// @class LTProceduralVignetting
-///
 /// Creates a vignetting pattern.
 /// Vignetting pattern has a value of 1 at the corners of the image and decreases towards the
 /// center. The fallof can be modulated with a noise to create a more ragged appearance.

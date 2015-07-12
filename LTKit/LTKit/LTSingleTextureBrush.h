@@ -3,8 +3,6 @@
 
 #import "LTTextureBrush.h"
 
-/// @class LTSingleTextureBrush
-///
 /// A class representing a texture brush used by the \c LTPainter, for painting using a single
 /// RGBA texture. The texture is blended to the target canvas according to the brush flow and
 /// opacity properties.

@@ -14,8 +14,6 @@
 @class LTBrushColorDynamicsEffect, LTBrushRandomState, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
     LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;
 
-/// @class LTBrush
-///
 /// A class representing a brush used by the \c LTPainter. This class (or its subclasses) can be
 /// used to draw a point or a stroke segment on a target framebuffer, and contain adjustable
 /// properties controlling the behavior and appearance of the painted areas.

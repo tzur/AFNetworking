@@ -3,9 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
-/// @class LTEdgesMaskProcessor creates an edges image that can be used as a mask in more complex
-/// image processing algorithms, such as NPR. The result of the computation at each pixel equals to:
-/// abs(dx) + abs(dy).
+/// Creates an edges image that can be used as a mask in more complex image processing algorithms,
+/// such as NPR. The result of the computation at each pixel equals to: abs(dx) + abs(dy).
 @interface LTEdgesMaskProcessor : LTImageProcessor
 
 /// Initializes the processor with input texture to be adjusted and output texture. The output

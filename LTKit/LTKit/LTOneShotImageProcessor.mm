@@ -6,8 +6,6 @@
 #import "LTProgramFactory.h"
 #import "LTRectDrawer.h"
 
-/// @class LTOneShotImageProcessor
-///
 /// Processes a single image input with a single processing iteration, and returns a single output,
 /// using an \c LTRectDrawer for drawing the output.
 @implementation LTOneShotImageProcessor

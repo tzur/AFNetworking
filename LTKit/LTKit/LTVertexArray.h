@@ -6,8 +6,6 @@
 @class LTArrayBuffer;
 @class LTGPUStruct;
 
-/// @class LTVertexArrayElement
-///
 /// Coordinator which connects three entities:
 ///
 /// - \c LTGPUStruct object, which gives metadata on structs that can be placed on the GPU.
@@ -45,8 +43,6 @@
 
 @end
 
-/// @class LTVertexArray
-///
 /// Encapsulates an OpenGL vertex array object. The vertex array object is composed of multiple
 /// \c LTVertexArrayElements, enabling the use of multiple \c LTGPUStruct objects in a single vertex
 /// array. This makes program binding easy, since all the vertex attribute data required to map

@@ -95,8 +95,6 @@ namespace cv {
   class Mat;
 }
 
-/// @class LTTexture
-///
 /// An abstract class representing a GPU-based texture. This class supports the texture CPU-GPU
 /// interface of loading, updating and retrieving a texture.
 ///

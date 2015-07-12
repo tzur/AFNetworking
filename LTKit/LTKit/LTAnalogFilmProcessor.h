@@ -15,8 +15,6 @@ typedef NS_ENUM(NSUInteger, LTLightLeakRotation) {
   LTLightLeakRotation270
 };
 
-/// @class LTAnalogFilmProcessor
-///
 /// Implements analog film effect. Controls the tonal characteristics of the result and additional
 /// content that makes the effect more appealing: grain, vignetting and texture.
 @interface LTAnalogFilmProcessor : LTOneShotImageProcessor

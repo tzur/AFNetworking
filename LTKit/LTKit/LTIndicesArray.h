@@ -10,8 +10,6 @@ typedef NS_ENUM(NSUInteger, LTIndicesBufferType) {
   LTIndicesBufferTypeInteger = GL_UNSIGNED_INT
 };
 
-/// @class LTIndicesArray
-///
 /// Encapsulates an \c LTArrayBuffer of \c LTArrayBufferTypeElement, including the data type of the
 /// indices in the underlying buffer.
 @interface LTIndicesArray : NSObject
