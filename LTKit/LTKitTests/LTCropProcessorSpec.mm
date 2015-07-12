@@ -228,7 +228,7 @@ context(@"processing", ^{
     it(@"should not crop if applyCrop is NO", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
       
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       
       processor.applyCrop = NO;
@@ -241,7 +241,7 @@ context(@"processing", ^{
     it(@"should crop according to cropRectangle", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
       
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       
       processor.applyCrop = YES;
@@ -256,7 +256,7 @@ context(@"processing", ^{
       CGRect kTarget = CGRectMake(51, 5, 80, 122);
 
       processor.rotations = 1;
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       
       processor.applyCrop = YES;
@@ -273,7 +273,7 @@ context(@"processing", ^{
       
       processor.flipHorizontal = YES;
       processor.flipVertical = YES;
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       
       processor.applyCrop = YES;
@@ -291,7 +291,7 @@ context(@"processing", ^{
       processor.flipHorizontal = YES;
       processor.flipVertical = YES;
       processor.rotations = 1;
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
 
       processor.applyCrop = YES;
@@ -306,7 +306,7 @@ context(@"processing", ^{
     
     it(@"should adjust crop rectangle after rotation", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       processor.rotations = 1;
       expect(processor.cropRectangle).to.equal(CGRectMake(51, 5, 80, 122));
@@ -320,7 +320,7 @@ context(@"processing", ^{
     
     it(@"should adjust crop rectangle after flip", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
       processor.flipHorizontal = YES;
       expect(processor.cropRectangle).to.equal(CGRectMake(129, 47, 122, 80));
@@ -334,7 +334,7 @@ context(@"processing", ^{
     
     it(@"should adjust crop rectangle after rotation and flip", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
-      processor.cropRectangle = kTarget;
+      processor.cropRectangle = LTRect(kTarget);
       processor.flipHorizontal = YES;
       processor.flipVertical = YES;
       processor.rotations = 1;

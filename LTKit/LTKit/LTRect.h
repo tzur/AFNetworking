@@ -9,7 +9,7 @@ struct LTRect {
   LTRect() : origin(CGRectNull.origin), size(CGRectNull.size) {}
   
   /// Initializes a new \c LTRect from the given CGRect.
-  LTRect(const CGRect &rect) : origin(rect.origin), size(rect.size) {}
+  explicit LTRect(const CGRect &rect) : origin(rect.origin), size(rect.size) {}
 
   /// Initializes a new \c LTRect from the given origin and size.
   LTRect(const CGPoint &origin, const CGSize &size) : origin(origin), size(size) {}

@@ -175,7 +175,7 @@
   if (self.cachedTransform != self.transform) {
     LTCropDrawerRect rect = [self transform:self.transform rect:self.normalizedCropRectangle];
     rect *= LTVector2([self rotatedSize:self.inputTexture.size]);
-    self.cachedCropRectangle = (CGRect)rect;
+    self.cachedCropRectangle = LTRect(rect);
     self.cachedTransform = self.transform;
   }
   
