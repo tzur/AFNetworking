@@ -1,26 +1,26 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTLimitedCapacityQueue.h"
+#import "LTBoundedQueue.h"
 
-SpecBegin(LTLimitedCapacityQueue)
+SpecBegin(LTBoundedQueue)
 
-__block LTLimitedCapacityQueue *singleObjectQueue;
-__block LTLimitedCapacityQueue *multipleObjectQueue;
+__block LTBoundedQueue *singleObjectQueue;
+__block LTBoundedQueue *multipleObjectQueue;
 __block id firstObject;
 __block id secondObject;
 __block id thirdObject;
 
 beforeEach(^{
-  singleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximalCapacity:1];
-  multipleObjectQueue = [[LTLimitedCapacityQueue alloc] initWithMaximalCapacity:3];
+  singleObjectQueue = [[LTBoundedQueue alloc] initWithMaximalCapacity:1];
+  multipleObjectQueue = [[LTBoundedQueue alloc] initWithMaximalCapacity:3];
   firstObject = [[NSObject alloc] init];
   secondObject = [[NSObject alloc] init];
   thirdObject = [[NSObject alloc] init];
 });
 
 it(@"should be a subclass of ENQueue", ^{
-  expect([[LTLimitedCapacityQueue class] isSubclassOfClass:[LTQueue class]]).to.beTruthy();
+  expect([[LTBoundedQueue class] isSubclassOfClass:[LTQueue class]]).to.beTruthy();
 });
 
 it(@"should be empty after initialization", ^{

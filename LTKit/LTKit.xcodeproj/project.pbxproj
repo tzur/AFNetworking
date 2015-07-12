@@ -500,11 +500,11 @@
 		503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */; };
 		505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */; };
 		505B465E1A093FF90046C00C /* LTQuadCopy.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 505B465C1A093F940046C00C /* LTQuadCopy.fsh */; };
-		5067221819EA80B5003AF8D2 /* LTLimitedCapacityQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */; };
-		5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */; };
+		5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */; };
+		5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */; };
 		5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221619EA80B5003AF8D2 /* LTQueue.h */; };
 		5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221719EA80B5003AF8D2 /* LTQueue.mm */; };
-		5067223119EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067222F19EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm */; };
+		5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */; };
 		5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067223019EA811A003AF8D2 /* LTQueueSpec.mm */; };
 		506F826819FE5CFA00A15D9D /* LTQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 506F826619FE5CFA00A15D9D /* LTQuadDrawer.h */; };
 		506F826919FE5CFA00A15D9D /* LTQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */; };
@@ -1735,11 +1735,11 @@
 		503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCFExtensionsSpec.mm; sourceTree = "<group>"; };
 		505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessorSpec.mm; sourceTree = "<group>"; };
 		505B465C1A093F940046C00C /* LTQuadCopy.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTQuadCopy.fsh; sourceTree = "<group>"; };
-		5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLimitedCapacityQueue.h; sourceTree = "<group>"; };
-		5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLimitedCapacityQueue.mm; sourceTree = "<group>"; };
+		5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoundedQueue.h; sourceTree = "<group>"; };
+		5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundedQueue.mm; sourceTree = "<group>"; };
 		5067221619EA80B5003AF8D2 /* LTQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQueue.h; sourceTree = "<group>"; };
 		5067221719EA80B5003AF8D2 /* LTQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueue.mm; sourceTree = "<group>"; };
-		5067222F19EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLimitedCapacityQueueSpec.mm; sourceTree = "<group>"; };
+		5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundedQueueSpec.mm; sourceTree = "<group>"; };
 		5067223019EA811A003AF8D2 /* LTQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueueSpec.mm; sourceTree = "<group>"; };
 		506F826619FE5CFA00A15D9D /* LTQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadDrawer.h; sourceTree = "<group>"; };
 		506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawer.mm; sourceTree = "<group>"; };
@@ -3822,7 +3822,7 @@
 			isa = PBXGroup;
 			children = (
 				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
-				5067222F19EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm */,
+				5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */,
 				50AE95D619D17624000E8086 /* LTQuadSpec.mm */,
 				5067223019EA811A003AF8D2 /* LTQueueSpec.mm */,
 				28BBD79119A109D80062C803 /* LTRectSpec.mm */,
@@ -3838,8 +3838,8 @@
 			children = (
 				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
 				8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */,
-				5067221419EA80B5003AF8D2 /* LTLimitedCapacityQueue.h */,
-				5067221519EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm */,
+				5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */,
+				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
 				50CF199419D16BB60010D52F /* LTQuad.h */,
 				50CF199519D16BB60010D52F /* LTQuad.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
@@ -4067,7 +4067,7 @@
 				8B8720251924A76300517F2E /* LTInterpolationRoutine.h in Headers */,
 				8B8720261924A76300517F2E /* LTLinearInterpolationRoutine.h in Headers */,
 				50FEAFAC19DC0510009C6E22 /* LTCGPathExtensions.h in Headers */,
-				5067221819EA80B5003AF8D2 /* LTLimitedCapacityQueue.h in Headers */,
+				5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */,
 				8B8720271924A76300517F2E /* LTTouchCollector.h in Headers */,
 				8B8720281924A76300517F2E /* LTTouchCollectorDistanceFilter.h in Headers */,
 				8B8720291924A76400517F2E /* LTTouchCollectorFilter.h in Headers */,
@@ -4780,7 +4780,7 @@
 				253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */,
 				500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */,
 				8BCA66F5182FB5E2003FCB65 /* LTGLException.m in Sources */,
-				5067221919EA80B5003AF8D2 /* LTLimitedCapacityQueue.mm in Sources */,
+				5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */,
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				28B3346919C826D3004B6191 /* LTOneShotImageProcessor.mm in Sources */,
 				25AF17571AD50BE00055E664 /* LTVGTypesetter.mm in Sources */,
@@ -4938,7 +4938,7 @@
 				25AF17661AD50C250055E664 /* LTVGLineSpec.mm in Sources */,
 				8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
-				5067223119EA811A003AF8D2 /* LTLimitedCapacityQueueSpec.mm in Sources */,
+				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */,
 				8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */,

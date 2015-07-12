@@ -1,16 +1,16 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTLimitedCapacityQueue.h"
+#import "LTBoundedQueue.h"
 
-@interface LTLimitedCapacityQueue ()
+@interface LTBoundedQueue ()
 
 /// Maximal number of objects allowed to reside simultaneously in the queue.
 @property (nonatomic) NSUInteger maximalCapacity;
 
 @end
 
-@implementation LTLimitedCapacityQueue
+@implementation LTBoundedQueue
 
 #pragma mark -
 #pragma mark Initialization
