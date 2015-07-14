@@ -39,6 +39,11 @@ const CGSize kCanvasSize = CGSizeMake(64, 64);
 __block LTPainter *painter;
 __block LTTexture *canvas;
 
+afterEach(^{
+  painter = nil;
+  canvas = nil;
+});
+
 context(@"initialization", ^{
   it(@"should initialize with sandboxed stroke mode", ^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
@@ -68,12 +73,7 @@ context(@"properties", ^{
     painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
                                 canvasTexture:canvas];
   });
-  
-  afterEach(^{
-    painter = nil;
-    canvas = nil;
-  });
-  
+
   it(@"should have default properties", ^{
     expect(painter.delegate).to.beNil();
     expect(painter.touchDelegateForLTView).to.conformTo(@protocol(LTViewTouchDelegate));
@@ -133,11 +133,6 @@ context(@"painting", ^{
     background.setTo(kBlack);
     expected.setTo(kBlack);
     clear.setTo(kClear);
-  });
-  
-  afterEach(^{
-    painter = nil;
-    canvas = nil;
   });
   
   it(@"should clear with the given color", ^{
