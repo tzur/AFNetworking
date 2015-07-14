@@ -10,6 +10,7 @@
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
+#import "LTGLView.h"
 #import "LTImage.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
@@ -147,7 +148,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   LTAssert(self.context, @"Could not set up GLKView when LTGLContext is nil");
   
   // Allocate the glkView and set it up.
-  self.glkView = [[GLKView alloc] initWithFrame:self.bounds];
+  self.glkView = [[LTGLView alloc] initWithFrame:self.bounds];
 #if TARGET_IPHONE_SIMULATOR
   self.glkView.contentScaleFactor = [LTDevice currentDevice].glkContentScaleFactor;
 #endif

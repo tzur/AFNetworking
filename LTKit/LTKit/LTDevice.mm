@@ -5,6 +5,7 @@
 
 #import <sys/utsname.h>
 
+#import "LTGLView.h"
 #import "NSFileManager+LTKit.h"
 
 /// Points per inch for the various devices. This is according to the specs, and can't be be found
@@ -462,7 +463,7 @@ objection_requires_sel(@selector(fileManager));
 
 - (CGFloat)glkContentScaleFactor {
   if (!_glkContentScaleFactor) {
-    GLKView *view = [[GLKView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    GLKView *view = [[LTGLView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 #ifdef DEBUG
 #if TARGET_IPHONE_SIMULATOR
     // TODO:(amit) remove this when the simulator returns the same value as the actual device.
