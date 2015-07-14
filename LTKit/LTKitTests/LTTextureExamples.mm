@@ -69,9 +69,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
   itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionByte),
-                       @"format": @(LTTextureFormatLuminance)});
 
   itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
@@ -82,9 +79,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
   itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"format": @(LTTextureFormatLuminance)});
 
   itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
@@ -95,9 +89,6 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
   itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionFloat),
-                       @"format": @(LTTextureFormatLuminance)});
 
   context(@"red and rg textures", ^{
     it(@"should read 4-byte aligned red channel data", ^{

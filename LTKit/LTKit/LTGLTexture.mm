@@ -362,8 +362,6 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       return 2;
     case LTTextureFormatRGBA:
       return 4;
-    case LTTextureFormatLuminance:
-      return 4;
   }
 }
 
@@ -383,8 +381,6 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
           return LTTextureFormatRGBA;
       }
     case LTTextureFormatRGBA:
-      return LTTextureFormatRGBA;
-    case LTTextureFormatLuminance:
       return LTTextureFormatRGBA;
   }
 }

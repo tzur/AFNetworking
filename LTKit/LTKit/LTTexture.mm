@@ -60,7 +60,7 @@ LTTextureFormat LTTextureFormatFromMatType(int type) {
       if ([LTDevice currentDevice].supportsRGTextures) {
         return LTTextureFormatRed;
       } else {
-        return LTTextureFormatLuminance;
+        return LTTextureFormatRGBA;
       }
     case 2:
       if ([LTDevice currentDevice].supportsRGTextures) {
@@ -84,7 +84,6 @@ LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image) {
 LTTextureChannels LTTextureChannelsFromFormat(LTTextureFormat format) {
   switch (format) {
     case LTTextureFormatRed:
-    case LTTextureFormatLuminance:
       return LTTextureChannelsOne;
     case LTTextureFormatRG:
       return LTTextureChannelsTwo;
@@ -131,8 +130,6 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
       return @"LTTextureFormatRG";
     case LTTextureFormatRGBA:
       return @"LTTextureFormatRGBA";
-    case LTTextureFormatLuminance:
-      return @"LTTextureFormatLuminance";
   }
 }
 
@@ -244,7 +241,6 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 
 - (BOOL)formatSupported:(LTTextureFormat)format {
   switch (format) {
-    case LTTextureFormatLuminance:
     case LTTextureFormatRGBA:
       return YES;
     case LTTextureFormatRed:
