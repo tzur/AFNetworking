@@ -4,7 +4,9 @@
 #import "LTViewPixelGrid.h"
 
 #import "LTCGExtensions.h"
+#import "LTFbo.h"
 #import "LTGridDrawer.h"
+#import "LTTexture+Factory.h"
 
 @interface LTViewPixelGrid ()
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
@@ -74,7 +76,9 @@ context(@"drawing", ^{
   __block LTViewPixelGrid *grid;
   __block LTGridDrawer *realDrawer;
   __block id mockDrawer;
-  const CGFloat kSmallValue = 0.01;
+  __block LTFbo *fbo;
+
+  static const CGFloat kSmallValue = 0.01;
   
   beforeEach(^{
     grid = [[LTViewPixelGrid alloc] initWithContentSize:contentSize];
@@ -84,36 +88,48 @@ context(@"drawing", ^{
     grid.minZoomScale = 2;
     grid.maxZoomScale = 4;
     grid.maxOpacity = 0.75;
+
+    LTTexture *output = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
+    fbo = [[LTFbo alloc] initWithTexture:output];
   });
   
   afterEach(^{
     grid = nil;
     mockDrawer = nil;
     realDrawer = nil;
+    fbo = nil;
   });
 
   it(@"should use maxOpacity above the maximal zoom scale", ^{
     CGSize targetSize = contentSize * (grid.maxZoomScale + kSmallValue);
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    }];
     expect([(LTGridDrawer *)mockDrawer opacity]).to.beCloseTo(grid.maxOpacity);
   });
   
   it(@"should use zero opacity if minimal and maximal zoom scales are equal", ^{
     grid.maxZoomScale = grid.minZoomScale;
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * grid.minZoomScale];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * grid.minZoomScale];
+    }];
     expect([(LTGridDrawer *)mockDrawer opacity]).to.equal(0);
   });
   
   it(@"should use zero opacity if minimal zoom scale is larger than the maximal zoom scale", ^{
     grid.maxZoomScale = 1;
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * grid.minZoomScale];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * grid.minZoomScale];
+    }];
     expect([(LTGridDrawer *)mockDrawer opacity]).to.equal(0);
   });
   
   it(@"should interpolate opacity according to the zoom scale", ^{
     const CGFloat ratio = 0.33;
     const CGFloat zoomScale = (grid.minZoomScale * (1 - ratio) + ratio * grid.maxZoomScale);
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * zoomScale];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize * zoomScale];
+    }];
     expect([(LTGridDrawer *)mockDrawer opacity]).to.beCloseToWithin(ratio * grid.maxOpacity,
                                                                     kSmallValue);
   });
@@ -121,21 +137,27 @@ context(@"drawing", ^{
   it(@"should not draw grid below minimal zoom scale", ^{
     [[[mockDrawer reject] ignoringNonObjectArgs] drawSubGridInRegion:CGRectZero
                                          inFramebufferWithSize:CGSizeZero];
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:contentSize];
+    }];
     OCMVerifyAll(mockDrawer);
   });
   
   it(@"should draw grid above the minimal zoom scale", ^{
     const CGSize targetSize = contentSize * (grid.minZoomScale + kSmallValue);
     [[mockDrawer expect] drawSubGridInRegion:contentBounds inFramebufferWithSize:targetSize];
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    }];
     OCMVerifyAll(mockDrawer);
   });
   
   it(@"should draw grid above the maximal zoom scale", ^{
     const CGSize targetSize = contentSize * (grid.maxZoomScale + kSmallValue);
     [[mockDrawer expect] drawSubGridInRegion:contentBounds inFramebufferWithSize:targetSize];
-    [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    [fbo bindAndDrawOnScreen:^{
+      [grid drawContentRegion:contentBounds toFramebufferWithSize:targetSize];
+    }];
     OCMVerifyAll(mockDrawer);
   });
 });
