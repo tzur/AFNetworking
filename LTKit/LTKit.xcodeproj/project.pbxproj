@@ -538,6 +538,8 @@
 		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
 		8B329070192CDA2C0010592E /* LTTextureContentsDataArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B328FDF192B598A0010592E /* LTTextureContentsDataArchiver.mm */; };
 		8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */; };
+		8B38317B1B551DD900620560 /* LTIZFastMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3831791B551DD900620560 /* LTIZFastMath.h */; };
+		8B38318F1B551E1400620560 /* LTIZFastMathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B38318E1B551E1400620560 /* LTIZFastMathSpec.mm */; };
 		8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */; };
 		8B3C0A47183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
 		8B3C0A48183294DF000845BA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A46183294DF000845BA /* opencv2.framework */; };
@@ -1789,6 +1791,8 @@
 		8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUResourceExamples.mm; sourceTree = "<group>"; };
 		8B3667F0184757E5002A1833 /* LTGPUResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResource.h; sourceTree = "<group>"; };
 		8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGPUResourceExamples.h; sourceTree = "<group>"; };
+		8B3831791B551DD900620560 /* LTIZFastMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIZFastMath.h; sourceTree = "<group>"; };
+		8B38318E1B551E1400620560 /* LTIZFastMathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIZFastMathSpec.mm; sourceTree = "<group>"; };
 		8B3B31D7183905C200FEA96F /* LTArrayBufferSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTArrayBufferSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8B3C0A46183294DF000845BA /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/images/opencv/opencv2.framework; sourceTree = "<group>"; };
 		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -2849,6 +2853,7 @@
 		28EC23881B0CE9ED0099946A /* Image Compression */ = {
 			isa = PBXGroup;
 			children = (
+				8B3831791B551DD900620560 /* LTIZFastMath.h */,
 				28EC239A1B0CEA190099946A /* LTImageCompression.h */,
 				28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */,
 				28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */,
@@ -2897,6 +2902,7 @@
 		8B329023192CC2590010592E /* IO */ = {
 			isa = PBXGroup;
 			children = (
+				8B38318E1B551E1400620560 /* LTIZFastMathSpec.mm */,
 				2884CDB11B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm */,
 				285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */,
 				8BB01CC119658014002A8609 /* LTImageLoaderSpec.mm */,
@@ -4027,6 +4033,7 @@
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
 				8B871FF51924A75F00517F2E /* LTSplitComplexMat.h in Headers */,
+				8B38317B1B551DD900620560 /* LTIZFastMath.h in Headers */,
 				8B871FF61924A75F00517F2E /* LTTiltShiftProcessor.h in Headers */,
 				8B871FF71924A75F00517F2E /* LTBoundaryCondition.h in Headers */,
 				8B871FF81924A75F00517F2E /* LTPatchKernel.h in Headers */,
@@ -5066,6 +5073,7 @@
 				8B7C6CC81B52860600B90DBE /* LTMatParallelDispatcherSpec.mm in Sources */,
 				28BB81A91924DF650071CB0B /* LTShapeDrawerSpec.mm in Sources */,
 				2812D56619912B380081478F /* LTCropProcessorSpec.mm in Sources */,
+				8B38318F1B551E1400620560 /* LTIZFastMathSpec.mm in Sources */,
 				8BC465C318995DB80094F7BC /* LTGPUBlockSpec.mm in Sources */,
 				8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */,
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
