@@ -340,8 +340,12 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   // We don't need the GLKView buffers for the next draw, so hint that they can be discarded.
   // (Since we clear the buffers at the beginning of each draw cycle).
-  const GLenum discards[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
-  glDiscardFramebufferEXT(GL_FRAMEBUFFER, 2, discards);
+  const std::array<GLenum, 2> discards{{GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT}};
+  [self.context executeForOpenGLES2:^{
+    glDiscardFramebufferEXT(GL_FRAMEBUFFER, discards.size(), discards.data());
+  } openGLES3:^{
+    glInvalidateFramebuffer(GL_FRAMEBUFFER, discards.size(), discards.data());
+  }];
 }
 
 - (void)informAboutFramebufferChangesIfRequired {

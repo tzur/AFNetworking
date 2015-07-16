@@ -14,263 +14,277 @@
 
 LTSpecBegin(LTDrawingContext)
 
-context(@"binding program and vertex array", ^{
-  it(@"should provide correct attribute to index mapping", ^{
-    id program = [OCMockObject mockForClass:[LTProgram class]];
-    id vertexArray = [OCMockObject mockForClass:[LTVertexArray class]];
+static NSString * const kLTDrawingContextExamples = @"LTDrawingContextExamples";
 
-    [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] attributes];
-    [[[program stub] andReturnValue:@(0)] attributeForName:@"a"];
-    [[[program stub] andReturnValue:@(1)] attributeForName:@"b"];
-
-    [[vertexArray expect] attachAttributesToIndices:@{@"a": @0, @"b": @1}];
-
-    __unused LTDrawingContext *drawingContext =
-        [[LTDrawingContext alloc] initWithProgram:program vertexArray:vertexArray
-                                 uniformToTexture:nil];
-
-    OCMVerifyAll(vertexArray);
-  });
-});
-
-context(@"uniform to texture mapping", ^{
-  __block id program;
-  __block id vertexArray;
-
+sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
   beforeEach(^{
-    program = [OCMockObject niceMockForClass:[LTProgram class]];
-    vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
-
-    [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] uniforms];
+    LTGLContextAPIVersion version = (LTGLContextAPIVersion)[contextInfo[@"version"]
+                                                            unsignedIntegerValue];
+    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
+    [LTGLContext setCurrentContext:context];
   });
 
-  it(@"should raise when uniforms is not a subset of program uniforms", ^{
-    NSDictionary *uniformMap = @{@"a": [NSNull null], @"c": [NSNull null]};
+  context(@"binding program and vertex array", ^{
+    it(@"should provide correct attribute to index mapping", ^{
+      id program = [OCMockObject mockForClass:[LTProgram class]];
+      id vertexArray = [OCMockObject mockForClass:[LTVertexArray class]];
 
-    expect(^{
-      __unused LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
-                                                                         vertexArray:vertexArray
-                                                                    uniformToTexture:uniformMap];
-    }).to.raise(NSInternalInconsistencyException);
-  });
+      [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] attributes];
+      [[[program stub] andReturnValue:@(0)] attributeForName:@"a"];
+      [[[program stub] andReturnValue:@(1)] attributeForName:@"b"];
 
-  it(@"should raise when attaching a uniform which does not exist in program", ^{
-    LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
-                                                              vertexArray:vertexArray
-                                                         uniformToTexture:nil];
+      [[vertexArray expect] attachAttributesToIndices:@{@"a": @0, @"b": @1}];
 
-    expect(^{
-      id texture = [OCMockObject niceMockForClass:[LTGLTexture class]];
-      [context attachUniform:@"z" toTexture:texture];
-    }).to.raise(NSInternalInconsistencyException);
-  });
+      __unused LTDrawingContext *drawingContext =
+          [[LTDrawingContext alloc] initWithProgram:program vertexArray:vertexArray
+                                   uniformToTexture:nil];
 
-  it(@"should raise when attaching a nil texture", ^{
-    LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
-                                                              vertexArray:vertexArray
-                                                         uniformToTexture:nil];
-
-    expect(^{
-      [context attachUniform:@"a" toTexture:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when detaching nil uniform", ^{
-    LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
-                                                              vertexArray:vertexArray
-                                                         uniformToTexture:nil];
-
-    expect(^{
-      [context detachUniformFromTexture:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
-context(@"texture binding while drawing", ^{
-  __block id vertexArray;
-  __block id textureA;
-  __block id textureB;
-
-  __block LTProgram *program;
-  __block id programMock;
-
-  __block LTDrawingContext *drawingContext;
-
-  __block LTFbo *fbo;
-
-  beforeEach(^{
-    LTTexture *output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
-    fbo = [[LTFbo alloc] initWithTexture:output];
-
-    vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
-    textureA = [OCMockObject niceMockForClass:[LTTexture class]];
-    textureB = [OCMockObject niceMockForClass:[LTTexture class]];
-
-    program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
-                                       fragmentSource:[TwoInputTexturesFsh source]];
-    programMock = [OCMockObject partialMockForObject:program];
-
-    NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
-                                 [TwoInputTexturesFsh textureB]: textureB};
-    drawingContext = [[LTDrawingContext alloc] initWithProgram:program
-                                                   vertexArray:vertexArray
-                                              uniformToTexture:uniformMap];
-  });
-
-  afterEach(^{
-    fbo = nil;
-    drawingContext = nil;
-    program = nil;
-    programMock = nil;
-  });
-
-  context(@"draw with mode", ^{
-    it(@"should set unique texture unit values as shader uniforms", ^{
-      // Record used indices when setting sampler index.
-      __block NSMutableArray *usedIndices = [NSMutableArray array];
-      id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
-        [usedIndices addObject:number];
-        return YES;
-      }];
-      
-      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(programMock);
-      
-      // Verify given indices are unique.
-      expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
-    });
-    
-    it(@"should bind to textures", ^{
-      [[textureA expect] bind];
-      [[textureB expect] bind];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should unbind from textures", ^{
-      [[textureA expect] unbind];
-      [[textureB expect] unbind];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should mark begin read from texture", ^{
-      [[textureA expect] beginReadFromTexture];
-      [[textureB expect] beginReadFromTexture];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should mark end read from texture", ^{
-      [[textureA expect] endReadFromTexture];
-      [[textureB expect] endReadFromTexture];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
+      OCMVerifyAll(vertexArray);
     });
   });
-  
-  context(@"draw elements with mode", ^{
-    __block id indicesArray;
-    
+
+  context(@"uniform to texture mapping", ^{
+    __block id program;
+    __block id vertexArray;
+
     beforeEach(^{
-      indicesArray = [OCMockObject mockForClass:[LTIndicesArray class]];
+      program = [OCMockObject niceMockForClass:[LTProgram class]];
+      vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
+
+      [[[program stub] andReturn:[NSSet setWithArray:@[@"a", @"b"]]] uniforms];
+    });
+
+    it(@"should raise when uniforms is not a subset of program uniforms", ^{
+      NSDictionary *uniformMap = @{@"a": [NSNull null], @"c": [NSNull null]};
+
+      expect(^{
+        __unused LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                           vertexArray:vertexArray
+                                                                      uniformToTexture:uniformMap];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+
+    it(@"should raise when attaching a uniform which does not exist in program", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        id texture = [OCMockObject niceMockForClass:[LTGLTexture class]];
+        [context attachUniform:@"z" toTexture:texture];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+
+    it(@"should raise when attaching nil texture", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        [context attachUniform:@"a" toTexture:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when detaching nil uniform", ^{
+      LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:program
+                                                                vertexArray:vertexArray
+                                                           uniformToTexture:nil];
+
+      expect(^{
+        [context detachUniformFromTexture:nil];
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
+
+  context(@"texture binding while drawing", ^{
+    __block id vertexArray;
+    __block id textureA;
+    __block id textureB;
+
+    __block LTProgram *program;
+    __block id programMock;
+
+    __block LTDrawingContext *drawingContext;
+
+    __block LTFbo *fbo;
+
+    beforeEach(^{
+      LTTexture *output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
+      fbo = [[LTFbo alloc] initWithTexture:output];
+
+      vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
+      textureA = [OCMockObject niceMockForClass:[LTTexture class]];
+      textureB = [OCMockObject niceMockForClass:[LTTexture class]];
+
+      program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                         fragmentSource:[TwoInputTexturesFsh source]];
+      programMock = [OCMockObject partialMockForObject:program];
+
+      NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
+                                   [TwoInputTexturesFsh textureB]: textureB};
+      drawingContext = [[LTDrawingContext alloc] initWithProgram:program
+                                                     vertexArray:vertexArray
+                                                uniformToTexture:uniformMap];
+    });
+
+    afterEach(^{
+      fbo = nil;
+      drawingContext = nil;
+      program = nil;
+      programMock = nil;
+    });
+
+    context(@"draw with mode", ^{
+      it(@"should set unique texture unit values as shader uniforms", ^{
+        // Record used indices when setting sampler index.
+        __block NSMutableArray *usedIndices = [NSMutableArray array];
+        id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+          [usedIndices addObject:number];
+          return YES;
+        }];
+        
+        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(programMock);
+        
+        // Verify given indices are unique.
+        expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
+      });
+      
+      it(@"should bind to textures", ^{
+        [[textureA expect] bind];
+        [[textureB expect] bind];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
+      
+      it(@"should unbind from textures", ^{
+        [[textureA expect] unbind];
+        [[textureB expect] unbind];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
+      
+      it(@"should mark begin read from texture", ^{
+        [[textureA expect] beginReadFromTexture];
+        [[textureB expect] beginReadFromTexture];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
+      
+      it(@"should mark end read from texture", ^{
+        [[textureA expect] endReadFromTexture];
+        [[textureB expect] endReadFromTexture];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
     });
     
-    it(@"should set unique texture unit values as shader uniforms", ^{
-      // Record used indices when setting sampler index.
-      __block NSMutableArray *usedIndices = [NSMutableArray array];
-      id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
-        [usedIndices addObject:number];
-        return YES;
-      }];
+    context(@"draw elements with mode", ^{
+      __block id indicesArray;
       
-      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-      [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+      beforeEach(^{
+        indicesArray = [OCMockObject mockForClass:[LTIndicesArray class]];
+      });
       
-      [fbo bindAndDraw:^{
-        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
-      }];
+      it(@"should set unique texture unit values as shader uniforms", ^{
+        // Record used indices when setting sampler index.
+        __block NSMutableArray *usedIndices = [NSMutableArray array];
+        id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+          [usedIndices addObject:number];
+          return YES;
+        }];
+        
+        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(programMock);
+        
+        // Verify given indices are unique.
+        expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
+      });
       
-      OCMVerifyAll(programMock);
+      it(@"should bind to textures", ^{
+        [[textureA expect] bind];
+        [[textureB expect] bind];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
       
-      // Verify given indices are unique.
-      expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
-    });
-    
-    it(@"should bind to textures", ^{
-      [[textureA expect] bind];
-      [[textureB expect] bind];
+      it(@"should unbind from textures", ^{
+        [[textureA expect] unbind];
+        [[textureB expect] unbind];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
       
-      [fbo bindAndDraw:^{
-        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
-      }];
+      it(@"should mark begin read from texture", ^{
+        [[textureA expect] beginReadFromTexture];
+        [[textureB expect] beginReadFromTexture];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
       
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should unbind from textures", ^{
-      [[textureA expect] unbind];
-      [[textureB expect] unbind];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should mark begin read from texture", ^{
-      [[textureA expect] beginReadFromTexture];
-      [[textureB expect] beginReadFromTexture];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
-    });
-    
-    it(@"should mark end read from texture", ^{
-      [[textureA expect] endReadFromTexture];
-      [[textureB expect] endReadFromTexture];
-      
-      [fbo bindAndDraw:^{
-        [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
-      }];
-      
-      OCMVerifyAll(textureA);
-      OCMVerifyAll(textureB);
+      it(@"should mark end read from texture", ^{
+        [[textureA expect] endReadFromTexture];
+        [[textureB expect] endReadFromTexture];
+        
+        [fbo bindAndDraw:^{
+          [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
+        }];
+        
+        OCMVerifyAll(textureA);
+        OCMVerifyAll(textureB);
+      });
     });
   });
 });
+
+itShouldBehaveLike(kLTDrawingContextExamples, @{@"version": @(LTGLContextAPIVersion2)});
+itShouldBehaveLike(kLTDrawingContextExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
 LTSpecEnd

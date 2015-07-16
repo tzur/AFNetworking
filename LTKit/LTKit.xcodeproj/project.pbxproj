@@ -567,7 +567,7 @@
 		8B3F94A8187AEA0200FAA265 /* Passthrough.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94A5187AEA0200FAA265 /* Passthrough.vsh */; };
 		8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D1187C194500FAA265 /* LTMMTexture.mm */; };
 		8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */; };
-		8B3F94D7187C340D00FAA265 /* LTTextureExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */; };
+		8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */; };
 		8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */; };
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
@@ -1826,8 +1826,8 @@
 		8B3F94D0187C194500FAA265 /* LTMMTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMMTexture.h; sourceTree = "<group>"; };
 		8B3F94D1187C194500FAA265 /* LTMMTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTexture.mm; sourceTree = "<group>"; };
 		8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTextureSpec.mm; sourceTree = "<group>"; };
-		8B3F94D5187C340D00FAA265 /* LTTextureExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureExamples.h; sourceTree = "<group>"; };
-		8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTextureExamples.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8B3F94D5187C340D00FAA265 /* LTTextureBasicExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureBasicExamples.h; sourceTree = "<group>"; };
+		8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTextureBasicExamples.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Specta+LTKit.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -3570,8 +3570,8 @@
 				8B2267451997BBC60049CF26 /* LTProgramFactorySpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
 				8BBE89321834C8A5006C58AA /* LTTextureSpec.mm */,
-				8B3F94D5187C340D00FAA265 /* LTTextureExamples.h */,
-				8B3F94D6187C340D00FAA265 /* LTTextureExamples.mm */,
+				8B3F94D5187C340D00FAA265 /* LTTextureBasicExamples.h */,
+				8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */,
 				8BB47172183E2A6400CA1681 /* LTVertexArraySpec.mm */,
 				8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */,
 				8B9D3FF318954605001A964D /* LTTextureFactorySpec.mm */,
@@ -5064,7 +5064,7 @@
 				287705A718BB75AD00D7CEC4 /* LTPainterStrokeSegmentSpec.mm in Sources */,
 				8B7EAA22187C5D960004A57A /* Colorize.fsh in Sources */,
 				658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */,
-				8B3F94D7187C340D00FAA265 /* LTTextureExamples.mm in Sources */,
+				8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */,
 				2833789B1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm in Sources */,
 				8BC1C9FA19FA5B0F00107580 /* LTAspectFillResizeProcessorSpec.mm in Sources */,
 				283906A118C4DB0A00BD21CE /* LTRoundBrushSpec.mm in Sources */,

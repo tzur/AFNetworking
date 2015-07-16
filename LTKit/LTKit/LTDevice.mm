@@ -5,6 +5,7 @@
 
 #import <sys/utsname.h>
 
+#import "LTGLContext.h"
 #import "LTGLView.h"
 #import "NSFileManager+LTKit.h"
 
@@ -159,7 +160,7 @@ static NSDictionary * const kDeviceTypeToString = @{
 @property (readwrite, nonatomic) LTDeviceType deviceType;
 @property (readwrite, nonatomic) NSString *deviceTypeString;
 
-@property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) LTGLContext *context;
 
 @property (strong, nonatomic) NSSet *supportedExtensions;
 @property (nonatomic) GLint maxTextureSize;
@@ -395,30 +396,30 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark GPU
 #pragma mark -
 
-- (EAGLContext *)setGLContext {
+- (LTGLContext *)setGLContext {
   // Set new context only if there's no context currently set.
-  EAGLContext *currentContext = [EAGLContext currentContext];
+  LTGLContext *currentContext = [LTGLContext currentContext];
   if (!currentContext) {
-    [EAGLContext setCurrentContext:self.context];
+    [LTGLContext setCurrentContext:self.context];
   }
   return currentContext;
 }
 
-- (void)restoreGLContext:(EAGLContext *)context {
+- (void)restoreGLContext:(LTGLContext *)context {
   if (!context) {
-    [EAGLContext setCurrentContext:nil];
+    [LTGLContext setCurrentContext:nil];
   }
 }
 
 - (void)executeOpenGL:(LTVoidBlock)block {
-  EAGLContext *context = [self setGLContext];
+  LTGLContext *context = [self setGLContext];
   if (block) block();
   [self restoreGLContext:context];
 }
 
-- (EAGLContext *)context {
+- (LTGLContext *)context {
   if (!_context) {
-    _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    _context = [[LTGLContext alloc] init];
     if (!_context) {
       LogError(@"Failed to create OpenGL ES context");
     }
@@ -490,7 +491,8 @@ objection_requires_sel(@selector(fileManager));
 }
 
 - (BOOL)supportsRGTextures {
-  return [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
+  return self.context.version == LTGLContextAPIVersion3 ||
+      [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
 }
 
 @end

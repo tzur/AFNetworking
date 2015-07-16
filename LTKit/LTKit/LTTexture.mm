@@ -8,6 +8,7 @@
 #import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
+#import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
@@ -665,10 +666,78 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   }
 
   [self bindAndExecute:^{
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, maxMipmapLevel);
+    [[LTGLContext currentContext] executeForOpenGLES2:^{
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, maxMipmapLevel);
+    } openGLES3:^{
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, maxMipmapLevel);
+    }];
   }];
 
   _maxMipmapLevel = maxMipmapLevel;
+}
+
+- (GLenum)glPrecision {
+  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
+    return self.precision;
+  } else {
+    switch (self.precision) {
+      case LTTexturePrecisionHalfFloat:
+        return GL_HALF_FLOAT;
+      default:
+        return self.precision;
+    }
+  }
+}
+
+- (GLint)glInternalFormat {
+  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
+    return self.format;
+  } else {
+    switch (self.format) {
+      case LTTextureFormatRed:
+        switch (self.precision) {
+          case LTTexturePrecisionByte:
+            return GL_R8;
+          case LTTexturePrecisionHalfFloat:
+            return GL_R16F;
+          case LTTexturePrecisionFloat:
+            return GL_R32F;
+        }
+      case LTTextureFormatRG:
+        switch (self.precision) {
+          case LTTexturePrecisionByte:
+            return GL_RG8;
+          case LTTexturePrecisionHalfFloat:
+            return GL_RG16F;
+          case LTTexturePrecisionFloat:
+            return GL_RG32F;
+        }
+      case LTTextureFormatRGBA:
+        switch (self.precision) {
+          case LTTexturePrecisionByte:
+            return GL_RGBA8;
+          case LTTexturePrecisionHalfFloat:
+            return GL_RGBA16F;
+          case LTTexturePrecisionFloat:
+            return GL_RGBA32F;
+        }
+    }
+  }
+}
+
+- (GLenum)glFormat {
+  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
+    return self.format;
+  } else {
+    switch (self.format) {
+      case LTTextureFormatRed:
+        return GL_RED;
+      case LTTextureFormatRG:
+        return GL_RG;
+      default:
+        return self.format;
+    }
+  }
 }
 
 - (int)matType {

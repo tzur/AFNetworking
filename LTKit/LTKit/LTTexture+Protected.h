@@ -19,6 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns \c YES if the given rect is completely inside the texture.
 - (BOOL)inTextureRect:(CGRect)rect;
 
+/// OpenGL precision of the texture.
+@property (readonly, nonatomic) GLenum glPrecision;
+
+/// OpenGL internal format the texture is stored with on the GPU.
+@property (readonly, nonatomic) GLint glInternalFormat;
+
+/// OpenGL format the texture is stored with on the GPU.
+@property (readonly, nonatomic) GLenum glFormat;
+
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
 

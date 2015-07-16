@@ -64,6 +64,7 @@
 
 - (void)drawUsingBlock:(LTVoidBlock)block {
   LTParameterAssert(block);
+
   [self.program bindAndExecute:^{
     NSMutableArray *textureStack = [NSMutableArray array];
 
@@ -85,7 +86,7 @@
 
     /// Bind the vertex array, and use the block to draw.
     [self.vertexArray bindAndExecute:block];
-    
+
     // Unbind in reverse order.
     for (NSInteger i = textureStack.count - 1; i >= 0; --i) {
       [textureStack[i] endReadFromTexture];

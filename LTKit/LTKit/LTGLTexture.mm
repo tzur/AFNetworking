@@ -87,8 +87,8 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self bindAndExecute:^{
     [self writeToTexture:^{
       for (Matrices::size_type i = 1; i < images.size(); ++i) {
-        glTexImage2D(GL_TEXTURE_2D, (GLint)i, self.format, images[i].cols, images[i].rows,
-                     0, self.format, self.precision, images[i].data);
+        glTexImage2D(GL_TEXTURE_2D, (GLint)i, self.glInternalFormat, images[i].cols, images[i].rows,
+                     0, self.glFormat, self.glPrecision, images[i].data);
       }
     }];
   }];
@@ -129,8 +129,8 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self writeToTexture:^{
     CGSize size = self.size;
     for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-      glTexImage2D(GL_TEXTURE_2D, i, self.format, size.width, size.height, 0, self.format,
-                   self.precision, NULL);
+      glTexImage2D(GL_TEXTURE_2D, i, self.glInternalFormat, size.width, size.height, 0,
+                   self.glFormat, self.glPrecision, NULL);
       size = std::round(size / 2);
     }
   }];
@@ -239,13 +239,13 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
       // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
       if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
-        glTexImage2D(GL_TEXTURE_2D, 0, self.format, rect.size.width, rect.size.height, 0,
-                     self.format, self.precision, image.data);
+        glTexImage2D(GL_TEXTURE_2D, 0, self.glInternalFormat, rect.size.width, rect.size.height, 0,
+                     self.glFormat, self.glPrecision, image.data);
       } else {
         // TODO: (yaron) this may create another copy of the texture. This needs to be profiled and
         // if suffers from performance impact, consider using glTexStorage.
         glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                        rect.size.width, rect.size.height, self.format, self.precision,
+                        rect.size.width, rect.size.height, self.glFormat, self.glPrecision,
                         image.data);
       }
     }];
@@ -343,7 +343,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // GL_HALF_FLOAT is only supported on device.
       GLint type;
       glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
-      if (type == GL_HALF_FLOAT_OES) {
+      if (type == GL_HALF_FLOAT_OES || type == GL_HALF_FLOAT) {
         return CV_16U;
       } else {
         return CV_32F;
@@ -372,6 +372,8 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // Get the minimal number of channels available.
       GLint format;
       glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
+      // GL_RED and GL_RG have the same values as GL_RED_EXT and GL_RG_EXT, so no further conversion
+      // is needed here.
       switch (format) {
         case GL_RED_EXT:
           return (self.format == LTTextureFormatRed) ? LTTextureFormatRed : LTTextureFormatRGBA;
