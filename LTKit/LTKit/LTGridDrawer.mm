@@ -139,7 +139,7 @@ static const CGFloat kDefaultWidth = 1.0;
 
 /// Creates the vertices for the horizontal grid lines according to the grid size. See comment above
 /// (\c verticesForVerticalGridLines) for more details.
-- (std::vector<LTGridDrawerVertex>) verticesForHorizontalGridLines {
+- (std::vector<LTGridDrawerVertex>)verticesForHorizontalGridLines {
   std::vector<LTGridDrawerVertex> vertexData;
   CGFloat gridSpacing = 1.0;
   GLfloat width = self.size.width;
