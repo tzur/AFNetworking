@@ -33,8 +33,16 @@
 }
 
 - (cv::Vec4b)lt_cvVector {
-  LTVector4 ltVector = self.lt_ltVector * std::numeric_limits<uchar>::max();
-  return cv::Vec4b(ltVector.r(), ltVector.g(), ltVector.b(), ltVector.a());
+  CGFloat r, g, b, a;
+  static const uchar kMax = std::numeric_limits<uchar>::max();
+  if ([self getRed:&r green:&g blue:&b alpha:&a]) {
+    return cv::Vec4b(std::round(r * kMax), std::round(g * kMax),
+                     std::round(b * kMax), std::round(a * kMax));
+  } else if ([self getWhite:&r alpha:&a]) {
+    return cv::Vec4b(std::round(r * kMax), std::round(r * kMax),
+                     std::round(r * kMax), std::round(a * kMax));
+  }
+  LTAssert(NO, @"Invalid color for conversion: %@", self);
 }
 
 @end

@@ -55,4 +55,24 @@ context(@"from UIColor", ^{
   });
 });
 
+it(@"should round correctly when creating cv::Vec4b with color", ^{
+  UIColor *gray = [UIColor colorWithRed:0.499 green:0.499 blue:0.499 alpha:0.499];
+  expect(gray.lt_cvVector[0]).to.equal(127);
+  expect(gray.lt_cvVector[1]).to.equal(127);
+  expect(gray.lt_cvVector[2]).to.equal(127);
+  expect(gray.lt_cvVector[3]).to.equal(127);
+
+  gray = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+  expect(gray.lt_cvVector[0]).to.equal(128);
+  expect(gray.lt_cvVector[1]).to.equal(128);
+  expect(gray.lt_cvVector[2]).to.equal(128);
+  expect(gray.lt_cvVector[3]).to.equal(128);
+
+  gray = [UIColor colorWithRed:0.501 green:0.501 blue:0.501 alpha:0.501];
+  expect(gray.lt_cvVector[0]).to.equal(128);
+  expect(gray.lt_cvVector[1]).to.equal(128);
+  expect(gray.lt_cvVector[2]).to.equal(128);
+  expect(gray.lt_cvVector[3]).to.equal(128);
+});
+
 SpecEnd
