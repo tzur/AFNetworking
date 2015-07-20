@@ -56,8 +56,6 @@ typedef NS_ENUM(GLenum, LTTextureFormat) {
   LTTextureFormatRG = GL_RG_EXT,
   /// All four channels.
   LTTextureFormatRGBA = GL_RGBA,
-  /// Single channel, but values are replicated across the RGB channels, and alpha is always 1.
-  LTTextureFormatLuminance = GL_LUMINANCE
 };
 
 /// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c

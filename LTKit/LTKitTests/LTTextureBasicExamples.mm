@@ -1,30 +1,30 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTextureExamples.h"
+#import "LTTextureBasicExamples.h"
 
 #import "LTGLKitExtensions.h"
 #import "LTTestUtils.h"
 #import "LTTexture+Protected.h"
 
-NSString * const kLTTextureExamples = @"LTTextureExamples";
-NSString * const kLTTextureExamplesTextureClass = @"LTTextureExamplesTextureClass";
+NSString * const kLTTextureBasicExamples = @"LTTextureBasicExamples";
+NSString * const kLTTextureBasicExamplesTextureClass = @"TextureClass";
 
 NSString * const kLTTextureDefaultValuesExamples = @"LTTextureDefaultValuesExamples";
-NSString * const kLTTextureDefaultValuesExamplesTexture = @"LTTextureDefaultValuesExamplesTexture";
+NSString * const kLTTextureDefaultValuesTexture = @"Texture";
 
-NSString * const kLTTexturePrecisionAndFormatExamples = @"LTTexturePrecisionAndFormatExamples";
+NSString * const kLTTextureBasicExamplesPrecisionAndFormat = @"PrecisionAndFormat";
 
 SharedExamplesBegin(LTTextureExamples)
 
-sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
+sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
   __block Class textureClass;
 
   beforeAll(^{
-    textureClass = data[kLTTextureExamplesTextureClass];
+    textureClass = data[kLTTextureBasicExamplesTextureClass];
   });
 
-  sharedExamplesFor(kLTTexturePrecisionAndFormatExamples, ^(NSDictionary *data) {
+  sharedExamplesFor(kLTTextureBasicExamplesPrecisionAndFormat, ^(NSDictionary *data) {
     __block LTTexturePrecision precision;
     __block LTTextureFormat format;
     __block int matType;
@@ -60,44 +60,35 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
     });
   });
 
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionByte),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionByte),
-                       @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionHalfFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"format": @(LTTextureFormatLuminance)});
 
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
+  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                      @{@"precision": @(LTTexturePrecisionFloat),
                        @"format": @(LTTextureFormatRGBA)});
-  itShouldBehaveLike(kLTTexturePrecisionAndFormatExamples,
-                     @{@"precision": @(LTTexturePrecisionFloat),
-                       @"format": @(LTTextureFormatLuminance)});
 
   context(@"red and rg textures", ^{
     it(@"should read 4-byte aligned red channel data", ^{
@@ -186,7 +177,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *data) {
       });
 
       itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
-        return @{kLTTextureDefaultValuesExamplesTexture:
+        return @{kLTTextureDefaultValuesTexture:
                    [NSValue valueWithNonretainedObject:texture]};
       });
     });
@@ -557,7 +548,7 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
   __block LTTexture *texture;
 
   beforeEach(^{
-    texture = [data[kLTTextureDefaultValuesExamplesTexture] nonretainedObjectValue];
+    texture = [data[kLTTextureDefaultValuesTexture] nonretainedObjectValue];
   });
 
   afterEach(^{

@@ -5,6 +5,12 @@
 
 #import <OpenGLES/ES2/glext.h>
 
+/// Supported OpenGL ES API versions.
+typedef NS_ENUM(NSUInteger, LTGLContextAPIVersion) {
+  LTGLContextAPIVersion2 = kEAGLRenderingAPIOpenGLES2,
+  LTGLContextAPIVersion3 = kEAGLRenderingAPIOpenGLES3
+};
+
 /// Supported blending functions.
 typedef NS_ENUM(GLenum, LTGLContextBlendFunc) {
   LTGLContextBlendFuncZero = GL_ZERO,
@@ -69,18 +75,32 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// \c context is \c nil, the rendering context will be unbound from any context.
 + (void)setCurrentContext:(LTGLContext *)context;
 
-/// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup.
+/// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup. On supported
+/// devices, the API version will be ES3, otherwise it will be ES2.
 - (instancetype)init;
 
-/// Initializes a context with a new \c EAGLContext and the given \c sharegroup.
+/// Initializes a context with a new \c EAGLContext and the given \c sharegroup. On supported
+/// devices, the API version will be ES3, otherwise it will be ES2.
 - (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup;
+
+/// Initializes a context with a new \c EAGLContext of version \c version using the given \c
+/// sharegroup. If \c version is not supported, this initializer will return \c nil.
+- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup
+                           version:(LTGLContextAPIVersion)version;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveState:(LTGLContextBlock)execute;
 
+/// Executes either \c openGLES2 or \c openGLES3, depending on the current API version. Both blocks
+/// must not be \c nil.
+- (void)executeForOpenGLES2:(LTVoidBlock)openGLES2 openGLES3:(LTVoidBlock)openGLES3;
+
 /// Fills the currently bound framebuffer with the given color.
 - (void)clearWithColor:(LTVector4)color;
+
+/// Current version of this context.
+@property (readonly, nonatomic) LTGLContextAPIVersion version;
 
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;

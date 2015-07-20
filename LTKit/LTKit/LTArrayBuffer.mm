@@ -3,6 +3,7 @@
 
 #import "LTArrayBuffer.h"
 
+#import "LTGLContext.h"
 #import "LTGLException.h"
 
 @interface LTArrayBuffer ()
@@ -118,28 +119,25 @@
   [self bindAndExecute:^{
     // This is the only way to read a buffer object, since OpenGL ES doesn't support the
     // \c GL_READ_ONLY flag with \c glMapBuffer().
-    GLvoid *mappedBuffer = glMapBufferRangeEXT(self.type, 0, self.size, GL_MAP_READ_BIT_EXT);
+    __block GLvoid *mappedBuffer;
+    [[LTGLContext currentContext] executeForOpenGLES2:^{
+      mappedBuffer = glMapBufferRangeEXT(self.type, 0, self.size, GL_MAP_READ_BIT_EXT);
+    } openGLES3:^{
+      mappedBuffer = glMapBufferRange(self.type, 0, self.size, GL_MAP_READ_BIT);
+    }];
     if (!mappedBuffer) {
       // OpenGL's documentation says: "If an error occurs, glMapBufferRange returns a NULL
       // pointer.". Throwing another exception for safety.
       LTGLCheck(@"Failed mapping buffer to memory");
 
       [LTGLException raise:kLTArrayBufferMappingFailedException
-                    format:@"glMapBufferRangeEXT() returned NULL pointer"];
+                    format:@"glMapBufferRange[EXT]() returned NULL pointer"];
       return;
     }
 
     data = [NSData dataWithBytes:mappedBuffer length:self.size];
 
-    if (!glUnmapBufferOES(self.type)) {
-      // From OpenGL's documentation: "...In such situations, GL_FALSE is returned and the data
-      // store contents are undefined. An application must detect this rare condition and
-      // reinitialize the data store."
-
-      // For now, throwing an exception here to notify this (rare) event happens.
-      [LTGLException raise:kLTArrayBufferMappingFailedException
-                    format:@"glUnmapBufferOES() returned GL_FALSE"];
-    }
+    [self unmapBuffer];
   }];
 
   return data;
@@ -158,14 +156,20 @@
 }
 
 - (void)updateBufferWithMapping:(NSArray *)dataArray {
-  char *mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
+  __block char *mappedBuffer;
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
+  } openGLES3:^{
+    mappedBuffer = (char *)glMapBufferRange(self.type, 0, self.size,
+                                            GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+  }];
   if (!mappedBuffer) {
     // OpenGL's documentation says: "If an error is generated, glMapBuffer returns NULL, and
     // glUnmapBuffer returns GL_FALSE.". Throwing another exception for safety.
     LTGLCheck(@"Failed mapping buffer to memory");
 
     [LTGLException raise:kLTArrayBufferMappingFailedException
-                  format:@"glMapBufferOES() returned NULL pointer"];
+                  format:@"glMapBuffer[OES|Range]() returned NULL pointer"];
     return;
   }
   
@@ -174,15 +178,25 @@
     memcpy(mappedBuffer + offset, data.bytes, data.length);
     offset += data.length;
   }
-  
-  if (!glUnmapBufferOES(self.type)) {
+
+  [self unmapBuffer];
+}
+
+- (void)unmapBuffer {
+  __block GLboolean unmapped;
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    unmapped = glUnmapBufferOES(self.type);
+  } openGLES3:^{
+    unmapped = glUnmapBuffer(self.type);
+  }];
+  if (!unmapped) {
     // From OpenGL's documentation: "...In such situations, GL_FALSE is returned and the data store
     // contents are undefined. An application must detect this rare condition and reinitialize the
     // data store."
 
     // For now, throwing an exception here to notify this (rare) event happens.
     [LTGLException raise:kLTArrayBufferMappingFailedException
-                  format:@"glUnmapBufferOES() returned GL_FALSE"];
+                  format:@"glUnmapBuffer[OES]() returned GL_FALSE"];
   }
 }
 

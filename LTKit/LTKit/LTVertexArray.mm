@@ -4,6 +4,7 @@
 #import "LTVertexArray.h"
 
 #import "LTArrayBuffer.h"
+#import "LTGLContext.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
 
@@ -92,7 +93,11 @@
     self.unattachedAttributes = self.attributes;
     self.structNameToElement = [NSMutableDictionary dictionary];
 
-    glGenVertexArraysOES(1, &_name);
+    [[LTGLContext currentContext] executeForOpenGLES2:^{
+      glGenVertexArraysOES(1, &_name);
+    } openGLES3:^{
+      glGenVertexArrays(1, &_name);
+    }];
     LTGLCheck(@"Failed generating vertex array");
   }
   return self;
@@ -100,7 +105,11 @@
 
 - (void)dealloc {
   [self unbind];
-  glDeleteVertexArraysOES(1, &_name);
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    glDeleteVertexArraysOES(1, &_name);
+  } openGLES3:^{
+    glDeleteVertexArrays(1, &_name);
+  }];
   LTGLCheck(@"Failed deleting vertex array");
 }
 
@@ -144,8 +153,13 @@
     return;
   }
 
-  glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &_previousVertexArray);
-  glBindVertexArrayOES(self.name);
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &_previousVertexArray);
+    glBindVertexArrayOES(self.name);
+  } openGLES3:^{
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &_previousVertexArray);
+    glBindVertexArray(self.name);
+  }];
 
   self.bound = YES;
 }
@@ -155,7 +169,11 @@
     return;
   }
 
-  glBindVertexArrayOES(self.previousVertexArray);
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    glBindVertexArrayOES(self.previousVertexArray);
+  } openGLES3:^{
+    glBindVertexArray(self.previousVertexArray);
+  }];
   self.previousVertexArray = 0;
 
   self.bound = NO;

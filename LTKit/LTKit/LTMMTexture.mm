@@ -7,6 +7,7 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
+#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
@@ -73,10 +74,10 @@
                                                                  self.pixelBufferRef,
                                                                  NULL,
                                                                  GL_TEXTURE_2D,
-                                                                 self.format,
+                                                                 self.glInternalFormat,
                                                                  self.size.width, self.size.height,
-                                                                 self.format,
-                                                                 self.precision,
+                                                                 self.glFormat,
+                                                                 self.glPrecision,
                                                                  0,
                                                                  &_textureRef);
   if (result != kCVReturnSuccess) {
@@ -243,7 +244,11 @@
 - (void)endWriteToTexture {
   // Make \c self.syncObject a synchronization barrier that is right beyond the last drawing to this
   // texture in the GPU queue.
-  self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
+  } openGLES3:^{
+    self.syncObject = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+  }];
 
   [self updateGenerationID];
   [self.lock unlock];
@@ -319,7 +324,13 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling mappedImage:");
 
     // Make sure everything is written to the texture before reading back to CPU.
-    if (glIsSyncAPPLE(self.syncObject)) {
+    __block BOOL isSync;
+    [[LTGLContext currentContext] executeForOpenGLES2:^{
+      isSync = glIsSyncAPPLE(self.syncObject);
+    } openGLES3:^{
+      isSync = glIsSync(self.syncObject);
+    }];
+    if (isSync) {
       [self waitForGPU];
     }
 
@@ -333,11 +344,14 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)waitForGPU {
-  GLint64 maxTimeout;
-  glGetInteger64vAPPLE(GL_MAX_SERVER_WAIT_TIMEOUT_APPLE, &maxTimeout);
-  GLenum waitResult = glClientWaitSyncAPPLE(self.syncObject,
-                                            GL_SYNC_FLUSH_COMMANDS_BIT_APPLE,
-                                            maxTimeout);
+  static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
+
+  __block GLenum waitResult;
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    waitResult = glClientWaitSyncAPPLE(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
+  } openGLES3:^{
+    waitResult = glClientWaitSync(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
+  }];
   self.syncObject = nil;
 
   LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");
@@ -361,9 +375,15 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)setSyncObject:(GLsync)syncObject {
-  if (glIsSyncAPPLE(_syncObject)) {
-    glDeleteSyncAPPLE(_syncObject);
-  }
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    if (glIsSyncAPPLE(_syncObject)) {
+      glDeleteSyncAPPLE(_syncObject);
+    }
+  } openGLES3:^{
+    if (glIsSync(_syncObject)) {
+      glDeleteSync(_syncObject);
+    }
+  }];
   _syncObject = syncObject;
 }
 

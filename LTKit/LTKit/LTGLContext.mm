@@ -87,11 +87,33 @@ typedef struct {
   return self;
 }
 
+- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup
+                           version:(LTGLContextAPIVersion)version {
+  if (self = [super init]) {
+    self.context = [self createEAGLContextWithSharegroup:sharegroup version:version];
+    if (!self.context) {
+      return nil;
+    }
+    self.fboPool = [[LTFboPool alloc] init];
+  }
+  return self;
+}
+
 - (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
-  EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
-                                               sharegroup:sharegroup];
+  EAGLContext *context = [self createEAGLContextWithSharegroup:sharegroup
+                                                       version:LTGLContextAPIVersion3];
+  if (!context) {
+    context = [self createEAGLContextWithSharegroup:sharegroup
+                                            version:LTGLContextAPIVersion2];
+  }
   LTAssert(context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
   return context;
+}
+
+- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+                                         version:(LTGLContextAPIVersion)version {
+  return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version
+                               sharegroup:sharegroup];
 }
 
 #pragma mark -
@@ -126,6 +148,17 @@ typedef struct {
 
 - (BOOL)isSetAsCurrentContext {
   return [[self class] currentContext] == self;
+}
+
+- (LTGLContextAPIVersion)version {
+  switch (self.context.API) {
+    case kEAGLRenderingAPIOpenGLES2:
+      return LTGLContextAPIVersion2;
+    case kEAGLRenderingAPIOpenGLES3:
+      return LTGLContextAPIVersion3;
+    default:
+      LTAssert(NO, @"Unknwon API version being used: %lu", (unsigned long)self.context.API);
+  }
 }
 
 #pragma mark -
@@ -233,6 +266,20 @@ typedef struct {
   execute(self);
   [self setCurrentStateFromValues:self.contextStack.top()];
   self.contextStack.pop();
+}
+
+- (void)executeForOpenGLES2:(LTVoidBlock)openGLES2 openGLES3:(LTVoidBlock)openGLES3 {
+  LTParameterAssert(openGLES2);
+  LTParameterAssert(openGLES3);
+
+  switch (self.version) {
+    case LTGLContextAPIVersion2:
+      openGLES2();
+      break;
+    case LTGLContextAPIVersion3:
+      openGLES3();
+      break;
+  }
 }
 
 - (void)clearWithColor:(LTVector4)color {
