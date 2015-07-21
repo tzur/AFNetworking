@@ -109,6 +109,9 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 LTPropertyWithoutSetter(CGFloat, hardness, Hardness, 0, 1, 1);
 - (void)setHardness:(CGFloat)hardness {
+  if (_hardness == hardness) {
+    return;
+  }
   [self _verifyAndSetHardness:hardness];
   self.shouldUpdateBrush = YES;
 }
