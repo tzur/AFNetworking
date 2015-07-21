@@ -171,6 +171,9 @@
 		253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */; };
 		256392541B0B453D00DA934F /* LTMeshProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 256392531B0B453D00DA934F /* LTMeshProcessor.h */; };
 		256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256392551B0B4B3400DA934F /* LTMeshProcessor.mm */; };
+		25705DBE1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */; };
+		25705DBF1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25705DBD1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm */; };
+		25705DD21B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25705DD11B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm */; };
 		25AF17461AD50BE00055E664 /* LTVGGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17341AD50BE00055E664 /* LTVGGlyph.h */; };
 		25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AF17351AD50BE00055E664 /* LTVGGlyph.mm */; };
 		25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */ = {isa = PBXBuildFile; fileRef = 25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */; };
@@ -1353,6 +1356,9 @@
 		253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomState.mm; sourceTree = "<group>"; };
 		256392531B0B453D00DA934F /* LTMeshProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeshProcessor.h; sourceTree = "<group>"; };
 		256392551B0B4B3400DA934F /* LTMeshProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessor.mm; sourceTree = "<group>"; };
+		25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTBrushRandomState+LTBrush.h"; sourceTree = "<group>"; };
+		25705DBD1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTBrushRandomState+LTBrush.mm"; sourceTree = "<group>"; };
+		25705DD11B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTBrushRandomState+LTBrushSpec.mm"; sourceTree = "<group>"; };
 		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
 		25AF17351AD50BE00055E664 /* LTVGGlyph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyph.mm; sourceTree = "<group>"; };
 		25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyphRun.h; sourceTree = "<group>"; };
@@ -2610,6 +2616,8 @@
 				28ED10EA18CC9EFE00EE1633 /* LTBristleBrush.mm */,
 				2839068618C4D9AA00BD21CE /* LTBrush.h */,
 				2839068718C4D9AA00BD21CE /* LTBrush.mm */,
+				25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */,
+				25705DBD1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm */,
 				2839068818C4D9AA00BD21CE /* LTBrush.fsh */,
 				2839068918C4D9AA00BD21CE /* LTBrush.vsh */,
 				253F60781B3FC979009C6A5F /* LTBrushRandomState.h */,
@@ -2625,6 +2633,7 @@
 				28ED110F18CDCF5A00EE1633 /* LTBristleBrushSpec.mm */,
 				2839069818C4DB0A00BD21CE /* LTBrushSpec.h */,
 				2839069918C4DB0A00BD21CE /* LTBrushSpec.mm */,
+				25705DD11B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm */,
 				2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */,
 				2839069A18C4DB0A00BD21CE /* LTEdgeAvoidingBrushSpec.mm */,
 				28A612861934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm */,
@@ -3982,6 +3991,7 @@
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
 				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
+				25705DBE1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h in Headers */,
 				8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */,
 				285EEA541B15C52A002D10EE /* LTImageJPEGCompressor.h in Headers */,
 				8BABF16E19BC3AC000AED760 /* LTPyramidProcessor.h in Headers */,
@@ -4931,6 +4941,7 @@
 				28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 				28EC239E1B0CEBCB0099946A /* LTImageIOCompressor.mm in Sources */,
+				25705DBF1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm in Sources */,
 				28A0C7101AC0384F00FBC803 /* LTCircularPatchProcessor.mm in Sources */,
 				8B9D3FE6189541F0001A964D /* LTTexture+Factory.mm in Sources */,
 				280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */,
@@ -5119,6 +5130,7 @@
 				2839069E18C4DB0A00BD21CE /* LTBrushSpec.mm in Sources */,
 				8BFA90E119212AC70088310E /* LTImageProcessorSpec.mm in Sources */,
 				8B2267461997BBC60049CF26 /* LTProgramFactorySpec.mm in Sources */,
+				25705DD21B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
