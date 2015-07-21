@@ -50,6 +50,7 @@ static const CGFloat kBristleSigma = 0.4;
     [self setBristleBrushDefaults];
     self.brushFbos = [self createBrushFbos];
     self.bristleDrawer = [self createBristleDrawer];
+    self.shouldUpdateBrush = YES;
   }
   return self;
 }
@@ -201,17 +202,26 @@ static const CGFloat kBristleSigma = 0.4;
 
 LTPropertyWithoutSetter(CGFloat, thickness, Thickness, 0.1, 2, 0.2);
 - (void)setThickness:(CGFloat)thickness {
+  if (_thickness == thickness) {
+    return;
+  }
   [self _verifyAndSetThickness:thickness];
   self.shouldUpdateBrush = YES;
 }
 
 LTPropertyWithoutSetter(NSUInteger, bristles, Bristles, 2, 30, 5);
 - (void)setBristles:(NSUInteger)bristles {
+  if (_bristles == bristles) {
+    return;
+  }
   [self _verifyAndSetBristles:bristles];
   self.shouldUpdateBrush = YES;
 }
 
 - (void)setShape:(LTBristleBrushShape)shape {
+  if (_shape == shape) {
+    return;
+  }
   _shape = shape;
   self.shouldUpdateBrush = YES;
 }
