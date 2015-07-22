@@ -129,8 +129,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       point = [[LTPainterPoint alloc] init];
       point.contentPosition = kOutputCenter;
       spline = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
-      segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 zoomScale:1
-                                                   distanceFromStart:0
+      segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
                                              andInterpolationRoutine:spline];
       
       [brush startNewStrokeAtPoint:point];

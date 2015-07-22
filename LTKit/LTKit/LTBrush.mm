@@ -39,6 +39,10 @@
 /// Drawer used for painting with the brush.
 @property (strong, nonatomic) LTRectDrawer *drawer;
 
+/// Point to use to determine the dynamic scale that should be applied to the brush, in case
+/// \c consistentScaleDuringStroke is \c YES.
+@property (nonatomic) LTPainterPoint *pointForConsistentScale;
+
 @end
 
 @implementation LTBrush
@@ -95,15 +99,18 @@ static const CGFloat kMinimumDiameter = 2;
 #pragma mark Drawing
 #pragma mark -
 
-- (void)startNewStrokeAtPoint:(LTPainterPoint __unused *)point {
+- (void)startNewStrokeAtPoint:(LTPainterPoint *)point {
   if (self.randomAnglePerStroke) {
     self.angle = [self.random randomDoubleBetweenMin:0 max:2 * M_PI];
+  }
+  if (self.forceConsistentScaleDuringStroke) {
+    self.pointForConsistentScale = point;
   }
   [self updateProgramForCurrentProperties];
 }
 
 - (NSArray *)drawPoint:(LTPainterPoint *)point inFramebuffer:(LTFbo *)fbo {
-  CGFloat diameter = [self diameterForZoomScale:point.zoomScale];
+  CGFloat diameter = [self diameterForPoint:point];
   LTRotatedRect *targetRect =
       [LTRotatedRect squareWithCenter:point.contentPosition length:diameter angle:self.angle];
   return [self applyEffectsAndDrawRects:@[targetRect] inFramebuffer:fbo];
@@ -189,7 +196,7 @@ static const CGFloat kMinimumDiameter = 2;
 
 - (NSArray *)pointsForStrokeSegment:(LTPainterStrokeSegment *)segment
                   fromPreviousPoint:(LTPainterPoint *)previousPoint {
-  CGFloat diameter = [self diameterForZoomScale:segment.zoomScale];
+  CGFloat diameter = [self diameterForStrokeSegment:segment];
   CGFloat spacing = MAX(diameter * self.spacing, 1.0);
   CGFloat offset = previousPoint ?
       MAX(0, previousPoint.distanceFromStart - segment.distanceFromStart + spacing) : 0;
@@ -201,9 +208,30 @@ static const CGFloat kMinimumDiameter = 2;
   return points;
 }
 
-- (CGFloat)diameterForZoomScale:(CGFloat)zoomScale {
-  LTParameterAssert(zoomScale > 0);
-  return MAX(self.baseDiameter * self.scale / zoomScale, kMinimumDiameter);
+- (CGFloat)diameterForStrokeSegment:(LTPainterStrokeSegment *)segment {
+  LTPainterPoint *point = self.forceConsistentScaleDuringStroke && self.pointForConsistentScale ?
+      self.pointForConsistentScale : segment.startPoint;
+
+  return [self diameterForPoint:point];
+}
+
+- (CGFloat)diameterForPoint:(LTPainterPoint *)point {
+  CGFloat pointScaleFactor = [self scaleFactorForPoint:point];
+  return MAX(self.baseDiameter * self.scale * pointScaleFactor, kMinimumDiameter);
+}
+
+- (CGFloat)scaleFactorForPoint:(LTPainterPoint *)point {
+  LTParameterAssert(point.zoomScale > 0);
+  return [self touchScaleFactorForPoint:point] / point.zoomScale;
+}
+
+- (CGFloat)touchScaleFactorForPoint:(LTPainterPoint *)point {
+  if (!self.touchRadiusMapper) {
+    return 1;
+  }
+
+  return [self.touchRadiusMapper scaleForTouchRadius:point.touchRadius
+                                           tolerance:point.touchRadiusTolerance];
 }
 
 - (NSArray *)normalizedRects:(NSArray *)rects forSize:(CGSize)size {

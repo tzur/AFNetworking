@@ -14,6 +14,17 @@
 @class LTBrushColorDynamicsEffect, LTBrushRandomState, LTBrushScatterEffect, LTBrushShapeDynamicsEffect,
     LTFbo, LTPainterPoint, LTPainterStrokeSegment, LTRandom, LTRotatedRect;
 
+/// Protocol for mapping \c touchRadius and \c touchRadiusTolerance into a scale that should be
+/// applied on the brush.
+///
+/// @see The \c majorRadius and \c majorRadiusTolerance properties of \c UITouch.
+@protocol LTBrushTouchRadiusMapper <NSObject>
+
+/// Returns the scale that should be applied for the given touch radius and tolerance.
+- (CGFloat)scaleForTouchRadius:(CGFloat)radius tolerance:(CGFloat)tolerance;
+
+@end
+
 /// A class representing a brush used by the \c LTPainter. This class (or its subclasses) can be
 /// used to draw a point or a stroke segment on a target framebuffer, and contain adjustable
 /// properties controlling the behavior and appearance of the painted areas.
@@ -87,6 +98,11 @@
 /// Color dynamics effect applied during the brush strokes.
 @property (strong, nonatomic) LTBrushColorDynamicsEffect *colorDynamicsEffect;
 
+/// Used for mapping the touch radius and tolerance of points to a scale applied on the drawn tip
+/// (stacked with the \c scale property and the scale applied due to the \c zoomScale of points).
+/// When set to \c nil (default), the touch radius will not affect the size of the drawn tip.
+@property (strong, nonatomic) id<LTBrushTouchRadiusMapper> touchRadiusMapper;
+
 /// Controls the size of the brush with respect to the base size.
 /// Must be in range [0.1,3], default is \c 1.
 @property (nonatomic) CGFloat scale;
@@ -120,5 +136,11 @@ LTPropertyDeclare(LTVector4, intensity, Intensity);
 
 /// If set to \c YES, the brush angle will be set to a random angle whenever a stroke starts.
 @property (nonatomic) BOOL randomAnglePerStroke;
+
+/// When set to \c YES, the brush will use a single scale throughout a stroke, ignoring changes to
+/// the touch radius and the zoom scale. This only affects the base scale, so any effects that alter
+/// the scale of the drawn tips can still lead to non uniform scale throughout the stroke. Default
+/// is \c NO.
+@property (nonatomic) BOOL forceConsistentScaleDuringStroke;
 
 @end

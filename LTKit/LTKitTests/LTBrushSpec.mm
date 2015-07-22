@@ -172,6 +172,13 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.randomAnglePerStroke).to.beFalsy();
     });
 
+    it(@"should set forceConsistentScaleDuringStroke", ^{
+      brush.forceConsistentScaleDuringStroke = YES;
+      expect(brush.forceConsistentScaleDuringStroke).to.beTruthy();
+      brush.forceConsistentScaleDuringStroke = NO;
+      expect(brush.forceConsistentScaleDuringStroke).to.beFalsy();
+    });
+
     it(@"should set splineFactory", ^{
       id<LTInterpolationRoutineFactory> linear = [[LTLinearInterpolationRoutineFactory alloc] init];
       id<LTInterpolationRoutineFactory> degenerate =
@@ -183,6 +190,14 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.splineFactory).to.beIdenticalTo(degenerate);
       brush.splineFactory = nil;
       expect(brush.splineFactory).to.beNil();
+    });
+
+    it(@"should set touchScaleMapper", ^{
+      id mapper = OCMProtocolMock(@protocol(LTBrushTouchRadiusMapper));
+      brush.touchRadiusMapper = mapper;
+      expect(brush.touchRadiusMapper).to.beIdenticalTo(mapper);
+      brush.touchRadiusMapper = nil;
+      expect(brush.touchRadiusMapper).to.beNil();
     });
 
     context(@"random state", ^{
@@ -312,7 +327,9 @@ context(@"properties", ^{
     cv::Mat1b expected(1, 1, 255);
     expect($(brush.texture.image)).to.equalMat($(expected));
     expect(brush.randomAnglePerStroke).to.beFalsy();
+    expect(brush.forceConsistentScaleDuringStroke).to.beFalsy();
     expect(brush.splineFactory).to.beNil();
+    expect(brush.touchRadiusMapper).to.beNil();
   });
 });
 
@@ -350,7 +367,7 @@ context(@"drawing", ^{
     startPoint.contentPosition = CGPointMake(0, kOutputCenter.y);
     endPoint.contentPosition = CGPointMake(kOutputSize.width, kOutputCenter.y);
     spline = [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:@[startPoint, endPoint]];
-    segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 zoomScale:1 distanceFromStart:0
+    segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
                                            andInterpolationRoutine:spline];
     centerPoint = [spline valueAtKey:0.5];
   });
@@ -524,6 +541,167 @@ context(@"drawing", ^{
     previousAngle = brush.angle;
     [brush startNewStrokeAtPoint:centerPoint];
     expect(brush.angle).notTo.equal(previousAngle);
+  });
+
+  context(@"dynamic scaling", ^{
+    context(@"points", ^{
+      it(@"should scale according to zoomScale", ^{
+        centerPoint.zoomScale = 2;
+        [brush drawPoint:centerPoint inFramebuffer:fbo];
+        CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale * 0.5);
+        expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+        expect($(output.image)).to.equalMat($(expected));
+      });
+
+      it(@"should scale according to touch radius mapper", ^{
+        id mapper = OCMProtocolMock(@protocol(LTBrushTouchRadiusMapper));
+        brush.touchRadiusMapper = mapper;
+        centerPoint.touchRadius = 4;
+        centerPoint.touchRadiusTolerance = 2;
+        OCMExpect([mapper scaleForTouchRadius:4 tolerance:2]).andReturn(2);
+        [brush drawPoint:centerPoint inFramebuffer:fbo];
+        CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale * 2);
+        expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+        expect($(output.image)).to.equalMat($(expected));
+      });
+    });
+
+    context(@"segments", ^{
+      __block LTLinearInterpolationRoutine *spline0;
+      __block LTLinearInterpolationRoutine *spline1;
+      __block LTPainterStrokeSegment *segment0;
+      __block LTPainterStrokeSegment *segment1;
+
+      context(@"zoom scale", ^{
+        beforeEach(^{
+          startPoint.zoomScale = 2;
+          endPoint.zoomScale = 2;
+          spline0 = [[LTLinearInterpolationRoutine alloc]
+                     initWithKeyFrames:@[startPoint, endPoint]];
+          segment0 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
+                                                  andInterpolationRoutine:spline0];
+
+          startPoint.zoomScale = 1;
+          endPoint.zoomScale = 1;
+          spline1 = [[LTLinearInterpolationRoutine alloc]
+                     initWithKeyFrames:@[endPoint, startPoint]];
+          segment1 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
+                                                        distanceFromStart:segment0.length
+                                                  andInterpolationRoutine:spline1];
+        });
+
+        it(@"should scale according to zoomScale of each segment", ^{
+          CGRect targetRect0 =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale * 0.5));
+          expected(LTCVRectWithCGRect(targetRect0)).setTo(cv::Vec4b(255, 255, 255, 255));
+
+          [brush startNewStrokeAtPoint:segment0.startPoint];
+          [brush drawStrokeSegment:segment0 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+
+          CGRect targetRect1 =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale));
+          expected.setTo(cv::Vec4b(0, 0, 0, 255));
+          expected(LTCVRectWithCGRect(targetRect1)).setTo(cv::Vec4b(255, 255, 255, 255));
+          [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+        });
+
+        it(@"should force consistent scale throughout stroke", ^{
+          CGRect targetRect =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale * 0.5));
+          expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+
+          brush.forceConsistentScaleDuringStroke = YES;
+          [brush startNewStrokeAtPoint:segment0.startPoint];
+          [brush drawStrokeSegment:segment0 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+
+          [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+        });
+      });
+
+      context(@"touch radius", ^{
+        beforeEach(^{
+          startPoint.touchRadius = 2;
+          startPoint.touchRadiusTolerance = 4;
+          endPoint.touchRadius = 2;
+          endPoint.touchRadiusTolerance = 4;
+          spline0 = [[LTLinearInterpolationRoutine alloc]
+                     initWithKeyFrames:@[startPoint, endPoint]];
+          segment0 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
+                                                  andInterpolationRoutine:spline0];
+
+          startPoint.touchRadius = 4;
+          startPoint.touchRadiusTolerance = 4;
+          endPoint.touchRadius = 4;
+          endPoint.touchRadiusTolerance = 4;
+          spline1 = [[LTLinearInterpolationRoutine alloc]
+                     initWithKeyFrames:@[endPoint, startPoint]];
+          segment1 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
+                                                        distanceFromStart:segment0.length
+                                                  andInterpolationRoutine:spline1];
+          id mapper = OCMProtocolMock(@protocol(LTBrushTouchRadiusMapper));
+          OCMStub([mapper scaleForTouchRadius:2 tolerance:4]).andReturn(0.5);
+          OCMStub([mapper scaleForTouchRadius:4 tolerance:4]).andReturn(1);
+          brush.touchRadiusMapper = mapper;
+        });
+
+        it(@"should scale according to touch radius mapping of each segment", ^{
+          CGRect targetRect0 =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale * 0.5));
+          expected(LTCVRectWithCGRect(targetRect0)).setTo(cv::Vec4b(255, 255, 255, 255));
+
+          [brush startNewStrokeAtPoint:startPoint];
+          [brush drawStrokeSegment:segment0 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+
+          CGRect targetRect1 =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale));
+          expected.setTo(cv::Vec4b(0, 0, 0, 255));
+          expected(LTCVRectWithCGRect(targetRect1)).setTo(cv::Vec4b(255, 255, 255, 255));
+          [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+        });
+
+        it(@"should force consistent scale throughout stroke", ^{
+          CGRect targetRect =
+              CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
+                                                         kBaseBrushDiameter * brush.scale * 0.5));
+          expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
+
+          brush.forceConsistentScaleDuringStroke = YES;
+          [brush startNewStrokeAtPoint:segment0.startPoint];
+          [brush drawStrokeSegment:segment0 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+
+          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+
+          [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
+                     inFramebuffer:fbo saveLastDrawnPointTo:nil];
+          expect($(output.image)).to.equalMat($(expected));
+        });
+      });
+    });
   });
 });
 
