@@ -35,7 +35,9 @@ context(@"properties", ^{
     expect(point.timestamp).to.equal(0);
     expect(point.screenPosition).to.equal(CGPointZero);
     expect(point.contentPosition).to.equal(CGPointZero);
-    expect(point.zoomScale).to.equal(0);
+    expect(point.zoomScale).to.equal(1);
+    expect(point.touchRadius).to.equal(1);
+    expect(point.touchRadiusTolerance).to.equal(1);
     expect(point.distanceFromStart).to.equal(0);
     expect(point.diameter).to.equal(0);
   });
@@ -62,12 +64,30 @@ context(@"properties", ^{
   });
   
   it(@"should set zoomScale", ^{
-    CGFloat newValue = 1;
+    CGFloat newValue = 2;
     point.zoomScale = newValue;
     expect(point.zoomScale).to.equal(newValue);
     
     point.zoomScale = -FLT_EPSILON;
     expect(point.zoomScale).to.equal(0);
+  });
+  
+  it(@"should set touchRadius", ^{
+    CGFloat newValue = 2;
+    point.touchRadius = newValue;
+    expect(point.touchRadius).to.equal(newValue);
+    
+    point.touchRadius = -FLT_EPSILON;
+    expect(point.touchRadius).to.equal(0);
+  });
+  
+  it(@"should set touchRadiusTolerance", ^{
+    CGFloat newValue = 2;
+    point.touchRadiusTolerance = newValue;
+    expect(point.touchRadiusTolerance).to.equal(newValue);
+    
+    point.touchRadiusTolerance = -FLT_EPSILON;
+    expect(point.touchRadiusTolerance).to.equal(0);
   });
   
   it(@"should set distanceFromStart", ^{
@@ -100,6 +120,8 @@ context(@"copying", ^{
     point.zoomScale = 3;
     point.distanceFromStart = 4;
     point.diameter = 5;
+    point.touchRadius = 6;
+    point.touchRadiusTolerance = 7;
   });
   
   it(@"should copy", ^{
@@ -111,6 +133,8 @@ context(@"copying", ^{
     expect(copy.zoomScale).to.equal(point.zoomScale);
     expect(copy.distanceFromStart).to.equal(point.distanceFromStart);
     expect(copy.diameter).to.equal(point.diameter);
+    expect(copy.touchRadius).to.equal(point.touchRadius);
+    expect(copy.touchRadiusTolerance).to.equal(point.touchRadiusTolerance);
   });
   
   it(@"should copy with zone", ^{
@@ -122,6 +146,8 @@ context(@"copying", ^{
     expect(copy.zoomScale).to.equal(point.zoomScale);
     expect(copy.distanceFromStart).to.equal(point.distanceFromStart);
     expect(copy.diameter).to.equal(point.diameter);
+    expect(copy.touchRadius).to.equal(point.touchRadius);
+    expect(copy.touchRadiusTolerance).to.equal(point.touchRadiusTolerance);
   });
 });
 

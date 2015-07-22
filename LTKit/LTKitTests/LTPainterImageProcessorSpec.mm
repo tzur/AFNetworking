@@ -113,8 +113,6 @@ context(@"processing", ^{
 
     LTPainterPoint *redPoint = [[LTPainterPoint alloc] init];
     LTPainterPoint *greenPoint = [[LTPainterPoint alloc] init];
-    redPoint.zoomScale = 1.0;
-    greenPoint.zoomScale = 1.0;
     redPoint.contentPosition = CGPointZero + 0.5 * kBrushSize;
     greenPoint.contentPosition = CGPointZero + kSize - 0.5 * kBrushSize;
     

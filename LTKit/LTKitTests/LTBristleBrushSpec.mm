@@ -99,7 +99,6 @@ context(@"drawing", ^{
     expected = LTLTVector4ToVec4b(kBackground);
     
     point = [[LTPainterPoint alloc] init];
-    point.zoomScale = 1;
     point.contentPosition = kOutputCenter;
   });
   

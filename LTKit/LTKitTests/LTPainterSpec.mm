@@ -16,7 +16,6 @@
 
 static LTPainterPoint *LTPointAt(CGPoint position) {
   LTPainterPoint *point = [[LTPainterPoint alloc] init];
-  point.zoomScale = 1.0;
   point.contentPosition = position;
   return point;
 }

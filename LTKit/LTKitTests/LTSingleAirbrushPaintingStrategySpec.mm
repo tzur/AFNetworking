@@ -168,7 +168,6 @@ context(@"instance", ^{
       for (NSUInteger i = 0; i < 10; ++i) {
         LTPainterPoint *point = [[LTPainterPoint alloc] init];
         point.contentPosition = CGPointMake(i, i);
-        point.zoomScale = 1.0;
         [points addObject:point];
       }
       strategy.points = points;

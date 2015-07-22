@@ -127,7 +127,6 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       expected = cv::Vec4b(0, 0, 0, 255);
       
       point = [[LTPainterPoint alloc] init];
-      point.zoomScale = 1;
       point.contentPosition = kOutputCenter;
       spline = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 zoomScale:1
