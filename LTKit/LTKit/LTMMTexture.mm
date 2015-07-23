@@ -267,7 +267,7 @@
       LTVector2 location = [LTSymmetricBoundaryCondition
                              boundaryConditionForPoint:LTVector2(locations[i].x,
                                                                       locations[i].y)
-                             withSignalSize:cv::Size2i(self.size.width, self.size.height)];
+                             withSignalSize:self.size];
       cv::Point2i point = cv::Point2i(std::floor(location.x), std::floor(location.y));
 
       values[i] = LTPixelValueFromImage(texture, point);

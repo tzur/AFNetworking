@@ -486,21 +486,36 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 }
 
 - (LTVector4)pixelValue:(CGPoint)location {
-  cv::Mat image = [self imageWithRect:CGRectMake(location.x, location.y, 1, 1)];
+  // Use boundary conditions similar to Matlab's 'symmetric'.
+  LTVector2 samplingPosition = [LTSymmetricBoundaryCondition
+                                boundaryConditionForPoint:LTVector2(location)
+                                withSignalSize:self.size];
+  cv::Mat image = [self imageWithRect:[self pixelSamplingRectWithPosition:samplingPosition]];
   return LTPixelValueFromImage(image, {0, 0});
+}
+
+- (CGRect)pixelSamplingRectWithPosition:(LTVector2)position {
+  int x = std::floor(position.x);
+  int y = std::floor(position.y);
+
+  // Edge case where sampling position is exactly at the edges of the texture.
+  if (x == self.size.width && self.size.width) {
+    x -= 1;
+  }
+  if (y == self.size.height && self.size.height) {
+    y -= 1;
+  }
+
+  return CGRectMake(x, y, 1, 1);
 }
 
 - (LTVector4s)pixelValues:(const CGPoints &)locations {
   // This is naive implementation which calls -[LTTexture pixelValue:] for each given pixel.
   LTVector4s values(locations.size());
 
-  for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
-    // Use boundary conditions similar to Matlab's 'symmetric'.
-    LTVector2 location = [LTSymmetricBoundaryCondition
-                           boundaryConditionForPoint:LTVector2(locations[i].x, locations[i].y)
-                           withSignalSize:cv::Size2i(self.size.width, self.size.height)];
-    values[i] = [self pixelValue:CGPointMake(floorf(location.x), floorf(location.y))];
-  }
+  std::transform(locations.cbegin(), locations.cend(), values.begin(), [&](const CGPoint location) {
+    return [self pixelValue:location];
+  });
 
   return values;
 }

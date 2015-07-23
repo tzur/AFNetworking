@@ -51,7 +51,7 @@ context(@"process patch", ^{
     processor.radius = textureSize.width / 4;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchDefault.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchDefault.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -72,7 +72,7 @@ context(@"process patch", ^{
     processor.rotation = M_PI_2;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchRotation.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchRotation.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -83,7 +83,7 @@ context(@"process patch", ^{
     processor.alpha = 0.5;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchAlpha.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchAlpha.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -94,7 +94,7 @@ context(@"process patch", ^{
     processor.featheringAlpha = 0.5;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFeathering.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFeathering.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -105,7 +105,7 @@ context(@"process patch", ^{
     processor.flip = YES;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFlipped.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchFlipped.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 });
@@ -120,7 +120,7 @@ context(@"process heal", ^{
     processor.radius = textureSize.width / 4;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -130,7 +130,7 @@ context(@"process heal", ^{
     processor.radius = textureSize.width / 4;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -140,7 +140,7 @@ context(@"process heal", ^{
     processor.rotation = M_PI_2;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealDefault.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -150,7 +150,7 @@ context(@"process heal", ^{
     processor.alpha = 0.9;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealAlpha.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealAlpha.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -160,7 +160,7 @@ context(@"process heal", ^{
     processor.featheringAlpha = 0.3;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealFeathering.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularHealFeathering.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 });
@@ -176,7 +176,7 @@ context(@"process clone", ^{
     processor.radius = textureSize.width / 4;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneDefault.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneDefault.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -187,7 +187,7 @@ context(@"process clone", ^{
     processor.rotation = M_PI;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneRotation.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneRotation.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -198,7 +198,7 @@ context(@"process clone", ^{
     processor.alpha = 0.3;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneAlpha.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneAlpha.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -209,7 +209,7 @@ context(@"process clone", ^{
     processor.featheringAlpha = 0.8;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneFeathering.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularCloneFeathering.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 });
@@ -221,7 +221,7 @@ context(@"process patch outside of image", ^{
     processor.radius = textureSize.width / 4;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchMirror.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchMirror.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -234,13 +234,13 @@ context(@"process patch outside of image", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(inputTexture.image), 2);
   });
 
-  it(@"should mirror source", ^{
+  it(@"should double mirror source", ^{
     processor.sourceCenter = CGPointMake(textureSize.width, textureSize.height);
     processor.targetCenter = CGPointMake(textureSize.width * 0.5, textureSize.height * 0.5);
     processor.radius = textureSize.width / 5;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchDoubleMirror.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchDoubleMirror.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 
@@ -250,7 +250,7 @@ context(@"process patch outside of image", ^{
     processor.radius = textureSize.width / 5;
     [processor process];
 
-    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchVisibleTarget.png");;
+    cv::Mat4b expected = LTLoadMat([self class], @"CircularPatchVisibleTarget.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 2);
   });
 });
