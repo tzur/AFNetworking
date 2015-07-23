@@ -315,9 +315,7 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 - (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block;
 
 /// Returns pixel value at the given location, with symmetric boundary condition.  The returned
-/// value is an RBGA value of the texture pixel at the given location. If the texture is of type
-/// luminance, the single channel will be placed in the first vector element, while the others will
-/// be set to \c 0.
+/// value is an RBGA value of the texture pixel at the given location.
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
