@@ -5,20 +5,24 @@
 
 @implementation LTSymmetricBoundaryCondition
 
-+ (float)boundaryConditionForPosition:(float)location withSignalLength:(int)length {
-  float base = fmodf(location, length - 1);
-  if (base < 0) base += (length - 1);
++ (float)boundaryConditionForPosition:(float)location withSignalLength:(float)length {
+  LTParameterAssert(length > 0, @"Length must be positive");
+
+  float base = fmodf(location, length);
+  if (base < 0) {
+    base += length;
+  }
 
   // Find number of repetitions. On odd repetitions we should mirror the signal, otherwise we keep
   // it as is.
-  if ((int)floorf(location / (length - 1)) % 2) {
-    return length - 1 - base;
+  if ((int)floorf(location / length) % 2) {
+    return length - base;
   } else {
     return base;
   }
 }
 
-+ (LTVector2)boundaryConditionForPoint:(LTVector2)point withSignalSize:(cv::Size2i)size {
++ (LTVector2)boundaryConditionForPoint:(LTVector2)point withSignalSize:(CGSize)size {
   if (point.x < 0 || point.x >= size.width) {
     point.x = [self boundaryConditionForPosition:point.x withSignalLength:size.width];
   }
