@@ -3,7 +3,7 @@
 
 #import "PTNPhotoKitAssetManager.h"
 
-@import Photos;
+#import <Photos/Photos.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"

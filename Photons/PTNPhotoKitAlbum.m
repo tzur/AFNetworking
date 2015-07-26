@@ -3,7 +3,7 @@
 
 #import "PTNPhotoKitAlbum.h"
 
-@import Photos;
+#import <Photos/Photos.h>
 
 #import "PTNCollection.h"
 

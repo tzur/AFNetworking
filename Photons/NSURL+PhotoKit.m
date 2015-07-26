@@ -3,9 +3,9 @@
 
 #import "NSURL+PhotoKit.h"
 
-#import "PTNPhotoKitAlbumType.h"
+#import <Photos/Photos.h>
 
-@import Photos;
+#import "PTNPhotoKitAlbumType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

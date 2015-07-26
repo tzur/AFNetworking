@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@import Photos;
+#import <Photos/Photos.h>
 
 #import "PTNObject.h"
 

@@ -3,7 +3,7 @@
 
 #import "PTNPhotoKitObserver.h"
 
-@import Photos;
+#import <Photos/Photos.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

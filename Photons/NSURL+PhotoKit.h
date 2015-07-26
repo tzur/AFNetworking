@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@import Photos;
+#import <Photos/Photos.h>
 
 @class PTNPhotoKitAlbumType;
 
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, PTNPhotoKitURLType) {
   /// URL of an album type.
   PTNPhotoKitURLTypeAlbumType,
   /// Invalid URL type.
-  PTNPhotoKitURLTypeInvalid,
+  PTNPhotoKitURLTypeInvalid
 };
 
 /// Category for easy analysis and synthesis of URLs related to PhotoKit objects.
