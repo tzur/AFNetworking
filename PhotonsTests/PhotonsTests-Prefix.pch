@@ -3,8 +3,12 @@
 
 #import "Photons-Prefix.pch"
 
-#import <Expecta/Expecta.h>
-#import <LLReactiveMatchers/LLReactiveMatchers.h>
-#import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
-#import <OCMock/OCMock.h>
-#import <Specta/Specta.h>
+#ifdef __OBJC__
+  #import <Expecta/Expecta.h>
+  #import <LLReactiveMatchers/LLReactiveMatchers.h>
+  #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+
+  #import <Photons/Photons.h>
+#endif

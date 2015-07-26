@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1515580A0604F222411356CE /* libPods-PhotonsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F92D3E5942FB44098A1FC2A5 /* libPods-PhotonsTests.a */; };
-		8B2FD02A1AF9F79000757B1F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2FD01E1AF9F79000757B1F /* libPhotons.a */; };
-		8B2FD07E1AFB809B00757B1F /* PTNPhotoKitAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */; };
-		8B2FD0841B00E2ED00757B1F /* PTNPhotoKitAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0831B00E2ED00757B1F /* PTNPhotoKitAlbum.m */; };
-		8B2FD0881B00E8A500757B1F /* PhotoKit+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0871B00E8A500757B1F /* PhotoKit+Photons.m */; };
-		8B2FD08B1B00E9B200757B1F /* NSURL+PhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD08A1B00E9B200757B1F /* NSURL+PhotoKit.m */; };
-		8B2FD0911B01059B00757B1F /* PTNPhotoKitFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */; };
-		8B2FD0941B01067700757B1F /* PTNPhotoKitObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */; };
 		8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */; };
 		8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0AD1B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		8B2FD0D11B09CD0800757B1F /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0AF1B09CD0800757B1F /* LLSignalTestRecorder.m */; };
@@ -33,38 +25,215 @@
 		8B2FD0DE1B09CD0800757B1F /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0CD1B09CD0800757B1F /* EXPMatchers+sendValues.m */; };
 		8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0CF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m */; };
 		8B2FD0E41B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m */; };
-		8B2FD0E71B0A0FD000757B1F /* PTNPhotoKitAlbumType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E61B0A0FD000757B1F /* PTNPhotoKitAlbumType.m */; };
-		8B2FD0EA1B0B2DC200757B1F /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8B2FD0EC1B0B494A00757B1F /* NSURL+PhotoKitSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */; };
-		F05B7A227FEFA9CDBAF5EB39 /* libPods-Photons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DE034BB575336AC881B299A /* libPods-Photons.a */; };
+		8B3832181B57D6FE00620560 /* PTNAlbumChangeset.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B3832191B57D6FE00620560 /* PTNAlbumChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3832171B57D6FE00620560 /* PTNAlbumChangeset.m */; };
+		8B3832321B5B89BD00620560 /* PTNAlbumChangesetMove.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */; };
+		8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m */; };
+		8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */; };
+		8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */; };
+		8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */; };
+		8B56195F1B65151B006B0DA0 /* PTNAlbumChangeset+PhotoKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3832341B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.h */; };
+		8B5619601B65151F006B0DA0 /* PTNImageFetchOptions+PhotoKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */; };
+		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
+		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
+		8BAFDCB21B0DEE2B003FB8F5 /* PhotoKit+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0871B00E8A500757B1F /* PhotoKit+Photons.m */; };
+		8BAFDCB31B0DEE2B003FB8F5 /* PTNImageFetchOptions+PhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC4E1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.m */; };
+		8BAFDCB41B0DEE2B003FB8F5 /* PTNPhotoKitAlbumType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E61B0A0FD000757B1F /* PTNPhotoKitAlbumType.m */; };
+		8BAFDCB51B0DEE2B003FB8F5 /* PTNPhotoKitFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */; };
+		8BAFDCB61B0DEE2B003FB8F5 /* PTNPhotoKitObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */; };
+		8BAFDCB71B0DEE2B003FB8F5 /* PTNPhotoKitAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0831B00E2ED00757B1F /* PTNPhotoKitAlbum.m */; };
+		8BAFDCB81B0DEE2B003FB8F5 /* PTNPhotoKitAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */; };
+		8BAFDCB91B0DEE2B003FB8F5 /* NSURL+PhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD08A1B00E9B200757B1F /* NSURL+PhotoKit.m */; };
+		8BAFDCBF1B0DF781003FB8F5 /* PTNAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC01B0DF781003FB8F5 /* PTNAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC21B0DF781003FB8F5 /* PTNObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0851B00E81100757B1F /* PTNObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD08F1B01059B00757B1F /* PTNPhotoKitFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07C1AFB809B00757B1F /* PTNPhotoKitAssetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFE2981B0E0BC9003FB8F5 /* Expecta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */; };
+		8BAFE2991B0E0BC9003FB8F5 /* Specta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */; };
+		8BAFE2AA1B0E0CCA003FB8F5 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */; };
+		8BAFE2AB1B0E0F6C003FB8F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */; };
+		8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFE2AF1B0E1537003FB8F5 /* Photons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFDC941B0DED4C003FB8F5 /* Photons.framework */; };
+		8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0E51B0A0FD000757B1F /* PTNPhotoKitAlbumType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFE2F21B0E1BDD003FB8F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */; };
+		8BAFE2F31B0E1CD4003FB8F5 /* NSURL+PhotoKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0891B00E9B200757B1F /* NSURL+PhotoKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */; };
+		8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B2FD02B1AF9F79000757B1F /* PBXContainerItemProxy */ = {
+		8BAFDCAD1B0DED5D003FB8F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B2FD0161AF9F79000757B1F /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8B2FD01D1AF9F79000757B1F;
+			remoteGlobalIDString = 8BAFDC931B0DED4C003FB8F5;
 			remoteInfo = Photons;
+		};
+		8BAFE25D1B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-Mac";
+		};
+		8BAFE25F1B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-MacTests";
+		};
+		8BAFE2611B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		8BAFE2631B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		8BAFE2731B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		8BAFE2751B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		8BAFE2771B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		8BAFE2791B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		8BAFE27B1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		8BAFE28C1B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		8BAFE28E1B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		8BAFE2901B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		8BAFE2921B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		8BAFE2941B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		8BAFE2961B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		8BAFE2A11B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8BAFE2A31B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8BAFE2A51B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8BAFE2A71B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		8B2FD01C1AF9F79000757B1F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		595A32FB91DEB54FACF44CCD /* Pods-PhotonsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotonsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotonsTests/Pods-PhotonsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6DE034BB575336AC881B299A /* libPods-Photons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Photons.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B2FD01E1AF9F79000757B1F /* libPhotons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotons.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B2FD0291AF9F79000757B1F /* PhotonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B2FD02F1AF9F79000757B1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B2FD0391AF9F93A00757B1F /* Photons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photons-Prefix.pch"; sourceTree = "<group>"; };
@@ -86,12 +255,6 @@
 		8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitObserver.h; sourceTree = "<group>"; };
 		8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitObserver.m; sourceTree = "<group>"; };
 		8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitObserverSpec.m; sourceTree = "<group>"; };
-		8B2FD0981B08B17400757B1F /* libPods-PhotonsTests-Expecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-PhotonsTests-Expecta.a"; path = "Pods/../build/Debug-iphoneos/libPods-PhotonsTests-Expecta.a"; sourceTree = "<group>"; };
-		8B2FD0991B08B17400757B1F /* libPods-PhotonsTests-LLReactiveMatchers.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-PhotonsTests-LLReactiveMatchers.a"; path = "Pods/../build/Debug-iphoneos/libPods-PhotonsTests-LLReactiveMatchers.a"; sourceTree = "<group>"; };
-		8B2FD09A1B08B17400757B1F /* libPods-PhotonsTests-OCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-PhotonsTests-OCMock.a"; path = "Pods/../build/Debug-iphoneos/libPods-PhotonsTests-OCMock.a"; sourceTree = "<group>"; };
-		8B2FD09B1B08B17400757B1F /* libPods-PhotonsTests-Specta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-PhotonsTests-Specta.a"; path = "Pods/../build/Debug-iphoneos/libPods-PhotonsTests-Specta.a"; sourceTree = "<group>"; };
-		8B2FD0A01B08B1F900757B1F /* libPods-PhotonsTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-PhotonsTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-PhotonsTests.a"; sourceTree = "<group>"; };
-		8B2FD0A51B08B98200757B1F /* libPods-Photons.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Photons.a"; path = "Pods/../build/Debug-iphoneos/libPods-Photons.a"; sourceTree = "<group>"; };
 		8B2FD0AC1B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
 		8B2FD0AD1B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
 		8B2FD0AE1B09CD0800757B1F /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
@@ -133,27 +296,52 @@
 		8B2FD0E81B0B2DC200757B1F /* NSError+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Photons.h"; sourceTree = "<group>"; };
 		8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+Photons.m"; sourceTree = "<group>"; };
 		8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PhotoKitSpec.m"; sourceTree = "<group>"; };
-		D16DE69B5737A20FE0C782E1 /* Pods-Photons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photons.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photons/Pods-Photons.debug.xcconfig"; sourceTree = "<group>"; };
-		DA5DA0E30A719B042E661876 /* Pods-Photons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photons.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photons/Pods-Photons.release.xcconfig"; sourceTree = "<group>"; };
-		E14883E6A29216D1CCAA9182 /* Pods-PhotonsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotonsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotonsTests/Pods-PhotonsTests.release.xcconfig"; sourceTree = "<group>"; };
-		F92D3E5942FB44098A1FC2A5 /* libPods-PhotonsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhotonsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAlbumChangeset.h; sourceTree = "<group>"; };
+		8B3832171B57D6FE00620560 /* PTNAlbumChangeset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangeset.m; sourceTree = "<group>"; };
+		8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAlbumChangesetMove.h; sourceTree = "<group>"; };
+		8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetMove.m; sourceTree = "<group>"; };
+		8B3832341B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNAlbumChangeset+PhotoKit.h"; sourceTree = "<group>"; };
+		8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNAlbumChangeset+PhotoKit.m"; sourceTree = "<group>"; };
+		8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetSpec.m; sourceTree = "<group>"; };
+		8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetMoveSpec.m; sourceTree = "<group>"; };
+		8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNAlbumChangeset+PhotoKitSpec.m"; sourceTree = "<group>"; };
+		8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageFetchOptions.h; sourceTree = "<group>"; };
+		8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptions.m; sourceTree = "<group>"; };
+		8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNImageFetchOptions+PhotoKit.h"; sourceTree = "<group>"; };
+		8BAFDC4E1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNImageFetchOptions+PhotoKit.m"; sourceTree = "<group>"; };
+		8BAFDC941B0DED4C003FB8F5 /* Photons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Photons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BAFDC971B0DED4C003FB8F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BAFDC981B0DED4C003FB8F5 /* Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photons.h; sourceTree = "<group>"; };
+		8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Vendor/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Vendor/Specta/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE2AD1B0E103A003FB8F5 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
+		8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNProgress.h; sourceTree = "<group>"; };
+		8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNProgress.m; sourceTree = "<group>"; };
+		8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACStream+Photons.h"; sourceTree = "<group>"; };
+		8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACStream+Photons.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8B2FD01B1AF9F79000757B1F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F05B7A227FEFA9CDBAF5EB39 /* libPods-Photons.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8B2FD0261AF9F79000757B1F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B2FD02A1AF9F79000757B1F /* libPhotons.a in Frameworks */,
-				1515580A0604F222411356CE /* libPods-PhotonsTests.a in Frameworks */,
+				8BAFE2AF1B0E1537003FB8F5 /* Photons.framework in Frameworks */,
+				8BAFE2AB1B0E0F6C003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
+				8BAFE2981B0E0BC9003FB8F5 /* Expecta.framework in Frameworks */,
+				8BAFE2991B0E0BC9003FB8F5 /* Specta.framework in Frameworks */,
+				8BAFE2AA1B0E0CCA003FB8F5 /* libOCMock.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BAFDC901B0DED4C003FB8F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BAFE2F21B0E1BDD003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,14 +351,8 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8B2FD0A51B08B98200757B1F /* libPods-Photons.a */,
-				8B2FD0A01B08B1F900757B1F /* libPods-PhotonsTests.a */,
-				8B2FD0981B08B17400757B1F /* libPods-PhotonsTests-Expecta.a */,
-				8B2FD0991B08B17400757B1F /* libPods-PhotonsTests-LLReactiveMatchers.a */,
-				8B2FD09A1B08B17400757B1F /* libPods-PhotonsTests-OCMock.a */,
-				8B2FD09B1B08B17400757B1F /* libPods-PhotonsTests-Specta.a */,
-				6DE034BB575336AC881B299A /* libPods-Photons.a */,
-				F92D3E5942FB44098A1FC2A5 /* libPods-PhotonsTests.a */,
+				8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */,
+				8BAFE2AD1B0E103A003FB8F5 /* Photos.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -180,17 +362,17 @@
 			children = (
 				8B2FD0201AF9F79000757B1F /* Photons */,
 				8B2FD02D1AF9F79000757B1F /* PhotonsTests */,
+				8BAFDCCB1B0E0B53003FB8F5 /* Libraries */,
 				8B2FD01F1AF9F79000757B1F /* Products */,
 				49F615BDE58178359DAFCD59 /* Frameworks */,
-				F0655508B5AF32CD6FA59EEA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		8B2FD01F1AF9F79000757B1F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B2FD01E1AF9F79000757B1F /* libPhotons.a */,
 				8B2FD0291AF9F79000757B1F /* PhotonsTests.xctest */,
+				8BAFDC941B0DED4C003FB8F5 /* Photons.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -198,7 +380,9 @@
 		8B2FD0201AF9F79000757B1F /* Photons */ = {
 			isa = PBXGroup;
 			children = (
+				8BAFDC981B0DED4C003FB8F5 /* Photons.h */,
 				8B2FD0711AFA0B5100757B1F /* Base */,
+				8BAFE3791B14C090003FB8F5 /* Extensions */,
 				8B2FD0721AFA0B5800757B1F /* PhotoKit */,
 				8B2FD0381AF9F92300757B1F /* Supporting Files */,
 			);
@@ -227,6 +411,7 @@
 		8B2FD0381AF9F92300757B1F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8BAFDC971B0DED4C003FB8F5 /* Info.plist */,
 				8B2FD0391AF9F93A00757B1F /* Photons-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -235,6 +420,7 @@
 		8B2FD06B1AF9FEDD00757B1F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8B5619421B6508DB006B0DA0 /* Base */,
 				8B2FD0951B04D60900757B1F /* PhotoKit */,
 			);
 			name = Tests;
@@ -246,9 +432,17 @@
 				8B2FD0E81B0B2DC200757B1F /* NSError+Photons.h */,
 				8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */,
 				8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */,
+				8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */,
+				8B3832171B57D6FE00620560 /* PTNAlbumChangeset.m */,
+				8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */,
+				8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */,
 				8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */,
 				8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */,
+				8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */,
+				8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */,
 				8B2FD0851B00E81100757B1F /* PTNObject.h */,
+				8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */,
+				8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -256,20 +450,24 @@
 		8B2FD0721AFA0B5800757B1F /* PhotoKit */ = {
 			isa = PBXGroup;
 			children = (
+				8B2FD0891B00E9B200757B1F /* NSURL+PhotoKit.h */,
+				8B2FD08A1B00E9B200757B1F /* NSURL+PhotoKit.m */,
 				8B2FD0861B00E8A500757B1F /* PhotoKit+Photons.h */,
 				8B2FD0871B00E8A500757B1F /* PhotoKit+Photons.m */,
+				8B3832341B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.h */,
+				8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m */,
+				8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */,
+				8BAFDC4E1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.m */,
+				8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */,
+				8B2FD0831B00E2ED00757B1F /* PTNPhotoKitAlbum.m */,
 				8B2FD0E51B0A0FD000757B1F /* PTNPhotoKitAlbumType.h */,
 				8B2FD0E61B0A0FD000757B1F /* PTNPhotoKitAlbumType.m */,
+				8B2FD07C1AFB809B00757B1F /* PTNPhotoKitAssetManager.h */,
+				8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */,
 				8B2FD08F1B01059B00757B1F /* PTNPhotoKitFetcher.h */,
 				8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */,
 				8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */,
 				8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */,
-				8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */,
-				8B2FD0831B00E2ED00757B1F /* PTNPhotoKitAlbum.m */,
-				8B2FD07C1AFB809B00757B1F /* PTNPhotoKitAssetManager.h */,
-				8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */,
-				8B2FD0891B00E9B200757B1F /* NSURL+PhotoKit.h */,
-				8B2FD08A1B00E9B200757B1F /* NSURL+PhotoKit.m */,
 			);
 			name = PhotoKit;
 			sourceTree = "<group>";
@@ -277,6 +475,7 @@
 		8B2FD0951B04D60900757B1F /* PhotoKit */ = {
 			isa = PBXGroup;
 			children = (
+				8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m */,
 				8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */,
 				8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */,
@@ -287,6 +486,9 @@
 		8B2FD0A71B08F20400757B1F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */,
+				8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */,
+				8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */,
 				8B2FD0AA1B09CD0800757B1F /* LLReactiveMatchers */,
 			);
 			name = Libraries;
@@ -351,29 +553,138 @@
 			path = Matchers;
 			sourceTree = "<group>";
 		};
-		F0655508B5AF32CD6FA59EEA /* Pods */ = {
+		8B5619421B6508DB006B0DA0 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				D16DE69B5737A20FE0C782E1 /* Pods-Photons.debug.xcconfig */,
-				DA5DA0E30A719B042E661876 /* Pods-Photons.release.xcconfig */,
-				595A32FB91DEB54FACF44CCD /* Pods-PhotonsTests.debug.xcconfig */,
-				E14883E6A29216D1CCAA9182 /* Pods-PhotonsTests.release.xcconfig */,
+				8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */,
+				8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */,
 			);
-			name = Pods;
+			name = Base;
+			sourceTree = "<group>";
+		};
+		8BAFDCCB1B0E0B53003FB8F5 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8BAFE2571B0E0B6F003FB8F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE25E1B0E0B70003FB8F5 /* ReactiveCocoa.framework */,
+				8BAFE2601B0E0B70003FB8F5 /* ReactiveCocoa-MacTests.xctest */,
+				8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */,
+				8BAFE2641B0E0B70003FB8F5 /* ReactiveCocoa-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BAFE2691B0E0BB0003FB8F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE2741B0E0BB0003FB8F5 /* Expecta.framework */,
+				8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */,
+				8BAFE2781B0E0BB0003FB8F5 /* ExpectaTests.xctest */,
+				8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
+				8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */,
+				8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */,
+				8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */,
+				8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BAFE2841B0E0BBE003FB8F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE28D1B0E0BBF003FB8F5 /* Specta.framework */,
+				8BAFE28F1B0E0BBF003FB8F5 /* SpectaTests.xctest */,
+				8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */,
+				8BAFE2931B0E0BBF003FB8F5 /* Specta-iOSTests.xctest */,
+				8BAFE2951B0E0BBF003FB8F5 /* libSpecta.a */,
+				8BAFE2971B0E0BBF003FB8F5 /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BAFE29B1B0E0C7F003FB8F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE2A21B0E0C7F003FB8F5 /* OCMock.framework */,
+				8BAFE2A41B0E0C7F003FB8F5 /* OCMockTests.xctest */,
+				8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */,
+				8BAFE2A81B0E0C7F003FB8F5 /* OCMockLibTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BAFE3791B14C090003FB8F5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */,
+				8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		8BAFDC911B0DED4C003FB8F5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */,
+				8BAFDCBF1B0DF781003FB8F5 /* PTNAlbum.h in Headers */,
+				8B3832181B57D6FE00620560 /* PTNAlbumChangeset.h in Headers */,
+				8B3832321B5B89BD00620560 /* PTNAlbumChangesetMove.h in Headers */,
+				8BAFDCC01B0DF781003FB8F5 /* PTNAssetManager.h in Headers */,
+				8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */,
+				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
+				8BAFDCC21B0DF781003FB8F5 /* PTNObject.h in Headers */,
+				8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */,
+				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
+				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
+				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
+				8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */,
+				8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */,
+				8BAFE2F31B0E1CD4003FB8F5 /* NSURL+PhotoKit.h in Headers */,
+				8B56195F1B65151B006B0DA0 /* PTNAlbumChangeset+PhotoKit.h in Headers */,
+				8B5619601B65151F006B0DA0 /* PTNImageFetchOptions+PhotoKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		8B2FD01D1AF9F79000757B1F /* Photons */ = {
+		8B2FD0281AF9F79000757B1F /* PhotonsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B2FD0321AF9F79000757B1F /* Build configuration list for PBXNativeTarget "Photons" */;
+			buildConfigurationList = 8B2FD0351AF9F79000757B1F /* Build configuration list for PBXNativeTarget "PhotonsTests" */;
 			buildPhases = (
-				9C27690874F736D20D0D709E /* Check Pods Manifest.lock */,
-				8B2FD01A1AF9F79000757B1F /* Sources */,
-				8B2FD01B1AF9F79000757B1F /* Frameworks */,
-				8B2FD01C1AF9F79000757B1F /* CopyFiles */,
-				21537C7DDA6F957F3AF89D15 /* Copy Pods Resources */,
+				8B2FD0251AF9F79000757B1F /* Sources */,
+				8B2FD0261AF9F79000757B1F /* Frameworks */,
+				8B2FD0271AF9F79000757B1F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BAFDCAE1B0DED5D003FB8F5 /* PBXTargetDependency */,
+			);
+			name = PhotonsTests;
+			productName = PhotonsTests;
+			productReference = 8B2FD0291AF9F79000757B1F /* PhotonsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8BAFDC931B0DED4C003FB8F5 /* Photons */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BAFDCA71B0DED4C003FB8F5 /* Build configuration list for PBXNativeTarget "Photons" */;
+			buildPhases = (
+				8BAFDC8F1B0DED4C003FB8F5 /* Sources */,
+				8BAFDC901B0DED4C003FB8F5 /* Frameworks */,
+				8BAFDC911B0DED4C003FB8F5 /* Headers */,
+				8BAFDC921B0DED4C003FB8F5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -381,28 +692,8 @@
 			);
 			name = Photons;
 			productName = Photons;
-			productReference = 8B2FD01E1AF9F79000757B1F /* libPhotons.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		8B2FD0281AF9F79000757B1F /* PhotonsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8B2FD0351AF9F79000757B1F /* Build configuration list for PBXNativeTarget "PhotonsTests" */;
-			buildPhases = (
-				BFB1F6CECAF2D81F31988759 /* Check Pods Manifest.lock */,
-				8B2FD0251AF9F79000757B1F /* Sources */,
-				8B2FD0261AF9F79000757B1F /* Frameworks */,
-				8B2FD0271AF9F79000757B1F /* Resources */,
-				0B6FAC174C58AA5FE4E9A730 /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8B2FD02C1AF9F79000757B1F /* PBXTargetDependency */,
-			);
-			name = PhotonsTests;
-			productName = PhotonsTests;
-			productReference = 8B2FD0291AF9F79000757B1F /* PhotonsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			productReference = 8BAFDC941B0DED4C003FB8F5 /* Photons.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -413,10 +704,10 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
-					8B2FD01D1AF9F79000757B1F = {
+					8B2FD0281AF9F79000757B1F = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
-					8B2FD0281AF9F79000757B1F = {
+					8BAFDC931B0DED4C003FB8F5 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
 				};
@@ -431,13 +722,190 @@
 			mainGroup = 8B2FD0151AF9F79000757B1F;
 			productRefGroup = 8B2FD01F1AF9F79000757B1F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8BAFE2691B0E0BB0003FB8F5 /* Products */;
+					ProjectRef = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BAFE29B1B0E0C7F003FB8F5 /* Products */;
+					ProjectRef = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BAFE2571B0E0B6F003FB8F5 /* Products */;
+					ProjectRef = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BAFE2841B0E0BBE003FB8F5 /* Products */;
+					ProjectRef = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
-				8B2FD01D1AF9F79000757B1F /* Photons */,
+				8BAFDC931B0DED4C003FB8F5 /* Photons */,
 				8B2FD0281AF9F79000757B1F /* PhotonsTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8BAFE25E1B0E0B70003FB8F5 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 8BAFE25D1B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2601B0E0B70003FB8F5 /* ReactiveCocoa-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-MacTests.xctest";
+			remoteRef = 8BAFE25F1B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 8BAFE2611B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2641B0E0B70003FB8F5 /* ReactiveCocoa-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-iOSTests.xctest";
+			remoteRef = 8BAFE2631B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2741B0E0BB0003FB8F5 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8BAFE2731B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8BAFE2751B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2781B0E0BB0003FB8F5 /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 8BAFE2771B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 8BAFE2791B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8BAFE27B1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			name = ExpectaTests.xctest;
+			path = libExpectaTests.xctest;
+			remoteRef = 8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			name = "Expecta-iOSTests.xctest";
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE28D1B0E0BBF003FB8F5 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8BAFE28C1B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE28F1B0E0BBF003FB8F5 /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 8BAFE28E1B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8BAFE2901B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2931B0E0BBF003FB8F5 /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 8BAFE2921B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2951B0E0BBF003FB8F5 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BAFE2941B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2971B0E0BBF003FB8F5 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BAFE2961B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2A21B0E0C7F003FB8F5 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8BAFE2A11B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2A41B0E0C7F003FB8F5 /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 8BAFE2A31B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 8BAFE2A51B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BAFE2A81B0E0C7F003FB8F5 /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 8BAFE2A71B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8B2FD0271AF9F79000757B1F /* Resources */ = {
@@ -447,96 +915,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BAFDC921B0DED4C003FB8F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		0B6FAC174C58AA5FE4E9A730 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotonsTests/Pods-PhotonsTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		21537C7DDA6F957F3AF89D15 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Photons/Pods-Photons-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9C27690874F736D20D0D709E /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		BFB1F6CECAF2D81F31988759 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		8B2FD01A1AF9F79000757B1F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B2FD08B1B00E9B200757B1F /* NSURL+PhotoKit.m in Sources */,
-				8B2FD0841B00E2ED00757B1F /* PTNPhotoKitAlbum.m in Sources */,
-				8B2FD0941B01067700757B1F /* PTNPhotoKitObserver.m in Sources */,
-				8B2FD0881B00E8A500757B1F /* PhotoKit+Photons.m in Sources */,
-				8B2FD07E1AFB809B00757B1F /* PTNPhotoKitAssetManager.m in Sources */,
-				8B2FD0EA1B0B2DC200757B1F /* NSError+Photons.m in Sources */,
-				8B2FD0911B01059B00757B1F /* PTNPhotoKitFetcher.m in Sources */,
-				8B2FD0E71B0A0FD000757B1F /* PTNPhotoKitAlbumType.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8B2FD0251AF9F79000757B1F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m in Sources */,
 				8B2FD0DB1B09CD0800757B1F /* EXPMatchers+matchValues.m in Sources */,
 				8B2FD0DC1B09CD0800757B1F /* EXPMatchers+sendError.m in Sources */,
 				8B2FD0E41B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m in Sources */,
 				8B2FD0D21B09CD0800757B1F /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				8B2FD0D61B09CD0800757B1F /* EXPMatchers+complete.m in Sources */,
+				8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */,
 				8B2FD0DD1B09CD0800757B1F /* EXPMatchers+sendEvents.m in Sources */,
 				8B2FD0D91B09CD0800757B1F /* EXPMatchers+matchError.m in Sources */,
 				8B2FD0EC1B0B494A00757B1F /* NSURL+PhotoKitSpec.m in Sources */,
@@ -544,6 +943,7 @@
 				8B2FD0DA1B09CD0800757B1F /* EXPMatchers+matchValue.m in Sources */,
 				8B2FD0D31B09CD0800757B1F /* LLReactiveMatchersHelpers.m in Sources */,
 				8B2FD0D41B09CD0800757B1F /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */,
 				8B2FD0D71B09CD0800757B1F /* EXPMatchers+error.m in Sources */,
 				8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */,
@@ -554,13 +954,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BAFDC8F1B0DED4C003FB8F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */,
+				8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */,
+				8BAFDCB21B0DEE2B003FB8F5 /* PhotoKit+Photons.m in Sources */,
+				8B3832191B57D6FE00620560 /* PTNAlbumChangeset.m in Sources */,
+				8BAFDCB31B0DEE2B003FB8F5 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
+				8BAFDCB41B0DEE2B003FB8F5 /* PTNPhotoKitAlbumType.m in Sources */,
+				8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */,
+				8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */,
+				8BAFDCB51B0DEE2B003FB8F5 /* PTNPhotoKitFetcher.m in Sources */,
+				8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */,
+				8BAFDCB61B0DEE2B003FB8F5 /* PTNPhotoKitObserver.m in Sources */,
+				8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */,
+				8BAFDCB71B0DEE2B003FB8F5 /* PTNPhotoKitAlbum.m in Sources */,
+				8BAFDCB81B0DEE2B003FB8F5 /* PTNPhotoKitAssetManager.m in Sources */,
+				8BAFDCB91B0DEE2B003FB8F5 /* NSURL+PhotoKit.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B2FD02C1AF9F79000757B1F /* PBXTargetDependency */ = {
+		8BAFDCAE1B0DED5D003FB8F5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B2FD01D1AF9F79000757B1F /* Photons */;
-			targetProxy = 8B2FD02B1AF9F79000757B1F /* PBXContainerItemProxy */;
+			target = 8BAFDC931B0DED4C003FB8F5 /* Photons */;
+			targetProxy = 8BAFDCAD1B0DED5D003FB8F5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -607,6 +1029,7 @@
 					"-Wall",
 					"-Wextra",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -646,44 +1069,14 @@
 					"-Wall",
 					"-Wextra",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		8B2FD0331AF9F79000757B1F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D16DE69B5737A20FE0C782E1 /* Pods-Photons.debug.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		8B2FD0341AF9F79000757B1F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA5DA0E30A719B042E661876 /* Pods-Photons.release.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		8B2FD0361AF9F79000757B1F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 595A32FB91DEB54FACF44CCD /* Pods-PhotonsTests.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -696,6 +1089,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
+					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -705,7 +1099,6 @@
 		};
 		8B2FD0371AF9F79000757B1F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E14883E6A29216D1CCAA9182 /* Pods-PhotonsTests.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -714,10 +1107,67 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
+					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8BAFDCA81B0DED4C003FB8F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = Photons/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8BAFDCA91B0DED4C003FB8F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = Photons/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -733,20 +1183,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B2FD0321AF9F79000757B1F /* Build configuration list for PBXNativeTarget "Photons" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8B2FD0331AF9F79000757B1F /* Debug */,
-				8B2FD0341AF9F79000757B1F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		8B2FD0351AF9F79000757B1F /* Build configuration list for PBXNativeTarget "PhotonsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B2FD0361AF9F79000757B1F /* Debug */,
 				8B2FD0371AF9F79000757B1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BAFDCA71B0DED4C003FB8F5 /* Build configuration list for PBXNativeTarget "Photons" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BAFDCA81B0DED4C003FB8F5 /* Debug */,
+				8BAFDCA91B0DED4C003FB8F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

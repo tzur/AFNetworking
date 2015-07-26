@@ -1,3 +1,15 @@
 [submodule "Vendor/LLReactiveMatchers"]
 	path = Vendor/LLReactiveMatchers
-	url = https://github.com/lawrencelomax/LLReactiveMatchers.git
+	url = https://github.com/Lightricks/LLReactiveMatchers.git
+[submodule "Vendor/ReactiveCocoa"]
+	path = Vendor/ReactiveCocoa
+	url = https://github.com/ReactiveCocoa/ReactiveCocoa.git
+[submodule "Vendor/OCMock"]
+	path = Vendor/OCMock
+	url = https://github.com/erikdoe/ocmock.git
+[submodule "Vendor/Specta"]
+	path = Vendor/Specta
+	url = https://github.com/specta/specta.git
+[submodule "Vendor/Expecta"]
+	path = Vendor/Expecta
+	url = https://github.com/specta/expecta.git

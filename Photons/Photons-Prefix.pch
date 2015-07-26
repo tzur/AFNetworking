@@ -2,8 +2,8 @@
 // Created by Yaron Inger.
 
 #ifdef __OBJC__
-  @import Foundation;
-  @import UIKit;
+  #import <Foundation/Foundation.h>
+  #import <UIKit/UIKit.h>
 
   #import <ReactiveCocoa/ReactiveCocoa.h>
 #endif
