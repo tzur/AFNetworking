@@ -18,6 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// greater than or equal to the value of the \c count property).
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 
+/// Returns the lowest index whose corresponding array value is equal to a given object.
+- (NSUInteger)indexOfObject:(id)anObject;
+
+/// Returns the lowest index within a specified range whose corresponding array value is equal to a
+/// given object.
+- (NSUInteger)indexOfObject:(id)anObject inRange:(NSRange)range;
+
 /// The first object in the collection, or \c nil if the collection is empty.
 @property (readonly, nonatomic, nullable) id firstObject;
 
