@@ -23,6 +23,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
 }
 
+- (PHFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers
+                                           options:(nullable PHFetchOptions *)options {
+  return [PHAsset fetchAssetsWithLocalIdentifiers:identifiers options:options];
+}
+
+- (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+                                           options:(nullable PHFetchOptions *)options {
+  return [PHAsset fetchKeyAssetsInAssetCollection:assetCollection options:options];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

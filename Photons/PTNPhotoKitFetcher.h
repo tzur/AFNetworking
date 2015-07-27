@@ -28,6 +28,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (PHFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                         options:(nullable PHFetchOptions *)options;
 
+/// Retrieves assets with the specified local identifiers.
+///
+/// @see [PHAsset fetchAssetsWithLocalIdentifiers:options:].
+- (PHFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers
+                                           options:(nullable PHFetchOptions *)options;
+
+
+/// Retrieves assets marked as key assets in the specified asset collection.
+///
+/// @see [PHAsset fetchKeyAssetsInAssetCollection:options:].
+- (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+                                           options:(nullable PHFetchOptions *)options;
+
 @end
 
 NS_ASSUME_NONNULL_END
