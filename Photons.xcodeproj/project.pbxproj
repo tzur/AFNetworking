@@ -500,6 +500,9 @@
 				8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */,
 				8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m */,
+				8B5619951B664182006B0DA0 /* PTNPhotoKitFakeImageManager.h */,
+				8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */,
+				8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.mm */,
 				8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */,
 				8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */,
 			);
@@ -581,6 +584,7 @@
 			children = (
 				8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */,
 				8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */,
+				8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */,
 				8B5619671B654515006B0DA0 /* PTNProgressSpec.mm */,
 			);
 			name = Base;
@@ -976,6 +980,7 @@
 				8B2FD0D21B09CD0800757B1F /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				8B2FD0D61B09CD0800757B1F /* EXPMatchers+complete.m in Sources */,
 				8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */,
+				8B5619771B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m in Sources */,
 				8B2FD0DD1B09CD0800757B1F /* EXPMatchers+sendEvents.m in Sources */,
 				8B2FD0D91B09CD0800757B1F /* EXPMatchers+matchError.m in Sources */,
 				8B2FD0EC1B0B494A00757B1F /* NSURL+PhotoKitSpec.m in Sources */,
@@ -984,6 +989,7 @@
 				8B2FD0D31B09CD0800757B1F /* LLReactiveMatchersHelpers.m in Sources */,
 				8B2FD0D41B09CD0800757B1F /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */,
+				8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.mm in Sources */,
 				8B2FD0D71B09CD0800757B1F /* EXPMatchers+error.m in Sources */,
 				8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */,
