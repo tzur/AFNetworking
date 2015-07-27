@@ -20,7 +20,9 @@
 
 /// Initializes mixer with \c back and \c front textures, \c mask and an \c output texture. The mask
 /// must be of the size of the \c front texture if \c maskMode is \c LTMixerMaskModeFront, and of
-/// the size of the \c back texture if \c maskMode is \c LTMixerMaskModeBack.
+/// the size of the \c back texture if \c maskMode is \c LTMixerMaskModeBack. If \c back is
+/// identical to \c output, the last fragment shader data is used rather than accessing the back
+/// texture.
 - (instancetype)initWithBack:(LTTexture *)back front:(LTTexture *)front mask:(LTTexture *)mask
                       output:(LTTexture *)output maskMode:(LTMixerMaskMode)maskMode;
 
