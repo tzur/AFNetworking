@@ -9,12 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// to be immutable value objects.
 @protocol PTNAlbum <NSObject>
 
+/// URL uniquely identifying the album.
+@property (readonly, nonatomic) NSURL *url;
+
 /// Asset implementing the \c PTNObject protocol contained in this album. If there are no assets, an
 /// empty collection will be returned.
 @property (readonly, nonatomic) id<PTNCollection> assets;
 
 /// Sub albums contained in this album implementing the \c PTNObject protocol. If there are no
-/// subalbums, no items will be returned.
+/// subalbums, an empty collection will be returned.
 @property (readonly, nonatomic) id<PTNCollection> subalbums;
 
 @end
