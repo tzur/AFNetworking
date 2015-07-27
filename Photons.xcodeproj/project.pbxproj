@@ -38,6 +38,9 @@
 		8B5619601B65151F006B0DA0 /* PTNImageFetchOptions+PhotoKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */; };
 		8B5619661B654227006B0DA0 /* RACStream+PhotonsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619651B654227006B0DA0 /* RACStream+PhotonsSpec.mm */; };
 		8B5619681B654515006B0DA0 /* PTNProgressSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619671B654515006B0DA0 /* PTNProgressSpec.mm */; };
+		8B56196A1B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m */; };
+		8B5619771B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */; };
+		8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.mm */; };
 		8B5619971B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
@@ -317,6 +320,9 @@
 		8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNAlbumChangeset+PhotoKitSpec.m"; sourceTree = "<group>"; };
 		8B5619651B654227006B0DA0 /* RACStream+PhotonsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACStream+PhotonsSpec.mm"; sourceTree = "<group>"; };
 		8B5619671B654515006B0DA0 /* PTNProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNProgressSpec.mm; sourceTree = "<group>"; };
+		8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitAlbumSpec.m; sourceTree = "<group>"; };
+		8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptionsSpec.m; sourceTree = "<group>"; };
+		8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PTNImageFetchOptions+PhotoKitSpec.mm"; sourceTree = "<group>"; };
 		8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitImageManager.h; sourceTree = "<group>"; };
 		8B5619951B664182006B0DA0 /* PTNPhotoKitFakeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeImageManager.h; sourceTree = "<group>"; };
 		8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeImageManager.m; sourceTree = "<group>"; };
@@ -492,6 +498,7 @@
 			isa = PBXGroup;
 			children = (
 				8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */,
+				8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m */,
 				8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */,
 				8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */,
@@ -984,6 +991,7 @@
 				8B2FD0D81B09CD0800757B1F /* EXPMatchers+finish.m in Sources */,
 				8B5619681B654515006B0DA0 /* PTNProgressSpec.mm in Sources */,
 				8B5619661B654227006B0DA0 /* RACStream+PhotonsSpec.mm in Sources */,
+				8B56196A1B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m in Sources */,
 				8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */,
 				8B2FD0D51B09CD0800757B1F /* EXPMatchers+beSubscribedTo.m in Sources */,
 			);

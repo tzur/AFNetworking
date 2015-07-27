@@ -5,6 +5,7 @@
 
 #import <Photos/Photos.h>
 
+#import "NSURL+PhotoKit.h"
 #import "PTNCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -13,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface PTNPhotoKitAlbum ()
+
+/// URL uniquely identifying this album.
+@property (strong, nonatomic) NSURL *url;
 
 /// Fetch results backing \c PHAsset objects.
 @property (strong, nonatomic) PHFetchResult *assetsFetchResult;
@@ -24,16 +28,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitAlbum
 
-- (instancetype)initWithAssets:(PHFetchResult *)assets {
+- (instancetype)initWithURL:(NSURL *)url fetchResult:(PHFetchResult *)fetchResult {
   if (self = [super init]) {
-    self.assetsFetchResult = assets;
-  }
-  return self;
-}
+    self.url = url;
 
-- (instancetype)initWithAlbums:(PHFetchResult *)albums {
-  if (self = [super init]) {
-    self.albumsFetchResult = albums;
+    switch (url.ptn_photoKitURLType) {
+      case PTNPhotoKitURLTypeAlbum:
+        self.assetsFetchResult = fetchResult;
+        break;
+      case PTNPhotoKitURLTypeAlbumType:
+        self.albumsFetchResult = fetchResult;
+        break;
+      default:
+        // TODO:(yaron) assert here.
+        __builtin_unreachable();
+    }
   }
   return self;
 }

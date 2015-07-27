@@ -9,13 +9,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNPhotoKitAlbum : NSObject <PTNAlbum>
 
-/// Initializes a PhotoKit album with a fetch result that contains \c PHAsset objects. The newly
-/// created album will contain assets only, and an empty \c subalbums collection.
-- (instancetype)initWithAssets:(PHFetchResult *)assets NS_DESIGNATED_INITIALIZER;
-
-/// Initializes a PhotoKit album with a fetch result that contains \c PHCollection objects. The
-/// newly created album will contain subalbums only, and an empty \c asset collection.
-- (instancetype)initWithAlbums:(PHFetchResult *)albums NS_DESIGNATED_INITIALIZER;
+/// Initializes a PhotoKit album identified by the given \c url and a fetch result. The given \c url
+/// must be of type \c PTNPhotoKitURLTypeAlbum or \c PTNPhotoKitURLTypeAlbumType. If the type is
+/// \c PTNPhotoKitURLTypeAlbum, the newly created album will contain assets only, and an empty \c
+/// subalbums collection. If the type is \c PTNPhotoKitURLTypeAlbumType, the newly created album
+/// will contain subalbums only, and an empty \c assets collection.
+- (instancetype)initWithURL:(NSURL *)url fetchResult:(PHFetchResult *)fetchResult
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
