@@ -24,6 +24,7 @@
 
 @interface LTQuadMixerProcessor ()
 
+/// Internally used quad drawer.
 @property (strong, nonatomic) LTQuadDrawer *quadDrawer;
 
 /// Mask mode used to mix the front and the back texture.
@@ -60,6 +61,7 @@
                                      [LTMixerFsh frontTexture]: front} andOutput:output]) {
     self.maskMatrix = GLKMatrix3Identity;
     self.maskMode = maskMode;
+    self[[LTMixerFsh useLastFragColor]] = @(back == output);
     [self resetInputModel];
   }
   return self;

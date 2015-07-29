@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#extension GL_EXT_shader_framebuffer_fetch : require
+
 const int kBlendModeNormal = 0;
 const int kBlendModeDarken = 1;
 const int kBlendModeMultiply = 2;
@@ -14,6 +16,7 @@ const int kBlendModePlusLighter = 9;
 const int kBlendModePlusDarker = 10;
 
 /// Source texture is back texture.
+uniform bool useLastFragColor;
 uniform lowp sampler2D sourceTexture;
 uniform lowp sampler2D frontTexture;
 uniform mediump sampler2D maskTexture;
@@ -107,7 +110,13 @@ void plusDarker(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
 }
 
 void main() {
-  mediump vec4 back = texture2D(sourceTexture, vBackTexcoord);
+  mediump vec4 back;
+
+  if (useLastFragColor) {
+    back = gl_LastFragData[0];
+  } else {
+    back = texture2D(sourceTexture, vTexcoord);
+  }
 
   highp vec3 frontTexcoord = frontMatrix * vec3(vTexcoord, 1.0);
   highp vec2 projectedFrontTexCoord = frontTexcoord.xy / frontTexcoord.z;
