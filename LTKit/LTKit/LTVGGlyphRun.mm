@@ -67,8 +67,14 @@
 
   for (glyph in glyphs) {
     LTParameterAssert([glyph isKindOfClass:[LTVGGlyph class]]);
-    LTParameterAssert([glyph.font isEqual:font]);
-    LTParameterAssert(verticalBaselineOrigin == glyph.baselineOrigin.y);
+    LTParameterAssert([glyph.font isEqual:font],
+                      @"Glyph of different fonts (%@ vs. %@) within the same run.",
+                      glyph.font.fontName ?: @"<nil>", font.fontName ?: @"<nil>");
+    LTParameterAssert(verticalBaselineOrigin == glyph.baselineOrigin.y,
+                      @"Vertical baseline origin (%g) of glyph with index %d of font %@ does not "
+                      "match required vertical baseline origin (%g).",
+                      glyph.baselineOrigin.y, glyph.glyphIndex, glyph.font.fontName ?: @"<nil>",
+                      verticalBaselineOrigin);
   }
 }
 
