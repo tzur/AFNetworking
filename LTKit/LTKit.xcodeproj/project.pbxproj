@@ -428,6 +428,9 @@
 		28B3346819C826D3004B6191 /* LTOneShotImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B3346619C826D3004B6191 /* LTOneShotImageProcessor.h */; };
 		28B3346919C826D3004B6191 /* LTOneShotImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B3346719C826D3004B6191 /* LTOneShotImageProcessor.mm */; };
 		28B3348819C84204004B6191 /* LTOneShotBaseImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B3348719C84204004B6191 /* LTOneShotBaseImageProcessorSpec.mm */; };
+		28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */; };
+		28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */; };
+		28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */; };
 		28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BB81981924DF520071CB0B /* LTShapeDrawer.h */; };
 		28BB819B1924DF520071CB0B /* LTShapeDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28BB81991924DF520071CB0B /* LTShapeDrawer.mm */; };
 		28BB81A91924DF650071CB0B /* LTShapeDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28BB81A81924DF650071CB0B /* LTShapeDrawerSpec.mm */; };
@@ -1677,6 +1680,9 @@
 		28B3346719C826D3004B6191 /* LTOneShotImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOneShotImageProcessor.mm; sourceTree = "<group>"; };
 		28B3347A19C831B1004B6191 /* LTOneShotImageProcessor+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTOneShotImageProcessor+Protected.h"; sourceTree = "<group>"; };
 		28B3348719C84204004B6191 /* LTOneShotBaseImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOneShotBaseImageProcessorSpec.mm; sourceTree = "<group>"; };
+		28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTWeakContainer.h; sourceTree = "<group>"; };
+		28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTWeakContainer.mm; sourceTree = "<group>"; };
+		28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTWeakContainerSpec.mm; sourceTree = "<group>"; };
 		28BB81981924DF520071CB0B /* LTShapeDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShapeDrawer.h; sourceTree = "<group>"; };
 		28BB81991924DF520071CB0B /* LTShapeDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawer.mm; sourceTree = "<group>"; };
 		28BB81A81924DF650071CB0B /* LTShapeDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTShapeDrawerSpec.mm; sourceTree = "<group>"; };
@@ -3947,6 +3953,7 @@
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				5096F90B19D3400800A38223 /* LTTriangleSpec.mm */,
 				8BA8218F198668D000FBE68E /* LTVectorSpec.mm */,
+				28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -3969,6 +3976,8 @@
 				5096F8F819D337AC00A38223 /* LTTriangle.mm */,
 				8BA821821986686800FBE68E /* LTVector.h */,
 				8BA822321987DB8A00FBE68E /* LTVector.mm */,
+				28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */,
+				28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -4068,6 +4077,7 @@
 				8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */,
 				8B3831FB1B56906300620560 /* LTIZCompressor.h in Headers */,
 				8B871FD71924A75E00517F2E /* LTBicubicResizeProcessor.h in Headers */,
+				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
 				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
 				8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */,
 				65409BB31B53EBDE00F0E9ED /* LTGLView.h in Headers */,
@@ -4936,6 +4946,7 @@
 				8B9851811868A4CF00D680D0 /* LTImage.mm in Sources */,
 				28BBD7F619A20AA40062C803 /* NSValue+LTRect.mm in Sources */,
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
+				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				031338D2191279B30095F99B /* LTImageBorderProcessor.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
@@ -5154,6 +5165,7 @@
 				283906A118C4DB0A00BD21CE /* LTRoundBrushSpec.mm in Sources */,
 				03C192ED18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm in Sources */,
 				8BAECDEC18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm in Sources */,
+				28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */,
 				283906CB18C71DF500BD21CE /* LTPainterSpec.mm in Sources */,
 				8BAE3A8A18B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
