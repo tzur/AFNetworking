@@ -224,6 +224,8 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
       [touch locationInView:view.viewForContentCoordinates] * view.contentScaleFactor;
   point.screenPosition = [touch locationInView:view];
   point.zoomScale = view.zoomScale;
+  point.touchRadius = touch.majorRadius;
+  point.touchRadiusTolerance = touch.majorRadiusTolerance;
   return point;
 }
 

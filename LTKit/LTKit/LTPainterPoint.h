@@ -21,8 +21,21 @@
 /// Position of the point, in content coordinates.
 @property (nonatomic) CGPoint contentPosition;
 
-/// Zoom scale of the view at the time the point is taken, clamped to range [0,Inf).
+/// Zoom scale of the view at the time the point is taken, clamped to range [0,Inf), Default is
+/// \c 1.
 @property (nonatomic) CGFloat zoomScale;
+
+/// Radius (in points) of the touch, in screen coordinates. Default is \c 1.
+///
+/// @see Relevant properties (\c touchRadius, \c majorRadiusTolerance) of \c UITouch.
+@property (nonatomic) CGFloat touchRadius;
+
+/// Tolerance (in points) of the touch’s radius, in screen coordinates. Default is \c 1.
+/// This value determines the accuracy of the value in the touchRadius property. Add this value to
+/// the radius to get the maximum touch radius. Subtract the value to get the minimum touch radius.
+///
+/// @see Relevant properties (\c touchRadius, \c majorRadiusTolerance) of \c UITouch.
+@property (nonatomic) CGFloat touchRadiusTolerance;
 
 /// Distance of the point from the start of the stroke it belongs to. Clamped to range [0,Inf).
 @property (nonatomic) CGFloat distanceFromStart;

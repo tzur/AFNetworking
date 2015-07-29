@@ -60,9 +60,7 @@ context(@"adding points and segments", ^{
 
   beforeEach(^{
     startingPoint = [[LTPainterPoint alloc] init];
-    startingPoint.zoomScale = 1;
     newPoint = [[LTPainterPoint alloc] init];
-    newPoint.zoomScale = 1;
     newPoint.contentPosition = CGPointMake(1, 1);
   });
   
@@ -173,9 +171,6 @@ context(@"adding points and segments", ^{
     p1.contentPosition = CGPointMake(1, 1);
     p2.contentPosition = CGPointMake(2, 2);
     p3.contentPosition = CGPointMake(3, 3);
-    p1.zoomScale = 1;
-    p2.zoomScale = 1;
-    p3.zoomScale = 1;
     
     stroke = [[LTPainterStroke alloc]
               initWithInterpolationRoutineFactory:[[LTLinearInterpolationRoutineFactory alloc] init]

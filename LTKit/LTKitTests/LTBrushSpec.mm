@@ -347,8 +347,6 @@ context(@"drawing", ^{
     
     startPoint = [[LTPainterPoint alloc] init];
     endPoint = [[LTPainterPoint alloc] init];
-    startPoint.zoomScale = 1;
-    endPoint.zoomScale = 1;
     startPoint.contentPosition = CGPointMake(0, kOutputCenter.y);
     endPoint.contentPosition = CGPointMake(kOutputSize.width, kOutputCenter.y);
     spline = [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:@[startPoint, endPoint]];

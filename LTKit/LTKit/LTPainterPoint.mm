@@ -16,7 +16,12 @@
 @implementation LTPainterPoint
 
 - (instancetype)init {
-  return self = [super init];
+  if (self = [super init]) {
+    self.zoomScale = 1;
+    self.touchRadius = 1;
+    self.touchRadiusTolerance = 1;
+  }
+  return self;
 }
 
 - (instancetype)initWithCurrentTimestamp {
@@ -27,20 +32,27 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"screen: (%.4g,%.4g), content: (%.4g,%.4g), zoom: %g, "
-          "timestamp: %g, distance: %g, diameter: %g",
-          self.screenPosition.x, self.screenPosition.y,
-          self.contentPosition.x, self.contentPosition.y,
-          self.zoomScale, self.timestamp, self.distanceFromStart, self.diameter];
+  return [NSString stringWithFormat:@"<%@: %p, screen: %@, content: %@, zoomScale: %g, "
+          "touch radius: %g, timestamp: %g, distance: %g, diameter: %g>", [self class], self,
+          NSStringFromCGPoint(self.screenPosition), NSStringFromCGPoint(self.contentPosition),
+          self.zoomScale, self.touchRadius, self.timestamp, self.distanceFromStart, self.diameter];
 }
 
 - (NSArray *)propertiesToInterpolate {
   static NSArray *propertiesToInterpolate;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    propertiesToInterpolate = @[@"contentPositionX", @"contentPositionY",
-                                @"screenPositionX", @"screenPositionY",
-                                @"timestamp", @"zoomScale", @"diameter"];
+    propertiesToInterpolate = @[
+      @keypath(self, contentPositionX),
+      @keypath(self, contentPositionY),
+      @keypath(self, screenPositionX),
+      @keypath(self, screenPositionY),
+      @keypath(self, timestamp),
+      @keypath(self, zoomScale),
+      @keypath(self, touchRadius),
+      @keypath(self, touchRadiusTolerance),
+      @keypath(self, diameter)
+    ];
   });
   return propertiesToInterpolate;
 }
@@ -51,6 +63,8 @@
   point.screenPosition = self.screenPosition;
   point.contentPosition = self.contentPosition;
   point.zoomScale = self.zoomScale;
+  point.touchRadius = self.touchRadius;
+  point.touchRadiusTolerance = self.touchRadiusTolerance;
   point.diameter = self.diameter;
   point.distanceFromStart = self.distanceFromStart;
   return point;
@@ -102,6 +116,14 @@
 
 - (void)setZoomScale:(CGFloat)zoomScale {
   _zoomScale = MAX(0, zoomScale);
+}
+
+- (void)setTouchRadius:(CGFloat)touchRadius {
+  _touchRadius = MAX(0, touchRadius);
+}
+
+- (void)setTouchRadiusTolerance:(CGFloat)touchRadiusTolerance {
+  _touchRadiusTolerance = MAX(0, touchRadiusTolerance);
 }
 
 - (void)setDistanceFromStart:(CGFloat)distanceFromStart {

@@ -138,7 +138,6 @@ context(@"edge avoiding drawing", ^{
     expected = cv::Scalar(0);
     
     point = [[LTPainterPoint alloc] init];
-    point.zoomScale = 1;
     point.contentPosition = kOutputCenter;
   });
   

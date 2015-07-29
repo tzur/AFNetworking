@@ -119,7 +119,6 @@ context(@"drawing", ^{
     expected = cv::Vec4b(0, 0, 0, 0);
     
     point = [[LTPainterPoint alloc] init];
-    point.zoomScale = 1;
     point.contentPosition = kOutputCenter;
   });
   
