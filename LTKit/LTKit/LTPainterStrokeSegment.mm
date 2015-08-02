@@ -11,13 +11,17 @@
   CGFloats _distances;
 }
 
-@property (nonatomic) NSUInteger index;
-@property (nonatomic) CGFloat distanceFromStart;
-@property (nonatomic) CGFloat length;
-@property (nonatomic) CGFloat zoomScale;
+/// Index of the segment in the stroke.
+@property (readwrite, nonatomic) NSUInteger index;
+
+/// Distance (in pixels) of the segment's starting point from the stroke's starting point.
+@property (readwrite, nonatomic) CGFloat distanceFromStart;
+
+/// Approximated length of the segment.
+@property (readwrite, nonatomic) CGFloat length;
 
 /// Starting point of the segment.
-@property (strong, nonatomic) LTPainterPoint *startPoint;
+@property (strong, readwrite, nonatomic) LTPainterPoint *startPoint;
 
 /// Ending point of the segment.
 @property (strong, nonatomic) LTPainterPoint *endPoint;
@@ -36,15 +40,12 @@
 static const NSUInteger kNumSamplesForLengthEstimation = 500;
 
 - (instancetype)initWithSegmentIndex:(NSUInteger)index
-                           zoomScale:(CGFloat)zoomScale
                    distanceFromStart:(CGFloat)distance
              andInterpolationRoutine:(LTInterpolationRoutine *)routine {
   if (self = [super init]) {
     LTParameterAssert(routine);
-    LTParameterAssert(zoomScale > 0);
     LTParameterAssert(distance >= 0);
     self.index = index;
-    self.zoomScale = zoomScale;
     self.distanceFromStart = distance;
     self.routine = routine;
     self.startPoint = [routine valueAtKey:0];

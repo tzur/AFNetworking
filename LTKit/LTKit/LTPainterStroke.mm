@@ -73,9 +73,9 @@
         CGPointDistance(point.contentPosition,
                         [self.controlPoints[self.controlPoints.count - 2] contentPosition]);
   }
+
   LTPainterStrokeSegment *segment =
       [[LTPainterStrokeSegment alloc] initWithSegmentIndex:self.mutableSegments.count
-                                                 zoomScale:[keyPoints.firstObject zoomScale]
                                          distanceFromStart:distanceOnSegmentStart
                                    andInterpolationRoutine:routine];
 
