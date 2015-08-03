@@ -254,8 +254,7 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
     }
   }
 
-  NSDictionary *result = @{@instanceKeypath(LTBrushRandomState, states): [randomStates copy]};
-  return [LTBrushRandomState modelWithDictionary:result error:nil];
+  return [[LTBrushRandomState alloc] initWithStates:randomStates];
 }
 
 - (void)setRandomState:(LTBrushRandomState *)randomState {

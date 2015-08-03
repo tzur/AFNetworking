@@ -11,15 +11,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTBrushRandomState (LTBrush)
 
+#pragma mark -
+#pragma mark Factory methods
+#pragma mark -
+
 + (instancetype)randomStateWithSeed:(NSUInteger)seed forBrush:(LTBrush *)brush {
   LTBrushRandomState *brushRandomState = brush.randomState;
   LTRandomState *randomState = [[LTRandom alloc] initWithSeed:seed].engineState;
   NSMutableDictionary *states = [brushRandomState.states mutableCopy];
-  for (NSString *key in states) {
-    [states setValue:randomState forKey:key];
+  [self setValuesOfDictionary:states toValue:randomState];
+  return [[LTBrushRandomState alloc] initWithStates:states];
+}
+
+#pragma mark -
+#pragma mark Auxiliary methods
+#pragma mark -
+
++ (void)setValuesOfDictionary:(NSMutableDictionary *)dictionary toValue:(id)value {
+  NSArray *keys = dictionary.allKeys;
+  for (id key in keys) {
+    [dictionary setObject:value forKey:key];
   }
-  NSDictionary *result = @{@instanceKeypath(LTBrushRandomState, states): [states copy]};
-  return [LTBrushRandomState modelWithDictionary:result error:nil];
 }
 
 @end
