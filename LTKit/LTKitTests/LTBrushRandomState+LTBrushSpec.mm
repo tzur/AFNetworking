@@ -1,9 +1,11 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTBrush.h"
-#import "LTBrushRandomState.h"
 #import "LTBrushRandomState+LTBrush.h"
+
+#import "LTBrush.h"
+#import "LTBrushColorDynamicsEffect.h"
+#import "LTBrushRandomState.h"
 #import "LTRandom.h"
 
 LTSpecBegin(LTBrushRandomState_LTBrush)
@@ -12,6 +14,7 @@ context(@"factory methods", ^{
   it(@"should return an instance with the correct seed", ^{
     NSUInteger seed = 0;
     LTBrush *brush = [[LTBrush alloc] init];
+    brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];
     LTBrushRandomState *randomState = [LTBrushRandomState randomStateWithSeed:seed forBrush:brush];
     expect(randomState).toNot.beNil();
     LTRandomState *expectedState = [[LTRandom alloc] initWithSeed:seed].engineState;
