@@ -85,7 +85,7 @@ context(@"shapes", ^{
     it(@"should add path", ^{
       id shape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       expect(shape).to.beKindOf([LTShapeDrawerPathShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerPathShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(kRotationAngle);
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
@@ -116,7 +116,7 @@ context(@"shapes", ^{
     it(@"should add triangular mesh", ^{
       id shape = [drawer addTriangularMeshWithTranslation:kTranslation rotation:kRotationAngle];
       expect(shape).to.beKindOf([LTShapeDrawerTriangularMeshShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerTriangularMeshShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(kRotationAngle);
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
@@ -143,7 +143,7 @@ context(@"shapes", ^{
           [LTRotatedRect rectWithCenter:kTranslation size:kSize angle:kRotationAngle];
       id shape = [drawer addEllipseInRotatedRect:rect];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerEllipticShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(kRotationAngle);
       expect([(LTShapeDrawerEllipticShape *)shape size]).to.equal(kSize);
       expect([(LTShapeDrawerEllipticShape *)shape filled]).to.beFalsy();
@@ -156,7 +156,7 @@ context(@"shapes", ^{
           [LTRotatedRect rectWithCenter:kTranslation size:kSize angle:kRotationAngle];
       id shape = [drawer fillEllipseInRotatedRect:rect];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerEllipticShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(kRotationAngle);
       expect([(LTShapeDrawerEllipticShape *)shape size]).to.equal(kSize);
       expect([(LTShapeDrawerEllipticShape *)shape filled]).to.beTruthy();
@@ -167,7 +167,7 @@ context(@"shapes", ^{
     it(@"should add circle", ^{
       id shape = [drawer addCircleWithCenter:kTranslation radius:kRadius];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerEllipticShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(0);
       expect([(LTShapeDrawerEllipticShape *)shape size]).to.equal(CGSizeMakeUniform(2 * kRadius));
       expect([(LTShapeDrawerEllipticShape *)shape filled]).to.beFalsy();
@@ -178,7 +178,7 @@ context(@"shapes", ^{
     it(@"should fill circle", ^{
       id shape = [drawer fillCircleWithCenter:kTranslation radius:kRadius];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
-      expect([shape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerEllipticShape *)shape translation]).to.equal(kTranslation);
       expect([shape rotationAngle]).to.equal(0);
       expect([(LTShapeDrawerEllipticShape *)shape size]).to.equal(CGSizeMakeUniform(2 * kRadius));
       expect([(LTShapeDrawerEllipticShape *)shape filled]).to.beTruthy();
@@ -235,10 +235,10 @@ context(@"shapes", ^{
       id firstShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       id secondShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       [drawer updateShape:firstShape setTranslation:CGPointZero];
-      expect([firstShape translation]).to.equal(CGPointZero);
-      expect([secondShape translation]).notTo.equal(CGPointZero);
+      expect([(LTShapeDrawerPathShape *)firstShape translation]).to.equal(CGPointZero);
+      expect([(LTShapeDrawerPathShape *)secondShape translation]).notTo.equal(CGPointZero);
       [drawer updateShape:secondShape setTranslation:CGPointZero];
-      expect([secondShape translation]).to.equal(CGPointZero);
+      expect([(LTShapeDrawerPathShape *)secondShape translation]).to.equal(CGPointZero);
     });
     
     it(@"should update rotation of shape", ^{
@@ -256,7 +256,7 @@ context(@"shapes", ^{
       [drawer removeShape:firstShape];
       [drawer updateShape:firstShape setTranslation:CGPointZero];
       [drawer updateShape:firstShape setRotation:0];
-      expect([firstShape translation]).to.equal(kTranslation);
+      expect([(LTShapeDrawerPathShape *)firstShape translation]).to.equal(kTranslation);
       expect([firstShape rotationAngle]).to.equal(kRotationAngle);
     });
   });
