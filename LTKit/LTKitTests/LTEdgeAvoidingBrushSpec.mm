@@ -7,6 +7,7 @@
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTRoundBrushSpec.h"
 #import "LTTexture+Factory.h"
@@ -350,8 +351,7 @@ context(@"edge avoiding drawing", ^{
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
   
   beforeEach(^{
-    cv::Mat4b inputMat(kOutputSize.height, kOutputSize.width);
-    inputMat = cv::Vec4b(0, 0, 0, 255);
+    cv::Mat4b inputMat(kOutputSize.height, kOutputSize.width, cv::Vec4b(0, 0, 0, 255));
     similarSubrect = CGRectMake(kOutputSize.width / 4, kOutputSize.height / 4,
                                 kOutputSize.width / 2, kOutputSize.height / 2);
     inputMat(LTCVRectWithCGRect(similarSubrect)).setTo(255);
@@ -442,6 +442,28 @@ context(@"edge avoiding drawing", ^{
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expect($(output.image)).to.beCloseToMatWithin($(maxSigma), 5);
+  });
+
+  context(@"blending mode", ^{
+    beforeEach(^{
+      [fbo clearWithColor:LTVector4(LTVector3Zero, 1)];
+      brush.mode = LTRoundBrushModeBlend;
+    });
+
+    it(@"should blend with edge avoiding effect", ^{
+      cv::Mat4b inputMat(kOutputSize.height, kOutputSize.width, cv::Vec4b(0, 0, 0, 255));
+      similarSubrect = CGRectMake(kOutputSize.width / 2 + 1, kOutputSize.height / 2 + 1,
+                                  kOutputSize.width / 2 - 1, kOutputSize.height / 2 - 1);
+      inputMat(LTCVRectWithCGRect(similarSubrect)).setTo(255);
+      inputTexture = [LTTexture textureWithImage:inputMat];
+      brush.inputTexture = inputTexture;
+      brush.sigma = brush.minSigma;
+      expected = LTLoadMat([self class], @"EdgeAvoiding.png");
+
+      [brush startNewStrokeAtPoint:point];
+      [brush drawPoint:point inFramebuffer:fbo];
+      expect($(output.image)).to.beCloseToMat($(expected));
+    });
   });
 });
 
