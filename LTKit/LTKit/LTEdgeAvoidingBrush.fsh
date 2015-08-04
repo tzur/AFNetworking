@@ -71,7 +71,7 @@ void main() {
     gl_FragColor = clamp(max(previousColor - flow * newColor, -opacity), vec4(-1.0), previousColor);
   } else if (mode == kModeBlend) {
     highp vec4 newColor = intensity;
-    newColor.a = min(newColor.a * flow * brush, opacity);
+    newColor.a = min(factor * newColor.a * flow * brush, opacity);
     normalNonPremultiplied(newColor, previousColor);
   } else {
     // Default mode is LTRoundBrushModePaint: regular painting.
