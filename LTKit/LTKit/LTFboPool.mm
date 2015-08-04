@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Represents the texture and its level which is bound to a framebuffer.
 @interface LTFboBindPair : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes a new bind pair with the texture's name and the level the framebuffer is bound to.
 - (instancetype)initWithName:(GLuint)name andLevel:(NSUInteger)level NS_DESIGNATED_INITIALIZER;
 
@@ -23,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation LTFboBindPair
+
+- (instancetype)init {
+  return nil;
+}
 
 - (instancetype)initWithName:(GLuint)name andLevel:(NSUInteger)level {
   if (self = [super init]) {

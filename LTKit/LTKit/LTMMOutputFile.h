@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// can be truncated upon destruction.
 @interface LTMMOutputFile : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Creates a new memory mapped output file. The output file is created in the given \c path with
 /// the given \c size and \c mode. If the file already exists, it will be overwritten (if
 /// permissions allow so).

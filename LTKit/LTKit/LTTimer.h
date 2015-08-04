@@ -3,9 +3,14 @@
 
 #import "LTTypedefs.h"
 
+@protocol LTTimeProvider;
+
 /// Class used for timing blocks of code using a high-precision timer which is independent on a
 /// runloop (such as \c NSTimer).
 @interface LTTimer : NSObject
+
+/// Initializes a new timer with the given time provider.
+- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
 
 /// Returns the time took to execute the given block.
 + (CFTimeInterval)timeForBlock:(LTVoidBlock)block;
@@ -31,12 +36,5 @@
 /// Returns the current time in seconds. The time is relative to a fixed time point, which can be
 /// different than the Epoch (for example, the device uptime in seconds).
 - (CFTimeInterval)currentTime;
-
-@end
-
-@interface LTTimer (ForTesting)
-
-/// Initializes a new timer with the given time provider.
-- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider;
 
 @end

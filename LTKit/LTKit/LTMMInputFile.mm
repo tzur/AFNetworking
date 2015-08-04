@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTMMInputFile
 
+- (instancetype)init {
+  return nil;
+}
+
 - (instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
     self.path = path;

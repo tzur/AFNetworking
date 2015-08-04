@@ -10,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Apply JPEG compression on images. User can define the compression \c quality.
 @interface LTImageJPEGCompressor : NSObject <LTImageCompression>
 
+/// Initialize \c LTImageJPEGCompressor with \c defaultQuality.
+- (instancetype)init;
+
 /// Initialize \c LTImageJPEGCompressor with \c quality in the range of \c [0, 1], where \c 1 means
 /// maximal storage and best quality and value of \c 0 means minimal storage but lowest quality.
 - (instancetype)initWithQuality:(CGFloat)quality NS_DESIGNATED_INITIALIZER;

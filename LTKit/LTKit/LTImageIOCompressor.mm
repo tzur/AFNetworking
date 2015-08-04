@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTImageIOCompressor
 
+- (instancetype)init {
+  return nil;
+}
+
 - (instancetype)initWithOptions:(nullable NSDictionary *)options UTI:(CFStringRef)UTI {
   LTParameterAssert(UTI);
   if (self = [super init]) {

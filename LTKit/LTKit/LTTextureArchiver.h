@@ -56,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// texture is provided as the source to archive or target to unarchive into.
 @interface LTTextureArchiver : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes the archiver with the given \c storage and the documents directory of the app as its
 /// base directory.
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage;

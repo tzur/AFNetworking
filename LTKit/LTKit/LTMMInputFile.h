@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Represents a memory mapped input file, which allows a read only access to its contents.
 @interface LTMMInputFile : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Creates a new memory mapped input file. The input file is based on the file that found in the
 /// given \c path with.
 ///
