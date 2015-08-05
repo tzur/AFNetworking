@@ -6,17 +6,20 @@
 #import "LTBrush.h"
 #import "LTCGExtensions.h"
 #import "LTFbo.h"
+#import "LTMathUtils.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTPainterStrokeSegment.h"
+#import "LTPropertyMacros.h"
 #import "LTRectDrawer.h"
+#import "LTSlidingWindowFilter.h"
 #import "LTTouchCollector.h"
 #import "LTTouchCollectorDistanceFilter.h"
 #import "LTTouchCollectorFilter.h"
 #import "LTTouchCollectorTimeIntervalFilter.h"
 
 #pragma mark -
-#pragma mark Protected Properties
+#pragma mark LTPainter+LTView
 #pragma mark -
 
 @interface LTPainter ()
@@ -29,13 +32,9 @@
 - (LTFbo *)fboForPainting;
 - (void)mergeStrokeCanvasWithPainterCanvasIfNecessary;
 
-@end
-
 #pragma mark -
 #pragma mark Category Properties
 #pragma mark -
-
-@interface LTPainter ()
 
 /// Touch collector used for receiving touch events from an \c LTView.
 @property (readonly, nonatomic) LTTouchCollector *touchCollector;
@@ -45,6 +44,9 @@
 
 /// Last point that was actually painted (not necessarily the ending point of the last segment).
 @property (strong, nonatomic) LTPainterPoint *lastDrawnPoint;
+
+/// Used for generating smoother transitions of the touch radiuses during a stroke.
+@property (strong, nonatomic) LTSlidingWindowFilter *touchRadiusFilter;
 
 @end
 
@@ -122,7 +124,21 @@
   if ([self.delegate respondsToSelector:@selector(alternativeZoomScale)]) {
     newPoint.zoomScale = [self.delegate alternativeZoomScale];
   }
+
+  [self createTouchRadiusFilterIfNeeded];
+  newPoint.touchRadius = [self.touchRadiusFilter pushValueAndFilter:point.touchRadius];
   return newPoint;
+}
+
+static const NSUInteger kTouchRadiusFilterWindowSize = 11;
+static const CGFloat kTouchRadiusFilterSigma = 5;
+
+- (void)createTouchRadiusFilterIfNeeded {
+  if (!self.touchRadiusFilter) {
+    CGFloats kernel = LTCreateHalfGaussian(kTouchRadiusFilterWindowSize - 1,
+                                           kTouchRadiusFilterSigma);
+    self.touchRadiusFilter = [[LTSlidingWindowFilter alloc] initWithKernel:kernel];
+  }
 }
 
 #pragma mark -
@@ -133,6 +149,7 @@
   if ([self.delegate respondsToSelector:@selector(ltPainterWillBeginStroke:)]) {
     [self.delegate ltPainterWillBeginStroke:self];
   }
+
   self.currentStroke =
       [[LTPainterStroke alloc]
        initWithInterpolationRoutineFactory:self.brush.splineFactory ?: self.splineFactory
@@ -142,6 +159,7 @@
 
 - (void)endStroke {
   [self.mutableStrokes addObject:self.currentStroke];
+  [self.touchRadiusFilter clear];
   self.lastDrawnPoint = nil;
   self.currentStroke = nil;
   [self mergeStrokeCanvasWithPainterCanvasIfNecessary];
@@ -154,40 +172,18 @@
 #pragma mark Category Properties
 #pragma mark -
 
-- (id<LTPainterDelegate>)delegate {
-  return objc_getAssociatedObject(self, @selector(delegate));
-}
+LTCategoryProperty(LTPainterPoint *, lastDrawnPoint, LastDrawnPoint);
+LTCategoryProperty(LTPainterStroke *, currentStroke, CurrentStroke);
+LTCategoryProperty(LTTouchCollector *, touchCollector, TouchCollector);
+LTCategoryProperty(LTSlidingWindowFilter *, touchRadiusFilter, TouchRadiusFilter);
+LTCategoryWeakProperty(LTTouchCollector *, delegate, Delegate);
 
-- (void)setDelegate:(id<LTPainterDelegate>)delegate {
-  objc_setAssociatedObject(self, @selector(delegate), delegate, OBJC_ASSOCIATION_ASSIGN);
-}
-
-- (LTPainterPoint *)lastDrawnPoint {
-  return objc_getAssociatedObject(self, @selector(lastDrawnPoint));
-}
-
-- (void)setLastDrawnPoint:(LTPainterPoint *)lastDrawnPoint {
-  objc_setAssociatedObject(self, @selector(lastDrawnPoint), lastDrawnPoint,
-                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (LTPainterStroke *)currentStroke {
-  return objc_getAssociatedObject(self, @selector(currentStroke));
-}
-
-- (void)setCurrentStroke:(LTPainterStroke *)currentStroke {
-  objc_setAssociatedObject(self, @selector(currentStroke), currentStroke,
-                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (LTTouchCollector *)touchCollector {
-  LTTouchCollector *touchCollector = objc_getAssociatedObject(self, @selector(touchCollector));
-  if (!touchCollector) {
-    touchCollector = [self createTouchCollector];
-    objc_setAssociatedObject(self, @selector(touchCollector), touchCollector,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (id<LTViewTouchDelegate>)touchDelegateForLTView {
+  if (!self.touchCollector) {
+    self.touchCollector = [self createTouchCollector];
   }
-  return touchCollector;
+
+  return self.touchCollector;
 }
 
 - (LTTouchCollector *)createTouchCollector {
@@ -206,10 +202,6 @@ static const CGFloat kMinimalTimeIntervalForDefaultFilter = 0.3;
                   filterWithMinimalTimeInterval:kMinimalTimeIntervalForDefaultFilter],
               [LTTouchCollectorDistanceFilter
                   filterWithMinimalScreenDistance:kMinimalScreenDistanceForDefaultFilter]]];
-}
-
-- (id<LTViewTouchDelegate>)touchDelegateForLTView {
-  return self.touchCollector;
 }
 
 @end
