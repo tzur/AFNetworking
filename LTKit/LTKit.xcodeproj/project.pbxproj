@@ -5345,7 +5345,6 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/images/opencv",
 					"$(SRCROOT)/../third_party/utils/objection",
@@ -5406,7 +5405,6 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/images/opencv",
 					"$(SRCROOT)/../third_party/utils/objection",
@@ -5465,11 +5463,7 @@
 		8B3DEC0B18296B6100EA0C1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(SRCROOT)/../third_party/images/opencv",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5497,11 +5491,7 @@
 		8B3DEC0C18296B6100EA0C1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(SRCROOT)/../third_party/images/opencv",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
