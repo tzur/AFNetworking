@@ -169,9 +169,10 @@ static const CGFloat kMaskDownscalingFactor = 4;
     _center = center;
     return;
   }
-  LTParameterAssert(center.x >= 0 && center.y >= 0 && center.x < self.inputSize.width &&
-                    center.y < self.inputSize.height,
-                    @"Center should be inside the bounds of the input texture");
+  LTParameterAssert(center.x >= 0 && center.y >= 0 && center.x <= self.inputSize.width &&
+                    center.y <= self.inputSize.height,
+                    @"Center %@ appears to be outside the bounds of the input texture %@",
+                    NSStringFromLTVector2(center), NSStringFromCGSize(self.inputSize));
   _center = center;
   self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
   [self setNeedsDualMaskUpdate];

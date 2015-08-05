@@ -72,12 +72,6 @@ context(@"properties", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should fail on out of bounds center", ^{
-    expect(^{
-      processor.center = LTVector2(2, 2);
-    }).to.raise(NSInvalidArgumentException);
-  });
-  
   it(@"should not fail on correct tone input", ^{
     expect(^{
       processor.fuzziness = -1.0;
@@ -86,6 +80,58 @@ context(@"properties", ^{
       processor.contrast = -1.0;
       processor.hue = 1.0;
     }).toNot.raiseAny();
+  });
+
+  context(@"setting mask center", ^{
+    beforeEach(^{
+      cv::Mat4b inputImage = cv::Mat4b(2, 2, cv::Vec4b(128, 64, 255, 255));
+      inputImage(1, 1) = cv::Vec4b(255, 255, 255, 255);
+      input = [LTTexture textureWithImage:inputImage];
+      output = [LTTexture textureWithPropertiesOf:input];
+      processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+    });
+
+    it(@"should fail on out of bounds center", ^{
+      expect(^{
+        processor.center = LTVector2(-1, -1);
+      }).to.raise(NSInvalidArgumentException);
+
+      expect(^{
+        processor.center = LTVector2(std::nextafter(0.0f, -1.0f), 0);
+      }).to.raise(NSInvalidArgumentException);
+
+      expect(^{
+        processor.center = LTVector2(3, 3);
+      }).to.raise(NSInvalidArgumentException);
+
+      expect(^{
+        processor.center = LTVector2(1, std::nextafter(2.0f, 3.0f));
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should allow center inside image bounds", ^{
+      expect(^{
+        processor.center = LTVector2Zero;
+      }).toNot.raiseAny();
+
+      expect(^{
+        processor.center = LTVector2(2, 2);
+      }).toNot.raiseAny();
+    });
+
+    it(@"should select the target color correctly", ^{
+      processor.center = LTVector2Zero;
+      expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
+
+      processor.center = LTVector2(0.5, 0.5);
+      expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
+
+      processor.center = LTVector2One;
+      expect(processor.rangeColor).to.equal(LTVector3(1, 1, 1));
+
+      processor.center = LTVector2(2, 2);
+      expect(processor.rangeColor).to.equal(LTVector3(1, 1, 1));
+    });
   });
 });
 
