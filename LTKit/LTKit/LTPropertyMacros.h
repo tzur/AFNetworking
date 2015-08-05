@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#import "LTWeakContainer.h"
 #import "NSNumber+CGFloat.h"
 
 /// Useful property declaration and implementation macros.
@@ -18,6 +19,19 @@
   } \
   - (void)set##Name:(type)name { \
     objc_setAssociatedObject(self, @selector(name), name, OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
+  }
+
+/// Implement a \c (weak, \c nonatomic) property in a category, using \c objc/runtime.
+///
+/// @note This macro cannot be used for primitive types.
+/// @note This property will be automatically set to \c nil when the target object is deallocated.
+#define LTCategoryWeakProperty(type, name, Name) \
+  - (type)name { \
+    return [(LTWeakContainer *)objc_getAssociatedObject(self, @selector(name)) object]; \
+  } \
+  - (void)set##Name:(type)name { \
+    objc_setAssociatedObject(self, @selector(name), [[LTWeakContainer alloc] initWithObject:name], \
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
   }
 
 /// Implement a struct primitive property in a category, using \c objc/runtime.

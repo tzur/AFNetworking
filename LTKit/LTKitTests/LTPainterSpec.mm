@@ -14,9 +14,12 @@
 #import "LTTexture+Factory.h"
 #import "LTTouchCollector.h"
 
-static LTPainterPoint *LTPointAt(CGPoint position) {
+static LTPainterPoint *LTPointAt(CGPoint position, CGFloat touchRadius = 0) {
   LTPainterPoint *point = [[LTPainterPoint alloc] init];
   point.contentPosition = position;
+  if (touchRadius) {
+    point.touchRadius = touchRadius;
+  }
   return point;
 }
 
@@ -29,6 +32,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 
 @interface LTPainterStroke ()
 @property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+@property (strong, nonatomic) NSMutableArray *controlPoints;
 @end
 
 LTSpecBegin(LTPainter)
@@ -244,7 +248,67 @@ context(@"painting", ^{
           .to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
       expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
     });
-    
+
+    context(@"touch radius", ^{
+      it(@"should smooth touch radius of collected points during a single stroke", ^{
+        [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero, 1)];
+        for (NSUInteger i = 0; i < 11; ++i) {
+          [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(CGPointZero, 2)];
+        }
+        [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+        NSArray *controlPoints = [painter.lastStroke.controlPoints copy];
+        expect(controlPoints).to.haveCountOf(12);
+        expect([controlPoints.firstObject touchRadius]).to.equal(1);
+        expect([controlPoints.lastObject touchRadius]).to.equal(2);
+        for (NSUInteger i = 1; i + 1 < controlPoints.count; ++i) {
+          expect([controlPoints[i] touchRadius])
+              .to.beGreaterThan([controlPoints[i - 1] touchRadius]);
+        }
+      });
+
+      it(@"should smooth touch radius of points in each stroke independently", ^{
+        [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero, 1)];
+        for (NSUInteger i = 0; i < 11; ++i) {
+          [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(CGPointZero, 2)];
+        }
+        [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+        [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero, 1)];
+        for (NSUInteger i = 0; i < 11; ++i) {
+          [painter ltTouchCollector:touchCollector collectedStrokeTouch:LTPointAt(CGPointZero, 2)];
+        }
+        [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+        NSArray *controlPoints = [painter.lastStroke.controlPoints copy];
+        expect(controlPoints).to.haveCountOf(12);
+        expect([controlPoints.firstObject touchRadius]).to.equal(1);
+        expect([controlPoints.lastObject touchRadius]).to.equal(2);
+        for (NSUInteger i = 1; i + 1 < controlPoints.count; ++i) {
+          expect([controlPoints[i] touchRadius])
+              .to.beGreaterThan([controlPoints[i - 1] touchRadius]);
+        }
+      });
+
+      it(@"should smooth touch radius of points collected on timer events", ^{
+        painter.airbrush = YES;
+        [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero, 1)];
+        for (NSUInteger i = 0; i < 11; ++i) {
+          [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(CGPointZero, 2)];
+        }
+        [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
+
+        NSArray *controlPoints = [painter.lastStroke.controlPoints copy];
+        expect(controlPoints).to.haveCountOf(12);
+        expect([controlPoints.firstObject touchRadius]).to.equal(1);
+        expect([controlPoints.lastObject touchRadius]).to.equal(2);
+        for (NSUInteger i = 1; i + 1 < controlPoints.count; ++i) {
+          expect([controlPoints[i] touchRadius])
+              .to.beGreaterThan([controlPoints[i - 1] touchRadius]);
+        }
+      });
+    });
+
     context(@"delegate", ^{
       __block id delegate;
       

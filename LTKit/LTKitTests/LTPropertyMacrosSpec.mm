@@ -63,6 +63,7 @@ LTPropertyProxyWithoutSetter(CGFloat, customProxyProperty, CustomProxyProperty,
 
 @interface TestClass (TestCategory)
 @property (strong, nonatomic) NSString *categoryString;
+@property (weak, nonatomic) id categoryWeakObject;
 @property (nonatomic) BOOL categoryBool;
 @property (nonatomic) CGFloat categoryFloat;
 @property (nonatomic) NSInteger categoryInteger;
@@ -72,6 +73,7 @@ LTPropertyProxyWithoutSetter(CGFloat, customProxyProperty, CustomProxyProperty,
 
 @implementation TestClass (TestCategory)
 LTCategoryProperty(NSString *, categoryString, CategoryString);
+LTCategoryWeakProperty(id, categoryWeakObject, CategoryWeakObject);
 LTCategoryBoolProperty(categoryBool, CategoryBool);
 LTCategoryCGFloatProperty(categoryFloat, CategoryFloat);
 LTCategoryIntegerProperty(categoryInteger, CategoryInteger);
@@ -221,6 +223,20 @@ context(@"category properties", ^{
     expect(testObject.categoryString).to.equal(@"1");
     testObject.categoryString = nil;
     expect(testObject.categoryString).to.beNil();
+  });
+
+  it(@"should set and get weak string property", ^{
+    @autoreleasepool {
+      id object = [[NSObject alloc] init];
+      expect(testObject.categoryWeakObject).to.beNil();
+      testObject.categoryWeakObject = object;
+      expect(testObject.categoryWeakObject).to.beIdenticalTo(object);
+      testObject.categoryWeakObject = nil;
+      expect(testObject.categoryWeakObject).to.beNil();
+      testObject.categoryWeakObject = object;
+      expect(testObject.categoryWeakObject).to.beIdenticalTo(object);
+    }
+    expect(testObject.categoryWeakObject).to.beNil();
   });
 
   it(@"should set and get boolean property", ^{
