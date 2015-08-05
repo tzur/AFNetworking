@@ -3,11 +3,11 @@
 
 #import "EXPMatchers+beCloseToGLKVector.h"
 
-#import <EXPFloatTuple.h>
-#import <EXPDoubleTuple.h>
+#import <Expecta/EXPDoubleTuple.h>
+#import <Expecta/EXPFloatTuple.h>
+#import <Expecta/NSValue+Expecta.h>
 
 #import "LTGLKitExtensions.h"
-#import "NSValue+Expecta.h"
 
 static const double kDefaultWithinValue = 1e-6;
 

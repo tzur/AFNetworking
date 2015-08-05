@@ -3,7 +3,7 @@
 
 #import "NSValue+OpenCVExtensions.h"
 
-#import "NSValue+Expecta.h"
+#import <Expecta/NSValue+Expecta.h>
 
 @interface LTMatRetainer : NSObject {
   cv::Mat _mat;
