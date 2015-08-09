@@ -34,8 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return (self.progress || [self.progress isEqual:object.progress]) &&
-      (self.result || [self.result isEqual:object.result]);
+  return (self.progress == object.progress || [self.progress isEqual:object.progress]) &&
+      (self.result == object.result || [self.result isEqual:object.result]);
 }
 
 - (NSUInteger)hash {
@@ -43,8 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  NSString *value = self.progress ? self.progress.stringValue : [self.result description];
-  return [NSString stringWithFormat:@"<%@: %p> %@", self.class, self, value];
+  NSString *value = self.progress ? [NSString stringWithFormat:@"progress: %@", self.progress] :
+      [NSString stringWithFormat:@"result: %@", self.result];
+  return [NSString stringWithFormat:@"<%@: %p, %@>", self.class, self, value];
 }
 
 @end
