@@ -488,6 +488,7 @@
 				8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */,
 				8B2FD08F1B01059B00757B1F /* PTNPhotoKitFetcher.h */,
 				8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */,
+				8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */,
 				8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */,
 				8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */,
 			);
