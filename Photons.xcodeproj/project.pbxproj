@@ -70,6 +70,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8B5619631B65420F006B0DA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
 		8BAFDCAD1B0DED5D003FB8F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B2FD0161AF9F79000757B1F /* Project object */;
@@ -616,6 +623,7 @@
 				8BAFE2A41B0E0C7F003FB8F5 /* OCMockTests.xctest */,
 				8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */,
 				8BAFE2A81B0E0C7F003FB8F5 /* OCMockLibTests.xctest */,
+				8B5619641B65420F006B0DA0 /* OCMock.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -749,6 +757,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8B5619641B65420F006B0DA0 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B5619631B65420F006B0DA0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8BAFE25E1B0E0B70003FB8F5 /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
