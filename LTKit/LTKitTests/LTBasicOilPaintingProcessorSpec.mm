@@ -72,7 +72,7 @@ context(@"processing", ^{
   });
 
   it(@"should process rectangular image", ^{
-    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.png")];
     output = [LTTexture byteRGBATextureWithSize:input.size];
     processor = [[LTBasicOilPaintingProcessor alloc] initWithInputTexture:input
                                                             outputTexture:output];

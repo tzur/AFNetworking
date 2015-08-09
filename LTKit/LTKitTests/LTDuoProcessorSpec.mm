@@ -148,7 +148,7 @@ context(@"blending modes", ^{
 
 context(@"processing", ^{
   beforeEach(^{
-    input = [LTTexture textureWithImage:LTLoadMat([self class], @"SanFrancisco.jpg")];
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"SanFrancisco.png")];
     CGSize outputSize = input.size * 0.1;
     output = [LTTexture byteRGBATextureWithSize:std::round(outputSize)];
     processor = [[LTDuoProcessor alloc] initWithInput:input output:output];
@@ -170,7 +170,7 @@ context(@"processing", ^{
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
   
-  sit(@"should apply only blue color", ^{
+  sit(@"should apply only red color", ^{
     processor.blueColor = LTVector4(0.0, 0.2, 0.3, 0.0);
     processor.redColor = LTVector4(0.6, 0.5, 0.2, 0.75);
     processor.spread = -1.0;

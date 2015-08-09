@@ -59,7 +59,7 @@ context(@"small inputs", ^{
 
 context(@"rendering", ^{
   beforeEach(^{
-    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.jpg")];
+    input = [LTTexture textureWithImage:LTLoadMat([self class], @"Island.png")];
     output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.1)];
     processor = [[LTTiltShiftProcessor alloc] initWithInput:input output:output];
   });
