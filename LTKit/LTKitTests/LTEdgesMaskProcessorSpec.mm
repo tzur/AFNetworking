@@ -14,7 +14,7 @@ __block LTTexture *output;
 __block LTEdgesMaskProcessor *processor;
 
 beforeEach(^{
-  input = [LTTexture textureWithImage:LTLoadMat([self class], @"MacbethSmall.jpg")];
+  input = [LTTexture textureWithImage:LTLoadMat([self class], @"MacbethSmall.png")];
 });
 
 afterEach(^{

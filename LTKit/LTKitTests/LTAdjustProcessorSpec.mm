@@ -478,7 +478,7 @@ context(@"processing", ^{
   });
 
   sit(@"should create correct conversion of luminance, color, details and split-tone", ^{
-    LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.jpg")];
+    LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.png")];
     LTTexture *output = [LTTexture textureWithPropertiesOf:input];
     
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
