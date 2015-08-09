@@ -36,6 +36,13 @@
   return [self initWithTimeProvider:[[LTDefaultTimeProvider alloc] init]];
 }
 
+- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider {
+  if (self = [super init]) {
+    self.timeProvider = timeProvider;
+  }
+  return self;
+}
+
 + (CFTimeInterval)timeForBlock:(LTVoidBlock)block {
   LTParameterAssert(block);
 
@@ -76,17 +83,6 @@
   self.isRunning = NO;
 
   return timeElapsed;
-}
-
-@end
-
-@implementation LTTimer (ForTesting)
-
-- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider {
-  if (self = [super init]) {
-    self.timeProvider = timeProvider;
-  }
-  return self;
 }
 
 @end

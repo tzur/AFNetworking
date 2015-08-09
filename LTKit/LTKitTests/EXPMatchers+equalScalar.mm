@@ -3,8 +3,9 @@
 
 #import "EXPMatchers+equalScalar.h"
 
+#import <Expecta/NSValue+Expecta.h>
+
 #import "LTTestUtils.h"
-#import "NSValue+Expecta.h"
 #import "NSValue+OpenCVExtensions.h"
 
 EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {

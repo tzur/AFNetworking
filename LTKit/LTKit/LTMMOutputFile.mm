@@ -24,6 +24,10 @@
 
 @implementation LTMMOutputFile
 
+- (instancetype)init {
+  return nil;
+}
+
 - (instancetype)initWithPath:(NSString *)path size:(size_t)size mode:(mode_t)mode
                        error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {

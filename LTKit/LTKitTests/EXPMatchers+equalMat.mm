@@ -3,8 +3,9 @@
 
 #import "EXPMatchers+equalMat.h"
 
+#import <Expecta/NSValue+Expecta.h>
+
 #import "LTTestUtils.h"
-#import "NSValue+Expecta.h"
 #import "NSValue+OpenCVExtensions.h"
 
 EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {

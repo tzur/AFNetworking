@@ -10,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// via \c options dictionary.
 @interface LTImageIOCompressor : NSObject <LTImageCompression>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes a new \c LTImageIOCompressor with compression \c options and \c UTI, which specifies
 /// the output compression format. The \c options an optional dictionary which is passed to
 /// ImageIO \c CGImageDestinationAddImage or \c CGImageDestinationAddImageFromSource to effect the

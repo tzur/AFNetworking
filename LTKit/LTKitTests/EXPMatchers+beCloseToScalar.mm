@@ -3,8 +3,9 @@
 
 #import "EXPMatchers+beCloseToScalar.h"
 
+#import <Expecta/NSValue+Expecta.h>
+
 #import "LTTestUtils.h"
-#import "NSValue+Expecta.h"
 #import "NSValue+OpenCVExtensions.h"
 
 static double LTDefaultRangeForMatType(int type) {

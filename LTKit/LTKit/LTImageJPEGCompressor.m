@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTImageJPEGCompressor
 
+- (instancetype)init {
+  return [self initWithQuality:self.defaultQuality];
+}
+
 - (instancetype)initWithQuality:(CGFloat)quality {
   if (self = [super init]) {
     self.quality = quality;

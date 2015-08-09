@@ -31,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 objection_requires_sel(@selector(fileManager));
 
+- (instancetype)init {
+  return nil;
+}
+
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage {
   return [self initWithStorage:storage baseDirectory:[NSFileManager lt_documentsDirectory]];
 }

@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  #import "Expecta.h"
+  #import <Expecta/Expecta.h>
   #import <OCMock/OCMock.h>
   #import <Specta/Specta.h>
 #ifdef __cplusplus

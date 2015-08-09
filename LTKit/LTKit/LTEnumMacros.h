@@ -194,7 +194,7 @@
     return self; \
   } \
   \
-  - (instancetype)initWithCoder:(NSCoder *)aDecoder {\
+  - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {\
     return [self initWithValue:[[aDecoder decodeObjectForKey:@"value"] NAME##Value]]; \
   } \
   \
@@ -278,7 +278,7 @@
         self.name, (unsigned long)self.value]; \
   } \
   \
-  - (id)copyWithZone:(NSZone __unused *)zone { \
+  - (id)copyWithZone:(nullable NSZone __unused *)zone { \
     return [NAME enumWithValue:self.value]; \
   } \
   \
