@@ -294,9 +294,18 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fetchAssetForObject:object] flattenMap:^(PHAsset *asset) {
     return [self fetchContentForAsset:asset
                            targetSize:targetSize
-                          contentMode:(PHImageContentMode)contentMode
+                          contentMode:[self photoKitContentModeForContentMode:contentMode]
                               options:[options photoKitOptions]];
   }];
+}
+
+- (PHImageContentMode)photoKitContentModeForContentMode:(PTNImageContentMode)contentMode {
+  switch (contentMode) {
+    case PTNImageContentModeAspectFill:
+      return PHImageContentModeAspectFill;
+    case PTNImageContentModeAspectFit:
+      return PHImageContentModeAspectFit;
+  }
 }
 
 - (RACSignal *)fetchContentForAsset:(PHAsset *)asset

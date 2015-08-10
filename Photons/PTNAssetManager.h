@@ -1,8 +1,6 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <Photos/Photos.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNObject;
@@ -12,9 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Options for fitting an image’s aspect ratio to a requested size.
 typedef NS_ENUM(NSUInteger, PTNImageContentMode) {
   /// Scales the image so that its larger dimension fits the target size.
-  PTNImageContentModeAspectFit = PHImageContentModeAspectFit,
+  PTNImageContentModeAspectFit,
   /// Scales the image so that it completely fills the target size.
-  PTNImageContentModeAspectFill = PHImageContentModeAspectFill
+  PTNImageContentModeAspectFill
 };
 
 @protocol PTNAssetManager <NSObject>

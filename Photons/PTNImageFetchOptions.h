@@ -1,30 +1,28 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <Photos/Photos.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Types of available image delivery modes.
 typedef NS_ENUM(NSInteger, PTNImageDeliveryMode) {
   /// Provide the image at the given size and highest quality available, but may take a long time to
   /// load. This is the default mode.
-  PTNImageDeliveryModeHighQuality = PHImageRequestOptionsDeliveryModeHighQualityFormat,
+  PTNImageDeliveryModeHighQuality,
   /// Provide an image quickly, which can be of low-quality.
-  PTNImageDeliveryModeFast = PHImageRequestOptionsDeliveryModeFastFormat,
+  PTNImageDeliveryModeFast,
   /// Provide one or more results in order to balance image quality and responsiveness. In this
   /// option a low-quality image(s) may be provided prior to providing a high-quality one.
-  PTNImageDeliveryModeOpportunistic = PHImageRequestOptionsDeliveryModeOpportunistic
+  PTNImageDeliveryModeOpportunistic
 };
 
 /// Type of available methods to resize an image if the requested image size is not equal to the
 /// size of the original image.
 typedef NS_ENUM(NSInteger, PTNImageResizeMode) {
   /// Image is resized exactly to the requested size.
-  PTNImageResizeModeExact = PHImageRequestOptionsResizeModeExact,
+  PTNImageResizeModeExact,
   /// Image is efficiently resized, producing an image which is similar to or slightly larger than
   /// the requested size.
-  PTNImageResizeModeFast = PHImageRequestOptionsResizeModeFast
+  PTNImageResizeModeFast
 };
 
 /// Value class containing options used while fetching images. Refer to a specific Photons source
