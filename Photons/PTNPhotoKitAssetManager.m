@@ -14,6 +14,7 @@
 #import "PTNPhotoKitObserver.h"
 #import "PTNProgress.h"
 #import "PhotoKit+Photons.h"
+#import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -78,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
   RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
+      subscribeOn:[RACScheduler scheduler]]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           *errorPtr = [NSError ptn_albumNotFound:url];
@@ -97,7 +99,6 @@ NS_ASSUME_NONNULL_BEGIN
           __builtin_unreachable();
         }
       }]
-      subscribeOn:[RACScheduler scheduler]]
       replayLazily];
 
   // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
@@ -129,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
         return changeset;
       }]
       distinctUntilChanged]
-      replayLast];
+      ptn_replayLastLazily];
 
   return self.albumSignals[url];
 }
@@ -222,7 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal return:object];
   } else if ([object isKindOfClass:[PHAssetCollection class]]) {
     return [[self fetchKeyAssetForAssetCollection:(PHAssetCollection *)object]
-            subscribeOn:[RACScheduler scheduler]];
+        subscribeOn:[RACScheduler scheduler]];
   } else {
     return [RACSignal error:[NSError ptn_invalidObject:object]];
   }
