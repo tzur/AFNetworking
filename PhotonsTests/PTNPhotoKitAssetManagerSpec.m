@@ -68,7 +68,10 @@ context(@"album fetching", ^{
     context(@"updates", ^{
       __block id<PTNAlbum> firstAlbum;
       __block id<PTNAlbum> secondAlbum;
+
+      __block id change;
       __block id changeDetails;
+      __block RACSubject *changeSignal;
 
       beforeEach(^{
         id asset = OCMClassMock([PHAsset class]);
@@ -77,26 +80,32 @@ context(@"album fetching", ^{
         changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
         OCMStub([changeDetails fetchResultAfterChanges]).andReturn(newAssets);
 
-        id change = OCMClassMock([PHChange class]);
+        change = OCMClassMock([PHChange class]);
         OCMStub([change changeDetailsForFetchResult:OCMOCK_ANY]).andReturn(changeDetails);
-        OCMStub([observer photoLibraryChanged]).andReturn([RACSignal return:change]);
+
+        changeSignal = [RACReplaySubject subject];
+        OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
 
         firstAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:assets];
         secondAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:newAssets];
       });
 
       it(@"should send new album upon update", ^{
-        expect([manager fetchAlbumWithURL:url]).will.sendValues(@[
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [changeSignal sendNext:change];
+
+        expect(recorder.values).will.equal(@[
           [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
           [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
         ]);
       });
 
       it(@"should send latest album when album observation is already in place", ^{
-        RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [changeSignal sendNext:change];
 
         // Trigger first fetch and wait until two values are returned.
-        expect(albumSignal).will.sendValues(@[
+        expect(recorder.values).will.equal(@[
           [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
           [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
         ]);
@@ -108,17 +117,18 @@ context(@"album fetching", ^{
 
       it(@"should send latest album after all signals have been destroyed", ^{
         @autoreleasepool {
-          RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
+          LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+          [changeSignal sendNext:change];
 
           // Trigger first fetch and wait until two values are returned.
-          expect(albumSignal).will.sendValues(@[
+          expect(recorder.values).will.equal(@[
             [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
             [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
           ]);
         }
 
         expect([manager fetchAlbumWithURL:url]).will.sendValues(@[
-          [PTNAlbumChangeset changesetWithAfterAlbum:secondAlbum],
+          [PTNAlbumChangeset changesetWithAfterAlbum:secondAlbum]
         ]);
       });
     });
@@ -158,7 +168,10 @@ context(@"album fetching", ^{
     context(@"updates", ^{
       __block id<PTNAlbum> firstAlbum;
       __block id<PTNAlbum> secondAlbum;
+
+      __block id change;
       __block id changeDetails;
+      __block RACSubject *changeSignal;
 
       beforeEach(^{
         id firstCollection = OCMClassMock([PHAssetCollection class]);
@@ -168,16 +181,21 @@ context(@"album fetching", ^{
         changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
         OCMStub([changeDetails fetchResultAfterChanges]).andReturn(newAlbums);
 
-        id change = OCMClassMock([PHChange class]);
+        change = OCMClassMock([PHChange class]);
         OCMStub([change changeDetailsForFetchResult:OCMOCK_ANY]).andReturn(changeDetails);
-        OCMStub([observer photoLibraryChanged]).andReturn([RACSignal return:change]);
+
+        changeSignal = [RACReplaySubject subject];
+        OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
 
         firstAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
         secondAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:newAlbums];
       });
 
       it(@"should send new album upon update", ^{
-        expect([manager fetchAlbumWithURL:url]).will.sendValues(@[
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [changeSignal sendNext:change];
+
+        expect(recorder.values).will.equal(@[
           [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
           [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
         ]);
@@ -236,10 +254,16 @@ context(@"asset fetching", ^{
 
     id change = OCMClassMock([PHChange class]);
     OCMStub([change changeDetailsForObject:OCMOCK_ANY]).andReturn(changeDetails);
-    OCMStub([observer photoLibraryChanged]).andReturn([RACSignal return:change]);
+
+    RACSubject *changeSignal = [RACReplaySubject subject];
+    OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
 
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[asset, newAsset]);
+    LLSignalTestRecorder *recorder = [[manager fetchAssetWithURL:url] testRecorder];
+
+    [changeSignal sendNext:change];
+
+    expect(recorder).will.sendValues(@[asset, newAsset]);
   });
 
   it(@"should error on non-existing asset", ^{
