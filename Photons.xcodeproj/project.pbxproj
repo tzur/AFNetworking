@@ -45,6 +45,7 @@
 		8B992CFF1B78A0EE00B7836B /* RACSignal+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */; };
 		8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */; };
 		8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */; };
+		8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
@@ -634,8 +635,8 @@
 				8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
 				8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */,
 				8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */,
-				8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */,
-				8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */,
+				8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */,
+				8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -696,6 +697,7 @@
 				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
 				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
+				8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */,
 				8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */,
 				8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */,
 				8BAFE2F31B0E1CD4003FB8F5 /* NSURL+PhotoKit.h in Headers */,
@@ -874,16 +876,18 @@
 			remoteRef = 8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */ = {
+		8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
+			name = ExpectaTests.xctest;
 			path = libExpectaTests.xctest;
 			remoteRef = 8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */ = {
+		8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
+			name = "Expecta-iOSTests.xctest";
 			path = "libExpecta-iOSTests.xctest";
 			remoteRef = 8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
