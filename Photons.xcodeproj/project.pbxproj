@@ -42,6 +42,9 @@
 		8B5619771B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */; };
 		8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m */; };
 		8B5619971B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */; };
+		8B992CFF1B78A0EE00B7836B /* RACSignal+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */; };
+		8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */; };
+		8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
@@ -326,6 +329,9 @@
 		8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitImageManager.h; sourceTree = "<group>"; };
 		8B5619951B664182006B0DA0 /* PTNPhotoKitFakeImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeImageManager.h; sourceTree = "<group>"; };
 		8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeImageManager.m; sourceTree = "<group>"; };
+		8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Photons.h"; sourceTree = "<group>"; };
+		8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+Photons.m"; sourceTree = "<group>"; };
+		8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+PhotonsSpec.m"; sourceTree = "<group>"; };
 		8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageFetchOptions.h; sourceTree = "<group>"; };
 		8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptions.m; sourceTree = "<group>"; };
 		8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNImageFetchOptions+PhotoKit.h"; sourceTree = "<group>"; };
@@ -594,6 +600,7 @@
 		8B5619611B65420F006B0DA0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */,
 				8B5619651B654227006B0DA0 /* RACStream+PhotonsSpec.m */,
 			);
 			name = Extensions;
@@ -627,8 +634,8 @@
 				8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
 				8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */,
 				8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */,
-				8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */,
-				8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
+				8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */,
+				8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -661,6 +668,8 @@
 		8BAFE3791B14C090003FB8F5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */,
+				8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */,
 				8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */,
 				8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */,
 			);
@@ -679,6 +688,7 @@
 				8B3832181B57D6FE00620560 /* PTNAlbumChangeset.h in Headers */,
 				8B3832321B5B89BD00620560 /* PTNAlbumChangesetMove.h in Headers */,
 				8BAFDCC01B0DF781003FB8F5 /* PTNAssetManager.h in Headers */,
+				8B992CFF1B78A0EE00B7836B /* RACSignal+Photons.h in Headers */,
 				8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */,
 				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
 				8BAFDCC21B0DF781003FB8F5 /* PTNObject.h in Headers */,
@@ -864,18 +874,16 @@
 			remoteRef = 8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2801B0E0BB0003FB8F5 /* ExpectaTests.xctest */ = {
+		8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = ExpectaTests.xctest;
 			path = libExpectaTests.xctest;
 			remoteRef = 8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2821B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */ = {
+		8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = "Expecta-iOSTests.xctest";
 			path = "libExpecta-iOSTests.xctest";
 			remoteRef = 8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -975,6 +983,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m in Sources */,
+				8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */,
 				8B2FD0DB1B09CD0800757B1F /* EXPMatchers+matchValues.m in Sources */,
 				8B2FD0DC1B09CD0800757B1F /* EXPMatchers+sendError.m in Sources */,
 				8B2FD0E41B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m in Sources */,
@@ -1017,6 +1026,7 @@
 				8BAFDCB41B0DEE2B003FB8F5 /* PTNPhotoKitAlbumType.m in Sources */,
 				8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */,
 				8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */,
+				8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */,
 				8BAFDCB51B0DEE2B003FB8F5 /* PTNPhotoKitFetcher.m in Sources */,
 				8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */,
 				8BAFDCB61B0DEE2B003FB8F5 /* PTNPhotoKitObserver.m in Sources */,
