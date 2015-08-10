@@ -14,6 +14,7 @@
 #import "PTNPhotoKitObserver.h"
 #import "PTNProgress.h"
 #import "PhotoKit+Photons.h"
+#import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -129,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
         return changeset;
       }]
       distinctUntilChanged]
-      replayLast];
+      ptn_replayLastLazily];
 
   return self.albumSignals[url];
 }
