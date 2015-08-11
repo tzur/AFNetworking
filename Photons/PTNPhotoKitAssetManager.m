@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dictionary from \c NSURL album urls to their \c RACSignal objects.
 @property (strong, nonatomic) NSMutableDictionary *albumSignals;
 
+/// Queue for accessing the album signals cache in a readers/writers fashion.
+@property (strong, nonatomic) dispatch_queue_t albumSignalsQueue;
+
 @end
 
 @implementation PTNPhotoKitAssetManager
@@ -50,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.imageManager = imageManager;
 
     self.albumSignals = [NSMutableDictionary dictionary];
+    self.albumSignalsQueue = dispatch_queue_create("com.lightricks.Photons.PhotoKit.AlbumSignals",
+                                                   DISPATCH_QUEUE_CONCURRENT);
   }
   return self;
 }
@@ -64,10 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError ptn_invalidURL:url]];
   }
 
-  if (self.albumSignals[url]) {
-    return [self.albumSignals[url] scanWithStart:nil
-                                 reduceWithIndex:^id(id __unused running, PTNAlbumChangeset *next,
-                                                     NSUInteger index) {
+  RACSignal *existingSignal = [self signalForURL:url];
+  if (existingSignal) {
+    return [existingSignal scanWithStart:nil
+                         reduceWithIndex:^id(id __unused running, PTNAlbumChangeset *next,
+                                             NSUInteger index) {
       // Strip previous changes for new subscribers on first value sent.
       if (!index) {
         return [PTNAlbumChangeset changesetWithAfterAlbum:next.afterAlbum];
@@ -78,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
-  RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
+  RACSignal *initialChangeset = [[[[[self fetchFetchResultWithURL:url]
       subscribeOn:[RACScheduler scheduler]]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
@@ -98,6 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
           // TODO:(yaron) assert here.
           __builtin_unreachable();
         }
+      }]
+      doError:^(NSError __unused *error) {
+        [self removeSignalForURL:url];
       }]
       replayLazily];
 
@@ -124,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
       concat];
 
   // Returns the latest \c PTNAlbumChangeset that is produced from the fetch results.
-  self.albumSignals[url] = [[[[RACSignal
+  RACSignal *changeset = [[[[RACSignal
       concat:@[initialChangeset, nextChangeset]]
       reduceEach:^(PHFetchResult __unused *fetchResult, PTNAlbumChangeset *changeset) {
         return changeset;
@@ -132,7 +141,35 @@ NS_ASSUME_NONNULL_BEGIN
       distinctUntilChanged]
       ptn_replayLastLazily];
 
-  return self.albumSignals[url];
+  [self setSignal:changeset forURL:url];
+
+  return changeset;
+}
+
+#pragma mark -
+#pragma mark Album signals cache
+#pragma mark -
+
+- (void)setSignal:(RACSignal *)signal forURL:(NSURL *)url {
+  dispatch_barrier_sync(self.albumSignalsQueue, ^{
+    self.albumSignals[url] = signal;
+  });
+}
+
+- (void)removeSignalForURL:(NSURL *)url {
+  dispatch_barrier_sync(self.albumSignalsQueue, ^{
+    [self.albumSignals removeObjectForKey:url];
+  });
+}
+
+- (RACSignal *)signalForURL:(NSURL *)url {
+  __block RACSignal *signal;
+
+  dispatch_sync(self.albumSignalsQueue, ^{
+    signal = self.albumSignals[url];
+  });
+
+  return signal;
 }
 
 #pragma mark -

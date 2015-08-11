@@ -55,13 +55,35 @@ context(@"album fetching", ^{
     });
 
     context(@"initial value", ^{
-      it(@"should fetch initial results of an album", ^{
+      beforeEach(^{
         OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
+      });
 
+      it(@"should fetch initial results of an album", ^{
         RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:assets];
         expect(albumSignal).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      });
+
+      it(@"should fetch initial value again if there was an error on the first fetch", ^{
+        id otherAssetCollection = OCMClassMock([PHAssetCollection class]);
+        OCMStub([otherAssetCollection localIdentifier]).andReturn(@"bar");
+
+        NSURL *otherURL = [NSURL ptn_photoKitAlbumURLWithCollection:otherAssetCollection];
+        expect([manager fetchAlbumWithURL:otherURL]).will.error();
+
+        NSArray *identifiers = @[@"bar"];
+        NSArray *assetCollections = @[otherAssetCollection];
+        OCMStub([fetcher fetchAssetCollectionsWithLocalIdentifiers:identifiers options:nil]).
+            andReturn(assetCollections);
+        OCMStub([fetcher fetchAssetsInAssetCollection:otherAssetCollection options:nil]).
+            andReturn(assets);
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:otherURL fetchResult:assets];
+        expect([manager fetchAlbumWithURL:otherURL]).will.sendValues(@[
+          [PTNAlbumChangeset changesetWithAfterAlbum:album]
+        ]);
       });
     });
 
