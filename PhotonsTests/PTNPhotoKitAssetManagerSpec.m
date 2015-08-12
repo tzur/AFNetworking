@@ -188,6 +188,61 @@ context(@"album fetching", ^{
         ]);
       });
     });
+
+    context(@"smart album collection updates", ^{
+      __block id albums;
+      __block NSURL *url;
+
+      beforeEach(^{
+        id firstCollection = PTNPhotoKitCreateAssetCollection(@"foo");
+        id secondCollection = PTNPhotoKitCreateAssetCollection(@"bar");
+
+        albums = @[firstCollection, secondCollection];
+        [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeSmartAlbum
+                               andSubtype:PHAssetCollectionSubtypeAny];
+
+        [fetcher registerAssetCollection:firstCollection];
+        [fetcher registerAssetCollection:secondCollection];
+        
+        [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
+            withAssetCollection:firstCollection];
+        [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
+            withAssetCollection:secondCollection];
+
+        PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
+                                      albumTypeWithType:PHAssetCollectionTypeSmartAlbum
+                                      subtype:PHAssetCollectionSubtypeAny];
+        url = [NSURL ptn_photoKitAlbumsWithType:type];
+      });
+
+      it(@"should update smart album collection on subalbum change", ^{
+        id asset = PTNPhotoKitCreateAsset(nil);
+
+        id changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(@[asset]);
+        id change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [observer sendChange:change];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
+        NSIndexSet *emptySet = [NSIndexSet indexSet];
+        expect(recorder.values).will.equal(@[
+          [PTNAlbumChangeset changesetWithAfterAlbum:album],
+          [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                           afterAlbum:album
+                                       removedIndexes:emptySet
+                                      insertedIndexes:emptySet
+                                       updatedIndexes:[NSIndexSet indexSetWithIndex:0]
+                                                moves:@[]],
+          [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                           afterAlbum:album
+                                       removedIndexes:emptySet
+                                      insertedIndexes:emptySet
+                                       updatedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                                moves:@[]]
+        ]);
+      });
+    });
   });
 
   context(@"fetching errors", ^{

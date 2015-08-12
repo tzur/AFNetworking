@@ -110,27 +110,17 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       replayLazily];
 
-  // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
-  // This works by scanning the input stream and producing a stream of streams that contain a single
-  // tuple.
-  RACSignal *nextChangeset = [[self.observer.photoLibraryChanged
-      scanWithStart:initialChangeset reduce:^(RACSignal *previous, PHChange *change) {
-        return [[[previous
-            takeLast:1]
-            reduceEach:^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
-              PHFetchResultChangeDetails *details =
-                  [change changeDetailsForFetchResult:fetchResult];
-              if (details) {
-                PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
-                                                                photoKitChangeDetails:details];
-                return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
-              } else {
-                return RACTuplePack(fetchResult, changeset);
-              }
-            }]
-            replayLazily];
-      }]
-      concat];
+  // Handle smart album collection differently, since they do not recieve \c PHChange notifications
+  // from PhotoKit.
+  RACSignal *nextChangeset;
+  if (url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumType &&
+      url.ptn_photoKitAlbumType.type == PHAssetCollectionTypeSmartAlbum) {
+    nextChangeset = [self nextChangesetForSmartAlbumCollectionWithURL:url
+                                                  andInitialChangeset:initialChangeset];
+  } else {
+    nextChangeset = [self nextChangesetForRegularAlbumWithURL:url
+                                          andInitialChangeset:initialChangeset];
+  }
 
   // Returns the latest \c PTNAlbumChangeset that is produced from the fetch results.
   RACSignal *changeset = [[[[RACSignal
@@ -144,6 +134,68 @@ NS_ASSUME_NONNULL_BEGIN
   [self setSignal:changeset forURL:url];
 
   return changeset;
+}
+
+- (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
+                               andInitialChangeset:(RACSignal *)initialChangeset {
+  // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
+  // This works by scanning the input stream and producing a stream of streams that contain a single
+  // tuple.
+  return [[self.observer.photoLibraryChanged
+        scanWithStart:initialChangeset reduce:^(RACSignal *previous, PHChange *change) {
+          return [[[previous
+              takeLast:1]
+              reduceEach:^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
+                PHFetchResultChangeDetails *details =
+                    [change changeDetailsForFetchResult:fetchResult];
+                if (details) {
+                  PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
+                                                                  photoKitChangeDetails:details];
+                  return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
+                } else {
+                  return RACTuplePack(fetchResult, changeset);
+                }
+              }]
+              replayLazily];
+        }]
+        concat];
+}
+
+- (RACSignal *)nextChangesetForSmartAlbumCollectionWithURL:(NSURL *)url
+                                       andInitialChangeset:(RACSignal *)initialChangeset {
+   return [[initialChangeset reduceEach:^(PHFetchResult *initialFetchResult,
+                                          PTNAlbumChangeset __unused *changeset) {
+     NSMutableArray *signals = [NSMutableArray array];
+
+     // Track changes on each subalbum. For each change fetch the smart album collection
+     // again, and send proper change details with the changed smart album. Assumption is that the
+     // list of albums doesn't change (since it's a smart album fetch result).
+     for (PHAssetCollection *collection in initialFetchResult) {
+       NSURL *subalbumURL = [NSURL ptn_photoKitAlbumURLWithCollection:collection];
+
+       RACSignal *signal = [[[[self fetchAlbumWithURL:subalbumURL]
+           skip:1]
+           flattenMap:^RACStream *(id __unused value) {
+             return [self fetchFetchResultWithURL:url];
+           }] map:^id(PHFetchResult *newFetchResult) {
+             NSUInteger index = [newFetchResult indexOfObject:collection];
+             NSArray *changedObjects = index != NSNotFound ? @[newFetchResult[index]] : nil;
+
+             PHFetchResultChangeDetails *changeDetails =
+                 [self.fetcher changeDetailsFromFetchResult:initialFetchResult
+                                              toFetchResult:newFetchResult
+                                             changedObjects:changedObjects];
+             PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
+                                                          photoKitChangeDetails:changeDetails];
+
+             return RACTuplePack(newFetchResult, changeset);
+           }];
+
+       [signals addObject:signal];
+     }
+     
+     return [RACSignal merge:signals];
+   }] flatten];
 }
 
 #pragma mark -
