@@ -1113,6 +1113,7 @@
 					"-Wextra",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1153,6 +1154,7 @@
 					"-Wextra",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
