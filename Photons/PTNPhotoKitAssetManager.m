@@ -88,7 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeOn:[RACScheduler scheduler]]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
-          *errorPtr = [NSError ptn_albumNotFound:url];
+          if (errorPtr) {
+            *errorPtr = [NSError ptn_albumNotFound:url];
+          }
           return nil;
         } else if (url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbum) {
           PHFetchResult *assets = [self.fetcher fetchAssetsInAssetCollection:fetchResult.firstObject
@@ -237,7 +239,9 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeOn:[RACScheduler scheduler]]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
-          *errorPtr = [NSError ptn_assetNotFound:url];
+          if (errorPtr) {
+            *errorPtr = [NSError ptn_assetNotFound:url];
+          }
         }
         return fetchResult.firstObject;
       }]
@@ -292,10 +296,14 @@ NS_ASSUME_NONNULL_BEGIN
         if (!fetchResult.count) {
           switch (url.ptn_photoKitURLType) {
             case PTNPhotoKitURLTypeAsset:
-              *errorPtr = [NSError ptn_assetNotFound:url];
+              if (errorPtr) {
+                *errorPtr = [NSError ptn_assetNotFound:url];
+              }
               return nil;
             case PTNPhotoKitURLTypeAlbum:
-              *errorPtr = [NSError ptn_albumNotFound:url];
+              if (errorPtr) {
+                *errorPtr = [NSError ptn_albumNotFound:url];
+              }
               return nil;
             default:
               // Should never happen, as this handles only assets and albums.
