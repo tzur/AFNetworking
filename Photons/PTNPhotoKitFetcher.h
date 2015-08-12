@@ -41,6 +41,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                            options:(nullable PHFetchOptions *)options;
 
+/// Creates a change details object that summarizes the differences between two fetch results.
+///
+/// @see [PHFetchResultChangeDetails changeDetailsFromFetchResult:toFetchResult:changedObjects:].
+- (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
+                                               toFetchResult:(PHFetchResult *)toResult
+                                              changedObjects:(NSArray *)changedObjects;
+
+
+@end
+
 /// Implementation of \c PTNPhotoKitFetcher by passing through the messages to the appropriate class
 /// method in PhotoKit.
 @interface PTNPhotoKitFetcher : NSObject <PTNPhotoKitFetcher>

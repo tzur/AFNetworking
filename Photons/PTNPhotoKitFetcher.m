@@ -33,6 +33,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAsset fetchKeyAssetsInAssetCollection:assetCollection options:options];
 }
 
+- (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
+                                               toFetchResult:(PHFetchResult *)toResult
+                                              changedObjects:(NSArray *)changedObjects {
+  return [PHFetchResultChangeDetails changeDetailsFromFetchResult:fromResult toFetchResult:toResult
+                                                   changedObjects:changedObjects];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
