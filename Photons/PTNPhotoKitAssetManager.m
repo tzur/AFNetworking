@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNPhotoKitAssetManager ()
 
 /// Observer for PhotoKit changes.
-@property (strong, nonatomic) PTNPhotoKitObserver *observer;
+@property (strong, nonatomic) id<PTNPhotoKitObserver> observer;
 
 /// Fetcher adapter for PhotoKit.
-@property (strong, nonatomic) PTNPhotoKitFetcher *fetcher;
+@property (strong, nonatomic) id<PTNPhotoKitFetcher> fetcher;
 
 /// Image manager used to request images.
 @property (strong, nonatomic) PHImageManager *imageManager;
@@ -44,8 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (instancetype)initWithFetcher:(PTNPhotoKitFetcher *)fetcher
-                       observer:(PTNPhotoKitObserver *)observer
+- (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
+                       observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager {
   if (self = [super init]) {
     self.fetcher = fetcher;

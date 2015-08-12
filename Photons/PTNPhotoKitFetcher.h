@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Adapter which converts class method calls on PhotoKit objects to instance methods for easier
 /// testing.
-@interface PTNPhotoKitFetcher : NSObject
+@protocol PTNPhotoKitFetcher <NSObject>
 
 /// Retrieves asset collections of the specified type and subtype.
 ///
@@ -41,6 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                            options:(nullable PHFetchOptions *)options;
 
+/// Implementation of \c PTNPhotoKitFetcher by passing through the messages to the appropriate class
+/// method in PhotoKit.
+@interface PTNPhotoKitFetcher : NSObject <PTNPhotoKitFetcher>
 @end
 
 NS_ASSUME_NONNULL_END
