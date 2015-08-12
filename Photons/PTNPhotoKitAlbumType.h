@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Groups type and subtype of PhotoKit asset collection.
-@interface PTNPhotoKitAlbumType : NSObject
+@interface PTNPhotoKitAlbumType : NSObject <NSCopying>
 
 /// Initiailizes new album type with PhotoKit \c type and \c subtype.
 + (instancetype)albumTypeWithType:(PHAssetCollectionType)type

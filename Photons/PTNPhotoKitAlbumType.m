@@ -34,6 +34,14 @@ NS_ASSUME_NONNULL_BEGIN
   return [@(self.type) hash] ^ [@(self.subtype) hash];
 }
 
+#pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (instancetype)copyWithZone:(NSZone __unused *)zone {
+  return self;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
