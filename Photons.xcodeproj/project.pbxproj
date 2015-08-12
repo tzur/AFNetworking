@@ -46,6 +46,7 @@
 		8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */; };
 		8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */; };
 		8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAB93511B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB93501B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m */; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
@@ -77,6 +78,8 @@
 		8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */; };
 		8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */; };
+		8BF135A01B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m */; };
+		8BF135BA1B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -333,6 +336,8 @@
 		8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Photons.h"; sourceTree = "<group>"; };
 		8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+Photons.m"; sourceTree = "<group>"; };
 		8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+PhotonsSpec.m"; sourceTree = "<group>"; };
+		8BAB934F1B7A0EF900B25392 /* PTNPhotoKitFakeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeObserver.h; sourceTree = "<group>"; };
+		8BAB93501B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeObserver.m; sourceTree = "<group>"; };
 		8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageFetchOptions.h; sourceTree = "<group>"; };
 		8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptions.m; sourceTree = "<group>"; };
 		8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNImageFetchOptions+PhotoKit.h"; sourceTree = "<group>"; };
@@ -350,6 +355,10 @@
 		8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNProgress.m; sourceTree = "<group>"; };
 		8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACStream+Photons.h"; sourceTree = "<group>"; };
 		8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACStream+Photons.m"; sourceTree = "<group>"; };
+		8BF1359E1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitTestUtils.h; sourceTree = "<group>"; };
+		8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitTestUtils.m; sourceTree = "<group>"; };
+		8BF135B81B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetcher.h; sourceTree = "<group>"; };
+		8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetcher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -508,10 +517,16 @@
 				8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */,
 				8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m */,
+				8BF135B81B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.h */,
+				8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */,
+				8BAB934F1B7A0EF900B25392 /* PTNPhotoKitFakeObserver.h */,
+				8BAB93501B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m */,
 				8B5619951B664182006B0DA0 /* PTNPhotoKitFakeImageManager.h */,
 				8B5619961B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m */,
 				8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m */,
 				8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */,
+				8BF1359E1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.h */,
+				8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m */,
 				8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.m */,
 			);
 			name = PhotoKit;
@@ -996,9 +1011,12 @@
 				8B2FD0D61B09CD0800757B1F /* EXPMatchers+complete.m in Sources */,
 				8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */,
 				8B5619771B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m in Sources */,
+				8BF135A01B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m in Sources */,
 				8B2FD0DD1B09CD0800757B1F /* EXPMatchers+sendEvents.m in Sources */,
+				8BAB93511B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m in Sources */,
 				8B2FD0D91B09CD0800757B1F /* EXPMatchers+matchError.m in Sources */,
 				8B2FD0EC1B0B494A00757B1F /* NSURL+PhotoKitSpec.m in Sources */,
+				8BF135BA1B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m in Sources */,
 				8B2FD0D11B09CD0800757B1F /* LLSignalTestRecorder.m in Sources */,
 				8B2FD0DA1B09CD0800757B1F /* EXPMatchers+matchValue.m in Sources */,
 				8B2FD0D31B09CD0800757B1F /* LLReactiveMatchersHelpers.m in Sources */,
