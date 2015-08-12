@@ -63,6 +63,9 @@
 		8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95231B8234F600B25392 /* PTNImageResizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB95241B8234F600B25392 /* PTNImageResizer.m */; };
 		8BAB95281B8239B400B25392 /* PTNImageContentMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95271B82361600B25392 /* PTNImageContentMode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */; };
+		8BAB947D1B7C820700B25392 /* PTNResizingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */; };
+		8BAB947F1B7CB25400B25392 /* PTNResizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
@@ -403,6 +406,9 @@
 		8BAB95231B8234F600B25392 /* PTNImageResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageResizer.h; sourceTree = "<group>"; };
 		8BAB95241B8234F600B25392 /* PTNImageResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageResizer.m; sourceTree = "<group>"; };
 		8BAB95271B82361600B25392 /* PTNImageContentMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNImageContentMode.h; sourceTree = "<group>"; };
+		8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNResizingStrategy.h; sourceTree = "<group>"; };
+		8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNResizingStrategy.m; sourceTree = "<group>"; };
+		8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNResizingStrategySpec.mm; sourceTree = "<group>"; };
 		8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageFetchOptions.h; sourceTree = "<group>"; };
 		8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptions.m; sourceTree = "<group>"; };
 		8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNImageFetchOptions+PhotoKit.h"; sourceTree = "<group>"; };
@@ -610,6 +616,8 @@
 				8BAB95241B8234F600B25392 /* PTNImageResizer.m */,
 				8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */,
 				8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */,
+				8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */,
+				8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -746,6 +754,7 @@
 				8BCF58551BCD0A74001EE2ED /* PTNImageMetadataSpec.mm */,
 				8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */,
 				8B5619671B654515006B0DA0 /* PTNProgressSpec.m */,
+				8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -874,6 +883,7 @@
 				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
 				8BAFDCC21B0DF781003FB8F5 /* PTNDescriptor.h in Headers */,
 				8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */,
+				8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */,
 				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
 				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
@@ -1228,6 +1238,7 @@
 				8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */,
 				8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m in Sources */,
 				8B2FD0D71B09CD0800757B1F /* EXPMatchers+error.m in Sources */,
+				8BAB947F1B7CB25400B25392 /* PTNResizingStrategySpec.mm in Sources */,
 				8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8B2FD0DE1B09CD0800757B1F /* EXPMatchers+sendValues.m in Sources */,
@@ -1244,6 +1255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BAB947D1B7C820700B25392 /* PTNResizingStrategy.m in Sources */,
 				8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */,
 				8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */,
 				8BCF58581BCD0B73001EE2ED /* PTNImageMetadata.m in Sources */,
