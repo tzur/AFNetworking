@@ -10,22 +10,23 @@
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitAlbumType.h"
+#import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
+#import "PTNPhotoKitFakeObserver.h"
 #import "PTNPhotoKitImageManager.h"
-#import "PTNPhotoKitFetcher.h"
-#import "PTNPhotoKitObserver.h"
+#import "PTNPhotoKitTestUtils.h"
 
 SpecBegin(PTNPhotoKitAssetManager)
 
 __block PTNPhotoKitAssetManager *manager;
 
-__block id fetcher;
-__block id observer;
-__block id imageManager;
+__block PTNPhotoKitFakeFetcher *fetcher;
+__block PTNPhotoKitFakeObserver *observer;
+__block PTNPhotoKitFakeImageManager *imageManager;
 
 beforeEach(^{
-  fetcher = OCMClassMock([PTNPhotoKitFetcher class]);
-  observer = OCMClassMock([PTNPhotoKitObserver class]);
+  fetcher = [[PTNPhotoKitFakeFetcher alloc] init];
+  observer = [[PTNPhotoKitFakeObserver alloc] init];
   imageManager = [[PTNPhotoKitFakeImageManager alloc] init];
 
   manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
@@ -38,27 +39,17 @@ context(@"album fetching", ^{
     __block NSURL *url;
 
     beforeEach(^{
-      id assetCollection = OCMClassMock([PHAssetCollection class]);
-      OCMStub([assetCollection localIdentifier]).andReturn(@"foo");
+      id assetCollection = PTNPhotoKitCreateAssetCollection(@"foo");
 
-      NSArray *identifiers = @[@"foo"];
-      NSArray *assetCollections = @[assetCollection];
-      OCMStub([fetcher fetchAssetCollectionsWithLocalIdentifiers:identifiers options:nil]).
-          andReturn(assetCollections);
+      [fetcher registerAssetCollection:assetCollection];
 
-      id firstAsset = OCMClassMock([PHAsset class]);
-      id secondAsset = OCMClassMock([PHAsset class]);
-      assets = @[firstAsset, secondAsset];
-      OCMStub([fetcher fetchAssetsInAssetCollection:assetCollection options:nil]).andReturn(assets);
+      assets = @[PTNPhotoKitCreateAsset(nil), PTNPhotoKitCreateAsset(nil)];
+      [fetcher registerAssets:assets withAssetCollection:assetCollection];
 
       url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
     });
 
     context(@"initial value", ^{
-      beforeEach(^{
-        OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
-      });
-
       it(@"should fetch initial results of an album", ^{
         RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
@@ -67,18 +58,13 @@ context(@"album fetching", ^{
       });
 
       it(@"should fetch initial value again if there was an error on the first fetch", ^{
-        id otherAssetCollection = OCMClassMock([PHAssetCollection class]);
-        OCMStub([otherAssetCollection localIdentifier]).andReturn(@"bar");
+        id otherAssetCollection = PTNPhotoKitCreateAssetCollection(@"bar");
 
         NSURL *otherURL = [NSURL ptn_photoKitAlbumURLWithCollection:otherAssetCollection];
         expect([manager fetchAlbumWithURL:otherURL]).will.error();
 
-        NSArray *identifiers = @[@"bar"];
-        NSArray *assetCollections = @[otherAssetCollection];
-        OCMStub([fetcher fetchAssetCollectionsWithLocalIdentifiers:identifiers options:nil]).
-            andReturn(assetCollections);
-        OCMStub([fetcher fetchAssetsInAssetCollection:otherAssetCollection options:nil]).
-            andReturn(assets);
+        [fetcher registerAssetCollection:otherAssetCollection];
+        [fetcher registerAssets:assets withAssetCollection:otherAssetCollection];
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:otherURL fetchResult:assets];
         expect([manager fetchAlbumWithURL:otherURL]).will.sendValues(@[
@@ -91,22 +77,15 @@ context(@"album fetching", ^{
       __block id<PTNAlbum> firstAlbum;
       __block id<PTNAlbum> secondAlbum;
 
-      __block id change;
       __block id changeDetails;
-      __block RACSubject *changeSignal;
+      __block id change;
 
       beforeEach(^{
-        id asset = OCMClassMock([PHAsset class]);
+        id asset = PTNPhotoKitCreateAsset(nil);
         id newAssets = @[asset];
 
-        changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
-        OCMStub([changeDetails fetchResultAfterChanges]).andReturn(newAssets);
-
-        change = OCMClassMock([PHChange class]);
-        OCMStub([change changeDetailsForFetchResult:OCMOCK_ANY]).andReturn(changeDetails);
-
-        changeSignal = [RACReplaySubject subject];
-        OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
+        changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(newAssets);
+        change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
 
         firstAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:assets];
         secondAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:newAssets];
@@ -114,7 +93,7 @@ context(@"album fetching", ^{
 
       it(@"should send new album upon update", ^{
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
-        [changeSignal sendNext:change];
+        [observer sendChange:change];
 
         expect(recorder.values).will.equal(@[
           [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
@@ -124,7 +103,7 @@ context(@"album fetching", ^{
 
       it(@"should send latest album when album observation is already in place", ^{
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
-        [changeSignal sendNext:change];
+        [observer sendChange:change];
 
         // Trigger first fetch and wait until two values are returned.
         expect(recorder.values).will.equal(@[
@@ -133,14 +112,14 @@ context(@"album fetching", ^{
         ]);
 
         expect([manager fetchAlbumWithURL:url]).will.sendValues(@[
-          [PTNAlbumChangeset changesetWithAfterAlbum:secondAlbum],
+          [PTNAlbumChangeset changesetWithAfterAlbum:secondAlbum]
         ]);
       });
 
       it(@"should send latest album after all signals have been destroyed", ^{
         @autoreleasepool {
           LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
-          [changeSignal sendNext:change];
+        [observer sendChange:change];
 
           // Trigger first fetch and wait until two values are returned.
           expect(recorder.values).will.equal(@[
@@ -161,14 +140,12 @@ context(@"album fetching", ^{
     __block NSURL *url;
 
     beforeEach(^{
-      id firstCollection = OCMClassMock([PHAssetCollection class]);
-      id secondCollection = OCMClassMock([PHAssetCollection class]);
-      albums = @[firstCollection, secondCollection];
+      albums = @[
+        PTNPhotoKitCreateAssetCollection(@"foo"), PTNPhotoKitCreateAssetCollection(@"bar")
+      ];
 
-      OCMStub([fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                             subtype:PHAssetCollectionSubtypeAny
-                                             options:nil]).
-          andReturn(albums);
+      [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeAlbum
+                             andSubtype:PHAssetCollectionSubtypeAny];
 
       PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
                                     albumTypeWithType:PHAssetCollectionTypeAlbum
@@ -178,8 +155,6 @@ context(@"album fetching", ^{
 
     context(@"initial value", ^{
       it(@"should fetch initial results of an album", ^{
-        OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
-
         RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
@@ -187,38 +162,28 @@ context(@"album fetching", ^{
       });
     });
 
-    context(@"updates", ^{
-      __block id<PTNAlbum> firstAlbum;
-      __block id<PTNAlbum> secondAlbum;
+    context(@"regular updates", ^{
+      __block id<PTNAlbum> initialAlbum;
 
       __block id change;
       __block id changeDetails;
-      __block RACSubject *changeSignal;
 
       beforeEach(^{
-        id firstCollection = OCMClassMock([PHAssetCollection class]);
-        id secondCollection = OCMClassMock([PHAssetCollection class]);
-        id newAlbums = @[firstCollection, secondCollection];
+        id newAlbums = @[
+          PTNPhotoKitCreateAssetCollection(nil), PTNPhotoKitCreateAssetCollection(nil)
+        ];
+        changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(newAlbums);
+        change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
 
-        changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
-        OCMStub([changeDetails fetchResultAfterChanges]).andReturn(newAlbums);
-
-        change = OCMClassMock([PHChange class]);
-        OCMStub([change changeDetailsForFetchResult:OCMOCK_ANY]).andReturn(changeDetails);
-
-        changeSignal = [RACReplaySubject subject];
-        OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
-
-        firstAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
-        secondAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:newAlbums];
+        initialAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
       });
 
       it(@"should send new album upon update", ^{
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
-        [changeSignal sendNext:change];
+        [observer sendChange:change];
 
         expect(recorder.values).will.equal(@[
-          [PTNAlbumChangeset changesetWithAfterAlbum:firstAlbum],
+          [PTNAlbumChangeset changesetWithAfterAlbum:initialAlbum],
           [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
         ]);
       });
@@ -239,8 +204,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error on non existing album", ^{
-      id assetCollection = OCMClassMock([PHAssetCollection class]);
-      OCMStub([assetCollection localIdentifier]).andReturn(@"foo");
+      id assetCollection = PTNPhotoKitCreateAssetCollection(@"foo");
 
       NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
 
@@ -255,46 +219,31 @@ context(@"asset fetching", ^{
   __block id asset;
 
   beforeEach(^{
-    asset = OCMClassMock([PHAsset class]);
-    OCMStub([asset localIdentifier]).andReturn(@"foo");
-
-    OCMStub([fetcher fetchAssetsWithLocalIdentifiers:@[@"foo"] options:nil]).andReturn(@[asset]);
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    [fetcher registerAsset:asset];
   });
 
   it(@"should fetch asset with URL", ^{
-    OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
-
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
     expect([manager fetchAssetWithURL:url]).will.sendValues(@[asset]);
   });
 
   it(@"should send new asset upon update", ^{
-    id newAsset = OCMClassMock([PHAsset class]);
+    id newAsset = PTNPhotoKitCreateAsset(nil);
 
-    id changeDetails = OCMClassMock([PHObjectChangeDetails class]);
-    OCMStub([changeDetails objectAfterChanges]).andReturn(newAsset);
-
-    id change = OCMClassMock([PHChange class]);
-    OCMStub([change changeDetailsForObject:OCMOCK_ANY]).andReturn(changeDetails);
-
-    RACSubject *changeSignal = [RACReplaySubject subject];
-    OCMStub([observer photoLibraryChanged]).andReturn(changeSignal);
+    id changeDetails = PTNPhotoKitCreateChangeDetailsForAsset(newAsset);
+    id change = PTNPhotoKitCreateChangeForObjectDetails(changeDetails);
 
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
     LLSignalTestRecorder *recorder = [[manager fetchAssetWithURL:url] testRecorder];
 
-    [changeSignal sendNext:change];
+    [observer sendChange:change];
 
     expect(recorder).will.sendValues(@[asset, newAsset]);
   });
 
   it(@"should error on non-existing asset", ^{
-    id newAsset = OCMClassMock([PHAsset class]);
-    OCMStub([newAsset localIdentifier]).andReturn(@"bar");
-
-    OCMStub([fetcher fetchAssetsWithLocalIdentifiers:@[@"bar"] options:nil]).andReturn(@[]);
-    OCMStub([observer photoLibraryChanged]).andReturn([RACSignal empty]);
-
+    id newAsset = PTNPhotoKitCreateAsset(@"bar");
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:newAsset];
     expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetNotFound;
@@ -332,9 +281,8 @@ context(@"image fetching", ^{
   __block NSError *defaultError;
 
   beforeEach(^{
-    asset = OCMClassMock([PHAsset class]);
-    OCMStub([asset localIdentifier]).andReturn(@"foo");
-    OCMStub([fetcher fetchAssetsWithLocalIdentifiers:@[@"foo"] options:nil]).andReturn(@[asset]);
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    [fetcher registerAsset:asset];
 
     size = CGSizeMake(64, 64);
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
@@ -423,8 +371,7 @@ context(@"image fetching", ^{
     });
 
     it(@"should error on non-existing asset", ^{
-      id unknownAsset = OCMClassMock([PHAsset class]);
-      OCMStub([unknownAsset localIdentifier]).andReturn(@"bar");
+      id unknownAsset = PTNPhotoKitCreateAsset(@"bar");
 
       url = [NSURL ptn_photoKitAssetURLWithAsset:unknownAsset];
 
@@ -446,18 +393,14 @@ context(@"image fetching", ^{
     __block NSURL *url;
 
     beforeEach(^{
-      assetCollection = OCMClassMock([PHAssetCollection class]);
-      OCMStub([assetCollection localIdentifier]).andReturn(@"foo");
+      assetCollection = PTNPhotoKitCreateAssetCollection(@"foo");
+      [fetcher registerAssetCollection:assetCollection];
 
       url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
-
-      OCMStub([fetcher fetchAssetCollectionsWithLocalIdentifiers:@[@"foo"] options:nil]).
-          andReturn(@[assetCollection]);
     });
 
     it(@"should fetch asset collection representative image", ^{
-      OCMStub([fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil]).
-          andReturn(@[asset]);
+      [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
 
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
@@ -469,8 +412,7 @@ context(@"image fetching", ^{
     });
 
     it(@"should error on non-existing asset collection", ^{
-      id assetCollection = OCMClassMock([PHAssetCollection class]);
-      OCMStub([assetCollection localIdentifier]).andReturn(@"bar");
+      id assetCollection = PTNPhotoKitCreateAssetCollection(@"bar");
 
       url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
 
@@ -494,8 +436,7 @@ context(@"image fetching", ^{
     });
 
     it(@"should error on non-existing key asset", ^{
-      OCMStub([fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil]).
-          andReturn(@[asset]);
+      [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
 
       RACSignal *values = [manager fetchImageWithURL:url targetSize:size
                                          contentMode:PTNImageContentModeAspectFill
