@@ -1,7 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTGLContext.h"
 #import "LTTestModule.h"
 
 /// Sets the current injector to strictly mock the given class and returns the mocked object.
@@ -54,9 +53,6 @@
       _injector = [JSObjection createInjector:_module]; \
       [JSObjection setDefaultInjector:_injector]; \
       \
-      LTGLContext *context = [[LTGLContext alloc] init]; \
-      [LTGLContext setCurrentContext:context]; \
-      \
       _keyWindowView = [[UIView alloc] initWithFrame:CGRectZero]; \
       [[UIApplication sharedApplication].keyWindow addSubview:_keyWindowView]; \
     }); \
@@ -66,8 +62,6 @@
       \
       _injector = nil; \
       _module = nil; \
-      \
-      [LTGLContext setCurrentContext:nil]; \
       \
       [_keyWindowView removeFromSuperview]; \
       _keyWindowView = nil; \
