@@ -3,6 +3,21 @@
 
 #import "LTRandom.h"
 
+/// Returns the mean value of all elements in the given container.
+template <typename Container>
+static double LTMean(const Container &container) {
+  return container.size() > 0 ?
+  std::accumulate(container.begin(), container.end(), 0.0) / (double)container.size() : 0.0;
+}
+
+/// Returns the variance of all elements in the given container.
+template <typename Container>
+static double LTVariance(const Container &container) {
+  double mean = LTMean(container);
+  double squareSum = std::inner_product(container.begin(), container.end(), container.begin(), 0.0);
+  return squareSum / container.size() - mean * mean;
+}
+
 SpecBegin(LTRandom)
 
 __block LTRandom *random;

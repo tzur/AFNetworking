@@ -13,7 +13,7 @@ context(@"valid file", ^{
   __block NSString *path;
 
   beforeEach(^{
-    path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Lena" ofType:@"png"];
+    path = [[NSBundle bundleForClass:[self class]] executablePath];
     inputFile = [[LTMMInputFile alloc] initWithPath:path error:&error];
   });
 

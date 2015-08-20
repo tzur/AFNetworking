@@ -3,8 +3,6 @@
 
 #import "NSFileManager+LTKit.h"
 
-#import "LTImage.h"
-
 LTSpecBegin(NSFileManager_LTKit)
 
 __block id fileManager;
@@ -47,7 +45,7 @@ it(@"should write data", ^{
 });
 
 it(@"should read data from file", ^{
-  NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
+  NSString *path = [[NSBundle bundleForClass:[self class]] executablePath];
 
   NSError *error;
   NSData *data = [fileManager lt_dataWithContentsOfFile:path options:0 error:&error];

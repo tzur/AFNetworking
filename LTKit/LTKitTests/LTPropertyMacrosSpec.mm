@@ -68,7 +68,7 @@ LTPropertyProxyWithoutSetter(CGFloat, customProxyProperty, CustomProxyProperty,
 @property (nonatomic) CGFloat categoryFloat;
 @property (nonatomic) NSInteger categoryInteger;
 @property (nonatomic) NSUInteger categoryUnsignedInteger;
-@property (nonatomic) LTVector4 categoryVector;
+@property (nonatomic) CGSize categorySize;
 @end
 
 @implementation TestClass (TestCategory)
@@ -78,7 +78,7 @@ LTCategoryBoolProperty(categoryBool, CategoryBool);
 LTCategoryCGFloatProperty(categoryFloat, CategoryFloat);
 LTCategoryIntegerProperty(categoryInteger, CategoryInteger);
 LTCategoryUnsignedIntegerProperty(categoryUnsignedInteger, CategoryUnsignedInteger);
-LTCategoryStructProperty(LTVector4, categoryVector, CategoryVector);
+LTCategoryStructProperty(CGSize, categorySize, CategorySize);
 @end
 
 LTSpecBegin(LTPropertyMarcros)
@@ -271,12 +271,11 @@ context(@"category properties", ^{
     expect(testObject.categoryUnsignedInteger).to.equal(0);
   });
 
-  it(@"should set and get vector property", ^{
-    expect(testObject.categoryVector).to.equal(LTVector4Zero);
-    testObject.categoryVector = LTVector4One;
-    expect(testObject.categoryVector).to.equal(LTVector4One);
-    testObject.categoryVector = LTVector4Zero;
-    expect(testObject.categoryVector).to.equal(LTVector4Zero);
+  it(@"should set and get struct property", ^{
+    testObject.categorySize = CGSizeMake(1, 5);
+    expect(testObject.categorySize).to.equal(CGSizeMake(1, 5));
+    testObject.categorySize = CGSizeZero;
+    expect(testObject.categorySize).to.equal(CGSizeZero);
   });
 });
 
