@@ -5,6 +5,6 @@
       location = "container:LTKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../examples/LTKitUser/LTKitUser.xcodeproj">
+      location = "group:LTKitUser.xcodeproj">
    </FileRef>
 </Workspace>

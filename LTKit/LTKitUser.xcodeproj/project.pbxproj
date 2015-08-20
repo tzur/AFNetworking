@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884B9188D992000AD338E /* Main-iPad.storyboard */; };
 		289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884BA188D992000AD338E /* Main-iPhone.storyboard */; };
+		8B2405201B85BE500079B724 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTKit.a */; };
 		8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B329054192CCB640010592E /* libextobjc_iOS.a */; };
 		8B4E493219E94D6F00B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493119E94D6F00B3F55D /* ImageIO.framework */; };
 		8B4E493619E94D7F00B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */; };
@@ -20,20 +21,22 @@
 		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; };
 		8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
 		8B8E51461868479100821829 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51451868479100821829 /* Images.xcassets */; };
-		8B8E51701868592400821829 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E516F1868592400821829 /* GLKit.framework */; };
-		8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51711868592E00821829 /* OpenGLES.framework */; };
-		8B8E517518685A7300821829 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTKit.a */; };
-		8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E517618685A8C00821829 /* opencv2.framework */; };
 		8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51841868606300821829 /* AVFoundation.framework */; };
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
 		8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA821F21986941000FBE68E /* libMantle-iOS.a */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
 		8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */; };
-		8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKit.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8B2405211B85BE640079B724 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
 		8B8E5167186847B200821829 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
@@ -48,25 +51,12 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTKitTests;
 		};
-		8B8E517318685A5700821829 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
-			remoteInfo = LTKit;
-		};
-		8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
-			remoteInfo = LTKitBundle;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		289884B9188D992000AD338E /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		289884BA188D992000AD338E /* Main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPhone.storyboard"; sourceTree = "<group>"; };
+		8B2405181B85BCF60079B724 /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "../../LTKit/build/Debug-iphoneos/libLTKit.a"; sourceTree = "<group>"; };
 		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B4E493119E94D6F00B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -101,17 +91,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B2405201B85BE500079B724 /* libLTKit.a in Frameworks */,
 				8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */,
 				8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */,
-				8B8E517518685A7300821829 /* libLTKit.a in Frameworks */,
 				8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */,
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
 				8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */,
 				8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */,
-				8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */,
-				8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */,
-				8B8E51701868592400821829 /* GLKit.framework in Frameworks */,
 				8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */,
 				8B8E51321868479100821829 /* UIKit.framework in Frameworks */,
 				8B8E512E1868479100821829 /* Foundation.framework in Frameworks */,
@@ -144,6 +131,7 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B2405181B85BCF60079B724 /* libLTKit.a */,
 				8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */,
 				8B4E493119E94D6F00B3F55D /* ImageIO.framework */,
 				8BA821F21986941000FBE68E /* libMantle-iOS.a */,
@@ -194,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				8B8E5168186847B200821829 /* libLTKit.a */,
-				8BCFC02518CF0C7200E612DE /* LTKit.bundle */,
 				8B8E516A186847B200821829 /* LTKitTests.xctest */,
 			);
 			name = Products;
@@ -222,7 +209,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				8B8E517418685A5700821829 /* PBXTargetDependency */,
+				8B2405221B85BE640079B724 /* PBXTargetDependency */,
 			);
 			name = LTKitUser;
 			productName = LTKitUser;
@@ -283,13 +270,6 @@
 			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BCFC02518CF0C7200E612DE /* LTKit.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTKit.bundle;
-			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -301,7 +281,6 @@
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
-				8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,10 +300,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B8E517418685A5700821829 /* PBXTargetDependency */ = {
+		8B2405221B85BE640079B724 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTKit;
-			targetProxy = 8B8E517318685A5700821829 /* PBXContainerItemProxy */;
+			targetProxy = 8B2405211B85BE640079B724 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -377,9 +356,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTKit",
-					"$(SRCROOT)/../../third_party/utils/libextobjc",
-					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -417,9 +395,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTKit",
-					"$(SRCROOT)/../../third_party/utils/libextobjc",
-					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
@@ -438,8 +415,7 @@
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../third_party/images/opencv",
-					"$(SRCROOT)/../../third_party/utils/objection",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
@@ -462,8 +438,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../third_party/images/opencv",
-					"$(SRCROOT)/../../third_party/utils/objection",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
