@@ -191,48 +191,6 @@
 			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
 			remoteInfo = "Specta-iOSTests";
 		};
-		8BA821E4198693B000FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D042FC3C15F72B23004E8054;
-			remoteInfo = Mantle;
-		};
-		8BA821E6198693B000FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D042FC5415F72B23004E8054;
-			remoteInfo = "Mantle Tests";
-		};
-		8BA821E8198693B000FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D042FC7915F72BC7004E8054;
-			remoteInfo = "Mantle-iOS";
-		};
-		8BA821EA198693B000FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D042FC8715F72BC7004E8054;
-			remoteInfo = "Mantle-iOS Tests";
-		};
-		8BA821EC198693B000FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D0A56B461804B04900A84EDC;
-			remoteInfo = "Mantle-Mac";
-		};
-		8BA821F61986942E00FBE68E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D042FC7815F72BC7004E8054;
-			remoteInfo = "Mantle-iOS";
-		};
 		8BB4714D183B534000CA1681 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
@@ -413,7 +371,6 @@
 		8BA5D6A2199250240093A4FD /* NSString+Hashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hashing.h"; sourceTree = "<group>"; };
 		8BA5D6A3199250240093A4FD /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
 		8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+HashingSpec.mm"; sourceTree = "<group>"; };
-		8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../../third_party/utils/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8BB01CAD196576D7002A8609 /* LTImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImageLoader.h; sourceTree = "<group>"; };
 		8BB01CAE196576D7002A8609 /* LTImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTImageLoader.m; sourceTree = "<group>"; };
@@ -763,23 +720,10 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
-		8BA821D5198693AF00FBE68E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BA821E5198693B000FBE68E /* Mantle.framework */,
-				8BA821E7198693B000FBE68E /* Mantle Tests.xctest */,
-				8BA821E9198693B000FBE68E /* libMantle-iOS.a */,
-				8BA821EB198693B000FBE68E /* Mantle-iOS Tests.xctest */,
-				8BA821ED198693B000FBE68E /* libMantle-Mac.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8BB47145183B533500CA1681 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
 				8BB47146183B534000CA1681 /* extobjc.xcodeproj */,
-				8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -906,7 +850,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8BA821F71986942E00FBE68E /* PBXTargetDependency */,
 			);
 			name = LTKit;
 			productName = LTKit;
@@ -962,10 +905,6 @@
 				{
 					ProductGroup = 8BB47147183B534000CA1681 /* Products */;
 					ProjectRef = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
-				},
-				{
-					ProductGroup = 8BA821D5198693AF00FBE68E /* Products */;
-					ProjectRef = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B4D457019C03AA8000B25F9 /* Products */;
@@ -1028,41 +967,6 @@
 			fileType = wrapper.cfbundle;
 			path = "Specta-iOSTests.xctest";
 			remoteRef = 8B4D457C19C03AA8000B25F9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BA821E5198693B000FBE68E /* Mantle.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Mantle.framework;
-			remoteRef = 8BA821E4198693B000FBE68E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BA821E7198693B000FBE68E /* Mantle Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Mantle Tests.xctest";
-			remoteRef = 8BA821E6198693B000FBE68E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BA821E9198693B000FBE68E /* libMantle-iOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libMantle-iOS.a";
-			remoteRef = 8BA821E8198693B000FBE68E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BA821EB198693B000FBE68E /* Mantle-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Mantle-iOS Tests.xctest";
-			remoteRef = 8BA821EA198693B000FBE68E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BA821ED198693B000FBE68E /* libMantle-Mac.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libMantle-Mac.a";
-			remoteRef = 8BA821EC198693B000FBE68E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8BB4714E183B534000CA1681 /* libextobjc_OSX.a */ = {
@@ -1224,11 +1128,6 @@
 			target = 8B3DEBE318296B6100EA0C1A /* LTKit */;
 			targetProxy = 8B3DEBFA18296B6100EA0C1A /* PBXContainerItemProxy */;
 		};
-		8BA821F71986942E00FBE68E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Mantle-iOS";
-			targetProxy = 8BA821F61986942E00FBE68E /* PBXContainerItemProxy */;
-		};
 		8BCA6725182FD8E6003FCB65 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Expecta-iOS";
@@ -1275,7 +1174,6 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/images/opencv",
 					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1297,7 +1195,6 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
-					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1332,7 +1229,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/images/opencv",
 					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1346,7 +1242,6 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/utils/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/utils/libextobjc",
-					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = (
