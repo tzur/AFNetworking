@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int fd;
 
 /// Pointer to the mapped data.
-@property (readwrite, nonatomic) const uchar *data;
+@property (readwrite, nonatomic) const uint8_t *data;
 
 /// Size of the buffer pointed by \c data.
 @property (readwrite, nonatomic) size_t size;
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
       return nil;
     }
 
-    self.data = (uchar *)mmap(0, _size, PROT_READ, MAP_FILE | MAP_PRIVATE, self.fd, 0);
+    self.data = (uint8_t *)mmap(0, _size, PROT_READ, MAP_FILE | MAP_PRIVATE, self.fd, 0);
     if (self.data == MAP_FAILED) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path

@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTTypedefs.h"
+
 typedef NS_ENUM(NSUInteger, LTDeviceType) {
   // iPhone.
   LTDeviceTypeIPhone1 = 0,
@@ -142,25 +144,6 @@ typedef NS_ENUM(NSUInteger, LTDeviceType) {
 /// @note the current app language is determined by the main bundle only, meaning it assumes that
 /// localizations to the main bundle apply to other bundles as well.
 @property (readonly, nonatomic) NSString *currentAppLanguage;
-
-#pragma mark -
-#pragma mark GPU
-#pragma mark -
-
-/// Maximal texture size that can be used on the device's GPU.
-@property (readonly, nonatomic) GLint maxTextureSize;
-
-/// Maximal number of texture units that can be used on the device GPU.
-@property (readonly, nonatomic) GLint maxTextureUnits;
-
-/// \c YES if writing to half-float textures is supported.
-@property (readonly, nonatomic) BOOL canRenderToHalfFloatTextures;
-
-/// \c YES if writing to float textures is supported.
-@property (readonly, nonatomic) BOOL canRenderToFloatTextures;
-
-/// \c YES if creating and rendering \c RED or \c RG textures is supported.
-@property (readonly, nonatomic) BOOL supportsRGTextures;
 
 @end
 

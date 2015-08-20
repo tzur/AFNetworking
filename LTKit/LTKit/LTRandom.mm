@@ -4,6 +4,7 @@
 #import "LTRandom.h"
 
 #import <random>
+#import <sstream>
 
 @interface LTRandomState ()
 

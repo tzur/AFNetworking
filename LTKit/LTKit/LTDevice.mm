@@ -5,8 +5,7 @@
 
 #import <sys/utsname.h>
 
-#import "LTGLContext.h"
-#import "LTGLView.h"
+#import "LTCGExtensions.h"
 #import "NSFileManager+LTKit.h"
 
 /// Points per inch for the various devices. This is according to the specs, and can't be be found
@@ -159,13 +158,6 @@ static NSDictionary * const kDeviceTypeToString = @{
 @property (readwrite, nonatomic) NSString *platformName;
 @property (readwrite, nonatomic) LTDeviceType deviceType;
 @property (readwrite, nonatomic) NSString *deviceTypeString;
-
-@property (strong, nonatomic) LTGLContext *context;
-
-@property (strong, nonatomic) NSSet *supportedExtensions;
-@property (nonatomic) GLint maxTextureSize;
-@property (nonatomic) GLint maxTextureUnits;
-@property (nonatomic) CGFloat glkContentScaleFactor;
 
 @property (strong, nonatomic) UIScreen *screen;
 @property (strong, nonatomic) UIDevice *device;
@@ -390,109 +382,6 @@ objection_requires_sel(@selector(fileManager));
 - (NSString *)currentAppLanguage {
   NSArray *localizations = [self.mainBundle preferredLocalizations];
   return [localizations firstObject];
-}
-
-#pragma mark -
-#pragma mark GPU
-#pragma mark -
-
-- (LTGLContext *)setGLContext {
-  // Set new context only if there's no context currently set.
-  LTGLContext *currentContext = [LTGLContext currentContext];
-  if (!currentContext) {
-    [LTGLContext setCurrentContext:self.context];
-  }
-  return currentContext;
-}
-
-- (void)restoreGLContext:(LTGLContext *)context {
-  if (!context) {
-    [LTGLContext setCurrentContext:nil];
-  }
-}
-
-- (void)executeOpenGL:(LTVoidBlock)block {
-  LTGLContext *context = [self setGLContext];
-  if (block) block();
-  [self restoreGLContext:context];
-}
-
-- (LTGLContext *)context {
-  if (!_context) {
-    _context = [[LTGLContext alloc] init];
-    if (!_context) {
-      LogError(@"Failed to create OpenGL ES context");
-    }
-  }
-  return _context;
-}
-
-/// Returns \c YES if the given OpenGL extension is supported on this device.
-- (NSSet *)supportedExtensions {
-  if (!_supportedExtensions) {
-    [self executeOpenGL:^{
-      NSString *extensions = [NSString stringWithCString:(const char *)glGetString(GL_EXTENSIONS)
-                                                encoding:NSASCIIStringEncoding];
-      NSString *trimmed = [extensions
-                           stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-      _supportedExtensions = [NSSet setWithArray:[trimmed componentsSeparatedByString:@" "]];
-    }];
-  }
-
-  return _supportedExtensions;
-}
-
-- (GLint)maxTextureSize {
-  if (!_maxTextureSize) {
-    [self executeOpenGL:^{
-      glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
-    }];
-  }
-
-  return _maxTextureSize;
-}
-
-- (GLint)maxTextureUnits {
-  if (!_maxTextureUnits) {
-    [self executeOpenGL:^{
-      glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
-    }];
-  }
-
-  return _maxTextureUnits;
-}
-
-- (CGFloat)glkContentScaleFactor {
-  if (!_glkContentScaleFactor) {
-    GLKView *view = [[LTGLView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-#ifdef DEBUG
-#if TARGET_IPHONE_SIMULATOR
-    // TODO:(amit) remove this when the simulator returns the same value as the actual device.
-    if (self.has4_7InchScreen) {
-      view.contentScaleFactor = 2.34375;
-      LogDebug(@"Simulating iPhone 6 content scale factor: %g", view.contentScaleFactor);
-    } else if (self.has5_5InchScreen) {
-      view.contentScaleFactor = 2.6087;
-      LogDebug(@"Simulating iPhone 6 Plus content scale factor: %g", view.contentScaleFactor);
-    }
-#endif
-#endif
-    _glkContentScaleFactor = view.contentScaleFactor;
-  }
-  return _glkContentScaleFactor;
-}
-
-- (BOOL)canRenderToHalfFloatTextures {
-  return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_half_float"];
-}
-
-- (BOOL)canRenderToFloatTextures {
-  return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_float"];
-}
-
-- (BOOL)supportsRGTextures {
-  return self.context.version == LTGLContextAPIVersion3 ||
-      [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
 }
 
 @end

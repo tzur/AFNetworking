@@ -3,19 +3,14 @@
 
 #ifdef __OBJC__
   #import <Foundation/Foundation.h>
-  #import <GLKit/GLKit.h>
-  #import <OpenGLES/ES2/glext.h>
-  #import <OpenGLES/ES3/gl.h>
   #import <QuartzCore/QuartzCore.h>
   #import <UIKit/UIKit.h>
 
   #import "LTAssert.h"
-  #import "LTGLUtils.h"
   #import "LTLogger.h"
   #import "LTPropertyMacros.h"
   #import "LTTypedefs.h"
   #import "NSError+LTKit.h"
-  #import "NSValue+GLKitExtensions.h"
 
   #ifdef __cplusplus
   extern "C" {
@@ -29,13 +24,6 @@
 #endif
 
 #ifdef __cplusplus
-  // Ignore CvForestTree::train and CvBoostTree::train warnings.
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Woverloaded-virtual"
-  #import <opencv2/opencv.hpp>
-  #pragma clang diagnostic pop
-
   #import "LTEasyBoxing.h"
   #import "LTEnumRegistry.h"
-  #import "LTOpenCVHalfFloat.h"
 #endif
