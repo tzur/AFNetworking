@@ -7,7 +7,6 @@
 #import <Specta/SpectaUtility.h>
 
 #import "LTCGExtensions.h"
-#import "LTDevice.h"
 #import "LTEnumRegistry.h"
 
 static NSString * const kMatOutputBasedir = @"/tmp/";

@@ -16,7 +16,6 @@
 		284EBBD11A33ABF600D36688 /* NSValue+TypeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284EBBD01A33ABF600D36688 /* NSValue+TypeSpec.mm */; };
 		287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */ = {isa = PBXBuildFile; fileRef = 287A96F21A3320F200A609CD /* NSValue+Type.h */; };
 		287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287A96F31A3320F200A609CD /* NSValue+Type.mm */; };
-		288AB4061835320200A11FA4 /* LTDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288AB4051835320200A11FA4 /* LTDevice.mm */; };
 		28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */ = {isa = PBXBuildFile; fileRef = 28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */; };
 		28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */; };
 		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
@@ -36,8 +35,12 @@
 		5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221719EA80B5003AF8D2 /* LTQueue.mm */; };
 		5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */; };
 		5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067223019EA811A003AF8D2 /* LTQueueSpec.mm */; };
-		8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B19620A184B31790065A057 /* LTDeviceSpec.mm */; };
 		8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */; };
+		8B2405801B8607270079B724 /* UIDevice+Kind.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Kind.h */; };
+		8B2405811B8607270079B724 /* UIDevice+Kind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24057F1B8607270079B724 /* UIDevice+Kind.mm */; };
+		8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2405861B860D620079B724 /* NSLocale+Language.h */; };
+		8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405871B860D620079B724 /* NSLocale+Language.m */; };
+		8B24058D1B89BBB90079B724 /* UIDevice+KindSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */; };
 		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
 		8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
 		8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
@@ -67,7 +70,6 @@
 		8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.mm */; };
 		8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */; };
 		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
-		8B871FC81924A75E00517F2E /* LTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288AB4041835320200A11FA4 /* LTDevice.h */; };
 		8B8720341924A76500517F2E /* LTAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E13F182A68FC00FDD95A /* LTAssert.h */; };
 		8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2836211E186C58DC00665ED9 /* LTCGExtensions.h */; };
 		8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FB718910941001A964D /* LTEasyBoxing.h */; };
@@ -80,6 +82,9 @@
 		8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF088187B030A00904F07 /* NSObject+AddToContainer.h */; };
 		8B87204C1924A76800517F2E /* LTAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ABE003187153AD005A5DEC /* LTAnimation.h */; };
 		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
+		8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */; };
+		8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */; };
+		8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
 		8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA5D6A2199250240093A4FD /* NSString+Hashing.h */; };
@@ -302,8 +307,6 @@
 		284EBBD01A33ABF600D36688 /* NSValue+TypeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+TypeSpec.mm"; sourceTree = "<group>"; };
 		287A96F21A3320F200A609CD /* NSValue+Type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+Type.h"; sourceTree = "<group>"; };
 		287A96F31A3320F200A609CD /* NSValue+Type.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+Type.mm"; sourceTree = "<group>"; };
-		288AB4041835320200A11FA4 /* LTDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDevice.h; sourceTree = "<group>"; };
-		288AB4051835320200A11FA4 /* LTDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDevice.mm; sourceTree = "<group>"; };
 		28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+CGFloat.h"; sourceTree = "<group>"; };
 		28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+CGFloat.mm"; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
@@ -326,9 +329,13 @@
 		5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundedQueueSpec.mm; sourceTree = "<group>"; };
 		5067223019EA811A003AF8D2 /* LTQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueueSpec.mm; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
-		8B19620A184B31790065A057 /* LTDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDeviceSpec.mm; sourceTree = "<group>"; };
 		8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
 		8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
+		8B24057E1B8607270079B724 /* UIDevice+Kind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Kind.h"; sourceTree = "<group>"; };
+		8B24057F1B8607270079B724 /* UIDevice+Kind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+Kind.mm"; sourceTree = "<group>"; };
+		8B2405861B860D620079B724 /* NSLocale+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLocale+Language.h"; sourceTree = "<group>"; };
+		8B2405871B860D620079B724 /* NSLocale+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+Language.m"; sourceTree = "<group>"; };
+		8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+KindSpec.mm"; sourceTree = "<group>"; };
 		8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8B3C0A531832950F000845BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -365,6 +372,9 @@
 		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+LTKit.m"; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
+		8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Physical.h"; sourceTree = "<group>"; };
+		8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+Physical.m"; sourceTree = "<group>"; };
+		8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIScreen+PhysicalSpec.mm"; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E13F182A68FC00FDD95A /* LTAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAssert.h; sourceTree = "<group>"; };
@@ -599,8 +609,6 @@
 				2836211F186C58DC00665ED9 /* LTCGExtensions.m */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
-				28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */,
-				28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
 				8BA5D6A3199250240093A4FD /* NSString+Hashing.m */,
 			);
@@ -611,6 +619,8 @@
 			isa = PBXGroup;
 			children = (
 				8B9D3FB718910941001A964D /* LTEasyBoxing.h */,
+				28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */,
+				28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */,
 				287A96F21A3320F200A609CD /* NSValue+Type.h */,
 				287A96F31A3320F200A609CD /* NSValue+Type.mm */,
 			);
@@ -687,8 +697,6 @@
 			isa = PBXGroup;
 			children = (
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
-				288AB4041835320200A11FA4 /* LTDevice.h */,
-				288AB4051835320200A11FA4 /* LTDevice.mm */,
 				8B78CFDC197654A900684B1D /* LTEnum.h */,
 				8BBB14A8194F489B000CF391 /* LTEnumMacros.h */,
 				8BBB1498194F4799000CF391 /* LTEnumRegistry.h */,
@@ -703,6 +711,12 @@
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
 				8B871F97192396BE00517F2E /* NSError+LTKit.mm */,
+				8B2405861B860D620079B724 /* NSLocale+Language.h */,
+				8B2405871B860D620079B724 /* NSLocale+Language.m */,
+				8B24057E1B8607270079B724 /* UIDevice+Kind.h */,
+				8B24057F1B8607270079B724 /* UIDevice+Kind.mm */,
+				8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */,
+				8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -710,12 +724,13 @@
 		8B8E50FD1861EB4000821829 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8B19620A184B31790065A057 /* LTDeviceSpec.mm */,
 				8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
 				8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */,
+				8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */,
+				8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -805,7 +820,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B871FC71924A75E00517F2E /* LTKit.h in Headers */,
-				8B871FC81924A75E00517F2E /* LTDevice.h in Headers */,
 				28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */,
 				8B78CFDE197654A900684B1D /* LTEnum.h in Headers */,
 				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
@@ -813,7 +827,9 @@
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
 				8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */,
+				8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */,
 				5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */,
+				8B2405801B8607270079B724 /* UIDevice+Kind.h in Headers */,
 				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
 				5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
@@ -826,6 +842,7 @@
 				8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */,
 				8B8720401924A76700517F2E /* LTPropertyMacros.h in Headers */,
 				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
+				8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */,
 				8B8720431924A76700517F2E /* LTTypedefs.h in Headers */,
 				8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */,
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
@@ -1078,13 +1095,15 @@
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */,
-				288AB4061835320200A11FA4 /* LTDevice.mm in Sources */,
+				8B2405811B8607270079B724 /* UIDevice+Kind.mm in Sources */,
 				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.mm in Sources */,
 				8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */,
+				8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */,
 				287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */,
+				8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1093,6 +1112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */,
+				8B24058D1B89BBB90079B724 /* UIDevice+KindSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
@@ -1110,11 +1130,11 @@
 				503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */,
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
-				8B19620B184B31790065A057 /* LTDeviceSpec.mm in Sources */,
 				8BD0748319A614DF005F2C37 /* LTTestModule.m in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
+				8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 				8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */,
 			);

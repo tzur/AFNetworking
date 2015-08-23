@@ -3,7 +3,6 @@
 
 #import "LTDefaultModule.h"
 
-#import "LTDevice.h"
 #import "LTRandom.h"
 
 @implementation LTDefaultModule

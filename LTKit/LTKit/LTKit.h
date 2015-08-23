@@ -3,7 +3,6 @@
 
 // Base.
 #import <LTKit/LTAssert.h>
-#import <LTKit/LTDevice.h>
 #import <LTKit/LTEnum.h>
 #import <LTKit/LTEnumRegistry.h>
 #import <LTKit/LTLogger.h>
@@ -11,6 +10,9 @@
 #import <LTKit/LTTimer.h>
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSLocale+Language.h>
+#import <LTKit/UIDevice+Kind.h>
+#import <LTKit/UIScreen+Physical.h>
 
 // Boxing.
 #import <LTKit/LTEasyBoxing.h>
