@@ -78,13 +78,14 @@ void screen(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa, in me
 void colorBurn(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa, in mediump float Da) {
   // safeX = (x <= 0) ? 1 : x;
   mediump float safeDa = Da + step(Da, 0.0);
-  mediump vec3 safeSca = Sca + step(Sca, vec3(0.0));
+  mediump vec3 stepSca = step(Sca, vec3(0.0));
+  mediump vec3 safeSca = Sca + stepSca;
 
   mediump vec3 zero = Sca * (1.0 - Da) + Dca * (1.0 - Sa);
   mediump vec3 nonzero = Sa * Da * (vec3(1.0) - min(vec3(1.0), (1.0 - Dca / safeDa) * Sa / safeSca))
       + Sca * (1.0 - Da) + Dca * (1.0 - Sa);
 
-  gl_FragColor.rgb = mix(zero, nonzero, 1.0 - float(equal(Sca, vec3(0.0))));
+  gl_FragColor.rgb = mix(zero, nonzero, 1.0 - stepSca);
   gl_FragColor.a = Sa + Da - Sa * Da;
 }
 

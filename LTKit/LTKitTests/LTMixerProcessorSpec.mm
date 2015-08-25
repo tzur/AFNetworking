@@ -234,14 +234,32 @@ context(@"blending", ^{
     expect($([output image])).to.beCloseToMat($(expected));
   });
 
-  it(@"should mix with color burn mode", ^{
-    processor.blendMode = LTBlendModeColorBurn;
-    [processor process];
+  context(@"color burn blend mode", ^{
+    it(@"should mix with color burn mode", ^{
+      processor.blendMode = LTBlendModeColorBurn;
+      [processor process];
 
-    cv::Mat4b expected(16, 16, backColor);
-    expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(64, 32, 255, 255));
+      cv::Mat4b expected(16, 16, backColor);
+      expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(64, 32, 255, 255));
 
-    expect($([output image])).to.beCloseToMat($(expected));
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
+
+    it(@"should yield correct results in all channels for color burn blend mode", ^{
+      cv::Vec4b newBackColor(0, 128, 255, 255);
+      cv::Vec4b newFrontColor(0, 192, 255, 255);
+      [back clearWithColor:LTVector4(newBackColor)];
+      [front clearWithColor:LTVector4(newFrontColor)];
+      [mask clearWithColor:LTVector4One];
+
+      processor.blendMode = LTBlendModeColorBurn;
+      [processor process];
+
+      cv::Mat4b expected(16, 16, newBackColor);
+      expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(0, 86, 255, 255));
+
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
   });
 
   it(@"should mix with overlay mode", ^{

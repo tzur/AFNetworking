@@ -67,6 +67,11 @@ context(@"blending modes", ^{
     processor.blueColor = LTVector4(0.5, 0.5, 0.5, 1.0);
     processor.opacity = 1;
   });
+
+  afterEach(^{
+    input = nil;
+    output = nil;
+  });
   
   it(@"should process with normal blending mode correctly", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(128, 128, 128, 255));
@@ -116,12 +121,28 @@ context(@"blending modes", ^{
     [processor process];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
-  
-  it(@"should process with color burn blending mode correctly", ^{
-    cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 0, 255));
-    processor.blendMode = LTDuoBlendModeColorBurn;
-    [processor process];
-    expect($(output.image)).to.beCloseToMat($(expected));
+
+  context(@"color burn", ^{
+    it(@"should process with color burn blending mode correctly", ^{
+      cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 0, 255));
+      processor.blendMode = LTDuoBlendModeColorBurn;
+      [processor process];
+      expect($(output.image)).to.beCloseToMat($(expected));
+    });
+
+    it(@"should yield correct results in all channels for color burn blend mode", ^{
+      cv::Vec4b inputColor(0, 128, 255, 255);
+      [input clearWithColor:LTVector4(inputColor)];
+
+      processor.blendMode = LTDuoBlendModeColorBurn;
+      processor.blueColor = LTVector4(cv::Vec4b(0, 192, 255, 255));
+      processor.redColor = processor.blueColor;
+      [processor process];
+
+      cv::Mat4b expected(1, 1, cv::Vec4b(0, 86, 255, 255));
+
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
   });
   
   it(@"should process with overlay blending mode correctly", ^{

@@ -74,13 +74,14 @@ mediump vec3 screen(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float S
 mediump vec3 colorBurn(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
                        in mediump float Da) {
   mediump float safeDa = Da + step(Da, 0.0);
-  mediump vec3 safeSca = Sca + step(Sca, vec3(0.0));
+  mediump vec3 stepSca = step(Sca, vec3(0.0));
+  mediump vec3 safeSca = Sca + stepSca;
   
   mediump vec3 zero = Sca * (1.0 - Da) + Dca * (1.0 - Sa);
   mediump vec3 nonzero = Sa * Da * (vec3(1.0) - min(vec3(1.0), (1.0 - Dca / safeDa) * Sa / safeSca))
       + Sca * (1.0 - Da) + Dca * (1.0 - Sa);
   
-  return mix(zero, nonzero, 1.0 - float(equal(Sca, vec3(0.0))));
+  return mix(zero, nonzero, 1.0 - stepSca);
 }
 
 mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa,
