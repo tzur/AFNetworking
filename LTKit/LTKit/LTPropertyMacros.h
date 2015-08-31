@@ -26,10 +26,10 @@
 /// @note This macro cannot be used for primitive types.
 /// @note This property will be automatically set to \c nil when the target object is deallocated.
 #define LTCategoryWeakProperty(type, name, Name) \
-  - (type)name { \
+  - (nullable type)name { \
     return [(LTWeakContainer *)objc_getAssociatedObject(self, @selector(name)) object]; \
   } \
-  - (void)set##Name:(type)name { \
+  - (void)set##Name:(nullable type)name { \
     objc_setAssociatedObject(self, @selector(name), [[LTWeakContainer alloc] initWithObject:name], \
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
   }
