@@ -6,7 +6,6 @@
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
-#import "LTTestUtils.h"
 
 SpecBegin(LTGLContext)
 

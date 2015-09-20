@@ -3,8 +3,9 @@
 
 #import "LTMeshProcessor.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTOpenCVExtensions.h"
-#import "LTRandom.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTexture+Factory.h"
 

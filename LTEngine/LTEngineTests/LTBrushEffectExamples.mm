@@ -3,16 +3,16 @@
 
 #import "LTBrushEffectExamples.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushScatterEffect.h"
 #import "LTBrushShapeDynamicsEffect.h"
-#import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
-#import "LTRandom.h"
 #import "LTTexture+Factory.h"
 #import "UIColor+Vector.h"
 

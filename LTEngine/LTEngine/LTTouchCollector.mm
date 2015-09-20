@@ -3,7 +3,6 @@
 
 #import "LTTouchCollector.h"
 
-#import "LTCGExtensions.h"
 #import "LTTouchCollectorDistanceFilter.h"
 #import "LTTouchCollectorFilter.h"
 #import "LTTouchCollectorTimeIntervalFilter.h"

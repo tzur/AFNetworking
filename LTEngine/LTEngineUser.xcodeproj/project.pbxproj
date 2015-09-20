@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884B9188D992000AD338E /* Main-iPad.storyboard */; };
 		289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289884BA188D992000AD338E /* Main-iPhone.storyboard */; };
-		8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B329054192CCB640010592E /* libextobjc_iOS.a */; };
+		8B16CA431BAF0F6C002FB750 /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8B16CA401BAF0F60002FB750 /* LTEngine.bundle */; };
 		8B4E493219E94D6F00B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493119E94D6F00B3F55D /* ImageIO.framework */; };
 		8B4E493619E94D7F00B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */; };
 		8B8E512E1868479100821829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E512D1868479100821829 /* Foundation.framework */; };
@@ -17,55 +17,48 @@
 		8B8E51321868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
 		8B8E51381868479100821829 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51361868479100821829 /* InfoPlist.strings */; };
 		8B8E513A1868479100821829 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51391868479100821829 /* main.m */; };
-		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; }; 8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
+		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; };
+		8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
 		8B8E51461868479100821829 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51451868479100821829 /* Images.xcassets */; };
 		8B8E51701868592400821829 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E516F1868592400821829 /* GLKit.framework */; };
 		8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51711868592E00821829 /* OpenGLES.framework */; };
-		8B8E517518685A7300821829 /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTEngine.a */; };
-		8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E517618685A8C00821829 /* opencv2.framework */; };
 		8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51841868606300821829 /* AVFoundation.framework */; };
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
 		8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51881868607500821829 /* CoreMedia.framework */; };
-		8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA821F21986941000FBE68E /* libMantle-iOS.a */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
-		8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */; };
-		8BCFC03018CF0D1C00E612DE /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTEngine.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B8E5167186847B200821829 /* PBXContainerItemProxy */ = {
+		8B16CA3D1BAF0F60002FB750 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
+			containerPortal = 8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
 			remoteInfo = LTEngine;
 		};
-		8B8E5169186847B200821829 /* PBXContainerItemProxy */ = {
+		8B16CA3F1BAF0F60002FB750 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
-			remoteInfo = LTEngineTests;
-		};
-		8B8E517318685A5700821829 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
-			remoteInfo = LTEngine;
-		};
-		8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
+			containerPortal = 8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
 			remoteInfo = LTEngineBundle;
+		};
+		8B16CA411BAF0F60002FB750 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		289884B9188D992000AD338E /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		289884BA188D992000AD338E /* Main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPhone.storyboard"; sourceTree = "<group>"; };
+		8B16C99A1BAEE0D7002FB750 /* libLTEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTEngine.a; path = "build/Debug-iphoneos/libLTEngine.a"; sourceTree = "<group>"; };
+		8B16C9A51BAEE1D6002FB750 /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "../LTKit/LTKit/build/Debug-iphoneos/libLTKit.a"; sourceTree = "<group>"; };
+		8B16C9A71BAEE2ED002FB750 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = LTEngine.xcodeproj; sourceTree = "<group>"; };
 		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B4E493119E94D6F00B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -83,7 +76,6 @@
 		8B8E51431868479100821829 /* LTViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewController.mm; sourceTree = "<group>"; };
 		8B8E51451868479100821829 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8B8E514C1868479100821829 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		8B8E5162186847B200821829 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		8B8E516F1868592400821829 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8B8E51711868592E00821829 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B8E517618685A8C00821829 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../third_party/images/opencv/opencv2.framework; sourceTree = "<group>"; };
@@ -100,15 +92,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */,
-				8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */,
-				8B8E517518685A7300821829 /* libLTEngine.a in Frameworks */,
 				8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */,
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
 				8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */,
-				8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */,
-				8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */,
 				8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */,
 				8B8E51701868592400821829 /* GLKit.framework in Frameworks */,
 				8B8E51301868479100821829 /* CoreGraphics.framework in Frameworks */,
@@ -122,11 +109,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B16CA381BAF0F5F002FB750 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B16CA3E1BAF0F60002FB750 /* libLTEngine.a */,
+				8B16CA401BAF0F60002FB750 /* LTEngine.bundle */,
+				8B16CA421BAF0F60002FB750 /* LTEngineTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B16CA441BAF133C002FB750 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		8B8E51211868479100821829 = {
 			isa = PBXGroup;
 			children = (
 				8B8E51331868479100821829 /* LTEngineUser */,
-				8B8E516B186847B900821829 /* Libraries */,
+				8B16CA441BAF133C002FB750 /* Libraries */,
 				8B8E512C1868479100821829 /* Frameworks */,
 				8B8E512B1868479100821829 /* Products */,
 			);
@@ -143,6 +148,9 @@
 		8B8E512C1868479100821829 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B16C9A71BAEE2ED002FB750 /* libextobjc_iOS.a */,
+				8B16C9A51BAEE1D6002FB750 /* libLTKit.a */,
+				8B16C99A1BAEE0D7002FB750 /* libLTEngine.a */,
 				8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */,
 				8B4E493119E94D6F00B3F55D /* ImageIO.framework */,
 				8BA821F21986941000FBE68E /* libMantle-iOS.a */,
@@ -175,7 +183,6 @@
 				8B8E51451868479100821829 /* Images.xcassets */,
 				8B8E51341868479100821829 /* Supporting Files */,
 			);
-			name = LTEngineUser;
 			path = LTEngineUser;
 			sourceTree = "<group>";
 		};
@@ -188,24 +195,6 @@
 				8B8E513B1868479100821829 /* LTEngineUser-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8B8E5163186847B200821829 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B8E5168186847B200821829 /* libLTEngine.a */,
-				8BCFC02518CF0C7200E612DE /* LTEngine.bundle */,
-				8B8E516A186847B200821829 /* LTEngineTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		8B8E516B186847B900821829 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				8B8E5162186847B200821829 /* LTEngine.xcodeproj */,
-			);
-			name = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,7 +211,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8B8E517418685A5700821829 /* PBXTargetDependency */,
 			);
 			name = LTEngineUser;
 			productName = LTEngineUser;
@@ -257,8 +245,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8B8E5163186847B200821829 /* Products */;
-					ProjectRef = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
+					ProductGroup = 8B16CA381BAF0F5F002FB750 /* Products */;
+					ProjectRef = 8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -269,25 +257,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8B8E5168186847B200821829 /* libLTEngine.a */ = {
+		8B16CA3E1BAF0F60002FB750 /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libLTEngine.a;
-			remoteRef = 8B8E5167186847B200821829 /* PBXContainerItemProxy */;
+			remoteRef = 8B16CA3D1BAF0F60002FB750 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B8E516A186847B200821829 /* LTEngineTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTEngineTests.xctest;
-			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BCFC02518CF0C7200E612DE /* LTEngine.bundle */ = {
+		8B16CA401BAF0F60002FB750 /* LTEngine.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = LTEngine.bundle;
-			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
+			remoteRef = 8B16CA3F1BAF0F60002FB750 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B16CA421BAF0F60002FB750 /* LTEngineTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineTests.xctest;
+			remoteRef = 8B16CA411BAF0F60002FB750 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -297,11 +285,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B16CA431BAF0F6C002FB750 /* LTEngine.bundle in Resources */,
 				289884BC188D992000AD338E /* Main-iPhone.storyboard in Resources */,
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
-				8BCFC03018CF0D1C00E612DE /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,14 +307,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8B8E517418685A5700821829 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LTEngine;
-			targetProxy = 8B8E517318685A5700821829 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8B8E51361868479100821829 /* InfoPlist.strings */ = {
@@ -377,9 +357,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTEngine",
-					"$(SRCROOT)/../../third_party/utils/libextobjc",
-					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../LTEngine",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -417,9 +397,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTEngine",
-					"$(SRCROOT)/../../third_party/utils/libextobjc",
-					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../LTEngine",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/utils/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
@@ -438,8 +418,8 @@
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../third_party/images/opencv",
-					"$(SRCROOT)/../../third_party/utils/objection",
+					"$(SRCROOT)/../third_party/images/opencv",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineUser/LTEngineUser-Prefix.pch";
@@ -462,8 +442,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../third_party/images/opencv",
-					"$(SRCROOT)/../../third_party/utils/objection",
+					"$(SRCROOT)/../third_party/images/opencv",
+					"$(SRCROOT)/../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineUser/LTEngineUser-Prefix.pch";

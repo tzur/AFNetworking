@@ -1,9 +1,11 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTGPUResource.h"
-
+#import <LTKit/LTTypedefs.h>
 #import <OpenGLES/ES2/glext.h>
+
+#import "LTGPUResource.h"
+#import "LTVector.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -3,13 +3,11 @@
 
 #import "LTShapeDrawerTriangularMeshShape.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 #import "LTShapeDrawerParams.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 #import "UIColor+Vector.h"
 

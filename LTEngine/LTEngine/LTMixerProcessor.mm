@@ -3,7 +3,6 @@
 
 #import "LTMixerProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotImageProcessor+Protected.h"

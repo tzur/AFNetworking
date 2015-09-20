@@ -5,8 +5,8 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreText/CoreText.h>
+#import <LTKit/LTCFExtensions.h>
 
-#import "LTCFExtensions.h"
 #import "LTGLKitExtensions.h"
 
 /// Structure wrapping the data required for computing the modified path.

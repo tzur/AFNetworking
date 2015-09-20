@@ -3,7 +3,7 @@
 
 #import "LTTexture+Factory.h"
 
-#import "LTDevice.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTMMTexture.h"
 
@@ -43,9 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
     case LTTexturePrecisionByte:
       return YES;
     case LTTexturePrecisionHalfFloat:
-      return [[LTDevice currentDevice] canRenderToHalfFloatTextures];
+      return [LTGLContext currentContext].canRenderToHalfFloatTextures;
     case LTTexturePrecisionFloat:
-      return [[LTDevice currentDevice] canRenderToFloatTextures];
+      return [LTGLContext currentContext].canRenderToFloatTextures;
   }
 }
 

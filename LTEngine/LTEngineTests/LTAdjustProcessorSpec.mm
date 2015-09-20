@@ -3,10 +3,8 @@
 
 #import "LTAdjustProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTOpenCVExtensions.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 LTSpecBegin(LTAdjustProcessor)

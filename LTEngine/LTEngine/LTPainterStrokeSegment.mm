@@ -3,7 +3,6 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTCGExtensions.h"
 #import "LTInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 

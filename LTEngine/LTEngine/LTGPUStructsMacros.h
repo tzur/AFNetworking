@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTMetaMacros.h"
+#import <LTKit/LTMetaMacros.h>
 
 /// Avoid including this file directly. To use these macros, include \c LTGPUStructs.h.
 

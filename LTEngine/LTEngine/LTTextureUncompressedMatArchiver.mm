@@ -3,8 +3,10 @@
 
 #import "LTTextureUncompressedMatArchiver.h"
 
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "LTTexture.h"
-#import "NSFileManager+LTKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

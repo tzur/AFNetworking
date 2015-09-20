@@ -3,13 +3,13 @@
 
 #import "LTSingleAirbrushPaintingStrategy.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrush.h"
-#import "LTCGExtensions.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainter.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
-#import "LTRandom.h"
 #import "LTTexture.h"
 
 @interface LTSingleAirbrushPaintingStrategy ()

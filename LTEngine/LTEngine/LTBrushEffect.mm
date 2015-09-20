@@ -3,7 +3,7 @@
 
 #import "LTBrushEffect.h"
 
-#import "LTRandom.h"
+#import <LTKit/LTRandom.h>
 
 @interface LTBrushEffect ()
 

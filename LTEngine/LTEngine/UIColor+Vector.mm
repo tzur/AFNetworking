@@ -3,7 +3,6 @@
 
 #import "UIColor+Vector.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 
 @implementation UIColor (Vector)

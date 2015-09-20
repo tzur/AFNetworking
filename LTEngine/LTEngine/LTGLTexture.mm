@@ -3,8 +3,6 @@
 
 #import "LTGLTexture.h"
 
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -391,7 +389,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   switch (self.channels) {
     case LTTextureChannelsOne:
     case LTTextureChannelsTwo:
-      if ([LTDevice currentDevice].supportsRGTextures) {
+      if ([LTGLContext currentContext].supportsRGTextures) {
         return [self matType];
       } else {
         return CV_MAKETYPE(CV_MAT_DEPTH([self matType]), 4);

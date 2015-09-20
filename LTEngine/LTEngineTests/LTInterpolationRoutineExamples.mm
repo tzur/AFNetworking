@@ -3,7 +3,6 @@
 
 #import "LTInterpolationRoutineExamples.h"
 
-#import "LTCGExtensions.h"
 #import "LTInterpolationRoutine.h"
 
 NSString * const kLTInterpolationRoutineExamples = @"LTInterpolationRoutineExamples";

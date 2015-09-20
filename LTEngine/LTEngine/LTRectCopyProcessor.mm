@@ -3,7 +3,6 @@
 
 #import "LTRectCopyProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"

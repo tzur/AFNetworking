@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPropertyMacros.h"
-
 /// Holds the configurable parameters controlling the appearance of the shapes drawn by the
 /// \c LTShapeDrawer.
 @interface LTShapeDrawerParams : NSObject <NSCopying>

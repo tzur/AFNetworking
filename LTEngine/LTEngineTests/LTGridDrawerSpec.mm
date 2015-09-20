@@ -5,7 +5,6 @@
 
 #import "LTFbo.h"
 #import "LTGLTexture.h"
-#import "LTTestUtils.h"
 
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
 /// blending the corners if necessary.

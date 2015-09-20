@@ -3,11 +3,12 @@
 
 #import "LTTextureJpegArchiver.h"
 
+#import <LTKit/LTImageLoader.h>
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "LTImage.h"
-#import "LTImageLoader.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
-#import "NSFileManager+LTKit.h"
 
 LTSpecBegin(LTTextureJpegArchiver)
 

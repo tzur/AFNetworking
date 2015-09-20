@@ -4,7 +4,6 @@
 #import "LTEdgeAvoidingBrush.h"
 
 #import "LTBrushSpec.h"
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"

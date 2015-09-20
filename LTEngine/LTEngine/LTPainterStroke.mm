@@ -3,7 +3,6 @@
 
 #import "LTPainterStroke.h"
 
-#import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTInterpolationRoutine.h"
 #import "LTLinearInterpolationRoutine.h"

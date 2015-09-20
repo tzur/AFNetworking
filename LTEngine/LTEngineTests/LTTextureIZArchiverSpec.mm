@@ -3,6 +3,8 @@
 
 #import "LTTextureIZArchiver.h"
 
+#import <LTKit/NSError+LTKit.h>
+
 #import "LTIZCompressor.h"
 #import "LTTexture+Factory.h"
 

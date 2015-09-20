@@ -3,7 +3,8 @@
 
 #import "LTTransformers.h"
 
-#import "LTEnum.h"
+#import <LTKit/LTEnum.h>
+
 #import "LTVector.h"
 
 @implementation LTTransformers

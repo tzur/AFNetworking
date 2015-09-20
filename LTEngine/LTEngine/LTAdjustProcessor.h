@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// This class tonally adjusts the image. The manipulations can be categorized into the four
 /// following categories: luminance, color, details and split-tone.
 /// Luminance / color separation is done with YIQ color space.

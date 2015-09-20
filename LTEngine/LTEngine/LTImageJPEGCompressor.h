@@ -3,8 +3,6 @@
 
 #import "LTImageCompression.h"
 
-#import "LTPropertyMacros.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Apply JPEG compression on images. User can define the compression \c quality.

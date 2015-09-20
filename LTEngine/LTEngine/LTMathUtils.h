@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTypedefs.h"
+#import "LTTypedefs+LTEngine.h"
 
 /// Returns \c YES if given \c value is integral and a power of two.
 NS_INLINE BOOL LTIsPowerOfTwo(CGFloat value) {

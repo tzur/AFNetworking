@@ -1,7 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTCGExtensions.h"
+#import <LTKit/LTCGExtensions.h>
+
+#ifdef __cplusplus
 
 /// Represents a \c CGRect, while providing easy access to its edges, corners and center.
 struct LTRect {
@@ -84,3 +86,5 @@ struct LTRect {
   CGPoint origin;
   CGSize size;
 };
+
+#endif

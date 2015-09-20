@@ -3,11 +3,12 @@
 
 #import "LTTextureJpegArchiver.h"
 
+#import <LTKit/LTImageLoader.h>
+#import <LTKit/NSError+LTKit.h>
+
 #import "LTImage.h"
-#import "LTImageLoader.h"
 #import "LTImage+Texture.h"
 #import "LTTexture.h"
-#import "NSError+LTKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

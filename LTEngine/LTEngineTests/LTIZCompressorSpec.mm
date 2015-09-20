@@ -3,6 +3,8 @@
 
 #import "LTIZCompressor.h"
 
+#import <LTKit/NSError+LTKit.h>
+
 #import "LTIZHeader.h"
 #import "LTOpenCVExtensions.h"
 

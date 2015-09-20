@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// Processor used to composite a mask on top of an input image. The mask is assumed to be a single
 /// channel image (where \c 0 marks masked area and \c 1 marks an unmasked area), allowing its
 /// [0,1] grayscale color to be replaced with an RGB color using the \c maskColor property.

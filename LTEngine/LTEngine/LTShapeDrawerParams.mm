@@ -4,7 +4,6 @@
 #import "LTShapeDrawerParams.h"
 
 #import "LTGLKitExtensions.h"
-#import "LTPropertyMacros.h"
 
 @implementation LTShapeDrawerParams
 

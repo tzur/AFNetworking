@@ -4,7 +4,7 @@
 #import "LTCurve.h"
 
 #import "LTOpenCVExtensions.h"
-#import "NSBundle+LTKitBundle.h"
+#import "NSBundle+LTEngineBundle.h"
 
 @implementation LTCurve
 
@@ -12,7 +12,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"IdentityCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"IdentityCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -22,7 +22,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"FillLightCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"FillLightCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -32,7 +32,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveHighlightsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"PositiveHighlightsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -42,7 +42,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeHighlightsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"NegativeHighlightsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -52,7 +52,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveShadowsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"PositiveShadowsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -62,7 +62,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeShadowsCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"NegativeShadowsCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -72,7 +72,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveBrightnessCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"PositiveBrightnessCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -82,7 +82,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeBrightnessCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"NegativeBrightnessCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -92,7 +92,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"PositiveContrastCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"PositiveContrastCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;
@@ -102,7 +102,7 @@
   static dispatch_once_t onceToken;
   static cv::Mat1b curve;
   dispatch_once(&onceToken, ^{
-    curve = LTLoadMatFromBundle([NSBundle LTKitBundle], @"NegativeContrastCurve.png");
+    curve = LTLoadMatFromBundle([NSBundle LTEngineBundle], @"NegativeContrastCurve.png");
     LTAssert(LTCurveIsLoadedCorrectly(curve), @"Could not load curve correctly");
   });
   return curve;

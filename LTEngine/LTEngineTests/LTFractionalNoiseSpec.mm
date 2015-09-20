@@ -5,7 +5,6 @@
 
 #import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
-#import "LTTestUtils.h"
 
 LTSpecBegin(LTFractionalNoise)
 

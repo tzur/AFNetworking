@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// Two possible strategies of using noise in frame creation.
 typedef NS_ENUM(GLenum, LTProceduralFrameNoiseMapping) {
   LTProceduralFrameNoiseMappingStretch = 0,

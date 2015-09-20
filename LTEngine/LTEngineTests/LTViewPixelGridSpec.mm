@@ -3,7 +3,6 @@
 
 #import "LTViewPixelGrid.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGridDrawer.h"
 #import "LTTexture+Factory.h"

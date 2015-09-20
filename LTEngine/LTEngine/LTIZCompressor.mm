@@ -3,12 +3,13 @@
 
 #import "LTIZCompressor.h"
 
+#import <LTKit/LTMMInputFile.h>
+#import <LTKit/LTMMOutputFile.h>
+#import <LTKit/NSError+LTKit.h>
+
 #import "LTIZFastMath.h"
 #import "LTIZHeader.h"
-#import "LTMMInputFile.h"
-#import "LTMMOutputFile.h"
 #import "LTMatParallelDispatcher.h"
-#import "NSError+LTKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

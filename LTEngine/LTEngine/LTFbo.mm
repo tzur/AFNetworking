@@ -3,7 +3,6 @@
 
 #import "LTFbo.h"
 
-#import "LTDevice.h"
 #import "LTGLContext.h"
 #import "LTTexture+Protected.h"
 
@@ -40,15 +39,15 @@
 }
 
 - (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level {
-  return [self initWithTexture:texture level:level device:[LTDevice currentDevice]];
+  return [self initWithTexture:texture level:level context:[LTGLContext currentContext]];
 }
 
-- (instancetype)initWithTexture:(LTTexture *)texture device:(LTDevice *)device {
-  return [self initWithTexture:texture level:0 device:device];
+- (instancetype)initWithTexture:(LTTexture *)texture context:(LTGLContext *)context {
+  return [self initWithTexture:texture level:0 context:context];
 }
 
 - (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level
-                         device:(LTDevice *)device {
+                        context:(LTGLContext *)context {
   if (self = [super init]) {
     LTParameterAssert(texture);
     LTParameterAssert((GLint)level <= texture.maxMipmapLevel);
@@ -60,7 +59,7 @@
       [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's size is (0, 0)"];
     }
 
-    [self verifyTextureAsRenderTarget:texture withDevice:device];
+    [self verifyTextureAsRenderTarget:texture withContext:context];
 
     self.previousViewport = CGRectNull;
     self.texture = texture;
@@ -81,19 +80,19 @@
   LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
 }
 
-- (void)verifyTextureAsRenderTarget:(LTTexture *)texture withDevice:(LTDevice *)device {
+- (void)verifyTextureAsRenderTarget:(LTTexture *)texture withContext:(LTGLContext *)context {
   switch (texture.precision) {
     case LTTexturePrecisionByte:
       // Rendering to byte precision is possible by OpenGL ES 2.0 spec.
       break;
     case LTTexturePrecisionHalfFloat:
-      if (!device.canRenderToHalfFloatTextures) {
+      if (!context.canRenderToHalfFloatTextures) {
         [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a "
          "half-float precision, which is unsupported as a render target on this device"];
       }
       break;
     case LTTexturePrecisionFloat:
-      if (!device.canRenderToFloatTextures) {
+      if (!context.canRenderToFloatTextures) {
         [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a float "
          "precision, which is unsupported as a render target on this device"];
       }

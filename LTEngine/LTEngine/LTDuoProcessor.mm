@@ -4,7 +4,6 @@
 #import "LTDuoProcessor.h"
 
 #import "LTProgram.h"
-#import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"

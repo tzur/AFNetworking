@@ -3,7 +3,6 @@
 
 #import "LTMultiRectDrawerSpec.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
@@ -11,7 +10,6 @@
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTTestUtils.h"
 #import "LTTextureDrawerExamples.h"
 
 NSString * const kLTMultiRectDrawerExamples = @"LTMultiRectDrawerExamples";

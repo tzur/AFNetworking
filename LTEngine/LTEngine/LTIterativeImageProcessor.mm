@@ -3,7 +3,6 @@
 
 #import "LTIterativeImageProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTIterativeProcessingStrategy.h"
 #import "LTProgramFactory.h"
 #import "LTRectDrawer.h"

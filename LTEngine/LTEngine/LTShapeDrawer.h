@@ -1,9 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPropertyMacros.h"
-
-#import "LTCGExtensions.h"
 #import "LTShapeDrawerParams.h"
 
 @class LTFbo, LTRotatedRect;

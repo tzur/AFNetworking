@@ -5,7 +5,6 @@
 
 #import "LTBlendMode.h"
 #import "LTMixerMaskMode.h"
-#import "LTPropertyMacros.h"
 
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
 /// mask on the front (default) or back texture. The back texture is fixed, while the front texture

@@ -5,9 +5,7 @@
 
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
-#import "LTTestUtils.h"
 #import "LTTextureBasicExamples.h"
-#import "NSFileManager+LTKit.h"
 
 // LTTexture spec is tested by the concrete class LTGLTexture.
 

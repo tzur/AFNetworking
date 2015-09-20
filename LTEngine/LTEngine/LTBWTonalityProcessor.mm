@@ -4,7 +4,6 @@
 #import "LTBWTonalityProcessor.h"
 
 #import "LTBilateralFilterProcessor.h"
-#import "LTCGExtensions.h"
 #import "LTColorGradient.h"
 #import "LTCurve.h"
 #import "LTGLKitExtensions.h"
@@ -14,7 +13,6 @@
 #import "LTShaderStorage+LTBWTonalityFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-#import "NSBundle+LTKitBundle.h"
 
 @interface LTBWTonalityProcessor ()
 

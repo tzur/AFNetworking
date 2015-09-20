@@ -3,7 +3,6 @@
 
 #import "LTColorRangeAdjustProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"

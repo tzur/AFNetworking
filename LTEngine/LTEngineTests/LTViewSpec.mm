@@ -3,14 +3,11 @@
 
 #import "LTView.h"
 
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTGridDrawer.h"
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
-#import "LTTestUtils.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
@@ -31,6 +28,8 @@
 @end
 
 LTSpecBegin(LTView)
+
+__block id uiScreen;
 
 __block LTTexture *contentTexture;
 __block LTTexture *outputTexture;
@@ -56,10 +55,10 @@ static const cv::Vec4b yellow(255, 255, 0, 255);
 beforeEach(^{
   // avoid fractional content scale factor since the tests were adjusted for pixels to fit without
   // interpolation.
-  id ltDevice = LTMockClass([LTDevice class]);
-  [[[ltDevice stub] andReturnValue:@2] glkContentScaleFactor];
+  uiScreen = LTMockClass([UIScreen class]);
+  [[[uiScreen stub] andReturnValue:@2] nativeScale];
 
-  CGSize framebufferSize = kViewSize * [LTDevice currentDevice].glkContentScaleFactor;
+  CGSize framebufferSize = kViewSize * 2;
   short width = kContentSize.width / 2;
   short height = kContentSize.height / 2;
   inputContent = cv::Mat4b(kContentSize.height, kContentSize.width);
@@ -82,6 +81,7 @@ beforeEach(^{
 });
 
 afterEach(^{
+  uiScreen = nil;
   fbo = nil;
   outputTexture = nil;
   contentTexture = nil;
@@ -162,7 +162,7 @@ context(@"properties", ^{
   });
   
   it(@"should have default values", ^{
-    expect(view.contentScaleFactor).to.equal([LTDevice currentDevice].glkContentScaleFactor);
+    expect(view.contentScaleFactor).to.equal([uiScreen nativeScale]);
     expect(view.contentSize).to.equal(kContentSize);
     expect(view.framebufferSize).to.equal(view.bounds.size * view.contentScaleFactor);
     expect(view.forwardTouchesToDelegate).to.beFalsy();

@@ -4,7 +4,6 @@
 #import "LTShapeDrawerPathShape.h"
 
 #import "LTArrayBuffer.h"
-#import "LTCGExtensions.h"
 #import "LTDrawingContext.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"

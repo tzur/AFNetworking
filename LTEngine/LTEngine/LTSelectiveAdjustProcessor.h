@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// LTSelectiveAdjustProcessor manipulates saturation and intensity of the image using masks defined
 /// by the hues in the image.
 @interface LTSelectiveAdjustProcessor : LTOneShotImageProcessor

@@ -3,9 +3,9 @@
 
 #import "LTBrushColorDynamicsEffect.h"
 
-#import "LTCGExtensions.h"
+#import <LTKit/LTRandom.h>
+
 #import "LTTexture.h"
-#import "LTRandom.h"
 #import "LTRotatedRect.h"
 #import "UIColor+Vector.h"
 

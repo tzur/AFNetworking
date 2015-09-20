@@ -3,8 +3,8 @@
 
 #import "LTBrushScatterEffect.h"
 
-#import "LTCGExtensions.h"
-#import "LTRandom.h"
+#import <LTKit/LTRandom.h>
+
 #import "LTRotatedRect.h"
 
 @implementation LTBrushScatterEffect

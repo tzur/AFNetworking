@@ -3,7 +3,6 @@
 
 #import "LTShapeDrawer.h"
 
-#import "LTCGExtensions.h"
 #import "LTCommonDrawableShape.h"
 #import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
@@ -11,7 +10,6 @@
 #import "LTShapeDrawerEllipticShape.h"
 #import "LTShapeDrawerPathShape.h"
 #import "LTShapeDrawerTriangularMeshShape.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 @interface LTShapeDrawer ()

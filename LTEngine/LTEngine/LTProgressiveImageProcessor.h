@@ -3,8 +3,6 @@
 
 #import "LTImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// Abstract image processor for progressive image processing tasks. This processor is built to
 /// process progressively according to its \c targetProgress property. This allows animating the
 /// output, as its being processed, for both UX and performance reasons.

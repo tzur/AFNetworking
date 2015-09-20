@@ -5,7 +5,7 @@
 
 #import <Expecta/NSValue+Expecta.h>
 
-#import "LTTestUtils.h"
+#import "LTTestUtils+LTEngine.h"
 #import "NSValue+OpenCVExtensions.h"
 
 static double LTDefaultRangeForMatType(int type) {

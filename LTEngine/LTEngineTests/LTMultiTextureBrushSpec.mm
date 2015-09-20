@@ -6,7 +6,6 @@
 #import "LTBrushEffectExamples.h"
 #import "LTTextureBrushExamples.h"
 
-#import "LTCGExtensions.h"
 #import "LTTexture+Factory.h"
 
 LTSpecBegin(LTMultiTextureBrush)

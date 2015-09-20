@@ -2,7 +2,6 @@
 // Created by Yaron Inger.
 
 #import "LTJSONSerializationAdapter.h"
-#import "LTKeyPathCoding.h"
 
 /// Abstract class for generic image processing mechanism. The mechanism accepts a varying number of
 /// inputs, including textures and an input model, and produces a varying number of outputs. Once

@@ -3,9 +3,9 @@
 
 #import "LTBrushShapeDynamicsEffect.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrushEffectExamples.h"
-#import "LTCGExtensions.h"
-#import "LTRandom.h"
 #import "LTRotatedRect.h"
 
 LTSpecBegin(LTBrushShapeDynamicsEffect)

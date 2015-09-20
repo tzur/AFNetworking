@@ -3,8 +3,6 @@
 
 #import "LTRotatedRect.h"
 
-#import "LTCGExtensions.h"
-
 @interface LTRotatedRect ()
 
 @property (nonatomic) CGRect rect;

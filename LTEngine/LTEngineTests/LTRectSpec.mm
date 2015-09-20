@@ -3,8 +3,6 @@
 
 #import "LTRect.h"
 
-#import "LTCGExtensions.h"
-
 SpecBegin(LTRect)
 
 context(@"initialization", ^{

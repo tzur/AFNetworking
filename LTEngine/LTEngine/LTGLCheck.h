@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTLogger.h"
+#import <OpenGLES/ES3/gl.h>
 
 #import "LTGLException.h"
 

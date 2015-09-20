@@ -3,11 +3,12 @@
 
 #import "LTTextureUncompressedMatArchiver.h"
 
+#import <LTKit/LTImageLoader.h>
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "LTImage.h"
-#import "LTImageLoader.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
-#import "NSFileManager+LTKit.h"
 
 static BOOL LTSaveMat(const cv::Mat &mat, NSString *relativePath) {
   NSUInteger matSize = mat.total() * mat.elemSize();

@@ -3,13 +3,13 @@
 
 #import "LTBristleBrush.h"
 
-#import "LTCGExtensions.h"
+#import <LTKit/LTRandom.h>
+
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
-#import "LTRandom.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"

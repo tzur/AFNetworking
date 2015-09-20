@@ -14,7 +14,6 @@
 #import "LTShaderStorage+LTAdjustFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
-#import "NSBundle+LTKitBundle.h"
 
 @interface LTAdjustProcessor ()
 

@@ -4,7 +4,7 @@
 #import <GLKit/GLKit.h>
 #import <opencv2/core/core.hpp>
 
-#import "LTCGExtensions.h"
+#ifdef __cplusplus
 
 #pragma mark -
 #pragma mark LTVector2
@@ -874,3 +874,5 @@ static const LTVector4 LTVector4One(1, 1, 1, 1);
 static const LTVector2 LTVector2Null(NAN);
 static const LTVector3 LTVector3Null(NAN);
 static const LTVector4 LTVector4Null(NAN);
+
+#endif

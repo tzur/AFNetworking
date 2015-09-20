@@ -6,12 +6,10 @@
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 NSString * const kLTTextureBrushExamples = @"LTTextureBrushExamples";

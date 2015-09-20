@@ -3,7 +3,8 @@
 
 #import "LTTextureContentsDataArchiver.h"
 
-#import "NSError+LTKit.h"
+#import <LTKit/NSError+LTKit.h>
+
 #import "LTImage.h"
 #import "LTTexture.h"
 

@@ -11,7 +11,6 @@
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+ValueSetterFsh.h"
-#import "LTTestUtils.h"
 #import "LTTextureBasicExamples.h"
 
 using half_float::half;

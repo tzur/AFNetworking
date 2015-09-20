@@ -3,7 +3,6 @@
 
 #import "LTCropProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"

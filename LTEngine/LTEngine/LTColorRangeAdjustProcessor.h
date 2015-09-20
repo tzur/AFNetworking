@@ -4,7 +4,6 @@
 #import "LTOneShotImageProcessor.h"
 
 #import "LTDualMaskProcessor.h"
-#import "LTPropertyMacros.h"
 
 /// Rendering modes of the processor.
 typedef NS_ENUM(NSUInteger, LTColorRangeRenderingMode) {

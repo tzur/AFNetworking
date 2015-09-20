@@ -3,7 +3,6 @@
 
 #import "LTBicubicResizeProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"

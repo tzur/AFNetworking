@@ -3,8 +3,6 @@
 
 #import "LTRotatedRect.h"
 
-#import "LTCGExtensions.h"
-
 SpecBegin(LTRotatedRect)
 
 const CGRect kRect = CGRectMake(1, 2, 3, 4);

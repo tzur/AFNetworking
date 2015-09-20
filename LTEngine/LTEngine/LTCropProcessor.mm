@@ -3,7 +3,6 @@
 
 #import "LTCropProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTCropDrawer.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"

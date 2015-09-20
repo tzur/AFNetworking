@@ -5,7 +5,6 @@
 
 #import "LTColorGradient.h"
 #import "LTColorGradient+ForTesting.h"
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"

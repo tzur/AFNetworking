@@ -4,21 +4,18 @@
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushRandomState.h"
 #import "LTBrushScatterEffect.h"
 #import "LTBrushShapeDynamicsEffect.h"
-#import "LTCGExtensions.h"
 #import "LTDegenerateInterpolationRoutine.h"
-#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
-#import "LTKeyPathCoding.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
-#import "LTRandom.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 NSString * const kLTBrushExamples = @"LTBrushExamples";
@@ -316,8 +313,7 @@ context(@"properties", ^{
   });
   
   it(@"should have default properties", ^{
-    expect(brush.baseDiameter).to.equal((NSUInteger)([LTDevice currentDevice].fingerSizeOnDevice *
-                                        [LTDevice currentDevice].glkContentScaleFactor));
+    expect(brush.baseDiameter).to.beGreaterThan(0);
     expect(brush.scale).to.equal(1);
     expect(brush.angle).to.equal(0);
     expect(brush.spacing).to.equal(0.05);

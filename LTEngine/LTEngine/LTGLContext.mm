@@ -5,7 +5,6 @@
 
 #import <stack>
 
-#import "LTCGExtensions.h"
 #import "LTFboPool.h"
 
 /// OpenGL default blend function.
@@ -66,6 +65,15 @@ typedef struct {
 /// Holds \c LTGLContextValues objects for each \c executeAndRestoreState: call. Note that this is
 /// a stack since it's possible to have recursive calls to \c executeAndRestoreState:.
 @property (readonly, nonatomic) std::stack<LTGLContextValues> &contextStack;
+
+/// Set of \c NSString objects of the supported extensions of this context.
+@property (readwrite, nonatomic) NSSet *supportedExtensions;
+
+/// Maximal texture size that can be used on the device's GPU.
+@property (readwrite, nonatomic) GLint maxTextureSize;
+
+/// Maximal number of texture units that can be used on the device GPU.
+@property (readwrite, nonatomic) GLint maxTextureUnits;
 
 @end
 
@@ -438,6 +446,49 @@ typedef struct {
 - (void)assertContextIsCurrentContext {
   LTAssert([self isSetAsCurrentContext],
            @"Trying to modify context while not set as current context");
+}
+
+
+#pragma mark -
+#pragma mark Capabilities
+#pragma mark -
+
+- (NSSet *)supportedExtensions {
+  if (!_supportedExtensions) {
+    NSString *extensions = [NSString stringWithCString:(const char *)glGetString(GL_EXTENSIONS)
+                                              encoding:NSASCIIStringEncoding];
+    NSString *trimmed = [extensions
+                         stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    _supportedExtensions = [NSSet setWithArray:[trimmed componentsSeparatedByString:@" "]];
+  }
+  return _supportedExtensions;
+}
+
+- (GLint)maxTextureSize {
+  if (!_maxTextureSize) {
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
+  }
+  return _maxTextureSize;
+}
+
+- (GLint)maxTextureUnits {
+  if (!_maxTextureUnits) {
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
+  }
+  return _maxTextureUnits;
+}
+
+- (BOOL)canRenderToHalfFloatTextures {
+  return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_half_float"];
+}
+
+- (BOOL)canRenderToFloatTextures {
+  return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_float"];
+}
+
+- (BOOL)supportsRGTextures {
+  return self.version == LTGLContextAPIVersion3 ||
+      [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
 }
 
 @end

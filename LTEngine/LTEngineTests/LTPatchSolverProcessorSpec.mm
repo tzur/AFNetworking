@@ -6,7 +6,6 @@
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
-#import "LTTestUtils.h"
 
 LTSpecBegin(LTPatchSolverProcessor)
 

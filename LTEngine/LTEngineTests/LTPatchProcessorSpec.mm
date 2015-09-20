@@ -3,7 +3,6 @@
 
 #import "LTPatchProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"

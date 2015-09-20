@@ -5,7 +5,6 @@
 
 #import <array>
 
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTNextIterationPlacement.h"
 #import "LTOneShotImageProcessor+Protected.h"

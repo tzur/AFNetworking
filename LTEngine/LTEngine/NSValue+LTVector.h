@@ -3,6 +3,8 @@
 
 #import "LTVector.h"
 
+#ifdef __cplusplus
+
 @interface NSValue (LTVector)
 
 - (LTVector2)LTVector2Value;
@@ -14,3 +16,5 @@
 + (NSValue *)valueWithLTVector4:(LTVector4)vector;
 
 @end
+
+#endif

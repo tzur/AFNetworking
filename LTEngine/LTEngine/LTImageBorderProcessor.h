@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// Available symmetrization strategies. Each strategy consists of flipping the texture around 0,
 /// 1 (x = 0.5 or y = 0.5) or 2 axis (x = 0.5 and y = 0.5). Flipped values are blended with the
 /// original pixels in such a manner that the pixels further away from the seam retain more of their

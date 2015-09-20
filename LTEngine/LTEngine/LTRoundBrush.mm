@@ -6,6 +6,7 @@
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTMathUtils.h"
+#import "LTOpenCVHalfFloat.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTBrushVsh.h"
 #import "LTShaderStorage+LTRoundBrushFsh.h"

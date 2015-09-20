@@ -10,3 +10,7 @@
 [submodule "third_party/utils/Mantle"]
 	path = third_party/utils/Mantle
 	url = https://github.com/Lightricks/Mantle.git
+[submodule "LTKit"]
+	path = LTKit
+	url = https://github.com/Lightricks/LTKit.git
+	branch = feature/split-ltdevice

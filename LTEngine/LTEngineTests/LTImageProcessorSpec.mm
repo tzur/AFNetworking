@@ -3,8 +3,6 @@
 
 #import "LTImageProcessor.h"
 
-#import <extobjc/extobjc.h>
-
 #import "LTGLKitExtensions.h"
 #import "LTVector.h"
 

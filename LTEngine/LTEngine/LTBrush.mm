@@ -3,19 +3,19 @@
 
 #import "LTBrush.h"
 
+#import <LTKit/LTRandom.h>
+#import <LTKit/UIDevice+Kind.h>
+#import <LTKit/UIScreen+Physical.h>
+
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushRandomState.h"
 #import "LTBrushScatterEffect.h"
 #import "LTBrushShapeDynamicsEffect.h"
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
-#import "LTKeyPathCoding.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTProgram.h"
-#import "LTRandom.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTBrushFsh.h"
@@ -75,8 +75,13 @@ static const CGFloat kMinimumDiameter = 2;
 }
 
 - (void)setBrushDefaults {
-  self.baseDiameter = [LTDevice currentDevice].fingerSizeOnDevice *
-                      [LTDevice currentDevice].glkContentScaleFactor;
+  static const CGFloat kCommonFingerSizeInInches = 0.63;
+
+  CGFloat pixelsPerInch = [UIDevice currentDevice].lt_pixelsPerInch;
+  CGFloat pointsPerInch = [[UIScreen mainScreen] lt_pointsPerInchForPixelsPerInch:pixelsPerInch];
+  CGFloat fingerSizeInPoints = kCommonFingerSizeInInches * pointsPerInch;
+
+  self.baseDiameter = fingerSizeInPoints * [UIScreen mainScreen].nativeScale;
 }
 
 - (LTTexture *)createTexture {

@@ -3,8 +3,9 @@
 
 #import "LTGeometry.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTGLKitExtensions.h"
-#import "LTRandom.h"
 
 static CGFloat LTScalarProjection(CGPoint p, CGPoint q, CGPoint r) {
   return LTVector2(p - r).dot(LTVector2(q - r).normalized());

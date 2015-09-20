@@ -3,8 +3,6 @@
 
 #import "LTEdgeAvoidingBrush.h"
 
-#import "LTCGExtensions.h"
-#import "LTEasyBoxing.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"

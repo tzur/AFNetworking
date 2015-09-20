@@ -6,7 +6,6 @@
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPainterPoint.h"

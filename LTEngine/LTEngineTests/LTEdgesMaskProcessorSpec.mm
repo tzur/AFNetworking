@@ -3,7 +3,6 @@
 
 #import "LTEdgesMaskProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 

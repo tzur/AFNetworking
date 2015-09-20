@@ -8,7 +8,6 @@
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
-#import "LTTestUtils.h"
 #import "LTTextureBasicExamples.h"
 
 @interface LTGLTexture ()

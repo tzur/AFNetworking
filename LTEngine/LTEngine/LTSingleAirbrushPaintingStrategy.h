@@ -3,8 +3,6 @@
 
 #import "LTSingleBrushPaintingStrategy.h"
 
-#import "LTPropertyMacros.h"
-
 /// POD for holding a single airbrush point used to generate painting directions by the
 /// \c LTSingleAirbrushPaintingStrategy.
 typedef struct {

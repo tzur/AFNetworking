@@ -3,11 +3,11 @@
 
 #import "LTMultiTextureBrush.h"
 
-#import "LTCGExtensions.h"
+#import <LTKit/LTRandom.h>
+
 #import "LTFbo.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
-#import "LTRandom.h"
 #import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTTextureBrushFsh.h"
 #import "UIColor+Vector.h"
@@ -64,7 +64,7 @@
 
 - (void)setTextures:(NSArray *)textures {
   LTParameterAssert(textures.count);
-  CGSize size = [textures.firstObject size];
+  CGSize size = [(LTTexture *)textures.firstObject size];
   for (LTTexture *texture in textures) {
     LTParameterAssert(texture.format == LTTextureFormatRGBA);
     LTParameterAssert(texture.size == size, @"all textures should have the same size");

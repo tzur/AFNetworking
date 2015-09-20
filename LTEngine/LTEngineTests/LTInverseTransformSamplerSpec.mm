@@ -3,7 +3,7 @@
 
 #import "LTInverseTransformSampler.h"
 
-#import "LTRandom.h"
+#import <LTKit/LTRandom.h>
 
 static NSArray *LTArrayFromFloats(const Floats &floats) {
   NSMutableArray *array = [NSMutableArray array];

@@ -3,9 +3,9 @@
 
 #import "LTMeshDrawer.h"
 
-#import "LTCGExtensions.h"
+#import <LTKit/LTRandom.h>
+
 #import "LTFbo.h"
-#import "LTRandom.h"
 #import "LTTextureDrawerExamples.h"
 #import "LTTexture+Factory.h"
 

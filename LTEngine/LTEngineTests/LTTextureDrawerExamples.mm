@@ -3,14 +3,12 @@
 
 #import "LTTextureDrawerExamples.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTTestUtils.h"
 #import "NSValue+GLKitExtensions.h"
 
 NSString * const kLTTextureDrawerExamples = @"LTTextureDrawerExamples";

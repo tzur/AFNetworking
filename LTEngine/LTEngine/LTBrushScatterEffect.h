@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPropertyMacros.h"
-
 #import "LTBrushEffect.h"
 
 /// A class representing a dynamic brush effect used by the \c LTBrush.

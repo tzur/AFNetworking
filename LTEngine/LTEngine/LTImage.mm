@@ -4,10 +4,8 @@
 #import "LTImage.h"
 
 #import <ImageIO/ImageIO.h>
+#import <LTKit/NSError+LTKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
-#import "LTCGExtensions.h"
-#import "NSError+LTKit.h"
 
 @interface LTImage () {
   /// Image contents.

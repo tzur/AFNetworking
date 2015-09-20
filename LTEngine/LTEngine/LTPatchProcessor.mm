@@ -3,7 +3,6 @@
 
 #import "LTPatchProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPatchCompositorProcessor.h"

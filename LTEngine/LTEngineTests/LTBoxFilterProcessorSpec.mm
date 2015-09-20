@@ -3,7 +3,6 @@
 
 #import "LTBoxFilterProcessor.h"
 
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 LTSpecBegin(LTBoxFilterProcessor)

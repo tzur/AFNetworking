@@ -149,4 +149,23 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Allowed values are {1, 2, 4, 8}.
 @property (nonatomic) GLint unpackAlignment;
 
+#pragma mark -
+#pragma mark Capabilities
+#pragma mark -
+
+/// Maximal texture size that can be used on the device's GPU.
+@property (readonly, nonatomic) GLint maxTextureSize;
+
+/// Maximal number of texture units that can be used on the device GPU.
+@property (readonly, nonatomic) GLint maxTextureUnits;
+
+/// \c YES if writing to half-float textures is supported.
+@property (readonly, nonatomic) BOOL canRenderToHalfFloatTextures;
+
+/// \c YES if writing to float textures is supported.
+@property (readonly, nonatomic) BOOL canRenderToFloatTextures;
+
+/// \c YES if creating and rendering \c RED or \c RG textures is supported.
+@property (readonly, nonatomic) BOOL supportsRGTextures;
+
 @end

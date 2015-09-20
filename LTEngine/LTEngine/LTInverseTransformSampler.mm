@@ -3,8 +3,7 @@
 
 #import "LTInverseTransformSampler.h"
 
-#import "LTRandom.h"
-
+#import <LTKit/LTRandom.h>
 #import <numeric>
 
 #pragma mark -

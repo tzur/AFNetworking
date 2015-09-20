@@ -1,13 +1,13 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrush.h"
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushScatterEffect.h"
 #import "LTBrushShapeDynamicsEffect.h"
 #import "LTBrushRandomState.h"
-#import "LTKeyPathCoding.h"
-#import "LTRandom.h"
 
 LTSpecBegin(LTBrushRandomState)
 

@@ -5,7 +5,6 @@
 
 #import <Accelerate/Accelerate.h>
 
-#import "LTCGExtensions.h"
 #import "LTFFTConvolutionProcessor.h"
 #import "LTFFTProcessor.h"
 #import "LTMathUtils.h"

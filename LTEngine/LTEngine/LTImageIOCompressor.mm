@@ -4,9 +4,10 @@
 #import "LTImageIOCompressor.h"
 
 #import <ImageIO/ImageIO.h>
+#import <LTKit/LTCFExtensions.h>
+#import <LTKit/NSError+LTKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#import "LTCFExtensions.h"
 #import "LTImage.h"
 
 NS_ASSUME_NONNULL_BEGIN

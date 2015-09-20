@@ -5,7 +5,6 @@
 
 #import "LTBlendMode.h"
 #import "LTMixerMaskMode.h"
-#import "LTPropertyMacros.h"
 
 @class LTQuad;
 

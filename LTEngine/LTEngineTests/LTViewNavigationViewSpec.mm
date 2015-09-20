@@ -3,9 +3,6 @@
 
 #import "LTViewNavigationView.h"
 
-#import "LTCGExtensions.h"
-#import "LTTestUtils.h"
-
 @interface LTViewNavigationView ()
 
 @property (strong, nonatomic) UIScrollView *scrollView;

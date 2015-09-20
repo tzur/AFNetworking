@@ -3,7 +3,6 @@
 
 #import "LTPainterImageProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLContext.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"

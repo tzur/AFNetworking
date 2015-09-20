@@ -3,8 +3,6 @@
 
 #import "LTOpenCVExtensions.h"
 
-#import "LTTestUtils.h"
-
 using half_float::half;
 
 SpecBegin(LTOpenCVExtensions)

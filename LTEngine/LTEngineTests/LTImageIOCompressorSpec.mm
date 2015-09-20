@@ -4,9 +4,9 @@
 #import "LTImageIOCompressor.h"
 
 #import <ImageIO/ImageIO.h>
+#import <LTKit/LTCFExtensions.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#import "LTCFExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 

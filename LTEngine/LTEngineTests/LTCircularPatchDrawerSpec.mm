@@ -3,7 +3,6 @@
 
 #import "LTCircularPatchDrawer.h"
 
-#import "LTCGExtensions.h"
 #import "LTCircularMeshModel.h"
 #import "LTFbo.h"
 #import "LTOpenCVExtensions.h"

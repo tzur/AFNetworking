@@ -3,9 +3,9 @@
 
 #import "LTBrushRandomState+LTBrush.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrush.h"
-#import "LTKeyPathCoding.h"
-#import "LTRandom.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

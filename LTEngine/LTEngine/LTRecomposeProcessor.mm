@@ -3,16 +3,15 @@
 
 #import "LTRecomposeProcessor.h"
 
+#import <LTKit/LTRandom.h>
 #import <objc/runtime.h>
 #import <unordered_set>
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTInverseTransformSampler.h"
 #import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
-#import "LTRandom.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

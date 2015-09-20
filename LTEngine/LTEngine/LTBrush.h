@@ -1,8 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPropertyMacros.h"
-
 #define LTPropertyUpdatingProgram(type, name, Name, minValue, maxValue, defaultValue) \
   LTPropertyWithoutSetter(type, name, Name, minValue, maxValue, defaultValue); \
   - (void)set##Name:(type)name { \

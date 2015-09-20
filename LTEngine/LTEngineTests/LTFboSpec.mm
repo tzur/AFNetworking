@@ -3,13 +3,22 @@
 
 #import "LTFbo.h"
 
-#import "LTDevice.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
-#import "LTTestUtils.h"
 
 LTSpecBegin(LTFbo)
+
+__block id glContext;
+
+beforeEach(^{
+  glContext = OCMPartialMock([LTGLContext currentContext]);
+});
+
+afterEach(^{
+  glContext = nil;
+});
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
@@ -20,21 +29,19 @@ context(@"initialization", ^{
   });
   
   it(@"should init with half-float RGBA texture on capable devices", ^{
-    id device = [OCMockObject mockForClass:[LTDevice class]];
-    [[[device stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
+    [[[glContext stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
                                                     format:LTTextureFormatRGBA
                                             allocateMemory:YES];
-    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
 
     expect(fbo.name).toNot.equal(0);
   });
   
   it(@"should raise with half-float RGBA texture on incapable devices", ^{
-    id device = [OCMockObject mockForClass:[LTDevice class]];
-    [[[device stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
+    [[[glContext stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionHalfFloat
@@ -42,13 +49,12 @@ context(@"initialization", ^{
                                             allocateMemory:YES];
 
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
     }).to.raise(kLTFboInvalidTextureException);
   });
   
   it(@"should init with float RGBA texture on capable devices", ^{
-    id device = [OCMockObject mockForClass:[LTDevice class]];
-    [[[device stub] andReturnValue:@(YES)] canRenderToFloatTextures];
+    [[[glContext stub] andReturnValue:@(YES)] canRenderToFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
@@ -57,13 +63,12 @@ context(@"initialization", ^{
 
     // Simulator doesn't support rendering to a colorbuffer, so no real initialization can happen.
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
     }).toNot.raise(kLTFboInvalidTextureException);
   });
 
   it(@"should raise with float RGBA texture on incapable devices", ^{
-    id device = [OCMockObject mockForClass:[LTDevice class]];
-    [[[device stub] andReturnValue:@(NO)] canRenderToFloatTextures];
+    [[[glContext stub] andReturnValue:@(NO)] canRenderToFloatTextures];
 
     LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
                                                  precision:LTTexturePrecisionFloat
@@ -71,7 +76,7 @@ context(@"initialization", ^{
                                             allocateMemory:YES];
 
     expect(^{
-      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture device:device];
+      __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
     }).to.raise(kLTFboInvalidTextureException);
   });
 

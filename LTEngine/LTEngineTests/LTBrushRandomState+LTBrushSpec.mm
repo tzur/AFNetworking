@@ -3,10 +3,11 @@
 
 #import "LTBrushRandomState+LTBrush.h"
 
+#import <LTKit/LTRandom.h>
+
 #import "LTBrush.h"
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushRandomState.h"
-#import "LTRandom.h"
 
 LTSpecBegin(LTBrushRandomState_LTBrush)
 

@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 @class LTColorGradient;
 
 /// Types of rotations available for lightleak textures.

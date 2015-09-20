@@ -3,12 +3,13 @@
 
 #import "LTTextureArchiver.h"
 
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "LTGLTexture.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureArchiveType.h"
 #import "LTTextureMetadata.h"
-#import "NSError+LTKit.h"
-#import "NSFileManager+LTKit.h"
 
 static BOOL LTLinkExists(NSString *relativePath) {
   NSDictionary *attributes =  [[NSFileManager defaultManager]

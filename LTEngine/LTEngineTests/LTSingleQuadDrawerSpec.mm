@@ -13,7 +13,6 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTSingleQuadDrawer.h"
-#import "LTTestUtils.h"
 #import "LTTextureDrawerExamples.h"
 #import "LTImage.h"
 

@@ -5,7 +5,7 @@
 
 @implementation LTShaderStorage
 
-static NSString * const kEncryptionKey = LTKIT_SHADER_ENCRYPTION_KEY;
+static NSString * const kEncryptionKey = SHADER_ENCRYPTION_KEY;
 
 + (NSData *)unpackData:(NSData *)data withKey:(NSString *)key {
   NSUInteger keyLength = key.length;

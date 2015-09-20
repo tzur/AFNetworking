@@ -5,7 +5,7 @@
 
 #import "LTGPUResource.h"
 
-@class LTDevice;
+@class LTGLContext;
 
 /// Object for encapsulating an OpenGL framebuffer, used for drawing to a texture and reading from
 /// it.
@@ -73,11 +73,11 @@
 ///
 /// @param texture texture to set as a render target. The texture must be of non-zero size, loaded
 /// (\c name which is non-zero) and with a precision that is valid as a render target.
-/// @param device LTDevice class used to determine if the texture is legible as a render target.
+/// @param context LTGLContext class used to determine if the texture is legible as a render target.
 ///
 /// @note The texture will not be cleared. Use \c clearWithColor: to clear the texture with a
 /// specific color.
-- (instancetype)initWithTexture:(LTTexture *)texture device:(LTDevice *)device;
+- (instancetype)initWithTexture:(LTTexture *)texture context:(LTGLContext *)context;
 
 /// Executes the given block while the receiver is bound to the active context, and \c LTGLContext's
 /// \c renderingToScreen is set to YES. 

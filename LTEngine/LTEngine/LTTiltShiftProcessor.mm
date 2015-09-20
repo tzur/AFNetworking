@@ -4,7 +4,6 @@
 #import "LTTiltShiftProcessor.h"
 
 #import "LTBicubicResizeProcessor.h"
-#import "LTCGExtensions.h"
 #import "LTDualMaskProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"

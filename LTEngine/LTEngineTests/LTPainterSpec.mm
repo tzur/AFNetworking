@@ -4,7 +4,6 @@
 #import "LTPainter+LTView.h"
 
 #import "LTBrush.h"
-#import "LTCGExtensions.h"
 #import "LTCatmullRomInterpolationRoutine.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"

@@ -3,7 +3,6 @@
 
 #import "LTRectMapping.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTRotatedRect.h"
 

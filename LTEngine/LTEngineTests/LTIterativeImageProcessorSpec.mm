@@ -3,13 +3,11 @@
 
 #import "LTIterativeImageProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Factory.h"
 
 @interface LTIterativeImageProcessorStub : LTIterativeImageProcessor

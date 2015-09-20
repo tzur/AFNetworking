@@ -4,13 +4,11 @@
 #import "LTPainter+LTView.h"
 
 #import "LTBrush.h"
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTMathUtils.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTPainterStrokeSegment.h"
-#import "LTPropertyMacros.h"
 #import "LTRectDrawer.h"
 #import "LTSlidingWindowFilter.h"
 #import "LTTouchCollector.h"

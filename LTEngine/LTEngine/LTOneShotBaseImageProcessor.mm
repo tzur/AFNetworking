@@ -3,7 +3,6 @@
 
 #import "LTOneShotBaseImageProcessor+Protected.h"
 
-#import "LTCGExtensions.h"
 #import "LTGLContext.h"
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"

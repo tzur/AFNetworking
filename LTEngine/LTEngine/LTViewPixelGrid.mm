@@ -4,7 +4,6 @@
 #import "LTViewPixelGrid.h"
 
 #import "LTGLContext.h"
-#import "LTCGExtensions.h"
 #import "LTGridDrawer.h"
 #import "UIColor+Vector.h"
 

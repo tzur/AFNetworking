@@ -1,20 +1,17 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTestUtils.h"
+#import "LTTestUtils+LTEngine.h"
 
+#import <LTKit/LTEnumRegistry.h>
+#import <LTKit/UIDevice+Kind.h>
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
 
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
-#import "LTEnumRegistry.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 
 using half_float::half;
-
-static NSString * const kMatOutputBasedir = @"/tmp/";
 
 #pragma mark -
 #pragma mark Forward declarations
@@ -44,23 +41,6 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index);
 #pragma mark -
 #pragma mark Public methods
 #pragma mark -
-
-void sit(NSString __unused *name, id __unused block) {
-#if TARGET_IPHONE_SIMULATOR
-  it(name, block);
-#endif
-}
-
-void dit(NSString __unused *name, id __unused block) {
-#if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
-  it(name, block);
-#endif
-}
-
-BOOL LTRunningApplicationTests() {
-  NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-  return environment[@"XCInjectBundle"] != nil;
-}
 
 cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
   angle = angle * (-180 / M_PI);
@@ -280,8 +260,8 @@ UIImage *LTCreateUIImage(CGSize size) {
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName) {
   cv::Mat mat;
-  if ([LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPhone ||
-      [LTDevice currentDevice].deviceType == LTDeviceTypeSimulatorIPad) {
+  if ([UIDevice currentDevice].lt_deviceKind == UIDeviceKindSimulatorIPhone ||
+      [UIDevice currentDevice].lt_deviceKind == UIDeviceKindSimulatorIPad) {
     mat = LTLoadMat(classInBundle, simulatorName);
   } else {
     mat = LTLoadMat(classInBundle, deviceName);
@@ -360,6 +340,8 @@ static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
 }
 
 static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
+  static NSString * const kMatOutputBasedir = @"/tmp/";
+
   NSString *filename = [NSString stringWithFormat:@"%@-%lu-%@.png",
                         [SPTCurrentSpec description], (unsigned long)index, name];
 

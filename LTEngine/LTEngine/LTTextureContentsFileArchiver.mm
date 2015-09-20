@@ -3,11 +3,13 @@
 
 #import "LTTextureContentsFileArchiver.h"
 
+#import <LTKit/LTImageLoader.h>
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "LTImage.h"
 #import "LTImage+Texture.h"
-#import "LTImageLoader.h"
 #import "LTTexture.h"
-#import "NSFileManager+LTKit.h"
 
 @interface LTTextureContentsFileArchiver ()
 

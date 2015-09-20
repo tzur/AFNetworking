@@ -3,7 +3,6 @@
 
 #import "LTPyramidProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTShaderStorage+LTPyramidProcessorVsh.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"

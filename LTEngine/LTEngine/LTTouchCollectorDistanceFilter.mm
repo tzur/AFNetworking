@@ -3,8 +3,6 @@
 
 #import "LTTouchCollectorDistanceFilter.h"
 
-#import "LTCGExtensions.h"
-
 @interface LTTouchCollectorDistanceFilter ()
 
 /// Distance metric type.

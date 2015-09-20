@@ -3,8 +3,6 @@
 
 #import "LTPainterPoint.h"
 
-#import "LTCGExtensions.h"
-
 SpecBegin(LTPainterPoint)
 
 context(@"initialization", ^{

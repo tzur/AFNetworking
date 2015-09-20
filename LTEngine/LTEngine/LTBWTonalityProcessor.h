@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 @class LTColorGradient;
 
 /// Converts RGB image to BW (black and white). Tunes the tonal characteristics of the result.

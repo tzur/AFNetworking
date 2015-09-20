@@ -5,7 +5,6 @@
 
 #import "LTBicubicResizeProcessor.h"
 #import "LTBilateralFilterProcessor.h"
-#import "LTCGExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"

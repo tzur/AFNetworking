@@ -3,7 +3,6 @@
 
 #import "LTCropDrawer.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTTexture+Factory.h"

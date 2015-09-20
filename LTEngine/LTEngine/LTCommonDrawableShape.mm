@@ -6,7 +6,6 @@
 #import "LTArrayBuffer.h"
 #import "LTDrawingContext.h"
 #import "LTProgram.h"
-#import "LTPropertyMacros.h"
 #import "LTShaderStorage+LTCommonDrawableShapeVsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTVertexArray.h"

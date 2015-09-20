@@ -3,8 +3,6 @@
 
 #import "LTOneShotImageProcessor.h"
 
-#import "LTPropertyMacros.h"
-
 /// Available dual mask types.
 typedef NS_ENUM(NSUInteger, LTDualMaskType) {
   LTDualMaskTypeRadial = 0,

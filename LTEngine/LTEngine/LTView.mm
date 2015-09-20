@@ -3,9 +3,8 @@
 
 #import "LTView.h"
 
-#import "LTAnimation.h"
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
+#import <LTKit/LTAnimation.h>
+
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -20,6 +19,9 @@
 #import "UIColor+Vector.h"
 
 @interface LTView () <GLKViewDelegate, LTViewNavigationViewDelegate>
+
+/// Screen to get native scale from.
+@property (strong, nonatomic) UIScreen *screen;
 
 /// OpenGL context to use while drawing on the view.
 @property (strong, nonatomic) LTGLContext *context;
@@ -105,6 +107,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
+    [[JSObjection defaultInjector] injectDependencies:self];
     [self setDefaults];
   }
   return self;
@@ -112,6 +115,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
   if (self = [super initWithCoder:aDecoder]) {
+    [[JSObjection defaultInjector] injectDependencies:self];
     [self setDefaults];
   }
   return self;
@@ -149,9 +153,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   // Allocate the glkView and set it up.
   self.glkView = [[LTGLView alloc] initWithFrame:self.bounds];
-#if TARGET_IPHONE_SIMULATOR
-  self.glkView.contentScaleFactor = [LTDevice currentDevice].glkContentScaleFactor;
-#endif
+  self.glkView.contentScaleFactor = self.contentScaleFactor;
   self.glkView.context = self.context.context;
   self.glkView.drawableDepthFormat = GLKViewDrawableDepthFormatNone;
   self.glkView.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
@@ -804,11 +806,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (CGFloat)contentScaleFactor {
-  return [LTDevice currentDevice].glkContentScaleFactor;
+  return [UIScreen mainScreen].nativeScale;
 }
 
 - (void)setContentScaleFactor:(CGFloat __unused)contentScaleFactor {
-  [super setContentScaleFactor:[LTDevice currentDevice].glkContentScaleFactor];
+  [super setContentScaleFactor:[UIScreen mainScreen].nativeScale];
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {

@@ -10,7 +10,6 @@
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTTestUtils.h"
 #import "LTTextureDrawerExamples.h"
 
 NSString * const kLTSingleRectDrawerExamples = @"LTSingleRectDrawerExamples";

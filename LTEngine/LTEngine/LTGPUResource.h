@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTypedefs.h"
+#import <LTKit/LTTypedefs.h>
 
 @protocol LTGPUResource <NSObject>
 

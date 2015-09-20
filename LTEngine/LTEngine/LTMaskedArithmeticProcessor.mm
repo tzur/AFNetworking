@@ -3,7 +3,6 @@
 
 #import "LTMaskedArithmeticProcessor.h"
 
-#import "LTCGExtensions.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTMaskedArithmeticFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

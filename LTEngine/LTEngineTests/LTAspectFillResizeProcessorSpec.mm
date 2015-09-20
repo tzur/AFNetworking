@@ -3,7 +3,6 @@
 
 #import "LTAspectFillResizeProcessor.h"
 
-#import "LTDevice.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 

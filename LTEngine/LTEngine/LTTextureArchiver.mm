@@ -3,13 +3,14 @@
 
 #import "LTTextureArchiver.h"
 
+#import <LTKit/NSError+LTKit.h>
+#import <LTKit/NSFileManager+LTKit.h>
+#import <LTKit/NSObject+AddToContainer.h>
+
 #import "LTTexture+Protected.h"
 #import "LTTextureArchiveType.h"
 #import "LTTextureBaseArchiver.h"
 #import "LTTextureMetadata.h"
-#import "NSError+LTKit.h"
-#import "NSFileManager+LTKit.h"
-#import "NSObject+AddToContainer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

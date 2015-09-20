@@ -3,7 +3,6 @@
 
 #import "LTGPUStruct.h"
 #import "LTCommonDrawableShapeStructs.h"
-#import "LTPropertyMacros.h"
 
 @class LTArrayBuffer, LTDrawingContext, LTProgram, LTShapeDrawerParams;
 

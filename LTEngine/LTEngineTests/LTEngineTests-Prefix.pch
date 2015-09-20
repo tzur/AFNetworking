@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTKit-Prefix.pch"
+#import "LTEngine-Prefix.pch"
 
 #define EXP_SHORTHAND
 
@@ -16,12 +16,14 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-  #import "LTTestUtils.h"
+  #import "LTTestUtils+LTEngine.h"
+
+  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTests/LTTestUtils.h>
 
   #import "EXPMatchers+equalMat.h"
   #import "EXPMatchers+equalScalar.h"
   #import "EXPMatchers+beCloseToMat.h"
-  #import "EXPMatchers+beCloseToPoint.h"
   #import "EXPMatchers+beCloseToScalar.h"
   #import "EXPMatchers+beCloseToGLKVector.h"
   #import "EXPMatchers+beCloseToCATransform3D.h"

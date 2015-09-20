@@ -5,8 +5,8 @@
 
 #import <CoreGraphics/CGFont.h>
 #import <CoreText/CoreText.h>
+#import <LTKit/LTCFExtensions.h>
 
-#import "LTCFExtensions.h"
 #import "LTVGGlyph.h"
 #import "LTVGGlyphRun.h"
 #import "LTVGLine.h"

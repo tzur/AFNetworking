@@ -4,7 +4,6 @@
 #import "LTMMTexture.h"
 
 #import "LTBoundaryCondition.h"
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"

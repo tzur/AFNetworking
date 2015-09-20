@@ -3,7 +3,6 @@
 
 #import "LTRectDrawer.h"
 
-#import "LTCGExtensions.h"
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"

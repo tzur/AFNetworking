@@ -4,8 +4,6 @@
 #import "LTTexture+Protected.h"
 
 #import "LTBoundaryCondition.h"
-#import "LTCGExtensions.h"
-#import "LTDevice.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -58,13 +56,13 @@ LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
 LTTextureFormat LTTextureFormatFromMatType(int type) {
   switch (CV_MAT_CN(type)) {
     case 1:
-      if ([LTDevice currentDevice].supportsRGTextures) {
+      if ([LTGLContext currentContext].supportsRGTextures) {
         return LTTextureFormatRed;
       } else {
         return LTTextureFormatRGBA;
       }
     case 2:
-      if ([LTDevice currentDevice].supportsRGTextures) {
+      if ([LTGLContext currentContext].supportsRGTextures) {
         return LTTextureFormatRG;
       } else {
         return LTTextureFormatRGBA;
@@ -246,7 +244,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
       return YES;
     case LTTextureFormatRed:
     case LTTextureFormatRG:
-      return [LTDevice currentDevice].supportsRGTextures;
+      return [LTGLContext currentContext].supportsRGTextures;
   }
 }
 

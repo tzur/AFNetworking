@@ -5,6 +5,6 @@
 @interface NSBundle (LTKitBundle)
 
 /// Local LTKit bundle, assuming it was copied to the main bundle.
-+ (NSBundle *)LTKitBundle;
++ (NSBundle *)LTEngineBundle;
 
 @end

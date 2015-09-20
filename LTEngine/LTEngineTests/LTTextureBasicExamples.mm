@@ -4,7 +4,6 @@
 #import "LTTextureBasicExamples.h"
 
 #import "LTGLKitExtensions.h"
-#import "LTTestUtils.h"
 #import "LTTexture+Protected.h"
 
 NSString * const kLTTextureBasicExamples = @"LTTextureBasicExamples";
