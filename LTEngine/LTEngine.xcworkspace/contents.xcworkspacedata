@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:LTKit.xcodeproj">
+      location = "container:LTEngine.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../examples/LTKitUser/LTKitUser.xcodeproj">
+      location = "group:LTEngineUser.xcodeproj">
    </FileRef>
 </Workspace>

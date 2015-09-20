@@ -17,12 +17,11 @@
 		8B8E51321868479100821829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51311868479100821829 /* UIKit.framework */; };
 		8B8E51381868479100821829 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51361868479100821829 /* InfoPlist.strings */; };
 		8B8E513A1868479100821829 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51391868479100821829 /* main.m */; };
-		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; };
-		8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
+		8B8E513E1868479100821829 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E513D1868479100821829 /* LTAppDelegate.m */; }; 8B8E51441868479100821829 /* LTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E51431868479100821829 /* LTViewController.mm */; };
 		8B8E51461868479100821829 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E51451868479100821829 /* Images.xcassets */; };
 		8B8E51701868592400821829 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E516F1868592400821829 /* GLKit.framework */; };
 		8B8E51721868592E00821829 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51711868592E00821829 /* OpenGLES.framework */; };
-		8B8E517518685A7300821829 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTKit.a */; };
+		8B8E517518685A7300821829 /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E5168186847B200821829 /* libLTEngine.a */; };
 		8B8E517718685A8C00821829 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E517618685A8C00821829 /* opencv2.framework */; };
 		8B8E51851868606300821829 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51841868606300821829 /* AVFoundation.framework */; };
 		8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8E51861868607000821829 /* AssetsLibrary.framework */; };
@@ -30,37 +29,37 @@
 		8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA821F21986941000FBE68E /* libMantle-iOS.a */; };
 		8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAE3A8118B3A89900DA79E1 /* Accelerate.framework */; };
 		8BB22AA01928CDFF00ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A9F1928CDFF00ACE1D5 /* Objection-iOS.framework */; };
-		8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTKit.bundle */; };
+		8BCFC03018CF0D1C00E612DE /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFC02518CF0C7200E612DE /* LTEngine.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		8B8E5167186847B200821829 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
-			remoteInfo = LTKit;
+			remoteInfo = LTEngine;
 		};
 		8B8E5169186847B200821829 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
-			remoteInfo = LTKitTests;
+			remoteInfo = LTEngineTests;
 		};
 		8B8E517318685A5700821829 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
-			remoteInfo = LTKit;
+			remoteInfo = LTEngine;
 		};
 		8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+			containerPortal = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
-			remoteInfo = LTKitBundle;
+			remoteInfo = LTEngineBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,21 +69,21 @@
 		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B4E493119E94D6F00B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		8B8E512A1868479100821829 /* LTKitUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTKitUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B8E512A1868479100821829 /* LTEngineUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTEngineUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8B8E51311868479100821829 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		8B8E51351868479100821829 /* LTKitUser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTKitUser-Info.plist"; sourceTree = "<group>"; };
+		8B8E51351868479100821829 /* LTEngineUser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LTEngineUser-Info.plist"; sourceTree = "<group>"; };
 		8B8E51371868479100821829 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B8E51391868479100821829 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8B8E513B1868479100821829 /* LTKitUser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitUser-Prefix.pch"; sourceTree = "<group>"; };
+		8B8E513B1868479100821829 /* LTEngineUser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTEngineUser-Prefix.pch"; sourceTree = "<group>"; };
 		8B8E513C1868479100821829 /* LTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAppDelegate.h; sourceTree = "<group>"; };
 		8B8E513D1868479100821829 /* LTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTAppDelegate.m; sourceTree = "<group>"; };
 		8B8E51421868479100821829 /* LTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTViewController.h; sourceTree = "<group>"; };
 		8B8E51431868479100821829 /* LTViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTViewController.mm; sourceTree = "<group>"; };
 		8B8E51451868479100821829 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8B8E514C1868479100821829 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		8B8E5162186847B200821829 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8B8E5162186847B200821829 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		8B8E516F1868592400821829 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8B8E51711868592E00821829 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B8E517618685A8C00821829 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../third_party/images/opencv/opencv2.framework; sourceTree = "<group>"; };
@@ -103,7 +102,7 @@
 			files = (
 				8BA821F31986941000FBE68E /* libMantle-iOS.a in Frameworks */,
 				8B329055192CCB640010592E /* libextobjc_iOS.a in Frameworks */,
-				8B8E517518685A7300821829 /* libLTKit.a in Frameworks */,
+				8B8E517518685A7300821829 /* libLTEngine.a in Frameworks */,
 				8BAE3A8218B3A89900DA79E1 /* Accelerate.framework in Frameworks */,
 				8B8E51891868607500821829 /* CoreMedia.framework in Frameworks */,
 				8B8E51871868607000821829 /* AssetsLibrary.framework in Frameworks */,
@@ -126,7 +125,7 @@
 		8B8E51211868479100821829 = {
 			isa = PBXGroup;
 			children = (
-				8B8E51331868479100821829 /* LTKitUser */,
+				8B8E51331868479100821829 /* LTEngineUser */,
 				8B8E516B186847B900821829 /* Libraries */,
 				8B8E512C1868479100821829 /* Frameworks */,
 				8B8E512B1868479100821829 /* Products */,
@@ -136,7 +135,7 @@
 		8B8E512B1868479100821829 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B8E512A1868479100821829 /* LTKitUser.app */,
+				8B8E512A1868479100821829 /* LTEngineUser.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,7 +163,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8B8E51331868479100821829 /* LTKitUser */ = {
+		8B8E51331868479100821829 /* LTEngineUser */ = {
 			isa = PBXGroup;
 			children = (
 				289884B9188D992000AD338E /* Main-iPad.storyboard */,
@@ -176,16 +175,17 @@
 				8B8E51451868479100821829 /* Images.xcassets */,
 				8B8E51341868479100821829 /* Supporting Files */,
 			);
-			path = LTKitUser;
+			name = LTEngineUser;
+			path = LTEngineUser;
 			sourceTree = "<group>";
 		};
 		8B8E51341868479100821829 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B8E51351868479100821829 /* LTKitUser-Info.plist */,
+				8B8E51351868479100821829 /* LTEngineUser-Info.plist */,
 				8B8E51361868479100821829 /* InfoPlist.strings */,
 				8B8E51391868479100821829 /* main.m */,
-				8B8E513B1868479100821829 /* LTKitUser-Prefix.pch */,
+				8B8E513B1868479100821829 /* LTEngineUser-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -193,9 +193,9 @@
 		8B8E5163186847B200821829 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B8E5168186847B200821829 /* libLTKit.a */,
-				8BCFC02518CF0C7200E612DE /* LTKit.bundle */,
-				8B8E516A186847B200821829 /* LTKitTests.xctest */,
+				8B8E5168186847B200821829 /* libLTEngine.a */,
+				8BCFC02518CF0C7200E612DE /* LTEngine.bundle */,
+				8B8E516A186847B200821829 /* LTEngineTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -203,7 +203,7 @@
 		8B8E516B186847B900821829 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8B8E5162186847B200821829 /* LTKit.xcodeproj */,
+				8B8E5162186847B200821829 /* LTEngine.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -211,9 +211,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8B8E51291868479100821829 /* LTKitUser */ = {
+		8B8E51291868479100821829 /* LTEngineUser */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B8E515C1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUser" */;
+			buildConfigurationList = 8B8E515C1868479100821829 /* Build configuration list for PBXNativeTarget "LTEngineUser" */;
 			buildPhases = (
 				8B8E51261868479100821829 /* Sources */,
 				8B8E51271868479100821829 /* Frameworks */,
@@ -224,9 +224,9 @@
 			dependencies = (
 				8B8E517418685A5700821829 /* PBXTargetDependency */,
 			);
-			name = LTKitUser;
-			productName = LTKitUser;
-			productReference = 8B8E512A1868479100821829 /* LTKitUser.app */;
+			name = LTEngineUser;
+			productName = LTEngineUser;
+			productReference = 8B8E512A1868479100821829 /* LTEngineUser.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -244,7 +244,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B8E51251868479100821829 /* Build configuration list for PBXProject "LTKitUser" */;
+			buildConfigurationList = 8B8E51251868479100821829 /* Build configuration list for PBXProject "LTEngineUser" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -258,35 +258,35 @@
 			projectReferences = (
 				{
 					ProductGroup = 8B8E5163186847B200821829 /* Products */;
-					ProjectRef = 8B8E5162186847B200821829 /* LTKit.xcodeproj */;
+					ProjectRef = 8B8E5162186847B200821829 /* LTEngine.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				8B8E51291868479100821829 /* LTKitUser */,
+				8B8E51291868479100821829 /* LTEngineUser */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8B8E5168186847B200821829 /* libLTKit.a */ = {
+		8B8E5168186847B200821829 /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libLTKit.a;
+			path = libLTEngine.a;
 			remoteRef = 8B8E5167186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B8E516A186847B200821829 /* LTKitTests.xctest */ = {
+		8B8E516A186847B200821829 /* LTEngineTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = LTKitTests.xctest;
+			path = LTEngineTests.xctest;
 			remoteRef = 8B8E5169186847B200821829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BCFC02518CF0C7200E612DE /* LTKit.bundle */ = {
+		8BCFC02518CF0C7200E612DE /* LTEngine.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = LTKit.bundle;
+			path = LTEngine.bundle;
 			remoteRef = 8BCFC02418CF0C7200E612DE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -301,7 +301,7 @@
 				8B8E51461868479100821829 /* Images.xcassets in Resources */,
 				8B8E51381868479100821829 /* InfoPlist.strings in Resources */,
 				289884BB188D992000AD338E /* Main-iPad.storyboard in Resources */,
-				8BCFC03018CF0D1C00E612DE /* LTKit.bundle in Resources */,
+				8BCFC03018CF0D1C00E612DE /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,7 +323,7 @@
 /* Begin PBXTargetDependency section */
 		8B8E517418685A5700821829 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = LTKit;
+			name = LTEngine;
 			targetProxy = 8B8E517318685A5700821829 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -377,7 +377,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTKit",
+					"$(SRCROOT)/../../LTEngine",
 					"$(SRCROOT)/../../third_party/utils/libextobjc",
 					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
@@ -417,7 +417,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../LTKit",
+					"$(SRCROOT)/../../LTEngine",
 					"$(SRCROOT)/../../third_party/utils/libextobjc",
 					/Applications/Xcode5.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
@@ -442,8 +442,8 @@
 					"$(SRCROOT)/../../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
-				INFOPLIST_FILE = "LTKitUser/LTKitUser-Info.plist";
+				GCC_PREFIX_HEADER = "LTEngineUser/LTEngineUser-Prefix.pch";
+				INFOPLIST_FILE = "LTEngineUser/LTEngineUser-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -466,8 +466,8 @@
 					"$(SRCROOT)/../../third_party/utils/objection",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LTKitUser/LTKitUser-Prefix.pch";
-				INFOPLIST_FILE = "LTKitUser/LTKitUser-Info.plist";
+				GCC_PREFIX_HEADER = "LTEngineUser/LTEngineUser-Prefix.pch";
+				INFOPLIST_FILE = "LTEngineUser/LTEngineUser-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -480,7 +480,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B8E51251868479100821829 /* Build configuration list for PBXProject "LTKitUser" */ = {
+		8B8E51251868479100821829 /* Build configuration list for PBXProject "LTEngineUser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B8E515A1868479100821829 /* Debug */,
@@ -489,7 +489,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B8E515C1868479100821829 /* Build configuration list for PBXNativeTarget "LTKitUser" */ = {
+		8B8E515C1868479100821829 /* Build configuration list for PBXNativeTarget "LTEngineUser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B8E515D1868479100821829 /* Debug */,
