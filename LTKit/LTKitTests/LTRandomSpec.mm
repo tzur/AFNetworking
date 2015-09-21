@@ -130,6 +130,18 @@ context(@"random", ^{
     expect(std::equal(first.begin(), first.end(), second.begin())).to.beTruthy();
 #pragma pop_macro("equal")
   });
+
+  it(@"should generate two equal engine states", ^{
+    LTRandom *random1 = [[LTRandom alloc] init];
+    for (NSInteger i = 0; i < 5; ++i) {
+      [random1 randomDouble];
+    }
+
+    LTRandom *random2 = [[LTRandom alloc] init];
+    [random2 resetToState:random1.engineState];
+
+    expect(random1.engineState).to.equal(random2.engineState);
+  });
   
   it(@"should generate identical random sequence when using same seed", ^{
     random = [[LTRandom alloc] init];
