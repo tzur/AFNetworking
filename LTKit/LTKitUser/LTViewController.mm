@@ -3,8 +3,6 @@
 
 #import "LTViewController.h"
 
-#import <LTKit/LTKit.h>
-
 @interface LTViewController ()
 @end
 
