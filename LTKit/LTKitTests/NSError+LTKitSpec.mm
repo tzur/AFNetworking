@@ -3,7 +3,7 @@
 
 #import "NSError+LTKit.h"
 
-LTSpecBegin(NSError_LTKit)
+SpecBegin(NSError_LTKit)
 
 static NSString * const kDescription = @"Foo Bar Baz";
 static NSString * const kPath = @"/foo.txt";
@@ -119,4 +119,4 @@ it(@"should create error with system error even if there's no error", ^{
   expect(error.lt_systemErrorMessage.length).to.beGreaterThan(0);
 });
 
-LTSpecEnd
+SpecEnd

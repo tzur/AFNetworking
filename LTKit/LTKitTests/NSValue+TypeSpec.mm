@@ -3,7 +3,7 @@
 
 #import "NSValue+Type.h"
 
-LTSpecBegin(NSValue_Type)
+SpecBegin(NSValue_Type)
 
 it(@"should test type accurately", ^{
   NSValue *intValue = [NSNumber numberWithInt:10];
@@ -30,4 +30,4 @@ it(@"should test type accurately", ^{
   expect([rectValue lt_isKindOfObjCType:@encode(CGPoint)]).to.beFalsy();
 });
 
-LTSpecEnd
+SpecEnd

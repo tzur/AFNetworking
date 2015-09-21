@@ -5,7 +5,7 @@
 
 #import <sys/mman.h>
 
-LTSpecBegin(LTMMInputFile)
+SpecBegin(LTMMInputFile)
 
 context(@"valid file", ^{
   __block NSError *error;
@@ -69,4 +69,4 @@ context(@"invalid file", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

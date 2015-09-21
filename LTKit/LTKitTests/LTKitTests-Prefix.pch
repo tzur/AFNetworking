@@ -19,5 +19,4 @@ extern "C" {
   #import "LTTestUtils.h"
 
   #import "EXPMatchers+beCloseToPoint.h"
-  #import "Specta+LTKit.h"
 #endif

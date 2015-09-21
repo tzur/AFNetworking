@@ -11,8 +11,6 @@
 		282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 282CF089187B030A00904F07 /* NSObject+AddToContainer.m */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
-		28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 28463D0E196983DE0021A7CD /* LTDefaultModule.h */; };
-		28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 28463D0F196983DE0021A7CD /* LTDefaultModule.m */; };
 		284EBBD11A33ABF600D36688 /* NSValue+TypeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284EBBD01A33ABF600D36688 /* NSValue+TypeSpec.mm */; };
 		287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */ = {isa = PBXBuildFile; fileRef = 287A96F21A3320F200A609CD /* NSValue+Type.h */; };
 		287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287A96F31A3320F200A609CD /* NSValue+Type.mm */; };
@@ -56,7 +54,6 @@
 		8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
 		8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
-		8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
@@ -95,16 +92,12 @@
 		8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
 		8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB01CAD196576D7002A8609 /* LTImageLoader.h */; };
 		8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB01CAE196576D7002A8609 /* LTImageLoader.m */; };
-		8BB22A911928CB8200ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
-		8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
 		8BBB149A194F4799000CF391 /* LTEnumRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBB1498194F4799000CF391 /* LTEnumRegistry.h */; };
 		8BBB149B194F4799000CF391 /* LTEnumRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB1499194F4799000CF391 /* LTEnumRegistry.m */; };
 		8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */; };
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BCA6735182FD8EA003FCB65 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta.a */; };
 		8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCF9AE219E3E5F100228390 /* libSpecta.a */; };
-		8BD0746119A5D4D9005F2C37 /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0746019A5D4D9005F2C37 /* LTObjectionModule.mm */; };
-		8BD0748319A614DF005F2C37 /* LTTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD0748219A614DF005F2C37 /* LTTestModule.m */; };
 		8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */; };
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
@@ -303,8 +296,6 @@
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
 		2836211F186C58DC00665ED9 /* LTCGExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTCGExtensions.m; sourceTree = "<group>"; };
 		2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGExtensionsSpec.mm; sourceTree = "<group>"; };
-		28463D0E196983DE0021A7CD /* LTDefaultModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultModule.h; sourceTree = "<group>"; };
-		28463D0F196983DE0021A7CD /* LTDefaultModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTDefaultModule.m; sourceTree = "<group>"; };
 		284EBBD01A33ABF600D36688 /* NSValue+TypeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+TypeSpec.mm"; sourceTree = "<group>"; };
 		287A96F21A3320F200A609CD /* NSValue+Type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+Type.h"; sourceTree = "<group>"; };
 		287A96F31A3320F200A609CD /* NSValue+Type.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+Type.mm"; sourceTree = "<group>"; };
@@ -355,7 +346,6 @@
 		8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3DEC1818296DE500EA0C1A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Specta+LTKit.mm"; sourceTree = "<group>"; };
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -386,7 +376,6 @@
 		8BA8C68718699D9A00E6F486 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8BB01CAD196576D7002A8609 /* LTImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImageLoader.h; sourceTree = "<group>"; };
 		8BB01CAE196576D7002A8609 /* LTImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTImageLoader.m; sourceTree = "<group>"; };
-		8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/utils/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		8BB47146183B534000CA1681 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/utils/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMetaMacros.h; sourceTree = "<group>"; };
 		8BBB1498194F4799000CF391 /* LTEnumRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEnumRegistry.h; sourceTree = "<group>"; };
@@ -397,10 +386,6 @@
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
 		8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		8BD0745F19A5D4D9005F2C37 /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTObjectionModule.h; sourceTree = "<group>"; };
-		8BD0746019A5D4D9005F2C37 /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTObjectionModule.mm; sourceTree = "<group>"; };
-		8BD0748119A614DF005F2C37 /* LTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTestModule.h; sourceTree = "<group>"; };
-		8BD0748219A614DF005F2C37 /* LTTestModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTestModule.m; sourceTree = "<group>"; };
 		8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumRegistrySpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
@@ -408,7 +393,6 @@
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
-		8BFA8F6A191A244C0088310E /* Specta+LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Specta+LTKit.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,7 +400,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BB22A911928CB8200ACE1D5 /* Objection-iOS.framework in Frameworks */,
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
@@ -437,7 +420,6 @@
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
-				8BB22A921928CB8300ACE1D5 /* Objection-iOS.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
@@ -526,7 +508,6 @@
 			children = (
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				8B4E493719E950C500B3F55D /* ImageIO.framework */,
-				8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
 				8B3C0A5818329538000845BA /* CoreMedia.framework */,
@@ -560,8 +541,6 @@
 		8B3DEBEA18296B6100EA0C1A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				28463D0E196983DE0021A7CD /* LTDefaultModule.h */,
-				28463D0F196983DE0021A7CD /* LTDefaultModule.m */,
 				8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */,
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */,
@@ -762,14 +741,8 @@
 			children = (
 				8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */,
 				8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */,
-				8BD0745F19A5D4D9005F2C37 /* LTObjectionModule.h */,
-				8BD0746019A5D4D9005F2C37 /* LTObjectionModule.mm */,
-				8BD0748119A614DF005F2C37 /* LTTestModule.h */,
-				8BD0748219A614DF005F2C37 /* LTTestModule.m */,
 				8BBE8941183503CD006C58AA /* LTTestUtils.h */,
 				8BBE8942183506E4006C58AA /* LTTestUtils.mm */,
-				8BFA8F6A191A244C0088310E /* Specta+LTKit.h */,
-				8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -823,7 +796,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B871FC71924A75E00517F2E /* LTKit.h in Headers */,
-				28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */,
 				8B78CFDE197654A900684B1D /* LTEnum.h in Headers */,
 				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
 				8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */,
@@ -1097,7 +1069,6 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
-				28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */,
 				8B2405811B8607270079B724 /* UIDevice+Kind.mm in Sources */,
 				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
@@ -1120,7 +1091,6 @@
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
-				8BD0746119A5D4D9005F2C37 /* LTObjectionModule.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */,
 				8B16C9891BAEDF1B002FB750 /* LTImageLoaderSpec.mm in Sources */,
@@ -1129,12 +1099,10 @@
 				28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
 				284EBBD11A33ABF600D36688 /* NSValue+TypeSpec.mm in Sources */,
-				8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */,
 				8B7C6CA81B52832600B90DBE /* LTMMInputFileSpec.mm in Sources */,
 				503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */,
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
-				8BD0748319A614DF005F2C37 /* LTTestModule.m in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,

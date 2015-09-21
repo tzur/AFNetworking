@@ -5,7 +5,7 @@
 
 #import "LTMMInputFile.h"
 
-LTSpecBegin(LTMMOutputFile)
+SpecBegin(LTMMOutputFile)
 
 __block NSError *error;
 __block LTMMOutputFile *outputFile;
@@ -128,4 +128,4 @@ context(@"invalid file", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

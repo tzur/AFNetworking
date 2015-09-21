@@ -22,7 +22,7 @@
 
 @end
 
-LTSpecBegin(LTQueue)
+SpecBegin(LTQueue)
 
 __block LTQueue *queue;
 __block id firstObject;
@@ -222,4 +222,4 @@ context(@"KVO compatibility", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

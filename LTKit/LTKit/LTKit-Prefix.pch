@@ -19,7 +19,6 @@
   #ifdef __cplusplus
   }
   #endif
-  #import <Objection-iOS/Objection.h>
 #endif
 
 #ifdef __cplusplus

@@ -81,7 +81,7 @@ LTCategoryUnsignedIntegerProperty(categoryUnsignedInteger, CategoryUnsignedInteg
 LTCategoryStructProperty(CGSize, categorySize, CategorySize);
 @end
 
-LTSpecBegin(LTPropertyMarcros)
+SpecBegin(LTPropertyMarcros)
 
 __block TestClass *testObject;
 __block ContainerClass *containerObject;
@@ -279,4 +279,4 @@ context(@"category properties", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

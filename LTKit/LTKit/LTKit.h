@@ -38,7 +38,6 @@
 #import <LTKit/NSFileManager+LTKit.h>
 
 // Supporting Files.
-#import <LTKit/LTDefaultModule.h>
 #import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTMetaMacros.h>
 #import <LTKit/LTPropertyMacros.h>
