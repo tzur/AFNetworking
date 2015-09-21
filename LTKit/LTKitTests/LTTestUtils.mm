@@ -6,11 +6,6 @@
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
 
-#import "LTCGExtensions.h"
-#import "LTEnumRegistry.h"
-
-static NSString * const kMatOutputBasedir = @"/tmp/";
-
 #pragma mark -
 #pragma mark Public methods
 #pragma mark -

@@ -1,8 +1,6 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <numeric>
-
 /// Returns an absolute path to the given file name. The path depends on the specific spec currently
 /// running, so there's no concern for files overwriting each other. If no argument is given, the
 /// directory itself is returned.
