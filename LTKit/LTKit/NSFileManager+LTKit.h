@@ -54,4 +54,10 @@
 /// error.
 - (BOOL)lt_skipBackup:(BOOL)skipBackup forItemAtURL:(NSURL *)url error:(NSError **)error;
 
+/// Total storage (in bytes) on the device. This property is not KVO compliant.
+@property (readonly, nonatomic) uint64_t lt_totalStorage;
+
+/// Free storage (in bytes) on the device. This property is not KVO compliant.
+@property (readonly, nonatomic) uint64_t lt_freeStorage;
+
 @end

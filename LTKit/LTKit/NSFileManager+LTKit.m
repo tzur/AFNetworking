@@ -81,4 +81,24 @@
   return [url setResourceValue:@(skipBackup) forKey:NSURLIsExcludedFromBackupKey error:error];
 }
 
+- (uint64_t)lt_totalStorage {
+  return [[[self storageDictionary] objectForKey:NSFileSystemSize] unsignedLongLongValue];
+}
+
+- (uint64_t)lt_freeStorage {
+  return [[[self storageDictionary] objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+}
+
+- (NSDictionary *)storageDictionary {
+  NSError *error;
+  NSDictionary *dictionary =
+      [self attributesOfFileSystemForPath:[NSFileManager lt_documentsDirectory] error:&error];
+  if (error) {
+    LogError(@"Error retrieving device storage information: %@", error.description);
+    return nil;
+  }
+
+  return dictionary;
+}
+
 @end

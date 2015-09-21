@@ -3,7 +3,6 @@
 
 #import "LTTestModule.h"
 
-#import "LTDevice.h"
 #import "LTRandom.h"
 
 @implementation LTTestModule
