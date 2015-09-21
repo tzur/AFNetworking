@@ -8,6 +8,8 @@
 /// NSValue *myValue = [NSValue valueWithStructName:value];
 /// @endcode
 
+#ifdef __cplusplus
+
 #define LTMakeEasyBoxing(STRUCT_NAME) \
   NS_INLINE NSValue *$(const STRUCT_NAME &value) { \
     return [NSValue valueWith##STRUCT_NAME:value]; \
@@ -24,4 +26,4 @@ LTMakeEasyBoxing(UIEdgeInsets);
 /// NSValue+CAAdditions.
 LTMakeEasyBoxing(CATransform3D);
 
-#undef LTMakeEasyBoxing
+#endif
