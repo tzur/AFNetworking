@@ -5,7 +5,7 @@
 
 SpecBegin(LTWeakContainer)
 
-__block LTWeakContainer *container;
+__block LTWeakContainer<NSObject *> *container;
 
 afterEach(^{
   container = nil;

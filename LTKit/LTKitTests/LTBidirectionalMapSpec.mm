@@ -32,7 +32,7 @@ static NSUInteger instanceCount = 0;
 
 SpecBegin(LTBidirectionalMap)
 
-static NSDictionary * const kSampleDict = @{@"a": @1, @"b": @2, @"c": @7};
+static NSDictionary<NSString *, NSNumber *> * const kSampleDict = @{@"a": @1, @"b": @2, @"c": @7};
 
 context(@"initialization", ^{
   it(@"should create an empty map from class method", ^{
@@ -48,20 +48,22 @@ context(@"initialization", ^{
   });
 
   it(@"should create map with dictionary from class method", ^{
-    LTBidirectionalMap *map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
+    LTBidirectionalMap<NSString *, NSNumber *> *map =
+        [LTBidirectionalMap mapWithDictionary:kSampleDict];
 
     expect(map.count).to.equal(3);
   });
 
   it(@"should create map with dictionary from initializer", ^{
-    LTBidirectionalMap *map = [[LTBidirectionalMap alloc] initWithDictionary:kSampleDict];
+    LTBidirectionalMap<NSString *, NSNumber *> *map =
+        [[LTBidirectionalMap alloc] initWithDictionary:kSampleDict];
 
     expect(map.count).to.equal(3);
   });
 });
 
 context(@"mutating the map", ^{
-  __block LTBidirectionalMap *map;
+  __block LTBidirectionalMap<NSString *, NSString *> *map;
 
   beforeEach(^{
     map = [LTBidirectionalMap map];
@@ -94,7 +96,7 @@ context(@"mutating the map", ^{
 });
 
 context(@"retrieving keys and values", ^{
-  __block LTBidirectionalMap *map;
+  __block LTBidirectionalMap<NSString *, NSString *> *map;
 
   beforeEach(^{
     map = [LTBidirectionalMap map];
@@ -125,7 +127,7 @@ context(@"retrieving keys and values", ^{
 
 context(@"memory management", ^{
   it(@"should persist objects that are stored in the map", ^{
-    LTBidirectionalMap *map = [LTBidirectionalMap map];
+    LTBidirectionalMap<NSString *, LTBidirectionalMapObject *> *map = [LTBidirectionalMap map];
     LTBidirectionalMapObject *object = [[LTBidirectionalMapObject alloc] init];
 
     @autoreleasepool {
@@ -138,7 +140,7 @@ context(@"memory management", ^{
   });
 
   it(@"should deallocate object when removed from map", ^{
-    LTBidirectionalMap *map = [LTBidirectionalMap map];
+    LTBidirectionalMap<NSString *, LTBidirectionalMapObject *> *map = [LTBidirectionalMap map];
 
     @autoreleasepool {
       LTBidirectionalMapObject *object = [[LTBidirectionalMapObject alloc] init];

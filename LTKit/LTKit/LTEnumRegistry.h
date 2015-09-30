@@ -14,16 +14,17 @@
 
 /// Registers an enum with the given name and a dictionary that maps field names (\c NSString) to
 /// their numeric (\c NSNumber) values.
-- (void)registerEnumName:(NSString *)enumName withFieldToValue:(NSDictionary *)fieldToValue;
+- (void)registerEnumName:(NSString *)enumName
+        withFieldToValue:(NSDictionary<NSString *, NSNumber *> *)fieldToValue;
 
 /// Returns \c YES if the given enum is registered.
 - (BOOL)isEnumRegistered:(NSString *)enumName;
 
 /// Returns an \c LTBidirectionalMap that maps the given enum's field names (\c NSString) to their
 /// numeric (\c NSNumber) values and vice versa.
-- (LTBidirectionalMap *)enumFieldToValueForName:(NSString *)enumName;
+- (LTBidirectionalMap<NSString *, NSNumber *> *)enumFieldToValueForName:(NSString *)enumName;
 
-/// Returns the enum dictionary for the given enum name (\c NSString).
-- (id)objectForKeyedSubscript:(NSString *)key;
+/// Shortcut for \c -enumFieldToValueForName:.
+- (LTBidirectionalMap<NSString *, NSNumber *> *)objectForKeyedSubscript:(NSString *)key;
 
 @end

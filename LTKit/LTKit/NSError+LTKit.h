@@ -58,7 +58,8 @@ NSString *LTSystemErrorMessageForError(int error);
 + (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingError:(NSError *)underlyingError;
 
 /// Creates an error with LTKit's domain, given error code and the given underlying errors.
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingErrors:(NSArray *)underlyingErrors;
++ (instancetype)lt_errorWithCode:(LTErrorCode)code
+                underlyingErrors:(NSArray<NSError *> *)underlyingErrors;
 
 /// Creates an error with LTKit's domain, given error code and the given error description.
 + (instancetype)lt_errorWithCode:(LTErrorCode)code description:(NSString *)description;
@@ -85,7 +86,7 @@ NSString *LTSystemErrorMessageForError(int error);
 @property (readonly, nonatomic, nullable) NSError *lt_underlyingError;
 
 /// Underlying errors.
-@property (readonly, nonatomic, nullable) NSArray *lt_underlyingErrors;
+@property (readonly, nonatomic, nullable) NSArray<NSError *> *lt_underlyingErrors;
 
 /// Non-localized error description. This description should not be shown to the user.
 @property (readonly, nonatomic, nullable) NSString *lt_description;
