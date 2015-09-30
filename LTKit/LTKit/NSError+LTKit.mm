@@ -3,11 +3,12 @@
 
 #import "NSError+LTKit.h"
 
+#import "NSErrorCodes+LTKit.h"
 #import "NSObject+AddToContainer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const kLTKitErrorDomain = @"com.lightricks.LTKit";
+NSString * const kLTErrorDomain = @"com.lightricks";
 
 NSString * const kLTUnderlyingErrorsKey = @"UnderlyingErrors";
 
@@ -31,39 +32,39 @@ NSString *LTSystemErrorMessageForError(int error) {
 #pragma mark File System Errors
 #pragma mark -
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code {
++ (instancetype)lt_errorWithCode:(NSInteger)code {
   return [self lt_errorWithCode:code userInfo:nil];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code userInfo:(nullable NSDictionary *)userInfo {
-  return [NSError errorWithDomain:kLTKitErrorDomain code:code userInfo:userInfo];
++ (instancetype)lt_errorWithCode:(NSInteger)code userInfo:(nullable NSDictionary *)userInfo {
+  return [NSError errorWithDomain:kLTErrorDomain code:code userInfo:userInfo];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingError:(NSError *)underlyingError {
++ (instancetype)lt_errorWithCode:(NSInteger)code underlyingError:(NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSUnderlyingErrorKey: underlyingError ?: [NSNull null]
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code underlyingErrors:(NSArray *)underlyingErrors {
++ (instancetype)lt_errorWithCode:(NSInteger)code underlyingErrors:(NSArray *)underlyingErrors {
   return [NSError lt_errorWithCode:code userInfo:@{
     kLTUnderlyingErrorsKey: underlyingErrors ?: [NSNull null]
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code description:(NSString *)description {
++ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description {
   return [NSError lt_errorWithCode:code userInfo:@{
     kLTErrorDescriptionKey: description ?: [NSNull null]
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code path:(NSString *)path {
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSFilePathErrorKey: path ?: [NSNull null]
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code path:(NSString *)path
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
                  underlyingError:(NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSFilePathErrorKey: path ?: [NSNull null],
@@ -71,13 +72,13 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code url:(NSURL *)url {
++ (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null],
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(LTErrorCode)code url:(NSURL *)url
++ (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
                  underlyingError:(NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null],
@@ -86,7 +87,7 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithSystemError {
-  return [NSError errorWithDomain:kLTKitErrorDomain code:LTErrorCodePOSIX userInfo:@{
+  return [NSError errorWithDomain:kLTErrorDomain code:LTErrorCodePOSIX userInfo:@{
     kLTSystemErrorKey: @(errno),
     kLTSystemErrorMessageKey: LTSystemErrorMessageForError(errno)
   }];

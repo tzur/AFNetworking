@@ -329,6 +329,7 @@
 		8B2405861B860D620079B724 /* NSLocale+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLocale+Language.h"; sourceTree = "<group>"; };
 		8B2405871B860D620079B724 /* NSLocale+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+Language.m"; sourceTree = "<group>"; };
 		8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+KindSpec.mm"; sourceTree = "<group>"; };
+		8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+LTKit.h"; sourceTree = "<group>"; };
 		8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8B3C0A531832950F000845BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -693,6 +694,7 @@
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
 				8B871F97192396BE00517F2E /* NSError+LTKit.mm */,
+				8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */,
 				8B2405861B860D620079B724 /* NSLocale+Language.h */,
 				8B2405871B860D620079B724 /* NSLocale+Language.m */,
 				8B24057E1B8607270079B724 /* UIDevice+Kind.h */,
