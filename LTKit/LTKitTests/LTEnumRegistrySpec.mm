@@ -29,12 +29,14 @@ it(@"should register enum", ^{
 
 context(@"automatic value assignment", ^{
   it(@"should have correct field to value mapping", ^{
-    NSDictionary *fieldToValue = [LTEnumRegistry sharedInstance][@"LTMyName"];
-    LTBidirectionalMap *expectedFieldToValue = [LTBidirectionalMap mapWithDictionary:@{
-      @"LTMyNameA": @0,
-      @"LTMyNameB": @1,
-      @"LTMyNameC": @2,
-    }];
+    LTBidirectionalMap<NSString *, NSNumber *> *fieldToValue =
+        [LTEnumRegistry sharedInstance][@"LTMyName"];
+    LTBidirectionalMap<NSString *, NSNumber *> *expectedFieldToValue =
+        [LTBidirectionalMap mapWithDictionary:@{
+          @"LTMyNameA": @0,
+          @"LTMyNameB": @1,
+          @"LTMyNameC": @2,
+        }];
 
     expect(fieldToValue).to.equal(expectedFieldToValue);
   });
@@ -42,12 +44,14 @@ context(@"automatic value assignment", ^{
 
 context(@"manual value assignment", ^{
   it(@"should have correct field to value mapping", ^{
-    NSDictionary *fieldToValue = [LTEnumRegistry sharedInstance][@"LTMyNameWithValues"];
-    LTBidirectionalMap *expectedFieldToValue = [LTBidirectionalMap mapWithDictionary:@{
-      @"LTMyNameWithValuesA": @5,
-      @"LTMyNameWithValuesB": @7,
-      @"LTMyNameWithValuesC": @550,
-    }];
+    LTBidirectionalMap<NSString *, NSNumber *> *fieldToValue =
+        [LTEnumRegistry sharedInstance][@"LTMyNameWithValues"];
+    LTBidirectionalMap<NSString *, NSNumber *> *expectedFieldToValue =
+        [LTBidirectionalMap mapWithDictionary:@{
+          @"LTMyNameWithValuesA": @5,
+          @"LTMyNameWithValuesB": @7,
+          @"LTMyNameWithValuesC": @550,
+        }];
 
     expect(fieldToValue).to.equal(expectedFieldToValue);
   });
@@ -77,7 +81,7 @@ context(@"enum objects", ^{
   });
 
   it(@"should enumerate enum values", ^{
-    NSMutableArray *values = [NSMutableArray array];
+    NSMutableArray<NSNumber *> *values = [NSMutableArray array];
 
     [LTMyNameWithValues enumerateValuesUsingBlock:^(_LTMyNameWithValues value) {
       [values addObject:@(value)];
@@ -89,7 +93,7 @@ context(@"enum objects", ^{
   });
 
   it(@"should enumerate enum objects", ^{
-    NSMutableArray *values = [NSMutableArray array];
+    NSMutableArray<LTMyNameWithValues *> *values = [NSMutableArray array];
 
     [LTMyNameWithValues enumerateEnumUsingBlock:^(LTMyNameWithValues *value) {
       [values addObject:value];

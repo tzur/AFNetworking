@@ -9,7 +9,8 @@
 
 /// Maps enum name (\c NSString ) to an \c NSDictionary of field names (\c NSString) to their
 /// numeric (\c NSNumber) values.
-@property (strong, nonatomic) NSMutableDictionary *enumMapping;
+@property (strong, nonatomic) NSMutableDictionary<NSString *,
+    LTBidirectionalMap<NSString *, NSNumber *> *> *enumMapping;
 
 @end
 
@@ -43,7 +44,7 @@
   return self.enumMapping[enumName] != nil;
 }
 
-- (LTBidirectionalMap *)enumFieldToValueForName:(NSString *)enumName {
+- (LTBidirectionalMap<NSString *, NSNumber *> *)enumFieldToValueForName:(NSString *)enumName {
   return self.enumMapping[enumName];
 }
 
