@@ -6,7 +6,4 @@
 #ifdef __OBJC__
   #import <UIKit/UIKit.h>
   #import <Foundation/Foundation.h>
-
-  #import <Objection-iOS/Objection.h>
-  #import <Mantle/Mantle.h>
 #endif
