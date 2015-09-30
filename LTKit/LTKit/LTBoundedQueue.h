@@ -4,7 +4,7 @@
 #import "LTQueue.h"
 
 /// Implementation of a FIFO queue with limited capacity.
-@interface LTBoundedQueue : LTQueue
+@interface LTBoundedQueue<ObjectType> : LTQueue<ObjectType>
 
 /// Initializes the queue with a maximal \c capacity of objects allowed to be simultaneously in the
 /// queue. Pushing an object to a full queue will discard the least recently added object of the
@@ -13,7 +13,7 @@
 
 /// Pushes the provided \c object into the queue, discards the least recently added object of the
 /// queue if the queue was full before insertion and returns the discarded object.
-- (id)pushObjectAndReturnPoppedObject:(id)object;
+- (ObjectType)pushObjectAndReturnPoppedObject:(ObjectType)object;
 
 /// Maximal capacity of the queue.
 @property (readonly, nonatomic) NSUInteger maximalCapacity;
