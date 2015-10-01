@@ -35,11 +35,11 @@
 		5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067223019EA811A003AF8D2 /* LTQueueSpec.mm */; };
 		8B16C9891BAEDF1B002FB750 /* LTImageLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9881BAEDF1B002FB750 /* LTImageLoaderSpec.mm */; settings = {ASSET_TAGS = (); }; };
 		8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */; };
-		8B2405801B8607270079B724 /* UIDevice+Kind.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Kind.h */; };
-		8B2405811B8607270079B724 /* UIDevice+Kind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24057F1B8607270079B724 /* UIDevice+Kind.mm */; };
+		8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Hardware.h */; };
+		8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24057F1B8607270079B724 /* UIDevice+Hardware.mm */; };
 		8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2405861B860D620079B724 /* NSLocale+Language.h */; };
 		8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405871B860D620079B724 /* NSLocale+Language.m */; };
-		8B24058D1B89BBB90079B724 /* UIDevice+KindSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */; };
+		8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */; };
 		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
 		8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
 		8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
@@ -324,11 +324,11 @@
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
 		8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
 		8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
-		8B24057E1B8607270079B724 /* UIDevice+Kind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Kind.h"; sourceTree = "<group>"; };
-		8B24057F1B8607270079B724 /* UIDevice+Kind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+Kind.mm"; sourceTree = "<group>"; };
+		8B24057E1B8607270079B724 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		8B24057F1B8607270079B724 /* UIDevice+Hardware.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+Hardware.mm"; sourceTree = "<group>"; };
 		8B2405861B860D620079B724 /* NSLocale+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLocale+Language.h"; sourceTree = "<group>"; };
 		8B2405871B860D620079B724 /* NSLocale+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+Language.m"; sourceTree = "<group>"; };
-		8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+KindSpec.mm"; sourceTree = "<group>"; };
+		8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+HardwareSpec.mm"; sourceTree = "<group>"; };
 		8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+LTKit.h"; sourceTree = "<group>"; };
 		8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -697,8 +697,8 @@
 				8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */,
 				8B2405861B860D620079B724 /* NSLocale+Language.h */,
 				8B2405871B860D620079B724 /* NSLocale+Language.m */,
-				8B24057E1B8607270079B724 /* UIDevice+Kind.h */,
-				8B24057F1B8607270079B724 /* UIDevice+Kind.mm */,
+				8B24057E1B8607270079B724 /* UIDevice+Hardware.h */,
+				8B24057F1B8607270079B724 /* UIDevice+Hardware.mm */,
 				8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */,
 				8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */,
 			);
@@ -713,7 +713,7 @@
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
 				8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */,
-				8B24058C1B89BBB90079B724 /* UIDevice+KindSpec.mm */,
+				8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */,
 				8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */,
 			);
 			name = Base;
@@ -806,7 +806,7 @@
 				8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */,
 				8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */,
 				5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */,
-				8B2405801B8607270079B724 /* UIDevice+Kind.h in Headers */,
+				8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */,
 				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
 				5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
@@ -1071,7 +1071,7 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
-				8B2405811B8607270079B724 /* UIDevice+Kind.mm in Sources */,
+				8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */,
 				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
@@ -1088,7 +1088,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */,
-				8B24058D1B89BBB90079B724 /* UIDevice+KindSpec.mm in Sources */,
+				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,

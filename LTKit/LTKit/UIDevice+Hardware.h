@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindUnknownDevice
 };
 
-@interface UIDevice (Type)
+@interface UIDevice (Hardware)
 
 #pragma mark -
 #pragma mark Device idioms

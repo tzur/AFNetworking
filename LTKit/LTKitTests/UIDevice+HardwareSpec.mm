@@ -1,9 +1,9 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "UIDevice+Kind.h"
+#import "UIDevice+Hardware.h"
 
-SpecBegin(UIDevice_Kind)
+SpecBegin(UIDevice_Hardware)
 
 __block UIDevice *device;
 

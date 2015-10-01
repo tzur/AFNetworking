@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "UIDevice+Kind.h"
+#import "UIDevice+Hardware.h"
 
 #import <cmath>
 #import <sys/utsname.h>
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
   UIDeviceScreenTypeIPadRetina,
 };
 
-@implementation UIDevice (Type)
+@implementation UIDevice (Hardware)
 
 #pragma mark -
 #pragma mark Device idioms
