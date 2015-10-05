@@ -11,7 +11,7 @@
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSError+LTKit.h>
 #import <LTKit/NSLocale+Language.h>
-#import <LTKit/UIDevice+Kind.h>
+#import <LTKit/UIDevice+Hardware.h>
 #import <LTKit/UIScreen+Physical.h>
 
 // Boxing.
