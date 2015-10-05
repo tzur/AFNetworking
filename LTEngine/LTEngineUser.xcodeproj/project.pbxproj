@@ -50,6 +50,13 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTEngineTests;
 		};
+		8BFBB9231BC2E6AA00D280AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CA371BAF0F5F002FB750 /* LTEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -211,6 +218,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8BFBB9241BC2E6AA00D280AD /* PBXTargetDependency */,
 			);
 			name = LTEngineUser;
 			productName = LTEngineUser;
@@ -307,6 +315,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8BFBB9241BC2E6AA00D280AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTEngineBundle;
+			targetProxy = 8BFBB9231BC2E6AA00D280AD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8B8E51361868479100821829 /* InfoPlist.strings */ = {
