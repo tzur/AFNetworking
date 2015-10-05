@@ -3,7 +3,7 @@
 
 #import "NSBundle+LTEngineBundle.h"
 
-@implementation NSBundle (LTKitBundle)
+@implementation NSBundle (LTEngineBundle)
 
 + (NSBundle *)LTEngineBundle {
   return [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"LTEngine"
