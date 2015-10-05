@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTBrush.h"
+#import <LTEngine/LTBrush.h>
 
 /// Brush examples shared group name.
 extern NSString * const kLTBrushExamples;

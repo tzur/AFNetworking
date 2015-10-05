@@ -5,6 +5,8 @@
 
 #import <OpenGLES/ES2/glext.h>
 
+#import "LTVector.h"
+
 /// Supported OpenGL ES API versions.
 typedef NS_ENUM(NSUInteger, LTGLContextAPIVersion) {
   LTGLContextAPIVersion2 = kEAGLRenderingAPIOpenGLES2,

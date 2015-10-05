@@ -5222,6 +5222,7 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
 					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",
@@ -5246,6 +5247,7 @@
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
 					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",

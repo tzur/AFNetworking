@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTColorGradient.h"
+#import <LTEngine/LTColorGradient.h>
 
 /// Convenience methods to create color gradients for testing.
 @interface LTColorGradient (ForTesting)

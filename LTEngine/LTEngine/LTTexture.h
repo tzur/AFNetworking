@@ -5,6 +5,7 @@
 #import <OpenGLES/ES2/glext.h>
 
 #import "LTGPUResource.h"
+#import "LTTypedefs+LTEngine.h"
 #import "LTVector.h"
 
 NS_ASSUME_NONNULL_BEGIN

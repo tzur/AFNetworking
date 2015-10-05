@@ -3,14 +3,14 @@
 
 #import "LTTextureBrushExamples.h"
 
+#import <LTEngine/LTFbo.h>
+#import <LTEngine/LTGLContext.h>
+#import <LTEngine/LTOpenCVExtensions.h>
+#import <LTEngine/LTPainterPoint.h>
+#import <LTEngine/LTTexture+Factory.h>
+
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
-
-#import "LTFbo.h"
-#import "LTGLContext.h"
-#import "LTOpenCVExtensions.h"
-#import "LTPainterPoint.h"
-#import "LTTexture+Factory.h"
 
 NSString * const kLTTextureBrushExamples = @"LTTextureBrushExamples";
 NSString * const kLTTextureBrushClass = @"LTTextureBrushClass";

@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTRoundBrush.h"
+#import <LTEngine/LTRoundBrush.h>
 
 /// Round brush examples shared group name.
 extern NSString * const kLTRoundBrushExamples;

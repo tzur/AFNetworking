@@ -6,8 +6,7 @@
 #import <Expecta/EXPDoubleTuple.h>
 #import <Expecta/EXPFloatTuple.h>
 #import <Expecta/NSValue+Expecta.h>
-
-#import "LTGLKitExtensions.h"
+#import <LTEngine/LTGLKitExtensions.h>
 
 static const double kDefaultWithinValue = 1e-6;
 

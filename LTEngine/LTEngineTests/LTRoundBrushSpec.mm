@@ -3,14 +3,14 @@
 
 #import "LTRoundBrushSpec.h"
 
+#import <LTEngine/LTFbo.h>
+#import <LTEngine/LTGLContext.h>
+#import <LTEngine/LTGLKitExtensions.h>
+#import <LTEngine/LTPainterPoint.h>
+#import <LTEngine/LTTexture+Factory.h>
+
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
-
-#import "LTFbo.h"
-#import "LTGLContext.h"
-#import "LTGLKitExtensions.h"
-#import "LTPainterPoint.h"
-#import "LTTexture+Factory.h"
 
 NSString * const kLTRoundBrushExamples = @"LTRoundBrushExamples";
 NSString * const kLTRoundBrushClass = @"LTRoundBrushClass";

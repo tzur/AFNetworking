@@ -1,8 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTGLContext.h"
-#import "LTTestModule.h"
+#import <LTEngine/LTGLContext.h>
+#import <LTEngineTests/LTTestModule.h>
 
 /// Sets the current injector to strictly mock the given class and returns the mocked object.
 #define LTStrictMockClass(CLASS) \

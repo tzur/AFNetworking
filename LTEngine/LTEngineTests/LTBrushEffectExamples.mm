@@ -3,18 +3,17 @@
 
 #import "LTBrushEffectExamples.h"
 
+#import <LTEngine/LTBrushColorDynamicsEffect.h>
+#import <LTEngine/LTBrushScatterEffect.h>
+#import <LTEngine/LTBrushShapeDynamicsEffect.h>
+#import <LTEngine/LTDegenerateInterpolationRoutine.h>
+#import <LTEngine/LTFbo.h>
+#import <LTEngine/LTGLKitExtensions.h>
+#import <LTEngine/LTPainterPoint.h>
+#import <LTEngine/LTPainterStrokeSegment.h>
+#import <LTEngine/LTTexture+Factory.h>
+#import <LTEngine/UIColor+Vector.h>
 #import <LTKit/LTRandom.h>
-
-#import "LTBrushColorDynamicsEffect.h"
-#import "LTBrushScatterEffect.h"
-#import "LTBrushShapeDynamicsEffect.h"
-#import "LTDegenerateInterpolationRoutine.h"
-#import "LTFbo.h"
-#import "LTGLKitExtensions.h"
-#import "LTPainterPoint.h"
-#import "LTPainterStrokeSegment.h"
-#import "LTTexture+Factory.h"
-#import "UIColor+Vector.h"
 
 NSString * const kLTBrushEffectLTBrushExamples = @"LTBrushEffectLTBrushExamples";
 NSString * const kLTBrushEffectSubclassExamples = @"LTBrushEffectSubclassExamples";

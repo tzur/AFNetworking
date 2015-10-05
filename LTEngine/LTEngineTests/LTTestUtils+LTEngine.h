@@ -3,8 +3,8 @@
 
 #import <numeric>
 
-#import "LTBlendMode.h"
-#import "LTOpenCVHalfFloat.h"
+#import <LTEngine/LTBlendMode.h>
+#import <LTEngine/LTOpenCVHalfFloat.h>
 
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
