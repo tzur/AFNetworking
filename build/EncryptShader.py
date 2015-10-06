@@ -148,10 +148,10 @@ class ShaderEncryptor(object):
 
     @staticmethod
     def __import_file():
-        if os.environ["PROJECT_NAME"].startswith("LTKit"):
+        if os.environ["PROJECT_NAME"].startswith("LTEngine"):
             return "\"LTShaderStorage.h\""
         else:
-            return "<LTKit/LTShaderStorage.h>"
+            return "<LTEngine/LTShaderStorage.h>"
 
     def write_to(self, output_directory):
         try:

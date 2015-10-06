@@ -1,0 +1,206 @@
+// Copyright (c) 2014 Lightricks. All rights reserved.
+// Created by Amit Goldstein.
+
+#import "LTBristleBrush.h"
+
+#import "LTBrushEffectExamples.h"
+#import "LTBrushSpec.h"
+
+#import "LTFbo.h"
+#import "LTOpenCVExtensions.h"
+#import "LTPainterPoint.h"
+#import "LTTexture+Factory.h"
+
+@interface LTBrush ()
+@property (readonly, nonatomic) LTTexture *texture;
+@end
+
+LTSpecBegin(LTBristleBrush)
+
+itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
+
+itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
+
+__block LTBristleBrush *brush;
+
+beforeEach(^{
+  brush = [[LTBristleBrush alloc] init];
+});
+
+afterEach(^{
+  brush = nil;
+});
+
+context(@"properties", ^{
+  const CGFloat kEpsilon = 1e-6;
+
+  it(@"should have default properties", ^{
+    expect(brush.shape).to.equal(LTBristleBrushShapeRoundBlunt);
+    expect(brush.bristles).to.equal(5);
+    expect(brush.thickness).to.equal(0.2);
+    expect(brush.spacing).to.equal(0.01);
+  });
+  
+  it(@"should set bristles", ^{
+    NSUInteger newValue = 10;
+    brush.bristles = newValue;
+    expect(brush.bristles).to.equal(newValue);
+    
+    expect(^{
+      brush.bristles = brush.minBristles - 1;
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      brush.bristles = brush.maxBristles + 1;
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should set thickness", ^{
+    const CGFloat newValue = 0.5;
+    expect(brush.thickness).notTo.equal(newValue);
+    brush.thickness = newValue;
+    expect(brush.thickness).to.equal(newValue);
+    
+    expect(^{
+      brush.thickness = brush.minThickness - kEpsilon;
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      brush.thickness = brush.maxThickness + kEpsilon;
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should set shape", ^{
+    brush.shape = LTBristleBrushShapeFlatFan;
+    expect(brush.shape).to.equal(LTBristleBrushShapeFlatFan);
+  });
+});
+
+context(@"drawing", ^{
+  __block cv::Mat4b expected;
+  __block LTTexture *output;
+  __block LTFbo *fbo;
+  __block LTPainterPoint *point;
+  
+  const LTVector4 kBackground = LTVector4(0, 0, 0, 1);
+  const CGFloat kBaseBrushDiameter = 64;
+  const CGFloat kTargetBrushDiameter = 64;
+  const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
+  const CGSize kOutputSize = kBaseBrushSize;
+  const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
+  
+  beforeEach(^{
+    brush.baseDiameter = kBaseBrushDiameter;
+    brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
+    output = [LTTexture byteRGBATextureWithSize:kOutputSize];
+    fbo = [[LTFbo alloc] initWithTexture:output];
+    [fbo clearWithColor:kBackground];
+    
+    expected.create(kOutputSize.height, kOutputSize.width);
+    expected = LTLTVector4ToVec4b(kBackground);
+    
+    point = [[LTPainterPoint alloc] init];
+    point.contentPosition = kOutputCenter;
+  });
+  
+  afterEach(^{
+    fbo = nil;
+    output = nil;
+    brush = nil;
+  });
+
+  it(@"should update the brush texture according to the shape property", ^{
+    brush.bristles = 30;
+    brush.thickness = 2;
+
+    brush.shape = LTBristleBrushShapeRoundBlunt;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.RoundBlunt.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+
+    brush.shape = LTBristleBrushShapeRoundPoint;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.RoundPoint.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+
+    brush.shape = LTBristleBrushShapeRoundFan;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.RoundFan.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+
+    brush.shape = LTBristleBrushShapeFlatBlunt;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.FlatBlunt.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+
+    brush.shape = LTBristleBrushShapeFlatPoint;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.FlatPoint.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+
+    brush.shape = LTBristleBrushShapeFlatFan;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.FlatFan.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+  });
+
+  it(@"should update the brush texture according to the bristles property", ^{
+    brush.thickness = 2.0;
+    
+    brush.bristles = 2;
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.2.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+    
+    brush.bristles = 4;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.4.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+    
+    brush.bristles = 20;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushBristles.20.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+  });
+  
+  it(@"should update the brush texture according to the thickness property", ^{
+    brush.bristles = 2;
+    
+    brush.thickness = 1.5;
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushThickness.1.5.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+    
+    brush.thickness = 0.75;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushThickness.0.75.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+    
+    brush.thickness = 0.1;
+    [fbo clearWithColor:kBackground];
+    [brush startNewStrokeAtPoint:point];
+    [brush drawPoint:point inFramebuffer:fbo];
+    expected = LTLoadMat([self class], @"BristleBrushThickness.0.1.png");
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
+  });
+});
+
+LTSpecEnd
