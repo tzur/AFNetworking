@@ -45,8 +45,7 @@
   UIImage *image = [UIImage imageWithData:data];
   if (!image) {
     if (error) {
-      *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileReadCorruptFileError
-                               userInfo:nil];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed];
     }
     return NO;
   }

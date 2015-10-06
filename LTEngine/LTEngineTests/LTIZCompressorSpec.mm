@@ -204,7 +204,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image;
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeFileReadFailed);
   });
 
@@ -224,7 +224,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image;
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
 
@@ -244,7 +244,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image;
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
 
@@ -264,7 +264,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image(1, 1);
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
 
@@ -284,7 +284,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image(1, 1);
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
 
@@ -304,7 +304,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image(2, 2);
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeFileReadFailed);
   });
 
@@ -324,7 +324,7 @@ context(@"header parsing", ^{
 
     __block cv::Mat4b image(1, 1);
     expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
-    expect(error.domain).to.equal(kLTKitErrorDomain);
+    expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
 });

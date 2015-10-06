@@ -126,8 +126,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
   UIImage *image = [imageLoader imageWithContentsOfFile:self.filePath];
   if (!image) {
     if (error) {
-      *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileReadCorruptFileError
-                               userInfo:@{NSFilePathErrorKey: self.filePath}];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:self.filePath];
     }
     return NO;
   }
@@ -142,8 +141,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
                                                 options:NSDataReadingUncached error:error];
   if (!data) {
     if (error) {
-      *error = [NSError errorWithDomain:kLTKitErrorDomain code:NSFileReadCorruptFileError
-                               userInfo:@{NSFilePathErrorKey: self.filePath ?: [NSNull null]}];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:self.filePath];
     }
     return NO;
   }

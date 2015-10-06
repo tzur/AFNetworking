@@ -3,12 +3,13 @@
 
 #import "LTTestUtils+LTEngine.h"
 
-#import <LTEngine/LTImage.h>
-#import <LTEngine/LTOpenCVExtensions.h>
 #import <LTKit/LTEnumRegistry.h>
-#import <LTKit/UIDevice+Kind.h>
+#import <LTKit/UIDevice+Hardware.h>
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
+
+#import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 
 using half_float::half;
 
