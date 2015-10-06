@@ -4,7 +4,7 @@
 #import "LTBrush.h"
 
 #import <LTKit/LTRandom.h>
-#import <LTKit/UIDevice+Kind.h>
+#import <LTKit/UIDevice+Hardware.h>
 #import <LTKit/UIScreen+Physical.h>
 
 #import "LTBrushColorDynamicsEffect.h"
