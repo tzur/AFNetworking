@@ -3,13 +3,13 @@
 
 #import "LTBidirectionalMap.h"
 
-@interface LTBidirectionalMap ()
+@interface LTBidirectionalMap <ObjectType, KeyType> ()
 
 /// Holds mapping of keys to values.
-@property (strong, nonatomic) NSMutableDictionary *keysToValues;
+@property (strong, nonatomic) NSMutableDictionary<KeyType, ObjectType> *keysToValues;
 
 /// Holds mapping of values to keys.
-@property (strong, nonatomic) NSMapTable *valuesToKeys;
+@property (strong, nonatomic) NSMapTable<ObjectType, KeyType> *valuesToKeys;
 
 @end
 

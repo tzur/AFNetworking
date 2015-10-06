@@ -13,7 +13,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
-                        change:(NSDictionary *)change
+                        change:(NSDictionary<NSString*, id> *)change
                        context:(void __unused *)context {
   LTAssert([keyPath isEqualToString:@instanceKeypath(LTQueue, count)]);
   LTAssert([object isKindOfClass:[LTQueue class]]);
@@ -22,9 +22,9 @@
 
 @end
 
-LTSpecBegin(LTQueue)
+SpecBegin(LTQueue)
 
-__block LTQueue *queue;
+__block LTQueue<NSObject *> *queue;
 __block id firstObject;
 __block id secondObject;
 __block id thirdObject;
@@ -222,4 +222,4 @@ context(@"KVO compatibility", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -5,8 +5,9 @@
 
 SpecBegin(LTBoundedQueue)
 
-__block LTBoundedQueue *singleObjectQueue;
-__block LTBoundedQueue *multipleObjectQueue;
+__block LTBoundedQueue<NSObject *> *singleObjectQueue;
+__block LTBoundedQueue<NSObject *> *multipleObjectQueue;
+
 __block id firstObject;
 __block id secondObject;
 __block id thirdObject;
@@ -14,6 +15,7 @@ __block id thirdObject;
 beforeEach(^{
   singleObjectQueue = [[LTBoundedQueue alloc] initWithMaximalCapacity:1];
   multipleObjectQueue = [[LTBoundedQueue alloc] initWithMaximalCapacity:3];
+
   firstObject = [[NSObject alloc] init];
   secondObject = [[NSObject alloc] init];
   thirdObject = [[NSObject alloc] init];
@@ -31,10 +33,13 @@ it(@"should be empty after initialization", ^{
 it(@"should add objects without discarding old ones before maximum capacity is reached", ^{
   [multipleObjectQueue pushObject:firstObject];
   expect(multipleObjectQueue.count).to.equal(1);
+
   [multipleObjectQueue pushObject:secondObject];
   expect(multipleObjectQueue.count).to.equal(2);
+
   [multipleObjectQueue pushObject:thirdObject];
   expect(multipleObjectQueue.count).to.equal(3);
+
   expect(multipleObjectQueue.firstObject).to.beIdenticalTo(firstObject);
   expect(multipleObjectQueue.lastObject).to.beIdenticalTo(thirdObject);
 });
@@ -46,6 +51,7 @@ it(@"should add objects and discard old ones after maximum capacity is reached",
   [multipleObjectQueue pushObject:secondObject];
   [singleObjectQueue pushObject:thirdObject];
   [multipleObjectQueue pushObject:thirdObject];
+
   expect(singleObjectQueue.count).to.equal(1);
   expect(multipleObjectQueue.count).to.equal(3);
   expect(singleObjectQueue.firstObject).to.beIdenticalTo(thirdObject);

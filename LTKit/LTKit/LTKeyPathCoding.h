@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <extobjc/extobjc.h>
+#import <extobjc/EXTKeyPathCoding.h>
 
 /// Allows compile-time verification of key paths. Given a class name and a key path:
 /// @code

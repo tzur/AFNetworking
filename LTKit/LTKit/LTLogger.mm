@@ -3,8 +3,6 @@
 
 #import "LTLogger.h"
 
-#import "LTVector.h"
-
 #pragma mark -
 #pragma mark LTLogger
 #pragma mark -
@@ -75,9 +73,6 @@
   MATCH_TYPE_AND_HANDLER(GLKVector2, NSStringFromGLKVector2);
   MATCH_TYPE_AND_HANDLER(GLKVector3, NSStringFromGLKVector3);
   MATCH_TYPE_AND_HANDLER(GLKVector4, NSStringFromGLKVector4);
-  MATCH_TYPE_AND_HANDLER(LTVector2, NSStringFromLTVector2);
-  MATCH_TYPE_AND_HANDLER(LTVector3, NSStringFromLTVector3);
-  MATCH_TYPE_AND_HANDLER(LTVector4, NSStringFromLTVector4);
 
   MATCH_TYPE_AND_FORMAT_STRING(CFStringRef, @"%@");
   MATCH_TYPE_AND_FORMAT_STRING(CFArrayRef, @"%@");

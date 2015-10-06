@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *path;
 
 /// Pointer to the mapped data.
-@property (readonly, nonatomic) uchar *data;
+@property (readonly, nonatomic) uint8_t *data;
 
 /// Size of the buffer pointed by \c data.
 @property (readonly, nonatomic) size_t size;

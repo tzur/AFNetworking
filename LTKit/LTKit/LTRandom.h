@@ -4,7 +4,7 @@
 /// Represents the internal state of the random generator. Reseting the generator to a given state
 /// will yield the same sequence of random numbers (assuming the same sequence of methods are
 /// called).
-@interface LTRandomState : MTLModel
+@interface LTRandomState : NSObject
 @end
 
 /// A random number generator class that can be shared between mutiple places, allowing generating

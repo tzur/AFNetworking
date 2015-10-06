@@ -3,10 +3,10 @@
 
 #import "LTQueue.h"
 
-@interface LTQueue ()
+@interface LTQueue <ObjectType> ()
 
-// Underlying data structure used for storing the objects.
-@property (strong, nonatomic) NSMutableArray *queue;
+/// Underlying data structure used for storing the objects.
+@property (strong, nonatomic) NSMutableArray<ObjectType> *queue;
 
 @end
 

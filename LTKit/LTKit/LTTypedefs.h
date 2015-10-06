@@ -6,11 +6,8 @@
 
 #ifdef __cplusplus
 
-#import <opencv2/core/core.hpp>
 #import <array>
 #import <vector>
-
-#import "LTVector.h"
 
 #pragma mark -
 #pragma mark CoreGraphics
@@ -26,40 +23,11 @@ typedef std::vector<CGPoint> CGPoints;
 typedef std::vector<CGSize> CGSizes;
 
 #pragma mark -
-#pragma mark GLKit
-#pragma mark -
-
-/// A collection of \c LTVector2.
-typedef std::vector<LTVector2> LTVector2s;
-/// A collection of \c GLKVector3.
-typedef std::vector<GLKVector3> GLKVector3s;
-/// A collection of \c GLKVector4.
-typedef std::vector<GLKVector4> GLKVector4s;
-
-#pragma mark -
 #pragma mark Scalar
 #pragma mark -
 
 /// A collection of \c GLuint.
 typedef std::vector<GLuint> GLuints;
-
-#pragma mark -
-#pragma mark LTVector
-#pragma mark -
-
-/// A collection of \c LTVector2.
-typedef std::vector<LTVector2> LTVector2s;
-/// A collection of \c LTVector3.
-typedef std::vector<LTVector3> LTVector3s;
-/// A collection of \c LTVector4.
-typedef std::vector<LTVector4> LTVector4s;
-
-#pragma mark -
-#pragma mark OpenCV
-#pragma mark -
-
-/// A collection of \c cv::Mat.
-typedef std::vector<cv::Mat> Matrices;
 
 #endif
 

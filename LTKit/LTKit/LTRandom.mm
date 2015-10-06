@@ -4,6 +4,7 @@
 #import "LTRandom.h"
 
 #import <random>
+#import <sstream>
 
 @interface LTRandomState ()
 
@@ -13,6 +14,23 @@
 @end
 
 @implementation LTRandomState
+
+- (BOOL)isEqual:(LTRandomState *)object {
+  if (object == self) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return [self.engineState isEqual:object.engineState];
+}
+
+- (NSUInteger)hash {
+  return self.engineState.hash;
+}
+
 @end
 
 @interface LTRandom () {

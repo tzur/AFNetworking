@@ -18,14 +18,5 @@ extern "C" {
 #ifdef __cplusplus
   #import "LTTestUtils.h"
 
-  #import "EXPMatchers+equalMat.h"
-  #import "EXPMatchers+equalScalar.h"
-  #import "EXPMatchers+beCloseToMat.h"
   #import "EXPMatchers+beCloseToPoint.h"
-  #import "EXPMatchers+beCloseToScalar.h"
-  #import "EXPMatchers+beCloseToGLKVector.h"
-  #import "EXPMatchers+beCloseToCATransform3D.h"
-
-  #import "LTEasyBoxing+OpenCVExtensions.h"
-  #import "Specta+LTKit.h"
 #endif

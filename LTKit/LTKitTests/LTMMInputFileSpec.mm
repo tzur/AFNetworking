@@ -5,7 +5,7 @@
 
 #import <sys/mman.h>
 
-LTSpecBegin(LTMMInputFile)
+SpecBegin(LTMMInputFile)
 
 context(@"valid file", ^{
   __block NSError *error;
@@ -13,7 +13,7 @@ context(@"valid file", ^{
   __block NSString *path;
 
   beforeEach(^{
-    path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Lena" ofType:@"png"];
+    path = [[NSBundle bundleForClass:[self class]] executablePath];
     inputFile = [[LTMMInputFile alloc] initWithPath:path error:&error];
   });
 
@@ -69,4 +69,4 @@ context(@"invalid file", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

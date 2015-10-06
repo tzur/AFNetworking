@@ -5,4 +5,5 @@ EXPMatcherInterface(_beCloseToPointWithin, (id expected, id within));
 EXPMatcherInterface(beCloseToPointWithin, (id expected, id within));
 
 #define beCloseToPoint(expected) _beCloseToPointWithin(EXPObjectify((expected)), nil)
-#define beCloseToPointWithin(expected, range) _beCloseToPointWithin(EXPObjectify((expected)), EXPObjectify((range)))
+#define beCloseToPointWithin(expected, range) _beCloseToPointWithin(EXPObjectify((expected)), \
+    EXPObjectify((range)))

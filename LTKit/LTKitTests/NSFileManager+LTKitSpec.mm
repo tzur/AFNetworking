@@ -3,9 +3,7 @@
 
 #import "NSFileManager+LTKit.h"
 
-#import "LTImage.h"
-
-LTSpecBegin(NSFileManager_LTKit)
+SpecBegin(NSFileManager_LTKit)
 
 __block id fileManager;
 
@@ -47,7 +45,7 @@ it(@"should write data", ^{
 });
 
 it(@"should read data from file", ^{
-  NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"Gray" ofType:@"jpg"];
+  NSString *path = [[NSBundle bundleForClass:[self class]] executablePath];
 
   NSError *error;
   NSData *data = [fileManager lt_dataWithContentsOfFile:path options:0 error:&error];
@@ -66,4 +64,32 @@ it(@"should not set backup flag for non existing file", ^{
   expect(error).notTo.beNil();
 });
 
-LTSpecEnd
+context(@"storage info", ^{
+  __block id mockedManager;
+
+  beforeEach(^{
+    mockedManager = OCMPartialMock(fileManager);
+  });
+
+  afterEach(^{
+    mockedManager = nil;
+  });
+
+  it(@"should return correct total storage", ^{
+    static const uint64_t kExpectedBytes = 123456;
+    OCMStub([mockedManager attributesOfFileSystemForPath:OCMOCK_ANY error:[OCMArg anyObjectRef]]).
+        andReturn(@{NSFileSystemSize: @(kExpectedBytes)});
+    uint64_t totalBytes = [mockedManager lt_totalStorage];
+    expect(totalBytes).to.equal(kExpectedBytes);
+  });
+
+  it(@"should return correct free storage", ^{
+    static const uint64_t kExpectedBytes = 123456;
+    OCMStub([mockedManager attributesOfFileSystemForPath:OCMOCK_ANY error:[OCMArg anyObjectRef]]).
+        andReturn(@{NSFileSystemFreeSize: @(kExpectedBytes)});
+    uint64_t freeBytes = [mockedManager lt_freeStorage];
+    expect(freeBytes).to.equal(kExpectedBytes);
+  });
+});
+
+SpecEnd

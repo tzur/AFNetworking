@@ -6,8 +6,7 @@
 #import <Expecta/EXPDoubleTuple.h>
 #import <Expecta/EXPFloatTuple.h>
 #import <Expecta/NSValue+Expecta.h>
-
-#import "LTCGExtensions.h"
+#import <LTKit/LTCGExtensions.h>
 
 EXPMatcherImplementationBegin(_beCloseToPointWithin, (id expected, id within)) {
   __block CGFloat distance;

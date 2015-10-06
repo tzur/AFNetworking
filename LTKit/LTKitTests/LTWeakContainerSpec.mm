@@ -3,9 +3,9 @@
 
 #import "LTWeakContainer.h"
 
-LTSpecBegin(LTWeakContainer)
+SpecBegin(LTWeakContainer)
 
-__block LTWeakContainer *container;
+__block LTWeakContainer<NSObject *> *container;
 
 afterEach(^{
   container = nil;
@@ -40,4 +40,4 @@ it(@"should set the contained object to nil when it is deallocated", ^{
   expect(container.object).to.beNil();
 });
 
-LTSpecEnd
+SpecEnd

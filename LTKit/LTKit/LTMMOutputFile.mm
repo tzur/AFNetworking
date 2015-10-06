@@ -15,7 +15,7 @@
 @property (nonatomic) int fd;
 
 /// Pointer to the mapped data.
-@property (readwrite, nonatomic) uchar *data;
+@property (readwrite, nonatomic) uint8_t *data;
 
 /// Size of the buffer pointed by \c data.
 @property (readwrite, nonatomic) size_t size;
@@ -50,7 +50,7 @@
       return nil;
     }
 
-    self.data = (uchar *)mmap(0, size, PROT_READ | PROT_WRITE, MAP_FILE | MAP_SHARED, self.fd, 0);
+    self.data = (uint8_t *)mmap(0, size, PROT_READ | PROT_WRITE, MAP_FILE | MAP_SHARED, self.fd, 0);
     if (self.data == MAP_FAILED) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path

@@ -3,6 +3,23 @@
 
 #import "LTRandom.h"
 
+#import <numeric>
+
+/// Returns the mean value of all elements in the given container.
+template <typename Container>
+static double LTMean(const Container &container) {
+  return container.size() > 0 ?
+  std::accumulate(container.begin(), container.end(), 0.0) / (double)container.size() : 0.0;
+}
+
+/// Returns the variance of all elements in the given container.
+template <typename Container>
+static double LTVariance(const Container &container) {
+  double mean = LTMean(container);
+  double squareSum = std::inner_product(container.begin(), container.end(), container.begin(), 0.0);
+  return squareSum / container.size() - mean * mean;
+}
+
 SpecBegin(LTRandom)
 
 __block LTRandom *random;
@@ -112,6 +129,18 @@ context(@"random", ^{
 #undef equal
     expect(std::equal(first.begin(), first.end(), second.begin())).to.beTruthy();
 #pragma pop_macro("equal")
+  });
+
+  it(@"should generate two equal engine states", ^{
+    LTRandom *random1 = [[LTRandom alloc] init];
+    for (NSInteger i = 0; i < 5; ++i) {
+      [random1 randomDouble];
+    }
+
+    LTRandom *random2 = [[LTRandom alloc] init];
+    [random2 resetToState:random1.engineState];
+
+    expect(random1.engineState).to.equal(random2.engineState);
   });
   
   it(@"should generate identical random sequence when using same seed", ^{
