@@ -6,6 +6,8 @@
 #import <random>
 #import <sstream>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTRandomState ()
 
 /// The internal state of the \c default_random_engine.
@@ -104,3 +106,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

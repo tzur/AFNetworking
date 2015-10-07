@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Groups various file operations in order to provide another level of dereference for easy
 /// testing and mocking.
 @interface NSFileManager (LTKit)
@@ -20,7 +22,7 @@
 /// Creates and returns a dictionary using the keys and values found in a file specified by a given
 /// path. or \c nil if there is a file error or if the contents of the file are an invalid
 /// representation of a dictionary.
-- (NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path;
+- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path;
 
 /// Writes the bytes in the receiver to the file specified by a given path.
 ///
@@ -32,14 +34,16 @@
 - (BOOL)lt_writeData:(NSData *)data toFile:(NSString *)path options:(NSDataWritingOptions)options
                error:(NSError **)error;
 
-/// Creates and returns a data object by reading every byte from the file specified by a given path.
+/// Creates and returns a data object by reading every byte from the file specified by a given path,
+/// or \c nil if an error occurred.
 ///
 /// @param path Absolute path of the file from which to read data.
 /// @param mask Mask that specifies options for reading the data.
 /// @param error If an error occurs, upon return contains an NSError object that describes the
 /// problem.
-- (NSData *)lt_dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
-                                error:(NSError **)error;
+- (nullable NSData *)lt_dataWithContentsOfFile:(NSString *)path
+                                       options:(NSDataReadingOptions)options
+                                         error:(NSError **)error;
 
 /// Globs the given \c path with optional \c recursion, returning paths of files that match the
 /// given \c predicate (for \c NSString paths). If an error has occurred, the returned array will be
@@ -61,3 +65,5 @@
 @property (readonly, nonatomic) uint64_t lt_freeStorage;
 
 @end
+
+NS_ASSUME_NONNULL_END

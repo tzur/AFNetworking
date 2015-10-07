@@ -12,8 +12,6 @@ it(@"should test type accurately", ^{
   NSValue *sizeValue = $(CGSizeZero);
   NSValue *rectValue = $(CGRectZero);
 
-  expect([intValue lt_isKindOfObjCType:NULL]).to.beFalsy();
-
   expect([intValue lt_isKindOfObjCType:@encode(int)]).to.beTruthy();
   expect([intValue lt_isKindOfObjCType:@encode(uint)]).to.beFalsy();
 

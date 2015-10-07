@@ -101,7 +101,7 @@
 		8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */; };
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
-		8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */; };
+		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
 /* End PBXBuildFile section */
@@ -390,7 +390,7 @@
 		8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumRegistrySpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
-		8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTBidirectionaMap.m; sourceTree = "<group>"; };
+		8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTBidirectionalMap.m; sourceTree = "<group>"; };
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
@@ -779,7 +779,7 @@
 			isa = PBXGroup;
 			children = (
 				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
-				8BF7B1711949BC7500E67079 /* LTBidirectionaMap.m */,
+				8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */,
 				5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */,
 				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
@@ -1076,7 +1076,7 @@
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
 				8B3DEC1118296D2200EA0C1A /* LTLogger.mm in Sources */,
-				8BF7B1731949BC7500E67079 /* LTBidirectionaMap.m in Sources */,
+				8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */,
 				8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */,
 				287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */,
 				8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */,

@@ -202,7 +202,7 @@
     [aCoder encodeObject:[NSValue valueWith##NAME:self.value] forKey:@"value"]; \
   } \
   \
-  - (instancetype)enumWithNextValue { \
+  - (nullable instancetype)enumWithNextValue { \
     LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
         enumFieldToValueForName:@#NAME]; \
     NSArray *enumValues = [mapping.allValues sortedArrayUsingSelector:@selector(compare:)]; \

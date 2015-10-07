@@ -3,6 +3,8 @@
 
 #import "LTLogger.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark -
 #pragma mark LTLogger
 #pragma mark -
@@ -44,7 +46,7 @@
 #pragma mark Expression formatter
 #pragma mark -
 
-+ (NSString *)descriptionFromTypeCode:(const char *)typeCode andValue:(void *)value {
++ (nullable NSString *)descriptionFromTypeCode:(const char *)typeCode andValue:(void *)value {
 #define MATCH_TYPE_AND_HANDLER(typeToMatch, handler) \
     if (strcmp(typeCode, @encode(typeToMatch)) == 0) { \
       return (handler)(*(typeToMatch *)value); \
@@ -221,3 +223,5 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

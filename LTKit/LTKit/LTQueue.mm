@@ -3,6 +3,8 @@
 
 #import "LTQueue.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTQueue <ObjectType> ()
 
 /// Underlying data structure used for storing the objects.
@@ -20,11 +22,11 @@
   return self.queue.count;
 }
 
-- (id)firstObject {
+- (nullable id)firstObject {
   return self.queue.firstObject;
 }
 
-- (id)lastObject {
+- (nullable id)lastObject {
   return self.queue.lastObject;
 }
 
@@ -45,14 +47,17 @@
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
-- (id)popObject {
+- (nullable id)popObject {
   if (!self.queue.count) {
     return nil;
   }
+
   id result = self.queue.firstObject;
+
   [self willChangeValueForKey:@keypath(self, count)];
   [self.queue removeObjectAtIndex:0];
   [self didChangeValueForKey:@keypath(self, count)];
+
   return result;
 }
 
@@ -121,3 +126,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

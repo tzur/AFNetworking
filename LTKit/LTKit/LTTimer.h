@@ -3,6 +3,8 @@
 
 #import "LTTypedefs.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol LTTimeProvider;
 
 /// Class used for timing blocks of code using a high-precision timer which is independent on a
@@ -38,3 +40,5 @@
 - (CFTimeInterval)currentTime;
 
 @end
+
+NS_ASSUME_NONNULL_END

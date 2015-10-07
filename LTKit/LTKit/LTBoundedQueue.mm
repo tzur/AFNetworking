@@ -3,6 +3,8 @@
 
 #import "LTBoundedQueue.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTBoundedQueue ()
 
 /// Maximal number of objects allowed to reside simultaneously in the queue.
@@ -39,10 +41,12 @@
   [super pushObject:object];
 }
 
-- (id)pushObjectAndReturnPoppedObject:(id)object {
+- (nullable id)pushObjectAndReturnPoppedObject:(id)object {
   id poppedObject = self.count == self.maximalCapacity ? self.firstObject : nil;
   [self pushObject:object];
   return poppedObject;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

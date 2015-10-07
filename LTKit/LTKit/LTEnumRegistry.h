@@ -3,6 +3,8 @@
 
 #import "LTEnumMacros.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTBidirectionalMap;
 
 /// Registry for enumeration types defined by the macro \c LTEnumMake(). This allows run-time
@@ -20,11 +22,15 @@
 /// Returns \c YES if the given enum is registered.
 - (BOOL)isEnumRegistered:(NSString *)enumName;
 
+typedef LTBidirectionalMap<NSString *, NSNumber *> LTEnumFieldToValue;
+
 /// Returns an \c LTBidirectionalMap that maps the given enum's field names (\c NSString) to their
-/// numeric (\c NSNumber) values and vice versa.
-- (LTBidirectionalMap<NSString *, NSNumber *> *)enumFieldToValueForName:(NSString *)enumName;
+/// numeric (\c NSNumber) values and vice versa, or \c nil if \c enumName is not registered.
+- (nullable LTEnumFieldToValue *)enumFieldToValueForName:(NSString *)enumName;
 
 /// Shortcut for \c -enumFieldToValueForName:.
-- (LTBidirectionalMap<NSString *, NSNumber *> *)objectForKeyedSubscript:(NSString *)key;
+- (nullable LTEnumFieldToValue *)objectForKeyedSubscript:(NSString *)key;
 
 @end
+
+NS_ASSUME_NONNULL_END

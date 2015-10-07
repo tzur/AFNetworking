@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Implementation of a FIFO queue.
 @interface LTQueue<ObjectType> : NSObject
 
@@ -9,7 +11,7 @@
 
 /// Pops and returns the least recently added object from the queue. Returns \c nil if the queue is
 /// empty.
-- (ObjectType)popObject;
+- (nullable ObjectType)popObject;
 
 /// Removes the provided \c object from the queue. If the queue does not contain the \c object, the
 /// method has no effect (although it does incur the overhead of searching the contents).
@@ -42,12 +44,14 @@
 - (BOOL)containsObject:(ObjectType)object;
 
 /// The least recently added object in the queue. Returns \c nil if the queue is empty.
-@property (readonly, nonatomic) ObjectType firstObject;
+@property (readonly, nonatomic, nullable) ObjectType firstObject;
 
 /// The most recently added object in the queue. Returns \c nil if the queue is empty.
-@property (readonly, nonatomic) ObjectType lastObject;
+@property (readonly, nonatomic, nullable) ObjectType lastObject;
 
 /// Number of objects in queue. KVO-compatible.
 @property (readonly, nonatomic) NSUInteger count;
 
 @end
+
+NS_ASSUME_NONNULL_END

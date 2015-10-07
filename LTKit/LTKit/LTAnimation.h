@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Represents an animation which is performed using a timer (a CADisplayLink, to be more precise)
 /// and not by CoreAnimation or UIKit. This is needed for openGL animations, or for animating views
 /// or layers without using properties.
@@ -57,3 +59,5 @@ typedef BOOL (^LTAnimationBlock)(CFTimeInterval timeSinceLastFrame,
 + (void)reset;
 
 @end
+
+NS_ASSUME_NONNULL_END

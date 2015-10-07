@@ -3,6 +3,8 @@
 
 #import "LTTimer.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTDefaultTimeProvider : NSObject <LTTimeProvider>
 @end
 
@@ -86,3 +88,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

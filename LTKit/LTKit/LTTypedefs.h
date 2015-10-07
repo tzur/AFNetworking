@@ -31,6 +31,8 @@ typedef std::vector<GLuint> GLuints;
 
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Various typedefs that are applicable across LTKit.
 
 #pragma mark -
@@ -47,8 +49,10 @@ typedef LTVoidBlock LTCompletionBlock;
 typedef void (^LTBoolCompletionBlock)(BOOL finished);
 
 /// Block used as a failure handler with an NSError describing the reason for failure.
-typedef void (^LTFailureBlock)(NSError *error);
+typedef void (^LTFailureBlock)(NSError * _Nonnull error);
 
 /// Block to indicate success or failure. If success is \c YES, error is \c nil. If success is \c
 /// NO, error will contain an appropriate error description.
-typedef void (^LTSuccessOrErrorBlock)(BOOL success, NSError *error);
+typedef void (^LTSuccessOrErrorBlock)(BOOL success, NSError * _Nullable error);
+
+NS_ASSUME_NONNULL_END

@@ -3,6 +3,8 @@
 
 #import "NSFileManager+LTKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSFileManager (LTKit)
 
 + (NSString *)lt_documentsDirectory {
@@ -22,7 +24,7 @@
   return [dictionary writeToFile:path atomically:YES];
 }
 
-- (NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path {
+- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path {
   return [NSDictionary dictionaryWithContentsOfFile:path];
 }
 
@@ -31,8 +33,9 @@
   return [data writeToFile:path options:options error:error];
 }
 
-- (NSData *)lt_dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)options
-                                error:(NSError *__autoreleasing *)error {
+- (nullable NSData *)lt_dataWithContentsOfFile:(NSString *)path
+                                       options:(NSDataReadingOptions)options
+                                         error:(NSError *__autoreleasing *)error {
   return [NSData dataWithContentsOfFile:path options:options error:error];
 }
 
@@ -102,3 +105,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

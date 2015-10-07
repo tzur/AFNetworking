@@ -152,9 +152,6 @@ it(@"should replace an object at a given index with another object", ^{
   expect(^{
     [queue replaceObjectAtIndex:2 withObject:thirdObject];
   }).to.raise(NSRangeException);
-  expect(^{
-    [queue replaceObjectAtIndex:0 withObject:nil];
-  }).to.raise(NSInvalidArgumentException);
 });
 
 it(@"should return an array containing the objects of the queue in correct order", ^{
