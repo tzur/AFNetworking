@@ -5,7 +5,7 @@
 
 #import "LTArrayBuffer.h"
 
-LTSpecBegin(LTIndicesArray)
+SpecBegin(LTIndicesArray)
 
 __block LTIndicesArray *array;
 __block id buffer;
@@ -73,4 +73,4 @@ context(@"properties", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

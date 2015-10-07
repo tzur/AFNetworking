@@ -36,7 +36,7 @@ static BOOL LTLoadIntoMat(NSString *relativePath, cv::Mat *mat) {
   return YES;
 }
 
-LTSpecBegin(LTTextureUncompressedMatArchiver)
+SpecBegin(LTTextureUncompressedMatArchiver)
 
 __block LTTextureUncompressedMatArchiver *archiver;
 __block LTTexture *texture;
@@ -292,4 +292,4 @@ context(@"removing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

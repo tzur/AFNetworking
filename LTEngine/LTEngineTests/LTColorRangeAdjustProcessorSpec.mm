@@ -21,7 +21,7 @@
 
 @end
 
-LTSpecBegin(LTColorRangeAdjustProcessor)
+SpecBegin(LTColorRangeAdjustProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -251,4 +251,4 @@ context(@"masks", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

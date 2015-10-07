@@ -11,7 +11,7 @@
 
 static const CGFloat kEpsilon = 1e-6;
 
-LTSpecBegin(LTVGLine)
+SpecBegin(LTVGLine)
 
 __block UIFont *font;
 __block CGPoint baselineOrigin;
@@ -117,4 +117,4 @@ context(@"path", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

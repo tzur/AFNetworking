@@ -4,6 +4,7 @@
 #import "LTGLTexture.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+PassthroughFsh.h"
@@ -14,7 +15,7 @@
 - (void)readRect:(CGRect)rect toImage:(cv::Mat *)image;
 @end
 
-LTSpecBegin(LTGLTexture)
+SpecBegin(LTGLTexture)
 
 static NSString * const kLTGLTextureExamples = @"LTGLTextureExamples";
 
@@ -283,4 +284,4 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
 itShouldBehaveLike(kLTGLTextureExamples, @{@"version": @(LTGLContextAPIVersion2)});
 itShouldBehaveLike(kLTGLTextureExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
-LTSpecEnd
+SpecEnd

@@ -8,6 +8,7 @@
 #import <LTEngine/LTBrushShapeDynamicsEffect.h>
 #import <LTEngine/LTDegenerateInterpolationRoutine.h>
 #import <LTEngine/LTFbo.h>
+#import <LTEngine/LTGLContext.h>
 #import <LTEngine/LTGLKitExtensions.h>
 #import <LTEngine/LTPainterPoint.h>
 #import <LTEngine/LTPainterStrokeSegment.h>

@@ -4,9 +4,10 @@
 #import "LTFboPool.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTFboPool)
+SpecBegin(LTFboPool)
 
 it(@"should initialize correctly", ^{
   expect(^{
@@ -147,4 +148,4 @@ context(@"current pool from current context", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -50,7 +50,7 @@ typedef std::pair<NSUInteger, float> LTIndexedFloat;
 
 @end
 
-LTSpecBegin(LTRecomposeProcessor)
+SpecBegin(LTRecomposeProcessor)
 
 context(@"initialization", ^{
   it(@"should not initialize if input size is smaller than mask size", ^{
@@ -226,4 +226,4 @@ context(@"properties", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

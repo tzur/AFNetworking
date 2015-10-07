@@ -22,7 +22,7 @@ static void LTPlusSignAt(cv::Mat4b image, const cv::Point &offset, const cv::Vec
   }
 }
 
-LTSpecBegin(LTQuadMixerProcessor)
+SpecBegin(LTQuadMixerProcessor)
 
 const cv::Vec4b backColor(cv::Vec4b(128, 64, 255, 255));
 const cv::Vec4b frontColor(cv::Vec4b(64, 128, 32, 255));
@@ -471,4 +471,4 @@ context(@"output size different than back size", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

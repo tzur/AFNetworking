@@ -3,7 +3,9 @@
 
 #import "LTGLView.h"
 
-LTSpecBegin(LTGLView)
+#import "LTGLContext.h"
+
+SpecBegin(LTGLView)
 
 __block LTGLContext *glContext;
 
@@ -36,4 +38,4 @@ context(@"opengl context restoration", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

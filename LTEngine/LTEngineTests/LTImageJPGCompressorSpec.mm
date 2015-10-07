@@ -13,7 +13,7 @@ static BOOL LTVerifyFormat(NSData *compressedImage) {
   return kJPEGHeader == header;
 }
 
-LTSpecBegin(LTImageJPEGCompressor)
+SpecBegin(LTImageJPEGCompressor)
 
 __block LTImageJPEGCompressor *compressor;
 __block NSError *error;
@@ -55,4 +55,4 @@ it(@"should verify that the quality option has effect", ^{
   expect(highestQualityData).notTo.equal(lowestQualityData);
 });
 
-LTSpecEnd
+SpecEnd

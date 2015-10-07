@@ -3,9 +3,10 @@
 
 #import "LTArrayBuffer.h"
 
+#import "LTGLContext.h"
 #import "LTGPUResourceExamples.h"
 
-LTSpecBegin(LTArrayBuffer)
+SpecBegin(LTArrayBuffer)
 
 static NSString * const kLTArrayBufferInitializationExamples =
     @"LTArrayBufferInitializationExamples";
@@ -303,4 +304,4 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
 itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLContextAPIVersion2)});
 itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
-LTSpecEnd
+SpecEnd

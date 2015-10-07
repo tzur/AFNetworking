@@ -7,7 +7,7 @@
 #import "LTNextIterationPlacement.h"
 #import "LTTexture.h"
 
-LTSpecBegin(LTGPUImageProcessor)
+SpecBegin(LTGPUImageProcessor)
 
 __block id drawer;
 __block id strategy;
@@ -163,4 +163,4 @@ context(@"strategy", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

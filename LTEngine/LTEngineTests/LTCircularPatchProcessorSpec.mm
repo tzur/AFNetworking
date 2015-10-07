@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTCircularPatchProcessor)
+SpecBegin(LTCircularPatchProcessor)
 
 __block LTCircularPatchProcessor *processor;
 __block LTTexture *inputTexture;
@@ -302,4 +302,4 @@ context(@"synthetic input texture", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

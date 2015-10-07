@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTColorConversionProcessor)
+SpecBegin(LTColorConversionProcessor)
 
 __block LTTexture *inputTexture;
 __block LTTexture *outputTexture;
@@ -157,4 +157,4 @@ context(@"rgb to yyyy", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

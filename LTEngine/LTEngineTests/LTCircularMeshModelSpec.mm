@@ -3,7 +3,7 @@
 
 #import "LTCircularMeshModel.h"
 
-LTSpecBegin(LTCircularMeshModel)
+SpecBegin(LTCircularMeshModel)
 
 __block LTCircularMeshModel *meshModel;
 
@@ -50,4 +50,4 @@ context(@"accessors", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

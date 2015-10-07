@@ -9,7 +9,7 @@
 #import "LTTextureDrawerExamples.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTMeshDrawer)
+SpecBegin(LTMeshDrawer)
 
 static NSString * const kFragmentWithUniformSource =
     @"uniform sampler2D sourceTexture;"
@@ -347,4 +347,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

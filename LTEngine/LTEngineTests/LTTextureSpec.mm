@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
 #import "LTTextureBasicExamples.h"
@@ -13,7 +14,7 @@
 // is probably possible only by refactoring the LTTexture abstract class to the strategy pattern:
 // http://stackoverflow.com/questions/243274/best-practice-with-unit-testing-abstract-classes
 
-LTSpecBegin(LTTexture)
+SpecBegin(LTTexture)
 
 static NSString * const kLTTextureExamples = @"LTTextureExamples";
 
@@ -152,4 +153,4 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
 itShouldBehaveLike(kLTTextureExamples, @{@"version": @(LTGLContextAPIVersion2)});
 itShouldBehaveLike(kLTTextureExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
-LTSpecEnd
+SpecEnd

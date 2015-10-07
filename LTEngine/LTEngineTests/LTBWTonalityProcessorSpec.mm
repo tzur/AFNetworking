@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTBWTonalityProcessor)
+SpecBegin(LTBWTonalityProcessor)
 
 __block LTTexture *noise;
 __block LTTexture *output;
@@ -163,4 +163,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

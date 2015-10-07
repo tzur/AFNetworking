@@ -9,7 +9,7 @@
 #import "LTBrushColorDynamicsEffect.h"
 #import "LTBrushRandomState.h"
 
-LTSpecBegin(LTBrushRandomState_LTBrush)
+SpecBegin(LTBrushRandomState_LTBrush)
 
 context(@"factory methods", ^{
   it(@"should return an instance with the correct seed", ^{
@@ -37,4 +37,4 @@ context(@"factory methods", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

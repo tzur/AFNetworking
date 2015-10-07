@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTDualMaskProcessor)
+SpecBegin(LTDualMaskProcessor)
 
 __block LTTexture *output;
 __block LTDualMaskProcessor *processor;
@@ -113,4 +113,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

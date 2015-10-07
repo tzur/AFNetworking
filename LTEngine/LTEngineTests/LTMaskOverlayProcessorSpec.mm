@@ -6,7 +6,7 @@
 #import "LTFbo.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTMaskOverlayProcessorSpec)
+SpecBegin(LTMaskOverlayProcessorSpec)
 
 context(@"processing", ^{
   __block LTMaskOverlayProcessor *processor;
@@ -68,4 +68,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

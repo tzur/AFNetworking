@@ -9,7 +9,7 @@
 #import "LTProgramFactory.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTCircularPatchDrawer)
+SpecBegin(LTCircularPatchDrawer)
 
 __block LTCircularPatchDrawer *drawer;
 __block LTTexture *inputTexture;
@@ -229,4 +229,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

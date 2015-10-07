@@ -34,7 +34,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @property (strong, nonatomic) NSMutableArray *controlPoints;
 @end
 
-LTSpecBegin(LTPainter)
+SpecBegin(LTPainter)
 
 const CGSize kCanvasSize = CGSizeMake(64, 64);
 
@@ -478,4 +478,4 @@ context(@"painting", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

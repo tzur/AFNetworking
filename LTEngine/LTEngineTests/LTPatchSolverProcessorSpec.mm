@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTPatchSolverProcessor)
+SpecBegin(LTPatchSolverProcessor)
 
 context(@"initialization", ^{
   it(@"should initialize with a half-float power of two output", ^{
@@ -112,4 +112,4 @@ context(@"processing", ^{
 
 });
 
-LTSpecEnd
+SpecEnd

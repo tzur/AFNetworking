@@ -10,7 +10,7 @@
 #import "LTVGLine.h"
 #import "LTVGLines.h"
 
-LTSpecBegin(LTVGTypesetter)
+SpecBegin(LTVGTypesetter)
 
 __block NSAttributedString *attributedString;
 __block LTVGLines *lines;
@@ -100,4 +100,4 @@ context(@"path", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

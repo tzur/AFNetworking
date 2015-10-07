@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTAspectFillResizeProcessor)
+SpecBegin(LTAspectFillResizeProcessor)
 
 it(@"should aspect fit image correctly", ^{
   cv::Mat image(LTLoadMat([self class], @"Flower.png"));
@@ -25,4 +25,4 @@ it(@"should aspect fit image correctly", ^{
   expect($([outputTexture image])).to.equalMat($(expected));
 });
 
-LTSpecEnd
+SpecEnd

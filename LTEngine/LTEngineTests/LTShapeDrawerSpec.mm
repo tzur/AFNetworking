@@ -5,6 +5,7 @@
 
 #import "LTCommonDrawableShape.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 #import "LTShapeDrawerEllipticShape.h"
@@ -19,16 +20,12 @@
 SpecBegin(LTShapeDrawer)
 
 beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-  
   // Make sure that everything is properly drawn when face culling is enabled.
-  context.faceCullingEnabled = YES;
+  [LTGLContext currentContext].faceCullingEnabled = YES;
 });
 
 afterEach(^{
   [LTCommonDrawableShape clearPrograms];
-  [LTGLContext setCurrentContext:nil];
 });
 
 __block LTShapeDrawer *drawer;

@@ -4,6 +4,7 @@
 #import "LTGridDrawer.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
@@ -28,7 +29,7 @@ static void LTBlendBorder(cv::Mat4b mat, const cv::Vec4b &baseColor, const cv::V
   }
 }
 
-LTSpecBegin(LTGridDrawerSpec)
+SpecBegin(LTGridDrawerSpec)
 
 beforeEach(^{
   LTGLContext *context = [LTGLContext currentContext];
@@ -226,4 +227,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

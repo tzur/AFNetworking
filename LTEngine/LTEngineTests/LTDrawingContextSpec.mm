@@ -5,6 +5,7 @@
 
 #import "LTArrayBuffer.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTIndicesArray.h"
 #import "LTProgram.h"
@@ -12,7 +13,7 @@
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
 #import "LTVertexArray.h"
 
-LTSpecBegin(LTDrawingContext)
+SpecBegin(LTDrawingContext)
 
 static NSString * const kLTDrawingContextExamples = @"LTDrawingContextExamples";
 
@@ -287,4 +288,4 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
 itShouldBehaveLike(kLTDrawingContextExamples, @{@"version": @(LTGLContextAPIVersion2)});
 itShouldBehaveLike(kLTDrawingContextExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
-LTSpecEnd
+SpecEnd

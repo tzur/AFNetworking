@@ -11,7 +11,7 @@
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTEdgeAvoidingMultiTextureBrush)
+SpecBegin(LTEdgeAvoidingMultiTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTEdgeAvoidingMultiTextureBrush class]});
 
@@ -198,4 +198,4 @@ context(@"edge avoiding drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

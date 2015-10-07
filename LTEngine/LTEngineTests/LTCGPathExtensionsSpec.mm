@@ -59,7 +59,7 @@ static void LTCheckCorrectnessOfPath(void *data, const CGPathElement *element) {
   }
 }
 
-LTSpecBegin(LTCGPathExtensions)
+SpecBegin(LTCGPathExtensions)
 
 __block CGMutablePathRef path;
 __block CGPoints initialPoints;
@@ -724,4 +724,4 @@ context(@"creation", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

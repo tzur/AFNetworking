@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTBasicOilPaintingProcessor)
+SpecBegin(LTBasicOilPaintingProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -82,4 +82,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

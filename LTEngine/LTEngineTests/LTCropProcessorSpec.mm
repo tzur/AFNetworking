@@ -27,7 +27,7 @@ static cv::Mat LTRotateClockwise(cv::Mat input, NSInteger rotations) {
   return output;
 }
 
-LTSpecBegin(LTCropProcessor)
+SpecBegin(LTCropProcessor)
 
 __block LTCropProcessor *processor;
 __block LTTexture *inputTexture;
@@ -342,4 +342,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

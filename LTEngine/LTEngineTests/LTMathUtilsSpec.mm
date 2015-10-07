@@ -3,7 +3,7 @@
 
 #import "LTMathUtils.h"
 
-LTSpecBegin(LTMathUtils)
+SpecBegin(LTMathUtils)
 
 context(@"power of two", ^{
   it(@"should return yes for power of two size", ^{
@@ -126,4 +126,4 @@ context(@"half gaussian", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

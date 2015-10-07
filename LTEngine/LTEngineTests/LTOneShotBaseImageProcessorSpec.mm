@@ -12,7 +12,7 @@
 #import "LTTextureDrawer.h"
 #import "LTRectDrawer.h"
 
-LTSpecBegin(LTOneShotBaseImageProcessor)
+SpecBegin(LTOneShotBaseImageProcessor)
 
 __block LTOneShotBaseImageProcessor *processor;
 __block LTTexture *input;
@@ -180,4 +180,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

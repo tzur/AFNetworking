@@ -6,7 +6,7 @@
 #import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
 
-LTSpecBegin(LTMultiscaleNoiseProcessor)
+SpecBegin(LTMultiscaleNoiseProcessor)
 
 __block LTTexture *output;
 
@@ -46,4 +46,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

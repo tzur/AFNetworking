@@ -8,7 +8,7 @@
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
 
-LTSpecBegin(LTFbo)
+SpecBegin(LTFbo)
 
 __block id glContext;
 
@@ -196,4 +196,4 @@ context(@"binding", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -7,7 +7,7 @@
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTPatchProcessor)
+SpecBegin(LTPatchProcessor)
 
 const CGSizes kWorkingSizes{CGSizeMake(64, 64)};
 
@@ -239,4 +239,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

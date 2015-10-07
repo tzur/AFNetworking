@@ -11,7 +11,7 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTBasicProgramFactory)
+SpecBegin(LTBasicProgramFactory)
 
 it(@"should generate program", ^{
   LTBasicProgramFactory *factory = [[LTBasicProgramFactory alloc] init];
@@ -22,7 +22,7 @@ it(@"should generate program", ^{
   }).toNot.raiseAny();
 });
 
-LTSpecEnd
+SpecEnd
 
 @interface LTNoColorInputVariableImageProcessor : LTOneShotImageProcessor
 @end
@@ -46,7 +46,7 @@ LTSpecEnd
 
 @end
 
-LTSpecBegin(LTVerifierProgramFactory)
+SpecBegin(LTVerifierProgramFactory)
 
 it(@"should raise if uniform doesn't exist", ^{
   NSSet *uniforms = [NSSet setWithArray:@[@"_foo"]];
@@ -68,9 +68,9 @@ it(@"should not raise if uniform exists", ^{
   }).toNot.raiseAny();
 });
 
-LTSpecEnd
+SpecEnd
 
-LTSpecBegin(LTMaskableProgramFactory)
+SpecBegin(LTMaskableProgramFactory)
 
 context(@"construction", ^{
   it(@"should generate compilable program with no input color variable", ^{
@@ -209,4 +209,4 @@ context(@"mixing with color input variable", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

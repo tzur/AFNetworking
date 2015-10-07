@@ -48,7 +48,7 @@ static NSInteger LTRandomSign(LTRandom *random) {
   return [random randomIntegerBetweenMin:0 max:1] ?: -1;
 }
 
-LTSpecBegin(LTGeometry)
+SpecBegin(LTGeometry)
 
 static const CGFloat kEpsilon = 1e-6;
 static const CGFloat kNumberOfEdgePointTests = 1000;
@@ -613,4 +613,4 @@ context(@"relationship point and line/edge", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

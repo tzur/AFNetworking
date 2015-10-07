@@ -21,7 +21,7 @@ LTTexture *LTConvertToY(LTTexture *input) {
   return luminance;
 }
 
-LTSpecBegin(LTEAWProcessor)
+SpecBegin(LTEAWProcessor)
 
 context(@"single channel", ^{
   __block LTEAWProcessor *processor;
@@ -114,4 +114,4 @@ context(@"multiple channels", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

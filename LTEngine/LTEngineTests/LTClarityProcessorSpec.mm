@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTClarityProcessor)
+SpecBegin(LTClarityProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -172,4 +172,4 @@ context(@"real world rendering", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -3,7 +3,7 @@
 
 #import "LTMatParallelDispatcher.h"
 
-LTSpecBegin(LTMatParallelDispatcher)
+SpecBegin(LTMatParallelDispatcher)
 
 context(@"initialization", ^{
   it(@"should initialize with given max number of shards", ^{
@@ -245,4 +245,4 @@ context(@"small input", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

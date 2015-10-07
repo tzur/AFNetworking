@@ -7,7 +7,7 @@
 
 using half_float::half;
 
-LTSpecBegin(LTMaskedArithmeticProcessor)
+SpecBegin(LTMaskedArithmeticProcessor)
 
 context(@"initialization", ^{
   it(@"should raise when initializing with different sized operands", ^{
@@ -72,4 +72,4 @@ it(@"should produce correct result", ^{
   expect($(output.image)).to.beCloseToMat($(expected));
 });
 
-LTSpecEnd
+SpecEnd
