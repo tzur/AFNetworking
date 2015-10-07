@@ -11,17 +11,20 @@
 #import "LTProgramFactory.h"
 #import "LTQuad.h"
 #import "LTQuadDrawer.h"
+#import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
-#import "LTShaderStorage+LTQuadCopyFsh.h"
 #import "LTTexture.h"
 
 @implementation LTQuadCopyProcessor
 
-- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
 
+- (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTProgram *program =
       [[[self class] programFactory] programWithVertexSource:[LTPassthroughShaderVsh source]
-                                              fragmentSource:[LTQuadCopyFsh source]];
+                                              fragmentSource:[LTPassthroughShaderFsh source]];
   LTQuadDrawer *drawer = [[LTQuadDrawer alloc] initWithProgram:program sourceTexture:input];
   if (self = [super initWithDrawer:drawer sourceTexture:input auxiliaryTextures:nil
                          andOutput:output]) {
@@ -33,8 +36,11 @@
 - (void)setDefaultValues {
   self.inputQuad = [LTQuad quadFromRect:CGRectFromSize(self.inputTexture.size)];
   self.outputQuad = [LTQuad quadFromRect:CGRectFromSize(self.outputTexture.size)];
-  self[[LTQuadCopyFsh useAlphaValues]] = @NO;
 }
+
+#pragma mark -
+#pragma mark LTGPUImageProcessor
+#pragma mark -
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
   [((LTQuadDrawer *)self.drawer) drawQuad:self.outputQuad inFramebuffer:placement.targetFbo
@@ -42,12 +48,26 @@
 }
 
 #pragma mark -
-#pragma mark Properties
+#pragma mark Screen processing
 #pragma mark -
 
-- (void)setUseAlphaValues:(BOOL)useAlphaValues {
-  _useAlphaValues = useAlphaValues;
-  self[[LTQuadCopyFsh useAlphaValues]] = @(useAlphaValues);
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self preprocess];
+
+  LTQuad *targetQuad = [self targetQuadFromQuad:self.outputQuad scaleFactor:size / rect.size
+                                    translation:-1 * rect.origin];
+  [((LTQuadDrawer *)self.drawer) drawQuad:targetQuad inFramebufferWithSize:size
+                                 fromQuad:self.inputQuad];
+}
+
+- (LTQuad *)targetQuadFromQuad:(LTQuad *)quad scaleFactor:(CGSize)scaleFactor
+                   translation:(CGPoint)translation {
+  LTQuadCorners corners = quad.corners;
+  std::transform(corners.begin(), corners.end(), corners.begin(),
+                 [translation, scaleFactor](CGPoint corner) {
+    return (corner + translation) * scaleFactor;
+  });
+  return [[LTQuad alloc] initWithCorners:corners];
 }
 
 @end
