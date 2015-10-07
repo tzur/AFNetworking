@@ -6,8 +6,7 @@
 @class LTQuad;
 
 /// Processor for copying an input texture to a quad in an output texture. An implicit interpolation
-/// will be triggered on the GPU depending on the min and mag filters of the input texture. It can
-/// be specified whether alpha values of the input texture are taken into account.
+/// will be triggered on the GPU depending on the min and mag filters of the input texture.
 @interface LTQuadCopyProcessor : LTOneShotImageProcessor
 
 /// Initializes with an input and output texture.
@@ -21,10 +20,5 @@
 /// coordinate system. The default value is an axis aligned (0, 0, output.width, output.height)
 /// rect.
 @property (strong, nonatomic) LTQuad *outputQuad;
-
-/// Should be set to \c YES if the input texture should be copied onto the output texture using
-/// src-over composition (http://www.w3.org/TR/SVGCompositing/). This is useful if the output
-/// texture already contains content.
-@property (nonatomic) BOOL useAlphaValues;
 
 @end

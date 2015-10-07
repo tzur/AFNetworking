@@ -3,6 +3,7 @@
 
 #import "LTQuadCopyProcessor.h"
 
+#import "LTFbo.h"
 #import "LTQuad.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
@@ -90,41 +91,71 @@ context(@"processing", ^{
     });
   });
 
-  context(@"alpha values", ^{
+  context(@"screen processing", ^{
+    __block LTTexture *framebufferTexture;
+    __block LTFbo *fbo;
+    __block CGRect outputRect;
+
     beforeEach(^{
-      image.create(16, 16);
-      image(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 255, 255, 255);
-      image(cv::Rect(0, 0, 1, 1)) = cv::Vec4b(0, 0, 0, 0);
-
-      input = [LTTexture textureWithImage:image];
-      input.magFilterInterpolation = LTTextureInterpolationNearest;
-
-      image = cv::Mat4b::zeros(16, 16);
-      image(cv::Rect(0, 0, 1, 1)) = cv::Vec4b(255, 0, 0, 255);
-      output = [LTTexture textureWithImage:image];
-      processor = [[LTQuadCopyProcessor alloc] initWithInput:input output:output];
+      framebufferTexture = [LTTexture byteRGBATextureWithSize:output.size / 2];
+      [framebufferTexture clearWithColor:LTVector4Zero];
+      fbo = [[LTFbo alloc] initWithTexture:framebufferTexture];
+      outputRect = CGRectCenteredAt(CGPointFromSize(output.size / 2 + CGSizeMakeUniform(1)),
+                                    output.size / 4);
     });
 
-    it(@"should copy the texture without considering alpha values", ^{
-      expect(processor.useAlphaValues).to.beFalsy();
-      [processor process];
-
-      cv::Mat4b expected(cv::Mat4b::zeros(16, 16));
-      expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 255, 255, 255);
-      expected(cv::Rect(0, 0, 1, 1)) = cv::Vec4b(0, 0, 0, 0);
-
-      expect($([output image])).to.equalMat($(expected));
+    afterEach(^{
+      framebufferTexture = nil;
+      fbo = nil;
     });
 
-    it(@"should copy the texture considering alpha values", ^{
-      processor.useAlphaValues = YES;
-      [processor process];
+    it(@"should copy non-rotated rect to non-rotated rect", ^{
+      processor.inputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+      processor.outputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 16, 16)];
+
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:outputRect];
+      }];
 
       cv::Mat4b expected(cv::Mat4b::zeros(16, 16));
-      expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(255, 255, 255, 255);
-      expected(cv::Rect(0, 0, 1, 1)) = cv::Vec4b(255, 0, 0, 255);
+      expected(cv::Rect(0, 0, 6, 6)) = cv::Vec4b(255, 0, 0, 255);
 
-      expect($([output image])).to.equalMat($(expected));
+      expect($([framebufferTexture image])).to.equalMat($(expected));
+    });
+
+    it(@"should copy rotated rect to non-rotated rect", ^{
+      processor.inputQuad =
+          [LTQuad quadFromRotatedRect:[LTRotatedRect rect:CGRectMake(0, 0, 16, 16) withAngle:M_PI]];
+      processor.outputQuad =
+          [LTQuad quadFromRotatedRect:[LTRotatedRect rect:CGRectMake(0, 0, 16, 16)]];
+
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:outputRect];
+      }];
+
+      cv::Mat4b expected(cv::Mat4b::zeros(16, 16));
+      expected(cv::Rect(0, 0, 6, 6)) = cv::Vec4b(255, 0, 0, 255);
+
+      expect($([framebufferTexture image])).to.equalMat($(expected));
+    });
+
+    it(@"should copy rect to quad", ^{
+      processor.inputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+
+      LTQuadCorners corners{{CGPointMake(0, 0), CGPointMake(32, -1), CGPointMake(32, 0),
+        CGPointMake(0, 32)}};
+      processor.outputQuad = [[LTQuad alloc] initWithCorners:corners];
+
+      [fbo bindAndDraw:^{
+        [processor processToFramebufferWithSize:fbo.size outputRect:outputRect];
+      }];
+
+      cv::Mat4b expected(cv::Mat4b::zeros(16, 16));
+      for (NSUInteger i = 0; i < 11; i++) {
+        expected(cv::Rect(0, 0, (int)(11 - i), (int)(i + 1))) = cv::Vec4b(255, 0, 0, 255);
+      }
+
+      expect($([framebufferTexture image])).to.equalMat($(expected));
     });
   });
 });
