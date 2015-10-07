@@ -717,6 +717,9 @@
 		8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E141182A773300FDD95A /* LTShaderSpec.mm */; };
 		8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3E143182A848300FDD95A /* LTProgramSpec.mm */; };
 		8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */; };
+		8BA468981BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA468971BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm */; settings = {ASSET_TAGS = (); }; };
+		8BA468B31BC517D700AAEC82 /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA468B21BC517D700AAEC82 /* LTSpectaObjectionHook.mm */; settings = {ASSET_TAGS = (); }; };
+		8BA468B61BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA468B51BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.mm */; settings = {ASSET_TAGS = (); }; };
 		8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */; };
 		8BA82040197E55C800FBE68E /* RectRotated.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203E197E55C800FBE68E /* RectRotated.jpg */; };
 		8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BA8203F197E55C800FBE68E /* RectUp.jpg */; };
@@ -1840,6 +1843,12 @@
 		8BA3E143182A848300FDD95A /* LTProgramSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramSpec.mm; sourceTree = "<group>"; };
 		8BA4552A18329FBB00E1EEE2 /* LTGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLTexture.h; sourceTree = "<group>"; };
 		8BA4552B18329FBB00E1EEE2 /* LTGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTexture.mm; sourceTree = "<group>"; };
+		8BA468961BC517B500AAEC82 /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
+		8BA468971BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
+		8BA468B11BC517D700AAEC82 /* LTSpectaObjectionHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSpectaObjectionHook.h; sourceTree = "<group>"; };
+		8BA468B21BC517D700AAEC82 /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
+		8BA468B41BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSpectaKeyWindowViewHook.h; sourceTree = "<group>"; };
+		8BA468B51BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSpectaKeyWindowViewHook.mm; sourceTree = "<group>"; };
 		8BA5D74C199378850093A4FD /* LTScreenProcessing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTScreenProcessing.h; sourceTree = "<group>"; };
 		8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenCVExtensions.h; sourceTree = "<group>"; };
 		8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensions.mm; sourceTree = "<group>"; };
@@ -3698,6 +3707,12 @@
 				8BAE3A3E18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm */,
 				8BFA8F6A191A244C0088310E /* Specta+LTKit.h */,
 				8B43CEA519C84CEA0032BA09 /* Specta+LTKit.mm */,
+				8BA468B41BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.h */,
+				8BA468B51BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.mm */,
+				8BA468B11BC517D700AAEC82 /* LTSpectaObjectionHook.h */,
+				8BA468B21BC517D700AAEC82 /* LTSpectaObjectionHook.mm */,
+				8BA468961BC517B500AAEC82 /* LTSpectaOpenGLContextHook.h */,
+				8BA468971BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -4887,6 +4902,7 @@
 				28E8AF141997B5FB00C2DD22 /* LTCropDrawerSpec.mm in Sources */,
 				28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */,
 				500AB3E719D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
+				8BA468B61BC517FE00AAEC82 /* LTSpectaKeyWindowViewHook.mm in Sources */,
 				8BABFD71188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm in Sources */,
 				280B3D9418BDE45300849006 /* LTDegenerateInterpolationRoutineSpec.mm in Sources */,
 				8B3F94A6187AEA0200FAA265 /* Adder.fsh in Sources */,
@@ -4964,6 +4980,7 @@
 				8BD688FB1B6E00FA003BDA34 /* LTTextureIZArchiverSpec.mm in Sources */,
 				2812D56619912B380081478F /* LTCropProcessorSpec.mm in Sources */,
 				8B38318F1B551E1400620560 /* LTIZFastMathSpec.mm in Sources */,
+				8BA468B31BC517D700AAEC82 /* LTSpectaObjectionHook.mm in Sources */,
 				8BC465C318995DB80094F7BC /* LTGPUBlockSpec.mm in Sources */,
 				8B43CEA619C84CEA0032BA09 /* Specta+LTKit.mm in Sources */,
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
@@ -4987,6 +5004,7 @@
 				03D516B518B3A6DB0026B56A /* LTProceduralVignettingSpec.mm in Sources */,
 				03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */,
 				03C192A918F5117E00DC6CA6 /* LTDualMaskProcessorSpec.mm in Sources */,
+				8BA468981BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				2899E3101937300000281CBB /* LTPainterImageProcessorSpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
