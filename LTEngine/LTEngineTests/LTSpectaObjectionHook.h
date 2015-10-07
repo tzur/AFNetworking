@@ -23,6 +23,9 @@ id LTBindObjectToClass(id object, Class objectClass);
 /// Sets the current injector to bind the given block to the given class name.
 void LTBindBlockToClass(JSObjectionBindBlock block, Class objectClass);
 
+/// Specta hook which sets a default injector with an on-the-fly configurable module. This allows
+/// binding to classes, protocols and concrete instances in a specific spec. The hook switches the
+/// default injector prior to the spec after the spec ends.
 @interface LTSpectaObjectionHook : NSObject <SPTGlobalBeforeAfterEach>
 @end
 
