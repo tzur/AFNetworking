@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTIterativeProcessingStrategy)
+SpecBegin(LTIterativeProcessingStrategy)
 
 __block LTTexture *input;
 __block LTTexture *outputA;
@@ -139,4 +139,4 @@ context(@"iterations", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

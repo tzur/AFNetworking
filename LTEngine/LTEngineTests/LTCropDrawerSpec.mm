@@ -7,7 +7,7 @@
 #import "LTGLKitExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTCropDrawer)
+SpecBegin(LTCropDrawer)
 
 __block LTCropDrawer *drawer;
 __block LTTexture *inputTexture;
@@ -270,4 +270,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

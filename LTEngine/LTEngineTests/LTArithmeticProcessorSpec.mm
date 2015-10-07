@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTArithmeticProcessor)
+SpecBegin(LTArithmeticProcessor)
 
 __block LTTexture *first;
 __block LTTexture *second;
@@ -95,4 +95,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

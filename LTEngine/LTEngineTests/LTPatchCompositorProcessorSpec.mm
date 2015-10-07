@@ -6,7 +6,7 @@
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTPatchCompositorProcessor)
+SpecBegin(LTPatchCompositorProcessor)
 
 context(@"initialization", ^{
   __block LTTexture *source;
@@ -106,4 +106,4 @@ it(@"should composite correctly", ^{
   expect($([output image])).to.beCloseToMat($(expected));
 });
 
-LTSpecEnd
+SpecEnd

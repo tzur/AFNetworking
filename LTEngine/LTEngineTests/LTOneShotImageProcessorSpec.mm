@@ -10,7 +10,7 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTOneShotImageProcessor)
+SpecBegin(LTOneShotImageProcessor)
 
 __block LTOneShotImageProcessor *processor;
 __block LTTexture *input;
@@ -65,4 +65,4 @@ context(@"intialization", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

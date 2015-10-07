@@ -4,6 +4,7 @@
 #import "LTView.h"
 
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTGridDrawer.h"
 #import "LTImage.h"
@@ -27,7 +28,7 @@
 @property (nonatomic) CGSize size;
 @end
 
-LTSpecBegin(LTView)
+SpecBegin(LTView)
 
 __block id uiScreen;
 
@@ -1008,4 +1009,4 @@ context(@"framebuffer delegate", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -6,7 +6,7 @@
 #import "LTColorGradient.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTHistogramProcessor)
+SpecBegin(LTHistogramProcessor)
 
 __block LTTexture *inputTexture;
 __block LTHistogramProcessor *processor;
@@ -95,4 +95,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

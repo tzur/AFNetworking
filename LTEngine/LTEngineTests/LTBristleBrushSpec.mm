@@ -15,7 +15,7 @@
 @property (readonly, nonatomic) LTTexture *texture;
 @end
 
-LTSpecBegin(LTBristleBrush)
+SpecBegin(LTBristleBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBristleBrush class]});
 
@@ -203,4 +203,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTVGTypeSetter.h"
 
-LTSpecBegin(LTVGGlyph)
+SpecBegin(LTVGGlyph)
 
 __block UIFont *font;
 __block CGPoint baselineOrigin;
@@ -105,4 +105,4 @@ context(@"path", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

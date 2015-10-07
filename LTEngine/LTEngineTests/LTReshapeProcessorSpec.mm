@@ -9,7 +9,7 @@
 #import "LTShaderStorage+passthroughFsh.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTReshapeProcessor)
+SpecBegin(LTReshapeProcessor)
 
 static NSString * const kFragmentRedFilter =
     @"uniform sampler2D sourceTexture;"
@@ -305,4 +305,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

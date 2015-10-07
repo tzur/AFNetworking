@@ -10,7 +10,7 @@
 #import "LTImage.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTTextureJpegArchiver)
+SpecBegin(LTTextureJpegArchiver)
 
 __block LTTextureJpegArchiver *archiver;
 __block LTTexture *texture;
@@ -228,4 +228,4 @@ context(@"removing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

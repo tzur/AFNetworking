@@ -3,7 +3,7 @@
 
 #import "LTSlidingWindowFilter.h"
 
-LTSpecBegin(LTSlidingWindowFilter)
+SpecBegin(LTSlidingWindowFilter)
 
 __block LTSlidingWindowFilter *filter;
 
@@ -79,4 +79,4 @@ context(@"filtering", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

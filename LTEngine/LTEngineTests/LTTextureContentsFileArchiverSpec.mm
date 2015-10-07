@@ -9,7 +9,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTTextureContentsFileArchiver)
+SpecBegin(LTTextureContentsFileArchiver)
 
 __block LTTexture *texture;
 
@@ -147,4 +147,4 @@ context(@"coding", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

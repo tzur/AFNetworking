@@ -31,12 +31,6 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
   
   beforeEach(^{
     brushClass = data[kLTBrushClass];
-    LTGLContext *context = [[LTGLContext alloc] init];
-    [LTGLContext setCurrentContext:context];
-  });
-  
-  afterEach(^{
-    [LTGLContext setCurrentContext:nil];
   });
   
   context(@"initialization", ^{
@@ -285,20 +279,11 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
 
 SharedExamplesEnd
 
-LTSpecBegin(LTBrush)
+SpecBegin(LTBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
 
 itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBrush class]});
-
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
 
 context(@"properties", ^{
   __block LTBrush *brush;
@@ -700,4 +685,4 @@ context(@"drawing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

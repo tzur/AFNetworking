@@ -8,7 +8,7 @@
 
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTSingleTextureBrush)
+SpecBegin(LTSingleTextureBrush)
 
 itShouldBehaveLike(kLTBrushExamples, @{kLTBrushClass: [LTSingleTextureBrush class]});
 
@@ -65,4 +65,4 @@ context(@"properties", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

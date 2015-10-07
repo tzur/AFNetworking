@@ -36,7 +36,7 @@ static NSDictionary *LTGetMetadata(NSData *compressedImage) {
   return CFBridgingRelease(properties);
 }
 
-LTSpecBegin(LTImageIOCompressor)
+SpecBegin(LTImageIOCompressor)
 
 __block LTImageIOCompressor *compressor;
 __block NSError *error;
@@ -155,4 +155,4 @@ it(@"should create valid data from non-contiguous texture", ^{
   expect(error).to.beNil();
 });
 
-LTSpecEnd
+SpecEnd

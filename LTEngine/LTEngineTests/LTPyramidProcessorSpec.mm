@@ -24,7 +24,7 @@ void LTGridMake(CGSize size, cv::Mat4b *grid, cv::Mat4b *downsampled) {
   }
 }
 
-LTSpecBegin(LTPyramidProcessor)
+SpecBegin(LTPyramidProcessor)
 
 static NSString * const kSubsamplingExamples = @"subsample image correctly using nearest neighbour";
 
@@ -111,4 +111,4 @@ context(@"small inputs", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

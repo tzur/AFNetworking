@@ -13,7 +13,7 @@ static NSArray *LTArrayFromFloats(const Floats &floats) {
   return array;
 }
 
-LTSpecBegin(LTInverseTransformSampler)
+SpecBegin(LTInverseTransformSampler)
 
 __block LTRandom *random;
 
@@ -101,4 +101,4 @@ context(@"factory", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

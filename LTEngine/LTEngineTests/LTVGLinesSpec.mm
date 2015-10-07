@@ -10,7 +10,7 @@
 #import "LTVGLine.h"
 #import "LTVGTypesetter.h"
 
-LTSpecBegin(LTVGLines)
+SpecBegin(LTVGLines)
 
 __block NSArray *linesArray;
 __block LTVGLines *lines;
@@ -211,4 +211,4 @@ context(@"glyph modification", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

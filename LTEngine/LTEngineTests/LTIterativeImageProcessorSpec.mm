@@ -29,7 +29,7 @@ typedef void (^LTIterativeImageProcessorStubCallback)(NSUInteger iteration);
 
 @end
 
-LTSpecBegin(LTIterativeImageProcessor)
+SpecBegin(LTIterativeImageProcessor)
 
 __block LTTexture *input;
 __block LTTexture *auxInput;
@@ -324,4 +324,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

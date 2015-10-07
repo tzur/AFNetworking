@@ -10,7 +10,7 @@
 #import "LTRotatedRect.h"
 #import "UIColor+Vector.h"
 
-LTSpecBegin(LTBrushColorDynamicsEffect)
+SpecBegin(LTBrushColorDynamicsEffect)
 
 itShouldBehaveLike(kLTBrushEffectSubclassExamples,
                    @{kLTBrushEffectClass: [LTBrushColorDynamicsEffect class]});
@@ -290,4 +290,4 @@ context(@"effect", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

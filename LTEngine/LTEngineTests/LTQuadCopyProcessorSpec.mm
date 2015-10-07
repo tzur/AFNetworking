@@ -7,7 +7,7 @@
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTQuadCopyProcessor)
+SpecBegin(LTQuadCopyProcessor)
 
 __block cv::Mat4b image;
 __block LTTexture *input;
@@ -129,4 +129,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

@@ -8,7 +8,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTAnalogFilmProcessor)
+SpecBegin(LTAnalogFilmProcessor)
 
 __block LTTexture *inputTexture;
 __block LTTexture *outputTexture;
@@ -318,4 +318,4 @@ context(@"integration tests", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

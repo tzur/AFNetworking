@@ -14,7 +14,7 @@ static BOOL LTVerifyFormat(NSData *compressedImage) {
   return kTIFFIIHeader == header || kTIFFMMHeader == header;
 }
 
-LTSpecBegin(LTImageTIFFCompressor)
+SpecBegin(LTImageTIFFCompressor)
 
 __block LTImageTIFFCompressor *compressor;
 __block NSError *error;
@@ -35,4 +35,4 @@ it(@"should create tiff format data", ^{
   expect(error).to.beNil();
 });
 
-LTSpecEnd
+SpecEnd

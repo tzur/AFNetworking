@@ -4,6 +4,7 @@
 #import "LTVertexArray.h"
 
 #import "LTArrayBuffer.h"
+#import "LTGLContext.h"
 #import "LTGPUResourceExamples.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
@@ -135,7 +136,7 @@ context(@"initialization", ^{
 
 SpecEnd
 
-LTSpecBegin(LTVertexArray)
+SpecBegin(LTVertexArray)
 
 static NSString * const kLTVertexArrayExamples = @"LTVertexArrayExamples";
 
@@ -425,4 +426,4 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
 itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLContextAPIVersion2)});
 itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLContextAPIVersion3)});
 
-LTSpecEnd
+SpecEnd

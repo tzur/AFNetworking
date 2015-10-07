@@ -9,7 +9,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTBWProcessor)
+SpecBegin(LTBWProcessor)
 
 __block LTTexture *inputTexture;
 __block LTTexture *outputTexture;
@@ -252,4 +252,4 @@ context(@"integration tests", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

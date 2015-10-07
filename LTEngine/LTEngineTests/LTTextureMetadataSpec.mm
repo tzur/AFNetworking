@@ -6,7 +6,7 @@
 #import "LTJSONSerializationAdapter.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTTextureMetadata)
+SpecBegin(LTTextureMetadata)
 
 __block LTTextureMetadata *metadata;
 
@@ -138,4 +138,4 @@ context(@"create texture with metadata", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

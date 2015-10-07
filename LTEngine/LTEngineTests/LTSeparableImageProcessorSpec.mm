@@ -12,15 +12,6 @@
 
 SpecBegin(LTSeprableImageProcessor)
 
-beforeEach(^{
-  LTGLContext *context = [[LTGLContext alloc] init];
-  [LTGLContext setCurrentContext:context];
-});
-
-afterEach(^{
-  [LTGLContext setCurrentContext:nil];
-});
-
 __block LTGLTexture *source;
 __block LTGLTexture *output0;
 __block LTGLTexture *output1;

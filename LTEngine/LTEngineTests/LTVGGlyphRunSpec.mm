@@ -9,7 +9,7 @@
 #import "LTVGGlyphRun.h"
 #import "LTVGTypesetter.h"
 
-LTSpecBegin(LTVGGlyphRun)
+SpecBegin(LTVGGlyphRun)
 
 __block UIFont *font;
 __block CGPoint baselineOrigin;
@@ -121,4 +121,4 @@ context(@"path", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

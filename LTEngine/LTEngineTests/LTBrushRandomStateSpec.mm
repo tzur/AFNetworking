@@ -9,7 +9,7 @@
 #import "LTBrushShapeDynamicsEffect.h"
 #import "LTBrushRandomState.h"
 
-LTSpecBegin(LTBrushRandomState)
+SpecBegin(LTBrushRandomState)
 
 __block LTBrushRandomState *randomState;
 __block id niceBrushRandomStateMock;
@@ -73,4 +73,4 @@ context(@"initialization", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

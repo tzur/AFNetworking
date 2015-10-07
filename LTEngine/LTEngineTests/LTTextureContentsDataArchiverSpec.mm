@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTTextureContentsDataArchiver)
+SpecBegin(LTTextureContentsDataArchiver)
 
 __block LTTexture *texture;
 __block cv::Mat4b image;
@@ -38,4 +38,4 @@ it(@"should store and restore texture from data", ^{
   expect($([texture image])).to.equalMat($(image));
 });
 
-LTSpecEnd
+SpecEnd

@@ -14,7 +14,7 @@
 @property (strong, nonatomic) LTPainter *painter;
 @end
 
-LTSpecBegin(LTPainterImageProcessor)
+SpecBegin(LTPainterImageProcessor)
 
 __block id strategy;
 __block LTPainterImageProcessor *processor;
@@ -137,4 +137,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

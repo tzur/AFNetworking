@@ -8,7 +8,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTProceduralVignetting)
+SpecBegin(LTProceduralVignetting)
 
 __block LTTexture *noise;
 __block LTTexture *output;
@@ -109,4 +109,4 @@ context(@"processing", ^{
   pending(@"should test tiled noise when implemented");
 });
 
-LTSpecEnd
+SpecEnd

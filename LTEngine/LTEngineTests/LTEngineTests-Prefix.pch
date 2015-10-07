@@ -30,4 +30,8 @@ extern "C" {
 
   #import "LTEasyBoxing+OpenCVExtensions.h"
   #import "Specta+LTKit.h"
+
+  #import "LTSpectaKeyWindowViewHook.h"
+  #import "LTSpectaObjectionHook.h"
+  #import "LTSpectaOpenGLContextHook.h"
 #endif

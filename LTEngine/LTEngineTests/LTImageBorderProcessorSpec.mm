@@ -7,7 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTImageBorderProcessor)
+SpecBegin(LTImageBorderProcessor)
 
 __block LTTexture *inputTexture;
 __block LTTexture *outputTexture;
@@ -403,4 +403,4 @@ context(@"processing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

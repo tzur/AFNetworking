@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTSmoothPyramidProcessor)
+SpecBegin(LTSmoothPyramidProcessor)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -51,4 +51,4 @@ context(@"properties", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

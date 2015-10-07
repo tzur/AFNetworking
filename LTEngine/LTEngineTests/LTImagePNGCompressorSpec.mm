@@ -13,7 +13,7 @@ static BOOL LTVerifyFormat(NSData *compressedImage) {
   return kPNGHeader == header;
 }
 
-LTSpecBegin(LTImagePNGCompressor)
+SpecBegin(LTImagePNGCompressor)
 
 __block LTImagePNGCompressor *compressor;
 __block NSError *error;
@@ -34,4 +34,4 @@ it(@"should create png format data", ^{
   expect(error).to.beNil();
 });
 
-LTSpecEnd
+SpecEnd

@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTImage_Texture)
+SpecBegin(LTImage_Texture)
 
 it(@"should create texture from RGBA image", ^{
   UIImage *image = LTLoadImage([self class], @"RectUp.jpg");
@@ -57,4 +57,4 @@ it(@"should not load image to inavlid texture size", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
-LTSpecEnd
+SpecEnd

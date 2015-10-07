@@ -106,7 +106,7 @@
 
 @end
 
-LTSpecBegin(LTTextureIZArchiver)
+SpecBegin(LTTextureIZArchiver)
 
 static NSString * const kPath = @"archive.iz";
 
@@ -332,4 +332,4 @@ context(@"removing", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

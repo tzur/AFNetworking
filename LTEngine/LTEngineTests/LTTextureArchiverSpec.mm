@@ -49,7 +49,7 @@ static BOOL LTLinkExists(NSString *relativePath) {
 
 @end
 
-LTSpecBegin(LTTextureArchive)
+SpecBegin(LTTextureArchive)
 
 __block BOOL result;
 __block NSError *error;
@@ -528,4 +528,4 @@ context(@"maintenance", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

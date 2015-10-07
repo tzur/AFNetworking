@@ -6,7 +6,7 @@
 #import "LTFbo.h"
 #import "LTGLTexture.h"
 
-LTSpecBegin(LTOneShotProcessingStrategy)
+SpecBegin(LTOneShotProcessingStrategy)
 
 __block LTTexture *input;
 __block LTTexture *output;
@@ -63,4 +63,4 @@ context(@"LTProcessingStrategy", ^{
   });
 });
 
-LTSpecEnd
+SpecEnd

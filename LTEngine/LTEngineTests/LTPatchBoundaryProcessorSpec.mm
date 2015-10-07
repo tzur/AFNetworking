@@ -5,7 +5,7 @@
 
 #import "LTTexture+Factory.h"
 
-LTSpecBegin(LTPatchBoundaryProcessor)
+SpecBegin(LTPatchBoundaryProcessor)
 
 it(@"should produce correct result with white subrect", ^{
   cv::Mat4b image(32, 32, cv::Vec4b(0, 0, 0, 255));
@@ -99,4 +99,4 @@ it(@"should produce correct result with threshold", ^{
   expect($(output.image)).to.beCloseToMat($(expected));
 });
 
-LTSpecEnd
+SpecEnd

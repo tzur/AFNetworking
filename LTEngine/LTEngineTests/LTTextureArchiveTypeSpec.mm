@@ -3,7 +3,7 @@
 
 #import "LTTextureArchiveType.h"
 
-LTSpecBegin(LTTextureArchiveType)
+SpecBegin(LTTextureArchiveType)
 
 it(@"should return a the archiver that should be used for each enum value", ^{
   [LTTextureArchiveType enumerateEnumUsingBlock:^(LTTextureArchiveType *value) {
@@ -18,4 +18,4 @@ it(@"should return the file extension assoicated with each enum value", ^{
   }];
 });
 
-LTSpecEnd
+SpecEnd
