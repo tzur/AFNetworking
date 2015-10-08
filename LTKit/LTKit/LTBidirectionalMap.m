@@ -3,6 +3,8 @@
 
 #import "LTBidirectionalMap.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTBidirectionalMap <ObjectType, KeyType> ()
 
 /// Holds mapping of keys to values.
@@ -44,7 +46,7 @@
   }];
 }
 
-- (id)objectForKeyedSubscript:(id<NSCopying>)key {
+- (nullable id)objectForKeyedSubscript:(id<NSCopying>)key {
   LTParameterAssert(key);
   return self.keysToValues[key];
 }
@@ -64,7 +66,7 @@
   [self.valuesToKeys removeObjectForKey:obj];
 }
 
-- (id)keyForObject:(id)object {
+- (nullable id)keyForObject:(id)object {
   return [self.valuesToKeys objectForKey:object];
 }
 
@@ -93,3 +95,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

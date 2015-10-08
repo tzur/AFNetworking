@@ -3,6 +3,8 @@
 
 #import "NSObject+AddToContainer.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSObject (AddToContainer)
 
 - (void)addToSet:(NSMutableSet *)set {
@@ -18,3 +20,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

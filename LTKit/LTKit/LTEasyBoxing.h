@@ -8,6 +8,8 @@
 /// NSValue *myValue = [NSValue valueWithStructName:value];
 /// @endcode
 
+NS_ASSUME_NONNULL_BEGIN
+
 #ifdef __cplusplus
 
 #define LTMakeEasyBoxing(STRUCT_NAME) \
@@ -27,3 +29,5 @@ LTMakeEasyBoxing(UIEdgeInsets);
 LTMakeEasyBoxing(CATransform3D);
 
 #endif
+
+NS_ASSUME_NONNULL_END

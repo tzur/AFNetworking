@@ -3,6 +3,8 @@
 
 #import "LTImageLoader.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTImageLoader ()
 @property (strong, nonatomic) Class imageClass;
 @end
@@ -27,12 +29,14 @@
   return instance;
 }
 
-- (UIImage *)imageNamed:(NSString *)name {
+- (nullable UIImage *)imageNamed:(NSString *)name {
   return [self.imageClass imageNamed:name];
 }
 
-- (UIImage *)imageWithContentsOfFile:(NSString *)name {
+- (nullable UIImage *)imageWithContentsOfFile:(NSString *)name {
   return [self.imageClass imageWithContentsOfFile:name];
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

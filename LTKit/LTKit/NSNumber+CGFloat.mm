@@ -3,6 +3,8 @@
 
 #import "NSNumber+CGFloat.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSNumber (CGFloat)
 
 + (NSNumber *)numberWithCGFloat:(CGFloat)value {
@@ -30,3 +32,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

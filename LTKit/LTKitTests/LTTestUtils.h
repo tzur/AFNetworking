@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Returns an absolute path to the given file name. The path depends on the specific spec currently
 /// running, so there's no concern for files overwriting each other. If no argument is given, the
 /// directory itself is returned.
@@ -34,3 +36,5 @@ BOOL LTRunningApplicationTests();
   [[NSTemporaryDirectory() \
     stringByAppendingPathComponent:[[@__FILE__ lastPathComponent] stringByDeletingPathExtension]] \
     stringByAppendingPathComponent:relativePath]
+
+NS_ASSUME_NONNULL_END

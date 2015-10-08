@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Category adding type testing to \c NSValue.
 @interface NSValue (Type)
 
@@ -9,3 +11,5 @@
 - (BOOL)lt_isKindOfObjCType:(const char *)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

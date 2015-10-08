@@ -6,6 +6,8 @@
 #import <sys/fcntl.h>
 #import <sys/mman.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTMMOutputFile ()
 
 /// Path to the memory mapped file.
@@ -28,8 +30,8 @@
   return nil;
 }
 
-- (instancetype)initWithPath:(NSString *)path size:(size_t)size mode:(mode_t)mode
-                       error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithPath:(NSString *)path size:(size_t)size mode:(mode_t)mode
+                                error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
     self.path = path;
     
@@ -87,3 +89,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -20,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// If the file cannot be opened, truncated to the given \c size or memory mapped, \c error will be
 /// populated.
-- (instancetype)initWithPath:(NSString *)path size:(size_t)size mode:(mode_t)mode
-                       error:(NSError **)error NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path size:(size_t)size mode:(mode_t)mode
+                                error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 
 /// Path to the memory mapped file.
 @property (readonly, nonatomic) NSString *path;

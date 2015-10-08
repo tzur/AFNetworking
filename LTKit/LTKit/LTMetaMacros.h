@@ -3,6 +3,8 @@
 
 #import <extobjc/metamacros.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Various useful metamacros.
 
 #pragma mark -
@@ -120,3 +122,5 @@
                              _25, _26, _27) \
     SEP() \
     MACRO(CONTEXT, _28, _29)
+
+NS_ASSUME_NONNULL_END

@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Logging is disabled by default. To enable, add LOGGING=1 to the GCC_PREPROCESSOR_DEFINITIONS
 /// build variable.
 #ifndef LOGGING
@@ -73,3 +75,5 @@
       LogDebug(@"Unknown type given to log: %s", typeCode); \
     } \
 } while (0)
+
+NS_ASSUME_NONNULL_END

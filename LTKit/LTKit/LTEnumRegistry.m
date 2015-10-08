@@ -5,12 +5,13 @@
 
 #import "LTBidirectionalMap.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTEnumRegistry ()
 
 /// Maps enum name (\c NSString ) to an \c NSDictionary of field names (\c NSString) to their
 /// numeric (\c NSNumber) values.
-@property (strong, nonatomic) NSMutableDictionary<NSString *,
-    LTBidirectionalMap<NSString *, NSNumber *> *> *enumMapping;
+@property (strong, nonatomic) NSMutableDictionary<NSString *, LTEnumFieldToValue *> *enumMapping;
 
 @end
 
@@ -44,12 +45,14 @@
   return self.enumMapping[enumName] != nil;
 }
 
-- (LTBidirectionalMap<NSString *, NSNumber *> *)enumFieldToValueForName:(NSString *)enumName {
+- (nullable LTEnumFieldToValue *)enumFieldToValueForName:(NSString *)enumName {
   return self.enumMapping[enumName];
 }
 
-- (id)objectForKeyedSubscript:(NSString *)key {
+- (nullable LTEnumFieldToValue *)objectForKeyedSubscript:(NSString *)key {
   return [self enumFieldToValueForName:key];
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

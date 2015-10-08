@@ -6,6 +6,8 @@
   #import <cmath>
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// The "empty" point. This is the point returned when, for example, we intersect parallel lines.
 ///
 /// @note the null point is not the same as the zero point, and that the null point will never be
@@ -476,3 +478,5 @@ CG_INLINE CGFloat CGNormalizedAngle(CGFloat angle) {
 }
 
 #endif
+
+NS_ASSUME_NONNULL_END

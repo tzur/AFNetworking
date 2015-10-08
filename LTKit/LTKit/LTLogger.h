@@ -3,6 +3,8 @@
 
 #import "LTLoggerMacrosImpl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // For Objective-C code, this library adds flexible, non-intrusive logging capabilities
 // that can be efficiently enabled or disabled via compile switches.
 //
@@ -75,8 +77,8 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
 + (LTLogger *)sharedLogger;
 
 /// Returns a printable description given a type (returned from \c \@encode) and a value of that
-/// type. If the type cannot be parsed, nil is returned.
-+ (NSString *)descriptionFromTypeCode:(const char *)type andValue:(void *)value;
+/// type. If the type cannot be parsed, \c nil is returned.
++ (nullable NSString *)descriptionFromTypeCode:(const char *)type andValue:(void *)value;
 
 /// Registers the given logger target to start recieving messages to log.
 - (void)registerTarget:(id<LTLoggerTarget>)target;
@@ -100,3 +102,5 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
 /// Logging target which logs to the standard output.
 @interface LTOutputLogger : NSObject <LTLoggerTarget>
 @end
+
+NS_ASSUME_NONNULL_END

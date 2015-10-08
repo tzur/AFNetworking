@@ -3,6 +3,8 @@
 
 #import "LTAnimation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Singleton instance used to trigger all active animations using a single CADisplayLink. This is
 /// done since creating a new display link while another is already active might hog it a bit,
 /// causing undesired lags.
@@ -19,6 +21,7 @@
 
 /// Display link used to trigger all the animations.
 @property (strong, nonatomic) CADisplayLink *displayLink;
+
 /// Holds all currently running animations.
 @property (strong, nonatomic) NSMutableArray *animations;
 
@@ -28,10 +31,13 @@
 
 /// Last timestamp of rendered frame.
 @property (nonatomic) CFTimeInterval lastFrameTime;
+
 /// Total animation time so far, in seconds.
 @property (nonatomic) CGFloat animationTime;
+
 /// Animation block to call each frame.
-@property (copy, nonatomic) LTAnimationBlock block;
+@property (copy, nonatomic, nullable) LTAnimationBlock block;
+
 /// Indicates if the animation is currently running.
 @property (nonatomic) BOOL isAnimating;
 
@@ -138,6 +144,7 @@ static LTAnimationManager *instance = nil;
 - (void)animate:(CADisplayLink *)link {
   // Iterate over the current animations.
   NSMutableArray *completed = [NSMutableArray array];
+
   for (LTAnimation *animation in self.animations) {
     // Calculate and update the total animation time, and the time since the last frame.
     CFTimeInterval timeSinceLastFrame = 0;
@@ -149,7 +156,7 @@ static LTAnimationManager *instance = nil;
     
     // Run the animation block. If the animation isn't animating, or has no block, or if NO is
     // returned when running the block, the animation is completed, and should be removed from the
-    // list. Note that this actually runs the animation block...
+    // list. Note that this actually runs the animation block.
     if (!animation.block || !animation.isAnimating ||
         !animation.block(timeSinceLastFrame, animation.animationTime)) {
       [animation stopAnimation];
@@ -175,3 +182,5 @@ static LTAnimationManager *instance = nil;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

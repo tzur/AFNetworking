@@ -4,6 +4,8 @@
 #import "LTWeakContainer.h"
 #import "NSNumber+CGFloat.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Useful property declaration and implementation macros.
 
 #pragma mark -
@@ -175,3 +177,5 @@
   - (void)set##Name:(type)name { \
     objc_setAssociatedObject(self, @selector(name), @(name), OBJC_ASSOCIATION_RETAIN_NONATOMIC); \
   }
+
+NS_ASSUME_NONNULL_END

@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Category for boxing and unboxing \c CGFloat.
 @interface NSNumber (CGFloat)
 
@@ -14,3 +16,5 @@
 - (CGFloat)CGFloatValue;
 
 @end
+
+NS_ASSUME_NONNULL_END

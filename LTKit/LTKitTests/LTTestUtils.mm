@@ -6,6 +6,8 @@
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark -
 #pragma mark Public methods
 #pragma mark -
@@ -26,3 +28,5 @@ BOOL LTRunningApplicationTests() {
   NSDictionary *environment = [[NSProcessInfo processInfo] environment];
   return environment[@"XCInjectBundle"] != nil;
 }
+
+NS_ASSUME_NONNULL_END
