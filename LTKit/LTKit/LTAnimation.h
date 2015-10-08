@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// or layers without using properties.
 @interface LTAnimation : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Prototype of an animation block. This block is responsible for drawing the next frame of the
 /// animation. Time since last frame and total animation time are given in seconds.
 ///

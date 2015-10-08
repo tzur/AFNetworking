@@ -18,10 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)init {
-  LTMethodNotImplemented();
-}
-
 - (instancetype)initWithMaximalCapacity:(NSUInteger)capacity {
   if (self = [super init]) {
     LTParameterAssert(capacity > 0);

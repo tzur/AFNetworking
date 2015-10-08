@@ -8,12 +8,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Implementation of a FIFO queue with limited capacity.
 @interface LTBoundedQueue<ObjectType> : LTQueue<ObjectType>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes the queue with a maximal \c capacity of objects allowed to be simultaneously in the
 /// queue. Pushing an object to a full queue will discard the least recently added object of the
 /// queue.
 ///
 /// @note capacity must be a positive number.
-- (instancetype)initWithMaximalCapacity:(NSUInteger)capacity;
+- (instancetype)initWithMaximalCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER;
 
 /// Pushes the provided \c object into the queue, discards the least recently added object of the
 /// queue if the queue was full before insertion and returns the discarded object.
