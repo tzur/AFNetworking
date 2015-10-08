@@ -166,11 +166,14 @@
 #define _LTEnumDeclareClass(NAME) \
   @interface NAME : NSObject <LTEnum> \
   \
-  - (instancetype)initWithValue:(_##NAME)value; \
+  - (instancetype)init NS_UNAVAILABLE; \
+  \
+  - (instancetype)initWithValue:(_##NAME)value NS_DESIGNATED_INITIALIZER; \
   \
   + (instancetype)enumWithValue:(_##NAME)value; \
   \
   + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block; \
+  \
   + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block; \
   \
   @property (nonatomic) _##NAME value; \
