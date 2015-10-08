@@ -85,6 +85,7 @@
 		8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */; };
 		8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
 		8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
+		8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */; settings = {ASSET_TAGS = (); }; };
 		8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA5D6A2199250240093A4FD /* NSString+Hashing.h */; };
 		8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5D6A3199250240093A4FD /* NSString+Hashing.m */; };
 		8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */; };
@@ -371,6 +372,8 @@
 		8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BA11AEA18320FCB00A5001D /* LTTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTypedefs.h; sourceTree = "<group>"; };
 		8BA3E13F182A68FC00FDD95A /* LTAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAssert.h; sourceTree = "<group>"; };
+		8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileManagerTestUtils.h; sourceTree = "<group>"; };
+		8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSFileManagerTestUtils.mm; sourceTree = "<group>"; };
 		8BA5D6A2199250240093A4FD /* NSString+Hashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hashing.h"; sourceTree = "<group>"; };
 		8BA5D6A3199250240093A4FD /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
 		8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+HashingSpec.mm"; sourceTree = "<group>"; };
@@ -480,6 +483,8 @@
 				8B16C9881BAEDF1B002FB750 /* LTImageLoaderSpec.mm */,
 				8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */,
 				8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */,
+				8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */,
+				8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */,
 				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 			);
 			name = IO;
@@ -1095,6 +1100,7 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */,
+				8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */,
 				8B16C9891BAEDF1B002FB750 /* LTImageLoaderSpec.mm in Sources */,
 				8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */,
 				8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */,
