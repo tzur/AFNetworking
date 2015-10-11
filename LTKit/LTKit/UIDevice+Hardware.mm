@@ -341,6 +341,14 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
   }
 }
 
+#pragma mark -
+#pragma mark Device memory
+#pragma mark -
+
+- (uint64_t)lt_physicalMemory {
+  return [NSProcessInfo processInfo].physicalMemory;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

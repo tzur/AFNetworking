@@ -111,6 +111,13 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
 /// The number of pixels per inch of the device's screen.
 @property (readonly, nonatomic) CGFloat lt_pixelsPerInch;
 
+#pragma mark -
+#pragma mark Device memory
+#pragma mark -
+
+/// The amount of physical memory on the device in bytes.
+@property (readonly, nonatomic) uint64_t lt_physicalMemory;
+
 @end
 
 NS_ASSUME_NONNULL_END
