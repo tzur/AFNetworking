@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
   return fetchResult;
 }
 
-- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-    options:(nullable PHFetchOptions __unused *)options {
+- (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
+    (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions __unused *)options {
   PHAsset *keyAsset =
       self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier];
   id fetchResult = keyAsset ? @[keyAsset] : @[];
