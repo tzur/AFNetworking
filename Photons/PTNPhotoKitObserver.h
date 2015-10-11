@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Adapter for observing PhotoKit notifications provided by \c PHPhotoLibrary.
 @interface PTNPhotoKitObserver : NSObject <PTNPhotoKitObserver>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes with the photo library used to observe the changes.
 - (instancetype)initWithPhotoLibrary:(PHPhotoLibrary *)photoLibrary NS_DESIGNATED_INITIALIZER;
 

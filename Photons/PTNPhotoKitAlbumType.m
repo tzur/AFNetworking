@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSCopying
 #pragma mark -
 
-- (instancetype)copyWithZone:(NSZone __unused *)zone {
+- (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
   return self;
 }
 

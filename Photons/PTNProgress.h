@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 @interface PTNProgress : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes a \c PTNProgress object with the resulting value.
 - (instancetype)initWithResult:(id<NSObject>)result NS_DESIGNATED_INITIALIZER;
 

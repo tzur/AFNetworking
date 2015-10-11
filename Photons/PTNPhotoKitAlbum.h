@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNPhotoKitAlbum : NSObject <PTNAlbum>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes a PhotoKit album identified by the given \c url and a fetch result. The given \c url
 /// must be of type \c PTNPhotoKitURLTypeAlbum or \c PTNPhotoKitURLTypeAlbumType. If the type is
 /// \c PTNPhotoKitURLTypeAlbum, the newly created album will contain assets only, and an empty \c
