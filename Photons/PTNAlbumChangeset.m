@@ -15,12 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
   return changeset;
 }
 
-+ (instancetype)changesetWithBeforeAlbum:(id<PTNAlbum>)beforeAlbum
++ (instancetype)changesetWithBeforeAlbum:(nullable id<PTNAlbum>)beforeAlbum
                               afterAlbum:(id<PTNAlbum>)afterAlbum
-                          removedIndexes:(NSIndexSet *)removedIndexes
-                         insertedIndexes:(NSIndexSet *)insertedIndexes
-                          updatedIndexes:(NSIndexSet *)updatedIndexes
-                                   moves:(PTNAlbumChangesetMoves *)moves {
+                          removedIndexes:(nullable NSIndexSet *)removedIndexes
+                         insertedIndexes:(nullable NSIndexSet *)insertedIndexes
+                          updatedIndexes:(nullable NSIndexSet *)updatedIndexes
+                                   moves:(nullable PTNAlbumChangesetMoves *)moves {
   PTNAlbumChangeset *changeset = [[PTNAlbumChangeset alloc] init];
   changeset->_beforeAlbum = beforeAlbum;
   changeset->_afterAlbum = afterAlbum;
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
       [self compare:self.moves with:object.moves];
 }
 
-- (BOOL)compare:(id)first with:(id)second {
+- (BOOL)compare:(nullable id)first with:(nullable id)second {
   return first == second || [first isEqual:second];
 }
 

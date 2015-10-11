@@ -27,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAsset fetchAssetsWithLocalIdentifiers:identifiers options:options];
 }
 
-- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                                  options:(nullable PHFetchOptions *)options {
+- (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
+    (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchKeyAssetsInAssetCollection:assetCollection options:options];
 }
 

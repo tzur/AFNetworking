@@ -37,11 +37,12 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
                                            options:(nullable PHFetchOptions *)options;
 
 
-/// Retrieves assets marked as key assets in the specified asset collection.
+/// Retrieves assets marked as key assets in the specified asset collection, or \c nil if no objects
+/// match the request.
 ///
 /// @see [PHAsset fetchKeyAssetsInAssetCollection:options:].
-- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                           options:(nullable PHFetchOptions *)options;
+- (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
+    (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions *)options;
 
 /// Creates a change details object that summarizes the differences between two fetch results.
 ///

@@ -27,12 +27,12 @@ typedef NSArray<PTNAlbumChangesetMove *> PTNAlbumChangesetMoves;
 + (instancetype)changesetWithAfterAlbum:(id<PTNAlbum>)afterAlbum;
 
 /// Constructs a new \c PTNAlbumChangeset object with all the required properties.
-+ (instancetype)changesetWithBeforeAlbum:(id<PTNAlbum>)beforeAlbum
++ (instancetype)changesetWithBeforeAlbum:(nullable id<PTNAlbum>)beforeAlbum
                               afterAlbum:(id<PTNAlbum>)afterAlbum
-                          removedIndexes:(NSIndexSet *)removedIndexes
-                         insertedIndexes:(NSIndexSet *)insertedIndexes
-                          updatedIndexes:(NSIndexSet *)updatedIndexes
-                                   moves:(PTNAlbumChangesetMoves *)moves;
+                          removedIndexes:(nullable NSIndexSet *)removedIndexes
+                         insertedIndexes:(nullable NSIndexSet *)insertedIndexes
+                          updatedIndexes:(nullable NSIndexSet *)updatedIndexes
+                                   moves:(nullable PTNAlbumChangesetMoves *)moves;
 
 /// Album before the changes, or \c nil if previous album is available.
 @property (readonly, nonatomic, nullable) id<PTNAlbum> beforeAlbum;
