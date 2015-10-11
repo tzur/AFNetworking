@@ -44,7 +44,7 @@ id LTMockProtocol(Protocol *protocol) {
   return LTSpectaObjectionHook.injector[protocol];
 }
 
-id LTBindObjectToClass(id object, Class objectClass) {
+id LTBindObjectToClass(id _Nullable object, Class objectClass) {
   [LTSpectaObjectionHook.module bind:object toClass:objectClass];
   [LTSpectaObjectionHook.injector lt_updateModule:LTSpectaObjectionHook.module];
   return object;
