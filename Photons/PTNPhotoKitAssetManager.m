@@ -328,7 +328,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType *)type {
   return [RACSignal defer:^{
-    PHFetchResult *assetCollections =
+    PTNAssetCollectionsFetchResult *assetCollections =
         [self.fetcher fetchAssetCollectionsWithType:type.type subtype:type.subtype options:nil];
     return [RACSignal return:assetCollections];
   }];
@@ -336,7 +336,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAlbumWithIdentifier:(NSString *)identifier {
   return [RACSignal defer:^{
-    PHFetchResult *assetCollections =
+    PTNAssetCollectionsFetchResult *assetCollections =
         [self.fetcher fetchAssetCollectionsWithLocalIdentifiers:@[identifier] options:nil];
     return [RACSignal return:assetCollections];
   }];
@@ -344,7 +344,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAssetWithIdentifier:(NSString *)identifier {
   return [RACSignal defer:^{
-    PHFetchResult *fetchResult =
+    PTNAssetsFetchResult *fetchResult =
         [self.fetcher fetchAssetsWithLocalIdentifiers:@[identifier] options:nil];
     return [RACSignal return:fetchResult];
   }];
@@ -352,7 +352,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchKeyAssetForAssetCollection:(PHAssetCollection *)assetCollection {
   return [RACSignal defer:^{
-    PHFetchResult *fetchResult =
+    PTNAssetsFetchResult *fetchResult =
         [self.fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil];
     if (!fetchResult.firstObject) {
       NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];

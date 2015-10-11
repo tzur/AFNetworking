@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                               initWithURL:url fetchResult:changeDetails.fetchResultBeforeChanges];
   id<PTNAlbum> afterAlbum = [[PTNPhotoKitAlbum alloc]
                              initWithURL:url fetchResult:changeDetails.fetchResultAfterChanges];
-  NSArray *moves = [self movesFromChangeDetails:changeDetails];
+  NSArray<PTNAlbumChangesetMove *> *moves = [self movesFromChangeDetails:changeDetails];
 
   return [PTNAlbumChangeset changesetWithBeforeAlbum:beforeAlbum afterAlbum:afterAlbum
                                       removedIndexes:changeDetails.removedIndexes
@@ -32,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
                                       updatedIndexes:changeDetails.changedIndexes moves:moves];
 }
 
-+ (NSArray *)movesFromChangeDetails:(PHFetchResultChangeDetails *)changeDetails {
-  NSMutableArray *moves = [NSMutableArray array];
++ (PTNAlbumChangesetMoves *)movesFromChangeDetails:(PHFetchResultChangeDetails *)changeDetails {
+  NSMutableArray<PTNAlbumChangesetMove *> *moves = [NSMutableArray array];
   [changeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex) {
     PTNAlbumChangesetMove *move = [PTNAlbumChangesetMove changesetMoveFrom:fromIndex to:toIndex];
     [moves addObject:move];

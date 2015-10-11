@@ -5,6 +5,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbum;
 
+@class PTNAlbumChangesetMove;
+
+typedef NSArray<PTNAlbumChangesetMove *> PTNAlbumChangesetMoves;
+
 /// Value class encapsulating the changes between two \c id<PATNAlbum> instances, \c beforeAlbum and
 /// \c afterAlbum. The changes describe how to perform modifications to \c beforeAlbum in order to
 /// produce \c afterAlbum. The changes need to be applied in the following order:
@@ -28,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
                           removedIndexes:(NSIndexSet *)removedIndexes
                          insertedIndexes:(NSIndexSet *)insertedIndexes
                           updatedIndexes:(NSIndexSet *)updatedIndexes
-                                   moves:(NSArray *)moves;
+                                   moves:(PTNAlbumChangesetMoves *)moves;
 
 /// Album before the changes, or \c nil if previous album is available.
 @property (readonly, nonatomic, nullable) id<PTNAlbum> beforeAlbum;
@@ -46,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, nullable) NSIndexSet *updatedIndexes;
 
 /// Array of \c PTNAlbumChangesetMove objects, or \c nil if no moves are available.
-@property (readonly, nonatomic, nullable) NSArray *moves;
+@property (readonly, nonatomic, nullable) PTNAlbumChangesetMoves *moves;
 
 @end
 

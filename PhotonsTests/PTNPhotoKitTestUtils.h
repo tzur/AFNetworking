@@ -9,7 +9,7 @@ id PTNPhotoKitCreateAsset(NSString *localIdentifier);
 
 /// Creates a \c PHFetchResultChangeDetails that returns the \c assets array for its
 /// \c fetchResultAfterChanges property.
-PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray *assets);
+PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets);
 
 /// Creates a \c PHObjectChangeDetails that returns \c asset for its \c objectAfterChanges property.
 PHObjectChangeDetails *PTNPhotoKitCreateChangeDetailsForAsset(PHAsset *asset);

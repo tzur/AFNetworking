@@ -43,11 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Registration
 #pragma mark -
 
-- (void)registerAssets:(NSArray *)assets withAssetCollection:(PHAssetCollection *)assetCollection {
+- (void)registerAssets:(NSArray<PHAsset *> *)assets
+   withAssetCollection:(PHAssetCollection *)assetCollection {
   self.assetCollectionLocalIdentifierToAssets[assetCollection.localIdentifier] = assets;
 }
 
-- (void)registerAssetCollections:(NSArray *)assetCollections withType:(PHAssetCollectionType)type
+- (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
+                        withType:(PHAssetCollectionType)type
                       andSubtype:(PHAssetCollectionSubtype)subtype {
   PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
   self.typeToAssetCollections[albumType] = assetCollections;
@@ -70,8 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTNPhotoKitFetcher
 #pragma mark -
 
-- (PHFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:(NSArray *)identifiers
-    options:(nullable PHFetchOptions __unused *)options {
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
+    (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions __unused *)options {
   id fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
     return self.localIdentifierToAssetCollection[identifier];
   }].array;
@@ -79,20 +81,19 @@ NS_ASSUME_NONNULL_BEGIN
   return fetchResult;
 }
 
-- (PHFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
-                                         subtype:(PHAssetCollectionSubtype)subtype
-                                         options:(nullable PHFetchOptions __unused *)options {
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
+    subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions __unused *)options {
   PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
   return self.typeToAssetCollections[albumType];
 }
 
-- (PHFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                        options:(nullable PHFetchOptions __unused *)options {
+- (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+                                               options:(nullable PHFetchOptions __unused *)options {
   return self.assetCollectionLocalIdentifierToAssets[assetCollection.localIdentifier];
 }
 
-- (PHFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers
-                                           options:(nullable PHFetchOptions __unused *)options {
+- (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
+    options:(nullable PHFetchOptions __unused *)options {
   id fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
     return self.localIdentifierToAsset[identifier];
   }].array;
@@ -100,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
   return fetchResult;
 }
 
-- (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                           options:(nullable PHFetchOptions __unused *)options {
+- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+    options:(nullable PHFetchOptions __unused *)options {
   PHAsset *keyAsset =
       self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier];
   id fetchResult = keyAsset ? @[keyAsset] : @[];
@@ -111,10 +112,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
                                                toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray *)changedObjects {
+                                              changedObjects:(NSArray<PHObject *> *)changedObjects {
   id changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
 
-  NSArray *indexes = [[changedObjects.rac_sequence
+  NSArray<NSNumber *> *indexes = [[changedObjects.rac_sequence
       filter:^BOOL(PHObject *object) {
         return [toResult containsObject:object];
       }] map:^(PHObject *object) {

@@ -7,35 +7,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitFetcher
 
-- (PHFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
-                                         subtype:(PHAssetCollectionSubtype)subtype
-                                         options:(nullable PHFetchOptions *)options {
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
+    subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions *)options {
   return [PHAssetCollection fetchAssetCollectionsWithType:type subtype:subtype options:options];
 }
 
-- (PHFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:(NSArray *)identifiers
-                                                     options:(nullable PHFetchOptions *)options {
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
+    (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options {
   return [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:identifiers options:options];
 }
 
-- (PHFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+- (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                         options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
 }
 
-- (PHFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers
-                                           options:(nullable PHFetchOptions *)options {
+- (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
+                                                  options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchAssetsWithLocalIdentifiers:identifiers options:options];
 }
 
-- (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                           options:(nullable PHFetchOptions *)options {
+- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+                                                  options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchKeyAssetsInAssetCollection:assetCollection options:options];
 }
 
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
                                                toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray *)changedObjects {
+                                              changedObjects:(NSArray<PHObject *> *)changedObjects {
   return [PHFetchResultChangeDetails changeDetailsFromFetchResult:fromResult toFetchResult:toResult
                                                    changedObjects:changedObjects];
 }

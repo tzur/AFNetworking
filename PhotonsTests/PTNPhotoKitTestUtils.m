@@ -17,7 +17,7 @@ id PTNPhotoKitCreateAsset(NSString *localIdentifier) {
   return asset;
 }
 
-PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray *assets) {
+PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets) {
   id changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
   OCMStub([changeDetails fetchResultAfterChanges]).andReturn(assets);
   return changeDetails;

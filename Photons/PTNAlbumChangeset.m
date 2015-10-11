@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
                           removedIndexes:(NSIndexSet *)removedIndexes
                          insertedIndexes:(NSIndexSet *)insertedIndexes
                           updatedIndexes:(NSIndexSet *)updatedIndexes
-                                   moves:(NSArray *)moves {
+                                   moves:(PTNAlbumChangesetMoves *)moves {
   PTNAlbumChangeset *changeset = [[PTNAlbumChangeset alloc] init];
   changeset->_beforeAlbum = beforeAlbum;
   changeset->_afterAlbum = afterAlbum;

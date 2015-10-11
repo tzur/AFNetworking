@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PHFetchResult, PHFetchResultChangeDetails;
+@class PHFetchResult<ObjectType>, PHFetchResultChangeDetails;
 
 @interface PTNAlbumChangeset (PhotoKit)
 

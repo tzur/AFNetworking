@@ -10,11 +10,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Registers the given \c assets to the given \c assetCollection. If a registration already exists,
 /// it will be replaced.
-- (void)registerAssets:(NSArray *)assets withAssetCollection:(PHAssetCollection *)assetCollection;
+- (void)registerAssets:(NSArray<PHAsset *> *)assets
+   withAssetCollection:(PHAssetCollection *)assetCollection;
 
 /// Registers the given \c assetCollections with the \c type and \c subtype asset collection query.
 /// If a registration already exists, it will be replaced.
-- (void)registerAssetCollections:(NSArray *)assetCollections withType:(PHAssetCollectionType)type
+- (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
+                        withType:(PHAssetCollectionType)type
                       andSubtype:(PHAssetCollectionSubtype)subtype;
 
 /// Registers the given \c assetCollection so it will be returned when querying for asset

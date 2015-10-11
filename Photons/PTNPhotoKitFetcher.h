@@ -5,6 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef PHFetchResult<PHAsset *> PTNAssetsFetchResult;
+typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
+
 /// Adapter which converts class method calls on PhotoKit objects to instance methods for easier
 /// testing.
 @protocol PTNPhotoKitFetcher <NSObject>
@@ -12,33 +15,32 @@ NS_ASSUME_NONNULL_BEGIN
 /// Retrieves asset collections of the specified type and subtype.
 ///
 /// @see [PHAssetCollection fetchAssetCollectionsWithType:subtype:options:].
-- (PHFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
-                                         subtype:(PHAssetCollectionSubtype)subtype
-                                         options:(nullable PHFetchOptions *)options;
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
+    subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions *)options;
 
 /// Retrieves asset collections with the specified local identifiers.
 ///
 /// @see [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:options:].
-- (PHFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:(NSArray *)identifiers
-                                                     options:(nullable PHFetchOptions *)options;
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
+    (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options;
 
 /// Retrieves assets from the specified asset collection.
 ///
 /// @see [PHAsset fetchAssetsInAssetCollection:options:].
-- (PHFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+- (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                         options:(nullable PHFetchOptions *)options;
 
 /// Retrieves assets with the specified local identifiers.
 ///
 /// @see [PHAsset fetchAssetsWithLocalIdentifiers:options:].
-- (PHFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers
+- (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
                                            options:(nullable PHFetchOptions *)options;
 
 
 /// Retrieves assets marked as key assets in the specified asset collection.
 ///
 /// @see [PHAsset fetchKeyAssetsInAssetCollection:options:].
-- (PHFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
+- (PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                            options:(nullable PHFetchOptions *)options;
 
 /// Creates a change details object that summarizes the differences between two fetch results.
@@ -46,8 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see [PHFetchResultChangeDetails changeDetailsFromFetchResult:toFetchResult:changedObjects:].
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
                                                toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray *)changedObjects;
-
+                                              changedObjects:(NSArray<PHObject *> *)changedObjects;
 
 @end
 

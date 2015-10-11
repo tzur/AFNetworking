@@ -54,7 +54,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
 
   if ([self.host isEqual:@"album"]) {
     if (self.query) {
-      NSDictionary *query = self.ptn_queryDictionary;
+      NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
       if (query[@"type"] && query[@"subtype"]) {
         return PTNPhotoKitURLTypeAlbumType;
       }
@@ -89,7 +89,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
     return nil;
   }
 
-  NSDictionary *query = self.ptn_queryDictionary;
+  NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
   if (!query[@"type"] || !query[@"subtype"]) {
     return nil;
   }
@@ -100,7 +100,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
   return [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
 }
 
-- (NSDictionary *)ptn_queryDictionary {
+- (NSDictionary<NSString *, NSString *> *)ptn_queryDictionary {
   NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
 
   // Last query item name overrides previous ones, if exist.

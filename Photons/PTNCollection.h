@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface NSArray () <PTNCollection>
+@interface NSArray<ObjectType> () <PTNCollection>
 @end
 
 NS_ASSUME_NONNULL_END

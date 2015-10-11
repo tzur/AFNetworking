@@ -44,7 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray *)progress image:(UIImage *)image {
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+             image:(UIImage *)image {
   NSString *identifier = asset.localIdentifier;
 
   self.identifierToProgress[identifier] = progress;
@@ -52,14 +53,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 }
 
-- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray *)progress finallyError:(NSError *)error {
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+      finallyError:(NSError *)error {
   NSString *identifier = asset.localIdentifier;
 
   self.identifierToProgress[identifier] = progress;
   self.identifierToError[identifier] = error;
 }
 
-- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray *)progress
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
    errorInProgress:(NSError *)error {
   NSString *identifier = asset.localIdentifier;
 

@@ -27,7 +27,7 @@ context(@"construction", ^{
     NSIndexSet *removedIndexes = [NSIndexSet indexSetWithIndex:0];
     NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:1];
     NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndex:2];
-    NSArray *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
+    PTNAlbumChangesetMoves *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
 
     PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithBeforeAlbum:before
                                                                     afterAlbum:after
@@ -56,7 +56,7 @@ context(@"equality", ^{
     NSIndexSet *removedIndexes = [NSIndexSet indexSetWithIndex:0];
     NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:1];
     NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndex:2];
-    NSArray *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
+    PTNAlbumChangesetMoves *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
 
     firstChangeset = [PTNAlbumChangeset changesetWithBeforeAlbum:before
                                                       afterAlbum:after

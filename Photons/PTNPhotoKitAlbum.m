@@ -19,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSURL *url;
 
 /// Fetch results backing \c PHAsset objects.
-@property (strong, nonatomic) PHFetchResult *assetsFetchResult;
+@property (strong, nonatomic) PHFetchResult<PHAsset *> *assetsFetchResult;
 
 /// Fetch results backing \c PHCollection objects.
-@property (strong, nonatomic) PHFetchResult *albumsFetchResult;
+@property (strong, nonatomic) PHFetchResult<PHCollection *> *albumsFetchResult;
 
 @end
 
