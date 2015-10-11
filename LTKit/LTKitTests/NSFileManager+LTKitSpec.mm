@@ -3,6 +3,8 @@
 
 #import "NSFileManager+LTKit.h"
 
+#import "NSFileManagerTestUtils.h"
+
 SpecBegin(NSFileManager_LTKit)
 
 __block id fileManager;
@@ -62,6 +64,107 @@ it(@"should not set backup flag for non existing file", ^{
 
   expect([fileManager lt_skipBackup:YES forItemAtURL:url error:&error]).to.beFalsy();
   expect(error).notTo.beNil();
+});
+
+context(@"globbing", ^{
+  static NSString * const kPath = @"/";
+  static NSURL * const kPathURL = [NSURL fileURLWithPath:kPath];
+
+  __block id mockedManager;
+
+  beforeEach(^{
+    mockedManager = OCMPartialMock(fileManager);
+  });
+
+  afterEach(^{
+    mockedManager = nil;
+  });
+
+  context(@"globbing shallowly", ^{
+    beforeEach(^{
+      NSArray<NSURL *> *mockedFiles = @[LTCreateFakeURL(@"foo"), LTCreateFakeURL(@"bar")];
+      LTStubFileManager(mockedManager, kPathURL, NO, mockedFiles);
+    });
+
+    it(@"should glob directory", ^{
+      NSError *error;
+      NSArray<NSString *> *files = [mockedManager lt_globPath:kPath recursively:NO
+                                                withPredicate:[NSPredicate predicateWithValue:YES]
+                                                        error:&error];
+
+      expect(files).to.equal(@[@"foo", @"bar"]);
+      expect(error).to.beNil();
+    });
+
+    it(@"should glob directory with predicate", ^{
+      NSError *error;
+      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == %@", @"bar"];
+      NSArray<NSString *> *files = [mockedManager lt_globPath:kPath recursively:NO
+                                                withPredicate:predicate error:&error];
+
+      expect(files).to.equal(@[@"bar"]);
+      expect(error).to.beNil();
+    });
+  });
+
+  context(@"globbing recursively", ^{
+    beforeEach(^{
+      NSArray<NSURL *> *mockedFiles = @[LTCreateFakeURL(@"foo"), LTCreateFakeURL(@"foo/bar")];
+      LTStubFileManager(mockedManager, kPathURL, YES, mockedFiles);
+    });
+
+    it(@"should glob directory", ^{
+      NSError *error;
+      NSArray<NSString *> *files = [mockedManager lt_globPath:kPath recursively:YES
+                                                withPredicate:[NSPredicate predicateWithValue:YES]
+                                                        error:&error];
+
+      expect(files).to.equal(@[@"foo", @"foo/bar"]);
+      expect(error).to.beNil();
+    });
+  });
+
+  context(@"failures", ^{
+    it(@"should fail globbing invalid path", ^{
+      NSError *error;
+      NSArray<NSString *> *files = [fileManager lt_globPath:@"/foo/bar/baz" recursively:NO
+                                              withPredicate:[NSPredicate predicateWithValue:YES]
+                                                      error:&error];
+
+      expect(files).to.beFalsy();
+      expect(error).notTo.beNil();
+    });
+
+    it(@"should fail globbing if failed retrieving file name", ^{
+      NSError *fakeError = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError];
+      NSArray<NSURL *> *mockedFiles = @[LTCreateFakeURL(@"foo"),
+                                        LTCreateFakeURLWithError(fakeError)];
+      LTStubFileManager(mockedManager, kPathURL, NO, mockedFiles);
+
+      NSError *error;
+      NSArray<NSString *> *files = [mockedManager lt_globPath:kPath recursively:NO
+                                                withPredicate:[NSPredicate predicateWithValue:YES]
+                                                        error:&error];
+
+      expect(files).to.beNil();
+      expect(error).notTo.beNil();
+    });
+
+    it(@"should fail globbing if enumeration returned an error", ^{
+      NSError *fakeError = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError];
+      NSArray<NSURL *> *mockedFiles = @[LTCreateFakeURL(@"foo"),
+                                        LTCreateFakeURLWithError(fakeError)];
+      LTStubFileManagerWithError(mockedManager, kPathURL, NO, mockedFiles, fakeError);
+
+      NSError *error;
+      NSArray<NSString *> *files = [mockedManager lt_globPath:kPath recursively:NO
+                                                withPredicate:[NSPredicate predicateWithValue:YES]
+                                                        error:&error];
+
+      expect(files).to.beNil();
+      expect(error).notTo.beNil();
+    });
+  });
 });
 
 context(@"storage info", ^{

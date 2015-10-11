@@ -50,8 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c nil and the \c error will be populated.
 ///
 /// @note returned paths are relative to the given \c path, and are not absolute paths.
-- (NSArray *)lt_globPath:(NSString *)path recursively:(BOOL)recursively
-           withPredicate:(NSPredicate *)predicate error:(NSError **)error;
+- (nullable NSArray<NSString *> *)lt_globPath:(NSString *)path recursively:(BOOL)recursively
+                                withPredicate:(NSPredicate *)predicate error:(NSError **)error;
 
 /// Sets the given file URL to skip iCloud and iTunes backups or not. Returns \c YES if the
 /// attribute setup completed successfully, otherwise returns \c NO and populates the given \c

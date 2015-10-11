@@ -81,6 +81,16 @@ it(@"should create error with path and underlyingError", ^{
   expect(error.lt_underlyingError).to.equal(underlyingError);
 });
 
+it(@"should create error with path and underlyingErrors", ^{
+  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:kPath
+                             underlyingErrors:underlyingErrors];
+
+  expect(error.domain).to.equal(kLTErrorDomain);
+  expect(error.code).to.equal(LTErrorCodeFileNotFound);
+  expect(error.lt_path).to.equal(kPath);
+  expect(error.lt_underlyingErrors).to.equal(underlyingErrors);
+});
+
 it(@"should create error with url", ^{
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:kURL];
 

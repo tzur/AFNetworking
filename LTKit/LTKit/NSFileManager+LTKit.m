@@ -39,34 +39,51 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSData dataWithContentsOfFile:path options:options error:error];
 }
 
-- (NSArray *)lt_globPath:(NSString *)path recursively:(BOOL)recursively
-           withPredicate:(NSPredicate *)predicate error:(NSError *__autoreleasing *)error {
+- (nullable NSArray<NSString *> *)lt_globPath:(NSString *)path
+                                  recursively:(BOOL)recursively
+                                withPredicate:(NSPredicate *)predicate
+                                        error:(NSError *__autoreleasing *)error {
+  NSMutableArray<NSError *> *globErrors = [NSMutableArray array];
+
   NSURL *url = [NSURL fileURLWithPath:path];
-  NSDirectoryEnumerationOptions options = recursively ?
-      NSDirectoryEnumerationSkipsSubdirectoryDescendants : 0;
+  NSDirectoryEnumerationOptions options = recursively ? 0 :
+      NSDirectoryEnumerationSkipsSubdirectoryDescendants;
   NSDirectoryEnumerator *enumerator =
       [self enumeratorAtURL:url includingPropertiesForKeys:@[NSURLNameKey] options:options
-               errorHandler:^BOOL(NSURL *url, NSError *enumerationError) {
-                 if (enumerationError) {
-                   if (error) {
-                     *error = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError
-                                                    url:url
-                                        underlyingError:enumerationError];
-                   }
-                   return NO;
+               errorHandler:^BOOL(NSURL *enumerationUrl, NSError *enumerationError) {
+                 if (enumerationError && error) {
+                   NSError *globError = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError
+                                                              url:enumerationUrl
+                                                  underlyingError:enumerationError];
+                   [globErrors addObject:globError];
                  }
                  return YES;
                }];
 
-  NSMutableArray *files = [NSMutableArray array];
+  NSMutableArray<NSString *> *files = [NSMutableArray array];
 
   for (NSURL *fileURL in enumerator) {
     NSString *filename;
-    [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+    NSError *resourceError;
+    if (![fileURL getResourceValue:&filename forKey:NSURLNameKey error:&resourceError]) {
+      NSError *globError = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError
+                                                 url:fileURL
+                                     underlyingError:resourceError];
+      [globErrors addObject:globError];
+      continue;
+    }
 
     if ([predicate evaluateWithObject:filename]) {
       [files addObject:filename];
     }
+  }
+
+  if (globErrors.count) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError path:path
+                        underlyingErrors:globErrors];
+    }
+    return nil;
   }
 
   return [files copy];

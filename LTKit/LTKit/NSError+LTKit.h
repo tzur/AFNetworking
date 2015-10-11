@@ -47,9 +47,15 @@ NSString *LTSystemErrorMessageForError(int error);
 /// Creates an error with Lightricks' domain, given error code and the given related file path.
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path;
 
-/// Creates an error with Lightricks' domain, given error code, related file path and underlying error.
+/// Creates an error with Lightricks' domain, given error code, related file path and underlying
+/// error.
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
                  underlyingError:(NSError *)underlyingError;
+
+/// Creates an error with Lightricks' domain, given error code, related file path and underlying
+/// errors.
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
+                underlyingErrors:(NSArray<NSError *> *)underlyingErrors;
 
 /// Creates an error with Lightricks' domain, given error code and the given related URL.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url;

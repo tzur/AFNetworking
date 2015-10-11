@@ -46,7 +46,8 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(NSInteger)code underlyingErrors:(NSArray *)underlyingErrors {
++ (instancetype)lt_errorWithCode:(NSInteger)code
+                underlyingErrors:(NSArray<NSError *> *)underlyingErrors {
   return [NSError lt_errorWithCode:code userInfo:@{
     kLTUnderlyingErrorsKey: underlyingErrors ?: [NSNull null]
   }];
@@ -69,6 +70,14 @@ NSString *LTSystemErrorMessageForError(int error) {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSFilePathErrorKey: path ?: [NSNull null],
     NSUnderlyingErrorKey: underlyingError ?: [NSNull null]
+  }];
+}
+
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
+                underlyingErrors:(NSArray<NSError *> *)underlyingErrors {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    NSFilePathErrorKey: path ?: [NSNull null],
+    kLTUnderlyingErrorsKey: underlyingErrors ?: [NSNull null]
   }];
 }
 
@@ -97,7 +106,7 @@ NSString *LTSystemErrorMessageForError(int error) {
   return [self valueOrNilForKey:NSUnderlyingErrorKey];
 }
 
-- (nullable NSArray *)lt_underlyingErrors {
+- (nullable NSArray<NSError *> *)lt_underlyingErrors {
   return [self valueOrNilForKey:kLTUnderlyingErrorsKey];
 }
 
