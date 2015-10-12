@@ -103,34 +103,34 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 - (nullable NSError *)lt_underlyingError {
-  return [self valueOrNilForKey:NSUnderlyingErrorKey];
+  return [self lt_valueOrNilForKey:NSUnderlyingErrorKey];
 }
 
 - (nullable NSArray<NSError *> *)lt_underlyingErrors {
-  return [self valueOrNilForKey:kLTUnderlyingErrorsKey];
+  return [self lt_valueOrNilForKey:kLTUnderlyingErrorsKey];
 }
 
 - (nullable NSString *)lt_description {
-  return [self valueOrNilForKey:kLTErrorDescriptionKey];
+  return [self lt_valueOrNilForKey:kLTErrorDescriptionKey];
 }
 
 - (nullable NSString *)lt_path {
-  return [self valueOrNilForKey:NSFilePathErrorKey];
+  return [self lt_valueOrNilForKey:NSFilePathErrorKey];
 }
 
 - (nullable NSString *)lt_url {
-  return [self valueOrNilForKey:NSURLErrorKey];
+  return [self lt_valueOrNilForKey:NSURLErrorKey];
 }
 
 - (nullable NSNumber *)lt_systemError {
-  return [self valueOrNilForKey:kLTSystemErrorKey];
+  return [self lt_valueOrNilForKey:kLTSystemErrorKey];
 }
 
 - (nullable NSString *)lt_systemErrorMessage {
-  return [self valueOrNilForKey:kLTSystemErrorMessageKey];
+  return [self lt_valueOrNilForKey:kLTSystemErrorMessageKey];
 }
 
-- (nullable id)valueOrNilForKey:(NSString *)key {
+- (nullable id)lt_valueOrNilForKey:(NSString *)key {
   return self.userInfo[key] != [NSNull null] ? self.userInfo[key] : nil;
 }
 
