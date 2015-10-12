@@ -59,7 +59,7 @@ void main() {
   mediump vec3 colorGradient = texture2D(colorGradientTexture, vec2(lum)).rgb;
   // If originalLum is 0, set it to 1.
   originalLum = originalLum + step(originalLum, 0.0);
-  outputColor.rgb = colorGradient * (outputColor.rgb / originalLum);
+  outputColor.rgb = clamp(colorGradient * (outputColor.rgb / originalLum), 0.0, 1.0);
 
   // Tone, Levels and Curves.
   outputColor.r = texture2D(toneLUT, vec2(outputColor.r, 0.0)).r;
