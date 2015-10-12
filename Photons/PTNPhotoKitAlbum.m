@@ -40,8 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
         self.albumsFetchResult = fetchResult;
         break;
       default:
-        // TODO:(yaron) assert here.
-        __builtin_unreachable();
+        LTParameterAssert(url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbum ||
+                          url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumType,
+                          @"Invalid URL type given: %lu", (unsigned long)url.ptn_photoKitURLType);
     }
   }
   return self;

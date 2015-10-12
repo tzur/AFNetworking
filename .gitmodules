@@ -13,3 +13,6 @@
 [submodule "Vendor/Expecta"]
 	path = Vendor/Expecta
 	url = https://github.com/specta/expecta.git
+[submodule "LTKit"]
+	path = LTKit
+	url = https://github.com/Lightricks/LTKit.git
