@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
   if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum &&
       url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbumType) {
-    return [RACSignal error:[NSError ptn_invalidURL:url]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   RACSignal *existingSignal = [self signalForURL:url];
@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
-            *errorPtr = [NSError ptn_albumNotFound:url];
+            *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url];
           }
           return nil;
         } else if (url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbum) {
@@ -232,7 +232,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAssetWithURL:(NSURL *)url {
   if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset) {
-    return [RACSignal error:[NSError ptn_invalidURL:url]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   RACSignal *initialFetchResult = [[[[self fetchFetchResultWithURL:url]
@@ -240,7 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
-            *errorPtr = [NSError ptn_assetNotFound:url];
+            *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url];
           }
         }
         return fetchResult.firstObject;
@@ -281,14 +281,14 @@ NS_ASSUME_NONNULL_BEGIN
     case PTNPhotoKitURLTypeAlbumType:
       return [self fetchAlbumWithType:url.ptn_photoKitAlbumType];
     default:
-      return [RACSignal error:[NSError ptn_invalidURL:url]];
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 }
 
 - (RACSignal *)fetchObjectWithURL:(NSURL *)url {
   if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset &&
       url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum) {
-    return [RACSignal error:[NSError ptn_invalidURL:url]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   return [[self fetchFetchResultWithURL:url]
@@ -297,12 +297,12 @@ NS_ASSUME_NONNULL_BEGIN
           switch (url.ptn_photoKitURLType) {
             case PTNPhotoKitURLTypeAsset:
               if (errorPtr) {
-                *errorPtr = [NSError ptn_assetNotFound:url];
+                *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url];
               }
               return nil;
             case PTNPhotoKitURLTypeAlbum:
               if (errorPtr) {
-                *errorPtr = [NSError ptn_albumNotFound:url];
+                *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url];
               }
               return nil;
             default:
@@ -322,7 +322,8 @@ NS_ASSUME_NONNULL_BEGIN
     return [[self fetchKeyAssetForAssetCollection:(PHAssetCollection *)object]
         subscribeOn:[RACScheduler scheduler]];
   } else {
-    return [RACSignal error:[NSError ptn_invalidObject:object]];
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidObject
+                                      associatedObject:object]];
   }
 }
 
@@ -356,7 +357,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil];
     if (!fetchResult.firstObject) {
       NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
-      return [RACSignal error:[NSError ptn_keyAssetsNotFound:url]];
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeKeyAssetsNotFound url:url]];
     } else {
       return [RACSignal return:fetchResult.firstObject];
     }
@@ -373,7 +374,7 @@ NS_ASSUME_NONNULL_BEGIN
                          options:(PTNImageFetchOptions *)options {
   if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset &&
       url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum) {
-    return [RACSignal error:[NSError ptn_invalidURL:url]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   return [[self fetchObjectWithURL:url] flattenMap:^(id<PTNObject> object) {
@@ -428,8 +429,9 @@ NS_ASSUME_NONNULL_BEGIN
     void (^resultHandler)(UIImage *result, NSDictionary *info) = ^(UIImage *result,
                                                                    NSDictionary *info) {
       if (!result || info[PHImageErrorKey]) {
-        NSError *wrappedError = [NSError ptn_assetLoadingFailed:asset.ptn_identifier
-                                                underlyingError:info[PHImageErrorKey]];
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
         [subscriber sendError:wrappedError];
       } else {
         PTNProgress *progress = [[PTNProgress alloc] initWithResult:result];

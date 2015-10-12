@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B16A8A31BCBFB33006DAAA7 /* NSErrorCodes+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */; settings = {ASSET_TAGS = (); }; };
+		8B16A8A41BCBFBFA006DAAA7 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A88D1BCBF59A006DAAA7 /* libLTKit.a */; };
+		8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
 		8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */; };
 		8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0AD1B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		8B2FD0D11B09CD0800757B1F /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0AF1B09CD0800757B1F /* LLSignalTestRecorder.m */; };
@@ -269,6 +272,8 @@
 
 /* Begin PBXFileReference section */
 		8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Photons.h"; sourceTree = "<group>"; };
+		8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		8B2FD0291AF9F79000757B1F /* PhotonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B2FD02F1AF9F79000757B1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B2FD0391AF9F93A00757B1F /* Photons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photons-Prefix.pch"; sourceTree = "<group>"; };
@@ -385,6 +390,8 @@
 				8BAFE2AB1B0E0F6C003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
 				8BAFE2981B0E0BC9003FB8F5 /* Expecta.framework in Frameworks */,
 				8BAFE2991B0E0BC9003FB8F5 /* Specta.framework in Frameworks */,
+				8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */,
+				8B16A8A41BCBFBFA006DAAA7 /* libLTKit.a in Frameworks */,
 				8BAFE2AA1B0E0CCA003FB8F5 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +410,7 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */,
 				8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */,
 				8BAFE2AD1B0E103A003FB8F5 /* Photos.framework */,
 			);
@@ -493,6 +501,7 @@
 			children = (
 				8B2FD0E81B0B2DC200757B1F /* NSError+Photons.h */,
 				8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */,
+				8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */,
 				8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */,
 				8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */,
 				8B3832171B57D6FE00620560 /* PTNAlbumChangeset.m */,
@@ -740,6 +749,7 @@
 				8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */,
 				8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */,
 				8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */,
+				8B16A8A31BCBFB33006DAAA7 /* NSErrorCodes+Photons.h in Headers */,
 				8BAFE2F31B0E1CD4003FB8F5 /* NSURL+PhotoKit.h in Headers */,
 				8B56195F1B65151B006B0DA0 /* PTNAlbumChangeset+PhotoKit.h in Headers */,
 				8B5619601B65151F006B0DA0 /* PTNImageFetchOptions+PhotoKit.h in Headers */,
