@@ -23,6 +23,7 @@
 // LTKit -> 0.
 // LTEngine -> 1.
 // Enlight -> 2.
+// Photons -> 3.
 
 /// Basic constants for Lightricks' error domain.
 NS_ENUM(NSInteger) {
