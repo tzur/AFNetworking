@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithProgress:(NSNumber *)progress {
   if (self = [super init]) {
-    // TODO:(yaron) check range of \c progress.
+    LTParameterAssert(progress.doubleValue >= 0 && progress.doubleValue <= 1,
+                      @"Progress must be in the range [0, 1], given: %@", progress);
     _progress = progress;
   }
   return self;

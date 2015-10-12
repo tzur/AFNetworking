@@ -103,8 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          photoKitFetchResult:fetchResult];
           return RACTuplePack(fetchResult, changeset);
         } else {
-          // TODO:(yaron) assert here.
-          __builtin_unreachable();
+          LTAssert(NO, @"Fetched URL of invalid type: %lu", (unsigned long)url.ptn_photoKitURLType);
         }
       }]
       doError:^(NSError __unused *error) {
