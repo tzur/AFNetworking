@@ -83,6 +83,7 @@
 		8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */; };
 		8BCF57D01BCC068E001EE2ED /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A88D1BCBF59A006DAAA7 /* libLTKit.a */; };
 		8BCF57D11BCC0692001EE2ED /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
+		8BCF57FE1BCC0858001EE2ED /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */; settings = {ASSET_TAGS = (); }; };
 		8BF135A01B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m */; };
 		8BF135BA1B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */; };
 /* End PBXBuildFile section */
@@ -377,6 +378,8 @@
 		8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNProgress.m; sourceTree = "<group>"; };
 		8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACStream+Photons.h"; sourceTree = "<group>"; };
 		8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACStream+Photons.m"; sourceTree = "<group>"; };
+		8BCF57FC1BCC0858001EE2ED /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = LTKit/LTKit/LTKitTests/LTTestUtils.h; sourceTree = SOURCE_ROOT; };
+		8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = LTKit/LTKit/LTKitTests/LTTestUtils.mm; sourceTree = SOURCE_ROOT; };
 		8BF1359E1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitTestUtils.h; sourceTree = "<group>"; };
 		8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitTestUtils.m; sourceTree = "<group>"; };
 		8BF135B81B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetcher.h; sourceTree = "<group>"; };
@@ -576,6 +579,7 @@
 				8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */,
 				8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */,
 				8B2FD0AA1B09CD0800757B1F /* LLReactiveMatchers */,
+				8BCF57E21BCC0844001EE2ED /* LTTestUtils */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -728,6 +732,15 @@
 				8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8BCF57E21BCC0844001EE2ED /* LTTestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				8BCF57FC1BCC0858001EE2ED /* LTTestUtils.h */,
+				8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */,
+			);
+			name = LTTestUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1065,6 +1078,7 @@
 				8B5619971B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m in Sources */,
 				8B2FD0D61B09CD0800757B1F /* EXPMatchers+complete.m in Sources */,
 				8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */,
+				8BCF57FE1BCC0858001EE2ED /* LTTestUtils.mm in Sources */,
 				8B5619771B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m in Sources */,
 				8BF135A01B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m in Sources */,
 				8B2FD0DD1B09CD0800757B1F /* EXPMatchers+sendEvents.m in Sources */,
@@ -1233,6 +1247,7 @@
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
 					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
+					"\"$(SRCROOT)/Vendor/Specta/Specta\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1252,6 +1267,7 @@
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
 					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
 					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
+					"\"$(SRCROOT)/Vendor/Specta/Specta\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
