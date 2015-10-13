@@ -83,7 +83,15 @@ NSString *LTSystemErrorMessageForError(int error) {
 
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url {
   return [NSError lt_errorWithCode:code userInfo:@{
+    NSURLErrorKey: url ?: [NSNull null]
+  }];
+}
+
++ (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
+                     description:(NSString *)description {
+  return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null],
+    kLTErrorDescriptionKey: description ?: [NSNull null]
   }];
 }
 

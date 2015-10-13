@@ -60,6 +60,10 @@ NSString *LTSystemErrorMessageForError(int error);
 /// Creates an error with Lightricks' domain, given error code and the given related URL.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url;
 
+/// Creates an error with Lightricks' domain, given error code, related URL and description.
++ (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
+                     description:(NSString *)description;
+
 /// Creates an error with Lightricks' domain, given error code, related URL and underlying error.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
                  underlyingError:(NSError *)underlyingError;
