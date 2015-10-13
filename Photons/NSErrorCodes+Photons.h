@@ -22,5 +22,7 @@ NS_ENUM(NSInteger) {
   /// Caused when an invalid asset type has been given.
   PTNErrorCodeInvalidAssetType,
   /// Caused when an invalid object has been given.
-  PTNErrorCodeInvalidObject
+  PTNErrorCodeInvalidObject,
+  /// Caused when object has failed to create itself.
+  PTNErrorCodeObjectCreationFailed,
 };
