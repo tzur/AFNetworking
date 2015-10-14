@@ -4,8 +4,10 @@
 #import "PTNImageResizer.h"
 
 #import <ImageIO/ImageIO.h>
+#import <LTKit/LTCGExtensions.h>
 
 #import "NSError+Photons.h"
+#import "PTNImageMetadata.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -42,7 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *transferredProperties = (__bridge_transfer NSDictionary *)(properties);
     CGSize inputSize = [self sizeOfImageWithProperties:transferredProperties];
 
-    if (inputSize.width == size.width && inputSize.height == size.height) {
+    if (inputSize.width == CGSizeNull.width || inputSize.height == CGSizeNull.height) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidObject url:url
+                                          description:@"Image doesn't have width or height"]];
+      return disposable;
+    } else if (inputSize.width == size.width && inputSize.height == size.height) {
       [subscriber sendNext:[UIImage imageWithContentsOfFile:url.path]];
       [subscriber sendCompleted];
 
@@ -78,25 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (CGSize)sizeOfImageWithProperties:(NSDictionary *)properties {
-  NSNumber *width = properties[(NSString *)kCGImagePropertyPixelWidth];
-  NSNumber *height = properties[(NSString *)kCGImagePropertyPixelHeight];
-  int orientation = [properties[(NSString *)kCGImagePropertyOrientation] intValue];
-
-  CGSize size = CGSizeMake(NAN, NAN);
-
-  if (width) {
-    size.width = width.floatValue;
-  }
-  if (height) {
-    size.height = height.floatValue;
-  }
-
-  // Flip size for rotated images.
-  if (orientation >= 5) {
-    size = CGSizeMake(size.height, size.width);
-  }
-
-  return size;
+  PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithMetadataDictionary:properties];
+  return metadata.size;
 }
 
 - (CGFloat)maxPixelSizeForInputSize:(CGSize)inputSize outputSize:(CGSize)outputSize
