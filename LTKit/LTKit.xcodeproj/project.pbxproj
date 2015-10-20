@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28178215187C2E7200548AE4 /* libOCMock.a */; };
 		282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 282CF089187B030A00904F07 /* NSObject+AddToContainer.m */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
@@ -79,6 +78,7 @@
 		8B8720431924A76700517F2E /* LTTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA11AEA18320FCB00A5001D /* LTTypedefs.h */; };
 		8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF088187B030A00904F07 /* NSObject+AddToContainer.h */; };
 		8B87204C1924A76800517F2E /* LTAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 28ABE003187153AD005A5DEC /* LTAnimation.h */; };
+		8B8A82081BD65E800027B97D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8A81FE1BD65E4F0027B97D /* libOCMock.a */; };
 		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
 		8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */; };
 		8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */; };
@@ -191,6 +191,41 @@
 			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
 			remoteInfo = "Specta-iOSTests";
 		};
+		8B8A81F91BD65E4F0027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8B8A81FB1BD65E4F0027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8B8A81FD1BD65E4F0027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8B8A81FF1BD65E4F0027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		8B8A82011BD65E4F0027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
 		8BB4714D183B534000CA1681 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
@@ -285,13 +320,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		28178215187C2E7200548AE4 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
-		28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
-		28178218187C2E7200548AE4 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
-		28178219187C2E7200548AE4 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
-		2817821A187C2E7200548AE4 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
-		2817821B187C2E7200548AE4 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
-		2817821C187C2E7200548AE4 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		282CF088187B030A00904F07 /* NSObject+AddToContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AddToContainer.h"; sourceTree = "<group>"; };
 		282CF089187B030A00904F07 /* NSObject+AddToContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AddToContainer.m"; sourceTree = "<group>"; };
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
@@ -364,6 +392,7 @@
 		8B871F97192396BE00517F2E /* NSError+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+LTKit.mm"; sourceTree = "<group>"; };
 		8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+LTKit.h"; sourceTree = "<group>"; };
 		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+LTKit.m"; sourceTree = "<group>"; };
+		8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/testing/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
 		8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Physical.h"; sourceTree = "<group>"; };
@@ -428,38 +457,15 @@
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8BCA6735182FD8EA003FCB65 /* libExpecta.a in Frameworks */,
+				8B8A82081BD65E800027B97D /* libOCMock.a in Frameworks */,
 				8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
-				2817821D187C2E7200548AE4 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		28178214187C2E7200548AE4 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				28178215187C2E7200548AE4 /* libOCMock.a */,
-				28178216187C2E7200548AE4 /* OCMock */,
-			);
-			name = OCMock;
-			path = ../../third_party/testing/OCMock;
-			sourceTree = "<group>";
-		};
-		28178216187C2E7200548AE4 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				28178217187C2E7200548AE4 /* NSNotificationCenter+OCMAdditions.h */,
-				28178218187C2E7200548AE4 /* OCMArg.h */,
-				28178219187C2E7200548AE4 /* OCMConstraint.h */,
-				2817821A187C2E7200548AE4 /* OCMock.h */,
-				2817821B187C2E7200548AE4 /* OCMockObject.h */,
-				2817821C187C2E7200548AE4 /* OCMockRecorder.h */,
-			);
-			path = OCMock;
-			sourceTree = "<group>";
-		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -660,8 +666,8 @@
 			isa = PBXGroup;
 			children = (
 				8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */,
+				8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */,
 				8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */,
-				28178214187C2E7200548AE4 /* OCMock */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -679,6 +685,18 @@
 				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */,
 			);
 			name = IO;
+			sourceTree = "<group>";
+		};
+		8B8A81E71BD65E4F0027B97D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B8A81FA1BD65E4F0027B97D /* OCMock.framework */,
+				8B8A81FC1BD65E4F0027B97D /* OCMockTests.xctest */,
+				8B8A81FE1BD65E4F0027B97D /* libOCMock.a */,
+				8B8A82001BD65E4F0027B97D /* OCMockLibTests.xctest */,
+				8B8A82021BD65E4F0027B97D /* OCMock.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8B8E50FC1861EB1F00821829 /* Base */ = {
@@ -906,6 +924,10 @@
 					ProjectRef = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
 				},
 				{
+					ProductGroup = 8B8A81E71BD65E4F0027B97D /* Products */;
+					ProjectRef = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B4D457019C03AA8000B25F9 /* Products */;
 					ProjectRef = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
 				},
@@ -966,6 +988,41 @@
 			fileType = wrapper.cfbundle;
 			path = "Specta-iOSTests.xctest";
 			remoteRef = 8B4D457C19C03AA8000B25F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A81FA1BD65E4F0027B97D /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B8A81F91BD65E4F0027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A81FC1BD65E4F0027B97D /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 8B8A81FB1BD65E4F0027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A81FE1BD65E4F0027B97D /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 8B8A81FD1BD65E4F0027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A82001BD65E4F0027B97D /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 8B8A81FF1BD65E4F0027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A82021BD65E4F0027B97D /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B8A82011BD65E4F0027B97D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8BB4714E183B534000CA1681 /* libextobjc_OSX.a */ = {
@@ -1291,14 +1348,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
+					"$(SRCROOT)/../third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../third_party/testing/Specta/Specta",
-					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../third_party/testing/OCMock",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = LTKitTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1316,14 +1369,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/testing/Expecta/src/**",
+					"$(SRCROOT)/../third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../third_party/testing/Specta/Specta",
-					"$(SRCROOT)/../third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../third_party/testing/OCMock",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = LTKitTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
