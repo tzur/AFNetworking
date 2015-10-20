@@ -7,3 +7,6 @@
 [submodule "third_party/utils/libextobjc"]
 	path = third_party/utils/libextobjc
 	url = https://github.com/Lightricks/libextobjc.git
+[submodule "third_party/testing/OCMock"]
+	path = third_party/testing/OCMock
+	url = https://github.com/Lightricks/ocmock.git
