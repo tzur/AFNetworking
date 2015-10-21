@@ -263,7 +263,7 @@ static const CGFloat kMinimumDiameter = 2;
 #pragma mark Properties
 #pragma mark -
 
-LTProperty(CGFloat, scale, Scale, 0.01, 3.0, 1.0)
+LTProperty(CGFloat, scale, Scale, 0.01, 10.0, 1.0)
 LTProperty(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
 LTPropertyUpdatingProgram(CGFloat, opacity, Opacity, 0, 1, 1)
 LTPropertyUpdatingProgram(CGFloat, flow, Flow, 0.01, 1, 1)

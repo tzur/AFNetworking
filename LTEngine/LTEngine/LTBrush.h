@@ -102,7 +102,7 @@
 @property (strong, nonatomic) id<LTBrushTouchRadiusMapper> touchRadiusMapper;
 
 /// Controls the size of the brush with respect to the base size.
-/// Must be in range [0.1,3], default is \c 1.
+/// Must be in range [0.01, 10], default is \c 1.
 @property (nonatomic) CGFloat scale;
 LTPropertyDeclare(CGFloat, scale, Scale)
 
