@@ -516,7 +516,6 @@
 		8B16C9D21BAF0591002FB750 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
 		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; settings = {ASSET_TAGS = (); }; };
 		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; settings = {ASSET_TAGS = (); }; };
-		8B16CAFE1BB06827002FB750 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAF31BB06827002FB750 /* libOCMock.a */; settings = {ASSET_TAGS = (); }; };
 		8B16CAFF1BB06891002FB750 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CACB1BB06784002FB750 /* libExpecta.a */; };
 		8B16CB001BB06891002FB750 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAE41BB06797002FB750 /* libSpecta.a */; };
 		8B16CB011BB068AE002FB750 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAB01BB0670A002FB750 /* libextobjc_iOS.a */; };
@@ -693,6 +692,7 @@
 		8B87204A1924A76800517F2E /* LTViewNavigationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF081187B030000904F07 /* LTViewNavigationView.h */; };
 		8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF083187B030000904F07 /* LTViewPixelGrid.h */; };
 		8B8720C01925167400517F2E /* TextureContentsImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B8720BF1925167400517F2E /* TextureContentsImage.png */; };
+		8B8A823D1BD6623D0027B97D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8A82381BD662350027B97D /* libOCMock.a */; };
 		8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50E91861AA8900821829 /* LTShaderStorage.m */; };
 		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
@@ -1086,6 +1086,41 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTEngine;
+		};
+		8B8A82331BD662350027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8B8A82351BD662350027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8B8A82371BD662350027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8B8A82391BD662350027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		8B8A823B1BD662350027B97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
 		};
 		8BA821E4198693B000FBE68E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1730,16 +1765,6 @@
 		8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../LTKit/third_party/utils/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../LTKit/third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8B16CAD01BB06797002FB750 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../LTKit/third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
-		8B16CAF31BB06827002FB750 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
-		8B16CAF51BB06827002FB750 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
-		8B16CAF61BB06827002FB750 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
-		8B16CAF71BB06827002FB750 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
-		8B16CAF81BB06827002FB750 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
-		8B16CAF91BB06827002FB750 /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
-		8B16CAFA1BB06827002FB750 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
-		8B16CAFB1BB06827002FB750 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
-		8B16CAFC1BB06827002FB750 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
-		8B16CAFD1BB06827002FB750 /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		8B18BB751922771C00DA4B64 /* LTTextureContentsArchiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTextureContentsArchiver.h; sourceTree = "<group>"; };
 		8B18BB7619235F4200DA4B64 /* LTTextureContentsFileArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureContentsFileArchiver.h; sourceTree = "<group>"; };
 		8B18BB7719235F4200DA4B64 /* LTTextureContentsFileArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiver.mm; sourceTree = "<group>"; };
@@ -1807,6 +1832,7 @@
 		8B7EAA21187C5D960004A57A /* Colorize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Colorize.fsh; path = Resources/Colorize.fsh; sourceTree = "<group>"; };
 		8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiverSpec.mm; sourceTree = "<group>"; };
 		8B8720BF1925167400517F2E /* TextureContentsImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TextureContentsImage.png; path = Resources/TextureContentsImage.png; sourceTree = "<group>"; };
+		8B8A822B1BD662350027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../LTKit/third_party/testing/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8B8E50E81861AA8900821829 /* LTShaderStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTShaderStorage.h; sourceTree = "<group>"; };
 		8B8E50E91861AA8900821829 /* LTShaderStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTShaderStorage.m; sourceTree = "<group>"; };
 		8B8E50F01861CE1800821829 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Resources/Shader.vsh; sourceTree = "<group>"; };
@@ -2101,7 +2127,7 @@
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8B16CAFF1BB06891002FB750 /* libExpecta.a in Frameworks */,
-				8B16CAFE1BB06827002FB750 /* libOCMock.a in Frameworks */,
+				8B8A823D1BD6623D0027B97D /* libOCMock.a in Frameworks */,
 				8B16C9CF1BAF056C002FB750 /* libMantle-iOS.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
 				8B16C9CE1BAF0557002FB750 /* libLTKit.a in Frameworks */,
@@ -2841,32 +2867,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8B16CAF21BB06827002FB750 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				8B16CAF31BB06827002FB750 /* libOCMock.a */,
-				8B16CAF41BB06827002FB750 /* OCMock */,
-			);
-			name = OCMock;
-			path = ../../LTKit/third_party/testing/OCMock;
-			sourceTree = "<group>";
-		};
-		8B16CAF41BB06827002FB750 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				8B16CAF51BB06827002FB750 /* NSNotificationCenter+OCMAdditions.h */,
-				8B16CAF61BB06827002FB750 /* OCMArg.h */,
-				8B16CAF71BB06827002FB750 /* OCMConstraint.h */,
-				8B16CAF81BB06827002FB750 /* OCMLocation.h */,
-				8B16CAF91BB06827002FB750 /* OCMMacroState.h */,
-				8B16CAFA1BB06827002FB750 /* OCMock.h */,
-				8B16CAFB1BB06827002FB750 /* OCMockObject.h */,
-				8B16CAFC1BB06827002FB750 /* OCMRecorder.h */,
-				8B16CAFD1BB06827002FB750 /* OCMStubRecorder.h */,
-			);
-			path = OCMock;
-			sourceTree = "<group>";
-		};
 		8B18BB681922770B00DA4B64 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -3341,7 +3341,7 @@
 			isa = PBXGroup;
 			children = (
 				8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */,
-				8B16CAF21BB06827002FB750 /* OCMock */,
+				8B8A822B1BD662350027B97D /* OCMock.xcodeproj */,
 				8B16CAD01BB06797002FB750 /* Specta.xcodeproj */,
 				8B16C9B01BAF01B6002FB750 /* LTKit */,
 			);
@@ -3355,6 +3355,18 @@
 				8B32901F192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		8B8A822C1BD662350027B97D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B8A82341BD662350027B97D /* OCMock.framework */,
+				8B8A82361BD662350027B97D /* OCMockTests.xctest */,
+				8B8A82381BD662350027B97D /* libOCMock.a */,
+				8B8A823A1BD662350027B97D /* OCMockLibTests.xctest */,
+				8B8A823C1BD662350027B97D /* OCMock.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8B8E50EF1861CDF900821829 /* Resources */ = {
@@ -4155,6 +4167,10 @@
 					ProjectRef = 8BA821D4198693AF00FBE68E /* Mantle.xcodeproj */;
 				},
 				{
+					ProductGroup = 8B8A822C1BD662350027B97D /* Products */;
+					ProjectRef = 8B8A822B1BD662350027B97D /* OCMock.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B16CAD11BB06797002FB750 /* Products */;
 					ProjectRef = 8B16CAD01BB06797002FB750 /* Specta.xcodeproj */;
 				},
@@ -4307,6 +4323,41 @@
 			fileType = archive.ar;
 			path = libSpecta.a;
 			remoteRef = 8B16CAE31BB06797002FB750 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A82341BD662350027B97D /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B8A82331BD662350027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A82361BD662350027B97D /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 8B8A82351BD662350027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A82381BD662350027B97D /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 8B8A82371BD662350027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A823A1BD662350027B97D /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 8B8A82391BD662350027B97D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8A823C1BD662350027B97D /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B8A823B1BD662350027B97D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8BA821E5198693B000FBE68E /* Mantle.framework */ = {
@@ -5232,14 +5283,10 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
+					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
-					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -5257,14 +5304,10 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
+					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
-					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../LTKit/third_party/testing/OCMock",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

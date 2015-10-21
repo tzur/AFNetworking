@@ -988,7 +988,7 @@ context(@"framebuffer delegate", ^{
 
   beforeEach(^{
     delegateMock = [OCMockObject mockForProtocol:@protocol(LTViewFramebufferDelegate)];
-    glkViewMock = [OCMockObject mockForClass:[GLKView class]];
+    glkViewMock = [OCMockObject niceMockForClass:[GLKView class]];
     [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(20)] drawableWidth];
     [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(10)] drawableHeight];
 
@@ -999,6 +999,7 @@ context(@"framebuffer delegate", ^{
 
   afterEach(^{
     delegateMock = nil;
+    glkViewMock = nil;
     view = nil;
   });
 
