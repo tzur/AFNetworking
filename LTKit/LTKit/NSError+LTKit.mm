@@ -40,9 +40,10 @@ NSString *LTSystemErrorMessageForError(int error) {
   return [NSError errorWithDomain:kLTErrorDomain code:code userInfo:userInfo];
 }
 
-+ (instancetype)lt_errorWithCode:(NSInteger)code underlyingError:(NSError *)underlyingError {
++ (instancetype)lt_errorWithCode:(NSInteger)code
+                 underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
-    NSUnderlyingErrorKey: underlyingError ?: [NSNull null]
+    NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
   }];
 }
 
@@ -66,10 +67,10 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
-                 underlyingError:(NSError *)underlyingError {
+                 underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSFilePathErrorKey: path ?: [NSNull null],
-    NSUnderlyingErrorKey: underlyingError ?: [NSNull null]
+    NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
   }];
 }
 
@@ -96,10 +97,10 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
-                 underlyingError:(NSError *)underlyingError {
+                 underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null],
-    NSUnderlyingErrorKey: underlyingError ?: [NSNull null]
+    NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
   }];
 }
 
@@ -108,6 +109,10 @@ NSString *LTSystemErrorMessageForError(int error) {
     kLTSystemErrorKey: @(errno),
     kLTSystemErrorMessageKey: LTSystemErrorMessageForError(errno)
   }];
+}
+
++ (instancetype)lt_nullValueGivenError {
+  return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
 
 - (nullable NSError *)lt_underlyingError {

@@ -59,5 +59,7 @@ NS_ENUM(NSInteger) {
   /// Marks a POSIX error created from the current value of \c errno.
   LTErrorCodePOSIX,
   /// Caused when bad file header has been read.
-  LTErrorCodeBadHeader
+  LTErrorCodeBadHeader,
+  /// Caused when a nonnull value was expected but null was provided.
+  LTErrorCodeNullValueGiven
 };
