@@ -35,7 +35,8 @@ NSString *LTSystemErrorMessageForError(int error);
 + (instancetype)lt_errorWithCode:(NSInteger)code userInfo:(nullable NSDictionary *)userInfo;
 
 /// Creates an error with Lightricks' domain, given error code and the given underlying error.
-+ (instancetype)lt_errorWithCode:(NSInteger)code underlyingError:(NSError *)underlyingError;
++ (instancetype)lt_errorWithCode:(NSInteger)code
+                 underlyingError:(nullable NSError *)underlyingError;
 
 /// Creates an error with Lightricks' domain, given error code and the given underlying errors.
 + (instancetype)lt_errorWithCode:(NSInteger)code
@@ -50,7 +51,7 @@ NSString *LTSystemErrorMessageForError(int error);
 /// Creates an error with Lightricks' domain, given error code, related file path and underlying
 /// error.
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
-                 underlyingError:(NSError *)underlyingError;
+                 underlyingError:(nullable NSError *)underlyingError;
 
 /// Creates an error with Lightricks' domain, given error code, related file path and underlying
 /// errors.
@@ -66,7 +67,7 @@ NSString *LTSystemErrorMessageForError(int error);
 
 /// Creates an error with Lightricks' domain, given error code, related URL and underlying error.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
-                 underlyingError:(NSError *)underlyingError;
+                 underlyingError:(nullable NSError *)underlyingError;
 
 /// Returns an error with the current system error and its string representation. An error will be
 /// returned even if the current system error variable indicates that there's no error.

@@ -46,6 +46,19 @@ it(@"should create error with underlyingError", ^{
   expect(error.lt_underlyingError).to.equal(underlyingError);
 });
 
+it(@"should create error with underlyingError of nil", ^{
+  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound underlyingError:nil];
+
+  expect(error.domain).to.equal(kLTErrorDomain);
+  expect(error.code).to.equal(LTErrorCodeFileNotFound);
+  expect(error.lt_underlyingError).notTo.beNil();
+  expect(error.lt_underlyingError.code).to.equal(LTErrorCodeNullValueGiven);
+
+  expect(^{
+    __unused NSString *description = [error description];
+  }).notTo.raiseAny();
+});
+
 it(@"should create error with underlyingErrors", ^{
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound
                              underlyingErrors:underlyingErrors];
@@ -79,6 +92,21 @@ it(@"should create error with path and underlyingError", ^{
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
   expect(error.lt_path).to.equal(kPath);
   expect(error.lt_underlyingError).to.equal(underlyingError);
+});
+
+it(@"should create error with path and underlyingError of nil", ^{
+  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:kPath
+                             underlyingError:nil];
+
+  expect(error.domain).to.equal(kLTErrorDomain);
+  expect(error.code).to.equal(LTErrorCodeFileNotFound);
+  expect(error.lt_path).to.equal(kPath);
+  expect(error.lt_underlyingError).notTo.beNil();
+  expect(error.lt_underlyingError.code).to.equal(LTErrorCodeNullValueGiven);
+
+  expect(^{
+    __unused NSString *description = [error description];
+  }).notTo.raiseAny();
 });
 
 it(@"should create error with path and underlyingErrors", ^{
@@ -117,6 +145,20 @@ it(@"should create error with url and underlyingError", ^{
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
   expect(error.lt_url).to.equal(kURL);
   expect(error.lt_underlyingError).to.equal(underlyingError);
+});
+
+it(@"should create error with url and underlyingError of nil", ^{
+  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:kURL underlyingError:nil];
+
+  expect(error.domain).to.equal(kLTErrorDomain);
+  expect(error.code).to.equal(LTErrorCodeFileNotFound);
+  expect(error.lt_url).to.equal(kURL);
+  expect(error.lt_underlyingError).notTo.beNil();
+  expect(error.lt_underlyingError.code).to.equal(LTErrorCodeNullValueGiven);
+
+  expect(^{
+    __unused NSString *description = [error description];
+  }).notTo.raiseAny();
 });
 
 it(@"should create error with system error", ^{
