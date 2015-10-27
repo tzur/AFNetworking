@@ -148,7 +148,7 @@ static LTAnimationManager *instance = nil;
   for (LTAnimation *animation in self.animations) {
     // Calculate and update the total animation time, and the time since the last frame.
     CFTimeInterval timeSinceLastFrame = 0;
-    if (animation.lastFrameTime) {
+    if (animation.lastFrameTime > 0) {
       timeSinceLastFrame = [link timestamp] - animation.lastFrameTime;
       animation.animationTime += timeSinceLastFrame;
     }

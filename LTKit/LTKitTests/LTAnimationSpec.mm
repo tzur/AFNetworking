@@ -38,7 +38,7 @@ xcontext(@"animations", ^{
     __block NSUInteger counterCombined = 0;
     __block NSUInteger counter1 = 0;
     __block NSUInteger counter2 = 0;
-    const NSUInteger targetFrames = kTimeout * kTargetFps;
+    const NSUInteger targetFrames = (NSUInteger)(kTimeout * kTargetFps);
     
     [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
       ++counter1;
@@ -63,7 +63,7 @@ xcontext(@"animations", ^{
     
     [animation stopAnimation];
     expect([LTAnimation isAnyAnimationRunning]).will.beFalsy();
-    usleep(kTimeout * USEC_PER_SEC);
+    usleep((useconds_t)(kTimeout * USEC_PER_SEC));
     expect(didExecute).to.beFalsy();
   });
   
@@ -80,7 +80,7 @@ xcontext(@"animations", ^{
     }];
 
     expect([LTAnimation isAnyAnimationRunning]).will.beFalsy();
-    usleep(kTimeout * USEC_PER_SEC);
+    usleep((useconds_t)(kTimeout * USEC_PER_SEC));
     expect(counter).to.beLessThanOrEqualTo(1);
   });
 });
