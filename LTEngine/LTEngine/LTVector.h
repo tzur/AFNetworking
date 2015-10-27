@@ -2,7 +2,8 @@
 // Created by Yaron Inger.
 
 #import <GLKit/GLKit.h>
-#import <opencv2/core/core.hpp>
+
+#import "LTOpenCVCore.h"
 
 #ifdef __cplusplus
 

@@ -1827,6 +1827,7 @@
 		8B6B4FB01BDFA41700662235 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		8B6B4FB11BDFA41700662235 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		8B6B50261BDFCF3300662235 /* LTOpenCVCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTOpenCVCore.h; sourceTree = "<group>"; };
 		8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInverseTransformSampler.h; sourceTree = "<group>"; };
 		8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInverseTransformSampler.mm; sourceTree = "<group>"; };
 		8B7C6CB21B5285E200B90DBE /* LTMatParallelDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMatParallelDispatcher.h; sourceTree = "<group>"; };
@@ -3018,6 +3019,7 @@
 				28463D0E196983DE0021A7CD /* LTDefaultModule.h */,
 				28463D0F196983DE0021A7CD /* LTDefaultModule.m */,
 				8B3DEBEB18296B6100EA0C1A /* LTEngine-Prefix.pch */,
+				8B6B50261BDFCF3300662235 /* LTOpenCVCore.h */,
 				8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */,
 				8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */,
 				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */,

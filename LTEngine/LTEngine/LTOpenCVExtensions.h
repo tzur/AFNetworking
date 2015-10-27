@@ -1,8 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <opencv2/core/core.hpp>
-
+#import "LTOpenCVCore.h"
 #import "LTOpenCVHalfFloat.h"
 #import "LTVector.h"
 
