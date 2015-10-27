@@ -461,10 +461,8 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   switch (mat.channels()) {
     case 1:
       return CGColorSpaceCreateDeviceGray();
-      break;
     case 4:
       return CGColorSpaceCreateDeviceRGB();
-      break;
     default:
       LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
                mat.channels());
