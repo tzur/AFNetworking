@@ -20,6 +20,20 @@
                ReferencedContainer = "container:LTKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B8E51291868479100821829"
+               BuildableName = "LTKitUser.app"
+               BlueprintName = "LTKitUser"
+               ReferencedContainer = "container:LTKitUser.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,10 +56,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B8E51291868479100821829"
-            BuildableName = "LTKitUser.app"
-            BlueprintName = "LTKitUser"
-            ReferencedContainer = "container:../examples/LTKitUser/LTKitUser.xcodeproj">
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libLTKit.a"
+            BlueprintName = "LTKit"
+            ReferencedContainer = "container:LTKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -61,16 +75,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B8E51291868479100821829"
-            BuildableName = "LTKitUser.app"
-            BlueprintName = "LTKitUser"
-            ReferencedContainer = "container:../examples/LTKitUser/LTKitUser.xcodeproj">
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libLTKit.a"
+            BlueprintName = "LTKit"
+            ReferencedContainer = "container:LTKit.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,6 +93,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libLTKit.a"
+            BlueprintName = "LTKit"
+            ReferencedContainer = "container:LTKit.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
