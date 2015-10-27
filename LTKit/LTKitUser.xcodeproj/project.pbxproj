@@ -35,7 +35,7 @@
 		8B6B4F241BDF9EAB00662235 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		8B6B4F251BDF9EAB00662235 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		8B6B4F261BDF9EAB00662235 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		8B6B4F281BDF9EAB00662235 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../xcconfigs/Common.xcconfig; sourceTree = "<group>"; };
+		8B6B4F281BDF9EAB00662235 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B8E512A1868479100821829 /* LTKitUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTKitUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -84,7 +84,7 @@
 				8B6B4F221BDF9EAB00662235 /* Release.xcconfig */,
 			);
 			name = Configurations;
-			path = ../xcconfigs/Configurations;
+			path = ../Configuration/Configurations;
 			sourceTree = "<group>";
 		};
 		8B6B4F271BDF9EAB00662235 /* Targets */ = {
@@ -95,7 +95,7 @@
 				8B6B4F261BDF9EAB00662235 /* StaticLibrary.xcconfig */,
 			);
 			name = Targets;
-			path = ../xcconfigs/Targets;
+			path = ../Configuration/Targets;
 			sourceTree = "<group>";
 		};
 		8B6B4F291BDF9EAB00662235 /* Configuration */ = {

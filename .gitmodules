@@ -10,6 +10,6 @@
 [submodule "third_party/testing/OCMock"]
 	path = third_party/testing/OCMock
 	url = https://github.com/Lightricks/ocmock.git
-[submodule "xcconfigs"]
-	path = xcconfigs
-	url = https://github.com/Lightricks/xcconfigs.git
+[submodule "Configuration"]
+	path = Configuration
+	url = https://github.com/Lightricks/Configuration.git

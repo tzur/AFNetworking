@@ -385,7 +385,7 @@
 		8B7883621BDF70790051CCD1 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		8B7883631BDF70790051CCD1 /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		8B7883641BDF70790051CCD1 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		8B7883651BDF70790051CCD1 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../xcconfigs/Common.xcconfig; sourceTree = "<group>"; };
+		8B7883651BDF70790051CCD1 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B78CFDC197654A900684B1D /* LTEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEnum.h; sourceTree = "<group>"; };
 		8B7C6C9B1B52829100B90DBE /* LTMMInputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMMInputFile.h; sourceTree = "<group>"; };
 		8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMInputFile.mm; sourceTree = "<group>"; };
@@ -619,7 +619,7 @@
 				8B7883601BDF70790051CCD1 /* Release.xcconfig */,
 			);
 			name = Configurations;
-			path = ../xcconfigs/Configurations;
+			path = ../Configuration/Configurations;
 			sourceTree = "<group>";
 		};
 		8B7883611BDF70790051CCD1 /* Targets */ = {
@@ -630,7 +630,7 @@
 				8B7883641BDF70790051CCD1 /* StaticLibrary.xcconfig */,
 			);
 			name = Targets;
-			path = ../xcconfigs/Targets;
+			path = ../Configuration/Targets;
 			sourceTree = "<group>";
 		};
 		8B7C6C781B52722900B90DBE /* Extensions */ = {
