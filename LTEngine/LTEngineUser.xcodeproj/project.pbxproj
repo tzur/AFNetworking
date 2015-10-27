@@ -69,6 +69,12 @@
 		8B329054192CCB640010592E /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B4E493119E94D6F00B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E493519E94D7F00B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8B6B4FB61BDFA45400662235 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		8B6B4FB71BDFA45400662235 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8B6B4FB91BDFA45400662235 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		8B6B4FBA1BDFA45400662235 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		8B6B4FBB1BDFA45400662235 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		8B6B4FBD1BDFA45400662235 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B8E512A1868479100821829 /* LTEngineUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTEngineUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E512D1868479100821829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B8E512F1868479100821829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -134,10 +140,42 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		8B6B4FB31BDFA44900662235 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FB81BDFA45400662235 /* Configurations */,
+				8B6B4FBC1BDFA45400662235 /* Targets */,
+				8B6B4FBD1BDFA45400662235 /* Common.xcconfig */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		8B6B4FB81BDFA45400662235 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FB61BDFA45400662235 /* Debug.xcconfig */,
+				8B6B4FB71BDFA45400662235 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		8B6B4FBC1BDFA45400662235 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FB91BDFA45400662235 /* Application.xcconfig */,
+				8B6B4FBA1BDFA45400662235 /* Framework.xcconfig */,
+				8B6B4FBB1BDFA45400662235 /* StaticLibrary.xcconfig */,
+			);
+			name = Targets;
+			path = ../Configuration/Targets;
+			sourceTree = "<group>";
+		};
 		8B8E51211868479100821829 = {
 			isa = PBXGroup;
 			children = (
 				8B8E51331868479100821829 /* LTEngineUser */,
+				8B6B4FB31BDFA44900662235 /* Configuration */,
 				8B16CA441BAF133C002FB750 /* Libraries */,
 				8B8E512C1868479100821829 /* Frameworks */,
 				8B8E512B1868479100821829 /* Products */,
@@ -232,7 +270,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = LT;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					8B8E51291868479100821829 = {
@@ -338,6 +376,7 @@
 /* Begin XCBuildConfiguration section */
 		8B8E515A1868479100821829 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB61BDFA45400662235 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -355,6 +394,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -386,6 +426,7 @@
 		};
 		8B8E515B1868479100821829 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB71BDFA45400662235 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -426,6 +467,7 @@
 		};
 		8B8E515D1868479100821829 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB91BDFA45400662235 /* Application.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -451,6 +493,7 @@
 		};
 		8B8E515E1868479100821829 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB91BDFA45400662235 /* Application.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
