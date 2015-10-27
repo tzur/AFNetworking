@@ -7,11 +7,13 @@
 @interface TestClass : NSObject
 
 @property (nonatomic) CGFloat basicProperty;
-LTPropertyDeclare(CGFloat, basicProperty, BasicProperty)
+LTPropertyDeclare(CGFloat, basicProperty, BasicProperty);
+
 @property (nonatomic) NSUInteger uintProperty;
-LTPropertyDeclare(NSUInteger, uintProperty, UintProperty)
+LTPropertyDeclare(NSUInteger, uintProperty, UintProperty);
+
 @property (nonatomic) CGFloat customSetterProperty;
-LTPropertyDeclare(CGFloat, customSetterProperty, CustomSetterProperty)
+LTPropertyDeclare(CGFloat, customSetterProperty, CustomSetterProperty);
 
 @property (nonatomic) BOOL didCallCustomSetter;
 
@@ -20,11 +22,13 @@ LTPropertyDeclare(CGFloat, customSetterProperty, CustomSetterProperty)
 @interface ContainerClass : NSObject
 
 @property (nonatomic) CGFloat basicProperty;
-LTPropertyDeclare(CGFloat, basicProperty, BasicProperty)
-@property (nonatomic) CGFloat uintProperty;
-LTPropertyDeclare(CGFloat, uintProperty, UintProperty)
+LTPropertyDeclare(CGFloat, basicProperty, BasicProperty);
+
+@property (nonatomic) NSUInteger uintProperty;
+LTPropertyDeclare(NSUInteger, uintProperty, UintProperty);
+
 @property (nonatomic) CGFloat customProxyProperty;
-LTPropertyDeclare(CGFloat, customProxyProperty, CustomProxyProperty)
+LTPropertyDeclare(CGFloat, customProxyProperty, CustomProxyProperty);
 
 @property (nonatomic) BOOL didCallCustomSetter;
 @property (nonatomic) BOOL didCallProxySetter;
@@ -47,8 +51,8 @@ LTPropertyWithoutSetter(CGFloat, customSetterProperty, CustomSetterProperty, -1,
 @implementation ContainerClass
 
 LTPropertyProxy(CGFloat, basicProperty, BasicProperty, self.testClass);
-LTPropertyProxyWithoutSetter(CGFloat, uintProperty, UintProperty, self.testClass);
-- (void)setUintProperty:(CGFloat)uintProperty {
+LTPropertyProxyWithoutSetter(NSUInteger, uintProperty, UintProperty, self.testClass);
+- (void)setUintProperty:(NSUInteger)uintProperty {
   self.testClass.uintProperty = uintProperty;
   self.didCallProxySetter = YES;
 }
