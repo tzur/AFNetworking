@@ -62,7 +62,7 @@
   _shardPathsError = error;
 }
 
-- (BOOL)compressImage:(const cv::Mat4b &)image toPath:(NSString *)path
+- (BOOL)compressImage:(const cv::Mat &)image toPath:(NSString *)path
                 error:(NSError * __autoreleasing *)error {
   _compressedImage = image.clone();
   _compressedPath = path;
@@ -76,7 +76,7 @@
   return YES;
 }
 
-- (BOOL)decompressFromPath:(NSString *)path toImage:(cv::Mat4b *)image
+- (BOOL)decompressFromPath:(NSString *)path toImage:(cv::Mat *)image
                      error:(NSError * __autoreleasing *)error {
   _decompressedPath = path;
   _decompressedImage = image->clone();

@@ -7,6 +7,8 @@ typedef struct __attribute__((packed)) {
   uint16_t signature;
   /// Current version of the compressed image.
   uint16_t version;
+  /// Number of channels of the image. Supported values are {1, 3}.
+  uint16_t channels;
   /// Total width of the uncompressed image.
   uint16_t totalWidth;
   /// Total height of the uncompressed image.
