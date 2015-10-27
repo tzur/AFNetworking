@@ -5,3 +5,6 @@
 	path = LTKit
 	url = https://github.com/Lightricks/LTKit.git
 	branch = feature/split-ltdevice
+[submodule "Configuration"]
+	path = Configuration
+	url = https://github.com/Lightricks/Configuration.git
