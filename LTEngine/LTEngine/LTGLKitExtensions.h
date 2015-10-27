@@ -3,7 +3,8 @@
 
 #import <GLKit/GLKMath.h>
 #import <cmath>
-#import <opencv2/core/core.hpp>
+
+#import "LTOpenCVCore.h"
 
 /// A \c 2x2 identity matrix.
 extern const GLKMatrix2 GLKMatrix2Identity;
