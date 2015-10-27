@@ -10,7 +10,6 @@
 - (void)configure {
   [self bind:[UIScreen mainScreen] toClass:[UIScreen class]];
   [self bind:[UIDevice currentDevice] toClass:[UIDevice class]];
-  [self bind:[UIApplication sharedApplication] toClass:[UIApplication class]];
   [self bind:[NSFileManager defaultManager] toClass:[NSFileManager class]];
   [self bindBlock:^id(JSObjectionInjector __unused *context) {
     return [[LTRandom alloc] init];
