@@ -5,7 +5,7 @@
 
 #import "LTBrush.h"
 #import "LTCatmullRomInterpolant.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTRotatedRect.h"
@@ -238,14 +238,14 @@ context(@"painting", ^{
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
 
-      painter.brush.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.brush.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
 
       expect([painter.strokes[0] factory])
           .to.beKindOf([LTCatmullRomInterpolantFactory class]);
-      expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
+      expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolantFactory class]);
     });
 
     context(@"touch radius", ^{
@@ -399,7 +399,7 @@ context(@"painting", ^{
       brush.spacing = 0.99;
       brush.baseDiameter = kCanvasSize.width / 2;
       painter.brush = brush;
-      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter clearWithColor:LTVector4(0, 0, 0, 1)];
 
       painter.airbrush = YES;
@@ -422,7 +422,7 @@ context(@"painting", ^{
       stroke = painter.lastStroke;
       painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
                                   canvasTexture:canvas];
-      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter clearWithColor:LTVector4(0, 0, 0, 1)];
       expect($(canvas.image)).to.equalMat($(background));
     });

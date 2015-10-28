@@ -1,11 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 
 #import "LTInterpolatedObject.h"
 
-@implementation LTLinearInterpolationRoutine
+@implementation LTLinearInterpolant
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames {
   NSArray *propertiesToInterpolate = [keyFrames.firstObject propertiesToInterpolate];
@@ -30,18 +30,18 @@
 
 @end
 
-@implementation LTLinearInterpolationRoutineFactory
+@implementation LTLinearInterpolantFactory
 
 - (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
-  return [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
+  return [[LTLinearInterpolant alloc] initWithKeyFrames:keyFrames];
 }
 
 - (NSUInteger)expectedKeyFrames {
-  return [LTLinearInterpolationRoutine expectedKeyFrames];
+  return [LTLinearInterpolant expectedKeyFrames];
 }
 
 - (NSRange)rangeOfIntervalInWindow {
-  return [LTLinearInterpolationRoutine rangeOfIntervalInWindow];
+  return [LTLinearInterpolant rangeOfIntervalInWindow];
 }
 
 @end

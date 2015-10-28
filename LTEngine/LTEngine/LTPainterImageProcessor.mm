@@ -3,7 +3,7 @@
 
 #import "LTPainterImageProcessor.h"
 
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPaintingStrategy.h"
 #import "LTPainter+LTView.h"
 #import "LTProgressiveImageProcessor+Protected.h"
@@ -39,7 +39,7 @@
 - (void)createPainterWithTexture:(LTTexture *)texture {
   self.painter =
       [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvasTexture:texture];
-  self.painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+  self.painter.splineFactory = [[LTLinearInterpolantFactory alloc] init];
 }
 
 #pragma mark -

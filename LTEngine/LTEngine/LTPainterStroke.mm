@@ -5,7 +5,7 @@
 
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTPolynomialInterpolant.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTPainterPoint.h"
 
@@ -52,7 +52,7 @@
   id<LTPolynomialInterpolantFactory> factory = self.factory;
   if (self.controlPoints.count < factory.expectedKeyFrames -
                                  [factory rangeOfIntervalInWindow].location) {
-    factory = [[LTLinearInterpolationRoutineFactory alloc] init];
+    factory = [[LTLinearInterpolantFactory alloc] init];
   } else if (self.controlPoints.count < factory.expectedKeyFrames) {
     return nil;
   }

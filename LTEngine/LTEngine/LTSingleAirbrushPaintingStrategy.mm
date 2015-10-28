@@ -6,7 +6,7 @@
 #import <LTKit/LTRandom.h>
 
 #import "LTBrush.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainter.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"

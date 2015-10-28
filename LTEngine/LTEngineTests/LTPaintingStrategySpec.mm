@@ -6,7 +6,7 @@
 #import "LTBrush.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 
 @interface LTPainterStroke ()
 @property (strong, nonatomic) id<LTPolynomialInterpolantFactory> factory;
@@ -52,7 +52,7 @@ context(@"painting directions", ^{
         directions = [LTPaintingDirections directionsWithBrush:brush linearStrokeStartingAt:point];
         expect(directions.brush).to.beIdenticalTo(brush);
         expect(directions.stroke.startingPoint).to.equal(point);
-        expect(directions.stroke.factory).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
+        expect(directions.stroke.factory).to.beKindOf([LTLinearInterpolantFactory class]);
       });
       
       it(@"should raise when creating with no brush", ^{

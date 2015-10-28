@@ -5,9 +5,9 @@
 
 /// Implementation of a linear interpolant, accepting two keyframes and performing a linear
 /// interpolation between them.
-@interface LTLinearInterpolationRoutine : LTPolynomialInterpolant
+@interface LTLinearInterpolant : LTPolynomialInterpolant
 @end
 
 /// Factory for creating linear interpolant instances.
-@interface LTLinearInterpolationRoutineFactory : NSObject <LTPolynomialInterpolantFactory>
+@interface LTLinearInterpolantFactory : NSObject <LTPolynomialInterpolantFactory>
 @end

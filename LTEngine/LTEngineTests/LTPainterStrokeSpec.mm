@@ -5,7 +5,7 @@
 
 #import "LTCatmullRomInterpolant.h"
 #import "LTDegenerateInterpolationRoutine.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
 
@@ -65,7 +65,7 @@ context(@"adding points and segments", ^{
   
   it(@"should add point", ^{
     stroke = [[LTPainterStroke alloc]
-              initWithInterpolationRoutineFactory:[[LTLinearInterpolationRoutineFactory alloc] init]
+              initWithInterpolationRoutineFactory:[[LTLinearInterpolantFactory alloc] init]
               startingPoint:startingPoint];
     [stroke addPointAt:newPoint];
     expect(stroke.segments.count).to.equal(1);
@@ -94,7 +94,7 @@ context(@"adding points and segments", ^{
   
   context(@"linear interpolation factory", ^{
     beforeEach(^{
-      factory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      factory = [[LTLinearInterpolantFactory alloc] init];
       stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
                                                               startingPoint:startingPoint];
     });
@@ -135,7 +135,7 @@ context(@"adding points and segments", ^{
     
     it(@"should return linear segment when there are not enough points", ^{
       expect([[stroke addSegmentTo:newPoints[0]] interpolant])
-          .to.beKindOf([LTLinearInterpolationRoutine class]);
+          .to.beKindOf([LTLinearInterpolant class]);
       expect([stroke addSegmentTo:newPoints[1]]).to.beNil();
       expect([[stroke addSegmentTo:newPoints[2]] interpolant])
           .to.beKindOf([LTCatmullRomInterpolant class]);
@@ -172,7 +172,7 @@ context(@"adding points and segments", ^{
     p3.contentPosition = CGPointMake(3, 3);
     
     stroke = [[LTPainterStroke alloc]
-              initWithInterpolationRoutineFactory:[[LTLinearInterpolationRoutineFactory alloc] init]
+              initWithInterpolationRoutineFactory:[[LTLinearInterpolantFactory alloc] init]
               startingPoint:startingPoint];
 
     [stroke addSegmentTo:p1];

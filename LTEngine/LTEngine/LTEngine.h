@@ -117,7 +117,7 @@
 
 // GPU/Painting/Interpolants.
 #import <LTEngine/LTCatmullRomInterpolant.h>
-#import <LTEngine/LTLinearInterpolationRoutine.h>
+#import <LTEngine/LTLinearInterpolant.h>
 
 // UI.
 #import <LTEngine/LTView.h>
