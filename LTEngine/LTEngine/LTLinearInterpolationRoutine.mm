@@ -32,7 +32,7 @@
 
 @implementation LTLinearInterpolationRoutineFactory
 
-- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames {
+- (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
   return [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
 }
 

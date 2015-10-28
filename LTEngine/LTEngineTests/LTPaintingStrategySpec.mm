@@ -9,7 +9,7 @@
 #import "LTLinearInterpolationRoutine.h"
 
 @interface LTPainterStroke ()
-@property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+@property (strong, nonatomic) id<LTPolynomialInterpolantFactory> factory;
 @end
 
 SpecBegin(LTPaintingStrategy)

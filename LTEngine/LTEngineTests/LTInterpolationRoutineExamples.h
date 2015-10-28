@@ -3,19 +3,19 @@
 
 #import "LTInterpolatedObject.h"
 
-/// Interpolation routines examples shared group name.
+/// Interpolants examples shared group name.
 extern NSString * const kLTInterpolationRoutineExamples;
 
-/// Interpolation routines factory examples shared group name.
+/// Interpolants factory examples shared group name.
 extern NSString * const kLTInterpolationRoutineFactoryExamples;
 
-/// Class object of LTInterpolationRoutine subclass to test.
+/// Class object of LTPolynomialInterpolant subclass to test.
 extern NSString * const kLTInterpolationRoutineClass;
 
-/// Instance of the LTInterpolationRoutine factory to test.
+/// Instance of the LTPolynomialInterpolant factory to test.
 extern NSString * const kLTInterpolationRoutineFactory;
 
-/// Used to test the various interpolation routines.
+/// Used to test the various interpolants.
 @interface InterpolatedObject : NSObject <LTInterpolatedObject>
 
 @property (nonatomic) double propertyNotToInterpolate;

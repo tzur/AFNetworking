@@ -4,15 +4,15 @@
 #import "LTPainterStroke.h"
 
 #import "LTDegenerateInterpolationRoutine.h"
-#import "LTInterpolationRoutine.h"
+#import "LTPolynomialInterpolant.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterStrokeSegment.h"
 #import "LTPainterPoint.h"
 
 @interface LTPainterStroke ()
 
-/// Factory used to generate the interpolation routine for new segments of the stroke.
-@property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+/// Factory used to generate the interpolant for new segments of the stroke.
+@property (strong, nonatomic) id<LTPolynomialInterpolantFactory> factory;
 
 /// Control points generating the stroke.
 @property (strong, nonatomic) NSMutableArray *controlPoints;
@@ -28,7 +28,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithInterpolationRoutineFactory:(id<LTInterpolationRoutineFactory>)factory
+- (instancetype)initWithInterpolationRoutineFactory:(id<LTPolynomialInterpolantFactory>)factory
                                       startingPoint:(LTPainterPoint *)startingPoint {
   if (self = [super init]) {
     LTParameterAssert(factory);
@@ -49,7 +49,7 @@
   
   // Use the default factory, but fall back to a linear interpolation factory in case there aren't
   // enough control points.
-  id<LTInterpolationRoutineFactory> factory = self.factory;
+  id<LTPolynomialInterpolantFactory> factory = self.factory;
   if (self.controlPoints.count < factory.expectedKeyFrames -
                                  [factory rangeOfIntervalInWindow].location) {
     factory = [[LTLinearInterpolationRoutineFactory alloc] init];
@@ -60,14 +60,14 @@
   NSUInteger neededPoints = factory.expectedKeyFrames;
   NSArray *keyPoints = [self.controlPoints subarrayWithRange:
                         NSMakeRange(self.controlPoints.count - neededPoints, neededPoints)];
-  LTInterpolationRoutine *routine = [factory routineWithKeyFrames:keyPoints];
+  LTPolynomialInterpolant *interpolant = [factory interpolantWithKeyFrames:keyPoints];
   NSArray *keyPointsOnInterval = [keyPoints subarrayWithRange:[factory rangeOfIntervalInWindow]];
 
   // The distance on the segment start is the distance of the first point on the segment interval,
   // unless we're dealing with a degenerate segment, meaning the point is disconnected so its
   // distance should be manually calculated.
   CGFloat distanceOnSegmentStart = [keyPointsOnInterval.firstObject distanceFromStart];
-  if ([routine isKindOfClass:[LTDegenerateInterpolationRoutine class]]) {
+  if ([interpolant isKindOfClass:[LTDegenerateInterpolationRoutine class]]) {
     distanceOnSegmentStart +=
         CGPointDistance(point.contentPosition,
                         [self.controlPoints[self.controlPoints.count - 2] contentPosition]);
@@ -76,7 +76,7 @@
   LTPainterStrokeSegment *segment =
       [[LTPainterStrokeSegment alloc] initWithSegmentIndex:self.mutableSegments.count
                                          distanceFromStart:distanceOnSegmentStart
-                                   andInterpolationRoutine:routine];
+                                            andInterpolant:interpolant];
 
   [keyPointsOnInterval.lastObject setDistanceFromStart:distanceOnSegmentStart + segment.length];
   [self.mutableSegments addObject:segment];

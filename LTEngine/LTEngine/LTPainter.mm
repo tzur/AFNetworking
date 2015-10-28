@@ -98,7 +98,7 @@
   return [[LTBrush alloc] init];
 }
 
-- (id<LTInterpolationRoutineFactory>)createDefaultSplineFactory {
+- (id<LTPolynomialInterpolantFactory>)createDefaultSplineFactory {
   return [[LTCatmullRomInterpolationRoutineFactory alloc] init];
 }
 

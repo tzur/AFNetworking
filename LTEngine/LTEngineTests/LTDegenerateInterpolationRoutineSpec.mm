@@ -18,7 +18,7 @@ it(@"should always return the single source keyframe", ^{
   InterpolatedObject *object = [[InterpolatedObject alloc] init];
   object.floatToInterpolate = 1;
   object.doubleToInterpolate = 2;
-  LTInterpolationRoutine *routine =
+  LTPolynomialInterpolant *routine =
       [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[object]];
   expect([routine valueAtKey:0]).to.equal(object);
   expect([routine valueAtKey:0.5]).to.equal(object);

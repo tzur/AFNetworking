@@ -1,11 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolationRoutine.h"
+#import "LTPolynomialInterpolant.h"
 
 #import "LTInterpolatedObject.h"
 
-@interface LTInterpolationRoutine ()
+@interface LTPolynomialInterpolant ()
 
 /// Array of objects acting as keyframes for the interpolation.
 @property (strong, nonatomic) NSArray *keyFrames;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation LTInterpolationRoutine
+@implementation LTPolynomialInterpolant
 
 + (NSUInteger)expectedKeyFrames {
   LTMethodNotImplemented();

@@ -1,13 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolationRoutine.h"
+#import "LTPolynomialInterpolant.h"
 
-/// Implementation of a linear interpolation routine, accepting two keyframes and performing a
-/// linear interpolation between them.
-@interface LTLinearInterpolationRoutine : LTInterpolationRoutine
+/// Implementation of a linear interpolant, accepting two keyframes and performing a linear
+/// interpolation between them.
+@interface LTLinearInterpolationRoutine : LTPolynomialInterpolant
 @end
 
-/// Factory for creating linear interpolation routine instances.
-@interface LTLinearInterpolationRoutineFactory : NSObject <LTInterpolationRoutineFactory>
+/// Factory for creating linear interpolant instances.
+@interface LTLinearInterpolationRoutineFactory : NSObject <LTPolynomialInterpolantFactory>
 @end

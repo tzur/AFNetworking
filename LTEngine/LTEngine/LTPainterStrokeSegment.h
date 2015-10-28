@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-@class LTInterpolationRoutine, LTPainterPoint;
+@class LTPolynomialInterpolant, LTPainterPoint;
 
 /// This class represents a segment of a painter stroke, used in the \c LTPainter mechanism.
 /// The main purpose of this class is to generate interpolated points on the segment.
@@ -11,11 +11,9 @@
 ///
 /// @param index index of the segment on the stroke it belongs to.
 /// @param distanceFromStart distance of the segment start from the stroke's starting point.
-/// @param interpolationRoutine the interpolation routine used to generate points on along the
-/// segment.
-- (instancetype)initWithSegmentIndex:(NSUInteger)index
-                   distanceFromStart:(CGFloat)distance
-             andInterpolationRoutine:(LTInterpolationRoutine *)routine;
+/// @param interpolant the interpolant used to sample points along the segment.
+- (instancetype)initWithSegmentIndex:(NSUInteger)index distanceFromStart:(CGFloat)distance
+                      andInterpolant:(LTPolynomialInterpolant *)interpolant;
 
 /// Returns a list of points on the segment.
 - (NSArray *)pointsWithInterval:(CGFloat)distance startingAtOffset:(CGFloat)offset;

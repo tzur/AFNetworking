@@ -5,7 +5,7 @@
 
 #import "LTInterpolatedObject.h"
 
-@interface LTInterpolationRoutine ()
+@interface LTPolynomialInterpolant ()
 @property (strong, nonatomic) NSArray *keyFrames;
 @end
 
@@ -38,7 +38,7 @@
 
 @implementation LTDegenerateInterpolationRoutineFactory
 
-- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames {
+- (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
   return [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
 }
 

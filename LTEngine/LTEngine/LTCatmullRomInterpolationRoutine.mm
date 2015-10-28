@@ -41,7 +41,7 @@ static const GLKMatrix4 M = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
 
 @implementation LTCatmullRomInterpolationRoutineFactory
 
-- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames {
+- (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
   return [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
 }
 

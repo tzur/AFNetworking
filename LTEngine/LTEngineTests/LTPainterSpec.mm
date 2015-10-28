@@ -30,7 +30,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @end
 
 @interface LTPainterStroke ()
-@property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+@property (strong, nonatomic) id<LTPolynomialInterpolantFactory> factory;
 @property (strong, nonatomic) NSMutableArray *controlPoints;
 @end
 
@@ -99,7 +99,7 @@ context(@"properties", ^{
   });
   
   it(@"should set splineFactory", ^{
-    id<LTInterpolationRoutineFactory> factory =
+    id<LTPolynomialInterpolantFactory> factory =
         [[LTCatmullRomInterpolationRoutineFactory alloc] init];
     painter.splineFactory = factory;
     expect(painter.splineFactory).to.beIdenticalTo(factory);

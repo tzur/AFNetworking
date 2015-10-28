@@ -104,7 +104,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
     __block LTBrush *brush;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    __block LTInterpolationRoutine *spline;
+    __block LTPolynomialInterpolant *interpolant;
     __block LTPainterPoint *point;
     __block LTPainterStrokeSegment *segment;
     
@@ -128,9 +128,9 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       
       point = [[LTPainterPoint alloc] init];
       point.contentPosition = kOutputCenter;
-      spline = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
+      interpolant = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
-                                             andInterpolationRoutine:spline];
+                                                      andInterpolant:interpolant];
       
       [brush startNewStrokeAtPoint:point];
       [brush.texture clearWithColor:LTVector4(1, 1, 1, 1)];

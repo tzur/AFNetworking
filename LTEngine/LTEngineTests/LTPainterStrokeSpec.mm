@@ -10,7 +10,7 @@
 #import "LTPainterStrokeSegment.h"
 
 @interface LTPainterStrokeSegment ()
-@property (strong, nonatomic) LTInterpolationRoutine *routine;
+@property (strong, nonatomic) LTPolynomialInterpolant *interpolant;
 @property (strong, nonatomic) LTPainterPoint *startPoint;
 @property (strong, nonatomic) LTPainterPoint *endPoint;
 @end
@@ -18,7 +18,7 @@
 SpecBegin(LTPainterStroke)
 
 context(@"initialization", ^{
-  __block id<LTInterpolationRoutineFactory> factory;
+  __block id<LTPolynomialInterpolantFactory> factory;
   
   beforeEach(^{
     factory = [[LTDegenerateInterpolationRoutineFactory alloc] init];
@@ -55,7 +55,7 @@ context(@"adding points and segments", ^{
   __block LTPainterStroke *stroke;
   __block LTPainterPoint *startingPoint;
   __block LTPainterPoint *newPoint;
-  __block id<LTInterpolationRoutineFactory> factory;
+  __block id<LTPolynomialInterpolantFactory> factory;
 
   beforeEach(^{
     startingPoint = [[LTPainterPoint alloc] init];
@@ -134,13 +134,13 @@ context(@"adding points and segments", ^{
     });
     
     it(@"should return linear segment when there are not enough points", ^{
-      expect([[stroke addSegmentTo:newPoints[0]]
-              routine]).to.beKindOf([LTLinearInterpolationRoutine class]);
+      expect([[stroke addSegmentTo:newPoints[0]] interpolant])
+          .to.beKindOf([LTLinearInterpolationRoutine class]);
       expect([stroke addSegmentTo:newPoints[1]]).to.beNil();
-      expect([[stroke addSegmentTo:newPoints[2]]
-              routine]).to.beKindOf([LTCatmullRomInterpolationRoutine class]);
-      expect([[stroke addSegmentTo:newPoints[2]]
-              routine]).to.beKindOf([LTCatmullRomInterpolationRoutine class]);
+      expect([[stroke addSegmentTo:newPoints[2]] interpolant])
+          .to.beKindOf([LTCatmullRomInterpolationRoutine class]);
+      expect([[stroke addSegmentTo:newPoints[2]] interpolant])
+          .to.beKindOf([LTCatmullRomInterpolationRoutine class]);
       expect(stroke.segments.count).to.equal(3);
     });
     
