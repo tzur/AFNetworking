@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTDegenerateInterpolationRoutine.h"
+#import "LTDegenerateInterpolant.h"
 
 #import "LTInterpolatedObject.h"
 
@@ -9,7 +9,7 @@
 @property (strong, nonatomic) NSArray *keyFrames;
 @end
 
-@implementation LTDegenerateInterpolationRoutine
+@implementation LTDegenerateInterpolant
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray __unused *)keyFrames {
   return nil;
@@ -36,18 +36,18 @@
 
 @end
 
-@implementation LTDegenerateInterpolationRoutineFactory
+@implementation LTDegenerateInterpolantFactory
 
 - (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
-  return [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
+  return [[LTDegenerateInterpolant alloc] initWithKeyFrames:keyFrames];
 }
 
 - (NSUInteger)expectedKeyFrames {
-  return [LTDegenerateInterpolationRoutine expectedKeyFrames];
+  return [LTDegenerateInterpolant expectedKeyFrames];
 }
 
 - (NSRange)rangeOfIntervalInWindow {
-  return [LTDegenerateInterpolationRoutine rangeOfIntervalInWindow];
+  return [LTDegenerateInterpolant rangeOfIntervalInWindow];
 }
 
 @end

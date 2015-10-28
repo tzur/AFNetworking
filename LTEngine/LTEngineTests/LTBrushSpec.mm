@@ -8,7 +8,7 @@
 #import <LTEngine/LTBrushRandomState.h>
 #import <LTEngine/LTBrushScatterEffect.h>
 #import <LTEngine/LTBrushShapeDynamicsEffect.h>
-#import <LTEngine/LTDegenerateInterpolationRoutine.h>
+#import <LTEngine/LTDegenerateInterpolant.h>
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTGLKitExtensions.h>
 #import <LTEngine/LTLinearInterpolant.h>
@@ -171,8 +171,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
 
     it(@"should set splineFactory", ^{
       id<LTPolynomialInterpolantFactory> linear = [[LTLinearInterpolantFactory alloc] init];
-      id<LTPolynomialInterpolantFactory> degenerate =
-          [[LTDegenerateInterpolationRoutineFactory alloc] init];
+      id<LTPolynomialInterpolantFactory> degenerate = [[LTDegenerateInterpolantFactory alloc] init];
 
       brush.splineFactory = linear;
       expect(brush.splineFactory).to.beIdenticalTo(linear);

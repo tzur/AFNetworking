@@ -4,7 +4,7 @@
 #import "LTPainterStrokeSegment.h"
 
 #import "LTCatmullRomInterpolant.h"
-#import "LTDegenerateInterpolationRoutine.h"
+#import "LTDegenerateInterpolant.h"
 #import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 
@@ -16,7 +16,7 @@ __block LTPolynomialInterpolant *interpolant;
 context(@"initialization", ^{
   beforeEach(^{
     LTPainterPoint *point = [[LTPainterPoint alloc] init];
-    interpolant = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
+    interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
   });
   
   it(@"should initailize with valid arguments", ^{
@@ -45,7 +45,7 @@ context(@"initialization", ^{
 context(@"points with interval", ^{
   context(@"arguments validation", ^{
     beforeEach(^{
-      interpolant = [[LTDegenerateInterpolationRoutine alloc]
+      interpolant = [[LTDegenerateInterpolant alloc]
                      initWithKeyFrames:@[[[LTPainterPoint alloc] init]]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
@@ -80,7 +80,7 @@ context(@"points with interval", ^{
     beforeEach(^{
       LTPainterPoint *point = [[LTPainterPoint alloc] init];
       point.contentPosition = CGPointMake(1,1);
-      interpolant = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
+      interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
                                                       andInterpolant:interpolant];

@@ -4,7 +4,7 @@
 #import "LTPainterStroke.h"
 
 #import "LTCatmullRomInterpolant.h"
-#import "LTDegenerateInterpolationRoutine.h"
+#import "LTDegenerateInterpolant.h"
 #import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStrokeSegment.h"
@@ -21,7 +21,7 @@ context(@"initialization", ^{
   __block id<LTPolynomialInterpolantFactory> factory;
   
   beforeEach(^{
-    factory = [[LTDegenerateInterpolationRoutineFactory alloc] init];
+    factory = [[LTDegenerateInterpolantFactory alloc] init];
   });
   
   it(@"should initialize with valid arguments", ^{
@@ -74,7 +74,7 @@ context(@"adding points and segments", ^{
   
   context(@"degenerate interpolation factory", ^{
     beforeEach(^{
-      factory = [[LTDegenerateInterpolationRoutineFactory alloc] init];
+      factory = [[LTDegenerateInterpolantFactory alloc] init];
       stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
                                                               startingPoint:startingPoint];
     });

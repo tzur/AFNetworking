@@ -5,9 +5,9 @@
 
 /// Implementation of a degenerate interpolant, accepting a single keyframe and returning it
 /// througout the interval.
-@interface LTDegenerateInterpolationRoutine : LTPolynomialInterpolant
+@interface LTDegenerateInterpolant : LTPolynomialInterpolant
 @end
 
 /// Factory for creating degenerate interpolant instances.
-@interface LTDegenerateInterpolationRoutineFactory : NSObject <LTPolynomialInterpolantFactory>
+@interface LTDegenerateInterpolantFactory : NSObject <LTPolynomialInterpolantFactory>
 @end

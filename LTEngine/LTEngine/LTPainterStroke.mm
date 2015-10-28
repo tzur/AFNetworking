@@ -3,7 +3,7 @@
 
 #import "LTPainterStroke.h"
 
-#import "LTDegenerateInterpolationRoutine.h"
+#import "LTDegenerateInterpolant.h"
 #import "LTPolynomialInterpolant.h"
 #import "LTLinearInterpolant.h"
 #import "LTPainterStrokeSegment.h"
@@ -67,7 +67,7 @@
   // unless we're dealing with a degenerate segment, meaning the point is disconnected so its
   // distance should be manually calculated.
   CGFloat distanceOnSegmentStart = [keyPointsOnInterval.firstObject distanceFromStart];
-  if ([interpolant isKindOfClass:[LTDegenerateInterpolationRoutine class]]) {
+  if ([interpolant isKindOfClass:[LTDegenerateInterpolant class]]) {
     distanceOnSegmentStart +=
         CGPointDistance(point.contentPosition,
                         [self.controlPoints[self.controlPoints.count - 2] contentPosition]);
