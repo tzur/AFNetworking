@@ -3,7 +3,7 @@
 
 #import "LTPainterStroke.h"
 
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
@@ -122,7 +122,7 @@ context(@"adding points and segments", ^{
     __block NSMutableArray *newPoints;
     
     beforeEach(^{
-      factory = [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+      factory = [[LTCatmullRomInterpolantFactory alloc] init];
       stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
                                                               startingPoint:startingPoint];
       newPoints = [NSMutableArray array];
@@ -138,9 +138,9 @@ context(@"adding points and segments", ^{
           .to.beKindOf([LTLinearInterpolationRoutine class]);
       expect([stroke addSegmentTo:newPoints[1]]).to.beNil();
       expect([[stroke addSegmentTo:newPoints[2]] interpolant])
-          .to.beKindOf([LTCatmullRomInterpolationRoutine class]);
+          .to.beKindOf([LTCatmullRomInterpolant class]);
       expect([[stroke addSegmentTo:newPoints[2]] interpolant])
-          .to.beKindOf([LTCatmullRomInterpolationRoutine class]);
+          .to.beKindOf([LTCatmullRomInterpolant class]);
       expect(stroke.segments.count).to.equal(3);
     });
     

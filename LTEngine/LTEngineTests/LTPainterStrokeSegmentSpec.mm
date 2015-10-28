@@ -3,7 +3,7 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 #import "LTDegenerateInterpolationRoutine.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
@@ -168,7 +168,7 @@ context(@"points with interval", ^{
       p1.contentPosition = CGPointMake(31, 58);
       p2.contentPosition = CGPointMake(66, 60);
       p3.contentPosition = CGPointMake(77, 15);
-      interpolant = [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
+      interpolant = [[LTCatmullRomInterpolant alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
                                                       andInterpolant:interpolant];

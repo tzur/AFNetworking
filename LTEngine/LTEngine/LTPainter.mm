@@ -3,7 +3,7 @@
 
 #import "LTPainter.h"
 
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -99,7 +99,7 @@
 }
 
 - (id<LTPolynomialInterpolantFactory>)createDefaultSplineFactory {
-  return [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+  return [[LTCatmullRomInterpolantFactory alloc] init];
 }
 
 #pragma mark -

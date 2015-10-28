@@ -1,11 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 
 #import "LTInterpolatedObject.h"
 
-@implementation LTCatmullRomInterpolationRoutine
+@implementation LTCatmullRomInterpolant
 
 /// M such that f(x) = [1, x, x^2, x^3] * M * [p0, p1, p2, p3].
 /// See: http://www.lighthouse3d.com/tutorials/maths/catmull-rom-spline/
@@ -39,18 +39,18 @@ static const GLKMatrix4 M = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
 
 @end
 
-@implementation LTCatmullRomInterpolationRoutineFactory
+@implementation LTCatmullRomInterpolantFactory
 
 - (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
-  return [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
+  return [[LTCatmullRomInterpolant alloc] initWithKeyFrames:keyFrames];
 }
 
 - (NSUInteger)expectedKeyFrames {
-  return [LTCatmullRomInterpolationRoutine expectedKeyFrames];
+  return [LTCatmullRomInterpolant expectedKeyFrames];
 }
 
 - (NSRange)rangeOfIntervalInWindow {
-  return [LTCatmullRomInterpolationRoutine rangeOfIntervalInWindow];
+  return [LTCatmullRomInterpolant rangeOfIntervalInWindow];
 }
 
 @end

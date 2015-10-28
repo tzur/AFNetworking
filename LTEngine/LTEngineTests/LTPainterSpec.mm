@@ -4,7 +4,7 @@
 #import "LTPainter+LTView.h"
 
 #import "LTBrush.h"
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 #import "LTLinearInterpolationRoutine.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
@@ -80,7 +80,7 @@ context(@"properties", ^{
     expect(painter.delegate).to.beNil();
     expect(painter.touchDelegateForLTView).to.conformTo(@protocol(LTViewTouchDelegate));
     expect(painter.brush).to.beKindOf([LTBrush class]);
-    expect(painter.splineFactory).to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
+    expect(painter.splineFactory).to.beKindOf([LTCatmullRomInterpolantFactory class]);
     expect(painter.airbrush).to.beFalsy();
     expect(painter.strokes).notTo.beNil();
     expect(painter.strokes.count).to.equal(0);
@@ -100,7 +100,7 @@ context(@"properties", ^{
   
   it(@"should set splineFactory", ^{
     id<LTPolynomialInterpolantFactory> factory =
-        [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+        [[LTCatmullRomInterpolantFactory alloc] init];
     painter.splineFactory = factory;
     expect(painter.splineFactory).to.beIdenticalTo(factory);
   });
@@ -233,7 +233,7 @@ context(@"painting", ^{
     });
 
     it(@"should use the brush's spline factory if set", ^{
-      painter.brush.splineFactory = [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+      painter.brush.splineFactory = [[LTCatmullRomInterpolantFactory alloc] init];
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
@@ -244,7 +244,7 @@ context(@"painting", ^{
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
 
       expect([painter.strokes[0] factory])
-          .to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
+          .to.beKindOf([LTCatmullRomInterpolantFactory class]);
       expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
     });
 

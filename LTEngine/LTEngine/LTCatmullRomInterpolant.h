@@ -7,9 +7,9 @@
 /// interpolation between the second and third key frames of the Catmull-Rom spline constructed from
 /// all four (Such that the value at \c 0 is the second key frame, and the value at \c 1 is the
 /// third one.
-@interface LTCatmullRomInterpolationRoutine : LTPolynomialInterpolant
+@interface LTCatmullRomInterpolant : LTPolynomialInterpolant
 @end
 
 /// Factory for creating Catmull-Rom spline interpolant instances.
-@interface LTCatmullRomInterpolationRoutineFactory : NSObject <LTPolynomialInterpolantFactory>
+@interface LTCatmullRomInterpolantFactory : NSObject <LTPolynomialInterpolantFactory>
 @end
