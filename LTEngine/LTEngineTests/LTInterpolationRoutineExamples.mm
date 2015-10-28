@@ -218,8 +218,8 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
         keysVector.push_back([key doubleValue]);
       }
       
-      CGFloats values = [interpolant valuesOfCGFloatPropertyNamed:@"pointToInterpolateX"
-                                                                   atKeys:keysVector];
+      CGFloats values = [interpolant valuesOfPropertyNamed:@"pointToInterpolateX"
+                                                    atKeys:keysVector];
       expect(values.size()).to.equal(keysVector.size());
       for (NSUInteger i = 0; i < keys.count; ++i) {
         CGFloat key = keysVector[i];

@@ -63,10 +63,8 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
     keys.push_back(i * step);
   }
 
-  CGFloats xPositions =
-      [self.interpolant valuesOfCGFloatPropertyNamed:@"contentPositionX" atKeys:keys];
-  CGFloats yPositions =
-      [self.interpolant valuesOfCGFloatPropertyNamed:@"contentPositionY" atKeys:keys];
+  CGFloats xPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionX" atKeys:keys];
+  CGFloats yPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionY" atKeys:keys];
   LTAssert(xPositions.size() == yPositions.size());
   
   CGFloat length = 0;

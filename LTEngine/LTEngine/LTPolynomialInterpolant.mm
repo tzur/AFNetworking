@@ -72,7 +72,7 @@
   return @(value);
 }
 
-- (CGFloats)valuesOfCGFloatPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
+- (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
   NSArray *coefficientsForProperty = self.coefficients[name];
   std::vector<double> coefficients;
   for (NSNumber *coefficient in coefficientsForProperty) {
