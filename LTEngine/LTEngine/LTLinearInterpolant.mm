@@ -3,7 +3,7 @@
 
 #import "LTLinearInterpolant.h"
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
 @implementation LTLinearInterpolant
 

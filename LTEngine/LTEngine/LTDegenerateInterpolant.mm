@@ -3,7 +3,7 @@
 
 #import "LTDegenerateInterpolant.h"
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
 @interface LTPolynomialInterpolant ()
 @property (strong, nonatomic) NSArray *keyFrames;

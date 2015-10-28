@@ -661,7 +661,7 @@
 		8B8720211924A76300517F2E /* LTBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2839068618C4D9AA00BD21CE /* LTBrush.h */; };
 		8B8720221924A76300517F2E /* LTCatmullRomInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 284ED12618954ECB00414A8A /* LTCatmullRomInterpolant.h */; };
 		8B8720231924A76300517F2E /* LTDegenerateInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 287705B618BB97F200D7CEC4 /* LTDegenerateInterpolant.h */; };
-		8B8720241924A76300517F2E /* LTInterpolatedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */; };
+		8B8720241924A76300517F2E /* LTInterpolatableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A84EE818953EDB00D8AB6C /* LTInterpolatableObject.h */; };
 		8B8720251924A76300517F2E /* LTPolynomialInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 289A872E1895158500EB8E86 /* LTPolynomialInterpolant.h */; };
 		8B8720261924A76300517F2E /* LTLinearInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 284ED11618954E9B00414A8A /* LTLinearInterpolant.h */; };
 		8B8720271924A76300517F2E /* LTTouchCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C61C0A18B23D930036D66E /* LTTouchCollector.h */; };
@@ -1638,7 +1638,7 @@
 		28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressiveImageProcessor.mm; sourceTree = "<group>"; };
 		28A6C5AF193B794000C217CC /* LTProgressiveImageProcessor+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTProgressiveImageProcessor+Protected.h"; sourceTree = "<group>"; };
 		28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressiveImageProcessorSpec.mm; sourceTree = "<group>"; };
-		28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatedObject.h; sourceTree = "<group>"; };
+		28A84EE818953EDB00D8AB6C /* LTInterpolatableObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatableObject.h; sourceTree = "<group>"; };
 		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
 		28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReshapeProcessorSpec.mm; sourceTree = "<group>"; };
 		28B3346619C826D3004B6191 /* LTOneShotImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOneShotImageProcessor.h; sourceTree = "<group>"; };
@@ -2599,7 +2599,7 @@
 				284ED12718954ECB00414A8A /* LTCatmullRomInterpolant.mm */,
 				287705B618BB97F200D7CEC4 /* LTDegenerateInterpolant.h */,
 				287705B718BB97F200D7CEC4 /* LTDegenerateInterpolant.mm */,
-				28A84EE818953EDB00D8AB6C /* LTInterpolatedObject.h */,
+				28A84EE818953EDB00D8AB6C /* LTInterpolatableObject.h */,
 				289A872E1895158500EB8E86 /* LTPolynomialInterpolant.h */,
 				289A872F1895158500EB8E86 /* LTPolynomialInterpolant.mm */,
 				284ED11618954E9B00414A8A /* LTLinearInterpolant.h */,
@@ -4055,7 +4055,7 @@
 				8B8720221924A76300517F2E /* LTCatmullRomInterpolant.h in Headers */,
 				8B8720231924A76300517F2E /* LTDegenerateInterpolant.h in Headers */,
 				28C2079D1AECC5CD007214A5 /* LTTextureUncompressedMatArchiver.h in Headers */,
-				8B8720241924A76300517F2E /* LTInterpolatedObject.h in Headers */,
+				8B8720241924A76300517F2E /* LTInterpolatableObject.h in Headers */,
 				50CF199619D16BB60010D52F /* LTQuad.h in Headers */,
 				8B8720251924A76300517F2E /* LTPolynomialInterpolant.h in Headers */,
 				8B8720261924A76300517F2E /* LTLinearInterpolant.h in Headers */,

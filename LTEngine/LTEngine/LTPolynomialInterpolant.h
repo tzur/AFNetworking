@@ -2,7 +2,7 @@
 // Created by Amit Goldstein.
 
 /// Abstract polynomial interpolant class, used to polynomially interpolate objects conforming to
-/// the \c LTInterpolatedObject protocol according to key-frame objects given upon initialization.
+/// the \c LTInterpolatableObject protocol according to key-frame objects given upon initialization.
 /// The "heavier" computation (calculating the polynomial coefficients) is performed on
 /// initialization, so querying for values at a given key point in range [0,1] is fast (estimating a
 /// polynom at a given point).
@@ -20,7 +20,7 @@
 + (NSRange)rangeOfIntervalInWindow;
 
 /// Initializes the interpolant with the given keyframes, validating the count and type of keyframes
-/// provided (all of the same class, and conform to the \c LTInterpolatedObject protocol).
+/// provided (all of the same class, and conform to the \c LTInterpolatableObject protocol).
 - (instancetype)initWithKeyFrames:(NSArray *)keyFrames;
 
 /// Returns the interpolated result (object of the same class of the key frames) at the given \c key
@@ -43,7 +43,7 @@
 /// ordered from the highest power to the lowest.
 ///
 /// @note it is safe to assume that \c keyFrames contains the expected number of objects, and that
-/// all of them are of the same type and conform to the \c LTInterpolatedObject protocol.
+/// all of them are of the same type and conform to the \c LTInterpolatableObject protocol.
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames;
 
 @end

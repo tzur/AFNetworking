@@ -1,9 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-/// The \c LTInterpolatedObject protocol declares the methods that a class must implement so that
+/// The \c LTInterpolatableObject protocol declares the methods that a class must implement so that
 /// instances of that class can be interpolated.
-@protocol LTInterpolatedObject <NSObject>
+@protocol LTInterpolatableObject <NSObject>
 
 @optional
 

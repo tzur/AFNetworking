@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
 /// Interpolants examples shared group name.
 extern NSString * const kLTInterpolationRoutineExamples;
@@ -16,7 +16,7 @@ extern NSString * const kLTInterpolationRoutineClass;
 extern NSString * const kLTInterpolationRoutineFactory;
 
 /// Used to test the various interpolants.
-@interface InterpolatedObject : NSObject <LTInterpolatedObject>
+@interface InterpolatedObject : NSObject <LTInterpolatableObject>
 
 @property (nonatomic) double propertyNotToInterpolate;
 @property (nonatomic) float floatToInterpolate;

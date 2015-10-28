@@ -3,7 +3,7 @@
 
 #import "LTPolynomialInterpolant.h"
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
 @interface LTPolynomialInterpolant ()
 
@@ -38,7 +38,7 @@
 - (void)validateKeyFrames:(NSArray *)keyFrames {
   LTParameterAssert(keyFrames.count == [[self class] expectedKeyFrames]);
   for (id object in keyFrames) {
-    LTParameterAssert([object conformsToProtocol:@protocol(LTInterpolatedObject)]);
+    LTParameterAssert([object conformsToProtocol:@protocol(LTInterpolatableObject)]);
     LTParameterAssert([object isKindOfClass:[keyFrames.firstObject class]]);
   }
 }
