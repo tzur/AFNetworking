@@ -30,10 +30,10 @@
 /// Creates an enum type using Apple's \c NS_ENUM macro. The first given parameter is
 /// the enum underlying type, then its name. Enum fields follow as pairs of (name, value). Example:
 /// @code
-/// LTEnumMake(NSUInteger, MyEnum,
-///            MyEnumChoiceA, 1,
-///            MyEnumChoiceB, 3,
-///            MyEnumChoiceC, 5);
+/// LTEnumMakeWithValues(NSUInteger, MyEnum,
+///                      MyEnumChoiceA, 1,
+///                      MyEnumChoiceB, 3,
+///                      MyEnumChoiceC, 5);
 /// @endcode
 ///
 /// Enums are defined globally, even if their scope is limited. Avoid defining an enum with a
