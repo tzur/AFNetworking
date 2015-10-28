@@ -51,7 +51,7 @@
   LTParameterAssert(key >= 0 && key <= 1);
   NSMutableDictionary *properties = [NSMutableDictionary dictionary];
   for (NSString *propertyName in [self.keyFrames.firstObject propertiesToInterpolate]) {
-    properties[propertyName] = [self valueOfPropertyNamed:propertyName atKey:key];
+    properties[propertyName] = @([self valueOfPropertyNamed:propertyName atKey:key]);
   }
   
   if ([self.keyFrames.firstObject respondsToSelector:@selector(initWithInterpolatedProperties:)]) {
@@ -63,13 +63,13 @@
   }
 }
 
-- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key {
+- (CGFloat)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key {
   NSArray *coefficientsForProperty = self.coefficients[name];
   double value = 0;
   for (NSNumber *coefficient in coefficientsForProperty) {
     value = key * value + [coefficient doubleValue];
   }
-  return @(value);
+  return value;
 }
 
 - (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {

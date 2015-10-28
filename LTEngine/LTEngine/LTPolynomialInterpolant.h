@@ -28,7 +28,7 @@
 - (id)valueAtKey:(CGFloat)key;
 
 /// Returns the interpolated property at the given \c key (must be in range [0,1]).
-- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key;
+- (CGFloat)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key;
 
 /// Returns a vector of the interpolated properties at the given keys (must be in range [0,1]).
 ///

@@ -15,9 +15,9 @@
   return nil;
 }
 
-- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat __unused)key {
+- (CGFloat)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat __unused)key {
   return [[self.keyFrames.firstObject propertiesToInterpolate] containsObject:name] ?
-      [self.keyFrames.firstObject valueForKey:name] : @(0);
+      [[self.keyFrames.firstObject valueForKey:name] CGFloatValue] : 0;
 }
 
 - (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {

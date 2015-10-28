@@ -202,12 +202,12 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
     });
     
     it(@"should interpolate a single property", ^{
-      NSNumber *value = [interpolant valueOfPropertyNamed:@"floatToInterpolate" atKey:0.5];
+      CGFloat value = [interpolant valueOfPropertyNamed:@"floatToInterpolate" atKey:0.5];
       expect(value).to.equal(keyObject.floatToInterpolate);
     });
 
     it(@"should return 0 when trying to interpolate a single invalid property", ^{
-      NSNumber *value = [interpolant valueOfPropertyNamed:@"propertyNotToInterpolate" atKey:0.5];
+      CGFloat value = [interpolant valueOfPropertyNamed:@"propertyNotToInterpolate" atKey:0.5];
       expect(value).to.equal(0);
     });
 
@@ -224,8 +224,7 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
       for (NSUInteger i = 0; i < keys.count; ++i) {
         CGFloat key = keysVector[i];
         CGFloat value = values[i];
-        NSNumber *expectedValue =
-            [interpolant valueOfPropertyNamed:@"pointToInterpolateX" atKey:key];
+        CGFloat expectedValue = [interpolant valueOfPropertyNamed:@"pointToInterpolateX" atKey:key];
         expect(value).to.equal(expectedValue);
       }
     });
