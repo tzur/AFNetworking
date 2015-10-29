@@ -509,13 +509,15 @@
 		65409BC71B53ECA600F0E9ED /* LTGLViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65409BC61B53ECA600F0E9ED /* LTGLViewSpec.mm */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
-		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; };
-		8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9CA1BAF01C5002FB750 /* LTTestUtils.mm */; };
+		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; settings = {ASSET_TAGS = (); }; };
+		8B0337FC1BD3EA1B00ACDF26 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */; };
+		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; settings = {ASSET_TAGS = (); }; };
+		8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9CA1BAF01C5002FB750 /* LTTestUtils.mm */; settings = {ASSET_TAGS = (); }; };
 		8B16C9CE1BAF0557002FB750 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16C9701BAEABD6002FB750 /* libLTKit.a */; };
 		8B16C9CF1BAF056C002FB750 /* libMantle-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA821E9198693B000FBE68E /* libMantle-iOS.a */; };
 		8B16C9D21BAF0591002FB750 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
-		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; };
-		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; };
+		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; settings = {ASSET_TAGS = (); }; };
+		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; settings = {ASSET_TAGS = (); }; };
 		8B16CAFF1BB06891002FB750 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CACB1BB06784002FB750 /* libExpecta.a */; };
 		8B16CB001BB06891002FB750 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAE41BB06797002FB750 /* libSpecta.a */; };
 		8B16CB011BB068AE002FB750 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAB01BB0670A002FB750 /* libextobjc_iOS.a */; };
@@ -1753,6 +1755,8 @@
 		65409BC61B53ECA600F0E9ED /* LTGLViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLViewSpec.mm; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
+		8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageZeroGrayscale.png; path = Resources/ImageZeroGrayscale.png; sourceTree = "<group>"; };
+		8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../LTKit/third_party/testing/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
 		8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTypedefs+LTEngine.h"; sourceTree = "<group>"; };
 		8B16C9741BAEAEB7002FB750 /* LTEasyBoxing+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+LTEngine.h"; sourceTree = "<group>"; };
@@ -2134,8 +2138,8 @@
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 				8B16CAFF1BB06891002FB750 /* libExpecta.a in Frameworks */,
-				8B8A823D1BD6623D0027B97D /* libOCMock.a in Frameworks */,
 				8B16C9CF1BAF056C002FB750 /* libMantle-iOS.a in Frameworks */,
+				8B0337FC1BD3EA1B00ACDF26 /* libOCMock.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
 				8B16C9CE1BAF0557002FB750 /* libLTKit.a in Frameworks */,
 				8B16CB001BB06891002FB750 /* libSpecta.a in Frameworks */,
@@ -2970,6 +2974,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */,
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				8B4E493719E950C500B3F55D /* ImageIO.framework */,
 				8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */,
@@ -3053,6 +3058,7 @@
 			isa = PBXGroup;
 			children = (
 				25AF176D1AD50C4A0055E664 /* Vector Graphics */,
+				8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */,
 				50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */,
 				037238371AA317F000937EAA /* Indexed.png */,
 				037238381AA317F000937EAA /* IndexedWithAlpha.png */,
@@ -4442,6 +4448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */,
 				507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */,
 				287583761B1B225F0000F0CE /* ImageCompressorInput.tiff in Resources */,
 				032DFC511A1A50FB002A4F69 /* MealBasicOilPainting.png in Resources */,
@@ -5273,7 +5280,6 @@
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -5287,6 +5293,7 @@
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
+					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
@@ -5309,6 +5316,7 @@
 					"$(SRCROOT)/../LTKit/third_party/testing/Expecta/src/**",
 					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 					"$(SRCROOT)/../LTKit/third_party/testing/Specta/Specta",
+					"$(SRCROOT)/../LTKit/third_party/testing/OCMock/Source",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
