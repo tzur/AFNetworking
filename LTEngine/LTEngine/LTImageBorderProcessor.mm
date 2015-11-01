@@ -135,7 +135,8 @@ LTPropertyWithoutSetter(CGFloat, opacity, Opacity, 0, 1, 1);
   self[[LTImageBorderFsh opacity]] = @(opacity);
 }
 
-LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3Zero, LTVector3One, LTVector3One);
+LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3::zeros(), LTVector3::ones(),
+                        LTVector3::ones());
 - (void)setColor:(LTVector3)color {
   [self _verifyAndSetColor:color];
   self[[LTImageBorderFsh frameColor]] = $(color);

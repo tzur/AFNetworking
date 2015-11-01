@@ -36,7 +36,7 @@ static const NSUInteger kRootNodeRank = 8;
   _indices.clear();
   
   // Create root node (level 0).
-  _vertices.push_back(LTVector2Zero);
+  _vertices.push_back(LTVector2::zeros());
   
   // Create sub-root nodes (level 1).
   CGFloat currentRadius = [self vertexRadius:1];

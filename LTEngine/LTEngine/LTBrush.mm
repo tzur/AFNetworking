@@ -268,7 +268,7 @@ LTProperty(CGFloat, spacing, Spacing, 0.01, 10.0, 0.05)
 LTPropertyUpdatingProgram(CGFloat, opacity, Opacity, 0, 1, 1)
 LTPropertyUpdatingProgram(CGFloat, flow, Flow, 0.01, 1, 1)
 LTPropertyUpdatingProgram(LTVector4, intensity, Intensity,
-                          LTVector4Zero, LTVector4One, LTVector4One);
+                          LTVector4::zeros(), LTVector4::ones(), LTVector4::ones());
 
 LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
 - (void)setAngle:(CGFloat)angle {

@@ -90,7 +90,7 @@ context(@"initialization", ^{
   });
 
   it(@"should use the last frag data when initialized with identical back and output textures", ^{
-    [mask clearWithColor:LTVector4One];
+    [mask clearWithColor:LTVector4::ones()];
     LTTexture *anotherFront = [LTTexture textureWithImage:cv::Mat4b(8, 8, anotherFrontColor)];
     LTQuadMixerProcessor *anotherProcessor =
         [[LTQuadMixerProcessor alloc] initWithBack:output front:anotherFront mask:mask output:output
@@ -282,7 +282,7 @@ context(@"blending", ^{
       cv::Vec4b newFrontColor(0, 192, 255, 255);
       [back clearWithColor:LTVector4(newBackColor)];
       [front clearWithColor:LTVector4(newFrontColor)];
-      [mask clearWithColor:LTVector4One];
+      [mask clearWithColor:LTVector4::ones()];
 
       processor.blendMode = LTBlendModeColorBurn;
       [processor process];
@@ -449,7 +449,7 @@ context(@"output size different than back size", ^{
   });
 
   it(@"should stretch the back texture onto the output texture", ^{
-    [mask clearWithColor:LTVector4Zero];
+    [mask clearWithColor:LTVector4::zeros()];
 
     cv::Mat4b expected(output.size.height, output.size.width, backColor);
     expected(cv::Rect(0, 0, output.size.width / 2, output.size.height / 2)) = secondBackColor;

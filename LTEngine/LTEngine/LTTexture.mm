@@ -204,7 +204,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
     _format = format;
     _channels = LTTextureChannelsFromFormat(format);
     _size = size;
-    _fillColor = LTVector4Null;
+    _fillColor = LTVector4::null();
     _generationID = [NSUUID UUID].UUIDString;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
@@ -403,7 +403,7 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
-  self.fillColor = LTVector4Null;
+  self.fillColor = LTVector4::null();
   block(&image, YES);
 
   // User wrote data to image, so it must be uploaded back to the GPU.

@@ -155,7 +155,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 }
 
 - (LTVector2)defaultCenter {
-  return LTVector2Zero;
+  return LTVector2::zeros();
 }
 
 - (CGFloat)defaultDiameter {

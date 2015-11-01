@@ -81,8 +81,8 @@
       texelOffset = LTVector2(CGSizeMakeUniform(-1) / (inputSize * 2));
       break;
     default:
-      texelScaling = LTVector2One;
-      texelOffset = LTVector2Zero;
+      texelScaling = LTVector2::ones();
+      texelOffset = LTVector2::zeros();
       break;
   }
   

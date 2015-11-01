@@ -317,7 +317,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)beginWriteToTexture {
-  self.fillColor = LTVector4Null;
+  self.fillColor = LTVector4::null();
 }
 
 - (void)endWriteToTexture {

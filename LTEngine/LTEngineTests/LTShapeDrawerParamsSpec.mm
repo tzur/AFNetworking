@@ -41,8 +41,8 @@ context(@"properties", ^{
   it(@"should have default properties", ^{
     expect(params.lineWidth).to.equal(1);
     expect(params.shadowWidth).to.equal(0);
-    expect(params.fillColor).to.equal(LTVector4One);
-    expect(params.strokeColor).to.equal(LTVector4One);
+    expect(params.fillColor).to.equal(LTVector4::ones());
+    expect(params.strokeColor).to.equal(LTVector4::ones());
     expect(params.shadowColor).to.equal(LTVector4(0, 0, 0, 1));
   });
   
@@ -63,7 +63,7 @@ context(@"properties", ^{
   });
   
   it(@"should update fillColor", ^{
-    LTVector4 newValue = LTVector4One * 0.5;
+    LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.fillColor).notTo.equal(newValue);
     params.fillColor = newValue;
     expect(params.fillColor).to.equal(newValue);
@@ -71,7 +71,7 @@ context(@"properties", ^{
   });
   
   it(@"should update strokeColor", ^{
-    LTVector4 newValue = LTVector4One * 0.5;
+    LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.strokeColor).notTo.equal(newValue);
     params.strokeColor = newValue;
     expect(params.strokeColor).to.equal(newValue);
@@ -79,7 +79,7 @@ context(@"properties", ^{
   });
   
   it(@"should update shadowColor", ^{
-    LTVector4 newValue = LTVector4One * 0.5;
+    LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.shadowColor).notTo.equal(newValue);
     params.shadowColor = newValue;
     expect(params.shadowColor).to.equal(newValue);
@@ -96,9 +96,9 @@ context(@"properties", ^{
   it(@"should copy", ^{
     params.lineWidth += 1;
     params.shadowWidth += 1;
-    params.fillColor = LTVector4One * 0.5;
-    params.strokeColor = LTVector4One * 0.5;
-    params.shadowColor = LTVector4One * 0.5;
+    params.fillColor = LTVector4::ones() * 0.5;
+    params.strokeColor = LTVector4::ones() * 0.5;
+    params.shadowColor = LTVector4::ones() * 0.5;
     LTShapeDrawerParams *paramsCopy = [params copy];
     expect(paramsCopy).notTo.beIdenticalTo(params);
     expect(paramsCopy).to.equal(params);

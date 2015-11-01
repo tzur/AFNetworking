@@ -157,13 +157,13 @@ typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
   [self updateDecimationOrderIfNeeded];
 
   [self updateRectsForLinesToDecimateInDimension:LTDecimationDimensionHorizontal];
-  [self.auxiliaryFbo clearWithColor:LTVector4Zero];
+  [self.auxiliaryFbo clearWithColor:LTVector4::zeros()];
   [self.drawer setSourceTexture:self.input];
   [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.auxiliaryFbo
                fromRotatedRects:self.sourceRects];
 
   [self updateRectsForLinesToDecimateInDimension:LTDecimationDimensionVertical];
-  [self.outputFbo clearWithColor:LTVector4Zero];
+  [self.outputFbo clearWithColor:LTVector4::zeros()];
   [self.drawer setSourceTexture:self.auxiliary];
   [self.drawer drawRotatedRects:self.targetRects inFramebuffer:self.outputFbo
                fromRotatedRects:self.sourceRects];

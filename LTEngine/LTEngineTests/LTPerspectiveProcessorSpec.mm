@@ -203,7 +203,7 @@ context(@"projection data", ^{
   });
   
   it(@"should set scale and translation to fit the projected texture in the output texture", ^{
-    [inputTexture clearWithColor:LTVector4One];
+    [inputTexture clearWithColor:LTVector4::ones()];
     [processor process];
     cv::Mat4b output = outputTexture.image;
 

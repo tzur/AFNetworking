@@ -200,7 +200,7 @@
   if (!self.texture.maxMipmapLevel) {
     self.texture.fillColor = color;
   } else if (self.texture.fillColor != color) {
-    self.texture.fillColor = LTVector4Null;
+    self.texture.fillColor = LTVector4::null();
   }
 
   [self bindAndExecute:^{

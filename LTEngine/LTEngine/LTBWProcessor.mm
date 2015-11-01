@@ -209,8 +209,8 @@
 #pragma mark Tone
 #pragma mark -
 
-LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter, -2 * LTVector3One, 2 * LTVector3One,
-                        LTVector3(0.299, 0.587, 0.114));
+LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter, -2 * LTVector3::ones(),
+                        2 * LTVector3::ones(), LTVector3(0.299, 0.587, 0.114));
 - (void)setColorFilter:(LTVector3)colorFilter {
   [self _verifyAndSetColorFilter:colorFilter];
   LTParameterAssert(colorFilter.sum(), @"Black is not a valid color filter");
@@ -379,7 +379,7 @@ LTPropertyProxyWithoutSetter(CGFloat, vignetteTransition, VignetteTransition,
 }
 
 LTPropertyWithoutSetter(LTVector3, grainChannelMixer, GrainChannelMixer,
-                        LTVector3Zero, LTVector3One, LTVector3(1, 0, 0));
+                        LTVector3::zeros(), LTVector3::ones(), LTVector3(1, 0, 0));
 - (void)setGrainChannelMixer:(LTVector3)grainChannelMixer {
   [self _verifyAndSetGrainChannelMixer:grainChannelMixer];
   _grainChannelMixer = grainChannelMixer / grainChannelMixer.sum();

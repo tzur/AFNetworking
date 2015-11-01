@@ -24,20 +24,20 @@ context(@"adding vertices", ^{
   __block LTCommonDrawableShapeVertex vertex;
   
   beforeEach(^{
-    vertex.position = LTVector2One;
-    vertex.offset = LTVector2One * 2;
-    vertex.lineBounds = LTVector4One;
-    vertex.shadowBounds = LTVector4One * 2;
-    vertex.color = LTVector4One * 0.5;
-    vertex.shadowColor = LTVector4One * 0.25;
+    vertex.position = LTVector2::ones();
+    vertex.offset = LTVector2::ones() * 2;
+    vertex.lineBounds = LTVector4::ones();
+    vertex.shadowBounds = LTVector4::ones() * 2;
+    vertex.color = LTVector4::ones() * 0.5;
+    vertex.shadowColor = LTVector4::ones() * 0.25;
   });
   
   it(@"should add shadow vertex", ^{
     LTAddShadowVertex(vertex, &shadowVertices);
     expect(LTAreVerticesEqual(vertex, shadowVertices.front())).to.beFalsy();
-    expect(shadowVertices.front().color).to.equal(LTVector4Zero);
+    expect(shadowVertices.front().color).to.equal(LTVector4::zeros());
     
-    vertex.color = LTVector4Zero;
+    vertex.color = LTVector4::zeros();
     LTAddShadowVertex(vertex, &shadowVertices);
     expect(LTAreVerticesEqual(vertex, shadowVertices.back())).to.beTruthy();
     expect(shadowVertices.size()).to.equal(2);
@@ -52,9 +52,9 @@ context(@"adding vertices", ^{
   it(@"should add stroke vertex", ^{
     LTAddStrokeVertex(vertex, &strokeVertices);
     expect(LTAreVerticesEqual(vertex, strokeVertices.front())).to.beFalsy();
-    expect(strokeVertices.front().shadowColor).to.equal(LTVector4Zero);
+    expect(strokeVertices.front().shadowColor).to.equal(LTVector4::zeros());
     
-    vertex.shadowColor = LTVector4Zero;
+    vertex.shadowColor = LTVector4::zeros();
     LTAddStrokeVertex(vertex, &strokeVertices);
     expect(LTAreVerticesEqual(vertex, strokeVertices.back())).to.beTruthy();
     expect(strokeVertices.size()).to.equal(2);
@@ -72,11 +72,11 @@ context(@"adding segments", ^{
   
   beforeEach(^{
     for (LTCommonDrawableShapeVertex &vertex : segment.v) {
-      vertex.offset = LTVector2One * 2;
-      vertex.lineBounds = LTVector4One;
-      vertex.shadowBounds = LTVector4One * 2;
-      vertex.color = LTVector4One * 0.5;
-      vertex.shadowColor = LTVector4One * 0.25;
+      vertex.offset = LTVector2::ones() * 2;
+      vertex.lineBounds = LTVector4::ones();
+      vertex.shadowBounds = LTVector4::ones() * 2;
+      vertex.color = LTVector4::ones() * 0.5;
+      vertex.shadowColor = LTVector4::ones() * 0.25;
     }
     segment.src0.position = LTVector2(0, 0);
     segment.src1.position = LTVector2(0, 1);
@@ -97,8 +97,8 @@ context(@"adding segments", ^{
       expect(strokeVertices[i].shadowBounds).to.equal(segment.src0.shadowBounds);
       expect(shadowVertices[i].shadowBounds).to.equal(segment.src0.shadowBounds);
       expect(strokeVertices[i].color).to.equal(segment.src0.color);
-      expect(shadowVertices[i].color).to.equal(LTVector4Zero);
-      expect(strokeVertices[i].shadowColor).to.equal(LTVector4Zero);
+      expect(shadowVertices[i].color).to.equal(LTVector4::zeros());
+      expect(strokeVertices[i].shadowColor).to.equal(LTVector4::zeros());
       expect(shadowVertices[i].shadowColor).to.equal(segment.src0.shadowColor);
       expect(strokeVertices[i].position).to.beCloseToGLKVector(shadowVertices[i].position);
     }
@@ -119,7 +119,7 @@ context(@"adding segments", ^{
       expect(vertex.lineBounds).to.equal(segment.src0.lineBounds);
       expect(vertex.shadowBounds).to.equal(segment.src0.shadowBounds);
       expect(vertex.color).to.equal(segment.src0.color);
-      expect(vertex.shadowColor).to.equal(LTVector4Zero);
+      expect(vertex.shadowColor).to.equal(LTVector4::zeros());
     }
     expect(strokeVertices[0].position).to.beCloseToGLKVector(segment.src0.position);
     expect(strokeVertices[1].position).to.beCloseToGLKVector(segment.src1.position);

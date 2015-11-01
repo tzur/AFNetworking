@@ -478,7 +478,7 @@ static const CGFloat kBalanceShift = 0.15;
       [self hslToRgb:LTVector3(self.lightsHue, self.lightsSaturation * 0.5,
                                1.0 - self.lightsSaturation * 0.1)];
   LTColorGradientControlPoint *blacks =
-      [[LTColorGradientControlPoint alloc] initWithPosition:0.0 color:LTVector3Zero];
+      [[LTColorGradientControlPoint alloc] initWithPosition:0.0 color:LTVector3::zeros()];
   LTColorGradientControlPoint *darks =
       [[LTColorGradientControlPoint alloc] initWithPosition:darksPosition color:darkPoint];
   LTColorGradientControlPoint *lights =

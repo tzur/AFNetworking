@@ -23,7 +23,7 @@
 }
 
 LTPropertyWithoutSetter(LTVector4, maskColor, MaskColor,
-                        LTVector4Zero, LTVector4One, LTVector4(1, 0, 0, 0.5));
+                        LTVector4::zeros(), LTVector4::ones(), LTVector4(1, 0, 0, 0.5));
 - (void)setMaskColor:(LTVector4)maskColor {
   [self _verifyAndSetMaskColor:maskColor];
   self[[LTMaskOverlayFsh maskColor]] = $(maskColor);

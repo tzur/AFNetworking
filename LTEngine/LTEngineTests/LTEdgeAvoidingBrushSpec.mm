@@ -79,7 +79,7 @@ context(@"non-edge avoiding drawing", ^{
     brush.hardness = 1;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4Zero];
+    [fbo clearWithColor:LTVector4::zeros()];
     
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
@@ -162,7 +162,7 @@ context(@"non-edge avoiding drawing", ^{
     
     context(@"direct erasing mode", ^{
       beforeEach(^{
-        [fbo clearWithColor:LTVector4One];
+        [fbo clearWithColor:LTVector4::ones()];
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
@@ -205,8 +205,8 @@ context(@"non-edge avoiding drawing", ^{
         brush.intensity = kIntensity;
         [brush startNewStrokeAtPoint:point];
         [brush drawPoint:point inFramebuffer:fbo];
-        expected.rowRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4One - kIntensity));
-        expected.colRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4One - kIntensity));
+        expected.rowRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4::ones() - kIntensity));
+        expected.colRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4::ones() - kIntensity));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
@@ -223,7 +223,7 @@ context(@"non-edge avoiding drawing", ^{
         output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
                                      format:LTTextureFormatRGBA allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
-        [fbo clearWithColor:LTVector4Zero];
+        [fbo clearWithColor:LTVector4::zeros()];
         
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);
@@ -445,7 +445,7 @@ context(@"edge avoiding drawing", ^{
 
   context(@"blending mode", ^{
     beforeEach(^{
-      [fbo clearWithColor:LTVector4(LTVector3Zero, 1)];
+      [fbo clearWithColor:LTVector4(LTVector3::zeros(), 1)];
       brush.mode = LTRoundBrushModeBlend;
     });
 

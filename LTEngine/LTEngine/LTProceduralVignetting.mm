@@ -106,7 +106,7 @@ LTPropertyWithoutSetter(CGFloat, transition, Transition, 0, 1, 0);
 }
 
 LTPropertyWithoutSetter(LTVector3, noiseChannelMixer, NoiseChannelMixer,
-                        -LTVector3One, LTVector3One, LTVector3(1, 0, 0));
+                        -LTVector3::ones(), LTVector3::ones(), LTVector3(1, 0, 0));
 - (void)setNoiseChannelMixer:(LTVector3)noiseChannelMixer {
   [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.

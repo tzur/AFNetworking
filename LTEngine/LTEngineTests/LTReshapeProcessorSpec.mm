@@ -33,7 +33,7 @@ beforeEach(^{
   output = [LTTexture byteRGBATextureWithSize:kOutputSize];
   mask = [LTTexture textureWithSize:kInputSize precision:LTTexturePrecisionHalfFloat
                                     format:LTTextureFormatRed allocateMemory:YES];
-  [mask clearWithColor:LTVector4One];
+  [mask clearWithColor:LTVector4::ones()];
 });
 
 afterEach(^{
@@ -215,7 +215,7 @@ context(@"processing", ^{
       it(@"should reset", ^{
         cv::Mat4hf expected = processor.meshDisplacementTexture.image;
         
-        [processor.meshDisplacementTexture clearWithColor:LTVector4One];
+        [processor.meshDisplacementTexture clearWithColor:LTVector4::ones()];
         expected.setTo(cv::Vec4hf(half(1), half(1), half(1), half(1)));
         expect($(processor.meshDisplacementTexture.image)).to.equalMat($(expected));
         
@@ -264,7 +264,7 @@ context(@"processing", ^{
       it(@"should reset ignoring mask", ^{
         cv::Mat4hf expected = processor.meshDisplacementTexture.image;
         
-        [processor.meshDisplacementTexture clearWithColor:LTVector4One];
+        [processor.meshDisplacementTexture clearWithColor:LTVector4::ones()];
         expected.setTo(cv::Vec4hf(half(1), half(1), half(1), half(1)));
         expect($(processor.meshDisplacementTexture.image)).to.equalMat($(expected));
         
@@ -292,7 +292,7 @@ context(@"processing", ^{
       
       it(@"should unwarp ignoring mask", ^{
         cv::Mat1hf previousMask = mask.image;
-        [mask clearWithColor:LTVector4One];
+        [mask clearWithColor:LTVector4::ones()];
         [processor resizeWithCenter:CGPointMake(0.5, 0.5) scale:1.5 brushParams:params];
         [mask load:previousMask];
         [processor unwarpWithCenter:CGPointMake(0.75, 0.75) brushParams:params];

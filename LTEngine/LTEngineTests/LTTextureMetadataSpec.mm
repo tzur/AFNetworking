@@ -59,7 +59,7 @@ it(@"should extract metadata from texture", ^{
   texture.minFilterInterpolation = LTTextureInterpolationLinear;
   texture.magFilterInterpolation = LTTextureInterpolationLinear;
   texture.wrap = LTTextureWrapRepeat;
-  [texture clearWithColor:LTVector4One];
+  [texture clearWithColor:LTVector4::ones()];
   LTTextureMetadata *metadata = texture.metadata;
 
   expect(metadata.size).to.equal(texture.size);
@@ -110,7 +110,7 @@ context(@"create texture with metadata", ^{
     expect(texture.fillColor.isNull()).to.beTruthy();
 
     expect(^{
-      [texture clearWithColor:LTVector4Zero];
+      [texture clearWithColor:LTVector4::zeros()];
     }).notTo.raiseAny();
   });
 
@@ -133,7 +133,7 @@ context(@"create texture with metadata", ^{
     expect(texture.fillColor.isNull()).to.beTruthy();
 
     expect(^{
-      [texture clearWithColor:LTVector4Zero];
+      [texture clearWithColor:LTVector4::zeros()];
     }).notTo.raiseAny();
   });
 });

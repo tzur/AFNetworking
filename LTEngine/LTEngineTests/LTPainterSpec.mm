@@ -159,7 +159,7 @@ context(@"painting", ^{
     [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(CGPointZero)];
     [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
     expect(painter.strokes.count).to.equal(1);
-    [painter clearWithColor:LTVector4Zero];
+    [painter clearWithColor:LTVector4::zeros()];
     expect(painter.strokes.count).to.equal(0);
   });
 

@@ -75,7 +75,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
 }
 
 - (LTVector2)defaultCenter {
-  return LTVector2Zero;
+  return LTVector2::zeros();
 }
 
 - (CGFloat)defaultDiameter {
@@ -167,14 +167,14 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 }
 
 LTPropertyWithoutSetter(LTVector4, blueColor, BlueColor,
-                        LTVector4Zero, LTVector4One, LTVector4(0, 0, 1, 1));
+                        LTVector4::zeros(), LTVector4::ones(), LTVector4(0, 0, 1, 1));
 - (void)setBlueColor:(LTVector4)blueColor {
   [self _verifyAndSetBlueColor:blueColor];
   self[[LTDuoFsh blueColor]] = $(blueColor);
 }
 
 LTPropertyWithoutSetter(LTVector4, redColor, RedColor,
-                        LTVector4Zero, LTVector4One, LTVector4(1, 0, 0, 1));
+                        LTVector4::zeros(), LTVector4::ones(), LTVector4(1, 0, 0, 1));
 - (void)setRedColor:(LTVector4)redColor {
   [self _verifyAndSetRedColor:redColor];
   self[[LTDuoFsh redColor]] = $(redColor);

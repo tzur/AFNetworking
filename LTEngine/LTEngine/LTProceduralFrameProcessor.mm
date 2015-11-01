@@ -96,7 +96,8 @@ LTPropertyWithoutSetter(CGFloat, corner, Corner, 0, 32, 0);
   self[[LTProceduralFrameFsh corner]] = @(corner);
 }
 
-LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3Zero, LTVector3One, LTVector3One);
+LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3::zeros(), LTVector3::ones(),
+                        LTVector3::ones());
 - (void)setColor:(LTVector3)color {
   [self _verifyAndSetColor:color];
   self[[LTProceduralFrameFsh color]] = $(color);
@@ -121,7 +122,7 @@ LTPropertyWithoutSetter(LTVector3, color, Color, LTVector3Zero, LTVector3One, LT
 }
 
 LTPropertyWithoutSetter(LTVector3, noiseChannelMixer, NoiseChannelMixer,
-                        -LTVector3One, LTVector3One, LTVector3(1, 0, 0));
+                        -LTVector3::ones(), LTVector3::ones(), LTVector3(1, 0, 0));
 - (void)setNoiseChannelMixer:(LTVector3)noiseChannelMixer {
   [self _verifyAndSetNoiseChannelMixer:noiseChannelMixer];
   // Normalize the input, so mixing doesn't affect amplitude.

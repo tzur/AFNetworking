@@ -116,7 +116,7 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
         expect(other.format).to.equal(texture.format);
         expect(other.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
         expect(^{
-          [other clearWithColor:LTVector4Zero];
+          [other clearWithColor:LTVector4::zeros()];
         }).notTo.raiseAny();
       });
 
@@ -130,7 +130,7 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
         expect(texture.format).to.equal(LTTextureFormatRGBA);
         expect(texture.maxMipmapLevel).to.equal(3);
         expect(^{
-          [texture clearWithColor:LTVector4Zero];
+          [texture clearWithColor:LTVector4::zeros()];
         }).notTo.raiseAny();
       });
     });
@@ -205,7 +205,7 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
 
       it(@"should clone to texture", ^{
         LTGLTexture *cloned = (LTGLTexture *)[texture clone];
-        [cloned clearWithColor:LTVector4Zero];
+        [cloned clearWithColor:LTVector4::zeros()];
         [texture cloneTo:cloned];
         for (GLint i = 0; i < texture.maxMipmapLevel; ++i) {
           cv::Mat4b actual = [cloned imageAtLevel:i];

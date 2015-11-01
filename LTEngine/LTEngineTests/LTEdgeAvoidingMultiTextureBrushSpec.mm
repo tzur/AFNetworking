@@ -148,7 +148,7 @@ context(@"edge avoiding drawing", ^{
   });
   
   it(@"should disable the edge-avoiding effect when setting sigma to 1.0", ^{
-    brush.intensity = LTVector4One;
+    brush.intensity = LTVector4::ones();
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -157,7 +157,7 @@ context(@"edge avoiding drawing", ^{
   });
   
   it(@"should have edge avoiding effect when sigma < 1.0", ^{
-    brush.intensity = LTVector4One;
+    brush.intensity = LTVector4::ones();
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
