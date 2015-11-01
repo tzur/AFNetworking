@@ -105,7 +105,7 @@ static const CGFloat kMaskDownscalingFactor = 4;
 }
 
 - (LTVector2)defaultCenter {
-  return LTVector2Zero;
+  return LTVector2::zeros();
 }
 
 - (CGFloat)defaultDiameter {
@@ -204,7 +204,7 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
   return self.dualMaskProcessor.angle;
 }
 
-LTPropertyWithoutSetter(LTVector3, rangeColor, RangeColor, LTVector3Zero, LTVector3One,
+LTPropertyWithoutSetter(LTVector3, rangeColor, RangeColor, LTVector3::zeros(), LTVector3::ones(),
                         LTVector3(1, 0, 0));
 - (void)setRangeColor:(LTVector3)rangeColor {
   [self _verifyAndSetRangeColor:rangeColor];
@@ -231,7 +231,7 @@ static const CGFloat kEdge0NegativeStep = 0.75;
   self[[LTColorRangeAdjustFsh disableRangeAttenuation]] = @(disableRangeAttenuation);
 }
 
-LTPropertyWithoutSetter(LTVector3, maskColor, MaskColor, LTVector3Zero, LTVector3One,
+LTPropertyWithoutSetter(LTVector3, maskColor, MaskColor, LTVector3::zeros(), LTVector3::ones(),
                         LTVector3(1, 0, 0));
 - (void)setMaskColor:(LTVector3)maskColor {
   [self _verifyAndSetMaskColor:maskColor];

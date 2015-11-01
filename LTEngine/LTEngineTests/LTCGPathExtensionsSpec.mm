@@ -328,7 +328,7 @@ context(@"creation", ^{
     CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
         CGPointMake(2, 1.65), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
-    LTVector2s inputData{LTVector2Zero, LTVector2(2, 0), LTVector2(2, 1.9), LTVector2(2, 2)};
+    LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 1.9), LTVector2(2, 2)};
     gapSize = 0.25;
     CGPathRef immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, kClosed);
@@ -348,7 +348,7 @@ context(@"creation", ^{
         CGPointMake(2, 1.75), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2(1, 0), LTVector2(2, 0), LTVector2(2, 2),
-        LTVector2Zero};
+        LTVector2::zeros()};
     gapSize = 0.25;
     CGPathRef immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, !kClosed);
@@ -386,7 +386,7 @@ context(@"creation", ^{
         CGPointMake(1.8619288125423, 1.75), CGPointMake(2, 1.75),
         CGPointMake(2.1380711874576983, 1.75), CGPointMake(2.25, 1.8619288125423),
         CGPointMake(2.25, 2)};
-    LTVector2s inputData{LTVector2Zero, LTVector2(2, 0), LTVector2(2, 2)};
+    LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 2)};
     circleSize = 0.25;
     CGPathRef immutablePath =
         LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, kClosed);
@@ -422,7 +422,7 @@ context(@"creation", ^{
         CGPointMake(1.8619288125423, 1.75), CGPointMake(2, 1.75),
         CGPointMake(2.1380711874576983, 1.75), CGPointMake(2.25, 1.8619288125423),
         CGPointMake(2.25, 2)};
-    LTVector2s inputData{LTVector2Zero, LTVector2(2, 0), LTVector2(2, 2)};
+    LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 2)};
     circleSize = 0.25;
     CGPathRef immutablePath =
         LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, !kClosed);
@@ -445,7 +445,8 @@ context(@"creation", ^{
         CGPointMake(-controlPointCoordinate, -1), CGPointMake(-1, -controlPointCoordinate),
         CGPointMake(-1, 0)};
 
-    CGPathRef circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2Zero, 1, 0, M_PI, YES);
+    CGPathRef circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, 0, M_PI,
+                                                                    YES);
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
@@ -462,7 +463,7 @@ context(@"creation", ^{
     points = CGPoints{CGPointZero, CGPointMake(0, 1), CGPointMake(0.26521644, 1),
         CGPointMake(0.51957041, 0.894643127), CGPointMake(M_SQRT1_2, M_SQRT1_2)};
 
-    circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2Zero, 1, M_PI_2, M_PI_4, YES);
+    circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, M_PI_2, M_PI_4, YES);
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;

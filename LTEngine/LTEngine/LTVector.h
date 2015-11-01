@@ -22,19 +22,19 @@ struct LTVector2 {
   LTVector2() : x(0), y(0) {}
 
   /// Initializes a new \c LTVector2 with \c x and \c y elements equal to the given scalar.
-  explicit LTVector2(float scalar) : x(scalar), y(scalar) {}
+  constexpr explicit LTVector2(float scalar) : x(scalar), y(scalar) {}
 
   /// Initializes a new \c LTVector2 from \c GLKVector2.
-  explicit LTVector2(GLKVector2 vector) : x(vector.x), y(vector.y) {}
+  constexpr explicit LTVector2(GLKVector2 vector) : x(vector.x), y(vector.y) {}
 
   /// Initializes a new \c LTVector2 from \c CGPoint.
-  explicit LTVector2(CGPoint point) : x(point.x), y(point.y) {}
+  constexpr explicit LTVector2(CGPoint point) : x(point.x), y(point.y) {}
 
   /// Initializes a new \c LTVector2 from \c CGSize.
-  explicit LTVector2(CGSize size) : x(size.width), y(size.height) {}
+  constexpr explicit LTVector2(CGSize size) : x(size.width), y(size.height) {}
 
   /// Initializes a new \c LTVector2 with \c x and \c y elements.
-  LTVector2(float x, float y) : x(x), y(y) {}
+  constexpr LTVector2(float x, float y) : x(x), y(y) {}
 
   /// Cast operator to \c GLKVector2.
   explicit operator GLKVector2() const {
@@ -106,7 +106,7 @@ struct LTVector2 {
     return *this;
   }
 
-  /// Returns YES if the vector is \c LTVector2Null.
+  /// Returns YES if the vector is \c LTVector2:null().
   inline bool isNull() const {
     return isnan(x) && isnan(y);
   }
@@ -177,6 +177,21 @@ struct LTVector2 {
   /// Returns pointer to the first element of the vector.
   inline const float *data() const {
     return reinterpret_cast<const float *>(this);
+  }
+
+  /// Returns a vector where each entry is \c 0.
+  constexpr static LTVector2 zeros() {
+    return LTVector2(0);
+  }
+
+  /// Returns a vector where each entry is \c 1.
+  constexpr static LTVector2 ones() {
+    return LTVector2(1);
+  }
+
+  /// Returns a vector where each entry is NaN.
+  constexpr static LTVector2 null() {
+    return LTVector2(NAN);
   }
 
   float x;
@@ -290,7 +305,7 @@ NSString *NSStringFromLTVector2(const LTVector2 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
-/// \c LTVector2 that is set to all zeroes will be returned.
+/// \c LTVector2 that is set to all zeros will be returned.
 LTVector2 LTVector2FromString(NSString *string);
 
 #pragma mark -
@@ -305,13 +320,13 @@ inline LTVector3 operator/(LTVector3 lhs, const CGFloat rhs);
 /// Represents a 3 element vector.
 struct LTVector3 {
   /// Initializes a new \c LTVector3 with three zero elements.
-  LTVector3() : x(0), y(0), z(0) {}
+  constexpr LTVector3() : x(0), y(0), z(0) {}
 
   /// Initializes a new \c LTVector3 with \c x, y and \c z elements equal to the given scalar.
-  explicit LTVector3(float scalar) : x(scalar), y(scalar), z(scalar) {}
+  constexpr explicit LTVector3(float scalar) : x(scalar), y(scalar), z(scalar) {}
 
   /// Initializes a new \c LTVector3 from \c GLKVector3.
-  explicit LTVector3(GLKVector3 vector) : x(vector.x), y(vector.y), z(vector.z) {}
+  constexpr explicit LTVector3(GLKVector3 vector) : x(vector.x), y(vector.y), z(vector.z) {}
 
   /// Initializes a new \c LTVector3 with \c x,\c y and \c z elements.
   LTVector3(float x, float y, float z) : x(x), y(y), z(z) {}
@@ -385,7 +400,7 @@ struct LTVector3 {
     return *this;
   }
   
-  /// Returns YES if the vector is \c LTVector3Null.
+  /// Returns YES if the vector is LTVector3::null().
   inline bool isNull() const {
     return isnan(x) && isnan(y) && isnan(z);
   }
@@ -448,6 +463,21 @@ struct LTVector3 {
   /// Returns pointer to the first element of the vector.
   inline const float *data() const {
     return reinterpret_cast<const float *>(this);
+  }
+
+  /// Returns a vector where each entry is \c 0.
+  constexpr static LTVector3 zeros() {
+    return LTVector3(0);
+  }
+
+  /// Returns a vector where each entry is \c 1.
+  constexpr static LTVector3 ones() {
+    return LTVector3(1);
+  }
+
+  /// Returns a vector where each entry is \c NaN.
+  constexpr static LTVector3 null() {
+    return LTVector3(NAN);
   }
 
   /// Converts from RGB to HSV color space.
@@ -552,7 +582,7 @@ NSString *NSStringFromLTVector3(const LTVector3 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
-/// \c LTVector3 that is set to all zeroes will be returned.
+/// \c LTVector3 that is set to all zeros will be returned.
 LTVector3 LTVector3FromString(NSString *string);
 
 #pragma mark -
@@ -567,16 +597,17 @@ inline LTVector4 operator/(LTVector4 lhs, const CGFloat rhs);
 /// Represents a 4 element vector.
 struct LTVector4 {
   /// Initializes a new \c LTVector4 with two zero elements.
-  LTVector4() : x(0), y(0), z(0), w(0) {}
+  constexpr LTVector4() : x(0), y(0), z(0), w(0) {}
   
   /// Initializes a new \c LTVector4 with \c x, y, z and \c w elements equal to the given scalar.
-  explicit LTVector4(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
+  constexpr explicit LTVector4(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 
   /// Initializes a new \c LTVector4 with the given \c rgb vector and \c alpha.
-  explicit LTVector4(LTVector3 rgb, float a) : x(rgb.x), y(rgb.y), z(rgb.z), w(a) {}
+  constexpr explicit LTVector4(LTVector3 rgb, float a) : x(rgb.x), y(rgb.y), z(rgb.z), w(a) {}
 
   /// Initializes a new \c LTVector4 from \c GLKVector4.
-  explicit LTVector4(GLKVector4 vector) : x(vector.x), y(vector.y), z(vector.z), w(vector.w) {}
+  constexpr explicit LTVector4(GLKVector4 vector) : x(vector.x), y(vector.y), z(vector.z),
+      w(vector.w) {}
 
   /// Initializes a new \c LTVector4 from \c cv::Vec4b, normalized to values in \c [0,1].
   explicit LTVector4(cv::Vec4b vector) : x(vector[0]), y(vector[1]), z(vector[2]), w(vector[3]) {
@@ -669,7 +700,7 @@ struct LTVector4 {
     return *this;
   }
 
-  /// Returns YES if the vector is \c LTVector4Null.
+  /// Returns YES if the vector is \c LTVector4::null().
   inline bool isNull() const {
     return isnan(x) && isnan(y) && isnan(z) && isnan(w);
   }
@@ -747,6 +778,21 @@ struct LTVector4 {
   /// Returns pointer to the first element of the vector.
   inline const float *data() const {
     return reinterpret_cast<const float *>(this);
+  }
+
+  /// Returns a vector where each entry is \c 0.
+  constexpr static LTVector4 zeros() {
+    return LTVector4(0);
+  }
+
+  /// Returns a vector where each entry is \c 1.
+  constexpr static LTVector4 ones() {
+    return LTVector4(1);
+  }
+
+  /// Returns a vector where each entry is \c NaN.
+  constexpr static LTVector4 null() {
+    return LTVector4(NAN);
   }
 
   /// Converts from RGB to HSV color space, leaving last coordinate unchanged.
@@ -857,23 +903,7 @@ NSString *NSStringFromLTVector4(const LTVector4 &vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given,
-/// an \c LTVector4 that is set to all zeroes will be returned.
+/// an \c LTVector4 that is set to all zeros will be returned.
 LTVector4 LTVector4FromString(NSString *string);
-
-#pragma mark -
-#pragma mark Constants
-#pragma mark -
-
-static const LTVector2 LTVector2Zero;
-static const LTVector3 LTVector3Zero;
-static const LTVector4 LTVector4Zero;
-
-static const LTVector2 LTVector2One(1, 1);
-static const LTVector3 LTVector3One(1, 1, 1);
-static const LTVector4 LTVector4One(1, 1, 1, 1);
-
-static const LTVector2 LTVector2Null(NAN);
-static const LTVector3 LTVector3Null(NAN);
-static const LTVector4 LTVector4Null(NAN);
 
 #endif

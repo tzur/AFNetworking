@@ -51,7 +51,7 @@ context(@"properties", ^{
     expect(^{
       processor.width = 0.1;
       processor.spread = 0.1;
-      processor.color = LTVector3Zero;
+      processor.color = LTVector3::zeros();
       processor.opacity = 0.2;
       processor.frontSymmetrization = LTSymmetrizationTypeTop;
       processor.backSymmetrization = LTSymmetrizationTypeBottom;

@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super initWithDrawer:drawer sourceTexture:input
                  auxiliaryTextures:nil andOutput:output]) {
     self.meshTexture = meshTexture;
-    [self.meshTexture clearWithColor:LTVector4Zero];
+    [self.meshTexture clearWithColor:LTVector4::zeros()];
   }
   return self;
 }
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)resetMesh {
-  [self.meshTexture clearWithColor:LTVector4Zero];
+  [self.meshTexture clearWithColor:LTVector4::zeros()];
 }
 
 #pragma mark -

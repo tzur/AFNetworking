@@ -147,8 +147,8 @@ context(@"clearing", ^{
                                                     format:LTTextureFormatRGBA allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     expect(texture.fillColor.isNull()).to.beTruthy();
-    [fbo clearWithColor:LTVector4Zero];
-    expect(texture.fillColor).to.equal(LTVector4Zero);
+    [fbo clearWithColor:LTVector4::zeros()];
+    expect(texture.fillColor).to.equal(LTVector4::zeros());
   });
 });
 
@@ -189,7 +189,7 @@ context(@"binding", ^{
   });
 
   it(@"should set texture fillColor to null on bindAndDraw", ^{
-    [fbo clearWithColor:LTVector4One];
+    [fbo clearWithColor:LTVector4::ones()];
     expect(fbo.texture.fillColor.isNull()).to.beFalsy();
     [fbo bindAndDraw:^{}];
     expect(fbo.texture.fillColor.isNull()).to.beTruthy();

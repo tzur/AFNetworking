@@ -205,7 +205,9 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool pre
       LTMethodNotImplemented();
   }
   if (!premultiplied) {
-    blended = blended.a() > 0 ? LTVector4(blended.rgb() / blended.a(), blended.a()) : LTVector4Zero;
+    blended = blended.a() > 0 ?
+        LTVector4(blended.rgb() / blended.a(), blended.a()) :
+        LTVector4::zeros();
   }
   blended = std::round(blended * UCHAR_MAX) / UCHAR_MAX;
   return LTLTVector4ToVec4b(blended);

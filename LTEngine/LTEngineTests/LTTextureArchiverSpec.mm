@@ -148,7 +148,7 @@ context(@"archiving", ^{
   });
 
   it(@"should not save content of texture with solid fillColor", ^{
-    [texture clearWithColor:LTVector4One];
+    [texture clearWithColor:LTVector4::ones()];
     result = [archiver archiveTexture:texture inPath:@"archive"
                       withArchiveType:$(LTTextureArchiveTypeJPEG) error:&error];
     expect(result).to.beTruthy();
@@ -349,7 +349,7 @@ context(@"unarchiving", ^{
   });
 
   it(@"should unarchive texture with solid color", ^{
-    [texture clearWithColor:LTVector4One];
+    [texture clearWithColor:LTVector4::ones()];
     result = [archiver archiveTexture:texture inPath:@"solidFillArchive"
                       withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
     expect(result).to.beTruthy();
@@ -406,7 +406,7 @@ context(@"removing", ^{
   });
 
   it(@"should successfully remove archive of solid color texture", ^{
-    [texture clearWithColor:LTVector4One];
+    [texture clearWithColor:LTVector4::ones()];
     result = [archiver archiveTexture:texture inPath:@"archive"
                       withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
     expect(result).to.beTruthy();

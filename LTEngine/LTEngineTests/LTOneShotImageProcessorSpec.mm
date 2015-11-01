@@ -56,7 +56,7 @@ context(@"intialization", ^{
     // fragment sources, with the correct source and auxiliary textures attached to it.
     expect(processor.drawer).to.beKindOf([LTRectDrawer class]);
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4Zero];
+    [fbo clearWithColor:LTVector4::zeros()];
     [processor.drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo
                       fromRect:CGRectFromSize(input.size)];
     

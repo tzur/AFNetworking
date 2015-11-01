@@ -69,7 +69,7 @@
 }
 
 LTPropertyWithoutSetter(LTVector3, colorFilter, ColorFilter,
-                        LTVector3Zero, LTVector3One, LTVector3(0.299, 0.587, 0.114));
+                        LTVector3::zeros(), LTVector3::ones(), LTVector3(0.299, 0.587, 0.114));
 - (void)setColorFilter:(LTVector3)colorFilter {
   [self _verifyAndSetColorFilter:colorFilter];
   LTParameterAssert(colorFilter.sum(), @"Black is not a valid color filter");

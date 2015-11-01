@@ -28,7 +28,7 @@ afterEach(^{
 context(@"properties", ^{
   it(@"should return default mask properties correctly", ^{
     expect(processor.maskType).to.equal(LTDualMaskTypeRadial);
-    expect(processor.center).to.equal(LTVector2Zero);
+    expect(processor.center).to.equal(LTVector2::zeros());
     expect(processor.diameter).to.equal(0);
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);

@@ -215,7 +215,7 @@ context(@"processing", ^{
     inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
     [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
-    [processor.assetTexture clearWithColor:LTVector4One * 0.25];
+    [processor.assetTexture clearWithColor:LTVector4::ones() * 0.25];
     processor.lightLeakIntensity = 1.0;
     processor.frameWidth = 1.0;
     [processor process];

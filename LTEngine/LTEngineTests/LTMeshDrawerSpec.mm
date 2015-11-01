@@ -37,7 +37,7 @@ beforeEach(^{
   meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
                                  precision:LTTexturePrecisionHalfFloat
                                     format:LTTextureFormatRG allocateMemory:YES];
-  [meshTexture clearWithColor:LTVector4Zero];
+  [meshTexture clearWithColor:LTVector4::zeros()];
   
   drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture];
 });
@@ -148,7 +148,7 @@ context(@"drawing", ^{
   beforeEach(^{
     output = [LTTexture byteRGBATextureWithSize:inputTexture.size];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4Zero];
+    [fbo clearWithColor:LTVector4::zeros()];
     
     cellSize = kInputSize / kMeshSize;
     cellRadius = cellSize / 2;
@@ -234,7 +234,7 @@ context(@"drawing", ^{
         .copyTo(expected.colRange(cellRadius.width, cellSize.width + 1));
     expect($(output.image)).to.equalMat($(expected));
     
-    [output clearWithColor:LTVector4Zero];
+    [output clearWithColor:LTVector4::zeros()];
     [meshTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(cv::Vec2hf(half(0)));
       mapped->row(1).setTo(cv::Vec2hf(half(0), half(-0.5 / kMeshSize.height)));
@@ -259,7 +259,7 @@ context(@"drawing", ^{
       [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo
               fromRect:CGRectFromSize(inputTexture.size)];
       warped = output.image;
-      [output clearWithColor:LTVector4Zero];
+      [output clearWithColor:LTVector4::zeros()];
     });
     
     context(@"framebuffer", ^{

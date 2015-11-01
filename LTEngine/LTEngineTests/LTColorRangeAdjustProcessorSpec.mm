@@ -110,7 +110,7 @@ context(@"properties", ^{
 
     it(@"should allow center inside image bounds", ^{
       expect(^{
-        processor.center = LTVector2Zero;
+        processor.center = LTVector2::zeros();
       }).toNot.raiseAny();
 
       expect(^{
@@ -119,13 +119,13 @@ context(@"properties", ^{
     });
 
     it(@"should select the target color correctly", ^{
-      processor.center = LTVector2Zero;
+      processor.center = LTVector2::zeros();
       expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
 
       processor.center = LTVector2(0.5, 0.5);
       expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
 
-      processor.center = LTVector2One;
+      processor.center = LTVector2::ones();
       expect(processor.rangeColor).to.equal(LTVector3(1, 1, 1));
 
       processor.center = LTVector2(2, 2);
@@ -164,7 +164,7 @@ context(@"processing", ^{
     [input clearWithColor:LTVector4(1, 1, 1, 1)];
     processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
     processor.contrast = 1;
-    processor.center = LTVector2Zero;
+    processor.center = LTVector2::zeros();
     processor.diameter = 10;
     [processor process];
     [input clearWithColor:LTVector4(0, 0, 0, 1)];

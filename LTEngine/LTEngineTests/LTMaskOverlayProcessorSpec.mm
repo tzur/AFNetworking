@@ -55,7 +55,7 @@ context(@"processing", ^{
   it(@"should use framebuffer as input in case the input and output are equal", ^{
     processor = [[LTMaskOverlayProcessor alloc] initWithImage:input mask:mask output:input];
     [input cloneTo:output];
-    [input clearWithColor:LTVector4Zero];
+    [input clearWithColor:LTVector4::zeros()];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo bindAndDraw:^{
       [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];

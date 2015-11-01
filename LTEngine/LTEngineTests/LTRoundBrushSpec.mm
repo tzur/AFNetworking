@@ -112,7 +112,7 @@ context(@"drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4Zero];
+    [fbo clearWithColor:LTVector4::zeros()];
     
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
@@ -195,7 +195,7 @@ context(@"drawing", ^{
     
     context(@"direct erasing mode", ^{
       beforeEach(^{
-        [fbo clearWithColor:LTVector4One];
+        [fbo clearWithColor:LTVector4::ones()];
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
@@ -238,8 +238,8 @@ context(@"drawing", ^{
         brush.intensity = kIntensity;
         [brush startNewStrokeAtPoint:point];
         [brush drawPoint:point inFramebuffer:fbo];
-        expected.rowRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4One - kIntensity));
-        expected.colRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4One - kIntensity));
+        expected.rowRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4::ones() - kIntensity));
+        expected.colRange(1, 3).setTo(LTLTVector4ToVec4b(LTVector4::ones() - kIntensity));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
@@ -256,7 +256,7 @@ context(@"drawing", ^{
         output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
                                      format:LTTextureFormatRGBA allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
-        [fbo clearWithColor:LTVector4Zero];
+        [fbo clearWithColor:LTVector4::zeros()];
         
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);

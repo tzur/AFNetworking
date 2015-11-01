@@ -377,7 +377,7 @@ static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVect
   NSUInteger prevIndex = kNumberOfCorners - 1;
   LTVector2 prevDirection = polyline[0] - polyline[prevIndex];
   LTVector2 normalizedPrevDirection =
-      prevDirection.length() < kEpsilon ? LTVector2Zero : prevDirection.normalized();
+      prevDirection.length() < kEpsilon ? LTVector2::zeros() : prevDirection.normalized();
 
   for (NSUInteger i = 0; i < kNumberOfCorners; ++i) {
     NSUInteger nextIndex = (i + 1) % kNumberOfCorners;
@@ -386,7 +386,7 @@ static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVect
                             smootheningRadius);
     prev->push_back(polyline[i] - (minRadius * normalizedPrevDirection));
     LTVector2 normalizedCurrentDirection =
-        currentDirection.length() < kEpsilon ? LTVector2Zero : currentDirection.normalized();
+        currentDirection.length() < kEpsilon ? LTVector2::zeros() : currentDirection.normalized();
     next->push_back(polyline[i] + (minRadius * normalizedCurrentDirection));
     prevDirection = currentDirection;
     normalizedPrevDirection = normalizedCurrentDirection;

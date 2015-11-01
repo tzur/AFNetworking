@@ -243,9 +243,9 @@ context(@"input model", ^{
       processor.floatValue = 0;
       processor.enumValue = [LTImageProcessorEnum enumWithValue:LTImageProcessorEnumC];
       processor.stringValue = @"bar";
-      processor.vector2Value = LTVector2One;
-      processor.vector3Value = LTVector3One;
-      processor.vector4Value = LTVector4One;
+      processor.vector2Value = LTVector2::ones();
+      processor.vector3Value = LTVector3::ones();
+      processor.vector4Value = LTVector4::ones();
 
       [processor resetValueForKey:@keypath(processor, integerValue)];
       expect(processor.integerValue).to.equal(processor.defaultIntegerValue);

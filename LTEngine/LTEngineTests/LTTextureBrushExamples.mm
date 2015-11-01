@@ -230,7 +230,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
 
           cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
           [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];
-          brush.intensity = LTVector4One;
+          brush.intensity = LTVector4::ones();
           brush.flow = 0.2;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:singleFbo];
@@ -329,7 +329,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
 
           cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
           [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];
-          brush.intensity = LTVector4One;
+          brush.intensity = LTVector4::ones();
           brush.flow = 0.2;
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:singleFbo];

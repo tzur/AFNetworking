@@ -250,7 +250,7 @@ context(@"blending", ^{
       cv::Vec4b newFrontColor(0, 192, 255, 255);
       [back clearWithColor:LTVector4(newBackColor)];
       [front clearWithColor:LTVector4(newFrontColor)];
-      [mask clearWithColor:LTVector4One];
+      [mask clearWithColor:LTVector4::ones()];
 
       processor.blendMode = LTBlendModeColorBurn;
       [processor process];

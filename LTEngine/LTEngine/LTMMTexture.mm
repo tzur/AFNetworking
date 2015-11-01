@@ -237,7 +237,7 @@
 
 - (void)beginWriteToTexture {
   [self.lock lock];
-  self.fillColor = LTVector4Null;
+  self.fillColor = LTVector4::null();
 }
 
 - (void)endWriteToTexture {
@@ -311,7 +311,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
-  self.fillColor = LTVector4Null;
+  self.fillColor = LTVector4::null();
   [self mappedImageWithBlock:block withFlags:0];
   [self updateGenerationID];
 }

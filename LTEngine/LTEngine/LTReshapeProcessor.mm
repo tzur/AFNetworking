@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 #pragma mark -
 
 - (void)process {
-  [self.outputTexture clearWithColor:LTVector4Zero];
+  [self.outputTexture clearWithColor:LTVector4::zeros()];
   [self.meshProcessor process];
 }
 
@@ -180,7 +180,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 
 - (LTTexture *)defaultMaskTexture {
   LTTexture *texture = [LTTexture textureWithImage:cv::Mat1b(1, 1)];
-  [texture clearWithColor:LTVector4One];
+  [texture clearWithColor:LTVector4::ones()];
   texture.minFilterInterpolation = LTTextureInterpolationNearest;
   texture.magFilterInterpolation = LTTextureInterpolationNearest;
   return texture;
