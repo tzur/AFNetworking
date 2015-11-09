@@ -106,6 +106,9 @@ namespace cv {
 ///
 /// @note The currently supported \c cv::Mat types are \c CV_32F (grayscale), \c CV32F_C4 (four
 /// channel float), CV_16C4 (four channel half-float) and \c CV_8UC4 (RGBA).
+///
+/// @note Binding texture objects binds them to the currently active textre unit in the OpenGL
+/// enviorment. Unbinding textures restores the state previous to the last \c bind call.
 @interface LTTexture : NSObject <LTGPUResource> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
