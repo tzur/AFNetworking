@@ -3,16 +3,16 @@
 
 #import "LTDegenerateInterpolant.h"
 
-#import "LTInterpolationRoutineExamples.h"
+#import "LTPolynomialInterpolantExamples.h"
 
 SpecBegin(LTDegenerateInterpolant)
 
-itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
-  @{kLTInterpolationRoutineFactory: [[LTDegenerateInterpolantFactory alloc] init],
-    kLTInterpolationRoutineClass: [LTDegenerateInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantFactoryExamples,
+  @{LTPolynomialInterpolantFactory: [[LTDegenerateInterpolantFactory alloc] init],
+    LTPolynomialInterpolantClass: [LTDegenerateInterpolant class]});
 
-itShouldBehaveLike(kLTInterpolationRoutineExamples,
-  @{kLTInterpolationRoutineClass: [LTDegenerateInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantExamples,
+  @{LTPolynomialInterpolantClass: [LTDegenerateInterpolant class]});
 
 it(@"should always return the single source keyframe", ^{
   InterpolatedObject *object = [[InterpolatedObject alloc] init];

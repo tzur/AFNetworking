@@ -3,16 +3,16 @@
 
 #import "LTLinearInterpolant.h"
 
-#import "LTInterpolationRoutineExamples.h"
+#import "LTPolynomialInterpolantExamples.h"
 
 SpecBegin(LTLinearInterpolant)
 
-itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
-  @{kLTInterpolationRoutineFactory: [[LTLinearInterpolantFactory alloc] init],
-    kLTInterpolationRoutineClass: [LTLinearInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantFactoryExamples,
+  @{LTPolynomialInterpolantFactory: [[LTLinearInterpolantFactory alloc] init],
+    LTPolynomialInterpolantClass: [LTLinearInterpolant class]});
 
-itShouldBehaveLike(kLTInterpolationRoutineExamples,
-  @{kLTInterpolationRoutineClass: [LTLinearInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantExamples,
+  @{LTPolynomialInterpolantClass: [LTLinearInterpolant class]});
 
 context(@"should perform correct linear interpolation", ^{
   __block InterpolatedObject *first;

@@ -3,16 +3,16 @@
 
 #import "LTCatmullRomInterpolant.h"
 
-#import "LTInterpolationRoutineExamples.h"
+#import "LTPolynomialInterpolantExamples.h"
 
 SpecBegin(LTCatmullRomInterpolant)
 
-itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
-  @{kLTInterpolationRoutineFactory: [[LTCatmullRomInterpolantFactory alloc] init],
-    kLTInterpolationRoutineClass: [LTCatmullRomInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantFactoryExamples,
+  @{LTPolynomialInterpolantFactory: [[LTCatmullRomInterpolantFactory alloc] init],
+    LTPolynomialInterpolantClass: [LTCatmullRomInterpolant class]});
 
-itShouldBehaveLike(kLTInterpolationRoutineExamples,
-  @{kLTInterpolationRoutineClass: [LTCatmullRomInterpolant class]});
+itShouldBehaveLike(LTPolynomialInterpolantExamples,
+  @{LTPolynomialInterpolantClass: [LTCatmullRomInterpolant class]});
 
 context(@"should perform correct catmull-rom interpolation", ^{
   __block InterpolatedObject *p0;

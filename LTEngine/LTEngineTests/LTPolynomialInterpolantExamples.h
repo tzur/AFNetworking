@@ -4,16 +4,16 @@
 #import "LTInterpolatableObject.h"
 
 /// Interpolants examples shared group name.
-extern NSString * const kLTInterpolationRoutineExamples;
+extern NSString * const LTPolynomialInterpolantExamples;
 
 /// Interpolants factory examples shared group name.
-extern NSString * const kLTInterpolationRoutineFactoryExamples;
+extern NSString * const LTPolynomialInterpolantFactoryExamples;
 
 /// Class object of LTPolynomialInterpolant subclass to test.
-extern NSString * const kLTInterpolationRoutineClass;
+extern NSString * const LTPolynomialInterpolantClass;
 
 /// Instance of the LTPolynomialInterpolant factory to test.
-extern NSString * const kLTInterpolationRoutineFactory;
+extern NSString * const LTPolynomialInterpolantFactory;
 
 /// Used to test the various interpolants.
 @interface InterpolatedObject : NSObject <LTInterpolatableObject>

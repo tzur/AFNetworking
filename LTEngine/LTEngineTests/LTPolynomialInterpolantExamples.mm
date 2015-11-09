@@ -1,15 +1,15 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolationRoutineExamples.h"
+#import "LTPolynomialInterpolantExamples.h"
 
 #import "LTPolynomialInterpolant.h"
 
-NSString * const kLTInterpolationRoutineExamples = @"LTInterpolationRoutineExamples";
-NSString * const kLTInterpolationRoutineFactoryExamples = @"LTInterpolationRoutineFactoryExamples";
+NSString * const LTPolynomialInterpolantExamples = @"LTPolynomialInterpolantExamples";
+NSString * const LTPolynomialInterpolantFactoryExamples = @"LTInterpolationRoutineFactoryExamples";
 
-NSString * const kLTInterpolationRoutineClass = @"LTInterpolationRoutineExamplesClass";
-NSString * const kLTInterpolationRoutineFactory = @"LTInterpolationRoutineFactoryExamplesFactory";
+NSString * const LTPolynomialInterpolantClass = @"LTInterpolationRoutineExamplesClass";
+NSString * const LTPolynomialInterpolantFactory = @"LTInterpolationRoutineFactoryExamplesFactory";
 
 static NSArray *LTArrayWithInstancesOfObject(NSObject *object, NSUInteger numInstances) {
   NSMutableArray *array = [NSMutableArray array];
@@ -99,17 +99,17 @@ static BOOL LTEqualWhithin(double a, double b, double withinValue = FLT_EPSILON)
 #pragma mark Shared Tests
 #pragma mark -
 
-SharedExamplesBegin(LTInterpolationRoutineExamples)
+SharedExamplesBegin(LTPolynomialInterpolantExamples)
 
-sharedExamplesFor(kLTInterpolationRoutineFactoryExamples, ^(NSDictionary *data) {
+sharedExamplesFor(LTPolynomialInterpolantFactoryExamples, ^(NSDictionary *data) {
   __block id<LTPolynomialInterpolantFactory> factory;
   __block Class expectedInterpolationRoutineClass;
   __block InterpolatedObject *keyObject;
   __block NSUInteger expectedKeyFrames;
   
   beforeEach(^{
-    factory = data[kLTInterpolationRoutineFactory];
-    expectedInterpolationRoutineClass = data[kLTInterpolationRoutineClass];
+    factory = data[LTPolynomialInterpolantFactory];
+    expectedInterpolationRoutineClass = data[LTPolynomialInterpolantClass];
     expectedKeyFrames = [factory expectedKeyFrames];
     keyObject = [[InterpolatedObject alloc] init];
   });
@@ -136,14 +136,14 @@ sharedExamplesFor(kLTInterpolationRoutineFactoryExamples, ^(NSDictionary *data) 
   });
 });
 
-sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
-  __block Class interpolationRoutineClass;
+sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
+  __block Class interpolantClass;
   __block InterpolatedObject *keyObject;
   __block NSUInteger expectedKeyFrames;
   
   beforeEach(^{
-    interpolationRoutineClass = data[kLTInterpolationRoutineClass];
-    expectedKeyFrames = [interpolationRoutineClass expectedKeyFrames];
+    interpolantClass = data[LTPolynomialInterpolantClass];
+    expectedKeyFrames = [interpolantClass expectedKeyFrames];
     keyObject = [[InterpolatedObject alloc] init];
     keyObject.propertyNotToInterpolate = 1;
     keyObject.floatToInterpolate = 1;
@@ -155,24 +155,24 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
     it(@"should initialize with the correct number of key frames", ^{
       expect(^{
         NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
-        LTPolynomialInterpolant __unused *interpolant = [[interpolationRoutineClass alloc]
-                                                    initWithKeyFrames:keyFrames];
+        LTPolynomialInterpolant __unused *interpolant =
+            [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       }).notTo.raiseAny();
     });
     
     it(@"should not initialize with fewer key frames than necessary", ^{
       expect(^{
         NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames - 1);
-        LTPolynomialInterpolant __unused *interpolant = [[interpolationRoutineClass alloc]
-                                                    initWithKeyFrames:keyFrames];
+        LTPolynomialInterpolant __unused *interpolant =
+            [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       }).to.raise(NSInvalidArgumentException);
     });
     
     it(@"should not initialize with more key frames than necessary", ^{
       expect(^{
         NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames + 1);
-        LTPolynomialInterpolant __unused *interpolant = [[interpolationRoutineClass alloc]
-                                                    initWithKeyFrames:keyFrames];
+        LTPolynomialInterpolant __unused *interpolant =
+            [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       }).to.raise(NSInvalidArgumentException);
     });
   });
@@ -183,7 +183,7 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
     
     beforeEach(^{
       NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
-      interpolant = [[interpolationRoutineClass alloc] initWithKeyFrames:keyFrames];
+      interpolant = [[interpolantClass alloc] initWithKeyFrames:keyFrames];
     });
 
     it(@"should return the correct range of the interval window", ^{
@@ -255,7 +255,7 @@ sharedExamplesFor(kLTInterpolationRoutineExamples, ^(NSDictionary *data) {
       expect(keyObject.didUseInitWithInterpolatedProperties).to.beFalsy();
       
       NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
-      interpolant = [[interpolationRoutineClass alloc] initWithKeyFrames:keyFrames];
+      interpolant = [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       InterpolatedObjectWithOptionalInitializer *interpolated = [interpolant valueAtKey:0.5];
       expect(interpolated.didUseInitWithInterpolatedProperties).to.beTruthy();
     });
