@@ -4,10 +4,10 @@
 #import "LTPainterStroke.h"
 
 #import "LTDegenerateInterpolant.h"
-#import "LTPolynomialInterpolant.h"
 #import "LTLinearInterpolant.h"
-#import "LTPainterStrokeSegment.h"
 #import "LTPainterPoint.h"
+#import "LTPainterStrokeSegment.h"
+#import "LTPolynomialInterpolant.h"
 
 @interface LTPainterStroke ()
 
@@ -28,8 +28,8 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithInterpolationRoutineFactory:(id<LTPolynomialInterpolantFactory>)factory
-                                      startingPoint:(LTPainterPoint *)startingPoint {
+- (instancetype)initWithInterpolantFactory:(id<LTPolynomialInterpolantFactory>)factory
+                             startingPoint:(LTPainterPoint *)startingPoint {
   if (self = [super init]) {
     LTParameterAssert(factory);
     LTParameterAssert(startingPoint);

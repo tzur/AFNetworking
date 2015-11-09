@@ -29,8 +29,7 @@
   LTPaintingDirections *directions = [[LTPaintingDirections alloc] init];
   directions.brush = brush;
   directions.stroke =
-      [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:[self linearFactory]
-                                                     startingPoint:point];
+      [[LTPainterStroke alloc] initWithInterpolantFactory:[self linearFactory] startingPoint:point];
   return directions;
 }
 

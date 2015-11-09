@@ -27,8 +27,7 @@ context(@"initialization", ^{
   it(@"should initialize with valid arguments", ^{
     LTPainterPoint *startingPoint = [[LTPainterPoint alloc] init];
     LTPainterStroke *stroke =
-        [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
-                                                       startingPoint:startingPoint];
+        [[LTPainterStroke alloc] initWithInterpolantFactory:factory startingPoint:startingPoint];
     expect(stroke.startingPoint).to.beIdenticalTo(startingPoint);
     expect(stroke.segments.count).to.equal(0);
   });
@@ -37,16 +36,14 @@ context(@"initialization", ^{
     expect(^{
       LTPainterPoint *startingPoint = [[LTPainterPoint alloc] init];
       LTPainterStroke __unused *stroke =
-          [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:nil
-                                                         startingPoint:startingPoint];
+          [[LTPainterStroke alloc] initWithInterpolantFactory:nil startingPoint:startingPoint];
     }).to.raise(NSInvalidArgumentException);
   });
   
   it(@"should raise an exception with nil starting point", ^{
     expect(^{
       LTPainterStroke __unused *stroke =
-          [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
-                                                         startingPoint:nil];
+          [[LTPainterStroke alloc] initWithInterpolantFactory:factory startingPoint:nil];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -65,7 +62,7 @@ context(@"adding points and segments", ^{
   
   it(@"should add point", ^{
     stroke = [[LTPainterStroke alloc]
-              initWithInterpolationRoutineFactory:[[LTLinearInterpolantFactory alloc] init]
+              initWithInterpolantFactory:[[LTLinearInterpolantFactory alloc] init]
               startingPoint:startingPoint];
     [stroke addPointAt:newPoint];
     expect(stroke.segments.count).to.equal(1);
@@ -75,8 +72,8 @@ context(@"adding points and segments", ^{
   context(@"degenerate interpolation factory", ^{
     beforeEach(^{
       factory = [[LTDegenerateInterpolantFactory alloc] init];
-      stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
-                                                              startingPoint:startingPoint];
+      stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
+                                                     startingPoint:startingPoint];
     });
     
     it(@"should add a segment immediately", ^{
@@ -95,8 +92,8 @@ context(@"adding points and segments", ^{
   context(@"linear interpolation factory", ^{
     beforeEach(^{
       factory = [[LTLinearInterpolantFactory alloc] init];
-      stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
-                                                              startingPoint:startingPoint];
+      stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
+                                                     startingPoint:startingPoint];
     });
     
     it(@"should add a segment immediately", ^{
@@ -123,8 +120,8 @@ context(@"adding points and segments", ^{
     
     beforeEach(^{
       factory = [[LTCatmullRomInterpolantFactory alloc] init];
-      stroke = [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:factory
-                                                              startingPoint:startingPoint];
+      stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
+                                                     startingPoint:startingPoint];
       newPoints = [NSMutableArray array];
       for (NSUInteger i = 0; i < 4; ++i) {
         [newPoints addObject:[[LTPainterPoint alloc] init]];
@@ -172,7 +169,7 @@ context(@"adding points and segments", ^{
     p3.contentPosition = CGPointMake(3, 3);
     
     stroke = [[LTPainterStroke alloc]
-              initWithInterpolationRoutineFactory:[[LTLinearInterpolantFactory alloc] init]
+              initWithInterpolantFactory:[[LTLinearInterpolantFactory alloc] init]
               startingPoint:startingPoint];
 
     [stroke addSegmentTo:p1];
