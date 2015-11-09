@@ -11,14 +11,17 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
 @class LTArrayBuffer, LTIndicesArray, LTProgram, LTTexture, LTVertexArray;
 
 /// Context for drawing using the GPU. The context is responsible for binding a vertex array to a
-/// program, and to manage resource binding before and after the drawing operation.
+/// program, and to manage resource binding before and after the drawing operation. The vertex array
+/// provided upon initialization of the context must not be bound to other programs but should be
+/// exclusively used for the provided program.
 @interface LTDrawingContext : NSObject
 
 /// Creates a new drawing context, and binds the vertex array's attributes to the given program's
 /// attribute indices.
 ///
 /// @param program program to execute in this context.
-/// @param vertexArray vertex array to bind to the program. The given array must be \c complete.
+/// @param vertexArray vertex array to bind to the program. The given array must be \c complete. The
+/// vertex array must not be bound to other programs while it is in use by the returned context.
 /// @param uniformToTexture maps between uniform name (\c NSString) to its corresponding \c
 /// LTTexture. The given uniforms must be of type \c GL_SAMPLER_2D and a subset of the \c program
 /// uniforms set.
