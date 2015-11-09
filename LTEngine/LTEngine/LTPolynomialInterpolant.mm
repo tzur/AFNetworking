@@ -1,11 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolationRoutine.h"
+#import "LTPolynomialInterpolant.h"
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
-@interface LTInterpolationRoutine ()
+@interface LTPolynomialInterpolant ()
 
 /// Array of objects acting as keyframes for the interpolation.
 @property (strong, nonatomic) NSArray *keyFrames;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation LTInterpolationRoutine
+@implementation LTPolynomialInterpolant
 
 + (NSUInteger)expectedKeyFrames {
   LTMethodNotImplemented();
@@ -38,7 +38,7 @@
 - (void)validateKeyFrames:(NSArray *)keyFrames {
   LTParameterAssert(keyFrames.count == [[self class] expectedKeyFrames]);
   for (id object in keyFrames) {
-    LTParameterAssert([object conformsToProtocol:@protocol(LTInterpolatedObject)]);
+    LTParameterAssert([object conformsToProtocol:@protocol(LTInterpolatableObject)]);
     LTParameterAssert([object isKindOfClass:[keyFrames.firstObject class]]);
   }
 }
@@ -51,7 +51,7 @@
   LTParameterAssert(key >= 0 && key <= 1);
   NSMutableDictionary *properties = [NSMutableDictionary dictionary];
   for (NSString *propertyName in [self.keyFrames.firstObject propertiesToInterpolate]) {
-    properties[propertyName] = [self valueOfPropertyNamed:propertyName atKey:key];
+    properties[propertyName] = @([self valueOfPropertyNamed:propertyName atKey:key]);
   }
   
   if ([self.keyFrames.firstObject respondsToSelector:@selector(initWithInterpolatedProperties:)]) {
@@ -63,16 +63,16 @@
   }
 }
 
-- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key {
+- (CGFloat)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat)key {
   NSArray *coefficientsForProperty = self.coefficients[name];
   double value = 0;
   for (NSNumber *coefficient in coefficientsForProperty) {
     value = key * value + [coefficient doubleValue];
   }
-  return @(value);
+  return value;
 }
 
-- (CGFloats)valuesOfCGFloatPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
+- (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
   NSArray *coefficientsForProperty = self.coefficients[name];
   std::vector<double> coefficients;
   for (NSNumber *coefficient in coefficientsForProperty) {

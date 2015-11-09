@@ -1,10 +1,10 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
 /// This class represents a point used in the \c LTPainter mechanism, with interpolated properties.
-@interface LTPainterPoint : NSObject <LTInterpolatedObject, NSCopying>
+@interface LTPainterPoint : NSObject <LTInterpolatableObject, NSCopying>
 
 /// initializes a point with the default primitive values and the current timestamp.
 - (instancetype)initWithCurrentTimestamp;

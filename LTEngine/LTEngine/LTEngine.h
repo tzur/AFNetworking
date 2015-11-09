@@ -115,9 +115,9 @@
 #import <LTEngine/LTBrushScatterEffect.h>
 #import <LTEngine/LTBrushShapeDynamicsEffect.h>
 
-// GPU/Painting/Interpolation Routines.
-#import <LTEngine/LTCatmullRomInterpolationRoutine.h>
-#import <LTEngine/LTLinearInterpolationRoutine.h>
+// GPU/Painting/Interpolants.
+#import <LTEngine/LTCatmullRomInterpolant.h>
+#import <LTEngine/LTLinearInterpolant.h>
 
 // UI.
 #import <LTEngine/LTView.h>

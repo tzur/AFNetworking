@@ -1,26 +1,26 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTDegenerateInterpolationRoutine.h"
+#import "LTDegenerateInterpolant.h"
 
-#import "LTInterpolatedObject.h"
+#import "LTInterpolatableObject.h"
 
-@interface LTInterpolationRoutine ()
+@interface LTPolynomialInterpolant ()
 @property (strong, nonatomic) NSArray *keyFrames;
 @end
 
-@implementation LTDegenerateInterpolationRoutine
+@implementation LTDegenerateInterpolant
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray __unused *)keyFrames {
   return nil;
 }
 
-- (NSNumber *)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat __unused)key {
+- (CGFloat)valueOfPropertyNamed:(NSString *)name atKey:(CGFloat __unused)key {
   return [[self.keyFrames.firstObject propertiesToInterpolate] containsObject:name] ?
-      [self.keyFrames.firstObject valueForKey:name] : @(0);
+      [[self.keyFrames.firstObject valueForKey:name] CGFloatValue] : 0;
 }
 
-- (CGFloats)valuesOfCGFloatPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
+- (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
   CGFloat value = [[self.keyFrames.firstObject propertiesToInterpolate] containsObject:name] ?
       [[self.keyFrames.firstObject valueForKey:name] doubleValue] : 0;
   return CGFloats(keys.size(), value);
@@ -36,18 +36,18 @@
 
 @end
 
-@implementation LTDegenerateInterpolationRoutineFactory
+@implementation LTDegenerateInterpolantFactory
 
-- (LTInterpolationRoutine *)routineWithKeyFrames:(NSArray *)keyFrames {
-  return [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:keyFrames];
+- (LTPolynomialInterpolant *)interpolantWithKeyFrames:(NSArray *)keyFrames {
+  return [[LTDegenerateInterpolant alloc] initWithKeyFrames:keyFrames];
 }
 
 - (NSUInteger)expectedKeyFrames {
-  return [LTDegenerateInterpolationRoutine expectedKeyFrames];
+  return [LTDegenerateInterpolant expectedKeyFrames];
 }
 
 - (NSRange)rangeOfIntervalInWindow {
-  return [LTDegenerateInterpolationRoutine rangeOfIntervalInWindow];
+  return [LTDegenerateInterpolant rangeOfIntervalInWindow];
 }
 
 @end

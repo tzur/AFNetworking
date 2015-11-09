@@ -150,7 +150,7 @@ static const CGFloat kTouchRadiusFilterSigma = 5;
 
   self.currentStroke =
       [[LTPainterStroke alloc]
-       initWithInterpolationRoutineFactory:self.brush.splineFactory ?: self.splineFactory
+       initWithInterpolantFactory:self.brush.splineFactory ?: self.splineFactory
        startingPoint:point];
   [self.brush startNewStrokeAtPoint:point];
 }

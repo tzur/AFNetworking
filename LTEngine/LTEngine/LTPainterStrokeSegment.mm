@@ -3,7 +3,7 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTInterpolationRoutine.h"
+#import "LTPolynomialInterpolant.h"
 #import "LTPainterPoint.h"
 
 @interface LTPainterStrokeSegment () {
@@ -25,8 +25,8 @@
 /// Ending point of the segment.
 @property (strong, nonatomic) LTPainterPoint *endPoint;
 
-/// Interpolation routine used for generating points along the segment.
-@property (strong, nonatomic) LTInterpolationRoutine *routine;
+/// Interpolant used for generating points along the segment.
+@property (strong, nonatomic) LTPolynomialInterpolant *interpolant;
 
 /// Array of distances of each sampling point along the segment.
 @property (readonly, nonatomic) CGFloats &distances;
@@ -38,17 +38,16 @@
 /// Number of sample points used for approximating the length of the segment.
 static const NSUInteger kNumSamplesForLengthEstimation = 500;
 
-- (instancetype)initWithSegmentIndex:(NSUInteger)index
-                   distanceFromStart:(CGFloat)distance
-             andInterpolationRoutine:(LTInterpolationRoutine *)routine {
+- (instancetype)initWithSegmentIndex:(NSUInteger)index distanceFromStart:(CGFloat)distance
+                      andInterpolant:(LTPolynomialInterpolant *)interpolant {
   if (self = [super init]) {
-    LTParameterAssert(routine);
+    LTParameterAssert(interpolant);
     LTParameterAssert(distance >= 0);
     self.index = index;
     self.distanceFromStart = distance;
-    self.routine = routine;
-    self.startPoint = [routine valueAtKey:0];
-    self.endPoint = [routine valueAtKey:1];
+    self.interpolant = interpolant;
+    self.startPoint = [interpolant valueAtKey:0];
+    self.endPoint = [interpolant valueAtKey:1];
     [self fillDistances:&_distances WithNumberOfSamples:kNumSamplesForLengthEstimation];
     self.length = self.distances.back();
   }
@@ -64,8 +63,8 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
     keys.push_back(i * step);
   }
 
-  CGFloats xPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionX" atKeys:keys];
-  CGFloats yPositions = [self.routine valuesOfCGFloatPropertyNamed:@"contentPositionY" atKeys:keys];
+  CGFloats xPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionX" atKeys:keys];
+  CGFloats yPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionY" atKeys:keys];
   LTAssert(xPositions.size() == yPositions.size());
   
   CGFloat length = 0;
@@ -100,7 +99,7 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
         // TODO:(amit) find out why the unclamped value might be negative in certain scenarios for
         // brushes with very small scale and spacing.
         LTPainterPoint *point =
-            [self.routine valueAtKey:std::clamp(key / self.distances.size(), 0, 1)];
+            [self.interpolant valueAtKey:std::clamp(key / self.distances.size(), 0, 1)];
         point.distanceFromStart = self.distanceFromStart + nextDistance;
         [points addObject:point];
         nextDistance = nextDistance + interval;
@@ -115,7 +114,8 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
 - (NSString *)description {
   return [NSString stringWithFormat:@"Segment from (%g,%g) to (%g,%g): method: %@",
           self.startPoint.contentPosition.x, self.startPoint.contentPosition.y,
-          self.endPoint.contentPosition.x, self.endPoint.contentPosition.y, [self.routine class]];
+          self.endPoint.contentPosition.x, self.endPoint.contentPosition.y,
+          [self.interpolant class]];
 }
 
 @end

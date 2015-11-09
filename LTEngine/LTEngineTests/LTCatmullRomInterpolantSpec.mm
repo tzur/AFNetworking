@@ -1,18 +1,18 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTCatmullRomInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
 
-#import "LTInterpolationRoutineExamples.h"
+#import "LTPolynomialInterpolantExamples.h"
 
-SpecBegin(LTCatmullRomInterpolationRoutine)
+SpecBegin(LTCatmullRomInterpolant)
 
-itShouldBehaveLike(kLTInterpolationRoutineFactoryExamples,
-  @{kLTInterpolationRoutineFactory: [[LTCatmullRomInterpolationRoutineFactory alloc] init],
-    kLTInterpolationRoutineClass: [LTCatmullRomInterpolationRoutine class]});
+itShouldBehaveLike(LTPolynomialInterpolantFactoryExamples,
+  @{LTPolynomialInterpolantFactory: [[LTCatmullRomInterpolantFactory alloc] init],
+    LTPolynomialInterpolantClass: [LTCatmullRomInterpolant class]});
 
-itShouldBehaveLike(kLTInterpolationRoutineExamples,
-  @{kLTInterpolationRoutineClass: [LTCatmullRomInterpolationRoutine class]});
+itShouldBehaveLike(LTPolynomialInterpolantExamples,
+  @{LTPolynomialInterpolantClass: [LTCatmullRomInterpolant class]});
 
 context(@"should perform correct catmull-rom interpolation", ^{
   __block InterpolatedObject *p0;
@@ -20,7 +20,7 @@ context(@"should perform correct catmull-rom interpolation", ^{
   __block InterpolatedObject *p2;
   __block InterpolatedObject *p3;
   __block InterpolatedObject *interpolated;
-  __block LTCatmullRomInterpolationRoutine *routine;
+  __block LTCatmullRomInterpolant *interpolant;
   
   beforeEach(^{
     p0 = [[InterpolatedObject alloc] init];
@@ -35,28 +35,28 @@ context(@"should perform correct catmull-rom interpolation", ^{
     p1.doubleToInterpolate = p2.floatToInterpolate;
     p2.doubleToInterpolate = p1.floatToInterpolate;
     p3.doubleToInterpolate = p0.floatToInterpolate;
-    routine = [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
+    interpolant = [[LTCatmullRomInterpolant alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
   });
   
   it(@"should return object equal to second keyframe for key 0", ^{
-    interpolated = [routine valueAtKey:0];
+    interpolated = [interpolant valueAtKey:0];
     expect(interpolated).to.equal(p1);
   });
   
   it(@"should return object equal to third keyframe for key 1", ^{
-    interpolated = [routine valueAtKey:1];
+    interpolated = [interpolant valueAtKey:1];
     expect(interpolated).to.equal(p2);
   });
   
   // Target values were calculated in matlab.
   it(@"should return the correct interpolation for values between [0,1]", ^{
-    interpolated = [routine valueAtKey:0.25];
+    interpolated = [interpolant valueAtKey:0.25];
     expect(interpolated.floatToInterpolate).to.beCloseToWithin(0.4759, 1e-4);
     expect(interpolated.doubleToInterpolate).to.beCloseToWithin(0.3496, 1e-4);
-    interpolated = [routine valueAtKey:0.5];
+    interpolated = [interpolant valueAtKey:0.5];
     expect(interpolated.floatToInterpolate).to.beCloseToWithin(0.4115, 1e-4);
     expect(interpolated.doubleToInterpolate).to.beCloseToWithin(0.4115, 1e-4);
-    interpolated = [routine valueAtKey:0.75];
+    interpolated = [interpolant valueAtKey:0.75];
     expect(interpolated.floatToInterpolate).to.beCloseToWithin(0.3496, 1e-4);
     expect(interpolated.doubleToInterpolate).to.beCloseToWithin(0.4759, 1e-4);
   });

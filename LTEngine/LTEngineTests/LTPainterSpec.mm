@@ -4,8 +4,8 @@
 #import "LTPainter+LTView.h"
 
 #import "LTBrush.h"
-#import "LTCatmullRomInterpolationRoutine.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTRotatedRect.h"
@@ -30,7 +30,7 @@ static LTPainterPoint *LTPointAt(CGSize position) {
 @end
 
 @interface LTPainterStroke ()
-@property (strong, nonatomic) id<LTInterpolationRoutineFactory> factory;
+@property (strong, nonatomic) id<LTPolynomialInterpolantFactory> factory;
 @property (strong, nonatomic) NSMutableArray *controlPoints;
 @end
 
@@ -80,7 +80,7 @@ context(@"properties", ^{
     expect(painter.delegate).to.beNil();
     expect(painter.touchDelegateForLTView).to.conformTo(@protocol(LTViewTouchDelegate));
     expect(painter.brush).to.beKindOf([LTBrush class]);
-    expect(painter.splineFactory).to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
+    expect(painter.splineFactory).to.beKindOf([LTCatmullRomInterpolantFactory class]);
     expect(painter.airbrush).to.beFalsy();
     expect(painter.strokes).notTo.beNil();
     expect(painter.strokes.count).to.equal(0);
@@ -99,8 +99,8 @@ context(@"properties", ^{
   });
   
   it(@"should set splineFactory", ^{
-    id<LTInterpolationRoutineFactory> factory =
-        [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+    id<LTPolynomialInterpolantFactory> factory =
+        [[LTCatmullRomInterpolantFactory alloc] init];
     painter.splineFactory = factory;
     expect(painter.splineFactory).to.beIdenticalTo(factory);
   });
@@ -233,19 +233,19 @@ context(@"painting", ^{
     });
 
     it(@"should use the brush's spline factory if set", ^{
-      painter.brush.splineFactory = [[LTCatmullRomInterpolationRoutineFactory alloc] init];
+      painter.brush.splineFactory = [[LTCatmullRomInterpolantFactory alloc] init];
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
 
-      painter.brush.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.brush.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
 
       expect([painter.strokes[0] factory])
-          .to.beKindOf([LTCatmullRomInterpolationRoutineFactory class]);
-      expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolationRoutineFactory class]);
+          .to.beKindOf([LTCatmullRomInterpolantFactory class]);
+      expect([painter.strokes[1] factory]).to.beKindOf([LTLinearInterpolantFactory class]);
     });
 
     context(@"touch radius", ^{
@@ -399,7 +399,7 @@ context(@"painting", ^{
       brush.spacing = 0.99;
       brush.baseDiameter = kCanvasSize.width / 2;
       painter.brush = brush;
-      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter clearWithColor:LTVector4(0, 0, 0, 1)];
 
       painter.airbrush = YES;
@@ -422,7 +422,7 @@ context(@"painting", ^{
       stroke = painter.lastStroke;
       painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
                                   canvasTexture:canvas];
-      painter.splineFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+      painter.splineFactory = [[LTLinearInterpolantFactory alloc] init];
       [painter clearWithColor:LTVector4(0, 0, 0, 1)];
       expect($(canvas.image)).to.equalMat($(background));
     });

@@ -8,10 +8,10 @@
 #import <LTEngine/LTBrushRandomState.h>
 #import <LTEngine/LTBrushScatterEffect.h>
 #import <LTEngine/LTBrushShapeDynamicsEffect.h>
-#import <LTEngine/LTDegenerateInterpolationRoutine.h>
+#import <LTEngine/LTDegenerateInterpolant.h>
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTGLKitExtensions.h>
-#import <LTEngine/LTLinearInterpolationRoutine.h>
+#import <LTEngine/LTLinearInterpolant.h>
 #import <LTEngine/LTPainterPoint.h>
 #import <LTEngine/LTPainterStrokeSegment.h>
 #import <LTEngine/LTTexture+Factory.h>
@@ -170,9 +170,8 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
     });
 
     it(@"should set splineFactory", ^{
-      id<LTInterpolationRoutineFactory> linear = [[LTLinearInterpolationRoutineFactory alloc] init];
-      id<LTInterpolationRoutineFactory> degenerate =
-          [[LTDegenerateInterpolationRoutineFactory alloc] init];
+      id<LTPolynomialInterpolantFactory> linear = [[LTLinearInterpolantFactory alloc] init];
+      id<LTPolynomialInterpolantFactory> degenerate = [[LTDegenerateInterpolantFactory alloc] init];
 
       brush.splineFactory = linear;
       expect(brush.splineFactory).to.beIdenticalTo(linear);
@@ -321,7 +320,7 @@ context(@"drawing", ^{
   __block LTPainterPoint *startPoint;
   __block LTPainterPoint *endPoint;
   __block LTPainterPoint *centerPoint;
-  __block LTLinearInterpolationRoutine *spline;
+  __block LTLinearInterpolant *spline;
   __block LTPainterStrokeSegment *segment;
 
   const CGFloat kBaseBrushDiameter = 100;
@@ -346,9 +345,9 @@ context(@"drawing", ^{
     endPoint = [[LTPainterPoint alloc] init];
     startPoint.contentPosition = CGPointMake(0, kOutputCenter.y);
     endPoint.contentPosition = CGPointMake(kOutputSize.width, kOutputCenter.y);
-    spline = [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:@[startPoint, endPoint]];
+    spline = [[LTLinearInterpolant alloc] initWithKeyFrames:@[startPoint, endPoint]];
     segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
-                                           andInterpolationRoutine:spline];
+                                                    andInterpolant:spline];
     centerPoint = [spline valueAtKey:0.5];
   });
   
@@ -547,8 +546,8 @@ context(@"drawing", ^{
     });
 
     context(@"segments", ^{
-      __block LTLinearInterpolationRoutine *spline0;
-      __block LTLinearInterpolationRoutine *spline1;
+      __block LTLinearInterpolant *spline0;
+      __block LTLinearInterpolant *spline1;
       __block LTPainterStrokeSegment *segment0;
       __block LTPainterStrokeSegment *segment1;
 
@@ -556,18 +555,18 @@ context(@"drawing", ^{
         beforeEach(^{
           startPoint.zoomScale = 2;
           endPoint.zoomScale = 2;
-          spline0 = [[LTLinearInterpolationRoutine alloc]
+          spline0 = [[LTLinearInterpolant alloc]
                      initWithKeyFrames:@[startPoint, endPoint]];
           segment0 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
-                                                  andInterpolationRoutine:spline0];
+                                                           andInterpolant:spline0];
 
           startPoint.zoomScale = 1;
           endPoint.zoomScale = 1;
-          spline1 = [[LTLinearInterpolationRoutine alloc]
+          spline1 = [[LTLinearInterpolant alloc]
                      initWithKeyFrames:@[endPoint, startPoint]];
           segment1 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                         distanceFromStart:segment0.length
-                                                  andInterpolationRoutine:spline1];
+                                                           andInterpolant:spline1];
         });
 
         it(@"should scale according to zoomScale of each segment", ^{
@@ -619,20 +618,20 @@ context(@"drawing", ^{
           startPoint.touchRadiusTolerance = 4;
           endPoint.touchRadius = 2;
           endPoint.touchRadiusTolerance = 4;
-          spline0 = [[LTLinearInterpolationRoutine alloc]
+          spline0 = [[LTLinearInterpolant alloc]
                      initWithKeyFrames:@[startPoint, endPoint]];
           segment0 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
-                                                  andInterpolationRoutine:spline0];
+                                                           andInterpolant:spline0];
 
           startPoint.touchRadius = 4;
           startPoint.touchRadiusTolerance = 4;
           endPoint.touchRadius = 4;
           endPoint.touchRadiusTolerance = 4;
-          spline1 = [[LTLinearInterpolationRoutine alloc]
+          spline1 = [[LTLinearInterpolant alloc]
                      initWithKeyFrames:@[endPoint, startPoint]];
           segment1 = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                         distanceFromStart:segment0.length
-                                                  andInterpolationRoutine:spline1];
+                                                           andInterpolant:spline1];
           id mapper = OCMProtocolMock(@protocol(LTBrushTouchRadiusMapper));
           OCMStub([mapper scaleForTouchRadius:2 tolerance:4]).andReturn(0.5);
           OCMStub([mapper scaleForTouchRadius:4 tolerance:4]).andReturn(1);

@@ -2,7 +2,7 @@
 // Created by Amit Goldstein.
 
 @class LTBrush, LTPainterStroke, LTTexture;
-@protocol LTInterpolationRoutineFactory;
+@protocol LTPolynomialInterpolantFactory;
 
 #pragma mark -
 #pragma mark Painter Enums
@@ -68,7 +68,7 @@ typedef NS_ENUM(NSUInteger, LTPainterTargetMode) {
 @property (strong, nonatomic) LTBrush *brush;
 
 /// Spline factory used for generating segments. Default is \c LTCatmullRomInterpolationFactory.
-@property (strong, nonatomic) id<LTInterpolationRoutineFactory> splineFactory;
+@property (strong, nonatomic) id<LTPolynomialInterpolantFactory> splineFactory;
 
 /// When set to \c YES, airbrush-style build-up effects are enabled, meaning that long presses over
 /// an area will continuously paint over it.

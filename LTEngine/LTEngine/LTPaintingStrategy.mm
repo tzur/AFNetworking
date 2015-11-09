@@ -3,7 +3,7 @@
 
 #import "LTPaintingStrategy.h"
 
-#import "LTLinearInterpolationRoutine.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterStroke.h"
 
 @interface LTPaintingDirections ()
@@ -29,16 +29,15 @@
   LTPaintingDirections *directions = [[LTPaintingDirections alloc] init];
   directions.brush = brush;
   directions.stroke =
-      [[LTPainterStroke alloc] initWithInterpolationRoutineFactory:[self linearFactory]
-                                                     startingPoint:point];
+      [[LTPainterStroke alloc] initWithInterpolantFactory:[self linearFactory] startingPoint:point];
   return directions;
 }
 
-+ (LTLinearInterpolationRoutineFactory *)linearFactory {
-  static LTLinearInterpolationRoutineFactory *linearFactory;
++ (LTLinearInterpolantFactory *)linearFactory {
+  static LTLinearInterpolantFactory *linearFactory;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    linearFactory = [[LTLinearInterpolationRoutineFactory alloc] init];
+    linearFactory = [[LTLinearInterpolantFactory alloc] init];
   });
   return linearFactory;
 }

@@ -3,26 +3,26 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTCatmullRomInterpolationRoutine.h"
-#import "LTDegenerateInterpolationRoutine.h"
-#import "LTLinearInterpolationRoutine.h"
+#import "LTCatmullRomInterpolant.h"
+#import "LTDegenerateInterpolant.h"
+#import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 
 SpecBegin(LTPainterStrokeSegment)
 
 __block LTPainterStrokeSegment *segment;
-__block LTInterpolationRoutine *routine;
+__block LTPolynomialInterpolant *interpolant;
 
 context(@"initialization", ^{
   beforeEach(^{
     LTPainterPoint *point = [[LTPainterPoint alloc] init];
-    routine = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
+    interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
   });
   
   it(@"should initailize with valid arguments", ^{
     segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                  distanceFromStart:1
-                                           andInterpolationRoutine:routine];
+                                                    andInterpolant:interpolant];
     expect(segment.index).to.equal(1);
     expect(segment.distanceFromStart).to.equal(1);
   });
@@ -31,13 +31,13 @@ context(@"initialization", ^{
     expect(^{
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:-FLT_EPSILON
-                                             andInterpolationRoutine:routine];
+                                                      andInterpolant:interpolant];
     }).to.raise(NSInvalidArgumentException);
     
     expect(^{
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
-                                             andInterpolationRoutine:nil];
+                                                      andInterpolant:nil];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -45,11 +45,11 @@ context(@"initialization", ^{
 context(@"points with interval", ^{
   context(@"arguments validation", ^{
     beforeEach(^{
-      routine = [[LTDegenerateInterpolationRoutine alloc]
-                 initWithKeyFrames:@[[[LTPainterPoint alloc] init]]];
+      interpolant = [[LTDegenerateInterpolant alloc]
+                     initWithKeyFrames:@[[[LTPainterPoint alloc] init]]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
-                                             andInterpolationRoutine:routine];
+                                                      andInterpolant:interpolant];
     });
     it(@"should raise an exception for non-positive interval", ^{
       expect(^{
@@ -80,10 +80,10 @@ context(@"points with interval", ^{
     beforeEach(^{
       LTPainterPoint *point = [[LTPainterPoint alloc] init];
       point.contentPosition = CGPointMake(1,1);
-      routine = [[LTDegenerateInterpolationRoutine alloc] initWithKeyFrames:@[point]];
+      interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
-                                             andInterpolationRoutine:routine];
+                                                      andInterpolant:interpolant];
     });
     
     it(@"should return correct starting point", ^{
@@ -118,10 +118,10 @@ context(@"points with interval", ^{
       endPoint = [[LTPainterPoint alloc] init];
       startPoint.contentPosition = CGPointMake(1,1);
       endPoint.contentPosition = CGPointMake(100,100);
-      routine = [[LTLinearInterpolationRoutine alloc] initWithKeyFrames:@[startPoint, endPoint]];
+      interpolant = [[LTLinearInterpolant alloc] initWithKeyFrames:@[startPoint, endPoint]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
-                                             andInterpolationRoutine:routine];
+                                                      andInterpolant:interpolant];
     });
     
     it(@"should return correct starting point", ^{
@@ -168,10 +168,10 @@ context(@"points with interval", ^{
       p1.contentPosition = CGPointMake(31, 58);
       p2.contentPosition = CGPointMake(66, 60);
       p3.contentPosition = CGPointMake(77, 15);
-      routine = [[LTCatmullRomInterpolationRoutine alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
+      interpolant = [[LTCatmullRomInterpolant alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
-                                             andInterpolationRoutine:routine];
+                                                      andInterpolant:interpolant];
     });
     
     it(@"should return correct starting point", ^{
