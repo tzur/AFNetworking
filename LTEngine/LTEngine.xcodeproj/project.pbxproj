@@ -2592,7 +2592,7 @@
 			name = "Round Brushes";
 			sourceTree = "<group>";
 		};
-		284ED12518954EA100414A8A /* Interpolation Routines */ = {
+		284ED12518954EA100414A8A /* Interpolation */ = {
 			isa = PBXGroup;
 			children = (
 				284ED12618954ECB00414A8A /* LTCatmullRomInterpolant.h */,
@@ -2605,14 +2605,13 @@
 				284ED11618954E9B00414A8A /* LTLinearInterpolant.h */,
 				284ED11718954E9B00414A8A /* LTLinearInterpolant.mm */,
 			);
-			name = "Interpolation Routines";
+			name = Interpolation;
 			sourceTree = "<group>";
 		};
 		284ED129189565E600414A8A /* Painting */ = {
 			isa = PBXGroup;
 			children = (
 				2839068518C4D98F00BD21CE /* Brushes */,
-				284ED12A189565F500414A8A /* Interpolation Routines */,
 				28C61BFA18B23D200036D66E /* Touch Collector */,
 				280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */,
 				283906CA18C71DF500BD21CE /* LTPainterSpec.mm */,
@@ -2622,7 +2621,7 @@
 			name = Painting;
 			sourceTree = "<group>";
 		};
-		284ED12A189565F500414A8A /* Interpolation Routines */ = {
+		284ED12A189565F500414A8A /* Interpolation */ = {
 			isa = PBXGroup;
 			children = (
 				284ED12B1895662300414A8A /* LTLinearInterpolantSpec.mm */,
@@ -2631,14 +2630,13 @@
 				284ED12F1895668800414A8A /* LTCatmullRomInterpolantSpec.mm */,
 				280B3D9318BDE45300849006 /* LTDegenerateInterpolantSpec.mm */,
 			);
-			name = "Interpolation Routines";
+			name = Interpolation;
 			sourceTree = "<group>";
 		};
 		289884D7188E7EB100AD338E /* Painting */ = {
 			isa = PBXGroup;
 			children = (
 				2839067818C4D98500BD21CE /* Brushes */,
-				284ED12518954EA100414A8A /* Interpolation Routines */,
 				28C61BF918B23CFC0036D66E /* Touch Collector */,
 				283906B118C4E27300BD21CE /* LTPainter.h */,
 				283906B218C4E27300BD21CE /* LTPainter.mm */,
@@ -3000,6 +2998,7 @@
 				8B7C6C781B52722900B90DBE /* Extensions */,
 				8BFE439818759482008B699F /* Image Processing */,
 				8B9851721868A4B200D680D0 /* Images */,
+				284ED12518954EA100414A8A /* Interpolation */,
 				8B8E50F81861EA7D00821829 /* GPU */,
 				282CF070187B02E600904F07 /* LTView */,
 				8B7C6C7A1B5273E100B90DBE /* Math */,
@@ -3365,6 +3364,7 @@
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
 				8BFE439E18759CED008B699F /* Image Processing */,
 				8B9C4FD61868BE8600AA8BF6 /* Images */,
+				284ED12A189565F500414A8A /* Interpolation */,
 				8B8E50FE1861EB4600821829 /* GPU */,
 				282CF08E187B033800904F07 /* LTView */,
 				8B7C6C7D1B52767200B90DBE /* Math */,
