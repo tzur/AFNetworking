@@ -489,7 +489,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)forceGLKViewFramebufferAllocation {
-  // TODO:(amit) see if this is necessary after switching to Xcode 6.
   [self.glkView bindDrawable];
 }
 
@@ -501,15 +500,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self updateContent];
   
   [self.context clearWithColor:self.backgroundColor.lt_ltVector];
-  [self drawBackground];
   
   // Get the visible content rectangle, in pixels.
   CGRect visibleContentRect = self.navigationView.visibleContentRect;
   visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
   visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
-  
-  // Draw the shadows surrounding the visible content rect.
-  [self drawShadows];
   
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Set the scissor box to draw only inside the visible content rect.
@@ -546,14 +541,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     // Reset the rectToDraw.
     self.contentRectToUpdate = CGRectNull;
   }
-}
-
-- (void)drawBackground {
-  // TODO:(amit) implement once the background mechanism is determined.
-}
-
-- (void)drawShadows {
-  // TODO:(amit) implement once the shadows mechanism is determined.
 }
 
 - (void)drawTransparencyBackground {
@@ -679,30 +666,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
-#pragma mark Rotation
-#pragma mark -
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-  [self.navigationView willRotateToInterfaceOrientation:orientation];
-  
-  if (!self.contentTexture) {
-    return;
-  }
-  
-  // TODO:(amit)implement when the appearance is defined.
-  [self bringSubviewToFront:self.navigationView];
-  self.glkView.hidden = YES;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation {
-  [self.navigationView didRotateFromInterfaceOrientation:orientation];
-  
-  self.glkView.hidden = NO;
-  self.navigationView.hidden = YES;
-  [self sendSubviewToBack:self.navigationView];
-}
-
-#pragma mark -
 #pragma mark Display updates for the GLKView and the content
 #pragma mark -
 
@@ -747,9 +710,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (LTImage *)snapshotView {
-  // TODO: (yaron) this can be optimized by creating an LTMMTexture which is backed by a cv::Mat,
-  // so there will be no need to create two duplicate images in memory (one of a texture and one of
-  // LTImage).
   LTTexture *texture = [LTTexture byteRGBATextureWithSize:self.framebufferSize];
   LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture];
   [fbo bindAndDraw:^{
