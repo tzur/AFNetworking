@@ -44,17 +44,31 @@ static NSString * const kUniformTypesVertexSource =
 SpecBegin(LTProgram)
 
 context(@"getting and setting uniforms and attributes", ^{
-  it(@"should set and get uniform values", ^{
-    LTProgram *program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
-                                                  fragmentSource:kBasicFragmentSource];
+  __block LTProgram *program;
 
-    NSNumber *boolValue = @(YES);
-    NSNumber *intValue = @(7);
-    NSNumber *floatValue = @(1);
+  __block NSNumber *boolValue;
+  __block NSNumber *intValue;
+  __block NSNumber *floatValue;
+  
+  __block NSValue *vec2;
+  __block NSValue *vec3;
+  __block NSValue *vec4;
+  
+  __block NSValue *mat2;
+  __block NSValue *mat3;
+  __block NSValue *mat4;
+  
+  beforeEach(^{
+    program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
+                                       fragmentSource:kBasicFragmentSource];
     
-    NSValue *vec2 = $(LTVector2(1.f, 2.f));
-    NSValue *vec3 = $(LTVector3(1.f, 2.f, 3.f));
-    NSValue *vec4 = $(LTVector4(1.f, 2.f, 3.f, 4.f));
+    boolValue = @(YES);
+    intValue = @(7);
+    floatValue = @(1.f);
+    
+    vec2 = $(LTVector2(1.f, 2.f));
+    vec3 = $(LTVector3(1.f, 2.f, 3.f));
+    vec4 = $(LTVector4(1.f, 2.f, 3.f, 4.f));
     
     GLKMatrix2 m2;
     for (int i = 0; i < 4; ++i) {
@@ -69,10 +83,12 @@ context(@"getting and setting uniforms and attributes", ^{
       m4.m[i] = (float)i;
     }
     
-    NSValue *mat2 = $(m2);
-    NSValue *mat3 = $(m3);
-    NSValue *mat4 = $(m4);
-
+    mat2 = $(m2);
+    mat3 = $(m3);
+    mat4 = $(m4);
+  });
+  
+  it(@"should set and get uniform values", ^{
     program[@"uBool"] = boolValue;
     program[@"uInt"] = intValue;
     program[@"uFloat"] = floatValue;
@@ -95,6 +111,166 @@ context(@"getting and setting uniforms and attributes", ^{
     expect([program[@"uMat2"] isEqualToValue:mat2]).to.beTruthy();
     expect([program[@"uMat3"] isEqualToValue:mat3]).to.beTruthy();
     expect([program[@"uMat4"] isEqualToValue:mat4]).to.beTruthy();
+  });
+  
+  context(@"uniform type validation", ^{
+    it(@"should not set uniform booleans with invalid values", ^{
+      expect(^{
+        program[@"uBool"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uBool"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform integers with invalid values", ^{
+      expect(^{
+        program[@"uInt"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should set uniform integers with small, medium sized and large values", ^{
+      expect(^{
+        program[@"uInt"] = @(INT_MIN);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(12345);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(INT_MAX);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(LONG_MIN);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(123456789);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(LONG_MAX);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(LONG_LONG_MIN);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(1234567890123456789);
+      }).toNot.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uInt"] = @(LONG_LONG_MAX);
+      }).toNot.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform samplers with invalid values", ^{
+      expect(^{
+        program[@"uSampler"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uSampler"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform floats with invalid values", ^{
+      expect(^{
+        program[@"uFloat"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform vector2's with invalid values", ^{
+      expect(^{
+        program[@"uVec2"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec2"] = vec3;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec2"] = mat3;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform vector3's with invalid values", ^{
+      expect(^{
+        program[@"uVec3"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec3"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec3"] = mat3;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform vector4's with invalid values", ^{
+      expect(^{
+        program[@"uVec4"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec4"] = vec3;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uVec4"] = mat3;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform matrix2's with invalid values", ^{
+      expect(^{
+        program[@"uMat2"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat2"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat2"] = mat3;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform matrix3's with invalid values", ^{
+      expect(^{
+        program[@"uMat3"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat3"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat3"] = mat2;
+      }).to.raise(NSInvalidArgumentException);
+    });
+    
+    it(@"should not set uniform matrix4's with invalid values", ^{
+      expect(^{
+        program[@"uMat4"] = floatValue;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat4"] = vec2;
+      }).to.raise(NSInvalidArgumentException);
+      
+      expect(^{
+        program[@"uMat4"] = mat3;
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 });
 

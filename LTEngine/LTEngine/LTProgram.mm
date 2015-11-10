@@ -3,6 +3,8 @@
 
 #import "LTProgram.h"
 
+#import <numeric>
+
 #import "LTGLException.h"
 #import "LTShader.h"
 
@@ -259,6 +261,47 @@
 #pragma mark Uniforms and attributes
 #pragma mark -
 
+/// Vector containing string representation of Objective-C's Type Encodings.
+typedef std::vector<const std::string> LTTypeEncodings;
+
+/// Mapping between a \c GLEnum representing an OpenGL unifrom type and an \c LTTypeEncodings
+/// object.
+typedef std::map<GLenum, const LTTypeEncodings> LTTypeToTypeEncodingsMap;
+
+/// Returns an \c LTTypeEncodings object corresponding to passed in types.
+/// usage is via the template types rather than via parameters i.e.:
+/// @code
+/// LTTypeEncodings en = LTEncodeTypes<char, short, int>();
+/// @endcode
+template <typename ...T> inline LTTypeEncodings LTEncodeTypes() {
+  return {std::string(@encode(T))...};
+}
+
+/// Valid encodings for non floating point scalar types (\c GL_BOOL, \c GL_INT, \c GL_SAMPLER_2D).
+static const LTTypeEncodings kNonFloatScalarEncodings =
+    LTEncodeTypes<BOOL, char, short, int, long, long long, unsigned short, unsigned int,
+                  unsigned long, unsigned long long>();
+
+/// Valid encodings for floating point scalar types (\c GL_FLOAT).
+static const LTTypeEncodings kFloatEncodings =
+    LTEncodeTypes<BOOL, char, short, int, long, long long, unsigned short, unsigned int,
+                  unsigned long, unsigned long long, float, double>();
+
+/// Mapping between a uniform type and it's valid value types' encodings used for value verfication
+/// when assigning uniforms.
+static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
+  {GL_BOOL, kNonFloatScalarEncodings},
+  {GL_INT, kNonFloatScalarEncodings},
+  {GL_SAMPLER_2D, kNonFloatScalarEncodings},
+  {GL_FLOAT, kFloatEncodings},
+  {GL_FLOAT_VEC2, LTEncodeTypes<LTVector2>()},
+  {GL_FLOAT_VEC3, LTEncodeTypes<LTVector3>()},
+  {GL_FLOAT_VEC4, LTEncodeTypes<LTVector4>()},
+  {GL_FLOAT_MAT2, LTEncodeTypes<GLKMatrix2>()},
+  {GL_FLOAT_MAT3, LTEncodeTypes<GLKMatrix3>()},
+  {GL_FLOAT_MAT4, LTEncodeTypes<GLKMatrix4>()}
+};
+
 - (GLuint)uniformForName:(NSString *)name {
   return [self.uniformToObject[name] index];
 }
@@ -277,66 +320,39 @@
 
 - (void)setUniform:(NSString *)name withValue:(id)value {
   LTProgramObject *object = self.uniformToObject[name];
-
-  if (object.size != 1) {
-    LTAssert(NO, @"Object '%@' is of an array type, which is currently not supported", name);
-  }
+  [self verifyUniform:object value:value];
   
   [self bindAndExecute:^{
     switch (object.type) {
       case GL_BOOL:
       case GL_INT:
       case GL_SAMPLER_2D: {
-        if (![value isKindOfClass:[NSNumber class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         glUniform1i(object.index, [value intValue]);
       } break;
       case GL_FLOAT: {
-        if (![value isKindOfClass:[NSNumber class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         glUniform1f(object.index, [value floatValue]);
       } break;
       case GL_FLOAT_VEC2: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         LTVector2 vector = [value LTVector2Value];
         glUniform2fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_VEC3: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         LTVector3 vector = [value LTVector3Value];
         glUniform3fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_VEC4: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         LTVector4 vector = [value LTVector4Value];
         glUniform4fv(object.index, 1, vector.data());
       } break;
       case GL_FLOAT_MAT2: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         GLKMatrix2 matrix = [value GLKMatrix2Value];
         glUniformMatrix2fv(object.index, 1, GL_FALSE, matrix.m);
       } break;
       case GL_FLOAT_MAT3: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         GLKMatrix3 matrix = [value GLKMatrix3Value];
         glUniformMatrix3fv(object.index, 1, GL_FALSE, matrix.m);
       } break;
       case GL_FLOAT_MAT4: {
-        if (![value isKindOfClass:[NSValue class]]) {
-          LTAssert(NO, @"Object type is %d, but %@ class is given", object.type, [value class]);
-        }
         GLKMatrix4 matrix = [value GLKMatrix4Value];
         glUniformMatrix4fv(object.index, 1, GL_FALSE, matrix.m);
       } break;
@@ -344,6 +360,32 @@
         LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, name);
     }
   }];
+}
+
+- (void)verifyUniform:(LTProgramObject *)uniform value:(id)value {
+  LTParameterAssert(uniform.size == 1,
+      @"Object '%@' is of an array type, which is currently not supported", uniform.name);
+  
+  LTParameterAssert([value isKindOfClass:[NSValue class]],
+      @"Tried to set uniform '%@' and got class of type %@ instead of NSValue", uniform.name,
+      [value class]);
+  
+  const std::string valueType([value objCType]);
+  const LTTypeEncodings validValueTypes = kTypeToValidTypeEncodings.at(uniform.type);
+  LTParameterAssert(std::find(validValueTypes.cbegin(), validValueTypes.cend(), valueType) !=
+      validValueTypes.end(),
+      @"Tried to set uniform '%@' and got class containing type %s instead of valid types [%@]",
+      uniform.name, valueType.c_str(),
+      [self typeEncodingDescription:validValueTypes delimitedBy:", "]);
+}
+
+- (NSString *)typeEncodingDescription:(const LTTypeEncodings &)encodings
+                          delimitedBy:(const std::string &)delimiter {
+  std::string description = std::accumulate(encodings.begin(), encodings.end(), std::string(),
+      [&](const std::string & desc, const std::string & type) {
+        return desc.empty() ? type : desc + delimiter + type;
+      });
+  return @(description.c_str());
 }
 
 - (id)uniformValue:(NSString *)name {
