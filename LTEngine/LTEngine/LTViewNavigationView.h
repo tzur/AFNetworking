@@ -35,15 +35,26 @@
 /// through the scroll view.
 @interface LTViewNavigationView : UIView
 
-/// Initialize the navigation view with the given frame for a content with the given size (in
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
+/// Initializes the navigation view with the given frame for a content with the given size (in
 /// pixels), starting centered at the largest zoom level allowing the whole content to be visible
 /// inside the scrollview.
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize;
 
-/// Designated initializer: initialize the navigation view with the given frame for a content with
-/// the given size (in pixels), starting at the given navigation state.
+/// Initializes the navigation view with the given frame for a content with the given size
+/// (in pixels), starting at the given navigation state.
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
                         state:(LTViewNavigationState *)state;
+
+/// Initializes the navigation view with the given frame for a content with
+/// the given size (in pixels), starting at the given navigation state with screen as its content
+/// screen.
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
+                        state:(LTViewNavigationState *)state
+                       screen:(UIScreen *)screen NS_DESIGNATED_INITIALIZER;
 
 // Notifies the view that it is about to be rotated to the given orientation due to an interface
 // orientation change.

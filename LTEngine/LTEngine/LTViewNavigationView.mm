@@ -54,20 +54,45 @@
 
 @interface LTViewNavigationView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
+/// Screen property used for scale factor extration.
+@property (strong, nonatomic) UIScreen *screen;
+
+/// Underlying scroll view used to generate native-feel bouncing feedback when scrolling
+/// out of bounds.
 @property (strong, nonatomic) UIScrollView *scrollView;
+
+/// Internal subview containing the content of this view.
 @property (strong, nonatomic) UIImageView *contentView;
+
+/// The underlying gesture recognizer for pinch gestures.
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+
+/// The underlying gesture recognizer for pinch gestures. Will return \c nil when zooming is
+/// disabled.
 @property (strong, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
+/// Underlying gesture recognizer for double tap gestures.
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
+/// Animation for updating the LTView according to the scrollView's state.
 @property (strong, nonatomic) LTAnimation *animation;
 
+/// State if underlying scrollview dragging.
 @property (nonatomic) BOOL scrollViewDragging;
+
+/// State if underlying scrollview zooming.
 @property (nonatomic) BOOL scrollViewZooming;
+
+/// State if underlying scrollview deceleration.
 @property (nonatomic) BOOL scrollViewDecelerating;
 
+/// True iff the interface orientatation is being altered.
 @property (nonatomic) BOOL duringRotation;
+
+/// Center of content during interface orientation change.
 @property (nonatomic) CGPoint centerDuringRotation;
+
+/// Zoom scale during interface orientation change.
 @property (nonatomic) CGFloat zoomScaleDuringRotation;
 
 @end
@@ -88,9 +113,16 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
-                        state:(LTViewNavigationState *)state{
+                        state:(LTViewNavigationState *)state {
+  return [self initWithFrame:frame contentSize:contentSize state:state
+                      screen:[UIScreen mainScreen]];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
+                        state:(LTViewNavigationState *)state screen:(UIScreen *)screen {
   if (self = [super initWithFrame:frame]) {
     self.contentSize = contentSize;
+    self.screen = screen;
     [self setDefaults];
     [self createScrollView];
     [self createContentView];
@@ -109,7 +141,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 - (void)setDefaults {
   self.mode = LTViewNavigationFull;
   self.maxZoomScale = CGFLOAT_MAX;
-  self.contentScaleFactor = [UIScreen mainScreen].nativeScale;
+  self.contentScaleFactor = self.screen.nativeScale;
 }
 
 - (void)createScrollView {

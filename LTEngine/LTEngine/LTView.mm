@@ -106,22 +106,25 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    [[JSObjection defaultInjector] injectDependencies:self];
-    [self setDefaults];
-  }
-  return self;
+  return [self initWithFrame:frame screen:[UIScreen mainScreen]];
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
   if (self = [super initWithCoder:aDecoder]) {
-    [[JSObjection defaultInjector] injectDependencies:self];
-    [self setDefaults];
+    [self setDefaultsWithScreen:[UIScreen mainScreen]];
   }
   return self;
 }
 
-- (void)setDefaults {
+- (instancetype)initWithFrame:(CGRect)frame screen:(UIScreen *)screen {
+  if (self = [super initWithFrame:frame]) {
+    [self setDefaultsWithScreen:screen];
+  }
+  return self;
+}
+
+- (void)setDefaultsWithScreen:(UIScreen *)screen {
+  self.screen = screen;
   self.maxZoomScale = kDefaultMaxZoomScale;
   self.doubleTapLevels = kDefaultDoubleTapLevels;
   self.doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
@@ -172,7 +175,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)createNavigationViewWithState:(LTViewNavigationState *)state {
   self.navigationView = [[LTViewNavigationView alloc] initWithFrame:self.bounds
                                                         contentSize:self.contentTexture.size
-                                                              state:state];
+                                                              state:state screen:self.screen];
   self.navigationView.delegate = self;
   self.navigationView.mode = self.navigationMode;
   self.navigationView.contentInset = self.contentInset;
@@ -806,11 +809,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (CGFloat)contentScaleFactor {
-  return [UIScreen mainScreen].nativeScale;
+  return self.screen.nativeScale;
 }
 
 - (void)setContentScaleFactor:(CGFloat __unused)contentScaleFactor {
-  [super setContentScaleFactor:[UIScreen mainScreen].nativeScale];
+  [super setContentScaleFactor:self.screen.nativeScale];
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
