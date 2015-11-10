@@ -54,10 +54,10 @@ static const cv::Vec4b blue(0, 0, 255, 255);
 static const cv::Vec4b yellow(255, 255, 0, 255);
 
 beforeEach(^{
-  // avoid fractional content scale factor since the tests were adjusted for pixels to fit without
+  // Avoid fractional content scale factor since the tests were adjusted for pixels to fit without
   // interpolation.
   uiScreen = LTMockClass([UIScreen class]);
-  [[[uiScreen stub] andReturnValue:@2] nativeScale];
+  OCMStub([uiScreen nativeScale]).andReturn(2);
 
   CGSize framebufferSize = kViewSize * 2;
   short width = kContentSize.width / 2;
@@ -90,7 +90,7 @@ afterEach(^{
 
 context(@"setup", ^{
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
   });
   
   afterEach(^{
@@ -98,13 +98,13 @@ context(@"setup", ^{
   });
   
   it(@"should setup without state", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
   });
   
   it(@"should setup with state", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
-    LTView *otherView = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
+    LTView *otherView = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     const CGRect targetRect = CGRectFromSize(kViewSize);
     [view.navigationView zoomToRect:targetRect animated:NO];
@@ -116,7 +116,7 @@ context(@"setup", ^{
   });
 
   it(@"should teardown", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     expect(view.glkView).notTo.beNil();
     [view teardown];
@@ -124,7 +124,7 @@ context(@"setup", ^{
   });
   
   it(@"should do nothing when setup is called twice", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     GLKView *glkView = view.glkView;
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
@@ -132,7 +132,7 @@ context(@"setup", ^{
   });
   
   it(@"should do nothing when teardown is called twice", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view teardown];
     [view teardown];
@@ -140,7 +140,7 @@ context(@"setup", ^{
   });
   
   it(@"should setup after a teardown", ^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     GLKView *glkView = view.glkView;
     [view teardown];
@@ -153,7 +153,7 @@ context(@"setup", ^{
 
 context(@"properties", ^{
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
   });
@@ -242,7 +242,7 @@ context(@"drawing", ^{
   __block LTView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
   });
@@ -444,7 +444,7 @@ context(@"public interface", ^{
   __block LTView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
   });
@@ -454,7 +454,7 @@ context(@"public interface", ^{
   });
 
   it(@"should navigate to state of other view", ^{
-    LTView *other = [[LTView alloc] initWithFrame:kViewFrame];
+    LTView *other = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [other setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     const CGRect targetRect = CGRectFromSize(kViewSize);
     [other.navigationView zoomToRect:targetRect animated:NO];
@@ -479,7 +479,7 @@ context(@"draw delegate", ^{
   
   beforeEach(^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTViewDrawDelegate)];
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
     view.drawDelegate = mock;
@@ -626,7 +626,7 @@ context(@"touch delegate", ^{
   __block id mock;
   
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view forceGLKViewFramebufferAllocation];
     view.forwardTouchesToDelegate = YES;
@@ -840,7 +840,7 @@ context(@"navigation gesture recognizers", ^{
   __block LTView *view;
   
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     navView = OCMPartialMock(view.navigationView);
   });
@@ -960,7 +960,7 @@ context(@"navigation delegate", ^{
   beforeEach(^{
     delegate = [OCMockObject mockForProtocol:@protocol(LTViewNavigationDelegate)];
     navView = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize];
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     
     view.navigationView = navView;
     view.navigationView.delegate = view;
@@ -992,7 +992,7 @@ context(@"framebuffer delegate", ^{
     [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(20)] drawableWidth];
     [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(10)] drawableHeight];
 
-    view = [[LTView alloc] initWithFrame:kViewFrame];
+    view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     view.glkView = glkViewMock;
     view.framebufferDelegate = delegateMock;
   });

@@ -16,6 +16,13 @@
 /// content.
 @interface LTView : UIView
 
+/// Initializes and returns a newly allocated \c LTView object with the
+/// specified \c frame rectangle and \c screen as its content screen.
+- (instancetype)initWithFrame:(CGRect)frame screen:(UIScreen *)screen NS_DESIGNATED_INITIALIZER;
+
+/// Initializes an object initialized from data in a given unarchiver \c decoder.
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
 /// Setup the LTView by providing an \c LTGLCcontext, a content texture to use for content, and an
 /// \c LTViewNavigationState with the initial state of the view (zoom, offset, etc.). In case a
 /// \c nil state is given, the \c LTView will automatically zoom out such that the whole content is
