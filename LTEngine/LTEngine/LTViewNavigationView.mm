@@ -86,15 +86,6 @@
 /// State if underlying scrollview deceleration.
 @property (nonatomic) BOOL scrollViewDecelerating;
 
-/// True iff the interface orientatation is being altered.
-@property (nonatomic) BOOL duringRotation;
-
-/// Center of content during interface orientation change.
-@property (nonatomic) CGPoint centerDuringRotation;
-
-/// Zoom scale during interface orientation change.
-@property (nonatomic) CGFloat zoomScaleDuringRotation;
-
 @end
 
 @implementation LTViewNavigationView
@@ -539,30 +530,6 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 #pragma mark -
-#pragma mark Rotation
-#pragma mark -
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation __unused)orientation {
-  // Save the current center of the visible rect (since we want to rotate around it), and the
-  // current zoom scale (since we want to try and preserve it, if possible).
-  self.centerDuringRotation = CGRectCenter(self.visibleContentRect);
-  self.zoomScaleDuringRotation = self.zoomScale;
-  self.duringRotation = YES;
-  
-  // Disable the navigation gestures, to cancel any active scrolling/zooming when the rotation
-  // begins.
-  self.scrollView.pinchGestureRecognizer.enabled = NO;
-  self.scrollView.panGestureRecognizer.enabled = NO;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation __unused)orientation {
-  self.centerDuringRotation = CGPointZero;
-  self.duringRotation = NO;
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
-  [self configureNavigationGesturesForCurrentMode];
-}
-
-#pragma mark -
 #pragma mark ContentView
 #pragma mark -
 
@@ -647,18 +614,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   }
   
   [self centerContentViewInScrollView];
-  if (self.duringRotation) {
-    [self updatedFrameDuringRotation];
-  } else {
-    self.visibleContentRect = [self visibleContentRectFromScrollView];
-  }
-}
-
-- (void)updatedFrameDuringRotation {
-  CGSize targetSize = self.scrollView.bounds.size / self.zoomScaleDuringRotation;
-  CGRect targetRect = CGRectCenteredAt(self.centerDuringRotation, targetSize);
-  [self.scrollView zoomToRect:targetRect animated:NO];
-  [self centerContentViewInScrollView];
+  self.visibleContentRect = [self visibleContentRectFromScrollView];
 }
 
 #pragma mark -
