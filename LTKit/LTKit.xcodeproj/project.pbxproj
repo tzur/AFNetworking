@@ -32,6 +32,7 @@
 		5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221719EA80B5003AF8D2 /* LTQueue.mm */; };
 		5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */; };
 		5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067223019EA811A003AF8D2 /* LTQueueSpec.mm */; };
+		8B04C96B1BEE651A0024D22E /* LTDefaultDeletersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B04C96A1BEE651A0024D22E /* LTDefaultDeletersSpec.mm */; };
 		8B16C9891BAEDF1B002FB750 /* LTImageLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9881BAEDF1B002FB750 /* LTImageLoaderSpec.mm */; };
 		8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */; };
 		8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Hardware.h */; };
@@ -349,7 +350,9 @@
 		5067221719EA80B5003AF8D2 /* LTQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueue.mm; sourceTree = "<group>"; };
 		5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundedQueueSpec.mm; sourceTree = "<group>"; };
 		5067223019EA811A003AF8D2 /* LTQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueueSpec.mm; sourceTree = "<group>"; };
+		8B04C96A1BEE651A0024D22E /* LTDefaultDeletersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultDeletersSpec.mm; sourceTree = "<group>"; };
 		8B16C9881BAEDF1B002FB750 /* LTImageLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageLoaderSpec.mm; sourceTree = "<group>"; };
+		8B1889351BEBC8F100E9BD67 /* LTDefaultDeleters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTDefaultDeleters.h; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
 		8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
 		8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
@@ -741,6 +744,7 @@
 			isa = PBXGroup;
 			children = (
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
+				8B1889351BEBC8F100E9BD67 /* LTDefaultDeleters.h */,
 				8B78CFDC197654A900684B1D /* LTEnum.h */,
 				8BBB14A8194F489B000CF391 /* LTEnumMacros.h */,
 				8BBB1498194F4799000CF391 /* LTEnumRegistry.h */,
@@ -769,6 +773,7 @@
 		8B8E50FD1861EB4000821829 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				8B04C96A1BEE651A0024D22E /* LTDefaultDeletersSpec.mm */,
 				8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
@@ -1187,6 +1192,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B04C96B1BEE651A0024D22E /* LTDefaultDeletersSpec.mm in Sources */,
 				28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */,
 				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,

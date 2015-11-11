@@ -22,6 +22,7 @@
 #endif
 
 #ifdef __cplusplus
+  #import "LTDefaultDeleters.h"
   #import "LTEasyBoxing.h"
   #import "LTEnumRegistry.h"
 #endif
