@@ -5,6 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Sampling points inside the texture's bounds.
+typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
+
 @interface LTTexture ()
 
 /// Updates the generation ID of the texture to a new random identifier.
@@ -18,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns \c YES if the given rect is completely inside the texture.
 - (BOOL)inTextureRect:(CGRect)rect;
+
+/// Returns pixel sampling points in the rect [0, 0, self.size.width - 1, self.size.height - 1]
+/// using symmetric boundary condition from a collection of locations that can be outside the
+/// texture's bounds.
+- (LTTextureSamplingPoints)samplingPointsFromLocations:(const CGPoints &)locations;
 
 /// OpenGL precision of the texture.
 @property (readonly, nonatomic) GLenum glPrecision;

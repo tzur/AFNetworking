@@ -260,17 +260,13 @@
 - (LTVector4s)pixelValues:(const CGPoints &)locations {
   __block LTVector4s values(locations.size());
 
-  [self mappedImageForReading:^(const cv::Mat &texture, BOOL) {
-    for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
-      // Use boundary conditions similar to Matlab's 'symmetric'.
-      LTVector2 location = [LTSymmetricBoundaryCondition
-                             boundaryConditionForPoint:LTVector2(locations[i].x,
-                                                                      locations[i].y)
-                             withSignalSize:self.size];
-      cv::Point2i point = cv::Point2i(std::floor(location.x), std::floor(location.y));
+  LTTextureSamplingPoints samplingPoints([self samplingPointsFromLocations:locations]);
 
-      values[i] = LTPixelValueFromImage(texture, point);
-    }
+  [self mappedImageForReading:^(const cv::Mat &texture, BOOL) {
+    std::transform(samplingPoints.cbegin(), samplingPoints.cend(), values.begin(),
+                   [&texture](cv::Point2i point) {
+                     return LTPixelValueFromImage(texture, point);
+                   });
   }];
 
   return values;

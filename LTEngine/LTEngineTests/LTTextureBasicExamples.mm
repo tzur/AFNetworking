@@ -256,6 +256,15 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(expected).to.equal(actual);
       });
 
+      it(@"should return a correct pixel value on the boundary", ^{
+        CGPoint point = CGPointMake(67, 48);
+
+        LTVector4 actual = [texture pixelValue:point];
+        LTVector4 expected = LTCVVec4bToLTVector4(image(47, 66));
+
+        expect(expected).to.equal(actual);
+      }); 
+
       it(@"should return correct pixel values inside texture", ^{
         CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
 
@@ -265,7 +274,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           expected.push_back(LTCVVec4bToLTVector4(image(point.y, point.x)));
         }
 
-        expect(expected == actual).to.equal(YES);
+        expect(expected == actual).to.beTruthy();
       });
 
       it(@"should return correct pixel values outside texture", ^{
@@ -278,7 +287,19 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           LTCVVec4bToLTVector4(image(47, 1))
         };
 
-        expect(expected == actual).to.equal(YES);
+        expect(expected == actual).to.beTruthy();
+      });
+
+      it(@"should return a correct pixel value on the boundary", ^{
+        CGPoints points{CGPointMake(0, 0), CGPointMake(67, 48)};
+
+        LTVector4s actual = [texture pixelValues:points];
+        LTVector4s expected{
+          LTCVVec4bToLTVector4(image(0, 0)),
+          LTCVVec4bToLTVector4(image(47, 66))
+        };
+
+        expect(expected == actual).to.beTruthy();
       });
     });
 
