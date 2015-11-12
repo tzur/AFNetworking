@@ -20,6 +20,31 @@ NS_ASSUME_NONNULL_BEGIN
   return documentsDirectory;
 }
 
++ (NSString *)lt_cachesDirectory {
+  static NSString *cachesDirectory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    cachesDirectory = [paths firstObject];
+  });
+
+  return cachesDirectory;
+}
+
++ (NSString *)lt_applicationSupportDirectory {
+  static NSString *applicationSupportDirectory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                         NSUserDomainMask, YES);
+    applicationSupportDirectory = [paths firstObject];
+  });
+
+  return applicationSupportDirectory;
+}
+
 - (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path {
   return [dictionary writeToFile:path atomically:YES];
 }

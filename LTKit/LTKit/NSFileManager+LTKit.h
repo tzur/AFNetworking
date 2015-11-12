@@ -10,6 +10,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Path to the documents directory of the app.
 + (NSString *)lt_documentsDirectory;
 
+/// Path to the discardable caches directory of the app.
++ (NSString *)lt_cachesDirectory;
+
+/// Path to the application support directory of the app.
++ (NSString *)lt_applicationSupportDirectory;
+
 /// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
 /// is written successfully, otherwise \c NO. The file is written atomically.
 ///
