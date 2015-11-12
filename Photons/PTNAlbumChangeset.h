@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NSArray<PTNAlbumChangesetMove *> PTNAlbumChangesetMoves;
 
-/// Value class encapsulating the changes between two \c id<PATNAlbum> instances, \c beforeAlbum and
+/// Value class encapsulating the changes between two \c id<PTNAlbum> instances, \c beforeAlbum and
 /// \c afterAlbum. The changes describe how to perform modifications to \c beforeAlbum in order to
 /// produce \c afterAlbum. The changes need to be applied in the following order:
 ///
