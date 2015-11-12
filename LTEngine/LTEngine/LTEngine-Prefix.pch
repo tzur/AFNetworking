@@ -1,40 +1,18 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#ifdef __OBJC__
-  #import <Foundation/Foundation.h>
-  #import <GLKit/GLKit.h>
-  #import <OpenGLES/ES2/glext.h>
-  #import <OpenGLES/ES3/gl.h>
-  #import <QuartzCore/QuartzCore.h>
-  #import <UIKit/UIKit.h>
+// Apple's Frameworks.
+#import <GLKit/GLKit.h>
+#import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES3/gl.h>
 
-  #import <LTKit/LTAssert.h>
-  #import <LTKit/LTCGExtensions.h>
-  #import <LTKit/LTEnumRegistry.h>
-  #import <LTKit/LTKeyPathCoding.h>
-  #import <LTKit/LTLogger.h>
-  #import <LTKit/LTPropertyMacros.h>
-  #import <LTKit/LTTypedefs.h>
+// Third party.
+#import <Mantle/Mantle.h>
 
-  #import "LTEasyBoxing+LTEngine.h"
-  #import "LTGLCheck.h"
-  #import "LTTypedefs+LTEngine.h"
-
-  #ifdef __cplusplus
-  extern "C" {
-  #endif
-    #import <extobjc/extobjc.h>
-  #ifdef __cplusplus
-  }
-  #endif
-  #import <Mantle/Mantle.h>
-
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wnewline-eof"
-  #import <Objection-iOS/Objection.h>
-  #pragma clang diagnostic pop
-#endif
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnewline-eof"
+#import <Objection-iOS/Objection.h>
+#pragma clang diagnostic pop
 
 #ifdef __cplusplus
   #pragma clang diagnostic push
@@ -45,3 +23,14 @@
   #import <opencv2/opencv.hpp>
   #pragma clang diagnostic pop
 #endif
+
+// LTKit.
+#import <LTKit/LTKit-Prefix.pch>
+
+#import <LTKit/LTCGExtensions.h>
+#import <LTKit/LTKeyPathCoding.h>
+
+// LTEngine.
+#import "LTEasyBoxing+LTEngine.h"
+#import "LTGLCheck.h"
+#import "LTTypedefs+LTEngine.h"
