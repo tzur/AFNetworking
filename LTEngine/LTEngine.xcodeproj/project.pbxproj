@@ -494,9 +494,9 @@
 		50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */; };
 		50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */; };
 		50A4794719FB7BBC005ABA65 /* LTSingleQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */; };
-		50C371461BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C371441BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h */; settings = {ASSET_TAGS = (); }; };
-		50C371471BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371451BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm */; settings = {ASSET_TAGS = (); }; };
-		50C371661BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */; settings = {ASSET_TAGS = (); }; };
+		50C371461BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C371441BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h */; };
+		50C371471BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371451BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm */; };
+		50C371661BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */; };
 		50CF199619D16BB60010D52F /* LTQuad.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF199419D16BB60010D52F /* LTQuad.h */; };
 		50CF199719D16BB60010D52F /* LTQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF199519D16BB60010D52F /* LTQuad.mm */; };
 		50D77CE71B6F5BC20001DA0C /* EdgeAvoiding.png in Resources */ = {isa = PBXBuildFile; fileRef = 50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */; };
@@ -512,15 +512,15 @@
 		65409BC71B53ECA600F0E9ED /* LTGLViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65409BC61B53ECA600F0E9ED /* LTGLViewSpec.mm */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
-		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; settings = {ASSET_TAGS = (); }; };
+		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; };
 		8B0337FC1BD3EA1B00ACDF26 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */; };
-		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; settings = {ASSET_TAGS = (); }; };
-		8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9CA1BAF01C5002FB750 /* LTTestUtils.mm */; settings = {ASSET_TAGS = (); }; };
+		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; };
+		8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9CA1BAF01C5002FB750 /* LTTestUtils.mm */; };
 		8B16C9CE1BAF0557002FB750 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16C9701BAEABD6002FB750 /* libLTKit.a */; };
 		8B16C9CF1BAF056C002FB750 /* libMantle-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA821E9198693B000FBE68E /* libMantle-iOS.a */; };
 		8B16C9D21BAF0591002FB750 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB22A901928CB8200ACE1D5 /* Objection-iOS.framework */; };
-		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; settings = {ASSET_TAGS = (); }; };
-		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; settings = {ASSET_TAGS = (); }; };
+		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; };
+		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; };
 		8B16CAFF1BB06891002FB750 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CACB1BB06784002FB750 /* libExpecta.a */; };
 		8B16CB001BB06891002FB750 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAE41BB06797002FB750 /* libSpecta.a */; };
 		8B16CB011BB068AE002FB750 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16CAB01BB0670A002FB750 /* libextobjc_iOS.a */; };
@@ -697,7 +697,6 @@
 		8B87204A1924A76800517F2E /* LTViewNavigationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF081187B030000904F07 /* LTViewNavigationView.h */; };
 		8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 282CF083187B030000904F07 /* LTViewPixelGrid.h */; };
 		8B8720C01925167400517F2E /* TextureContentsImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B8720BF1925167400517F2E /* TextureContentsImage.png */; };
-		8B8A823D1BD6623D0027B97D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B8A82381BD662350027B97D /* libOCMock.a */; };
 		8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50E91861AA8900821829 /* LTShaderStorage.m */; };
 		8B8E50F11861CE1800821829 /* Shader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F01861CE1800821829 /* Shader.vsh */; };
 		8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */; };
@@ -5193,8 +5192,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5219,12 +5216,6 @@
 					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"-Wall",
-					"-Wextra",
-				);
-				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SHADER_ENCRYPTION_KEY = "performSelector:";
 			};
@@ -5235,8 +5226,6 @@
 			baseConfigurationReference = 8B6B4FAE1BDFA41700662235 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5256,14 +5245,8 @@
 					"$(SRCROOT)/../third_party/utils/Mantle/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_CFLAGS = (
-					"-Wall",
-					"-Wextra",
-				);
-				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SHADER_ENCRYPTION_KEY = "performSelector:";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
