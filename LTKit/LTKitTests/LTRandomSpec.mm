@@ -3,8 +3,6 @@
 
 #import "LTRandom.h"
 
-#import <numeric>
-
 /// Returns the mean value of all elements in the given container.
 template <typename Container>
 static double LTMean(const Container &container) {

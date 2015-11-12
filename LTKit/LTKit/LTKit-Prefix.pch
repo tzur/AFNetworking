@@ -1,25 +1,37 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#ifdef __OBJC__
-  #import <Foundation/Foundation.h>
-  #import <QuartzCore/QuartzCore.h>
-  #import <UIKit/UIKit.h>
-
-  #import "LTAssert.h"
-  #import "LTLogger.h"
-  #import "LTPropertyMacros.h"
-  #import "LTTypedefs.h"
-  #import "NSError+LTKit.h"
-
-  #ifdef __cplusplus
-  extern "C" {
-  #endif
-    #import <extobjc/extobjc.h>
-  #ifdef __cplusplus
-  }
-  #endif
+// libc++.
+#ifdef __cplusplus
+  #import <algorithm>
+  #import <array>
+  #import <cmath>
+  #import <map>
+  #import <memory>
+  #import <numeric>
+  #import <vector>
 #endif
+
+// Apple's Frameworks.
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
+
+// Third party.
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <extobjc/extobjc.h>
+#ifdef __cplusplus
+}
+#endif
+
+// LTKit.
+#import "LTAssert.h"
+#import "LTLogger.h"
+#import "LTPropertyMacros.h"
+#import "LTTypedefs.h"
+#import "NSError+LTKit.h"
 
 #ifdef __cplusplus
   #import "LTDefaultDeleters.h"

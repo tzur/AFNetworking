@@ -1,11 +1,6 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#ifdef __cplusplus
-  #import <algorithm>
-  #import <cmath>
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// The "empty" point. This is the point returned when, for example, we intersect parallel lines.
