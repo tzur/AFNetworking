@@ -16,3 +16,6 @@
 [submodule "LTKit"]
 	path = LTKit
 	url = https://github.com/Lightricks/LTKit.git
+[submodule "Configuration"]
+	path = Configuration
+	url = https://github.com/Lightricks/Configuration.git

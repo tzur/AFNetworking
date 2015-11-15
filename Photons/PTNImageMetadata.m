@@ -134,7 +134,7 @@ static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing 
   return self;
 }
 
-- (instancetype)initWithImageURL:(NSURL *)url error:(NSError **)error {
+- (instancetype)initWithImageURL:(NSURL *)url error:(NSError *__autoreleasing *)error {
   if (self = [self init]) {
     [self setupMetadataDictionary:PTNGetMetadataFromURL(url, error)];
   }
