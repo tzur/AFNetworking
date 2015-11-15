@@ -124,15 +124,17 @@ context(@"rotated image", ^{
   });
 
   context(@"aspect fill", ^{
-    static CGSize kTargetSize = CGSizeMake(3, 4);
-    static CGSize kExpectedSize = CGSizeMake(6, 3);
+    it(@"should return a resized aspect filled image", ^{
+      static CGSize kTargetSize = CGSizeMake(3, 4);
+      static CGSize kExpectedSize = CGSizeMake(8, 4);
 
-    RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                      contentMode:PTNImageContentModeAspectFill];
-    expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-      return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                        contentMode:PTNImageContentModeAspectFill];
+      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      });
+      expect(signal).to.complete();
     });
-    expect(signal).to.complete();
   });
 
   context(@"aspect fit", ^{
