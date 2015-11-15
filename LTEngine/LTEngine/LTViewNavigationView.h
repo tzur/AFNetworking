@@ -56,14 +56,6 @@
                         state:(LTViewNavigationState *)state
                        screen:(UIScreen *)screen NS_DESIGNATED_INITIALIZER;
 
-// Notifies the view that it is about to be rotated to the given orientation due to an interface
-// orientation change.
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation;
-
-// Notifies the view that the rotation animation is about to start. This is called after the layout
-// has been updated to reflect the new orientation.
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation;
-
 /// For some reason on the iPhone 6 Plus (and possibly on the iPhone 6) the scrollview's pan gesture
 /// triggers even while its numberOfTouches is less than its minimumNumberOfTouches. This triggers a
 /// call to touchesCancelled, which prevents any touch functionality from happening.
