@@ -3,28 +3,53 @@
 
 #import "LTPainterPoint.h"
 
+@interface LTPainterPoint ()
+@property (nonatomic) CGFloat contentPositionX;
+@property (nonatomic) CGFloat contentPositionY;
+@end
+
 SpecBegin(LTPainterPoint)
+
+__block LTPainterPoint *point;
 
 context(@"initialization", ^{
   it(@"should initialize with no arguments", ^{
-    expect(^{
-      LTPainterPoint __unused *point = [[LTPainterPoint alloc] init];
-    }).notTo.raiseAny();
+    point = [[LTPainterPoint alloc] init];
+    expect(point).toNot.beNil();
   });
-  
-  it(@"should initailize with current timestamp", ^{
+
+  it(@"should initialize with current timestamp", ^{
+    CFTimeInterval before = CACurrentMediaTime();
+    point = [[LTPainterPoint alloc] initWithCurrentTimestamp];
+    CFTimeInterval after = CACurrentMediaTime();
+    expect(point).toNot.beNil();
+    expect(point.timestamp).to.beInTheRangeOf(before, after);
+  });
+
+  it(@"should initialize with interpolated properties", ^{
+    NSDictionary *properties = @{
+      @instanceKeypath(LTPainterPoint, contentPositionX): @7,
+      @instanceKeypath(LTPainterPoint, contentPositionY): @9,
+      @instanceKeypath(LTPainterPoint, zoomScale): @1.5
+    };
+    point = [[LTPainterPoint alloc] initWithInterpolatedProperties:properties];
+    expect(point.contentPosition).to.equal(CGPointMake(7, 9));
+    expect(point.zoomScale).to.equal(1.5);
+  });
+
+  it(@"should raise when attempting to initialize with non-existent interpolated properties", ^{
+    NSDictionary *properties = @{
+      @instanceKeypath(LTPainterPoint, contentPositionX): @7,
+      @instanceKeypath(LTPainterPoint, contentPositionY): @9,
+      @"notExistentProperty": @1.5
+    };
     expect(^{
-      CFTimeInterval before = CACurrentMediaTime();
-      LTPainterPoint __unused *point = [[LTPainterPoint alloc] initWithCurrentTimestamp];
-      CFTimeInterval after = CACurrentMediaTime();
-      expect(point.timestamp).to.beInTheRangeOf(before, after);
-    }).notTo.raiseAny();
+      point = [[LTPainterPoint alloc] initWithInterpolatedProperties:properties];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
 context(@"properties", ^{
-  __block LTPainterPoint *point;
-  
   beforeEach(^{
     point = [[LTPainterPoint alloc] init];
   });
