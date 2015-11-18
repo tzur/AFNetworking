@@ -195,4 +195,27 @@ context(@"storage info", ^{
   });
 });
 
+context(@"common directories", ^{
+  it(@"should return the documents directory", ^{
+    NSString *path = [NSFileManager lt_documentsDirectory];
+    expect(path).to.equal(NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                              NSUserDomainMask, YES).firstObject);
+    expect(path).to.endWith(@"Documents");
+  });
+
+  it(@"should return the caches directory", ^{
+    NSString *path = [NSFileManager lt_cachesDirectory];
+    expect(path).to.equal(NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
+                                                              NSUserDomainMask, YES).firstObject);
+    expect(path).to.endWith(@"Caches");
+  });
+
+  it(@"should return the application support directory", ^{
+    NSString *path = [NSFileManager lt_applicationSupportDirectory];
+    expect(path).to.equal(NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                              NSUserDomainMask, YES).firstObject);
+    expect(path).to.endWith(@"Application Support");
+  });
+});
+
 SpecEnd
