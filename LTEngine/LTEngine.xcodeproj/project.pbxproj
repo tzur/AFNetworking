@@ -165,6 +165,10 @@
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
 		253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */ = {isa = PBXBuildFile; fileRef = 253F60781B3FC979009C6A5F /* LTBrushRandomState.h */; };
 		253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */; };
+		254DD74E1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 254DD74C1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h */; };
+		254DD74F1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm in Sources */ = {isa = PBXBuildFile; fileRef = 254DD74D1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm */; };
+		254DD7741BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 254DD7721BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm */; };
+		254DD7751BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 254DD7731BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm */; };
 		256392541B0B453D00DA934F /* LTMeshProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 256392531B0B453D00DA934F /* LTMeshProcessor.h */; };
 		256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256392551B0B4B3400DA934F /* LTMeshProcessor.mm */; };
 		25705DBE1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */; };
@@ -194,6 +198,9 @@
 		25AF178C1AD50CBF0055E664 /* GlyphTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF17891AD50CBF0055E664 /* GlyphTest.png */; };
 		25AF178E1AD50CCB0055E664 /* FramesetterTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AF178D1AD50CCB0055E664 /* FramesetterTest.png */; };
 		25CDE1761B0B5EF000BC3532 /* LTMeshProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25CDE1751B0B5EF000BC3532 /* LTMeshProcessorSpec.mm */; };
+		25CE71DE1BF9D82100E13CB4 /* LTParameterizedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */; };
+		25CE71E11BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */; };
+		25CE71E21BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
@@ -1357,6 +1364,11 @@
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
 		253F60781B3FC979009C6A5F /* LTBrushRandomState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushRandomState.h; sourceTree = "<group>"; };
 		253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomState.mm; sourceTree = "<group>"; };
+		254DD74C1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObjectFactories.h; sourceTree = "<group>"; };
+		254DD74D1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitiveParameterizedObjectFactories.mm; sourceTree = "<group>"; };
+		254DD7711BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObjectFactoriesExamples.h; sourceTree = "<group>"; };
+		254DD7721BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitiveParameterizedObjectFactoriesExamples.mm; sourceTree = "<group>"; };
+		254DD7731BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitiveParameterizedObjectFactoriesSpec.mm; sourceTree = "<group>"; };
 		256392531B0B453D00DA934F /* LTMeshProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeshProcessor.h; sourceTree = "<group>"; };
 		256392551B0B4B3400DA934F /* LTMeshProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessor.mm; sourceTree = "<group>"; };
 		25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTBrushRandomState+LTBrush.h"; sourceTree = "<group>"; };
@@ -1386,6 +1398,9 @@
 		25AF17891AD50CBF0055E664 /* GlyphTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlyphTest.png; path = Resources/GlyphTest.png; sourceTree = "<group>"; };
 		25AF178D1AD50CCB0055E664 /* FramesetterTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FramesetterTest.png; path = Resources/FramesetterTest.png; sourceTree = "<group>"; };
 		25CDE1751B0B5EF000BC3532 /* LTMeshProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshProcessorSpec.mm; sourceTree = "<group>"; };
+		25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizedObject.h; sourceTree = "<group>"; };
+		25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObject.h; sourceTree = "<group>"; };
+		25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObjectFactory.h; sourceTree = "<group>"; };
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
@@ -2394,6 +2409,43 @@
 			name = Noise;
 			sourceTree = "<group>";
 		};
+		254DD76D1BF9FA2600972C0A /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				254DD74C1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h */,
+				254DD74D1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm */,
+				25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */,
+			);
+			name = Factories;
+			sourceTree = "<group>";
+		};
+		254DD76E1BF9FA2F00972C0A /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */,
+				25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		254DD76F1BF9FA4000972C0A /* Parameterization */ = {
+			isa = PBXGroup;
+			children = (
+				254DD7701BF9FA4900972C0A /* Factories */,
+			);
+			name = Parameterization;
+			sourceTree = "<group>";
+		};
+		254DD7701BF9FA4900972C0A /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				254DD7711BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.h */,
+				254DD7721BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm */,
+				254DD7731BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm */,
+			);
+			name = Factories;
+			sourceTree = "<group>";
+		};
 		25AF17221AD50B4A0055E664 /* Typography */ = {
 			isa = PBXGroup;
 			children = (
@@ -2446,6 +2498,15 @@
 				25AF17821AD50CB60055E664 /* LineTrackingTest.png */,
 			);
 			name = Typography;
+			sourceTree = "<group>";
+		};
+		25CE71BE1BF9D7F800E13CB4 /* Parameterization */ = {
+			isa = PBXGroup;
+			children = (
+				254DD76D1BF9FA2600972C0A /* Factories */,
+				254DD76E1BF9FA2F00972C0A /* Objects */,
+			);
+			name = Parameterization;
 			sourceTree = "<group>";
 		};
 		280F5A11191A8CC700F9F80B /* Shape Drawer */ = {
@@ -3015,6 +3076,7 @@
 				8B8E50F81861EA7D00821829 /* GPU */,
 				282CF070187B02E600904F07 /* LTView */,
 				8B7C6C7A1B5273E100B90DBE /* Math */,
+				25CE71BE1BF9D7F800E13CB4 /* Parameterization */,
 				8BC465B0189926560094F7BC /* Scheduling */,
 				8BA822091987885900FBE68E /* Serialization */,
 				28C2073B1AE67D98007214A5 /* Storage */,
@@ -3382,6 +3444,7 @@
 				8B8E50FE1861EB4600821829 /* GPU */,
 				282CF08E187B033800904F07 /* LTView */,
 				8B7C6C7D1B52767200B90DBE /* Math */,
+				254DD76F1BF9FA4000972C0A /* Parameterization */,
 				8BC465B7189954ED0094F7BC /* Scheduling */,
 				8BA82289198805BC00FBE68E /* Serialization */,
 				28C207A91AEF6927007214A5 /* Storage */,
@@ -3943,6 +4006,7 @@
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
 				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
 				8BD688E71B6A8E2C003BDA34 /* LTTextureIZArchiver.h in Headers */,
+				25CE71E21BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h in Headers */,
 				25705DBE1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h in Headers */,
 				8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */,
 				285EEA541B15C52A002D10EE /* LTImageJPEGCompressor.h in Headers */,
@@ -3964,6 +4028,7 @@
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
 				03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */,
 				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
+				25CE71DE1BF9D82100E13CB4 /* LTParameterizedObject.h in Headers */,
 				25AF17561AD50BE00055E664 /* LTVGTypesetter.h in Headers */,
 				8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */,
 				28EC239D1B0CEBCB0099946A /* LTImageIOCompressor.h in Headers */,
@@ -4081,6 +4146,7 @@
 				8B87202A1924A76400517F2E /* LTTouchCollectorTimeIntervalFilter.h in Headers */,
 				28C207781AE7B143007214A5 /* LTTextureArchiver.h in Headers */,
 				2830B91419C6D09A00BF4E8E /* LTIndicesArray.h in Headers */,
+				254DD74E1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h in Headers */,
 				8B87202B1924A76400517F2E /* LTPainter.h in Headers */,
 				28BBD7F519A20AA40062C803 /* NSValue+LTRect.h in Headers */,
 				2868B744193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h in Headers */,
@@ -4091,6 +4157,7 @@
 				8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */,
 				8B87202F1924A76400517F2E /* LTPainter+LTView.h in Headers */,
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
+				25CE71E11BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h in Headers */,
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
 				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
 				28A0C7091AC0188D00FBC803 /* LTCircularMeshModel.h in Headers */,
@@ -4920,6 +4987,7 @@
 				8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */,
 				284004BE18D7650800403938 /* LTSingleTextureBrush.mm in Sources */,
 				03AFC171190E24B500F17063 /* LTTiltShiftProcessor.mm in Sources */,
+				254DD74F1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm in Sources */,
 				28ED10F918CCB26C00EE1633 /* LTPainter+LTView.mm in Sources */,
 				28A0C70A1AC0188D00FBC803 /* LTCircularMeshModel.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
@@ -4956,6 +5024,7 @@
 				03AFC14D19067F0400F17063 /* LTDuoProcessorSpec.mm in Sources */,
 				2830B91319C6D07900BF4E8E /* LTIndicesArraySpec.mm in Sources */,
 				28A0C7291AC1509B00FBC803 /* LTCircularMeshModelSpec.mm in Sources */,
+				254DD7751BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm in Sources */,
 				28907A6618D7274E00DFBE7F /* LTBrushEffectExamples.mm in Sources */,
 				28B8BC0C1B692F8400CF9F73 /* LTSlidingWindowFilterSpec.mm in Sources */,
 				8BAE3A4718B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm in Sources */,
@@ -5118,6 +5187,7 @@
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
 				8BD685FF1885519700571E75 /* LTBilateralFilterProcessorSpec.mm in Sources */,
 				8B3F94A01879B00C00FAA265 /* LTIterativeImageProcessorSpec.mm in Sources */,
+				254DD7741BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm in Sources */,
 				8BAB7C5418C61853005BE12A /* LTPatchProcessorSpec.mm in Sources */,
 				8BB47173183E2A6400CA1681 /* LTVertexArraySpec.mm in Sources */,
 				8BAE3AA018B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm in Sources */,
