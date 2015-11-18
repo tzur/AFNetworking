@@ -15,7 +15,7 @@ static const GLKMatrix4 M = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
                                                        -0.5, 1.5, -1.5, 0.5);
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames {
-  NSArray *propertiesToInterpolate = [keyFrames.firstObject propertiesToInterpolate];
+  NSSet<NSString *> *propertiesToInterpolate = [keyFrames.firstObject propertiesToInterpolate];
   NSMutableDictionary *coefficients =
   [NSMutableDictionary dictionaryWithCapacity:propertiesToInterpolate.count];
   for (NSString *propertyName in propertiesToInterpolate) {
