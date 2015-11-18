@@ -38,6 +38,12 @@ static BOOL LTEqualWhithin(double a, double b, double withinValue = FLT_EPSILON)
 
 @implementation InterpolatedObject
 
+- (instancetype)initWithInterpolatedProperties:(NSDictionary<NSString *, NSNumber *> *)properties {
+  InterpolatedObject *object = [[InterpolatedObject alloc] init];
+  [object setValuesForKeysWithDictionary:properties];
+  return object;
+}
+
 - (NSArray *)propertiesToInterpolate {
   return @[@"floatToInterpolate", @"doubleToInterpolate",
            @"pointToInterpolateX", @"pointToInterpolateY"];

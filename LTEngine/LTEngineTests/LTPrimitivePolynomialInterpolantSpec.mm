@@ -31,29 +31,34 @@ context(@"initialization", ^{
   });
 });
 
-context(@"interpolation", ^{
+context(@"LTPrimitiveParameterizedObject protocol", ^{
+  it(@"should have the correct intrinsic parameteric range", ^{
+    expect(interpolant.minParametricValue).to.equal(0);
+    expect(interpolant.maxParametricValue).to.equal(1);
+  });
+
   it(@"should return the correct linearly interpolated result for a given value", ^{
     interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{2, 5}];
-    expect([interpolant interpolatedValueForValue:-1]).to.beCloseToWithin(3, kEpsilon);
-    expect([interpolant interpolatedValueForValue:0]).to.beCloseToWithin(5, kEpsilon);
-    expect([interpolant interpolatedValueForValue:1]).to.beCloseToWithin(7, kEpsilon);
-    expect([interpolant interpolatedValueForValue:2]).to.beCloseToWithin(9, kEpsilon);
+    expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(3, kEpsilon);
+    expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(5, kEpsilon);
+    expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(7, kEpsilon);
+    expect([interpolant floatForParametricValue:2]).to.beCloseToWithin(9, kEpsilon);
   });
 
   it(@"should return the correct quadratically interpolated result for a given value", ^{
     interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
-    expect([interpolant interpolatedValueForValue:-1]).to.beCloseToWithin(2, kEpsilon);
-    expect([interpolant interpolatedValueForValue:0]).to.beCloseToWithin(3, kEpsilon);
-    expect([interpolant interpolatedValueForValue:1]).to.beCloseToWithin(6, kEpsilon);
-    expect([interpolant interpolatedValueForValue:2]).to.beCloseToWithin(11, kEpsilon);
+    expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(2, kEpsilon);
+    expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(3, kEpsilon);
+    expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(6, kEpsilon);
+    expect([interpolant floatForParametricValue:2]).to.beCloseToWithin(11, kEpsilon);
   });
 
   it(@"should return the correct cubically interpolated result for a given value", ^{
     interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
-    expect([interpolant interpolatedValueForValue:-1]).to.beCloseToWithin(2, kEpsilon);
-    expect([interpolant interpolatedValueForValue:0]).to.beCloseToWithin(4, kEpsilon);
-    expect([interpolant interpolatedValueForValue:1]).to.beCloseToWithin(10, kEpsilon);
-    expect([interpolant interpolatedValueForValue:2]).to.beCloseToWithin(26, kEpsilon);
+    expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(2, kEpsilon);
+    expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(4, kEpsilon);
+    expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(10, kEpsilon);
+    expect([interpolant floatForParametricValue:2]).to.beCloseToWithin(26, kEpsilon);
   });
 });
 

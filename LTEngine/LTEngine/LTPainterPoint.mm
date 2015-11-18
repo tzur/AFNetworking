@@ -15,6 +15,10 @@
 
 @implementation LTPainterPoint
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 - (instancetype)init {
   if (self = [super init]) {
     self.zoomScale = 1;
@@ -31,30 +35,32 @@
   return self;
 }
 
+- (instancetype)initWithInterpolatedProperties:(NSDictionary<NSString *,NSNumber *> *)properties {
+  LTParameterAssert([[NSSet setWithArray:[properties allKeys]]
+                     isSubsetOfSet:self.propertiesToInterpolate],
+                    @"Keys of the given properties (%@) must be subset of propertiesToInterpolate "
+                    "(%@)", [NSSet setWithArray:[properties allKeys]],
+                    self.propertiesToInterpolate);
+
+  if (self = [self init]) {
+    [properties enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSNumber *value, BOOL *) {
+      LTParameterAssert([self respondsToSelector:NSSelectorFromString(key)],
+                        @"Invalid key provided: %@", key);
+      [self setValue:value forKey:key];
+    }];
+  }
+  return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, screen: %@, content: %@, zoomScale: %g, "
           "touch radius: %g, timestamp: %g, distance: %g, diameter: %g>", [self class], self,
           NSStringFromCGPoint(self.screenPosition), NSStringFromCGPoint(self.contentPosition),
           self.zoomScale, self.touchRadius, self.timestamp, self.distanceFromStart, self.diameter];
-}
-
-- (NSArray *)propertiesToInterpolate {
-  static NSArray *propertiesToInterpolate;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    propertiesToInterpolate = @[
-      @keypath(self, contentPositionX),
-      @keypath(self, contentPositionY),
-      @keypath(self, screenPositionX),
-      @keypath(self, screenPositionY),
-      @keypath(self, timestamp),
-      @keypath(self, zoomScale),
-      @keypath(self, touchRadius),
-      @keypath(self, touchRadiusTolerance),
-      @keypath(self, diameter)
-    ];
-  });
-  return propertiesToInterpolate;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -68,6 +74,29 @@
   point.diameter = self.diameter;
   point.distanceFromStart = self.distanceFromStart;
   return point;
+}
+
+#pragma mark -
+#pragma mark LTInterpolatableObject
+#pragma mark -
+
+- (NSSet<NSString *> *)propertiesToInterpolate {
+  static NSSet *propertiesToInterpolate;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    propertiesToInterpolate = [NSSet setWithArray:@[
+      @keypath(self, contentPositionX),
+      @keypath(self, contentPositionY),
+      @keypath(self, screenPositionX),
+      @keypath(self, screenPositionY),
+      @keypath(self, timestamp),
+      @keypath(self, zoomScale),
+      @keypath(self, touchRadius),
+      @keypath(self, touchRadiusTolerance),
+      @keypath(self, diameter)
+    ]];
+  });
+  return propertiesToInterpolate;
 }
 
 #pragma mark -

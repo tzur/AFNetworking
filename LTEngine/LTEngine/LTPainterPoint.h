@@ -6,11 +6,11 @@
 /// This class represents a point used in the \c LTPainter mechanism, with interpolated properties.
 @interface LTPainterPoint : NSObject <LTInterpolatableObject, NSCopying>
 
-/// initializes a point with the default primitive values and the current timestamp.
-- (instancetype)initWithCurrentTimestamp;
+/// Initializes with default values.
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
-/// Designated initializer: create a point with the default primitive values for its properties.
-- (instancetype)init;
+/// Initializes with the default values and the current timestamp.
+- (instancetype)initWithCurrentTimestamp;
 
 /// Timestamp of the point, clamped to range [0,Inf).
 @property (nonatomic) CFTimeInterval timestamp;

@@ -8,7 +8,7 @@
 @implementation LTLinearInterpolant
 
 - (NSDictionary *)calculateCoefficientsForKeyFrames:(NSArray *)keyFrames {
-  NSArray *propertiesToInterpolate = [keyFrames.firstObject propertiesToInterpolate];
+  NSSet<NSString *> *propertiesToInterpolate = [keyFrames.firstObject propertiesToInterpolate];
   NSObject *first = keyFrames.firstObject;
   NSObject *last = keyFrames.lastObject;
   NSMutableDictionary *coefficients = [NSMutableDictionary dictionary];
