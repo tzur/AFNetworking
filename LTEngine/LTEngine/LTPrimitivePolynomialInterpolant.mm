@@ -27,15 +27,23 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Public interface
+#pragma mark LTPrimitiveParameterizedObject
 #pragma mark -
 
-- (CGFloat)interpolatedValueForValue:(CGFloat)value {
+- (CGFloat)floatForParametricValue:(CGFloat)parametricValue {
   CGFloat result = 0;
   for (const CGFloat &coefficient : _coefficients) {
-    result = value * result + coefficient;
+    result = parametricValue * result + coefficient;
   }
   return result;
+}
+
+- (CGFloat)minParametricValue {
+  return 0;
+}
+
+- (CGFloat)maxParametricValue {
+  return 1;
 }
 
 @end
