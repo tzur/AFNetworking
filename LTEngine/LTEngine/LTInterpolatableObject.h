@@ -1,26 +1,21 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-/// The \c LTInterpolatableObject protocol declares the methods that a class must implement so that
-/// instances of that class can be interpolated.
+/// Protocol which should be implemented by objects allowing the creation of instances with
+/// interpolated properties.
 @protocol LTInterpolatableObject <NSObject>
 
-@optional
+/// Initializes the object with the given \c properties. The keys of the given \c properties must be
+/// a subset of the \c propertiesToInterpolate.
+- (instancetype)initWithInterpolatedProperties:(NSDictionary<NSString *, NSNumber *> *)properties;
 
-/// Initializes the object while setting the interpolated properties given as a dictionary mapping
-/// property names (\cNSString) to values (\c NSNumber).
+/// Returns a set of names of the properties to interpolate. All properties must be of a primitive
+/// floating-point type.
 ///
-/// @note In case this method is not implemented, the standard initializer will be used and all the
-/// interpolated properties will be set after the initialization.
-- (instancetype)initWithInterpolatedProperties:(NSDictionary *)properties;
-
-@required
-
-/// Returns an array of names of the properties that should be interpolated. All properties must be
-/// of a primitive floating point type.
-///
+/// @important Any class implementing this protocol must guarantee that the returned set must be the
+/// same for all its instances.
 /// @note It is possible to interpolate complex properties (such as \c CGPoint for example) by
 /// creating helper properties for setting and getting their components. See \c LTPainterPoint.
-- (NSArray *)propertiesToInterpolate;
+- (NSSet<NSString *> *)propertiesToInterpolate;
 
 @end
