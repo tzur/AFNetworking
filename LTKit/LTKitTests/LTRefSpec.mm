@@ -30,22 +30,35 @@ LTMakeRefReleaser(LTMyType *, LTMyTypeRelease);
 SpecBegin(LTRef)
 
 context(@"releaser for custom type", ^{
+  __block BOOL released;
+
+  beforeEach(^{
+    released = NO;
+
+    releaseBlock = ^(LTMyType *releasedMyType) {
+      expect(@(releasedMyType->name().c_str())).to.equal(@"foo");
+      released = YES;
+    };
+  });
+
   afterEach(^{
     releaseBlock = nil;
   });
 
   it(@"should call release function when Ref is destroyed", ^{
-    __block BOOL released = NO;
-    releaseBlock = ^(LTMyType *releasedMyType) {
-      expect(@(releasedMyType->name().c_str())).to.equal(@"foo");
-      released = YES;
-    };
-
     {
       lt::Ref<LTMyType *> myType(new LTMyType("foo"));
     }
 
     expect(released).to.beTruthy();
+  });
+
+  it(@"should call release function when resetting the Ref", ^{
+    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    myType.reset(nullptr);
+
+    bool empty = !myType;
+    expect(empty).to.beTruthy();
   });
 });
 
@@ -75,6 +88,30 @@ context(@"move semantics", ^{
 
     expect(firstReference).to.equal(movedReference);
     expect(stolenReference).toNot.equal(movedReference);
+  });
+});
+
+context(@"explicit boolean operator", ^{
+  it(@"should be empty when constructed with no ref", ^{
+    lt::Ref<LTMyType *> ref;
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
+  });
+
+  it(@"should be not empty when constructed with a valid ref", ^{
+    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
+
+    bool empty = !ref;
+    expect(empty).to.beFalsy();
+  });
+
+  it(@"should be empty after reset to nullptr", ^{
+    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
+    ref.reset(nullptr);
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
   });
 });
 

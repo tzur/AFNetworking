@@ -146,7 +146,12 @@ public:
     return *this;
   }
 
-  /// Returns the acquired reference.
+  /// \c true if this class currently owns a reference.
+  explicit operator bool() const noexcept {
+    return (bool)_unique_ptr;
+  }
+
+  /// Returns the owned reference.
   T *get() const noexcept {
     return _unique_ptr.get();
   }
