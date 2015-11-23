@@ -11,6 +11,8 @@
 // by the auxiliary macro \c LTMakeRefRelease. The macro accepts the reference type and the release
 // function, which is an unary function that decreases the retain count of the object by 1.
 
+#ifdef __cplusplus
+
 namespace lt {
 
 /// Base template for \c RefReleaser classes. This class should be specialized on the type of \c Ref
@@ -186,3 +188,5 @@ LTMakeRefReleaser(CGMutablePathRef, CGPathRelease);
 LTMakeRefReleaser(CGGradientRef, CGGradientRelease);
 
 } // namespace lt
+
+#endif
