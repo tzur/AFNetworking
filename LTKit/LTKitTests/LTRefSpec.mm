@@ -1,9 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTDefaultDeleters.h"
-
-#import <string>
+#import "LTRef.h"
 
 class LTMyType {
 public:
@@ -27,16 +25,16 @@ void LTMyTypeRelease(LTMyType *myType) {
   }
 }
 
-LTMakeDefaultDelete(LTMyType, LTMyTypeRelease);
+LTMakeRefReleaser(LTMyType *, LTMyTypeRelease);
 
-SpecBegin(LTDefaultDeleters)
+SpecBegin(LTRef)
 
-context(@"deleter for custom type", ^{
+context(@"releaser for custom type", ^{
   afterEach(^{
     releaseBlock = nil;
   });
 
-  it(@"should call deleter function when unique_ptr is destroyed", ^{
+  it(@"should call release function when Ref is destroyed", ^{
     __block BOOL released = NO;
     releaseBlock = ^(LTMyType *releasedMyType) {
       expect(@(releasedMyType->name().c_str())).to.equal(@"foo");
@@ -44,21 +42,50 @@ context(@"deleter for custom type", ^{
     };
 
     {
-      std::unique_ptr<LTMyType> myType(new LTMyType("foo"));
+      lt::Ref<LTMyType *> myType(new LTMyType("foo"));
     }
 
     expect(released).to.beTruthy();
   });
 });
 
-context(@"deleter for registered types", ^{
-  it(@"should delete CGColorSpace", ^{
+context(@"move semantics", ^{
+  it(@"should use move constructor correctly", ^{
+    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    LTMyType *firstReference = myType.get();
+
+    lt::Ref<LTMyType *> movedMyType = std::move(myType);
+    LTMyType *movedReference = movedMyType.get();
+
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+
+  it(@"should use move assignment operator correctly", ^{
+    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    lt::Ref<LTMyType *> movedMyType;
+
+    LTMyType *firstReference = myType.get();
+    movedMyType = std::move(myType);
+
+    LTMyType *movedReference = movedMyType.get();
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+});
+
+context(@"releaser for registered types", ^{
+  it(@"should release CGColorSpace", ^{
     CGColorSpaceRef colorSpaceRef;
     CFIndex retainCount;
 
     {
-      std::unique_ptr<CGColorSpace> colorSpace(CGColorSpaceCreateDeviceRGB());
-      colorSpaceRef = (CGColorSpaceRef)CFRetain(colorSpace.get());
+      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
+      colorSpaceRef = (CGColorSpaceRef)CFRetain(colorSpace);
       retainCount = CFGetRetainCount(colorSpaceRef);
     }
 
@@ -66,18 +93,18 @@ context(@"deleter for registered types", ^{
     CGColorSpaceRelease(colorSpaceRef);
   });
 
-  it(@"should delete CGContext", ^{
+  it(@"should release CGContext", ^{
     CGContextRef contextRef;
     CFIndex retainCount;
 
     {
       char data[4] = {0};
-      std::unique_ptr<CGColorSpace> colorSpace(CGColorSpaceCreateDeviceRGB());
-      std::unique_ptr<CGContext> context(CGBitmapContextCreate(data, 1, 1, 8, 4,
-                                                               colorSpace.get(),
-                                                               kCGImageAlphaPremultipliedLast |
-                                                               kCGBitmapByteOrderDefault));
-      contextRef = (CGContextRef)CFRetain(context.get());
+      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
+      lt::Ref<CGContextRef> context(CGBitmapContextCreate(data, 1, 1, 8, 4,
+                                                          colorSpace,
+                                                          kCGImageAlphaPremultipliedLast |
+                                                          kCGBitmapByteOrderDefault));
+      contextRef = (CGContextRef)CFRetain(context);
       retainCount = CFGetRetainCount(contextRef);
     }
 
@@ -85,14 +112,14 @@ context(@"deleter for registered types", ^{
     CGContextRelease(contextRef);
   });
 
-  it(@"should delete CGDataProvider", ^{
+  it(@"should release CGDataProvider", ^{
     CGDataProviderRef dataProviderRef;
     CFIndex retainCount;
 
     {
       NSData *data = [NSData data];
-      std::unique_ptr<CGDataProvider> dataProvider(CGDataProviderCreateWithCFData((CFDataRef)data));
-      dataProviderRef = (CGDataProviderRef)CFRetain(dataProvider.get());
+      lt::Ref<CGDataProviderRef> dataProvider(CGDataProviderCreateWithCFData((CFDataRef)data));
+      dataProviderRef = (CGDataProviderRef)CFRetain(dataProvider);
       retainCount = CFGetRetainCount(dataProviderRef);
     }
 
@@ -100,7 +127,7 @@ context(@"deleter for registered types", ^{
     CGDataProviderRelease(dataProviderRef);
   });
 
-  it(@"should delete CGImage", ^{
+  it(@"should release CGImage", ^{
     CGImageRef imageRef;
     CFIndex retainCount;
 
@@ -110,8 +137,8 @@ context(@"deleter for registered types", ^{
         source = UIGraphicsGetImageFromCurrentImageContext();
       } UIGraphicsEndImageContext();
 
-      std::unique_ptr<CGImage> image(CGImageCreateCopy(source.CGImage));
-      imageRef = (CGImageRef)CFRetain(image.get());
+      lt::Ref<CGImageRef> image(CGImageCreateCopy(source.CGImage));
+      imageRef = (CGImageRef)CFRetain(image);
       retainCount = CFGetRetainCount(imageRef);
     }
 
@@ -119,7 +146,7 @@ context(@"deleter for registered types", ^{
     CGImageRelease(imageRef);
   });
 
-  it(@"should delete CGPath", ^{
+  it(@"should release CGPath", ^{
     CGPathRef pathRef;
     CFIndex retainCount;
 
@@ -129,8 +156,8 @@ context(@"deleter for registered types", ^{
         source = UIGraphicsGetImageFromCurrentImageContext();
       } UIGraphicsEndImageContext();
 
-      std::unique_ptr<CGPath> path(CGPathCreateMutable());
-      pathRef = (CGPathRef)CFRetain(path.get());
+      lt::Ref<CGPathRef> path(CGPathCreateMutable());
+      pathRef = (CGPathRef)CFRetain(path);
       retainCount = CFGetRetainCount(pathRef);
     }
 
@@ -138,7 +165,7 @@ context(@"deleter for registered types", ^{
     CGPathRelease(pathRef);
   });
 
-  it(@"should delete CGGradient", ^{
+  it(@"should release CGGradient", ^{
     CGGradientRef gradientRef;
     CFIndex retainCount;
 
@@ -148,13 +175,13 @@ context(@"deleter for registered types", ^{
         source = UIGraphicsGetImageFromCurrentImageContext();
       } UIGraphicsEndImageContext();
 
-      std::unique_ptr<CGColorSpace> colorSpace(CGColorSpaceCreateDeviceRGB());
+      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
       CGFloat components[4] = {0};
       CGFloat locations[1] = {0};
-      std::unique_ptr<CGGradient> image(CGGradientCreateWithColorComponents(colorSpace.get(),
-                                                                            components,
-                                                                            locations, 1));
-      gradientRef = (CGGradientRef)CFRetain(image.get());
+      lt::Ref<CGGradientRef> image(CGGradientCreateWithColorComponents(colorSpace,
+                                                                       components,
+                                                                       locations, 1));
+      gradientRef = (CGGradientRef)CFRetain(image);
       retainCount = CFGetRetainCount(gradientRef);
     }
 

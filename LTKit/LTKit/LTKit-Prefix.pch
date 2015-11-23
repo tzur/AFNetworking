@@ -35,7 +35,7 @@ extern "C" {
 #import "NSError+LTKit.h"
 
 #ifdef __cplusplus
-  #import "LTDefaultDeleters.h"
   #import "LTEasyBoxing.h"
   #import "LTEnumRegistry.h"
+  #import "LTRef.h"
 #endif
