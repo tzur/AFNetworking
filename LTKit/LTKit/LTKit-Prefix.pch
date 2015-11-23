@@ -9,6 +9,7 @@
   #import <map>
   #import <memory>
   #import <numeric>
+  #import <string>
   #import <vector>
 #endif
 
