@@ -10,7 +10,7 @@
 // }
 //
 // NS_ENUM(NSInteger) {
-//   <first error code name> = LTErrorCodeBase + <product prefix>ErrorCodeProductID,
+//   <first error code name> = <product prefix>ErrorCodeProductID << LTErrorCodeBaseOffset,
 //   <second error code name>,
 //   // Additional error codes here.
 // };
@@ -29,9 +29,6 @@
 NS_ENUM(NSInteger) {
   /// Offset for base of error codes, leaving three bits for source identifier.
   LTErrorCodeBaseOffset = 28,
-
-  /// Base for all error codes in LTKit.
-  LTErrorCodeBase = 0 << LTErrorCodeBaseOffset,
 };
 
 /// Product ID.
@@ -43,7 +40,7 @@ NS_ENUM(NSInteger) {
 /// All error codes available in LTKit.
 NS_ENUM(NSInteger) {
   /// Caused when an object failed to be created.
-  LTErrorCodeObjectCreationFailed = LTErrorCodeBase + LTKitErrorCodeProductID,
+  LTErrorCodeObjectCreationFailed = LTKitErrorCodeProductID << LTErrorCodeBaseOffset,
   /// Caused due to an unknown error in file handling.
   LTErrorCodeFileUnknownError,
   /// Caused when an expected file was not found.
