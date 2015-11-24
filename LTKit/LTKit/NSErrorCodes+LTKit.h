@@ -27,8 +27,8 @@
 
 /// Basic constants for Lightricks' error domain.
 NS_ENUM(NSInteger) {
-  /// Offset for base of error codes, leaving three bits for source identifier.
-  LTErrorCodeBaseOffset = 28,
+  /// Offset for base of error codes, leaving 8 bits for product identifier.
+  LTErrorCodeBaseOffset = 24,
 };
 
 /// Product ID.
