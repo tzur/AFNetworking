@@ -91,6 +91,24 @@ context(@"move semantics", ^{
   });
 });
 
+context(@"getting the underlying reference", ^{
+  it(@"should retrieve the underlying reference with get()", ^{
+    LTMyType *myType = new LTMyType("foo");
+    lt::Ref<LTMyType *> myTypeRef(myType);
+
+    LTMyType *myTypeRetrieved = myTypeRef.get();
+    expect(myTypeRetrieved).to.equal(myType);
+  });
+
+  it(@"should retrieve the underlying reference with implicit cast", ^{
+    LTMyType *myType = new LTMyType("foo");
+    lt::Ref<LTMyType *> myTypeRef(myType);
+
+    LTMyType *myTypeRetrieved(myTypeRef);
+    expect(myTypeRetrieved).to.equal(myType);
+  });
+});
+
 context(@"explicit boolean operator", ^{
   it(@"should be empty when constructed with no ref", ^{
     lt::Ref<LTMyType *> ref;
@@ -115,7 +133,22 @@ context(@"explicit boolean operator", ^{
   });
 });
 
-context(@"releaser for registered types", ^{
+context(@"releasing a ref", ^{
+  it(@"should release a ref and return it", ^{
+    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
+
+    LTMyType *rawPointer = ref.get();
+    LTMyType *myType = ref.release();
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
+    expect(rawPointer).to.to.equal(myType);
+
+    delete myType;
+  });
+});
+
+context(@"releaser for core foundation objects", ^{
   it(@"should release CGColorSpace", ^{
     CGColorSpaceRef colorSpaceRef;
     CFIndex retainCount;
@@ -128,102 +161,6 @@ context(@"releaser for registered types", ^{
 
     expect(CFGetRetainCount(colorSpaceRef)).to.equal(retainCount - 1);
     CGColorSpaceRelease(colorSpaceRef);
-  });
-
-  it(@"should release CGContext", ^{
-    CGContextRef contextRef;
-    CFIndex retainCount;
-
-    {
-      char data[4] = {0};
-      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
-      lt::Ref<CGContextRef> context(CGBitmapContextCreate(data, 1, 1, 8, 4,
-                                                          colorSpace,
-                                                          kCGImageAlphaPremultipliedLast |
-                                                          kCGBitmapByteOrderDefault));
-      contextRef = (CGContextRef)CFRetain(context);
-      retainCount = CFGetRetainCount(contextRef);
-    }
-
-    expect(CFGetRetainCount(contextRef)).to.equal(retainCount - 1);
-    CGContextRelease(contextRef);
-  });
-
-  it(@"should release CGDataProvider", ^{
-    CGDataProviderRef dataProviderRef;
-    CFIndex retainCount;
-
-    {
-      NSData *data = [NSData data];
-      lt::Ref<CGDataProviderRef> dataProvider(CGDataProviderCreateWithCFData((CFDataRef)data));
-      dataProviderRef = (CGDataProviderRef)CFRetain(dataProvider);
-      retainCount = CFGetRetainCount(dataProviderRef);
-    }
-
-    expect(CFGetRetainCount(dataProviderRef)).to.equal(retainCount - 1);
-    CGDataProviderRelease(dataProviderRef);
-  });
-
-  it(@"should release CGImage", ^{
-    CGImageRef imageRef;
-    CFIndex retainCount;
-
-    {
-      UIImage *source;
-      UIGraphicsBeginImageContext(CGSizeMake(1, 1)); {
-        source = UIGraphicsGetImageFromCurrentImageContext();
-      } UIGraphicsEndImageContext();
-
-      lt::Ref<CGImageRef> image(CGImageCreateCopy(source.CGImage));
-      imageRef = (CGImageRef)CFRetain(image);
-      retainCount = CFGetRetainCount(imageRef);
-    }
-
-    expect(CFGetRetainCount(imageRef)).to.equal(retainCount - 1);
-    CGImageRelease(imageRef);
-  });
-
-  it(@"should release CGPath", ^{
-    CGPathRef pathRef;
-    CFIndex retainCount;
-
-    {
-      UIImage *source;
-      UIGraphicsBeginImageContext(CGSizeMake(1, 1)); {
-        source = UIGraphicsGetImageFromCurrentImageContext();
-      } UIGraphicsEndImageContext();
-
-      lt::Ref<CGPathRef> path(CGPathCreateMutable());
-      pathRef = (CGPathRef)CFRetain(path);
-      retainCount = CFGetRetainCount(pathRef);
-    }
-
-    expect(CFGetRetainCount(pathRef)).to.equal(retainCount - 1);
-    CGPathRelease(pathRef);
-  });
-
-  it(@"should release CGGradient", ^{
-    CGGradientRef gradientRef;
-    CFIndex retainCount;
-
-    {
-      UIImage *source;
-      UIGraphicsBeginImageContext(CGSizeMake(1, 1)); {
-        source = UIGraphicsGetImageFromCurrentImageContext();
-      } UIGraphicsEndImageContext();
-
-      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
-      CGFloat components[4] = {0};
-      CGFloat locations[1] = {0};
-      lt::Ref<CGGradientRef> image(CGGradientCreateWithColorComponents(colorSpace,
-                                                                       components,
-                                                                       locations, 1));
-      gradientRef = (CGGradientRef)CFRetain(image);
-      retainCount = CFGetRetainCount(gradientRef);
-    }
-
-    expect(CFGetRetainCount(gradientRef)).to.equal(retainCount - 1);
-    CGGradientRelease(gradientRef);
   });
 });
 
