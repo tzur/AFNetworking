@@ -205,6 +205,12 @@ public:
     return get();
   }
 
+  /// Releases the ownership of the managed object if it exists and returns the pointer to the
+  /// managed reference. After this call, this object will not own a reference.
+  PointerType release() noexcept {
+    return _unique_ptr.release();
+  }
+
   /// Resets the Ref by releasing the previously held reference and acquiring the given \c ref. If
   /// Ref is currently pointing to \c nullptr, no action is performed.
   void reset(T *ref) noexcept {
