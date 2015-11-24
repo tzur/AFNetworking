@@ -226,7 +226,7 @@ context(@"album fetching", ^{
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
         NSIndexSet *emptySet = [NSIndexSet indexSet];
-        expect(recorder.values).will.equal(@[
+        expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
           [PTNAlbumChangeset changesetWithAfterAlbum:album],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
@@ -240,7 +240,7 @@ context(@"album fetching", ^{
                                       insertedIndexes:emptySet
                                        updatedIndexes:[NSIndexSet indexSetWithIndex:1]
                                                 moves:@[]]
-        ]);
+        ]]);
       });
     });
   });
