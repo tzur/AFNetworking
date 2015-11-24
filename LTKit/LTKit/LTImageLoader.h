@@ -18,6 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// -[UIImage imageWithContentsOfFile:] for more details.
 - (nullable UIImage *)imageWithContentsOfFile:(NSString *)name;
 
+/// Returns the image object generated from the given data. See [UIImage imageWithData:] for more
+/// details.
+///
+/// @note This method is possibly not thread safe, see
+/// https://github.com/AFNetworking/AFNetworking/issues/2572
+- (nullable UIImage *)imageWithData:(NSData *)data;
+
 @end
 
 NS_ASSUME_NONNULL_END

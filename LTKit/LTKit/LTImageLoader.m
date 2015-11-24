@@ -5,18 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTImageLoader ()
-@property (strong, nonatomic) Class imageClass;
-@end
-
 @implementation LTImageLoader
-
-- (instancetype)init {
-  if (self = [super init]) {
-    self.imageClass = [UIImage class];
-  }
-  return self;
-}
 
 + (instancetype)sharedInstance {
   static LTImageLoader *instance;
@@ -30,11 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable UIImage *)imageNamed:(NSString *)name {
-  return [self.imageClass imageNamed:name];
+  return [UIImage imageNamed:name];
 }
 
 - (nullable UIImage *)imageWithContentsOfFile:(NSString *)name {
-  return [self.imageClass imageWithContentsOfFile:name];
+  return [UIImage imageWithContentsOfFile:name];
+}
+
+- (nullable UIImage *)imageWithData:(NSData *)data {
+  return [UIImage imageWithData:data];
 }
 
 @end
