@@ -3,6 +3,8 @@
 
 #import "LTOpenCVExtensions.h"
 
+#import <LTKit/NSBundle+Path.h>
+
 #import "LTGLKitExtensions.h"
 #import "LTImage.h"
 
@@ -10,8 +12,6 @@ using half_float::half;
 
 void LTConvertToSameNumberOfChannels(const cv::Mat &input, cv::Mat *output, int type);
 void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type);
-NSString *LTPathForResourceNearClass(Class classInBundle, NSString *name);
-NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name);
 
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type) {
   LTAssert(&input != output, @"Conversion cannot be made in-place");
@@ -125,7 +125,7 @@ void LTPreDivideMat(cv::Mat *mat) {
 }
 
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
-  NSString *path = LTPathForResourceNearClass(classInBundle, name);
+  NSString *path = [NSBundle lt_pathForResource:name nearClass:classInBundle];
   UIImage *image = [UIImage imageWithContentsOfFile:path];
   LTParameterAssert(image, @"Given image name '%@' cannot be loaded", name);
 
@@ -149,23 +149,9 @@ cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide) {
 }
 
 cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide) {
-  NSString *path = LTPathForResourceInBundle(bundle, name);
+  NSString *path = [bundle lt_pathForResource:name];
+  LTParameterAssert(path, @"Given image name '%@' cannot be found in the bundle %@", name, bundle);
   return LTMatFromImage([UIImage imageWithContentsOfFile:path], preDivide);
-}
-
-NSString *LTPathForResourceNearClass(Class classInBundle, NSString *name) {
-  NSBundle *bundle = [NSBundle bundleForClass:classInBundle];
-  return LTPathForResourceInBundle(bundle, name);
-}
-
-NSString *LTPathForResourceInBundle(NSBundle *bundle, NSString *name) {
-  NSString *resource = [name stringByDeletingPathExtension];
-  NSString *type = [name pathExtension];
-
-  NSString *path = [bundle pathForResource:resource ofType:type];
-  LTParameterAssert(path, @"Given image name '%@' doesn't exist in bundle '%@'", name, bundle);
-
-  return path;
 }
 
 static double LTNormalizationFactorForGaussianMat(const cv::Mat &mat, double sigma) {
