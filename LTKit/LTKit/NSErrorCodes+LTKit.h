@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "NSErrorCodes+Macros.h"
+
 // Defines error codes that are common across all Lightricks' products. Additional libraries and
 // apps should define their business specific error codes in their own NSErrorCodes+<Product Name>.h
 // file with the following structure:
@@ -9,11 +11,19 @@
 //   <product prefix>ErrorCodeProductID = <product ID>
 // }
 //
-// NS_ENUM(NSInteger) {
-//   <first error code name> = <product prefix>ErrorCodeProductID << LTErrorCodeBaseOffset,
+// LTErrorCodesDeclare(<product prefix>ErrorCodeProductID,
+//   <first error code name>,
+//   <second error code name>,
+//   // Additional error codes here
+// );
+//
+// Additionally, create an NSErrorCodes+<Product Name>.mm file with the implementation:
+//
+// LTErrorCodesImplement(<product prefix>ErrorCodeProductID,
+//   <first error code name>,
 //   <second error code name>,
 //   // Additional error codes here.
-// };
+// );
 //
 // The product ID should be unique across all Lightricks' products, and registered in this file.
 // This will allow having unique error codes across multiple libraries and apps, while using the
@@ -24,6 +34,34 @@
 // LTEngine -> 1.
 // Enlight -> 2.
 // Photons -> 3.
+
+/// Defines error codes for a given product ID. The first given parameter is the product ID or a
+/// constant representing it. Error codes follow. Example:
+/// @code
+/// LTErrorCodesDeclare(LTKitErrorCodeProductID,
+///                     LTErrorCodeFoo,
+///                     LTErrorCodeBar,
+///                     LTErrorCodeBaz);
+/// @endcode
+///
+/// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
+/// with a similar name twice.
+#define LTErrorCodesDeclare(PRODUCT_ID, ...) \
+  _LTErrorCodesDeclare(PRODUCT_ID, __VA_ARGS__)
+
+/// Implements and registers the error codes for a given product ID. The first given parameter is
+/// the product ID or a constant representing it. Error codes follow. Example:
+/// @code
+/// LTErrorCodesImplement(LTKitErrorCodeProductID,
+///                       LTErrorCodeFoo,
+///                       LTErrorCodeBar,
+///                       LTErrorCodeBaz);
+/// @endcode
+///
+/// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
+/// with a similar name twice.
+#define LTErrorCodesImplement(PRODUCT_ID, ...) \
+  _LTErrorCodesImplement(PRODUCT_ID, __VA_ARGS__)
 
 /// Basic constants for Lightricks' error domain.
 NS_ENUM(NSInteger) {
@@ -38,9 +76,9 @@ NS_ENUM(NSInteger) {
 };
 
 /// All error codes available in LTKit.
-NS_ENUM(NSInteger) {
+LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when an object failed to be created.
-  LTErrorCodeObjectCreationFailed = LTKitErrorCodeProductID << LTErrorCodeBaseOffset,
+  LTErrorCodeObjectCreationFailed,
   /// Caused due to an unknown error in file handling.
   LTErrorCodeFileUnknownError,
   /// Caused when an expected file was not found.
@@ -59,4 +97,4 @@ NS_ENUM(NSInteger) {
   LTErrorCodeBadHeader,
   /// Caused when a nonnull value was expected but null was provided.
   LTErrorCodeNullValueGiven
-};
+);

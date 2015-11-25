@@ -28,10 +28,18 @@ NSString *LTSystemErrorMessageForError(int error);
 
 @interface NSError (LTKit)
 
-/// Creates an error with Lightricks' domain and given error code.
+/// Creates an error with Lightricks' domain and given error code. The \c userInfo dictionary will
+/// be augmented with the error code description if available.
+///
+/// @see NSErrorCodes+LTKit for more information about error code creation that supports description
+/// augmentation.
 + (instancetype)lt_errorWithCode:(NSInteger)code;
 
-/// Creates an error with Lightricks' domain, given error code and \c userInfo dictionary.
+/// Creates an error with Lightricks' domain, given error code and \c userInfo dictionary, which
+/// will be augmented with the error code description if available.
+///
+/// @see NSErrorCodes+LTKit for more information about error code creation that supports description
+/// augmentation.
 + (instancetype)lt_errorWithCode:(NSInteger)code userInfo:(nullable NSDictionary *)userInfo;
 
 /// Creates an error with Lightricks' domain, given error code and the given underlying error.
@@ -82,6 +90,9 @@ NSString *LTSystemErrorMessageForError(int error);
 
 /// Non-localized error description. This description should not be shown to the user.
 @property (readonly, nonatomic, nullable) NSString *lt_description;
+
+/// Description of the error code. This description should not be shown to the user.
+@property (readonly, nonatomic, nullable) NSString *lt_errorCodeDescription;
 
 /// Path related to the error.
 @property (readonly, nonatomic, nullable) NSString *lt_path;

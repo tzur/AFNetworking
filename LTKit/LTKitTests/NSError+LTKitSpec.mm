@@ -25,16 +25,29 @@ it(@"should create error with code and domain", ^{
 
   expect(error.domain).to.equal(kLTErrorDomain);
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
-  expect(error.userInfo.count).to.equal(0);
+  expect(error.lt_errorCodeDescription).to.equal(@"LTErrorCodeFileNotFound");
+  expect(error.userInfo.count).to.equal(1);
 });
 
-it(@"should create error with code and userInfo", ^{
+it(@"should create error with code and userInfo and not augment with error code description", ^{
+  NSDictionary *userInfo = @{@"foo": @7};
+  NSError *error = [NSError lt_errorWithCode:NSIntegerMax userInfo:userInfo];
+
+  expect(error.domain).to.equal(kLTErrorDomain);
+  expect(error.code).to.equal(NSIntegerMax);
+  expect(error.userInfo).to.equal(userInfo);
+});
+
+it(@"should create error with code and userInfo and augment with error code description", ^{
   NSDictionary *userInfo = @{@"foo": @7};
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound userInfo:userInfo];
 
+  NSMutableDictionary *userInfoWithDescription = [userInfo mutableCopy];
+  userInfoWithDescription[(NSString *)kCFErrorDescriptionKey] = @"LTErrorCodeFileNotFound";
+
   expect(error.domain).to.equal(kLTErrorDomain);
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
-  expect(error.userInfo).to.equal(userInfo);
+  expect(error.userInfo).to.equal(userInfoWithDescription);
 });
 
 it(@"should create error with underlyingError", ^{
