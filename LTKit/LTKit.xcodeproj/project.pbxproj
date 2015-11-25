@@ -777,6 +777,7 @@
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
 				8B871F97192396BE00517F2E /* NSError+LTKit.mm */,
 				8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */,
+				8B87D5931C05AC630005410A /* NSErrorCodes+LTKit.mm */,
 				8B87D5CA1C05DD8B0005410A /* NSErrorCodes+Macros.h */,
 				8B2405861B860D620079B724 /* NSLocale+Language.h */,
 				8B2405871B860D620079B724 /* NSLocale+Language.m */,
@@ -1185,6 +1186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
+				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
 				8BBB149B194F4799000CF391 /* LTEnumRegistry.m in Sources */,
 				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
 				8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */,
