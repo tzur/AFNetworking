@@ -7,15 +7,43 @@
 //
 // Adding new reference types:
 //
-// To add a new reference type, one should define a specialization of the \c lt::RefReleaser class
-// by the auxiliary macro \c LTMakeRefRelease. The macro accepts the reference type and the release
-// function, which is an unary function that decreases the retain count of the object by 1.
+// There are two ways to add a new reference type:
+// 1. If the reference is a Core Foundation object, add a specialization for the type trait
+//    \c IsCoreFoundationObjectRef for the object type and publicly inherit from \c std::true_type.
+//    The type will be released with \c CFRelease.
+// 2. To add a new reference type with a custom releaser, define a specialization of the
+//    \c lt::RefReleaser class by the auxiliary macro \c LTMakeRefRelease. The macro accepts the
+//    reference type and the release function, which is an unary function that decreases the retain
+//    count of the object by 1.
+
+#ifdef __cplusplus
 
 namespace lt {
 
+#pragma mark -
+#pragma mark Type traits
+#pragma mark -
+
+/// Type trait indicating if the type is a reference to a Core Foundation Object.
+template <typename T>
+struct IsCoreFoundationObjectRef : public std::false_type {};
+
+// Core Graphics.
+template <> struct IsCoreFoundationObjectRef<CGColorSpaceRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGContextRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGDataProviderRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGImageRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGPathRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGMutablePathRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGGradientRef> : public std::true_type {};
+
+#pragma mark -
+#pragma mark RefReleaser
+#pragma mark -
+
 /// Base template for \c RefReleaser classes. This class should be specialized on the type of \c Ref
 /// that is managed, and contain an \c operator() that releases that ref.
-template <typename T>
+template <typename T, bool UseCFRelease = false>
 struct RefReleaser {
 };
 
@@ -25,11 +53,23 @@ struct RefReleaser {
 /// null-check is required.
 #define LTMakeRefReleaser(TYPE, RELEASE_FUNCTION) \
   template <> \
-  struct ::lt::RefReleaser<TYPE> { \
+  struct ::lt::RefReleaser<TYPE, false> { \
     inline void operator()(TYPE ptr) const noexcept { \
       RELEASE_FUNCTION(ptr); \
     } \
   };
+
+/// RefReleaser for Core Foundation objects that are released with \c CFRelease.
+template <typename T>
+struct RefReleaser<T, true> {
+  inline void operator()(T ptr) const noexcept {
+    CFRelease(ptr);
+  }
+};
+
+#pragma mark -
+#pragma mark Ref
+#pragma mark -
 
 /// Base template for \c Ref classes. Since Ref is templated only on pointer types, use the Ref<T*>
 /// specialization instead.
@@ -123,6 +163,9 @@ public:
   /// Type of the pointer this Ref holds, i.e. T*.
   typedef T *PointerType;
 
+  /// Type of the ref releaser used by this Ref.
+  typedef RefReleaser<T*, IsCoreFoundationObjectRef<T*>::value> RefReleaserType;
+
   /// Constructs a Ref with a \c nullptr reference.
   Ref() noexcept = default;
 
@@ -146,7 +189,12 @@ public:
     return *this;
   }
 
-  /// Returns the acquired reference.
+  /// \c true if this class currently owns a reference.
+  explicit operator bool() const noexcept {
+    return (bool)_unique_ptr;
+  }
+
+  /// Returns the owned reference.
   T *get() const noexcept {
     return _unique_ptr.get();
   }
@@ -157,6 +205,12 @@ public:
     return get();
   }
 
+  /// Releases the ownership of the managed object if it exists and returns the pointer to the
+  /// managed reference. After this call, this object will not own a reference.
+  PointerType release() noexcept {
+    return _unique_ptr.release();
+  }
+
   /// Resets the Ref by releasing the previously held reference and acquiring the given \c ref. If
   /// Ref is currently pointing to \c nullptr, no action is performed.
   void reset(T *ref) noexcept {
@@ -165,19 +219,12 @@ public:
 
 private:
   /// Type of unique pointer that is contained in this class.
-  typedef std::unique_ptr<T, RefReleaser<T*>> UniquePtrType;
+  typedef std::unique_ptr<T, RefReleaserType> UniquePtrType;
 
   /// Unique pointer which is held by this Ref.
   UniquePtrType _unique_ptr;
 };
 
-// Core Graphics.
-LTMakeRefReleaser(CGColorSpaceRef, CGColorSpaceRelease);
-LTMakeRefReleaser(CGContextRef, CGContextRelease);
-LTMakeRefReleaser(CGDataProviderRef, CGDataProviderRelease);
-LTMakeRefReleaser(CGImageRef, CGImageRelease);
-LTMakeRefReleaser(CGPathRef, CGPathRelease);
-LTMakeRefReleaser(CGMutablePathRef, CGPathRelease);
-LTMakeRefReleaser(CGGradientRef, CGGradientRelease);
-
 } // namespace lt
+
+#endif
