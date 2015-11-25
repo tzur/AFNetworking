@@ -78,7 +78,7 @@ sharedExamplesFor(kLTPrimitiveParameterizedObjectFactoryExamples, ^(NSDictionary
             [factory primitiveParameterizedObjectsFromValues:unboxedInitializationValues];
       });
 
-      it(@"should have correct intrinsic parameteric range", ^{
+      it(@"should have correct intrinsic parametric range", ^{
         expect(parameterizedObject.minParametricValue)
             .to.equal(data[kLTPrimitiveParameterizedObjectFactoryMinParametricValue]);
         expect(parameterizedObject.maxParametricValue)
