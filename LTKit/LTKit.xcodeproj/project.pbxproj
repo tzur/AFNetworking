@@ -405,6 +405,7 @@
 		8B87D5341C04BA940005410A /* NSBundle+Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Path.h"; sourceTree = "<group>"; };
 		8B87D5351C04BA940005410A /* NSBundle+Path.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+Path.mm"; sourceTree = "<group>"; };
 		8B87D54D1C04BC2F0005410A /* NSBundle+PathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PathSpec.mm"; sourceTree = "<group>"; };
+		8B87D5CA1C05DD8B0005410A /* NSErrorCodes+Macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Macros.h"; sourceTree = "<group>"; };
 		8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/testing/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
@@ -766,6 +767,7 @@
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
 				8B871F97192396BE00517F2E /* NSError+LTKit.mm */,
 				8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */,
+				8B87D5CA1C05DD8B0005410A /* NSErrorCodes+Macros.h */,
 				8B2405861B860D620079B724 /* NSLocale+Language.h */,
 				8B2405871B860D620079B724 /* NSLocale+Language.m */,
 				8B24057E1B8607270079B724 /* UIDevice+Hardware.h */,
