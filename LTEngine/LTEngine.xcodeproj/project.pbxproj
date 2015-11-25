@@ -1893,6 +1893,7 @@
 		8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryCondition.mm; sourceTree = "<group>"; };
 		8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundaryConditionSpec.mm; sourceTree = "<group>"; };
 		8B7EAA21187C5D960004A57A /* Colorize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Colorize.fsh; path = Resources/Colorize.fsh; sourceTree = "<group>"; };
+		8B8664321BF5026D006FFF03 /* LTRef+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRef+LTEngine.h"; sourceTree = "<group>"; };
 		8B871F8F19238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiverSpec.mm; sourceTree = "<group>"; };
 		8B8720BF1925167400517F2E /* TextureContentsImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TextureContentsImage.png; path = Resources/TextureContentsImage.png; sourceTree = "<group>"; };
 		8B8A822B1BD662350027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../LTKit/third_party/testing/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
@@ -3162,6 +3163,7 @@
 				28463D0F196983DE0021A7CD /* LTDefaultModule.m */,
 				8B3DEBEB18296B6100EA0C1A /* LTEngine-Prefix.pch */,
 				8B6B50261BDFCF3300662235 /* LTOpenCVCore.h */,
+				8B8664321BF5026D006FFF03 /* LTRef+LTEngine.h */,
 				8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */,
 				8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */,
 				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */,
