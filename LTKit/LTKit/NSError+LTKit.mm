@@ -3,6 +3,7 @@
 
 #import "NSError+LTKit.h"
 
+#import "LTErrorCodesRegistry.h"
 #import "NSErrorCodes+LTKit.h"
 #import "NSObject+AddToContainer.h"
 
@@ -37,7 +38,8 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code userInfo:(nullable NSDictionary *)userInfo {
-  return [NSError errorWithDomain:kLTErrorDomain code:code userInfo:userInfo];
+  return [NSError errorWithDomain:kLTErrorDomain code:code
+                         userInfo:[self lt_userInfo:userInfo withCodeDescription:code]];
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code
@@ -111,6 +113,19 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
++ (NSDictionary *)lt_userInfo:(NSDictionary *)userInfo withCodeDescription:(NSInteger)code {
+  NSString * _Nullable description = [[LTErrorCodesRegistry sharedRegistry]
+                                      descriptionForErrorCode:code];
+  if (!description) {
+    return userInfo;
+  }
+
+  NSMutableDictionary *mutableUserInfo = userInfo ? [userInfo mutableCopy] :
+      [NSMutableDictionary dictionary];
+  mutableUserInfo[(NSString *)kCFErrorDescriptionKey] = description;
+  return [mutableUserInfo copy];
+}
+
 + (instancetype)lt_nullValueGivenError {
   return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
@@ -125,6 +140,10 @@ NSString *LTSystemErrorMessageForError(int error) {
 
 - (nullable NSString *)lt_description {
   return [self lt_valueOrNilForKey:kLTErrorDescriptionKey];
+}
+
+- (nullable NSString *)lt_errorCodeDescription {
+  return [self lt_valueOrNilForKey:(NSString *)kCFErrorDescriptionKey];
 }
 
 - (nullable NSString *)lt_path {
