@@ -3,10 +3,6 @@
 
 #import "LTCGPathExtensions.h"
 
-#import <CoreFoundation/CoreFoundation.h>
-#import <CoreText/CoreText.h>
-#import <LTKit/LTCFExtensions.h>
-
 #import "LTGLKitExtensions.h"
 
 /// Structure wrapping the data required for computing the modified path.
@@ -50,8 +46,8 @@ static void LTRecomputePoints(void *data, const CGPathElement *element);
 static CGPoint LTCGPointApplyTransform(CGPoint point, GLKMatrix3 &transform);
 
 /// Returns a path connecting the provided points. The path is closed iff \c closed is YES.
-static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
-                                                              BOOL closed);
+static lt::Ref<CGPathRef> LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
+                                                                BOOL closed);
 
 /// Computes the additional control points used for a smoothened path. Please refer to the header
 /// file for a detailed description of the smoothening mechanism.
@@ -85,10 +81,10 @@ static void LTComputeGapControlPoints(const LTVector2s &polyline, LTVector2s *st
 
 /// Returns a smoothened path from the provided control points. The path is closed iff \c closed is
 /// YES.
-static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s &points,
-                                                                const LTVector2s &prev,
-                                                                const LTVector2s &next,
-                                                                BOOL closed);
+static lt::Ref<CGPathRef> LTCreateSmoothenedPathWithControlPoints(const LTVector2s &points,
+                                                                  const LTVector2s &prev,
+                                                                  const LTVector2s &next,
+                                                                  BOOL closed);
 
 #pragma mark -
 #pragma mark - Public methods
@@ -100,7 +96,7 @@ void LTCGPathInspectWithBlock(CGPathRef path, LTPathInspectionBlock block) {
   CGPathApply(path, (__bridge void *)block, &LTCGPathIteration);
 }
 
-CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation) {
+lt::Ref<CGPathRef> LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation) {
   CGMutablePathRef result = CGPathCreateMutable();
 
   LTPathModificationData data;
@@ -108,10 +104,11 @@ CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &trans
   data.transform = transformation;
 
   CGPathApply(path, &data, &LTRecomputePoints);
-  return result;
+
+  return lt::Ref<CGPathRef>(result);
 }
 
-CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect) {
+lt::Ref<CGPathRef> LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect) {
   CGRect boundingBox = CGPathGetBoundingBox(path);
   CGAffineTransform translateToPointZero = CGAffineTransformMakeTranslation(-boundingBox.origin.x,
                                                                             -boundingBox.origin.y);
@@ -124,11 +121,11 @@ CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect) {
       CGAffineTransformConcat(CGAffineTransformConcat(translateToPointZero, scaleToDesiredSize),
                               translateToDesiredOrigin);
 
-  return CGPathCreateCopyByTransformingPath(path, &transformation);
+  return lt::Ref<CGPathRef>(CGPathCreateCopyByTransformingPath(path, &transformation));
 }
 
-CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
-                                                 CGFloat smootheningRadius, BOOL closed) {
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
+                                                   CGFloat smootheningRadius, BOOL closed) {
   LTParameterAssert(polyline.size() > 1);
   LTParameterAssert(smootheningRadius >= 0);
   const NSUInteger kNumberOfCorners = polyline.size();
@@ -148,8 +145,9 @@ CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
 
 static const CGFloat kEpsilon = 1e-8;
 
-CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
-                                                               CGFloat gapSize, BOOL closed) {
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
+                                                                        CGFloat gapSize,
+                                                                        BOOL closed) {
   LTParameterAssert(polyline.size() > 1);
   LTParameterAssert(gapSize >= 0);
   const NSUInteger kNumberOfCorners = polyline.size();
@@ -172,12 +170,11 @@ CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s 
     CGPathAddLineToPoint(path, NULL, end[i].x, end[i].y);
     CGPathCloseSubpath(path);
   }
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
-CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector2s &polyline,
-                                                                  CGFloat circleRadius,
-                                                                  BOOL closed) {
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndCirclesAroundVertices(
+    const LTVector2s &polyline, CGFloat circleRadius, BOOL closed) {
   LTParameterAssert(polyline.size() > 1);
   LTParameterAssert(circleRadius >= 0);
 
@@ -185,26 +182,26 @@ CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector
     return LTCreatePolylinePathWithControlPoints(polyline, closed);
   }
 
-  CGPathRef pathWithGaps =
+  lt::Ref<CGPathRef> pathWithGaps =
       LTCGPathCreateWithControlPointsAndGapsAroundVertices(polyline, circleRadius, closed);
-  CGMutablePathRef mutablePathWithGaps = CGPathCreateMutableCopy(pathWithGaps);
-  CGPathRelease(pathWithGaps);
+  CGMutablePathRef mutablePathWithGaps = CGPathCreateMutableCopy(pathWithGaps.get());
 
   for (NSUInteger i = 0; i < polyline.size(); ++i) {
     CGPathAddEllipseInRect(mutablePathWithGaps, NULL,
                            CGRectCenteredAt((CGPoint)polyline[i],
                                             CGSizeMakeUniform(2 * circleRadius)));
   }
-  return mutablePathWithGaps;
+  return lt::Ref<CGPathRef>(mutablePathWithGaps);
 }
 
-CGPathRef LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius, CGFloat startAngle,
-                                           CGFloat endAngle, BOOL clockwise) {
+lt::Ref<CGPathRef> LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius,
+                                                    CGFloat startAngle, CGFloat endAngle,
+                                                    BOOL clockwise) {
   CGMutablePathRef path = CGPathCreateMutable();
   CGPathMoveToPoint(path, NULL, center.x, center.y);
   CGPathAddArc(path, NULL, center.x, center.y, radius, startAngle, endAngle, clockwise);
   CGPathCloseSubpath(path);
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
 #pragma mark -
@@ -256,8 +253,8 @@ static CGPoint LTCGPointApplyTransform(CGPoint point, GLKMatrix3 &transform) {
   return CGPointMake(vector.x / vector.z, vector.y / vector.z);
 }
 
-static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
-                                                              BOOL closed) {
+static lt::Ref<CGPathRef> LTCreatePolylinePathWithControlPoints(const LTVector2s &polyline,
+                                                                BOOL closed) {
   CGMutablePathRef path = CGPathCreateMutable();
   const NSUInteger kNumberOfCorners = polyline.size();
 
@@ -268,7 +265,8 @@ static CGMutablePathRef LTCreatePolylinePathWithControlPoints(const LTVector2s &
   if (closed) {
     CGPathCloseSubpath(path);
   }
-  return path;
+
+  return lt::Ref<CGPathRef>(path);
 }
 
 static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVector2s *prev,
@@ -298,10 +296,10 @@ static void LTComputeSmootheningControlPoints(const LTVector2s &polyline, LTVect
   LTAssert(next->size() == kNumberOfCorners);
 }
 
-static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s &points,
-                                                                const LTVector2s &prev,
-                                                                const LTVector2s &next,
-                                                                BOOL closed) {
+static lt::Ref<CGPathRef> LTCreateSmoothenedPathWithControlPoints(const LTVector2s &points,
+                                                                  const LTVector2s &prev,
+                                                                  const LTVector2s &next,
+                                                                  BOOL closed) {
   const NSUInteger kNumberOfCorners = points.size();
   CGMutablePathRef path = CGPathCreateMutable();
 
@@ -327,7 +325,7 @@ static CGMutablePathRef LTCreateSmoothenedPathWithControlPoints(const LTVector2s
                          points[kNumberOfCorners - 1].y);
   }
 
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
 static void LTComputeGapControlPoints(const LTVector2s &polyline, LTVector2s *start,

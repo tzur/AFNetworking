@@ -18,17 +18,14 @@ static BOOL LTVerifyFormat(NSData *compressedImage) {
 }
 
 static NSDictionary *LTGetMetadata(NSData *compressedImage) {
-  __block CGImageSourceRef sourceRef =
-      CGImageSourceCreateWithData((__bridge CFDataRef)compressedImage, NULL);
-  @onExit {
-    LTCFSafeRelease(sourceRef);
-  };
-
-  if (!sourceRef) {
+  lt::Ref<CGImageSourceRef> source(
+    CGImageSourceCreateWithData((__bridge CFDataRef)compressedImage, NULL)
+  );
+  if (!source) {
     return nil;
   }
 
-  CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(sourceRef, 0, NULL);
+  CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(source.get(), 0, NULL);
   if (!properties) {
     return nil;
   }

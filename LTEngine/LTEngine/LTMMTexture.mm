@@ -12,19 +12,19 @@
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Protected.h"
 
-@interface LTMMTexture ()
+@interface LTMMTexture () {
+  /// Reference to the pixel buffer that backs the texture.
+  lt::Ref<CVPixelBufferRef> _pixelBuffer;
+
+  /// Reference to the texture object.
+  lt::Ref<CVOpenGLESTextureRef> _texture;
+
+  /// Reference to the texture cache object.
+  lt::Ref<CVOpenGLESTextureCacheRef> _textureCache;
+}
 
 /// Lock for texture read/write synchronization.
 @property (strong, nonatomic) NSRecursiveLock *lock;
-
-/// Reference to the pixel buffer that backs the texture.
-@property (nonatomic) CVPixelBufferRef pixelBufferRef;
-
-/// Reference to the texture object.
-@property (nonatomic) CVOpenGLESTextureRef textureRef;
-
-/// Reference to the texture cache object.
-@property (nonatomic) CVOpenGLESTextureCacheRef textureCacheRef;
 
 /// OpenGL sync object used for GPU/CPU synchronization.
 @property (nonatomic) GLsync syncObject;
@@ -45,6 +45,7 @@
 
 - (void)createTextureForMatType:(int)type {
   [self createPixelBufferForMatType:type];
+  [self createTextureCache];
   [self allocateTexture];
   [self bindAndExecute:^{
     [self setMinFilterInterpolation:self.minFilterInterpolation];
@@ -58,19 +59,38 @@
   OSType pixelFormat = [self pixelFormatForMatType:type];
   NSDictionary *attributes = @{(NSString *)kCVPixelBufferIOSurfacePropertiesKey: @{}};
 
+  CVPixelBufferRef pixelBufferRef;
   CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault, self.size.width, self.size.height,
                                         pixelFormat, (__bridge CFDictionaryRef)attributes,
-                                        &_pixelBufferRef);
+                                        &pixelBufferRef);
   if (result != kCVReturnSuccess) {
     [LTGLException raise:kLTTextureCreationFailedException
                   format:@"Failed creating pixel buffer with error %d", result];
   }
+
+  _pixelBuffer.reset(pixelBufferRef);
+}
+
+- (void)createTextureCache {
+  EAGLContext *context = [EAGLContext currentContext];
+  LTAssert(context, @"Must have an active OpenGL ES context");
+
+  CVOpenGLESTextureCacheRef textureCacheRef;
+  CVReturn result = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL,
+                                                 &textureCacheRef);
+  if (result != kCVReturnSuccess) {
+    [LTGLException raise:kLTTextureCreationFailedException
+                  format:@"Failed creating texture cache with error %d", result];
+  }
+
+  _textureCache.reset(textureCacheRef);
 }
 
 - (void)allocateTexture {
+  CVOpenGLESTextureRef textureRef;
   CVReturn result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                                 self.textureCacheRef,
-                                                                 self.pixelBufferRef,
+                                                                 _textureCache.get(),
+                                                                 _pixelBuffer.get(),
                                                                  NULL,
                                                                  GL_TEXTURE_2D,
                                                                  self.glInternalFormat,
@@ -78,11 +98,13 @@
                                                                  self.glFormat,
                                                                  self.glPrecision,
                                                                  0,
-                                                                 &_textureRef);
+                                                                 &textureRef);
   if (result != kCVReturnSuccess) {
     [LTGLException raise:kLTTextureCreationFailedException
                   format:@"Failed creating texture with error %d", result];
   }
+
+  _texture.reset(textureRef);
 }
 
 - (OSType)pixelFormatForMatType:(int)type {
@@ -120,40 +142,20 @@
   }
 }
 
-- (CVOpenGLESTextureCacheRef)textureCacheRef {
-  if (!_textureCacheRef) {
-    EAGLContext *context = [EAGLContext currentContext];
-    LTAssert(context, @"Must have an active OpenGL ES context");
-
-    CVReturn result = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, context, NULL,
-                                                   &_textureCacheRef);
-    if (result != kCVReturnSuccess) {
-      [LTGLException raise:kLTTextureCreationFailedException
-                    format:@"Failed creating texture cache with error %d", result];
-    }
-  }
-  return _textureCacheRef;
-}
-
 - (void)destroy {
   if (!self.name) {
     return;
   }
 
   [self lockTextureAndExecute:^{
-    if (self.pixelBufferRef) {
-      CVPixelBufferRelease(self.pixelBufferRef);
-      self.pixelBufferRef = NULL;
+    _pixelBuffer.reset(nullptr);
+    _texture.reset(nullptr);
+
+    if (_textureCache) {
+      CVOpenGLESTextureCacheFlush(_textureCache.get(), 0);
+      _textureCache.reset(nullptr);
     }
-    if (self.textureRef) {
-      CFRelease(self.textureRef);
-      self.textureRef = NULL;
-    }
-    if (self.textureCacheRef) {
-      CVOpenGLESTextureCacheFlush(self.textureCacheRef, 0);
-      CFRelease(self.textureCacheRef);
-      self.textureCacheRef = NULL;
-    }
+
     self.syncObject = nil;
   }];
 }
@@ -182,7 +184,7 @@
                     "type derived for this texture (%d vs. %d)", image.type(), [self matType]);
   LTParameterAssert(image.isContinuous(), @"Given image matrix must be continuous");
 
-  if (!self.textureRef) {
+  if (!_texture) {
     [self createTextureForMatType:image.type()];
   }
 
@@ -316,7 +318,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
-    LTAssert(self.pixelBufferRef, @"Pixelbuffer must be created before calling mappedImage:");
+    LTAssert(_pixelBuffer, @"Pixelbuffer must be created before calling mappedImage:");
 
     // Make sure everything is written to the texture before reading back to CPU.
     __block BOOL isSync;
@@ -330,9 +332,9 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     }
 
     [self lockBufferAndExecute:^{
-      void *base = CVPixelBufferGetBaseAddress(self.pixelBufferRef);
+      void *base = CVPixelBufferGetBaseAddress(_pixelBuffer.get());
       cv::Mat mat(self.size.height, self.size.width, self.matType, base,
-                  CVPixelBufferGetBytesPerRow(self.pixelBufferRef));
+                  CVPixelBufferGetBytesPerRow(_pixelBuffer.get()));
       block(&mat, NO);
     } withFlags:lockFlags];
   }];
@@ -354,7 +356,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)lockBufferAndExecute:(LTVoidBlock)block withFlags:(CVOptionFlags)lockFlags {
-  CVReturn lockResult = CVPixelBufferLockBaseAddress(self.pixelBufferRef, lockFlags);
+  CVReturn lockResult = CVPixelBufferLockBaseAddress(_pixelBuffer.get(), lockFlags);
   if (kCVReturnSuccess != lockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed locking base address of buffer with error %d", lockResult];
@@ -362,7 +364,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   if (block) block();
 
-  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(self.pixelBufferRef, lockFlags);
+  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(_pixelBuffer.get(), lockFlags);
   if (kCVReturnSuccess != unlockResult) {
     [LTGLException raise:kLTMMTextureBufferLockingFailedException
                   format:@"Failed unlocking base address of buffer with error %d", unlockResult];
@@ -387,7 +389,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 #pragma mark -
 
 - (GLuint)name {
-  return self.textureRef ? CVOpenGLESTextureGetName(self.textureRef) : 0;
+  return _texture ? CVOpenGLESTextureGetName(_texture.get()) : 0;
 }
 
 @end

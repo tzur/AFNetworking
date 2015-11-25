@@ -61,16 +61,16 @@ static void LTCheckCorrectnessOfPath(void *data, const CGPathElement *element) {
 
 SpecBegin(LTCGPathExtensions)
 
-__block CGMutablePathRef path;
+__block lt::Ref<CGMutablePathRef> mutablePath;
 __block CGPoints initialPoints;
 __block EvaluationStruct evaluation;
 
 beforeEach(^{
-  path = CGPathCreateMutable();
+  mutablePath.reset(CGPathCreateMutable());
   initialPoints = {CGPointZero, CGPointMake(1, 1), CGPointMake(2, 0)};
-  CGPathMoveToPoint(path, nil, initialPoints[0].x, initialPoints[0].y);
-  CGPathAddLineToPoint(path, nil, initialPoints[1].x, initialPoints[1].y);
-  CGPathAddLineToPoint(path, nil, initialPoints[2].x, initialPoints[2].y);
+  CGPathMoveToPoint(mutablePath.get(), nil, initialPoints[0].x, initialPoints[0].y);
+  CGPathAddLineToPoint(mutablePath.get(), nil, initialPoints[1].x, initialPoints[1].y);
+  CGPathAddLineToPoint(mutablePath.get(), nil, initialPoints[2].x, initialPoints[2].y);
   evaluation.points.clear();
   evaluation.numberOfPoints = 0;
   evaluation.numberOfClosedSubPaths = 0;
@@ -79,15 +79,12 @@ beforeEach(^{
   evaluation.failure = NO;
 });
 
-afterEach(^{
-  CGPathRelease(path);
-});
-
 context(@"path inspection", ^{
   it(@"should correctly inspect a rectangular path", ^{
-    CGPathRef pathToInspect = CGPathCreateWithRect(CGRectMake(1, 2, 3, 4), NULL);
+    lt::Ref<CGPathRef> pathToInspect(CGPathCreateWithRect(CGRectMake(1, 2, 3, 4), NULL));
+
     __block NSUInteger i = 0;
-    LTCGPathInspectWithBlock(pathToInspect, ^(CGPathElementType type, CGPoints points) {
+    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type, CGPoints points) {
       switch (i) {
         case 0: {
           expect(type).to.equal(kCGPathElementMoveToPoint);
@@ -124,9 +121,10 @@ context(@"path inspection", ^{
   });
 
   it(@"should correctly inspect a circular path", ^{
-    CGPathRef pathToInspect = CGPathCreateWithEllipseInRect(CGRectMake(0, 0, 1, 1), NULL);
+    lt::Ref<CGPathRef> pathToInspect(CGPathCreateWithEllipseInRect(CGRectMake(0, 0, 1, 1), NULL));
     __block NSUInteger i = 0;
-    LTCGPathInspectWithBlock(pathToInspect, ^(CGPathElementType type, CGPoints points) {
+
+    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type, CGPoints points) {
       switch (i) {
         case 0: {
           expect(type).to.equal(kCGPathElementMoveToPoint);
@@ -178,21 +176,20 @@ context(@"path inspection", ^{
 });
 
 context(@"transformation", ^{
-  __block CGPathRef transformedPath;
+  __block lt::Ref<CGPathRef> transformedPath;
 
   it(@"should correctly create a translated copy of a path", ^{
     CGPoint translation = CGPointMake(1, 2);
     GLKMatrix3 matrix = GLKMatrix3MakeTranslation(translation.x, translation.y);
-    transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
+    transformedPath = LTCGPathCreateCopyByTransformingPath(mutablePath.get(), matrix);
 
     evaluation.points = {initialPoints[0] + translation, initialPoints[1] + translation,
         initialPoints[2] + translation};
     evaluation.numberOfPointsToExpect = evaluation.points.size();
-    CGPathApply(transformedPath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(transformedPath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(transformedPath);
   });
 
   it(@"should correctly create a rotated copy of a path", ^{
@@ -205,26 +202,26 @@ context(@"transformation", ^{
 
     GLKMatrix3 matrix = GLKMatrix3MakeRotation(kClockwiseAngle, 0, 0, 1);
 
-    transformedPath = LTCGPathCreateCopyByTransformingPath(path, matrix);
+    transformedPath = LTCGPathCreateCopyByTransformingPath(mutablePath.get(), matrix);
 
     evaluation.points = {CGPointZero, CGPointMake(1, -1), CGPointMake(0, -2)};
     evaluation.numberOfPointsToExpect = evaluation.points.size();
-    CGPathApply(transformedPath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(transformedPath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(transformedPath);
   });
 
   it(@"should correctly create a copy of a path in a given rect", ^{
-    CGPathRef originalPath = CGPathCreateWithEllipseInRect(CGRectMake(1, 2, 3, 4), NULL);
-    CGPathRef expectedTransformedPath = CGPathCreateWithEllipseInRect(CGRectMake(2, 3, 4, 5), NULL);
-    CGPathRef actualTransformedPath =
-        LTCGPathCreateCopyInRect(originalPath, CGRectMake(2, 3, 4, 5));
-    expect(CGPathEqualToPath(expectedTransformedPath, actualTransformedPath)).to.beTruthy();
-    CGPathRelease(originalPath);
-    CGPathRelease(expectedTransformedPath);
-    CGPathRelease(actualTransformedPath);
+    lt::Ref<CGPathRef> originalPath(CGPathCreateWithEllipseInRect(CGRectMake(1, 2, 3, 4), NULL));
+    lt::Ref<CGPathRef> expectedTransformedPath(CGPathCreateWithEllipseInRect(CGRectMake(2, 3, 4, 5),
+                                                                             NULL));
+    lt::Ref<CGPathRef> actualTransformedPath =
+        LTCGPathCreateCopyInRect(originalPath.get(), CGRectMake(2, 3, 4, 5));
+
+    BOOL pathsAreEqual = CGPathEqualToPath(expectedTransformedPath.get(),
+                                           actualTransformedPath.get());
+    expect(pathsAreEqual).to.beTruthy();
   });
 });
 
@@ -234,17 +231,17 @@ context(@"creation", ^{
   __block CGFloat smootheningRadius;
   __block CGFloat gapSize;
   __block CGFloat circleSize;
+  __block lt::Ref<CGPathRef> path;
 
   it(@"should correctly create a path for a given acyclic unsmoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[1]), LTVector2(points[2])};
     smootheningRadius = 0;
-    CGPathRelease(path);
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
-    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(path.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
@@ -255,13 +252,13 @@ context(@"creation", ^{
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[1]), LTVector2(points[2]),
         LTVector2(points[3])};
     smootheningRadius = 0;
-    CGPathRelease(path);
+
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
-    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(path.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
@@ -272,13 +269,13 @@ context(@"creation", ^{
         CGPointMake(1 + M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(2, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[2]), LTVector2(points[4])};
     smootheningRadius = 0.25;
-    CGPathRelease(path);
+
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 0;
-    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(path.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
@@ -290,13 +287,13 @@ context(@"creation", ^{
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[2]), LTVector2(points[5]),
         LTVector2(points[7])};
     smootheningRadius = 0.25;
-    CGPathRelease(path);
+
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
     
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 0;
-    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(path.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
@@ -312,13 +309,13 @@ context(@"creation", ^{
     LTVector2s inputData{LTVector2(points[11]), LTVector2(points[2]), LTVector2(points[5]),
         LTVector2(points[8])};
     smootheningRadius = 0.25;
-    CGPathRelease(path);
+
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
-    CGPathApply(path, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(path.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
@@ -330,17 +327,16 @@ context(@"creation", ^{
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 1.9), LTVector2(2, 2)};
     gapSize = 0.25;
-    CGPathRef immutablePath =
+    lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 3;
-    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(immutablePath);
   });
 
   it(@"should correctly create an open path with gaps", ^{
@@ -350,17 +346,16 @@ context(@"creation", ^{
     LTVector2s inputData{LTVector2(1, 0), LTVector2(2, 0), LTVector2(2, 2),
         LTVector2::zeros()};
     gapSize = 0.25;
-    CGPathRef immutablePath =
+    lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, !kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 3;
-    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(immutablePath);
   });
 
   it(@"should correctly create a closed path with circles around vertices", ^{
@@ -388,17 +383,16 @@ context(@"creation", ^{
         CGPointMake(2.25, 2)};
     LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 2)};
     circleSize = 0.25;
-    CGPathRef immutablePath =
+    lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 6;
-    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(immutablePath);
   });
 
   it(@"should correctly create an open path with circles around vertices", ^{
@@ -424,17 +418,16 @@ context(@"creation", ^{
         CGPointMake(2.25, 2)};
     LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 2)};
     circleSize = 0.25;
-    CGPathRef immutablePath =
+    lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndCirclesAroundVertices(inputData, circleSize, !kClosed);
 
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 5;
-    CGPathApply(immutablePath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(immutablePath);
   });
 
   it(@"should correctly create a path for a circular sector", ^{
@@ -445,16 +438,15 @@ context(@"creation", ^{
         CGPointMake(-controlPointCoordinate, -1), CGPointMake(-1, -controlPointCoordinate),
         CGPointMake(-1, 0)};
 
-    CGPathRef circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, 0, M_PI,
-                                                                    YES);
+    lt::Ref<CGPathRef> circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1,
+                                                                             0, M_PI, YES);
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
-    CGPathApply(circularSectorPath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(circularSectorPath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(circularSectorPath);
 
     evaluation.points.clear();
     evaluation.numberOfPoints = 0;
@@ -467,11 +459,10 @@ context(@"creation", ^{
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
-    CGPathApply(circularSectorPath, &evaluation, &LTCheckCorrectnessOfPath);
+    CGPathApply(circularSectorPath.get(), &evaluation, &LTCheckCorrectnessOfPath);
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
-    CGPathRelease(circularSectorPath);
   });
 });
 

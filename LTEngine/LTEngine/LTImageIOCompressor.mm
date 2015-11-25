@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTImageIOCompressor()
+@interface LTImageIOCompressor ()
 
 /// Optional dictionary that specifies destination parameters such as image compression quality.
 @property (strong, nonatomic, nullable) NSDictionary *options;
@@ -23,10 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation LTImageIOCompressor
-
-- (instancetype)init {
-  return nil;
-}
 
 - (instancetype)initWithOptions:(nullable NSDictionary *)options UTI:(CFStringRef)UTI {
   LTParameterAssert(UTI);
@@ -42,19 +38,18 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(image);
 
   NSMutableData *imageData = [NSMutableData data];
-  __block CGImageDestinationRef destination =
-      CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData, self.UTI, 1, NULL);
+  lt::Ref<CGImageDestinationRef> destination(
+    CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData, self.UTI, 1, NULL)
+  );
   if (!destination) {
     return nil;
   }
-  @onExit {
-    LTCFSafeRelease(destination);
-  };
 
   NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options];
-  CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)combinedOptions);
+  CGImageDestinationAddImage(destination.get(), image.CGImage,
+                             (__bridge CFDictionaryRef)combinedOptions);
   
-  BOOL finalized = CGImageDestinationFinalize(destination);
+  BOOL finalized = CGImageDestinationFinalize(destination.get());
   if (!finalized) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed];

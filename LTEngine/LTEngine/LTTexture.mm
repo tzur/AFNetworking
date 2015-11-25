@@ -416,20 +416,16 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   [self mappedImageForReading:^(const cv::Mat &mapped, BOOL isCopy) {
     NSUInteger length = mapped.rows * mapped.step[0];
     NSData *data = [NSData dataWithBytesNoCopy:mapped.data length:length freeWhenDone:NO];
-    CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
+    lt::Ref<CGDataProviderRef> provider(CGDataProviderCreateWithCFData((CFDataRef)data));
 
-    CGColorSpaceRef colorSpace = [self newColorSpaceForMat:mapped];
+    lt::Ref<CGColorSpaceRef> colorSpace([self newColorSpaceForMat:mapped]);
     CGBitmapInfo bitmapInfo = [self bitmapInfoForMat:mapped];
 
-    CGImageRef imageRef = CGImageCreate(mapped.cols, mapped.rows,
-                                        8 * mapped.elemSize1(), 8 * mapped.elemSize(),
-                                        mapped.step[0], colorSpace, bitmapInfo,
-                                        provider, NULL, YES, kCGRenderingIntentDefault);
-    block(imageRef, isCopy);
-
-    CGImageRelease(imageRef);
-    CGColorSpaceRelease(colorSpace);
-    CGDataProviderRelease(provider);
+    lt::Ref<CGImageRef> image(CGImageCreate(mapped.cols, mapped.rows,
+                                            8 * mapped.elemSize1(), 8 * mapped.elemSize(),
+                                            mapped.step[0], colorSpace.get(), bitmapInfo,
+                                            provider.get(), NULL, YES, kCGRenderingIntentDefault));
+    block(image.get(), isCopy);
   }];
 }
 
@@ -438,22 +434,20 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 
   [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     size_t bitsPerComponent = mapped->elemSize1() * 8;
-    CGColorSpaceRef colorSpace = [self newColorSpaceForMat:*mapped];
+    lt::Ref<CGColorSpaceRef> colorSpace([self newColorSpaceForMat:*mapped]);
     CGBitmapInfo bitmapInfo = [self bitmapInfoForMat:*mapped];
 
-    CGContextRef context = CGBitmapContextCreate(mapped->data, self.size.width, self.size.height,
-                                                 bitsPerComponent, mapped->step[0], colorSpace,
-                                                 bitmapInfo);
+    lt::Ref<CGContextRef> context(
+      CGBitmapContextCreate(mapped->data, self.size.width, self.size.height,
+                            bitsPerComponent, mapped->step[0], colorSpace.get(), bitmapInfo)
+    );
 
     // Flip context since CoreGraphics' origin is bottom-left.
     CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0,
                                                            self.size.height);
-    CGContextConcatCTM(context, flipVertical);
+    CGContextConcatCTM(context.get(), flipVertical);
 
-    block(context);
-
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorSpace);
+    block(context.get());
   }];
 }
 
