@@ -26,7 +26,7 @@
                            attributedString:attributedString];
   }
 
-  __block CTFrameRef frameRef = [self frameForAttributedString:attributedString];
+  __block CTFrameRef frameRef = [self newFrameForAttributedString:attributedString];
 
   @onExit {
     LTCFSafeRelease(frameRef);
@@ -60,7 +60,7 @@
 #pragma mark Auxiliary methods
 #pragma mark -
 
-+ (CTFrameRef)frameForAttributedString:(NSAttributedString *)attributedString {
++ (CTFrameRef)newFrameForAttributedString:(NSAttributedString *)attributedString {
   __block CTFramesetterRef frameSetterRef =
       CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
 
