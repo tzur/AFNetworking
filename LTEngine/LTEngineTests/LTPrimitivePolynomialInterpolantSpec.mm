@@ -32,7 +32,7 @@ context(@"initialization", ^{
 });
 
 context(@"LTPrimitiveParameterizedObject protocol", ^{
-  it(@"should have the correct intrinsic parameteric range", ^{
+  it(@"should have the correct intrinsic parametric range", ^{
     expect(interpolant.minParametricValue).to.equal(0);
     expect(interpolant.maxParametricValue).to.equal(1);
   });
