@@ -49,21 +49,6 @@ CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector
                                                                   CGFloat circleRadius,
                                                                   BOOL closed);
 
-/// Creates a path from the provided \c string, using the provided \c font. The top-left corner of
-/// the bounding box of the returned path is \c CGPointZero. The method returns \c NULL if the given
-/// \c string exclusively consists of whitespace characters. The caller is responsible for releasing
-/// the returned path.
-CGMutablePathRef LTCGPathCreateWithString(NSString *string, UIFont *font);
-
-/// Creates a path from the provided \c attributedString. The regular line heights are multiplied
-/// with the given \c lineHeightFactor. The regular glyph advancement is multiplied with the given
-/// \c advancementFactor. The top-left corner of the bounding box of the returned path is
-/// \c CGPointZero. The method returns \c NULL if the given \c string exclusively consists of
-/// whitespace characters. The caller is responsible for releasing the returned path.
-CGPathRef LTCGPathCreateWithAttributedString(NSAttributedString *attributedString,
-                                             CGFloat lineHeightFactor = 1,
-                                             CGFloat advancementFactor = 1);
-
 /// Creates an immutable path constituting a sector of a circle with the given \c center and the
 /// given \c radius. The arc of the sector is defined by the given \c startAngle and \c endAngle and
 /// the \c clockwise parameter. Both \c startAngle and \c endAngle are measured in counter-clockwise
