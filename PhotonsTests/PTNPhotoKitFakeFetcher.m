@@ -4,6 +4,7 @@
 #import "PTNPhotoKitFakeFetcher.h"
 
 #import "PTNPhotoKitAlbumType.h"
+#import "PTNPhotoKitFakeFetchResultChangeDetails.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,14 +46,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerAssets:(NSArray<PHAsset *> *)assets
    withAssetCollection:(PHAssetCollection *)assetCollection {
-  self.assetCollectionLocalIdentifierToAssets[assetCollection.localIdentifier] = assets;
+  @synchronized (self.assetCollectionLocalIdentifierToAssets) {
+    self.assetCollectionLocalIdentifierToAssets[assetCollection.localIdentifier] = assets;
+  }
 }
 
 - (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
                         withType:(PHAssetCollectionType)type
                       andSubtype:(PHAssetCollectionSubtype)subtype {
   PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
-  self.typeToAssetCollections[albumType] = assetCollections;
+  @synchronized (self.typeToAssetCollections) {
+    self.typeToAssetCollections[albumType] = assetCollections;
+  }
 }
 
 - (void)registerAssetCollection:(PHAssetCollection *)assetCollection {
@@ -60,12 +65,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)registerAsset:(PHAsset *)asset {
-  self.localIdentifierToAsset[asset.localIdentifier] = asset;
+  @synchronized (self.localIdentifierToAsset) {
+    self.localIdentifierToAsset[asset.localIdentifier] = asset;
+  }
 }
 
 - (void)registerAsset:(PHAsset *)asset
     asKeyAssetOfAssetCollection:(PHAssetCollection *)assetCollection {
-  self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier] = asset;
+  @synchronized (self.assetCollectionLocalIdentifierToKeyAsset) {
+    self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier] = asset;
+  }
 }
 
 #pragma mark -
@@ -74,9 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
     (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions __unused *)options {
-  id fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
-    return self.localIdentifierToAssetCollection[identifier];
-  }].array;
+  id fetchResult;
+  @synchronized (self.localIdentifierToAssetCollection) {
+    fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
+      return self.localIdentifierToAssetCollection[identifier];
+    }].array;
+  }
 
   return fetchResult;
 }
@@ -84,7 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
     subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions __unused *)options {
   PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
-  return self.typeToAssetCollections[albumType];
+  PTNAssetCollectionsFetchResult *result;
+  @synchronized (self.typeToAssetCollections) {
+    result = self.typeToAssetCollections[albumType];
+  }
+  return result;
 }
 
 - (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
@@ -94,27 +110,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
     options:(nullable PHFetchOptions __unused *)options {
-  id fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
-    return self.localIdentifierToAsset[identifier];
-  }].array;
+  id fetchResult;
+  @synchronized (self.localIdentifierToAsset) {
+    fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
+      return self.localIdentifierToAsset[identifier];
+    }].array;
+  }
 
   return fetchResult;
 }
 
 - (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions __unused *)options {
-  PHAsset *keyAsset =
-      self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier];
-  id fetchResult = keyAsset ? @[keyAsset] : @[];
+  PHAsset *keyAsset;
+  
+  @synchronized (self.assetCollectionLocalIdentifierToKeyAsset) {
+    keyAsset = self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier];
+  }
 
-  return fetchResult;
+  return (id)(keyAsset ? @[keyAsset] : @[]);
 }
 
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
                                                toFetchResult:(PHFetchResult *)toResult
                                               changedObjects:(NSArray<PHObject *> *)changedObjects {
-  id changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
-
   NSArray<NSNumber *> *indexes = [[changedObjects.rac_sequence
       filter:^BOOL(PHObject *object) {
         return [toResult containsObject:object];
@@ -126,20 +145,18 @@ NS_ASSUME_NONNULL_BEGIN
   for (NSNumber *index in indexes) {
     [indexSet addIndex:index.unsignedIntegerValue];
   }
-
-  // This implementation is only partial and handles only in-place changed objects.
-  OCMStub([changeDetails fetchResultBeforeChanges]).andReturn(fromResult);
-  OCMStub([changeDetails fetchResultAfterChanges]).andReturn(toResult);
-  OCMStub([changeDetails hasIncrementalChanges]).andReturn(YES);
-
-  OCMStub([changeDetails changedObjects]).andReturn(changedObjects);
-  OCMStub([changeDetails changedIndexes]).andReturn(indexSet);
-
-  OCMStub([changeDetails removedObjects]).andReturn(@[]);
-  OCMStub([changeDetails removedIndexes]).andReturn([NSIndexSet indexSet]);
-  OCMStub([changeDetails insertedObjects]).andReturn(@[]);
-  OCMStub([changeDetails insertedIndexes]).andReturn([NSIndexSet indexSet]);
-  OCMStub([changeDetails hasMoves]).andReturn(NO);
+  
+  PTNPhotoKitFakeFetchResultChangeDetails *changeDetails =
+      [[PTNPhotoKitFakeFetchResultChangeDetails alloc] initWithBeforeChanges:fromResult
+                                                                afterChanges:toResult
+                                                       hasIncrementalChanges:YES
+                                                              removedIndexes:[NSIndexSet indexSet]
+                                                              removedObjects:@[]
+                                                             insertedIndexes:[NSIndexSet indexSet]
+                                                             insertedObjects:@[]
+                                                              changedIndexes:indexSet
+                                                              changedObjects:changedObjects
+                                                                    hasMoves:NO];
 
   return changeDetails;
 }
