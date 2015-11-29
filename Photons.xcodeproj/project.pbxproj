@@ -41,6 +41,7 @@
 		8B3832321B5B89BD00620560 /* PTNAlbumChangesetMove.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */; };
 		8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m */; };
+		8B3F4E1E1C0BA581007C2962 /* NSErrorCodes+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F4E1D1C0BA581007C2962 /* NSErrorCodes+Photons.m */; };
 		8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */; };
 		8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */; };
 		8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */; };
@@ -377,6 +378,7 @@
 		8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetMove.m; sourceTree = "<group>"; };
 		8B3832341B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNAlbumChangeset+PhotoKit.h"; sourceTree = "<group>"; };
 		8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNAlbumChangeset+PhotoKit.m"; sourceTree = "<group>"; };
+		8B3F4E1D1C0BA581007C2962 /* NSErrorCodes+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Photons.m"; sourceTree = "<group>"; };
 		8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetSpec.m; sourceTree = "<group>"; };
 		8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAlbumChangesetMoveSpec.m; sourceTree = "<group>"; };
 		8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PTNAlbumChangeset+PhotoKitSpec.m"; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 				8B2FD0E81B0B2DC200757B1F /* NSError+Photons.h */,
 				8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */,
 				8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */,
+				8B3F4E1D1C0BA581007C2962 /* NSErrorCodes+Photons.m */,
 				8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */,
 				8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */,
 				8B3832171B57D6FE00620560 /* PTNAlbumChangeset.m */,
@@ -1245,6 +1248,7 @@
 				8BAFDCB51B0DEE2B003FB8F5 /* PTNPhotoKitFetcher.m in Sources */,
 				8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */,
 				8BAFDCB61B0DEE2B003FB8F5 /* PTNPhotoKitObserver.m in Sources */,
+				8B3F4E1E1C0BA581007C2962 /* NSErrorCodes+Photons.m in Sources */,
 				8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */,
 				8BAFDCB71B0DEE2B003FB8F5 /* PTNPhotoKitAlbum.m in Sources */,
 				8BAFDCB81B0DEE2B003FB8F5 /* PTNPhotoKitAssetManager.m in Sources */,
@@ -1277,7 +1281,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/LTKit/LTKit";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/LTKit/LTKit",
+					"$(SRCROOT)/LTKit/third_party/utils/libextobjc/",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1299,7 +1306,10 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/LTKit/LTKit";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/LTKit/LTKit",
+					"$(SRCROOT)/LTKit/third_party/utils/libextobjc/",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";

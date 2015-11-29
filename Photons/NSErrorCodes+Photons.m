@@ -1,16 +1,10 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <LTKit/NSErrorCodes+LTKit.h>
-
-/// Product ID.
-NS_ENUM(NSInteger) {
-  /// Product ID of Photons.
-  PhotonsErrorCodeProductID = 3
-};
+#import "NSErrorCodes+Photons.h"
 
 /// All error codes available in Photons.
-LTErrorCodesDeclare(PhotonsErrorCodeProductID,
+LTErrorCodesImplement(PhotonsErrorCodeProductID,
   /// Caused when an invalid URL has been given.
   PTNErrorCodeInvalidURL,
   /// Caused when a requested album has not been found.
