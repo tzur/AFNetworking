@@ -385,7 +385,7 @@ context(@"image fetching", ^{
 
       [[values subscribeNext:^(id __unused x) {}] dispose];
 
-      expect([imageManager isRequestCancelledForAsset:asset]).to.beTruthy();
+      expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
     });
 
     it(@"should error on download error", ^{
