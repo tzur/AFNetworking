@@ -20,6 +20,10 @@ id LTMockProtocol(Protocol *protocol);
 /// it.
 id LTBindObjectToClass(id _Nullable object, Class objectClass);
 
+/// Sets the current injector to bind the given object instance to the given protocol name and
+/// returns it.
+id LTBindObjectToProtocol(id _Nullable object, Protocol *protocol);
+
 /// Sets the current injector to bind the given block to the given class name.
 void LTBindBlockToClass(JSObjectionBindBlock block, Class objectClass);
 
