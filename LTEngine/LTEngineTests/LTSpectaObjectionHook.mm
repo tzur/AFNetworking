@@ -50,6 +50,12 @@ id LTBindObjectToClass(id _Nullable object, Class objectClass) {
   return object;
 }
 
+id LTBindObjectToProtocol(id _Nullable object, Protocol *protocol) {
+  [LTSpectaObjectionHook.module bind:object toProtocol:protocol];
+  [LTSpectaObjectionHook.injector lt_updateModule:LTSpectaObjectionHook.module];
+  return object;
+}
+
 void LTBindBlockToClass(JSObjectionBindBlock block, Class objectClass) {
   [LTSpectaObjectionHook.module bindBlock:block toClass:objectClass];
   [LTSpectaObjectionHook.injector lt_updateModule:LTSpectaObjectionHook.module];
