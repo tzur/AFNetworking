@@ -45,25 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<id<PTNObject>>.
 - (RACSignal *)fetchAssetWithURL:(NSURL *)url;
 
-/// Fetches the image which is backed by the object identified by the given \c url. For asset
-/// objects, the returned image is the image represented by the asset. For album objects, the
-/// returned image is a representative image for that album (which is usually the first or last
-/// asset in that album).
-///
-/// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
-/// final result is sent and errs if an error occurred while fetching the image. The result type
-/// will always be a \c UIImage.
-///
-/// If the asset doesn't exist, the signal will err.
-///
-/// Disposal of the returned signal will abort the current image fetch operation, if in progress.
-///
-/// @return RACSignal<PTNProgress>.
-- (RACSignal *)fetchImageWithURL:(NSURL *)url
-                      targetSize:(CGSize)targetSize
-                     contentMode:(PTNImageContentMode)contentMode
-                         options:(PTNImageFetchOptions *)options;
-
 /// Fetches the image which is backed by the given \c object. For asset objects, the returned image
 /// is the image represented by the asset. For album objects, the returned image is a representative
 /// image for that album (which is usually the first or last asset in that album).

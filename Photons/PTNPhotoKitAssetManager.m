@@ -367,23 +367,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Image fetching
 #pragma mark -
 
-- (RACSignal *)fetchImageWithURL:(NSURL *)url
-                      targetSize:(CGSize)targetSize
-                     contentMode:(PTNImageContentMode)contentMode
-                         options:(PTNImageFetchOptions *)options {
-  if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset &&
-      url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
-  }
-
-  return [[self fetchObjectWithURL:url] flattenMap:^(id<PTNObject> object) {
-    return [self fetchImageWithObject:object
-                           targetSize:targetSize
-                          contentMode:contentMode
-                              options:options];
-  }];
-}
-
 - (RACSignal *)fetchImageWithObject:(id<PTNObject>)object
                          targetSize:(CGSize)targetSize
                         contentMode:(PTNImageContentMode)contentMode
