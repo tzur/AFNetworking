@@ -348,29 +348,23 @@ context(@"image fetching", ^{
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });
 
-  context(@"fetch image of asset with URL", ^{
-    __block NSURL *url;
-
-    beforeEach(^{
-      url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-    });
-
-    it(@"should fetch image with URL", ^{
+  context(@"fetch image of asset", ^{
+    it(@"should fetch image", ^{
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithURL:url targetSize:size
-                            contentMode:PTNImageContentModeAspectFill
-                                options:options]).will.sendValues(@[
+      expect([manager fetchImageWithObject:asset targetSize:size
+                               contentMode:PTNImageContentModeAspectFill
+                                   options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
     });
 
-    it(@"should fetch downloaded image with URL", ^{
+    it(@"should fetch downloaded image", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] image:image];
 
-      expect([manager fetchImageWithURL:url targetSize:size
-                            contentMode:PTNImageContentModeAspectFill
-                                options:options]).will.sendValues(@[
+      expect([manager fetchImageWithObject:asset targetSize:size
+                               contentMode:PTNImageContentModeAspectFill
+                                   options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
         [[PTNProgress alloc] initWithProgress:@1],
@@ -379,9 +373,9 @@ context(@"image fetching", ^{
     });
 
     it(@"should cancel request upon disposal", ^{
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
+      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
+                                            contentMode:PTNImageContentModeAspectFill
+                                                options:options];
 
       [[values subscribeNext:^(id __unused x) {}] dispose];
 
@@ -391,9 +385,9 @@ context(@"image fetching", ^{
     it(@"should error on download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
 
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
+      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
+                                            contentMode:PTNImageContentModeAspectFill
+                                                options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -410,9 +404,9 @@ context(@"image fetching", ^{
     it(@"should error on progress download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
 
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
+      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
+                                            contentMode:PTNImageContentModeAspectFill
+                                                options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -424,34 +418,14 @@ context(@"image fetching", ^{
             [error.userInfo[NSUnderlyingErrorKey] isEqual:defaultError];
       });
     });
-
-    it(@"should error on non-existing asset", ^{
-      id unknownAsset = PTNPhotoKitCreateAsset(@"bar");
-
-      url = [NSURL ptn_photoKitAssetURLWithAsset:unknownAsset];
-
-      [imageManager serveAsset:unknownAsset withProgress:@[@0.25, @0.5, @1]
-               errorInProgress:defaultError];
-
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
-
-      expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetNotFound;
-      });
-    });
   });
 
-  context(@"fetch image of asset collection with URL", ^{
+  context(@"fetch image of asset collection", ^{
     __block id assetCollection;
-    __block NSURL *url;
 
     beforeEach(^{
       assetCollection = PTNPhotoKitCreateAssetCollection(@"foo");
       [fetcher registerAssetCollection:assetCollection];
-
-      url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
     });
 
     it(@"should fetch asset collection representative image", ^{
@@ -459,31 +433,17 @@ context(@"image fetching", ^{
 
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithURL:url targetSize:size
+      expect([manager fetchImageWithObject:assetCollection targetSize:size
                             contentMode:PTNImageContentModeAspectFill
                                 options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
     });
 
-    it(@"should error on non-existing asset collection", ^{
-      id assetCollection = PTNPhotoKitCreateAssetCollection(@"bar");
-
-      url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
-
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
-
-      expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAlbumNotFound;
-      });
-    });
-
     it(@"should error on non-existing key assets", ^{
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
+      RACSignal *values = [manager fetchImageWithObject:assetCollection targetSize:size
+                                            contentMode:PTNImageContentModeAspectFill
+                                                options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeKeyAssetsNotFound;
@@ -493,36 +453,25 @@ context(@"image fetching", ^{
     it(@"should error on non-existing key asset", ^{
       [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
 
-      RACSignal *values = [manager fetchImageWithURL:url targetSize:size
-                                         contentMode:PTNImageContentModeAspectFill
-                                             options:options];
+      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
+                                            contentMode:PTNImageContentModeAspectFill
+                                                options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAssetLoadingFailed;
       });
     });
   });
-
-  it(@"should error on bad URL type", ^{
-    PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
-                                  albumTypeWithType:PHAssetCollectionTypeAlbum
-                                  subtype:PHAssetCollectionSubtypeAny];
-    NSURL *url = [NSURL ptn_photoKitAlbumsWithType:type];
-
-    expect([manager fetchImageWithURL:url targetSize:size
-                          contentMode:PTNImageContentModeAspectFill
-                              options:options]).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeInvalidURL;
-    });
-  });
-
-  it(@"should error on invalid URL", ^{
-    NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
-
-    expect([manager fetchImageWithURL:url targetSize:size
-                          contentMode:PTNImageContentModeAspectFill
-                              options:options]).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeInvalidURL;
+  
+  it(@"should error on non-PhotoKit asset", ^{
+    id invalidAsset = OCMProtocolMock(@protocol(PTNObject));
+    
+    RACSignal *values = [manager fetchImageWithObject:invalidAsset targetSize:size
+                                          contentMode:PTNImageContentModeAspectFill
+                                              options:options];
+    
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeInvalidObject;
     });
   });
 });
