@@ -124,7 +124,7 @@ class Ref {
 ///
 ///      // Call the method while keeping the responsibility for releasing the object in this
 ///      // scope.
-///      needColorSpace(colorSpace.get()); // or just needColorSpace(colorSpace);
+///      needColorSpace(colorSpace.get());
 ///    }
 ///
 ///    void needColorSpace(CGColorSpaceRef colorSpace) {
@@ -197,12 +197,6 @@ public:
   /// Returns the owned reference.
   T *get() const noexcept {
     return _unique_ptr.get();
-  }
-
-  /// Implicit cast operator to the underlying Ref. One can use this operator to easily use refs
-  /// when passing them to methods without the need to call \c get().
-  operator T *() const noexcept {
-    return get();
   }
 
   /// Releases the ownership of the managed object if it exists and returns the pointer to the

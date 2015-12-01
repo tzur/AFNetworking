@@ -104,7 +104,7 @@ context(@"getting the underlying reference", ^{
     LTMyType *myType = new LTMyType("foo");
     lt::Ref<LTMyType *> myTypeRef(myType);
 
-    LTMyType *myTypeRetrieved(myTypeRef);
+    LTMyType *myTypeRetrieved = myTypeRef.get();
     expect(myTypeRetrieved).to.equal(myType);
   });
 });
@@ -155,7 +155,7 @@ context(@"releaser for core foundation objects", ^{
 
     {
       lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
-      colorSpaceRef = (CGColorSpaceRef)CFRetain(colorSpace);
+      colorSpaceRef = (CGColorSpaceRef)CFRetain(colorSpace.get());
       retainCount = CFGetRetainCount(colorSpaceRef);
     }
 
