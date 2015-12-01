@@ -1810,7 +1810,7 @@ namespace half_float
 			static double lgamma(double arg)
 			{
 				double v = 1.0;
-				for(; arg<8.0; ++arg) v *= arg;
+				while(arg<8.0) { v *= arg; ++arg; }
 				double w = 1.0 / (arg * arg);
 				return (((((((-0.02955065359477124183006535947712*w+0.00641025641025641025641025641026)*w+
 					-0.00191752691752691752691752691753)*w+8.4175084175084175084175084175084e-4)*w+
