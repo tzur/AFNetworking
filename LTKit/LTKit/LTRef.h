@@ -124,7 +124,7 @@ class Ref {
 ///
 ///      // Call the method while keeping the responsibility for releasing the object in this
 ///      // scope.
-///      needColorSpace(colorSpace.get()); // or just needColorSpace(colorSpace);
+///      needColorSpace(colorSpace.get());
 ///    }
 ///
 ///    void needColorSpace(CGColorSpaceRef colorSpace) {
@@ -136,8 +136,17 @@ class Ref {
 ///    For more information about pointer ownership and semantics, see
 ///    http://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/.
 ///
+/// 3. Return \c lt::Ref from factory methods or functions that create a manually refcounted object.
+///    Example:
 ///
-/// 3. Don't fear from calling release functions that normally crash with \c nullptr. The
+///    @code@
+///    lt::Ref<CGColorSpace> LTCreateColorSpaceWithFoo(Foo *foo);
+///    @endcode@
+///
+///    For more information about this convention, see section #2 here:
+///    http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
+///
+/// 4. Don't fear from calling release functions that normally crash with \c nullptr. The
 ///    implementation of \c lt::Ref releaser is called only if the managed pointer is not \c
 ///    nullptr, avoiding the need to check for nullability.
 ///
@@ -197,12 +206,6 @@ public:
   /// Returns the owned reference.
   T *get() const noexcept {
     return _unique_ptr.get();
-  }
-
-  /// Implicit cast operator to the underlying Ref. One can use this operator to easily use refs
-  /// when passing them to methods without the need to call \c get().
-  operator T *() const noexcept {
-    return get();
   }
 
   /// Releases the ownership of the managed object if it exists and returns the pointer to the
