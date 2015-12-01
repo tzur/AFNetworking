@@ -15,17 +15,24 @@ private:
   const std::string _name;
 };
 
-typedef void (^LTMyTypeReleaseBlock)(LTMyType *myType);
+class LTMyDerivedType : public LTMyType {
+public:
+  LTMyDerivedType(const std::string &name) : LTMyType(name) {};
+};
+
+typedef void (^LTMyTypeReleaseBlock)(const LTMyType *myType);
 
 static LTMyTypeReleaseBlock releaseBlock;
 
-void LTMyTypeRelease(LTMyType *myType) {
+void LTMyTypeRelease(const LTMyType *myType) {
   if (releaseBlock) {
     releaseBlock(myType);
   }
 }
 
 LTMakeRefReleaser(LTMyType *, LTMyTypeRelease);
+LTMakeRefReleaser(const LTMyType *, LTMyTypeRelease);
+LTMakeRefReleaser(LTMyDerivedType *, LTMyTypeRelease);
 
 SpecBegin(LTRef)
 
@@ -35,7 +42,7 @@ context(@"releaser for custom type", ^{
   beforeEach(^{
     released = NO;
 
-    releaseBlock = ^(LTMyType *releasedMyType) {
+    releaseBlock = ^(const LTMyType *releasedMyType) {
       expect(@(releasedMyType->name().c_str())).to.equal(@"foo");
       released = YES;
     };
@@ -76,8 +83,62 @@ context(@"move semantics", ^{
     expect(stolenReference).toNot.equal(movedReference);
   });
 
+  it(@"should use move constructor to a const type", ^{
+    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    LTMyType *firstReference = myType.get();
+
+    lt::Ref<const LTMyType *> movedMyType = std::move(myType);
+    const LTMyType *movedReference = movedMyType.get();
+
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+
+  it(@"should use move constructor to a different type", ^{
+    lt::Ref<LTMyDerivedType *> myType(new LTMyDerivedType("foo"));
+    LTMyType *firstReference = myType.get();
+
+    lt::Ref<LTMyType *> movedMyType = std::move(myType);
+    LTMyType *movedReference = movedMyType.get();
+
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+
   it(@"should use move assignment operator correctly", ^{
     lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    lt::Ref<LTMyType *> movedMyType;
+
+    LTMyType *firstReference = myType.get();
+    movedMyType = std::move(myType);
+
+    LTMyType *movedReference = movedMyType.get();
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+
+  it(@"should use move assignment to a const type", ^{
+    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
+    lt::Ref<const LTMyType *> movedMyType;
+
+    LTMyType *firstReference = myType.get();
+    movedMyType = std::move(myType);
+
+    const LTMyType *movedReference = movedMyType.get();
+    LTMyType *stolenReference = myType.get();
+
+    expect(firstReference).to.equal(movedReference);
+    expect(stolenReference).toNot.equal(movedReference);
+  });
+
+  it(@"should use move assignment to a different type", ^{
+    lt::Ref<LTMyDerivedType *> myType(new LTMyDerivedType("foo"));
     lt::Ref<LTMyType *> movedMyType;
 
     LTMyType *firstReference = myType.get();

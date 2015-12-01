@@ -54,6 +54,12 @@ struct RefReleaser {
 #define LTMakeRefReleaser(TYPE, RELEASE_FUNCTION) \
   template <> \
   struct ::lt::RefReleaser<TYPE, false> { \
+    constexpr RefReleaser() noexcept = default; \
+  \
+    template <typename U> \
+    constexpr RefReleaser(const RefReleaser<U*> &, \
+        typename std::enable_if<std::is_convertible<U*, TYPE>::value>::type* = 0) noexcept {} \
+  \
     inline void operator()(TYPE ptr) const noexcept { \
       RELEASE_FUNCTION(ptr); \
     } \
@@ -62,6 +68,16 @@ struct RefReleaser {
 /// RefReleaser for Core Foundation objects that are released with \c CFRelease.
 template <typename T>
 struct RefReleaser<T, true> {
+  /// Default constructor. Required since there's an explicit copy constructor.
+  constexpr RefReleaser() noexcept = default;
+
+  /// Copy constructor allowing copying the releaser to a different type of \c Ref.
+  template <typename U, bool UseCFRelease>
+  constexpr RefReleaser(const RefReleaser<U, UseCFRelease> &,
+                        typename std::enable_if<std::is_convertible<U, T>::value>::type* = 0)
+      noexcept {}
+
+  /// Releaser () operator which releases \c ptr.
   inline void operator()(T ptr) const noexcept {
     CFRelease(ptr);
   }
@@ -185,15 +201,32 @@ public:
   /// Disallows copying a \c Ref.
   Ref(const Ref &ref) = delete;
 
-  /// Move constructor which constructs a new Ref from an rvalue by stealing its underlying ref.
+  /// Move constructor which constructs a new \c Ref from an rvalue by stealing its underlying ref.
   Ref(Ref &&ref) noexcept : _unique_ptr(std::move(ref._unique_ptr)) {
+  }
+
+  /// Move constructor which constructs a new \c Ref from an rvalue by stealing its underlying ref.
+  /// This move constructor supports type covariance by allowing to move a \c Ref from type \c U to
+  /// type \c T, if \c U is convertible to \c T.
+  template <typename U>
+  Ref(Ref<U*> &&ref,
+      typename std::enable_if<
+        std::is_convertible<typename Ref<U*>::PointerType, PointerType>::value
+      >::type * = 0) noexcept :
+      _unique_ptr(std::move(ref._unique_ptr)) {
   }
 
   /// Disallows assigning a \c Ref.
   Ref &operator=(const Ref &ref) = delete;
 
-  /// Move assignment operator, which steals the reference from \c ref.
-  Ref &operator=(Ref &&ref) noexcept {
+  /// Move assignment operator, which steals the reference from \c ref. This move assignment
+  /// operator supports type covariance by allowing to move assign a \c Ref from type \c U to
+  /// type \c T, if \c U is convertible to \c T.
+  template <typename U>
+  typename std::enable_if<
+    std::is_convertible<typename Ref<U*>::PointerType, PointerType>::value, Ref &
+  >::type
+  operator=(Ref<U*> &&ref) noexcept {
     _unique_ptr = std::move(ref._unique_ptr);
     return *this;
   }
@@ -221,6 +254,10 @@ public:
   }
 
 private:
+  /// Allows accessing private members of \c Ref<U> from \c Ref<T>.
+  template <typename U>
+  friend class Ref;
+
   /// Type of unique pointer that is contained in this class.
   typedef std::unique_ptr<T, RefReleaserType> UniquePtrType;
 
