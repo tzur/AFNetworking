@@ -136,8 +136,17 @@ class Ref {
 ///    For more information about pointer ownership and semantics, see
 ///    http://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/.
 ///
+/// 3. Return \c lt::Ref from factory methods or functions that create a manually refcounted object.
+///    Example:
 ///
-/// 3. Don't fear from calling release functions that normally crash with \c nullptr. The
+///    @code@
+///    lt::Ref<CGColorSpace> LTCreateColorSpaceWithFoo(Foo *foo);
+///    @endcode@
+///
+///    For more information about this convention, see section #2 here:
+///    http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
+///
+/// 4. Don't fear from calling release functions that normally crash with \c nullptr. The
 ///    implementation of \c lt::Ref releaser is called only if the managed pointer is not \c
 ///    nullptr, avoiding the need to check for nullability.
 ///
