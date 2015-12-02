@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
+		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B16A8A31BCBFB33006DAAA7 /* NSErrorCodes+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */; };
 		8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
@@ -298,6 +299,8 @@
 /* Begin PBXFileReference section */
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
+		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
+		84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
 		8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageResizerSpec.mm; sourceTree = "<group>"; };
 		8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Photons.h"; sourceTree = "<group>"; };
@@ -703,6 +706,8 @@
 		8B2FD0B91B09CD0800757B1F /* Matchers */ = {
 			isa = PBXGroup;
 			children = (
+				84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */,
+				84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */,
 				8B2FD0BA1B09CD0800757B1F /* EXPMatchers+beSubscribedTo.h */,
 				8B2FD0BB1B09CD0800757B1F /* EXPMatchers+beSubscribedTo.m */,
 				8B2FD0BC1B09CD0800757B1F /* EXPMatchers+complete.h */,
@@ -1194,6 +1199,7 @@
 				8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.m in Sources */,
 				8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */,
 				8B2FD0DB1B09CD0800757B1F /* EXPMatchers+matchValues.m in Sources */,
+				84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				8B2FD0DC1B09CD0800757B1F /* EXPMatchers+sendError.m in Sources */,
 				8B2FD0E41B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.m in Sources */,
 				8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */,

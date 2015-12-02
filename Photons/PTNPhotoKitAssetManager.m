@@ -84,8 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
-  RACSignal *initialChangeset = [[[[[self fetchFetchResultWithURL:url]
-      subscribeOn:[RACScheduler scheduler]]
+  RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
@@ -124,13 +123,14 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   // Returns the latest \c PTNAlbumChangeset that is produced from the fetch results.
-  RACSignal *changeset = [[[[RACSignal
+  RACSignal *changeset = [[[[[RACSignal
       concat:@[initialChangeset, nextChangeset]]
       reduceEach:^(PHFetchResult __unused *fetchResult, PTNAlbumChangeset *changeset) {
         return changeset;
       }]
       distinctUntilChanged]
-      ptn_replayLastLazily];
+      ptn_replayLastLazily]
+      subscribeOn:RACScheduler.scheduler];
 
   [self setSignal:changeset forURL:url];
 
@@ -234,8 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  RACSignal *initialFetchResult = [[[[self fetchFetchResultWithURL:url]
-      subscribeOn:[RACScheduler scheduler]]
+  RACSignal *initialFetchResult = [[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
@@ -261,10 +260,11 @@ NS_ASSUME_NONNULL_BEGIN
   // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects are
   // equal if they back the same asset, even if the asset has changed. This makes sure that only new
   // fetch results are provided, but avoid sending the same fetch result over and over again.
-  return [[[RACSignal
+  return [[[[RACSignal
       concat:@[initialFetchResult, nextFetchResults]]
       ptn_identicallyDistinctUntilChanged]
-      replayLast];
+      replayLast]
+      subscribeOn:RACScheduler.scheduler];
 }
 
 #pragma mark -
@@ -318,8 +318,7 @@ NS_ASSUME_NONNULL_BEGIN
   if ([object isKindOfClass:[PHAsset class]]) {
     return [RACSignal return:object];
   } else if ([object isKindOfClass:[PHAssetCollection class]]) {
-    return [[self fetchKeyAssetForAssetCollection:(PHAssetCollection *)object]
-        subscribeOn:[RACScheduler scheduler]];
+    return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)object];
   } else {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidObject
                                       associatedObject:object]];
@@ -371,12 +370,14 @@ NS_ASSUME_NONNULL_BEGIN
                          targetSize:(CGSize)targetSize
                         contentMode:(PTNImageContentMode)contentMode
                             options:(PTNImageFetchOptions *)options {
-  return [[self fetchAssetForObject:object] flattenMap:^(PHAsset *asset) {
-    return [self fetchContentForAsset:asset
-                           targetSize:targetSize
-                          contentMode:[self photoKitContentModeForContentMode:contentMode]
-                              options:[options photoKitOptions]];
-  }];
+  return [[[self fetchAssetForObject:object]
+      flattenMap:^(PHAsset *asset) {
+        return [self fetchContentForAsset:asset
+                               targetSize:targetSize
+                              contentMode:[self photoKitContentModeForContentMode:contentMode]
+                                  options:[options photoKitOptions]];
+      }]
+      subscribeOn:RACScheduler.scheduler];
 }
 
 - (PHImageContentMode)photoKitContentModeForContentMode:(PTNImageContentMode)contentMode {

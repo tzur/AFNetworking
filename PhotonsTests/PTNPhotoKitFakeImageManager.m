@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Set of cancelled request IDs.
 @property (strong, nonatomic) NSMutableSet *cancelledRequests;
 
+/// Set of issued request IDs.
+@property (strong, nonatomic) NSMutableSet *issuedRequests;
+
 /// Next request identifier to return.
 @property (nonatomic) PHImageRequestID nextRequestIdentifier;
 
@@ -40,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.identifierToProgressError = [NSMutableDictionary dictionary];
     self.requestToIdentifier = [NSMutableDictionary dictionary];
     self.cancelledRequests = [NSMutableSet set];
+    self.issuedRequests = [NSMutableSet set];
   }
   return self;
 }
@@ -71,6 +75,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isRequestCancelledForAsset:(PHAsset *)asset {
   return [self.cancelledRequests containsObject:asset.localIdentifier];
+}
+
+- (BOOL)isRequestIssuedForAsset:(PHAsset *)asset {
+  return [self.issuedRequests containsObject:asset.localIdentifier];
 }
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset targetSize:(CGSize __unused)targetSize
@@ -112,6 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   ++self.nextRequestIdentifier;
   self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+  [self.issuedRequests addObject:identifier];
 
   return self.nextRequestIdentifier;
 }
