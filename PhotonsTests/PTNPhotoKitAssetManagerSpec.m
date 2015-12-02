@@ -133,6 +133,15 @@ context(@"album fetching", ^{
         ]);
       });
     });
+    
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        RACSignal *values = [manager fetchAlbumWithURL:url];
+        
+        expect(values).will.sendValuesWithCount(1);
+        expect(values).willNot.deliverValuesOnMainThread();
+      });
+    });
   });
 
   context(@"fetching album by type", ^{
@@ -243,6 +252,15 @@ context(@"album fetching", ^{
         ]]);
       });
     });
+    
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        RACSignal *values = [manager fetchAlbumWithURL:url];
+        
+        expect(values).will.sendValuesWithCount(1);
+        expect(values).willNot.deliverValuesOnMainThread();
+      });
+    });
   });
 
   context(@"fetching errors", ^{
@@ -323,6 +341,17 @@ context(@"asset fetching", ^{
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
+  
+  context(@"thread transitions", ^{
+    it(@"should not operate on the main thread", ^{
+      NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
+      
+      RACSignal *values = [manager fetchAssetWithURL:url];
+      
+      expect(values).will.sendValuesWithCount(1);
+      expect(values).willNot.deliverValuesOnMainThread();
+    });
+  });
 });
 
 context(@"image fetching", ^{
@@ -377,8 +406,10 @@ context(@"image fetching", ^{
                                             contentMode:PTNImageContentModeAspectFill
                                                 options:options];
 
-      [[values subscribeNext:^(id __unused x) {}] dispose];
+      RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
+      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
 
+      [subscriber dispose];
       expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
     });
 
@@ -398,6 +429,19 @@ context(@"image fetching", ^{
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAssetLoadingFailed &&
             [error.userInfo[NSUnderlyingErrorKey] isEqual:defaultError];
+      });
+    });
+    
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        [imageManager serveAsset:asset withProgress:@[] image:image];
+        
+        RACSignal *values =  [manager fetchImageWithObject:asset targetSize:size
+                                               contentMode:PTNImageContentModeAspectFill
+                                                   options:options];
+        
+        expect(values).will.sendValuesWithCount(1);
+        expect(values).willNot.deliverValuesOnMainThread();
       });
     });
 

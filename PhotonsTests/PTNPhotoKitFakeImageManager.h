@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if a request for the given \c asset has been cancelled.
 - (BOOL)isRequestCancelledForAsset:(PHAsset *)asset;
 
+/// \c YES if a request for the given \c asset has been issued.
+- (BOOL)isRequestIssuedForAsset:(PHAsset *)asset;
+
 @end
 
 NS_ASSUME_NONNULL_END
