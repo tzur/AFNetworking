@@ -14,11 +14,11 @@ void LTCGPathInspectWithBlock(CGPathRef path, LTPathInspectionBlock block);
 /// provided \c path by a z coordinate of 1, multiplying the vertex with the provided 3x3
 /// \c transformation matrix and projecting the point back onto the z plane. The caller is
 /// responsible for releasing the returned path.
-CGPathRef LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation);
+lt::Ref<CGPathRef> LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation);
 
 /// Creates a copy of the provided \c path such that its bounding box corresponds to the given
 /// \c rect. The caller is responsible for releasing the returned path.
-CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
+lt::Ref<CGPathRef> LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
 
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c smootheningRadius is greater than 0, additional control points are inserted to create a
@@ -29,8 +29,8 @@ CGPathRef LTCGPathCreateCopyInRect(CGPathRef path, CGRect rect);
 /// and w1 from v1 is min(smootheningRadius, length(v0, v1) / 2, length(v1, v2) / 2). This corner
 /// smoothening is applied to every non-end joint of the provided \c polyline. The caller is
 /// responsible for releasing the returned path.
-CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
-                                                 CGFloat smootheningRadius, BOOL closed);
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
+                                                   CGFloat smootheningRadius, BOOL closed);
 
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c gapSize is greater than 0, the returned path contains gaps in the following way: Given an
@@ -39,15 +39,15 @@ CGMutablePathRef LTCGPathCreateWithControlPoints(const LTVector2s &polyline,
 /// resulting path contains a line from w0 to w1, but no lines from v0 to w0 or from w1 to v1. This
 /// procedure is applied to every edge of the polyline. The caller is responsible for releasing the
 /// returned path.
-CGPathRef LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
-                                                               CGFloat gapSize, BOOL closed);
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LTVector2s &polyline,
+                                                                        CGFloat gapSize,
+                                                                        BOOL closed);
 
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c circleRadius is greater than 0, the returned path contains empty circles of radius
 /// \c circleRadius around its vertices. The caller is responsible for releasing the returned path.
-CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector2s &polyline,
-                                                                  CGFloat circleRadius,
-                                                                  BOOL closed);
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndCirclesAroundVertices(
+    const LTVector2s &polyline, CGFloat circleRadius, BOOL closed);
 
 /// Creates an immutable path constituting a sector of a circle with the given \c center and the
 /// given \c radius. The arc of the sector is defined by the given \c startAngle and \c endAngle and
@@ -56,5 +56,6 @@ CGPathRef LTCGPathCreateWithControlPointsAndCirclesAroundVertices(const LTVector
 /// sector is the arc between the starting point defined by \c startAngle and the ending point
 /// defined by the \c endAngle in clockwise direction. Otherwise, the arc is the complementary arc.
 /// The caller is responsible for releasing the returned path.
-CGPathRef LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius, CGFloat startAngle,
-                                           CGFloat endAngle, BOOL clockwise = NO);
+lt::Ref<CGPathRef> LTCGPathCreateWithCircularSector(LTVector2 center, CGFloat radius,
+                                                    CGFloat startAngle, CGFloat endAngle,
+                                                    BOOL clockwise = NO);

@@ -137,11 +137,10 @@
 
   __block UIImage *image;
 
-  CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
-  [self createImageWithDataProvider:provider andDo:^(CGImageRef imageRef) {
+  lt::Ref<CGDataProviderRef> provider(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
+  [self createImageWithDataProvider:provider.get() andDo:^(CGImageRef imageRef) {
     image = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
   }];
-  CGDataProviderRelease(provider);
 
   return image;
 }
@@ -152,20 +151,18 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
                               andDo:(LTImageCGImageBlock)block {
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
-  CGColorSpaceRef colorSpace = [self newColorSpaceForImage];
-  CGBitmapInfo bitmapInfo = [[self class] bitmapFlagsForColorSpace:colorSpace];
+  lt::Ref<CGColorSpaceRef> colorSpace = [self newColorSpaceForImage];
+  CGBitmapInfo bitmapInfo = [[self class] bitmapFlagsForColorSpace:colorSpace.get()];
 
-  CGImageRef imageRef = CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent, bitsPerPixel,
-                                      self.mat.step[0], colorSpace, bitmapInfo, dataProvider,
-                                      NULL, false, kCGRenderingIntentDefault);
+  lt::Ref<CGImageRef> imageRef(CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent,
+                                             bitsPerPixel, self.mat.step[0], colorSpace.get(),
+                                             bitmapInfo, dataProvider, NULL, false,
+                                             kCGRenderingIntentDefault));
   LTAssert(imageRef, @"Failed to create CGImage from LTImage");
 
   if (block) {
-    block(imageRef);
+    block(imageRef.get());
   }
-
-  CGColorSpaceRelease(colorSpace);
-  CGImageRelease(imageRef);
 }
 
 - (NSData *)dataFromMatWithCopying:(BOOL)copyData {
@@ -179,17 +176,17 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
   }
 }
 
-- (CGColorSpaceRef)newColorSpaceForImage {
+- (lt::Ref<CGColorSpaceRef>)newColorSpaceForImage {
   switch (self.depth) {
     case LTImageDepthGrayscale:
-      return CGColorSpaceCreateDeviceGray();
+      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
     case LTImageDepthRGBA:
-      return CGColorSpaceCreateDeviceRGB();
+      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
   }
 }
 
 - (BOOL)writeToPath:(NSString *)path error:(NSError *__autoreleasing *)error {
-  CGDataProviderRef provider = [self newDataProvider];
+  lt::Ref<CGDataProviderRef> provider([self newDataProvider]);
   if (!provider) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
@@ -197,30 +194,25 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
     }
     return NO;
   }
-  @onExit {
-    CGDataProviderRelease(provider);
-  };
 
   __block BOOL imageWritten = NO;
-  [self createImageWithDataProvider:provider andDo:^(CGImageRef imageRef) {
+  [self createImageWithDataProvider:provider.get() andDo:^(CGImageRef imageRef) {
     NSURL *url = [NSURL fileURLWithPath:path];
-    CGImageDestinationRef destinationRef = [self newImageDestinationWithURL:url];
-    if (!destinationRef) {
+    lt::Ref<CGImageDestinationRef> destination([self newImageDestinationWithURL:url]);
+    if (!destination) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
                                description:@"Failed creating image destination"];
       }
       return;
     }
-    @onExit {
-      CFRelease(destinationRef);
+
+    NSDictionary *properties = @{
+      (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
     };
+    CGImageDestinationAddImage(destination.get(), imageRef, (CFDictionaryRef)properties);
 
-    NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality:
-                                   @1};
-    CGImageDestinationAddImage(destinationRef, imageRef, (CFDictionaryRef)properties);
-
-    BOOL writtenSuccessfully = CGImageDestinationFinalize(destinationRef);
+    BOOL writtenSuccessfully = CGImageDestinationFinalize(destination.get());
     if (!writtenSuccessfully) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path];

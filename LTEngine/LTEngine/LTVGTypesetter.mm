@@ -26,16 +26,11 @@
                            attributedString:attributedString];
   }
 
-  __block CTFrameRef frameRef = [self newFrameForAttributedString:attributedString];
+  lt::Ref<CTFrameRef> frame = [self newFrameForAttributedString:attributedString];
+  LTAssert(frame, @"frameForAttributedString returned nil CTFrameRef");
 
-  @onExit {
-    LTCFSafeRelease(frameRef);
-  };
-
-  LTAssert(frameRef);
-
-  CGPoints lineOrigins = [self originsOfLinesInFrame:frameRef];
-  return [self linesInFrame:frameRef lineOrigins:lineOrigins attributedString:attributedString];
+  CGPoints lineOrigins = [self originsOfLinesInFrame:frame.get()];
+  return [self linesInFrame:frame.get() lineOrigins:lineOrigins attributedString:attributedString];
 }
 
 + (LTVGGlyph *)glyphWithIndex:(CGGlyph)index font:(UIFont *)font
@@ -46,37 +41,31 @@
   CGAffineTransform transformation =
       CGAffineTransformConcat(mirrorAroundXAxis,
                               CGAffineTransformMakeTranslation(baselineOrigin.x, baselineOrigin.y));
-  CTFontRef fontRef = CTFontCreateWithName((CFStringRef)font.fontName, font.pointSize, NULL);
-  CGPathRef path = CTFontCreatePathForGlyph(fontRef, index, &transformation);
-  CFRelease(fontRef);
+  lt::Ref<CTFontRef> fontForPath(CTFontCreateWithName((CFStringRef)font.fontName,
+                                                                   font.pointSize, NULL));
+  lt::Ref<CGPathRef> path(CTFontCreatePathForGlyph(fontForPath.get(), index, &transformation));
 
-  LTVGGlyph *glyph = [[LTVGGlyph alloc] initWithPath:path glyphIndex:index font:font
-                                      baselineOrigin:baselineOrigin];
-  CGPathRelease(path);
-  return glyph;
+  return [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:index font:font
+                          baselineOrigin:baselineOrigin];
 }
 
 #pragma mark -
 #pragma mark Auxiliary methods
 #pragma mark -
 
-+ (CTFrameRef)newFrameForAttributedString:(NSAttributedString *)attributedString {
-  __block CTFramesetterRef frameSetterRef =
-      CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
++ (lt::Ref<CTFrameRef>)newFrameForAttributedString:(NSAttributedString *)attributedString {
+  lt::Ref<CTFramesetterRef> frameSetter(
+    CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString)
+  );
 
-  @onExit {
-    LTCFSafeRelease(frameSetterRef);
-  };
-
-  if (!frameSetterRef) {
-    return NULL;
+  if (!frameSetter) {
+    return lt::Ref<CTFrameRef>();
   }
 
-  CGPathRef path = CGPathCreateWithRect(CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX), NULL);
-  CTFrameRef result = CTFramesetterCreateFrame(frameSetterRef, CFRangeMake(0,0), path, NULL);
-  CGPathRelease(path);
+  lt::Ref<CGPathRef> path(CGPathCreateWithRect(CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX), NULL));
 
-  return result;
+  return lt::Ref<CTFrameRef>(CTFramesetterCreateFrame(frameSetter.get(), CFRangeMake(0,0),
+                                                      path.get(), NULL));
 }
 
 + (CGPoints)originsOfLinesInFrame:(CTFrameRef)frameRef {
@@ -162,15 +151,12 @@
 }
 
 + (UIFont *)fontForRunRef:(CTRunRef)runRef {
-  CTFontRef runFontRef =
-      (CTFontRef)CFDictionaryGetValue(CTRunGetAttributes(runRef), kCTFontAttributeName);
-  __block CFStringRef fontNameRef = CTFontCopyName(runFontRef, kCTFontPostScriptNameKey);
+  CTFontRef runFontRef = (CTFontRef)CFDictionaryGetValue(CTRunGetAttributes(runRef),
+                                                         kCTFontAttributeName);
+  NSString *fontName = (__bridge_transfer NSString *)CTFontCopyName(runFontRef,
+                                                                    kCTFontPostScriptNameKey);
 
-  @onExit {
-    LTCFSafeRelease(fontNameRef);
-  };
-
-  return [UIFont fontWithName:(__bridge NSString *)fontNameRef size:CTFontGetSize(runFontRef)];
+  return [UIFont fontWithName:fontName size:CTFontGetSize(runFontRef)];
 }
 
 #pragma mark -

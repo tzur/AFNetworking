@@ -7,7 +7,9 @@
 
 #import "LTVGGlyphRun.h"
 
-@implementation LTVGGlyph
+@implementation LTVGGlyph {
+  lt::Ref<CGPathRef> _pathPointer;
+}
 
 #pragma mark -
 #pragma mark Initialization
@@ -19,7 +21,7 @@
 
   if (self = [super init]) {
     // Allow empty paths since blank glyphs are considered glyphs, too.
-    _path = CGPathCreateCopy(path);
+    _pathPointer.reset(CGPathCreateCopy(path));
     _glyphIndex = glyphIndex;
     _font = font;
     _baselineOrigin = baselineOrigin;
@@ -27,9 +29,8 @@
   return self;
 }
 
-- (void)dealloc {
-  CGPathRelease(_path);
-  _path = NULL;
+- (CGPathRef)path {
+  return _pathPointer.get();
 }
 
 #pragma mark -
