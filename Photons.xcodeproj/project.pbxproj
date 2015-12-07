@@ -76,7 +76,7 @@
 		8BAFDCBF1B0DF781003FB8F5 /* PTNAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC01B0DF781003FB8F5 /* PTNAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BAFDCC21B0DF781003FB8F5 /* PTNObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0851B00E81100757B1F /* PTNObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAFDCC21B0DF781003FB8F5 /* PTNDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0851B00E81100757B1F /* PTNDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD08F1B01059B00757B1F /* PTNPhotoKitFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -324,7 +324,7 @@
 		8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitAssetManager.m; sourceTree = "<group>"; };
 		8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitAlbum.h; sourceTree = "<group>"; };
 		8B2FD0831B00E2ED00757B1F /* PTNPhotoKitAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitAlbum.m; sourceTree = "<group>"; };
-		8B2FD0851B00E81100757B1F /* PTNObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNObject.h; sourceTree = "<group>"; };
+		8B2FD0851B00E81100757B1F /* PTNDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNDescriptor.h; sourceTree = "<group>"; };
 		8B2FD0861B00E8A500757B1F /* PhotoKit+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PhotoKit+Photons.h"; sourceTree = "<group>"; };
 		8B2FD0871B00E8A500757B1F /* PhotoKit+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PhotoKit+Photons.m"; sourceTree = "<group>"; };
 		8B2FD0891B00E9B200757B1F /* NSURL+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+PhotoKit.h"; sourceTree = "<group>"; };
@@ -598,6 +598,7 @@
 				8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */,
 				8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */,
 				8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */,
+				8B2FD0851B00E81100757B1F /* PTNDescriptor.h */,
 				8BAB95271B82361600B25392 /* PTNImageContentMode.h */,
 				8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */,
 				8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */,
@@ -605,7 +606,6 @@
 				8B2404961B8493C70079B724 /* PTNImageMetadata.m */,
 				8BAB95231B8234F600B25392 /* PTNImageResizer.h */,
 				8BAB95241B8234F600B25392 /* PTNImageResizer.m */,
-				8B2FD0851B00E81100757B1F /* PTNObject.h */,
 				8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */,
 				8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */,
 			);
@@ -869,7 +869,7 @@
 				8B992CFF1B78A0EE00B7836B /* RACSignal+Photons.h in Headers */,
 				8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */,
 				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
-				8BAFDCC21B0DF781003FB8F5 /* PTNObject.h in Headers */,
+				8BAFDCC21B0DF781003FB8F5 /* PTNDescriptor.h in Headers */,
 				8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */,
 				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,

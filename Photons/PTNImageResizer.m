@@ -29,14 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
       }
     };
     if (!sourceRef) {
-      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeObjectCreationFailed
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed creating image source"]];
       return disposable;
     }
 
     CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(sourceRef, 0, NULL);
     if (!properties) {
-      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeObjectCreationFailed
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed copying source properties"]];
       return disposable;
     }
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     CGSize inputSize = [self sizeOfImageWithProperties:transferredProperties];
 
     if (inputSize.width == CGSizeNull.width || inputSize.height == CGSizeNull.height) {
-      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidObject url:url
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor url:url
                                           description:@"Image doesn't have width or height"]];
       return disposable;
     } else if (inputSize.width == size.width && inputSize.height == size.height) {
@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
     };
     if (!outputRef) {
-      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeObjectCreationFailed
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed creating output thumbnail"]];
       return disposable;
     }

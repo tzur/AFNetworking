@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// URL uniquely identifying the album.
 @property (readonly, nonatomic) NSURL *url;
 
-/// Asset implementing the \c PTNObject protocol contained in this album. If there are no assets, an
-/// empty collection will be returned.
+/// Asset implementing the \c PTNDescriptor protocol contained in this album. If there are no
+/// assets, an empty collection will be returned.
 @property (readonly, nonatomic) id<PTNCollection> assets;
 
-/// Sub albums contained in this album implementing the \c PTNObject protocol. If there are no
+/// Sub albums contained in this album implementing the \c PTNDescriptor protocol. If there are no
 /// subalbums, an empty collection will be returned.
 @property (readonly, nonatomic) id<PTNCollection> subalbums;
 

@@ -17,8 +17,8 @@ LTErrorCodesImplement(PhotonsErrorCodeProductID,
   PTNErrorCodeAssetLoadingFailed,
   /// Caused when an invalid asset type has been given.
   PTNErrorCodeInvalidAssetType,
-  /// Caused when an invalid object has been given.
-  PTNErrorCodeInvalidObject,
-  /// Caused when object has failed to create itself.
-  PTNErrorCodeObjectCreationFailed
+  /// Caused when an invalid descriptor has been given.
+  PTNErrorCodeInvalidDescriptor,
+  /// Caused when descriptor has failed to create itself.
+  PTNErrorCodeDescriptorCreationFailed
 );

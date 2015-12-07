@@ -3,14 +3,14 @@
 
 #import <Photos/Photos.h>
 
-#import "PTNObject.h"
+#import "PTNDescriptor.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PHAsset (Photons) <PTNObject>
+@interface PHAsset (Photons) <PTNDescriptor>
 @end
 
-@interface PHCollection (Photons) <PTNObject>
+@interface PHCollection (Photons) <PTNDescriptor>
 @end
 
 NS_ASSUME_NONNULL_END
