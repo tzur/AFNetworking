@@ -83,7 +83,7 @@ static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing 
   };
   if (!sourceRef) {
     if (error) {
-      *error = [NSError lt_errorWithCode:PTNErrorCodeObjectCreationFailed
+      *error = [NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                      url:url
                              description:@"Failed creating CGImageSource"];
     }
@@ -93,7 +93,7 @@ static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing 
   CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(sourceRef, 0, NULL);
   if (!properties) {
     if (error) {
-      *error = [NSError lt_errorWithCode:PTNErrorCodeObjectCreationFailed
+      *error = [NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                      url:url
                              description:@"Failed retrieving image properties"];
     }

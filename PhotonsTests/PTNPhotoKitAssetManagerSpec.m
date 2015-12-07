@@ -381,9 +381,9 @@ context(@"image fetching", ^{
     it(@"should fetch image", ^{
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithObject:asset targetSize:size
-                               contentMode:PTNImageContentModeAspectFill
-                                   options:options]).will.sendValues(@[
+      expect([manager fetchImageWithDescriptor:asset targetSize:size
+                                   contentMode:PTNImageContentModeAspectFill
+                                       options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
     });
@@ -391,9 +391,9 @@ context(@"image fetching", ^{
     it(@"should fetch downloaded image", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] image:image];
 
-      expect([manager fetchImageWithObject:asset targetSize:size
-                               contentMode:PTNImageContentModeAspectFill
-                                   options:options]).will.sendValues(@[
+      expect([manager fetchImageWithDescriptor:asset targetSize:size
+                                   contentMode:PTNImageContentModeAspectFill
+                                       options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
         [[PTNProgress alloc] initWithProgress:@1],
@@ -402,9 +402,9 @@ context(@"image fetching", ^{
     });
 
     it(@"should cancel request upon disposal", ^{
-      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
-                                            contentMode:PTNImageContentModeAspectFill
-                                                options:options];
+      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
+                                                contentMode:PTNImageContentModeAspectFill
+                                                    options:options];
 
       RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
       expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
@@ -416,9 +416,9 @@ context(@"image fetching", ^{
     it(@"should error on download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
 
-      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
-                                            contentMode:PTNImageContentModeAspectFill
-                                                options:options];
+      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
+                                                contentMode:PTNImageContentModeAspectFill
+                                                    options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -436,10 +436,10 @@ context(@"image fetching", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[] image:image];
         
-        RACSignal *values =  [manager fetchImageWithObject:asset targetSize:size
-                                               contentMode:PTNImageContentModeAspectFill
-                                                   options:options];
-        
+        RACSignal *values =  [manager fetchImageWithDescriptor:asset targetSize:size
+                                                   contentMode:PTNImageContentModeAspectFill
+                                                       options:options];
+
         expect(values).will.sendValuesWithCount(1);
         expect(values).willNot.deliverValuesOnMainThread();
       });
@@ -448,9 +448,9 @@ context(@"image fetching", ^{
     it(@"should error on progress download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
 
-      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
-                                            contentMode:PTNImageContentModeAspectFill
-                                                options:options];
+      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
+                                                contentMode:PTNImageContentModeAspectFill
+                                                    options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -477,17 +477,17 @@ context(@"image fetching", ^{
 
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithObject:assetCollection targetSize:size
-                            contentMode:PTNImageContentModeAspectFill
-                                options:options]).will.sendValues(@[
+      expect([manager fetchImageWithDescriptor:assetCollection targetSize:size
+                                   contentMode:PTNImageContentModeAspectFill
+                                       options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
     });
 
     it(@"should error on non-existing key assets", ^{
-      RACSignal *values = [manager fetchImageWithObject:assetCollection targetSize:size
-                                            contentMode:PTNImageContentModeAspectFill
-                                                options:options];
+      RACSignal *values = [manager fetchImageWithDescriptor:assetCollection targetSize:size
+                                                contentMode:PTNImageContentModeAspectFill
+                                                    options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeKeyAssetsNotFound;
@@ -497,9 +497,9 @@ context(@"image fetching", ^{
     it(@"should error on non-existing key asset", ^{
       [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
 
-      RACSignal *values = [manager fetchImageWithObject:asset targetSize:size
-                                            contentMode:PTNImageContentModeAspectFill
-                                                options:options];
+      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
+                                                contentMode:PTNImageContentModeAspectFill
+                                                    options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAssetLoadingFailed;
@@ -508,14 +508,14 @@ context(@"image fetching", ^{
   });
   
   it(@"should error on non-PhotoKit asset", ^{
-    id invalidAsset = OCMProtocolMock(@protocol(PTNObject));
+    id invalidAsset = OCMProtocolMock(@protocol(PTNDescriptor));
     
-    RACSignal *values = [manager fetchImageWithObject:invalidAsset targetSize:size
-                                          contentMode:PTNImageContentModeAspectFill
-                                              options:options];
+    RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset targetSize:size
+                                              contentMode:PTNImageContentModeAspectFill
+                                                  options:options];
     
     expect(values).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeInvalidObject;
+      return error.code == PTNErrorCodeInvalidDescriptor;
     });
   });
 });

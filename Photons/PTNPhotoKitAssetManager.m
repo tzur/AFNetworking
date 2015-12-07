@@ -284,7 +284,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (RACSignal *)fetchObjectWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset &&
       url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
@@ -314,14 +314,14 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)fetchAssetForObject:(id<PTNObject>)object {
-  if ([object isKindOfClass:[PHAsset class]]) {
-    return [RACSignal return:object];
-  } else if ([object isKindOfClass:[PHAssetCollection class]]) {
-    return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)object];
+- (RACSignal *)fetchAssetForDescriptor:(id<PTNDescriptor>)descriptor {
+  if ([descriptor isKindOfClass:[PHAsset class]]) {
+    return [RACSignal return:descriptor];
+  } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
+    return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor];
   } else {
-    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidObject
-                                      associatedObject:object]];
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
   }
 }
 
@@ -366,11 +366,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Image fetching
 #pragma mark -
 
-- (RACSignal *)fetchImageWithObject:(id<PTNObject>)object
-                         targetSize:(CGSize)targetSize
-                        contentMode:(PTNImageContentMode)contentMode
-                            options:(PTNImageFetchOptions *)options {
-  return [[[self fetchAssetForObject:object]
+- (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
+                             targetSize:(CGSize)targetSize
+                            contentMode:(PTNImageContentMode)contentMode
+                                options:(PTNImageFetchOptions *)options {
+  return [[[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
         return [self fetchContentForAsset:asset
                                targetSize:targetSize

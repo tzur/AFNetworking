@@ -7,19 +7,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * kPTNErrorAssociatedObjectKey = @"AssociatedObject";
+NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
 
 @implementation NSError (Photons)
 
-+ (instancetype)ptn_errorWithCode:(NSInteger)code associatedObject:(id<PTNObject>)associatedObject {
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+             associatedDescriptor:(id<PTNDescriptor>)associatedDescriptor {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kPTNErrorAssociatedObjectKey: (id)associatedObject ?: [NSNull null]
+    kPTNErrorAssociatedDescriptorKey: (id)associatedDescriptor ?: [NSNull null]
   }];
 }
 
-- (nullable id<PTNObject>)ptn_associatedObject {
-  return self.userInfo[kPTNErrorAssociatedObjectKey] != [NSNull null] ?
-      self.userInfo[kPTNErrorAssociatedObjectKey] : nil;
+- (nullable id<PTNDescriptor>)ptn_associatedDescriptor {
+  return self.userInfo[kPTNErrorAssociatedDescriptorKey] != [NSNull null] ?
+      self.userInfo[kPTNErrorAssociatedDescriptorKey] : nil;
 }
 
 @end

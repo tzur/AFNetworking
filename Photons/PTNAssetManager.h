@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNObject;
+@protocol PTNDescriptor;
 
 @class PTNImageFetchOptions;
 
@@ -33,21 +33,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetches the asset identified by the given \url, and continues to stream updates about the asset
 /// in the returned signal.
 ///
-/// The returned signal sends \c id<PTNObject> objects that represent the asset, on an arbitrary
+/// The returned signal sends \c id<PTNDescriptor> objects that represent the asset, on an arbitrary
 /// thread. The signal can be infinite or contain a single value, depending on the capabilities of
 /// the asset manager:
 ///
 ///   - If the manager is capable of observing the fetched asset and reporting changes, the signal
 ///     will be infinite, where each value is sent upon asset update.
-///   - If the manager is not capable of such observation, a single \c id<PTNObject> value will be
-///     sent upon fetch, and then the signal will complete.
+///   - If the manager is not capable of such observation, a single \c id<PTNDescriptor> value will
+///     be sent upon fetch, and then the signal will complete.
 ///
-/// @return RACSignal<id<PTNObject>>.
+/// @return RACSignal<id<PTNDescriptor>>.
 - (RACSignal *)fetchAssetWithURL:(NSURL *)url;
 
-/// Fetches the image which is backed by the given \c object. For asset objects, the returned image
-/// is the image represented by the asset. For album objects, the returned image is a representative
-/// image for that album (which is usually the first or last asset in that album).
+/// Fetches the image which is backed by the given \c descriptor. For asset descriptors, the
+/// returned image is the image represented by the asset. For album descriptors, the returned image
+/// is a representative image for that album (which is usually the first or last asset in that
+/// album).
 ///
 /// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
 /// final result is sent and errs if an error occurred while fetching the image. The result type
@@ -58,10 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Disposal of the returned signal will abort the current image fetch operation, if in progress.
 ///
 /// @return RACSignal<PTNProgress>.
-- (RACSignal *)fetchImageWithObject:(id<PTNObject>)object
-                         targetSize:(CGSize)targetSize
-                        contentMode:(PTNImageContentMode)contentMode
-                            options:(PTNImageFetchOptions *)options;
+- (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
+                             targetSize:(CGSize)targetSize
+                            contentMode:(PTNImageContentMode)contentMode
+                                options:(PTNImageFetchOptions *)options;
 
 @end
 
