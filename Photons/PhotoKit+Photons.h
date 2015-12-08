@@ -7,10 +7,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PHAsset (Photons) <PTNDescriptor>
+@interface PHAsset (Photons) <PTNAssetDescriptor>
 @end
 
-@interface PHCollection (Photons) <PTNDescriptor>
+@interface PHCollection (Photons) <PTNAlbumDescriptor>
 @end
 
 NS_ASSUME_NONNULL_END

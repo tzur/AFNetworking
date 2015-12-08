@@ -13,12 +13,25 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSURL ptn_photoKitAssetURLWithAsset:self];
 }
 
+- (nullable NSString *)localizedTitle {
+  return nil;
+}
+
 @end
 
 @implementation PHCollection (Photons)
 
 - (NSURL *)ptn_identifier {
   return [NSURL ptn_photoKitAlbumURLWithCollection:self];
+}
+
+- (NSUInteger)assetCount {
+  if (![self isKindOfClass:[PHAssetCollection class]]) {
+    return PTNNotFound;
+  }
+  
+  NSUInteger estimatedAssetCount = [(PHAssetCollection *)self estimatedAssetCount];
+  return estimatedAssetCount != NSNotFound ? estimatedAssetCount : PTNNotFound;
 }
 
 @end
