@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   options.deliveryMode = self.photoKitDeliveryMode;
   options.resizeMode = self.photoKitResizeMode;
+  options.networkAccessAllowed = YES;
 
   return options;
 }
