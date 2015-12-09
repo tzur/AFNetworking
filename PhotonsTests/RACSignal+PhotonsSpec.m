@@ -63,6 +63,31 @@ context(@"ptn_replayLastLazily", ^{
     LLSignalTestRecorder *recorder = [lastLazily testRecorder];
     expect(recorder.values).to.equal(@[@3]);
   });
+
+  it(@"should not dispose its subscription to the source signal when its subscribers dispose", ^{
+    __block BOOL wasDisposed = NO;
+    __block NSMutableArray *subscribers = [NSMutableArray array];
+    RACSignal *sourceSignal =
+        [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+          [subscribers addObject:subscriber];
+          
+          return [RACDisposable disposableWithBlock:^{
+            [subscribers removeObject:subscriber];
+            wasDisposed = YES;
+          }];
+        }];
+
+    RACDisposable *sourceSubscriber = [sourceSignal subscribeNext:^(id __unused x) {}];
+    RACDisposable *lastLazilySubscriber = [[sourceSignal
+        ptn_replayLastLazily]
+        subscribeNext:^(id __unused x) {}];
+
+    [lastLazilySubscriber dispose];
+    expect(wasDisposed).to.beFalsy();
+
+    [sourceSubscriber dispose];
+    expect(wasDisposed).to.beTruthy();
+  });
 });
 
 SpecEnd
