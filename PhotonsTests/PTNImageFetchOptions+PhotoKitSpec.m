@@ -14,7 +14,7 @@ it(@"should create photokit options from photons options", ^{
   expect(photoKitOptions.version).to.equal(PHImageRequestOptionsVersionCurrent);
   expect(photoKitOptions.deliveryMode).to.equal(PHImageRequestOptionsDeliveryModeFastFormat);
   expect(photoKitOptions.resizeMode).to.equal(PHImageRequestOptionsResizeModeFast);
-  expect(photoKitOptions.networkAccessAllowed).to.beFalsy();
+  expect(photoKitOptions.networkAccessAllowed).to.beTruthy();
   expect(photoKitOptions.synchronous).to.beFalsy();
   expect(photoKitOptions.progressHandler).to.beNil();
 });
