@@ -58,9 +58,6 @@ objection_register_singleton([LTGPUQueue class]);
 - (void)dealloc {
   // Releasing a suspended dispatch queue will result in an exception.
   [self resume];
-
-  // Wait until all the tasks finished executing.
-  dispatch_group_wait(self.group, DISPATCH_TIME_FOREVER);
 }
 
 - (void)createQueues {
