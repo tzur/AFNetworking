@@ -39,16 +39,14 @@ NS_ASSUME_NONNULL_BEGIN
   // only afterwards subscribes itself the the underlying signal.
   // Defer with \c RACMulticastConnection can actually achieve this with \c autoconnect but it
   // permanently stops subscribing when it reaches 0 subscribers.
+  //
+  // @note Unlike \c replayLazily but rather like \c replayLast this operator doesn't naturally
+  // dispose of its internal subscribtion and it can be disposed only if the source signal completes
+  // or errs.
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    RACCompoundDisposable *compoundDisposable = [RACCompoundDisposable compoundDisposable];
-
-    RACDisposable *signalDisposable = [connection.signal subscribe:subscriber];
-    [compoundDisposable addDisposable:signalDisposable];
-    
-    RACDisposable *connectionDisposable = [connection connect];
-    [compoundDisposable addDisposable:connectionDisposable];
-    
-    return compoundDisposable;
+    RACDisposable *disposable = [connection.signal subscribe:subscriber];
+    [connection connect];
+    return disposable;
   }] setNameWithFormat:@"[%@] -ptn_replayLastLazily", self.name];
 }
 
