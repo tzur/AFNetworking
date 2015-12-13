@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */; };
+		259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */; };
+		259FF7E71C14921800362CDD /* LTBipartiteGraphSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */; };
 		282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 282CF089187B030A00904F07 /* NSObject+AddToContainer.m */; };
 		28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2836211F186C58DC00665ED9 /* LTCGExtensions.m */; };
 		2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */; };
@@ -327,6 +330,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBipartiteGraph.h; sourceTree = "<group>"; };
+		259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraph.mm; sourceTree = "<group>"; };
+		259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraphSpec.mm; sourceTree = "<group>"; };
 		282CF088187B030A00904F07 /* NSObject+AddToContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AddToContainer.h"; sourceTree = "<group>"; };
 		282CF089187B030A00904F07 /* NSObject+AddToContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AddToContainer.m"; sourceTree = "<group>"; };
 		2836211E186C58DC00665ED9 /* LTCGExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGExtensions.h; sourceTree = "<group>"; };
@@ -854,6 +860,7 @@
 			isa = PBXGroup;
 			children = (
 				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
+				259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */,
 				5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */,
 				5067223019EA811A003AF8D2 /* LTQueueSpec.mm */,
 				28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */,
@@ -866,6 +873,8 @@
 			children = (
 				8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */,
 				8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */,
+				259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */,
+				259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */,
 				5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */,
 				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
@@ -903,6 +912,7 @@
 				8B7C6CA51B5282AC00B90DBE /* NSFileManager+LTKit.h in Headers */,
 				8B87203C1924A76600517F2E /* LTLogger.h in Headers */,
 				8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */,
+				259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */,
 				8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */,
 				8B8720401924A76700517F2E /* LTPropertyMacros.h in Headers */,
 				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
@@ -1198,6 +1208,7 @@
 				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8B87D5371C04BA940005410A /* NSBundle+Path.mm in Sources */,
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
+				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */,
@@ -1229,6 +1240,7 @@
 				8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */,
 				8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */,
 				8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */,
+				259FF7E71C14921800362CDD /* LTBipartiteGraphSpec.mm in Sources */,
 				8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */,
 				28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
