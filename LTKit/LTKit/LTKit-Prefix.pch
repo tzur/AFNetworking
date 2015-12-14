@@ -10,6 +10,7 @@
   #import <memory>
   #import <numeric>
   #import <string>
+  #import <unordered_map>
   #import <vector>
 #endif
 
