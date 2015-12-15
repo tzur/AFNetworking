@@ -87,7 +87,7 @@ typedef struct {
   // Solving for \c k: p + k * d + m * s <= interval.min() <=> k <= (interval.min() - p - m * s) / d
   NSInteger k = std::floor(interval.min() - firstValueOfSequence) / self.valueDistance;
   LTAssert(k >= 0, @"Computed value (%ld) must be non-negative", (long)k);
-  LTAssert(k < (NSInteger)self.numberOfValuesPerSequence,
+  LTAssert((NSUInteger)k < self.numberOfValuesPerSequence,
            @"Computed value (%ld) must be smaller than number of values per sequence (%lu)",
            (long)k, (unsigned long)self.numberOfValuesPerSequence);
 
