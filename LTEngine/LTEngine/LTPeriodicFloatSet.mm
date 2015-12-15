@@ -86,16 +86,16 @@ typedef struct {
 
   // Solving for \c k: p + k * d + m * s <= interval.min() <=> k <= (interval.min() - p - m * s) / d
   NSInteger k = std::floor(interval.min() - firstValueOfSequence) / self.valueDistance;
-  LTAssert(k >= 0, @"Computed value (%d) must be non-negative", k);
+  LTAssert(k >= 0, @"Computed value (%ld) must be non-negative", (long)k);
   LTAssert(k < (NSInteger)self.numberOfValuesPerSequence,
-           @"Computed value (%d) must be smaller than number of values per sequence (%d)", k,
-           self.numberOfValuesPerSequence);
+           @"Computed value (%ld) must be smaller than number of values per sequence (%lu)",
+           (long)k, (unsigned long)self.numberOfValuesPerSequence);
 
   CGFloat startValue = self.pivotValue + k * self.valueDistance + m * self.distanceOfFirstValues;
   LTAssert(startValue <= interval.min(),
-           @"Value (%f) computed for p = %f, k = %d, d = %f, m = %d, s = %f must be smaller than "
-           "minimum value of interval (%f)", startValue, self.pivotValue, k, self.valueDistance, m,
-           self.distanceOfFirstValues, interval.min());
+           @"Value (%f) computed for p = %f, k = %ld, d = %f, m = %ld, s = %f must be smaller than "
+           "minimum value of interval (%f)", startValue, self.pivotValue, (long)k,
+           self.valueDistance, (long)m, self.distanceOfFirstValues, interval.min());
 
   return {.startValue = startValue, .numberOfRemainingValues = self.numberOfValuesPerSequence - k};
 }
