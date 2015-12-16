@@ -1,17 +1,13 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-@class LTFboPool, LTGLContext;
-
 #import <OpenGLES/ES2/glext.h>
 
-#import "LTVector.h"
+#import "LTGLEnums.h"
 
-/// Supported OpenGL ES API versions.
-typedef NS_ENUM(NSUInteger, LTGLContextAPIVersion) {
-  LTGLContextAPIVersion2 = kEAGLRenderingAPIOpenGLES2,
-  LTGLContextAPIVersion3 = kEAGLRenderingAPIOpenGLES3
-};
+@class LTFboPool, LTGLContext;
+
+struct LTVector;
 
 /// Supported blending functions.
 typedef NS_ENUM(GLenum, LTGLContextBlendFunc) {
@@ -88,7 +84,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Initializes a context with a new \c EAGLContext of version \c version using the given \c
 /// sharegroup. If \c version is not supported, this initializer will return \c nil.
 - (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup
-                           version:(LTGLContextAPIVersion)version;
+                           version:(LTGLVersion)version;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
@@ -102,7 +98,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 - (void)clearWithColor:(LTVector4)color;
 
 /// Current version of this context.
-@property (readonly, nonatomic) LTGLContextAPIVersion version;
+@property (readonly, nonatomic) LTGLVersion version;
 
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;

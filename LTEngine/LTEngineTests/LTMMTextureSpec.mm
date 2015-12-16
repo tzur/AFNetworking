@@ -43,8 +43,7 @@ static NSString * const kLTMMTextureExamples = @"LTMMTextureExamples";
 
 sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
   beforeEach(^{
-    LTGLContextAPIVersion version = (LTGLContextAPIVersion)[contextInfo[@"version"]
-                                                            unsignedIntegerValue];
+    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
     LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
     [LTGLContext setCurrentContext:context];
   });
@@ -253,7 +252,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
   });
 });
 
-itShouldBehaveLike(kLTMMTextureExamples, @{@"version": @(LTGLContextAPIVersion2)});
-itShouldBehaveLike(kLTMMTextureExamples, @{@"version": @(LTGLContextAPIVersion3)});
+itShouldBehaveLike(kLTMMTextureExamples, @{@"version": @(LTGLVersion2)});
+itShouldBehaveLike(kLTMMTextureExamples, @{@"version": @(LTGLVersion3)});
 
 SpecEnd
