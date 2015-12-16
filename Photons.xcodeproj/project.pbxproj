@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		84146FB51C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */; };
+		84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84195F371C1EC8740081EC68 /* PTNImageContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84195F3A1C1EC8740081EC68 /* PTNImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F381C1EC8740081EC68 /* PTNImageContainer.m */; };
+		84195F3C1C1ECBFA0081EC68 /* PTNImageContainerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
 		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
@@ -302,6 +305,9 @@
 
 /* Begin PBXFileReference section */
 		84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PhotoKit+PhotonsSpec.m"; sourceTree = "<group>"; };
+		84195F371C1EC8740081EC68 /* PTNImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageContainer.h; sourceTree = "<group>"; };
+		84195F381C1EC8740081EC68 /* PTNImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainer.m; sourceTree = "<group>"; };
+		84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainerSpec.m; sourceTree = "<group>"; };
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
@@ -607,6 +613,8 @@
 				8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */,
 				8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */,
 				8B2FD0851B00E81100757B1F /* PTNDescriptor.h */,
+				84195F371C1EC8740081EC68 /* PTNImageContainer.h */,
+				84195F381C1EC8740081EC68 /* PTNImageContainer.m */,
 				8BAB95271B82361600B25392 /* PTNImageContentMode.h */,
 				8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */,
 				8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */,
@@ -750,6 +758,7 @@
 			children = (
 				8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */,
 				8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */,
+				84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */,
 				8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */,
 				8BCF58551BCD0A74001EE2ED /* PTNImageMetadataSpec.mm */,
 				8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */,
@@ -888,6 +897,7 @@
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
 				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
 				8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */,
+				84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */,
 				8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */,
 				8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */,
 				8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */,
@@ -1242,6 +1252,7 @@
 				8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8B2FD0DE1B09CD0800757B1F /* EXPMatchers+sendValues.m in Sources */,
+				84195F3C1C1ECBFA0081EC68 /* PTNImageContainerSpec.m in Sources */,
 				8B2FD0D81B09CD0800757B1F /* EXPMatchers+finish.m in Sources */,
 				8B5619681B654515006B0DA0 /* PTNProgressSpec.m in Sources */,
 				8B5619661B654227006B0DA0 /* RACStream+PhotonsSpec.m in Sources */,
@@ -1274,6 +1285,7 @@
 				8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */,
 				8BAFDCB71B0DEE2B003FB8F5 /* PTNPhotoKitAlbum.m in Sources */,
 				8BAFDCB81B0DEE2B003FB8F5 /* PTNPhotoKitAssetManager.m in Sources */,
+				84195F3A1C1EC8740081EC68 /* PTNImageContainer.m in Sources */,
 				8BAFDCB91B0DEE2B003FB8F5 /* NSURL+PhotoKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
