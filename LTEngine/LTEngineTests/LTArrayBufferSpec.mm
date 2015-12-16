@@ -92,8 +92,7 @@ sharedExamplesFor(kLTArrayBufferModificationExamples, ^(NSDictionary *dict) {
 
 sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
   beforeEach(^{
-    LTGLContextAPIVersion version = (LTGLContextAPIVersion)[contextInfo[@"version"]
-                                                            unsignedIntegerValue];
+    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
     LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
     [LTGLContext setCurrentContext:context];
   });
@@ -301,7 +300,7 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
   });
 });
 
-itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLContextAPIVersion2)});
-itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLContextAPIVersion3)});
+itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion2)});
+itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion3)});
 
 SpecEnd

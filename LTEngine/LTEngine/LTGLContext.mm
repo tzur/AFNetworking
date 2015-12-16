@@ -95,8 +95,7 @@ typedef struct {
   return self;
 }
 
-- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup
-                           version:(LTGLContextAPIVersion)version {
+- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup version:(LTGLVersion)version {
   if (self = [super init]) {
     self.context = [self createEAGLContextWithSharegroup:sharegroup version:version];
     if (!self.context) {
@@ -108,18 +107,16 @@ typedef struct {
 }
 
 - (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
-  EAGLContext *context = [self createEAGLContextWithSharegroup:sharegroup
-                                                       version:LTGLContextAPIVersion3];
+  EAGLContext *context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion3];
   if (!context) {
-    context = [self createEAGLContextWithSharegroup:sharegroup
-                                            version:LTGLContextAPIVersion2];
+    context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion2];
   }
   LTAssert(context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
   return context;
 }
 
 - (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
-                                         version:(LTGLContextAPIVersion)version {
+                                         version:(LTGLVersion)version {
   return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version
                                sharegroup:sharegroup];
 }
@@ -158,14 +155,14 @@ typedef struct {
   return [[self class] currentContext] == self;
 }
 
-- (LTGLContextAPIVersion)version {
+- (LTGLVersion)version {
   switch (self.context.API) {
     case kEAGLRenderingAPIOpenGLES2:
-      return LTGLContextAPIVersion2;
+      return LTGLVersion2;
     case kEAGLRenderingAPIOpenGLES3:
-      return LTGLContextAPIVersion3;
+      return LTGLVersion3;
     default:
-      LTAssert(NO, @"Unknwon API version being used: %lu", (unsigned long)self.context.API);
+      LTAssert(NO, @"Unknown API version being used: %lu", (unsigned long)self.context.API);
   }
 }
 
@@ -281,10 +278,10 @@ typedef struct {
   LTParameterAssert(openGLES3);
 
   switch (self.version) {
-    case LTGLContextAPIVersion2:
+    case LTGLVersion2:
       openGLES2();
       break;
-    case LTGLContextAPIVersion3:
+    case LTGLVersion3:
       openGLES3();
       break;
   }
@@ -487,7 +484,7 @@ typedef struct {
 }
 
 - (BOOL)supportsRGTextures {
-  return self.version == LTGLContextAPIVersion3 ||
+  return self.version == LTGLVersion3 ||
       [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
 }
 

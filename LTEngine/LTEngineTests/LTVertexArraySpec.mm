@@ -142,8 +142,7 @@ static NSString * const kLTVertexArrayExamples = @"LTVertexArrayExamples";
 
 sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
   beforeEach(^{
-    LTGLContextAPIVersion version = (LTGLContextAPIVersion)[contextInfo[@"version"]
-                                                            unsignedIntegerValue];
+    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
     LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
     [LTGLContext setCurrentContext:context];
   });
@@ -423,7 +422,7 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
   });
 });
 
-itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLContextAPIVersion2)});
-itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLContextAPIVersion3)});
+itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLVersion2)});
+itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLVersion3)});
 
 SpecEnd
