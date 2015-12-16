@@ -48,6 +48,16 @@ sharedExamplesFor(kLTPrimitiveParameterizedObjectFactoryExamples, ^(NSDictionary
     });
   });
 
+  context(@"validity of properties", ^{
+    it(@"should have correct properties", ^{
+      expect([[factory class] numberOfRequiredValues]).to.beGreaterThan(0);
+      expect([[factory class] intrinsicParametricRange].length).to.beGreaterThanOrEqualTo(1);
+      expect([[factory class] intrinsicParametricRange].location +
+             [[factory class] intrinsicParametricRange].length)
+          .toNot.beGreaterThan([[factory class] numberOfRequiredValues]);
+    });
+  });
+
   context(@"computation of primitive parameterized objects", ^{
     context(@"invalid API calls", ^{
       it(@"should raise when attempting to compute object from values with invalid count", ^{

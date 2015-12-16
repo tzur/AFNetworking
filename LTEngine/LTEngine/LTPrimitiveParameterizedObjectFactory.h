@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:(CGFloats)values;
 
 /// Returns the number of values required to create a primitive parameterized object using this
-/// factory.
+/// factory. Returned number is positive.
 + (NSUInteger)numberOfRequiredValues;
 
 /// Returns the range, in terms of the input \c values array, representing the intrinsic parametric
@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// the returned primitive parameterized objects. \c A equals
 /// \c values[intrinsicParametricRange.location] and \c B equals
 /// \c values[intrinsicParametricRange.location + intrinsicParametricRange.length - 1].
+///
+/// The \c length of the returned range is greater than \c 0. The sum of the \c location and the
+/// \c length of the returned range are smaller than or equal to \c numberOfRequiredValues.
 + (NSRange)intrinsicParametricRange;
 
 @end
