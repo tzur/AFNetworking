@@ -109,6 +109,7 @@
 		8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BBE8942183506E4006C58AA /* LTTestUtils.mm */; };
 		8BCA6735182FD8EA003FCB65 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCA672E182FD8EA003FCB65 /* libExpecta.a */; };
 		8BCF9AE319E3E60000228390 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCF9AE219E3E5F100228390 /* libSpecta.a */; };
+		8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */; };
 		8BEE674319596DE7005E4D53 /* LTEnumRegistrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */; };
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
@@ -390,6 +391,7 @@
 		8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3DEC1818296DE500EA0C1A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8B4AD2761C20375E00E3CBD3 /* LTHashExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTHashExtensions.h; sourceTree = "<group>"; };
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/testing/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -447,6 +449,7 @@
 		8BBE8942183506E4006C58AA /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTestUtils.mm; sourceTree = "<group>"; };
 		8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHashExtensionsSpec.mm; sourceTree = "<group>"; };
 		8BEE674219596DE7005E4D53 /* LTEnumRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumRegistrySpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
@@ -661,6 +664,7 @@
 				503442A51A0FB8AF008E0ED3 /* LTCFExtensions.h */,
 				2836211E186C58DC00665ED9 /* LTCGExtensions.h */,
 				2836211F186C58DC00665ED9 /* LTCGExtensions.m */,
+				8B4AD2761C20375E00E3CBD3 /* LTHashExtensions.h */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
@@ -695,6 +699,7 @@
 			children = (
 				503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */,
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
+				8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 			);
 			name = Extensions;
@@ -1251,6 +1256,7 @@
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
+				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
 				8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */,
