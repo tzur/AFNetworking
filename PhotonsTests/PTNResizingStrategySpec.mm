@@ -5,9 +5,13 @@
 
 SpecBegin(PTNIdentityResizingStrategy)
 
-it(@"should return correct output size", ^{
-  PTNIdentityResizingStrategy *strategy = [[PTNIdentityResizingStrategy alloc] init];
+__block PTNIdentityResizingStrategy *strategy;
 
+beforeEach(^{
+  strategy = [[PTNIdentityResizingStrategy alloc] init];
+});
+
+it(@"should return correct output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(100, 100)]).to.equal(CGSizeMake(100, 100));
   expect([strategy sizeForInputSize:CGSizeMake(200, 50)]).to.equal(CGSizeMake(200, 50));
   expect([strategy sizeForInputSize:CGSizeMake(50, 200)]).to.equal(CGSizeMake(50, 200));
@@ -17,10 +21,13 @@ SpecEnd
 
 SpecBegin(PTNMaxPixelsResizingStrategy)
 
-it(@"should return correct output size", ^{
-  PTNMaxPixelsResizingStrategy *strategy = [[PTNMaxPixelsResizingStrategy alloc]
-                                            initWithMaxPixels:1024 * 1024];
+__block PTNMaxPixelsResizingStrategy *strategy;
 
+beforeEach(^{
+  strategy = [[PTNMaxPixelsResizingStrategy alloc] initWithMaxPixels:1024 * 1024];
+});
+
+it(@"should return correct output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(1024, 1024)]).to.equal(CGSizeMake(1024, 1024));
   expect([strategy sizeForInputSize:CGSizeMake(512, 2048)]).to.equal(CGSizeMake(512, 2048));
   expect([strategy sizeForInputSize:CGSizeMake(2048, 2048)]).to.equal(CGSizeMake(1024, 1024));
