@@ -41,6 +41,42 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSCopying protocol", ^{
+  __block LTReparameterization *copyOfReparameterization;
+
+  beforeEach(^{
+    reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1, 2}];
+    copyOfReparameterization = [reparameterization copy];
+  });
+
+  it(@"should return a copy", ^{
+    expect(copyOfReparameterization).to.beMemberOf([reparameterization class]);
+  });
+
+  it(@"should return a copy that is not identical to itself", ^{
+    expect(copyOfReparameterization).toNot.beIdenticalTo(reparameterization);
+  });
+
+  it(@"should return a copy with correct mapping", ^{
+    expect([copyOfReparameterization floatForParametricValue:0])
+        .to.equal([reparameterization floatForParametricValue:0]);
+    expect([copyOfReparameterization floatForParametricValue:0.5])
+        .to.equal([reparameterization floatForParametricValue:0.5]);
+    expect([copyOfReparameterization floatForParametricValue:1])
+        .to.equal([reparameterization floatForParametricValue:1]);
+  });
+
+  it(@"should return a copy with correct minimum parametric value", ^{
+    expect(copyOfReparameterization.minParametricValue)
+        .to.equal(reparameterization.minParametricValue);
+  });
+
+  it(@"should return a copy with correct maximum parametric value", ^{
+    expect(copyOfReparameterization.maxParametricValue)
+        .to.equal(reparameterization.maxParametricValue);
+  });
+});
+
 context(@"LTPrimitiveParameterizedObject", ^{
   it(@"should have the correct minParametricValue and maxParametricValue", ^{
     reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1}];

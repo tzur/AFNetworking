@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// In particular, \c minParametricValue maps to \c x, \c maxParametricValue maps to \c y and
 /// parametric values outside the intrinsic range provide the corresponding values outside the
 /// interval \c [x, y].
-@protocol LTPrimitiveParameterizedObject
+@protocol LTPrimitiveParameterizedObject <NSCopying, NSObject>
 
 /// Returns the mapped value for the given parametric \c value.
 - (CGFloat)floatForParametricValue:(CGFloat)parametricValue;

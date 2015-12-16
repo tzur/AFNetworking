@@ -17,6 +17,10 @@
 
 @synthesize parameterizationKeys = _parameterizationKeys;
 
+- (id)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
+}
+
 - (LTParameterizationKeyToValue *)mappingForParametricValue:(__unused CGFloat)value {
   return nil;
 }

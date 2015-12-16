@@ -31,7 +31,7 @@ typedef NSDictionary<NSString *, NSArray<NSNumber *> *> LTParameterizationKeyToV
 /// \c P, \c Q, \c R, and \c S, the intrinsic parametric range represents the segment from \c Q to
 /// \c R. In particular, \c minParametricValue maps to \c Q and \c maxParametricValue maps to \c R
 /// and parametric values outside the intrinsic range provide the extrapolated corresponding points.
-@protocol LTParameterizedObject <NSObject>
+@protocol LTParameterizedObject <NSCopying, NSObject>
 
 /// Returns the mapping from all \c parameterizationKeys to the corresponding real values, for the
 /// given parametric \c value.

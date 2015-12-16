@@ -64,6 +64,34 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSCopying protocol", ^{
+  __block LTCompoundParameterizedObject *copyOfObject;
+
+  beforeEach(^{
+    copyOfObject = [object copy];
+  });
+
+  it(@"should return a copy", ^{
+    expect(copyOfObject).to.beMemberOf([object class]);
+  });
+
+  it(@"should return a copy that is not identical to itself", ^{
+    expect(copyOfObject).toNot.beIdenticalTo(object);
+  });
+
+  it(@"should return a copy with correct parameterization keys", ^{
+    expect(copyOfObject.parameterizationKeys).to.equal(object.parameterizationKeys);
+  });
+
+  it(@"should return a copy with correct minimum parametric value", ^{
+    expect(copyOfObject.minParametricValue).to.equal(object.minParametricValue);
+  });
+
+  it(@"should return a copy with correct maximum parametric value", ^{
+    expect(copyOfObject.maxParametricValue).to.equal(object.maxParametricValue);
+  });
+});
+
 context(@"LTParameterizedObject protocol", ^{
   __block NSSet *expectedKeys;
 

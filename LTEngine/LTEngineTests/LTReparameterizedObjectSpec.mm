@@ -14,6 +14,10 @@
 
 @implementation LTReparameterizedObjectTestObject
 
+- (id)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
+}
+
 - (LTParameterizationKeyToValue *)mappingForParametricValue:(CGFloat)value {
   self.receivedValues = {value};
   return self.returnedKeyToValue;
@@ -75,6 +79,41 @@ context(@"initialization", ^{
     expect(reparameterizedObject).toNot.beNil();
     expect(reparameterizedObject.parameterizedObject).to.beIdenticalTo(parameterizedObject);
     expect(reparameterizedObject.reparameterization).to.beIdenticalTo(reparameterizationMock);
+  });
+});
+
+context(@"NSCopying protocol", ^{
+  __block LTReparameterizedObject *copyOfReparameterizedObject;
+
+  beforeEach(^{
+    id copyOfReparameterizationMock = OCMClassMock([LTReparameterization class]);
+    OCMStub([reparameterizationMock copy]).andReturn(copyOfReparameterizationMock);
+    OCMStub([copyOfReparameterizationMock minParametricValue]).andReturn(3);
+    OCMStub([copyOfReparameterizationMock maxParametricValue]).andReturn(4);
+    copyOfReparameterizedObject = [reparameterizedObject copy];
+  });
+
+  it(@"should return a copy", ^{
+    expect(copyOfReparameterizedObject).to.beMemberOf([reparameterizedObject class]);
+  });
+
+  it(@"should return a copy that is not identical to itself", ^{
+    expect(copyOfReparameterizedObject).toNot.beIdenticalTo(reparameterizedObject);
+  });
+
+  it(@"should return a copy with correct parameterization keys", ^{
+    expect(copyOfReparameterizedObject.parameterizationKeys)
+        .to.equal(reparameterizedObject.parameterizationKeys);
+  });
+
+  it(@"should return a copy with correct minimum parametric value", ^{
+    expect(copyOfReparameterizedObject.minParametricValue)
+        .to.equal(reparameterizedObject.minParametricValue);
+  });
+
+  it(@"should return a copy with correct maximum parametric value", ^{
+    expect(copyOfReparameterizedObject.maxParametricValue)
+        .to.equal(reparameterizedObject.maxParametricValue);
   });
 });
 

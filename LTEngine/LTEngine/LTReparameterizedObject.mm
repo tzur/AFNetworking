@@ -23,6 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (id)copyWithZone:(nullable NSZone __unused *)zone {
+  return [[[self class] alloc] initWithParameterizedObject:[self.parameterizedObject copy]
+                                        reparameterization:[self.reparameterization copy]];
+}
+
+#pragma mark -
 #pragma mark LTParameterizedObject - Methods
 #pragma mark -
 

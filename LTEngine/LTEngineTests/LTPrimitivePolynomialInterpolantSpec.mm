@@ -31,6 +31,12 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSCopying protocol", ^{
+  it(@"should return itself as copy", ^{
+    expect([interpolant copy]).to.beIdenticalTo(interpolant);
+  });
+});
+
 context(@"LTPrimitiveParameterizedObject protocol", ^{
   it(@"should have the correct intrinsic parametric range", ^{
     expect(interpolant.minParametricValue).to.equal(0);

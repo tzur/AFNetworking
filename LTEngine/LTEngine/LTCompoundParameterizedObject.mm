@@ -64,6 +64,14 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 }
 
 #pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (id)copyWithZone:(nullable NSZone __unused *)zone {
+  return [[[self class] alloc] initWithMapping:[self.mapping copy]];
+}
+
+#pragma mark -
 #pragma mark LTParameterizedObject
 #pragma mark -
 
