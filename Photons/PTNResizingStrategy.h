@@ -19,6 +19,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Factory class for convenient creation of various basic \c PTNResizingStrategy compliant objects.
+@interface PTNResizingStrategy : NSObject
+
+/// Returns a resizing strategy that returns the input size.
++ (id<PTNResizingStrategy>)identity;
+
+/// Returns a resizing strategy that enforces that the maximal number of pixels of the returned size
+/// will not be larger than a given limit.
++ (id<PTNResizingStrategy>)maxPixels:(NSUInteger)maxPixels;
+
+/// Returns a resizing strategy for calculating an output size in an aspect fit manner.
++ (id<PTNResizingStrategy>)aspectFit:(CGSize)size;
+
+/// Returns a resizing strategy for calculating an output size in an aspect fill manner.
++ (id<PTNResizingStrategy>)aspectFill:(CGSize)size;
+
+/// Returns a resizing strategy for calculating an output size in the manner specified in
+/// \c contentMode.
++ (id<PTNResizingStrategy>)contentMode:(PTNImageContentMode)contentMode size:(CGSize)size;
+
+@end
+
 /// Resizing strategy that returns the input size.
 @interface PTNIdentityResizingStrategy : NSObject <PTNResizingStrategy>
 @end

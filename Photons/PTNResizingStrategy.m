@@ -5,6 +5,36 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@implementation PTNResizingStrategy
+
++ (id<PTNResizingStrategy>)identity {
+  return [[PTNIdentityResizingStrategy alloc] init];
+}
+
++ (id<PTNResizingStrategy>)maxPixels:(NSUInteger)maxPixels {
+  return [[PTNMaxPixelsResizingStrategy alloc] initWithMaxPixels:maxPixels];
+}
+
++ (id<PTNResizingStrategy>)aspectFit:(CGSize)size {
+  return [[PTNAspectFitResizingStrategy alloc] initWithSize:size];
+}
+
++ (id<PTNResizingStrategy>)aspectFill:(CGSize)size {
+  return [[PTNAspectFillResizingStrategy alloc] initWithSize:size];
+}
+
++ (id<PTNResizingStrategy>)contentMode:(PTNImageContentMode)contentMode
+                                       size:(CGSize)size {
+  switch (contentMode) {
+    case PTNImageContentModeAspectFill:
+      return [[PTNAspectFillResizingStrategy alloc] initWithSize:size];
+    case PTNImageContentModeAspectFit:
+      return [[PTNAspectFitResizingStrategy alloc] initWithSize:size];
+  }
+}
+
+@end
+
 @implementation PTNIdentityResizingStrategy
 
 - (CGSize)sizeForInputSize:(CGSize)size {

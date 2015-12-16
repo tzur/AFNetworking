@@ -3,6 +3,46 @@
 
 #import "PTNResizingStrategy.h"
 
+SpecBegin(PTNResizingStrategy)
+
+it(@"should return correct identity strategy", ^{
+  id<PTNResizingStrategy> strategy = [PTNResizingStrategy identity];
+
+  expect([strategy isKindOfClass:[PTNIdentityResizingStrategy class]]).to.beTruthy();
+});
+
+it(@"should return correct max pixels strategy", ^{
+  id<PTNResizingStrategy> strategy = [PTNResizingStrategy maxPixels:1024 * 1024];
+
+  expect([strategy isKindOfClass:[PTNMaxPixelsResizingStrategy class]]).to.beTruthy();
+  expect([strategy sizeForInputSize:CGSizeMake(1024, 4096)]).to.equal(CGSizeMake(512, 2048));
+});
+
+it(@"should return correct aspect fit strategy", ^{
+  id<PTNResizingStrategy> strategy = [PTNResizingStrategy aspectFit:CGSizeMake(20, 10)];
+
+  expect([strategy isKindOfClass:[PTNAspectFitResizingStrategy class]]).to.beTruthy();
+  expect([strategy sizeForInputSize:CGSizeMake(40, 10)]).to.equal(CGSizeMake(20, 5));
+});
+
+it(@"should return correct aspect fit strategy", ^{
+  id<PTNResizingStrategy> strategy = [PTNResizingStrategy aspectFill:CGSizeMake(20, 10)];
+
+  expect([strategy isKindOfClass:[PTNAspectFillResizingStrategy class]]).to.beTruthy();
+  expect([strategy sizeForInputSize:CGSizeMake(40, 10)]).to.equal(CGSizeMake(40, 10));
+});
+
+it(@"should return correct content mode strategy", ^{
+  id<PTNResizingStrategy> strategy = [PTNResizingStrategy
+                                      contentMode:PTNImageContentModeAspectFill
+                                      size:CGSizeMake(20, 10)];
+
+  expect([strategy isKindOfClass:[PTNAspectFillResizingStrategy class]]).to.beTruthy();
+  expect([strategy sizeForInputSize:CGSizeMake(40, 10)]).to.equal(CGSizeMake(40, 10));
+});
+
+SpecEnd
+
 SpecBegin(PTNIdentityResizingStrategy)
 
 __block PTNIdentityResizingStrategy *strategy;
