@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
     (NSArray<ObjectType> *)objects;
 
 /// Returns the number of interpolatable objects required to create a corresponding parameterized
-/// object.
+/// object. Returned number is positive.
 - (NSUInteger)numberOfRequiredInterpolatableObjects;
 
 /// Returns the range, in terms of the \c objects provided to the
@@ -42,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 /// returns the mapping from the \c propertiesToInterpolate of
 /// \c objects[intrinsicParametricRange.location+intrinsicParametricRange.length-1] to its values.
+///
+/// The \c length of the returned range is greater than \c 0. The sum of the \c location and the
+/// \c length of the returned range are smaller than or equal to \c numberOfRequiredValues.
 - (NSRange)intrinsicParametricRange;
 
 @end
