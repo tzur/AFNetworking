@@ -8,6 +8,7 @@
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
+#import "PTNResizingStrategy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)resizeImageAtURL:(NSURL *)url toSize:(CGSize)size
                     contentMode:(PTNImageContentMode)contentMode {
+  return [self resizeImageAtURL:url
+               resizingStrategy:[PTNResizingStrategy contentMode:contentMode size:size]];
+}
+
+- (RACSignal *)resizeImageAtURL:(NSURL *)url
+               resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   if (!url.isFileURL) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
@@ -43,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSDictionary *transferredProperties = (__bridge_transfer NSDictionary *)(properties);
     CGSize inputSize = [self sizeOfImageWithProperties:transferredProperties];
+    CGSize size = [resizingStrategy sizeForInputSize:inputSize];
 
     if (inputSize.width == CGSizeNull.width || inputSize.height == CGSizeNull.height) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor url:url
@@ -56,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     CGFloat maxPixelSize = [self maxPixelSizeForInputSize:inputSize outputSize:size
-                                              contentMode:contentMode];
+                                              contentMode:resizingStrategy.contentMode];
     NSDictionary *options = @{
       (NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
       (NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxPixelSize),

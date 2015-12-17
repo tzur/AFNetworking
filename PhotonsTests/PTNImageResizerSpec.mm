@@ -3,6 +3,8 @@
 
 #import "PTNImageResizer.h"
 
+#import "PTNResizingStrategy.h"
+
 static void PTNWriteImageOfSizeToFile(CGSize size, NSString *path, UIImageOrientation orientation) {
   UIGraphicsBeginImageContext(size); {
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -57,6 +59,15 @@ context(@"portrait image", ^{
       });
       expect(signal).to.complete();
     });
+
+    it(@"should return a resized image according to given strategy", ^{
+      RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                   resizingStrategy:[PTNResizingStrategy identity]];
+      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+        return value.size.width == kOriginalSize.width && value.size.height == kOriginalSize.height;
+      });
+      expect(signal).to.complete();
+    });
   });
 
   beforeEach(^{
@@ -93,6 +104,18 @@ context(@"portrait image", ^{
       });
       expect(signal).to.complete();
     });
+
+    it(@"should return a resized image according to given strategy", ^{
+      static CGSize kTargetSize = CGSizeMake(2, 4);
+      static CGSize kExpectedSize = CGSizeMake(4, 4);
+
+      RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                   resizingStrategy:[PTNResizingStrategy aspectFill:kTargetSize]];
+      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      });
+      expect(signal).to.complete();
+    });
   });
 
   context(@"aspect fit", ^{
@@ -105,6 +128,18 @@ context(@"portrait image", ^{
 
       RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
                                         contentMode:PTNImageContentModeAspectFit];
+      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      });
+      expect(signal).to.complete();
+    });
+
+    it(@"should return a resized image according to given strategy", ^{
+      static CGSize kTargetSize = CGSizeMake(2, 3);
+      static CGSize kExpectedSize = CGSizeMake(2, 2);
+
+      RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                   resizingStrategy:[PTNResizingStrategy aspectFit:kTargetSize]];
       expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
         return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
       });

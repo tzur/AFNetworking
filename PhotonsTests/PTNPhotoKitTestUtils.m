@@ -14,6 +14,15 @@ id PTNPhotoKitCreateAssetCollection(NSString *localIdentifier) {
 id PTNPhotoKitCreateAsset(NSString *localIdentifier) {
   id asset = OCMClassMock([PHAsset class]);
   OCMStub([asset localIdentifier]).andReturn(localIdentifier);
+
+  return asset;
+}
+
+id PTNPhotoKitCreateAssetWithSize(NSString *localIdentifier, CGSize size) {
+  id asset = PTNPhotoKitCreateAsset(localIdentifier);
+  OCMStub([asset pixelWidth]).andReturn(size.width);
+  OCMStub([asset pixelHeight]).andReturn(size.height);
+
   return asset;
 }
 

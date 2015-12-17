@@ -13,6 +13,7 @@
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitObserver.h"
 #import "PTNProgress.h"
+#import "PTNResizingStrategy.h"
 #import "PhotoKit+Photons.h"
 #import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
@@ -367,14 +368,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                             targetSize:(CGSize)targetSize
-                            contentMode:(PTNImageContentMode)contentMode
+                       resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options {
   return [[[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
         return [self fetchContentForAsset:asset
-                               targetSize:targetSize
-                              contentMode:[self photoKitContentModeForContentMode:contentMode]
+                         resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                   options:[options photoKitOptions]];
       }]
       subscribeOn:RACScheduler.scheduler];
@@ -390,8 +389,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchContentForAsset:(PHAsset *)asset
-                         targetSize:(CGSize)targetSize
-                        contentMode:(PHImageContentMode)contentMode
+                   resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                             options:(PHImageRequestOptions *)options {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error,
@@ -405,6 +403,8 @@ NS_ASSUME_NONNULL_BEGIN
     // Technically, this shouldn't matter, but PHImageManager returns a nil image for front camera
     // images that were taken with burst mode with no error, unless PHImageManagerMaximumSize is
     // specified.
+    CGSize targetSize = [resizingStrategy
+                         sizeForInputSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight)];
     BOOL requestingOriginalSize = targetSize.width == asset.pixelWidth &&
         targetSize.height == asset.pixelHeight;
     CGSize requestedSize = requestingOriginalSize ? PHImageManagerMaximumSize : targetSize;
@@ -426,6 +426,8 @@ NS_ASSUME_NONNULL_BEGIN
       }
     };
 
+    PHImageContentMode contentMode =
+        [self photoKitContentModeForContentMode:resizingStrategy.contentMode];
     PHImageRequestID requestID = [self.imageManager requestImageForAsset:asset
                                                               targetSize:requestedSize
                                                              contentMode:contentMode options:options
