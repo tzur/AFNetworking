@@ -22,6 +22,7 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/PTNImageMetadata.h>
 #import <Photons/PTNImageResizer.h>
 #import <Photons/PTNProgress.h>
+#import <Photons/PTNResizingStrategy.h>
 
 /// PhotoKit.
 #import <Photons/NSURL+PhotoKit.h>

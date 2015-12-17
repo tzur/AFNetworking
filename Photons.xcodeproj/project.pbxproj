@@ -60,12 +60,12 @@
 		8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */; };
 		8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAB93511B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB93501B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m */; };
+		8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAB947D1B7C820700B25392 /* PTNResizingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */; };
+		8BAB947F1B7CB25400B25392 /* PTNResizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */; };
 		8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95231B8234F600B25392 /* PTNImageResizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB95241B8234F600B25392 /* PTNImageResizer.m */; };
 		8BAB95281B8239B400B25392 /* PTNImageContentMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95271B82361600B25392 /* PTNImageContentMode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */; };
-		8BAB947D1B7C820700B25392 /* PTNResizingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */; };
-		8BAB947F1B7CB25400B25392 /* PTNResizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */; };
 		8BAFDC991B0DED4C003FB8F5 /* Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC981B0DED4C003FB8F5 /* Photons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCB01B0DEE2B003FB8F5 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		8BAFDCB11B0DEE2B003FB8F5 /* PTNImageFetchOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */; };
@@ -403,12 +403,12 @@
 		8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+PhotonsSpec.m"; sourceTree = "<group>"; };
 		8BAB934F1B7A0EF900B25392 /* PTNPhotoKitFakeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeObserver.h; sourceTree = "<group>"; };
 		8BAB93501B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeObserver.m; sourceTree = "<group>"; };
-		8BAB95231B8234F600B25392 /* PTNImageResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageResizer.h; sourceTree = "<group>"; };
-		8BAB95241B8234F600B25392 /* PTNImageResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageResizer.m; sourceTree = "<group>"; };
-		8BAB95271B82361600B25392 /* PTNImageContentMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNImageContentMode.h; sourceTree = "<group>"; };
 		8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNResizingStrategy.h; sourceTree = "<group>"; };
 		8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNResizingStrategy.m; sourceTree = "<group>"; };
 		8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNResizingStrategySpec.mm; sourceTree = "<group>"; };
+		8BAB95231B8234F600B25392 /* PTNImageResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageResizer.h; sourceTree = "<group>"; };
+		8BAB95241B8234F600B25392 /* PTNImageResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageResizer.m; sourceTree = "<group>"; };
+		8BAB95271B82361600B25392 /* PTNImageContentMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNImageContentMode.h; sourceTree = "<group>"; };
 		8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageFetchOptions.h; sourceTree = "<group>"; };
 		8BAFDC431B0CC431003FB8F5 /* PTNImageFetchOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageFetchOptions.m; sourceTree = "<group>"; };
 		8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTNImageFetchOptions+PhotoKit.h"; sourceTree = "<group>"; };
@@ -883,8 +883,8 @@
 				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
 				8BAFDCC21B0DF781003FB8F5 /* PTNDescriptor.h in Headers */,
 				8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */,
-				8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */,
 				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
+				8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */,
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
 				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
 				8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */,
