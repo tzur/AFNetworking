@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNDescriptor;
+@protocol PTNDescriptor, PTNResizingStrategy;
 
 @class PTNImageFetchOptions;
 
@@ -60,8 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return RACSignal<PTNProgress>.
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                             targetSize:(CGSize)targetSize
-                            contentMode:(PTNImageContentMode)contentMode
+                       resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options;
 
 @end

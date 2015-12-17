@@ -7,6 +7,10 @@ id PTNPhotoKitCreateAssetCollection(NSString *name);
 /// Creates a fake PhotoKit asset.
 id PTNPhotoKitCreateAsset(NSString *localIdentifier);
 
+/// Creates a fake PhotoKit asset with \c pixelWidth and \c pixelHeight properties as specified by
+/// \c size.
+id PTNPhotoKitCreateAssetWithSize(NSString *localIdentifier, CGSize size);
+
 /// Creates a \c PHFetchResultChangeDetails that returns the \c assets array for its
 /// \c fetchResultAfterChanges property.
 PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets);

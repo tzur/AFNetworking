@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitAlbumType.h"
 #import "PTNPhotoKitFakeFetcher.h"
@@ -359,6 +360,7 @@ context(@"image fetching", ^{
 
   __block CGSize size;
   __block PTNImageFetchOptions *options;
+  __block id<PTNResizingStrategy> resizingStrategy;
 
   __block UIImage *image;
 
@@ -369,6 +371,7 @@ context(@"image fetching", ^{
     [fetcher registerAsset:asset];
 
     size = CGSizeMake(64, 64);
+    resizingStrategy = [PTNResizingStrategy aspectFill:size];
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
                                                  resizeMode:PTNImageResizeModeFast];
 
@@ -381,8 +384,7 @@ context(@"image fetching", ^{
     it(@"should fetch image", ^{
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithDescriptor:asset targetSize:size
-                                   contentMode:PTNImageContentModeAspectFill
+      expect([manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
@@ -391,8 +393,7 @@ context(@"image fetching", ^{
     it(@"should fetch downloaded image", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] image:image];
 
-      expect([manager fetchImageWithDescriptor:asset targetSize:size
-                                   contentMode:PTNImageContentModeAspectFill
+      expect([manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
@@ -402,8 +403,7 @@ context(@"image fetching", ^{
     });
 
     it(@"should cancel request upon disposal", ^{
-      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
-                                                contentMode:PTNImageContentModeAspectFill
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                                     options:options];
 
       RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
@@ -416,8 +416,7 @@ context(@"image fetching", ^{
     it(@"should error on download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
 
-      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
-                                                contentMode:PTNImageContentModeAspectFill
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                                     options:options];
 
       expect(values).will.sendValues(@[
@@ -436,9 +435,9 @@ context(@"image fetching", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[] image:image];
         
-        RACSignal *values =  [manager fetchImageWithDescriptor:asset targetSize:size
-                                                   contentMode:PTNImageContentModeAspectFill
-                                                       options:options];
+        RACSignal *values = [manager fetchImageWithDescriptor:asset
+                                             resizingStrategy:resizingStrategy
+                                                      options:options];
 
         expect(values).will.sendValuesWithCount(1);
         expect(values).willNot.deliverValuesOnMainThread();
@@ -448,8 +447,7 @@ context(@"image fetching", ^{
     it(@"should error on progress download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
 
-      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
-                                                contentMode:PTNImageContentModeAspectFill
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                                     options:options];
 
       expect(values).will.sendValues(@[
@@ -477,16 +475,15 @@ context(@"image fetching", ^{
 
       [imageManager serveAsset:asset withProgress:@[] image:image];
 
-      expect([manager fetchImageWithDescriptor:assetCollection targetSize:size
-                                   contentMode:PTNImageContentModeAspectFill
+      expect([manager fetchImageWithDescriptor:assetCollection resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:image]
       ]);
     });
 
     it(@"should error on non-existing key assets", ^{
-      RACSignal *values = [manager fetchImageWithDescriptor:assetCollection targetSize:size
-                                                contentMode:PTNImageContentModeAspectFill
+      RACSignal *values = [manager fetchImageWithDescriptor:assetCollection
+                                           resizingStrategy:resizingStrategy
                                                     options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -497,8 +494,7 @@ context(@"image fetching", ^{
     it(@"should error on non-existing key asset", ^{
       [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
 
-      RACSignal *values = [manager fetchImageWithDescriptor:asset targetSize:size
-                                                contentMode:PTNImageContentModeAspectFill
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                                     options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -510,12 +506,85 @@ context(@"image fetching", ^{
   it(@"should error on non-PhotoKit asset", ^{
     id invalidAsset = OCMProtocolMock(@protocol(PTNDescriptor));
     
-    RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset targetSize:size
-                                              contentMode:PTNImageContentModeAspectFill
+    RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset
+                                         resizingStrategy:resizingStrategy
                                                   options:options];
     
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  context(@"resizing strategy", ^{
+    __block id imageManagerMock;
+    __block id<PTNResizingStrategy> resizingStrategy;
+
+    beforeEach(^{
+      asset = PTNPhotoKitCreateAssetWithSize(@"baz", size);
+      imageManagerMock = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+      manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
+                                                    imageManager:imageManagerMock];
+      resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
+    });
+
+    context(@"image size", ^{
+      it(@"should request image size from strategy and use it to fetch image", ^{
+        OCMStub([resizingStrategy sizeForInputSize:size]).andReturn(CGSizeMake(1337, 1337));
+        OCMExpect([imageManagerMock requestImageForAsset:asset
+                                              targetSize:CGSizeMake(1337, 1337)
+                                             contentMode:0
+                                                 options:OCMOCK_ANY
+                                           resultHandler:OCMOCK_ANY]);
+
+        [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
+         subscribeNext:^(id __unused x) {}];
+
+        OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
+
+      it(@"should fetch image with maximum size if strategy returns original image size", ^{
+        OCMStub([resizingStrategy sizeForInputSize:size]).andReturn(size);
+        OCMExpect([imageManagerMock requestImageForAsset:asset
+                                              targetSize:PHImageManagerMaximumSize
+                                             contentMode:0
+                                                 options:OCMOCK_ANY
+                                           resultHandler:OCMOCK_ANY]);
+
+        [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
+         subscribeNext:^(id __unused x) {}];
+        
+        OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
+    });
+
+    context(@"content mode", ^{
+      it(@"should request content mode from strategy and use it to fetch image when its fill", ^{
+        OCMStub(resizingStrategy.contentMode).andReturn(PTNImageContentModeAspectFill);
+        OCMExpect([imageManagerMock requestImageForAsset:asset
+                                              targetSize:CGSizeZero
+                                             contentMode:PHImageContentModeAspectFill
+                                                 options:OCMOCK_ANY
+                                           resultHandler:OCMOCK_ANY]);
+
+        [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
+         subscribeNext:^(id __unused x) {}];
+
+        OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
+
+      it(@"should request content mode from strategy and use it to fetch image when its fit", ^{
+        OCMStub(resizingStrategy.contentMode).andReturn(PTNImageContentModeAspectFit);
+        OCMExpect([imageManagerMock requestImageForAsset:asset
+                                              targetSize:CGSizeZero
+                                             contentMode:PHImageContentModeAspectFit
+                                                 options:OCMOCK_ANY
+                                           resultHandler:OCMOCK_ANY]);
+
+        [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
+         subscribeNext:^(id __unused x) {}];
+        
+        OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
     });
   });
 });
