@@ -49,12 +49,8 @@ context(@"NSCopying protocol", ^{
     copyOfReparameterization = [reparameterization copy];
   });
 
-  it(@"should return a copy", ^{
-    expect(copyOfReparameterization).to.beMemberOf([reparameterization class]);
-  });
-
-  it(@"should return a copy that is not identical to itself", ^{
-    expect(copyOfReparameterization).toNot.beIdenticalTo(reparameterization);
+  it(@"should return a copy that is identical to itself", ^{
+    expect(copyOfReparameterization).to.beIdenticalTo(reparameterization);
   });
 
   it(@"should return a copy with correct mapping", ^{
