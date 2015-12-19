@@ -63,14 +63,13 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
 
 - (void)addVertex:(LTVertex)vertex toPartition:(LTBipartiteGraphPartition)partition {
   LTParameterAssert(partition >= 0 && partition < (NSInteger)self.edgeMaps.count,
-                    @"Invalid partition (%lu) provided", (unsigned long)partition);
+                    @"Invalid partition (%ld) provided", (long)partition);
 
   LTBipartiteGraphPartition partitionOfVertex = [self partitionOfVertex:vertex];
   if (partitionOfVertex != LTBipartiteGraphPartitionNone) {
     LTParameterAssert(partition == partitionOfVertex,
-                      @"Attempting to add vertex (%@) existing in partition (%lu) to partition "
-                      "(%lu)",
-                      vertex, (unsigned long)partitionOfVertex, (unsigned long)partition);
+                      @"Attempting to add vertex (%@) existing in partition (%ld) to partition "
+                      "(%ld)", vertex, (long)partitionOfVertex, (long)partition);
     return;
   }
   self.edgeMaps[partition][vertex] = [NSMutableSet set];
@@ -87,10 +86,9 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
 
   LTBipartiteGraphPartition partitionOfNewVertex = [self partitionOfVertex:newVertex];
   LTParameterAssert(partitionOfNewVertex == LTBipartiteGraphPartitionNone,
-                    @"Attempting to replace vertex (%@) in partition (%lu) by vertex (%@) already "
-                    "existing in partition (%lu)", vertexToReplace,
-                    (unsigned long)partitionOfVertexToReplace, newVertex,
-                    (unsigned long)partitionOfNewVertex);
+                    @"Attempting to replace vertex (%@) in partition (%ld) by vertex (%@) already "
+                    "existing in partition (%ld)", vertexToReplace,
+                    (long)partitionOfVertexToReplace, newVertex, (long)partitionOfNewVertex);
 
   NSSet *adjacentVertices = [self.edgeMaps[partitionOfVertexToReplace][vertexToReplace] copy];
   [self removeVertex:vertexToReplace];
@@ -154,8 +152,8 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
     NSMutableSet<LTVertex> *minusSet = [vertices mutableCopy];
     [minusSet minusSet:verticesInPartition];
     LTParameterAssert(NO, @"Certain vertices (%@) of given vertices (%@) are not among vertices "
-                      "(%@) of partition (%lu)", minusSet, vertices, verticesInPartition,
-                      partition);
+                      "(%@) of partition (%ld)", minusSet, vertices, verticesInPartition,
+                     (long)partition);
   }
 }
 
