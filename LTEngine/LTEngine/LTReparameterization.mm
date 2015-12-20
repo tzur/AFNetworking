@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (id)copyWithZone:(nullable NSZone __unused *)zone {
-  return [[[self class] alloc] initWithMapping:_mapping];
+  return self;
 }
 
 #pragma mark -
