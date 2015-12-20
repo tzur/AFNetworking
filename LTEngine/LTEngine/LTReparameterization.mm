@@ -46,6 +46,23 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Public methods
+#pragma mark -
+
+- (LTReparameterization *)reparameterizationShiftedByOffset:(CGFloat)offset {
+  if (!offset) {
+    return self;
+  }
+
+  CGFloats shiftedMapping(_mapping.size());
+  std::transform(_mapping.cbegin(), _mapping.cend(), shiftedMapping.begin(),
+                 [offset](CGFloat value) {
+    return value + offset;
+  });
+  return [[LTReparameterization alloc] initWithMapping:shiftedMapping];
+}
+
+#pragma mark -
 #pragma mark LTPrimitiveParameterizedObject
 #pragma mark -
 

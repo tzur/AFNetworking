@@ -77,6 +77,30 @@ context(@"NSCopying protocol", ^{
   });
 });
 
+context(@"reparameterization with shifted mapping", ^{
+  __block LTReparameterization *reparameterizationWithShiftedMapping;
+
+  beforeEach(^{
+    reparameterization = [[LTReparameterization alloc] initWithMapping:{1, 2}];
+    reparameterizationWithShiftedMapping = [reparameterization reparameterizationShiftedByOffset:-3];
+  });
+
+  it(@"should create a reparameterization with shifted mapping", ^{
+    expect(reparameterizationWithShiftedMapping.minParametricValue).to.equal(-2);
+    expect(reparameterizationWithShiftedMapping.maxParametricValue).to.equal(-1);
+  });
+
+  it(@"should not modify the reparameterization used to create a shifted reparameterization", ^{
+    expect(reparameterization.minParametricValue).to.equal(1);
+    expect(reparameterization.maxParametricValue).to.equal(2);
+  });
+
+  it(@"should return itself when requesting a shifted reparameterization with offset 0", ^{
+    expect([reparameterization reparameterizationShiftedByOffset:0])
+        .to.beIdenticalTo(reparameterization);
+  });
+});
+
 context(@"LTPrimitiveParameterizedObject", ^{
   it(@"should have the correct minParametricValue and maxParametricValue", ^{
     reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1}];

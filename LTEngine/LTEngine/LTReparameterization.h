@@ -25,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// mapped according to the last interval.
 - (instancetype)initWithMapping:(CGFloats)mapping NS_DESIGNATED_INITIALIZER;
 
+/// Returns a new instance with a shifted version of the \c mapping of the receiver. All values of
+/// the \c mapping of the returned instance are shifted by the given \c offset, in comparison to the
+/// \c mapping of the receiver. The receiver is not modified.
+- (LTReparameterization *)reparameterizationShiftedByOffset:(CGFloat)offset;
+
 @end
 
 NS_ASSUME_NONNULL_END
