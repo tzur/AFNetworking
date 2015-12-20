@@ -2118,6 +2118,7 @@
 		8BC465C218995DB80094F7BC /* LTGPUBlockSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUBlockSpec.mm; sourceTree = "<group>"; };
 		8BC87E5E1C21D25D0061BD00 /* LTGLEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGLEnums.h; sourceTree = "<group>"; };
 		8BC87EAE1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLPixelFormatSpec.mm; sourceTree = "<group>"; };
+		8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTFboWritableAttachment.h; sourceTree = "<group>"; };
 		8BCA66F3182FB5E2003FCB65 /* LTGLException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLException.h; sourceTree = "<group>"; };
 		8BCA66F4182FB5E2003FCB65 /* LTGLException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLException.m; sourceTree = "<group>"; };
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
@@ -3659,6 +3660,7 @@
 				8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachment.h */,
 				8B539FF21B4A882600036743 /* LTFboPool.h */,
 				8B539FF31B4A882600036743 /* LTFboPool.mm */,
+				8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */,
 				8BA3E140182A707200FDD95A /* LTGLCheck.h */,
 				8B8E51031861F54600821829 /* LTGLContext.h */,
 				8B8E51041861F54600821829 /* LTGLContext.mm */,
