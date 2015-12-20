@@ -17,13 +17,13 @@ NS_ENUM(NSUInteger) {
 /// Identifier of the Photons object.
 @property (readonly, nonatomic) NSURL *ptn_identifier;
 
+/// Localized title of the descriptor or \c nil if no such title is available.
+@property (readonly, nonatomic, nullable) NSString *localizedTitle;
+
 @end
 
 /// Descriptor for album objects, which is used to fetch the actual album contents.
 @protocol PTNAlbumDescriptor <PTNDescriptor>
-
-/// Localized title of the album or \c nil if no such title is available.
-@property (readonly, nonatomic, nullable) NSString *localizedTitle;
 
 /// Number of assets contained in the album as \c NSUInteger, or \c PTNNotFound if no such count is
 /// available.
@@ -33,9 +33,6 @@ NS_ENUM(NSUInteger) {
 
 /// Descriptor for asset objects, which is used to fetch the actual asset contents.
 @protocol PTNAssetDescriptor <PTNDescriptor>
-
-/// Localized title of the asset or \c nil if no such title is available.
-@property (readonly, nonatomic, nullable) NSString *localizedTitle;
 
 @end
 
