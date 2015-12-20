@@ -5463,7 +5463,6 @@
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
