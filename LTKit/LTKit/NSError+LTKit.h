@@ -81,6 +81,9 @@ NSString *LTSystemErrorMessageForError(int error);
 /// returned even if the current system error variable indicates that there's no error.
 + (instancetype)lt_errorWithSystemError;
 
+/// \c YES if the error domain is \c kLTErrorDomain.
+@property (readonly, nonatomic) BOOL lt_isLTDomain;
+
 /// Underlying error.
 @property (readonly, nonatomic, nullable) NSError *lt_underlyingError;
 
