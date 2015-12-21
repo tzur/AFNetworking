@@ -20,6 +20,18 @@ beforeEach(^{
   ];
 });
 
+context(@"domain predicate", ^{
+  it(@"should return YES for error with LTErrorDomain", ^{
+    NSError *error = [NSError errorWithDomain:kLTErrorDomain code:1 userInfo:nil];
+    expect(error.lt_isLTDomain).to.beTruthy();
+  });
+
+  it(@"should return NO for error with LTErrorDomain", ^{
+    NSError *error = [NSError errorWithDomain:@"NotLTErrorDomain" code:1 userInfo:nil];
+    expect(error.lt_isLTDomain).to.beFalsy();
+  });
+});
+
 it(@"should create error with code and domain", ^{
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound];
 

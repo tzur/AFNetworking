@@ -130,6 +130,10 @@ NSString *LTSystemErrorMessageForError(int error) {
   return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
 
+- (BOOL)lt_isLTDomain {
+  return [self.domain isEqualToString:kLTErrorDomain];
+}
+
 - (nullable NSError *)lt_underlyingError {
   return [self lt_valueOrNilForKey:NSUnderlyingErrorKey];
 }
