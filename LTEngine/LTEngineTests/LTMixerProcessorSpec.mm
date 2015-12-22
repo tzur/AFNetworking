@@ -35,9 +35,7 @@ __block LTMixerProcessor *processor;
 beforeEach(^{
   back = [LTTexture textureWithImage:cv::Mat4b(16, 16, backColor)];
   front = [LTTexture textureWithImage:cv::Mat4b(8, 8, frontColor)];
-  mask = [LTTexture textureWithSize:CGSizeMake(8, 8)
-                          precision:LTTexturePrecisionByte
-                             format:LTTextureFormatRed allocateMemory:YES];
+  mask = [LTTexture byteRedTextureWithSize:CGSizeMake(8, 8)];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
   [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
@@ -56,8 +54,8 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should not initialize with front and mask of different sizes if mask is applied to front", ^{
     LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(16, 16)
-                            precision:LTTexturePrecisionHalfFloat
-                               format:LTTextureFormatRed allocateMemory:YES];
+                                     pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
     expect(^{
       LTMixerProcessor __unused *processor =
           [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
@@ -72,8 +70,8 @@ context(@"initialization", ^{
 
   it(@"should not initialize with back and mask of different sizes if mask is applied to back", ^{
     LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(8, 8)
-                                       precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
+                                     pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
     expect(^{
       LTMixerProcessor __unused *processor =
           [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output

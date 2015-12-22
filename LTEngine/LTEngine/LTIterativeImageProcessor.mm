@@ -81,8 +81,7 @@
 
   for (NSUInteger i = 1; i < outputs.count; ++i) {
     LTTexture *output = outputs[i];
-    if (output.precision != firstOutput.precision ||
-        output.channels != firstOutput.channels) {
+    if (![output.pixelFormat isEqual:firstOutput.pixelFormat]) {
       return NO;
     }
   }

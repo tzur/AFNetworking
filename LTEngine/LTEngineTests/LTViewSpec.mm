@@ -5,10 +5,10 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTGridDrawer.h"
 #import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
+#import "LTTexture+Factory.h"
 #import "LTViewNavigationView.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
@@ -67,10 +67,10 @@ beforeEach(^{
   inputContent(cv::Rect(width, 0, width, height)).setTo(green);
   inputContent(cv::Rect(0, height, width, height)).setTo(blue);
   inputContent(cv::Rect(width, height, width, height)).setTo(yellow);
-  contentTexture = [[LTGLTexture alloc] initWithImage:inputContent];
+  contentTexture = [LTTexture textureWithImage:inputContent];
   
   output = cv::Mat4b(framebufferSize.height, framebufferSize.width);
-  outputTexture = [[LTGLTexture alloc] initWithImage:output];
+  outputTexture = [LTTexture textureWithImage:output];
   fbo = [[LTFbo alloc] initWithTexture:outputTexture];
 
   expectedOutput = cv::Mat4b(framebufferSize.height, framebufferSize.width);
@@ -401,7 +401,7 @@ context(@"drawing", ^{
     cv::Mat4b newMat(newSize.height, newSize.width);
     newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = red;
     newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = blue;
-    LTTexture *newTexture = [[LTGLTexture alloc] initWithImage:newMat];
+    LTTexture *newTexture = [LTTexture textureWithImage:newMat];
     [view replaceContentWith:newTexture];
     
     cv::flip(newMat, newMat, 0);
@@ -413,13 +413,13 @@ context(@"drawing", ^{
   
   it(@"should replace content when minimum zoomscale is greater than 1", ^{
     CGSize newSize = kViewSize * view.contentScaleFactor / 2;
-    [view replaceContentWith:[[LTGLTexture alloc] initByteRGBAWithSize:newSize]];
+    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newSize]];
 
     newSize = kViewSize * view.contentScaleFactor / CGSizeMake(4, 2);
     cv::Mat4b newMat(newSize.height, newSize.width);
     newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = red;
     newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = blue;
-    LTTexture *newTexture = [[LTGLTexture alloc] initWithImage:newMat];
+    LTTexture *newTexture = [LTTexture textureWithImage:newMat];
     [view replaceContentWith:newTexture];
     
     cv::resize(newMat, newMat, cv::Size(), 2, 2);
@@ -435,7 +435,7 @@ context(@"drawing", ^{
 
   it(@"should update pixel grid when replacing content", ^{
     CGSize newSize = view.contentSize * 2;
-    [view replaceContentWith:[[LTGLTexture alloc] initByteRGBAWithSize:newSize]];
+    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newSize]];
     expect(view.pixelGrid.gridDrawer.size).to.equal(newSize);
   });
 });
@@ -548,7 +548,7 @@ context(@"draw delegate", ^{
   it(@"should use delegate to provide an alternative content texture", ^{
     cv::Mat4b altMat(kContentSize.height, kContentSize.width);
     altMat = red;
-    LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:altMat];
+    LTTexture *altTexture = [LTTexture textureWithImage:altMat];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     
     expectedOutput = view.backgroundColor.lt_cvVector;
@@ -578,7 +578,7 @@ context(@"draw delegate", ^{
     [view drawToFbo:fbo];
     
     // When there's an alternativeContentTexture, it should be provided instead.
-    LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:inputContent];
+    LTTexture *altTexture = [LTTexture textureWithImage:inputContent];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     [[mock expect] ltView:view drawProcessedContent:altTexture
                    withVisibleContentRect:view.visibleContentRect];
@@ -591,7 +591,7 @@ context(@"draw delegate", ^{
       expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
       cv::Mat4b altMat(kContentSize.height, kContentSize.width);
       altMat = blue;
-      LTTexture *altTexture = [[LTGLTexture alloc] initWithImage:altMat];
+      LTTexture *altTexture = [LTTexture textureWithImage:altMat];
       LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:altTexture];
       [rectDrawer drawRect:CGRectFromSize(view.framebufferSize)
        inFramebufferWithSize:view.framebufferSize fromRect:view.visibleContentRect];

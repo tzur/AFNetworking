@@ -24,27 +24,23 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
   });
 
   sharedExamplesFor(kLTTextureBasicExamplesPrecisionAndFormat, ^(NSDictionary *data) {
-    __block LTTexturePrecision precision;
-    __block LTTextureFormat format;
+    __block LTGLPixelFormat *pixelFormat;
     __block int matType;
     __block cv::Mat image;
 
     beforeAll(^{
-      precision = (LTTexturePrecision)[data[@"precision"] unsignedIntValue];
-      format = (LTTextureFormat)[data[@"format"] unsignedIntValue];
-      matType = LTMatTypeForPrecisionAndFormat(precision, format);
+      pixelFormat = data[@"pixelFormat"];
+      matType = pixelFormat.matType;
     });
 
     it(@"should create texture", ^{
       CGSize size = CGSizeMake(42, 42);
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
-                                                                 precision:precision
-                                                                    format:format
+                                                               pixelFormat:pixelFormat
                                                             allocateMemory:NO];
 
       expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(precision);
-      expect(texture.format).to.equal(format);
+      expect(texture.pixelFormat).to.equal(pixelFormat);
     });
 
     it(@"should load image from mat", ^{
@@ -54,40 +50,16 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
 
       expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(precision);
-      expect(texture.channels).to.equal(image.channels());
+      expect(texture.pixelFormat).to.equal(pixelFormat);
     });
   });
 
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionByte),
-                       @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionByte),
-                       @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionByte),
-                       @"format": @(LTTextureFormatRGBA)});
-
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionHalfFloat),
-                       @"format": @(LTTextureFormatRGBA)});
-
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionFloat),
-                       @"format": @(LTTextureFormatRed)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionFloat),
-                       @"format": @(LTTextureFormatRG)});
-  itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
-                     @{@"precision": @(LTTexturePrecisionFloat),
-                       @"format": @(LTTextureFormatRGBA)});
+  // This will be executed when the test suite runs and generate execution of the shared examples
+  // for each for the pixel formats.
+  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+    itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
+                       @{@"pixelFormat": pixelFormat});
+  }];
 
   context(@"red and rg textures", ^{
     it(@"should read 4-byte aligned red channel data", ^{
@@ -128,35 +100,31 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
   context(@"init without an image", ^{
     it(@"should create an unallocated texture with size", ^{
       CGSize size = CGSizeMake(42, 42);
-      LTTexturePrecision precision = LTTexturePrecisionByte;
-      LTTextureFormat format = LTTextureFormatRGBA;
+      LTGLPixelFormat *pixelFormat = $(LTGLPixelFormatRGBA8Unorm);
 
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:size
-                                                                 precision:precision
-                                                                    format:format
-                                                            allocateMemory:NO];
+      LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                            initWithSize:size pixelFormat:pixelFormat allocateMemory:NO];
 
       expect(texture.size).to.equal(size);
-      expect(texture.precision).to.equal(precision);
-      expect(texture.format).to.equal(format);
+      expect(texture.pixelFormat).to.equal(pixelFormat);
     });
 
     it(@"should create a texture with similar properties", ^{
       CGSize size = CGSizeMake(42, 42);
-      LTTexture *texture = [(LTTexture *)[textureClass alloc] initByteRGBAWithSize:size];
+      LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                            initWithSize:size pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                            allocateMemory:YES];
       LTTexture *similar = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
 
       expect(similar.size).to.equal(texture.size);
-      expect(similar.precision).to.equal(texture.precision);
-      expect(similar.channels).to.equal(texture.channels);
+      expect(similar.pixelFormat).to.equal(texture.pixelFormat);
     });
 
     it(@"should not initialize with zero sized texture", ^{
       expect(^{
         LTTexture __unused *texture = [(LTTexture *)[textureClass alloc]
                                        initWithSize:CGSizeZero
-                                       precision:LTTexturePrecisionByte
-                                       format:LTTextureFormatRGBA
+                                       pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                                        allocateMemory:YES];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -165,9 +133,8 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       __block LTTexture *texture;
 
       beforeEach(^{
-        texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(1, 1)
-                                                        precision:LTTexturePrecisionByte
-                                                           format:LTTextureFormatRGBA
+        texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMakeUniform(1)
+                                                      pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                                                    allocateMemory:NO];
       });
 
@@ -189,7 +156,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
       expect(^{
         __unused LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-      }).to.raise(kLTTextureUnsupportedFormatException);
+      }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should not load invalid image channel count", ^{
@@ -198,7 +165,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
       expect(^{
         __unused LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:image];
-      }).to.raise(kLTTextureUnsupportedFormatException);
+      }).to.raise(NSInvalidArgumentException);
     });
   });
 
@@ -324,8 +291,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       it(@"should not clone to a texture with a different size", ^{
         CGSize size = CGSizeMake(texture.size.width - 1, texture.size.height - 1);
         LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithSize:size
-                                                                  precision:texture.precision
-                                                                     format:texture.format
+                                                                pixelFormat:texture.pixelFormat
                                                              allocateMemory:YES];
 
         expect(^{
@@ -416,7 +382,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(texture.fillColor.isNull()).to.beFalsy();
       });
 
-      it(@"should have initial fill color of null when initializing with properties of texture", ^{
+        it(@"should have initial fill color of null when initializing with properties of texture", ^{
         [texture clearWithColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];
@@ -435,10 +401,9 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
     context(@"drawing with coregraphics", ^{
       it(@"should draw with coregraphics to red channel texture", ^{
-        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(67, 48)
-                                                                   precision:LTTexturePrecisionByte
-                                                                      format:LTTextureFormatRed
-                                                              allocateMemory:YES];
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(67, 48) pixelFormat:$(LTGLPixelFormatR8Unorm)
+                              allocateMemory:YES];
 
         [texture drawWithCoreGraphics:^(CGContextRef context) {
           UIGraphicsPushContext(context); {
@@ -510,12 +475,6 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       it(@"should change generation ID after writing via writeToTexture", ^{
         [texture writeToTexture:^{
         }];
-        expect(texture.generationID).toNot.equal(generationID);
-      });
-
-      it(@"should change generation ID after writing via begin/end writeToTexture", ^{
-        [texture beginWriteToTexture];
-        [texture endWriteToTexture];
         expect(texture.generationID).toNot.equal(generationID);
       });
 

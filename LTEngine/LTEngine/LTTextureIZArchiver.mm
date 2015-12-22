@@ -54,7 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)verifyTexture:(LTTexture *)texture {
   LTParameterAssert(texture);
-  LTParameterAssert(texture.precision == LTTexturePrecisionByte);
+  LTParameterAssert(texture.pixelFormat.value == LTGLPixelFormatR8Unorm ||
+                    texture.pixelFormat.value == LTGLPixelFormatRGBA8Unorm);
   LTParameterAssert(!texture.usingAlphaChannel);
 }
 

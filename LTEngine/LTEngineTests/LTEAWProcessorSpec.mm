@@ -10,8 +10,7 @@
 #import "LTImage.h"
 
 LTTexture *LTConvertToY(LTTexture *input) {
-  LTTexture *luminance = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionByte
-                                             format:LTTextureFormatRed allocateMemory:YES];
+  LTTexture *luminance = [LTTexture byteRedTextureWithSize:input.size];
 
   LTColorConversionProcessor *conversion = [[LTColorConversionProcessor alloc]
                                             initWithInput:input output:luminance];
@@ -30,8 +29,7 @@ context(@"single channel", ^{
 
   beforeEach(^{
     input = [LTTexture textureWithImage:LTLoadMat([self class], @"Flower.png")];
-    output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionByte
-                                 format:LTTextureFormatRed allocateMemory:YES];
+    output = [LTTexture byteRedTextureWithSize:input.size];
 
     processor = [[LTEAWProcessor alloc] initWithInput:input output:output];
   });

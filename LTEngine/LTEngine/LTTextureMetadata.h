@@ -5,17 +5,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LTGLPixelFormat;
+
 /// Metadata of an \c LTTexture.
 @interface LTTextureMetadata : MTLModel <MTLJSONSerializing>
 
 /// @see \c LTTexture.size.
 @property (readonly, nonatomic) CGSize size;
 
-/// @see \c LTTexture.format.
-@property (readonly, nonatomic) LTTextureFormat format;
-
-/// @see \c LTTexture.precision.
-@property (readonly, nonatomic) LTTexturePrecision precision;
+/// @see \c LTTexture.pixelFormat.
+@property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;
 
 /// @see \c LTTexture.maxMipmapLevel.
 @property (readonly, nonatomic) GLint maxMipmapLevel;

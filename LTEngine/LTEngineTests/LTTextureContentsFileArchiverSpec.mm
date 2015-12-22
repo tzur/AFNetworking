@@ -81,7 +81,7 @@ context(@"half float textures", ^{
     image(1, 1) = cv::Vec4hf(half(0), half(0), half(0), half(1));
 
     texture = [LTTexture textureWithImage:image];
-    expect(texture.precision).to.equal(LTTexturePrecisionHalfFloat);
+    expect(texture.pixelFormat).to.equal($(LTGLPixelFormatRGBA16Float));
 
     filePath = [NSTemporaryDirectory()
                 stringByAppendingString:@"_LTTextureContentsFileArchiverSaveTest.jpg"];

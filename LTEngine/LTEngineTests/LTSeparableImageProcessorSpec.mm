@@ -3,32 +3,23 @@
 
 #import "LTSeparableImageProcessor.h"
 
-#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTShaderStorage+TexelOffsetVsh.h"
 #import "LTShaderStorage+TexelOffsetFsh.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTSeprableImageProcessor)
 
-__block LTGLTexture *source;
-__block LTGLTexture *output0;
-__block LTGLTexture *output1;
+__block LTTexture *source;
+__block LTTexture *output0;
+__block LTTexture *output1;
 
 beforeEach(^{
-  source = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                   precision:LTTexturePrecisionByte
-                                      format:LTTextureFormatRGBA
-                              allocateMemory:YES];
-  output0 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                    precision:LTTexturePrecisionByte
-                                       format:LTTextureFormatRGBA
-                               allocateMemory:YES];
-  output1 = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                    precision:LTTexturePrecisionByte
-                                       format:LTTextureFormatRGBA
-                               allocateMemory:YES];
+  source = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
+  output0 = [LTTexture textureWithPropertiesOf:source];
+  output1 = [LTTexture textureWithPropertiesOf:source];
 });
 
 afterEach(^{
@@ -62,11 +53,11 @@ context(@"initialization", ^{
 context(@"properties", ^{
   it(@"iterations per output", ^{
     LTSeparableImageProcessor *processor =
-    [[LTSeparableImageProcessor alloc] initWithVertexSource:[TexelOffsetVsh source]
-                                             fragmentSource:[TexelOffsetFsh source]
-                                              sourceTexture:source
-                                                    outputs:@[output0, output1]];
-    NSArray * const kIterationPerOutput = @[@1, @7];
+        [[LTSeparableImageProcessor alloc] initWithVertexSource:[TexelOffsetVsh source]
+                                                 fragmentSource:[TexelOffsetFsh source]
+                                                  sourceTexture:source
+                                                        outputs:@[output0, output1]];
+    static NSArray * const kIterationPerOutput = @[@1, @7];
     processor.iterationsPerOutput = kIterationPerOutput;
     expect(processor.iterationsPerOutput).to.equal(kIterationPerOutput);
   });

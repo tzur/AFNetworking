@@ -23,13 +23,14 @@ typedef NS_ENUM(NSUInteger, LTEdgesMode) {
 @implementation LTEdgeMaskSubprocessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTParameterAssert(output.format == LTTextureFormatRed || output.format == LTTextureFormatRGBA);
+  LTParameterAssert(output.components == LTGLPixelComponentsR ||
+                    output.components == LTGLPixelComponentsRGBA);
   if (self = [super initWithVertexSource:[LTEdgesMaskVsh source]
                           fragmentSource:[LTEdgesMaskFsh source] input:input andOutput:output]) {
     self[[LTEdgesMaskVsh texelOffset]] = $(LTVector2(1.0 / input.size.width,
                                                           1.0 / input.size.height));
     self[[LTEdgesMaskFsh edgesMode]] =
-        @((output.format == LTTextureFormatRed) ? LTEdgesModeGrey : LTEdgesModeColor);
+        @((output.components == LTGLPixelComponentsR) ? LTEdgesModeGrey : LTEdgesModeColor);
   }
   return self;
 }
@@ -49,7 +50,8 @@ typedef NS_ENUM(NSUInteger, LTEdgesMode) {
 @implementation LTEdgesMaskProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTParameterAssert(output.format == LTTextureFormatRed || output.format == LTTextureFormatRGBA);
+  LTParameterAssert(output.components == LTGLPixelComponentsR ||
+                    output.components == LTGLPixelComponentsRGBA);
   if (self = [super init]) {
     self.inputTexture = input;
     self.outputTexture = output;

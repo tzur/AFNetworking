@@ -17,17 +17,14 @@
 @implementation LTHistogramProcessor
 
 - (instancetype)initWithInputTexture:(LTTexture *)inputTexture {
-  LTParameterAssert([self.class isValidInputTexture:inputTexture],
-                    @"Output should be in LTTextureFormatRGBA format");
+  LTParameterAssert(inputTexture.pixelFormat.value == LTGLPixelFormatRGBA8Unorm,
+                    @"Input texture pixel format should be LTGLPixelFormatRGBA8Unorm, got: %@",
+                    inputTexture.pixelFormat);
   if (self = [super init]) {
     self.inputTexture = inputTexture;
     [self setHistogramValuesToZero];
   }
   return self;
-}
-
-+ (BOOL)isValidInputTexture:(LTTexture *)texture {
-  return texture.format == LTTextureFormatRGBA && texture.precision == LTTexturePrecisionByte;
 }
 
 static const NSUInteger kHistogramSize = 256;

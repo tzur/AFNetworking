@@ -4,6 +4,7 @@
 #import "LTAspectFillResizeProcessor.h"
 
 #import "LTFbo.h"
+#import "LTTexture.h"
 
 @interface LTAspectFillResizeProcessor ()
 

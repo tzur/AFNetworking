@@ -5,11 +5,11 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
+#import "LTTexture+Factory.h"
 #import "LTTextureDrawerExamples.h"
 
 NSString * const kLTMultiRectDrawerExamples = @"LTMultiRectDrawerExamples";
@@ -47,9 +47,8 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     image(cv::Rect(0, height, width, height)).setTo(cv::Vec4b(0, 0, 255, 255));
     image(cv::Rect(width, height, width, height)).setTo(cv::Vec4b(255, 255, 0, 255));
     
-    texture = [[LTGLTexture alloc] initWithSize:inputSize
-                                      precision:LTTexturePrecisionByte
-                                         format:LTTextureFormatRGBA allocateMemory:NO];
+    texture = [LTTexture textureWithSize:inputSize pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                          allocateMemory:NO];
     [texture load:image];
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
@@ -70,9 +69,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                                          fragmentSource:[PassthroughFsh source]];
       rectDrawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
-      output = [[LTGLTexture alloc] initWithSize:inputSize
-                                       precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRGBA allocateMemory:YES];
+      output = [LTTexture byteRGBATextureWithSize:inputSize];
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
@@ -200,7 +197,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       __block cv::Mat4b expected;
       
       beforeEach(^{
-        expectedTexture = [[LTGLTexture alloc] initWithPropertiesOf:output];
+        expectedTexture = [LTTexture textureWithPropertiesOf:output];
         expectedFbo = [[LTFbo alloc] initWithTexture:expectedTexture];
         [expectedFbo clearWithColor:LTVector4(0, 0, 0, 1)];
         expected.create(expectedTexture.size.height, expectedTexture.size.width);

@@ -1,7 +1,6 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTImage+Texture.h"
 #import "LTTexture.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,20 +15,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param size size of the texture.
 /// @param precision precision of the texture.
-/// @param format format the texture is stored in the GPU with.
-/// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
-/// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
-/// Otherwise, the implementation will try to create a texture object only without allocating the
-/// memory, and a call to \c load: or \c loadRect:fromImage: will be required to allocate memory on
-/// the device.
+/// @param pixelFormat pixel format the texture is stored in the GPU with. The format must be
+///        supported on the target platform, or an \c NSInvalidArgumentException will be thrown.
+/// @param allocateMemory an optimization recommendation to implementors of this class. If set to
+///        \c YES, the texture's memory will be allocated on the GPU (but will not be initialized -
+///        see note). Otherwise, the implementation will try to create a texture object only without
+///        allocating the memory, and a call to \c load: or \c loadRect:fromImage: will be required
+///        to allocate memory on the device.
 ///
 /// @note The texture memory is not allocated until a call to \c load: or \c loadRect: is made, and
 /// only the affected regions are set to be in a defined state. Calling \c storeRect:toImage: with
 /// an uninitialized rect will return an undefined result.
-///
-/// @note Designated initializer.
-+ (instancetype)textureWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                         format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
++ (instancetype)textureWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+                 allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
@@ -45,8 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// memory. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:size precision:LTTexturePrecisionByte
-///        format:LTTextureFormatRGBA allocateMemory:YES]
+/// [initWithSize:size pixelFormat:LTGLPixelFormatRGBA8Unorm allocateMemory:YES];
 /// @endcode
 + (instancetype)byteRGBATextureWithSize:(CGSize)size;
 
@@ -54,8 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// memory. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:size precision:LTTexturePrecisionByte
-///        format:LTTextureFormatRed allocateMemory:YES];
+/// [initWithSize:size pixelFormat:LTGLPixelFormatR8Unorm allocateMemory:YES];
 /// @endcode
 + (instancetype)byteRedTextureWithSize:(CGSize)size;
 
@@ -63,8 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c texture. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:texture.size precision:texture.precision
-///      channels:texture.channels allocateMemory:YES]
+/// [LTTexture initWithSize:texture.size pixelFormat:texture.pixelFormat allocateMemory:YES];
 /// @endcode
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture;
 

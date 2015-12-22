@@ -6,10 +6,10 @@
 /// A texture class representing an OpenGL based texture.
 @interface LTGLTexture : LTTexture
 
-/// Allocates a texture with the given \c size, \c precision, \c format and maximal number of
-/// mipmap levels. The texture's memory will be allocated on the GPU but will not be initialized.
-- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                      format:(LTTextureFormat)format maxMipmapLevel:(GLint)maxMipmapLevel;
+/// Allocates a texture with the given \c size, \c pixelFormat and maximal number of mipmap levels.
+/// The texture's memory will be allocated on the GPU but will not be initialized.
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture as the base level (0).

@@ -59,8 +59,8 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should not initialize with front and mask of different sizes if mask is applied to front", ^{
     LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(16, 16)
-                                       precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
+                                     pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
     expect(^{
       LTQuadMixerProcessor __unused *processor =
       [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
@@ -76,8 +76,8 @@ context(@"initialization", ^{
 
   it(@"should not initialize with back and mask of different sizes if mask is applied to back", ^{
     LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(8, 8)
-                                       precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
+                                     pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
     expect(^{
       LTQuadMixerProcessor __unused *processor =
       [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output

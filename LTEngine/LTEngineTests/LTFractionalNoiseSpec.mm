@@ -3,15 +3,15 @@
 
 #import "LTFractionalNoise.h"
 
-#import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTFractionalNoise)
 
 __block LTTexture *output;
 
 beforeEach(^{
-  output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(4, 4)];
+  output = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
 });
 
 afterEach(^{

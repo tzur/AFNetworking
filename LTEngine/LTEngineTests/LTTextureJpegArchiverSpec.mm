@@ -79,16 +79,16 @@ context(@"archiving", ^{
 
   it(@"should raise if trying to archive non-byte precision texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
-                                                   precision:LTTexturePrecisionHalfFloat
-                                                      format:texture.format allocateMemory:YES];
+                                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                              allocateMemory:YES];
     expect(^{
       [archiver archiveTexture:halfFloatTexture inPath:@"halfFloatArchive.jpg" error:&error];
     }).to.raise(NSInvalidArgumentException);
     expect(LTFileExistsInTemporaryPath(@"halfFloatArchive.jpg")).to.beFalsy();
 
     LTTexture *floatTexture = [LTTexture textureWithSize:texture.size
-                                               precision:LTTexturePrecisionFloat
-                                                  format:texture.format allocateMemory:YES];
+                                               pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                          allocateMemory:YES];
     expect(^{
       [archiver archiveTexture:floatTexture inPath:@"floatArchive.jpg" error:&error];
     }).to.raise(NSInvalidArgumentException);
@@ -156,15 +156,15 @@ context(@"unarchiving", ^{
 
   it(@"should raise if trying to unarchive into a non-byte precision texture", ^{
     texture = [LTTexture textureWithSize:CGSizeMake(mat.rows, mat.cols)
-                               precision:LTTexturePrecisionHalfFloat
-                                  format:LTTextureFormatRGBA allocateMemory:YES];
+                             pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                          allocateMemory:YES];
     expect(^{
       [archiver unarchiveToTexture:texture fromPath:LTTemporaryPath(@"archive.jpg") error:&error];
     }).to.raise(NSInvalidArgumentException);
 
     texture = [LTTexture textureWithSize:CGSizeMake(mat.rows, mat.cols)
-                               precision:LTTexturePrecisionFloat
-                                  format:LTTextureFormatRGBA allocateMemory:YES];
+                             pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                          allocateMemory:YES];
     expect(^{
       [archiver unarchiveToTexture:texture fromPath:LTTemporaryPath(@"archive.jpg") error:&error];
     }).to.raise(NSInvalidArgumentException);

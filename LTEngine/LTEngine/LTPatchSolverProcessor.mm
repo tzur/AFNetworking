@@ -75,8 +75,9 @@
 
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output {
-  LTParameterAssert(output.precision == LTTexturePrecisionHalfFloat,
-                    @"Output texture must be of half-float precision");
+  LTParameterAssert(output.bitDepth == LTGLPixelBitDepth16 &&
+                    output.dataType == LTGLPixelDataTypeFloat,
+                    @"Output texture must be of half-float precision, got: %@", output.pixelFormat);
   if (self = [super init]) {
     self.mask = mask;
     self.source = source;
@@ -154,10 +155,7 @@
 - (void)createBoundary {
   [self.maskResizer process];
 
-  LTTexture *boundary = [LTTexture textureWithSize:self.workingSize
-                                         precision:LTTexturePrecisionByte
-                                            format:LTTextureFormatRed
-                                    allocateMemory:YES];
+  LTTexture *boundary = [LTTexture byteRedTextureWithSize:self.workingSize];
   LTPatchBoundaryProcessor *processor = [[LTPatchBoundaryProcessor alloc]
                                          initWithInput:self.maskResized output:boundary];
   [processor process];

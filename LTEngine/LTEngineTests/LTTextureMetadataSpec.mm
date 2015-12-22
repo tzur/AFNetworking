@@ -20,8 +20,7 @@ context(@"deserialize", ^{
   beforeEach(^{
     NSDictionary *json = @{
       @"size": @"(1, 2)",
-      @"format": @(LTTextureFormatRGBA),
-      @"precision": @(LTTexturePrecisionHalfFloat),
+      @"pixelFormat": @"LTGLPixelFormatRGBA16Float",
       @"maxMipmapLevel": @3,
       @"usingAlphaChannel": @YES,
       @"minFilterInterpolation": @(LTTextureInterpolationLinear),
@@ -41,8 +40,7 @@ context(@"deserialize", ^{
 
   it(@"should deserialize correctly", ^{
     expect(metadata.size).to.equal(CGSizeMake(1, 2));
-    expect(metadata.format).to.equal(LTTextureFormatRGBA);
-    expect(metadata.precision).to.equal(LTTexturePrecisionHalfFloat);
+    expect(metadata.pixelFormat).to.equal($(LTGLPixelFormatRGBA16Float));
     expect(metadata.maxMipmapLevel).to.equal(3);
     expect(metadata.usingAlphaChannel).to.beTruthy();
     expect(metadata.minFilterInterpolation).to.equal(LTTextureInterpolationLinear);
@@ -63,8 +61,7 @@ it(@"should extract metadata from texture", ^{
   LTTextureMetadata *metadata = texture.metadata;
 
   expect(metadata.size).to.equal(texture.size);
-  expect(metadata.format).to.equal(texture.format);
-  expect(metadata.precision).to.equal(texture.precision);
+  expect(metadata.pixelFormat).to.equal(texture.pixelFormat);
   expect(metadata.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
   expect(metadata.usingAlphaChannel).to.equal(texture.usingAlphaChannel);
   expect(metadata.minFilterInterpolation).to.equal(texture.minFilterInterpolation);
@@ -80,8 +77,7 @@ context(@"create texture with metadata", ^{
   beforeEach(^{
     json = [@{
       @"size": @"(4, 8)",
-      @"format": @(LTTextureFormatRGBA),
-      @"precision": @(LTTexturePrecisionHalfFloat),
+      @"pixelFormat": @"LTGLPixelFormatRGBA16Float",
       @"usingAlphaChannel": @YES,
       @"minFilterInterpolation": @(LTTextureInterpolationLinear),
       @"magFilterInterpolation": @(LTTextureInterpolationLinear),
@@ -98,8 +94,7 @@ context(@"create texture with metadata", ^{
 
     LTTexture *texture = [LTTexture textureWithMetadata:metadata];
     expect(texture.size).to.equal(metadata.size);
-    expect(texture.format).to.equal(metadata.format);
-    expect(texture.precision).to.equal(metadata.precision);
+    expect(texture.pixelFormat).to.equal(metadata.pixelFormat);
     expect(texture.maxMipmapLevel).to.equal(metadata.maxMipmapLevel);
     expect(texture.usingAlphaChannel).to.equal(metadata.usingAlphaChannel);
     expect(texture.minFilterInterpolation).to.equal(metadata.minFilterInterpolation);
@@ -121,8 +116,7 @@ context(@"create texture with metadata", ^{
 
     LTTexture *texture = [LTTexture textureWithMetadata:metadata];
     expect(texture.size).to.equal(metadata.size);
-    expect(texture.format).to.equal(metadata.format);
-    expect(texture.precision).to.equal(metadata.precision);
+    expect(texture.pixelFormat).to.equal(metadata.pixelFormat);
     expect(texture.maxMipmapLevel).to.equal(metadata.maxMipmapLevel);
     expect(texture.usingAlphaChannel).to.equal(metadata.usingAlphaChannel);
     expect(texture.minFilterInterpolation).to.equal(metadata.minFilterInterpolation);

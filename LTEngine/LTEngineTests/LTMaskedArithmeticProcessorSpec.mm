@@ -55,8 +55,7 @@ it(@"should produce correct result", ^{
   LTTexture *first = [LTTexture textureWithImage:firstImage];
   LTTexture *second = [LTTexture textureWithImage:secondImage];
   LTTexture *output = [LTTexture textureWithSize:mask.size
-                                       precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRGBA
+                                     pixelFormat:$(LTGLPixelFormatRGBA16Float)
                                   allocateMemory:YES];
 
   LTMaskedArithmeticProcessor *processor = [[LTMaskedArithmeticProcessor alloc]

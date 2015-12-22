@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotProcessingStrategy.h"
+#import "LTTexture.h"
 
 @interface LTOneShotBaseImageProcessor ()
 

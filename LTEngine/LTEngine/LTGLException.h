@@ -17,7 +17,6 @@ extern NSString * const kLTProgramCreationFailedException;
 extern NSString * const kLTProgramLinkFailedException;
 
 // LTTexture.
-extern NSString * const kLTTextureUnsupportedFormatException;
 extern NSString * const kLTTextureCreationFailedException;
 
 // LTMMTexture.

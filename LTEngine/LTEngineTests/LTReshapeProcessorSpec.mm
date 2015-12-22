@@ -31,8 +31,8 @@ static const CGSize kOutputSize = CGSizeMake(64, 128);
 beforeEach(^{
   input = [LTTexture byteRGBATextureWithSize:kInputSize];
   output = [LTTexture byteRGBATextureWithSize:kOutputSize];
-  mask = [LTTexture textureWithSize:kInputSize precision:LTTexturePrecisionHalfFloat
-                                    format:LTTextureFormatRed allocateMemory:YES];
+  mask = [LTTexture textureWithSize:kInputSize pixelFormat:$(LTGLPixelFormatR16Float)
+                     allocateMemory:YES];
   [mask clearWithColor:LTVector4::ones()];
 });
 

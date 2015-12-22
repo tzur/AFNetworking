@@ -11,6 +11,7 @@
 #import "LTProgram.h"
 #import "LTQuad.h"
 #import "LTQuadMapping.h"
+#import "LTTexture.h"
 #import "LTVertexArray.h"
 
 /// Holds the position and texture coordinate of each of the quad's corners.

@@ -41,8 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (LTTexture *)meshTextureWithSize:(CGSize)size {
-  return [LTTexture textureWithSize:size precision:LTTexturePrecisionHalfFloat
-                             format:LTTextureFormatRGBA allocateMemory:YES];
+  return [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                     allocateMemory:YES];
 }
 
 #pragma mark -

@@ -12,10 +12,7 @@ it(@"should aspect fit image correctly", ^{
   cv::Mat image(LTLoadMat([self class], @"Flower.png"));
 
   LTTexture *inputTexture = [LTTexture textureWithImage:image];
-  LTTexture *outputTexture = [LTTexture textureWithSize:CGSizeMake(32, 32)
-                                              precision:LTTexturePrecisionByte
-                                                 format:LTTextureFormatRGBA
-                                         allocateMemory:YES];
+  LTTexture *outputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(32)];
 
   LTAspectFillResizeProcessor *processor = [[LTAspectFillResizeProcessor alloc]
                                             initWithInput:inputTexture andOutput:outputTexture];

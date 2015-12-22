@@ -17,12 +17,10 @@
   LTParameterAssert(image, @"Given image cannot be nil");
 
   int type = [self matTypeForImage:image];
+  LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:type];
 
   CGSize size = [self imageSizeInPixels:image];
-  LTTexture *texture = [LTTexture textureWithSize:size
-                                        precision:LTTexturePrecisionFromMatType(type)
-                                           format:LTTextureFormatFromMatType(type)
-                                   allocateMemory:YES];
+  LTTexture *texture = [LTTexture textureWithSize:size pixelFormat:pixelFormat allocateMemory:YES];
 
   [self loadImage:image toTexture:texture];
 

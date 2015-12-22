@@ -4,6 +4,7 @@
 #import "LTMMTexture.h"
 
 #import "LTFbo.h"
+#import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTProgram.h"
@@ -33,7 +34,7 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
   return [target image];
 }
 
-@interface LTMMTexture ()
+@interface LTMMTexture () <LTFboWritableAttachment>
 @property (nonatomic) GLsync syncObject;
 @end
 
@@ -55,7 +56,8 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
   __block LTMMTexture *texture;
 
   beforeEach(^{
-    texture = [[LTMMTexture alloc] initByteRGBAWithSize:CGSizeMake(2, 2)];
+    texture = [[LTMMTexture alloc] initWithSize:CGSizeMake(2, 2)
+                                    pixelFormat:$(LTGLPixelFormatRGBA8Unorm) allocateMemory:YES];
   });
 
   afterEach(^{
@@ -206,8 +208,12 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
 
     dit(@"should have fresh values on CPU after GPU rendering", ^{
       CGSize size = CGSizeMake(16, 16);
-      LTMMTexture *source = [[LTMMTexture alloc] initByteRGBAWithSize:size];
-      LTMMTexture *target = [[LTMMTexture alloc] initByteRGBAWithSize:size];
+      LTMMTexture *source = [[LTMMTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
+      LTMMTexture *target = [[LTMMTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
       LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                     fragmentSource:[ValueSetterFsh source]];
       LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:source];
@@ -232,8 +238,12 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
 
     dit(@"should have fresh values on GPU after CPU rendering", ^{
       CGSize size = CGSizeMake(16, 16);
-      LTMMTexture *source = [[LTMMTexture alloc] initByteRGBAWithSize:size];
-      LTGLTexture *target = [[LTGLTexture alloc] initByteRGBAWithSize:size];
+      LTMMTexture *source = [[LTMMTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
+      LTGLTexture *target = [[LTGLTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
 
       float values[] = {0, 0.25, 0.5, 0.75, 1.0};
 

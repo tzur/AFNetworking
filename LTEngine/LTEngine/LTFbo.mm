@@ -81,22 +81,25 @@
 }
 
 - (void)verifyTextureAsRenderTarget:(LTTexture *)texture withContext:(LTGLContext *)context {
-  switch (texture.precision) {
-    case LTTexturePrecisionByte:
-      // Rendering to byte precision is possible by OpenGL ES 2.0 spec.
-      break;
-    case LTTexturePrecisionHalfFloat:
-      if (!context.canRenderToHalfFloatTextures) {
-        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a "
-         "half-float precision, which is unsupported as a render target on this device"];
-      }
-      break;
-    case LTTexturePrecisionFloat:
-      if (!context.canRenderToFloatTextures) {
-        [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a float "
-         "precision, which is unsupported as a render target on this device"];
-      }
-      break;
+  if (texture.dataType == LTGLPixelDataTypeUnorm && texture.bitDepth == LTGLPixelBitDepth8) {
+    // Rendering to byte precision is always available by the spec of OpenGL ES 2.0 and 3.0.
+    return;
+  } else if (texture.dataType == LTGLPixelDataTypeFloat &&
+             texture.bitDepth == LTGLPixelBitDepth16) {
+    if (!context.canRenderToHalfFloatTextures) {
+      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a pixel format "
+       "type %@, which is unsupported as a render target on this device", texture.pixelFormat];
+    }
+  } else if (texture.dataType == LTGLPixelDataTypeFloat &&
+             texture.bitDepth == LTGLPixelBitDepth32) {
+    if (!context.canRenderToFloatTextures) {
+      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has pixel format "
+       "type %@, which is unsupported as a render target on this device", texture.pixelFormat];
+    }
+  } else {
+    [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has an unsupported "
+     "pixel format type %@, which is unsupported as a render target on this device",
+     texture.pixelFormat];
   }
 }
 
@@ -222,6 +225,14 @@
 
 - (CGSize)size {
   return self.texture.size;
+}
+
+- (LTGLPixelFormat *)pixelFormat {
+  return self.texture.pixelFormat;
+}
+
+- (LTVector4)fillColor {
+  return self.texture.fillColor;
 }
 
 #pragma mark -

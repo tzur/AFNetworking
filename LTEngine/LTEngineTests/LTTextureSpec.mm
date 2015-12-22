@@ -1,11 +1,10 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTGLTexture.h"
-
 #import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
+#import "LTTexture+Factory.h"
 #import "LTTextureBasicExamples.h"
 
 // LTTexture spec is tested by the concrete class LTGLTexture.
@@ -27,27 +26,21 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
 
   context(@"properties", ^{
     it(@"will not set wrap to repeat on NPOT texture", ^{
-      LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 3)
-                                                   precision:LTTexturePrecisionByte
-                                                      format:LTTextureFormatRGBA allocateMemory:NO];
+      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 3)];
       texture.wrap = LTTextureWrapRepeat;
 
       expect(texture.wrap).toNot.equal(LTTextureWrapRepeat);
     });
 
     it(@"will set the warp to repeat on POT texture", ^{
-      LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
-                                                   precision:LTTexturePrecisionByte
-                                                      format:LTTextureFormatRGBA allocateMemory:NO];
+      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
       texture.wrap = LTTextureWrapRepeat;
 
       expect(texture.wrap).to.equal(LTTextureWrapRepeat);
     });
 
     it(@"will set min and mag filters", ^{
-      LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(2, 2)
-                                                   precision:LTTexturePrecisionByte
-                                                      format:LTTextureFormatRGBA allocateMemory:NO];
+      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
 
       texture.minFilterInterpolation = LTTextureInterpolationNearest;
       texture.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -61,8 +54,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
     __block LTTexture *texture;
 
     beforeEach(^{
-      texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1) precision:LTTexturePrecisionByte
-                                           format:LTTextureFormatRGBA allocateMemory:NO];
+      texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
     });
 
     afterEach(^{

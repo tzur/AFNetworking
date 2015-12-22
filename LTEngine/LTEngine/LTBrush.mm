@@ -303,7 +303,7 @@ LTPropertyWithoutSetter(CGFloat, angle, Angle, 0, 2 * M_PI, 0);
 }
 
 - (void)setTexture:(LTTexture *)texture {
-  LTParameterAssert(texture.format == LTTextureFormatRed);
+  LTParameterAssert(texture.components == LTGLPixelComponentsR);
   _texture = texture;
   [self.drawer setSourceTexture:texture];
 }

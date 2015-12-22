@@ -6,11 +6,11 @@
 #import "LTArrayBuffer.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
+#import "LTTexture+Factory.h"
 #import "LTVertexArray.h"
 
 SpecBegin(LTDrawingContext)
@@ -70,7 +70,7 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
                                                            uniformToTexture:nil];
 
       expect(^{
-        id texture = [OCMockObject niceMockForClass:[LTGLTexture class]];
+        id texture = [OCMockObject niceMockForClass:[LTTexture class]];
         [context attachUniform:@"z" toTexture:texture];
       }).to.raise(NSInternalInconsistencyException);
     });
@@ -109,7 +109,7 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
     __block LTFbo *fbo;
 
     beforeEach(^{
-      LTTexture *output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
+      LTTexture *output = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
       fbo = [[LTFbo alloc] initWithTexture:output];
 
       vertexArray = [OCMockObject niceMockForClass:[LTVertexArray class]];
@@ -272,7 +272,7 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
       it(@"should mark end read from texture", ^{
         [[textureA expect] endReadFromTexture];
         [[textureB expect] endReadFromTexture];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];

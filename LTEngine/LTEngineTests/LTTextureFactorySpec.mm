@@ -10,8 +10,7 @@ SpecBegin(LTTextureFactory)
 
 it(@"should initialize with size precision channels and allocate memory", ^{
   LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
-                                        precision:LTTexturePrecisionByte
-                                           format:LTTextureFormatRGBA
+                                      pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                                    allocateMemory:YES];
 
   expect(texture).to.beKindOf([LTTexture class]);

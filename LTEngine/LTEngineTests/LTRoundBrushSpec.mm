@@ -253,8 +253,8 @@ context(@"drawing", ^{
       __block cv::Mat4hf expected;
       
       beforeEach(^{
-        output = [LTTexture textureWithSize:kOutputSize precision:LTTexturePrecisionHalfFloat
-                                     format:LTTextureFormatRGBA allocateMemory:YES];
+        output = [LTTexture textureWithSize:kOutputSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                             allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
         [fbo clearWithColor:LTVector4::zeros()];
         

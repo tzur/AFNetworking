@@ -83,8 +83,9 @@
 - (void)prepareOutputTexture {
   CGSize targetSize = [self sizeForOutputTexture];
   if (self.outputTexture.size != targetSize) {
-    self.outputTexture = [LTTexture textureWithSize:targetSize precision:self.inputTexture.precision
-                                             format:self.inputTexture.format allocateMemory:YES];
+    self.outputTexture = [LTTexture textureWithSize:targetSize
+                                        pixelFormat:self.inputTexture.pixelFormat
+                                     allocateMemory:YES];
   }
 }
    

@@ -10,8 +10,8 @@
 /// Graphic Gems IV. San Diego: Academic Press Professional, 1994. 474–485.
 @interface LTCLAHEProcessor : LTImageProcessor
 
-/// Initializes the processor with input and output textures. Output texture should be in
-/// \c LTTextureFormatRed format.
+/// Initializes the processor with input and output textures. Output texture must have
+/// \c LTGLPixelFormatR8Unorm pixel format.
 - (instancetype)initWithInputTexture:(LTTexture *)inputTexture
                        outputTexture:(LTTexture *)outputTexture;
 

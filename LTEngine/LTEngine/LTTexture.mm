@@ -7,130 +7,12 @@
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
-#import "LTGLException.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTMathUtils.h"
 #import "LTTextureContentsDataArchiver.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-LTTexturePrecision LTTexturePrecisionFromMatType(int type) {
-  switch (CV_MAT_DEPTH(type)) {
-    case CV_8U:
-      return LTTexturePrecisionByte;
-    case CV_16U:
-      return LTTexturePrecisionHalfFloat;
-    case CV_32F:
-      return LTTexturePrecisionFloat;
-    default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Invalid depth: %d, type: %d", CV_MAT_DEPTH(type), type];
-      __builtin_unreachable();
-  }
-}
-
-LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image) {
-  return LTTexturePrecisionFromMatType(image.type());
-}
-
-LTTextureChannels LTTextureChannelsFromMatType(int type) {
-  switch (CV_MAT_CN(type)) {
-    case 1:
-      return LTTextureChannelsOne;
-    case 2:
-      return LTTextureChannelsTwo;
-    case 4:
-      return LTTextureChannelsFour;
-    default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Invalid number of channels: %d", CV_MAT_CN(type)];
-      __builtin_unreachable();
-  }
-}
-
-LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image) {
-  return LTTextureChannelsFromMatType(image.type());
-}
-
-LTTextureFormat LTTextureFormatFromMatType(int type) {
-  switch (CV_MAT_CN(type)) {
-    case 1:
-      if ([LTGLContext currentContext].supportsRGTextures) {
-        return LTTextureFormatRed;
-      } else {
-        return LTTextureFormatRGBA;
-      }
-    case 2:
-      if ([LTGLContext currentContext].supportsRGTextures) {
-        return LTTextureFormatRG;
-      } else {
-        return LTTextureFormatRGBA;
-      }
-    case 4:
-      return LTTextureFormatRGBA;
-    default:
-      [LTGLException raise:kLTTextureUnsupportedFormatException
-                    format:@"Invalid number of channels: %d, type: %d", CV_MAT_CN(type), type];
-      __builtin_unreachable();
-  }
-}
-
-LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image) {
-  return LTTextureFormatFromMatType(image.type());
-}
-
-LTTextureChannels LTTextureChannelsFromFormat(LTTextureFormat format) {
-  switch (format) {
-    case LTTextureFormatRed:
-      return LTTextureChannelsOne;
-    case LTTextureFormatRG:
-      return LTTextureChannelsTwo;
-    case LTTextureFormatRGBA:
-      return LTTextureChannelsFour;
-  }
-}
-
-int LTMatDepthForPrecision(LTTexturePrecision precision) {
-  switch (precision) {
-    case LTTexturePrecisionByte:
-      return CV_8U;
-    case LTTexturePrecisionHalfFloat:
-      return CV_16U;
-    case LTTexturePrecisionFloat:
-      return CV_32F;
-  }
-}
-
-int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels) {
-  return CV_MAKETYPE(LTMatDepthForPrecision(precision), (int)channels);
-}
-
-int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat format) {
-  return CV_MAKETYPE(LTMatDepthForPrecision(precision), (int)LTTextureChannelsFromFormat(format));
-}
-
-static NSString *NSStringFromLTTexturePrecision(LTTexturePrecision precision) {
-  switch (precision) {
-    case LTTexturePrecisionByte:
-      return @"LTTexturePrecisionByte";
-    case LTTexturePrecisionFloat:
-      return @"LTTexturePrecisionFloat";
-    case LTTexturePrecisionHalfFloat:
-      return @"LTTexturePrecisionHalfFloat";
-  }
-}
-
-static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
-  switch (format) {
-    case LTTextureFormatRed:
-      return @"LTTextureFormatRed";
-    case LTTextureFormatRG:
-      return @"LTTextureFormatRG";
-    case LTTextureFormatRGBA:
-      return @"LTTextureFormatRGBA";
-  }
-}
 
 #pragma mark -
 #pragma mark LTTextureParameters
@@ -190,19 +72,16 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 #pragma mark Abstract methods
 #pragma mark -
 
-- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                      format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory {
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              allocateMemory:(BOOL)allocateMemory {
   if (self = [super init]) {
-    LTParameterAssert([self formatSupported:format],
-                      @"Given texture format %d is not supported in this system", format);
+    [self verifyPixelFormat:pixelFormat];
     LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
                       size.width, size.height);
     LTParameterAssert(size.height > 0 && size.width > 0, @"Given size (%g, %g) has width or height "
                       "which are <= 0", size.width, size.height);
 
-    _precision = precision;
-    _format = format;
-    _channels = LTTextureChannelsFromFormat(format);
+    _pixelFormat = pixelFormat;
     _size = size;
     _fillColor = LTVector4::null();
     _generationID = [NSUUID UUID].UUIDString;
@@ -216,36 +95,31 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 
 - (instancetype)initWithImage:(const cv::Mat &)image {
   if (self = [self initWithSize:CGSizeMake(image.cols, image.rows)
-                      precision:LTTexturePrecisionFromMat(image)
-                         format:LTTextureFormatFromMat(image)
+                    pixelFormat:[[LTGLPixelFormat alloc] initWithMatType:image.type()]
                  allocateMemory:NO]) {
     [self load:image];
   }
   return self;
 }
 
-- (instancetype)initByteRGBAWithSize:(CGSize)size {
-  return [self initWithSize:size precision:LTTexturePrecisionByte
-                     format:LTTextureFormatRGBA allocateMemory:YES];
-}
-
 - (instancetype)initWithPropertiesOf:(LTTexture *)texture {
-  return [self initWithSize:texture.size precision:texture.precision
-                     format:texture.format allocateMemory:YES];
+  return [self initWithSize:texture.size pixelFormat:texture.pixelFormat allocateMemory:YES];
 }
 
 - (void)dealloc {
   [self destroy];
 }
 
-- (BOOL)formatSupported:(LTTextureFormat)format {
-  switch (format) {
-    case LTTextureFormatRGBA:
-      return YES;
-    case LTTextureFormatRed:
-    case LTTextureFormatRG:
-      return [LTGLContext currentContext].supportsRGTextures;
-  }
+- (void)verifyPixelFormat:(LTGLPixelFormat *)pixelFormat {
+  LTParameterAssert(pixelFormat);
+
+  LTGLVersion version = [LTGLContext currentContext].version;
+  LTParameterAssert([pixelFormat formatForVersion:version] != LTGLInvalidEnum,
+                    @"Pixel format %@ doesn't have a matching GL format", pixelFormat);
+  LTParameterAssert([pixelFormat internalFormatForVersion:version] != LTGLInvalidEnum,
+                    @"Pixel format %@ doesn't have a matching GL internal format", pixelFormat);
+  LTParameterAssert([pixelFormat precisionForVersion:version] != LTGLInvalidEnum,
+                    @"Pixel format %@ doesn't have a matching GL precision", pixelFormat);
 }
 
 - (void)setDefaultValues {
@@ -545,13 +419,13 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 }
 
 - (void)clearWithColor:(LTVector4)color {
+  // Set the fillColor first to avoid it changing multiple times across the clearing process.
   self.fillColor = color;
-  [self performWithoutUpdatingFillColor:^{
-    for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-      LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:i];
-      [fbo clearWithColor:color];
-    }
-  }];
+
+  for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
+    LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:i];
+    [fbo clearWithColor:color];
+  }
 }
 
 #pragma mark -
@@ -693,72 +567,20 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
   _maxMipmapLevel = maxMipmapLevel;
 }
 
-- (GLenum)glPrecision {
-  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
-    return self.precision;
-  } else {
-    switch (self.precision) {
-      case LTTexturePrecisionHalfFloat:
-        return GL_HALF_FLOAT;
-      default:
-        return self.precision;
-    }
-  }
+- (LTGLPixelBitDepth)bitDepth {
+  return self.pixelFormat.bitDepth;
 }
 
-- (GLint)glInternalFormat {
-  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
-    return self.format;
-  } else {
-    switch (self.format) {
-      case LTTextureFormatRed:
-        switch (self.precision) {
-          case LTTexturePrecisionByte:
-            return GL_R8;
-          case LTTexturePrecisionHalfFloat:
-            return GL_R16F;
-          case LTTexturePrecisionFloat:
-            return GL_R32F;
-        }
-      case LTTextureFormatRG:
-        switch (self.precision) {
-          case LTTexturePrecisionByte:
-            return GL_RG8;
-          case LTTexturePrecisionHalfFloat:
-            return GL_RG16F;
-          case LTTexturePrecisionFloat:
-            return GL_RG32F;
-        }
-      case LTTextureFormatRGBA:
-        switch (self.precision) {
-          case LTTexturePrecisionByte:
-            return GL_RGBA8;
-          case LTTexturePrecisionHalfFloat:
-            return GL_RGBA16F;
-          case LTTexturePrecisionFloat:
-            return GL_RGBA32F;
-        }
-    }
-  }
+- (LTGLPixelComponents)components {
+  return self.pixelFormat.components;
 }
 
-- (GLenum)glFormat {
-  if ([EAGLContext currentContext].API == kEAGLRenderingAPIOpenGLES2) {
-    return self.format;
-  } else {
-    switch (self.format) {
-      case LTTextureFormatRed:
-        return GL_RED;
-      case LTTextureFormatRG:
-        return GL_RG;
-      default:
-        return self.format;
-    }
-  }
+- (LTGLPixelDataType)dataType {
+  return self.pixelFormat.dataType;
 }
 
 - (int)matType {
-  return LTMatTypeForPrecisionAndChannels(self.precision, self.channels);
+  return self.pixelFormat.matType;
 }
 
 #pragma mark -
@@ -766,10 +588,9 @@ static NSString *NSStringFromLTTextureFormat(LTTextureFormat format) {
 #pragma mark -
 
 - (NSString *)debugDescription {
-  return [NSString stringWithFormat:@"<%@: %p, size: %@, precision: %@, format: %@, "
-          "generation ID: %lu>", [self class], self, NSStringFromCGSize(self.size),
-          NSStringFromLTTexturePrecision(self.precision), NSStringFromLTTextureFormat(self.format),
-          (unsigned long)self.generationID];
+  return [NSString stringWithFormat:@"<%@: %p, size: %@, pixelFormat: %@, "
+          "generation ID: %@>", [self class], self, NSStringFromCGSize(self.size),
+          self.pixelFormat.name, self.generationID];
 }
 
 - (id)debugQuickLookObject {

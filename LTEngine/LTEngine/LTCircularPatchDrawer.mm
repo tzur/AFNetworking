@@ -15,6 +15,7 @@
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+LTCircularPatchVsh.h"
 #import "LTShaderStorage+LTCircularPatchFsh.h"
+#import "LTTexture.h"
 #import "LTVertexArray.h"
 
 /// Struct containing vertex position and texcoord.

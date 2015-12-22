@@ -27,8 +27,8 @@ context(@"initialization", ^{
   it(@"should not initialize with half float texture", ^{
     expect(^{
       inputTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                      precision:LTTexturePrecisionHalfFloat
-                                         format:LTTextureFormatRGBA allocateMemory:YES];
+                                    pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                 allocateMemory:YES];
       processor = [[LTHistogramProcessor alloc] initWithInputTexture:inputTexture];
     }).to.raise(NSInvalidArgumentException);
   });

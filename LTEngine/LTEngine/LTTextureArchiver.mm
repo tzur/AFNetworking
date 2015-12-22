@@ -182,8 +182,7 @@ objection_requires_sel(@selector(fileManager));
            withArchiveType:(LTTextureArchiveType *)type metadata:(LTTextureMetadata *)metadata
                      error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture.size == metadata.size);
-  LTParameterAssert(texture.format == metadata.format);
-  LTParameterAssert(texture.precision == metadata.precision);
+  LTParameterAssert([texture.pixelFormat isEqual:metadata.pixelFormat]);
 
   __block BOOL success;
   texture.generationID = metadata.generationID;

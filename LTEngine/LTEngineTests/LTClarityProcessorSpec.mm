@@ -138,8 +138,8 @@ context(@"synthetic rendering", ^{
 context(@"real world rendering", ^{
   beforeEach(^{
     input = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
-    output = [LTTexture textureWithSize:input.size precision:LTTexturePrecisionHalfFloat
-                                 format:LTTextureFormatRGBA allocateMemory:YES];
+    output = [LTTexture textureWithSize:input.size pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                         allocateMemory:YES];
     processor = [[LTClarityProcessor alloc] initWithInput:input output:output];
   });
   
