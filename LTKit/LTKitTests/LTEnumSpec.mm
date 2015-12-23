@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTEnumRegistry.h"
+#import "LTEnum.h"
 
 LTEnumMake(NSUInteger, LTMyName,
   LTMyNameA,
@@ -23,14 +23,14 @@ LTEnumMakeWithValues(NSUInteger, LTMyNameWithUnorderedValues,
 
 SpecBegin(LTEnumRegistry)
 
-it(@"should register enum", ^{
-  expect([[LTEnumRegistry sharedInstance] isEnumRegistered:@"LTMyName"]).to.beTruthy();
-});
-
 context(@"automatic value assignment", ^{
+  it(@"should return the enum fields according to the order they were defined", ^{
+    NSArray<LTMyName *> *fields = [LTMyName fields];
+    expect(fields).to.equal(@[$(LTMyNameA), $(LTMyNameB), $(LTMyNameC)]);
+  });
+
   it(@"should have correct field to value mapping", ^{
-    LTBidirectionalMap<NSString *, NSNumber *> *fieldToValue =
-        [LTEnumRegistry sharedInstance][@"LTMyName"];
+    LTBidirectionalMap<NSString *, NSNumber *> *fieldToValue = [LTMyName fieldNamesToValues];
     LTBidirectionalMap<NSString *, NSNumber *> *expectedFieldToValue =
         [LTBidirectionalMap mapWithDictionary:@{
           @"LTMyNameA": @0,
@@ -43,9 +43,15 @@ context(@"automatic value assignment", ^{
 });
 
 context(@"manual value assignment", ^{
+  it(@"should return the enum fields according to the order they were defined", ^{
+    NSArray<LTMyNameWithUnorderedValues *> *fields = [LTMyNameWithUnorderedValues fields];
+    expect(fields).to.equal(@[$(LTMyNameWithUnorderedValuesA), $(LTMyNameWithUnorderedValuesB),
+                              $(LTMyNameWithUnorderedValuesC)]);
+  });
+
   it(@"should have correct field to value mapping", ^{
     LTBidirectionalMap<NSString *, NSNumber *> *fieldToValue =
-        [LTEnumRegistry sharedInstance][@"LTMyNameWithValues"];
+        [LTMyNameWithValues fieldNamesToValues];
     LTBidirectionalMap<NSString *, NSNumber *> *expectedFieldToValue =
         [LTBidirectionalMap mapWithDictionary:@{
           @"LTMyNameWithValuesA": @5,
@@ -80,28 +86,43 @@ context(@"enum objects", ^{
     expect(enumObjectC.value).to.equal(LTMyNameWithValuesC);
   });
 
-  it(@"should enumerate enum values", ^{
+  it(@"should enumerate sorted enum values", ^{
     NSMutableArray<NSNumber *> *values = [NSMutableArray array];
 
-    [LTMyNameWithValues enumerateValuesUsingBlock:^(_LTMyNameWithValues value) {
+    [LTMyNameWithUnorderedValues
+        enumerateSortedValuesUsingBlock:^(_LTMyNameWithUnorderedValues value) {
       [values addObject:@(value)];
     }];
 
-    expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
-      @[@(LTMyNameWithValuesA), @(LTMyNameWithValuesB), @(LTMyNameWithValuesC)]
-    );
+    expect(values).to.equal(@[@(LTMyNameWithUnorderedValuesB), @(LTMyNameWithUnorderedValuesA),
+                              @(LTMyNameWithUnorderedValuesC)]);
+  });
+
+  it(@"should enumerate enum values", ^{
+    NSMutableArray<NSNumber *> *values = [NSMutableArray array];
+
+    [LTMyNameWithUnorderedValues enumerateValuesUsingBlock:^(_LTMyNameWithUnorderedValues value) {
+      [values addObject:@(value)];
+    }];
+
+    expect(values).to.equal(@[@(LTMyNameWithUnorderedValuesA), @(LTMyNameWithUnorderedValuesB),
+                              @(LTMyNameWithUnorderedValuesC)]);
   });
 
   it(@"should enumerate enum objects", ^{
-    NSMutableArray<LTMyNameWithValues *> *values = [NSMutableArray array];
+    NSMutableArray<LTMyNameWithUnorderedValues *> *values = [NSMutableArray array];
 
-    [LTMyNameWithValues enumerateEnumUsingBlock:^(LTMyNameWithValues *value) {
+    [LTMyNameWithUnorderedValues enumerateEnumUsingBlock:^(LTMyNameWithUnorderedValues *value) {
       [values addObject:value];
     }];
 
-    expect([values sortedArrayUsingSelector:@selector(compare:)]).to.equal(
-      @[$(LTMyNameWithValuesA), $(LTMyNameWithValuesB), $(LTMyNameWithValuesC)]
-    );
+    expect(values).to.equal(@[$(LTMyNameWithUnorderedValuesA), $(LTMyNameWithUnorderedValuesB),
+                               $(LTMyNameWithUnorderedValuesC)]);
+  });
+
+  it(@"should return new enum object with lowest value", ^{
+    LTMyNameWithUnorderedValues *value = [LTMyNameWithUnorderedValues enumWithLowestValue];
+    expect(value.value).to.equal(LTMyNameWithUnorderedValuesB);
   });
 
   it(@"should return new enum object with next value", ^{

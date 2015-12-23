@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import "LTEnumMacros.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Represents an enum object, allowing to initialize with a given enum field name. Other methods
@@ -9,14 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see LTEnumMacros.
 @protocol LTEnum <NSCoding, NSCopying, NSObject>
 
-/// Initializes a new enum with the given field name.
+/// Initializes a new enum object with the given field name.
 - (instancetype)initWithName:(NSString *)name;
 
-/// Initializes a new enum with a default value.
-+ (instancetype)enum;
-
-/// Initializes a new enum with the given field name.
+/// Returns a new enum object with the given field name.
 + (instancetype)enumWithName:(NSString *)name;
+
+/// Returns a new enum object with the lowest value.
++ (instancetype)enumWithLowestValue;
 
 /// Returns a new enum object with a lowest value greater than the receiving object, or \c nil if
 /// the receiving object is the greatest enum value.
@@ -24,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note The order in which enum items were defined does not affect the objects provided by this
 /// method.
 - (nullable instancetype)enumWithNextValue;
+
+/// Returns an array of new enum objects of all possible enum fields, in the order they were
+/// defined.
++ (NSArray *)fields;
+
+/// Returns a mapping between the name of every enum field and its corresponding value.
++ (LTBidirectionalMap<NSString *, NSNumber *> *)fieldNamesToValues;
 
 /// Name of the currently value set.
 @property (readonly, nonatomic) NSString *name;

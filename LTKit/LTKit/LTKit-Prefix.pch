@@ -37,6 +37,6 @@ extern "C" {
 
 #ifdef __cplusplus
   #import "LTEasyBoxing.h"
-  #import "LTEnumRegistry.h"
+  #import "LTEnum.h"
   #import "LTRef.h"
 #endif
