@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTBidirectionalMap <ObjectType, KeyType> ()
+@interface LTBidirectionalMap <KeyType: id<NSCopying>, ObjectType> ()
 
 /// Holds mapping of keys to values.
 @property (strong, nonatomic) NSMutableDictionary<KeyType, ObjectType> *keysToValues;

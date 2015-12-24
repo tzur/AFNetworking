@@ -4,9 +4,8 @@
 #import "LTMetaMacros.h"
 
 #import "LTBidirectionalMap.h"
-#import "LTEnum.h"
 
-/// Avoid including this file directly. To use these macros, include \c LTEnumRegistry.h.
+/// Avoid including this file directly. To use these macros, include \c LTEnum.h.
 
 #pragma mark -
 #pragma mark Interface
@@ -82,8 +81,9 @@
   /* Verify the implementation matches the definition. */ \
   _LTVerifyImplementation(NAME, __VA_ARGS__); \
   \
-  /* Register the enum with LTEnumRegistry. */ \
-  _LTEnumRegister(NAME, TYPE, __VA_ARGS__) \
+  /* Create the Enum wrapper category providing list of fields and mappings of fields to values */ \
+  _LTEnumDeclareRegistryCategory(NAME) \
+  _LTEnumImplementRegistryCategory(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumImplementNSValueCategory(TYPE, NAME) \
@@ -95,8 +95,9 @@
   /* Verify the implementation matches the definition. */ \
   _LTVerifyImplementationWithValues(NAME, __VA_ARGS__); \
   \
-  /* Register the enum with LTEnumRegistry. */ \
-  _LTEnumRegisterWithValues(NAME, TYPE, __VA_ARGS__) \
+  /* Create the Enum wrapper category providing list of fields and mappings of fields to values */ \
+  _LTEnumDeclareRegistryCategory(NAME) \
+  _LTEnumImplementRegistryCategoryWithValues(NAME, TYPE, __VA_ARGS__) \
   \
   /* Create NSValue+NAMEValue category. */ \
   _LTEnumImplementNSValueCategory(TYPE, NAME) \
@@ -108,22 +109,68 @@
 #pragma mark Implementation
 #pragma mark -
 
-/// Registers the enum with \c LTEnumRegistry on image load.
-#define _LTEnumRegister(NAME, TYPE, ...) \
-  __attribute__((constructor)) static void __register##NAME() { \
-    [[LTEnumRegistry sharedInstance] \
-        registerEnumName:@#NAME \
-        withFieldToValue:@{metamacro_foreach_cxt(_LTEnumDictionaryField,, TYPE, __VA_ARGS__)}]; \
-  }
+/// Declares the Registry category for the enum wrapper class.
+#define _LTEnumDeclareRegistryCategory(NAME) \
+  @interface NAME (Registry) \
+  \
+  /* Returns an array of the names of all the enum fields, in the order they were defined. */ \
+  + (NSArray<NSString *> *)_fieldNames; \
+  \
+  /* Returns a bidirectional mapping between enum field names and their corresponding values. */ \
+  + (LTBidirectionalMap<NSString *, NSNumber *> *)_fieldNamesToValues; \
+  \
+  @end
 
-/// Registers the enum with \c LTEnumRegistry on image load.
-#define _LTEnumRegisterWithValues(NAME, TYPE, ...) \
-  __attribute__((constructor)) static void __register##NAME() { \
-    [[LTEnumRegistry sharedInstance] \
-        registerEnumName:@#NAME \
-        withFieldToValue:@{metamacro_foreach2(_LTEnumDictionaryFieldWithValue, TYPE, \
-                                              _LTNull, __VA_ARGS__)}]; \
-  }
+/// Implements the Registry category for the enum wrapper class, when the default values are used.
+#define _LTEnumImplementRegistryCategory(NAME, TYPE, ...) \
+  @implementation NAME (Registry) \
+  \
+  + (NSArray<NSString *> *)_fieldNames { \
+    static NSArray<NSString *> *fieldNames; \
+    static dispatch_once_t onceToken; \
+    dispatch_once(&onceToken, ^{ \
+      fieldNames = @[metamacro_foreach(_LTEnumArrayField,, __VA_ARGS__)]; \
+    }); \
+    return fieldNames; \
+  } \
+  \
+  + (LTBidirectionalMap<NSString *, NSNumber *> *)_fieldNamesToValues { \
+    static LTBidirectionalMap<NSString *, NSNumber *> *fieldNamesToValues; \
+    static dispatch_once_t onceToken; \
+    dispatch_once(&onceToken, ^{ \
+      NSDictionary *dict = @{metamacro_foreach_cxt(_LTEnumDictionaryField,, TYPE, __VA_ARGS__)}; \
+      fieldNamesToValues = [LTBidirectionalMap mapWithDictionary:dict]; \
+    }); \
+    return fieldNamesToValues; \
+  } \
+  \
+  @end
+
+/// Implements the Registry category for the enum wrapper class, when custom values are provided.
+#define _LTEnumImplementRegistryCategoryWithValues(NAME, TYPE, ...) \
+  @implementation NAME (Registry) \
+  \
+  + (NSArray<NSString *> *)_fieldNames { \
+    static NSArray<NSString *> *fieldNames; \
+    static dispatch_once_t onceToken; \
+    dispatch_once(&onceToken, ^{ \
+      fieldNames = @[metamacro_foreach2(_LTEnumArrayFieldWithValue,, _LTNull, __VA_ARGS__)]; \
+    }); \
+    return fieldNames; \
+  } \
+  \
+  + (LTBidirectionalMap<NSString *, NSNumber *> *)_fieldNamesToValues { \
+    static LTBidirectionalMap<NSString *, NSNumber *> *fieldNamesToValues; \
+    static dispatch_once_t onceToken; \
+    dispatch_once(&onceToken, ^{ \
+      NSDictionary *dict = @{metamacro_foreach2(_LTEnumDictionaryFieldWithValue, TYPE, \
+                                                _LTNull, __VA_ARGS__)}; \
+      fieldNamesToValues = [LTBidirectionalMap mapWithDictionary:dict]; \
+    }); \
+    return fieldNamesToValues; \
+  } \
+  \
+  @end
 
 /// Defines NSValue category with boxing / unboxing methods.
 #define _LTEnumDeclareNSValueCategory(TYPE, NAME) \
@@ -168,31 +215,45 @@
   \
   - (instancetype)init NS_UNAVAILABLE; \
   \
+  /* Designated initializer: Initializes a new enum object with the given value. */ \
   - (instancetype)initWithValue:(_##NAME)value NS_DESIGNATED_INITIALIZER; \
   \
+  /* Returns a new enum object with the given value. */ \
   + (instancetype)enumWithValue:(_##NAME)value; \
   \
+  /* Executes the given block using each enum value, starting from the smallest value and */ \
+  /* continuing through all values to the greatest value. */ \
+  + (void)enumerateSortedValuesUsingBlock:(void (^)(_##NAME value))block; \
+  \
+  /* Executes the given block using each enum value, iterating according to the order the */ \
+  /* fields were defined. */ \
   + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block; \
   \
+  /* Executes the given block using each enum object, iterating according to the order the */ \
+  /* fields were defined. */ \
   + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block; \
   \
-  @property (nonatomic) _##NAME value; \
+  /* Returns an array of new enum objects of all possible enum fields, in the order they were */ \
+  /* defined. */ \
+  + (NSArray<NAME *> *)fields; \
+  \
+  /* Underlying value of the enum object. */ \
+  @property (readonly, nonatomic) _##NAME value; \
   \
   @end
 
-/// Implement the enum wrapper class.
 #define _LTEnumImplementClass(NAME) \
   @implementation NAME \
   \
   - (instancetype)initWithName:(NSString *)name { \
-    NSValue *value = [LTEnumRegistry sharedInstance][@#NAME][name]; \
+    NSValue *value = [[self class] fieldNamesToValues][name]; \
     LTParameterAssert(value, @"Field %@ does not exist in the enum %@", name, @#NAME); \
     return [self initWithValue:[value NAME##Value]]; \
   } \
   \
   - (instancetype)initWithValue:(_##NAME)value { \
     if (self = [super init]) { \
-      self.value = value; \
+      _value = value; \
     } \
     return self; \
   } \
@@ -206,8 +267,7 @@
   } \
   \
   - (nullable instancetype)enumWithNextValue { \
-    LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
-        enumFieldToValueForName:@#NAME]; \
+    LTBidirectionalMap *mapping = [[self class] fieldNamesToValues]; \
     NSArray *enumValues = [mapping.allValues sortedArrayUsingSelector:@selector(compare:)]; \
     NSUInteger selfIndex = [enumValues indexOfObject:@(self.value)]; \
     LTAssert(selfIndex != NSNotFound, @"Could not find mapping for enum value %@", self); \
@@ -215,10 +275,6 @@
       return nil; \
     } \
     return [[self class] enumWithValue:[enumValues[selfIndex + 1] NAME ## Value]]; \
-  } \
-  \
-  + (instancetype)enum { \
-    return [[[self class] alloc] init]; \
   } \
   \
   + (instancetype)enumWithName:(NSString *)name { \
@@ -229,25 +285,53 @@
     return [[NAME alloc] initWithValue:value]; \
   } \
   \
-  + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block { \
+  + (instancetype)enumWithLowestValue { \
+    LTBidirectionalMap *mapping = [self fieldNamesToValues]; \
+    NSArray *enumValues = [mapping.allValues sortedArrayUsingSelector:@selector(compare:)]; \
+    return [self enumWithValue:[enumValues.firstObject NAME##Value]]; \
+  } \
+  \
+  + (void)enumerateSortedValuesUsingBlock:(void (^)(_##NAME value))block { \
     LTParameterAssert(block); \
-    LTBidirectionalMap *mapping = [[LTEnumRegistry sharedInstance] \
-        enumFieldToValueForName:@#NAME]; \
+    LTBidirectionalMap *mapping = [[self class] fieldNamesToValues]; \
     \
-    for (NSNumber *value in mapping.allValues) { \
+    NSArray *sortedValues = [mapping.allValues sortedArrayUsingSelector:@selector(compare:)]; \
+    for (NSNumber *value in sortedValues) { \
       block([value NAME##Value]); \
     } \
   } \
   \
-  + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block { \
+  + (void)enumerateValuesUsingBlock:(void (^)(_##NAME value))block { \
     LTParameterAssert(block); \
-    [self enumerateValuesUsingBlock:^(_##NAME value) { \
-      block([[NAME alloc] initWithValue:value]); \
+    [self enumerateEnumUsingBlock:^(NAME *value) { \
+      block(value.value); \
     }]; \
   } \
   \
+  + (void)enumerateEnumUsingBlock:(void (^)(NAME *value))block { \
+    LTParameterAssert(block); \
+    for (NAME *value in [self fields]) { \
+      block(value); \
+    } \
+  } \
+  \
+  /* This method always returns a new array of new objects for the same reason we didn't want */ \
+  /* each enum value to be a singleton - in case categories with associated objects are added */ \
+  /* to the enum, this may lead to confusing scenarios. */ \
+  + (NSArray<NAME *> *)fields { \
+    NSMutableArray<NAME *> *fields = [NSMutableArray array]; \
+    for (NSString *fieldName in [self _fieldNames]) { \
+      [fields addObject:[[NAME alloc] initWithName:fieldName]]; \
+    } \
+    return fields; \
+  } \
+  \
+  + (LTBidirectionalMap<NSString *, NSNumber *> *)fieldNamesToValues { \
+    return [self _fieldNamesToValues]; \
+  } \
+  \
   - (NSString *)name { \
-    return [[LTEnumRegistry sharedInstance][@#NAME] keyForObject:@(self.value)]; \
+    return [[[self class] fieldNamesToValues] keyForObject:@(self.value)]; \
   } \
   \
   - (NSUInteger)hash { \
@@ -338,9 +422,17 @@
 #define _LTEnumDictionaryField(INDEX, TYPE, ARG) \
   _LTEnumDictionaryFieldWithValue(TYPE, ARG, INDEX)
 
-/// Callback to define a dictionary field with \c ARG as \c NSString and INDEX as \c NSNumber.
+/// Callback to define a dictionary field with \c ARG as \c NSString and VALUE as \c NSNumber.
 #define _LTEnumDictionaryFieldWithValue(TYPE, ARG, VALUE) \
   @#ARG: @((TYPE)VALUE),
+
+/// Callback to define an array field with \c ARG as \c NSString, and an ending comma.
+#define _LTEnumArrayField(INDEX, ARG) \
+  _LTEnumArrayFieldWithValue(, ARG, INDEX)
+
+/// Callback to define an array field with \c ARG as \c NSString, and an ending comma.
+#define _LTEnumArrayFieldWithValue(CONTEXT, ARG, VALUE) \
+  @#ARG,
 
 /// Callback to define a single enum field in the traits struct.
 #define _LTEnumTraitsStuctField(INDEX, ARG) \
