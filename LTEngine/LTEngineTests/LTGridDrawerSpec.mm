@@ -5,7 +5,7 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
+#import "LTTexture+Factory.h"
 
 /// Fills the given mat with baseColor, and then blend the given color on its border, double
 /// blending the corners if necessary.
@@ -64,10 +64,7 @@ context(@"drawing", ^{
   __block cv::Mat4b expected(kFramebufferSize.height, kFramebufferSize.width);
   
   beforeEach(^{
-    output = [[LTGLTexture alloc] initWithSize:kFramebufferSize
-                                      precision:LTTexturePrecisionByte
-                                        format:LTTextureFormatRGBA
-                                 allocateMemory:YES];
+    output = [LTTexture byteRGBATextureWithSize:kFramebufferSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
     expected = kBlack;

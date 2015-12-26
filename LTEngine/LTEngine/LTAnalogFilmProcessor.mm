@@ -401,15 +401,15 @@ LTPropertyWithoutSetter(CGFloat, lightLeakIntensity, LightLeakIntensity, 0, 1, 0
     assetTexture = [self defaultAssetTexture];
   }
   LTParameterAssert([self isValidTexture:assetTexture],
-                    @"Asset should be a square, four channel texture.");
+                    @"Asset should be a square, RGBA8 texture.");
   _assetTexture = assetTexture;
   [self setAuxiliaryTexture:assetTexture withName:[LTAnalogFilmFsh assetTexture]];
 }
 
 - (BOOL)isValidTexture:(LTTexture *)texture {
   BOOL hasSquareRatio = (texture.size.width == texture.size.height);
-  BOOL hasFourChannels = (texture.channels == LTTextureChannelsFour);
-  return hasSquareRatio && hasFourChannels;
+  BOOL hasCorrectPixelFormat = (texture.pixelFormat.value == LTGLPixelFormatRGBA8Unorm);
+  return hasSquareRatio && hasCorrectPixelFormat;
 }
 
 LTPropertyWithoutSetter(CGFloat, frameWidth, FrameWidth, -1, 1, 0);

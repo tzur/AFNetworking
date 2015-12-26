@@ -37,12 +37,15 @@ context(@"properties", ^{
   });
   
   it(@"should set textures", ^{
-    LTTexture *byteTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                 format:LTTextureFormatRGBA allocateMemory:YES];
-    LTTexture *halfTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionHalfFloat
-                                                 format:LTTextureFormatRGBA allocateMemory:YES];
-    LTTexture *floatTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionFloat
-                                                  format:LTTextureFormatRGBA allocateMemory:YES];
+    LTTexture *byteTexture = [LTTexture textureWithSize:kSize
+                                            pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                         allocateMemory:YES];
+    LTTexture *halfTexture = [LTTexture textureWithSize:kSize
+                                            pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                         allocateMemory:YES];
+    LTTexture *floatTexture = [LTTexture textureWithSize:kSize
+                                             pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                          allocateMemory:YES];
     NSArray *textures = [@[byteTexture, halfTexture, floatTexture] mutableCopy];
     brush.textures = textures;
     expect(brush.textures).notTo.beIdenticalTo(textures);
@@ -54,14 +57,16 @@ context(@"properties", ^{
   
   it(@"should not set non rgba textures", ^{
     expect(^{
-      LTTexture *redTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                  format:LTTextureFormatRed allocateMemory:YES];
+      LTTexture *redTexture = [LTTexture textureWithSize:kSize
+                                             pixelFormat:$(LTGLPixelFormatR8Unorm)
+                                          allocateMemory:YES];
       brush.textures = @[redTexture];
     }).to.raise(NSInvalidArgumentException);
     
     expect(^{
-      LTTexture *rgTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                 format:LTTextureFormatRG allocateMemory:YES];
+      LTTexture *rgTexture = [LTTexture textureWithSize:kSize
+                                            pixelFormat:$(LTGLPixelFormatRG8Unorm)
+                                         allocateMemory:YES];
       brush.textures = @[rgTexture];
     }).to.raise(NSInvalidArgumentException);
   });

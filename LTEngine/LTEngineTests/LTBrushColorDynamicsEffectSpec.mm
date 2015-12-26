@@ -84,15 +84,13 @@ context(@"properties", ^{
     expect(effect.baseColorTexture).to.beNil();
     
     expect(^{
-      effect.baseColorTexture= [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRed allocateMemory:YES];
+      effect.baseColorTexture = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
-      effect.baseColorTexture= [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                                precision:LTTexturePrecisionByte
-                                                   format:LTTextureFormatRG allocateMemory:YES];
+      effect.baseColorTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
+                                               pixelFormat:$(LTGLPixelFormatRG8Unorm)
+                                            allocateMemory:YES];
     }).to.raise(NSInvalidArgumentException);
   });
 });

@@ -69,7 +69,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
   __block BOOL stored;
 
   [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    if (texture.precision == LTTexturePrecisionByte) {
+    if (texture.dataType == LTGLPixelDataTypeUnorm && texture.bitDepth == LTGLPixelBitDepth8) {
       stored = [self archiveBytePrecisionMat:mapped error:error];
     } else {
       stored = [self archiveNonBytePrecisionMat:mapped error:error];
@@ -109,7 +109,7 @@ objection_initializer_sel(@selector(initWithFilePath:));
   LTParameterAssert(data && !data.length, @"Given data must be an empty NSData object");
 
   BOOL success;
-  if (texture.precision == LTTexturePrecisionByte) {
+  if (texture.dataType == LTGLPixelDataTypeUnorm && texture.bitDepth == LTGLPixelBitDepth8) {
     success = [self unarchiveToByteTexture:texture error:error];
   } else {
     success = [self unarchiveToNonByteTexture:texture error:error];

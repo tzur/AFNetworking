@@ -15,8 +15,6 @@ NSString * const kLTShaderCompilationFailedException = @"Shader Compilation Fail
 NSString * const kLTProgramCreationFailedException = @"Program Creation Failed Exception";
 NSString * const kLTProgramLinkFailedException = @"Program Link Failed Exception";
 
-NSString * const kLTTextureUnsupportedFormatException =
-    @"Texture Unsupported Format Exception";
 NSString * const kLTTextureCreationFailedException = @"Texture Creation Failed Exception";
 
 NSString * const kLTMMTextureBufferLockingFailedException =

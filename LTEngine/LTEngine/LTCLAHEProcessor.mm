@@ -20,8 +20,9 @@
 
 - (instancetype)initWithInputTexture:(LTTexture *)inputTexture
                        outputTexture:(LTTexture *)outputTexture {
-  LTParameterAssert(outputTexture.format == LTTextureFormatRed,
-                    @"Output should be in LTTextureFormatRed format");
+  LTParameterAssert(outputTexture.pixelFormat.value == LTGLPixelFormatR8Unorm,
+                    @"Output texture pixel format should be LTGLPixelFormatR8Unorm, got: %@",
+                    outputTexture.pixelFormat);
   if (self = [super init]) {
     self.inputTexture = inputTexture;
     self.outputTexture = outputTexture;

@@ -15,8 +15,8 @@ context(@"initialization", ^{
     LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *output = [LTTexture textureWithSize:CGSizeMake(15, 16)
-                                         precision:LTTexturePrecisionHalfFloat
-                                            format:LTTextureFormatRGBA allocateMemory:YES];
+                                       pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                    allocateMemory:YES];
 
     expect(^{
       LTPatchSolverProcessor __unused *processor = [[LTPatchSolverProcessor alloc]
@@ -31,8 +31,8 @@ context(@"initialization", ^{
     LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *output = [LTTexture textureWithSize:CGSizeMake(15, 16)
-                                         precision:LTTexturePrecisionByte
-                                            format:LTTextureFormatRGBA allocateMemory:YES];
+                                       pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                    allocateMemory:YES];
 
     expect(^{
       LTPatchSolverProcessor __unused *processor = [[LTPatchSolverProcessor alloc]
@@ -55,9 +55,8 @@ context(@"processing", ^{
     target = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(kTextureWidth)];
     mask = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(kTextureWidth)];
     output = [LTTexture textureWithSize:CGSizeMakeUniform(kTextureWidth)
-                              precision:LTTexturePrecisionHalfFloat
-                                 format:LTTextureFormatRGBA allocateMemory:YES];
-
+                              pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                         allocateMemory:YES];
   });
 
   afterEach(^{

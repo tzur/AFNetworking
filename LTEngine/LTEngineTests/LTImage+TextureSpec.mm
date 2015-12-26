@@ -13,8 +13,7 @@ it(@"should create texture from RGBA image", ^{
   LTTexture *texture = [LTImage textureWithImage:image];
   LTImage *ltImage = [[LTImage alloc] initWithImage:image];
 
-  expect(texture.precision).to.equal(LTTexturePrecisionByte);
-  expect(texture.format).to.equal(LTTextureFormatRGBA);
+  expect(texture.pixelFormat).to.equal($(LTGLPixelFormatRGBA8Unorm));
   expect($([texture image])).to.equalMat($(ltImage.mat));
 });
 
@@ -23,15 +22,13 @@ it(@"should create texture from gray image", ^{
   LTTexture *texture = [LTImage textureWithImage:image];
   LTImage *ltImage = [[LTImage alloc] initWithImage:image];
 
-  expect(texture.precision).to.equal(LTTexturePrecisionByte);
-  expect(texture.format).to.equal(LTTextureFormatRed);
+  expect(texture.pixelFormat).to.equal($(LTGLPixelFormatR8Unorm));
   expect($([texture image])).to.equalMat($(ltImage.mat));
 });
 
 it(@"should load image to existing texture", ^{
   UIImage *image = LTLoadImage([self class], @"Gray.jpg");
-  LTTexture *texture = [LTTexture textureWithSize:image.size precision:LTTexturePrecisionByte
-                                           format:LTTextureFormatRed allocateMemory:YES];
+  LTTexture *texture = [LTTexture byteRedTextureWithSize:image.size];
   [LTImage loadImage:image toTexture:texture];
 
   LTImage *ltImage = [[LTImage alloc] initWithImage:image];
@@ -41,17 +38,15 @@ it(@"should load image to existing texture", ^{
 
 it(@"should not load image to invalid texture format", ^{
   UIImage *image = LTLoadImage([self class], @"Gray.jpg");
-  LTTexture *texture = [LTTexture textureWithSize:image.size precision:LTTexturePrecisionByte
-                                           format:LTTextureFormatRGBA allocateMemory:YES];
+  LTTexture *texture = [LTTexture byteRGBATextureWithSize:image.size];
   expect(^{
     [LTImage loadImage:image toTexture:texture];
   }).to.raise(NSInvalidArgumentException);
 });
 
-it(@"should not load image to inavlid texture size", ^{
+it(@"should not load image to invalid texture size", ^{
   UIImage *image = LTLoadImage([self class], @"Gray.jpg");
-  LTTexture *texture = [LTTexture textureWithSize:image.size * 2 precision:LTTexturePrecisionByte
-                                           format:LTTextureFormatRed allocateMemory:YES];
+  LTTexture *texture = [LTTexture byteRedTextureWithSize:image.size * 2];
   expect(^{
     [LTImage loadImage:image toTexture:texture];
   }).to.raise(NSInvalidArgumentException);

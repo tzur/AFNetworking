@@ -7,6 +7,7 @@
 #import <LTKit/LTCFExtensions.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 

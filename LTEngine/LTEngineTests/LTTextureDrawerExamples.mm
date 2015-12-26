@@ -5,11 +5,11 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
+#import "LTTexture+Factory.h"
 #import "NSValue+GLKitExtensions.h"
 
 NSString * const kLTTextureDrawerExamples = @"LTTextureDrawerExamples";
@@ -138,11 +138,8 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     image(cv::Rect(width, 0, width, height)).setTo(cv::Vec4b(0, 255, 0, 255));
     image(cv::Rect(0, height, width, height)).setTo(cv::Vec4b(0, 0, 255, 255));
     image(cv::Rect(width, height, width, height)).setTo(cv::Vec4b(255, 255, 0, 255));
-    
-    texture = [[LTGLTexture alloc] initWithSize:inputSize
-                                      precision:LTTexturePrecisionByte
-                                         format:LTTextureFormatRGBA allocateMemory:NO];
-    [texture load:image];
+
+    texture = [LTTexture textureWithImage:image];
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
   });
@@ -184,9 +181,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                          fragmentSource:[PassthroughFsh source]];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
-      output = [[LTGLTexture alloc] initWithSize:inputSize
-                                       precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRGBA allocateMemory:YES];
+      output = [LTTexture byteRGBATextureWithSize:inputSize];
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
@@ -325,7 +320,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
         expected.setTo(cv::Vec4b(137, 137, 0, 255));
         
-        LTTexture *secondTexture = [[LTGLTexture alloc] initWithImage:expected];
+        LTTexture *secondTexture = [LTTexture textureWithImage:expected];
         [drawer setSourceTexture:secondTexture];
         
         CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
@@ -355,11 +350,8 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture
                                   auxiliaryTextures:@{@"otherTexture": texture}];
       
-      output = [[LTGLTexture alloc] initWithSize:inputSize
-                                       precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRGBA
-                                  allocateMemory:YES];
-      clearTexture = [[LTGLTexture alloc] initWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
+      output = [LTTexture byteRGBATextureWithSize:inputSize];
+      clearTexture = [LTTexture textureWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
@@ -428,9 +420,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                          fragmentSource:kFragmentWithUniformSource];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
       
-      output = [[LTGLTexture alloc] initWithSize:inputSize
-                                       precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRGBA allocateMemory:YES];
+      output = [LTTexture byteRGBATextureWithSize:inputSize];
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });

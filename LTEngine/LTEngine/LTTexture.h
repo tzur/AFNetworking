@@ -4,18 +4,11 @@
 #import <LTKit/LTTypedefs.h>
 #import <OpenGLES/ES2/glext.h>
 
+#import "LTGLPixelFormat.h"
 #import "LTGPUResource.h"
 #import "LTTypedefs+LTEngine.h"
-#import "LTVector.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Precision of each channel of the texture on the GPU.
-typedef NS_ENUM(GLenum, LTTexturePrecision) {
-  LTTexturePrecisionByte = GL_UNSIGNED_BYTE,
-  LTTexturePrecisionHalfFloat = GL_HALF_FLOAT_OES,
-  LTTexturePrecisionFloat = GL_FLOAT
-};
 
 /// Type of interpolation used by the sampler on the GPU.
 typedef NS_ENUM(GLenum, LTTextureInterpolation) {
@@ -41,60 +34,11 @@ typedef NS_ENUM(GLenum, LTTextureWrap) {
   LTTextureWrapRepeat = GL_REPEAT
 };
 
-/// Number of channels stored in the texture.
-typedef NS_ENUM(NSUInteger, LTTextureChannels) {
-  /// Single channel.
-  LTTextureChannelsOne = 1,
-  /// Two channels.
-  LTTextureChannelsTwo = 2,
-  /// Four channels.
-  LTTextureChannelsFour = 4
-};
-
-/// Format the texture is stored in the GPU.
-typedef NS_ENUM(GLenum, LTTextureFormat) {
-  /// Single, red channel only.
-  LTTextureFormatRed = GL_RED_EXT,
-  /// Dual red and green channels.
-  LTTextureFormatRG = GL_RG_EXT,
-  /// All four channels.
-  LTTextureFormatRGBA = GL_RGBA,
-};
-
-/// Returns precision for a given \c cv::Mat type, or throws an \c LTGLException with \c
-/// kLTTextureUnsupportedFormatException if the precision is invalid or unsupported.
-LTTexturePrecision LTTexturePrecisionFromMatType(int type);
-
-/// Returns precision for a given \c cv::Mat, or throws an \c LTGLException with \c
-/// kLTTextureUnsupportedFormatException if the precision is invalid or unsupported.
-LTTexturePrecision LTTexturePrecisionFromMat(const cv::Mat &image);
-
-/// Returns number of channels for a given \c cv::Mat type, or throws an \c LTGLException with \c
-/// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
-LTTextureChannels LTTextureChannelsFromMatType(int type);
-
-/// Returns number of channels for a given \c cv::Mat, or throws an \c LTGLException with \c
-/// kLTTextureUnsupportedFormatException if the number of channels is invalid or unsupported.
-LTTextureChannels LTTextureChannelsFromMat(const cv::Mat &image);
-
-/// Returns format for a given \c cv::Mat type.
-LTTextureFormat LTTextureFormatFromMatType(int type);
-
-/// Returns format for a given \c cv::Mat.
-LTTextureFormat LTTextureFormatFromMat(const cv::Mat &image);
-
-/// Returns a \c cv::Mat depth for the given \c precision.
-int LTMatDepthForPrecision(LTTexturePrecision precision);
-
-/// Returns a \c cv::Mat type for the given \c precision and \c channels.
-int LTMatTypeForPrecisionAndChannels(LTTexturePrecision precision, LTTextureChannels channels);
-
-/// Returns a \c cv::Mat type for the given \c precision and \c format.
-int LTMatTypeForPrecisionAndFormat(LTTexturePrecision precision, LTTextureFormat format);
-
 namespace cv {
   class Mat;
 }
+
+struct LTVector4;
 
 /// An abstract class representing a GPU-based texture. This class supports the texture CPU-GPU
 /// interface of loading, updating and retrieving a texture.
@@ -123,9 +67,8 @@ namespace cv {
 /// kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
 /// @param size size of the texture. Must be integral.
-/// @param precision precision of the texture.
-/// @param format format the texture is stored in the GPU with. The format must be supported on the
-/// target platform, or an \c NSInvalidArguemntException will be thrown.
+/// @param pixelFormat pixel format the texture is stored in the GPU with. The format must be
+/// supported on the target platform, or an \c NSInvalidArgumentException will be thrown.
 /// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
 /// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
 /// Otherwise, the implementation will try to create a texture object only without allocating the
@@ -137,22 +80,13 @@ namespace cv {
 /// an uninitialized rect will return an undefined result.
 ///
 /// @note Designated initializer.
-- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                      format:(LTTextureFormat)format allocateMemory:(BOOL)allocateMemory;
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              allocateMemory:(BOOL)allocateMemory;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture. Throws \c LTGLException with \c
 /// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
 - (instancetype)initWithImage:(const cv::Mat &)image;
-
-/// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
-/// memory. This is a convenience method which is similar to calling:
-///
-/// @code
-/// [initWithSize:size precision:LTTexturePrecisionByte
-///      channels:LTTextureChannelsRGBA allocateMemory:YES]
-/// @endcode
-- (instancetype)initByteRGBAWithSize:(CGSize)size;
 
 /// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
 /// \c texture. This is a convenience method which is similar to calling:
@@ -366,14 +300,18 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// Size of the texture.
 @property (readonly, nonatomic) CGSize size;
 
-/// Precision of the texture.
-@property (readonly, nonatomic) LTTexturePrecision precision;
+/// Pixel format for the underlying pixel buffer.
+@property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;
 
-/// Number of channels of the texture.
-@property (readonly, nonatomic) LTTextureChannels channels;
+/// Bit depth of the underlying pixel buffer, derived from \c pixelFormat.
+@property (readonly, nonatomic) LTGLPixelBitDepth bitDepth;
 
-/// Format the texture is stored with on the GPU.
-@property (readonly, nonatomic) LTTextureFormat format;
+/// Components of the underlying pixel buffer, derived from \c pixelFormat.
+@property (readonly, nonatomic) LTGLPixelComponents components;
+
+/// Data type of each component of pixel of the underlying pixel buffer, derived from
+/// \c pixelFormat.
+@property (readonly, nonatomic) LTGLPixelDataType dataType;
 
 /// Maximal (coarsest) mipmap level to be selected in this texture. For non-mipmap textures, this
 /// value is \c 0.

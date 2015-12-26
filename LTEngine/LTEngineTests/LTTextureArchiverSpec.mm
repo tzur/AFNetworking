@@ -263,8 +263,8 @@ context(@"unarchiving", ^{
 
       expect(^{
         [archiver unarchiveToTexture:[LTTexture textureWithSize:texture.size
-                                                      precision:LTTexturePrecisionHalfFloat
-                                                         format:texture.format allocateMemory:YES]
+                                                    pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                                 allocateMemory:YES]
                             fromPath:@"archive"
                      withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:nil];
       }).to.raise(NSInvalidArgumentException);
@@ -273,8 +273,8 @@ context(@"unarchiving", ^{
     it(@"should raise if trying to unarchive to a mipmap texture", ^{
       expect(^{
         [archiver unarchiveToTexture:[[LTGLTexture alloc]
-                                      initWithSize:texture.size precision:texture.precision
-                                      format:texture.format maxMipmapLevel:1]
+                                      initWithSize:texture.size pixelFormat:texture.pixelFormat
+                                      maxMipmapLevel:1]
                             fromPath:@"archive"
                      withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:nil];
       }).to.raise(NSInvalidArgumentException);

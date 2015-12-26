@@ -62,8 +62,8 @@ LTGPUStructMake(LTMeshDrawerVertex,
 - (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture
                           meshTexture:(LTTexture *)meshTexture
                        fragmentSource:(NSString *)fragmentSource {
-  LTParameterAssert(meshTexture.channels > 1);
-  LTParameterAssert(meshTexture.precision == LTTexturePrecisionHalfFloat);
+  LTParameterAssert(meshTexture.pixelFormat.value == LTGLPixelFormatRG16Float ||
+                    meshTexture.pixelFormat.value == LTGLPixelFormatRGBA16Float);
   if (self = [super initWithProgram:[self createProgramWithFragmentSource:fragmentSource]
                       sourceTexture:sourceTexture
                   auxiliaryTextures:@{[LTMeshDrawerVsh meshTexture]: meshTexture}]) {

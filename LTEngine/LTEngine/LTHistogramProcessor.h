@@ -8,8 +8,8 @@
 /// Computes a histogram of red, green and blue channels of RGBA image.
 @interface LTHistogramProcessor : LTImageProcessor
 
-/// Initializes the processor with input. Output texture should be in \c LTTextureFormatRGBA format
-/// with a byte precision.
+/// Initializes the processor with input. Input texture pixel format must be
+/// \c LTGLPixelFormatRGBA8Unorm.
 - (instancetype)initWithInputTexture:(LTTexture *)inputTexture;
 
 /// Histogram values are computed when \c process is called and can be updated if the texture is

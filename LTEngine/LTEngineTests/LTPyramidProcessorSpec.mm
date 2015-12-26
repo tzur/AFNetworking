@@ -60,8 +60,7 @@ it(@"should create correct levels for input", ^{
   NSArray *sizes = @[$(CGSizeMake(8, 7)), $(CGSizeMake(4, 4))];
 
   [levels enumerateObjectsUsingBlock:^(LTTexture *level, NSUInteger i, BOOL *) {
-    expect(level.format).to.equal(input.format);
-    expect(level.precision).to.equal(input.precision);
+    expect(level.pixelFormat).to.equal(input.pixelFormat);
     expect(level.size).to.equal([sizes[i] CGSizeValue]);
   }];
 });

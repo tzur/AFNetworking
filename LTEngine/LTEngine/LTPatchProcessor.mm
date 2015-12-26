@@ -115,8 +115,8 @@ LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 
 - (void)createMembraneTexture {
   self.membrane = [LTTexture textureWithSize:[self maskSizeForCurrentWorkingSize]
-                                   precision:LTTexturePrecisionHalfFloat
-                                      format:LTTextureFormatRGBA allocateMemory:YES];
+                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                              allocateMemory:YES];
 }
 
 - (void)createSolver {

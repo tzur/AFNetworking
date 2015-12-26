@@ -10,8 +10,8 @@
 /// @see \c LTTextureBrush for more information.
 @interface LTSingleTextureBrush : LTTextureBrush
 
-/// Texture used by the brush. Its format must be \c LTTextureFormatRGBA. By default, this is a
-/// single-pixel, white texture.
+/// Texture used by the brush. Its components must be \c LTGLPixelComponentsRGBA. By default, this
+/// is a single-pixel, white texture.
 @property (strong, nonatomic) LTTexture *texture;
 
 @end

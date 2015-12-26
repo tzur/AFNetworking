@@ -52,7 +52,8 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 
 - (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRects:(NSArray *)sourceRects {
-  self.program[[LTTextureBrushFsh singleChannelTarget]] = @(fbo.texture.channels == 1);
+  self.program[[LTTextureBrushFsh singleChannelTarget]] =
+      @(fbo.pixelFormat.components == LTGLPixelComponentsR);
   [super drawRects:targetRects inFramebuffer:fbo fromRects:sourceRects];
 }
 
@@ -65,7 +66,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
 }
 
 - (void)setTexture:(LTTexture *)texture {
-  LTParameterAssert(texture.format == LTTextureFormatRGBA);
+  LTParameterAssert(texture.pixelFormat.components == LTGLPixelComponentsRGBA);
   _texture = texture;
   [self.drawer setSourceTexture:texture];
 }

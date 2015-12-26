@@ -87,7 +87,7 @@ LTProperty(CGFloat, brightnessJitter, BrightnessJitter, 0, 1, 0);
 LTProperty(CGFloat, secondaryColorJitter, SecondaryColorJitter, 0, 1, 0);
 
 - (void)setBaseColorTexture:(LTTexture *)baseColorTexture {
-  LTParameterAssert(!baseColorTexture || baseColorTexture.format == LTTextureFormatRGBA);
+  LTParameterAssert(!baseColorTexture || baseColorTexture.components == LTGLPixelComponentsRGBA);
   _baseColorTexture = baseColorTexture;
 }
 

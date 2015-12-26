@@ -354,7 +354,6 @@ context(@"binding", ^{
   });
 
   itShouldBehaveLike(kLTResourceExamples, ^{
-    NSLog(@"generating dict");
     return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:program],
              kLTResourceExamplesOpenGLParameterName: @GL_CURRENT_PROGRAM};
   });

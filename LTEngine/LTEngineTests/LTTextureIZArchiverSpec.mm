@@ -150,8 +150,8 @@ context(@"archiving", ^{
 
   it(@"should raise if trying to archive half float precision texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
-                                                   precision:LTTexturePrecisionHalfFloat
-                                                      format:texture.format allocateMemory:YES];
+                                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                              allocateMemory:YES];
     expect(^{
       [archiver archiveTexture:halfFloatTexture inPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);
@@ -160,8 +160,8 @@ context(@"archiving", ^{
 
   it(@"should raise if trying to archive float precision texture", ^{
     LTTexture *floatTexture = [LTTexture textureWithSize:texture.size
-                                               precision:LTTexturePrecisionFloat
-                                                  format:texture.format allocateMemory:YES];
+                                             pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                          allocateMemory:YES];
     expect(^{
       [archiver archiveTexture:floatTexture inPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);
@@ -215,8 +215,8 @@ context(@"unarchiving", ^{
 
   it(@"should raise if trying to archive half float precision texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
-                                                   precision:LTTexturePrecisionHalfFloat
-                                                      format:texture.format allocateMemory:YES];
+                                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                              allocateMemory:YES];
     expect(^{
       [archiver unarchiveToTexture:halfFloatTexture fromPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);
@@ -225,8 +225,8 @@ context(@"unarchiving", ^{
 
   it(@"should raise if trying to archive float precision texture", ^{
     LTTexture *floatTexture = [LTTexture textureWithSize:texture.size
-                                               precision:LTTexturePrecisionFloat
-                                                  format:texture.format allocateMemory:YES];
+                                             pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                          allocateMemory:YES];
     expect(^{
       [archiver unarchiveToTexture:floatTexture fromPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);

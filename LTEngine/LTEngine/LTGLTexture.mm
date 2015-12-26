@@ -6,7 +6,6 @@
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
-#import "LTGLException.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
@@ -23,13 +22,13 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 @implementation LTGLTexture
 
 - (instancetype)initWithPropertiesOf:(LTTexture *)texture {
-  return [self initWithSize:texture.size precision:texture.precision
-                     format:texture.format maxMipmapLevel:texture.maxMipmapLevel];
+  return [self initWithSize:texture.size pixelFormat:texture.pixelFormat
+             maxMipmapLevel:texture.maxMipmapLevel];
 }
 
-- (instancetype)initWithSize:(CGSize)size precision:(LTTexturePrecision)precision
-                      format:(LTTextureFormat)format maxMipmapLevel:(GLint)maxMipmapLevel {
-  if (self = [super initWithSize:size precision:precision format:format allocateMemory:NO]) {
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel {
+  if (self = [super initWithSize:size pixelFormat:pixelFormat allocateMemory:NO]) {
     [self allocateMipmapLevels:maxMipmapLevel forTexture:self];
   }
   return self;
@@ -84,9 +83,14 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   // The initial image has been already added.
   [self bindAndExecute:^{
     [self writeToTexture:^{
+      LTGLVersion version = [LTGLContext currentContext].version;
+      GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+      GLenum precision = [self.pixelFormat precisionForVersion:version];
+      GLenum format = [self.pixelFormat formatForVersion:version];
+
       for (Matrices::size_type i = 1; i < images.size(); ++i) {
-        glTexImage2D(GL_TEXTURE_2D, (GLint)i, self.glInternalFormat, images[i].cols, images[i].rows,
-                     0, self.glFormat, self.glPrecision, images[i].data);
+        glTexImage2D(GL_TEXTURE_2D, (GLint)i, internalFormat, images[i].cols, images[i].rows, 0,
+                     format, precision, images[i].data);
       }
     }];
   }];
@@ -125,10 +129,15 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
 - (void)allocateMemoryForAllLevels {
   [self writeToTexture:^{
+    LTGLVersion version = [LTGLContext currentContext].version;
+    GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+    GLenum precision = [self.pixelFormat precisionForVersion:version];
+    GLenum format = [self.pixelFormat formatForVersion:version];
     CGSize size = self.size;
+
     for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
-      glTexImage2D(GL_TEXTURE_2D, i, self.glInternalFormat, size.width, size.height, 0,
-                   self.glFormat, self.glPrecision, NULL);
+      glTexImage2D(GL_TEXTURE_2D, i, internalFormat, size.width, size.height, 0, format, precision,
+                   NULL);
       size = std::round(size / 2);
     }
   }];
@@ -171,7 +180,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (void)readRect:(CGRect)rect toImage:(cv::Mat *)image {
   int matType = [self matType];
   int matTypeForReading = [self matTypeForReading];
-
+  LTGLPixelFormat *readingPixelFormat = [[LTGLPixelFormat alloc] initWithMatType:matTypeForReading];
   image->create(rect.size.height, rect.size.width, matType);
 
   // If the mat has the desired data type, read directly into it. Otherwise, allocate a new mat and
@@ -189,11 +198,13 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // packing of the texture that may effect the representation of the Mat if the number of bytes
       // per row % 4 != 0.
       context.packAlignment = 1;
+
+      GLenum format = [readingPixelFormat formatForVersion:context.version];
+      GLenum precision = [readingPixelFormat precisionForVersion:context.version];
+
       // Read pixels into the mutable data, according to the texture precision.
       glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
-                   [self bestSupportedReadingFormat],
-                   LTTexturePrecisionFromMatType(matTypeForReading),
-                   readImage.data);
+                   format, precision, readImage.data);
     }];
   }];
 
@@ -235,24 +246,27 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // per row % 4 != 0.
       context.unpackAlignment = 1;
 
+      GLenum internalFormat = [self.pixelFormat internalFormatForVersion:context.version];
+      GLenum precision = [self.pixelFormat precisionForVersion:context.version];
+      GLenum format = [self.pixelFormat formatForVersion:context.version];
+
       // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
       if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
-        glTexImage2D(GL_TEXTURE_2D, 0, self.glInternalFormat, rect.size.width, rect.size.height, 0,
-                     self.glFormat, self.glPrecision, image.data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, rect.size.width, rect.size.height, 0, format,
+                     precision, image.data);
       } else {
-        // TODO: (yaron) this may create another copy of the texture. This needs to be profiled and
+        // TODO:(yaron) this may create another copy of the texture. This needs to be profiled and
         // if suffers from performance impact, consider using glTexStorage.
         glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                        rect.size.width, rect.size.height, self.glFormat, self.glPrecision,
-                        image.data);
+                        rect.size.width, rect.size.height, format, precision, image.data);
       }
     }];
   }];
 }
 
 - (LTTexture *)clone {
-  LTGLTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size precision:self.precision
-                                                   format:self.format allocateMemory:NO];
+  LTGLTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size pixelFormat:self.pixelFormat
+                                           allocateMemory:NO];
   [cloned allocateMipmapLevels:self.maxMipmapLevel forTexture:cloned];
 
   [self cloneTo:cloned];
@@ -297,7 +311,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self];
 
   CGRect sourceRect = CGRectMake(0, 0, self.size.width, self.size.height);
-  CGRect targetRect = CGRectMake(0, 0, fbo.texture.size.width, fbo.texture.size.height);
+  CGRect targetRect = CGRectMake(0, 0, fbo.size.width, fbo.size.height);
   [self executeAndPreserveParameters:^{
     self.magFilterInterpolation = LTTextureInterpolationNearest;
     self.minFilterInterpolation = self.maxMipmapLevel ?
@@ -333,40 +347,42 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (int)matDepthForReading {
-  switch (self.precision) {
-    case LTTexturePrecisionByte:
-      // GL_UNSIGNED_BYTE is always supported for byte textures.
-      return CV_8U;
-    case LTTexturePrecisionHalfFloat:
-      // GL_HALF_FLOAT is only supported on device.
-      GLint type;
-      glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
-      if (type == GL_HALF_FLOAT_OES || type == GL_HALF_FLOAT) {
-        return CV_16U;
-      } else {
-        return CV_32F;
-      }
-    case LTTexturePrecisionFloat:
-      // If reading is possible, then support for GL_FLOAT is guaranteed.
+  if (self.dataType == LTGLPixelDataTypeUnorm && self.bitDepth == LTGLPixelBitDepth8) {
+    // GL_UNSIGNED_BYTE is always supported for byte textures.
+    return CV_8U;
+  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth16) {
+    // GL_HALF_FLOAT is only supported on device.
+    GLint type;
+    glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
+    if (([LTGLContext currentContext].version == LTGLVersion2 && type == GL_HALF_FLOAT_OES) ||
+        ([LTGLContext currentContext].version == LTGLVersion3 && type == GL_HALF_FLOAT)) {
+      return CV_16U;
+    } else {
       return CV_32F;
+    }
+  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth32) {
+    // If reading is possible, then support for GL_FLOAT is guaranteed.
+    return CV_32F;
+  } else {
+    LTParameterAssert(NO, @"Reading is not supported for pixel format %@", self.pixelFormat);
   }
 }
 
 - (int)matChannelsForReading {
-  switch ([self bestSupportedReadingFormat]) {
-    case LTTextureFormatRed:
+  switch ([self bestSupportedReadingComponents]) {
+    case LTGLPixelComponentsR:
       return 1;
-    case LTTextureFormatRG:
+    case LTGLPixelComponentsRG:
       return 2;
-    case LTTextureFormatRGBA:
+    case LTGLPixelComponentsRGBA:
       return 4;
   }
 }
 
-- (LTTextureFormat)bestSupportedReadingFormat {
-  switch (self.format) {
-    case LTTextureFormatRed:
-    case LTTextureFormatRG:
+- (LTGLPixelComponents)bestSupportedReadingComponents {
+  switch (self.components) {
+    case LTGLPixelComponentsR:
+    case LTGLPixelComponentsRG:
       // Get the minimal number of channels available.
       GLint format;
       glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
@@ -374,27 +390,28 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // is needed here.
       switch (format) {
         case GL_RED_EXT:
-          return (self.format == LTTextureFormatRed) ? LTTextureFormatRed : LTTextureFormatRGBA;
+          return (self.components == LTGLPixelComponentsR) ? LTGLPixelComponentsR :
+              LTGLPixelComponentsRGBA;
         case GL_RG_EXT:
-          return LTTextureFormatRG;
+          return LTGLPixelComponentsRG;
         default:
-          return LTTextureFormatRGBA;
+          return LTGLPixelComponentsRGBA;
       }
-    case LTTextureFormatRGBA:
-      return LTTextureFormatRGBA;
+    case LTGLPixelComponentsRGBA:
+      return LTGLPixelComponentsRGBA;
   }
 }
 
 - (int)matTypeForWriting {
-  switch (self.channels) {
-    case LTTextureChannelsOne:
-    case LTTextureChannelsTwo:
+  switch (self.components) {
+    case LTGLPixelComponentsR:
+    case LTGLPixelComponentsRG:
       if ([LTGLContext currentContext].supportsRGTextures) {
         return [self matType];
       } else {
         return CV_MAKETYPE(CV_MAT_DEPTH([self matType]), 4);
       }
-    case LTTextureChannelsFour:
+    case LTGLPixelComponentsRGBA:
       return [self matType];
   }
 }

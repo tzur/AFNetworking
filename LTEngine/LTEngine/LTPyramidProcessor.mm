@@ -16,9 +16,7 @@
   NSMutableArray *levels = [NSMutableArray array];
   for (NSUInteger i = 0; i < levelCount; ++i) {
     LTTexture *texture = [LTTexture textureWithSize:std::ceil(input.size / std::pow(2, i + 1))
-                                          precision:input.precision
-                                             format:input.format
-                                     allocateMemory:YES];
+                                        pixelFormat:input.pixelFormat allocateMemory:YES];
     [levels addObject:texture];
   }
 

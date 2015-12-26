@@ -5,6 +5,7 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
+#import "LTTexture.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

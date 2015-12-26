@@ -1,17 +1,15 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTTexture.h"
-
 #import "LTGPUResource.h"
 
-@class LTGLContext;
+@class LTGLContext, LTGLPixelFormat, LTTexture;
 
 /// Object for encapsulating an OpenGL framebuffer, used for drawing to a texture and reading from
 /// it.
 @interface LTFbo : NSObject <LTGPUResource>
 
-/// Create an FBO with a target texture (without clearing it in the process). If the given texture
+/// Creates an FBO with a target texture (without clearing it in the process). If the given texture
 /// is invalid, an \c LTGLException named \c kLTFboInvalidTextureException will be thrown.
 ///
 /// @param texture texture to set as a render target. The texture must be of non-zero size, loaded
@@ -20,7 +18,7 @@
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (instancetype)initWithTexture:(LTTexture *)texture;
 
-/// Designated initializer: create an FBO with a target texture and mipmap level (without clearing
+/// Creates an FBO with a target texture and mipmap level (without clearing
 /// it in the process). If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidTextureException will be thrown.
 ///
@@ -46,17 +44,24 @@
 /// @param block The block to execute after binding the resource. This parameter cannot be nil.
 - (void)bindAndDraw:(LTVoidBlock)block;
 
-/// Fills the texture bound to this FBO with the given color.
+/// Fills the attachment bound to this FBO with the given color.
 - (void)clearWithColor:(LTVector4)color;
 
-/// Size of the texture associated with this framebuffer.
+/// Size of the attachment associated with this framebuffer.
 @property (readonly, nonatomic) CGSize size;
 
 /// Texture backed by this framebuffer.
 @property (readonly, nonatomic) LTTexture *texture;
 
-/// Mip map level of the the texture associated with the FBO. In case the texture is not a mipmap
-/// texture, this will be \c 0.
+/// Pixel format of the attachment associated with this framebuffer.
+@property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;
+
+/// Returns the color that the entire attachment, and all its levels, is filled with, or
+/// \c LTVector4Null in case that it is uncertain that the attachment is filled with a single color.
+@property (readonly, nonatomic) LTVector4 fillColor;
+
+/// Mipmap level of the the attachment bound to the FBO. In case the attachment is not a mipmap
+/// texture, the value will be \c 0.
 @property (readonly, nonatomic) GLint level;
 
 @end

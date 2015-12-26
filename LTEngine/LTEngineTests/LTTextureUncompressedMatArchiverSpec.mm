@@ -105,8 +105,8 @@ context(@"archiving", ^{
   
   it(@"should archive half float texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
-                                                   precision:LTTexturePrecisionHalfFloat
-                                                      format:texture.format allocateMemory:YES];
+                                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                              allocateMemory:YES];
     [texture cloneTo:halfFloatTexture];
 
     result = [archiver archiveTexture:halfFloatTexture
@@ -191,8 +191,7 @@ context(@"unarchiving", ^{
     expect(LTSaveMat(mat, @"archive.mat")).to.beTruthy();
 
     texture = [LTTexture textureWithSize:CGSizeMake(mat.cols, mat.rows)
-                               precision:LTTexturePrecisionHalfFloat
-                                  format:LTTextureFormatRGBA allocateMemory:YES];
+                             pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
     result = [archiver unarchiveToTexture:texture
                                  fromPath:LTTemporaryPath(@"archive.mat") error:&error];
     expect(result).to.beTruthy();
@@ -206,8 +205,7 @@ context(@"unarchiving", ^{
     expect(LTSaveMat(mat, @"archive.mat")).to.beTruthy();
 
     texture = [LTTexture textureWithSize:CGSizeMake(mat.cols, mat.rows)
-                               precision:LTTexturePrecisionFloat
-                                  format:LTTextureFormatRGBA allocateMemory:YES];
+                             pixelFormat:$(LTGLPixelFormatRGBA32Float) allocateMemory:YES];
     result = [archiver unarchiveToTexture:texture
                                  fromPath:LTTemporaryPath(@"archive.mat") error:&error];
     expect(result).to.beTruthy();

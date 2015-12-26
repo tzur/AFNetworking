@@ -3,15 +3,15 @@
 
 #import "LTMultiscaleNoiseProcessor.h"
 
-#import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTMultiscaleNoiseProcessor)
 
 __block LTTexture *output;
 
 beforeEach(^{
-  output = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(128, 64)];
+  output = [LTTexture byteRGBATextureWithSize:CGSizeMake(128, 64)];
 });
 
 afterEach(^{

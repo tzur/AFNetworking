@@ -13,7 +13,7 @@
 /// Array of \c LTTextures used for painting. When painting, a texture will be randomally picked for
 /// each brush tip. By default, this is an array with a single single-pixel white texture.
 ///
-/// @note All textures must be of \c LTTextureFormatRGBA format, and have the same size.
+/// @note All textures must have \c LTGLPixelComponentsRGBA components and be of the same size.
 @property (strong, nonatomic) NSArray *textures;
 
 @end

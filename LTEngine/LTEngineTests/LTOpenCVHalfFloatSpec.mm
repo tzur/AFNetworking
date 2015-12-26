@@ -5,7 +5,7 @@
 
 using half_float::half;
 
-SpecBegin(LTCVHalfFloatExtension)
+SpecBegin(LTOpenCVHalfFloat)
 
 context(@"setting values", ^{
   it(@"should set scalar value", ^{

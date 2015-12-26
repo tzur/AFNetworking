@@ -77,7 +77,7 @@ static const double kGaussianSigma = 0.3;
 }
 
 - (void)setGaussianTexture:(LTTexture *)gaussianTexture {
-  LTParameterAssert(gaussianTexture.format == LTTextureFormatRed);
+  LTParameterAssert(gaussianTexture.components == LTGLPixelComponentsR);
   _gaussianTexture = gaussianTexture;
   [self.drawer setAuxiliaryTexture:gaussianTexture
                           withName:[LTEdgeAvoidingMultiTextureBrushFsh gaussianTexture]];

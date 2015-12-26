@@ -3,19 +3,19 @@
 
 #import "LTBicubicResizeProcessor.h"
 
-#import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTBicubicResizeProcessor)
 
-__block LTGLTexture *input;
-__block LTGLTexture *output;
+__block LTTexture *input;
+__block LTTexture *output;
 __block LTBicubicResizeProcessor *processor;
 
 beforeEach(^{
-  input = [[LTGLTexture alloc] initWithImage:LTCreateDeltaMat(CGSizeMake(8, 8))];
-  output = [[LTGLTexture alloc] initByteRGBAWithSize:input.size * 2.0];
+  input = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMakeUniform(8))];
+  output = [LTTexture byteRGBATextureWithSize:input.size * 2.0];
   
   processor = [[LTBicubicResizeProcessor alloc] initWithInput:input output:output];
 });

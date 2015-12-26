@@ -27,15 +27,6 @@ typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
 /// texture's bounds.
 - (LTTextureSamplingPoints)samplingPointsFromLocations:(const CGPoints &)locations;
 
-/// OpenGL precision of the texture.
-@property (readonly, nonatomic) GLenum glPrecision;
-
-/// OpenGL internal format the texture is stored with on the GPU.
-@property (readonly, nonatomic) GLint glInternalFormat;
-
-/// OpenGL format the texture is stored with on the GPU.
-@property (readonly, nonatomic) GLenum glFormat;
-
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;
 

@@ -37,10 +37,7 @@ __block LTTexture *output;
 __block NSDictionary *auxiliaryTextures;
 
 beforeEach(^{
-  input = [LTTexture textureWithSize:CGSizeMake(1, 1)
-                           precision:LTTexturePrecisionByte
-                              format:LTTextureFormatRGBA
-                      allocateMemory:YES];
+  input = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
 
   cv::Mat image = cv::Mat4b::zeros(1, 1);
   auxInput = [LTTexture textureWithImage:image];
@@ -88,8 +85,7 @@ context(@"initialization", ^{
 
   it(@"should not initialize with unsimilar outputs", ^{
     LTTexture *different = [LTTexture textureWithSize:input.size
-                                            precision:LTTexturePrecisionHalfFloat
-                                               format:input.format
+                                          pixelFormat:$(LTGLPixelFormatRGBA16Float)
                                        allocateMemory:YES];
 
     expect((^{

@@ -16,11 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see \c LTTexture.size.
 @property (readwrite, nonatomic) CGSize size;
 
-/// @see \c LTTexture.format.
-@property (readwrite, nonatomic) LTTextureFormat format;
-
-/// @see \c LTTexture.precision.
-@property (readwrite, nonatomic) LTTexturePrecision precision;
+/// @see \c LTTexture.pixelFormat.
+@property (readwrite, strong, nonatomic) LTGLPixelFormat *pixelFormat;
 
 /// @see \c LTTexture.maxMipmapLevel.
 @property (readwrite, nonatomic) GLint maxMipmapLevel;
@@ -38,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) LTTextureWrap wrap;
 
 /// @see \c LTTexture.generationID.
-@property (readwrite, nonatomic) NSString *generationID;
+@property (readwrite, strong, nonatomic) NSString *generationID;
 
 /// @see \c LTTexture.fillColor.
 @property (readwrite, nonatomic) LTVector4 fillColor;
@@ -53,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{};
+}
+
++ (NSValueTransformer *)pixelFormatJSONTransformer {
+  return [LTTransformers transformerForClass:LTGLPixelFormat.class];
 }
 
 + (NSValueTransformer *)sizeJSONTransformer {
@@ -80,11 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
   LTTexture *texture;
   if (metadata.maxMipmapLevel) {
     texture = [[LTGLTexture alloc]
-               initWithSize:metadata.size precision:metadata.precision
-               format:metadata.format maxMipmapLevel:metadata.maxMipmapLevel];
+               initWithSize:metadata.size pixelFormat:metadata.pixelFormat
+               maxMipmapLevel:metadata.maxMipmapLevel];
   } else {
-    texture = [LTTexture textureWithSize:metadata.size precision:metadata.precision
-                                  format:metadata.format allocateMemory:YES];
+    texture = [LTTexture textureWithSize:metadata.size pixelFormat:metadata.pixelFormat
+                          allocateMemory:YES];
   }
 
   texture.usingAlphaChannel = metadata.usingAlphaChannel;
@@ -99,8 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTTextureMetadata *metadata = [[LTTextureMetadata alloc] init];
 
   metadata.size = self.size;
-  metadata.format = self.format;
-  metadata.precision = self.precision;
+  metadata.pixelFormat = self.pixelFormat;
   metadata.maxMipmapLevel = self.maxMipmapLevel;
   metadata.usingAlphaChannel = self.usingAlphaChannel;
 

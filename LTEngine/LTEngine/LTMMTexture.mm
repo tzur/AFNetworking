@@ -40,11 +40,7 @@
 - (void)create:(BOOL __unused)allocateMemory {
   // It's impossible to avoid memory allocation since the shared memory texture buffer must be
   // allocated via CV* functions to allow updates to reflect to OpenGL.
-  [self createTextureForMatType:self.matType];
-}
-
-- (void)createTextureForMatType:(int)type {
-  [self createPixelBufferForMatType:type];
+  [self createPixelBuffer];
   [self createTextureCache];
   [self allocateTexture];
   [self bindAndExecute:^{
@@ -55,13 +51,15 @@
   }];
 }
 
-- (void)createPixelBufferForMatType:(int)type {
-  OSType pixelFormat = [self pixelFormatForMatType:type];
+- (void)createPixelBuffer {
   NSDictionary *attributes = @{(NSString *)kCVPixelBufferIOSurfacePropertiesKey: @{}};
 
   CVPixelBufferRef pixelBufferRef;
+  OSType pixelFormatType = self.pixelFormat.cvPixelFormatType;
+  LTParameterAssert(pixelFormatType != kUnknownType, @"Pixel format %@ is not compatible with "
+                    "CoreVideo, so no pixel buffer can be created from it", self.pixelFormat);
   CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault, self.size.width, self.size.height,
-                                        pixelFormat, (__bridge CFDictionaryRef)attributes,
+                                        pixelFormatType, (__bridge CFDictionaryRef)attributes,
                                         &pixelBufferRef);
   if (result != kCVReturnSuccess) {
     [LTGLException raise:kLTTextureCreationFailedException
@@ -87,16 +85,21 @@
 }
 
 - (void)allocateTexture {
+  LTGLVersion version = [LTGLContext currentContext].version;
+  GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+  GLenum format = [self.pixelFormat formatForVersion:version];
+  GLenum precision = [self.pixelFormat precisionForVersion:version];
+
   CVOpenGLESTextureRef textureRef;
   CVReturn result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                  _textureCache.get(),
                                                                  _pixelBuffer.get(),
                                                                  NULL,
                                                                  GL_TEXTURE_2D,
-                                                                 self.glInternalFormat,
+                                                                 internalFormat,
                                                                  self.size.width, self.size.height,
-                                                                 self.glFormat,
-                                                                 self.glPrecision,
+                                                                 format,
+                                                                 precision,
                                                                  0,
                                                                  &textureRef);
   if (result != kCVReturnSuccess) {
@@ -105,41 +108,6 @@
   }
 
   _texture.reset(textureRef);
-}
-
-- (OSType)pixelFormatForMatType:(int)type {
-  switch (LTTextureChannelsFromMatType(type)) {
-    case LTTextureChannelsOne:
-      switch (LTTexturePrecisionFromMatType(type)) {
-        case LTTexturePrecisionByte:
-          return kCVPixelFormatType_OneComponent8;
-        case LTTexturePrecisionHalfFloat:
-          return kCVPixelFormatType_OneComponent16Half;
-        case LTTexturePrecisionFloat:
-          return kCVPixelFormatType_OneComponent32Float;
-      }
-      break;
-    case LTTextureChannelsTwo:
-      switch (LTTexturePrecisionFromMatType(type)) {
-        case LTTexturePrecisionByte:
-          return kCVPixelFormatType_TwoComponent8;
-        case LTTexturePrecisionHalfFloat:
-          return kCVPixelFormatType_TwoComponent16Half;
-        case LTTexturePrecisionFloat:
-          return kCVPixelFormatType_TwoComponent32Float;
-      }
-      break;
-    case LTTextureChannelsFour:
-      switch (LTTexturePrecisionFromMatType(type)) {
-        case LTTexturePrecisionByte:
-          return kCVPixelFormatType_32BGRA;
-        case LTTexturePrecisionHalfFloat:
-          return kCVPixelFormatType_64RGBAHalf;
-        case LTTexturePrecisionFloat:
-          return kCVPixelFormatType_128RGBAFloat;
-      }
-      break;
-  }
 }
 
 - (void)destroy {
@@ -184,10 +152,6 @@
                     "type derived for this texture (%d vs. %d)", image.type(), [self matType]);
   LTParameterAssert(image.isContinuous(), @"Given image matrix must be continuous");
 
-  if (!_texture) {
-    [self createTextureForMatType:image.type()];
-  }
-
   [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     LTParameterAssert(image.type() == mapped->type(), @"Source image's type (%d) must match "
                       "mapped image's type (%d)", image.type(), mapped->type());
@@ -225,7 +189,7 @@
     self.magFilterInterpolation = LTTextureInterpolationNearest;
 
     [rectDrawer drawRect:CGRectFromSize(self.size) inFramebuffer:fbo
-                fromRect:CGRectFromSize(fbo.texture.size)];
+                fromRect:CGRectFromSize(fbo.size)];
   }];
 }
 

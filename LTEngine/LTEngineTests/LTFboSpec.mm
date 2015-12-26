@@ -4,9 +4,9 @@
 #import "LTFbo.h"
 
 #import "LTGLContext.h"
-#import "LTGLTexture.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
+#import "LTTexture+Factory.h"
 
 SpecBegin(LTFbo)
 
@@ -22,7 +22,7 @@ afterEach(^{
 
 context(@"initialization", ^{
   it(@"should init with RGBA byte texture", ^{
-    LTTexture *texture = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(1, 1)];
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
 
     expect(fbo.name).toNot.equal(0);
@@ -31,10 +31,9 @@ context(@"initialization", ^{
   it(@"should init with half-float RGBA texture on capable devices", ^{
     [[[glContext stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
 
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionHalfFloat
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                                        pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                     allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
 
     expect(fbo.name).toNot.equal(0);
@@ -43,10 +42,9 @@ context(@"initialization", ^{
   it(@"should raise with half-float RGBA texture on incapable devices", ^{
     [[[glContext stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
 
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionHalfFloat
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                                        pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                     allocateMemory:YES];
 
     expect(^{
       __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
@@ -56,10 +54,9 @@ context(@"initialization", ^{
   it(@"should init with float RGBA texture on capable devices", ^{
     [[[glContext stub] andReturnValue:@(YES)] canRenderToFloatTextures];
 
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionFloat
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                                        pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                     allocateMemory:YES];
 
     // Simulator doesn't support rendering to a colorbuffer, so no real initialization can happen.
     expect(^{
@@ -70,10 +67,9 @@ context(@"initialization", ^{
   it(@"should raise with float RGBA texture on incapable devices", ^{
     [[[glContext stub] andReturnValue:@(NO)] canRenderToFloatTextures];
 
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionFloat
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                                        pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                     allocateMemory:YES];
 
     expect(^{
       __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
@@ -89,7 +85,7 @@ context(@"initialization", ^{
         levels.push_back(cv::Mat4b(diameter, diameter));
       }
 
-      texture = [[LTGLTexture alloc] initWithMipmapImages:levels];
+      texture = [LTTexture textureWithMipmapImages:levels];
     });
 
     afterEach(^{
@@ -129,10 +125,9 @@ context(@"clearing", ^{
     cv::Mat expected(size.height, size.width, CV_8UC4);
     expected.setTo(cv::Vec4b(128, 64, 128, 255));
 
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:size
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture textureWithSize:size
+                                        pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                     allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo clearWithColor:value];
 
@@ -142,9 +137,7 @@ context(@"clearing", ^{
   });
 
   it(@"should set texture fillColor when clearing with color", ^{
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMakeUniform(16)
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRGBA allocateMemory:YES];
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     expect(texture.fillColor.isNull()).to.beTruthy();
     [fbo clearWithColor:LTVector4::zeros()];
@@ -156,10 +149,7 @@ context(@"binding", ^{
   __block LTFbo *fbo;
 
   beforeEach(^{
-    LTTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(1, 1)
-                                                 precision:LTTexturePrecisionByte
-                                                    format:LTTextureFormatRGBA
-                                            allocateMemory:YES];
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
     fbo = [[LTFbo alloc] initWithTexture:texture];
   });
 
@@ -188,11 +178,11 @@ context(@"binding", ^{
     expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
   });
 
-  it(@"should set texture fillColor to null on bindAndDraw", ^{
+  it(@"should set attachment fillColor to null on bindAndDraw", ^{
     [fbo clearWithColor:LTVector4::ones()];
-    expect(fbo.texture.fillColor.isNull()).to.beFalsy();
+    expect(fbo.fillColor.isNull()).to.beFalsy();
     [fbo bindAndDraw:^{}];
-    expect(fbo.texture.fillColor.isNull()).to.beTruthy();
+    expect(fbo.fillColor.isNull()).to.beTruthy();
   });
 });
 

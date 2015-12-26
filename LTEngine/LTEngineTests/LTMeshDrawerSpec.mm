@@ -35,8 +35,7 @@ beforeEach(^{
   inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
   
   meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
-                                 precision:LTTexturePrecisionHalfFloat
-                                    format:LTTextureFormatRG allocateMemory:YES];
+                               pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
   [meshTexture clearWithColor:LTVector4::zeros()];
   
   drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture];
@@ -68,16 +67,16 @@ context(@"initialization", ^{
     
     it(@"should raise when initializing with a mesh texture of less than 2 channels", ^{
       expect(^{
-        meshTexture = [LTTexture textureWithSize:kMeshSize precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
+        meshTexture = [LTTexture textureWithSize:kMeshSize pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
         drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture];
       }).to.raise(NSInvalidArgumentException);
     });
     
     it(@"should raise when initializing with a mesh texture of non half-float precision", ^{
       expect(^{
-        meshTexture = [LTTexture textureWithSize:kMeshSize precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRG allocateMemory:YES];
+        meshTexture = [LTTexture textureWithSize:kMeshSize pixelFormat:$(LTGLPixelFormatRG8Unorm)
+                                  allocateMemory:YES];
         drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -105,8 +104,8 @@ context(@"initialization", ^{
     
     it(@"should raise when initializing with a mesh texture of less than 2 channels", ^{
       expect(^{
-        meshTexture = [LTTexture textureWithSize:kMeshSize precision:LTTexturePrecisionHalfFloat
-                                          format:LTTextureFormatRed allocateMemory:YES];
+        meshTexture = [LTTexture textureWithSize:kMeshSize pixelFormat:$(LTGLPixelFormatR16Float)
+                                  allocateMemory:YES];
         drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture
                                               fragmentSource:kFragmentWithUniformSource];
       }).to.raise(NSInvalidArgumentException);
@@ -114,8 +113,8 @@ context(@"initialization", ^{
     
     it(@"should raise when initializing with a mesh texture of non half-float precision", ^{
       expect(^{
-        meshTexture = [LTTexture textureWithSize:kMeshSize precision:LTTexturePrecisionByte
-                                          format:LTTextureFormatRG allocateMemory:YES];
+        meshTexture = [LTTexture textureWithSize:kMeshSize pixelFormat:$(LTGLPixelFormatRG8Unorm)
+                                  allocateMemory:YES];
         drawer = [[LTMeshDrawer alloc] initWithSourceTexture:inputTexture meshTexture:meshTexture
                                               fragmentSource:kFragmentWithUniformSource];
       }).to.raise(NSInvalidArgumentException);

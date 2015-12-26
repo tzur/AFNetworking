@@ -36,12 +36,13 @@ context(@"properties", ^{
   });
 
   it(@"should set texture", ^{
-    LTTexture *byteTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                 format:LTTextureFormatRGBA allocateMemory:YES];
-    LTTexture *halfTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionHalfFloat
-                                                 format:LTTextureFormatRGBA allocateMemory:YES];
-    LTTexture *floatTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionFloat
-                                                  format:LTTextureFormatRGBA allocateMemory:YES];
+    LTTexture *byteTexture = [LTTexture byteRGBATextureWithSize:kSize];
+    LTTexture *halfTexture = [LTTexture textureWithSize:kSize
+                                            pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                         allocateMemory:YES];
+    LTTexture *floatTexture = [LTTexture textureWithSize:kSize
+                                             pixelFormat:$(LTGLPixelFormatRGBA32Float)
+                                          allocateMemory:YES];
     brush.texture = byteTexture;
     expect(brush.texture).to.beIdenticalTo(byteTexture);
     brush.texture = halfTexture;
@@ -52,14 +53,16 @@ context(@"properties", ^{
   
   it(@"should not set non rgba textures", ^{
     expect(^{
-      LTTexture *redTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                  format:LTTextureFormatRed allocateMemory:YES];
+      LTTexture *redTexture = [LTTexture textureWithSize:kSize
+                                             pixelFormat:$(LTGLPixelFormatR8Unorm)
+                                          allocateMemory:YES];
       brush.texture = redTexture;
     }).to.raise(NSInvalidArgumentException);
     
     expect(^{
-      LTTexture *rgTexture = [LTTexture textureWithSize:kSize precision:LTTexturePrecisionByte
-                                                 format:LTTextureFormatRG allocateMemory:YES];
+      LTTexture *rgTexture = [LTTexture textureWithSize:kSize
+                                            pixelFormat:$(LTGLPixelFormatRG8Unorm)
+                                         allocateMemory:YES];
       brush.texture = rgTexture;
     }).to.raise(NSInvalidArgumentException);
   });

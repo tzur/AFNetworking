@@ -6,10 +6,12 @@
 #import <LTKit/LTRandom.h>
 
 #import "LTFbo.h"
+#import "LTGLPixelFormat.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTRotatedRect+UIColor.h"
 #import "LTShaderStorage+LTTextureBrushFsh.h"
+#import "LTTexture.h"
 #import "UIColor+Vector.h"
 
 @interface LTBrush ()
@@ -42,7 +44,8 @@
 - (void)drawRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
         fromRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count == sourceRects.count);
-  self.program[[LTTextureBrushFsh singleChannelTarget]] = @(fbo.texture.channels == 1);
+  self.program[[LTTextureBrushFsh singleChannelTarget]] =
+      @(fbo.pixelFormat.components == LTGLPixelComponentsR);
   [fbo bindAndDraw:^{
     for (NSUInteger i = 0; i < targetRects.count; ++i) {
       LTRotatedRect *targetRect = targetRects[i];
@@ -66,7 +69,7 @@
   LTParameterAssert(textures.count);
   CGSize size = [(LTTexture *)textures.firstObject size];
   for (LTTexture *texture in textures) {
-    LTParameterAssert(texture.format == LTTextureFormatRGBA);
+    LTParameterAssert(texture.components == LTGLPixelComponentsRGBA);
     LTParameterAssert(texture.size == size, @"all textures should have the same size");
   }
   _textures = [textures copy];

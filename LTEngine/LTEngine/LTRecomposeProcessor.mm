@@ -138,7 +138,7 @@ typedef NS_ENUM(NSUInteger, LTDecimationDimension) {
   // "Invert" the sum, to correspond to an inverted mask. Note that in case the mask is of byte
   // precision, the reduce-sum will sum float values in range [0,255], so it is necessary to divide
   // by 255 in order to have similar behaviors for all mask precision types.
-  float maxMaskPixelValue = (self.mask.precision == LTTexturePrecisionByte) ? UCHAR_MAX : 1;
+  float maxMaskPixelValue = (self.mask.dataType == LTGLPixelDataTypeUnorm) ? UCHAR_MAX : 1;
   float maxReducedCellValue = dimension == LTDecimationDimensionHorizontal ?
       self.mask.size.height : self.mask.size.width;
   std::transform(sum.begin(), sum.end(), sum.begin(),

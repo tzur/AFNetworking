@@ -111,8 +111,7 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
                                 initWithMipmapImages:{cv::Mat4b(128, 64), cv::Mat4b(64, 32)}];
         LTGLTexture *other = [[LTGLTexture alloc] initWithPropertiesOf:texture];
         expect(other.size).to.equal(texture.size);
-        expect(other.precision).to.equal(texture.precision);
-        expect(other.format).to.equal(texture.format);
+        expect(other.pixelFormat).to.equal(texture.pixelFormat);
         expect(other.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
         expect(^{
           [other clearWithColor:LTVector4::zeros()];
@@ -120,13 +119,12 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
       });
 
       it(@"should initialize with properties", ^{
-        LTGLTexture *texture = [[LTGLTexture alloc]
-                                initWithSize:CGSizeMake(64, 128) precision:LTTexturePrecisionByte
-                                format:LTTextureFormatRGBA maxMipmapLevel:3];
+        LTGLTexture *texture = [[LTGLTexture alloc] initWithSize:CGSizeMake(64, 128)
+                                                     pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                                  maxMipmapLevel:3];
 
         expect(texture.size).to.equal(CGSizeMake(64, 128));
-        expect(texture.precision).to.equal(LTTexturePrecisionByte);
-        expect(texture.format).to.equal(LTTextureFormatRGBA);
+        expect(texture.pixelFormat).to.equal($(LTGLPixelFormatRGBA8Unorm));
         expect(texture.maxMipmapLevel).to.equal(3);
         expect(^{
           [texture clearWithColor:LTVector4::zeros()];
@@ -163,7 +161,9 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
         program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                            fragmentSource:[PassthroughFsh source]];
         drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
-        target = [[LTGLTexture alloc] initByteRGBAWithSize:CGSizeMake(64, 64)];
+        target = [[LTGLTexture alloc] initWithSize:CGSizeMake(64, 64)
+                                       pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                    allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:target];
       });
 

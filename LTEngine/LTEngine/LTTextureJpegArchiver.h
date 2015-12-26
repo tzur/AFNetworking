@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Archiver that can be used for saving textures as jpeg files. This archiver supports only
-/// textures with \c LTTexturePrecisionByte \c precision, with \c usingAlphaChannel of \c NO.
+/// textures with \c LTGLPixelBitDepth8 \c bitDepth, with \c usingAlphaChannel of \c NO.
 @interface LTTextureJpegArchiver : NSObject <LTTextureBaseArchiver>
 @end
 

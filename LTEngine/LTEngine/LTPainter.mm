@@ -69,8 +69,8 @@
     self.strokeTexture = [LTTexture textureWithPropertiesOf:self.canvasTexture];
   } else {
     self.strokeTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                          precision:self.canvasTexture.precision
-                                             format:self.canvasTexture.format allocateMemory:YES];
+                                        pixelFormat:self.canvasTexture.pixelFormat
+                                     allocateMemory:YES];
   }
   self.strokeTexture.minFilterInterpolation = LTTextureInterpolationNearest;
   self.strokeTexture.magFilterInterpolation = LTTextureInterpolationNearest;
