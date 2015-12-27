@@ -4,8 +4,8 @@
 #import <LTKit/LTTypedefs.h>
 #import <OpenGLES/ES2/glext.h>
 
+#import "LTFboAttachment.h"
 #import "LTGLPixelFormat.h"
-#import "LTGPUResource.h"
 #import "LTTypedefs+LTEngine.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -53,7 +53,7 @@ struct LTVector4;
 ///
 /// @note Binding texture objects binds them to the currently active textre unit in the OpenGL
 /// enviorment. Unbinding textures restores the state previous to the last \c bind call.
-@interface LTTexture : NSObject <LTGPUResource> {
+@interface LTTexture : NSObject <LTFboAttachment> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
   GLuint _name;
@@ -139,38 +139,6 @@ struct LTVector4;
 /// receiver.
 - (void)cloneTo:(LTTexture *)texture;
 
-/// Marks a beginning of read operation from the texture.
-///
-/// @note prefers calls to \c readFromTexture: instead of calling \c beginReadFromTexture: and
-/// \c endReadFromTexture:.
-///
-/// @see \c readFromTexture: for more information.
-- (void)beginReadFromTexture;
-
-/// Marks an ending of read operation from the texture.
-///
-/// @note prefers calls to \c readFromTexture: instead of calling \c beginReadFromTexture: and
-/// \c endReadFromTexture:.
-///
-/// @see \c readFromTexture: for more information.
-- (void)endReadFromTexture;
-
-/// Marks a beginning of write operation to the texture.
-///
-/// @note prefers calls to \c writeToTexture: instead of calling \c beginWriteToTexture: and
-/// \c endWriteToTexture:.
-///
-/// @see \c writeToTexture: for more information.
-- (void)beginWriteToTexture;
-
-/// Marks an ending of write operation to the texture.
-///
-/// @note prefers calls to \c writeToTexture: instead of calling \c beginWriteToTexture: and
-/// \c endWriteToTexture:.
-///
-/// @see \c writeToTexture: for more information.
-- (void)endWriteToTexture;
-
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -
@@ -179,19 +147,6 @@ struct LTVector4;
 /// and type of this \c Mat must match the \c size and \c precision properties of the texture. If
 /// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
 - (void)load:(const cv::Mat &)image;
-
-/// Executes the block which is marked as a block that reads from the texture, allowing the texture
-/// object to synchronize before and after the read.
-///
-/// @note all texture reads that are GPU based should be executed via this method, or be wrapped
-/// with \c beginReadFromTexture: and endReadFromTexture: calls.
-- (void)readFromTexture:(LTVoidBlock)block;
-
-/// Executes the block which is marked as a block that writes to the texture, allowing the texture
-/// object to synchronize before and after the read.
-///
-/// @note all texture writes that are GPU based should be executed via this method.
-- (void)writeToTexture:(LTVoidBlock)block;
 
 /// Block for transferring the texture contents while allowing read-only access. If \c isCopy is \c
 /// YES, the given image is a copy of the texture and its reference can be stored outside the context
@@ -297,12 +252,6 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 #pragma mark Properties
 #pragma mark -
 
-/// Size of the texture.
-@property (readonly, nonatomic) CGSize size;
-
-/// Pixel format for the underlying pixel buffer.
-@property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;
-
 /// Bit depth of the underlying pixel buffer, derived from \c pixelFormat.
 @property (readonly, nonatomic) LTGLPixelBitDepth bitDepth;
 
@@ -333,21 +282,6 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// to \c LTTextureWrapRepeat requires that the texture size will be a power of two. If this
 /// condition doesn't hold, the property will not change.
 @property (nonatomic) LTTextureWrap wrap;
-
-/// Current generation ID of this texture. The generation ID changes whenever the texture is
-/// modified, and is copied when a texture is cloned. This can be used as an efficient way to check
-/// if a texture has changed or if two textures have the same content.
-///
-/// @note While two textures having equal \c generationID implies that they have the same
-/// content, the other direction is not necessarily true as two textures can have the same content
-/// with different \c generationID.
-@property (readonly, nonatomic) NSString *generationID;
-
-/// Returns the color the entire texture (and all its levels for mipmap textures) is filled with,
-/// or \c LTVector4Null in case it is uncertain that the texture is filled with a single color.
-/// This property is updated when the texture is cleared using \c clearWithColor, and set to
-/// \c LTVector4Null whenever the texture is updated by any other method.
-@property (readonly, nonatomic) LTVector4 fillColor;
 
 @end
 

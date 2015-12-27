@@ -11,6 +11,7 @@
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TwoInputTexturesFsh.h"
 #import "LTTexture+Factory.h"
+#import "LTTexture+Sampling.h"
 #import "LTVertexArray.h"
 
 SpecBegin(LTDrawingContext)
@@ -180,9 +181,9 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
         OCMVerifyAll(textureB);
       });
       
-      it(@"should mark begin read from texture", ^{
-        [[textureA expect] beginReadFromTexture];
-        [[textureB expect] beginReadFromTexture];
+      it(@"should mark begin sampling from texture", ^{
+        [[textureA expect] beginSamplingWithGPU];
+        [[textureB expect] beginSamplingWithGPU];
         
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
@@ -192,9 +193,9 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
         OCMVerifyAll(textureB);
       });
       
-      it(@"should mark end read from texture", ^{
-        [[textureA expect] endReadFromTexture];
-        [[textureB expect] endReadFromTexture];
+      it(@"should mark end sampling from texture", ^{
+        [[textureA expect] endSamplingWithGPU];
+        [[textureB expect] endSamplingWithGPU];
         
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
@@ -257,9 +258,9 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
         OCMVerifyAll(textureB);
       });
       
-      it(@"should mark begin read from texture", ^{
-        [[textureA expect] beginReadFromTexture];
-        [[textureB expect] beginReadFromTexture];
+      it(@"should mark begin sampling from texture", ^{
+        [[textureA expect] beginSamplingWithGPU];
+        [[textureB expect] beginSamplingWithGPU];
         
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
@@ -269,10 +270,10 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
         OCMVerifyAll(textureB);
       });
       
-      it(@"should mark end read from texture", ^{
-        [[textureA expect] endReadFromTexture];
-        [[textureB expect] endReadFromTexture];
-
+      it(@"should mark end sampling from texture", ^{
+        [[textureA expect] endSamplingWithGPU];
+        [[textureB expect] endSamplingWithGPU];
+        
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];

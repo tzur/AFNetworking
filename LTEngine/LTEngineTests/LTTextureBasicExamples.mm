@@ -472,21 +472,21 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         generationID = nil;
       });
 
-      it(@"should change generation ID after writing via writeToTexture", ^{
-        [texture writeToTexture:^{
+      it(@"should change generation ID after writing via writeToAttachmentWithBlock", ^{
+        [texture writeToAttachmentWithBlock:^{
         }];
         expect(texture.generationID).toNot.equal(generationID);
       });
 
-      it(@"should not change generation ID after reading via readFromTexture", ^{
-        [texture readFromTexture:^{
+      it(@"should not change generation ID after reading via sampleWithGPUWithBlock", ^{
+        [texture sampleWithGPUWithBlock:^{
         }];
         expect(texture.generationID).to.equal(generationID);
       });
 
-      it(@"should not change generation ID after reading via begin/end readFromTexture", ^{
-        [texture beginReadFromTexture];
-        [texture endReadFromTexture];
+      it(@"should not change generation ID after reading via begin/end samplingWithGPU", ^{
+        [texture beginSamplingWithGPU];
+        [texture endSamplingWithGPU];
         expect(texture.generationID).to.equal(generationID);
       });
 
