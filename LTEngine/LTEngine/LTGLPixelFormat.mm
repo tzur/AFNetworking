@@ -56,6 +56,10 @@ typedef std::pair<LTGLVersion, LTGLPixelComponents> LTPixelComponentsPair;
 /// Maps from components pair to OpenGL format. Note that when a new pixel format is added, the
 /// number of entries that will added to this table should be equal to the number of supported
 /// OpenGL versions.
+///
+/// @note when there's a discrepancy between the format of a renderbuffer and a texture, the format
+/// of texture will be used. This is because right now we use the pixel format solely for textures
+/// and not renderbuffers, which are allocated by Core Animation.
 static const LTUnorderedMap<LTPixelComponentsPair, GLenum> kComponentsToFormat{
   {{LTGLVersion2, LTGLPixelComponentsR}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelComponentsR}, GL_RED},
@@ -86,24 +90,28 @@ typedef std::pair<LTGLVersion, _LTGLPixelFormat> LTPixelFormatPair;
 /// Maps from pixel format pair to OpenGL internal format. Note that when a new pixel format is
 /// added, the number of entries that will added to this table should be equal to the number of
 /// supported OpenGL versions.
+///
+/// @note when there's a discrepancy between internal format of a renderbuffer and a texture, the
+/// internal format of texture will be used. This is because right now we use the pixel format
+/// solely for textures and not renderbuffers, which are allocated by Core Animation.
 static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatR8Unorm}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR8Unorm}, GL_R8},
-  {{LTGLVersion2, LTGLPixelFormatR16Float}, GL_R16F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatR16Float}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR16Float}, GL_R16F},
-  {{LTGLVersion2, LTGLPixelFormatR32Float}, GL_R32F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatR32Float}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR32Float}, GL_R32F},
   {{LTGLVersion2, LTGLPixelFormatRG8Unorm}, GL_RG_EXT},
   {{LTGLVersion3, LTGLPixelFormatRG8Unorm}, GL_RG8},
-  {{LTGLVersion2, LTGLPixelFormatRG16Float}, GL_RG16F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatRG16Float}, GL_RG_EXT},
   {{LTGLVersion3, LTGLPixelFormatRG16Float}, GL_RG16F},
-  {{LTGLVersion2, LTGLPixelFormatRG32Float}, GL_RG32F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatRG32Float}, GL_RG_EXT},
   {{LTGLVersion3, LTGLPixelFormatRG32Float}, GL_RG32F},
   {{LTGLVersion2, LTGLPixelFormatRGBA8Unorm}, GL_RGBA},
   {{LTGLVersion3, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8},
-  {{LTGLVersion2, LTGLPixelFormatRGBA16Float}, GL_RGBA16F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatRGBA16Float}, GL_RGBA},
   {{LTGLVersion3, LTGLPixelFormatRGBA16Float}, GL_RGBA16F},
-  {{LTGLVersion2, LTGLPixelFormatRGBA32Float}, GL_RGBA32F_EXT},
+  {{LTGLVersion2, LTGLPixelFormatRGBA32Float}, GL_RGBA},
   {{LTGLVersion3, LTGLPixelFormatRGBA32Float}, GL_RGBA32F}
 };
 
