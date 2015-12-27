@@ -6,7 +6,7 @@
 #import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
-#import "LTRenderbuffer+Fbo.h"
+#import "LTRenderbuffer+Writing.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
