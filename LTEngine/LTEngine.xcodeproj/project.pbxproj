@@ -594,6 +594,7 @@
 		8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */; };
 		8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */; };
 		8B422A4E1C30468D00398F27 /* LTTexture+Sampling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */; };
+		8B422A6D1C30493200398F27 /* LTTexture+Writing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B422A6C1C30493200398F27 /* LTTexture+Writing.mm */; };
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
@@ -1889,8 +1890,10 @@
 		8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTextureSpec.mm; sourceTree = "<group>"; };
 		8B3F94D5187C340D00FAA265 /* LTTextureBasicExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureBasicExamples.h; sourceTree = "<group>"; };
 		8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTextureBasicExamples.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8B4229E11C2FF09800398F27 /* LTTexture+Writing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Writing.h"; sourceTree = "<group>"; };
 		8B4229FF1C303ECE00398F27 /* LTTexture+Sampling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Sampling.h"; sourceTree = "<group>"; };
 		8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+Sampling.mm"; sourceTree = "<group>"; };
+		8B422A6C1C30493200398F27 /* LTTexture+Writing.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+Writing.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -3709,6 +3712,8 @@
 				28A5AE251AC298A6003594C0 /* LTTexture+Protected.h */,
 				8B4229FF1C303ECE00398F27 /* LTTexture+Sampling.h */,
 				8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */,
+				8B4229E11C2FF09800398F27 /* LTTexture+Writing.h */,
+				8B422A6C1C30493200398F27 /* LTTexture+Writing.mm */,
 				8BB4713F183A470400CA1681 /* LTVertexArray.h */,
 				8BB47140183A470400CA1681 /* LTVertexArray.mm */,
 			);
@@ -5084,6 +5089,7 @@
 				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */,
 				288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */,
 				28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */,
+				8B422A6D1C30493200398F27 /* LTTexture+Writing.mm in Sources */,
 				8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */,
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
 				5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */,
