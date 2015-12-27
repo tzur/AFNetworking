@@ -593,6 +593,7 @@
 		8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D1187C194500FAA265 /* LTMMTexture.mm */; };
 		8B3F94D4187C338E00FAA265 /* LTMMTextureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */; };
 		8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */; };
+		8B422A4E1C30468D00398F27 /* LTTexture+Sampling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */; };
 		8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
@@ -1888,6 +1889,8 @@
 		8B3F94D3187C338E00FAA265 /* LTMMTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMTextureSpec.mm; sourceTree = "<group>"; };
 		8B3F94D5187C340D00FAA265 /* LTTextureBasicExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureBasicExamples.h; sourceTree = "<group>"; };
 		8B3F94D6187C340D00FAA265 /* LTTextureBasicExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTTextureBasicExamples.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8B4229FF1C303ECE00398F27 /* LTTexture+Sampling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTexture+Sampling.h"; sourceTree = "<group>"; };
+		8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+Sampling.mm"; sourceTree = "<group>"; };
 		8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -3704,6 +3707,8 @@
 				8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */,
 				8B9D3FE5189541F0001A964D /* LTTexture+Factory.mm */,
 				28A5AE251AC298A6003594C0 /* LTTexture+Protected.h */,
+				8B4229FF1C303ECE00398F27 /* LTTexture+Sampling.h */,
+				8B422A4D1C30468D00398F27 /* LTTexture+Sampling.mm */,
 				8BB4713F183A470400CA1681 /* LTVertexArray.h */,
 				8BB47140183A470400CA1681 /* LTVertexArray.mm */,
 			);
@@ -4978,6 +4983,7 @@
 				030CF744189935AF000E9ED0 /* LTBWTonality.fsh in Sources */,
 				8BB92FAE1906AE5400954124 /* LTMaskOverlayProcessor.mm in Sources */,
 				0367A4B518ACF7AA00B42E34 /* LTProceduralFrame.fsh in Sources */,
+				8B422A4E1C30468D00398F27 /* LTTexture+Sampling.mm in Sources */,
 				2839069718C4D9AA00BD21CE /* LTRoundBrush.mm in Sources */,
 				2830B91219C5A78300BF4E8E /* LTIndicesArray.mm in Sources */,
 				039C95B41897E91700F1E213 /* LTMultiscaleNoise.fsh in Sources */,
