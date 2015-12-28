@@ -20,7 +20,14 @@ typedef NS_ENUM(NSInteger, LTBipartiteGraphPartition) {
 /// the \c NSCopying protocol and implement both the \c isEqual: method and the \c hash method
 /// according to their needs. The time complexity statements are under the assumption that value
 /// insertion and retrieval of \c NSDictionary is in \c O(1).
-@interface LTBipartiteGraph : NSObject
+@interface LTBipartiteGraph : NSObject <NSCopying>
+
+/// Returns a Boolean value that indicates whether the receiver and the given \c object are equal.
+/// For more details, refer to the documentation in the \c NSObject protocol.
+///
+/// Time complexity: \c O(max{n_A,n_B,m}), where \c n_X is the maximum number of vertices in
+/// partition \c X and \c m is the number of edges of the graph.
+- (BOOL)isEqual:(id)object;
 
 /// Adds a \c copy of the given \c vertex to the given \c partition. Is silently ignored, if the
 /// given \c vertex already exists in the graph. After adding, the graph does not contain any edges

@@ -319,4 +319,102 @@ context(@"providing information about edges", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  beforeEach(^{
+    [graph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+    [graph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+    [graph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:vertexInB]];
+  });
+
+  context(@"comparison with isEqual:", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([graph isEqual:graph]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to a graph with the same content", ^{
+      LTBipartiteGraph *anotherGraph = [[LTBipartiteGraph alloc] init];
+      [anotherGraph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+      [anotherGraph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:vertexInB]];
+      expect([graph isEqual:anotherGraph]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      LTBipartiteGraph *anotherGraph = nil;
+      expect([graph isEqual:anotherGraph]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([graph isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to a graph with same vertices but different edges", ^{
+      LTBipartiteGraph *anotherGraph = [[LTBipartiteGraph alloc] init];
+      [anotherGraph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+      [anotherGraph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+      expect([graph isEqual:anotherGraph]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to a graph with same edges but different vertices", ^{
+      LTBipartiteGraph *anotherGraph = [[LTBipartiteGraph alloc] init];
+      [anotherGraph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+      [anotherGraph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addVertex:anotherVertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:vertexInB]];
+      expect([graph isEqual:anotherGraph]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to a graph with different vertices and different edges", ^{
+      LTBipartiteGraph *anotherGraph = [[LTBipartiteGraph alloc] init];
+      [anotherGraph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+      [anotherGraph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addVertex:anotherVertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addEdgesBetweenVertex:vertexInA
+                              andVertices:[NSSet setWithArray:@[vertexInB, anotherVertexInB]]];
+      expect([graph isEqual:anotherGraph]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTBipartiteGraph *anotherGraph = [[LTBipartiteGraph alloc] init];
+      [anotherGraph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+      [anotherGraph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+      [anotherGraph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:vertexInB]];
+      expect([graph hash]).to.equal([anotherGraph hash]);
+    });
+  });
+});
+
+context(@"NSCopying protocol", ^{
+  __block LTBipartiteGraph *copiedGraph;
+
+  beforeEach(^{
+    [graph addVertex:vertexInA toPartition:LTBipartiteGraphPartitionA];
+    [graph addVertex:vertexInB toPartition:LTBipartiteGraphPartitionB];
+    [graph addVertex:anotherVertexInB toPartition:LTBipartiteGraphPartitionB];
+    [graph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:vertexInB]];
+    copiedGraph = [graph copy];
+  });
+
+  it(@"should create a correct copy", ^{
+    expect(copiedGraph).to.equal(graph);
+    expect(copiedGraph).toNot.beIdenticalTo(graph);
+  });
+
+  it(@"should create a copy that is independent of the vertices of the original graph", ^{
+    LTBipartiteGraphTestObject *anotherVertexInA = [[LTBipartiteGraphTestObject alloc] init];
+    anotherVertexInA.value = 10;
+    [graph addVertex:anotherVertexInA toPartition:LTBipartiteGraphPartitionA];
+
+    expect(copiedGraph).toNot.equal(graph);
+  });
+
+  it(@"should create a copy that is independent of the edges of the original graph", ^{
+    [graph addEdgesBetweenVertex:vertexInA andVertices:[NSSet setWithObject:anotherVertexInB]];
+
+    expect(copiedGraph).toNot.equal(graph);
+  });
+});
+
 SpecEnd
