@@ -85,9 +85,6 @@ context(@"equality", ^{
 
   it(@"should create proper hash", ^{
     expect(firstChangeset.hash).to.equal(secondChangeset.hash);
-
-    expect(firstChangeset.hash).notTo.equal(otherChangeset.hash);
-    expect(secondChangeset.hash).notTo.equal(otherChangeset.hash);
   });
 });
 
