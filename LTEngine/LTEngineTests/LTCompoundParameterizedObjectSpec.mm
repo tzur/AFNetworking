@@ -64,6 +64,46 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  context(@"comparison with isEqual:", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([object isEqual:object]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to an object with the same properties", ^{
+      LTCompoundParameterizedObject *anotherObject =
+          [[LTCompoundParameterizedObject alloc] initWithMapping:[mapping copy]];
+      expect([object isEqual:anotherObject]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      LTCompoundParameterizedObject *anotherObject = nil;
+      expect([object isEqual:anotherObject]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([object isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object with different properties", ^{
+      id primitiveParameterizedObjectMock =
+          OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
+      LTKeyToPrimitiveParameterizedObject *mapping = @{@"test": primitiveParameterizedObjectMock};
+      LTCompoundParameterizedObject *anotherObject =
+          [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
+      expect([object isEqual:anotherObject]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTCompoundParameterizedObject *anotherObject =
+          [[LTCompoundParameterizedObject alloc] initWithMapping:[mapping copy]];
+      expect([object hash]).to.equal([anotherObject hash]);
+    });
+  });
+});
+
 context(@"NSCopying protocol", ^{
   __block LTCompoundParameterizedObject *copyOfObject;
 
