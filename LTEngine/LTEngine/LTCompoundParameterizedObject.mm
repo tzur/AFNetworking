@@ -64,6 +64,26 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 }
 
 #pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTCompoundParameterizedObject *)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return [self.mapping isEqualToDictionary:object.mapping];
+}
+
+- (NSUInteger)hash {
+  return self.mapping.hash;
+}
+
+#pragma mark -
 #pragma mark NSCopying
 #pragma mark -
 
