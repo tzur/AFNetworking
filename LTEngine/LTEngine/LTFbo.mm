@@ -4,7 +4,7 @@
 #import "LTFbo.h"
 
 #import "LTGLContext.h"
-#import "LTTexture+Protected.h"
+#import "LTTexture+Writing.h"
 
 @interface LTFbo ()
 
@@ -182,9 +182,7 @@
 - (void)bindAndDraw:(LTVoidBlock)block {
   LTParameterAssert(block);
   [self bindAndExecute:^{
-    [self.texture writeToTexture:^{
-      block();
-    }];
+    [self.texture writeToAttachmentWithBlock:block];
   }];
 }
 
@@ -199,18 +197,9 @@
 #pragma mark -
 
 - (void)clearWithColor:(LTVector4)color {
-  // Adjust the texture's fill color in case it has only a single level.
-  if (!self.texture.maxMipmapLevel) {
-    self.texture.fillColor = color;
-  } else if (self.texture.fillColor != color) {
-    self.texture.fillColor = LTVector4::null();
-  }
-
   [self bindAndExecute:^{
-    [self.texture performWithoutUpdatingFillColor:^{
-      [self.texture writeToTexture:^{
-        [[LTGLContext currentContext] clearWithColor:color];
-      }];
+    [self.texture clearAttachmentWithColor:color block:^{
+      [[LTGLContext currentContext] clearWithColor:color];
     }];
   }];
 }

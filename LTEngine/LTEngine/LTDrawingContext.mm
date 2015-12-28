@@ -8,6 +8,7 @@
 #import "LTIndicesArray.h"
 #import "LTProgram.h"
 #import "LTTexture.h"
+#import "LTTexture+Sampling.h"
 #import "LTVertexArray.h"
 
 @interface LTDrawingContext ()
@@ -75,7 +76,7 @@
       // Switch to the proper texture unit and bind the texture there.
       glActiveTexture(GL_TEXTURE0 + index);
       [texture bind];
-      [texture beginReadFromTexture];
+      [texture beginSamplingWithGPU];
 
       // Map sampler to the texture unit.
       self.program[uniform] = @(index);
@@ -89,7 +90,7 @@
 
     // Unbind in reverse order.
     for (NSInteger i = textureStack.count - 1; i >= 0; --i) {
-      [textureStack[i] endReadFromTexture];
+      [textureStack[i] endSamplingWithGPU];
       [textureStack[i] unbind];
     }
   }];

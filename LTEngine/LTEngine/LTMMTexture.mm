@@ -193,20 +193,20 @@
   }];
 }
 
-- (void)beginReadFromTexture {
+- (void)beginSamplingWithGPU {
   [self.lock lock];
 }
 
-- (void)endReadFromTexture {
+- (void)endSamplingWithGPU {
   [self.lock unlock];
 }
 
-- (void)beginWriteToTexture {
+- (void)beginWritingWithGPU {
   [self.lock lock];
   self.fillColor = LTVector4::null();
 }
 
-- (void)endWriteToTexture {
+- (void)endWritingWithGPU {
   // Make \c self.syncObject a synchronization barrier that is right beyond the last drawing to this
   // texture in the GPU queue.
   [[LTGLContext currentContext] executeForOpenGLES2:^{

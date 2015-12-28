@@ -82,7 +82,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (void)addImagesToMipmap:(const Matrices &)images {
   // The initial image has been already added.
   [self bindAndExecute:^{
-    [self writeToTexture:^{
+    [self writeWithBlock:^{
       LTGLVersion version = [LTGLContext currentContext].version;
       GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
       GLenum precision = [self.pixelFormat precisionForVersion:version];
@@ -128,7 +128,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 }
 
 - (void)allocateMemoryForAllLevels {
-  [self writeToTexture:^{
+  [self writeWithBlock:^{
     LTGLVersion version = [LTGLContext currentContext].version;
     GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
     GLenum precision = [self.pixelFormat precisionForVersion:version];
@@ -192,20 +192,18 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
     readImage = *image;
   }
 
-  [self readFromTexture:^{
-    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
-      // Since the default pack alignment is 4, it is necessarry to verify there's no special
-      // packing of the texture that may effect the representation of the Mat if the number of bytes
-      // per row % 4 != 0.
-      context.packAlignment = 1;
+  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
+    // Since the default pack alignment is 4, it is necessarry to verify there's no special
+    // packing of the texture that may effect the representation of the Mat if the number of bytes
+    // per row % 4 != 0.
+    context.packAlignment = 1;
 
-      GLenum format = [readingPixelFormat formatForVersion:context.version];
-      GLenum precision = [readingPixelFormat precisionForVersion:context.version];
+    GLenum format = [readingPixelFormat formatForVersion:context.version];
+    GLenum precision = [readingPixelFormat precisionForVersion:context.version];
 
-      // Read pixels into the mutable data, according to the texture precision.
-      glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
-                   format, precision, readImage.data);
-    }];
+    // Read pixels into the mutable data, according to the texture precision.
+    glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
+                 format, precision, readImage.data);
   }];
 
   // Convert read data to the output image's type, if needed.
@@ -239,7 +237,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
     LTConvertMat(image, &storedImage, [self matTypeForWriting]);
   }
 
-  [self writeToTexture:^{
+  [self writeWithBlock:^{
     [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
       // Since the default pack alignment is 4, it is necessarry to verify there's no special
       // packing of the texture that may effect the representation of the Mat if the number of bytes
@@ -320,22 +318,36 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }];
 }
 
+#pragma mark -
+#pragma mark LTTexture+Sampling
+#pragma mark -
+
 // Assuming that OpenGL calls are synchronized (when used in a single-threaded environment), no
 // synchronization needs to be done, therefore no logic appears in reading and writing, besides
 // updating the generation ID.
 
-- (void)beginReadFromTexture {
+- (void)beginSamplingWithGPU {
 }
 
-- (void)endReadFromTexture {
+- (void)endSamplingWithGPU {
 }
 
-- (void)beginWriteToTexture {
+#pragma mark -
+#pragma mark LTTexture+Writing
+#pragma mark -
+
+- (void)beginWritingWithGPU {
   self.fillColor = LTVector4::null();
 }
 
-- (void)endWriteToTexture {
+- (void)endWritingWithGPU {
   [self updateGenerationID];
+}
+
+- (void)writeWithBlock:(LTVoidBlock)block {
+  // LTGLTexture doesn't support memory mapping, therefore any write should be treated as write via
+  // framebuffer.
+  [self writeToAttachmentWithBlock:block];
 }
 
 #pragma mark -

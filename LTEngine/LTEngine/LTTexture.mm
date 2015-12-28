@@ -10,6 +10,7 @@
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTMathUtils.h"
+#import "LTTexture+Protected.h"
 #import "LTTextureContentsDataArchiver.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -58,11 +59,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
+/// Pixel format of the attachment.
+@property (strong, readwrite, nonatomic) LTGLPixelFormat *pixelFormat;
+
+/// Size of the attachment.
+@property (nonatomic) CGSize size;
+
 /// While \c YES, the \c generationID property will not be updated.
 @property (nonatomic) BOOL isGenerationIDLocked;
-
-/// While \c YES, the \c fillColor property will not be updated.
-@property (nonatomic) BOOL isFillColorLocked;
 
 @end
 
@@ -130,53 +134,27 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)create:(BOOL __unused)allocateMemory {
-  LTAssert(NO, @"-[LTTexture create:] is an abstract method that should be overridden by "
-           "subclasses");
+  LTMethodNotImplemented();
 }
 
 - (void)destroy {
-  LTAssert(NO, @"-[LTTexture destroy] is an abstract method that should be overridden by "
-           "subclasses");
+  LTMethodNotImplemented();
 }
 
 - (void)storeRect:(CGRect __unused)rect toImage:(cv::Mat __unused *)image {
-  LTAssert(NO, @"-[LTTexture storeRect:toImage:] is an abstract method that should be overridden "
-           "by subclasses");
+  LTMethodNotImplemented();
 }
 
 - (void)loadRect:(CGRect __unused)rect fromImage:(const cv::Mat __unused &)image {
-  LTAssert(NO, @"-[LTTexture loadRect:fromImage] is an abstract method that should be overridden "
-           "by subclasses");
+  LTMethodNotImplemented();
 }
 
 - (LTTexture *)clone {
-  LTAssert(NO, @"-[LTTexture clone] is an abstract method that should be overridden by subclasses");
-  __builtin_unreachable();
+  LTMethodNotImplemented();
 }
 
 - (void)cloneTo:(LTTexture __unused *)texture {
-  LTAssert(NO, @"-[LTTexture cloneTo:] is an abstract method that should be overridden by "
-           "subclasses");
-}
-
-- (void)beginReadFromTexture {
-  LTAssert(NO, @"-[LTTexture beginReadFromTexture] is an abstract method that should be "
-           "overridden by subclasses");
-}
-
-- (void)endReadFromTexture {
-  LTAssert(NO, @"-[LTTexture endReadFromTexture] is an abstract method that should be overridden "
-           "by subclasses");
-}
-
-- (void)beginWriteToTexture {
-  LTAssert(NO, @"-[LTTexture beginWriteToTexture] is an abstract method that should be overridden "
-           "by subclasses");
-}
-
-- (void)endWriteToTexture {
-  LTAssert(NO, @"-[LTTexture endWriteToTexture] is an abstract method that should be overridden "
-           "by subclasses");
+  LTMethodNotImplemented();
 }
 
 #pragma mark -
@@ -185,20 +163,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)load:(const cv::Mat &)image {
   [self loadRect:CGRectMake(0, 0, image.cols, image.rows) fromImage:image];
-}
-
-- (void)readFromTexture:(LTVoidBlock)block {
-  LTParameterAssert(block);
-  [self beginReadFromTexture];
-  block();
-  [self endReadFromTexture];
-}
-
-- (void)writeToTexture:(LTVoidBlock)block {
-  LTParameterAssert(block);
-  [self beginWriteToTexture];
-  block();
-  [self endWriteToTexture];
 }
 
 - (void)bind {
@@ -469,12 +433,12 @@ NS_ASSUME_NONNULL_BEGIN
   self.isGenerationIDLocked = locked;
 }
 
-- (void)performWithoutUpdatingFillColor:(LTVoidBlock)block {
-  LTParameterAssert(block);
-  BOOL locked = self.isFillColorLocked;
-  self.isFillColorLocked = YES;
-  block();
-  self.isFillColorLocked = locked;
+#pragma mark -
+#pragma mark LTFboAttachment
+#pragma mark -
+
+- (LTFboAttachmentType)attachmentType {
+  return LTFboAttachmentTypeTexture2D;
 }
 
 #pragma mark -
@@ -488,14 +452,6 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   _generationID = generationID;
-}
-
-- (void)setFillColor:(LTVector4)fillColor {
-  if (_fillColor == fillColor || self.isFillColorLocked) {
-    return;
-  }
-
-  _fillColor = fillColor;
 }
 
 - (void)setMinFilterInterpolation:(LTTextureInterpolation)minFilterInterpolation {

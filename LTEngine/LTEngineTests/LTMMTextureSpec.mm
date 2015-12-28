@@ -13,6 +13,7 @@
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+ValueSetterFsh.h"
+#import "LTTexture+Protected.h"
 #import "LTTextureBasicExamples.h"
 
 using half_float::half;
@@ -34,7 +35,7 @@ cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
   return [target image];
 }
 
-@interface LTMMTexture () <LTFboWritableAttachment>
+@interface LTMMTexture ()
 @property (nonatomic) GLsync syncObject;
 @end
 
@@ -120,12 +121,12 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
   });
 
   context(@"synchronization", ^{
-    it(@"should not allow reading while writing", ^{
+    it(@"should not allow sampling while writing", ^{
       __block BOOL inRead = NO;
 
-      [texture writeToTexture:^{
+      [texture writeToAttachmentWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-          [texture readFromTexture:^{
+          [texture sampleWithGPUWithBlock:^{
             inRead = YES;
           }];
         });
@@ -137,9 +138,9 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
     it(@"should not allow writing while reading", ^{
       __block BOOL inWrite = NO;
 
-      [texture readFromTexture:^{
+      [texture sampleWithGPUWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-          [texture writeToTexture:^{
+          [texture writeToAttachmentWithBlock:^{
             inWrite = YES;
           }];
         });

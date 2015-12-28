@@ -3,6 +3,9 @@
 
 #import "LTTexture.h"
 
+#import "LTTexture+Sampling.h"
+#import "LTTexture+Writing.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Sampling points inside the texture's bounds.
@@ -15,9 +18,6 @@ typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
 
 /// Executes the given block while keeping the texture's \c generationID unchanged.
 - (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block;
-
-/// Executes the given block while keeping the texture's \c fillColor unchanged.
-- (void)performWithoutUpdatingFillColor:(LTVoidBlock)block;
 
 /// Returns \c YES if the given rect is completely inside the texture.
 - (BOOL)inTextureRect:(CGRect)rect;
