@@ -49,9 +49,6 @@ context(@"equality", ^{
 
   it(@"should create proper hash", ^{
     expect(firstImage.hash).to.equal(secondImage.hash);
-
-    expect(firstImage.hash).notTo.equal(otherImage.hash);
-    expect(secondImage.hash).notTo.equal(otherImage.hash);
   });
 });
 
