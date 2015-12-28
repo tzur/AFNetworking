@@ -45,12 +45,58 @@ NS_ASSUME_NONNULL_BEGIN
   return applicationSupportDirectory;
 }
 
-- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path {
-  return [dictionary writeToFile:path atomically:YES];
+- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path
+                     error:(NSError *__autoreleasing *)error {
+  NSError *serializationError;
+  NSData *data = [NSPropertyListSerialization dataWithPropertyList:dictionary
+                                                            format:NSPropertyListXMLFormat_v1_0
+                                                           options:0 error:&serializationError];
+  if (!data || serializationError) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                                    path:path underlyingError:serializationError];
+    }
+    return NO;
+  }
+
+  NSError *writeError;
+  if (![self lt_writeData:data toFile:path options:NSDataWritingAtomic error:&writeError]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                                    path:path underlyingError:writeError];
+    }
+    return NO;
+  }
+
+  return YES;
 }
 
-- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path {
-  return [NSDictionary dictionaryWithContentsOfFile:path];
+- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path
+                                                     error:(NSError *__autoreleasing *)error {
+  NSError *readError;
+  NSData *data = [self lt_dataWithContentsOfFile:path
+                                         options:NSDataReadingUncached error:&readError];
+  if (!data || readError) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed
+                                    path:path underlyingError:readError];
+    }
+    return nil;
+  }
+
+  NSError *deserializationError;
+  NSDictionary *dictionary = [NSPropertyListSerialization
+                              propertyListWithData:data options:NSPropertyListImmutable
+                              format:nil error:&deserializationError];
+  if (!dictionary || deserializationError) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed
+                                    path:path underlyingError:deserializationError];
+    }
+    return nil;
+  }
+
+  return dictionary;
 }
 
 - (BOOL)lt_writeData:(NSData *)data toFile:(NSString *)path options:(NSDataWritingOptions)options

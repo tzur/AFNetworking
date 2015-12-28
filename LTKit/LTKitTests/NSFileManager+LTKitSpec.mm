@@ -13,20 +13,126 @@ beforeEach(^{
   fileManager = [NSFileManager defaultManager];
 });
 
-it(@"should write dictionary", ^{
-  NSString *path = @"MyFile";
-  id dictionary = OCMClassMock([NSDictionary class]);
-  [fileManager lt_writeDictionary:dictionary toFile:path];
-  OCMVerify([(NSDictionary *)dictionary writeToFile:path atomically:YES]);
-});
+context(@"plist dictionaries", ^{
+  static NSString * const kPath = @"/a/b/file";
+  static NSError * const kError = [NSError lt_errorWithCode:1337];
 
-it(@"should read dictionary", ^{
-  NSString *path = @"MyFile";
-  NSDictionary *dictionary = @{@"a": @"b"};
-  id mock = OCMClassMock([NSDictionary class]);
-  OCMExpect([mock dictionaryWithContentsOfFile:path]).andReturn(dictionary);
-  expect([fileManager lt_dictionaryWithContentsOfFile:path]).to.equal(dictionary);
-  OCMVerifyAll(mock);
+  __block id mock;
+  __block NSError *error;
+  __block NSDictionary *validDictionary;
+  __block NSDictionary *invalidDictionary;
+
+  beforeEach(^{
+    mock = OCMPartialMock(fileManager);
+
+    validDictionary = @{
+      @"bool": @YES,
+      @"number": @2,
+      @"string": @"string",
+      @"array": @[@YES, @2],
+      @"dictionary": @{
+        @"dictionary.bool": @YES,
+        @"dictionary.number": @2
+      }
+    };
+
+    invalidDictionary = @{
+      @"bool": @YES,
+      @"number": @2,
+      @"string": @"string",
+      @"invalid": [NSValue valueWithCGPoint:CGPointZero]
+    };
+  });
+
+  afterEach(^{
+    mock = nil;
+    error = nil;
+  });
+
+  it(@"should write a dictionary containing a valid plist", ^{
+    OCMExpect([mock lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+      NSError *error;
+      NSPropertyListFormat format;
+      NSDictionary *dictionary = [NSPropertyListSerialization
+                                  propertyListWithData:data options:NSPropertyListImmutable
+                                  format:&format error:&error];
+      return [dictionary isEqual:validDictionary] && !error &&
+          format == NSPropertyListXMLFormat_v1_0;
+    }] toFile:kPath options:NSDataWritingAtomic error:[OCMArg anyObjectRef]]).andReturn(YES);
+
+    BOOL success = [fileManager lt_writeDictionary:validDictionary toFile:kPath error:&error];
+
+    expect(success).to.beTruthy();
+    expect(error).to.beNil();
+    OCMVerifyAll(mock);
+  });
+
+  it(@"should return no and populate error when trying to write an invalid dictionary", ^{
+    [[mock reject] lt_writeData:[OCMArg any] toFile:kPath
+                        options:NSDataWritingAtomic error:[OCMArg anyObjectRef]];
+
+    BOOL success = [fileManager lt_writeDictionary:invalidDictionary toFile:kPath error:&error];
+
+    expect(success).to.beFalsy();
+    expect(error).notTo.beNil();
+    OCMVerifyAll(mock);
+  });
+
+  it(@"should return no and populate error if failed to write a valid dictionary", ^{
+    OCMExpect([mock lt_writeData:[OCMArg any] toFile:kPath options:NSDataWritingAtomic
+                           error:[OCMArg setTo:kError]]).andReturn(NO);
+
+    BOOL success = [fileManager lt_writeDictionary:validDictionary toFile:kPath error:&error];
+
+    expect(success).to.beFalsy();
+    expect(error).notTo.beNil();
+    expect(error.lt_underlyingError).to.beIdenticalTo(kError);
+    OCMVerifyAll(mock);
+  });
+
+  it(@"should read a file containing a valid plist", ^{
+    __block NSData *serializedData;
+    OCMExpect([mock lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+      serializedData = data;
+      return YES;
+    }] toFile:kPath options:NSDataWritingAtomic error:[OCMArg anyObjectRef]]).andReturn(YES);
+    [fileManager lt_writeDictionary:validDictionary toFile:kPath error:&error];
+    expect(serializedData).notTo.beNil();
+    OCMVerifyAll(mock);
+
+    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+                                        error:[OCMArg anyObjectRef]]).andReturn(serializedData);
+
+    NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
+
+    expect(dictionary).to.equal(validDictionary);
+    expect(error).to.beNil();
+    OCMVerifyAll(mock);
+  });
+
+  it(@"should return nil and populate error if failed to read the file at the given path", ^{
+    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+                                        error:[OCMArg setTo:kError]]);
+
+    NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
+
+    expect(dictionary).to.beNil();
+    expect(error).notTo.beNil();
+    expect(error.lt_underlyingError).to.beIdenticalTo(kError);
+    OCMVerifyAll(mock);
+  });
+
+  it(@"should return nil and populate error if failed to deserialize the file into a dictionary", ^{
+    NSData *invalidData = [@"<xml><a></b></xml>" dataUsingEncoding:NSUTF8StringEncoding];
+    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+                                      error:[OCMArg anyObjectRef]]).andReturn(invalidData);
+
+    NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
+
+    expect(dictionary).to.beNil();
+    expect(error).notTo.beNil();
+    OCMVerifyAll(mock);
+  });
 });
 
 it(@"should write data", ^{

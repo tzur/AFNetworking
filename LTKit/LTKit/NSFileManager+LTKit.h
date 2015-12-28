@@ -17,18 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)lt_applicationSupportDirectory;
 
 /// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
-/// is written successfully, otherwise \c NO. The file is written atomically.
+/// is written successfully, otherwise returns \c NO and populates \c error. The plist is saved in
+/// the XML property list format (\c NSPropertyListXMLFormat_v1_0), and the file is written
+/// atomically. 
 ///
 /// This method recursively validates that all the contained objects are property list objects
 /// (instances of \c NSData, \c NSDate, \c NSNumber, \c NSString, \c NSArray, or \c NSDictionary)
 /// before writing out the file, and returns \c NO if all the objects are not property list objects,
 /// since the resultant file would not be a valid property list.
-- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path;
+- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path
+                     error:(NSError **)error;
 
 /// Creates and returns a dictionary using the keys and values found in a file specified by a given
-/// path. or \c nil if there is a file error or if the contents of the file are an invalid
-/// representation of a dictionary.
-- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path;
+/// path, or \c nil while populating \c error if there is a file error or if the contents of the
+/// file are an invalid representation of a dictionary.
+- (nullable NSDictionary *)lt_dictionaryWithContentsOfFile:(NSString *)path error:(NSError **)error;
 
 /// Writes the bytes in the receiver to the file specified by a given path.
 ///
