@@ -38,23 +38,43 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (object == self) {
+- (BOOL)isEqual:(LTBipartiteGraph *)bipartiteGraph {
+  if (bipartiteGraph == self) {
     return YES;
   }
 
-  if (![object isKindOfClass:[self class]]) {
+  if (![bipartiteGraph isKindOfClass:[self class]]) {
     return NO;
   }
 
-  LTBipartiteGraph *graph = (LTBipartiteGraph *)object;
-
-  return [self.verticesInPartitionA isEqualToSet:graph.verticesInPartitionA] &&
-      [self.verticesInPartitionB isEqualToSet:graph.verticesInPartitionB];
+  return [self.edgeMaps isEqual:bipartiteGraph.edgeMaps];
 }
 
 - (NSUInteger)hash {
   return self.edgeMaps.hash;
+}
+
+#pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
+  NSMutableArray<LTBipartiteGraphEdgeMap *> *mutableEdgeMaps =
+      [NSMutableArray arrayWithCapacity:self.edgeMaps.count];
+
+  for (LTBipartiteGraphEdgeMap *map in self.edgeMaps) {
+    LTBipartiteGraphEdgeMap *mutableEdgeMap =
+        [[LTBipartiteGraphEdgeMap alloc] initWithCapacity:map.count];
+    [map enumerateKeysAndObjectsUsingBlock:^(LTVertex _Nonnull key,
+                                             NSMutableSet<LTVertex> * _Nonnull set, BOOL *) {
+      mutableEdgeMap[key] = [set mutableCopy];
+    }];
+    [mutableEdgeMaps addObject:mutableEdgeMap];
+  }
+
+  LTBipartiteGraph *copiedGraph = [[[self class] alloc] init];
+  copiedGraph.edgeMaps = [mutableEdgeMaps copy];
+  return copiedGraph;
 }
 
 #pragma mark -
