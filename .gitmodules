@@ -19,3 +19,6 @@
 [submodule "Configuration"]
 	path = Configuration
 	url = https://github.com/Lightricks/Configuration.git
+[submodule "Vendor/dropbox-ios-sdk"]
+	path = Vendor/dropbox-ios-sdk
+	url = https://github.com/Lightricks/dropbox-ios-sdk.git

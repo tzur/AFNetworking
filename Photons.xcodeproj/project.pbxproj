@@ -11,6 +11,7 @@
 		84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84195F371C1EC8740081EC68 /* PTNImageContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84195F3A1C1EC8740081EC68 /* PTNImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F381C1EC8740081EC68 /* PTNImageContainer.m */; };
 		84195F3C1C1ECBFA0081EC68 /* PTNImageContainerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */; };
+		843319B81C2FF9AD004502B5 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843319B71C2FF9AD004502B5 /* DropboxSDK.framework */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
 		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
@@ -308,6 +309,7 @@
 		84195F371C1EC8740081EC68 /* PTNImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageContainer.h; sourceTree = "<group>"; };
 		84195F381C1EC8740081EC68 /* PTNImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainer.m; sourceTree = "<group>"; };
 		84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainerSpec.m; sourceTree = "<group>"; };
+		843319B71C2FF9AD004502B5 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843319B81C2FF9AD004502B5 /* DropboxSDK.framework in Frameworks */,
 				8BCF57D11BCC0692001EE2ED /* libc++.tbd in Frameworks */,
 				8BCF57D01BCC068E001EE2ED /* libLTKit.a in Frameworks */,
 				8BAFE2F21B0E1BDD003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
@@ -479,6 +482,7 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				843319B71C2FF9AD004502B5 /* DropboxSDK.framework */,
 				8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */,
 				8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */,
 				8BAFE2AD1B0E103A003FB8F5 /* Photos.framework */,
@@ -1409,6 +1413,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
 				INFOPLIST_FILE = Photons/Info.plist;
@@ -1433,6 +1441,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
 				INFOPLIST_FILE = Photons/Info.plist;
