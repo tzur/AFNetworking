@@ -4,18 +4,25 @@
 #import "LTFboPool.h"
 
 #import "LTFbo.h"
+#import "LTFboAttachment.h"
 #import "LTGLContext.h"
+#import "LTRenderbuffer.h"
 #import "LTTexture.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Represents the texture and its level which is bound to a framebuffer.
-@interface LTFboBindPair : NSObject
+@interface LTFboAttachmentDescriptor : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes a new bind pair with the texture's name and the level the framebuffer is bound to.
-- (instancetype)initWithName:(GLuint)name andLevel:(NSUInteger)level NS_DESIGNATED_INITIALIZER;
+/// Initializes a new attachment descriptor with the attachment type, the attachment's name and the
+/// level the framebuffer is attached to.
+- (instancetype)initWithType:(LTFboAttachmentType)type name:(GLuint)name
+                    andLevel:(NSUInteger)level NS_DESIGNATED_INITIALIZER;
+
+/// Type of binding.
+@property (readonly, nonatomic) LTFboAttachmentType type;
 
 /// Name of the texture.
 @property (readonly, nonatomic) GLuint name;
@@ -25,14 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation LTFboBindPair
+@implementation LTFboAttachmentDescriptor
 
 - (instancetype)init {
   return nil;
 }
 
-- (instancetype)initWithName:(GLuint)name andLevel:(NSUInteger)level {
+- (instancetype)initWithType:(LTFboAttachmentType)type name:(GLuint)name
+                    andLevel:(NSUInteger)level {
   if (self = [super init]) {
+    _type = type;
     _name = name;
     _level = level;
   }
@@ -40,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return _name + (_level << 16);
+  return _type + (_name << 2) + (_level << 16);
 }
 
 - (BOOL)isEqual:(id)object {
@@ -48,25 +57,26 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
   }
 
-  if (![object isKindOfClass:[LTFboBindPair class]]) {
+  if (![object isKindOfClass:[LTFboAttachmentDescriptor class]]) {
     return NO;
   }
 
-  LTFboBindPair *pair = object;
-  return self.name == pair.name && self.level == pair.level;
+  LTFboAttachmentDescriptor *descriptor = object;
+  return self.type == descriptor.type && self.name == descriptor.name &&
+      self.level == descriptor.level;
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, name: %d, level: %lu>", self.class, self,
-          self.name, (unsigned long)self.level];
+  return [NSString stringWithFormat:@"<%@: %p, type: %lu, name: %d, level: %lu>", self.class, self,
+          (unsigned long)self.type, self.name, (unsigned long)self.level];
 }
 
 @end
 
 @interface LTFboPool ()
 
-/// Maps between an \c LTFboBindPair and its associated \c LTFbo, which is held weakly.
-@property (strong, nonatomic) NSMapTable *bindPairToFbo;
+/// Maps between an \c LTFboAttachmentDescriptor and its associated \c LTFbo, which is held weakly.
+@property (strong, nonatomic) NSMapTable *attachmentDescriptorToFbo;
 
 @end
 
@@ -74,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    self.bindPairToFbo = [NSMapTable strongToWeakObjectsMapTable];
+    self.attachmentDescriptorToFbo = [NSMapTable strongToWeakObjectsMapTable];
   }
   return self;
 }
@@ -88,15 +98,35 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (LTFbo *)fboWithTexture:(LTTexture *)texture level:(NSUInteger)level {
-  LTFboBindPair *bindPair = [[LTFboBindPair alloc] initWithName:texture.name andLevel:level];
+  LTFboAttachmentDescriptor *descriptor = [[LTFboAttachmentDescriptor alloc]
+                                           initWithType:LTFboAttachmentTypeTexture2D
+                                           name:texture.name
+                                           andLevel:level];
 
-  LTFbo *existingFbo = [self.bindPairToFbo objectForKey:bindPair];
+  LTFbo *existingFbo = [self.attachmentDescriptorToFbo objectForKey:descriptor];
   if (existingFbo) {
     return existingFbo;
   }
 
   LTFbo *newFbo = [[LTFbo alloc] initWithTexture:texture level:level];
-  [self.bindPairToFbo setObject:newFbo forKey:bindPair];
+  [self.attachmentDescriptorToFbo setObject:newFbo forKey:descriptor];
+
+  return newFbo;
+}
+
+- (LTFbo *)fboWithRenderbuffer:(LTRenderbuffer *)renderbuffer {
+  LTFboAttachmentDescriptor *descriptor = [[LTFboAttachmentDescriptor alloc]
+                                           initWithType:LTFboAttachmentTypeRenderbuffer
+                                           name:renderbuffer.name
+                                           andLevel:0];
+
+  LTFbo *existingFbo = [self.attachmentDescriptorToFbo objectForKey:descriptor];
+  if (existingFbo) {
+    return existingFbo;
+  }
+
+  LTFbo *newFbo = [[LTFbo alloc] initWithRenderbuffer:renderbuffer];
+  [self.attachmentDescriptorToFbo setObject:newFbo forKey:descriptor];
 
   return newFbo;
 }

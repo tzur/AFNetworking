@@ -24,7 +24,7 @@ NSString * const kLTArrayBufferMappingFailedException = @"Array Buffer Mapping F
 NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException =
     @"Array Buffer Disallows Static Buffer Update Exception";
 
-NSString * const kLTFboInvalidTextureException = @"Fbo Invalid Texture Exception";
+NSString * const kLTFboInvalidAttachmentException = @"Fbo Invalid Attachment Exception";
 NSString * const kLTFboCreationFailedException = @"Fbo Creation Failed Exception";
 
 NSString * const kLTGPUQueueContextCreationFailedException =

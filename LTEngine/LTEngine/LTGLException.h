@@ -27,7 +27,7 @@ extern NSString * const kLTArrayBufferMappingFailedException;
 extern NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException;
 
 // LTFbo.
-extern NSString * const kLTFboInvalidTextureException;
+extern NSString * const kLTFboInvalidAttachmentException;
 extern NSString * const kLTFboCreationFailedException;
 
 // LTGPUQueue.

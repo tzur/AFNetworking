@@ -27,11 +27,17 @@
 /// Current output framebuffer.
 @property (strong, nonatomic) LTFbo *outputFbo;
 
+/// Current output texture.
+@property (strong, nonatomic) LTTexture *outputTexture;
+
 /// Source texture to read data from while processing.
 @property (strong, nonatomic) LTTexture *sourceTexture;
 
 /// Target framebuffer to write processed data to.
 @property (strong, nonatomic) LTFbo *targetFbo;
+
+/// Target texture to write processed data to.
+@property (strong, nonatomic) LTTexture *targetTexture;
 
 /// Previous texture that was set as a target.
 @property (strong, nonatomic) LTTexture *previousTargetTexture;
@@ -111,25 +117,29 @@
 }
 
 - (void)prepareNextOutput {
-  LTTexture *outputTexture = self.outputs[self.nextOutputIndex];
-  self.outputFbo = [[LTFboPool currentPool] fboWithTexture:outputTexture];
+  self.outputTexture = self.outputs[self.nextOutputIndex];
+  self.outputFbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
 }
 
 - (void)setSourceTextureAndTargetFboForIteration:(NSUInteger)iteration {
-  self.previousTargetTexture = self.targetFbo.texture ?: self.input;
+  self.previousTargetTexture = self.targetTexture ?: self.input;
 
-  // Toggle between source -> itermediate, intermediate -> output and output -> intermediate.
+  // Toggle between source -> intermediate, intermediate -> output and output -> intermediate.
   if (iteration == 0) {
     if (self.totalNumberOfIterations > 1 && ![self shouldProduceOutputs]) {
       self.targetFbo = self.intermediateFbo;
+      self.targetTexture = self.intermediateTexture;
     } else {
       // For a single iteration, no intermediate texture or framebuffer are needed.
       self.targetFbo = self.outputFbo;
+      self.targetTexture = self.outputTexture;
     }
   } else if (iteration % 2 || [self shouldProduceOutputs]) {
     self.targetFbo = self.outputFbo;
+    self.targetTexture = self.outputTexture;
   } else {
     self.targetFbo = self.intermediateFbo;
+    self.targetTexture = self.intermediateTexture;
   }
 
   self.sourceTexture = self.previousTargetTexture;
@@ -143,14 +153,14 @@
   // If the intermediate buffer was the current target, it needs to be cloned to the output.
   // Otherwise, the output already contains the desired result.
   if (self.targetFbo == self.intermediateFbo) {
-    [self.intermediateTexture cloneTo:self.outputFbo.texture];
+    [self.intermediateTexture cloneTo:self.outputTexture];
   }
   ++self.nextOutputIndex;
 
   // Clone to all output textures that has the same iteration count.
   while (self.nextOutputIndex < self.outputs.count &&
          (self.currentIteration + 1) == self.iterationsForNextOutput) {
-    [self.outputFbo.texture cloneTo:self.outputs[self.nextOutputIndex]];
+    [self.outputTexture cloneTo:self.outputs[self.nextOutputIndex]];
     ++self.nextOutputIndex;
   }
 
@@ -167,8 +177,10 @@
   self.nextOutputIndex = 0;
   self.intermediateTexture = nil;
   self.intermediateFbo = nil;
+  self.outputTexture = nil;
   self.outputFbo = nil;
   self.sourceTexture = nil;
+  self.targetTexture = nil;
   self.targetFbo = nil;
   self.previousTargetTexture = nil;
 }

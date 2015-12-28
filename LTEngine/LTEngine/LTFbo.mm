@@ -3,15 +3,18 @@
 
 #import "LTFbo.h"
 
+#import "LTFboAttachment.h"
+#import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
+#import "LTRenderbuffer+Writing.h"
 #import "LTTexture+Writing.h"
 
 @interface LTFbo ()
 
-/// Texture associated with the FBO.
-@property (strong, nonatomic) LTTexture *texture;
+/// Writable attachment attached to this framebuffer.
+@property (strong, readwrite, nonatomic) id<LTFboWritableAttachment> writableAttachment;
 
-/// Mip map level of the the texture associated with the FBO.
+/// Mip map level of the the texture attached to this framebuffer.
 @property (nonatomic) GLint level;
 
 /// Framebuffer identifier.
@@ -52,17 +55,15 @@
     LTParameterAssert(texture);
     LTParameterAssert((GLint)level <= texture.maxMipmapLevel);
 
-    if (!texture.name) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's name is 0"];
-    }
     if (CGSizeEqualToSize(texture.size, CGSizeZero)) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture's size is (0, 0)"];
+      [LTGLException raise:kLTFboInvalidAttachmentException
+                    format:@"Given texture's size is (0, 0)"];
     }
 
     [self verifyTextureAsRenderTarget:texture withContext:context];
 
     self.previousViewport = CGRectNull;
-    self.texture = texture;
+    self.writableAttachment = texture;
     self.level = (GLint)level;
 
     [self createFramebuffer];
@@ -70,14 +71,21 @@
   return self;
 }
 
-- (void)dealloc {
-  if (self.framebuffer) {
-    [self bindAndExecute:^{
-      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, self.level);
-    }];
-    glDeleteFramebuffers(1, &_framebuffer);
+- (instancetype)initWithRenderbuffer:(LTRenderbuffer *)renderbuffer {
+  if (self = [super init]) {
+    LTParameterAssert(renderbuffer);
+
+    if (CGSizeEqualToSize(renderbuffer.size, CGSizeZero)) {
+      [LTGLException raise:kLTFboInvalidAttachmentException
+                    format:@"Given renderbuffer's size is (0, 0)"];
+    }
+
+    self.previousViewport = CGRectNull;
+    self.writableAttachment = renderbuffer;
+
+    [self createFramebuffer];
   }
-  LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
+  return self;
 }
 
 - (void)verifyTextureAsRenderTarget:(LTTexture *)texture withContext:(LTGLContext *)context {
@@ -87,18 +95,18 @@
   } else if (texture.dataType == LTGLPixelDataTypeFloat &&
              texture.bitDepth == LTGLPixelBitDepth16) {
     if (!context.canRenderToHalfFloatTextures) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has a pixel format "
-       "type %@, which is unsupported as a render target on this device", texture.pixelFormat];
+      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has a pixel "
+       "format %@, which is unsupported as a render target on this device", texture.pixelFormat];
     }
   } else if (texture.dataType == LTGLPixelDataTypeFloat &&
              texture.bitDepth == LTGLPixelBitDepth32) {
     if (!context.canRenderToFloatTextures) {
-      [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has pixel format "
-       "type %@, which is unsupported as a render target on this device", texture.pixelFormat];
+      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has pixel "
+       "format %@, which is unsupported as a render target on this device", texture.pixelFormat];
     }
   } else {
-    [LTGLException raise:kLTFboInvalidTextureException format:@"Given texture has an unsupported "
-     "pixel format type %@, which is unsupported as a render target on this device",
+    [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has an "
+     "unsupported pixel format %@, which is unsupported as a render target on this device",
      texture.pixelFormat];
   }
 }
@@ -108,19 +116,55 @@
   LTGLCheck(@"Framebuffer creation failed");
 
   [self bindAndExecute:^{
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                           self.texture.name, self.level);
-    LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.texture);
+    [self attachAttachment];
 
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE) {
       [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
-       "(status: 0x%x, framebuffer: %d, texture: %@, level: %d)", status, self.framebuffer,
-       self.texture, self.level];
+       "(status: 0x%x, framebuffer: %d, attachment: %@, level: %d)", status, self.framebuffer,
+       self.attachment, self.level];
     }
 
     LTGLCheck(@"Error while creating framebuffer");
   }];
+}
+
+- (void)attachAttachment {
+  switch (self.attachment.attachmentType) {
+    case LTFboAttachmentTypeTexture2D:
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                             self.attachment.name, self.level);
+      LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.attachment);
+      break;
+    case LTFboAttachmentTypeRenderbuffer:
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
+                                self.attachment.name);
+      LTGLCheck(@"Failed attaching renderbuffer to framebuffer (renderbuffer: %@)",
+                self.attachment);
+      break;
+  }
+}
+
+- (void)dealloc {
+  if (self.framebuffer) {
+    [self bindAndExecute:^{
+      [self detachAttachment];
+    }];
+
+    glDeleteFramebuffers(1, &_framebuffer);
+    LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
+  }
+}
+
+- (void)detachAttachment {
+  switch (self.attachmentType) {
+    case LTFboAttachmentTypeRenderbuffer:
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
+      break;
+    case LTFboAttachmentTypeTexture2D:
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, self.level);
+      break;
+  }
 }
 
 #pragma mark -
@@ -138,7 +182,7 @@
   self.previousViewport = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
 
   glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
-  CGSize size = self.texture.size / std::pow(2, self.level);
+  CGSize size = self.attachment.size / std::pow(2, self.level);
   glViewport(0, 0, size.width, size.height);
   self.bound = YES;
 }
@@ -182,7 +226,7 @@
 - (void)bindAndDraw:(LTVoidBlock)block {
   LTParameterAssert(block);
   [self bindAndExecute:^{
-    [self.texture writeToAttachmentWithBlock:block];
+    [self.writableAttachment writeToAttachmentWithBlock:block];
   }];
 }
 
@@ -198,7 +242,7 @@
 
 - (void)clearWithColor:(LTVector4)color {
   [self bindAndExecute:^{
-    [self.texture clearAttachmentWithColor:color block:^{
+    [self.writableAttachment clearAttachmentWithColor:color block:^{
       [[LTGLContext currentContext] clearWithColor:color];
     }];
   }];
@@ -212,16 +256,24 @@
   return self.framebuffer;
 }
 
+- (id<LTFboAttachment>)attachment {
+  return self.writableAttachment;
+}
+
 - (CGSize)size {
-  return self.texture.size;
+  return self.writableAttachment.size;
+}
+
+- (LTFboAttachmentType)attachmentType {
+  return self.writableAttachment.attachmentType;
 }
 
 - (LTGLPixelFormat *)pixelFormat {
-  return self.texture.pixelFormat;
+  return self.writableAttachment.pixelFormat;
 }
 
 - (LTVector4)fillColor {
-  return self.texture.fillColor;
+  return self.writableAttachment.fillColor;
 }
 
 #pragma mark -
@@ -229,7 +281,11 @@
 #pragma mark -
 
 - (id)debugQuickLookObject {
-  return [self.texture performSelector:@selector(debugQuickLookObject)];
+  if ([self.attachment respondsToSelector:@selector(debugQuickLookObject)]) {
+    return [self.attachment performSelector:@selector(debugQuickLookObject)];
+  } else {
+    return nil;
+  }
 }
 
 @end
