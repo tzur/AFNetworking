@@ -32,13 +32,17 @@ typedef NS_ENUM(NSInteger, PTNImageResizeMode) {
 
 /// Creates a new \c PTNImageFetchOptions with the given \c deliveryMode and \c resizeMode.
 + (instancetype)optionsWithDeliveryMode:(PTNImageDeliveryMode)deliveryMode
-                             resizeMode:(PTNImageResizeMode)resizeMode;
+                             resizeMode:(PTNImageResizeMode)resizeMode
+                          fetchMetadata:(BOOL)fetchMetadata;
 
 /// Type of image delivery mode.
 @property (readonly, nonatomic) PTNImageDeliveryMode deliveryMode;
 
 /// Type of image resize mode.
 @property (readonly, nonatomic) PTNImageResizeMode resizeMode;
+
+/// \c YES if the result should contain the image's metadata.
+@property (readonly, nonatomic) BOOL fetchMetadata;
 
 @end
 

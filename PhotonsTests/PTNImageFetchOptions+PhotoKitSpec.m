@@ -8,7 +8,8 @@ SpecBegin(PTNImageFetchOptions_PhotoKit)
 it(@"should create photokit options from photons options", ^{
   PTNImageFetchOptions *options = [PTNImageFetchOptions
                                    optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                   resizeMode:PTNImageResizeModeFast];
+                                   resizeMode:PTNImageResizeModeFast
+                                fetchMetadata:YES];
   PHImageRequestOptions *photoKitOptions = [options photoKitOptions];
 
   expect(photoKitOptions.version).to.equal(PHImageRequestOptionsVersionCurrent);

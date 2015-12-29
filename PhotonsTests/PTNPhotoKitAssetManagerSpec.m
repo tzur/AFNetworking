@@ -373,7 +373,8 @@ context(@"image fetching", ^{
     size = CGSizeMake(64, 64);
     resizingStrategy = [PTNResizingStrategy aspectFill:size];
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                 resizeMode:PTNImageResizeModeFast];
+                                                 resizeMode:PTNImageResizeModeFast
+                                              fetchMetadata:NO];
 
     image = [[UIImage alloc] init];
 
