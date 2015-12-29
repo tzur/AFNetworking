@@ -495,6 +495,9 @@
 		506F826B19FE5DD700A15D9D /* LTQuadDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */; };
 		5070CA3219FE819800381A36 /* LTQuadMixerProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5070CA3119FE819800381A36 /* LTQuadMixerProcessorSpec.mm */; };
 		507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */ = {isa = PBXBuildFile; fileRef = 507B92B219FE731500BA7EC9 /* SingleQuadDrawerTest0.png */; };
+		50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 50802FC11C2402E1008607C7 /* LTTouchEvent.h */; };
+		50802FC81C2402E1008607C7 /* LTTouchEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50802FC21C2402E1008607C7 /* LTTouchEvent.mm */; };
+		50802FD81C24113F008607C7 /* LTTouchEventSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50802FD71C24113F008607C7 /* LTTouchEventSpec.mm */; };
 		508C153C1C1C84A2009ADA5C /* LTIntervalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 508C153B1C1C84A2009ADA5C /* LTIntervalSpec.mm */; };
 		508C155B1C1C84B0009ADA5C /* LTInterval.h in Headers */ = {isa = PBXBuildFile; fileRef = 508C155A1C1C84B0009ADA5C /* LTInterval.h */; };
 		508C155E1C1C84BF009ADA5C /* LTSampler.h in Headers */ = {isa = PBXBuildFile; fileRef = 508C155C1C1C84BF009ADA5C /* LTSampler.h */; };
@@ -1773,6 +1776,9 @@
 		506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawerSpec.mm; sourceTree = "<group>"; };
 		5070CA3119FE819800381A36 /* LTQuadMixerProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMixerProcessorSpec.mm; sourceTree = "<group>"; };
 		507B92B219FE731500BA7EC9 /* SingleQuadDrawerTest0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SingleQuadDrawerTest0.png; path = Resources/SingleQuadDrawerTest0.png; sourceTree = "<group>"; };
+		50802FC11C2402E1008607C7 /* LTTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEvent.h; sourceTree = "<group>"; };
+		50802FC21C2402E1008607C7 /* LTTouchEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEvent.mm; sourceTree = "<group>"; };
+		50802FD71C24113F008607C7 /* LTTouchEventSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEventSpec.mm; sourceTree = "<group>"; };
 		508C153B1C1C84A2009ADA5C /* LTIntervalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIntervalSpec.mm; sourceTree = "<group>"; };
 		508C155A1C1C84B0009ADA5C /* LTInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInterval.h; sourceTree = "<group>"; };
 		508C155C1C1C84BF009ADA5C /* LTSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSampler.h; sourceTree = "<group>"; };
@@ -2903,6 +2909,23 @@
 			name = Effects;
 			sourceTree = "<group>";
 		};
+		50802FA31C2402AA008607C7 /* Interaction */ = {
+			isa = PBXGroup;
+			children = (
+				50802FC11C2402E1008607C7 /* LTTouchEvent.h */,
+				50802FC21C2402E1008607C7 /* LTTouchEvent.mm */,
+			);
+			name = Interaction;
+			sourceTree = "<group>";
+		};
+		50802FD61C241125008607C7 /* Interaction */ = {
+			isa = PBXGroup;
+			children = (
+				50802FD71C24113F008607C7 /* LTTouchEventSpec.mm */,
+			);
+			name = Interaction;
+			sourceTree = "<group>";
+		};
 		50D82E971BFCAC56002EDCBD /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -3162,6 +3185,7 @@
 				8B7C6C781B52722900B90DBE /* Extensions */,
 				8BFE439818759482008B699F /* Image Processing */,
 				8B9851721868A4B200D680D0 /* Images */,
+				50802FA31C2402AA008607C7 /* Interaction */,
 				8B8E50F81861EA7D00821829 /* GPU */,
 				282CF070187B02E600904F07 /* LTView */,
 				8B7C6C7A1B5273E100B90DBE /* Math */,
@@ -3537,6 +3561,7 @@
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
 				8BFE439E18759CED008B699F /* Image Processing */,
 				8B9C4FD61868BE8600AA8BF6 /* Images */,
+				50802FD61C241125008607C7 /* Interaction */,
 				8B8E50FE1861EB4600821829 /* GPU */,
 				282CF08E187B033800904F07 /* LTView */,
 				8B7C6C7D1B52767200B90DBE /* Math */,
@@ -4099,6 +4124,7 @@
 				50E998A41C075F67004F15C9 /* LTReparameterizedObject.h in Headers */,
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,
 				8BA822C0198954AE00FBE68E /* LTTransformers.h in Headers */,
+				50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */,
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
@@ -4994,6 +5020,7 @@
 				50CF199719D16BB60010D52F /* LTQuad.mm in Sources */,
 				03D516A418B3A6500026B56A /* LTProceduralVignetting.mm in Sources */,
 				8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */,
+				50802FC81C2402E1008607C7 /* LTTouchEvent.mm in Sources */,
 				65409BB41B53EBDE00F0E9ED /* LTGLView.m in Sources */,
 				2843B77918ABBF350044B87A /* LTSingleRectDrawer.mm in Sources */,
 				8BAF8BDF18BCAA8600C77C04 /* LTRectMapping.mm in Sources */,
@@ -5135,6 +5162,7 @@
 				50E998A91C075F89004F15C9 /* LTReparameterizedObjectSpec.mm in Sources */,
 				2830B91319C6D07900BF4E8E /* LTIndicesArraySpec.mm in Sources */,
 				28A0C7291AC1509B00FBC803 /* LTCircularMeshModelSpec.mm in Sources */,
+				50802FD81C24113F008607C7 /* LTTouchEventSpec.mm in Sources */,
 				254DD7751BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm in Sources */,
 				28907A6618D7274E00DFBE7F /* LTBrushEffectExamples.mm in Sources */,
 				28B8BC0C1B692F8400CF9F73 /* LTSlidingWindowFilterSpec.mm in Sources */,
