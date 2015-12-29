@@ -14,6 +14,10 @@
 
 @implementation LTReparameterizedObjectTestObject
 
+- (BOOL)isEqual:(id)object {
+  return [object isKindOfClass:[self class]];
+}
+
 - (id)copyWithZone:(nullable NSZone __unused *)zone {
   return self;
 }
@@ -79,6 +83,51 @@ context(@"initialization", ^{
     expect(reparameterizedObject).toNot.beNil();
     expect(reparameterizedObject.parameterizedObject).to.beIdenticalTo(parameterizedObject);
     expect(reparameterizedObject.reparameterization).to.beIdenticalTo(reparameterizationMock);
+  });
+});
+
+context(@"NSObject protocol", ^{
+  context(@"comparison with isEqual:", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([reparameterizedObject isEqual:reparameterizedObject]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to an object with the same properties", ^{
+      LTReparameterizedObject *anotherReparameterizedObject =
+          [[LTReparameterizedObject alloc] initWithParameterizedObject:parameterizedObject
+                                                    reparameterization:reparameterizationMock];
+      expect([reparameterizedObject isEqual:anotherReparameterizedObject]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      LTReparameterizedObject *anotherReparameterizedObject = nil;
+      expect([reparameterizedObject isEqual:anotherReparameterizedObject]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([reparameterizedObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object with different properties", ^{
+      id anotherReparameterizationMock = OCMClassMock([LTReparameterization class]);
+      OCMStub([anotherReparameterizationMock isEqual:reparameterizationMock]).andReturn(NO);
+
+      LTReparameterizedObject *anotherReparameterizedObject =
+          [[LTReparameterizedObject alloc]
+           initWithParameterizedObject:parameterizedObject
+           reparameterization:anotherReparameterizationMock];
+
+      expect([reparameterizedObject isEqual:anotherReparameterizedObject]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTReparameterizedObject *anotherReparameterizedObject =
+          [[LTReparameterizedObject alloc] initWithParameterizedObject:parameterizedObject
+                                                    reparameterization:reparameterizationMock];
+      expect([reparameterizedObject hash]).to.equal([anotherReparameterizedObject hash]);
+    });
   });
 });
 

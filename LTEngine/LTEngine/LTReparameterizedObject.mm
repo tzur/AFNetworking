@@ -23,6 +23,27 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTReparameterizedObject *)reparameterizedObject {
+  if (self == reparameterizedObject) {
+    return YES;
+  }
+
+  if (![reparameterizedObject isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return [self.parameterizedObject isEqual:reparameterizedObject.parameterizedObject] &&
+      [self.reparameterization isEqual:reparameterizedObject.reparameterization];
+}
+
+- (NSUInteger)hash {
+  return self.parameterizedObject.hash ^ self.reparameterization.hash;
+}
+
+#pragma mark -
 #pragma mark NSCopying
 #pragma mark -
 
