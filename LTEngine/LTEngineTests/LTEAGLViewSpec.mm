@@ -17,7 +17,8 @@ __block id delegate;
 beforeEach(^{
   glContext = [LTGLContext currentContext];
   view = [[LTEAGLView alloc] initWithFrame:CGRectMake(0, 0, kSize.width, kSize.height)
-                                   context:glContext];
+                                   context:glContext
+                        contentScaleFactor:[UIScreen mainScreen].nativeScale];
 
   delegate = OCMProtocolMock(@protocol(LTEAGLViewDelegate));
   view.delegate = delegate;
@@ -39,7 +40,8 @@ it(@"should have a valid drawable size after layout", ^{
 });
 
 it(@"should initialize and layout with zero size", ^{
-  view = [[LTEAGLView alloc] initWithFrame:CGRectZero context:glContext];
+  view = [[LTEAGLView alloc] initWithFrame:CGRectZero context:glContext
+                        contentScaleFactor:[UIScreen mainScreen].nativeScale];
   expect(view.drawableSize).to.equal(CGSizeZero);
   [view layoutIfNeeded];
   expect(view.drawableSize).to.equal(CGSizeZero);

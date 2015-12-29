@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// make sure the display is fresh.
 ///
 /// The view is initialized with a default \c opaque value of \c NO and a \c contentScaleFactor of
-/// the screen's native scale.
+/// the screen's native scale. The pixel format of the underlying drawable is
+/// \c LTGLPixelFormatRGBA8Unorm with no multisampling and there are no depth or stencil buffers.
 ///
 /// @important if this view is laid out with positive size, zero size and positive size again, the
 /// underlying \c CAEAGLLayer will fail allocating the backing storage, which will result in an
@@ -38,8 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note the underlying \c CAEAGLLayer will fail allocating the backing storage if the content
 /// scale factor of the view is changed after the view has been laid out. To mitigate this, setting
-/// the \c contentScaleFactor is disabled in this view, so the view only supports the default
-/// content scale factor.
+/// the \c contentScaleFactor is disabled in this view, so the view only accepts the \c
+/// contentScaleFactor via the initializer.
 @interface LTEAGLView : UIView
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -48,14 +49,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
-/// Initializes with the given \c frame and \c context. OpenGL objects that are required by this
-/// view will be created in that context, and the context is guaranteed to be set when the drawing
-/// delegate is called.
+/// Initializes with the given \c frame, \c context and \c contentScaleFactor. OpenGL objects that
+/// are required by this view will be created in that context, and the context is guaranteed to be
+/// set when the drawing delegate is called.
+///
+/// The content scale factor is allowed to be set only via the initializer and not via the regular
+/// \c setContentScaleFactor: method. See the class documentation for more info.
 ///
 /// @note the initial \c drawableSize of the view will be \c CGSizeZero. Backing store will only be
 /// allocated on the first layout.
 - (instancetype)initWithFrame:(CGRect)frame context:(LTGLContext *)context
-    NS_DESIGNATED_INITIALIZER;
+           contentScaleFactor:(CGFloat)contentScaleFactor NS_DESIGNATED_INITIALIZER;
 
 /// OpenGL context used with this view.
 @property (readonly, nonatomic) LTGLContext *context;

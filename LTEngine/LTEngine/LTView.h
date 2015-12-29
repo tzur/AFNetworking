@@ -171,8 +171,4 @@
 /// delegate, with a \c nil \c UIEvent.
 - (void)simulateTouchesOfPhase:(UITouchPhase)phase;
 
-/// Forces the underlying \c GLKView to allocate its framebuffer, since it doesn't happen until the
-/// view is connected to a window and needs to be drawn.
-- (void)forceGLKViewFramebufferAllocation;
-
 @end

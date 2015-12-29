@@ -29,13 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTEAGLView
 
-- (instancetype)initWithFrame:(CGRect)frame context:(LTGLContext *)context {
+- (instancetype)initWithFrame:(CGRect)frame context:(LTGLContext *)context
+           contentScaleFactor:(CGFloat)contentScaleFactor {
   if (self = [super initWithFrame:frame]) {
     _context = context;
 
     [self observeActivityNotifications];
 
-    [super setContentScaleFactor:[UIScreen mainScreen].nativeScale];
+    [super setContentScaleFactor:contentScaleFactor];
     self.opaque = YES;
   }
   return self;
