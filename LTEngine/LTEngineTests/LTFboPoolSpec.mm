@@ -5,6 +5,7 @@
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
+#import "LTRenderbuffer.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTFboPool)
@@ -70,7 +71,7 @@ context(@"fbo creation", ^{
     });
 
     it(@"should not clear texture when creating new fbo", ^{
-      const cv::Mat4b image  = cv::Mat4b(1, 1, cv::Vec4b(10, 20, 30, 40));
+      const cv::Mat4b image = cv::Mat4b(1, 1, cv::Vec4b(10, 20, 30, 40));
       [texture load:image];
 
       LTFbo __unused *fbo = [fboPool fboWithTexture:texture];
@@ -80,7 +81,7 @@ context(@"fbo creation", ^{
     it(@"should not clear texture when reusing existing fbo", ^{
       LTFbo *fbo = [fboPool fboWithTexture:texture];
 
-      const cv::Mat4b image  = cv::Mat4b(1, 1, cv::Vec4b(10, 20, 30, 40));
+      const cv::Mat4b image = cv::Mat4b(1, 1, cv::Vec4b(10, 20, 30, 40));
       [texture load:image];
 
       LTFbo *fbo2 = [fboPool fboWithTexture:texture];
@@ -117,6 +118,60 @@ context(@"fbo creation", ^{
       LTFbo *anotherLevelFbo = [fboPool fboWithTexture:mipmapTexture level:1];
       LTFbo *anotherLevelFbo2 = [fboPool fboWithTexture:mipmapTexture level:1];
       expect(anotherLevelFbo2.name).to.equal(anotherLevelFbo.name);
+    });
+  });
+
+  context(@"renderbuffers", ^{
+    __block LTRenderbuffer *renderbuffer;
+    __block LTRenderbuffer *anotherRenderbuffer;
+    __block CAEAGLLayer *drawable;
+    __block CAEAGLLayer *anotherDrawable;
+
+    beforeEach(^{
+      drawable = [CAEAGLLayer layer];
+      drawable.frame = CGRectMake(0, 0, 1, 1);
+      anotherDrawable = [CAEAGLLayer layer];
+      anotherDrawable.frame = drawable.frame;
+
+      renderbuffer = [[LTRenderbuffer alloc] initWithDrawable:drawable];
+      anotherRenderbuffer = [[LTRenderbuffer alloc] initWithDrawable:anotherDrawable];
+    });
+
+    afterEach(^{
+      drawable = nil;
+      anotherDrawable = nil;
+
+      renderbuffer = nil;
+      anotherRenderbuffer = nil;
+    });
+
+    it(@"should return new fbo for new renderbuffer", ^{
+      LTFbo *fbo = [fboPool fboWithRenderbuffer:renderbuffer];
+      expect(fbo).toNot.beNil();
+    });
+
+    it(@"should reuse existing fbo for existing renderbuffer", ^{
+      LTFbo *fbo = [fboPool fboWithRenderbuffer:renderbuffer];
+      LTFbo *fbo2 = [fboPool fboWithRenderbuffer:renderbuffer];
+      expect(fbo2.name).to.equal(fbo.name);
+    });
+
+    it(@"should return different fbos for different renderbuffers", ^{
+      LTFbo *fbo = [fboPool fboWithRenderbuffer:renderbuffer];
+      LTFbo *fbo2 = [fboPool fboWithRenderbuffer:anotherRenderbuffer];
+      expect(fbo2.name).toNot.equal(fbo.name);
+    });
+
+    it(@"should let fbo to be deallocated when no longer held strongly", ^{
+      __weak LTFbo *fboToBeDeallocated;
+
+      @autoreleasepool {
+        LTFbo *fbo = [fboPool fboWithRenderbuffer:renderbuffer];
+        expect(fbo).toNot.beNil();
+        fboToBeDeallocated = fbo;
+      }
+
+      expect(fboToBeDeallocated).to.beNil();
     });
   });
 });

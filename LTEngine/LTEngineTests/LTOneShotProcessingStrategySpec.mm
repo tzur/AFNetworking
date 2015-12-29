@@ -51,7 +51,7 @@ context(@"LTProcessingStrategy", ^{
     LTNextIterationPlacement *placement = [strategy iterationStarted];
 
     expect(placement.sourceTexture).to.equal(input);
-    expect(placement.targetFbo.texture).to.equal(output);
+    expect(placement.targetFbo.attachment).to.equal(output);
   });
 
   it(@"should mark end of processing", ^{

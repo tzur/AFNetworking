@@ -2,6 +2,7 @@
 // Created by Yaron Inger.
 
 #import "LTFboWritableAttachment.h"
+#import "LTRenderbuffer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
