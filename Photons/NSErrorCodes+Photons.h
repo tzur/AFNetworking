@@ -21,6 +21,8 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   PTNErrorCodeKeyAssetsNotFound,
   /// Caused when asset contents loading has failed.
   PTNErrorCodeAssetLoadingFailed,
+  /// Caused when asset metadata loading has failed.
+  PTNErrorCodeAssetMetadataLoadingFailed,
   /// Caused when an invalid asset type has been given.
   PTNErrorCodeInvalidAssetType,
   /// Caused when an invalid descriptor has been given.

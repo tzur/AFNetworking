@@ -9,6 +9,7 @@
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
+#import "PTNImageContainer.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitAlbumType.h"
 #import "PTNPhotoKitFakeFetcher.h"
@@ -387,8 +388,18 @@ context(@"image fetching", ^{
 
       expect([manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithResult:image]
+        [[PTNProgress alloc] initWithResult:[[PTNImageContainer alloc] initWithImage:image]]
       ]);
+    });
+
+    it(@"should complete after fetching an image", ^{
+      [imageManager serveAsset:asset withProgress:@[] image:image];
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:options];
+
+      expect(values).will.sendValuesWithCount(1);
+      expect(values).will.complete();
     });
 
     it(@"should fetch downloaded image", ^{
@@ -399,7 +410,7 @@ context(@"image fetching", ^{
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
         [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:image]
+        [[PTNProgress alloc] initWithResult:[[PTNImageContainer alloc] initWithImage:image]]
       ]);
     });
 
@@ -427,8 +438,7 @@ context(@"image fetching", ^{
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed &&
-            [error.userInfo[NSUnderlyingErrorKey] isEqual:defaultError];
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
       });
     });
     
@@ -457,8 +467,7 @@ context(@"image fetching", ^{
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed &&
-            [error.userInfo[NSUnderlyingErrorKey] isEqual:defaultError];
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
       });
     });
   });
@@ -478,7 +487,7 @@ context(@"image fetching", ^{
 
       expect([manager fetchImageWithDescriptor:assetCollection resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithResult:image]
+        [[PTNProgress alloc] initWithResult:[[PTNImageContainer alloc] initWithImage:image]]
       ]);
     });
 
@@ -586,6 +595,102 @@ context(@"image fetching", ^{
         
         OCMVerifyAllWithDelay(imageManagerMock, 1);
       });
+    });
+  });
+
+  __block PTNImageFetchOptions* fetchMetadataOptions;
+
+  context(@"metadata fetching", ^{
+    beforeEach(^{
+      fetchMetadataOptions = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
+                                                                resizeMode:PTNImageResizeModeFast
+                                                             fetchMetadata:YES];
+      [imageManager serveAsset:asset withProgress:@[] image:image];
+    });
+
+    it(@"should fetch metadata", ^{
+      NSURL *url = [[NSBundle bundleForClass:[self class]] URLForResource:@"PTNImageMetadataImage"
+                                                            withExtension:@"jpg"];
+      PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateContentEditingInput(url);
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchValue(0, ^BOOL(PTNProgress<PTNImageContainer *> *progress) {
+        return [progress.result.image isEqual:image] && progress.result.metadata;
+      });
+    });
+
+    it(@"should err when empty content editing input is received", ^{
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", nil, nil, 0);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetMetadataLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err when empty content editing input is received", ^{
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", nil, nil, 0);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetMetadataLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err when content editing fullSizeImageURL key is nil", ^{
+      PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateContentEditingInput(nil);
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetMetadataLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err when requesting metadata of non existing asset", ^{
+      NSURL *url = [NSURL fileURLWithPath:@"/foo/bar/baz.jpg"];
+      PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateContentEditingInput(url);
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetMetadataLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should not fetch metadata before image is loaded", ^{
+      [[asset reject] requestContentEditingInputWithOptions:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should cancel metadata request upon disposal", ^{
+      asset = PTNPhotoKitCreateAssetForContentEditing(@"foo", nil, nil, 1337);
+      OCMExpect([asset cancelContentEditingInputRequest:1337]);
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:fetchMetadataOptions];
+      [values subscribeNext:^(id __unused x) {}];
+
+      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+      OCMVerifyAllWithDelay(asset, 1);
     });
   });
 });

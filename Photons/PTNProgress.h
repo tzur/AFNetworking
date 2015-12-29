@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///   case Progress(Double)
 /// }
 /// @endcode
-@interface PTNProgress : NSObject
+@interface PTNProgress<ResultType : id<NSObject>> : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes a \c PTNProgress object with the resulting value.
-- (instancetype)initWithResult:(id<NSObject>)result NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResult:(ResultType)result NS_DESIGNATED_INITIALIZER;
 
 /// Initializes a \c PTNProgress object with the current \c progress in [0, 1].
 - (instancetype)initWithProgress:(NSNumber *)progress NS_DESIGNATED_INITIALIZER;
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, nullable) NSNumber *progress;
 
 /// Result produced by the operation.
-@property (readonly, nonatomic, nullable) id<NSObject> result;
+@property (readonly, nonatomic, nullable) ResultType result;
 
 @end
 

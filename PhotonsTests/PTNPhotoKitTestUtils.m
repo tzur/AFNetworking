@@ -5,14 +5,16 @@
 
 #import <Photos/Photos.h>
 
-id PTNPhotoKitCreateAssetCollection(NSString *localIdentifier) {
-  id assetCollection = OCMClassMock([PHAssetCollection class]);
+NS_ASSUME_NONNULL_BEGIN
+
+PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localIdentifier) {
+  PHAssetCollection *assetCollection = OCMClassMock([PHAssetCollection class]);
   OCMStub([assetCollection localIdentifier]).andReturn(localIdentifier);
   return assetCollection;
 }
 
-id PTNPhotoKitCreateAsset(NSString *localIdentifier) {
-  id asset = OCMClassMock([PHAsset class]);
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier) {
+  PHAsset *asset = OCMClassMock([PHAsset class]);
   OCMStub([asset localIdentifier]).andReturn(localIdentifier);
 
   return asset;
@@ -24,6 +26,23 @@ id PTNPhotoKitCreateAssetWithSize(NSString *localIdentifier, CGSize size) {
   OCMStub([asset pixelHeight]).andReturn(size.height);
 
   return asset;
+}
+
+PHAsset *PTNPhotoKitCreateAssetForContentEditing(NSString *localIdentifier,
+    PHContentEditingInput * _Nullable contentEditingInput,
+    NSDictionary * _Nullable contentEditingInfo, PHContentEditingInputRequestID requestID) {
+  PHAsset *asset = PTNPhotoKitCreateAsset(localIdentifier);
+  id blockInvoker = [OCMArg invokeBlockWithArgs:contentEditingInput ?: [NSNull null],
+                                                contentEditingInfo ?: [NSNull null], nil];
+  OCMStub([asset requestContentEditingInputWithOptions:OCMOCK_ANY completionHandler:blockInvoker])
+      .andReturn(requestID);
+  return asset;
+}
+
+PHContentEditingInput *PTNPhotoKitCreateContentEditingInput(NSURL * _Nullable fullSizeImageURL) {
+  PHContentEditingInput *contentEditingInput = OCMClassMock([PHContentEditingInput class]);
+  OCMStub(contentEditingInput.fullSizeImageURL).andReturn(fullSizeImageURL);
+  return contentEditingInput;
 }
 
 PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets) {
@@ -49,3 +68,5 @@ PHChange *PTNPhotoKitCreateChangeForObjectDetails(PHObjectChangeDetails *changeD
   OCMStub([change changeDetailsForObject:OCMOCK_ANY]).andReturn(changeDetails);
   return change;
 }
+
+NS_ASSUME_NONNULL_END
