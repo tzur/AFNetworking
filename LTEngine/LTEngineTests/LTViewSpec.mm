@@ -3,10 +3,10 @@
 
 #import "LTView.h"
 
+#import "LTEAGLView.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGridDrawer.h"
-#import "LTImage.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
 #import "LTViewNavigationView.h"
@@ -14,7 +14,7 @@
 #import "UIColor+Vector.h"
 
 @interface LTView () <LTViewNavigationViewDelegate>
-@property (strong, nonatomic) GLKView *glkView;
+@property (strong, nonatomic) LTEAGLView *eaglView;
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
@@ -118,17 +118,17 @@ context(@"setup", ^{
   it(@"should teardown", ^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    expect(view.glkView).notTo.beNil();
+    expect(view.eaglView).notTo.beNil();
     [view teardown];
-    expect(view.glkView).to.beNil();
+    expect(view.eaglView).to.beNil();
   });
   
   it(@"should do nothing when setup is called twice", ^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    GLKView *glkView = view.glkView;
+    LTEAGLView *eaglView = view.eaglView;
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    expect(view.glkView).to.beIdenticalTo(glkView);
+    expect(view.eaglView).to.beIdenticalTo(eaglView);
   });
   
   it(@"should do nothing when teardown is called twice", ^{
@@ -136,18 +136,18 @@ context(@"setup", ^{
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
     [view teardown];
     [view teardown];
-    expect(view.glkView).to.beNil();
+    expect(view.eaglView).to.beNil();
   });
   
   it(@"should setup after a teardown", ^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    GLKView *glkView = view.glkView;
+    LTEAGLView *eaglView = view.eaglView;
     [view teardown];
-    expect(view.glkView).to.beNil();
+    expect(view.eaglView).to.beNil();
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    expect(view.glkView).notTo.beNil();
-    expect(view.glkView).notTo.beIdenticalTo(glkView);
+    expect(view.eaglView).notTo.beNil();
+    expect(view.eaglView).notTo.beIdenticalTo(eaglView);
   });
 });
 
@@ -155,7 +155,7 @@ context(@"properties", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    [view forceGLKViewFramebufferAllocation];
+    [view layoutIfNeeded];
   });
   
   afterEach(^{
@@ -244,7 +244,7 @@ context(@"drawing", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    [view forceGLKViewFramebufferAllocation];
+    [view layoutIfNeeded];
   });
   
   afterEach(^{
@@ -446,7 +446,7 @@ context(@"public interface", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    [view forceGLKViewFramebufferAllocation];
+    [view layoutIfNeeded];
   });
 
   afterEach(^{
@@ -481,7 +481,7 @@ context(@"draw delegate", ^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTViewDrawDelegate)];
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    [view forceGLKViewFramebufferAllocation];
+    [view layoutIfNeeded];
     view.drawDelegate = mock;
   });
   
@@ -628,7 +628,7 @@ context(@"touch delegate", ^{
   beforeEach(^{
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
     [view setupWithContext:[LTGLContext currentContext] contentTexture:contentTexture state:nil];
-    [view forceGLKViewFramebufferAllocation];
+    [view layoutIfNeeded];
     view.forwardTouchesToDelegate = YES;
     view.navigationMode = LTViewNavigationNone;
 
@@ -667,7 +667,7 @@ context(@"touch delegate", ^{
     OCMVerifyAll(mock);
   });
   
-  it (@"should not forward events if property is set to NO", ^{
+  it(@"should not forward events if property is set to NO", ^{
     [[mock reject] ltView:OCMOCK_ANY touchesBegan:OCMOCK_ANY withEvent:OCMOCK_ANY];
     [[mock reject] ltView:OCMOCK_ANY touchesMoved:OCMOCK_ANY withEvent:OCMOCK_ANY];
     [[mock reject] ltView:OCMOCK_ANY touchesEnded:OCMOCK_ANY withEvent:OCMOCK_ANY];
@@ -680,7 +680,7 @@ context(@"touch delegate", ^{
     OCMVerifyAll(mock);
   });
 
-  it (@"should only forward events if navigation mode is none or two fingers", ^{
+  it(@"should only forward events if navigation mode is none or two fingers", ^{
     NSArray *validModes = @[@(LTViewNavigationNone), @(LTViewNavigationTwoFingers)];
     for (NSUInteger i = 0; i < LTViewNavigationNone; ++i) {
       mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
@@ -850,11 +850,11 @@ context(@"navigation gesture recognizers", ^{
     view = nil;
   });
 
-  it(@"should add the initial recognizers to the glkview", ^{
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
-    expect(view.glkView.gestureRecognizers).to.contain([navView panGestureRecognizer]);
-    expect(view.glkView.gestureRecognizers).to.contain([navView pinchGestureRecognizer]);
-    expect(view.glkView.gestureRecognizers).to.contain([navView doubleTapGestureRecognizer]);
+  it(@"should add the initial recognizers to the LTEAGLView", ^{
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain([navView panGestureRecognizer]);
+    expect(view.eaglView.gestureRecognizers).to.contain([navView pinchGestureRecognizer]);
+    expect(view.eaglView.gestureRecognizers).to.contain([navView doubleTapGestureRecognizer]);
 
     expect(view.panGestureRecognizer).to.beIdenticalTo([navView panGestureRecognizer]);
     expect(view.pinchGestureRecognizer).to.beIdenticalTo([navView pinchGestureRecognizer]);
@@ -868,9 +868,9 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.panGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 
   it(@"should correctly update pan recognizer on change from/to nil", ^{
@@ -879,16 +879,16 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.panGestureRecognizer).to.beNil;
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(2);
 
     id newRecognizer = [[UIPanGestureRecognizer alloc] init];
     OCMExpect([navView panGestureRecognizer]).andReturn(newRecognizer);
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.panGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 
   it(@"should correctly update pinch recognizer on change", ^{
@@ -898,9 +898,9 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.pinchGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 
   it(@"should correctly update pinch recognizer on change from/to nil", ^{
@@ -909,16 +909,16 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.pinchGestureRecognizer).to.beNil;
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(2);
 
     id newRecognizer = [[UIPinchGestureRecognizer alloc] init];
     OCMExpect([navView pinchGestureRecognizer]).andReturn(newRecognizer);
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.pinchGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 
   it(@"should correctly update double tap recognizer on change", ^{
@@ -928,9 +928,9 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.doubleTapGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 
   it(@"should correctly update double tap recognizer on change from/to nil", ^{
@@ -939,16 +939,16 @@ context(@"navigation gesture recognizers", ^{
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.doubleTapGestureRecognizer).to.beNil;
-    expect(view.glkView.gestureRecognizers).notTo.contain(oldRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(2);
+    expect(view.eaglView.gestureRecognizers).notTo.contain(oldRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(2);
 
     id newRecognizer = [[UITapGestureRecognizer alloc] init];
     OCMExpect([navView doubleTapGestureRecognizer]).andReturn(newRecognizer);
 
     [view navigationGestureRecognizersDidChangeFrom:nil to:nil];
     expect(view.doubleTapGestureRecognizer).to.beIdenticalTo(newRecognizer);
-    expect(view.glkView.gestureRecognizers).to.contain(newRecognizer);
-    expect(view.glkView.gestureRecognizers.count).to.equal(3);
+    expect(view.eaglView.gestureRecognizers).to.contain(newRecognizer);
+    expect(view.eaglView.gestureRecognizers.count).to.equal(3);
   });
 });
 
@@ -983,29 +983,28 @@ context(@"navigation delegate", ^{
 
 context(@"framebuffer delegate", ^{
   __block id delegateMock;
-  __block id glkViewMock;
+  __block id eaglViewMock;
   __block LTView *view;
 
   beforeEach(^{
     delegateMock = [OCMockObject mockForProtocol:@protocol(LTViewFramebufferDelegate)];
-    glkViewMock = [OCMockObject niceMockForClass:[GLKView class]];
-    [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(20)] drawableWidth];
-    [[[glkViewMock stub] andReturnValue:OCMOCK_VALUE(10)] drawableHeight];
+    eaglViewMock = [OCMockObject niceMockForClass:[LTEAGLView class]];
+    [[[eaglViewMock stub] andReturnValue:$(CGSizeMake(20, 10))] drawableSize];
 
     view = [[LTView alloc] initWithFrame:kViewFrame screen:uiScreen];
-    view.glkView = glkViewMock;
+    view.eaglView = eaglViewMock;
     view.framebufferDelegate = delegateMock;
   });
 
   afterEach(^{
     delegateMock = nil;
-    glkViewMock = nil;
+    eaglViewMock = nil;
     view = nil;
   });
 
   it(@"should forward event to delegate", ^{
     [[delegateMock expect] ltView:view framebufferChangedToSize:CGSizeMake(20, 10)];
-    [((id<GLKViewDelegate>)view) glkView:glkViewMock drawInRect:CGRectMake(0, 0, 1, 1)];
+    [((id<LTEAGLViewDelegate>)view) eaglView:eaglViewMock drawInRect:CGRectMake(0, 0, 1, 1)];
     OCMVerifyAll(delegateMock);
   });
 });

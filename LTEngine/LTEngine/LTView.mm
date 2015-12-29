@@ -5,6 +5,7 @@
 
 #import <LTKit/LTAnimation.h>
 
+#import "LTEAGLView.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -18,7 +19,7 @@
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@interface LTView () <GLKViewDelegate, LTViewNavigationViewDelegate>
+@interface LTView () <LTEAGLViewDelegate, LTViewNavigationViewDelegate>
 
 /// Screen to get native scale from.
 @property (strong, nonatomic) UIScreen *screen;
@@ -30,7 +31,7 @@
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 
 /// Target rendering view. The \c LTView's content will be drawn on this view.
-@property (strong, nonatomic) GLKView *glkView;
+@property (strong, nonatomic) LTEAGLView *eaglView;
 
 /// Holds the rectangle that needs to be updated in the next draw.
 @property (nonatomic) CGRect contentRectToUpdate;
@@ -50,17 +51,17 @@
 /// Fbo used for updating the LTView's content texture.
 @property (strong, nonatomic) LTFbo *contentFbo;
 
-/// RectDrawer used for drawing the content texture on the GLKView.
+/// Rect drawer used for drawing the content texture on the \c LTEAGLView.
 @property (strong, nonatomic) LTRectDrawer *rectDrawer;
 
-/// RectDrawer used for drawing the checkerboard background.
+/// Rect drawer used for drawing the checkerboard background.
 @property (strong, nonatomic) LTRectDrawer *backgroundDrawer;
 
 /// Manages the pixel grid drawn on the LTView on certain zoom levels.
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 
 /// Size of the \c LTView's framebuffer, in pixels, before the next redrawing of the underlying
-/// \c GLKView.
+/// \c LTEAGLView.
 @property (nonatomic) CGSize previousFramebufferSize;
 
 /// When set to \c YES, the \c LTView will forward touch events to its delegate.
@@ -109,7 +110,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   return [self initWithFrame:frame screen:[UIScreen mainScreen]];
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   if (self = [super initWithCoder:aDecoder]) {
     [self setDefaultsWithScreen:[UIScreen mainScreen]];
   }
@@ -141,7 +142,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.context = context;
   self.contentTexture = texture;
   self.contentRectToUpdate = CGRectNull;
-  [self createGlkView];
+  [self createEaglView];
   [self createNavigationViewWithState:state];
   [self createContentFbo];
   [self createRectDrawer];
@@ -151,25 +152,17 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self setNeedsDisplay];
 }
 
-- (void)createGlkView {
-  LTAssert(self.context, @"Could not set up GLKView when LTGLContext is nil");
-  
-  // Allocate the glkView and set it up.
-  self.glkView = [[LTGLView alloc] initWithFrame:self.bounds];
-  self.glkView.contentScaleFactor = self.contentScaleFactor;
-  self.glkView.context = self.context.context;
-  self.glkView.drawableDepthFormat = GLKViewDrawableDepthFormatNone;
-  self.glkView.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
-  self.glkView.drawableMultisample = GLKViewDrawableMultisampleNone;
-  self.glkView.drawableStencilFormat = GLKViewDrawableStencilFormatNone;
-  self.glkView.enableSetNeedsDisplay = YES;
-  self.glkView.delegate = self;
-  self.glkView.opaque = YES;
-  
-  self.glkView.autoresizingMask =
+- (void)createEaglView {
+  LTAssert(self.context, @"Could not set up LTEAGLView when LTGLContext is nil");
+
+  self.eaglView = [[LTEAGLView alloc] initWithFrame:self.bounds context:self.context
+                                 contentScaleFactor:self.contentScaleFactor];
+  self.eaglView.delegate = self;
+  self.eaglView.autoresizingMask =
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  self.glkView.multipleTouchEnabled = YES;
-  [self addSubview:self.glkView];
+  self.eaglView.multipleTouchEnabled = YES;
+
+  [self addSubview:self.eaglView];
 }
 
 - (void)createNavigationViewWithState:(LTViewNavigationState *)state {
@@ -186,7 +179,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.navigationView.autoresizingMask =
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
-  [self insertSubview:self.navigationView belowSubview:self.glkView];
+  [self insertSubview:self.navigationView belowSubview:self.eaglView];
   [self updateNavigationGestureRecognizers];
 }
 
@@ -237,7 +230,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kSetNeedsDisplayNotification
                                                 object:self];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(glkSetNeedsDisplayNotification:)
+                                           selector:@selector(eaglSetNeedsDisplayNotification:)
                                                name:kSetNeedsDisplayNotification object:self];
 }
 
@@ -251,7 +244,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.contentFbo = nil;
   self.contentTexture = nil;
   self.navigationView = nil;
-  self.glkView = nil;
+  self.eaglView = nil;
   self.context = nil;
 }
 
@@ -263,9 +256,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark Views
 #pragma mark -
 
-- (void)setGlkView:(GLKView *)glkView {
-  [_glkView removeFromSuperview];
-  _glkView = glkView;
+- (void)setEaglView:(LTEAGLView *)eaglView {
+  [_eaglView removeFromSuperview];
+  _eaglView = eaglView;
 }
 
 - (void)setNavigationView:(LTViewNavigationView *)navigationView {
@@ -331,19 +324,18 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
-#pragma mark GLKViewDelegate
+#pragma mark LTEAGLViewDelegate
 #pragma mark -
 
-- (void)glkView:(GLKView __unused *)view drawInRect:(CGRect __unused)rect {
+- (void)eaglView:(LTEAGLView __unused *)eaglView drawInRect:(__unused CGRect)rect {
   [self informAboutFramebufferChangesIfRequired];
 
-  [LTGLContext setCurrentContext:self.context];
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     context.renderingToScreen = YES;
     [self drawToBoundFramebuffer];
   }];
   
-  // We don't need the GLKView buffers for the next draw, so hint that they can be discarded.
+  // We don't need the \c LTEAGLView buffers for the next draw, so hint that they can be discarded.
   // (Since we clear the buffers at the beginning of each draw cycle).
   const std::array<GLenum, 2> discards{{GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT}};
   [self.context executeForOpenGLES2:^{
@@ -486,10 +478,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   default:
     break;
   }
-}
-
-- (void)forceGLKViewFramebufferAllocation {
-  [self.glkView bindDrawable];
 }
 
 #pragma mark -
@@ -650,7 +638,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (CGSize)framebufferSize {
-  return CGSizeMake(self.glkView.drawableWidth, self.glkView.drawableHeight);
+  return self.eaglView.drawableSize;
 }
 
 - (CGRect)framebufferBounds {
@@ -666,43 +654,43 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
-#pragma mark Display updates for the GLKView and the content
+#pragma mark Display updates for the LTEAGLView and the content
 #pragma mark -
 
 - (void)setNeedsDisplayContentInRect:(CGRect)rect {
   // Clip the rectangle with the content bounds.
   rect = CGRectIntersection(rect, self.contentBounds);
   self.contentRectToUpdate = CGRectUnion(self.contentRectToUpdate, rect);
-  [self glkSetNeedsDisplay];
+  [self eaglSetNeedsDisplay];
 }
 
 - (void)setNeedsDisplayContent {
   self.contentRectToUpdate = self.contentBounds;
-  [self glkSetNeedsDisplay];
+  [self eaglSetNeedsDisplay];
 }
 
 - (void)setNeedsDisplayInRect:(CGRect __unused)rect {
-  [self glkSetNeedsDisplay];
+  [self eaglSetNeedsDisplay];
 }
 
 - (void)setNeedsDisplay {
-  [self glkSetNeedsDisplay];
+  [self eaglSetNeedsDisplay];
 }
 
-- (void)glkSetNeedsDisplay {
-  // In case any display link based animation is active, calling the glkView's setNeedsDisplay
+- (void)eaglSetNeedsDisplay {
+  // In case any display link based animation is active, calling the LTEAGLView's setNeedsDisplay
   // method might cause lags. Calling it from a different runloop using a notification, appears to
   // to solve the issue.
   if ([LTAnimation isAnyAnimationRunning]) {
     [[NSNotificationCenter defaultCenter]
         postNotificationName:kSetNeedsDisplayNotification object:self];
   } else {
-    [self.glkView setNeedsDisplay];
+    [self.eaglView setNeedsDisplay];
   }
 }
 
-- (void)glkSetNeedsDisplayNotification:(NSNotification __unused *)notification {
-  [self.glkView setNeedsDisplay];
+- (void)eaglSetNeedsDisplayNotification:(NSNotification __unused *)notification {
+  [self.eaglView setNeedsDisplay];
 }
 
 #pragma mark -
@@ -728,11 +716,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 
   if (_panGestureRecognizer) {
-    [self.glkView removeGestureRecognizer:_panGestureRecognizer];
+    [self.eaglView removeGestureRecognizer:_panGestureRecognizer];
   }
   _panGestureRecognizer = panGestureRecognizer;
   if (_panGestureRecognizer) {
-    [self.glkView addGestureRecognizer:_panGestureRecognizer];
+    [self.eaglView addGestureRecognizer:_panGestureRecognizer];
   }
 }
 
@@ -742,11 +730,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 
   if (_pinchGestureRecognizer) {
-    [self.glkView removeGestureRecognizer:_pinchGestureRecognizer];
+    [self.eaglView removeGestureRecognizer:_pinchGestureRecognizer];
   }
   _pinchGestureRecognizer = pinchGestureRecognizer;
   if (_pinchGestureRecognizer) {
-    [self.glkView addGestureRecognizer:_pinchGestureRecognizer];
+    [self.eaglView addGestureRecognizer:_pinchGestureRecognizer];
   }
 }
 
@@ -756,11 +744,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 
   if (_doubleTapGestureRecognizer) {
-    [self.glkView removeGestureRecognizer:_doubleTapGestureRecognizer];
+    [self.eaglView removeGestureRecognizer:_doubleTapGestureRecognizer];
   }
   _doubleTapGestureRecognizer = doubleTapGestureRecognizer;
   if (_doubleTapGestureRecognizer) {
-    [self.glkView addGestureRecognizer:_doubleTapGestureRecognizer];
+    [self.eaglView addGestureRecognizer:_doubleTapGestureRecognizer];
   }
 }
 
