@@ -8,7 +8,9 @@
 4. Click on your new project, then on `Build Settings`:
   - Add `-ObjC` to `Other Linker Flags`.
   - Add references to `LTEngine` and `libextobjc` to the `Header Search Paths`. A common setting is to append the string `$(SRCROOT)/../../LTEngine $(SRCROOT)/../../third_party/utils/libextobjc`, but it needs to be updated if your project's directory has a different relative path to LTEngine.
+  - Add references to the OpenCV and the Objection framework to the `Framework Search Paths`: `$(SRCROOT)/../../third_party/images/opencv` and `$(SRCROOT)/../../third_party/utils/objection`. Again, the strings might have to be updated if your project's directory has a different relative path to LTEngine.
 5. In the `General` tab, add the following to `Linked Frameworks and Binaries`: `Accelerate`, `AVFoundation`, `AssetsLibrary`, `CoreMedia`, `OpenGLES`, `GLKit`.
 6. In `Build Phases`:
   - Add `LTEngine (LTEngine)` to `Target Dependencies`.
   - Add the following to `Link Binary With Libraries`: `libLTEngine.a`, `libLTKit.a`, `libMantle-iOS.a`, `libextobjc_iOS.a`.
+7. The C++ Standard Library is not included automatically in your project. It will be included automatically once there is an `.mm` file in your project.
