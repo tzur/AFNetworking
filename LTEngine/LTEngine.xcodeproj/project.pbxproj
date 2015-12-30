@@ -494,6 +494,9 @@
 		506F826919FE5CFA00A15D9D /* LTQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */; };
 		506F826B19FE5DD700A15D9D /* LTQuadDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */; };
 		5070CA3219FE819800381A36 /* LTQuadMixerProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5070CA3119FE819800381A36 /* LTQuadMixerProcessorSpec.mm */; };
+		50795E351C0F303900773A71 /* LTReparameterization+ArcLength.h in Headers */ = {isa = PBXBuildFile; fileRef = 50795E341C0F303900773A71 /* LTReparameterization+ArcLength.h */; };
+		50795E541C0F319D00773A71 /* LTReparameterization+ArcLength.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50795E531C0F319D00773A71 /* LTReparameterization+ArcLength.mm */; };
+		50795E561C0F361000773A71 /* LTReparameterization+ArcLengthSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50795E551C0F361000773A71 /* LTReparameterization+ArcLengthSpec.mm */; };
 		507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */ = {isa = PBXBuildFile; fileRef = 507B92B219FE731500BA7EC9 /* SingleQuadDrawerTest0.png */; };
 		50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 50802FC11C2402E1008607C7 /* LTTouchEvent.h */; };
 		50802FC81C2402E1008607C7 /* LTTouchEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50802FC21C2402E1008607C7 /* LTTouchEvent.mm */; };
@@ -514,6 +517,7 @@
 		50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */; };
 		50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */; };
 		50A4794719FB7BBC005ABA65 /* LTSingleQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */; };
+		50B6BB231C1E9F310043FE24 /* LTEasyVectorBoxing.h in Headers */ = {isa = PBXBuildFile; fileRef = 50B6BB221C1E9F310043FE24 /* LTEasyVectorBoxing.h */; };
 		50C371461BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C371441BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h */; };
 		50C371471BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371451BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm */; };
 		50C371661BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */; };
@@ -1786,6 +1790,9 @@
 		506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawer.mm; sourceTree = "<group>"; };
 		506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawerSpec.mm; sourceTree = "<group>"; };
 		5070CA3119FE819800381A36 /* LTQuadMixerProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMixerProcessorSpec.mm; sourceTree = "<group>"; };
+		50795E341C0F303900773A71 /* LTReparameterization+ArcLength.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTReparameterization+ArcLength.h"; sourceTree = "<group>"; };
+		50795E531C0F319D00773A71 /* LTReparameterization+ArcLength.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTReparameterization+ArcLength.mm"; sourceTree = "<group>"; };
+		50795E551C0F361000773A71 /* LTReparameterization+ArcLengthSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTReparameterization+ArcLengthSpec.mm"; sourceTree = "<group>"; };
 		507B92B219FE731500BA7EC9 /* SingleQuadDrawerTest0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SingleQuadDrawerTest0.png; path = Resources/SingleQuadDrawerTest0.png; sourceTree = "<group>"; };
 		50802FC11C2402E1008607C7 /* LTTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEvent.h; sourceTree = "<group>"; };
 		50802FC21C2402E1008607C7 /* LTTouchEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEvent.mm; sourceTree = "<group>"; };
@@ -1807,6 +1814,7 @@
 		50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMixerMaskMode.h; sourceTree = "<group>"; };
 		50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSingleQuadDrawer.h; sourceTree = "<group>"; };
 		50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleQuadDrawer.mm; sourceTree = "<group>"; };
+		50B6BB221C1E9F310043FE24 /* LTEasyVectorBoxing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEasyVectorBoxing.h; sourceTree = "<group>"; };
 		50C371441BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitivePolynomialInterpolant.h; sourceTree = "<group>"; };
 		50C371451BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitivePolynomialInterpolant.mm; sourceTree = "<group>"; };
 		50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitivePolynomialInterpolantSpec.mm; sourceTree = "<group>"; };
@@ -2510,6 +2518,8 @@
 				25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */,
 				50E9989E1C075F67004F15C9 /* LTReparameterization.h */,
 				50E9989F1C075F67004F15C9 /* LTReparameterization.mm */,
+				50795E341C0F303900773A71 /* LTReparameterization+ArcLength.h */,
+				50795E531C0F319D00773A71 /* LTReparameterization+ArcLength.mm */,
 				50E998A01C075F67004F15C9 /* LTReparameterizedObject.h */,
 				50E998A11C075F67004F15C9 /* LTReparameterizedObject.mm */,
 			);
@@ -2961,6 +2971,7 @@
 			children = (
 				50D82E981BFCAC67002EDCBD /* LTCompoundParameterizedObjectSpec.mm */,
 				50E998A61C075F89004F15C9 /* LTReparameterizationSpec.mm */,
+				50795E551C0F361000773A71 /* LTReparameterization+ArcLengthSpec.mm */,
 				50E998A71C075F89004F15C9 /* LTReparameterizedObjectSpec.mm */,
 			);
 			name = Objects;
@@ -3984,6 +3995,7 @@
 				03C1933018FE530A00DC6CA6 /* LTColorGradient+ForTesting.h */,
 				03C1933118FE530A00DC6CA6 /* LTColorGradient+ForTesting.mm */,
 				8BAE3A4318B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h */,
+				50B6BB221C1E9F310043FE24 /* LTEasyVectorBoxing.h */,
 				8BD0745F19A5D4D9005F2C37 /* LTObjectionModule.h */,
 				8BD0746019A5D4D9005F2C37 /* LTObjectionModule.mm */,
 				8BD0748119A614DF005F2C37 /* LTTestModule.h */,
@@ -4227,6 +4239,7 @@
 				8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */,
 				8BA821B31986846900FBE68E /* NSValue+LTVector.h in Headers */,
 				28BB819A1924DF520071CB0B /* LTShapeDrawer.h in Headers */,
+				50795E351C0F303900773A71 /* LTReparameterization+ArcLength.h in Headers */,
 				03676D091A4097B100072966 /* LTHistogramProcessor.h in Headers */,
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
@@ -4280,6 +4293,7 @@
 				28E8AF111997AB4700C2DD22 /* LTCropDrawerRect.h in Headers */,
 				288F154919A63C7A00E1C6F9 /* LTMeshDrawer.h in Headers */,
 				28F340661B1EECBF00545B82 /* LTTextureBaseArchiver.h in Headers */,
+				50B6BB231C1E9F310043FE24 /* LTEasyVectorBoxing.h in Headers */,
 				8B8720111924A76100517F2E /* LTRectDrawer+PassthroughShader.h in Headers */,
 				8B8720121924A76100517F2E /* LTRectDrawer.h in Headers */,
 				502B1CAA19FA81B200985F30 /* LTQuadMixerProcessor.h in Headers */,
@@ -5053,6 +5067,7 @@
 				508C15651C1C84D5009ADA5C /* LTPeriodicFloatSet.mm in Sources */,
 				2843B77C18ABBF450044B87A /* LTMultiRectDrawer.mm in Sources */,
 				28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */,
+				50795E541C0F319D00773A71 /* LTReparameterization+ArcLength.mm in Sources */,
 				280F5A26191A970400F9F80B /* LTShapeDrawerEllipticShape.mm in Sources */,
 				282CF087187B030000904F07 /* LTViewPixelGrid.mm in Sources */,
 				28C61C0118B23D430036D66E /* LTTouchCollectorDistanceFilter.mm in Sources */,
@@ -5226,6 +5241,7 @@
 				2843B78318ACC08B0044B87A /* LTTextureDrawerExamples.mm in Sources */,
 				8BAF8BF818BCB21D00C77C04 /* LTRectMappingSpec.mm in Sources */,
 				8B8E510E1863216E00821829 /* LTGLContextSpec.mm in Sources */,
+				50795E561C0F361000773A71 /* LTReparameterization+ArcLengthSpec.mm in Sources */,
 				284ED12E1895667500414A8A /* LTPolynomialInterpolantExamples.mm in Sources */,
 				8BABF18419BC46D600AED760 /* LTPyramidProcessorSpec.mm in Sources */,
 				8BFA8F87191A2F9F0088310E /* LTGLKitExtensionsSpec.mm in Sources */,

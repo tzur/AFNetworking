@@ -10,7 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// [\c 0, \c 1].
 ///
 /// @note A possible use case of this object is the reparameterization of a parameterized object of
-/// geometric nature to its arc-length parameterization.
+/// geometric nature to its arc-length parameterization. Value retrieval via the
+/// \c floatForParametricValue: method is in \c O(log n), where \c n is the size of the \c mapping
+/// provided upon initialization.
 @interface LTReparameterization : NSObject <LTPrimitiveParameterizedObject>
 
 - (instancetype)init NS_UNAVAILABLE;
