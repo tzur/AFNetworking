@@ -35,6 +35,9 @@
 		5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067221719EA80B5003AF8D2 /* LTQueue.mm */; };
 		5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */; };
 		5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5067223019EA811A003AF8D2 /* LTQueueSpec.mm */; };
+		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
+		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
+		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
 		8B04C96B1BEE651A0024D22E /* LTRefSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */; };
 		8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */; };
 		8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Hardware.h */; };
@@ -361,6 +364,9 @@
 		5067221719EA80B5003AF8D2 /* LTQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueue.mm; sourceTree = "<group>"; };
 		5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBoundedQueueSpec.mm; sourceTree = "<group>"; };
 		5067223019EA811A003AF8D2 /* LTQueueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQueueSpec.mm; sourceTree = "<group>"; };
+		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
+		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
+		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
 		8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRefSpec.mm; sourceTree = "<group>"; };
 		8B1889351BEBC8F100E9BD67 /* LTRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTRef.h; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
@@ -515,6 +521,7 @@
 			children = (
 				8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */,
 				8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */,
+				84F7AB281C3290D600AA502F /* LTPathSpec.m */,
 				8B87D54D1C04BC2F0005410A /* NSBundle+PathSpec.mm */,
 				8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */,
 				8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */,
@@ -742,6 +749,8 @@
 				8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */,
 				8B7C6C9D1B52829100B90DBE /* LTMMOutputFile.h */,
 				8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */,
+				84F7AB241C3290BA00AA502F /* LTPath.h */,
+				84F7AB251C3290BA00AA502F /* LTPath.m */,
 				8B87D5341C04BA940005410A /* NSBundle+Path.h */,
 				8B87D5351C04BA940005410A /* NSBundle+Path.mm */,
 				8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */,
@@ -922,6 +931,7 @@
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
 				28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */,
 				287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */,
+				84F7AB261C3290BA00AA502F /* LTPath.h in Headers */,
 				8B87204C1924A76800517F2E /* LTAnimation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1197,6 +1207,7 @@
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
 				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
 				8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */,
+				84F7AB271C3290BA00AA502F /* LTPath.m in Sources */,
 				28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */,
 				8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */,
 				5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */,
@@ -1232,6 +1243,7 @@
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
+				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
 				8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */,
