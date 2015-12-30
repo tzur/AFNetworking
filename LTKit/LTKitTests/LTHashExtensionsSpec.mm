@@ -37,4 +37,12 @@ context(@"hashing with unordered_map", ^{
   });
 });
 
+context(@"hashing std::vector", ^{
+  it(@"should hash std::vector", ^{
+    size_t hash0 = lt::hash<CGFloats>()({1, 2});
+    size_t hash1 = lt::hash<CGFloats>()({1, 2});
+    expect(hash0).to.equal(hash1);
+  });
+});
+
 SpecEnd
