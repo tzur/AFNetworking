@@ -24,6 +24,17 @@ inline void hash_combine(std::size_t &seed, const T &v) {
   seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
+/// Template for calculating the combined hash value of the elements in an iterator range.
+///
+/// @see http://www.boost.org/doc/libs/1_35_0/doc/html/boost/hash_range_id420926.html
+template <class It>
+inline void hash_range(std::size_t &seed, It first, It last) {
+  while (first != last) {
+    hash_combine(seed, *first);
+    ++first;
+  }
+}
+
 } // namespace detail
 
 #pragma mark -
@@ -72,6 +83,20 @@ struct hash<std::tuple<T...>> {
   inline size_t operator()(const std::tuple<T...> &t) const {
     size_t seed = 0;
     detail::TupleHash<std::tuple<T...>>::apply(seed, t);
+    return seed;
+  }
+};
+
+#pragma mark -
+#pragma mark std::vector
+#pragma mark -
+
+/// Hash specialization for \c std::vector.
+template <typename T>
+struct hash<std::vector<T>> {
+  inline size_t operator()(const std::vector<T> &v) const {
+    size_t seed = 0;
+    detail::hash_range(seed, v.begin(), v.end());
     return seed;
   }
 };
