@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
       return [[NSBundle mainBundle] bundlePath];
     case LTPathBaseDirectoryApplicationSupport:
       return [NSFileManager lt_applicationSupportDirectory];
-    case LTPathBaseDirectoryCachesDirectory:
+    case LTPathBaseDirectoryCaches:
       return [NSFileManager lt_cachesDirectory];
   }
 }

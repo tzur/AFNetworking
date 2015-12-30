@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
   /// Base directory is the main bundle's directory.
   LTPathBaseDirectoryMainBundle,
   /// Base directory is the discardable caches directory path.
-  LTPathBaseDirectoryCachesDirectory,
+  LTPathBaseDirectoryCaches,
   /// Base directory is the application support directory path.
   LTPathBaseDirectoryApplicationSupport
 };

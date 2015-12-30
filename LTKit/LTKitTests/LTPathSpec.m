@@ -54,10 +54,10 @@ it(@"should initialize with main bundle base path", ^{
 });
 
 it(@"should initialize with caches base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryCachesDirectory
+  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryCaches
                                andRelativePath:kPath];
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryCachesDirectory);
+  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryCaches);
   expect(path.relativePath).to.equal(kPath);
 
   NSString *expectedPath =
