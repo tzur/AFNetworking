@@ -7,6 +7,10 @@ SpecBegin(LTReparameterization)
 
 __block LTReparameterization *reparameterization;
 
+beforeEach(^{
+  reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1}];
+});
+
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1}];
@@ -41,6 +45,43 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  context(@"comparison with isEqual:", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([reparameterization isEqual:reparameterization]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to an object with the same properties", ^{
+      LTReparameterization *anotherReparameterization =
+          [[LTReparameterization alloc] initWithMapping:{0, 1}];
+      expect([reparameterization isEqual:anotherReparameterization]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      LTReparameterization *anotherReparameterization = nil;
+      expect([reparameterization isEqual:anotherReparameterization]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([reparameterization isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object with different properties", ^{
+      LTReparameterization *anotherReparameterization =
+          [[LTReparameterization alloc] initWithMapping:{0, 1, 2}];
+      expect([reparameterization isEqual:anotherReparameterization]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTReparameterization *anotherReparameterization =
+          [[LTReparameterization alloc] initWithMapping:{0, 1}];
+      expect([reparameterization hash]).to.equal([anotherReparameterization hash]);
+    });
+  });
+});
+
 context(@"NSCopying protocol", ^{
   __block LTReparameterization *copyOfReparameterization;
 
@@ -49,27 +90,8 @@ context(@"NSCopying protocol", ^{
     copyOfReparameterization = [reparameterization copy];
   });
 
-  it(@"should return a copy that is identical to itself", ^{
+  it(@"should return itself as a copy, due to immutability", ^{
     expect(copyOfReparameterization).to.beIdenticalTo(reparameterization);
-  });
-
-  it(@"should return a copy with correct mapping", ^{
-    expect([copyOfReparameterization floatForParametricValue:0])
-        .to.equal([reparameterization floatForParametricValue:0]);
-    expect([copyOfReparameterization floatForParametricValue:0.5])
-        .to.equal([reparameterization floatForParametricValue:0.5]);
-    expect([copyOfReparameterization floatForParametricValue:1])
-        .to.equal([reparameterization floatForParametricValue:1]);
-  });
-
-  it(@"should return a copy with correct minimum parametric value", ^{
-    expect(copyOfReparameterization.minParametricValue)
-        .to.equal(reparameterization.minParametricValue);
-  });
-
-  it(@"should return a copy with correct maximum parametric value", ^{
-    expect(copyOfReparameterization.maxParametricValue)
-        .to.equal(reparameterization.maxParametricValue);
   });
 });
 

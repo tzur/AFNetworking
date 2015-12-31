@@ -3,6 +3,8 @@
 
 #import "LTReparameterization.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTReparameterization () {
@@ -35,6 +37,26 @@ NS_ASSUME_NONNULL_BEGIN
   });
 
   LTParameterAssert(it == mapping.cend(), @"Mapping must be strictly monotonically increasing");
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTReparameterization *)reparameterization {
+  if (self == reparameterization) {
+    return YES;
+  }
+
+  if (![reparameterization isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return _mapping == reparameterization->_mapping;
+}
+
+- (NSUInteger)hash {
+  return lt::hash<CGFloats>()(_mapping);
 }
 
 #pragma mark -
