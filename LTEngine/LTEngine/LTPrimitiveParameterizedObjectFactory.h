@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol LTPrimitiveParameterizedObject;
 
-/// Protocol which should be implemented by objects creating objects conforming to the
+/// Protocol which should be implemented by immutable objects creating objects conforming to the
 /// \c \c LTPrimitiveParameterizedObject protocol.
 @protocol LTPrimitiveParameterizedObjectFactory <NSObject>
 
