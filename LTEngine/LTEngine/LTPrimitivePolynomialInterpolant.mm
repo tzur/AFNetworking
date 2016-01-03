@@ -3,6 +3,8 @@
 
 #import "LTPrimitivePolynomialInterpolant.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTPrimitivePolynomialInterpolant () {
@@ -24,6 +26,26 @@ NS_ASSUME_NONNULL_BEGIN
     _coefficients = coefficients;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTPrimitivePolynomialInterpolant *)interpolant {
+  if (self == interpolant) {
+    return YES;
+  }
+
+  if (![interpolant isMemberOfClass:[self class]]) {
+    return NO;
+  }
+
+  return _coefficients == interpolant->_coefficients;
+}
+
+- (NSUInteger)hash {
+  return lt::hash<CGFloats>()(_coefficients);
 }
 
 #pragma mark -

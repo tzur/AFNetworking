@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Protocol which should be implemented by objects constituting a mapping from a single real-valued
-/// parameter to another real value.
+/// Protocol which should be implemented by immutable value objects constituting a mapping from a
+/// single real-valued parameter to another real value.
 ///
 /// A parametric object has a so-called intrinsic parametric range, a real-valued range
 /// [\c minParametricValue, \c maxParametricValue], which maps to a special set of values. For

@@ -31,8 +31,45 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  context(@"comparison with isEqual:", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([interpolant isEqual:interpolant]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to an object with the same properties", ^{
+      LTPrimitivePolynomialInterpolant *anotherInterpolant =
+          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
+      expect([interpolant isEqual:anotherInterpolant]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      LTPrimitivePolynomialInterpolant *anotherInterpolant = nil;
+      expect([interpolant isEqual:anotherInterpolant]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([interpolant isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object with different properties", ^{
+      LTPrimitivePolynomialInterpolant *anotherInterpolant =
+          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
+      expect([interpolant isEqual:anotherInterpolant]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTPrimitivePolynomialInterpolant *anotherInterpolant =
+          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
+      expect([interpolant hash]).to.equal([anotherInterpolant hash]);
+    });
+  });
+});
+
 context(@"NSCopying protocol", ^{
-  it(@"should return itself as copy", ^{
+  it(@"should return itself as copy, due to immutability", ^{
     expect([interpolant copy]).to.beIdenticalTo(interpolant);
   });
 });
