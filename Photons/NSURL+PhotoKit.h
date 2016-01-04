@@ -28,6 +28,9 @@ typedef NS_ENUM(NSUInteger, PTNPhotoKitURLType) {
 ///       <photokit scheme>://album/?type=<type>&subtype=<subtype>
 @interface NSURL (PhotoKit)
 
+/// The URL scheme associated with PhotoKit URLs.
++ (NSString *)ptn_photoKitScheme;
+
 /// The unique identifier URL of the given \c asset.
 + (NSURL *)ptn_photoKitAssetURLWithAsset:(PHAsset *)asset;
 
