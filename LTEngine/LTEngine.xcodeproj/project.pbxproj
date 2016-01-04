@@ -532,11 +532,11 @@
 		50CF199619D16BB60010D52F /* LTQuad.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF199419D16BB60010D52F /* LTQuad.h */; };
 		50CF199719D16BB60010D52F /* LTQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF199519D16BB60010D52F /* LTQuad.mm */; };
 		50D77CE71B6F5BC20001DA0C /* EdgeAvoiding.png in Resources */ = {isa = PBXBuildFile; fileRef = 50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */; };
-		50D82E721BFCABFD002EDCBD /* LTParameterizedObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D82E701BFCABFD002EDCBD /* LTParameterizedObjectFactory.h */; };
-		50D82E731BFCABFD002EDCBD /* LTParameterizedObjectFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E711BFCABFD002EDCBD /* LTParameterizedObjectFactory.mm */; };
+		50D82E721BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */; };
+		50D82E731BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */; };
 		50D82E931BFCAC30002EDCBD /* LTCompoundParameterizedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D82E911BFCAC30002EDCBD /* LTCompoundParameterizedObject.h */; };
 		50D82E941BFCAC30002EDCBD /* LTCompoundParameterizedObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E921BFCAC30002EDCBD /* LTCompoundParameterizedObject.mm */; };
-		50D82E961BFCAC54002EDCBD /* LTParameterizedObjectFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E951BFCAC54002EDCBD /* LTParameterizedObjectFactorySpec.mm */; };
+		50D82E961BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E951BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm */; };
 		50D82E991BFCAC67002EDCBD /* LTCompoundParameterizedObjectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E981BFCAC67002EDCBD /* LTCompoundParameterizedObjectSpec.mm */; };
 		50E998A21C075F67004F15C9 /* LTReparameterization.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E9989E1C075F67004F15C9 /* LTReparameterization.h */; };
 		50E998A31C075F67004F15C9 /* LTReparameterization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E9989F1C075F67004F15C9 /* LTReparameterization.mm */; };
@@ -1838,11 +1838,11 @@
 		50CF199419D16BB60010D52F /* LTQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuad.h; sourceTree = "<group>"; };
 		50CF199519D16BB60010D52F /* LTQuad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuad.mm; sourceTree = "<group>"; };
 		50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EdgeAvoiding.png; path = Resources/EdgeAvoiding.png; sourceTree = "<group>"; };
-		50D82E701BFCABFD002EDCBD /* LTParameterizedObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizedObjectFactory.h; sourceTree = "<group>"; };
-		50D82E711BFCABFD002EDCBD /* LTParameterizedObjectFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectFactory.mm; sourceTree = "<group>"; };
+		50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompoundParameterizedObjectFactory.h; sourceTree = "<group>"; };
+		50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundParameterizedObjectFactory.mm; sourceTree = "<group>"; };
 		50D82E911BFCAC30002EDCBD /* LTCompoundParameterizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompoundParameterizedObject.h; sourceTree = "<group>"; };
 		50D82E921BFCAC30002EDCBD /* LTCompoundParameterizedObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundParameterizedObject.mm; sourceTree = "<group>"; };
-		50D82E951BFCAC54002EDCBD /* LTParameterizedObjectFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectFactorySpec.mm; sourceTree = "<group>"; };
+		50D82E951BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundParameterizedObjectFactorySpec.mm; sourceTree = "<group>"; };
 		50D82E981BFCAC67002EDCBD /* LTCompoundParameterizedObjectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundParameterizedObjectSpec.mm; sourceTree = "<group>"; };
 		50E9989E1C075F67004F15C9 /* LTReparameterization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTReparameterization.h; sourceTree = "<group>"; };
 		50E9989F1C075F67004F15C9 /* LTReparameterization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReparameterization.mm; sourceTree = "<group>"; };
@@ -2517,8 +2517,8 @@
 		254DD76D1BF9FA2600972C0A /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				50D82E701BFCABFD002EDCBD /* LTParameterizedObjectFactory.h */,
-				50D82E711BFCABFD002EDCBD /* LTParameterizedObjectFactory.mm */,
+				50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */,
+				50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */,
 				254DD74C1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h */,
 				254DD74D1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.mm */,
 				25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */,
@@ -2557,7 +2557,7 @@
 		254DD7701BF9FA4900972C0A /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				50D82E951BFCAC54002EDCBD /* LTParameterizedObjectFactorySpec.mm */,
+				50D82E951BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm */,
 				254DD7711BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.h */,
 				254DD7721BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesExamples.mm */,
 				254DD7731BF9FA5900972C0A /* LTPrimitiveParameterizedObjectFactoriesSpec.mm */,
@@ -4399,7 +4399,7 @@
 				28F340641B1EECB000545B82 /* LTTextureJpegArchiver.h in Headers */,
 				03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */,
 				8B8720481924A76800517F2E /* LTViewDelegates.h in Headers */,
-				50D82E721BFCABFD002EDCBD /* LTParameterizedObjectFactory.h in Headers */,
+				50D82E721BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h in Headers */,
 				28B117A519C85C42007E2F17 /* LTScreenProcessing.h in Headers */,
 				28C207A51AEF5FC2007214A5 /* LTTextureArchiveType.h in Headers */,
 				8B8720491924A76800517F2E /* LTViewNavigationMode.h in Headers */,
@@ -5016,7 +5016,7 @@
 				25AF17491AD50BE00055E664 /* LTVGGlyphRun.mm in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				285EEA551B15C52A002D10EE /* LTImageJPEGCompressor.m in Sources */,
-				50D82E731BFCABFD002EDCBD /* LTParameterizedObjectFactory.mm in Sources */,
+				50D82E731BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
 				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,
@@ -5337,7 +5337,7 @@
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,
 				039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */,
 				5070CA3219FE819800381A36 /* LTQuadMixerProcessorSpec.mm in Sources */,
-				50D82E961BFCAC54002EDCBD /* LTParameterizedObjectFactorySpec.mm in Sources */,
+				50D82E961BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm in Sources */,
 				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.mm in Sources */,
 				284004D718D8423500403938 /* LTMultiTextureBrushSpec.mm in Sources */,
 				8BAE3A3F18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm in Sources */,

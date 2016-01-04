@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTParameterizedObjectFactory.h"
+#import "LTCompoundParameterizedObjectFactory.h"
 
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTParameterizedObjectFactory ()
+@interface LTCompoundParameterizedObjectFactory ()
 
 /// Factory used to create the primitive parameterized objects constituting the parameterized
 /// objects which can be created by this instance.
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation LTParameterizedObjectFactory
+@implementation LTCompoundParameterizedObjectFactory
 
 #pragma mark -
 #pragma mark Initialization
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public interface
 #pragma mark -
 
-- (id<LTParameterizedObject>)parameterizedObjectFromInterpolatableObjects:
+- (LTCompoundParameterizedObject *)parameterizedObjectFromInterpolatableObjects:
     (NSArray<id<LTInterpolatableObject>> *)objects {
   LTParameterAssert(objects.count == [[self.primitiveFactory class] numberOfRequiredValues],
                     @"Number of provided interpolatable objects (%lu) does not match number of "
