@@ -1,0 +1,826 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8BED800B1C3A66E90001C6F1 /* BLUObject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8BED800A1C3A66E90001C6F1 /* BLUObject.h */; };
+		8BED800D1C3A66E90001C6F1 /* BLUObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED800C1C3A66E90001C6F1 /* BLUObject.mm */; };
+		8BED809B1C3A68290001C6F1 /* BLUObjectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */; };
+		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
+		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
+		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
+		8BED81D61C3A71B40001C6F1 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81CD1C3A717B0001C6F1 /* OCMock.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8BED809E1C3A68290001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED7FFF1C3A66E90001C6F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BED80061C3A66E90001C6F1;
+			remoteInfo = Blueprints;
+		};
+		8BED80AF1C3A689B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
+		8BED80B11C3A689B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
+		8BED81961C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		8BED81981C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		8BED819A1C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		8BED819C1C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		8BED819E1C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		8BED81A01C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		8BED81A21C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		8BED81A41C3A71690001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		8BED81AF1C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		8BED81B11C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		8BED81B31C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		8BED81B51C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		8BED81B71C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		8BED81B91C3A71720001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		8BED81C41C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8BED81C61C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8BED81C81C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8BED81CA1C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		8BED81CC1C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
+		8BED81CE1C3A717B0001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 817EB1621BD765130047E85A;
+			remoteInfo = "OCMock tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8BED80051C3A66E90001C6F1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				8BED800B1C3A66E90001C6F1 /* BLUObject.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BED800A1C3A66E90001C6F1 /* BLUObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUObject.h; sourceTree = "<group>"; };
+		8BED800C1C3A66E90001C6F1 /* BLUObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUObject.mm; sourceTree = "<group>"; };
+		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		8BED808F1C3A68080001C6F1 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8BED80911C3A68080001C6F1 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		8BED80921C3A68080001C6F1 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		8BED80981C3A68290001C6F1 /* BlueprintsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueprintsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUObjectSpec.mm; sourceTree = "<group>"; };
+		8BED809C1C3A68290001C6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTEngine/LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blueprints-Prefix.pch"; sourceTree = "<group>"; };
+		8BED80DF1C3A6A280001C6F1 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTEngine/LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8BED80E91C3A6B930001C6F1 /* BlueprintsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlueprintsTests-Prefix.pch"; sourceTree = "<group>"; };
+		8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../Vendor/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../Vendor/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8BED80041C3A66E90001C6F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BED80951C3A68290001C6F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BED81D61C3A71B40001C6F1 /* OCMock.framework in Frameworks */,
+				8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */,
+				8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */,
+				8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8BED7FFE1C3A66E90001C6F1 = {
+			isa = PBXGroup;
+			children = (
+				8BED80091C3A66E90001C6F1 /* Blueprints */,
+				8BED80991C3A68290001C6F1 /* BlueprintsTests */,
+				8BED80511C3A67AD0001C6F1 /* Configuration */,
+				8BED80E21C3A6A5B0001C6F1 /* Frameworks */,
+				8BED80081C3A66E90001C6F1 /* Products */,
+				8BED80A91C3A688D0001C6F1 /* Projects */,
+			);
+			sourceTree = "<group>";
+		};
+		8BED80081C3A66E90001C6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80981C3A68290001C6F1 /* BlueprintsTests.xctest */,
+				8BED80071C3A66E90001C6F1 /* libBlueprints.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BED80091C3A66E90001C6F1 /* Blueprints */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
+				8BED800A1C3A66E90001C6F1 /* BLUObject.h */,
+				8BED800C1C3A66E90001C6F1 /* BLUObject.mm */,
+			);
+			path = Blueprints;
+			sourceTree = "<group>";
+		};
+		8BED80511C3A67AD0001C6F1 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				8BED808D1C3A68080001C6F1 /* Configurations */,
+				8BED80901C3A68080001C6F1 /* Targets */,
+				8BED808C1C3A68080001C6F1 /* Common.xcconfig */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		8BED808D1C3A68080001C6F1 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				8BED808E1C3A68080001C6F1 /* Debug.xcconfig */,
+				8BED808F1C3A68080001C6F1 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		8BED80901C3A68080001C6F1 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80911C3A68080001C6F1 /* Application.xcconfig */,
+				8BED80921C3A68080001C6F1 /* Framework.xcconfig */,
+				8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */,
+			);
+			name = Targets;
+			path = ../Configuration/Targets;
+			sourceTree = "<group>";
+		};
+		8BED80991C3A68290001C6F1 /* BlueprintsTests */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
+				8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */,
+				8BED809C1C3A68290001C6F1 /* Info.plist */,
+			);
+			path = BlueprintsTests;
+			sourceTree = "<group>";
+		};
+		8BED80A91C3A688D0001C6F1 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		8BED80AB1C3A689B0001C6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80B21C3A689B0001C6F1 /* LTKitTests.xctest */,
+				8BED80B01C3A689B0001C6F1 /* libLTKit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BED80C41C3A697A0001C6F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BED80E21C3A6A5B0001C6F1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */,
+				8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */,
+				8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */,
+				8BED80DF1C3A6A280001C6F1 /* libextobjc_iOS.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8BED80E81C3A6B880001C6F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8BED80E91C3A6B930001C6F1 /* BlueprintsTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BED818C1C3A71690001C6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BED819D1C3A71690001C6F1 /* Expecta-iOSTests.xctest */,
+				8BED81971C3A71690001C6F1 /* Expecta.framework */,
+				8BED81991C3A71690001C6F1 /* Expecta.framework */,
+				8BED819B1C3A71690001C6F1 /* ExpectaTests.xctest */,
+				8BED81A51C3A71690001C6F1 /* libExpecta-iOSTests.xctest */,
+				8BED819F1C3A71690001C6F1 /* libExpecta.a */,
+				8BED81A11C3A71690001C6F1 /* libExpecta.a */,
+				8BED81A31C3A71690001C6F1 /* libExpectaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BED81A71C3A71720001C6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BED81B61C3A71720001C6F1 /* Specta-iOSTests.xctest */,
+				8BED81B01C3A71720001C6F1 /* Specta.framework */,
+				8BED81B41C3A71720001C6F1 /* Specta.framework */,
+				8BED81B21C3A71720001C6F1 /* SpectaTests.xctest */,
+				8BED81B81C3A71720001C6F1 /* libSpecta.a */,
+				8BED81BA1C3A71720001C6F1 /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BED81BC1C3A717B0001C6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BED81C51C3A717B0001C6F1 /* OCMock.framework */,
+				8BED81CD1C3A717B0001C6F1 /* OCMock.framework */,
+				8BED81CF1C3A717B0001C6F1 /* OCMock.framework */,
+				8BED81CB1C3A717B0001C6F1 /* OCMockLibTests.xctest */,
+				8BED81C71C3A717B0001C6F1 /* OCMockTests.xctest */,
+				8BED81C91C3A717B0001C6F1 /* libOCMock.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8BED80061C3A66E90001C6F1 /* Blueprints */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BED80101C3A66E90001C6F1 /* Build configuration list for PBXNativeTarget "Blueprints" */;
+			buildPhases = (
+				8BED80031C3A66E90001C6F1 /* Sources */,
+				8BED80041C3A66E90001C6F1 /* Frameworks */,
+				8BED80051C3A66E90001C6F1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Blueprints;
+			productName = Blueprints;
+			productReference = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		8BED80971C3A68290001C6F1 /* BlueprintsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BED80A01C3A68290001C6F1 /* Build configuration list for PBXNativeTarget "BlueprintsTests" */;
+			buildPhases = (
+				8BED80941C3A68290001C6F1 /* Sources */,
+				8BED80951C3A68290001C6F1 /* Frameworks */,
+				8BED80961C3A68290001C6F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BED809F1C3A68290001C6F1 /* PBXTargetDependency */,
+			);
+			name = BlueprintsTests;
+			productName = BlueprintsTests;
+			productReference = 8BED80981C3A68290001C6F1 /* BlueprintsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8BED7FFF1C3A66E90001C6F1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					8BED80061C3A66E90001C6F1 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					8BED80971C3A68290001C6F1 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 8BED80021C3A66E90001C6F1 /* Build configuration list for PBXProject "Blueprints" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8BED7FFE1C3A66E90001C6F1;
+			productRefGroup = 8BED80081C3A66E90001C6F1 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8BED818C1C3A71690001C6F1 /* Products */;
+					ProjectRef = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BED80AB1C3A689B0001C6F1 /* Products */;
+					ProjectRef = 8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BED81BC1C3A717B0001C6F1 /* Products */;
+					ProjectRef = 8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = 8BED81A71C3A71720001C6F1 /* Products */;
+					ProjectRef = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8BED80061C3A66E90001C6F1 /* Blueprints */,
+				8BED80971C3A68290001C6F1 /* BlueprintsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8BED80B01C3A689B0001C6F1 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = 8BED80AF1C3A689B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED80B21C3A689B0001C6F1 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = 8BED80B11C3A689B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81971C3A71690001C6F1 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8BED81961C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81991C3A71690001C6F1 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8BED81981C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED819B1C3A71690001C6F1 /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 8BED819A1C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED819D1C3A71690001C6F1 /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 8BED819C1C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED819F1C3A71690001C6F1 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8BED819E1C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81A11C3A71690001C6F1 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8BED81A01C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81A31C3A71690001C6F1 /* libExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = libExpectaTests.xctest;
+			remoteRef = 8BED81A21C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81A51C3A71690001C6F1 /* libExpecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 8BED81A41C3A71690001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81B01C3A71720001C6F1 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8BED81AF1C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81B21C3A71720001C6F1 /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 8BED81B11C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81B41C3A71720001C6F1 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8BED81B31C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81B61C3A71720001C6F1 /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 8BED81B51C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81B81C3A71720001C6F1 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BED81B71C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81BA1C3A71720001C6F1 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8BED81B91C3A71720001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81C51C3A717B0001C6F1 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8BED81C41C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81C71C3A717B0001C6F1 /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 8BED81C61C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81C91C3A717B0001C6F1 /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 8BED81C81C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81CB1C3A717B0001C6F1 /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 8BED81CA1C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81CD1C3A717B0001C6F1 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8BED81CC1C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BED81CF1C3A717B0001C6F1 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8BED81CE1C3A717B0001C6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8BED80961C3A68290001C6F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8BED80031C3A66E90001C6F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BED800D1C3A66E90001C6F1 /* BLUObject.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BED80941C3A68290001C6F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BED809B1C3A68290001C6F1 /* BLUObjectSpec.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8BED809F1C3A68290001C6F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BED80061C3A66E90001C6F1 /* Blueprints */;
+			targetProxy = 8BED809E1C3A68290001C6F1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8BED800E1C3A66E90001C6F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED808E1C3A68080001C6F1 /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../LTEngine/LTKit/LTKit\"",
+					"$(SRCROOT)/../LTEngine/LTKit/third_party/utils/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8BED800F1C3A66E90001C6F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED808F1C3A68080001C6F1 /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../LTEngine/LTKit/LTKit\"",
+					"$(SRCROOT)/../LTEngine/LTKit/third_party/utils/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8BED80111C3A66E90001C6F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Blueprints/Blueprints-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8BED80121C3A66E90001C6F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Blueprints/Blueprints-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8BED80A11C3A68290001C6F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../Vendor/Expecta/src/**",
+					"$(SRCROOT)/../Vendor/Specta/Specta",
+					"$(SRCROOT)/../Vendor/OCMock/Source",
+				);
+				INFOPLIST_FILE = BlueprintsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BlueprintsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8BED80A21C3A68290001C6F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../Vendor/Expecta/src/**",
+					"$(SRCROOT)/../Vendor/Specta/Specta",
+					"$(SRCROOT)/../Vendor/OCMock/Source",
+				);
+				INFOPLIST_FILE = BlueprintsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BlueprintsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8BED80021C3A66E90001C6F1 /* Build configuration list for PBXProject "Blueprints" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BED800E1C3A66E90001C6F1 /* Debug */,
+				8BED800F1C3A66E90001C6F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BED80101C3A66E90001C6F1 /* Build configuration list for PBXNativeTarget "Blueprints" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BED80111C3A66E90001C6F1 /* Debug */,
+				8BED80121C3A66E90001C6F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8BED80A01C3A68290001C6F1 /* Build configuration list for PBXNativeTarget "BlueprintsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BED80A11C3A68290001C6F1 /* Debug */,
+				8BED80A21C3A68290001C6F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8BED7FFF1C3A66E90001C6F1 /* Project object */;
+}
