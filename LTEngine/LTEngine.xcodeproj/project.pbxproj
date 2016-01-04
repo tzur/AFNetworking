@@ -201,6 +201,7 @@
 		25CE71DE1BF9D82100E13CB4 /* LTParameterizedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */; };
 		25CE71E11BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */; };
 		25CE71E21BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */; };
+		25FBF7DB1C32D26D00E2E5BC /* LTTouchEventDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 25FBF7D81C32D26D00E2E5BC /* LTTouchEventDelegate.h */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
@@ -1434,6 +1435,7 @@
 		25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizedObject.h; sourceTree = "<group>"; };
 		25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObject.h; sourceTree = "<group>"; };
 		25CE71E01BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPrimitiveParameterizedObjectFactory.h; sourceTree = "<group>"; };
+		25FBF7D81C32D26D00E2E5BC /* LTTouchEventDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventDelegate.h; sourceTree = "<group>"; };
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
@@ -2935,6 +2937,7 @@
 			children = (
 				50802FC11C2402E1008607C7 /* LTTouchEvent.h */,
 				50802FC21C2402E1008607C7 /* LTTouchEvent.mm */,
+				25FBF7D81C32D26D00E2E5BC /* LTTouchEventDelegate.h */,
 			);
 			name = Interaction;
 			sourceTree = "<group>";
@@ -4351,6 +4354,7 @@
 				28B117A519C85C42007E2F17 /* LTScreenProcessing.h in Headers */,
 				28C207A51AEF5FC2007214A5 /* LTTextureArchiveType.h in Headers */,
 				8B8720491924A76800517F2E /* LTViewNavigationMode.h in Headers */,
+				25FBF7DB1C32D26D00E2E5BC /* LTTouchEventDelegate.h in Headers */,
 				8B87204A1924A76800517F2E /* LTViewNavigationView.h in Headers */,
 				285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */,
 				8B87204B1924A76800517F2E /* LTViewPixelGrid.h in Headers */,
