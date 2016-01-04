@@ -84,7 +84,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   [self bindAndExecute:^{
     [self writeWithBlock:^{
       LTGLVersion version = [LTGLContext currentContext].version;
-      GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+      GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
       GLenum precision = [self.pixelFormat precisionForVersion:version];
       GLenum format = [self.pixelFormat formatForVersion:version];
 
@@ -130,7 +130,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 - (void)allocateMemoryForAllLevels {
   [self writeWithBlock:^{
     LTGLVersion version = [LTGLContext currentContext].version;
-    GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+    GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
     GLenum precision = [self.pixelFormat precisionForVersion:version];
     GLenum format = [self.pixelFormat formatForVersion:version];
     CGSize size = self.size;
@@ -244,7 +244,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       // per row % 4 != 0.
       context.unpackAlignment = 1;
 
-      GLenum internalFormat = [self.pixelFormat internalFormatForVersion:context.version];
+      GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:context.version];
       GLenum precision = [self.pixelFormat precisionForVersion:context.version];
       GLenum format = [self.pixelFormat formatForVersion:context.version];
 

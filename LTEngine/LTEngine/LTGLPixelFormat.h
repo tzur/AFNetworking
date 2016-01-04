@@ -57,13 +57,20 @@ typedef std::vector<int> LTGLPixelFormatSupportedMatTypes;
 /// interaction with OpenCV and CoreVideo.
 ///
 /// @note Currently, all defined pixel formats are supported by OpenGL and have a valid format,
-/// precision and internal format.
+/// precision and texture internal format. For renderbuffers, only the \c LTGLPixelFormatRGBA8Unorm
+/// format is supported.
 @interface LTGLPixelFormat (Additions)
 
-/// Initializes a new \c LTGLPixelFormat from an \c internalFormat and an OpenGL \c version. If no
-/// pixel format can be derived from the \c internalFormat and the \c version, an assert will be
-/// raised.
-- (instancetype)initWithInternalFormat:(GLenum)internalFormat version:(LTGLVersion)version;
+/// Initializes a new \c LTGLPixelFormat from a texture \c internalFormat and an OpenGL \c version.
+/// If no pixel format can be derived from the \c internalFormat and the \c version, an assert will
+/// be raised.
+- (instancetype)initWithTextureInternalFormat:(GLenum)internalFormat version:(LTGLVersion)version;
+
+/// Initializes a new \c LTGLPixelFormat from a renderbuffer \c internalFormat and an OpenGL
+/// \c version. If no pixel format can be derived from the \c internalFormat and the \c version, an
+/// assert will be raised.
+- (instancetype)initWithRenderbufferInternalFormat:(GLenum)internalFormat
+                                           version:(LTGLVersion)version;
 
 /// Initializes a new \c LTGLPixelFormat from an \c cv::Mat type. If no pixel format can be derived
 /// from \c matType, an assert will be raised.
@@ -80,9 +87,13 @@ typedef std::vector<int> LTGLPixelFormatSupportedMatTypes;
 /// available.
 - (GLenum)precisionForVersion:(LTGLVersion)version;
 
-/// OpenGL internal format for the given OpenGL \c version, or \c LTGLInvalidEnum if no such
+/// OpenGL texture internal format for the given OpenGL \c version, or \c LTGLInvalidEnum if no such
 /// internal format is available.
-- (GLenum)internalFormatForVersion:(LTGLVersion)version;
+- (GLenum)textureInternalFormatForVersion:(LTGLVersion)version;
+
+/// OpenGL renderbuffer internal format for the given OpenGL \c version, or \c LTGLInvalidEnum if no
+/// such internal format is available.
+- (GLenum)renderbufferInternalFormatForVersion:(LTGLVersion)version;
 
 /// Components of the pixel format.
 @property (readonly, nonatomic) LTGLPixelComponents components;
