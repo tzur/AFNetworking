@@ -5,18 +5,21 @@
 
 #import <Photos/Photos.h>
 
+#import "NSURL+Photons.h"
 #import "PTNPhotoKitAlbumType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
-
 @implementation NSURL (PhotoKit)
+
++ (NSString *)ptn_photoKitScheme {
+  return @"com.lightricks.Photons.PhotoKit";
+}
 
 + (NSURL *)ptn_photoKitAssetURLWithAsset:(PHAsset *)asset {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 
-  components.scheme = kPhotoKitScheme;
+  components.scheme = [NSURL ptn_photoKitScheme];
   components.host = @"asset";
   components.path = [@"/" stringByAppendingString:asset.localIdentifier];
 
@@ -26,7 +29,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
 + (NSURL *)ptn_photoKitAlbumURLWithCollection:(PHCollection *)collection {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 
-  components.scheme = kPhotoKitScheme;
+  components.scheme = [NSURL ptn_photoKitScheme];
   components.host = @"album";
   components.path = [@"/" stringByAppendingString:collection.localIdentifier];
 
@@ -39,7 +42,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
   NSString *typeString = [NSString stringWithFormat:@"%ld", (long)type.type];
   NSString *subtypeString = [NSString stringWithFormat:@"%ld", (long)type.subtype];
 
-  components.scheme = kPhotoKitScheme;
+  components.scheme = [NSURL ptn_photoKitScheme];
   components.host = @"album";
   components.queryItems = @[[NSURLQueryItem queryItemWithName:@"type" value:typeString],
                             [NSURLQueryItem queryItemWithName:@"subtype" value:subtypeString]];
@@ -48,7 +51,7 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
 }
 
 - (PTNPhotoKitURLType)ptn_photoKitURLType {
-  if (![self.scheme isEqual:kPhotoKitScheme]) {
+  if (![self.scheme isEqual:[NSURL ptn_photoKitScheme]]) {
     return PTNPhotoKitURLTypeInvalid;
   }
 
@@ -98,18 +101,6 @@ static NSString * const kPhotoKitScheme = @"com.lightricks.Photons.PhotoKit";
   PHAssetCollectionSubtype subtype = [query[@"subtype"] integerValue];
 
   return [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
-}
-
-- (NSDictionary<NSString *, NSString *> *)ptn_queryDictionary {
-  NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
-
-  // Last query item name overrides previous ones, if exist.
-  NSMutableDictionary *items = [NSMutableDictionary dictionary];
-  for (NSURLQueryItem *item in components.queryItems) {
-    items[item.name] = item.value;
-  }
-
-  return [items copy];
 }
 
 @end
