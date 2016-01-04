@@ -266,7 +266,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[[RACSignal
       concat:@[initialFetchResult, nextFetchResults]]
       ptn_identicallyDistinctUntilChanged]
-      replayLast]
+      ptn_replayLastLazily]
       subscribeOn:RACScheduler.scheduler];
 }
 
