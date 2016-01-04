@@ -3,13 +3,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LTInterpolatableObject, LTParameterizedObject, LTPrimitiveParameterizedObjectFactory;
+@class LTCompoundParameterizedObject;
 
-/// Factory for creating \c id<LTParameterizedObject> objects constituted by a set of
+@protocol LTInterpolatableObject, LTPrimitiveParameterizedObjectFactory;
+
+/// Factory for creating \c LTCompoundParameterizedObject objects constituted by a set of
 /// \c id<LTPrimitiveParameterizedObject> objects. The factory is initialized with a factory for
 /// creating the primitive parameterized objects and constructs parameterized objects from the
 /// interpolatable properties of given \c id<LTInterpolatableObject> objects.
-@interface LTParameterizedObjectFactory<__covariant ObjectType:id<LTInterpolatableObject>> :
+@interface LTCompoundParameterizedObjectFactory<__covariant ObjectType:id<LTInterpolatableObject>> :
     NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -22,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a parameterized object mapping each of the interpolatable properties of the given
 /// \c objects to a corresponding primitive parameterized object created by the \c primitiveFactory.
 /// The number of given \c objects must equal the \c numberOfRequiredInterpolatableObjects.
-- (id<LTParameterizedObject>)parameterizedObjectFromInterpolatableObjects:
+- (LTCompoundParameterizedObject *)parameterizedObjectFromInterpolatableObjects:
     (NSArray<ObjectType> *)objects;
 
 /// Returns the number of interpolatable objects required to create a corresponding parameterized

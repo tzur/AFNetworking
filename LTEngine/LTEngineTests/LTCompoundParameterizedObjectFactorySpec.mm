@@ -1,17 +1,17 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTParameterizedObjectFactory.h"
+#import "LTCompoundParameterizedObjectFactory.h"
 
+#import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
-#import "LTParameterizedObject.h"
 #import "LTPrimitiveParameterizedObject.h"
 #import "LTPrimitiveParameterizedObjectFactory.h"
 
-@interface LTParameterizedObjectFactoryTestInterpolatableObject : NSObject <LTInterpolatableObject>
+@interface LTTestInterpolatableObject : NSObject <LTInterpolatableObject>
 @end
 
-@implementation LTParameterizedObjectFactoryTestInterpolatableObject
+@implementation LTTestInterpolatableObject
 
 - (instancetype)initWithInterpolatedProperties:(NSDictionary __unused *)properties {
   return nil;
@@ -23,11 +23,10 @@
 
 @end
 
-@interface LTParameterizedObjectFactoryTestPrimitiveFactory : NSObject
-    <LTPrimitiveParameterizedObjectFactory>
+@interface LTTestPrimitiveFactory : NSObject <LTPrimitiveParameterizedObjectFactory>
 @end
 
-@implementation LTParameterizedObjectFactoryTestPrimitiveFactory
+@implementation LTTestPrimitiveFactory
 
 - (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:
     (__unused CGFloats)values {
@@ -44,18 +43,17 @@
 
 @end
 
-SpecBegin(LTParameterizedObjectFactory)
+SpecBegin(LTCompoundParameterizedObjectFactory)
 
-__block LTParameterizedObjectFactory<LTParameterizedObjectFactoryTestInterpolatableObject *> *
-    factory;
+__block LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> *factory;
 __block id<LTPrimitiveParameterizedObjectFactory> primitiveFactory;
 __block id primitiveFactoryMock;
 
 beforeEach(^{
-  primitiveFactory = [[LTParameterizedObjectFactoryTestPrimitiveFactory alloc] init];
+  primitiveFactory = [[LTTestPrimitiveFactory alloc] init];
   primitiveFactoryMock = OCMPartialMock(primitiveFactory);
   factory =
-      [[LTParameterizedObjectFactory<LTParameterizedObjectFactoryTestInterpolatableObject *> alloc]
+      [[LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> alloc]
        initWithPrimitiveFactory:primitiveFactoryMock];
 });
 
@@ -74,8 +72,7 @@ context(@"parameterized object computation", ^{
   __block id interpolatableObjectMock;
 
   beforeEach(^{
-    interpolatableObjectMock =
-        OCMClassMock([LTParameterizedObjectFactoryTestInterpolatableObject class]);
+    interpolatableObjectMock = OCMClassMock([LTTestInterpolatableObject class]);
   });
 
   afterEach(^{
@@ -85,12 +82,12 @@ context(@"parameterized object computation", ^{
   context(@"invalid API calls", ^{
     it(@"should raise when quering a compound interpolant with keyframes of invalid count", ^{
       expect(^{
-        __unused id<LTParameterizedObject> result =
+        __unused LTCompoundParameterizedObject *result =
             [factory parameterizedObjectFromInterpolatableObjects:@[]];
       }).to.raise(NSInvalidArgumentException);
 
       expect(^{
-        __unused id<LTParameterizedObject> result =
+        __unused LTCompoundParameterizedObject *result =
             [factory parameterizedObjectFromInterpolatableObjects:@[interpolatableObjectMock,
                                                                     interpolatableObjectMock]];
       }).to.raise(NSInvalidArgumentException);
@@ -123,7 +120,7 @@ context(@"parameterized object computation", ^{
       OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
                  primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
 
-      id<LTParameterizedObject> result =
+      LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
 
       expect(result).toNot.beNil();
@@ -136,7 +133,7 @@ context(@"parameterized object computation", ^{
                  primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForX);
       OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
                  primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
-      id<LTParameterizedObject> result =
+      LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
       OCMVerifyAll(primitiveFactoryMock);
 
@@ -153,7 +150,7 @@ context(@"parameterized object computation", ^{
                  primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForX);
       OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
                  primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
-      id<LTParameterizedObject> result =
+      LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
       OCMVerifyAll(primitiveFactoryMock);
 
