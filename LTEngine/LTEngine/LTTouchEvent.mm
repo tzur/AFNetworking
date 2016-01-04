@@ -49,8 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-+ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch {
-  return [[LTTouchEvent alloc] initWithSequenceID:(NSUInteger)touch timeStamp:touch.timestamp
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID {
+  return [[LTTouchEvent alloc] initWithSequenceID:sequenceID timeStamp:touch.timestamp
                                              view:touch.view
                                      viewLocation:[touch locationInView:touch.view]
                              previousViewLocation:[touch previousLocationInView:touch.view]
