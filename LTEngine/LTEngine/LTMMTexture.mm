@@ -86,7 +86,7 @@
 
 - (void)allocateTexture {
   LTGLVersion version = [LTGLContext currentContext].version;
-  GLenum internalFormat = [self.pixelFormat internalFormatForVersion:version];
+  GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
   GLenum format = [self.pixelFormat formatForVersion:version];
   GLenum precision = [self.pixelFormat precisionForVersion:version];
 

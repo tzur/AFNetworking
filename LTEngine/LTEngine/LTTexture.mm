@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTGLVersion version = [LTGLContext currentContext].version;
   LTParameterAssert([pixelFormat formatForVersion:version] != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL format", pixelFormat);
-  LTParameterAssert([pixelFormat internalFormatForVersion:version] != LTGLInvalidEnum,
+  LTParameterAssert([pixelFormat textureInternalFormatForVersion:version] != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL internal format", pixelFormat);
   LTParameterAssert([pixelFormat precisionForVersion:version] != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL precision", pixelFormat);

@@ -87,14 +87,10 @@ static const LTUnorderedMap<LTPixelBitDepthPair, GLenum> kBitDepthToPrecision{
 /// Pair of (version, pixel format).
 typedef std::pair<LTGLVersion, _LTGLPixelFormat> LTPixelFormatPair;
 
-/// Maps from pixel format pair to OpenGL internal format. Note that when a new pixel format is
-/// added, the number of entries that will added to this table should be equal to the number of
+/// Maps from pixel format pair to OpenGL texture internal format. Note that when a new pixel format
+/// is added, the number of entries that will added to this table should be equal to the number of
 /// supported OpenGL versions.
-///
-/// @note when there's a discrepancy between internal format of a renderbuffer and a texture, the
-/// internal format of texture will be used. This is because right now we use the pixel format
-/// solely for textures and not renderbuffers, which are allocated by Core Animation.
-static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToInternalFormat{
+static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToTextureInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatR8Unorm}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR8Unorm}, GL_R8},
   {{LTGLVersion2, LTGLPixelFormatR16Float}, GL_RED_EXT},
@@ -115,18 +111,40 @@ static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToInternalFormat{
   {{LTGLVersion3, LTGLPixelFormatRGBA32Float}, GL_RGBA32F}
 };
 
-/// Returns the pixel format that corresponds to the given \c internalFormat and \c version. Asserts
-/// if no such format is found.
-static _LTGLPixelFormat LTGLPixelFormatForInternalFormat(GLenum internalFormat,
-                                                         LTGLVersion version) {
-  for (const auto &pair : kFormatToInternalFormat) {
+/// Maps from pixel format pair to OpenGL renderbuffer internal format. Note that when a new pixel
+/// format is added, the number of entries that will added to this table should be equal to the
+/// number of supported OpenGL versions.
+static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToRenderbufferInternalFormat{
+  {{LTGLVersion2, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8_OES},
+  {{LTGLVersion3, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8},
+};
+
+/// Returns the pixel format that corresponds to the given texture \c internalFormat and \c version.
+/// Asserts if no such format is found.
+static _LTGLPixelFormat LTGLPixelFormatForTextureInternalFormat(GLenum internalFormat,
+                                                                LTGLVersion version) {
+  for (const auto &pair : kFormatToTextureInternalFormat) {
     if (pair.second == internalFormat && pair.first.first == version) {
       return pair.first.second;
     }
   }
 
-  LTParameterAssert(NO, @"No pixel format was found for the internal format %lu and version %lu",
-                    (unsigned long)internalFormat, (unsigned long)version);
+  LTParameterAssert(NO, @"No pixel format was found for the texture internal format %lu, "
+                    "version %lu", (unsigned long)internalFormat, (unsigned long)version);
+}
+
+/// Returns the pixel format that corresponds to the given renderbuffer \c internalFormat and
+/// \c version. Asserts if no such format is found.
+static _LTGLPixelFormat LTGLPixelFormatForRenderbufferInternalFormat(GLenum internalFormat,
+                                                                     LTGLVersion version) {
+  for (const auto &pair : kFormatToRenderbufferInternalFormat) {
+    if (pair.second == internalFormat && pair.first.first == version) {
+      return pair.first.second;
+    }
+  }
+
+  LTParameterAssert(NO, @"No pixel format was found for the renderbuffer internal format %lu, "
+                    "version %lu", (unsigned long)internalFormat, (unsigned long)version);
 }
 
 /// Maps between pixel format pair to OpenGL internal format.
@@ -166,8 +184,15 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
 
 @implementation LTGLPixelFormat (Additions)
 
-- (instancetype)initWithInternalFormat:(GLenum)internalFormat version:(LTGLVersion)version {
-  _LTGLPixelFormat pixelFormat = LTGLPixelFormatForInternalFormat(internalFormat, version);
+- (instancetype)initWithTextureInternalFormat:(GLenum)internalFormat version:(LTGLVersion)version {
+  _LTGLPixelFormat pixelFormat = LTGLPixelFormatForTextureInternalFormat(internalFormat, version);
+  return [self initWithValue:pixelFormat];
+}
+
+- (instancetype)initWithRenderbufferInternalFormat:(GLenum)internalFormat
+                                           version:(LTGLVersion)version {
+  _LTGLPixelFormat pixelFormat = LTGLPixelFormatForRenderbufferInternalFormat(internalFormat,
+                                                                              version);
   return [self initWithValue:pixelFormat];
 }
 
@@ -201,9 +226,14 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
   return it != kBitDepthToPrecision.cend() ? it->second : LTGLInvalidEnum;
 }
 
-- (GLenum)internalFormatForVersion:(LTGLVersion)version {
-  const auto it = kFormatToInternalFormat.find({version, self.value});
-  return it != kFormatToInternalFormat.cend() ? it->second : LTGLInvalidEnum;
+- (GLenum)textureInternalFormatForVersion:(LTGLVersion)version {
+  const auto it = kFormatToTextureInternalFormat.find({version, self.value});
+  return it != kFormatToTextureInternalFormat.cend() ? it->second : LTGLInvalidEnum;
+}
+
+- (GLenum)renderbufferInternalFormatForVersion:(LTGLVersion)version {
+  const auto it = kFormatToRenderbufferInternalFormat.find({version, self.value});
+  return it != kFormatToRenderbufferInternalFormat.cend() ? it->second : LTGLInvalidEnum;
 }
 
 - (LTDescriptorTuple)descriptor {

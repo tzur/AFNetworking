@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   _pixelFormat = [[LTGLPixelFormat alloc]
-                  initWithInternalFormat:internalFormat
+                  initWithRenderbufferInternalFormat:internalFormat
                   version:[LTGLContext currentContext].version];
 }
 

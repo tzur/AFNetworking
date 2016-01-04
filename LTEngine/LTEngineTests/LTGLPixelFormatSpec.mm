@@ -14,13 +14,23 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
     version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
   });
 
-  it(@"should initialize with all supported internal formats", ^{
+  it(@"should initialize with all supported texture internal formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *format) {
-      GLenum internalFormat = [format internalFormatForVersion:version];
-      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithInternalFormat:internalFormat
-                                                                             version:version];
-      expect([pixelFormat internalFormatForVersion:version]).to.equal(internalFormat);
+      GLenum internalFormat = [format textureInternalFormatForVersion:version];
+      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc]
+                                      initWithTextureInternalFormat:internalFormat
+                                      version:version];
+      expect([pixelFormat textureInternalFormatForVersion:version]).to.equal(internalFormat);
     }];
+  });
+
+  it(@"should initialize with renderbuffer internal format LTGLPixelFormatRGBA8Unorm", ^{
+    LTGLPixelFormat *format = $(LTGLPixelFormatRGBA8Unorm);
+    GLenum internalFormat = [format renderbufferInternalFormatForVersion:version];
+    LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc]
+                                    initWithRenderbufferInternalFormat:internalFormat
+                                    version:version];
+    expect([pixelFormat renderbufferInternalFormatForVersion:version]).to.equal(internalFormat);
   });
 
   it(@"should return valid OpenGL format for all pixel formats", ^{
@@ -35,10 +45,15 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
     }];
   });
 
-  it(@"should return valid OpenGL internal format for all pixel formats", ^{
+  it(@"should return valid OpenGL texture internal format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-      expect([pixelFormat internalFormatForVersion:version]).toNot.equal(LTGLInvalidEnum);
+      expect([pixelFormat textureInternalFormatForVersion:version]).toNot.equal(LTGLInvalidEnum);
     }];
+  });
+
+  it(@"should return valid OpenGL renderbuffer internal format for LTGLPixelFormatRGBA8Unorm", ^{
+    LTGLPixelFormat *pixelFormat = $(LTGLPixelFormatRGBA8Unorm);
+    expect([pixelFormat textureInternalFormatForVersion:version]).toNot.equal(LTGLInvalidEnum);
   });
 });
 
