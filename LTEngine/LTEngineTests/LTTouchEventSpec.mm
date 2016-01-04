@@ -58,22 +58,26 @@ context(@"initialization", ^{
     strictViewMock = nil;
   });
 
-  it(@"should initialize using the address of the given touch as sequence ID", ^{
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
-    expect(touchEvent.sequenceID).to.equal((NSUInteger)touchMock);
+  it(@"should initialize using the given sequence ID", ^{
+    static const NSUInteger kSequenceID = 7;
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:kSequenceID];
+    expect(touchEvent.sequenceID).to.equal(kSequenceID);
   });
 
   it(@"should initialize using the view of the given touch", ^{
     UIView *view = [[UIView alloc] init];
     OCMExpect([touchMock view]).andReturn(view);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.view).to.beIdenticalTo(view);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the time stamp of the given touch", ^{
     OCMExpect([touchMock timestamp]).andReturn(timestamp);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.timestamp).to.equal(timestamp);
     OCMVerifyAll(touchMock);
   });
@@ -82,7 +86,8 @@ context(@"initialization", ^{
     it(@"should initialize using the view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
       OCMExpect([touchMock locationInView:strictViewMock]).andReturn(viewLocation);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.viewLocation).to.equal(viewLocation);
       OCMVerifyAll(touchMock);
     });
@@ -90,7 +95,8 @@ context(@"initialization", ^{
     it(@"should initialize using the previous view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
       OCMExpect([touchMock previousLocationInView:strictViewMock]).andReturn(previousViewLocation);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.previousViewLocation).to.equal(previousViewLocation);
       OCMVerifyAll(touchMock);
     });
@@ -98,49 +104,56 @@ context(@"initialization", ^{
 
   it(@"should initialize using the phase of the given touch", ^{
     OCMExpect([touchMock phase]).andReturn(phase);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.phase).to.equal(phase);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the tap count of the given touch", ^{
     OCMExpect([(UITouch *)touchMock tapCount]).andReturn(tapCount);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.tapCount).to.equal(tapCount);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the major radius of the given touch", ^{
     OCMExpect([touchMock majorRadius]).andReturn(majorRadius);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.majorRadius).to.equal(majorRadius);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the major radius tolerance of the given touch", ^{
     OCMExpect([touchMock majorRadiusTolerance]).andReturn(majorRadiusTolerance);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.majorRadiusTolerance).to.equal(majorRadiusTolerance);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the type of the given touch", ^{
     OCMExpect([(UITouch *)touchMock type]).andReturn(type);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.type).to.equal(type);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the force of the given touch", ^{
     OCMExpect([(UITouch *)touchMock force]).andReturn(force);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.force).to.equal(force);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the maximum possible force of the given touch", ^{
     OCMExpect([(UITouch *)touchMock maximumPossibleForce]).andReturn(maximumPossibleForce);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.maximumPossibleForce).to.equal(maximumPossibleForce);
     OCMVerifyAll(touchMock);
   });
@@ -149,14 +162,16 @@ context(@"initialization", ^{
     it(@"should initialize using the azimuth angle if type is UITouchTypeStylus", ^{
       OCMStub([(UITouch *)touchMock type]).andReturn(UITouchTypeStylus);
       OCMExpect([touchMock azimuthAngleInView:nil]).andReturn(azimuthAngle);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.azimuthAngle).to.equal(azimuthAngle);
       OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the azimuth angle of the given touch if type is not UITouchTypeStylus", ^{
       OCMExpect([[touchMock reject] azimuthAngleInView:nil]);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.azimuthAngle).to.beNil();
       OCMVerifyAll(touchMock);
     });
@@ -167,14 +182,16 @@ context(@"initialization", ^{
       OCMStub([(UITouch *)touchMock type]).andReturn(UITouchTypeStylus);
       OCMExpect([touchMock azimuthUnitVectorInView:nil])
           .andReturn(CGVectorMake(azimuthUnitVector.x, azimuthUnitVector.y));
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.azimuthUnitVector).to.equal(azimuthUnitVector);
       OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the azimuth unit vector if type is not UITouchTypeStylus", ^{
       OCMExpect([[touchMock reject] azimuthUnitVectorInView:nil]);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.azimuthUnitVector.isNull()).to.beTruthy();
       OCMVerifyAll(touchMock);
     });
@@ -184,14 +201,16 @@ context(@"initialization", ^{
     it(@"should initialize using the altitude angle if type is UITouchTypeStylus", ^{
       OCMStub([(UITouch *)touchMock type]).andReturn(UITouchTypeStylus);
       OCMExpect([(UITouch *)touchMock altitudeAngle]).andReturn(altitudeAngle);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.altitudeAngle).to.equal(altitudeAngle);
       OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the altitude angle if type is not UITouchTypeStylus", ^{
       OCMExpect([(UITouch *)[touchMock reject] altitudeAngle]);
-      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
       expect(touchEvent.altitudeAngle).to.beNil();
       OCMVerifyAll(touchMock);
     });
@@ -199,14 +218,16 @@ context(@"initialization", ^{
 
   it(@"should initialize using the estimation update index of the given touch", ^{
     OCMExpect([touchMock estimationUpdateIndex]).andReturn(estimationUpdateIndex);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.estimationUpdateIndex).to.equal(estimationUpdateIndex);
     OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the estimated properties of the given touch", ^{
     OCMExpect([(UITouch *)touchMock estimatedProperties]).andReturn(estimatedProperties);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.estimatedProperties).to.equal(estimatedProperties);
     OCMVerifyAll(touchMock);
   });
@@ -214,7 +235,8 @@ context(@"initialization", ^{
   it(@"should initialize using the estimated properties expecting updates of the given touch", ^{
     OCMExpect([(UITouch *)touchMock estimatedPropertiesExpectingUpdates])
         .andReturn(propertiesExpectingUpdates);
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
     expect(touchEvent.estimatedPropertiesExpectingUpdates).to.equal(propertiesExpectingUpdates);
     OCMVerifyAll(touchMock);
   });
@@ -241,10 +263,11 @@ context(@"initialization", ^{
     OCMExpect([(UITouch *)strictTouchMock estimatedPropertiesExpectingUpdates])
         .andReturn(propertiesExpectingUpdates);
 
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:strictTouchMock];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:strictTouchMock
+                                                                  sequenceID:7];
 
     expect(touchEvent).toNot.beNil();
-    expect(touchEvent.sequenceID).to.equal((NSUInteger)strictTouchMock);
+    expect(touchEvent.sequenceID).to.equal(7);
     expect(touchEvent.timestamp).to.equal(timestamp);
     expect(touchEvent.view).to.beIdenticalTo(strictViewMock);
     expect(touchEvent.viewLocation).to.equal(viewLocation);
@@ -270,7 +293,7 @@ context(@"initialization", ^{
 context(@"copying", ^{
   it(@"should return itself as copy, due to immutability", ^{
     LTTouchEvent *touchEvent =
-        [LTTouchEvent touchEventWithPropertiesOfTouch:OCMClassMock([UITouch class])];
+        [LTTouchEvent touchEventWithPropertiesOfTouch:OCMClassMock([UITouch class]) sequenceID:0];
     expect([touchEvent copy]).to.beIdenticalTo(touchEvent);
   });
 });

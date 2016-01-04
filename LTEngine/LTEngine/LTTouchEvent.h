@@ -16,15 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the current properties of the given \c touch. The given \c touch is not
-/// retained by the returned object.
-+ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch;
+/// Initializes with the properties of the given \c touch and the given \c sequenceID. The given
+/// \c touch is not retained by the returned object.
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID;
 
 /// ID of the sequence to which this touch belongs.
 ///
 /// @important Temporally consecutive touch event sequences might have the same sequence ID.
 /// However, it is guaranteed that there are no concurrently occurring touch event sequences with
-/// the same sequence ID.
+/// the same sequence ID, if the sequences originate from the same \c UIResponder.
 @property (readonly, nonatomic) NSUInteger sequenceID;
 
 /// Location of the touch during the touch event, in coordinates of the \c view.
