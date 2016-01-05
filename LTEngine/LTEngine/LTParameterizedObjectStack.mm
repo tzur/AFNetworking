@@ -20,11 +20,11 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 @property (strong, nonatomic) LTReparameterization *reparameterization;
 
 /// Mutable ordered collection of parameterized objects constituting this instance.
-@property (strong, nonatomic) NSMutableArray<id<LTParameterizedObject>> *mutableObjects;
+@property (strong, nonatomic) NSMutableArray<id<LTParameterizedValueObject>> *mutableObjects;
 
 /// Immutable ordered collection of parameterized objects returned to user. Updated after updates to
 /// the state of the stack. Used for performance reasons.
-@property (strong, readwrite, nonatomic) NSArray<id<LTParameterizedObject>> *immutableObjects;
+@property (strong, readwrite, nonatomic) NSArray<id<LTParameterizedValueObject>> *immutableObjects;
 
 @end
 
@@ -34,7 +34,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithParameterizedObject:(id<LTParameterizedObject>)parameterizedObject {
+- (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   if (self = [super init]) {
     self.mutableObjects = [NSMutableArray arrayWithObject:parameterizedObject];
     [self updateImmutableObjects];
@@ -48,7 +48,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Public interface
 #pragma mark -
 
-- (void)pushParameterizedObject:(id<LTParameterizedObject>)parameterizedObject {
+- (void)pushParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   [self validatePushedParameterizedObject:parameterizedObject];
   [self.mutableObjects addObject:parameterizedObject];
   _mapping.push_back(parameterizedObject.maxParametricValue);
@@ -56,8 +56,8 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   [self updateImmutableObjects];
 }
 
-- (void)replaceParameterizedObject:(id<LTParameterizedObject>)objectToReplace
-                          byObject:(id<LTParameterizedObject>)newObject {
+- (void)replaceParameterizedObject:(id<LTParameterizedValueObject>)objectToReplace
+                          byObject:(id<LTParameterizedValueObject>)newObject {
   NSUInteger index = [self.mutableObjects indexOfObject:objectToReplace];
   LTParameterAssert(index != NSNotFound, @"Object (%@) to replace not found", objectToReplace);
   LTParameterAssert(objectToReplace.minParametricValue == newObject.minParametricValue &&
@@ -76,12 +76,12 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   [self updateImmutableObjects];
 }
 
-- (nullable id<LTParameterizedObject>)popParameterizedObject {
+- (nullable id<LTParameterizedValueObject>)popParameterizedObject {
   if (self.mutableObjects.count == 1) {
     return nil;
   }
 
-  id<LTParameterizedObject> result = self.mutableObjects.lastObject;
+  id<LTParameterizedValueObject> result = self.mutableObjects.lastObject;
   [self.mutableObjects removeLastObject];
   _mapping.pop_back();
   self.reparameterization = [[LTReparameterization alloc] initWithMapping:_mapping];
@@ -93,7 +93,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Public interface - Auxiliary methods
 #pragma mark -
 
-- (void)validatePushedParameterizedObject:(id<LTParameterizedObject>)parameterizedObject {
+- (void)validatePushedParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   LTParameterAssert(parameterizedObject.minParametricValue < parameterizedObject.maxParametricValue,
                     @"Minimum value (%g) of intrinsic parametric range must be smaller than "
                     "maximum value (%g)", parameterizedObject.minParametricValue,
@@ -197,7 +197,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Properties
 #pragma mark -
 
-- (NSArray<id<LTParameterizedObject>> *)parameterizedObjects {
+- (NSArray<id<LTParameterizedValueObject>> *)parameterizedObjects {
   return self.immutableObjects;
 }
 

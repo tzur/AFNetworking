@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTParameterizedObject.h"
+#import "LTParameterizedValueObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with the given \c parameterizedObject. The \c parameterizedObject is added to the
 /// \c parameterizedObjects. The \c minParametricValue and \c maxParametricValue of the initialized
 /// object is set to the ones of the given \c parameterizedObject.
-- (instancetype)initWithParameterizedObject:(id<LTParameterizedObject>)parameterizedObject
+- (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject
     NS_DESIGNATED_INITIALIZER;
 
 /// Pushes the given \c parameterizedObject at the end of the \c parameterizedObjects currently held
@@ -32,22 +32,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// the \c parameterizedObjects. The \c minParametricValue of the given \c parameterizedObject must
 /// equal the \c maxParametricValue of the last object in \c parameterizedObjects. The
 /// \c minParametricValue and the \c maxParametricValue of this instance are updated accordingly.
-- (void)pushParameterizedObject:(id<LTParameterizedObject>)parameterizedObject;
+- (void)pushParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject;
 
 /// Replaces the given \c objectToReplace with the given \c newObject. The \c objectToReplace must
 /// be in the \c parameterizedObjects of this instance and its \c minParametricValue and
 /// \c maxParametricValue must equal those of the \c newObject.
-- (void)replaceParameterizedObject:(id<LTParameterizedObject>)objectToReplace
-                          byObject:(id<LTParameterizedObject>)newObject;
+- (void)replaceParameterizedObject:(id<LTParameterizedValueObject>)objectToReplace
+                          byObject:(id<LTParameterizedValueObject>)newObject;
 
 /// Pops the most recently added parameterized objects from \c parameterizedObjects. The removed
 /// object is returned. The \c minParametricValue and the \c maxParametricValue of this instance are
 /// updated accordingly. Does nothing and returns \c nil if \c parameterizedObjects consists of a
 /// single object.
-- (nullable id<LTParameterizedObject>)popParameterizedObject;
+- (nullable id<LTParameterizedValueObject>)popParameterizedObject;
 
 /// Ordered collection of parameterized objects constituting this object.
-@property (readonly, nonatomic) NSArray<id<LTParameterizedObject>> *parameterizedObjects;
+@property (readonly, nonatomic) NSArray<id<LTParameterizedValueObject>> *parameterizedObjects;
 
 @end
 

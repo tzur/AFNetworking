@@ -10,7 +10,7 @@ __block id parameterizedObjectMock;
 __block NSSet<NSString *> *parameterizationKeys;
 
 beforeEach(^{
-  parameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+  parameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedValueObject));
   OCMStub([parameterizedObjectMock minParametricValue]).andReturn(3);
   OCMStub([parameterizedObjectMock maxParametricValue]).andReturn(4);
   parameterizationKeys = [NSSet setWithArray:@[@"key0", @"key1"]];
@@ -28,7 +28,7 @@ context(@"modifying extensible parameterized object", ^{
   __block id anotherParameterizedObjectMock;
 
   beforeEach(^{
-    anotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+    anotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedValueObject));
   });
 
   context(@"pushing parameterized object", ^{
@@ -80,7 +80,7 @@ context(@"modifying extensible parameterized object", ^{
 
   context(@"replacing parameterized object", ^{
     it(@"should raise when replacing non-existent parameterized object", ^{
-      id nonExistentParameterizedObject = OCMProtocolMock(@protocol(LTParameterizedObject));
+      id nonExistentParameterizedObject = OCMProtocolMock(@protocol(LTParameterizedValueObject));
       expect(^{
         [object replaceParameterizedObject:nonExistentParameterizedObject
                                   byObject:anotherParameterizedObjectMock];
@@ -123,7 +123,7 @@ context(@"modifying extensible parameterized object", ^{
 
   context(@"popping last parameterized object", ^{
     it(@"should do nothing if only one parameterized object exists", ^{
-      id<LTParameterizedObject> result = [object popParameterizedObject];
+      id<LTParameterizedValueObject> result = [object popParameterizedObject];
       expect(result).to.beNil();
       expect(object.parameterizedObjects).to.equal(@[parameterizedObjectMock]);
     });
@@ -134,14 +134,14 @@ context(@"modifying extensible parameterized object", ^{
       OCMStub([anotherParameterizedObjectMock parameterizationKeys])
           .andReturn(parameterizationKeys);
       [object pushParameterizedObject:anotherParameterizedObjectMock];
-      id yetAnotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+      id yetAnotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedValueObject));
       OCMStub([yetAnotherParameterizedObjectMock minParametricValue]).andReturn(7);
       OCMStub([yetAnotherParameterizedObjectMock maxParametricValue]).andReturn(8);
       OCMStub([yetAnotherParameterizedObjectMock parameterizationKeys])
           .andReturn(parameterizationKeys);
       [object pushParameterizedObject:yetAnotherParameterizedObjectMock];
 
-      id<LTParameterizedObject> result = [object popParameterizedObject];
+      id<LTParameterizedValueObject> result = [object popParameterizedObject];
       expect(result).to.beIdenticalTo(yetAnotherParameterizedObjectMock);
       expect(object.parameterizedObjects)
           .to.equal(@[parameterizedObjectMock, anotherParameterizedObjectMock]);
@@ -157,7 +157,7 @@ context(@"LTParameterizedObject protocol", ^{
   __block id anotherParameterizedObjectMock;
 
   beforeEach(^{
-    anotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+    anotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedValueObject));
     OCMStub([anotherParameterizedObjectMock minParametricValue]).andReturn(4);
     OCMStub([anotherParameterizedObjectMock maxParametricValue]).andReturn(7);
     OCMStub([anotherParameterizedObjectMock parameterizationKeys]).andReturn(parameterizationKeys);
@@ -213,14 +213,15 @@ context(@"LTParameterizedObject protocol", ^{
       __block id anotherStrictParameterizedObjectMock;
 
       beforeEach(^{
-        strictParameterizedObjectMock = OCMStrictProtocolMock(@protocol(LTParameterizedObject));
+        strictParameterizedObjectMock =
+            OCMStrictProtocolMock(@protocol(LTParameterizedValueObject));
         OCMStub([strictParameterizedObjectMock minParametricValue]).andReturn(3);
         OCMStub([strictParameterizedObjectMock maxParametricValue]).andReturn(4);
         OCMStub([strictParameterizedObjectMock parameterizationKeys])
             .andReturn(parameterizationKeys);
 
         anotherStrictParameterizedObjectMock =
-            OCMStrictProtocolMock(@protocol(LTParameterizedObject));
+            OCMStrictProtocolMock(@protocol(LTParameterizedValueObject));
         OCMStub([anotherStrictParameterizedObjectMock minParametricValue]).andReturn(4);
         OCMStub([anotherStrictParameterizedObjectMock maxParametricValue]).andReturn(7);
         OCMStub([anotherStrictParameterizedObjectMock parameterizationKeys])
