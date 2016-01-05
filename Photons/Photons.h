@@ -29,6 +29,9 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/NSURL+Dropbox.h>
 #import <Photons/PTNDropboxEntry.h>
 
+/// File System.
+#import <Photons/NSURL+FileSystem.h>
+
 /// PhotoKit.
 #import <Photons/NSURL+PhotoKit.h>
 #import <Photons/PTNPhotoKitAlbum.h>

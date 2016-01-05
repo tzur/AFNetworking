@@ -17,12 +17,13 @@
 		84331A951C300C96004502B5 /* PTNDropboxEntrySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */; };
 		844C10C11C3A5D54001A6DC9 /* PTNNSURLTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.m */; };
 		844C10E01C3A6440001A6DC9 /* NSURL+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10DF1C3A6440001A6DC9 /* NSURL+PhotonsSpec.m */; };
+		848186781C3ADD810070462E /* NSURL+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E27AE71C34307500806A27 /* NSURL+Photons.m */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
+		84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */; };
 		84E27ABE1C34287300806A27 /* NSURL+Dropbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E27ABF1C34287300806A27 /* NSURL+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E27ABD1C34287300806A27 /* NSURL+Dropbox.m */; };
 		84E27AC11C34288600806A27 /* NSURL+DropboxSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E27AC01C34288600806A27 /* NSURL+DropboxSpec.m */; };
 		84E27AE81C34307500806A27 /* NSURL+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E27AE61C34307500806A27 /* NSURL+Photons.h */; };
-		84E27AE91C34307500806A27 /* NSURL+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E27AE71C34307500806A27 /* NSURL+Photons.m */; };
 		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B16A8A31BCBFB33006DAAA7 /* NSErrorCodes+Photons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */; };
@@ -77,6 +78,8 @@
 		8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAB947D1B7C820700B25392 /* PTNResizingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */; };
 		8BAB947F1B7CB25400B25392 /* PTNResizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */; };
+		8BAB94E61B80730E00B25392 /* NSURL+FileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB94E41B80730E00B25392 /* NSURL+FileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BAB94E71B80730E00B25392 /* NSURL+FileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */; };
 		8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95231B8234F600B25392 /* PTNImageResizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB95241B8234F600B25392 /* PTNImageResizer.m */; };
 		8BAB95281B8239B400B25392 /* PTNImageContentMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAB95271B82361600B25392 /* PTNImageContentMode.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -335,6 +338,7 @@
 		84E27AE71C34307500806A27 /* NSURL+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Photons.m"; sourceTree = "<group>"; };
 		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
 		84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
+		8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+FileSystemSpec.m"; sourceTree = "<group>"; };
 		8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageResizerSpec.mm; sourceTree = "<group>"; };
 		8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Photons.h"; sourceTree = "<group>"; };
@@ -435,6 +439,8 @@
 		8BAB947A1B7C820700B25392 /* PTNResizingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNResizingStrategy.h; sourceTree = "<group>"; };
 		8BAB947B1B7C820700B25392 /* PTNResizingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNResizingStrategy.m; sourceTree = "<group>"; };
 		8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNResizingStrategySpec.mm; sourceTree = "<group>"; };
+		8BAB94E41B80730E00B25392 /* NSURL+FileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+FileSystem.h"; sourceTree = "<group>"; };
+		8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+FileSystem.m"; sourceTree = "<group>"; };
 		8BAB95231B8234F600B25392 /* PTNImageResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageResizer.h; sourceTree = "<group>"; };
 		8BAB95241B8234F600B25392 /* PTNImageResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageResizer.m; sourceTree = "<group>"; };
 		8BAB95271B82361600B25392 /* PTNImageContentMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNImageContentMode.h; sourceTree = "<group>"; };
@@ -531,6 +537,14 @@
 			name = Dropbox;
 			sourceTree = "<group>";
 		};
+		8B16A7F91BCAB3EA006DAAA7 /* FileSystem */ = {
+			isa = PBXGroup;
+			children = (
+				8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */,
+			);
+			name = FileSystem;
+			sourceTree = "<group>";
+		};
 		8B16A87D1BCBF599006DAAA7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -599,6 +613,7 @@
 				8B2FD0711AFA0B5100757B1F /* Base */,
 				84331A751C300C67004502B5 /* Dropbox */,
 				8BAFE3791B14C090003FB8F5 /* Extensions */,
+				8BAB94CC1B80710300B25392 /* FileSystem */,
 				8B2FD0721AFA0B5800757B1F /* PhotoKit */,
 				8B2FD0381AF9F92300757B1F /* Supporting Files */,
 			);
@@ -640,6 +655,7 @@
 				8B5619421B6508DB006B0DA0 /* Base */,
 				84331A931C300C81004502B5 /* Dropbox */,
 				8B5619611B65420F006B0DA0 /* Extensions */,
+				8B16A7F91BCAB3EA006DAAA7 /* FileSystem */,
 				8B2FD0951B04D60900757B1F /* PhotoKit */,
 			);
 			name = Tests;
@@ -829,6 +845,15 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		8BAB94CC1B80710300B25392 /* FileSystem */ = {
+			isa = PBXGroup;
+			children = (
+				8BAB94E41B80730E00B25392 /* NSURL+FileSystem.h */,
+				8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */,
+			);
+			name = FileSystem;
+			sourceTree = "<group>";
+		};
 		8BAFDCCB1B0E0B53003FB8F5 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,6 +978,7 @@
 				8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */,
 				84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */,
 				8B992D281B78A9C200B7836B /* PTNPhotoKitImageManager.h in Headers */,
+				8BAB94E61B80730E00B25392 /* NSURL+FileSystem.h in Headers */,
 				8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */,
 				84E27ABE1C34287300806A27 /* NSURL+Dropbox.h in Headers */,
 				8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */,
@@ -1316,6 +1342,7 @@
 				8B5619681B654515006B0DA0 /* PTNProgressSpec.m in Sources */,
 				8B5619661B654227006B0DA0 /* RACStream+PhotonsSpec.m in Sources */,
 				8B56196A1B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.m in Sources */,
+				84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */,
 				8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */,
 				8B2FD0D51B09CD0800757B1F /* EXPMatchers+beSubscribedTo.m in Sources */,
 			);
@@ -1331,13 +1358,14 @@
 				8BCF58581BCD0B73001EE2ED /* PTNImageMetadata.m in Sources */,
 				8BAFDCB21B0DEE2B003FB8F5 /* PhotoKit+Photons.m in Sources */,
 				8B3832191B57D6FE00620560 /* PTNAlbumChangeset.m in Sources */,
+				8BAB94E71B80730E00B25392 /* NSURL+FileSystem.m in Sources */,
 				8BAFDCB31B0DEE2B003FB8F5 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
 				8BAFDCB41B0DEE2B003FB8F5 /* PTNPhotoKitAlbumType.m in Sources */,
 				8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */,
+				848186781C3ADD810070462E /* NSURL+Photons.m in Sources */,
 				8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */,
 				8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */,
 				8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */,
-				84E27AE91C34307500806A27 /* NSURL+Photons.m in Sources */,
 				8BAFDCB51B0DEE2B003FB8F5 /* PTNPhotoKitFetcher.m in Sources */,
 				8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */,
 				8BAFDCB61B0DEE2B003FB8F5 /* PTNPhotoKitObserver.m in Sources */,
