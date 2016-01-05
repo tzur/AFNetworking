@@ -264,6 +264,19 @@ context(@"LTParameterizedObject protocol", ^{
       OCMVerifyAll(anotherParameterizedObjectMock);
     });
 
+    it(@"should delegate value queries with parametric values outside range to correct object", ^{
+      OCMExpect([parameterizedObjectMock floatForParametricValue:2 key:@"key0"]).andReturn(0);
+      CGFloat value = [object floatForParametricValue:2 key:@"key0"];
+      expect(value).to.equal(0);
+      OCMVerifyAll(parameterizedObjectMock);
+
+      OCMExpect([anotherParameterizedObjectMock floatForParametricValue:10 key:@"key0"])
+          .andReturn(8);
+      value = [object floatForParametricValue:10 key:@"key0"];
+      expect(value).to.equal(8);
+      OCMVerifyAll(parameterizedObjectMock);
+    });
+
     it(@"should delegate values queries to the correct parameterized object", ^{
       OCMExpect([parameterizedObjectMock floatForParametricValue:3.5 key:@"key0"]).andReturn(0);
       OCMExpect([anotherParameterizedObjectMock floatForParametricValue:5.5 key:@"key0"])

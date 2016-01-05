@@ -181,7 +181,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 - (NSUInteger)indexOfObjectForParametricValue:(CGFloat)parametricValue {
   CGFloat value = [self.reparameterization floatForParametricValue:parametricValue];
   NSUInteger numberOfSplineSegments = self.mutableObjects.count;
-  return std::clamp(std::floor(value * numberOfSplineSegments), 0, numberOfSplineSegments);
+  return std::clamp(std::floor(value * numberOfSplineSegments), 0, numberOfSplineSegments - 1);
 }
 
 - (std::vector<NSUInteger>)indicesOfObjectsForParametricValues:(const CGFloats &)parametricValues {
