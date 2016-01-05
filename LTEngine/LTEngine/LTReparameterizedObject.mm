@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithParameterizedObject:(id<LTParameterizedObject>)parameterizedObject
+- (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject
                          reparameterization:(LTReparameterization *)reparameterization {
   if (self = [super init]) {
     _parameterizedObject = parameterizedObject;
@@ -48,8 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (id)copyWithZone:(nullable NSZone __unused *)zone {
-  return [[[self class] alloc] initWithParameterizedObject:[self.parameterizedObject copy]
-                                        reparameterization:[self.reparameterization copy]];
+  return self;
 }
 
 #pragma mark -

@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTParameterizedObject.h"
+#import "LTParameterizedValueObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,8 +15,9 @@ typedef NSDictionary<NSString *, id<LTPrimitiveParameterizedObject>>
 typedef NSMutableDictionary<NSString *, id<LTPrimitiveParameterizedObject>>
     LTMutableKeyToPrimitiveParameterizedObject;
 
-/// Univariately parameterized object constituted by a compound of primitive parameterized objects.
-@interface LTCompoundParameterizedObject : NSObject <LTParameterizedObject>
+/// Univariately parameterized value object constituted by a compound of primitive parameterized
+/// objects.
+@interface LTCompoundParameterizedObject : NSObject <LTParameterizedValueObject>
 
 - (instancetype)init NS_UNAVAILABLE;
 

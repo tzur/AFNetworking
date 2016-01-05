@@ -1422,6 +1422,7 @@
 		25705DBC1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTBrushRandomState+LTBrush.h"; sourceTree = "<group>"; };
 		25705DBD1B5E23B90054EC70 /* LTBrushRandomState+LTBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTBrushRandomState+LTBrush.mm"; sourceTree = "<group>"; };
 		25705DD11B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTBrushRandomState+LTBrushSpec.mm"; sourceTree = "<group>"; };
+		25964BFA1C390C2C00096586 /* LTParameterizedValueObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTParameterizedValueObject.h; sourceTree = "<group>"; };
 		25AF17341AD50BE00055E664 /* LTVGGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyph.h; sourceTree = "<group>"; };
 		25AF17351AD50BE00055E664 /* LTVGGlyph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVGGlyph.mm; sourceTree = "<group>"; };
 		25AF17361AD50BE00055E664 /* LTVGGlyphRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVGGlyphRun.h; sourceTree = "<group>"; };
@@ -2534,6 +2535,7 @@
 				50795ED91C0F4F1100773A71 /* LTParameterizedObjectStack.h */,
 				50795EDA1C0F4F1100773A71 /* LTParameterizedObjectStack.mm */,
 				25CE71DD1BF9D82100E13CB4 /* LTParameterizedObject.h */,
+				25964BFA1C390C2C00096586 /* LTParameterizedValueObject.h */,
 				25CE71DF1BF9D82D00E13CB4 /* LTPrimitiveParameterizedObject.h */,
 				50E9989E1C075F67004F15C9 /* LTReparameterization.h */,
 				50E9989F1C075F67004F15C9 /* LTReparameterization.mm */,
