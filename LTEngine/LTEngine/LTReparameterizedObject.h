@@ -1,17 +1,18 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTParameterizedObject.h"
+#import "LTParameterizedValueObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class LTReparameterization;
 
-/// Parameterized object constituted by another parameterized object and a reparameterization, both
-/// provided upon initialization. The reparameterization is used in order to project the intrinsic
-/// parametric range of this object to the corresponding range of the parameterized object.
-@interface LTReparameterizedObject<__covariant ObjectType:id<LTParameterizedObject>> : NSObject
-    <LTParameterizedObject>
+/// Immutable parameterized value object constituted by another immutable parameterized value object
+/// and a reparameterization, both provided upon initialization. The reparameterization is used in
+/// order to project the intrinsic parametric range of this object to the corresponding range of the
+/// parameterized object.
+@interface LTReparameterizedObject<__covariant ObjectType:id<LTParameterizedValueObject>> : NSObject
+    <LTParameterizedValueObject>
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -5,7 +5,7 @@
 
 #import "LTReparameterization.h"
 
-@interface LTReparameterizedObjectTestObject : NSObject <LTParameterizedObject>
+@interface LTReparameterizedObjectTestObject : NSObject <LTParameterizedValueObject>
 @property (nonatomic) CGFloats receivedValues;
 @property (nonatomic) NSString *receivedKey;
 @property (strong, nonatomic) LTParameterizationKeyToValue *returnedKeyToValue;
@@ -132,37 +132,8 @@ context(@"NSObject protocol", ^{
 });
 
 context(@"NSCopying protocol", ^{
-  __block LTReparameterizedObject *copyOfReparameterizedObject;
-
-  beforeEach(^{
-    id copyOfReparameterizationMock = OCMClassMock([LTReparameterization class]);
-    OCMStub([reparameterizationMock copy]).andReturn(copyOfReparameterizationMock);
-    OCMStub([copyOfReparameterizationMock minParametricValue]).andReturn(3);
-    OCMStub([copyOfReparameterizationMock maxParametricValue]).andReturn(4);
-    copyOfReparameterizedObject = [reparameterizedObject copy];
-  });
-
-  it(@"should return a copy", ^{
-    expect(copyOfReparameterizedObject).to.beMemberOf([reparameterizedObject class]);
-  });
-
-  it(@"should return a copy that is not identical to itself", ^{
-    expect(copyOfReparameterizedObject).toNot.beIdenticalTo(reparameterizedObject);
-  });
-
-  it(@"should return a copy with correct parameterization keys", ^{
-    expect(copyOfReparameterizedObject.parameterizationKeys)
-        .to.equal(reparameterizedObject.parameterizationKeys);
-  });
-
-  it(@"should return a copy with correct minimum parametric value", ^{
-    expect(copyOfReparameterizedObject.minParametricValue)
-        .to.equal(reparameterizedObject.minParametricValue);
-  });
-
-  it(@"should return a copy with correct maximum parametric value", ^{
-    expect(copyOfReparameterizedObject.maxParametricValue)
-        .to.equal(reparameterizedObject.maxParametricValue);
+  it(@"should return itself as copy, due to immutability", ^{
+    expect([reparameterizedObject copy]).to.beIdenticalTo(reparameterizedObject);
   });
 });
 
