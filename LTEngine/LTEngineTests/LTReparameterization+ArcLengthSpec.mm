@@ -4,9 +4,9 @@
 #import "LTReparameterization+ArcLength.h"
 
 #import "LTEasyVectorBoxing.h"
-#import "LTParameterizedObject.h"
+#import "LTParameterizedValueObject.h"
 
-@interface LTParameterizedTestObject : NSObject <LTParameterizedObject>
+@interface LTParameterizedTestObject : NSObject <LTParameterizedValueObject>
 @property (nonatomic) CGFloats receivedValuesForXKey;
 @property (nonatomic) CGFloats receivedValuesForYKey;
 @property (nonatomic) CGFloats returnedValuesForXKey;
