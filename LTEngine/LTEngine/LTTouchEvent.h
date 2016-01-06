@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Number of taps associated with this touch event.
 ///
 /// @see Homonymous property of \c UITouch.
-@property (readonly, nonatomic) CGFloat tapCount;
+@property (readonly, nonatomic) NSUInteger tapCount;
 
 /// Radius, in points, of the touch during the event.
 ///

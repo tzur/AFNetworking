@@ -149,6 +149,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, sequence ID: %lu, timestamp: %g, view: %@, "
+          @"view location: (%g, %g), previous view location: (%g, %g), phase: %ld, tap count: %lu, "
+          @"radius: %g, radius tolerance: %g, type: %ld, force: %g, maximum possible force: %g, "
+          @"azimuth angle: %g, azimuth unit vector: (%g, %g), altitude angle: %g, "
+          @"estimation update index: %lu, estimated properties: %ld, "
+          @"estimated properties expecting updates: %ld>",
+          [self class], self, (unsigned long)self.sequenceID, self.timestamp, self.view,
+          self.viewLocation.x, self.viewLocation.y, self.previousViewLocation.x,
+          self.previousViewLocation.y, (long)self.phase, (unsigned long)self.tapCount,
+          self.majorRadius, self.majorRadiusTolerance, (long)self.type,
+          [self.force CGFloatValue], [self.maximumPossibleForce CGFloatValue],
+          [self.azimuthAngle CGFloatValue], self.azimuthUnitVector.x, self.azimuthUnitVector.y,
+          [self.altitudeAngle CGFloatValue],
+          (unsigned long)[self.estimationUpdateIndex unsignedIntegerValue],
+          (long)self.estimatedProperties, (long)self.estimatedPropertiesExpectingUpdates];
+}
+
+#pragma mark -
 #pragma mark NSCopying
 #pragma mark -
 
