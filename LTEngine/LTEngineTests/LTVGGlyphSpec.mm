@@ -12,24 +12,20 @@ SpecBegin(LTVGGlyph)
 __block UIFont *font;
 __block CGPoint baselineOrigin;
 __block LTVGGlyph *glyph;
-__block CGPathRef path;
+__block lt::Ref<CGPathRef> path;
 
 beforeEach(^{
   font = [UIFont fontWithName:@"Arial" size:10];
   baselineOrigin = CGPointMake(0, 8);
-  path = CGPathCreateWithRect(CGRectMake(0, 1, 2, 3), NULL);
-  glyph = [[LTVGGlyph alloc] initWithPath:path glyphIndex:7 font:font
+  path = lt::Ref<CGPathRef>(CGPathCreateWithRect(CGRectMake(0, 1, 2, 3), NULL));
+  glyph = [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:font
                            baselineOrigin:baselineOrigin];
-});
-
-afterEach(^{
-  CGPathRelease(path);
 });
 
 context(@"initialization", ^{
   it(@"should raise when trying to initialize without font", ^{
     expect(^{
-      glyph = [[LTVGGlyph alloc] initWithPath:path glyphIndex:7 font:nil
+      glyph = [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:nil
                                baselineOrigin:baselineOrigin];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -43,10 +39,10 @@ context(@"initialization", ^{
   });
 
   it(@"should initialize correctly with a path", ^{
-    glyph = [[LTVGGlyph alloc] initWithPath:path glyphIndex:7 font:font
+    glyph = [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:font
                              baselineOrigin:baselineOrigin];
-    expect(glyph.path == path).beFalsy();
-    expect(CGPathEqualToPath(glyph.path, path)).to.beTruthy();
+    expect(glyph.path == path.get()).beFalsy();
+    expect(CGPathEqualToPath(glyph.path, path.get())).to.beTruthy();
     expect(glyph.glyphIndex).to.equal(7);
     expect(glyph.font).to.equal(font);
     expect(glyph.baselineOrigin).to.equal(baselineOrigin);
@@ -61,21 +57,23 @@ context(@"NSObject", ^{
     expect([glyph isEqual:glyph]).to.beTruthy();
 
     LTVGGlyph *equalGlyph =
-        [[LTVGGlyph alloc] initWithPath:path glyphIndex:7 font:font baselineOrigin:baselineOrigin];
+        [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:font
+                         baselineOrigin:baselineOrigin];
     expect([glyph isEqual:equalGlyph]).to.beTruthy();
 
     LTVGGlyph *differentGlyph =
-        [[LTVGGlyph alloc] initWithPath:path glyphIndex:8 font:font baselineOrigin:baselineOrigin];
+        [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:8 font:font
+                         baselineOrigin:baselineOrigin];
     expect([glyph isEqual:differentGlyph]).to.beFalsy();
 
     differentGlyph =
-        [[LTVGGlyph alloc] initWithPath:path glyphIndex:7
+        [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7
                                    font:[UIFont fontWithName:@"Arial" size:11]
                          baselineOrigin:baselineOrigin];
     expect([glyph isEqual:differentGlyph]).to.beFalsy();
 
     differentGlyph =
-        [[LTVGGlyph alloc] initWithPath:path glyphIndex:7 font:font
+        [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:font
                          baselineOrigin:CGPointMake(0, 1)];
     expect([glyph isEqual:differentGlyph]).to.beFalsy();
   });

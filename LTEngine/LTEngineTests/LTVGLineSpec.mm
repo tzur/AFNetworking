@@ -85,9 +85,8 @@ context(@"path", ^{
   });
   
   it(@"should create a correct path", ^{
-    CGPathRef path = [line newPathWithTrackingFactor:0];
-    shapeLayer.path = path;
-    CGPathRelease(path);
+    lt::Ref<CGPathRef> path = [line pathWithTrackingFactor:0];
+    shapeLayer.path = path.get();
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(25, 9), YES, 2.0);
     [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];
@@ -101,9 +100,8 @@ context(@"path", ^{
   });
 
   it(@"should create a correct path with non-zero tracking", ^{
-    CGPathRef path = [line newPathWithTrackingFactor:1];
-    shapeLayer.path = path;
-    CGPathRelease(path);
+    lt::Ref<CGPathRef> path = [line pathWithTrackingFactor:1];
+    shapeLayer.path = path.get();
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 9), YES, 2.0);
     [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];

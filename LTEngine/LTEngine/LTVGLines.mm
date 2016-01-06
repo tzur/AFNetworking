@@ -45,35 +45,35 @@
 #pragma mark Public methods
 #pragma mark -
 
-- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor
-                       trackingFactor:(CGFloat)trackingFactor {
+- (lt::Ref<CGPathRef>)pathWithLeadingFactor:(CGFloat)leadingFactor
+                             trackingFactor:(CGFloat)trackingFactor {
   NSParagraphStyle *paragraphStyle = [self.attributedString attribute:NSParagraphStyleAttributeName
                                                               atIndex:0 effectiveRange:NULL];
   NSTextAlignment alignment = paragraphStyle ? paragraphStyle.alignment : NSTextAlignmentLeft;
 
-  return [self newPathWithLeadingFactor:leadingFactor trackingFactor:trackingFactor
-                              alignment:alignment];
+  return [self pathWithLeadingFactor:leadingFactor trackingFactor:trackingFactor
+                           alignment:alignment];
 }
 
-- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor
-                       trackingFactor:(CGFloat)trackingFactor alignment:(NSTextAlignment)alignment {
+- (lt::Ref<CGPathRef>)pathWithLeadingFactor:(CGFloat)leadingFactor
+                             trackingFactor:(CGFloat)trackingFactor
+                                  alignment:(NSTextAlignment)alignment {
   CGMutablePathRef path = CGPathCreateMutable();
 
   CGFloat leading = 0;
 
   for (LTVGLine *line in self.lines) {
-    CGPathRef linePath = [line newPathWithTrackingFactor:trackingFactor];
-    CGAffineTransform alignmentTransformation = [self transformationForPath:linePath
+    lt::Ref<CGPathRef> linePath = [line pathWithTrackingFactor:trackingFactor];
+    CGAffineTransform alignmentTransformation = [self transformationForPath:linePath.get()
                                                                andAlignment:alignment];
     CGAffineTransform finalTransformation =
         CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, leading),
                                 alignmentTransformation);
-    CGPathAddPath(path, &finalTransformation, linePath);
-    CGPathRelease(linePath);
+    CGPathAddPath(path, &finalTransformation, linePath.get());
 
     leading += leadingFactor * line.lineHeight;
   }
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
 - (LTVGLines *)linesWithGlyphsTransformedUsingBlock:(LTVGGlyph *(^)(LTVGGlyph *glyph))block {
