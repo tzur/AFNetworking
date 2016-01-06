@@ -81,12 +81,10 @@ context(@"path", ^{
   });
 
   it(@"should create lines with correct path", ^{
-    CGPathRef path = [lines newPathWithLeadingFactor:0 trackingFactor:0];
+    lt::Ref<CGPathRef> path = [lines pathWithLeadingFactor:0 trackingFactor:0];
     CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 9);
-    CGPathRef translatedPath = CGPathCreateCopyByTransformingPath(path, &translation);
-    shapeLayer.path = translatedPath;
-    CGPathRelease(path);
-    CGPathRelease(translatedPath);
+    lt::Ref<CGPathRef> translatedPath(CGPathCreateCopyByTransformingPath(path.get(), &translation));
+    shapeLayer.path = translatedPath.get();
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(23, 36), YES, 2.0);
     [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];

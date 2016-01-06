@@ -41,7 +41,7 @@
 #pragma mark Public methods
 #pragma mark -
 
-- (CGPathRef)newPathWithTrackingFactor:(CGFloat)trackingFactor {
+- (lt::Ref<CGPathRef>)pathWithTrackingFactor:(CGFloat)trackingFactor {
   CGMutablePathRef path = CGPathCreateMutable();
 
   [self.glyphs enumerateObjectsUsingBlock:^(LTVGGlyph *glyph, NSUInteger i, BOOL *) {
@@ -50,7 +50,7 @@
     CGPathAddPath(path, &transformation, glyph.path);
   }];
 
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
 #pragma mark -

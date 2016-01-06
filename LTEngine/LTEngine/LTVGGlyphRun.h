@@ -11,9 +11,8 @@
 
 /// Returns a path of the runs (which, in turn, are paths of combined glyph paths) of this instance,
 /// s.t. the glyphs of this run are spaced by the product of the given \c trackingFactor and the
-/// point size of the font of this run. It is the responsibility of the caller to release the
-/// returned path.
-- (CGPathRef)newPathWithTrackingFactor:(CGFloat)trackingFactor;
+/// point size of the font of this run.
+- (lt::Ref<CGPathRef>)pathWithTrackingFactor:(CGFloat)trackingFactor;
 
 /// Ordered collection of \c LTVGGlyph constituting this run.
 @property (readonly, nonatomic) NSArray *glyphs;

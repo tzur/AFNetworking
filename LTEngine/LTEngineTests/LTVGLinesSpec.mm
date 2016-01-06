@@ -113,9 +113,8 @@ context(@"path", ^{
   });
 
   it(@"should create a correct path", ^{
-    CGPathRef path = [lines newPathWithLeadingFactor:0 trackingFactor:0];
-    shapeLayer.path = path;
-    CGPathRelease(path);
+    lt::Ref<CGPathRef> path = [lines pathWithLeadingFactor:0 trackingFactor:0];
+    shapeLayer.path = path.get();
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 19), YES, 2.0);
     [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];
@@ -129,9 +128,8 @@ context(@"path", ^{
   });
 
   it(@"should create a correct path with non-zero leading and non-zero tracking", ^{
-    CGPathRef path = [lines newPathWithLeadingFactor:1 trackingFactor:1];
-    shapeLayer.path = path;
-    CGPathRelease(path);
+    lt::Ref<CGPathRef> path = [lines pathWithLeadingFactor:1 trackingFactor:1];
+    shapeLayer.path = path.get();
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(26, 30), YES, 2.0);
     [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];
@@ -161,7 +159,7 @@ context(@"path", ^{
 
       lines = [[LTVGLines alloc] initWithLines:linesArray attributedString:attributedString];
 
-      CGPathRef path = [lines newPathWithLeadingFactor:0 trackingFactor:0];
+      lt::Ref<CGPathRef> path = [lines pathWithLeadingFactor:0 trackingFactor:0];
       CGAffineTransform translation;
       if (i == 0) {
         translation = CGAffineTransformIdentity;
@@ -171,10 +169,9 @@ context(@"path", ^{
         translation = CGAffineTransformMakeTranslation(14, 0);
       }
 
-      CGPathRef translatedPath = CGPathCreateCopyByTransformingPath(path, &translation);
-      CGPathRelease(path);
-      shapeLayer.path = translatedPath;
-      CGPathRelease(translatedPath);
+      lt::Ref<CGPathRef> translatedPath(CGPathCreateCopyByTransformingPath(path.get(),
+                                                                           &translation));
+      shapeLayer.path = translatedPath.get();
 
       UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 19), YES, 2.0);
       [shapeLayer renderInContext:UIGraphicsGetCurrentContext()];

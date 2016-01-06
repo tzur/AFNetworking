@@ -41,19 +41,18 @@
 #pragma mark Public methods
 #pragma mark -
 
-- (CGPathRef)newPathWithTrackingFactor:(CGFloat)trackingFactor {
+- (lt::Ref<CGPathRef>)pathWithTrackingFactor:(CGFloat)trackingFactor {
   CGMutablePathRef path = CGPathCreateMutable();
 
   CGFloat tracking = 0;
   for (LTVGGlyphRun *run in self.glyphRuns) {
-    CGPathRef runPath = [run newPathWithTrackingFactor:trackingFactor];
+    lt::Ref<CGPathRef> runPath = [run pathWithTrackingFactor:trackingFactor];
     CGAffineTransform transformation = CGAffineTransformMakeTranslation(tracking, 0);
-    CGPathAddPath(path, &transformation, runPath);
-    CGPathRelease(runPath);
+    CGPathAddPath(path, &transformation, runPath.get());
 
     tracking += trackingFactor * run.glyphs.count * run.font.pointSize;
   }
-  return path;
+  return lt::Ref<CGPathRef>(path);
 }
 
 #pragma mark -

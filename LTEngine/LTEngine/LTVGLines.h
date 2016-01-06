@@ -19,9 +19,9 @@ typedef LTVGGlyph *(^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 /// Returns a path of the lines of this instance, s.t. the vertical distance between the subpaths of
 /// two consecutive lines corresponds to the product of the given \c leadingFactor and the baseline
 /// distance of the involved lines. The glyphs of the runs of each line are spaced by the product of
-/// the given \c trackingFactor and the point size of the font of each run. It is the responsibility
-/// of the caller to release the returned path.
-- (CGPathRef)newPathWithLeadingFactor:(CGFloat)leadingFactor trackingFactor:(CGFloat)trackingFactor;
+/// the given \c trackingFactor and the point size of the font of each run.
+- (lt::Ref<CGPathRef>)pathWithLeadingFactor:(CGFloat)leadingFactor
+                             trackingFactor:(CGFloat)trackingFactor;
 
 /// Returns a new \c LTVGLines object, created by transforming each glyph of this instance using the
 /// given \c block.
