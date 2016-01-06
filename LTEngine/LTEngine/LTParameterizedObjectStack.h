@@ -32,11 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// the \c parameterizedObjects. The \c minParametricValue of the given \c parameterizedObject must
 /// equal the \c maxParametricValue of the last object in \c parameterizedObjects. The
 /// \c minParametricValue and the \c maxParametricValue of this instance are updated accordingly.
+///
+/// Time complexity: \c O(n), where \c n is the number of elements in \c parameterizedObjects.
 - (void)pushParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject;
 
 /// Replaces the given \c objectToReplace with the given \c newObject. The \c objectToReplace must
 /// be in the \c parameterizedObjects of this instance and its \c minParametricValue and
 /// \c maxParametricValue must equal those of the \c newObject.
+///
+/// Time complexity: time complexity of \c NSMutableArray to perform \c indexOfObject: and
+/// \c replaceObjectAtIndex:withObject:.
 - (void)replaceParameterizedObject:(id<LTParameterizedValueObject>)objectToReplace
                           byObject:(id<LTParameterizedValueObject>)newObject;
 
@@ -44,9 +49,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// object is returned. The \c minParametricValue and the \c maxParametricValue of this instance are
 /// updated accordingly. Does nothing and returns \c nil if \c parameterizedObjects consists of a
 /// single object.
+///
+/// Time complexity: \c O(n), where \c n is the number of elements in \c parameterizedObjects.
 - (nullable id<LTParameterizedValueObject>)popParameterizedObject;
 
+/// Returns the number of parameterized objects held by this object.
+///
+/// Time complexity: \c O(1)
+@property (readonly, nonatomic) NSUInteger count;
+
 /// Ordered collection of parameterized objects constituting this object.
+///
+/// Time complexity: \c O(n), where \c n is the number of elements in \c parameterizedObjects, for
+/// the first call after an update (pushing, replacing, popping), and \c O(1) for additional calls.
 @property (readonly, nonatomic) NSArray<id<LTParameterizedValueObject>> *parameterizedObjects;
 
 @end

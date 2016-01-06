@@ -22,9 +22,9 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 /// Mutable ordered collection of parameterized objects constituting this instance.
 @property (strong, nonatomic) NSMutableArray<id<LTParameterizedValueObject>> *mutableObjects;
 
-/// Immutable ordered collection of parameterized objects returned to user. Updated after updates to
+/// Immutable ordered collection of parameterized objects returned to user. Reset after updates to
 /// the state of the stack. Used for performance reasons.
-@property (strong, readwrite, nonatomic) NSArray<id<LTParameterizedValueObject>> *immutableObjects;
+@property (strong, nonatomic, nullable) NSArray<id<LTParameterizedValueObject>> *immutableObjects;
 
 @end
 
@@ -37,7 +37,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 - (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   if (self = [super init]) {
     self.mutableObjects = [NSMutableArray arrayWithObject:parameterizedObject];
-    [self updateImmutableObjects];
+    [self resetImmutableObjects];
     _mapping.assign({parameterizedObject.minParametricValue,
                      parameterizedObject.maxParametricValue});
   }
@@ -53,7 +53,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   [self.mutableObjects addObject:parameterizedObject];
   _mapping.push_back(parameterizedObject.maxParametricValue);
   self.reparameterization = [[LTReparameterization alloc] initWithMapping:_mapping];
-  [self updateImmutableObjects];
+  [self resetImmutableObjects];
 }
 
 - (void)replaceParameterizedObject:(id<LTParameterizedValueObject>)objectToReplace
@@ -73,7 +73,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
                     objectToReplace.parameterizationKeys.description,
                     newObject.parameterizationKeys.description);
   [self.mutableObjects replaceObjectAtIndex:index withObject:newObject];
-  [self updateImmutableObjects];
+  [self resetImmutableObjects];
 }
 
 - (nullable id<LTParameterizedValueObject>)popParameterizedObject {
@@ -85,7 +85,7 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   [self.mutableObjects removeLastObject];
   _mapping.pop_back();
   self.reparameterization = [[LTReparameterization alloc] initWithMapping:_mapping];
-  [self updateImmutableObjects];
+  [self resetImmutableObjects];
   return result;
 }
 
@@ -111,8 +111,8 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
                     [self.mutableObjects.lastObject parameterizationKeys]);
 }
 
-- (void)updateImmutableObjects {
-  self.immutableObjects = [self.mutableObjects copy];
+- (void)resetImmutableObjects {
+  self.immutableObjects = nil;
 }
 
 #pragma mark -
@@ -197,7 +197,14 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Properties
 #pragma mark -
 
+- (NSUInteger)count {
+  return self.mutableObjects.count;
+}
+
 - (NSArray<id<LTParameterizedValueObject>> *)parameterizedObjects {
+  if (!self.immutableObjects) {
+    self.immutableObjects = [self.mutableObjects copy];
+  }
   return self.immutableObjects;
 }
 
