@@ -294,4 +294,37 @@ context(@"LTParameterizedObject protocol", ^{
   });
 });
 
+context(@"count property", ^{
+  __block id anotherParameterizedObjectMock;
+  __block id yetAnotherParameterizedObjectMock;
+
+  beforeEach(^{
+    anotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+    OCMStub([anotherParameterizedObjectMock minParametricValue]).andReturn(4);
+    OCMStub([anotherParameterizedObjectMock maxParametricValue]).andReturn(5);
+    OCMStub([anotherParameterizedObjectMock parameterizationKeys])
+        .andReturn(parameterizationKeys);
+
+    yetAnotherParameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
+    OCMStub([yetAnotherParameterizedObjectMock minParametricValue]).andReturn(4);
+    OCMStub([yetAnotherParameterizedObjectMock maxParametricValue]).andReturn(5);
+    OCMStub([yetAnotherParameterizedObjectMock parameterizationKeys])
+        .andReturn(parameterizationKeys);
+  });
+
+  it(@"should return the correct count", ^{
+    expect(object.count).to.equal(1);
+
+    [object pushParameterizedObject:anotherParameterizedObjectMock];
+    expect(object.count).to.equal(2);
+
+    [object replaceParameterizedObject:anotherParameterizedObjectMock
+                              byObject:yetAnotherParameterizedObjectMock];
+    expect(object.count).to.equal(2);
+
+    [object popParameterizedObject];
+    expect(object.count).to.equal(1);
+  });
+});
+
 SpecEnd

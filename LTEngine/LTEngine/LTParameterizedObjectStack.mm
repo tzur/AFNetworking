@@ -197,6 +197,10 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark Properties
 #pragma mark -
 
+- (NSUInteger)count {
+  return self.mutableObjects.count;
+}
+
 - (NSArray<id<LTParameterizedValueObject>> *)parameterizedObjects {
   if (!self.immutableObjects) {
     self.immutableObjects = [self.mutableObjects copy];
