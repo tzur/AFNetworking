@@ -28,18 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// sampled as well as the actual sampling result.
 @interface LTSampler : NSObject
 
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with the given parameterized \c object. The given \c object is held strongly.
-- (instancetype)initWithParameterizedObject:(id<LTParameterizedObject>)object
-    NS_DESIGNATED_INITIALIZER;
-
-/// Samples the parameterized object held by this instance according to values of the given
-/// \c discreteSet belonging to the given \c interval. Returns a tuple consisting of a) the values
-/// at which the parameterized \c object has been sampled, and b) the mapping from keys of the
-/// sampled parameterized \c object to the corresponding values.
-- (id<LTSamplerOutput>)samplesUsingDiscreteSet:(id<LTFloatSet>)discreteSet
-                                      interval:(const lt::Interval<CGFloat> &)interval;
+/// Samples the given \c parameterizedObject according to the values of the given \c discreteSet,
+/// belonging to the given \c interval. Returns a tuple consisting of a) the values at which the
+/// \c parameterizedObject has been sampled, and b) the mapping from keys of the sampled
+/// \c parameterizedObject to the corresponding values.
+- (id<LTSamplerOutput>)samplesFromParameterizedObject:(id<LTParameterizedObject>)parameterizedObject
+                                     usingDiscreteSet:(id<LTFloatSet>)discreteSet
+                                             interval:(const lt::Interval<CGFloat> &)interval;
 
 @end
 

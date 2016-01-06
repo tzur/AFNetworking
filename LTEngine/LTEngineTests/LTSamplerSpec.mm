@@ -17,10 +17,6 @@
 
 @synthesize parameterizationKeys = _parameterizationKeys;
 
-- (id)copyWithZone:(nullable NSZone __unused *)zone {
-  return self;
-}
-
 - (LTParameterizationKeyToValue *)mappingForParametricValue:(__unused CGFloat)value {
   return nil;
 }
@@ -68,12 +64,11 @@ __block LTSampler *sampler;
 __block LTTestParameterizedObject *parameterizedObject;
 
 beforeEach(^{
+  sampler = [[LTSampler alloc] init];
   parameterizedObject = [[LTTestParameterizedObject alloc] init];
   parameterizedObject.minParametricValue = 0;
   parameterizedObject.maxParametricValue = 10;
   parameterizedObject.returnedMapping = [[LTParameterizationKeyToValues alloc] init];
-
-  sampler = [[LTSampler alloc] initWithParameterizedObject:parameterizedObject];
 });
 
 it(@"should correcly sample parameterized object using discrete CGFloat set, in given interval", ^{
@@ -82,7 +77,8 @@ it(@"should correcly sample parameterized object using discrete CGFloat set, in 
 
   parameterizedObject.expectedParametricValues = {1, 2, 3};
 
-  id<LTSamplerOutput> output = [sampler samplesUsingDiscreteSet:set interval:interval];
+  id<LTSamplerOutput> output = [sampler samplesFromParameterizedObject:parameterizedObject
+                                                      usingDiscreteSet:set interval:interval];
 
   expect(set.receivedInterval.min()).to.equal(interval.min());
   expect(set.receivedInterval.max()).to.equal(interval.max());

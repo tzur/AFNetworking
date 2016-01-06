@@ -56,32 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface LTSampler ()
-
-/// Parameterized object used for sampling.
-@property (strong, nonatomic) id<LTParameterizedObject> parameterizedObject;
-
-@end
-
 @implementation LTSampler
-
-#pragma mark -
-#pragma mark Initialization
-#pragma mark -
-
-- (instancetype)initWithParameterizedObject:(id<LTParameterizedObject>)object {
-  if (self = [super init]) {
-    self.parameterizedObject = object;
-  }
-  return self;
-}
 
 #pragma mark -
 #pragma mark Public interface
 #pragma mark -
 
-- (id<LTSamplerOutput>)samplesUsingDiscreteSet:(id<LTFloatSet>)discreteSet
-                                      interval:(const lt::Interval<CGFloat> &)interval {
+- (id<LTSamplerOutput>)samplesFromParameterizedObject:(id<LTParameterizedObject>)parameterizedObject
+                                     usingDiscreteSet:(id<LTFloatSet>)discreteSet
+                                             interval:(const lt::Interval<CGFloat> &)interval {
   CGFloats parametricValues = [discreteSet discreteValuesInInterval:interval];
 
   if (!parametricValues.size()) {
@@ -89,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   LTParameterizationKeyToValues *mapping =
-      [self.parameterizedObject mappingForParametricValues:parametricValues];
+      [parameterizedObject mappingForParametricValues:parametricValues];
   return [[LTSamplerOutput alloc] initWithSampledParametricValues:parametricValues mapping:mapping];
 }
 
