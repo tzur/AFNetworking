@@ -41,6 +41,14 @@ NS_ASSUME_NONNULL_BEGIN
   return size;
 }
 
+- (BOOL)inputSizeBoundedBySize:(CGSize __unused)size {
+  // For any size \c s \c ([self sizeForInputSize:s]) returns exactly \c s. Hence there exists
+  // no size such that the value returned for it by \c ([self sizeForInputSize]) bounds every other
+  // size returned by \c ([self sizeForInputSize]). Since that would imply that there exists a size
+  // that bounds all other sizes.
+  return NO;
+}
+
 - (PTNImageContentMode)contentMode {
   // Using aspect fit is arbitrary since no use of it should be made when the aspect ratio of the
   // requested size matches that of the image.
@@ -82,6 +90,17 @@ NS_ASSUME_NONNULL_BEGIN
   return CGSizeMake(floor(scaledSize.width), floor(scaledSize.height));
 }
 
+- (BOOL)inputSizeBoundedBySize:(CGSize)size {
+  // While extremely inefficient this single dimension comparison is the best certainty possible
+  // without knowing the aspect ratio of the original size.
+  // For example the only size to bound a \c PTNMaxPixelResizingStrategy with a max pixels value
+  // of \c 512 will be \c (512, 512).
+  // Obviously containing a lot more than \c 512 pixels, this is the only size that bounds from
+  // above all sizes with less than or equal to \c 512 pixels. Due to edge cases such as \c (1, 512)
+  // and \c (512, 1).
+  return MIN(size.height, size.width) >= self.maxPixels;
+}
+
 - (PTNImageContentMode)contentMode {
   // Using aspect fit is crucial since it returns a size that is bounded from above by the requested
   // size.
@@ -115,6 +134,10 @@ NS_ASSUME_NONNULL_BEGIN
   return CGSizeMake(round(size.width * scaling), round(size.height * scaling));
 }
 
+- (BOOL)inputSizeBoundedBySize:(CGSize)size {
+  return size.height >= self.size.height && size.width >= self.size.width;
+}
+
 - (PTNImageContentMode)contentMode {
   return PTNImageContentModeAspectFit;
 }
@@ -144,6 +167,18 @@ NS_ASSUME_NONNULL_BEGIN
   CGFloat scaling = MAX(widthRatio, heightRatio);
 
   return CGSizeMake(round(size.width * scaling), round(size.height * scaling));
+}
+
+- (BOOL)inputSizeBoundedBySize:(CGSize __unused)size {
+  // Due to the nature of \c PTNImageContentModeAspectFill there is not size that bounds all sizes
+  // returned by this strategy.
+  // Let there be a \c PTNAspectFillResizingStrategy of size \c (a, b). Assume by contradiction
+  // that there exists some size \c (c, d) such that the returned value of
+  // \c ([self sizeForInputSize:]) with it is \c (e, f). And assume \c (e, f) bounds from above any
+  // size returned by the strategy.
+  // However the size \c (e, 1) supplied to this strategy will return the size \c (64e, 64) which is
+  // clearly not bound by (e, f) in width.
+  return NO;
 }
 
 - (PTNImageContentMode)contentMode {

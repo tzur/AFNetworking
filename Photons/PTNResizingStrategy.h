@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// and uniformly scaled from \c size.
 - (CGSize)sizeForInputSize:(CGSize)size;
 
+/// \c YES if <tt>([self sizeForInputSize:])</tt> with \c size bounds from above the the size
+/// returned by <tt>([self sizeForInputSize:])</tt> for \b any size.
+/// Size \c s1 bounds from above size \c s2 if the rect <tt>(0, 0, s1.width, s1.height)</tt>
+/// bounds from above the rect <tt>(0, 0, s2.width, s2.height)</tt>.
+- (BOOL)inputSizeBoundedBySize:(CGSize)size;
+
 /// Content mode used by this \c PTNResizingStrategy in the cases where the requested size
 /// doesn't match the aspect ratio of the original size.
 @property (readonly, nonatomic) PTNImageContentMode contentMode;

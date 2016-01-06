@@ -57,6 +57,11 @@ it(@"should return correct output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(50, 200)]).to.equal(CGSizeMake(50, 200));
 });
 
+it(@"should not have a binding size", ^{
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(100, 100)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(1024, 1024)]).to.beFalsy();
+});
+
 SpecEnd
 
 SpecBegin(PTNMaxPixelsResizingStrategy)
@@ -72,6 +77,12 @@ it(@"should return correct output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(512, 2048)]).to.equal(CGSizeMake(512, 2048));
   expect([strategy sizeForInputSize:CGSizeMake(2048, 2048)]).to.equal(CGSizeMake(1024, 1024));
   expect([strategy sizeForInputSize:CGSizeMake(1024, 4096)]).to.equal(CGSizeMake(512, 2048));
+});
+
+it(@"should be bound by sizes with both dimensions larger than max pixels", ^{
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(512, 512)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(2048, 2048)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(1024 * 1024, 1024 * 1024)]).to.beTruthy();
 });
 
 SpecEnd
@@ -96,6 +107,13 @@ it(@"should round output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(40.1, 10)]).to.equal(CGSizeMake(20, 5));
 });
 
+it(@"should be bound by sizes larger than strategy's size in both dimensions", ^{
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(10, 10)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(19, 10)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(20, 9)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(20, 10)]).to.beTruthy();
+});
+
 SpecEnd
 
 SpecBegin(PTNAspectFillResizingStrategy)
@@ -116,6 +134,11 @@ it(@"should return correct output size", ^{
 
 it(@"should round output size", ^{
   expect([strategy sizeForInputSize:CGSizeMake(40.1, 10)]).to.equal(CGSizeMake(40, 10));
+});
+
+it(@"should not have a binding size", ^{
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(20, 10)]).to.beFalsy();
+  expect([strategy inputSizeBoundedBySize:CGSizeMake(1024, 1024)]).to.beFalsy();
 });
 
 SpecEnd
