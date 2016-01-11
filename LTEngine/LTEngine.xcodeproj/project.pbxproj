@@ -531,6 +531,7 @@
 		50C371661BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */; };
 		50CF199619D16BB60010D52F /* LTQuad.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF199419D16BB60010D52F /* LTQuad.h */; };
 		50CF199719D16BB60010D52F /* LTQuad.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF199519D16BB60010D52F /* LTQuad.mm */; };
+		50D61F4A1C4416CE00EED798 /* LTQuadSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D61F491C4416CE00EED798 /* LTQuadSpec.mm */; };
 		50D77CE71B6F5BC20001DA0C /* EdgeAvoiding.png in Resources */ = {isa = PBXBuildFile; fileRef = 50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */; };
 		50D82E721BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */; };
 		50D82E731BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */; };
@@ -1838,6 +1839,7 @@
 		50C371651BF0DDA5003EC78D /* LTPrimitivePolynomialInterpolantSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPrimitivePolynomialInterpolantSpec.mm; sourceTree = "<group>"; };
 		50CF199419D16BB60010D52F /* LTQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuad.h; sourceTree = "<group>"; };
 		50CF199519D16BB60010D52F /* LTQuad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuad.mm; sourceTree = "<group>"; };
+		50D61F491C4416CE00EED798 /* LTQuadSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadSpec.mm; sourceTree = "<group>"; };
 		50D77CE61B6F5BC20001DA0C /* EdgeAvoiding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EdgeAvoiding.png; path = Resources/EdgeAvoiding.png; sourceTree = "<group>"; };
 		50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompoundParameterizedObjectFactory.h; sourceTree = "<group>"; };
 		50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundParameterizedObjectFactory.mm; sourceTree = "<group>"; };
@@ -4098,6 +4100,7 @@
 		8BEE674419596F59005E4D53 /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				50D61F491C4416CE00EED798 /* LTQuadSpec.mm */,
 				28BBD79119A109D80062C803 /* LTRectSpec.mm */,
 				2843B6FA18A938AF0044B87A /* LTRotatedRectSpec.mm */,
 				28B8BC0B1B692F8400CF9F73 /* LTSlidingWindowFilterSpec.mm */,
@@ -5303,6 +5306,7 @@
 				03BBB383188C0B98001E7703 /* LTFractionalNoiseSpec.mm in Sources */,
 				2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */,
 				28BBD79219A109D80062C803 /* LTRectSpec.mm in Sources */,
+				50D61F4A1C4416CE00EED798 /* LTQuadSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
