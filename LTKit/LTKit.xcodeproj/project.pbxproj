@@ -452,6 +452,7 @@
 		8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/testing/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHashExtensionsSpec.mm; sourceTree = "<group>"; };
+		8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTRandomAccessCollection.h; sourceTree = "<group>"; };
 		8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumSpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
@@ -887,6 +888,7 @@
 				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
 				5067221719EA80B5003AF8D2 /* LTQueue.mm */,
+				8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */,
 				28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */,
 				28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */,
 			);
