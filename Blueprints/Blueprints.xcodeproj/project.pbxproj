@@ -204,6 +204,7 @@
 		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8BED82A91C3BEDA00001C6F1 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTEngine/LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8BED82C11C3BEDB00001C6F1 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "../LTEngine/third_party/utils/Mantle/build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
+		8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollection.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
+				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
 			);
 			path = Blueprints;
 			sourceTree = "<group>";
