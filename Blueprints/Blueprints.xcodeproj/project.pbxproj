@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8BED800B1C3A66E90001C6F1 /* BLUObject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8BED800A1C3A66E90001C6F1 /* BLUObject.h */; };
-		8BED800D1C3A66E90001C6F1 /* BLUObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED800C1C3A66E90001C6F1 /* BLUObject.mm */; };
-		8BED809B1C3A68290001C6F1 /* BLUObjectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
@@ -180,23 +177,10 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		8BED80051C3A66E90001C6F1 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				8BED800B1C3A66E90001C6F1 /* BLUObject.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BED800A1C3A66E90001C6F1 /* BLUObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUObject.h; sourceTree = "<group>"; };
-		8BED800C1C3A66E90001C6F1 /* BLUObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUObject.mm; sourceTree = "<group>"; };
 		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8BED808F1C3A68080001C6F1 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -204,7 +188,6 @@
 		8BED80921C3A68080001C6F1 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		8BED80981C3A68290001C6F1 /* BlueprintsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueprintsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUObjectSpec.mm; sourceTree = "<group>"; };
 		8BED809C1C3A68290001C6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTEngine/LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blueprints-Prefix.pch"; sourceTree = "<group>"; };
@@ -216,13 +199,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8BED80041C3A66E90001C6F1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8BED80951C3A68290001C6F1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -262,8 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
-				8BED800A1C3A66E90001C6F1 /* BLUObject.h */,
-				8BED800C1C3A66E90001C6F1 /* BLUObject.mm */,
 			);
 			path = Blueprints;
 			sourceTree = "<group>";
@@ -303,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
-				8BED809A1C3A68290001C6F1 /* BLUObjectSpec.mm */,
 				8BED809C1C3A68290001C6F1 /* Info.plist */,
 			);
 			path = BlueprintsTests;
@@ -657,7 +630,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BED800D1C3A66E90001C6F1 /* BLUObject.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,7 +637,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BED809B1C3A68290001C6F1 /* BLUObjectSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
