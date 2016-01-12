@@ -9,10 +9,17 @@
 /* Begin PBXBuildFile section */
 		8B3CE8091C43D90F008E779B /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80B01C3A689B0001C6F1 /* libLTKit.a */; };
 		8B3CE80B1C43D90F008E779B /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3CE80A1C43D90F008E779B /* libextobjc_iOS.a */; };
+		8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */; };
+		8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */; };
+		8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */; };
+		8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */; };
+		8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
 		8BED81D61C3A71B40001C6F1 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81CD1C3A717B0001C6F1 /* OCMock.framework */; };
+		8BED83041C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */; };
+		8BED83051C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +194,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+BLUNodeCollection.h"; sourceTree = "<group>"; };
+		8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+BLUNodeCollection.mm"; sourceTree = "<group>"; };
+		8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollectionExamples.h; sourceTree = "<group>"; };
+		8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNodeCollectionExamples.m; sourceTree = "<group>"; };
+		8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+BLUNodeCollectionSpec.mm"; sourceTree = "<group>"; };
+		8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSOrderedSet+BLUNodeCollectionSpec.mm"; sourceTree = "<group>"; };
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -205,6 +218,8 @@
 		8BED82A91C3BEDA00001C6F1 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTEngine/LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8BED82C11C3BEDB00001C6F1 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "../LTEngine/third_party/utils/Mantle/build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
 		8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollection.h; sourceTree = "<group>"; };
+		8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOrderedSet+BLUNodeCollection.h"; sourceTree = "<group>"; };
+		8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSOrderedSet+BLUNodeCollection.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +265,10 @@
 			children = (
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
 				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
+				8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */,
+				8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */,
+				8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */,
+				8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */,
 			);
 			path = Blueprints;
 			sourceTree = "<group>";
@@ -289,6 +308,10 @@
 			isa = PBXGroup;
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
+				8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */,
+				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */,
+				8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */,
+				8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */,
 				8BED809C1C3A68290001C6F1 /* Info.plist */,
 			);
 			path = BlueprintsTests;
@@ -660,6 +683,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */,
+				8BED83051C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,6 +692,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */,
+				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */,
+				8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
