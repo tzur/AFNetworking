@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		84146FB51C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */; };
+		84182D2A1C43968E00F762DF /* PTNFileSystemAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 84182D281C43968E00F762DF /* PTNFileSystemAlbum.h */; };
+		84182D2B1C43968E00F762DF /* PTNFileSystemAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 84182D291C43968E00F762DF /* PTNFileSystemAlbum.m */; };
+		84182D461C4396AD00F762DF /* PTNFileSystemAlbumSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84182D451C4396AD00F762DF /* PTNFileSystemAlbumSpec.m */; };
 		84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84195F371C1EC8740081EC68 /* PTNImageContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84195F3A1C1EC8740081EC68 /* PTNImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F381C1EC8740081EC68 /* PTNImageContainer.m */; };
 		84195F3C1C1ECBFA0081EC68 /* PTNImageContainerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */; };
@@ -329,6 +332,9 @@
 
 /* Begin PBXFileReference section */
 		84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PhotoKit+PhotonsSpec.m"; sourceTree = "<group>"; };
+		84182D281C43968E00F762DF /* PTNFileSystemAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNFileSystemAlbum.h; sourceTree = "<group>"; };
+		84182D291C43968E00F762DF /* PTNFileSystemAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNFileSystemAlbum.m; sourceTree = "<group>"; };
+		84182D451C4396AD00F762DF /* PTNFileSystemAlbumSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNFileSystemAlbumSpec.m; sourceTree = "<group>"; };
 		84195F371C1EC8740081EC68 /* PTNImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageContainer.h; sourceTree = "<group>"; };
 		84195F381C1EC8740081EC68 /* PTNImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainer.m; sourceTree = "<group>"; };
 		84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainerSpec.m; sourceTree = "<group>"; };
@@ -581,6 +587,7 @@
 			isa = PBXGroup;
 			children = (
 				8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */,
+				84182D451C4396AD00F762DF /* PTNFileSystemAlbumSpec.m */,
 				848188651C3BF4620070462E /* PTNFileSystemDirectoryDescriptorSpec.m */,
 				848188661C3BF4620070462E /* PTNFileSystemFileDescriptorSpec.m */,
 			);
@@ -894,6 +901,8 @@
 			children = (
 				8BAB94E41B80730E00B25392 /* NSURL+FileSystem.h */,
 				8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */,
+				84182D281C43968E00F762DF /* PTNFileSystemAlbum.h */,
+				84182D291C43968E00F762DF /* PTNFileSystemAlbum.m */,
 				848188821C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.h */,
 				848188831C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.m */,
 				848188841C3BF48E0070462E /* PTNFileSystemFileDescriptor.h */,
@@ -1024,6 +1033,7 @@
 				84331A911C300C7B004502B5 /* PTNDropboxEntry.h in Headers */,
 				8BAB947C1B7C820700B25392 /* PTNResizingStrategy.h in Headers */,
 				8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */,
+				84182D2A1C43968E00F762DF /* PTNFileSystemAlbum.h in Headers */,
 				8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */,
 				8BAB95251B8234F600B25392 /* PTNImageResizer.h in Headers */,
 				84195F391C1EC8740081EC68 /* PTNImageContainer.h in Headers */,
@@ -1389,6 +1399,7 @@
 				8B2FD0D01B09CD0800757B1F /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				844C10C11C3A5D54001A6DC9 /* PTNNSURLTestUtils.m in Sources */,
 				84E27AC11C34288600806A27 /* NSURL+DropboxSpec.m in Sources */,
+				84182D461C4396AD00F762DF /* PTNFileSystemAlbumSpec.m in Sources */,
 				8B2FD0DF1B09CD0800757B1F /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8B2FD0DE1B09CD0800757B1F /* EXPMatchers+sendValues.m in Sources */,
 				84195F3C1C1ECBFA0081EC68 /* PTNImageContainerSpec.m in Sources */,
@@ -1418,6 +1429,7 @@
 				8BAFDCB31B0DEE2B003FB8F5 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
 				8BAFDCB41B0DEE2B003FB8F5 /* PTNPhotoKitAlbumType.m in Sources */,
 				8B3832371B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.m in Sources */,
+				84182D2B1C43968E00F762DF /* PTNFileSystemAlbum.m in Sources */,
 				848186781C3ADD810070462E /* NSURL+Photons.m in Sources */,
 				8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */,
 				8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */,
