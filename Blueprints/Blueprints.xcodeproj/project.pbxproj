@@ -20,12 +20,15 @@
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
 		8BED81D61C3A71B40001C6F1 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81CD1C3A717B0001C6F1 /* OCMock.framework */; };
 		8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED82C41C3D32F80001C6F1 /* BLUNode.m */; };
+		8BED82E11C3D39B20001C6F1 /* BLUTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED82E01C3D39B20001C6F1 /* BLUTree.m */; };
 		8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */; };
 		8BED82FC1C3D6A8A0001C6F1 /* BLUNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED82C31C3D32F80001C6F1 /* BLUNode.h */; };
+		8BED82FD1C3D6A8A0001C6F1 /* BLUTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED82DF1C3D39B20001C6F1 /* BLUTree.h */; };
 		8BED83041C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */; };
 		8BED83051C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */; };
 		8BED83081C3D87480001C6F1 /* BLUNode+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */; };
 		8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */; };
+		8BED830B1C3E84DB0001C6F1 /* BLUTreeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED830A1C3E84DB0001C6F1 /* BLUTreeSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -226,12 +229,15 @@
 		8BED82C11C3BEDB00001C6F1 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "../LTEngine/third_party/utils/Mantle/build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
 		8BED82C31C3D32F80001C6F1 /* BLUNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNode.h; sourceTree = "<group>"; };
 		8BED82C41C3D32F80001C6F1 /* BLUNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNode.m; sourceTree = "<group>"; };
+		8BED82DF1C3D39B20001C6F1 /* BLUTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUTree.h; sourceTree = "<group>"; };
+		8BED82E01C3D39B20001C6F1 /* BLUTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUTree.m; sourceTree = "<group>"; };
 		8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUNodeSpec.mm; sourceTree = "<group>"; };
 		8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollection.h; sourceTree = "<group>"; };
 		8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOrderedSet+BLUNodeCollection.h"; sourceTree = "<group>"; };
 		8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSOrderedSet+BLUNodeCollection.mm"; sourceTree = "<group>"; };
 		8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Operations.h"; sourceTree = "<group>"; };
 		8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Operations.m"; sourceTree = "<group>"; };
+		8BED830A1C3E84DB0001C6F1 /* BLUTreeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUTreeSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +287,8 @@
 				8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */,
 				8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */,
 				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
+				8BED82DF1C3D39B20001C6F1 /* BLUTree.h */,
+				8BED82E01C3D39B20001C6F1 /* BLUTree.m */,
 				8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */,
 				8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */,
 				8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */,
@@ -328,6 +336,7 @@
 				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */,
 				8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */,
 				8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */,
+				8BED830A1C3E84DB0001C6F1 /* BLUTreeSpec.mm */,
 				8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */,
 				8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */,
 				8BED809C1C3A68290001C6F1 /* Info.plist */,
@@ -703,6 +712,7 @@
 			files = (
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
+				8BED82E11C3D39B20001C6F1 /* BLUTree.m in Sources */,
 				8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */,
 				8BED83051C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm in Sources */,
 			);
@@ -717,6 +727,7 @@
 				8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */,
 				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */,
 				8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */,
+				8BED830B1C3E84DB0001C6F1 /* BLUTreeSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
