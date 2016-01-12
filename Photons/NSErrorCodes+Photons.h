@@ -28,5 +28,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   /// Caused when an invalid descriptor has been given.
   PTNErrorCodeInvalidDescriptor,
   /// Caused when descriptor has failed to create itself.
-  PTNErrorCodeDescriptorCreationFailed
+  PTNErrorCodeDescriptorCreationFailed,
+  /// Caused when an unrecognized URL scheme has been given.
+  PTNErrorCodeUnrecognizedURLScheme
 );
