@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B3CE8091C43D90F008E779B /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80B01C3A689B0001C6F1 /* libLTKit.a */; };
+		8B3CE80B1C43D90F008E779B /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3CE80A1C43D90F008E779B /* libextobjc_iOS.a */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
@@ -175,9 +177,14 @@
 			remoteGlobalIDString = 817EB1621BD765130047E85A;
 			remoteInfo = "OCMock tvOS";
 		};
-/* End PBXContainerItemProxy section */
-
+		8BED82FF1C3D6BA30001C6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = LTKit;
 		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,11 +198,12 @@
 		8BED809C1C3A68290001C6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTEngine/LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blueprints-Prefix.pch"; sourceTree = "<group>"; };
-		8BED80DF1C3A6A280001C6F1 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTEngine/LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8BED80E91C3A6B930001C6F1 /* BlueprintsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlueprintsTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../Vendor/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../Vendor/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		8BED82A91C3BEDA00001C6F1 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTEngine/LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8BED82C11C3BEDB00001C6F1 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "../LTEngine/third_party/utils/Mantle/build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +214,9 @@
 				8BED81D61C3A71B40001C6F1 /* OCMock.framework in Frameworks */,
 				8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */,
 				8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */,
+				8B3CE8091C43D90F008E779B /* libLTKit.a in Frameworks */,
 				8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */,
+				8B3CE80B1C43D90F008E779B /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,8 +303,8 @@
 		8BED80AB1C3A689B0001C6F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8BED80B21C3A689B0001C6F1 /* LTKitTests.xctest */,
 				8BED80B01C3A689B0001C6F1 /* libLTKit.a */,
+				8BED80B21C3A689B0001C6F1 /* LTKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -310,10 +320,12 @@
 		8BED80E21C3A6A5B0001C6F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B3CE80A1C43D90F008E779B /* libextobjc_iOS.a */,
 				8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */,
+				8BED82C11C3BEDB00001C6F1 /* Mantle.framework */,
 				8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */,
 				8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */,
-				8BED80DF1C3A6A280001C6F1 /* libextobjc_iOS.a */,
+				8BED82A91C3BEDA00001C6F1 /* libextobjc_iOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -329,14 +341,14 @@
 		8BED818C1C3A71690001C6F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8BED819D1C3A71690001C6F1 /* Expecta-iOSTests.xctest */,
 				8BED81971C3A71690001C6F1 /* Expecta.framework */,
 				8BED81991C3A71690001C6F1 /* Expecta.framework */,
 				8BED819B1C3A71690001C6F1 /* ExpectaTests.xctest */,
-				8BED81A51C3A71690001C6F1 /* libExpecta-iOSTests.xctest */,
+				8BED819D1C3A71690001C6F1 /* Expecta-iOSTests.xctest */,
 				8BED819F1C3A71690001C6F1 /* libExpecta.a */,
 				8BED81A11C3A71690001C6F1 /* libExpecta.a */,
 				8BED81A31C3A71690001C6F1 /* libExpectaTests.xctest */,
+				8BED81A51C3A71690001C6F1 /* libExpecta-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -344,10 +356,10 @@
 		8BED81A71C3A71720001C6F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8BED81B61C3A71720001C6F1 /* Specta-iOSTests.xctest */,
 				8BED81B01C3A71720001C6F1 /* Specta.framework */,
-				8BED81B41C3A71720001C6F1 /* Specta.framework */,
 				8BED81B21C3A71720001C6F1 /* SpectaTests.xctest */,
+				8BED81B41C3A71720001C6F1 /* Specta.framework */,
+				8BED81B61C3A71720001C6F1 /* Specta-iOSTests.xctest */,
 				8BED81B81C3A71720001C6F1 /* libSpecta.a */,
 				8BED81BA1C3A71720001C6F1 /* libSpecta.a */,
 			);
@@ -358,16 +370,32 @@
 			isa = PBXGroup;
 			children = (
 				8BED81C51C3A717B0001C6F1 /* OCMock.framework */,
-				8BED81CD1C3A717B0001C6F1 /* OCMock.framework */,
-				8BED81CF1C3A717B0001C6F1 /* OCMock.framework */,
-				8BED81CB1C3A717B0001C6F1 /* OCMockLibTests.xctest */,
 				8BED81C71C3A717B0001C6F1 /* OCMockTests.xctest */,
 				8BED81C91C3A717B0001C6F1 /* libOCMock.a */,
+				8BED81CB1C3A717B0001C6F1 /* OCMockLibTests.xctest */,
+				8BED81CD1C3A717B0001C6F1 /* OCMock.framework */,
+				8BED81CF1C3A717B0001C6F1 /* OCMock.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8BED82FA1C3D6A7D0001C6F1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BED83081C3D87480001C6F1 /* BLUNode+Operations.h in Headers */,
+				8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */,
+				8BED82FC1C3D6A8A0001C6F1 /* BLUNode.h in Headers */,
+				8BC462561C3ED83B00610337 /* BLUTree+Building.h in Headers */,
+				8BED82FD1C3D6A8A0001C6F1 /* BLUTree.h in Headers */,
+				8BED83041C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		8BED80061C3A66E90001C6F1 /* Blueprints */ = {
@@ -375,12 +403,12 @@
 			buildConfigurationList = 8BED80101C3A66E90001C6F1 /* Build configuration list for PBXNativeTarget "Blueprints" */;
 			buildPhases = (
 				8BED80031C3A66E90001C6F1 /* Sources */,
-				8BED80041C3A66E90001C6F1 /* Frameworks */,
-				8BED80051C3A66E90001C6F1 /* CopyFiles */,
+				8BED82FA1C3D6A7D0001C6F1 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8BED83001C3D6BA30001C6F1 /* PBXTargetDependency */,
 			);
 			name = Blueprints;
 			productName = Blueprints;
@@ -648,6 +676,11 @@
 			target = 8BED80061C3A66E90001C6F1 /* Blueprints */;
 			targetProxy = 8BED809E1C3A68290001C6F1 /* PBXContainerItemProxy */;
 		};
+		8BED83001C3D6BA30001C6F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTKit;
+			targetProxy = 8BED82FF1C3D6BA30001C6F1 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -659,7 +692,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -686,7 +718,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
