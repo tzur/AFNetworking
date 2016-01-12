@@ -18,7 +18,8 @@ typedef NS_ENUM(NSInteger, PTNImageDeliveryMode) {
 /// Type of available methods to resize an image if the requested image size is not equal to the
 /// size of the original image.
 typedef NS_ENUM(NSInteger, PTNImageResizeMode) {
-  /// Image is resized exactly to the requested size.
+  /// Image is resized exactly to the requested size or to the original image size. (The smaller of
+  /// the two).
   PTNImageResizeModeExact,
   /// Image is efficiently resized, producing an image which is similar to or slightly larger than
   /// the requested size.
