@@ -101,4 +101,39 @@ struct hash<std::vector<T>> {
   }
 };
 
+#pragma mark -
+#pragma mark std::array
+#pragma mark -
+
+namespace detail {
+
+/// Recursive template for performing hash on \c std::array.
+template <class T, size_t Index>
+struct ArrayHash {
+  static void apply(size_t &seed, const T &array) {
+    ArrayHash<T, Index - 1>::apply(seed, array);
+    detail::hash_combine(seed, std::get<Index - 1>(array));
+  }
+};
+
+/// Template base case for hashing \c std::array.
+template <class T>
+struct ArrayHash<T, 1> {
+  static void apply(size_t &seed, const T &array) {
+    lt::detail::hash_combine(seed, std::get<0>(array));
+  }
+};
+
+} // namespace detail
+
+/// Hash specialization for \c std::array.
+template <typename T, size_t N>
+struct hash<std::array<T, N>> {
+  inline size_t operator()(const std::array<T, N> &a) const {
+    size_t seed = 0;
+    detail::ArrayHash<std::array<T, N>, N>::apply(seed, a);
+    return seed;
+  }
+};
+
 } // namespace lt
