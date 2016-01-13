@@ -13,10 +13,6 @@
 
 @implementation LTTestInterpolatableObject
 
-- (instancetype)initWithInterpolatedProperties:(NSDictionary __unused *)properties {
-  return nil;
-}
-
 - (NSSet<NSString *> *)propertiesToInterpolate {
   return nil;
 }

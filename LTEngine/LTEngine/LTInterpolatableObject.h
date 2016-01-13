@@ -5,10 +5,6 @@
 /// interpolated properties.
 @protocol LTInterpolatableObject <NSObject>
 
-/// Initializes the object with the given \c properties. The keys of the given \c properties must be
-/// a subset of the \c propertiesToInterpolate.
-- (instancetype)initWithInterpolatedProperties:(NSDictionary<NSString *, NSNumber *> *)properties;
-
 /// Returns a set of names of the properties to interpolate. All properties must be of a primitive
 /// floating-point type.
 ///
@@ -17,5 +13,11 @@
 /// @note It is possible to interpolate complex properties (such as \c CGPoint for example) by
 /// creating helper properties for setting and getting their components. See \c LTPainterPoint.
 - (NSSet<NSString *> *)propertiesToInterpolate;
+
+@optional
+
+/// Initializes the object with the given \c properties. The keys of the given \c properties must be
+/// a subset of the \c propertiesToInterpolate.
+- (instancetype)initWithInterpolatedProperties:(NSDictionary<NSString *, NSNumber *> *)properties;
 
 @end
