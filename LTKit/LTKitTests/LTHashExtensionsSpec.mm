@@ -45,4 +45,12 @@ context(@"hashing std::vector", ^{
   });
 });
 
+context(@"hashing std::array", ^{
+  it(@"should hash std::array", ^{
+    size_t hash0 = lt::hash<std::array<CGFloat, 3>>()({{1, 2, 3}});
+    size_t hash1 = lt::hash<std::array<CGFloat, 3>>()({{1, 2, 3}});
+    expect(hash0).to.equal(hash1);
+  });
+});
+
 SpecEnd
