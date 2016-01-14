@@ -28,16 +28,22 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes a new \c LTPath object with the given \c path and \c LTPathBaseDirectoryNone as its
-/// \c baseDirectory.
-/// The path will be constructed by resolving the path of the concatenated base directory and the
-/// relative path.
+/// \c baseDirectory. The full path will be constructed by resolving the path of the concatenated
+/// base directory and the relative path.
 + (instancetype)pathWithPath:(NSString *)path;
 
 /// Initializes a new \c LTPath object with the given \c baseDirectory and \c relativePath.
-/// The path will be constructed by resolving the path of the concatenated base directory and the
-/// relative path.
+/// \c relativePath will be standardized and will be converted to absolute path (by adding a leading
+/// '/'). The path will be constructed by resolving the path of the concatenated base directory and
+/// the relative path.
 + (instancetype)pathWithBaseDirectory:(LTPathBaseDirectory)baseDirectory
                       andRelativePath:(NSString *)relativePath;
+
+/// Initializes a new \c LTPath with the given \c relativeURL. If the \c relativeURL's \c scheme or
+/// \c host doesn't match the values accepted by \c LTFilePath, \c nil will be returned.
+///
+/// @see <tt>-[LTFilePath relativeURL]</tt> for more details.
++ (nullable instancetype)pathWithRelativeURL:(NSURL *)relativeURL;
 
 /// Returns a new path made by appending \c pathComponent to the receiver's \c relativePath
 /// component. \c baseDirectory is the same as the receiver's.
@@ -62,6 +68,11 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 
 /// Path represented as file URL.
 @property (readonly, nonatomic) NSURL *url;
+
+/// Path represented as a URL, with a custom scheme and host. This can be used in conjunction with
+/// <tt>+[LTFilePath pathWithRelativeURL:]</tt> to serialize and deserialize the receiver to and
+/// from \c NSURL, accordingly.
+@property (readonly, nonatomic) NSURL *relativeURL;
 
 @end
 
