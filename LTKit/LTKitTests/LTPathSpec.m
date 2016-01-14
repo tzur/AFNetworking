@@ -9,74 +9,133 @@ SpecBegin(LTPath)
 
 static NSString * const kPath = @"/foo/bar";
 
-it(@"should initialize with no base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryNone andRelativePath:kPath];
+context(@"no base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryNone);
-  expect(path.relativePath).to.equal(kPath);
-  expect(path.path).to.equal(kPath);
-  expect(path.url.path).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryNone andRelativePath:kPath];
+  });
+
+  it(@"should initialize with no base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryNone);
+    expect(path.relativePath).to.equal(kPath);
+    expect(path.path).to.equal(kPath);
+    expect(path.url.path).to.equal(kPath);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
-it(@"should initialize with temp base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
+context(@"temp base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryTemp);
-  expect(path.relativePath).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
+  });
 
-  NSString *expectedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:kPath];
-  expect(path.path).to.equal(expectedPath);
-  expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  it(@"should initialize with temp base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryTemp);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
-it(@"should initialize with documents base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:kPath];
+context(@"documents base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryDocuments);
-  expect(path.relativePath).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:kPath];
+  });
 
-  NSString *expectedPath =
-      [[NSFileManager lt_documentsDirectory] stringByAppendingPathComponent:kPath];
-  expect(path.path).to.equal(expectedPath);
-  expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  it(@"should initialize with documents base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryDocuments);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath =
+    [[NSFileManager lt_documentsDirectory] stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
-it(@"should initialize with main bundle base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryMainBundle andRelativePath:kPath];
+context(@"main bundle base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryMainBundle);
-  expect(path.relativePath).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryMainBundle andRelativePath:kPath];
+  });
 
-  NSString *expectedPath = [[[NSBundle mainBundle] bundlePath]
-                            stringByAppendingPathComponent:kPath];
-  expect(path.path).to.equal(expectedPath);
-  expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  it(@"should initialize with main bundle base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryMainBundle);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath = [[[NSBundle mainBundle] bundlePath]
+                              stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
-it(@"should initialize with caches base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryCaches
-                               andRelativePath:kPath];
+context(@"caches base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryCaches);
-  expect(path.relativePath).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryCaches andRelativePath:kPath];
+  });
 
-  NSString *expectedPath =
-      [[NSFileManager lt_cachesDirectory] stringByAppendingPathComponent:kPath];
-  expect(path.path).to.equal(expectedPath);
-  expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  it(@"should initialize with caches base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryCaches);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath =
+    [[NSFileManager lt_cachesDirectory] stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
-it(@"should initialize with application support base path", ^{
-  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
-                               andRelativePath:kPath];
+context(@"application support base path", ^{
+  __block LTPath *path;
 
-  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryApplicationSupport);
-  expect(path.relativePath).to.equal(kPath);
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
+                         andRelativePath:kPath];
+  });
 
-  NSString *expectedPath =
-      [[NSFileManager lt_applicationSupportDirectory] stringByAppendingPathComponent:kPath];
-  expect(path.path).to.equal(expectedPath);
-  expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  it(@"should initialize with application support base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryApplicationSupport);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath =
+        [[NSFileManager lt_applicationSupportDirectory] stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
 });
 
 context(@"path operations", ^{
