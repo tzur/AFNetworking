@@ -14,73 +14,85 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Protected.h"
 
-/// Returns the \c CGSize of the given \c mat.
-static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
-  return CGSizeMake(mat.cols, mat.rows);
-}
-
-@implementation LTGLTexture
-
-- (instancetype)initWithPropertiesOf:(LTTexture *)texture {
-  return [self initWithSize:texture.size pixelFormat:texture.pixelFormat
-             maxMipmapLevel:texture.maxMipmapLevel];
-}
-
-- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
-              maxMipmapLevel:(GLint)maxMipmapLevel {
-  if (self = [super initWithSize:size pixelFormat:pixelFormat allocateMemory:NO]) {
-    [self allocateMipmapLevels:maxMipmapLevel forTexture:self];
-  }
-  return self;
-}
-
-#pragma mark -
-#pragma mark Mipmaps
-#pragma mark -
-
-- (instancetype)initWithBaseLevelMipmapImage:(const cv::Mat &)image {
-  [self verifyMipmapImages:{image}];
-  if (self = [self initWithImage:image]) {
-    [self bindAndExecute:^{
-      glGenerateMipmap(GL_TEXTURE_2D);
-      self.maxMipmapLevel = log2(std::max(image.rows, image.cols));
-    }];
-  }
-  return self;
-}
-
-- (instancetype)initWithMipmapImages:(const Matrices &)images {
-  [self verifyMipmapImages:images];
-  if (self = [self initWithImage:images[0]]) {
-    [self addImagesToMipmap:images];
-  }
-  return self;
-}
-
-- (void)verifyMipmapImages:(const Matrices &)images {
+/// Raises if the given vector of images is not a valid mipmap.
+static void LTVerifyMipmapImages(const Matrices &images) {
   LTParameterAssert(images.size(), @"Images vector must contain at least one image");
 
-  CGSize currentLevelSize = LTCGSizeOfMat(images[0]);
+  const cv::Mat &baseImage = images.front();
+  CGSize currentLevelSize = CGSizeMake(baseImage.cols, baseImage.rows);
   LTParameterAssert(LTIsPowerOfTwo(currentLevelSize), @"Base image must be a power of two");
 
   for (Matrices::size_type i = 1; i < images.size(); ++i) {
-    LTParameterAssert(images[i].type() == images[0].type(), @"Image type for level %lu (%d) "
-                      "doesn't match base level type (%d)", i, images[i].type(), self.matType);
+    LTParameterAssert(images[i].type() == baseImage.type(), @"Image type for level %zu (%d) "
+                      "doesn't match base level type (%d)", i, images[i].type(), baseImage.type());
 
     CGSize previousLevelSize = currentLevelSize;
-    currentLevelSize = LTCGSizeOfMat(images[i]);
+    currentLevelSize = CGSizeMake(images[i].cols, images[i].rows);
 
     LTParameterAssert(currentLevelSize.width * 2 == previousLevelSize.width &&
                       currentLevelSize.height * 2 == previousLevelSize.height,
-                      @"Given image at level %lu doesn't has a size of (%g, %g), which is not a"
+                      @"Given image at level %zu doesn't has a size of (%g, %g), which is not a"
                       "dyadic downsampling from its parent of size (%g, %g)", i,
                       currentLevelSize.width, currentLevelSize.height,
                       previousLevelSize.width, previousLevelSize.height);
   }
 }
 
-- (void)addImagesToMipmap:(const Matrices &)images {
-  // The initial image has been already added.
+@implementation LTGLTexture
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel
+              allocateMemory:(BOOL)allocateMemory {
+  if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
+                  allocateMemory:allocateMemory]) {
+    [self create:allocateMemory];
+  }
+  return self;
+}
+
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel {
+  return [self initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
+             allocateMemory:YES];
+}
+
+- (instancetype)initWithBaseLevelMipmapImage:(const cv::Mat &)image {
+  LTVerifyMipmapImages({image});
+
+  CGSize size = CGSizeMake(image.cols, image.rows);
+  LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:image.type()];
+  GLint maxMipmapLevel = log2(std::max(image.rows, image.cols));
+
+  if (self = [self initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
+                 allocateMemory:NO]) {
+    [self load:image];
+    [self bindAndExecute:^{
+      glGenerateMipmap(GL_TEXTURE_2D);
+    }];
+  }
+  return self;
+}
+
+- (instancetype)initWithMipmapImages:(const Matrices &)images {
+  LTVerifyMipmapImages(images);
+
+  const cv::Mat &baseImage = images.front();
+  CGSize size = CGSizeMake(baseImage.cols, baseImage.rows);
+  LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:baseImage.type()];
+  GLint maxMipmapLevel = (GLint)(images.size() - 1);
+
+  if (self = [self initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
+                 allocateMemory:NO]) {
+    [self loadMipmapImages:images];
+  }
+  return self;
+}
+
+- (void)loadMipmapImages:(const Matrices &)images {
   [self bindAndExecute:^{
     [self writeWithBlock:^{
       LTGLVersion version = [LTGLContext currentContext].version;
@@ -88,7 +100,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
       GLenum precision = [self.pixelFormat precisionForVersion:version];
       GLenum format = [self.pixelFormat formatForVersion:version];
 
-      for (Matrices::size_type i = 1; i < images.size(); ++i) {
+      for (Matrices::size_type i = 0; i < images.size(); ++i) {
         glTexImage2D(GL_TEXTURE_2D, (GLint)i, internalFormat, images[i].cols, images[i].rows, 0,
                      format, precision, images[i].data);
       }
@@ -96,14 +108,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }];
 
   LTGLCheck(@"Error loading texture mipmap levels");
-
-  // Allow rendering with incomplete mipmap levels.
-  self.maxMipmapLevel = (GLint)(images.size() - 1);
 }
-
-#pragma mark -
-#pragma mark LTTexture abstract methods implementation
-#pragma mark -
 
 - (void)create:(BOOL)allocateMemory {
   if (self.name) {
@@ -143,7 +148,7 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   }];
 }
 
-- (void)destroy {
+- (void)dealloc {
   if (!self.name) {
     return;
   }
@@ -153,6 +158,10 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
   LTGLCheckDbg(@"Error deleting texture");
   _name = 0;
 }
+
+#pragma mark -
+#pragma mark LTTexture abstract methods implementation
+#pragma mark -
 
 - (cv::Mat)imageAtLevel:(NSUInteger)level {
   LTParameterAssert((GLint)level <= self.maxMipmapLevel);
@@ -264,23 +273,10 @@ static CGSize LTCGSizeOfMat(const cv::Mat &mat) {
 
 - (LTTexture *)clone {
   LTGLTexture *cloned = [[LTGLTexture alloc] initWithSize:self.size pixelFormat:self.pixelFormat
-                                           allocateMemory:NO];
-  [cloned allocateMipmapLevels:self.maxMipmapLevel forTexture:cloned];
-
+                                           maxMipmapLevel:self.maxMipmapLevel
+                                           allocateMemory:YES];
   [self cloneTo:cloned];
   return cloned;
-}
-
-- (void)allocateMipmapLevels:(GLint)levels forTexture:(LTGLTexture *)texture {
-  LTParameterAssert(levels >= 0);
-  LTParameterAssert(texture);
-
-  texture.maxMipmapLevel = levels;
-  [texture bindAndExecute:^{
-    [texture allocateMemoryForAllLevels];
-  }];
-
-  LTGLCheck(@"Error allocating mipmap levels");
 }
 
 - (void)cloneTo:(LTTexture *)texture {
