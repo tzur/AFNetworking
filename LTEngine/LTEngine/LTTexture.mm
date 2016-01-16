@@ -73,28 +73,37 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation LTTexture
 
 #pragma mark -
-#pragma mark Abstract methods
+#pragma mark Initialization
 #pragma mark -
 
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
-              allocateMemory:(BOOL)allocateMemory {
+              maxMipmapLevel:(GLint)maxMipmapLevel
+              allocateMemory:(BOOL __unused)allocateMemory {
   if (self = [super init]) {
     [self verifyPixelFormat:pixelFormat];
     LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
                       size.width, size.height);
     LTParameterAssert(size.height > 0 && size.width > 0, @"Given size (%g, %g) has width or height "
                       "which are <= 0", size.width, size.height);
-
+    LTParameterAssert(maxMipmapLevel >= 0, @"Given maxMipmapLevel (%ld) is negative",
+                      (long)maxMipmapLevel);
+    
     _pixelFormat = pixelFormat;
     _size = size;
+    _maxMipmapLevel = maxMipmapLevel;
     _fillColor = LTVector4::null();
     _generationID = [NSUUID UUID].UUIDString;
 
     self.bindStateStack = [[NSMutableArray alloc] init];
     [self setDefaultValues];
-    [self create:allocateMemory];
   }
   return self;
+}
+
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              allocateMemory:(BOOL)allocateMemory {
+  return [self initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0
+             allocateMemory:allocateMemory];
 }
 
 - (instancetype)initWithImage:(const cv::Mat &)image {
@@ -107,11 +116,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithPropertiesOf:(LTTexture *)texture {
-  return [self initWithSize:texture.size pixelFormat:texture.pixelFormat allocateMemory:YES];
-}
-
-- (void)dealloc {
-  [self destroy];
+  return [self initWithSize:texture.size pixelFormat:texture.pixelFormat
+             maxMipmapLevel:texture.maxMipmapLevel
+             allocateMemory:YES];
 }
 
 - (void)verifyPixelFormat:(LTGLPixelFormat *)pixelFormat {
@@ -130,16 +137,11 @@ NS_ASSUME_NONNULL_BEGIN
   _minFilterInterpolation = LTTextureInterpolationLinear;
   _magFilterInterpolation = LTTextureInterpolationLinear;
   _wrap = LTTextureWrapClamp;
-  _maxMipmapLevel = 0;
 }
 
-- (void)create:(BOOL __unused)allocateMemory {
-  LTMethodNotImplemented();
-}
-
-- (void)destroy {
-  LTMethodNotImplemented();
-}
+#pragma mark -
+#pragma mark Abstract methods
+#pragma mark -
 
 - (void)storeRect:(CGRect __unused)rect toImage:(cv::Mat __unused *)image {
   LTMethodNotImplemented();

@@ -60,59 +60,68 @@ struct LTVector4;
 }
 
 #pragma mark -
-#pragma mark Initializers
+#pragma mark Initialization
 #pragma mark -
 
-/// Creates an empty texture on the GPU.  Throws \c LTGLException with \c
-/// kLTOpenGLRuntimeErrorException if texture creation failed.
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Creates an empty texture on the GPU. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
 /// @param size size of the texture. Must be integral.
+///
 /// @param pixelFormat pixel format the texture is stored in the GPU with. The format must be
 /// supported on the target platform, or an \c NSInvalidArgumentException will be thrown.
-/// @param allocateMemory an optimization recommendation to implementors of this class. If set to \c
-/// YES, the texture's memory will be allocated on the GPU (but will not be initialized - see note).
-/// Otherwise, the implementation will try to create a texture object only without allocating the
-/// memory, and a call to \c load: or \c loadRect:fromImage: will be required to allocate memory on
-/// the device.
+///
+/// @param maxMipmapLevel maximal mipmap level, with \c 0 meaning that only a single level exists.
+/// Not all implementations might support mipmap textures, in which case the parameter must be \c 0
+/// or an exception will be raised.
+///
+/// @param allocateMemory an optimization recommendation to implementors of this class. If set to
+/// \c YES, the texture's memory will be allocated on the GPU (but will not be initialized - see
+/// note). Otherwise, the implementation will try to create a texture object only without allocating
+/// the memory, and a call to \c load: or \c loadRect:fromImage: will be required to allocate
+/// memory on the device.
 ///
 /// @note The texture memory is not allocated until a call to \c load: or \c loadRect: is made, and
 /// only the affected regions are set to be in a defined state. Calling \c storeRect:toImage: with
 /// an uninitialized rect will return an undefined result.
 ///
-/// @note Designated initializer.
+/// @note Designated initializer. The base implementation performs initialization with the given
+/// parameters but does not actually create the texture. Implementations must override this
+/// initializer and perform the creation themselves.
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel
+              allocateMemory:(BOOL)allocateMemory NS_DESIGNATED_INITIALIZER;
+
+/// Creates an empty texture on the GPU without mipmap. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if texture creation failed. This is a convenience method which
+/// is similar to calling:
+///
+/// @code
+/// initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0 allocateMemory:allocateMemory
+/// @endcode
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
               allocateMemory:(BOOL)allocateMemory;
 
-/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
-/// image, and loads the \c image to the texture. Throws \c LTGLException with \c
-/// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
+/// Allocates a texture with the \c size and \c pixelFormat properties suitable for the given
+/// \c image, and loads the \c image to the texture. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has
+/// failed.
 - (instancetype)initWithImage:(const cv::Mat &)image;
 
-/// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
-/// \c texture. This is a convenience method which is similar to calling:
+/// Creates a new, allocated texture with \c size, \c pixelFormat and \c maxMipmapLevel similar to
+/// the given \c texture. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:texture.size precision:texture.precision
-///      channels:texture.channels allocateMemory:YES]
+/// initWithSize:texture.size pixelFormat:texture.pixelFormat maxMipmapLevel:texture.maxMipmapLevel
+///     allocateMemory:YES
 /// @endcode
 - (instancetype)initWithPropertiesOf:(LTTexture *)texture;
 
 #pragma mark -
 #pragma mark Abstract methods
 #pragma mark -
-
-/// Creates the texture in the active OpenGL context. If the texture is already allocated, this
-/// method has no effect.
-///
-/// @param allocateMemory if set to \c YES, the texture's memory will be allocated on the GPU (but
-/// will not be initialized - see \c initWithSize:precision:channels:allocateMemory note).
-/// Otherwise, only a texture object will be created, and a call to \c load: or \c
-/// loadRect:fromImage: will be required to allocate memory on the device.
-- (void)create:(BOOL)allocateMemory;
-
-/// Releases the texture from the active OpenGL context. If the texture is already released, this
-/// method has no effect.
-- (void)destroy;
 
 /// Stores the texture's data in the given \c rect to the given \c image. The image will be created
 /// with the same precision and size of the given \c rect. The given \c rect must be contained in
@@ -209,7 +218,7 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// @see LTTextureCoreGraphicsBlock for more information about the \c block.
 - (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block;
 
-/// Returns pixel value at the given location, with symmetric boundary condition.  The returned
+/// Returns pixel value at the given location, with symmetric boundary condition. The returned
 /// value is an RBGA value of the texture pixel at the given location.
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
@@ -269,13 +278,13 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// Set to \c YES if the texture is using its alpha channel. This cannot be inferred from the
 /// texture data itself, and should be set to \c YES when needed. Setting this value to \c YES will
 /// enable texture processing algorithms to avoid running computations on the alpha channel, saving
-/// time and/or memory.  The default value is \c NO.
+/// time and/or memory. The default value is \c NO.
 @property (nonatomic) BOOL usingAlphaChannel;
 
 /// Interpolation of the texture when downsampling. Default is \c LTTextureInterpolationLinear.
 @property (nonatomic) LTTextureInterpolation minFilterInterpolation;
 
-/// Interpolation of the texture when up-sampling. Default is \c LTTextureInterpolationLinear.
+/// Interpolation of the texture when upsampling. Default is \c LTTextureInterpolationLinear.
 @property (nonatomic) LTTextureInterpolation magFilterInterpolation;
 
 /// Warping of texture coordinates outside \c [0, 1]. Default is \c LTTextureWrapClamp. Setting this
