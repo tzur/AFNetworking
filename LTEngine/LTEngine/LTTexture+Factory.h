@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Category which adds a factory on top of LTTexture's abstract class. The factory chooses the
-/// appropriate \c LTTexture subclass to instantiate, based on hardware compatabilities and
+/// appropriate \c LTTexture subclass to instantiate, based on hardware compatibilities and
 /// performance considerations.
 @interface LTTexture (Factory)
 

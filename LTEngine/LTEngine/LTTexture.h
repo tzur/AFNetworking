@@ -26,7 +26,7 @@ typedef NS_ENUM(GLenum, LTTextureInterpolation) {
   LTTextureInterpolationLinearMipmapLinear = GL_LINEAR_MIPMAP_LINEAR
 };
 
-/// Type of wraping used by the sampler for texture coodinates outside [0, 1].
+/// Type of wrapping used by the sampler for texture coordinates outside [0, 1].
 typedef NS_ENUM(GLenum, LTTextureWrap) {
   /// Clamp texture coordinates.
   LTTextureWrapClamp = GL_CLAMP_TO_EDGE,
@@ -51,8 +51,8 @@ struct LTVector4;
 /// @note The currently supported \c cv::Mat types are \c CV_32F (grayscale), \c CV32F_C4 (four
 /// channel float), CV_16C4 (four channel half-float) and \c CV_8UC4 (RGBA).
 ///
-/// @note Binding texture objects binds them to the currently active textre unit in the OpenGL
-/// enviorment. Unbinding textures restores the state previous to the last \c bind call.
+/// @note Binding texture objects binds them to the currently active texture unit in the OpenGL
+/// environment. Unbinding textures restores the state previous to the last \c bind call.
 @interface LTTexture : NSObject <LTFboAttachment> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
@@ -186,7 +186,7 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// not be referenced outside this block (unless it is duplicated to a new \c CGImageRef).
 typedef void (^LTTextureMappedCGImageBlock)(CGImageRef imageRef, BOOL isCopy);
 
-/// Calls the given \c block with a valid \c CGImageRef as a wrapper for the tetxure's data.
+/// Calls the given \c block with a valid \c CGImageRef as a wrapper for the texture's data.
 ///
 /// @note current implementation allows to create a image of textures of 1 or 4 channels only. An
 /// assert will be thrown for other types of textures.
@@ -275,7 +275,7 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// Interpolation of the texture when downsampling. Default is \c LTTextureInterpolationLinear.
 @property (nonatomic) LTTextureInterpolation minFilterInterpolation;
 
-/// Interpolation of the texture when upsampling. Default is \c LTTextureInterpolationLinear.
+/// Interpolation of the texture when up-sampling. Default is \c LTTextureInterpolationLinear.
 @property (nonatomic) LTTextureInterpolation magFilterInterpolation;
 
 /// Warping of texture coordinates outside \c [0, 1]. Default is \c LTTextureWrapClamp. Setting this
