@@ -3,13 +3,11 @@
 
 #import "LTQuad.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 #import "LTTriangle.h"
 #import "LTRotatedRect.h"
 
-typedef union {
-  NSUInteger intValue;
-  CGFloat floatValue;
-} LTQuadHashHelperStruct;
 @interface LTQuad () {
   /// Corners of this quad.
   LTQuadCorners _corners;
@@ -337,11 +335,11 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (BOOL)isConvex {
-  NSUInteger size = self.corners.size();
+  NSUInteger size = _corners.size();
   for (NSUInteger i = 0; i < size; i++) {
-    CGPoint origin = self.corners[i];
-    CGPoint direction = self.corners[(i + 1) % size] - origin;
-    if (LTPointLocationRelativeToRay(self.corners[(i + 2) % size], origin, direction) ==
+    CGPoint origin = _corners[i];
+    CGPoint direction = _corners[(i + 1) % size] - origin;
+    if (LTPointLocationRelativeToRay(_corners[(i + 2) % size], origin, direction) ==
         LTPointLocationLeftOfRay) {
       return NO;
     }
@@ -460,33 +458,25 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"v0 = (%g, %g), v1 = (%g, %g), v2 = (%g, %g), v3 = (%g, %g)",
-          self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x, self.v2.y, self.v3.x, self.v3.y];
+  return [NSString stringWithFormat:@"<%@: %p, v0: (%g, %g), v1: (%g, %g), v2: (%g, %g), "
+          "v3: (%g, %g)>", self.class, self, self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x,
+          self.v2.y, self.v3.x, self.v3.y];
 }
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTQuad *)quad {
+  if (self == quad) {
     return YES;
   }
 
-  if ([object isKindOfClass:[self class]]) {
-    LTQuad *quad = object;
-    return self.v0 == quad.v0 && self.v1 == quad.v1 && self.v2 == quad.v2 && self.v3 == quad.v3;
+  if (![quad isKindOfClass:[self class]]) {
+    return NO;
   }
 
-  return NO;
+  return _corners == quad->_corners;
 }
 
 - (NSUInteger)hash {
-  NSUInteger result = 0;
-  LTQuadHashHelperStruct converter;
-  for (const CGPoint &corner : self.corners) {
-    converter.floatValue = corner.x;
-    result ^= converter.intValue;
-    converter.floatValue = corner.y;
-    result ^= converter.intValue;
-  }
-  return result;
+  return lt::hash<LTQuadCorners>()(_corners);
 }
 
 - (BOOL)isSimilarTo:(LTQuad *)quad upToDeviation:(CGFloat)deviation {
