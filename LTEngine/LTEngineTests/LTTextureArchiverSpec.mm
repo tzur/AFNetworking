@@ -138,12 +138,12 @@ context(@"archiving", ^{
   });
 
   it(@"should return error if failed to save texture metadata", ^{
-    OCMStub([fileManager lt_writeDictionary:[OCMArg any]
-                                     toFile:LTTemporaryPath(@"archive.plist")]).andReturn(NO);
+    OCMStub([fileManager lt_writeDictionary:[OCMArg any] toFile:LTTemporaryPath(@"archive.plist")
+                                      error:[OCMArg setTo:kFakeError]]).andReturn(NO);
     result = [archiver archiveTexture:texture inPath:@"archive"
                       withArchiveType:$(LTTextureArchiveTypeJPEG) error:&error];
     expect(result).to.beFalsy();
-    expect(error).notTo.beNil();
+    expect(error).to.equal(kFakeError);
     expect(LTFileExistsInTemporaryPath(@"archive.jpg")).to.beFalsy();
   });
 
@@ -289,12 +289,13 @@ context(@"unarchiving", ^{
     });
 
     it(@"should return error if failed to load archive metadata", ^{
-      OCMStub([fileManager lt_dictionaryWithContentsOfFile:[OCMArg any]]);
+      OCMStub([fileManager lt_dictionaryWithContentsOfFile:[OCMArg any]
+                                                     error:[OCMArg setTo:kFakeError]]);
       result = [archiver unarchiveToTexture:texture fromPath:@"archive"
                             withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
-      expect(error.code).to.equal(LTErrorCodeFileReadFailed);
+      expect(error).to.equal(kFakeError);
     });
 
     it(@"should return error if failed to load archive content", ^{
@@ -329,12 +330,13 @@ context(@"unarchiving", ^{
     });
 
     it(@"should return nil if failed to load archive metadata", ^{
-      OCMStub([fileManager lt_dictionaryWithContentsOfFile:[OCMArg any]]);
+      OCMStub([fileManager lt_dictionaryWithContentsOfFile:[OCMArg any]
+                                                     error:[OCMArg setTo:kFakeError]]);
       texture = [archiver unarchiveFromPath:@"archive"
                             withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
       expect(texture).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.code).to.equal(LTErrorCodeFileReadFailed);
+      expect(error).to.equal(kFakeError);
     });
 
     it(@"should return nil if failed to load archive content", ^{
