@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		255339401C3E512300C478F9 /* LTTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2553393E1C3E512300C478F9 /* LTTreeNode.h */; };
+		255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2553393F1C3E512300C478F9 /* LTTreeNode.mm */; };
+		255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */; };
 		259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */; };
 		259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */; };
 		259FF7E71C14921800362CDD /* LTBipartiteGraphSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */; };
@@ -332,6 +335,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
+		2553393F1C3E512300C478F9 /* LTTreeNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNode.mm; sourceTree = "<group>"; };
+		255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNodeSpec.mm; sourceTree = "<group>"; };
 		259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBipartiteGraph.h; sourceTree = "<group>"; };
 		259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraph.mm; sourceTree = "<group>"; };
 		259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraphSpec.mm; sourceTree = "<group>"; };
@@ -870,6 +876,7 @@
 				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
 				259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */,
 				5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */,
+				255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */,
 				5067223019EA811A003AF8D2 /* LTQueueSpec.mm */,
 				28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */,
 			);
@@ -885,6 +892,8 @@
 				259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */,
 				5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */,
 				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
+				2553393E1C3E512300C478F9 /* LTTreeNode.h */,
+				2553393F1C3E512300C478F9 /* LTTreeNode.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
 				5067221719EA80B5003AF8D2 /* LTQueue.mm */,
 				28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */,
@@ -905,6 +914,7 @@
 				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
 				8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */,
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
+				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
 				8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */,
 				8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */,
@@ -1219,6 +1229,7 @@
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
+				255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */,
 				8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */,
 				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
@@ -1245,6 +1256,7 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
 				8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */,
+				255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */,
 				8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */,
