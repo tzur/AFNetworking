@@ -299,10 +299,15 @@ objection_requires_sel(@selector(fileManager));
   }
 
   NSDictionary *json = [MTLJSONAdapter JSONDictionaryFromModel:metadata];
-  if (!json || ![self.fileManager lt_writeDictionary:json toFile:path]) {
+  if (!json) {
     if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed];
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                             description:@"Failed to serialize texture metadata"];
     }
+    return NO;
+  }
+
+  if (![self.fileManager lt_writeDictionary:json toFile:path error:error]) {
     return NO;
   }
 
@@ -319,17 +324,14 @@ objection_requires_sel(@selector(fileManager));
     return nil;
   }
 
-  NSDictionary *jsonDictionary = [self.fileManager lt_dictionaryWithContentsOfFile:path];
-  if (!jsonDictionary) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
-    }
+  NSDictionary *dictionary = [self.fileManager lt_dictionaryWithContentsOfFile:path error:error];
+  if (!dictionary) {
     return nil;
   }
 
   NSError *mantleError;
   LTTextureMetadata *metadata = [MTLJSONAdapter modelOfClass:[LTTextureMetadata class]
-                                          fromJSONDictionary:jsonDictionary error:&mantleError];
+                                          fromJSONDictionary:dictionary error:&mantleError];
   if (!metadata && error) {
     *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed underlyingError:mantleError];
   }
