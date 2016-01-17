@@ -1,7 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-// Adds \c lt::hash template specializations for \c std value types. References:
+// Adds \c lt::hash template specializations for selected \c std value types and structs.
+// References:
 // http://stackoverflow.com/questions/7222143/unordered-map-hash-function-c
 // http://stackoverflow.com/questions/7110301/generic-hash-for-tuples-in-unordered-map-unordered-set
 
@@ -36,6 +37,20 @@ inline void hash_range(std::size_t &seed, It first, It last) {
 }
 
 } // namespace detail
+
+#pragma mark -
+#pragma mark CGPoint
+#pragma mark -
+
+template <>
+struct hash<CGPoint> {
+  inline size_t operator()(CGPoint p) const {
+    size_t seed = 0;
+    detail::hash_combine(seed, p.x);
+    detail::hash_combine(seed, p.y);
+    return seed;
+  }
+};
 
 #pragma mark -
 #pragma mark std::pair
