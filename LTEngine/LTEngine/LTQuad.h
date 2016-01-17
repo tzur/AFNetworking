@@ -73,12 +73,14 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 #pragma mark Initialization
 #pragma mark -
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Designated initializer: initializes a general quad defined by the given \c corners. In case of a
 /// simple (i.e. non-self-intersecting) quad, the corners have to be provided in clockwise order.
 /// The provided corners must be valid (refer to \c LTQuadCornersValidity for more details).
 /// Checking whether corners are valid for initialization can be done using the
 /// \c validityOfCorners: method.
-- (instancetype)initWithCorners:(const LTQuadCorners &)corners;
+- (instancetype)initWithCorners:(const LTQuadCorners &)corners NS_DESIGNATED_INITIALIZER;
 
 #pragma mark -
 #pragma mark Copying
@@ -172,7 +174,7 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 #pragma mark Properties
 #pragma mark -
 
-/// The corners of this quad.
+/// Corners of this quad.
 @property (readonly, nonatomic) LTQuadCorners corners;
 
 /// First vertex of the quad. Corresponds to \c corners[0].
@@ -194,20 +196,20 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// points.
 @property (readonly, nonatomic) CGPoint center;
 
-/// Indicates whether this quad is convex.
+/// \c YES if this quad is convex.
 @property (readonly, nonatomic) BOOL isConvex;
 
-/// Indicates whether this quad is self-intersecting.
+/// \c YES if this quad is self-intersecting.
 @property (readonly, nonatomic) BOOL isSelfIntersecting;
 
 /// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
 /// its projected corners coincide with the vertices of this quad.
 @property (readonly, nonatomic) GLKMatrix3 transform;
 
-/// Returns the length of the shortest edge of this \c quad.
+/// Length of the shortest edge of this \c quad.
 @property (readonly, nonatomic) CGFloat minimalEdgeLength;
 
-/// Returns the length of the longest edge of this \c quad.
+/// Length of the longest edge of this \c quad.
 @property (readonly, nonatomic) CGFloat maximalEdgeLength;
 
 @end
