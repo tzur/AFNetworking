@@ -12,6 +12,7 @@ SpecBegin(PTNFileSystemAlbum)
 
 it(@"should initialize with path, subdirectories and files", ^{
   LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:@"/foo"];
+  NSURL *albumURL = [NSURL ptn_fileSystemAlbumURLWithPath:path];
 
   LTPath *subdirectoryPath1 = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryNone
                                             andRelativePath:@"/foo/bar"];
@@ -31,10 +32,10 @@ it(@"should initialize with path, subdirectories and files", ^{
     [[PTNFileSystemFileDescriptor alloc] initWithPath:filePath2]
   ];
 
-  PTNFileSystemAlbum *album = [[PTNFileSystemAlbum alloc] initWithPath:path.url
+  PTNFileSystemAlbum *album = [[PTNFileSystemAlbum alloc] initWithPath:albumURL
                                                         subdirectories:subdirectories files:files];
 
-  expect(album.url).to.equal(path.url);
+  expect(album.url).to.equal(albumURL);
   expect(album.subalbums).to.equal(subdirectories);
   expect(album.assets).to.equal(files);
 });
@@ -44,7 +45,7 @@ context(@"equality", ^{
   __block PTNFileSystemAlbum *secondAlbum;
 
   beforeEach(^{
-    id path = [LTPath pathWithPath:@"foo/bar"];
+    id path = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"foo/bar"]];
     id files = @[
       [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:[LTPath pathWithPath:@"/foo/bar"]],
       [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:[LTPath pathWithPath:@"/foo/baz"]]

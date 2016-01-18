@@ -3,6 +3,7 @@
 
 #import "PTNFileSystemAlbum.h"
 
+#import "NSURL+FileSystem.h"
 #import "PTNCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPath:(NSURL *)path
               subdirectories:(PTNFileSystemSubdirectories *)subdirectories
                        files:(PTNFileSystemFiles *)files {
+  LTParameterAssert(path.ptn_fileSystemURLType == PTNFileSystemURLTypeAlbum, @"Invalid URL given: "
+                    "%@", path);
   if (self = [super init]) {
     self.url = path;
     self.subdirectories = subdirectories;
