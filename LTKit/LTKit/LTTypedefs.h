@@ -22,6 +22,9 @@ typedef std::vector<CGPoint> CGPoints;
 /// A collection of \c CGSize.
 typedef std::vector<CGSize> CGSizes;
 
+/// A collection of \c CGRect.
+typedef std::vector<CGRect> CGRects;
+
 #pragma mark -
 #pragma mark Scalar
 #pragma mark -
