@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Path to the application support directory of the app.
 + (NSString *)lt_applicationSupportDirectory;
 
+/// Returns \c YES if a directory exists at the given \c path.
+- (BOOL)lt_directoryExistsAtPath:(NSString *)path;
+
 /// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
 /// is written successfully, otherwise returns \c NO and populates \c error. The plist is saved in
 /// the XML property list format (\c NSPropertyListXMLFormat_v1_0), and the file is written
