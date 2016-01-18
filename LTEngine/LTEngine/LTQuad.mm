@@ -3,18 +3,15 @@
 
 #import "LTQuad.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 #import "LTTriangle.h"
 #import "LTRotatedRect.h"
 
-typedef union {
-  NSUInteger intValue;
-  CGFloat floatValue;
-} LTQuadHashHelperStruct;
-
-@interface LTQuad ()
-
-/// The corners of this quad.
-@property (readwrite, nonatomic) LTQuadCorners corners;
+@interface LTQuad () {
+  /// Corners of this quad.
+  LTQuadCorners _corners;
+}
 
 @end
 
@@ -156,7 +153,7 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (instancetype)copyWithTranslation:(CGPoint)translation ofCorners:(LTQuadCornerRegion)corners {
-  LTQuadCorners translatedCorners = self.corners;
+  LTQuadCorners translatedCorners = _corners;
   if (corners & LTQuadCornerRegionV0) {
     translatedCorners[0] = translatedCorners[0] + translation;
   }
@@ -183,7 +180,7 @@ static const CGFloat kEpsilon = 1e-10;
 - (void)updateWithCorners:(const LTQuadCorners &)corners {
   LTParameterAssert([[self class] validityOfCorners:corners] == LTQuadCornersValidityValid,
                     @"Invalid corners provided.");
-  self.corners = corners;
+  _corners = corners;
 }
 
 #pragma mark -
@@ -208,10 +205,10 @@ static const CGFloat kEpsilon = 1e-10;
 /// instance. Throws an exception if the instance is not convex.
 - (BOOL)convexQuadContainsPoint:(const CGPoint)point {
   LTAssert([self isConvex], @"Method call is illegal for concave quadrilaterals.");
-  NSUInteger size = self.corners.size();
+  NSUInteger size = _corners.size();
   for (NSUInteger i = 0; i < size; i++) {
-    CGPoint origin = self.corners[i];
-    CGPoint direction = self.corners[(i + 1) % size] - origin;
+    CGPoint origin = _corners[i];
+    CGPoint direction = _corners[(i + 1) % size] - origin;
     if (LTPointLocationRelativeToRay(point, origin, direction) == LTPointLocationLeftOfRay) {
       return NO;
     }
@@ -225,16 +222,16 @@ static const CGFloat kEpsilon = 1e-10;
   LTAssert(![self isConvex], @"Method call is illegal for convex quadrilaterals.");
   LTAssert(![self isSelfIntersecting], @"Method call is illegal for complex quadrilaterals.");
 
-  const NSUInteger kNumCorners = self.corners.size();
+  const NSUInteger kNumCorners = _corners.size();
 
   NSUInteger indexOfConcavePoint = [self indexOfConcavePoint];
-  LTTriangleCorners corners0{{self.corners[indexOfConcavePoint],
-      self.corners[(indexOfConcavePoint + 1) % kNumCorners],
-      self.corners[(indexOfConcavePoint + 2) % kNumCorners]}};
+  LTTriangleCorners corners0{{_corners[indexOfConcavePoint],
+      _corners[(indexOfConcavePoint + 1) % kNumCorners],
+      _corners[(indexOfConcavePoint + 2) % kNumCorners]}};
   LTTriangle *triangle0 = [[LTTriangle alloc] initWithCorners:corners0];
-  LTTriangleCorners corners1{{self.corners[(indexOfConcavePoint + 2) % kNumCorners],
-      self.corners[(indexOfConcavePoint + 3) % kNumCorners],
-      self.corners[indexOfConcavePoint]}};
+  LTTriangleCorners corners1{{_corners[(indexOfConcavePoint + 2) % kNumCorners],
+      _corners[(indexOfConcavePoint + 3) % kNumCorners],
+      _corners[indexOfConcavePoint]}};
   LTTriangle *triangle1 = [[LTTriangle alloc] initWithCorners:corners1];
   return [triangle0 containsPoint:point] || [triangle1 containsPoint:point];
 }
@@ -244,11 +241,11 @@ static const CGFloat kEpsilon = 1e-10;
 /// convex or complex.
 - (NSUInteger)indexOfConcavePoint {
   LTAssert(!self.isSelfIntersecting, @"Quadrilateral is complex.");
-  NSUInteger size = self.corners.size();
+  NSUInteger size = _corners.size();
   for (NSUInteger i = 0; i < size; i++) {
-    CGPoint origin = self.corners[i];
-    CGPoint direction = self.corners[(i + 1) % size] - origin;
-    if (LTPointLocationRelativeToRay(self.corners[(i + 2) % size], origin, direction) ==
+    CGPoint origin = _corners[i];
+    CGPoint direction = _corners[(i + 1) % size] - origin;
+    if (LTPointLocationRelativeToRay(_corners[(i + 2) % size], origin, direction) ==
         LTPointLocationLeftOfRay) {
       return (i + 1) % size;
     }
@@ -263,22 +260,21 @@ static const CGFloat kEpsilon = 1e-10;
   LTAssert([self isSelfIntersecting], @"Method call is illegal for simple quadrilaterals.");
 
   // Compute intersection point.
-  CGPoints pointsOfClosedPolyLine{self.corners[0], self.corners[1], self.corners[2],
-                                  self.corners[3], self.corners[0]};
+  CGPoints pointsOfClosedPolyLine{_corners[0], _corners[1], _corners[2], _corners[3], _corners[0]};
   CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
   LTAssert(intersectionPoints.size() == 1, @"Quadrilaterals can self-intersect at most once.");
 
   // Compute point inclusion using the two triangles of which the self-intersecting quad consists.
   LTTriangle *triangle0, *triangle1;
-  if (LTPointsAreCollinear(CGPoints{self.corners[0], self.corners[1], intersectionPoints[0]})) {
-    LTTriangleCorners corners0{{intersectionPoints[0], self.corners[1], self.corners[2]}};
+  if (LTPointsAreCollinear(CGPoints{_corners[0], _corners[1], intersectionPoints[0]})) {
+    LTTriangleCorners corners0{{intersectionPoints[0], _corners[1], _corners[2]}};
     triangle0 = [[LTTriangle alloc] initWithCorners:corners0];
-    LTTriangleCorners corners1{{intersectionPoints[0], self.corners[3], self.corners[0]}};
+    LTTriangleCorners corners1{{intersectionPoints[0], _corners[3], _corners[0]}};
     triangle1 = [[LTTriangle alloc] initWithCorners:corners1];
   } else {
-    LTTriangleCorners corners0{{intersectionPoints[0], self.corners[0], self.corners[1]}};
+    LTTriangleCorners corners0{{intersectionPoints[0], _corners[0], _corners[1]}};
     triangle0 = [[LTTriangle alloc] initWithCorners:corners0];
-    LTTriangleCorners corners1{{intersectionPoints[0], self.corners[2], self.corners[3]}};
+    LTTriangleCorners corners1{{intersectionPoints[0], _corners[2], _corners[3]}};
     triangle1 = [[LTTriangle alloc] initWithCorners:corners1];
   }
 
@@ -295,12 +291,12 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark -
 
 - (CGPoint)pointOnEdgeClosestToPoint:(CGPoint)point {
-  NSUInteger size = self.corners.size();
+  NSUInteger size = _corners.size();
   CGPoint closestPoint = CGPointNull;
   CGFloat minimalDistance = CGFLOAT_MAX;
   for (NSUInteger i = 0; i < size; ++i) {
     CGPoint pointOnLine =
-        LTPointOnEdgeClosestToPoint(self.corners[i], self.corners[(i + 1) % size], point);
+        LTPointOnEdgeClosestToPoint(_corners[i], _corners[(i + 1) % size], point);
     CGFloat distance = LTVector2(pointOnLine - point).length();
     if (distance < minimalDistance) {
       minimalDistance = distance;
@@ -339,11 +335,11 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (BOOL)isConvex {
-  NSUInteger size = self.corners.size();
+  NSUInteger size = _corners.size();
   for (NSUInteger i = 0; i < size; i++) {
-    CGPoint origin = self.corners[i];
-    CGPoint direction = self.corners[(i + 1) % size] - origin;
-    if (LTPointLocationRelativeToRay(self.corners[(i + 2) % size], origin, direction) ==
+    CGPoint origin = _corners[i];
+    CGPoint direction = _corners[(i + 1) % size] - origin;
+    if (LTPointLocationRelativeToRay(_corners[(i + 2) % size], origin, direction) ==
         LTPointLocationLeftOfRay) {
       return NO;
     }
@@ -458,37 +454,29 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark -
 
 - (id)copyWithZone:(NSZone *)zone {
-  return [((LTQuad *)[[self class] allocWithZone:zone]) initWithCorners:self.corners];
+  return [((LTQuad *)[[self class] allocWithZone:zone]) initWithCorners:_corners];
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"v0 = (%g, %g), v1 = (%g, %g), v2 = (%g, %g), v3 = (%g, %g)",
-          self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x, self.v2.y, self.v3.x, self.v3.y];
+  return [NSString stringWithFormat:@"<%@: %p, v0: (%g, %g), v1: (%g, %g), v2: (%g, %g), "
+          "v3: (%g, %g)>", self.class, self, self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x,
+          self.v2.y, self.v3.x, self.v3.y];
 }
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTQuad *)quad {
+  if (self == quad) {
     return YES;
   }
 
-  if ([object isKindOfClass:[self class]]) {
-    LTQuad *quad = object;
-    return self.v0 == quad.v0 && self.v1 == quad.v1 && self.v2 == quad.v2 && self.v3 == quad.v3;
+  if (![quad isKindOfClass:[self class]]) {
+    return NO;
   }
 
-  return NO;
+  return _corners == quad->_corners;
 }
 
 - (NSUInteger)hash {
-  NSUInteger result = 0;
-  LTQuadHashHelperStruct converter;
-  for (const CGPoint &corner : self.corners) {
-    converter.floatValue = corner.x;
-    result ^= converter.intValue;
-    converter.floatValue = corner.y;
-    result ^= converter.intValue;
-  }
-  return result;
+  return lt::hash<LTQuadCorners>()(_corners);
 }
 
 - (BOOL)isSimilarTo:(LTQuad *)quad upToDeviation:(CGFloat)deviation {
@@ -527,24 +515,23 @@ static const CGFloat kEpsilon = 1e-10;
 #pragma mark -
 
 - (CGPoint)v0 {
-  return self.corners[0];
+  return _corners[0];
 }
 
 - (CGPoint)v1 {
-  return self.corners[1];
+  return _corners[1];
 }
 
 - (CGPoint)v2 {
-  return self.corners[2];
+  return _corners[2];
 }
 
 - (CGPoint)v3 {
-  return self.corners[3];
+  return _corners[3];
 }
 
 - (BOOL)isSelfIntersecting {
-  CGPoints pointsOfClosedPolyLine{self.corners[0], self.corners[1], self.corners[2],
-                                  self.corners[3], self.corners[0]};
+  CGPoints pointsOfClosedPolyLine{_corners[0], _corners[1], _corners[2], _corners[3], _corners[0]};
   return LTIsSelfIntersectingPolyline(pointsOfClosedPolyLine);
 }
 

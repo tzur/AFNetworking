@@ -92,6 +92,7 @@ context(@"initializers and factory methods", ^{
     it(@"should initialize with corners", ^{
       LTQuadCorners corners{{v0, v1, v2, v3}};
       quad = [[LTQuad alloc] initWithCorners:corners];
+      expect(quad.corners == corners).to.beTruthy();
       expect(quad.v0).to.equal(v0);
       expect(quad.v1).to.equal(v1);
       expect(quad.v2).to.equal(v2);
