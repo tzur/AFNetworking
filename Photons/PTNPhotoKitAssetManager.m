@@ -16,6 +16,7 @@
 #import "PTNPhotoKitObserver.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNSignalCache.h"
 #import "PhotoKit+Photons.h"
 #import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
@@ -33,11 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Image manager used to request images.
 @property (strong, nonatomic) PHImageManager *imageManager;
 
-/// Dictionary from \c NSURL album urls to their \c RACSignal objects.
-@property (strong, nonatomic) NSMutableDictionary *albumSignals;
-
-/// Queue for accessing the album signals cache in a readers/writers fashion.
-@property (strong, nonatomic) dispatch_queue_t albumSignalsQueue;
+/// Cache from \c NSURL album urls to their \c RACSignal objects.
+@property (strong, nonatomic) PTNSignalCache *albumSignalCache;
 
 @end
 
@@ -55,9 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.observer = observer;
     self.imageManager = imageManager;
 
-    self.albumSignals = [NSMutableDictionary dictionary];
-    self.albumSignalsQueue = dispatch_queue_create("com.lightricks.Photons.PhotoKit.AlbumSignals",
-                                                   DISPATCH_QUEUE_CONCURRENT);
+    self.albumSignalCache = [[PTNSignalCache alloc] init];
   }
   return self;
 }
@@ -72,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  RACSignal *existingSignal = [self signalForURL:url];
+  RACSignal *existingSignal = self.albumSignalCache[url];
   if (existingSignal) {
     return [existingSignal scanWithStart:nil
                          reduceWithIndex:^id(id __unused running, PTNAlbumChangeset *next,
@@ -109,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }]
       doError:^(NSError __unused *error) {
-        [self removeSignalForURL:url];
+        [self.albumSignalCache removeSignalForURL:url];
       }]
       replayLazily];
 
@@ -135,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
       ptn_replayLastLazily]
       subscribeOn:RACScheduler.scheduler];
 
-  [self setSignal:changeset forURL:url];
+  self.albumSignalCache[url] = changeset;
 
   return changeset;
 }
@@ -200,32 +196,6 @@ NS_ASSUME_NONNULL_BEGIN
      
      return [RACSignal merge:signals];
    }] flatten];
-}
-
-#pragma mark -
-#pragma mark Album signals cache
-#pragma mark -
-
-- (void)setSignal:(RACSignal *)signal forURL:(NSURL *)url {
-  dispatch_barrier_sync(self.albumSignalsQueue, ^{
-    self.albumSignals[url] = signal;
-  });
-}
-
-- (void)removeSignalForURL:(NSURL *)url {
-  dispatch_barrier_sync(self.albumSignalsQueue, ^{
-    [self.albumSignals removeObjectForKey:url];
-  });
-}
-
-- (RACSignal *)signalForURL:(NSURL *)url {
-  __block RACSignal *signal;
-
-  dispatch_sync(self.albumSignalsQueue, ^{
-    signal = self.albumSignals[url];
-  });
-
-  return signal;
 }
 
 #pragma mark -
