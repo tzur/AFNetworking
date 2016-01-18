@@ -322,6 +322,21 @@ context(@"common directories", ^{
                                                               NSUserDomainMask, YES).firstObject);
     expect(path).to.endWith(@"Application Support");
   });
+
+  it(@"should return YES if directory exists at path", ^{
+    expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beFalsy();
+
+    [fileManager createDirectoryAtPath:LTTemporaryPath() withIntermediateDirectories:YES
+                            attributes:nil error:nil];
+    expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beTruthy();
+
+    [fileManager lt_writeDictionary:@{} toFile:LTTemporaryPath(@"file") error:nil];
+    expect([fileManager fileExistsAtPath:LTTemporaryPath(@"file")]).to.beTruthy();
+    expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath(@"file")]).to.beFalsy();
+
+    [fileManager removeItemAtPath:LTTemporaryPath() error:nil];
+    expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beFalsy();
+  });
 });
 
 SpecEnd
