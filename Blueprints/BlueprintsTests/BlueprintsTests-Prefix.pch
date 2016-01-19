@@ -22,4 +22,6 @@ extern "C" {
 
   // Matchers.
   #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LLReactiveMatchers/LLReactiveMatchers.h>
+  #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 #endif
