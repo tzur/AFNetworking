@@ -15,6 +15,8 @@
 		8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */; };
 		8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */; };
 		8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */; };
+		8B3CEA071C4E6EF3008E779B /* NSErrorCodes+Blueprints.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */; };
+		8B3CEA081C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA061C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm */; };
 		8B3CEA421C4E7438008E779B /* LLReactiveMatchers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA1D1C4E7438008E779B /* LLReactiveMatchers.h */; };
 		8B3CEA431C4E7438008E779B /* LLReactiveMatchersHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA1E1C4E7438008E779B /* LLReactiveMatchersHelpers.h */; };
 		8B3CEA451C4E7438008E779B /* LLReactiveMatchersImports.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA201C4E7438008E779B /* LLReactiveMatchersImports.h */; };
@@ -476,6 +478,8 @@
 				8BED82E01C3D39B20001C6F1 /* BLUTree.m */,
 				8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */,
 				8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */,
+				8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */,
+				8B3CEA061C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm */,
 				8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */,
 				8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */,
 			);
@@ -646,6 +650,7 @@
 				8B3CEA431C4E7438008E779B /* LLReactiveMatchersHelpers.h in Headers */,
 				8B3CEA451C4E7438008E779B /* LLReactiveMatchersImports.h in Headers */,
 				8B3CEA461C4E7438008E779B /* LLReactiveMatchersMessageBuilder.h in Headers */,
+				8B3CEA071C4E6EF3008E779B /* NSErrorCodes+Blueprints.h in Headers */,
 				8BED83041C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -950,6 +955,7 @@
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
 				8BED82E11C3D39B20001C6F1 /* BLUTree.m in Sources */,
 				8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */,
+				8B3CEA081C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm in Sources */,
 				8BED83051C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
