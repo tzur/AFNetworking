@@ -15,6 +15,8 @@
 		8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */; };
 		8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */; };
 		8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */; };
+		8B3CEA031C4E6BB7008E779B /* BLUModelNodeChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */; };
+		8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */; };
 		8B3CEA071C4E6EF3008E779B /* NSErrorCodes+Blueprints.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */; };
 		8B3CEA081C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA061C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm */; };
 		8B3CEA421C4E7438008E779B /* LLReactiveMatchers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA1D1C4E7438008E779B /* LLReactiveMatchers.h */; };
@@ -50,6 +52,7 @@
 		8B3CEA741C4E8904008E779B /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA3B1C4E7438008E779B /* EXPMatchers+sendValuesWithCount.m */; };
 		8B3CEA751C4E8909008E779B /* LLReactiveMatchersHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA1F1C4E7438008E779B /* LLReactiveMatchersHelpers.m */; };
 		8B3CEA761C4E8909008E779B /* LLReactiveMatchersMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA221C4E7438008E779B /* LLReactiveMatchersMessageBuilder.m */; settings = {COMPILER_FLAGS = "-Wno-unused-parameter"; }; };
+		8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
@@ -471,6 +474,8 @@
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
 				8BED82C31C3D32F80001C6F1 /* BLUNode.h */,
 				8BED82C41C3D32F80001C6F1 /* BLUNode.m */,
+				8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */,
+				8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */,
 				8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */,
 				8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */,
 				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
@@ -521,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
+				8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */,
 				8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */,
 				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */,
 				8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */,
@@ -629,6 +635,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3CEA031C4E6BB7008E779B /* BLUModelNodeChange.h in Headers */,
 				8BED83081C3D87480001C6F1 /* BLUNode+Operations.h in Headers */,
 				8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */,
 				8BED82FC1C3D6A8A0001C6F1 /* BLUNode.h in Headers */,
@@ -951,6 +958,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
 				8BED82E11C3D39B20001C6F1 /* BLUTree.m in Sources */,
@@ -967,6 +975,7 @@
 				8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */,
 				8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */,
 				8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */,
+				8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */,
 				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */,
 				8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */,
 				8BED830B1C3E84DB0001C6F1 /* BLUTreeSpec.mm in Sources */,
