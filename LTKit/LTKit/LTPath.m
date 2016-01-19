@@ -86,12 +86,12 @@ static NSString * const kPathScheme = @"com.lightricks.path";
   return components.URL;
 }
 
-- (LTPath *)filePathByAppendingPathComponent:(NSString *)pathComponent {
+- (LTPath *)pathByAppendingPathComponent:(NSString *)pathComponent {
   NSString *relativePath = [self.relativePath stringByAppendingPathComponent:pathComponent];
   return [LTPath pathWithBaseDirectory:self.baseDirectory andRelativePath:relativePath];
 }
 
-- (LTPath *)filePathByAppendingPathExtension:(NSString *)pathExtension {
+- (LTPath *)pathByAppendingPathExtension:(NSString *)pathExtension {
   NSString *relativePath = [self.relativePath stringByAppendingPathExtension:pathExtension];
   return [LTPath pathWithBaseDirectory:self.baseDirectory andRelativePath:relativePath];
 }
