@@ -21,6 +21,9 @@
 		843CD2BA1C4670F0007435E8 /* PTNDropboxAlbumSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 843CD2B91C4670F0007435E8 /* PTNDropboxAlbumSpec.m */; };
 		843CD2D61C467102007435E8 /* PTNDropboxAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 843CD2D41C467102007435E8 /* PTNDropboxAlbum.h */; };
 		843CD2D71C467102007435E8 /* PTNDropboxAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 843CD2D51C467102007435E8 /* PTNDropboxAlbum.m */; };
+		843CD33C1C46763F007435E8 /* PTNDropboxPathProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 843CD33B1C46763F007435E8 /* PTNDropboxPathProviderSpec.m */; };
+		843CD3591C467659007435E8 /* PTNDropboxPathProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 843CD3561C467659007435E8 /* PTNDropboxPathProvider.h */; };
+		843CD35B1C467659007435E8 /* PTNDropboxPathProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 843CD3581C467659007435E8 /* PTNDropboxPathProvider.m */; };
 		844C0F4F1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 844C0F3E1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.h */; };
 		844C0F501C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C0F3F1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.m */; };
 		844C0F531C354FD9001A6DC9 /* PTNDropboxFileDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 844C0F421C354FD9001A6DC9 /* PTNDropboxFileDescriptor.h */; };
@@ -358,6 +361,9 @@
 		843CD2B91C4670F0007435E8 /* PTNDropboxAlbumSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAlbumSpec.m; sourceTree = "<group>"; };
 		843CD2D41C467102007435E8 /* PTNDropboxAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxAlbum.h; sourceTree = "<group>"; };
 		843CD2D51C467102007435E8 /* PTNDropboxAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAlbum.m; sourceTree = "<group>"; };
+		843CD33B1C46763F007435E8 /* PTNDropboxPathProviderSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxPathProviderSpec.m; sourceTree = "<group>"; };
+		843CD3561C467659007435E8 /* PTNDropboxPathProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxPathProvider.h; sourceTree = "<group>"; };
+		843CD3581C467659007435E8 /* PTNDropboxPathProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxPathProvider.m; sourceTree = "<group>"; };
 		844C0F3E1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxDirectoryDescriptor.h; sourceTree = "<group>"; };
 		844C0F3F1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxDirectoryDescriptor.m; sourceTree = "<group>"; };
 		844C0F421C354FD9001A6DC9 /* PTNDropboxFileDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxFileDescriptor.h; sourceTree = "<group>"; };
@@ -584,6 +590,8 @@
 				84331A901C300C7B004502B5 /* PTNDropboxEntry.m */,
 				844C0F421C354FD9001A6DC9 /* PTNDropboxFileDescriptor.h */,
 				844C0F431C354FD9001A6DC9 /* PTNDropboxFileDescriptor.m */,
+				843CD3561C467659007435E8 /* PTNDropboxPathProvider.h */,
+				843CD3581C467659007435E8 /* PTNDropboxPathProvider.m */,
 			);
 			name = Dropbox;
 			sourceTree = "<group>";
@@ -596,6 +604,7 @@
 				848186FA1C3BCDAB0070462E /* PTNDropboxDirectoryDescriptorSpec.m */,
 				84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */,
 				848186DF1C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m */,
+				843CD33B1C46763F007435E8 /* PTNDropboxPathProviderSpec.m */,
 				844C0F651C35502A001A6DC9 /* PTNDropboxTestUtils.h */,
 				844C0F661C35502A001A6DC9 /* PTNDropboxTestUtils.m */,
 			);
@@ -1072,6 +1081,7 @@
 				8BAFDCC11B0DF781003FB8F5 /* PTNCollection.h in Headers */,
 				8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */,
 				8BAFDCC21B0DF781003FB8F5 /* PTNDescriptor.h in Headers */,
+				843CD3591C467659007435E8 /* PTNDropboxPathProvider.h in Headers */,
 				8BAFDCC41B0DF792003FB8F5 /* PTNPhotoKitFetcher.h in Headers */,
 				8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */,
 				84331A911C300C7B004502B5 /* PTNDropboxEntry.h in Headers */,
@@ -1430,6 +1440,7 @@
 				848186FB1C3BCDAB0070462E /* PTNDropboxDirectoryDescriptorSpec.m in Sources */,
 				8BF135A01B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.m in Sources */,
 				8B2FD0DD1B09CD0800757B1F /* EXPMatchers+sendEvents.m in Sources */,
+				843CD33C1C46763F007435E8 /* PTNDropboxPathProviderSpec.m in Sources */,
 				8BAB93511B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m in Sources */,
 				8B2FD0D91B09CD0800757B1F /* EXPMatchers+matchError.m in Sources */,
 				84331A951C300C96004502B5 /* PTNDropboxEntrySpec.m in Sources */,
@@ -1485,6 +1496,7 @@
 				843CD2D71C467102007435E8 /* PTNDropboxAlbum.m in Sources */,
 				848186781C3ADD810070462E /* NSURL+Photons.m in Sources */,
 				8B3832331B5B89BD00620560 /* PTNAlbumChangesetMove.m in Sources */,
+				843CD35B1C467659007435E8 /* PTNDropboxPathProvider.m in Sources */,
 				8BAB95261B8234F600B25392 /* PTNImageResizer.m in Sources */,
 				848189BE1C3C14720070462E /* PTNMultiplexerAssetManager.m in Sources */,
 				8B992D001B78A0EE00B7836B /* RACSignal+Photons.m in Sources */,
