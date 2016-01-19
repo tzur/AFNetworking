@@ -2,5 +2,14 @@
 // Created by Yaron Inger.
 
 #ifdef __OBJC__
+  #import <ReactiveCocoa/ReactiveCocoa.h>
+
+  // Undefine macros that were defined by ReactiveCocoa which are redefined by libextobjc.
+  #undef keypath
+  #undef onExit
+  #undef weakify
+  #undef unsafeify
+  #undef strongify
+
   #import <LTKit/LTKit-Prefix.pch>
 #endif
