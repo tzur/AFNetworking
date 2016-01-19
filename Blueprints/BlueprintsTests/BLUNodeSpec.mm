@@ -26,7 +26,7 @@ it(@"should copy initializer parameters", ^{
 
   NSMutableString *name = [@"name" mutableCopy];
   id<BLUNodeCollection> childNodes = [@[child] mutableCopy];
-  id<NSCopying, NSObject> value = [@[@"foo"] mutableCopy];
+  BLUNodeValue value = [@[@"foo"] mutableCopy];
 
   BLUNode *parent = [BLUNode nodeWithName:name childNodes:childNodes value:value];
 

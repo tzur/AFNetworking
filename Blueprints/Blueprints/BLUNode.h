@@ -5,10 +5,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BLUNodeCollection;
 
+/// Type of value that is held by BLUNode.
+typedef id<NSCopying, NSObject> BLUNodeValue;
+
 /// Represents a node in a tree. A node has three basic properties: \c name which identifies the
 /// node, \c childNodes which is a collection of children nodes with unique names, and \c value
 /// which holds the actual data of the node.
-@interface BLUNode<__covariant ObjectType:id<NSCopying, NSObject>> : NSObject
+@interface BLUNode<__covariant ObjectType:BLUNodeValue> : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 

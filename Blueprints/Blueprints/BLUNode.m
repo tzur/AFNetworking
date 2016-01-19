@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BLUNode
 
 - (instancetype)initWithName:(NSString *)name childNodes:(id<BLUNodeCollection>)childNodes
-                       value:(id<NSCopying, NSObject>)value {
+                       value:(BLUNodeValue)value {
   LTParameterAssert(name);
   LTParameterAssert(childNodes);
   LTParameterAssert(value);
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)nodeWithName:(NSString *)name childNodes:(id<BLUNodeCollection>)childNodes
-                       value:(id<NSCopying, NSObject>)value {
+                       value:(BLUNodeValue)value {
   return [[BLUNode alloc] initWithName:name childNodes:childNodes value:value];
 }
 
