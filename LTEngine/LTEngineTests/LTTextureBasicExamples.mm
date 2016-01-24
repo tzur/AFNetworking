@@ -113,11 +113,13 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       CGSize size = CGSizeMake(42, 42);
       LTTexture *texture = [(LTTexture *)[textureClass alloc]
                             initWithSize:size pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                            maxMipmapLevel:0
                             allocateMemory:YES];
       LTTexture *similar = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
 
       expect(similar.size).to.equal(texture.size);
       expect(similar.pixelFormat).to.equal(texture.pixelFormat);
+      expect(similar.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
     });
 
     it(@"should not initialize with zero sized texture", ^{

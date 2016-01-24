@@ -8,7 +8,16 @@ SpecBegin(LTTextureFactory)
 /// Since the class is currently decided in compile time, only verify that the class methods are
 /// correctly called and that the returned object is indeed a texture class.
 
-it(@"should initialize with size precision channels and allocate memory", ^{
+it(@"should initialize with size pixel format max mipmap level and allocate memory", ^{
+  LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
+                                      pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                   maxMipmapLevel:0
+                                   allocateMemory:YES];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize with size pixel format and allocate memory", ^{
   LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                       pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                                    allocateMemory:YES];
