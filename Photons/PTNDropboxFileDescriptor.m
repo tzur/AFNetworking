@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Revision associated with this descriptor.
 @property (strong, nonatomic) NSString *revision;
 
+/// Date the Dropbox entry represented by this descriptor was last modified.
+@property (strong, nonatomic, nullable) NSDate *modificationDate;
+
 @end
 
 @implementation PTNDropboxFileDescriptor
@@ -28,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     self.path = metadata.path;
     self.revision = metadata.rev;
+    self.modificationDate = metadata.lastModifiedDate;
   }
   return self;
 }
@@ -42,13 +46,18 @@ NS_ASSUME_NONNULL_BEGIN
   return self.path.lastPathComponent;
 }
 
+- (nullable NSDate *)creationDate {
+  // Unavailable in Dropbox API.
+  return nil;
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, path: %@, revision: %@>",
-          self.class, self, self.path, self.revision ?: @"latest"];
+  return [NSString stringWithFormat:@"<%@: %p, path: %@, revision: %@, last modified: %@>",
+          self.class, self, self.path, self.revision ?: @"latest", self.modificationDate ?: @"N/A"];
 }
 
 - (BOOL)isEqual:(PTNDropboxFileDescriptor *)object {
@@ -60,11 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [self.path isEqual:object.path] &&
-         (self.revision == object.revision || [self.revision isEqual:object.revision]);
+         (self.revision == object.revision || [self.revision isEqual:object.revision]) &&
+         (self.modificationDate == object.modificationDate ||
+             [self.modificationDate isEqualToDate:object.modificationDate]);
 }
 
 - (NSUInteger)hash {
-  return self.path.hash ^ self.revision.hash;
+  return self.path.hash ^ self.revision.hash ^ self.modificationDate.hash;
 }
 
 @end

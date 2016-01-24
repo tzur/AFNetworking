@@ -17,6 +17,8 @@ it(@"should initialize with path", ^{
 
   expect(identifier.ptn_fileSystemURLType).to.equal(PTNFileSystemURLTypeAsset);
   expect(identifier.ptn_fileSystemAssetPath).to.equal(path);
+  expect(descriptor.creationDate).to.beNil();
+  expect(descriptor.modificationDate).to.beNil();
 });
 
 it(@"should use last path component for localized title", ^{
@@ -26,6 +28,22 @@ it(@"should use last path component for localized title", ^{
                                              initWithPath:path];
   
   expect(descriptor.localizedTitle).to.equal(@"bar.jpg");
+});
+
+it(@"should initialize with path and creation and modification dates", ^{
+  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
+                               andRelativePath:kPath];
+  NSDate *creationDate = [[NSDate alloc] init];
+  NSDate *modificationDate = [[NSDate alloc] init];
+  PTNFileSystemFileDescriptor *descriptor =
+      [[PTNFileSystemFileDescriptor alloc] initWithPath:path creationDate:creationDate
+                                       modificationDate:modificationDate];
+  NSURL *identifier = descriptor.ptn_identifier;
+
+  expect(identifier.ptn_fileSystemURLType).to.equal(PTNFileSystemURLTypeAsset);
+  expect(identifier.ptn_fileSystemAssetPath).to.equal(path);
+  expect(descriptor.creationDate).to.equal(creationDate);
+  expect(descriptor.modificationDate).to.equal(modificationDate);
 });
 
 context(@"equality", ^{

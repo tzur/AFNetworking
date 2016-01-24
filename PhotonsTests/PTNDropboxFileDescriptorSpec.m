@@ -9,44 +9,39 @@
 
 SpecBegin(PTNDropboxFileDescriptor)
 
-static NSString * const kPath = @"foo/bar.jpg";
-static NSString * const kRevision = @"bar";
-
-__block PTNDropboxFileDescriptor *asset;
-__block DBMetadata *metadata;
-
-beforeEach(^{
-  metadata = PTNDropboxCreateFileMetadata(kPath, kRevision);
-  asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
-});
-
 it(@"should return correct identifier", ^{
-  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:kPath andRevision:kRevision];
+  NSDate *lastModified = [[NSDate alloc] init];
+  DBMetadata *metadata =
+      PTNDropboxCreateFileMetadataWithModificationDate(@"foo/bar.jpg", @"bar", lastModified);
+  PTNDropboxFileDescriptor *asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
+  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:@"foo/bar.jpg" andRevision:@"bar"];
 
   expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAssetURLWithEntry:entry]);
-});
-
-it(@"should use last path component for localized title", ^{
   expect(asset.localizedTitle).to.equal(@"bar.jpg");
+  expect(asset.modificationDate).to.equal(lastModified);
 });
 
 context(@"equality", ^{
-  __block PTNDropboxFileDescriptor *firstDirectory;
-  __block PTNDropboxFileDescriptor *secondDirectory;
+  __block PTNDropboxFileDescriptor *firstFile;
+  __block PTNDropboxFileDescriptor *secondFile;
 
   context(@"revision", ^{
     beforeEach(^{
-      firstDirectory = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
-      secondDirectory = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
+      NSDate *lastModified = [[NSDate alloc] init];
+      DBMetadata *metadata =
+          PTNDropboxCreateFileMetadataWithModificationDate(@"foo/bar.jpg", @"bar", lastModified);
+
+      firstFile = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
+      secondFile = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
     });
 
     it(@"should handle isEqual correctly", ^{
-      expect(firstDirectory).to.equal(secondDirectory);
-      expect(secondDirectory).to.equal(firstDirectory);
+      expect(firstFile).to.equal(secondFile);
+      expect(secondFile).to.equal(firstFile);
     });
 
     it(@"should create proper hash", ^{
-      expect(firstDirectory.hash).to.equal(secondDirectory.hash);
+      expect(firstFile.hash).to.equal(secondFile.hash);
     });
   });
 });

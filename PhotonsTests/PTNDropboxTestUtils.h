@@ -5,14 +5,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Creates a fake Dropbox metadata object with the given \c path and \c rev.
+/// Creates a fake Dropbox metadata object with the given \c path and \c revision.
 DBMetadata *PTNDropboxCreateMetadata(NSString *path, NSString * _Nullable revision);
 
-/// Creates a fake Dropbox metadata object with the given \c path and \c rev and setting
+/// Creates a fake Dropbox metadata object with the given \c path and \c revision and setting
 /// \c isDirectory to \c NO.
 DBMetadata *PTNDropboxCreateFileMetadata(NSString *path, NSString * _Nullable revision);
 
-/// Creates a fake Dropbox metadata object with the given \c path and \c rev and setting
+/// Creates a fake Dropbox metadata object with the given \c path, \c revision and \c lastModified
+/// and setting \c isDirectory to \c NO.
+DBMetadata *PTNDropboxCreateFileMetadataWithModificationDate(NSString *path,
+                                                             NSString * _Nullable revision,
+                                                             NSDate * _Nullable lastModified);
+
+/// Creates a fake Dropbox metadata object with the given \c path and \c revision and setting
 /// \c isDirectory to \c YES.
 DBMetadata *PTNDropboxCreateDirectoryMetadata(NSString *path, NSString * _Nullable revision);
 
