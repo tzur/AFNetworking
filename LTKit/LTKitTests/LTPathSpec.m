@@ -141,20 +141,20 @@ context(@"application support base path", ^{
 context(@"path operations", ^{
   it(@"should append path component", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
-    LTPath *newPath = [path filePathByAppendingPathComponent:@"gaz"];
+    LTPath *newPath = [path pathByAppendingPathComponent:@"gaz"];
     expect(newPath.path).to.equal([path.path stringByAppendingPathComponent:@"gaz"]);
     expect(newPath.baseDirectory).to.equal(path.baseDirectory);
-    newPath = [path filePathByAppendingPathComponent:@"/gaz"];
+    newPath = [path pathByAppendingPathComponent:@"/gaz"];
     expect(newPath.path).to.equal([path.path stringByAppendingPathComponent:@"/gaz"]);
     expect(newPath.baseDirectory).to.equal(path.baseDirectory);
   });
 
   it(@"should append path extension", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
-    LTPath *newPath = [path filePathByAppendingPathExtension:@"gaz"];
+    LTPath *newPath = [path pathByAppendingPathExtension:@"gaz"];
     expect(newPath.path).to.equal([path.path stringByAppendingPathExtension:@"gaz"]);
     expect(newPath.baseDirectory).to.equal(path.baseDirectory);
-    newPath = [path filePathByAppendingPathExtension:@".gaz"];
+    newPath = [path pathByAppendingPathExtension:@".gaz"];
     expect(newPath.path).to.equal([path.path stringByAppendingPathExtension:@".gaz"]);
     expect(newPath.baseDirectory).to.equal(path.baseDirectory);
   });

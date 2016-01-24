@@ -40,22 +40,22 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
                       andRelativePath:(NSString *)relativePath;
 
 /// Initializes a new \c LTPath with the given \c relativeURL. If the \c relativeURL's \c scheme or
-/// \c host doesn't match the values accepted by \c LTFilePath, \c nil will be returned.
+/// \c host doesn't match the values accepted by \c LTPath, \c nil will be returned.
 ///
-/// @see <tt>-[LTFilePath relativeURL]</tt> for more details.
+/// @see <tt>-[LTPath relativeURL]</tt> for more details.
 + (nullable instancetype)pathWithRelativeURL:(NSURL *)relativeURL;
 
 /// Returns a new path made by appending \c pathComponent to the receiver's \c relativePath
 /// component. \c baseDirectory is the same as the receiver's.
 ///
 /// @see -[NSString stringByAppendingPathComponent:].
-- (LTPath *)filePathByAppendingPathComponent:(NSString *)pathComponent;
+- (LTPath *)pathByAppendingPathComponent:(NSString *)pathComponent;
 
 /// Returns a new path made by appending \c pathExtension to the receiver's \c relativePath
 /// component. \c baseDirectory is the same as the receiver's.
 ///
 /// @see -[NSString stringByAppendingPathExtension:].
-- (LTPath *)filePathByAppendingPathExtension:(NSString *)pathExtension;
+- (LTPath *)pathByAppendingPathExtension:(NSString *)pathExtension;
 
 /// Base directory of the path.
 @property (readonly, nonatomic) LTPathBaseDirectory baseDirectory;
@@ -70,7 +70,7 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 @property (readonly, nonatomic) NSURL *url;
 
 /// Path represented as a URL, with a custom scheme and host. This can be used in conjunction with
-/// <tt>+[LTFilePath pathWithRelativeURL:]</tt> to serialize and deserialize the receiver to and
+/// <tt>+[LTPath pathWithRelativeURL:]</tt> to serialize and deserialize the receiver to and
 /// from \c NSURL, accordingly.
 @property (readonly, nonatomic) NSURL *relativeURL;
 
