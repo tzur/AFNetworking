@@ -23,7 +23,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
 }
 
 - (NSString *)absolutePathWithPath:(NSString *)path {
-  if ([[path substringToIndex:1] isEqualToString:@"/"]) {
+  if ([path hasPrefix:@"/"]) {
     return path;
   } else {
     return [@"/" stringByAppendingString:path];
