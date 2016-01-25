@@ -138,6 +138,31 @@ context(@"application support base path", ^{
   });
 });
 
+context(@"no relative path", ^{
+  __block LTPath *path;
+
+  it(@"should initialize without relative path nor base path", ^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryNone andRelativePath:@""];
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryNone);
+    expect(path.relativePath).to.equal(@"/");
+
+    NSString *expectedPath = @"/";
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should initialize with a base path and without a relative path", ^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:@""];
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryDocuments);
+    expect(path.relativePath).to.equal(@"/");
+
+    NSString *expectedPath =
+        [[NSFileManager lt_documentsDirectory] stringByAppendingPathComponent:@"/"];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+});
+
 context(@"path operations", ^{
   it(@"should append path component", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
