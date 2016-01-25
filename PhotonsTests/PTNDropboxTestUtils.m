@@ -13,6 +13,14 @@ DBMetadata *PTNDropboxCreateFileMetadata(NSString *path, NSString * _Nullable re
   return metadata;
 }
 
+DBMetadata *PTNDropboxCreateFileMetadataWithModificationDate(NSString *path,
+                                                             NSString * _Nullable revision,
+                                                             NSDate * _Nullable lastModified) {
+  DBMetadata *metadata = PTNDropboxCreateFileMetadata(path, revision);
+  OCMStub([metadata lastModifiedDate]).andReturn(lastModified);
+  return metadata;
+}
+
 DBMetadata *PTNDropboxCreateDirectoryMetadata(NSString *path, NSString * _Nullable revision) {
   DBMetadata *metadata = PTNDropboxCreateMetadata(path, revision);
   OCMStub([metadata isDirectory]).andReturn(YES);

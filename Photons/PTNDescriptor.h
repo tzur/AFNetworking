@@ -34,6 +34,14 @@ NS_ENUM(NSUInteger) {
 /// Descriptor for asset objects, which is used to fetch the actual asset contents.
 @protocol PTNAssetDescriptor <PTNDescriptor>
 
+/// Date at which the asset identified by this descriptor was originally created or \c nil if that
+/// information is unavailable.
+@property (readonly, nonatomic, nullable) NSDate *creationDate;
+
+/// Date at which the asset identified by this descriptor was last modified or \c nil if that
+/// information is unavailable.
+@property (readonly, nonatomic, nullable) NSDate *modificationDate;
+
 @end
 
 NS_ASSUME_NONNULL_END
