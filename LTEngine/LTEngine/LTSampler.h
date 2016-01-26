@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Mapping from \c parameterizationKeys of the sampled parameterized object to sampled values.
 /// \c nil if no values were sampled.
-@property (readonly, nonatomic) LTParameterizationKeyToValues *mappingOfSampledValues;
+@property (readonly, nonatomic, nullable) LTParameterizationKeyToValues *mappingOfSampledValues;
 
 @end
 
