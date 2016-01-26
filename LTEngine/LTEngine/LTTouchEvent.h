@@ -3,6 +3,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LTTouchEvent;
+
+/// Ordered collection of \c LTTouchEvent objects.
+typedef NSArray<LTTouchEvent *> LTTouchEvents;
+
+/// Mutable ordered collection of \c LTTouchEvent objects.
+typedef NSMutableArray<LTTouchEvent *> LTMutableTouchEvents;
+
 /// Immmutable value object representing the discrete state of a touch (event) sequence associated
 /// with a view. A touch event sequence starts with an input device (e.g. finger, stylus, etc.)
 /// entering the area in which touches are sensorically recognized and ends either due to the input
