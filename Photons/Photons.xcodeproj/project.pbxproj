@@ -56,6 +56,11 @@
 		848189BE1C3C14720070462E /* PTNMultiplexerAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 848189BC1C3C14720070462E /* PTNMultiplexerAssetManager.m */; };
 		848189C11C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 848189C01C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.m */; };
 		84818A381C3D21920070462E /* PTNMultiplexingTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84818A371C3D21920070462E /* PTNMultiplexingTestUtils.m */; };
+		84A5E6451C58F2A000B29423 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9101C58C5DD004E0175 /* libLTKit.a */; };
+		84A5E6581C58F2A300B29423 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A5E6571C58F2A300B29423 /* libextobjc_iOS.a */; };
+		84A5E6591C58F38C00B29423 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9281C58C61E004E0175 /* libExpecta.a */; };
+		84A5E65C1C58F3B800B29423 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9391C58C658004E0175 /* libOCMock.a */; };
+		84A5E65E1C58F3C100B29423 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A5E65D1C58F3C100B29423 /* libSpecta.a */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
 		84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */; };
 		84E27ABE1C34287300806A27 /* NSURL+Dropbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -139,10 +144,6 @@
 		8BAFDCC51B0DF792003FB8F5 /* PTNPhotoKitObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC61B0DF792003FB8F5 /* PTNPhotoKitAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFDCC71B0DF792003FB8F5 /* PTNPhotoKitAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD07C1AFB809B00757B1F /* PTNPhotoKitAssetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BAFE2981B0E0BC9003FB8F5 /* Expecta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */; };
-		8BAFE2991B0E0BC9003FB8F5 /* Specta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */; };
-		8BAFE2AA1B0E0CCA003FB8F5 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */; };
-		8BAFE2AB1B0E0F6C003FB8F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */; };
 		8BAFE2AC1B0E0FF9003FB8F5 /* PTNImageFetchOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFDC421B0CC431003FB8F5 /* PTNImageFetchOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFE2B01B0E15BB003FB8F5 /* PTNPhotoKitAlbumType.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2FD0E51B0A0FD000757B1F /* PTNPhotoKitAlbumType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFE2F21B0E1BDD003FB8F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */; };
@@ -150,7 +151,6 @@
 		8BAFE36C1B1476C9003FB8F5 /* PTNProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BAFE36D1B1476C9003FB8F5 /* PTNProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */; };
 		8BAFE37D1B14C0AD003FB8F5 /* RACStream+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */; };
-		8BCF57D01BCC068E001EE2ED /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A88D1BCBF59A006DAAA7 /* libLTKit.a */; };
 		8BCF57D11BCC0692001EE2ED /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
 		8BCF57FE1BCC0858001EE2ED /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */; };
 		8BCF58561BCD0A74001EE2ED /* PTNImageMetadataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF58551BCD0A74001EE2ED /* PTNImageMetadataSpec.mm */; };
@@ -170,21 +170,133 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B16A88C1BCBF59A006DAAA7 /* PBXContainerItemProxy */ = {
+		8476B8FF1C58C5C6004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-Mac";
+		};
+		8476B9011C58C5C6004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-MacTests";
+		};
+		8476B9031C58C5C6004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		8476B9051C58C5C6004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		8476B90F1C58C5DD004E0175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
 			remoteInfo = LTKit;
 		};
-		8B16A88E1BCBF59A006DAAA7 /* PBXContainerItemProxy */ = {
+		8476B9111C58C5DD004E0175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTKitTests;
 		};
-		8B5619631B65420F006B0DA0 /* PBXContainerItemProxy */ = {
+		8476B91D1C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		8476B91F1C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		8476B9211C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		8476B9231C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		8476B9251C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		8476B9271C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		8476B9291C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		8476B92B1C58C61E004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		8476B9341C58C658004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8476B9361C58C658004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8476B9381C58C658004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8476B93A1C58C658004E0175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		8476B93C1C58C658004E0175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
 			proxyType = 2;
@@ -197,160 +309,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8BAFDC931B0DED4C003FB8F5;
 			remoteInfo = Photons;
-		};
-		8BAFE25D1B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725EA19E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-Mac";
-		};
-		8BAFE25F1B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725F519E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-MacTests";
-		};
-		8BAFE2611B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047260C19E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOS";
-		};
-		8BAFE2631B0E0B70003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047261619E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOSTests";
-		};
-		8BAFE2731B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 908379791A8B972C009844DA;
-			remoteInfo = Expecta;
-		};
-		8BAFE2751B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 908379111A8B9660009844DA;
-			remoteInfo = "Expecta-iOS";
-		};
-		8BAFE2771B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
-			remoteInfo = ExpectaTests;
-		};
-		8BAFE2791B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
-			remoteInfo = "Expecta-iOSTests";
-		};
-		8BAFE27B1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
-			remoteInfo = libExpecta;
-		};
-		8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
-			remoteInfo = "libExpecta-iOS";
-		};
-		8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
-			remoteInfo = libExpectaTests;
-		};
-		8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
-			remoteInfo = "libExpecta-iOSTests";
-		};
-		8BAFE28C1B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
-			remoteInfo = Specta;
-		};
-		8BAFE28E1B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
-			remoteInfo = SpectaTests;
-		};
-		8BAFE2901B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
-			remoteInfo = "Specta-iOS";
-		};
-		8BAFE2921B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
-			remoteInfo = "Specta-iOSTests";
-		};
-		8BAFE2941B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E91713F119DF07BB00921712;
-			remoteInfo = libSpecta;
-		};
-		8BAFE2961B0E0BBF003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E917140919DF07D700921712;
-			remoteInfo = "libSpecta-iOS";
-		};
-		8BAFE2A11B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 030EF0A814632FD000B04273;
-			remoteInfo = OCMock;
-		};
-		8BAFE2A31B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 03565A3118F0566E003AE91E;
-			remoteInfo = OCMockTests;
-		};
-		8BAFE2A51B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 030EF0DC14632FF700B04273;
-			remoteInfo = OCMockLib;
-		};
-		8BAFE2A71B0E0C7F003FB8F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D31108AD1828DB8700737925;
-			remoteInfo = OCMockLibTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -370,10 +328,14 @@
 		84195F371C1EC8740081EC68 /* PTNImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageContainer.h; sourceTree = "<group>"; };
 		84195F381C1EC8740081EC68 /* PTNImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainer.m; sourceTree = "<group>"; };
 		84195F3B1C1ECBFA0081EC68 /* PTNImageContainerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNImageContainerSpec.m; sourceTree = "<group>"; };
-		843319B71C2FF9AD004502B5 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
+		843319B71C2FF9AD004502B5 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		84331A8F1C300C7B004502B5 /* PTNDropboxEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxEntry.h; sourceTree = "<group>"; };
 		84331A901C300C7B004502B5 /* PTNDropboxEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxEntry.m; sourceTree = "<group>"; };
 		84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxEntrySpec.m; sourceTree = "<group>"; };
+		843CD1E61C463FF3007435E8 /* NSFileManager+FileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+FileSystem.h"; sourceTree = "<group>"; };
+		843CD2301C464F9A007435E8 /* PTNSignalCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNSignalCache.h; sourceTree = "<group>"; };
+		843CD2311C464F9A007435E8 /* PTNSignalCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNSignalCache.m; sourceTree = "<group>"; };
+		843CD24D1C465445007435E8 /* PTNSignalCacheSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNSignalCacheSpec.m; sourceTree = "<group>"; };
 		843CD2B91C4670F0007435E8 /* PTNDropboxAlbumSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAlbumSpec.m; sourceTree = "<group>"; };
 		843CD2D41C467102007435E8 /* PTNDropboxAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxAlbum.h; sourceTree = "<group>"; };
 		843CD2D51C467102007435E8 /* PTNDropboxAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAlbum.m; sourceTree = "<group>"; };
@@ -386,10 +348,6 @@
 		844C0F431C354FD9001A6DC9 /* PTNDropboxFileDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxFileDescriptor.m; sourceTree = "<group>"; };
 		844C0F651C35502A001A6DC9 /* PTNDropboxTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxTestUtils.h; sourceTree = "<group>"; };
 		844C0F661C35502A001A6DC9 /* PTNDropboxTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxTestUtils.m; sourceTree = "<group>"; };
-		843CD2301C464F9A007435E8 /* PTNSignalCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNSignalCache.h; sourceTree = "<group>"; };
-		843CD2311C464F9A007435E8 /* PTNSignalCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNSignalCache.m; sourceTree = "<group>"; };
-		843CD24D1C465445007435E8 /* PTNSignalCacheSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNSignalCacheSpec.m; sourceTree = "<group>"; };
-		843CD1E61C463FF3007435E8 /* NSFileManager+FileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+FileSystem.h"; sourceTree = "<group>"; };
 		844C10BF1C3A5D54001A6DC9 /* PTNNSURLTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNNSURLTestUtils.h; sourceTree = "<group>"; };
 		844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNNSURLTestUtils.m; sourceTree = "<group>"; };
 		844C10DF1C3A6440001A6DC9 /* NSURL+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PhotonsSpec.m"; sourceTree = "<group>"; };
@@ -407,6 +365,8 @@
 		848189C01C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNMultiplexerAssetManagerSpec.m; sourceTree = "<group>"; };
 		84818A361C3D21920070462E /* PTNMultiplexingTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNMultiplexingTestUtils.h; sourceTree = "<group>"; };
 		84818A371C3D21920070462E /* PTNMultiplexingTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNMultiplexingTestUtils.m; sourceTree = "<group>"; };
+		84A5E6571C58F2A300B29423 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		84A5E65D1C58F3C100B29423 /* libSpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpecta.a; path = "../LTKit/third_party/testing/Specta/Specta/build/Debug-iphoneos/libSpecta.a"; sourceTree = "<group>"; };
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Dropbox.h"; sourceTree = "<group>"; };
@@ -417,10 +377,10 @@
 		84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
 		8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+FileSystemSpec.m"; sourceTree = "<group>"; };
 		8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageResizerSpec.mm; sourceTree = "<group>"; };
-		8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B16A8A21BCBF6E5006DAAA7 /* NSErrorCodes+Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Photons.h"; sourceTree = "<group>"; };
 		8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		8B1889C41BF1E54B00E9BD67 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		8B1889C41BF1E54B00E9BD67 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B1889C61BF1E54B00E9BD67 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B1889C71BF1E54B00E9BD67 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8B1889C91BF1E54B00E9BD67 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
@@ -528,18 +488,18 @@
 		8BAFDC941B0DED4C003FB8F5 /* Photons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Photons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BAFDC971B0DED4C003FB8F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BAFDC981B0DED4C003FB8F5 /* Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photons.h; sourceTree = "<group>"; };
-		8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
-		8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Vendor/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
-		8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Vendor/Specta/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
-		8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../Vendor/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE2831B0E0BBE003FB8F5 /* Specta */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Specta; path = ../Vendor/Specta/Specta; sourceTree = SOURCE_ROOT; };
+		8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../Vendor/OCMock/Source/OCMock.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8BAFE2AD1B0E103A003FB8F5 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
+		8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../Vendor/ReactiveCocoa/build/Debug-iphonesimulator/ReactiveCocoa.framework"; sourceTree = "<group>"; };
 		8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNProgress.h; sourceTree = "<group>"; };
 		8BAFE36B1B1476C9003FB8F5 /* PTNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNProgress.m; sourceTree = "<group>"; };
 		8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACStream+Photons.h"; sourceTree = "<group>"; };
 		8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACStream+Photons.m"; sourceTree = "<group>"; };
-		8BCF57FC1BCC0858001EE2ED /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = LTKit/LTKit/LTKitTests/LTTestUtils.h; sourceTree = SOURCE_ROOT; };
-		8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = LTKit/LTKit/LTKitTests/LTTestUtils.mm; sourceTree = SOURCE_ROOT; };
+		8BCF57FC1BCC0858001EE2ED /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = ../LTKit/LTKit/LTKitTests/LTTestUtils.h; sourceTree = SOURCE_ROOT; };
+		8BCF57FD1BCC0858001EE2ED /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = ../LTKit/LTKit/LTKitTests/LTTestUtils.mm; sourceTree = SOURCE_ROOT; };
 		8BCF58551BCD0A74001EE2ED /* PTNImageMetadataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageMetadataSpec.mm; sourceTree = "<group>"; };
 		8BCF585E1BCD25AB001EE2ED /* PTNImageMetadataDown.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = PTNImageMetadataDown.jpg; path = Resources/PTNImageMetadataDown.jpg; sourceTree = "<group>"; };
 		8BCF585F1BCD25AB001EE2ED /* PTNImageMetadataDownMirrored.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = PTNImageMetadataDownMirrored.jpg; path = Resources/PTNImageMetadataDownMirrored.jpg; sourceTree = "<group>"; };
@@ -561,11 +521,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BAFE2AB1B0E0F6C003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
-				8BAFE2981B0E0BC9003FB8F5 /* Expecta.framework in Frameworks */,
-				8BAFE2991B0E0BC9003FB8F5 /* Specta.framework in Frameworks */,
+				84A5E65E1C58F3C100B29423 /* libSpecta.a in Frameworks */,
+				84A5E65C1C58F3B800B29423 /* libOCMock.a in Frameworks */,
+				84A5E6591C58F38C00B29423 /* libExpecta.a in Frameworks */,
 				8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */,
-				8BAFE2AA1B0E0CCA003FB8F5 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,9 +532,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A5E6581C58F2A300B29423 /* libextobjc_iOS.a in Frameworks */,
+				84A5E6451C58F2A000B29423 /* libLTKit.a in Frameworks */,
 				843319B81C2FF9AD004502B5 /* DropboxSDK.framework in Frameworks */,
 				8BCF57D11BCC0692001EE2ED /* libc++.tbd in Frameworks */,
-				8BCF57D01BCC068E001EE2ED /* libLTKit.a in Frameworks */,
 				8BAFE2F21B0E1BDD003FB8F5 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -586,6 +546,8 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84A5E65D1C58F3C100B29423 /* libSpecta.a */,
+				84A5E6571C58F2A300B29423 /* libextobjc_iOS.a */,
 				843319B71C2FF9AD004502B5 /* DropboxSDK.framework */,
 				8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */,
 				8BAFE2F11B0E1BDD003FB8F5 /* ReactiveCocoa.framework */,
@@ -628,6 +590,53 @@
 			name = Dropbox;
 			sourceTree = "<group>";
 		};
+		8476B8F91C58C5C6004E0175 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8476B9001C58C5C6004E0175 /* ReactiveCocoa.framework */,
+				8476B9021C58C5C6004E0175 /* ReactiveCocoa-MacTests.xctest */,
+				8476B9041C58C5C6004E0175 /* ReactiveCocoa.framework */,
+				8476B9061C58C5C6004E0175 /* ReactiveCocoa-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8476B90B1C58C5DD004E0175 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8476B9101C58C5DD004E0175 /* libLTKit.a */,
+				8476B9121C58C5DD004E0175 /* LTKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8476B9131C58C61E004E0175 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8476B91E1C58C61E004E0175 /* Expecta.framework */,
+				8476B9201C58C61E004E0175 /* Expecta.framework */,
+				8476B9221C58C61E004E0175 /* ExpectaTests.xctest */,
+				8476B9241C58C61E004E0175 /* Expecta-iOSTests.xctest */,
+				8476B9261C58C61E004E0175 /* libExpecta.a */,
+				8476B9281C58C61E004E0175 /* libExpecta.a */,
+				8476B92A1C58C61E004E0175 /* libExpectaTests.xctest */,
+				8476B92C1C58C61E004E0175 /* libExpecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8476B92D1C58C658004E0175 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8476B9351C58C658004E0175 /* OCMock.framework */,
+				8476B9371C58C658004E0175 /* OCMockTests.xctest */,
+				8476B9391C58C658004E0175 /* libOCMock.a */,
+				8476B93B1C58C658004E0175 /* OCMockLibTests.xctest */,
+				8476B93D1C58C658004E0175 /* OCMock.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		848189A11C3C144C0070462E /* Multiplexing */ = {
 			isa = PBXGroup;
 			children = (
@@ -663,15 +672,6 @@
 			name = FileSystem;
 			sourceTree = "<group>";
 		};
-		8B16A87D1BCBF599006DAAA7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B16A88D1BCBF59A006DAAA7 /* libLTKit.a */,
-				8B16A88F1BCBF59A006DAAA7 /* LTKitTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8B1889AA1BF1E52F00E9BD67 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -680,6 +680,7 @@
 				8B1889C41BF1E54B00E9BD67 /* Common.xcconfig */,
 			);
 			name = Configuration;
+			path = ../Configuration;
 			sourceTree = "<group>";
 		};
 		8B1889C51BF1E54B00E9BD67 /* Configurations */ = {
@@ -689,7 +690,7 @@
 				8B1889C71BF1E54B00E9BD67 /* Release.xcconfig */,
 			);
 			name = Configurations;
-			path = Configuration/Configurations;
+			path = ../Configuration/Configurations;
 			sourceTree = "<group>";
 		};
 		8B1889C81BF1E54B00E9BD67 /* Targets */ = {
@@ -700,7 +701,7 @@
 				8B1889CB1BF1E54B00E9BD67 /* StaticLibrary.xcconfig */,
 			);
 			name = Targets;
-			path = Configuration/Targets;
+			path = ../Configuration/Targets;
 			sourceTree = "<group>";
 		};
 		8B2FD0151AF9F79000757B1F = {
@@ -871,7 +872,7 @@
 			isa = PBXGroup;
 			children = (
 				8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */,
-				8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */,
+				8BAFE2831B0E0BBE003FB8F5 /* Specta */,
 				8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */,
 				8B2FD0AA1B09CD0800757B1F /* LLReactiveMatchers */,
 				8BCF57E21BCC0844001EE2ED /* LTTestUtils */,
@@ -893,7 +894,7 @@
 				8B2FD0B91B09CD0800757B1F /* Matchers */,
 			);
 			name = LLReactiveMatchers;
-			path = Vendor/LLReactiveMatchers/LLReactiveMatchers;
+			path = ../Vendor/LLReactiveMatchers/LLReactiveMatchers;
 			sourceTree = SOURCE_ROOT;
 		};
 		8B2FD0AB1B09CD0800757B1F /* Helpers */ = {
@@ -994,57 +995,6 @@
 				8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		8BAFE2571B0E0B6F003FB8F5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BAFE25E1B0E0B70003FB8F5 /* ReactiveCocoa.framework */,
-				8BAFE2601B0E0B70003FB8F5 /* ReactiveCocoa-MacTests.xctest */,
-				8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */,
-				8BAFE2641B0E0B70003FB8F5 /* ReactiveCocoa-iOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		8BAFE2691B0E0BB0003FB8F5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BAFE2741B0E0BB0003FB8F5 /* Expecta.framework */,
-				8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */,
-				8BAFE2781B0E0BB0003FB8F5 /* ExpectaTests.xctest */,
-				8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */,
-				8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */,
-				8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */,
-				8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */,
-				8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		8BAFE2841B0E0BBE003FB8F5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BAFE28D1B0E0BBF003FB8F5 /* Specta.framework */,
-				8BAFE28F1B0E0BBF003FB8F5 /* SpectaTests.xctest */,
-				8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */,
-				8BAFE2931B0E0BBF003FB8F5 /* Specta-iOSTests.xctest */,
-				8BAFE2951B0E0BBF003FB8F5 /* libSpecta.a */,
-				8BAFE2971B0E0BBF003FB8F5 /* libSpecta.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		8BAFE29B1B0E0C7F003FB8F5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8BAFE2A21B0E0C7F003FB8F5 /* OCMock.framework */,
-				8BAFE2A41B0E0C7F003FB8F5 /* OCMockTests.xctest */,
-				8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */,
-				8BAFE2A81B0E0C7F003FB8F5 /* OCMockLibTests.xctest */,
-				8B5619641B65420F006B0DA0 /* OCMock.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8BAFE3791B14C090003FB8F5 /* Extensions */ = {
@@ -1202,24 +1152,20 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8BAFE2691B0E0BB0003FB8F5 /* Products */;
+					ProductGroup = 8476B9131C58C61E004E0175 /* Products */;
 					ProjectRef = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
 				},
 				{
-					ProductGroup = 8B16A87D1BCBF599006DAAA7 /* Products */;
+					ProductGroup = 8476B90B1C58C5DD004E0175 /* Products */;
 					ProjectRef = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
 				},
 				{
-					ProductGroup = 8BAFE29B1B0E0C7F003FB8F5 /* Products */;
+					ProductGroup = 8476B92D1C58C658004E0175 /* Products */;
 					ProjectRef = 8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */;
 				},
 				{
-					ProductGroup = 8BAFE2571B0E0B6F003FB8F5 /* Products */;
+					ProductGroup = 8476B8F91C58C5C6004E0175 /* Products */;
 					ProjectRef = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
-				},
-				{
-					ProductGroup = 8BAFE2841B0E0BBE003FB8F5 /* Products */;
-					ProjectRef = 8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1231,179 +1177,137 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8B16A88D1BCBF59A006DAAA7 /* libLTKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLTKit.a;
-			remoteRef = 8B16A88C1BCBF59A006DAAA7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8B16A88F1BCBF59A006DAAA7 /* LTKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTKitTests.xctest;
-			remoteRef = 8B16A88E1BCBF59A006DAAA7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8B5619641B65420F006B0DA0 /* OCMock.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = OCMock.framework;
-			remoteRef = 8B5619631B65420F006B0DA0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE25E1B0E0B70003FB8F5 /* ReactiveCocoa.framework */ = {
+		8476B9001C58C5C6004E0175 /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ReactiveCocoa.framework;
-			remoteRef = 8BAFE25D1B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B8FF1C58C5C6004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2601B0E0B70003FB8F5 /* ReactiveCocoa-MacTests.xctest */ = {
+		8476B9021C58C5C6004E0175 /* ReactiveCocoa-MacTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "ReactiveCocoa-MacTests.xctest";
-			remoteRef = 8BAFE25F1B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9011C58C5C6004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2621B0E0B70003FB8F5 /* ReactiveCocoa.framework */ = {
+		8476B9041C58C5C6004E0175 /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ReactiveCocoa.framework;
-			remoteRef = 8BAFE2611B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9031C58C5C6004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2641B0E0B70003FB8F5 /* ReactiveCocoa-iOSTests.xctest */ = {
+		8476B9061C58C5C6004E0175 /* ReactiveCocoa-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "ReactiveCocoa-iOSTests.xctest";
-			remoteRef = 8BAFE2631B0E0B70003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9051C58C5C6004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2741B0E0BB0003FB8F5 /* Expecta.framework */ = {
+		8476B9101C58C5DD004E0175 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = 8476B90F1C58C5DD004E0175 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8476B9121C58C5DD004E0175 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = 8476B9111C58C5DD004E0175 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8476B91E1C58C61E004E0175 /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Expecta.framework;
-			remoteRef = 8BAFE2731B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B91D1C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2761B0E0BB0003FB8F5 /* Expecta.framework */ = {
+		8476B9201C58C61E004E0175 /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Expecta.framework;
-			remoteRef = 8BAFE2751B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B91F1C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2781B0E0BB0003FB8F5 /* ExpectaTests.xctest */ = {
+		8476B9221C58C61E004E0175 /* ExpectaTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ExpectaTests.xctest;
-			remoteRef = 8BAFE2771B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9211C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE27A1B0E0BB0003FB8F5 /* Expecta-iOSTests.xctest */ = {
+		8476B9241C58C61E004E0175 /* Expecta-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Expecta-iOSTests.xctest";
-			remoteRef = 8BAFE2791B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9231C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE27C1B0E0BB0003FB8F5 /* libExpecta.a */ = {
+		8476B9261C58C61E004E0175 /* libExpecta.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libExpecta.a;
-			remoteRef = 8BAFE27B1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9251C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE27E1B0E0BB0003FB8F5 /* libExpecta.a */ = {
+		8476B9281C58C61E004E0175 /* libExpecta.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libExpecta.a;
-			remoteRef = 8BAFE27D1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9271C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2801B0E0BB0003FB8F5 /* libExpectaTests.xctest */ = {
+		8476B92A1C58C61E004E0175 /* libExpectaTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = libExpectaTests.xctest;
-			remoteRef = 8BAFE27F1B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9291C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2821B0E0BB0003FB8F5 /* libExpecta-iOSTests.xctest */ = {
+		8476B92C1C58C61E004E0175 /* libExpecta-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "libExpecta-iOSTests.xctest";
-			remoteRef = 8BAFE2811B0E0BB0003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B92B1C58C61E004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE28D1B0E0BBF003FB8F5 /* Specta.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Specta.framework;
-			remoteRef = 8BAFE28C1B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE28F1B0E0BBF003FB8F5 /* SpectaTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SpectaTests.xctest;
-			remoteRef = 8BAFE28E1B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE2911B0E0BBF003FB8F5 /* Specta.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Specta.framework;
-			remoteRef = 8BAFE2901B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE2931B0E0BBF003FB8F5 /* Specta-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Specta-iOSTests.xctest";
-			remoteRef = 8BAFE2921B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE2951B0E0BBF003FB8F5 /* libSpecta.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSpecta.a;
-			remoteRef = 8BAFE2941B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE2971B0E0BBF003FB8F5 /* libSpecta.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSpecta.a;
-			remoteRef = 8BAFE2961B0E0BBF003FB8F5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8BAFE2A21B0E0C7F003FB8F5 /* OCMock.framework */ = {
+		8476B9351C58C658004E0175 /* OCMock.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = OCMock.framework;
-			remoteRef = 8BAFE2A11B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9341C58C658004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2A41B0E0C7F003FB8F5 /* OCMockTests.xctest */ = {
+		8476B9371C58C658004E0175 /* OCMockTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = OCMockTests.xctest;
-			remoteRef = 8BAFE2A31B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9361C58C658004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2A61B0E0C7F003FB8F5 /* libOCMock.a */ = {
+		8476B9391C58C658004E0175 /* libOCMock.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libOCMock.a;
-			remoteRef = 8BAFE2A51B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B9381C58C658004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BAFE2A81B0E0C7F003FB8F5 /* OCMockLibTests.xctest */ = {
+		8476B93B1C58C658004E0175 /* OCMockLibTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = OCMockLibTests.xctest;
-			remoteRef = 8BAFE2A71B0E0C7F003FB8F5 /* PBXContainerItemProxy */;
+			remoteRef = 8476B93A1C58C658004E0175 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8476B93D1C58C658004E0175 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8476B93C1C58C658004E0175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1572,12 +1476,18 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
+					"$(inherited)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/LTKit/LTKit",
-					"$(SRCROOT)/LTKit/third_party/utils/libextobjc/",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
+					"$(inherited)",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1599,10 +1509,16 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
+					"$(inherited)",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/LTKit/LTKit",
-					"$(SRCROOT)/LTKit/third_party/utils/libextobjc/",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
+					"$(inherited)",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1620,7 +1536,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+					"\"$(SRCROOT)/../Vendor/dropbox-ios-sdk\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsTests/PhotonsTests-Prefix.pch";
@@ -1630,10 +1546,11 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
-					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
-					"\"$(SRCROOT)/Vendor/Specta/Specta\"",
+					"\"$(SRCROOT)/../Vendor/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../Vendor/LLReactiveMatchers/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../Vendor/OCMock/Source\"",
+					"\"$(SRCROOT)/../Vendor/Specta/Specta\"",
+					"\"$(SRCROOT)/../Vendor/Expecta/Expecta\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1649,16 +1566,17 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+					"\"$(SRCROOT)/../Vendor/dropbox-ios-sdk\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsTests/PhotonsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/Vendor/LLReactiveMatchers/LLReactiveMatchers\"/**",
-					"\"$(SRCROOT)/Vendor/OCMock/Source\"",
-					"\"$(SRCROOT)/Vendor/Specta/Specta\"",
+					"\"$(SRCROOT)/../Vendor/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../Vendor/LLReactiveMatchers/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../Vendor/OCMock/Source\"",
+					"\"$(SRCROOT)/../Vendor/Specta/Specta\"",
+					"\"$(SRCROOT)/../Vendor/Expecta/Expecta\"",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1679,7 +1597,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+					"\"$(SRCROOT)/../Vendor/dropbox-ios-sdk\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
@@ -1707,7 +1625,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/dropbox-ios-sdk\"",
+					"\"$(SRCROOT)/../Vendor/dropbox-ios-sdk\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
