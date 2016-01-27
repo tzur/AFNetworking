@@ -160,6 +160,10 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */; };
+		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
+		2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */; };
+		2520D4131C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */; };
 		2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */; };
 		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
@@ -1411,6 +1415,11 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSpline.h; sourceTree = "<group>"; };
+		2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSpline.mm; sourceTree = "<group>"; };
+		2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSplineSpec.mm; sourceTree = "<group>"; };
+		2520D4101C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSplineTestUtils.h; sourceTree = "<group>"; };
+		2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSplineTestUtils.mm; sourceTree = "<group>"; };
 		2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomStateSpec.mm; sourceTree = "<group>"; };
 		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
@@ -2983,6 +2992,8 @@
 			children = (
 				503044FA1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h */,
 				503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */,
+				2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */,
+				2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */,
 			);
 			name = Spline;
 			sourceTree = "<group>";
@@ -2991,6 +3002,9 @@
 			isa = PBXGroup;
 			children = (
 				503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */,
+				2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */,
+				2520D4101C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.h */,
+				2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */,
 			);
 			name = Spline;
 			sourceTree = "<group>";
@@ -4221,6 +4235,7 @@
 				8B871FC71924A75E00517F2E /* LTEngine.h in Headers */,
 				50E998A21C075F67004F15C9 /* LTReparameterization.h in Headers */,
 				8B871FC91924A75E00517F2E /* LTShaderStorage.h in Headers */,
+				2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */,
 				28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */,
 				8B871FCA1924A75E00517F2E /* LTImageProcessor.h in Headers */,
 				8B871FCC1924A75E00517F2E /* LTIterativeImageProcessor.h in Headers */,
@@ -5242,6 +5257,7 @@
 				28C61BEC18B23CD10036D66E /* LTPainterPoint.mm in Sources */,
 				03045D1F19C1711D0075207D /* LTClarityProcessor.mm in Sources */,
 				289A87301895158500EB8E86 /* LTPolynomialInterpolant.mm in Sources */,
+				2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */,
 				8B19621D184B6DA40065A057 /* LTGPUQueue.mm in Sources */,
 				8B71C3FD190047C900E978B2 /* LTInverseTransformSampler.mm in Sources */,
 				8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */,
@@ -5335,6 +5351,7 @@
 				2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */,
 				28BBD79219A109D80062C803 /* LTRectSpec.mm in Sources */,
 				50D61F4A1C4416CE00EED798 /* LTQuadSpec.mm in Sources */,
+				2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
@@ -5409,6 +5426,7 @@
 				658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */,
 				8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */,
 				2833789B1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm in Sources */,
+				2520D4131C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm in Sources */,
 				8BC1C9FA19FA5B0F00107580 /* LTAspectFillResizeProcessorSpec.mm in Sources */,
 				8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */,
 				283906A118C4DB0A00BD21CE /* LTRoundBrushSpec.mm in Sources */,
