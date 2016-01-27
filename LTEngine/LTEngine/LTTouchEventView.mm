@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSArray<UITouch *> *sortedMainTouches = [self sortedTouches:[touches allObjects]];
 
-  NSMutableArray<LTTouchEvent *> *mutableTouchEvents =
+  LTMutableTouchEvents *mutableTouchEvents =
       [NSMutableArray arrayWithCapacity:sortedMainTouches.count];
 
   for (UITouch *touch in sortedMainTouches) {
@@ -135,9 +135,8 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (NSArray<LTTouchEvent *> *)touchEventsForMainTouch:(UITouch *)mainTouch
-                                      withSequenceID:(NSUInteger)sequenceID
-                                             inEvent:(UIEvent *)event {
+- (LTTouchEvents *)touchEventsForMainTouch:(UITouch *)mainTouch
+                            withSequenceID:(NSUInteger)sequenceID inEvent:(UIEvent *)event {
   if (![event respondsToSelector:@selector(coalescedTouchesForTouch:)]) {
     return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
   }
@@ -153,10 +152,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [self touchEventsForTouches:sortedCoalescedTouches withSequenceID:sequenceID];
 }
 
-- (NSArray<LTTouchEvent *> *)touchEventsForTouches:(NSArray<UITouch *> *)touches
-                                    withSequenceID:(NSUInteger)sequenceID {
-  NSMutableArray<LTTouchEvent *> *mutableTouchEvents =
-      [NSMutableArray arrayWithCapacity:touches.count];
+- (LTTouchEvents *)touchEventsForTouches:(NSArray<UITouch *> *)touches
+                          withSequenceID:(NSUInteger)sequenceID {
+  LTMutableTouchEvents *mutableTouchEvents = [NSMutableArray arrayWithCapacity:touches.count];
 
   for (UITouch *touch in touches) {
     [mutableTouchEvents addObject:[LTTouchEvent touchEventWithPropertiesOfTouch:touch
@@ -166,9 +164,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [mutableTouchEvents copy];
 }
 
-- (NSArray<LTTouchEvent *> *)predictedTouchEventsForMainTouch:(UITouch *)mainTouch
-                                               withSequenceID:(NSUInteger)sequenceID
-                                                      inEvent:(UIEvent *)event {
+- (LTTouchEvents *)predictedTouchEventsForMainTouch:(UITouch *)mainTouch
+                                     withSequenceID:(NSUInteger)sequenceID
+                                            inEvent:(UIEvent *)event {
   if (![event respondsToSelector:@selector(predictedTouchesForTouch:)]) {
     return @[];
   }

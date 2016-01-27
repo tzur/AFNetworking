@@ -8,8 +8,8 @@
 #import "LTTouchEventViewTestUtils.h"
 
 @interface LTTestTouchEventDelegateCall : NSObject
-@property (strong, nonatomic) NSArray<LTTouchEvent *> *events;
-@property (strong, nonatomic) NSArray<LTTouchEvent *> *predictedEvents;
+@property (strong, nonatomic) LTTouchEvents *events;
+@property (strong, nonatomic) LTTouchEvents *predictedEvents;
 @property (nonatomic) LTTouchEventSequenceState state;
 @end
 
@@ -29,18 +29,16 @@
   return self;
 }
 
-- (void)receivedTouchEvents:(NSArray<LTTouchEvent *> *)events
-            predictedEvents:(NSArray<LTTouchEvent *> *)predictedEvents
+- (void)receivedTouchEvents:(LTTouchEvents *)events predictedEvents:(LTTouchEvents *)predictedEvents
     touchEventSequenceState:(LTTouchEventSequenceState)state {
   [self storeEvents:events predictedEvents:predictedEvents
               state:state];
 }
 
-- (void)receivedUpdatesOfTouchEvents:(NSArray<LTTouchEvent *> __unused *)events {
+- (void)receivedUpdatesOfTouchEvents:(LTTouchEvents __unused *)events {
 }
 
-- (void)storeEvents:(NSArray<LTTouchEvent *> *)events
-    predictedEvents:(NSArray<LTTouchEvent *> *)predictedEvents
+- (void)storeEvents:(LTTouchEvents *)events predictedEvents:(LTTouchEvents *)predictedEvents
               state:(LTTouchEventSequenceState)state {
   LTTestTouchEventDelegateCall *call = [[LTTestTouchEventDelegateCall alloc] init];
   call.events = events;

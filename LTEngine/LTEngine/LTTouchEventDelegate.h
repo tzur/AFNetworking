@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import "LTTouchEvent.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class LTTouchEvent;
@@ -25,14 +27,14 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 /// sequence with the given \c state. The given \c predictedTouchEvents consist of possibly existing
 /// predicted touches. Both the \c touchEvents and the \c predictedTouchEvents are ordered according
 /// to their timestamps.
-- (void)receivedTouchEvents:(NSArray<LTTouchEvent *> *)touchEvents
-            predictedEvents:(NSArray<LTTouchEvent *> *)predictedTouchEvents
+- (void)receivedTouchEvents:(LTTouchEvents *)touchEvents
+            predictedEvents:(LTTouchEvents *)predictedTouchEvents
     touchEventSequenceState:(LTTouchEventSequenceState)state;
 
 /// Called to delegate the handling of the given updated \c touchEvents provided by the given
 /// \c touchEventProvider. The \c touchEvents are ordered according to their timestamps and belong
 /// to touch event sequences that have not ended yet.
-- (void)receivedUpdatesOfTouchEvents:(NSArray<LTTouchEvent *> *)touchEvents;
+- (void)receivedUpdatesOfTouchEvents:(LTTouchEvents *)touchEvents;
 
 @end
 
