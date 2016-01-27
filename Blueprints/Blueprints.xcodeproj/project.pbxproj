@@ -59,6 +59,9 @@
 		8B3CECC01C579234008E779B /* BLUFastEnumeratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CECBF1C579234008E779B /* BLUFastEnumeratorSpec.mm */; };
 		8B3CECEB1C57B74E008E779B /* BLUFastEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CECEA1C57B74E008E779B /* BLUFastEnumerator.m */; };
 		8B3CED051C57B75A008E779B /* BLUFastEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CED041C57B75A008E779B /* BLUFastEnumerator.h */; };
+		8B3CED251C57C1AA008E779B /* BLULazyNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CED231C57C1AA008E779B /* BLULazyNodeCollection.h */; };
+		8B3CED261C57C1AA008E779B /* BLULazyNodeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED241C57C1AA008E779B /* BLULazyNodeCollection.m */; };
+		8B3CED321C590234008E779B /* BLULazyNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED311C590234008E779B /* BLULazyNodeCollectionSpec.mm */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
@@ -338,6 +341,9 @@
 		8B3CECBF1C579234008E779B /* BLUFastEnumeratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUFastEnumeratorSpec.mm; sourceTree = "<group>"; };
 		8B3CECEA1C57B74E008E779B /* BLUFastEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUFastEnumerator.m; sourceTree = "<group>"; };
 		8B3CED041C57B75A008E779B /* BLUFastEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUFastEnumerator.h; sourceTree = "<group>"; };
+		8B3CED231C57C1AA008E779B /* BLULazyNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLULazyNodeCollection.h; sourceTree = "<group>"; };
+		8B3CED241C57C1AA008E779B /* BLULazyNodeCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLULazyNodeCollection.m; sourceTree = "<group>"; };
+		8B3CED311C590234008E779B /* BLULazyNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLULazyNodeCollectionSpec.mm; sourceTree = "<group>"; };
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -483,6 +489,8 @@
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
 				8B3CED041C57B75A008E779B /* BLUFastEnumerator.h */,
 				8B3CECEA1C57B74E008E779B /* BLUFastEnumerator.m */,
+				8B3CED231C57C1AA008E779B /* BLULazyNodeCollection.h */,
+				8B3CED241C57C1AA008E779B /* BLULazyNodeCollection.m */,
 				8B3CE9641C4E57C9008E779B /* BLUModel.h */,
 				8B3CE9651C4E57C9008E779B /* BLUModel.m */,
 				8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */,
@@ -540,6 +548,7 @@
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
 				8B3CECBF1C579234008E779B /* BLUFastEnumeratorSpec.mm */,
+				8B3CED311C590234008E779B /* BLULazyNodeCollectionSpec.mm */,
 				8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */,
 				8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */,
 				8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */,
@@ -669,6 +678,7 @@
 				8B3CEA421C4E7438008E779B /* LLReactiveMatchers.h in Headers */,
 				8B3CEA431C4E7438008E779B /* LLReactiveMatchersHelpers.h in Headers */,
 				8B3CEA451C4E7438008E779B /* LLReactiveMatchersImports.h in Headers */,
+				8B3CED251C57C1AA008E779B /* BLULazyNodeCollection.h in Headers */,
 				8B3CEA461C4E7438008E779B /* LLReactiveMatchersMessageBuilder.h in Headers */,
 				8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */,
 				8B3CEA071C4E6EF3008E779B /* NSErrorCodes+Blueprints.h in Headers */,
@@ -975,6 +985,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3CE9671C4E57C9008E779B /* BLUModel.m in Sources */,
+				8B3CED261C57C1AA008E779B /* BLULazyNodeCollection.m in Sources */,
 				8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
@@ -1005,6 +1016,7 @@
 				8B3CEA6E1C4E8904008E779B /* EXPMatchers+matchError.m in Sources */,
 				8B3CEA6F1C4E8904008E779B /* EXPMatchers+matchValue.m in Sources */,
 				8B3CEA701C4E8904008E779B /* EXPMatchers+matchValues.m in Sources */,
+				8B3CED321C590234008E779B /* BLULazyNodeCollectionSpec.mm in Sources */,
 				8B3CEA711C4E8904008E779B /* EXPMatchers+sendError.m in Sources */,
 				8B3CEA721C4E8904008E779B /* EXPMatchers+sendEvents.m in Sources */,
 				8B3CEA731C4E8904008E779B /* EXPMatchers+sendValues.m in Sources */,
