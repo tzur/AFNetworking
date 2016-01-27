@@ -34,10 +34,21 @@
 @implementation LTMMTexture
 
 #pragma mark -
-#pragma mark Abstract implementation
+#pragma mark Initialization
 #pragma mark -
 
-- (void)create:(BOOL __unused)allocateMemory {
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+              maxMipmapLevel:(GLint)maxMipmapLevel
+              allocateMemory:(BOOL)allocateMemory {
+  LTParameterAssert(!maxMipmapLevel, @"LTMMTexture does not support mipmaps");
+  if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
+                  allocateMemory:allocateMemory]) {
+    [self create];
+  }
+  return self;
+}
+
+- (void)create {
   // It's impossible to avoid memory allocation since the shared memory texture buffer must be
   // allocated via CV* functions to allow updates to reflect to OpenGL.
   [self createPixelBuffer];
@@ -110,7 +121,7 @@
   _texture.reset(textureRef);
 }
 
-- (void)destroy {
+- (void)dealloc {
   if (!self.name) {
     return;
   }
@@ -127,6 +138,10 @@
     self.syncObject = nil;
   }];
 }
+
+#pragma mark -
+#pragma mark Abstract implementation
+#pragma mark -
 
 - (void)storeRect:(CGRect)rect toImage:(cv::Mat *)image {
   // Preconditions.

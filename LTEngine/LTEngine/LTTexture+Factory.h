@@ -6,44 +6,62 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Category which adds a factory on top of LTTexture's abstract class. The factory chooses the
-/// appropriate \c LTTexture subclass to instantiate, based on hardware compatabilities and
+/// appropriate \c LTTexture subclass to instantiate, based on hardware compatibilities and
 /// performance considerations.
 @interface LTTexture (Factory)
 
-/// Creates an empty texture on the GPU.  Throws \c LTGLException with \c
-/// kLTOpenGLRuntimeErrorException if texture creation failed.
+/// Creates an empty texture on the GPU. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
-/// @param size size of the texture.
-/// @param precision precision of the texture.
+/// @param size size of the texture. Must be integral.
+///
 /// @param pixelFormat pixel format the texture is stored in the GPU with. The format must be
-///        supported on the target platform, or an \c NSInvalidArgumentException will be thrown.
+/// supported on the target platform, or an \c NSInvalidArgumentException will be thrown.
+///
+/// @param maxMipmapLevel maximal mipmap level, with \c 0 meaning that only a single level exists.
+///
 /// @param allocateMemory an optimization recommendation to implementors of this class. If set to
-///        \c YES, the texture's memory will be allocated on the GPU (but will not be initialized -
-///        see note). Otherwise, the implementation will try to create a texture object only without
-///        allocating the memory, and a call to \c load: or \c loadRect:fromImage: will be required
-///        to allocate memory on the device.
+/// \c YES, the texture's memory will be allocated on the GPU (but will not be initialized - see
+/// note). Otherwise, the implementation will try to create a texture object only without allocating
+/// the memory, and a call to \c load: or \c loadRect:fromImage: will be required to allocate
+/// memory on the device.
 ///
 /// @note The texture memory is not allocated until a call to \c load: or \c loadRect: is made, and
 /// only the affected regions are set to be in a defined state. Calling \c storeRect:toImage: with
 /// an uninitialized rect will return an undefined result.
 + (instancetype)textureWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+                 maxMipmapLevel:(GLint)maxMipmapLevel
                  allocateMemory:(BOOL)allocateMemory;
 
-/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
-/// image, and loads the \c image to the texture. Throws \c LTGLException with \c
-/// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
+/// Creates an empty texture on the GPU without mipmap. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if texture creation failed. This is a convenience method which
+/// is similar to calling:
+///
+/// @code
+/// [LTTexture textureWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0
+///             allocateMemory:allocateMemory];
+/// @endcode
++ (instancetype)textureWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+                 allocateMemory:(BOOL)allocateMemory;
+
+/// Allocates a texture with the \c size and \c pixelFormat properties suitable for the given
+/// \c image, and loads the \c image to the texture. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has
+/// failed.
 + (instancetype)textureWithImage:(const cv::Mat &)image;
 
-/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
-/// image, and loads the \c image to the texture. Throws \c LTGLException with \c
-/// kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has failed.
+/// Allocates a texture with the \c size and \c pixelFormat properties suitable for the given
+/// \c image, and loads the \c image to the texture. Throws \c LTGLException with
+/// \c kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has
+/// failed.
 + (instancetype)textureWithUIImage:(UIImage *)image;
 
 /// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
 /// memory. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:size pixelFormat:LTGLPixelFormatRGBA8Unorm allocateMemory:YES];
+/// [LTTexture textureWithSize:size pixelFormat:LTGLPixelFormatRGBA8Unorm maxMipmapLevel:0
+///             allocateMemory:YES];
 /// @endcode
 + (instancetype)byteRGBATextureWithSize:(CGSize)size;
 
@@ -51,15 +69,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// memory. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [initWithSize:size pixelFormat:LTGLPixelFormatR8Unorm allocateMemory:YES];
+/// [LTTexture textureWithSize:size pixelFormat:LTGLPixelFormatR8Unorm maxMipmapLevel:0
+///             allocateMemory:YES];
 /// @endcode
 + (instancetype)byteRedTextureWithSize:(CGSize)size;
 
-/// Creates a new, allocated texture with \c size, \c precision and \c channels similar to the given
-/// \c texture. This is a convenience method which is similar to calling:
+/// Creates a new, allocated texture with \c size, \c pixelFormat and \c maxMipmapLevel similar to
+/// the given \c texture. This is a convenience method which is similar to calling:
 ///
 /// @code
-/// [LTTexture initWithSize:texture.size pixelFormat:texture.pixelFormat allocateMemory:YES];
+/// [LTTexture textureWithSize:texture.size pixelFormat:texture.pixelFormat
+///             maxMipmapLevel:texture.maxMipmapLevel
+///             allocateMemory:YES];
 /// @endcode
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture;
 

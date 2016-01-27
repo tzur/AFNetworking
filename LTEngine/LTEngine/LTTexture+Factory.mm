@@ -31,11 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [LTGLTexture class];
 }
 
-+ (Class)classForPixelFormat:(LTGLPixelFormat *)pixelFormat {
-  if ([[self class] pixelFormatSupportedByMemoryMappedTexture:pixelFormat]) {
-    return [[self class] textureClass];
++ (Class)classForPixelFormat:(LTGLPixelFormat *)pixelFormat maxMipmapLevel:(GLint)maxMipmapLevel {
+  // LTGLTexture is the only implementation supporting mipmaps. When the latter is required, memory
+  // mapped textures cannot be used.
+  if (!maxMipmapLevel && [self pixelFormatSupportedByMemoryMappedTexture:pixelFormat]) {
+    return [self textureClass];
   } else {
-    return [[self class] defaultTextureClass];
+    return [self defaultTextureClass];
   }
 }
 
@@ -56,15 +58,23 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)textureWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+                 maxMipmapLevel:(GLint)maxMipmapLevel
                  allocateMemory:(BOOL)allocateMemory {
-  Class textureClass = [self classForPixelFormat:pixelFormat];
+  Class textureClass = [self classForPixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel];
   return [[textureClass alloc] initWithSize:size pixelFormat:pixelFormat
+                             maxMipmapLevel:maxMipmapLevel
                              allocateMemory:allocateMemory];
+}
+
++ (instancetype)textureWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
+                 allocateMemory:(BOOL)allocateMemory {
+  return [self textureWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0
+                allocateMemory:allocateMemory];
 }
 
 + (instancetype)textureWithImage:(const cv::Mat &)image {
   LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:image.type()];
-  Class textureClass = [self classForPixelFormat:pixelFormat];
+  Class textureClass = [self classForPixelFormat:pixelFormat maxMipmapLevel:0];
   return [(LTTexture *)[textureClass alloc] initWithImage:image];
 }
 
@@ -73,20 +83,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)byteRGBATextureWithSize:(CGSize)size {
-  return [[[self textureClass] alloc] initWithSize:size
-                                       pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
-                                    allocateMemory:YES];
+  return [self textureWithSize:size pixelFormat:$(LTGLPixelFormatRGBA8Unorm) maxMipmapLevel:0
+                allocateMemory:YES];
 }
 
 + (instancetype)byteRedTextureWithSize:(CGSize)size {
-  return [[[self textureClass] alloc] initWithSize:size
-                                       pixelFormat:$(LTGLPixelFormatR8Unorm)
-                                    allocateMemory:YES];
+  return [self textureWithSize:size pixelFormat:$(LTGLPixelFormatR8Unorm) maxMipmapLevel:0
+                allocateMemory:YES];
 }
 
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture {
-  Class textureClass = [self classForPixelFormat:texture.pixelFormat];
-  return [[textureClass alloc] initWithPropertiesOf:texture];
+  return [self textureWithSize:texture.size pixelFormat:texture.pixelFormat
+                maxMipmapLevel:texture.maxMipmapLevel
+                allocateMemory:YES];
 }
 
 + (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image {
