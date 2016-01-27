@@ -343,6 +343,7 @@
 		8B3CEA3A1C4E7438008E779B /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
 		8B3CEA3B1C4E7438008E779B /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
 		8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUModelNodeChangeSpec.mm; sourceTree = "<group>"; };
+		8B3CEC711C54B673008E779B /* BLUProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUProvider.h; sourceTree = "<group>"; };
 		8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUProviderDescriptor.h; sourceTree = "<group>"; };
 		8B3CECBB1C563B70008E779B /* BLUFastEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUFastEnumerator.h; sourceTree = "<group>"; };
 		8B3CECBF1C579234008E779B /* BLUFastEnumeratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUFastEnumeratorSpec.mm; sourceTree = "<group>"; };
@@ -502,6 +503,7 @@
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
 				8B3CED041C57B75A008E779B /* BLUFastEnumerator.h */,
 				8B3CECEA1C57B74E008E779B /* BLUFastEnumerator.m */,
+				8B3CEC711C54B673008E779B /* BLUProvider.h */,
 				8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */,
 				8B3CED231C57C1AA008E779B /* BLULazyNodeCollection.h */,
 				8B3CED241C57C1AA008E779B /* BLULazyNodeCollection.m */,
