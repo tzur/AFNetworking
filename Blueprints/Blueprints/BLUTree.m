@@ -130,6 +130,46 @@ NS_ASSUME_NONNULL_BEGIN
   return [self nodesForPath:path].lastObject;
 }
 
+- (void)enumerateTreeWithEnumerationType:(BLUTreeEnumerationType)enumerationType
+                              usingBlock:(BLUTreeEnumerationBlock)block {
+  LTParameterAssert(block);
+
+  BOOL stop = NO;
+  [self enumerateNode:self.root withEnumerationType:enumerationType stop:&stop
+       pathComponents:@[@"/"] usingBlock:block];
+}
+
+- (void)enumerateNode:(BLUNode *)node
+  withEnumerationType:(BLUTreeEnumerationType)enumerationType
+                 stop:(BOOL *)stop
+       pathComponents:(NSArray *)pathComponents
+           usingBlock:(BLUTreeEnumerationBlock)block {
+  if (*stop) {
+    return;
+  }
+
+  NSString *path = [NSString pathWithComponents:pathComponents];
+
+  if (enumerationType == BLUTreeEnumerationTypePreOrder) {
+    block(node, path, stop);
+    if (*stop) {
+      return;
+    }
+  }
+
+  for (BLUNode *childNode in node.childNodes) {
+    [self enumerateNode:childNode withEnumerationType:enumerationType stop:stop
+         pathComponents:[pathComponents arrayByAddingObject:childNode.name] usingBlock:block];
+    if (*stop) {
+      return;
+    }
+  }
+
+  if (enumerationType == BLUTreeEnumerationTypePostOrder) {
+    block(node, path, stop);
+  }
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
@@ -151,7 +191,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, root: %@>", self.class, self, self.root];
+  __block NSMutableArray *nodeDescriptions = [NSMutableArray array];
+  [self enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
+                              usingBlock:^(BLUNode *node, NSString *path, BOOL __unused *stop) {
+    NSArray<NSString *> *components = [path pathComponents];
+    NSString *nodeDescription;
+    switch (components.count) {
+      case 1:
+        nodeDescription = @"/";
+        break;
+      case 2:
+        nodeDescription = [NSString stringWithFormat:@"|-- %@ -> %@", node.name, node.value];
+        break;
+      default: {
+        NSString *padding = [@"" stringByPaddingToLength:4 * components.count - 9
+                                              withString:@" " startingAtIndex:0];
+        nodeDescription = [NSString stringWithFormat:@"|%@`-- %@ -> %@", padding, node.name,
+                           node.value];
+      }
+    }
+    [nodeDescriptions addObject:nodeDescription];
+  }];
+
+  NSString *formattedTree = [nodeDescriptions componentsJoinedByString:@"\n"];
+
+  return [NSString stringWithFormat:@"<%@: %p,\n%@\n>", self.class, self, formattedTree];
 }
 
 @end

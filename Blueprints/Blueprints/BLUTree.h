@@ -5,6 +5,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BLUNode;
 
+/// Types for enumerating the tree.
+typedef NS_ENUM(NSUInteger, BLUTreeEnumerationType) {
+  BLUTreeEnumerationTypePreOrder,
+  BLUTreeEnumerationTypePostOrder
+};
+
 /// Represents an immutable tree that holds \c BLUNode objects as its nodes.
 ///
 /// Paths:
@@ -50,6 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns the node at the given \c path or \c nil if no such node is found.
 - (nullable BLUNode *)objectForKeyedSubscript:(NSString *)path;
+
+/// Enumeration block that provides the next \c node at the given \c path in the tree and an
+/// out-only argument \c stop used to stop the enumeration by setting it to \c YES, if needed.
+typedef void (^BLUTreeEnumerationBlock)(BLUNode *node, NSString *path, BOOL *stop);
+
+/// Enumerates the tree with the given \c enumerationType, by calling \c block with the next node.
+/// If \c stop is set to \c YES, the enumeration will be stopped.
+- (void)enumerateTreeWithEnumerationType:(BLUTreeEnumerationType)enumerationType
+                              usingBlock:(BLUTreeEnumerationBlock)block;
 
 /// Root node of the tree.
 @property (readonly, nonatomic) BLUNode *root;
