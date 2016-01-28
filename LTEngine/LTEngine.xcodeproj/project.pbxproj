@@ -339,14 +339,6 @@
 		285EEA5D1B15C552002D10EE /* LTImageTIFFCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 285EEA5B1B15C552002D10EE /* LTImageTIFFCompressor.m */; };
 		2868B7381933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B7361933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h */; };
 		2868B7391933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B7371933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm */; };
-		2868B73C193354A600E1BF0F /* LTPainterImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B73A193354A600E1BF0F /* LTPainterImageProcessor.h */; };
-		2868B73D193354A600E1BF0F /* LTPainterImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B73B193354A600E1BF0F /* LTPainterImageProcessor.mm */; };
-		2868B742193354BB00E1BF0F /* LTPaintingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B73E193354BB00E1BF0F /* LTPaintingStrategy.h */; };
-		2868B743193354BB00E1BF0F /* LTPaintingStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B73F193354BB00E1BF0F /* LTPaintingStrategy.mm */; };
-		2868B744193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B740193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h */; };
-		2868B745193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B741193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.mm */; };
-		2868B7851933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B7831933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h */; };
-		2868B7861933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B7841933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.mm */; };
 		286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932A18CF727300F203DF /* BristleBrushBristles.2.png */; };
 		286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932B18CF727300F203DF /* BristleBrushBristles.4.png */; };
 		286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932C18CF727300F203DF /* BristleBrushBristles.20.png */; };
@@ -383,10 +375,6 @@
 		2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */; };
 		2897A893197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2897A891197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm */; };
 		2897A8C6197F041E004EE8B5 /* LTPerspectiveProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2897A8B8197F040F004EE8B5 /* LTPerspectiveProcessor.fsh */; };
-		2899E3101937300000281CBB /* LTPainterImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2899E30F1937300000281CBB /* LTPainterImageProcessorSpec.mm */; };
-		2899E33819377EC600281CBB /* LTPaintingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2899E33719377EC600281CBB /* LTPaintingStrategySpec.mm */; };
-		2899E346193787E900281CBB /* LTSingleBrushPaintingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2899E345193787E900281CBB /* LTSingleBrushPaintingStrategySpec.mm */; };
-		2899E348193B206500281CBB /* LTSingleAirbrushPaintingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2899E347193B206500281CBB /* LTSingleAirbrushPaintingStrategySpec.mm */; };
 		289A87301895158500EB8E86 /* LTPolynomialInterpolant.mm in Sources */ = {isa = PBXBuildFile; fileRef = 289A872F1895158500EB8E86 /* LTPolynomialInterpolant.mm */; };
 		28A0C7011AC00C3500FBC803 /* LTCircularPatchDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A0C6FF1AC00C3500FBC803 /* LTCircularPatchDrawer.h */; };
 		28A0C7021AC00C3500FBC803 /* LTCircularPatchDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A0C7001AC00C3500FBC803 /* LTCircularPatchDrawer.mm */; };
@@ -415,9 +403,6 @@
 		28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A612861934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm */; };
 		28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A612941934F15D00D005D8 /* GaussianAnisotropic.png */; };
 		28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A612951934F15D00D005D8 /* GaussianSquare.png */; };
-		28A6C5AD193B77C300C217CC /* LTProgressiveImageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A6C5AB193B77C300C217CC /* LTProgressiveImageProcessor.h */; };
-		28A6C5AE193B77C300C217CC /* LTProgressiveImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */; };
-		28A6C5B1193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */; };
 		28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */; };
 		28B117A219C8586A007E2F17 /* LTOneShotImageProcessor+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B3347A19C831B1004B6191 /* LTOneShotImageProcessor+Protected.h */; };
 		28B117A319C8587E007E2F17 /* LTOneShotBaseImageProcessor+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 288F14D119A61B9500E1C6F9 /* LTOneShotBaseImageProcessor+Protected.h */; };
@@ -1634,14 +1619,6 @@
 		285EEA5B1B15C552002D10EE /* LTImageTIFFCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTImageTIFFCompressor.m; sourceTree = "<group>"; };
 		2868B7361933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEdgeAvoidingMultiTextureBrush.h; sourceTree = "<group>"; };
 		2868B7371933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEdgeAvoidingMultiTextureBrush.mm; sourceTree = "<group>"; };
-		2868B73A193354A600E1BF0F /* LTPainterImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterImageProcessor.h; sourceTree = "<group>"; };
-		2868B73B193354A600E1BF0F /* LTPainterImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterImageProcessor.mm; sourceTree = "<group>"; };
-		2868B73E193354BB00E1BF0F /* LTPaintingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPaintingStrategy.h; sourceTree = "<group>"; };
-		2868B73F193354BB00E1BF0F /* LTPaintingStrategy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPaintingStrategy.mm; sourceTree = "<group>"; };
-		2868B740193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSingleBrushPaintingStrategy.h; sourceTree = "<group>"; };
-		2868B741193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleBrushPaintingStrategy.mm; sourceTree = "<group>"; };
-		2868B7831933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSingleAirbrushPaintingStrategy.h; sourceTree = "<group>"; };
-		2868B7841933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleAirbrushPaintingStrategy.mm; sourceTree = "<group>"; };
 		286A932A18CF727300F203DF /* BristleBrushBristles.2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.2.png; path = Resources/BristleBrushBristles.2.png; sourceTree = "<group>"; };
 		286A932B18CF727300F203DF /* BristleBrushBristles.4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.4.png; path = Resources/BristleBrushBristles.4.png; sourceTree = "<group>"; };
 		286A932C18CF727300F203DF /* BristleBrushBristles.20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.20.png; path = Resources/BristleBrushBristles.20.png; sourceTree = "<group>"; };
@@ -1682,10 +1659,6 @@
 		2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPerspectiveProcessor.h; sourceTree = "<group>"; };
 		2897A891197EE3CC004EE8B5 /* LTPerspectiveProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPerspectiveProcessor.mm; sourceTree = "<group>"; };
 		2897A8B8197F040F004EE8B5 /* LTPerspectiveProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPerspectiveProcessor.fsh; sourceTree = "<group>"; };
-		2899E30F1937300000281CBB /* LTPainterImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterImageProcessorSpec.mm; sourceTree = "<group>"; };
-		2899E33719377EC600281CBB /* LTPaintingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPaintingStrategySpec.mm; sourceTree = "<group>"; };
-		2899E345193787E900281CBB /* LTSingleBrushPaintingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleBrushPaintingStrategySpec.mm; sourceTree = "<group>"; };
-		2899E347193B206500281CBB /* LTSingleAirbrushPaintingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleAirbrushPaintingStrategySpec.mm; sourceTree = "<group>"; };
 		289A872E1895158500EB8E86 /* LTPolynomialInterpolant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPolynomialInterpolant.h; sourceTree = "<group>"; };
 		289A872F1895158500EB8E86 /* LTPolynomialInterpolant.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPolynomialInterpolant.mm; sourceTree = "<group>"; };
 		28A0C6FF1AC00C3500FBC803 /* LTCircularPatchDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCircularPatchDrawer.h; sourceTree = "<group>"; };
@@ -1719,10 +1692,6 @@
 		28A612861934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEdgeAvoidingMultiTextureBrushSpec.mm; sourceTree = "<group>"; };
 		28A612941934F15D00D005D8 /* GaussianAnisotropic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianAnisotropic.png; path = Resources/GaussianAnisotropic.png; sourceTree = "<group>"; };
 		28A612951934F15D00D005D8 /* GaussianSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianSquare.png; path = Resources/GaussianSquare.png; sourceTree = "<group>"; };
-		28A6C5AB193B77C300C217CC /* LTProgressiveImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProgressiveImageProcessor.h; sourceTree = "<group>"; };
-		28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressiveImageProcessor.mm; sourceTree = "<group>"; };
-		28A6C5AF193B794000C217CC /* LTProgressiveImageProcessor+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTProgressiveImageProcessor+Protected.h"; sourceTree = "<group>"; };
-		28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressiveImageProcessorSpec.mm; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatableObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatableObject.h; sourceTree = "<group>"; };
 		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
 		28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReshapeProcessorSpec.mm; sourceTree = "<group>"; };
@@ -3969,12 +3938,6 @@
 				8BABFD68188C5A29004163DA /* LTNextIterationPlacement.mm */,
 				8BABFD60188C13FA004163DA /* LTOneShotProcessingStrategy.h */,
 				8BABFD61188C13FA004163DA /* LTOneShotProcessingStrategy.mm */,
-				2868B73E193354BB00E1BF0F /* LTPaintingStrategy.h */,
-				2868B73F193354BB00E1BF0F /* LTPaintingStrategy.mm */,
-				2868B7831933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h */,
-				2868B7841933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.mm */,
-				2868B740193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h */,
-				2868B741193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.mm */,
 			);
 			name = Strategies;
 			sourceTree = "<group>";
@@ -3996,11 +3959,6 @@
 				28B3346619C826D3004B6191 /* LTOneShotImageProcessor.h */,
 				28B3346719C826D3004B6191 /* LTOneShotImageProcessor.mm */,
 				28B3347A19C831B1004B6191 /* LTOneShotImageProcessor+Protected.h */,
-				2868B73A193354A600E1BF0F /* LTPainterImageProcessor.h */,
-				2868B73B193354A600E1BF0F /* LTPainterImageProcessor.mm */,
-				28A6C5AB193B77C300C217CC /* LTProgressiveImageProcessor.h */,
-				28A6C5AC193B77C300C217CC /* LTProgressiveImageProcessor.mm */,
-				28A6C5AF193B794000C217CC /* LTProgressiveImageProcessor+Protected.h */,
 				8BACB32F199CEFAF000F9238 /* LTPartialProcessing.h */,
 				8BA5D74C199378850093A4FD /* LTScreenProcessing.h */,
 			);
@@ -4013,9 +3971,6 @@
 				8BABFD70188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm */,
 				8BABFD6C188C5AD3004163DA /* LTNextIterationPlacementSpec.mm */,
 				8BABFD6E188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm */,
-				2899E33719377EC600281CBB /* LTPaintingStrategySpec.mm */,
-				2899E345193787E900281CBB /* LTSingleBrushPaintingStrategySpec.mm */,
-				2899E347193B206500281CBB /* LTSingleAirbrushPaintingStrategySpec.mm */,
 			);
 			name = Strategies;
 			sourceTree = "<group>";
@@ -4027,8 +3982,6 @@
 				8B3F949F1879B00C00FAA265 /* LTIterativeImageProcessorSpec.mm */,
 				8BABFD72188D2177004163DA /* LTGPUImageProcessorSpec.mm */,
 				8B3F94A1187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm */,
-				2899E30F1937300000281CBB /* LTPainterImageProcessorSpec.mm */,
-				28A6C5B0193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm */,
 				28B3348719C84204004B6191 /* LTOneShotBaseImageProcessorSpec.mm */,
 			);
 			name = Processors;
@@ -4297,7 +4250,6 @@
 				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
 				28C2074F1AE67DAB007214A5 /* LTTextureMetadata.h in Headers */,
 				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
-				2868B73C193354A600E1BF0F /* LTPainterImageProcessor.h in Headers */,
 				8B871FE81924A75F00517F2E /* LTMixerProcessor.h in Headers */,
 				502B1CC319FA91FB00985F30 /* LTQuadMapping.h in Headers */,
 				2888EEAB1993D2F70008F1C7 /* LTCropDrawer.h in Headers */,
@@ -4355,7 +4307,6 @@
 				8B8720081924A76000517F2E /* LTVertexArray.h in Headers */,
 				8B8720091924A76000517F2E /* LTShapeDrawerEllipticShape.h in Headers */,
 				8B87200A1924A76100517F2E /* LTShapeDrawerPathShape.h in Headers */,
-				2868B7851933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.h in Headers */,
 				50D82E931BFCAC30002EDCBD /* LTCompoundParameterizedObject.h in Headers */,
 				8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */,
 				8B87200C1924A76100517F2E /* LTDrawableShape.h in Headers */,
@@ -4411,7 +4362,6 @@
 				254DD74E1BF9FA2000972C0A /* LTPrimitiveParameterizedObjectFactories.h in Headers */,
 				8B87202B1924A76400517F2E /* LTPainter.h in Headers */,
 				28BBD7F519A20AA40062C803 /* NSValue+LTRect.h in Headers */,
-				2868B744193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.h in Headers */,
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
@@ -4434,10 +4384,8 @@
 				8B8720391924A76600517F2E /* LTGLKitExtensions.h in Headers */,
 				8B87203A1924A76600517F2E /* LTGLCheck.h in Headers */,
 				8B87203B1924A76600517F2E /* LTInverseTransformSampler.h in Headers */,
-				28A6C5AD193B77C300C217CC /* LTProgressiveImageProcessor.h in Headers */,
 				8B87203F1924A76600517F2E /* LTMathUtils.h in Headers */,
 				8B8720411924A76700517F2E /* LTRotatedRect.h in Headers */,
-				2868B742193354BB00E1BF0F /* LTPaintingStrategy.h in Headers */,
 				25AF174C1AD50BE00055E664 /* LTVGLines.h in Headers */,
 				8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */,
 				8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */,
@@ -5051,7 +4999,6 @@
 				8B7C6CB51B5285E200B90DBE /* LTMatParallelDispatcher.mm in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
 				50C371471BF0DD7E003EC78D /* LTPrimitivePolynomialInterpolant.mm in Sources */,
-				28A6C5AE193B77C300C217CC /* LTProgressiveImageProcessor.mm in Sources */,
 				8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */,
 				031338E3191284100095F99B /* LTImageBorder.fsh in Sources */,
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
@@ -5075,7 +5022,6 @@
 				03C192EE18FABDFE00DC6CA6 /* LTColorConversionProcessor.fsh in Sources */,
 				03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */,
 				03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */,
-				2868B73D193354A600E1BF0F /* LTPainterImageProcessor.mm in Sources */,
 				283906C918C6217A00BD21CE /* LTPainterMergeShader.fsh in Sources */,
 				8BB92FB01906AEB900954124 /* LTMaskOverlay.fsh in Sources */,
 				8BA822C1198954AE00FBE68E /* LTTransformers.mm in Sources */,
@@ -5095,7 +5041,6 @@
 				283906A318C4DB1500BD21CE /* LTBrush.vsh in Sources */,
 				8B9F3BE71C15DC6800FEB7C4 /* LTRenderbuffer.mm in Sources */,
 				03D516FA18B5DC280026B56A /* LTAdjust.fsh in Sources */,
-				2868B7861933D2B100E1BF0F /* LTSingleAirbrushPaintingStrategy.mm in Sources */,
 				8BEBF3DD18FA9995005A0DE9 /* LTMixerProcessor.mm in Sources */,
 				28B8BBDC1B69092100CF9F73 /* LTSlidingWindowFilter.mm in Sources */,
 				8BEBF3EC18FA9CA5005A0DE9 /* LTMixer.fsh in Sources */,
@@ -5155,7 +5100,6 @@
 				284ED11818954E9B00414A8A /* LTLinearInterpolant.mm in Sources */,
 				2843B77618ABBF1F0044B87A /* LTTextureDrawer.mm in Sources */,
 				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
-				2868B743193354BB00E1BF0F /* LTPaintingStrategy.mm in Sources */,
 				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				50CF199719D16BB60010D52F /* LTQuad.mm in Sources */,
 				03D516A418B3A6500026B56A /* LTProceduralVignetting.mm in Sources */,
@@ -5275,7 +5219,6 @@
 				28A0C7021AC00C3500FBC803 /* LTCircularPatchDrawer.mm in Sources */,
 				8B18BB7819235F4200DA4B64 /* LTTextureContentsFileArchiver.mm in Sources */,
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
-				2868B745193354BB00E1BF0F /* LTSingleBrushPaintingStrategy.mm in Sources */,
 				8BD688BF1B6A7DB6003BDA34 /* LTIZHeader.mm in Sources */,
 				8B9F3C091C16FF4B00FEB7C4 /* LTGLPixelFormat.mm in Sources */,
 				28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */,
@@ -5357,7 +5300,6 @@
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
-				2899E348193B206500281CBB /* LTSingleAirbrushPaintingStrategySpec.mm in Sources */,
 				28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */,
 				28E8AF141997B5FB00C2DD22 /* LTCropDrawerSpec.mm in Sources */,
 				28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */,
@@ -5440,7 +5382,6 @@
 				280F5A20191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm in Sources */,
 				2843B78018ACBFB60044B87A /* LTMultiRectDrawerSpec.mm in Sources */,
 				8B8E50F51861D36E00821829 /* LTShaderStorageSpec.m in Sources */,
-				2899E346193787E900281CBB /* LTSingleBrushPaintingStrategySpec.mm in Sources */,
 				50795EFB1C0F4F7F00773A71 /* LTParameterizedObjectStackSpec.mm in Sources */,
 				28C207B01AEF696E007214A5 /* LTTextureArchiverSpec.mm in Sources */,
 				8B7C6CC81B52860600B90DBE /* LTMatParallelDispatcherSpec.mm in Sources */,
@@ -5455,7 +5396,6 @@
 				285660221B1761A800807A4F /* LTImageJPGCompressorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
 				8BABF0D019B8491800AED760 /* LTEAWProcessorSpec.mm in Sources */,
-				28A6C5B1193B7B5F00C217CC /* LTProgressiveImageProcessorSpec.mm in Sources */,
 				508C156C1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm in Sources */,
 				038DDD8019EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm in Sources */,
 				8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */,
@@ -5465,7 +5405,6 @@
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				50E998A81C075F89004F15C9 /* LTReparameterizationSpec.mm in Sources */,
-				2899E33819377EC600281CBB /* LTPaintingStrategySpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolantSpec.mm in Sources */,
 				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
@@ -5475,7 +5414,6 @@
 				03C192A918F5117E00DC6CA6 /* LTDualMaskProcessorSpec.mm in Sources */,
 				8BA468981BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
-				2899E3101937300000281CBB /* LTPainterImageProcessorSpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
 				8BAECBB618BDEAAC00315425 /* LTSplitComplexMatSpec.mm in Sources */,
 				28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */,
