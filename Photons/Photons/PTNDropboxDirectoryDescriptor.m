@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, path: %@, revision: %@, assetCount: %lu>",
-          self.class, self, self.path, self.revision ?: @"latest", self.assetCount];
+          self.class, self, self.path, self.revision ?: @"latest", (unsigned long)self.assetCount];
 }
 
 - (BOOL)isEqual:(PTNDropboxDirectoryDescriptor *)object {

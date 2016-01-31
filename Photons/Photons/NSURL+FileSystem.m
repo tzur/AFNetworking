@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSURL *)ptn_fileSystemUrlForType:(PTNFileSystemURLType)type andPath:(LTPath *)path {
   NSString *baseName = [self ptn_fileSystemBaseTypeToBaseName][@(path.baseDirectory)];
-  LTParameterAssert(baseName, @"Unrecognized File System base directory: %lu", type);
+  LTParameterAssert(baseName, @"Unrecognized File System base directory: %lu", (unsigned long)type);
 
   NSURLComponents *components = [[NSURLComponents alloc] init];
   components.scheme = [NSURL ptn_fileSystemScheme];
