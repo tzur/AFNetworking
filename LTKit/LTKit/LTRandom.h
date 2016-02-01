@@ -20,13 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// purpose.
 @interface LTRandom : NSObject
 
-/// Initializes the random generator with a random device generated seed.
+/// Initializes the random generator with a randomly generated state.
 - (instancetype)init;
 
-/// Designated initializer: initializes the random generator with the given seed.
+/// Initializes the random generator with a state generated using the given \c seed.
 - (instancetype)initWithSeed:(NSUInteger)seed;
 
-/// Resets the random generator to its original seed.
+/// Initializes the random generator with the given state.
+- (instancetype)initWithState:(LTRandomState *)state NS_DESIGNATED_INITIALIZER;
+
+/// Resets the random generator to its initial state.
 - (void)reset;
 
 /// Resets the random generator to the given state.
@@ -44,8 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a uniformly distributed \c NSUInteger in range [0,max-1].
 - (uint)randomUnsignedIntegerBelow:(uint)max;
 
-/// Seed used to initialize the random generator.
-@property (readonly, nonatomic) NSUInteger seed;
+/// Initial state of the random generator.
+@property (readonly, nonatomic) LTRandomState *initialState;
 
 /// Returns the internal state of the random generator.
 @property (readonly, nonatomic) LTRandomState *engineState;

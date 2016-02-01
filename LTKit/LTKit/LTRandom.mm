@@ -76,29 +76,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 /// Seed used to initialize the random engine.
-@property (nonatomic) NSUInteger seed;
+@property (strong, nonatomic) LTRandomState *initialState;
 
 @end
 
 @implementation LTRandom
 
 - (instancetype)init {
-  return [self initWithSeed:arc4random()];
+  return [self initWithState:[[LTRandomState alloc] init]];
 }
 
 - (instancetype)initWithSeed:(NSUInteger)seed {
+  return [self initWithState:[[LTRandomState alloc] initWithSeed:seed]];
+}
+
+- (instancetype)initWithState:(LTRandomState *)state {
   if (self = [super init]) {
-    self.seed = seed;
-    [self reset];
+    _initialState = state;
     _uniformDouble = std::uniform_real_distribution<double>(0, 1);
+    [self resetToState:state];
   }
   return self;
 }
 
 - (void)reset {
-  std::default_random_engine::result_type seed =
-      self.seed % std::numeric_limits<std::default_random_engine::result_type>::max();
-  _engine = std::default_random_engine(seed);
+  [self resetToState:self.initialState];
 }
 
 - (void)resetToState:(LTRandomState *)state {
