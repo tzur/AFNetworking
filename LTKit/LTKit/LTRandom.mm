@@ -10,12 +10,44 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTRandomState ()
 
-/// The internal state of the \c default_random_engine.
-@property (strong, nonatomic) NSString *engineState;
+/// Initializes with a randomly generated state.
+- (instancetype)init;
+
+/// Initializes with a state generated using the given \c seed.
+- (instancetype)initWithSeed:(NSUInteger)seed;
+
+/// Initializes with the given \c state.
+- (instancetype)initWithState:(NSString *)state NS_DESIGNATED_INITIALIZER;
+
+/// State represented by this object.
+@property (readonly, nonatomic) NSString *engineState;
 
 @end
 
 @implementation LTRandomState
+
+- (instancetype)init {
+  return [self initWithSeed:arc4random()];
+}
+
+- (instancetype)initWithSeed:(NSUInteger)seed {
+  auto validSeed = seed % std::numeric_limits<std::default_random_engine::result_type>::max();
+  auto engine = std::default_random_engine(validSeed);
+
+  std::stringstream stream;
+  stream << engine;
+  NSString *state = [NSString stringWithUTF8String:stream.str().data()];
+  return [self initWithState:state];
+}
+
+- (instancetype)initWithState:(NSString *)state {
+  LTParameterAssert(state);
+
+  if (self = [super init]) {
+    _engineState = state;
+  }
+  return self;
+}
 
 - (BOOL)isEqual:(LTRandomState *)object {
   if (object == self) {
@@ -78,9 +110,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (LTRandomState *)engineState {
   std::stringstream stream;
   stream << _engine;
-  LTRandomState *state = [[LTRandomState alloc] init];
-  state.engineState = [NSString stringWithUTF8String:stream.str().data()];
-  return state;
+  NSString *state = [NSString stringWithUTF8String:stream.str().data()];
+  return [[LTRandomState alloc] initWithState:state];
 }
 
 - (double)randomDouble {
