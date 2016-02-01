@@ -206,26 +206,4 @@ context(@"unarchiving", ^{
   });
 });
 
-context(@"removing", ^{
-  it(@"should remove the archived texture", ^{
-    OCMExpect([fileManager removeItemAtPath:LTTemporaryPath(@"archive.jpg")
-                                      error:[OCMArg anyObjectRef]]).andReturn(YES);
-    result = [archiver removeArchiveInPath:LTTemporaryPath(@"archive.jpg") error:&error];
-    expect(result).to.beTruthy();
-    expect(error).to.beNil();
-    OCMVerifyAll(fileManager);
-  });
-
-  it(@"should return error if failed to remove the archive", ^{
-    OCMExpect([fileManager removeItemAtPath:LTTemporaryPath(@"archive.jpg")
-                                      error:[OCMArg setTo:kFakeError]]).andReturn(NO);
-    result = [archiver removeArchiveInPath:LTTemporaryPath(@"archive.jpg") error:&error];
-    expect(result).to.beFalsy();
-    expect(error).notTo.beNil();
-    expect(error.code).to.equal(LTErrorCodeFileRemovalFailed);
-    expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
-    OCMVerifyAll(fileManager);
-  });
-});
-
 SpecEnd

@@ -33,12 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(path);
   [self verifyTexture:texture];
 
-  LTImageLoader *imageLoader = [JSObjection defaultInjector][[LTImageLoader class]];
-  UIImage *image = [imageLoader imageWithContentsOfFile:path];
+  UIImage *image = [self unarchiveImageFromPath:path error:error];
   if (!image) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
-    }
     return NO;
   }
 
@@ -46,23 +42,41 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
-- (void)verifyTexture:(LTTexture *)texture {
-  LTParameterAssert(texture);
-  LTParameterAssert(texture.bitDepth == LTGLPixelBitDepth8);
-  LTParameterAssert(!texture.usingAlphaChannel);
-}
+- (BOOL)unarchiveToMat:(cv::Mat *)mat fromPath:(NSString *)path
+                 error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(mat);
+  LTParameterAssert(path);
+  LTParameterAssert(mat->depth() == 8, @"JPEG compression supports only byte precision images: %d",
+                    mat->depth());
 
-- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
-  NSError *removalError;
-  if (![fileManager removeItemAtPath:path error:&removalError]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
-                         underlyingError:removalError];
-    }
+  UIImage *uiImage = [self unarchiveImageFromPath:path error:error];
+  if (!uiImage) {
     return NO;
   }
+
+  LTImage *ltImage = [[LTImage alloc] initWithImage:uiImage];
+  ltImage.mat.copyTo(*mat);
   return YES;
+}
+
+- (UIImage *)unarchiveImageFromPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(path);
+  LTImageLoader *imageLoader = [JSObjection defaultInjector][[LTImageLoader class]];
+  UIImage *image = [imageLoader imageWithContentsOfFile:path];
+  if (!image && error) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
+  }
+
+  return image;
+}
+
+- (void)verifyTexture:(LTTexture *)texture {
+  LTParameterAssert(texture);
+  LTParameterAssert(texture.bitDepth == LTGLPixelBitDepth8,
+                    @"JPEG compression supports only byte precision textures: %lu",
+                    (unsigned long)texture.bitDepth);
+  LTParameterAssert(!texture.usingAlphaChannel,
+                    @"JPEG compression does not support textures using their alpha channel");
 }
 
 @end
