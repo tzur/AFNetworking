@@ -3,6 +3,8 @@
 
 #import "LTTestModule.h"
 
+#import <LTEngine/LTTextureArchiverNonPersistentStorage.h>
+#import <LTKit/LTPath.h>
 #import <LTKit/LTRandom.h>
 
 @implementation LTTestModule
@@ -21,6 +23,12 @@ static const NSUInteger kTestingSeed = 1234;
   [self bindBlock:^id(JSObjectionInjector __unused *context) {
     return [[LTRandom alloc] initWithSeed:kTestingSeed];
   } toClass:[LTRandom class]];
+
+  [self bindBlock:^id(JSObjectionInjector __unused *context) {
+    id<LTTextureArchiverStorage> storage = [[LTTextureArchiverNonPersistentStorage alloc] init];
+    LTPath *path = [LTPath pathWithPath:LTTemporaryPath()];
+    return [[LTTextureArchiver alloc] initWithStorage:storage baseDirectory:path];
+  } toClass:[LTTextureArchiver class]];
 }
 
 @end

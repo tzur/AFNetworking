@@ -3,11 +3,15 @@
 
 #import "LTTextureArchiver.h"
 
+#import <LTKit/LTPath.h>
 #import <LTKit/NSError+LTKit.h>
 #import <LTKit/NSFileManager+LTKit.h>
 #import <LTKit/NSObject+AddToContainer.h>
 
+#import "LTGLPixelFormat.h"
+#import "LTOpenCVHalfFloat.h"
 #import "LTTexture+Protected.h"
+#import "LTTextureArchiveMetadata.h"
 #import "LTTextureArchiveType.h"
 #import "LTTextureBaseArchiver.h"
 #import "LTTextureMetadata.h"
@@ -24,12 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Base directory of the archiver. All paths given as arguments to the archiver are treated as
 /// relative to it.
-@property (strong, nonatomic) NSString *baseDirectory;
+@property (strong, nonatomic) LTPath *baseDirectory;
 
 @end
 
 @implementation LTTextureArchiver
 
+objection_initializer(initWithStorage:baseDirectory:);
 objection_requires_sel(@selector(fileManager));
 
 - (instancetype)init {
@@ -37,11 +42,12 @@ objection_requires_sel(@selector(fileManager));
 }
 
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage {
-  return [self initWithStorage:storage baseDirectory:[NSFileManager lt_documentsDirectory]];
+  LTPath *base = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:@""];
+  return [self initWithStorage:storage baseDirectory:base];
 }
 
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage
-                  baseDirectory:(NSString *)baseDirectory {
+                  baseDirectory:(LTPath *)baseDirectory {
   LTParameterAssert(storage);
   if (self = [super init]) {
     [self injectDependencies];
@@ -65,67 +71,79 @@ objection_requires_sel(@selector(fileManager));
   LTParameterAssert(type);
   LTParameterAssert(!texture.maxMipmapLevel);
 
-  NSString *metadataPath = [self metadataPathForRelativePath:path];
-  LTTextureMetadata *metadata = texture.metadata;
-  if (![self saveMetadata:metadata inPath:metadataPath error:error]) {
+  LogDebug(@"Archiving texture in path: %@", path);
+
+  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
+  if (![self createArchiveFolderAtPath:archivePath error:error]) {
+    return NO;
+  }
+
+  LTTextureMetadata *textureMetadata = texture.metadata;
+  LTTextureArchiveMetadata *archiveMetadata = [[LTTextureArchiveMetadata alloc]
+                                               initWithArchiveType:type
+                                               textureMetadata:textureMetadata];
+  if (![self saveMetadata:archiveMetadata inPath:archivePath error:error]) {
+    [self removeFailedArchiveFolderAtPath:archivePath];
     return NO;
   }
 
   // In case the texture is a solid color texture, no need to actually store it.
-  if (!metadata.fillColor.isNull()) {
+  if (!textureMetadata.fillColor.isNull()) {
+    LogDebug(@"Skipped saving of content of solid color texture");
     return YES;
   }
 
-  if (![self storeContentOfTexture:texture inPath:path withArchiveType:type error:error]) {
-    if (![self.fileManager removeItemAtPath:metadataPath error:nil]) {
-      LogWarning(@"Could not remove failed archive metadata: %@", metadataPath);
-    }
+  if (![self storeContentOfTexture:texture inPath:archivePath withArchiveType:type error:error]) {
+    [self removeFailedArchiveFolderAtPath:archivePath];
     return NO;
   }
 
   return YES;
 }
 
-- (BOOL)storeContentOfTexture:(LTTexture *)texture inPath:(NSString *)path
+- (BOOL)createArchiveFolderAtPath:(LTPath *)path error:(NSError *__autoreleasing *)error {
+  if ([self.fileManager fileExistsAtPath:path.path]) {
+    [self setError:error withCode:LTErrorCodeFileAlreadyExists path:path.path underlyingError:nil];
+    return NO;
+  }
+
+  NSError *createError;
+  if (![self.fileManager createDirectoryAtPath:path.path withIntermediateDirectories:NO
+                                    attributes:nil error:&createError]) {
+    [self setError:error withCode:LTErrorCodeFileWriteFailed
+              path:path.path underlyingError:createError];
+    return NO;
+  }
+
+  return YES;
+}
+
+- (void)removeFailedArchiveFolderAtPath:(LTPath *)path {
+  NSError *error;
+  if (![self.fileManager removeItemAtPath:path.path error:&error]) {
+    LogWarning(@"Could not remove failed archive folder '%@': %@", path.path, error ?: @"");
+  }
+}
+
+- (BOOL)storeContentOfTexture:(LTTexture *)texture inPath:(LTPath *)path
               withArchiveType:(LTTextureArchiveType *)type error:(NSError *__autoreleasing *)error {
+  LTAssert([self.fileManager lt_directoryExistsAtPath:path.path],
+           @"Archive folder must exist prior to trying to store its content: %@", path.path);
+
   NSString *storageKey = [self storageKeyForTextureMetadata:texture.metadata archiveType:type];
-  NSString *contentPath = [self contentPathForType:type relativePath:path];
-
-  if ([self.fileManager fileExistsAtPath:contentPath]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:contentPath];
-    }
-    return NO;
-  }
-
-  if ([self linkContentPath:contentPath toExistingArchiveWithStorageKey:storageKey]) {
+  if ([self linkContentInPath:path toExistingArchiveWithStorageKey:storageKey]) {
+    LogDebug(@"Linked to existing texture");
+    [self addExistingArchiveInPath:path forStorageKey:storageKey];
     return YES;
   }
 
-  if (![type.archiver archiveTexture:texture inPath:contentPath error:error]) {
-    [self.storage removeObjectForKey:storageKey];
+  if (![self archiveContentOfTexture:texture inPath:path withArchiveType:type error:error]) {
     return NO;
   }
 
-  self.storage[storageKey] = @[contentPath];
+  LogDebug(@"Saved new texture");
+  [self setExistingArchives:@[path] forStorageKey:storageKey];
   return YES;
-}
-
-- (BOOL)linkContentPath:(NSString *)contentPath toExistingArchiveWithStorageKey:(NSString *)key {
-  NSArray *existingArchives = [self existingArchivesForStorageKey:key];
-  for (NSString *existingArchivePath in existingArchives) {
-    NSError *linkError;
-    if ([self.fileManager linkItemAtPath:existingArchivePath toPath:contentPath error:&linkError]) {
-      self.storage[key] = [existingArchives arrayByAddingObject:contentPath];
-      return YES;
-    }
-
-    LogWarning(@"Could not hard link %@ to %@: %@.\n This can happen in case an archived texture "
-               "was deleted not using the LTTextureArchiver.",
-               contentPath, existingArchivePath, linkError);
-  }
-
-  return NO;
 }
 
 - (NSString *)storageKeyForTextureMetadata:(LTTextureMetadata *)metadata
@@ -133,65 +151,152 @@ objection_requires_sel(@selector(fileManager));
   return [metadata.generationID stringByAppendingPathExtension:type.fileExtension];
 }
 
-- (NSArray *)existingArchivesForStorageKey:(NSString *)key {
-  id existingArchives = self.storage[key] ?: @[];
-  LTAssert([existingArchives isKindOfClass:[NSArray class]]);
-  for (id archive in existingArchives) {
-    LTAssert([archive isKindOfClass:[NSString class]]);
+- (BOOL)linkContentInPath:(LTPath *)path toExistingArchiveWithStorageKey:(NSString *)key {
+  // While trying to link the content to an existing archive, invalid archives are removed from the
+  // storage as an optimization, to avoid trying to link over and over records that do not exist.
+  NSArray<LTPath *> *existingArchives = [self existingArchivesForStorageKey:key];
+  NSMutableArray<LTPath *> *invalidArchives = [NSMutableArray array];
+  for (LTPath *existingArchive in existingArchives) {
+    if ([self linkContentInPath:path toExistingArchiveAtPath:existingArchive]) {
+      break;
+    } else {
+      [invalidArchives addObject:existingArchive];
+    }
   }
 
-  return existingArchives;
-}
-
-#pragma mark -
-#pragma mark Unarchiving
-#pragma mark -
-
-- (LTTexture *)unarchiveFromPath:(NSString *)path withArchiveType:(LTTextureArchiveType *)type
-                           error:(NSError *__autoreleasing *)error {
-  LTParameterAssert(type);
-
-  NSString *metadataPath = [self metadataPathForRelativePath:path];
-  LTTextureMetadata *metadata = [self loadMetadataInPath:metadataPath error:error];
-  if (!metadata) {
-    return nil;
+  if (invalidArchives.count) {
+    [self removeExistingArchives:invalidArchives forStorageKey:key];
   }
 
-  LTTexture *texture = [LTTexture textureWithMetadata:metadata];
-  return [self unarchiveToTexture:texture fromPath:path withArchiveType:type
-                         metadata:metadata error:error] ? texture : nil;
+  return invalidArchives.count != existingArchives.count;
 }
 
-- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path
-           withArchiveType:(LTTextureArchiveType *)type error:(NSError *__autoreleasing *)error {
-  LTParameterAssert(texture);
-  LTParameterAssert(type);
-  LTParameterAssert(!texture.maxMipmapLevel);
+- (BOOL)linkContentInPath:(LTPath *)path toExistingArchiveAtPath:(LTPath *)existingPath {
+  NSError *listError;
+  NSArray<NSString *> *existingArchiveFiles =
+      [self filenamesOfArchiveAtPath:existingPath includeMetadata:NO error:&listError];
 
-  NSString *metadataPath = [self metadataPathForRelativePath:path];
-  LTTextureMetadata *metadata = [self loadMetadataInPath:metadataPath error:error];
-  if (!metadata) {
+  if (!existingArchiveFiles.count) {
+    LogWarning(@"Invalid contents of %@: %@.\n This can happen in case an archived texture "
+               "was deleted not using the LTTextureArchiver.", existingPath, listError ?: @"");
     return NO;
   }
 
-  return [self unarchiveToTexture:texture fromPath:path withArchiveType:type
-                         metadata:metadata error:error];
+  NSMutableArray<NSString *> *linkedPaths = [NSMutableArray array];
+  for (NSString *existingFile in existingArchiveFiles) {
+    NSString *filename = existingFile.lastPathComponent;
+    NSString *source = [existingPath.path stringByAppendingPathComponent:filename];
+    NSString *target = [path.path stringByAppendingPathComponent:filename];
+
+    NSError *linkError;
+    if (![self.fileManager linkItemAtPath:source toPath:target error:&linkError]) {
+      LogWarning(@"Could not hard link %@ to %@: %@.\n This can happen in case an archived texture "
+                 "was deleted not using the LTTextureArchiver.",
+                 target, existingFile, linkError ?: @"");
+      break;
+    }
+
+    [linkedPaths addObject:target];
+  }
+
+  if (linkedPaths.count != existingArchiveFiles.count) {
+    NSError *removeError;
+    for (NSString *linkedPath in linkedPaths) {
+      if (![self.fileManager removeItemAtPath:linkedPath error:&removeError]) {
+        LogWarning(@"Could not cleanup %@ after failure to hard link existing content: %@",
+                   linkedPath, removeError ?: @"");
+      }
+    }
+    return NO;
+  }
+
+  return YES;
+}
+
+- (nullable NSArray<NSString *> *)filenamesOfArchiveAtPath:(LTPath *)path
+                                           includeMetadata:(BOOL)includeMetadata
+                                                     error:(NSError *__autoreleasing *)error {
+  NSArray<NSString *> *filenames =
+      [self.fileManager contentsOfDirectoryAtPath:path.path error:error];
+  if (!filenames) {
+    return nil;
+  }
+
+  NSMutableArray<NSString *> *paths = [NSMutableArray array];
+  for (NSString *filename in filenames) {
+    if (includeMetadata || ![filename isEqualToString:kMetadataFilename]) {
+      [paths addObject:[path.path stringByAppendingPathComponent:filename]];
+    }
+  }
+  return paths;
+}
+
+- (BOOL)archiveContentOfTexture:(LTTexture *)texture inPath:(LTPath *)path
+                withArchiveType:(LTTextureArchiveType *)type
+                          error:(NSError *__autoreleasing *)error {
+  NSString *contentPath =
+      [self contentPathForArchiveFolderPath:path fileExtension:type.fileExtension];
+
+  NSError *archiverError;
+  if (![type.archiver archiveTexture:texture inPath:contentPath error:&archiverError]) {
+    [self setError:error withCode:LTErrorCodeFileWriteFailed
+              path:contentPath underlyingError:archiverError];
+    return NO;
+  }
+
+  return YES;
+}
+
+#pragma mark -
+#pragma mark Unarchiving To Texture
+#pragma mark -
+
+- (nullable LTTexture *)unarchiveTextureFromPath:(NSString *)path
+                                           error:(NSError *__autoreleasing *)error {
+  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
+
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  if (!archiveMetadata) {
+    return nil;
+  }
+
+  LTTexture *texture = [LTTexture textureWithMetadata:archiveMetadata.textureMetadata];
+  return [self unarchiveToTexture:texture fromPath:archivePath
+                  withArchiveType:archiveMetadata.archiveType
+                         metadata:archiveMetadata.textureMetadata error:error] ? texture : nil;
 }
 
 - (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path
+                     error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(texture);
+  LTParameterAssert(!texture.maxMipmapLevel);
+
+  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
+
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  if (!archiveMetadata) {
+    return NO;
+  }
+
+  return [self unarchiveToTexture:texture fromPath:archivePath
+                  withArchiveType:archiveMetadata.archiveType
+                         metadata:archiveMetadata.textureMetadata error:error];
+}
+
+- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(LTPath *)path
            withArchiveType:(LTTextureArchiveType *)type metadata:(LTTextureMetadata *)metadata
                      error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture.size == metadata.size);
   LTParameterAssert([texture.pixelFormat isEqual:metadata.pixelFormat]);
 
-  __block BOOL success;
+  __block BOOL success = YES;
   texture.generationID = metadata.generationID;
   [texture performWithoutUpdatingGenerationID:^{
     if (!metadata.fillColor.isNull()) {
       [texture clearWithColor:metadata.fillColor];
-      success = YES;
     } else {
-      NSString *contentPath = [self contentPathForType:type relativePath:path];
+      NSString *contentPath =
+          [self contentPathForArchiveFolderPath:path fileExtension:type.fileExtension];
       success = [type.archiver unarchiveToTexture:texture fromPath:contentPath error:error];
     }
   }];
@@ -200,64 +305,110 @@ objection_requires_sel(@selector(fileManager));
 }
 
 #pragma mark -
+#pragma mark Unarchiving To Image
+#pragma mark -
+
+- (nullable UIImage *)unarchiveImageFromPath:(NSString *)path
+                                       error:(NSError *__autoreleasing *)error {
+  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
+
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  if (!archiveMetadata) {
+    return nil;
+  }
+
+  LTTextureMetadata *textureMetadata = archiveMetadata.textureMetadata;
+  if (![self canCreateImageForTextureMetadata:textureMetadata path:archivePath error:error]) {
+    return nil;
+  }
+
+  NSMutableData *data = [self dataForMatWithMetadata:textureMetadata];
+  cv::Mat4b mat = [self matWithData:data metadata:textureMetadata];
+
+  if (!textureMetadata.fillColor.isNull()) {
+    mat.setTo((cv::Vec4b)textureMetadata.fillColor);
+  } else {
+    LTTextureArchiveType *type = archiveMetadata.archiveType;
+    NSString *contentPath =
+        [self contentPathForArchiveFolderPath:archivePath fileExtension:type.fileExtension];
+    if (![type.archiver unarchiveToMat:&mat fromPath:contentPath error:error]) {
+      return nil;
+    }
+  }
+
+  return [self imageWithData:data metadata:archiveMetadata.textureMetadata];
+}
+
+- (BOOL)canCreateImageForTextureMetadata:(LTTextureMetadata *)metadata path:(LTPath *)path
+                                   error:(NSError *__autoreleasing *)error {
+  if ([metadata.pixelFormat isEqual:$(LTGLPixelFormatRGBA8Unorm)]) {
+    return YES;
+  }
+
+  NSString *description =
+      [NSString stringWithFormat:@"Could not create UIImage from %@: invalid pixel format %@",
+       path.path, metadata.pixelFormat.name];
+  [self setError:error withCode:LTErrorCodeObjectCreationFailed description:description];
+  return NO;
+}
+
+- (NSMutableData *)dataForMatWithMetadata:(LTTextureMetadata *)metadata {
+  LTParameterAssert(metadata.pixelFormat.matType == CV_8UC4);
+  NSUInteger length = metadata.size.height * metadata.size.width * cv::Mat4b().elemSize();
+  return [NSMutableData dataWithLength:length];
+}
+
+- (cv::Mat4b)matWithData:(NSMutableData *)data metadata:(LTTextureMetadata *)metadata {
+  LTParameterAssert(metadata.pixelFormat.matType == CV_8UC4);
+  return cv::Mat(metadata.size.height, metadata.size.width,
+                 metadata.pixelFormat.matType, data.mutableBytes);
+}
+
+- (UIImage *)imageWithData:(NSData *)data metadata:(LTTextureMetadata *)metadata {
+  LTParameterAssert([metadata.pixelFormat isEqual:$(LTGLPixelFormatRGBA8Unorm)]);
+  lt::Ref<CGDataProviderRef> provider(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
+
+  size_t bitsPerComponent = 8;
+  size_t bitsPerPixel = 4 * bitsPerComponent;
+  size_t bytesPerRow = 4 * metadata.size.width;
+  CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+  lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
+  lt::Ref<CGImageRef> imageRef(CGImageCreate(metadata.size.width, metadata.size.height,
+                                             bitsPerComponent, bitsPerPixel, bytesPerRow,
+                                             colorSpace.get(), bitmapInfo, provider.get(), NULL,
+                                             YES, kCGRenderingIntentDefault));
+
+  return [UIImage imageWithCGImage:imageRef.get()];
+}
+
+#pragma mark -
 #pragma mark Deleting
 #pragma mark -
 
-- (BOOL)removeArchiveType:(LTTextureArchiveType *)type inPath:(NSString *)path
-                    error:(NSError *__autoreleasing *)error {
-  LTParameterAssert(type);
+- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
   LTParameterAssert(path);
 
-  NSString *contentPath = [self contentPathForType:type relativePath:path];
-  NSString *metadataPath = [self metadataPathForRelativePath:path];
-  LTTextureMetadata *metadata = [self loadMetadataInPath:metadataPath error:error];
-  if (!metadata ||
-      (metadata.fillColor.isNull() && ![self verifyFileInPath:contentPath error:error])) {
+  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  if (!archiveMetadata) {
     return NO;
   }
 
-  BOOL succeededRemovingAllFiles = YES;
+  LTTextureMetadata *textureMetadata = archiveMetadata.textureMetadata;
+  if (textureMetadata.fillColor.isNull()) {
+    LTTextureArchiveType *type = archiveMetadata.archiveType;
+    NSString *storageKey = [self storageKeyForTextureMetadata:textureMetadata archiveType:type];
+    [self removeExistingArchives:@[archivePath] forStorageKey:storageKey];
+  }
+
   NSError *removeError;
-  NSMutableArray *errors = [NSMutableArray array];
-
-  if (![self.fileManager removeItemAtPath:metadataPath error:&removeError]) {
-    [removeError addToArray:errors];
-    succeededRemovingAllFiles = NO;
-  }
-
-  if (metadata.fillColor.isNull() &&
-      ![type.archiver removeArchiveInPath:contentPath error:&removeError]) {
-    [removeError addToArray:errors];
-    succeededRemovingAllFiles = NO;
-  }
-
-  if (errors.count && error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed underlyingErrors:errors];
-  }
-
-  NSString *storageKey = [self storageKeyForTextureMetadata:metadata archiveType:type];
-  [self removeExistingArchiveInPath:contentPath forStorageKey:storageKey];
-  return succeededRemovingAllFiles;
-}
-
-- (BOOL)verifyFileInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
-  if (![self.fileManager fileExistsAtPath:path]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:path];
-    }
+  if (![self.fileManager removeItemAtPath:archivePath.path error:&removeError]) {
+    [self setError:error withCode:LTErrorCodeFileRemovalFailed
+              path:archivePath.path underlyingError:removeError];
     return NO;
   }
-  return YES;
-}
 
-- (void)removeExistingArchiveInPath:(NSString *)path forStorageKey:(NSString *)key {
-  NSMutableArray *existingArchives = [[self existingArchivesForStorageKey:key] mutableCopy];
-  [existingArchives removeObject:path];
-  if (existingArchives.count) {
-    self.storage[key] = [existingArchives copy];
-  } else {
-    [self.storage removeObjectForKey:key];
-  }
+  return YES;
 }
 
 #pragma mark -
@@ -266,19 +417,77 @@ objection_requires_sel(@selector(fileManager));
 
 - (void)performStorageMaintenance {
   for (NSString *key in [self.storage allKeys]) {
-    NSArray *existingArchives = [self existingArchivesForStorageKey:key];
-    NSMutableArray *validExistingArchives = [NSMutableArray array];
-    for (NSString *existingArchive in existingArchives) {
-      if ([self.fileManager fileExistsAtPath:existingArchive]) {
-        [validExistingArchives addObject:existingArchive];
+    NSArray<LTPath *> *existingArchives = [self existingArchivesForStorageKey:key];
+    NSMutableArray<LTPath *> *invalidArchives = [NSMutableArray array];
+
+    for (LTPath *existingArchive in existingArchives) {
+      if (![self isValidArchiveInPath:existingArchive]) {
+        LogWarning(@"Removing zombie record in texture cache: %@", existingArchive);
+        [self.fileManager removeItemAtPath:existingArchive.path error:nil];
+        [invalidArchives addObject:existingArchive];
       }
     }
 
-    if (validExistingArchives.count) {
-      self.storage[key] = [validExistingArchives copy];
-    } else {
-      [self.storage removeObjectForKey:key];
-    }
+    [self removeExistingArchives:invalidArchives forStorageKey:key];
+  }
+}
+
+- (BOOL)isValidArchiveInPath:(LTPath *)path {
+  NSArray<NSString *> *filenames =
+      [self.fileManager contentsOfDirectoryAtPath:path.path error:nil];
+
+  BOOL hasMetadata = [filenames containsObject:kMetadataFilename];
+  BOOL hasContent = [self filenamesContainContentFilename:filenames];
+
+  return hasMetadata && hasContent;
+}
+
+- (BOOL)filenamesContainContentFilename:(nullable NSArray<NSString *> *)filenames {
+  return [filenames indexOfObjectPassingTest:^BOOL(NSString *file, NSUInteger, BOOL *) {
+    return [[file stringByDeletingPathExtension] isEqualToString:kContentFilename];
+  }] != NSNotFound;
+}
+
+#pragma mark -
+#pragma mark Storage
+#pragma mark -
+
+- (void)addExistingArchiveInPath:(LTPath *)path forStorageKey:(NSString *)key {
+  NSMutableArray<LTPath *> *mutableArchives =
+      [[self existingArchivesForStorageKey:key] mutableCopy];
+
+  [mutableArchives addObject:path];
+  [self setExistingArchives:mutableArchives forStorageKey:key];
+}
+
+- (void)removeExistingArchives:(NSArray<LTPath *> *)archives forStorageKey:(NSString *)key {
+  NSMutableArray<LTPath *> *mutableArchives =
+      [[self existingArchivesForStorageKey:key] mutableCopy];
+
+  [mutableArchives removeObjectsInArray:archives];
+  [self setExistingArchives:mutableArchives forStorageKey:key];
+}
+
+- (NSArray<LTPath *> *)existingArchivesForStorageKey:(NSString *)key {
+  NSMutableArray<LTPath *> *existingArchives = [NSMutableArray array];
+  for (NSString *encodedExistingArchivePath in self.storage[key]) {
+    LTPath *path = [LTPath pathWithRelativeURL:[NSURL URLWithString:encodedExistingArchivePath]];
+    [path addToArray:existingArchives];
+  }
+
+  return [existingArchives copy];
+}
+
+- (void)setExistingArchives:(NSArray<LTPath *> *)existingArchives forStorageKey:(NSString *)key {
+  NSMutableArray<NSString *> *encodedPaths = [NSMutableArray array];
+  for (LTPath *path in existingArchives) {
+    [path.relativeURL.absoluteString addToArray:encodedPaths];
+  }
+
+  if (encodedPaths.count) {
+    self.storage[key] = [encodedPaths copy];
+  } else {
+    [self.storage removeObjectForKey:key];
   }
 }
 
@@ -286,76 +495,122 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Metadata
 #pragma mark -
 
-- (BOOL)saveMetadata:(LTTextureMetadata *)metadata inPath:(NSString *)path
+- (BOOL)saveMetadata:(LTTextureArchiveMetadata *)metadata inPath:(LTPath *)path
                error:(NSError *__autoreleasing *)error {
   LTParameterAssert(metadata);
   LTParameterAssert(path);
+  LTAssert([self.fileManager lt_directoryExistsAtPath:path.path]);
 
-  if ([self.fileManager fileExistsAtPath:path]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:path];
-    }
+  NSString *metadataPath = [self metadataPathForArchiveFolderPath:path];
+  if ([self.fileManager fileExistsAtPath:metadataPath]) {
+    [self setError:error withCode:LTErrorCodeFileAlreadyExists
+              path:metadataPath underlyingError:nil];
     return NO;
   }
 
   NSDictionary *json = [MTLJSONAdapter JSONDictionaryFromModel:metadata];
   if (!json) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
-                             description:@"Failed to serialize texture metadata"];
-    }
+    [self setError:error withCode:LTErrorCodeFileWriteFailed
+       description:@"Failed to serialize texture metadata"];
     return NO;
   }
 
-  if (![self.fileManager lt_writeDictionary:json toFile:path error:error]) {
+  if (![self.fileManager lt_writeDictionary:json toFile:metadataPath error:error]) {
     return NO;
   }
 
   return YES;
 }
 
-- (LTTextureMetadata *)loadMetadataInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+- (LTTextureArchiveMetadata *)metadataFromPath:(LTPath *)path
+                                         error:(NSError *__autoreleasing *)error {
   LTParameterAssert(path);
 
-  if (![self.fileManager fileExistsAtPath:path]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:path];
-    }
+  NSString *metadataPath = [self metadataPathForArchiveFolderPath:path];
+  if (![self.fileManager fileExistsAtPath:metadataPath]) {
+    [self setError:error withCode:LTErrorCodeFileNotFound path:metadataPath underlyingError:nil];
     return nil;
   }
 
-  NSDictionary *dictionary = [self.fileManager lt_dictionaryWithContentsOfFile:path error:error];
+  NSDictionary *dictionary =
+      [self.fileManager lt_dictionaryWithContentsOfFile:metadataPath error:error];
   if (!dictionary) {
     return nil;
   }
 
   NSError *mantleError;
-  LTTextureMetadata *metadata = [MTLJSONAdapter modelOfClass:[LTTextureMetadata class]
-                                          fromJSONDictionary:dictionary error:&mantleError];
-  if (!metadata && error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed underlyingError:mantleError];
+  LTTextureArchiveMetadata *metadata = [MTLJSONAdapter modelOfClass:[LTTextureArchiveMetadata class]
+                                                 fromJSONDictionary:dictionary error:&mantleError];
+  if (!metadata) {
+    [self setError:error withCode:LTErrorCodeFileReadFailed
+              path:metadataPath underlyingError:mantleError];
+    return nil;
   }
+
+  NSError *metadataError = [self verifyArchiveMetadata:metadata];
+  if (metadataError) {
+    [self setError:error withCode:LTErrorCodeFileReadFailed
+              path:metadataPath underlyingError:metadataError];
+    return nil;
+  }
+
   return metadata;
+}
+
+- (nullable NSError *)verifyArchiveMetadata:(LTTextureArchiveMetadata *)metadata {
+  if (!metadata.archiveType) {
+    return [NSError lt_errorWithCode:LTErrorCodeFileReadFailed description:@"Missing archive type"];
+  }
+
+  if (!metadata.textureMetadata) {
+    return [NSError lt_errorWithCode:LTErrorCodeFileReadFailed
+                         description:@"Missing texture metadata"];
+  }
+
+  return nil;
 }
 
 #pragma mark -
 #pragma mark Paths
 #pragma mark -
 
-static NSString * const kMetadataExtension = @"plist";
+/// Name of the metadata file of an archive.
+static NSString * const kMetadataFilename = @"metadata.plist";
 
-- (NSString *)metadataPathForRelativePath:(NSString *)path {
-  return [[self fullPathFromRelativePath:path] stringByAppendingPathExtension:kMetadataExtension];
+- (NSString *)metadataPathForArchiveFolderPath:(LTPath *)path {
+  return [path.path stringByAppendingPathComponent:kMetadataFilename];
 }
 
-- (NSString *)contentPathForType:(LTTextureArchiveType *)type relativePath:(NSString *)path {
-  LTParameterAssert(type);
-  return [[self fullPathFromRelativePath:path] stringByAppendingPathExtension:type.fileExtension];
+/// Name of the content file of an archive, without an extension that will be defined according to
+/// the type of archiver that is used to generate the content.
+static NSString * const kContentFilename = @"content";
+
+- (NSString *)contentPathForArchiveFolderPath:(LTPath *)path fileExtension:(NSString *)extension {
+  NSString *filename = [kContentFilename stringByAppendingPathExtension:extension];
+  return [path.path stringByAppendingPathComponent:filename];
 }
 
-- (NSString *)fullPathFromRelativePath:(NSString *)path {
+- (LTPath *)archiveFolderPathFromRelativePath:(NSString *)path {
   LTParameterAssert(path);
-  return [self.baseDirectory stringByAppendingPathComponent:path];
+  return [self.baseDirectory pathByAppendingPathComponent:path];
+}
+
+#pragma mark -
+#pragma mark Errors
+#pragma mark -
+
+- (void)setError:(NSError *__autoreleasing *)error withCode:(NSInteger)code
+     description:(NSString *)description {
+  if (error) {
+    *error = [NSError lt_errorWithCode:code description:description];
+  }
+}
+
+- (void)setError:(NSError *__autoreleasing *)error withCode:(NSInteger)code path:(NSString *)path
+ underlyingError:(nullable NSError *)underlyingError {
+  if (error) {
+    *error = [NSError lt_errorWithCode:code path:path underlyingError:underlyingError];
+  }
 }
 
 @end

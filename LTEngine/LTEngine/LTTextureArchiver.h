@@ -3,13 +3,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTTexture, LTTextureArchiveType;
+@class LTPath, LTTexture, LTTextureArchiveType;
 
 /// Protocol for a key-value storage used by the \c LTTextureArchiver.
 @protocol LTTextureArchiverStorage <NSObject>
 
 /// Loads the value for the key specified by \c key and returns it, or \c nil on failure.
-- (id)objectForKeyedSubscript:(NSString *)key;
+- (nullable id)objectForKeyedSubscript:(NSString *)key;
 
 /// Associates \c object with the specified \c key. Both \c key and \c object must not be \c nil.
 /// Will raise an exception on failure. After a successful invocation of this method a following
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the archiver with the given \c storage and the given directory as the base directory
 /// for all relative paths provided to it.
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage
-                  baseDirectory:(NSString *)baseDirectory NS_DESIGNATED_INITIALIZER;
+                  baseDirectory:(LTPath *)baseDirectory NS_DESIGNATED_INITIALIZER;
 
 /// Creates an archive of the given \c type in the given \c path, storing the given \c texture.
 /// Returns \c YES in case of success, or \c NO while populating \c error in case of failure.
@@ -74,24 +74,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)archiveTexture:(LTTexture *)texture inPath:(NSString *)path
        withArchiveType:(LTTextureArchiveType *)type error:(NSError **)error;
 
-/// Loads the texture archive of the given \c type in the given \c path into the given \c texture,
-/// whose properties must match the properties of the archived texture. Returns \c YES in case of
-/// success, or \c NO while populating \c error in case of failure.
-- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path
-           withArchiveType:(LTTextureArchiveType *)type error:(NSError **)error;
-
-/// Loads the texture archive of the given \c type in the given \c path into a newly allocated
-/// texture. Returns \c nil while populating \c error in case of failure.
-- (LTTexture *)unarchiveFromPath:(NSString *)path withArchiveType:(LTTextureArchiveType *)type
-                           error:(NSError **)error;
-
-/// Removes the archive of the given \c type in the given \c path. Returns \c YES in case of success
+/// Loads the texture archive stored in the given \c path into the given \c texture, whose
+/// properties must match the properties of the archived texture. Returns \c YES in case of success,
 /// or \c NO while populating \c error in case of failure.
+- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path error:(NSError **)error;
+
+/// Loads the texture archive stored in the given \c path into a newly allocated texture. In case of
+/// failure, returns \c nil while populating \c error.
+- (nullable LTTexture *)unarchiveTextureFromPath:(NSString *)path error:(NSError **)error;
+
+/// Loads the texture archive stored in the given \c path into a newly allocated \c UIImage. In case
+/// of failure, returns \c nil while populating \c error.
+///
+/// @note Only archives of byte RGBA textures can be unarchived to \c UIImage.
+- (nullable UIImage *)unarchiveImageFromPath:(NSString *)path error:(NSError **)error;
+
+/// Removes the archive stored in the given \c path. Returns \c YES in case of success or \c NO
+/// while populating \c error in case of failure.
 ///
 /// @note In case of failure it is possible that the archive is left in an inconsistent state and
 /// the behavior in case of trying to unarchive it or remove it again is undefined.
-- (BOOL)removeArchiveType:(LTTextureArchiveType *)type inPath:(NSString *)path
-                    error:(NSError **)error;
+- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError **)error;
 
 /// Cleans up the storage by removing records referring to files that does not exist and keys that
 /// do not refer to any existing file.
@@ -99,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Base directory of the archiver. All paths given as arguments to the archiver are treated as
 /// relative to it.
-@property (readonly, nonatomic) NSString *baseDirectory;
+@property (readonly, nonatomic) LTPath *baseDirectory;
 
 @end
 
