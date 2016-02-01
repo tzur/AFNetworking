@@ -29,12 +29,13 @@ context(@"initialization", ^{
   it(@"should initialize with a random seed using the default initializer", ^{
     random = [[LTRandom alloc] init];
     LTRandom *otherRandom = [[LTRandom alloc] init];
-    expect(random.seed).notTo.equal(otherRandom.seed);
+    expect(random.initialState).notTo.beIdenticalTo(otherRandom.initialState);
   });
   
   it(@"should initialize with a specific seed", ^{
     random = [[LTRandom alloc] initWithSeed:kTestingSeed];
-    expect(random.seed).to.equal(kTestingSeed);
+    LTRandom *otherRandom = [[LTRandom alloc] initWithSeed:kTestingSeed];
+    expect(random.initialState).to.equal(otherRandom.initialState);
   });
 });
 
@@ -95,7 +96,9 @@ context(@"random", ^{
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
       first.push_back([random randomDouble]);
     }
+    
     [random reset];
+
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
       second.push_back([random randomDouble]);
     }
@@ -142,9 +145,9 @@ context(@"random", ^{
   });
   
   it(@"should generate identical random sequence when using same seed", ^{
-    random = [[LTRandom alloc] init];
-    LTRandom *otherRandom = [[LTRandom alloc] initWithSeed:random.seed];
-    
+    random = [[LTRandom alloc] initWithSeed:7];
+    LTRandom *otherRandom = [[LTRandom alloc] initWithSeed:7];
+
     NSMutableArray *first = [NSMutableArray array];
     NSMutableArray *second = [NSMutableArray array];
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
