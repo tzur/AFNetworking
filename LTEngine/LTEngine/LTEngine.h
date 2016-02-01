@@ -24,9 +24,7 @@
 #import <LTEngine/LTImageProcessor.h>
 #import <LTEngine/LTIterativeImageProcessor.h>
 #import <LTEngine/LTOneShotImageProcessor.h>
-#import <LTEngine/LTPainterImageProcessor.h>
 #import <LTEngine/LTPartialProcessing.h>
-#import <LTEngine/LTProgressiveImageProcessor.h>
 #import <LTEngine/LTScreenProcessing.h>
 
 // Image Processing/Blocks.
@@ -97,8 +95,6 @@
 // GPU/Painting.
 #import <LTEngine/LTPainter+LTView.h>
 #import <LTEngine/LTPainterStroke.h>
-#import <LTEngine/LTSingleAirbrushPaintingStrategy.h>
-#import <LTEngine/LTSingleBrushPaintingStrategy.h>
 
 // GPU/Painting/Brushes.
 #import <LTEngine/LTBristleBrush.h>
