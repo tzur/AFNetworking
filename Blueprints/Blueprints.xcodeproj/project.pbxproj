@@ -15,7 +15,7 @@
 		8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */; };
 		8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */; };
 		8B3CE9661C4E57C9008E779B /* BLUModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CE9641C4E57C9008E779B /* BLUModel.h */; };
-		8B3CE9671C4E57C9008E779B /* BLUModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE9651C4E57C9008E779B /* BLUModel.m */; };
+		8B3CE9671C4E57C9008E779B /* BLUModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE9651C4E57C9008E779B /* BLUModel.mm */; };
 		8B3CEA031C4E6BB7008E779B /* BLUModelNodeChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */; };
 		8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */; };
 		8B3CEA071C4E6EF3008E779B /* NSErrorCodes+Blueprints.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */; };
@@ -68,6 +68,7 @@
 		8B3CED4D1C590D6F008E779B /* BLUNodeData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CED4B1C590D6F008E779B /* BLUNodeData.h */; };
 		8B3CED4E1C590D6F008E779B /* BLUNodeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED4C1C590D6F008E779B /* BLUNodeData.m */; };
 		8B3CED501C5930CF008E779B /* BLUNodeDataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */; };
+		8B3CED751C593523008E779B /* BLUModelTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED741C593523008E779B /* BLUModelTestUtils.m */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED81D41C3A71A90001C6F1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81BA1C3A71720001C6F1 /* libSpecta.a */; };
 		8BED81D51C3A71AE0001C6F1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED81A11C3A71690001C6F1 /* libExpecta.a */; };
@@ -299,7 +300,7 @@
 		8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSOrderedSet+BLUNodeCollectionSpec.mm"; sourceTree = "<group>"; };
 		8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+OperationSpec.mm"; sourceTree = "<group>"; };
 		8B3CE9641C4E57C9008E779B /* BLUModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUModel.h; sourceTree = "<group>"; };
-		8B3CE9651C4E57C9008E779B /* BLUModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUModel.m; sourceTree = "<group>"; };
+		8B3CE9651C4E57C9008E779B /* BLUModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUModel.mm; sourceTree = "<group>"; };
 		8B3CE9DD1C4E5CEB008E779B /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUModelNodeChange.h; sourceTree = "<group>"; };
 		8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUModelNodeChange.m; sourceTree = "<group>"; };
@@ -358,6 +359,8 @@
 		8B3CED4B1C590D6F008E779B /* BLUNodeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNodeData.h; sourceTree = "<group>"; };
 		8B3CED4C1C590D6F008E779B /* BLUNodeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNodeData.m; sourceTree = "<group>"; };
 		8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUNodeDataSpec.mm; sourceTree = "<group>"; };
+		8B3CED731C593523008E779B /* BLUModelTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUModelTestUtils.h; sourceTree = "<group>"; };
+		8B3CED741C593523008E779B /* BLUModelTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUModelTestUtils.m; sourceTree = "<group>"; };
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -508,7 +511,7 @@
 				8B3CED231C57C1AA008E779B /* BLULazyNodeCollection.h */,
 				8B3CED241C57C1AA008E779B /* BLULazyNodeCollection.m */,
 				8B3CE9641C4E57C9008E779B /* BLUModel.h */,
-				8B3CE9651C4E57C9008E779B /* BLUModel.m */,
+				8B3CE9651C4E57C9008E779B /* BLUModel.mm */,
 				8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */,
 				8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */,
 				8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */,
@@ -571,6 +574,8 @@
 				8B3CED311C590234008E779B /* BLULazyNodeCollectionSpec.mm */,
 				8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */,
 				8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */,
+				8B3CED731C593523008E779B /* BLUModelTestUtils.h */,
+				8B3CED741C593523008E779B /* BLUModelTestUtils.m */,
 				8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */,
 				8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */,
 				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */,
@@ -1009,8 +1014,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BD00C3E1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.mm in Sources */,
-				8B3CE9671C4E57C9008E779B /* BLUModel.m in Sources */,
 				8B3CED261C57C1AA008E779B /* BLULazyNodeCollection.m in Sources */,
+				8B3CE9671C4E57C9008E779B /* BLUModel.mm in Sources */,
 				8B3CED4E1C590D6F008E779B /* BLUNodeData.m in Sources */,
 				8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
@@ -1029,6 +1034,7 @@
 			files = (
 				8B3CEA0A1C4E72BB008E779B /* BLUModelSpec.mm in Sources */,
 				8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */,
+				8B3CED751C593523008E779B /* BLUModelTestUtils.m in Sources */,
 				8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */,
 				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */,
 				8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */,
