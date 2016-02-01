@@ -3,9 +3,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Represents the internal state of the random generator. Reseting the generator to a given state
-/// will yield the same sequence of random numbers (assuming the same sequence of methods are
+/// Object representing the internal state of a random generator. Resetting a generator to a given
+/// state will yield the same sequence of random numbers (assuming the same sequence of methods is
 /// called).
+///
+/// @note This class is thread-safe.
 @interface LTRandomState : NSObject
 @end
 
@@ -14,10 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// This is important since this class can be used to replay a random sequence by calling reset or
 /// initializing with a specific seed.
 ///
-/// @note This class should be used to create pseudo random numbers and does not gurantee anything
-/// about the strength of randomness of the generated numbers. Its purpose is for creating a
+/// @warning This class should be used to create pseudo random numbers and does not guarantee anything
+/// regarding the strength of randomness of the generated numbers. Its sole purpose is to create a
 /// randomly-looking behavior, and should not be used for any cryptographic or security-related
 /// purpose.
+///
+/// @warning This class is not thread-safe.
 @interface LTRandom : NSObject
 
 /// Initializes the random generator with a randomly generated state.
@@ -50,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initial state of the random generator.
 @property (readonly, nonatomic) LTRandomState *initialState;
 
-/// Returns the internal state of the random generator.
+/// Current state of the random generator.
 @property (readonly, nonatomic) LTRandomState *engineState;
 
 @end
