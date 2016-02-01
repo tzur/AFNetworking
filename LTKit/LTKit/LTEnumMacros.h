@@ -378,28 +378,40 @@
   }
 
 /// Defines a traits struct used to verify that the declaration and implementation are similar.
-#define _LTDefineTraitsStruct(NAME, ...) \
-  struct __## NAME { \
-    metamacro_foreach(_LTEnumTraitsStuctField,, __VA_ARGS__) \
-    static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
-  };
+#ifdef __cplusplus
+  #define _LTDefineTraitsStruct(NAME, ...) \
+    struct __## NAME { \
+      metamacro_foreach(_LTEnumTraitsStuctField,, __VA_ARGS__) \
+      static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
+    };
+#else
+  #define _LTDefineTraitsStruct(NAME, ...)
+#endif
 
 /// Defines a traits struct with given field values used to verify that the declaration and
 /// implementation are similar.
-#define _LTDefineTraitsStructWithValues(NAME, ...) \
-  struct __## NAME { \
-    metamacro_foreach2(_LTEnumTraitsStuctFieldAndValue,, _LTNull, __VA_ARGS__) \
-    static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
-  };
+#ifdef __cplusplus
+  #define _LTDefineTraitsStructWithValues(NAME, ...) \
+    struct __## NAME { \
+      metamacro_foreach2(_LTEnumTraitsStuctFieldAndValue,, _LTNull, __VA_ARGS__) \
+      static const int fieldCount = metamacro_argcount(__VA_ARGS__); \
+    };
+#else
+  #define _LTDefineTraitsStructWithValues(NAME, ...)
+#endif
 
 /// Defines a method which does nothing but to statically verify that the declaration and
 /// implementation are similar.
-#define _LTVerifyImplementation(NAME, ...) \
+#ifdef __cplusplus
+  #define _LTVerifyImplementation(NAME, ...) \
   __unused static void __verify##NAME() { \
     static_assert(__##NAME::fieldCount == metamacro_argcount(__VA_ARGS__), \
                   "Field count doesn't match for enum " #NAME); \
     metamacro_foreach_cxt(_LTEnumVerifyField,, NAME, __VA_ARGS__) \
   }
+#else
+  #define _LTVerifyImplementation(NAME, ...)
+#endif
 
 /// Defines a method which does nothing but to statically verify that the declaration and
 /// implementation are similar.
