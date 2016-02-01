@@ -5,6 +5,7 @@
 
 #import "BLUNode.h"
 #import "NSArray+BLUNodeCollection.h"
+#import "NSIndexPath+Blueprints.h"
 
 SpecBegin(BLUTree)
 
@@ -28,23 +29,48 @@ beforeEach(^{
   tree = [BLUTree treeWithRoot:root];
 });
 
-context(@"fetching node at path", ^{
-  it(@"should fetch the root node", ^{
-    expect(tree[@"/"]).to.equal(tree.root);
+context(@"fetching nodes", ^{
+  context(@"at path", ^{
+    it(@"should fetch the root node", ^{
+      expect(tree[@"/"]).to.equal(tree.root);
+    });
+
+    it(@"should fetch middle node", ^{
+      expect(tree[@"/left"]).to.equal(tree.root.childNodes.firstObject);
+    });
+
+    it(@"should fetch leaf node", ^{
+      BLUNode *left = tree.root.childNodes.firstObject;
+      BLUNode *leftRight = left.childNodes.lastObject;
+      expect(tree[@"/left/leftRight"]).to.equal(leftRight);
+    });
+
+    it(@"should return nil for non existing node", ^{
+      expect(tree[@"/foo"]).to.beNil();
+    });
   });
 
-  it(@"should fetch middle node", ^{
-    expect(tree[@"/left"]).to.equal(tree.root.childNodes.firstObject);
-  });
+  context(@"at index path", ^{
+    it(@"should fetch the root node", ^{
+      expect(tree[[NSIndexPath blu_empty]]).to.equal(tree.root);
+    });
 
-  it(@"should fetch leaf node", ^{
-    BLUNode *left = tree.root.childNodes.firstObject;
-    BLUNode *leftRight = left.childNodes.lastObject;
-    expect(tree[@"/left/leftRight"]).to.equal(leftRight);
-  });
+    it(@"should fetch middle node", ^{
+      NSIndexPath *indexPath = [NSIndexPath blu_indexPathWithIndexes:{0}];
+      expect(tree[indexPath]).to.equal(tree.root.childNodes.firstObject);
+    });
 
-  it(@"should return nil for non existing node", ^{
-    expect(tree[@"/foo"]).to.beNil();
+    it(@"should fetch leaf node", ^{
+      BLUNode *left = tree.root.childNodes.firstObject;
+      BLUNode *leftRight = left.childNodes.lastObject;
+      NSIndexPath *indexPath = [NSIndexPath blu_indexPathWithIndexes:{0, 2}];
+      expect(tree[indexPath]).to.equal(leftRight);
+    });
+
+    it(@"should return nil for non existing node", ^{
+      NSIndexPath *indexPath = [NSIndexPath blu_indexPathWithIndexes:{3}];
+      expect(tree[indexPath]).to.beNil();
+    });
   });
 });
 

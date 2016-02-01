@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)blu_indexPathWithIndexes:(const std::vector<NSUInteger> &)indexes {
   if (indexes.size()) {
-    return [self indexPathWithIndexes:&indexes[0] length:indexes.size()];
+    return [self indexPathWithIndexes:indexes.data() length:indexes.size()];
   } else {
     return [self blu_empty];
   }

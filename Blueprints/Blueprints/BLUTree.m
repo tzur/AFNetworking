@@ -103,6 +103,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [BLUTree treeWithRoot:currentNode];
 }
 
+- (nullable BLUNode *)objectForKeyedSubscript:(id)path {
+  if ([path isKindOfClass:[NSString class]]) {
+    return [self nodesForPath:path].lastObject;
+  } else if ([path isKindOfClass:[NSIndexPath class]]) {
+    return [self nodesForIndexPath:path].lastObject;
+  } else {
+    LTParameterAssert(NO, @"Path must be an NSString or NSIndexPath, got: %@", path);
+  }
+}
+
 - (nullable NSArray<BLUNode *> *)nodesForPath:(NSString *)path {
   NSArray<NSString *> *pathComponents = path.pathComponents;
   if (![pathComponents.firstObject isEqualToString:@"/"]) {
@@ -126,8 +136,23 @@ NS_ASSUME_NONNULL_BEGIN
   return [nodes copy];
 }
 
-- (nullable BLUNode *)objectForKeyedSubscript:(NSString *)path {
-  return [self nodesForPath:path].lastObject;
+- (nullable NSArray<BLUNode *> *)nodesForIndexPath:(NSIndexPath *)indexPath {
+  NSMutableArray<BLUNode *> *nodes = [NSMutableArray arrayWithCapacity:indexPath.length + 1];
+  [nodes addObject:self.root];
+
+  BLUNode *currentNode = nodes.firstObject;
+  for (NSUInteger i = 0; i < indexPath.length; ++i) {
+    NSUInteger index = [indexPath indexAtPosition:i];
+    if (currentNode.childNodes.count <= index) {
+      return nil;
+    }
+
+    BLUNode *node = currentNode.childNodes[index];
+    [nodes addObject:node];
+    currentNode = node;
+  }
+
+  return [nodes copy];
 }
 
 - (void)enumerateTreeWithEnumerationType:(BLUTreeEnumerationType)enumerationType
