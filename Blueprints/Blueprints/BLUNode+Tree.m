@@ -1,30 +1,16 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "BLUTree.h"
+#import "BLUNode+Tree.h"
 
-#import <LTKit/LTRandomAccessCollection.h>
-
-#import "BLUNode.h"
 #import "BLUNode+Operations.h"
-#import "NSOrderedSet+BLUNodeCollection.h"
+#import "BLUNodeCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BLUTree
+@implementation BLUNode (Tree)
 
-- (instancetype)initWithRoot:(BLUNode *)root {
-  if (self = [super init]) {
-    _root = root;
-  }
-  return self;
-}
-
-+ (instancetype)treeWithRoot:(BLUNode *)root {
-  return [[BLUTree alloc] initWithRoot:root];
-}
-
-- (instancetype)treeByRemovingNodeAtPath:(NSString *)path {
+- (instancetype)nodeByRemovingNodeAtPath:(NSString *)path {
   NSArray<BLUNode *> * _Nullable nodes = [self nodesForPath:path];
   if (!nodes) {
     return self;
@@ -36,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
   // Remove the node from its parent.
   BLUNode *parentNode = [nodesWithoutLast.lastObject nodeByRemovingChildNodes:@[nodes.lastObject]];
 
-  return [self treeByUpdatingPathToRootFromNode:parentNode path:nodesWithoutLast];
+  return [self nodeByUpdatingPathToRootFromNode:parentNode path:nodesWithoutLast];
 }
 
-- (instancetype)treeByAddingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path {
+- (instancetype)nodeByAddingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path {
   NSArray<BLUNode *> * _Nullable nodes = [self nodesForPath:path];
   LTParameterAssert(nodes, @"Trying to add node %@ to a non-existing path: %@", node, path);
 
@@ -48,10 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
   BLUNode *newParentNode = [parentNode nodeByInsertingChildNode:node
                                                         atIndex:parentNode.childNodes.count];
 
-  return [self treeByUpdatingPathToRootFromNode:newParentNode path:nodes];
+  return [self nodeByUpdatingPathToRootFromNode:newParentNode path:nodes];
 }
 
-- (instancetype)treeByInsertingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path
+- (instancetype)nodeByInsertingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path
                                  atIndex:(NSUInteger)index {
   NSArray<BLUNode *> * _Nullable nodes = [self nodesForPath:path];
   LTParameterAssert(nodes, @"Trying to insert node %@ to a non-existing path: %@", node, path);
@@ -60,16 +46,16 @@ NS_ASSUME_NONNULL_BEGIN
   BLUNode *parentNode = nodes.lastObject;
   BLUNode *newParentNode = [parentNode nodeByInsertingChildNode:node atIndex:index];
 
-  return [self treeByUpdatingPathToRootFromNode:newParentNode path:nodes];
+  return [self nodeByUpdatingPathToRootFromNode:newParentNode path:nodes];
 }
 
-- (instancetype)treeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node {
+- (instancetype)nodeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node {
   NSArray<BLUNode *> * _Nullable nodes = [self nodesForPath:path];
   LTParameterAssert(nodes, @"Trying to replace node %@ with a non-existing node: %@", node, path);
 
   // Replacing root node.
   if (nodes.count == 1) {
-    return [BLUTree treeWithRoot:node];
+    return node;
   }
 
   NSArray<BLUNode *> *nodesWithoutLast = [nodes subarrayWithRange:NSMakeRange(0, nodes.count - 1)];
@@ -81,13 +67,13 @@ NS_ASSUME_NONNULL_BEGIN
   BLUNode *newParentNode = [parentNode nodeByReplacingChildNodesAtIndexes:indexes
                                                            withChildNodes:@[node]];
 
-  return [self treeByUpdatingPathToRootFromNode:newParentNode path:nodesWithoutLast];
+  return [self nodeByUpdatingPathToRootFromNode:newParentNode path:nodesWithoutLast];
 }
 
-- (instancetype)treeByUpdatingPathToRootFromNode:(BLUNode *)node path:(NSArray<BLUNode *> *)path {
+- (instancetype)nodeByUpdatingPathToRootFromNode:(BLUNode *)node path:(NSArray<BLUNode *> *)path {
   // No path, node is the root.
   if (!path.count) {
-    return [BLUTree treeWithRoot:node];
+    return node;
   }
 
   BLUNode *currentNode = node;
@@ -100,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                withChildNodes:@[currentNode]];
   }
 
-  return [BLUTree treeWithRoot:currentNode];
+  return currentNode;
 }
 
 - (nullable BLUNode *)objectForKeyedSubscript:(id)path {
@@ -120,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   NSMutableArray<BLUNode *> *nodes = [NSMutableArray arrayWithCapacity:pathComponents.count];
-  [nodes addObject:self.root];
+  [nodes addObject:self];
 
   BLUNode *currentNode = nodes.firstObject;
   for (NSUInteger i = 1; i < pathComponents.count; ++i) {
@@ -138,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSArray<BLUNode *> *)nodesForIndexPath:(NSIndexPath *)indexPath {
   NSMutableArray<BLUNode *> *nodes = [NSMutableArray arrayWithCapacity:indexPath.length + 1];
-  [nodes addObject:self.root];
+  [nodes addObject:self];
 
   BLUNode *currentNode = nodes.firstObject;
   for (NSUInteger i = 0; i < indexPath.length; ++i) {
@@ -160,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(block);
 
   BOOL stop = NO;
-  [self enumerateNode:self.root withEnumerationType:enumerationType stop:&stop
+  [self enumerateNode:self withEnumerationType:enumerationType stop:&stop
        pathComponents:@[@"/"] usingBlock:block];
 }
 
@@ -195,27 +181,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (BOOL)isEqual:(BLUTree *)object {
-  if (self == object) {
-    return YES;
-  }
-
-  if (![object isKindOfClass:BLUTree.class]) {
-    return NO;
-  }
-
-  return [self.root isEqual:object.root];
-}
-
-- (NSUInteger)hash {
-  return self.root.hash;
-}
-
-- (NSString *)description {
+- (NSString *)treeDescription {
   __block NSMutableArray *nodeDescriptions = [NSMutableArray array];
   [self enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
                               usingBlock:^(BLUNode *node, NSString *path, BOOL __unused *stop) {
@@ -238,9 +204,7 @@ NS_ASSUME_NONNULL_BEGIN
     [nodeDescriptions addObject:nodeDescription];
   }];
 
-  NSString *formattedTree = [nodeDescriptions componentsJoinedByString:@"\n"];
-
-  return [NSString stringWithFormat:@"<%@: %p,\n%@\n>", self.class, self, formattedTree];
+  return [nodeDescriptions componentsJoinedByString:@"\n"];
 }
 
 @end

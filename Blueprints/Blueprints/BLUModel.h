@@ -7,11 +7,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BLUNodeCollection;
 
-@class BLUTree, RACSignal;
+@class BLUNode, RACSignal;
 
-/// Represents a model that is backed by \c BLUTree. In contrast to \c BLUTree, the model is a
-/// stateful object that holds the latest tree that was produced from the series of transformations
-/// on the model.
+/// Represents a model that is backed by \c BLUNode that represents a root node of a tree. In
+/// contrast to \c BLUNode, the model is a stateful object that holds the latest tree that was
+/// produced from the series of transformations on the model.
 ///
 /// The model allows to mutate itself by replacing a value of a node or its child nodes (but not
 /// renaming its path or deleting existing nodes). The mutations can be observed by observing a
@@ -30,21 +30,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the initial tree this model is composed of. The initial tree will be iterated,
-/// and every node that holds a value that conforms to \c BLUProviderDescriptor will be replaced
-/// with a node of an initial value of <tt>[NSNull null]</tt> and an empty array as child nodes, and
-/// will be attached to a provider created using the descriptor. Upon any update of value or child
-/// nodes from the provider, the model will be changed and changes will be sent to listeners.
-- (instancetype)initWithTree:(BLUTree *)tree NS_DESIGNATED_INITIALIZER;
+/// Initializes with the initial root node of a tree this model is composed of. The initial tree
+/// will be iterated, and every node that holds a value that conforms to \c BLUProviderDescriptor
+/// will be replaced with a node of an initial value of <tt>[NSNull null]</tt> and an empty array as
+/// child nodes, and will be attached to a provider created using the descriptor. Upon any update of
+/// value or child nodes from the provider, the model will be changed and changes will be sent to
+/// listeners.
+- (instancetype)initWithRootNode:(BLUNode *)rootNode NS_DESIGNATED_INITIALIZER;
 
 /// Listens to changes to the \c value or \c childNodes of the node at the given \c path. If \c path
 /// doesn't exist, the signal will err. If the node is removed while it is being observed, the
 /// signal will complete. Values will be sent on an arbitrary scheduler.
+///
+/// @see BLUNode+Tree for more information about how to format \c path.
 - (RACSignal *)changesForNodeAtPath:(NSString *)path;
 
-/// Returns a signal of \c BLUTree objects that sends the initial tree and a new tree each time it
-/// is changed. Values will be sent on an arbitrary scheduler.
-- (RACSignal *)treeModel;
+/// Returns a signal of \c BLUNode objects that sends the current root node of the tree and a new
+/// tree each time it is changed. Values will be sent on an arbitrary scheduler.
+- (RACSignal *)currentRootNode;
 
 @end
 

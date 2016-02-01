@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Operations that can be performed on \c BLUNode.
+/// Operations that can be performed on the data of a single \c BLUNode.
 @interface BLUNode (Operations)
 
 /// Returns a new node with the same \c name and \c value, but with \c childNodes that do not

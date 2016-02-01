@@ -6,15 +6,15 @@
 #import "BLUModelNodeChange.h"
 #import "BLUModelTestUtils.h"
 #import "BLUNode.h"
+#import "BLUNode+Tree.h"
 #import "BLUNodeData.h"
-#import "BLUTree.h"
 #import "NSArray+BLUNodeCollection.h"
 #import "NSErrorCodes+Blueprints.h"
 
 SpecBegin(BLUModel)
 
 __block BLUFakeProvider *provider;
-__block BLUTree *tree;
+__block BLUNode *root;
 __block BLUModel *model;
 
 beforeEach(^{
@@ -25,34 +25,33 @@ beforeEach(^{
   BLUNode *second = [BLUNode nodeWithName:@"second" childNodes:@[child] value:descriptor];
 
   BLUNode *first = [BLUNode nodeWithName:@"first" childNodes:@[] value:@5];
-  BLUNode *root = [BLUNode nodeWithName:@"root" childNodes:@[first, second] value:@7];
+  root = [BLUNode nodeWithName:@"root" childNodes:@[first, second] value:@7];
 
-  tree = [BLUTree treeWithRoot:root];
-  model = [[BLUModel alloc] initWithTree:tree];
+  model = [[BLUModel alloc] initWithRootNode:root];
 });
 
 context(@"tree model", ^{
-  __block BLUTree *treeAfterAttachment;
+  __block BLUNode *rootAfterAttachment;
 
   beforeEach(^{
     BLUNode *emptyNode = [BLUNode nodeWithName:@"second" childNodes:@[] value:[NSNull null]];
-    treeAfterAttachment = [tree treeByReplacingNodeAtPath:@"/second" withNode:emptyNode];
+    rootAfterAttachment = [root nodeByReplacingNodeAtPath:@"/second" withNode:emptyNode];
   });
 
   it(@"should send the initial tree model", ^{
     BLUNode *emptyNode = [BLUNode nodeWithName:@"second" childNodes:@[] value:[NSNull null]];
-    BLUTree *treeAfterAttachment = [tree treeByReplacingNodeAtPath:@"/second" withNode:emptyNode];
+    BLUNode *rootAfterAttachment = [root nodeByReplacingNodeAtPath:@"/second" withNode:emptyNode];
 
-    expect(model.treeModel).will.sendValues(@[treeAfterAttachment]);
+    expect(model.currentRootNode).will.sendValues(@[rootAfterAttachment]);
   });
 
   it(@"should send the initial tree model on second subscription", ^{
-    expect(model.treeModel).will.sendValues(@[treeAfterAttachment]);
-    expect(model.treeModel).will.sendValues(@[treeAfterAttachment]);
+    expect(model.currentRootNode).will.sendValues(@[rootAfterAttachment]);
+    expect(model.currentRootNode).will.sendValues(@[rootAfterAttachment]);
   });
 
   it(@"should send new tree upon changing value of a node", ^{
-    LLSignalTestRecorder *recorder = [model.treeModel testRecorder];
+    LLSignalTestRecorder *recorder = [model.currentRootNode testRecorder];
 
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:@42 childNodes:@[]];
     [provider sendNodeData:nodeData];
@@ -62,7 +61,7 @@ context(@"tree model", ^{
   });
 
   it(@"should send new tree upon changing child nodes of a node", ^{
-    LLSignalTestRecorder *recorder = [model.treeModel testRecorder];
+    LLSignalTestRecorder *recorder = [model.currentRootNode testRecorder];
 
     BLUNode *child = [BLUNode nodeWithName:@"child" childNodes:@[] value:@1];
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:[NSNull null] childNodes:@[child]];
@@ -78,8 +77,8 @@ context(@"model manipulations", ^{
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:@42 childNodes:@[]];
     [provider sendNodeData:nodeData];
 
-    BLUTree *tree = model.treeModel.first;
-    expect(tree[@"/second"].value).to.equal(@42);
+    BLUNode *node = model.currentRootNode.first;
+    expect(node[@"/second"].value).to.equal(@42);
   });
 
   it(@"should replace child nodes of node", ^{
@@ -87,8 +86,8 @@ context(@"model manipulations", ^{
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:[NSNull null] childNodes:@[child]];
     [provider sendNodeData:nodeData];
 
-    BLUTree *tree = model.treeModel.first;
-    expect(tree[@"/second/child"].value).to.equal(@1);
+    BLUNode *node = model.currentRootNode.first;
+    expect(node[@"/second/child"].value).to.equal(@1);
   });
 });
 
@@ -96,7 +95,7 @@ context(@"observations", ^{
   it(@"should send change for node when its value is changed", ^{
     LLSignalTestRecorder *recorder = [[model changesForNodeAtPath:@"/second"] testRecorder];
 
-    BLUNode *oldNode = model.treeModel.first[@"/second"];
+    BLUNode *oldNode = model.currentRootNode.first[@"/second"];
     BLUNode *newNode = [BLUNode nodeWithName:oldNode.name childNodes:oldNode.childNodes value:@42];
 
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:@42 childNodes:@[]];
@@ -114,7 +113,7 @@ context(@"observations", ^{
     BLUNode *child = [BLUNode nodeWithName:@"child" childNodes:@[] value:@1];
     BLUNodeData *nodeData = [BLUNodeData nodeDataWithValue:[NSNull null] childNodes:@[child]];
 
-    BLUNode *oldNode = model.treeModel.first[@"/second"];
+    BLUNode *oldNode = model.currentRootNode.first[@"/second"];
     BLUNode *newNode = [BLUNode nodeWithName:oldNode.name childNodes:@[child] value:oldNode.value];
 
     [provider sendNodeData:nodeData];
