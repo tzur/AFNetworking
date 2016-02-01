@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)getResourceValue:(out id _Nullable __autoreleasing *)value forKey:(NSString *)key
                    error:(out NSError * _Nullable __unused __autoreleasing *)error {
   *value = self.resources[key];
-  return self.resources[key];
+  return self.resources[key] != nil;
 }
 
 @end
@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)fileExistsAtPath:(NSString *)path isDirectory:(nullable BOOL *)isDirectory {
   PTNFileSystemFakeFileManagerFile *file = [self fileAtPath:path];
   *isDirectory = file.isDirectory;
-  return file;
+  return file != nil;
 }
 
 - (nullable NSArray<NSURL *> *)contentsOfDirectoryAtURL:(NSURL *)url
