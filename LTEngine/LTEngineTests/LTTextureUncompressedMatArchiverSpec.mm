@@ -248,46 +248,6 @@ context(@"unarchiving", ^{
       [archiver unarchiveToTexture:texture fromPath:LTTemporaryPath(@"archive.mat") error:&error];
     }).to.raise(NSInvalidArgumentException);
   });
-
-  it(@"should return error and keep texture unchanged if failed to unarchive the texture", ^{
-    cv::Mat4b mat(32, 16);
-    expect(LTSaveMat(mat, @"archive.mat")).to.beTruthy();
-
-    OCMStub([fileManager lt_dataWithContentsOfFile:LTTemporaryPath(@"archive.mat")
-                                           options:NSDataReadingUncached
-                                             error:[OCMArg setTo:kFakeError]]);
-
-    texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(mat.cols, mat.rows)];
-    NSString *generationID = texture.generationID;
-    result = [archiver unarchiveToTexture:texture
-                                 fromPath:LTTemporaryPath(@"archive.mat") error:&error];
-    expect(result).to.beFalsy();
-    expect(error).notTo.beNil();
-    expect(error.code).to.equal(LTErrorCodeFileReadFailed);
-    expect(texture.generationID).to.equal(generationID);
-  });
-});
-
-context(@"removing", ^{
-  it(@"should remove the archived texture", ^{
-    OCMExpect([fileManager removeItemAtPath:LTTemporaryPath(@"archive.mat")
-                                      error:[OCMArg anyObjectRef]]).andReturn(YES);
-    result = [archiver removeArchiveInPath:LTTemporaryPath(@"archive.mat") error:&error];
-    expect(result).to.beTruthy();
-    expect(error).to.beNil();
-    OCMVerifyAll(fileManager);
-  });
-
-  it(@"should return error if failed to remove the archive", ^{
-    OCMExpect([fileManager removeItemAtPath:LTTemporaryPath(@"archive.mat")
-                                      error:[OCMArg setTo:kFakeError]]).andReturn(NO);
-    result = [archiver removeArchiveInPath:LTTemporaryPath(@"archive.mat") error:&error];
-    expect(result).to.beFalsy();
-    expect(error).notTo.beNil();
-    expect(error.code).to.equal(LTErrorCodeFileRemovalFailed);
-    expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
-    OCMVerifyAll(fileManager);
-  });
 });
 
 SpecEnd

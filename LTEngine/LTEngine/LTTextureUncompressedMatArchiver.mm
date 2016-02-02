@@ -49,6 +49,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path
                      error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture);
+
+  __block BOOL success;
+  [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    success = [self unarchiveToMat:mapped fromPath:path error:error];
+  }];
+
+  return success;
+}
+
+- (BOOL)unarchiveToMat:(cv::Mat *)mat fromPath:(NSString *)path
+                 error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(mat);
   LTParameterAssert(path);
 
   NSError *dataError;
@@ -63,25 +75,12 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-    LTParameterAssert(data.length == mapped->total() * mapped->elemSize());
-    cv::Mat mat(mapped->rows, mapped->cols, mapped->type(), (void *)data.bytes);
-    mat.copyTo(*mapped);
-  }];
+  LTParameterAssert(data.length == mat->total() * mat->elemSize(),
+                    @"Length (%lu) of data read does not match size (%lu) of target mat",
+                    (unsigned long)data.length, (unsigned long)(mat->total() * mat->elemSize()));
+  cv::Mat dataMat(mat->rows, mat->cols, mat->type(), (void *)data.bytes);
+  dataMat.copyTo(*mat);
 
-  return YES;
-}
-
-- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
-  NSError *removalError;
-  if (![fileManager removeItemAtPath:path error:&removalError]) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
-                         underlyingError:removalError];
-    }
-    return NO;
-  }
   return YES;
 }
 

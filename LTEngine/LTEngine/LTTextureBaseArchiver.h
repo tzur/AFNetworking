@@ -22,10 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// the given \c path.
 - (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path error:(NSError **)error;
 
-/// Removes the archive at the given path, and any additional files that were created by this
-/// archiver when the archive was created. Returns \c YES on success or \c NO while populating \c
-/// error in case of a failure.
-- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError **)error;
+/// Unarchives the file at the given \c path to the given \c mat. Returns \c YES on success or \c NO
+/// while populating \c error in case of a failure.
+///
+/// @note The type and dimension of \c mat must match the type and dimension of the archive at the
+/// given \c path.
+- (BOOL)unarchiveToMat:(cv::Mat *)mat fromPath:(NSString *)path error:(NSError **)error;
 
 @end
 
