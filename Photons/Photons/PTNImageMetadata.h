@@ -32,6 +32,13 @@ typedef NS_ENUM(NSUInteger, PTNImageOrientation) {
 /// remains as-is, and will be returned as part of \c metadataDictionary.
 - (instancetype)initWithImageURL:(NSURL *)url error:(NSError **)error;
 
+/// Initializes with the metadata of the image represented by \c data. If any error occurs, \c error
+/// will be non \c nil, and this \c PTNImageMetadata will be empty.
+///
+/// @note Metadata that is not supported by \c PTNImageMetadata is not discarded, but instead
+/// remains as-is, and will be returned as part of \c metadataDictionary.
+- (instancetype)initWithImageData:(NSData *)data error:(NSError **)error;
+
 /// Initializes with identical contents as the given \c metadata.
 ///
 /// @note Metadata that is not supported by \c PTNImageMetadata is not discarded, but instead
