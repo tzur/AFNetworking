@@ -20,16 +20,16 @@ __block PTNImageResizer *imageResizer;
 
 beforeEach(^{
   fileManager = [[PTNFileSystemFakeFileManager alloc] initWithFiles:@[
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"" path:@"" isDirectory:YES],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpg" path:@"" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"bar.jpg" path:@"" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpg" path:@"baz" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz" path:@"" isDirectory:YES],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.png" path:@"baz" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.tiff" path:@"baz" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpeg" path:@"baz" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.zip" path:@"" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"qux" path:@"" isDirectory:YES]
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"/" path:@"" isDirectory:YES],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpg" path:@"/" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"bar.jpg" path:@"/" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpg" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz" path:@"/" isDirectory:YES],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.png" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.tiff" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpeg" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.zip" path:@"/" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"qux" path:@"/" isDirectory:YES]
   ]];
   imageResizer = OCMClassMock([PTNImageResizer class]);
   manager = [[PTNFileSystemAssetManager alloc] initWithFileManager:fileManager
@@ -38,7 +38,7 @@ beforeEach(^{
 
 context(@"album fetching", ^{
   it(@"should fetch current results of an album", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"/")];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *directories = @[
       PTNFileSystemDirectoryFromString(@"baz"),
@@ -162,7 +162,7 @@ context(@"image fetching", ^{
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
                                                  resizeMode:PTNImageResizeModeFast
                                               fetchMetadata:NO];
-    NSURL *fileURL = [NSURL fileURLWithPath:@"foo.jpg"];
+    NSURL *fileURL = [NSURL fileURLWithPath:@"/foo.jpg"];
     image = [[UIImage alloc] init];
 
     OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
@@ -214,7 +214,7 @@ context(@"image fetching", ^{
 
   context(@"fetch image of asset collection", ^{
     beforeEach(^{
-      NSURL *fileURL = [NSURL fileURLWithPath:@"baz/foo.jpg"];
+      NSURL *fileURL = [NSURL fileURLWithPath:@"/baz/foo.jpg"];
       OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
           .andReturn([RACSignal return:image]);
     });

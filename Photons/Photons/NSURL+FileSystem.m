@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
       @(LTPathBaseDirectoryTemp): @"temp",
       @(LTPathBaseDirectoryDocuments): @"documents",
       @(LTPathBaseDirectoryMainBundle): @"mainbundle",
-      @(LTPathBaseDirectoryCachesDirectory): @"caches",
+      @(LTPathBaseDirectoryCaches): @"caches",
       @(LTPathBaseDirectoryApplicationSupport): @"applicationsupport",
     }];
   });

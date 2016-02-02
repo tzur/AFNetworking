@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
     includingPropertiesForKeys:(nullable __unused NSArray<NSString *> *)keys
     options:(__unused NSDirectoryEnumerationOptions)mask
     error:(NSError *_Nullable __autoreleasing *)error {
-  NSString *path = url.relativePath ?: @"";
+  NSString *path = url.relativePath ?: @"/";
   PTNFileSystemFakeFileManagerFile *directory = [self fileAtPath:path];
   if (!directory.isDirectory) {
     if (error) {
