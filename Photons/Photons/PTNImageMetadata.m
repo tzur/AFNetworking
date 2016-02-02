@@ -9,6 +9,7 @@
 #import <LTKit/LTCFExtensions.h>
 #import <LTKit/LTCGExtensions.h>
 #import <LTKit/NSNumber+CGFloat.h>
+#import <LTKit/NSObject+AddToContainer.h>
 
 #import "NSError+Photons.h"
 
@@ -76,30 +77,54 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+static NSDictionary *PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+                                    NSError *__autoreleasing *error);
+
+static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NSURL * _Nullable url,
+                        NSString * _Nullable description);
+
 static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing *error) {
   __block CGImageSourceRef sourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)url, NULL);
   @onExit {
     LTCFSafeRelease(sourceRef);
   };
+  return PTNGetMetadata(sourceRef, url, error);
+}
+
+static NSDictionary *PTNGetMetadataFromData(NSData *data, NSError *__autoreleasing *error) {
+  __block CGImageSourceRef sourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+  @onExit {
+    LTCFSafeRelease(sourceRef);
+  };
+  return PTNGetMetadata(sourceRef, nil, error);
+}
+
+static NSDictionary *PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+                                    NSError *__autoreleasing *error) {
   if (!sourceRef) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
-                                     url:url
-                             description:@"Failed creating CGImageSource"];
-    }
+    PTNSetError(error, PTNErrorCodeDescriptorCreationFailed, url, @"Failed creating CGImageSource");
     return nil;
   }
 
   CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(sourceRef, 0, NULL);
   if (!properties) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
-                                     url:url
-                             description:@"Failed retrieving image properties"];
-    }
+    PTNSetError(error, PTNErrorCodeDescriptorCreationFailed, url,
+                @"Failed retrieving image properties");
     return nil;
   }
   return CFBridgingRelease(properties);
+}
+
+static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NSURL * _Nullable url,
+                        NSString * _Nullable description) {
+  if (!error) {
+    return;
+  }
+
+  NSMutableDictionary *errorInfo = [NSMutableDictionary dictionary];
+  [url setInDictionary:errorInfo forKey:NSURLErrorKey];
+  [description setInDictionary:errorInfo forKey:kLTErrorDescriptionKey];
+  *error = [NSError lt_errorWithCode:errorCode userInfo:[errorInfo copy]];
 }
 
 /// Toll-free bridge a \c CFStringRef into a \c NSString.
@@ -137,6 +162,13 @@ static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing 
 - (instancetype)initWithImageURL:(NSURL *)url error:(NSError *__autoreleasing *)error {
   if (self = [self init]) {
     [self setupMetadataDictionary:PTNGetMetadataFromURL(url, error)];
+  }
+  return self;
+}
+
+- (instancetype)initWithImageData:(NSData *)data error:(NSError *__autoreleasing *)error {
+  if (self = [self init]) {
+    [self setupMetadataDictionary:PTNGetMetadataFromData(data, error)];
   }
   return self;
 }

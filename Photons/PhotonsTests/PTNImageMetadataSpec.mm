@@ -181,65 +181,114 @@ context(@"NSCopying", ^{
 });
 
 context(@"initialization", ^{
-  __block PTNImageMetadata *metadata;
+  static NSString * const kMetadataInitializingExamples = @"metadata initializing";
+  static NSString * const kMetadataInitializingMetadataKey = @"metadata";
+
+  __block NSString *path;
 
   beforeEach(^{
-    NSString *path = [[NSBundle bundleForClass:[self class]]
-                      pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
+    path = [[NSBundle bundleForClass:[self class]]
+            pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
     expect(path).toNot.beNil();
-    NSError *error;
-    metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]
-                                                    error:&error];
-    expect(error).to.beNil();
-    expect(metadata).notTo.beNil();
   });
 
-  it(@"should initialize with expected test data", ^{
-    expect(metadata.make).to.equal(@"Apple");
-    expect(metadata.model).to.equal(@"iPhone 6");
-    expect(metadata.software).to.equal(@"8.1.3");
+  sharedExamplesFor(kMetadataInitializingExamples, ^(NSDictionary *data) {
+    __block PTNImageMetadata *metadata;
 
-    NSDate *originalTime = [NSDate dateWithTimeIntervalSince1970:1423410852.489];
-    expect(metadata.originalTime).to.equal(originalTime);
-    expect(metadata.digitizedTime).to.equal(originalTime);
+    beforeEach(^{
+      metadata = data[kMetadataInitializingMetadataKey];
+    });
 
-    expect(metadata.location.coordinate.latitude).to.beCloseToWithin(31.767272, 0.000001);
-    expect(metadata.location.coordinate.longitude).to.beCloseToWithin(35.19585, 0.000001);
-    expect(metadata.location.altitude).to.beCloseToWithin(730, 0.1);
-    expect(metadata.location.horizontalAccuracy).to.beLessThan(0);
-    expect(metadata.location.verticalAccuracy).to.beLessThan(0);
-    expect(metadata.location.speed).to.beCloseToWithin(1.831 / 3.6, 0.001);
-    expect(metadata.location.course).to.beLessThan(0);
-    NSDate *gpsTime = [NSDate dateWithTimeIntervalSince1970:1423410851];
-    expect(metadata.location.timestamp).to.equal(gpsTime);
-    expect(metadata.headingReference).to.beNil();
-    expect(metadata.headingDirection).to.beLessThan(0);
+    it(@"should initialize with expected test data", ^{
+      expect(metadata.make).to.equal(@"Apple");
+      expect(metadata.model).to.equal(@"iPhone 6");
+      expect(metadata.software).to.equal(@"8.1.3");
 
-    expect(metadata.size).to.equal(CGSizeMake(44, 44));
-    expect(metadata.orientation).to.equal(PTNImageOrientationUp);
+      NSDate *originalTime = [NSDate dateWithTimeIntervalSince1970:1423410852.489];
+      expect(metadata.originalTime).to.equal(originalTime);
+      expect(metadata.digitizedTime).to.equal(originalTime);
+
+      expect(metadata.location.coordinate.latitude).to.beCloseToWithin(31.767272, 0.000001);
+      expect(metadata.location.coordinate.longitude).to.beCloseToWithin(35.19585, 0.000001);
+      expect(metadata.location.altitude).to.beCloseToWithin(730, 0.1);
+      expect(metadata.location.horizontalAccuracy).to.beLessThan(0);
+      expect(metadata.location.verticalAccuracy).to.beLessThan(0);
+      expect(metadata.location.speed).to.beCloseToWithin(1.831 / 3.6, 0.001);
+      expect(metadata.location.course).to.beLessThan(0);
+      NSDate *gpsTime = [NSDate dateWithTimeIntervalSince1970:1423410851];
+      expect(metadata.location.timestamp).to.equal(gpsTime);
+      expect(metadata.headingReference).to.beNil();
+      expect(metadata.headingDirection).to.beLessThan(0);
+
+      expect(metadata.size).to.equal(CGSizeMake(44, 44));
+      expect(metadata.orientation).to.equal(PTNImageOrientationUp);
+    });
+
+    it(@"should copy metadata", ^{
+      PTNImageMetadata *copy = [[PTNImageMetadata alloc] initWithMetadata:metadata];
+      expect(copy).to.equal(metadata);
+      expect(copy).toNot.beIdenticalTo(metadata);
+    });
+
+    it(@"should copy metadata dictionary", ^{
+      PTNImageMetadata *copy =
+          [[PTNImageMetadata alloc] initWithMetadataDictionary:metadata.metadataDictionary];
+      expect(copy).to.equal(metadata);
+      expect(copy).toNot.beIdenticalTo(metadata);
+    });
   });
 
-  it(@"should copy metadata", ^{
-    PTNImageMetadata *copy = [[PTNImageMetadata alloc] initWithMetadata:metadata];
-    expect(copy).to.equal(metadata);
-    expect(copy).toNot.beIdenticalTo(metadata);
+  context(@"url initialization", ^{
+    __block PTNImageMetadata *metadata;
+
+    beforeEach(^{
+      NSError *error;
+      metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]
+                                                      error:&error];
+      expect(error).to.beNil();
+      expect(metadata).toNot.beNil();
+    });
+
+    itShouldBehaveLike(kMetadataInitializingExamples, ^{
+      return @{kMetadataInitializingMetadataKey: metadata};
+    });
+
+    it(@"should be empty when image path is invalid", ^{
+      NSURL *url = [[NSURL alloc] initFileURLWithPath:@"/foo/bar/baz"];
+
+      NSError *error;
+      metadata = [[PTNImageMetadata alloc] initWithImageURL:url error:&error];
+
+      expect(metadata).to.equal([[PTNImageMetadata alloc] init]);
+      expect(error).toNot.beNil();
+    });
   });
 
-  it(@"should copy metadata dictionary", ^{
-    PTNImageMetadata *copy =
-        [[PTNImageMetadata alloc] initWithMetadataDictionary:metadata.metadataDictionary];
-    expect(copy).to.equal(metadata);
-    expect(copy).toNot.beIdenticalTo(metadata);
-  });
+  context(@"data initialization", ^{
+    __block PTNImageMetadata *metadata;
 
-  it(@"should be empty when image path is invalid", ^{
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:@"/foo/bar/baz"];
+    beforeEach(^{
+      NSData *data = [NSData dataWithContentsOfFile:path];
+      expect(data).toNot.beNil();
+      NSError *error;
+      metadata = [[PTNImageMetadata alloc] initWithImageData:data error:&error];
+      expect(error).to.beNil();
+      expect(metadata).toNot.beNil();
+    });
 
-    NSError *error;
-    metadata = [[PTNImageMetadata alloc] initWithImageURL:url error:&error];
+    itShouldBehaveLike(kMetadataInitializingExamples, ^{
+      return @{kMetadataInitializingMetadataKey: metadata};
+    });
 
-    expect(metadata).to.equal([[PTNImageMetadata alloc] init]);
-    expect(error).notTo.beNil();
+    it(@"should be empty when image data is invalid", ^{
+      NSData *data = [[NSData alloc] init];
+
+      NSError *error;
+      metadata = [[PTNImageMetadata alloc] initWithImageData:data error:&error];
+
+      expect(metadata).to.equal([[PTNImageMetadata alloc] init]);
+      expect(error).toNot.beNil();
+    });
   });
 });
 
@@ -307,7 +356,7 @@ context(@"compliance", ^{
     NSError *error;
     metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path] error:&error];
     expect(error).to.beNil();
-    expect(metadata).notTo.beNil();
+    expect(metadata).toNot.beNil();
 
     // Prepare a PTNImageMetadata with the expected metadata from the same image.
     expected = [[PTNMutableImageMetadata alloc] init];
