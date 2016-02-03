@@ -26,15 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used for file operations by the texture archiver.
 @property (strong, nonatomic) NSFileManager *fileManager;
 
-/// Base directory of the archiver. All paths given as arguments to the archiver are treated as
-/// relative to it.
-@property (strong, nonatomic) LTPath *baseDirectory;
-
 @end
 
 @implementation LTTextureArchiver
 
-objection_initializer(initWithStorage:baseDirectory:);
+objection_initializer(initWithStorage:);
 objection_requires_sel(@selector(fileManager));
 
 - (instancetype)init {
@@ -42,17 +38,10 @@ objection_requires_sel(@selector(fileManager));
 }
 
 - (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage {
-  LTPath *base = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:@""];
-  return [self initWithStorage:storage baseDirectory:base];
-}
-
-- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage
-                  baseDirectory:(LTPath *)baseDirectory {
   LTParameterAssert(storage);
   if (self = [super init]) {
     [self injectDependencies];
     self.storage = storage;
-    self.baseDirectory = baseDirectory;
   }
   return self;
 }
@@ -65,7 +54,7 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Archiving
 #pragma mark -
 
-- (BOOL)archiveTexture:(LTTexture *)texture inPath:(NSString *)path
+- (BOOL)archiveTexture:(LTTexture *)texture inPath:(LTPath *)path
        withArchiveType:(LTTextureArchiveType *)type error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture);
   LTParameterAssert(type);
@@ -73,8 +62,7 @@ objection_requires_sel(@selector(fileManager));
 
   LogDebug(@"Archiving texture in path: %@", path);
 
-  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
-  if (![self createArchiveFolderAtPath:archivePath error:error]) {
+  if (![self createArchiveFolderAtPath:path error:error]) {
     return NO;
   }
 
@@ -82,8 +70,8 @@ objection_requires_sel(@selector(fileManager));
   LTTextureArchiveMetadata *archiveMetadata = [[LTTextureArchiveMetadata alloc]
                                                initWithArchiveType:type
                                                textureMetadata:textureMetadata];
-  if (![self saveMetadata:archiveMetadata inPath:archivePath error:error]) {
-    [self removeFailedArchiveFolderAtPath:archivePath];
+  if (![self saveMetadata:archiveMetadata inPath:path error:error]) {
+    [self removeFailedArchiveFolderAtPath:path];
     return NO;
   }
 
@@ -93,8 +81,8 @@ objection_requires_sel(@selector(fileManager));
     return YES;
   }
 
-  if (![self storeContentOfTexture:texture inPath:archivePath withArchiveType:type error:error]) {
-    [self removeFailedArchiveFolderAtPath:archivePath];
+  if (![self storeContentOfTexture:texture inPath:path withArchiveType:type error:error]) {
+    [self removeFailedArchiveFolderAtPath:path];
     return NO;
   }
 
@@ -251,35 +239,29 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Unarchiving To Texture
 #pragma mark -
 
-- (nullable LTTexture *)unarchiveTextureFromPath:(NSString *)path
+- (nullable LTTexture *)unarchiveTextureFromPath:(LTPath *)path
                                            error:(NSError *__autoreleasing *)error {
-  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
-
-  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:path error:error];
   if (!archiveMetadata) {
     return nil;
   }
 
   LTTexture *texture = [LTTexture textureWithMetadata:archiveMetadata.textureMetadata];
-  return [self unarchiveToTexture:texture fromPath:archivePath
-                  withArchiveType:archiveMetadata.archiveType
+  return [self unarchiveToTexture:texture fromPath:path withArchiveType:archiveMetadata.archiveType
                          metadata:archiveMetadata.textureMetadata error:error] ? texture : nil;
 }
 
-- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path
+- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(LTPath *)path
                      error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture);
   LTParameterAssert(!texture.maxMipmapLevel);
 
-  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
-
-  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:path error:error];
   if (!archiveMetadata) {
     return NO;
   }
 
-  return [self unarchiveToTexture:texture fromPath:archivePath
-                  withArchiveType:archiveMetadata.archiveType
+  return [self unarchiveToTexture:texture fromPath:path withArchiveType:archiveMetadata.archiveType
                          metadata:archiveMetadata.textureMetadata error:error];
 }
 
@@ -308,17 +290,15 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Unarchiving To Image
 #pragma mark -
 
-- (nullable UIImage *)unarchiveImageFromPath:(NSString *)path
+- (nullable UIImage *)unarchiveImageFromPath:(LTPath *)path
                                        error:(NSError *__autoreleasing *)error {
-  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
-
-  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:path error:error];
   if (!archiveMetadata) {
     return nil;
   }
 
   LTTextureMetadata *textureMetadata = archiveMetadata.textureMetadata;
-  if (![self canCreateImageForTextureMetadata:textureMetadata path:archivePath error:error]) {
+  if (![self canCreateImageForTextureMetadata:textureMetadata path:path error:error]) {
     return nil;
   }
 
@@ -330,7 +310,7 @@ objection_requires_sel(@selector(fileManager));
   } else {
     LTTextureArchiveType *type = archiveMetadata.archiveType;
     NSString *contentPath =
-        [self contentPathForArchiveFolderPath:archivePath fileExtension:type.fileExtension];
+        [self contentPathForArchiveFolderPath:path fileExtension:type.fileExtension];
     if (![type.archiver unarchiveToMat:&mat fromPath:contentPath error:error]) {
       return nil;
     }
@@ -385,11 +365,10 @@ objection_requires_sel(@selector(fileManager));
 #pragma mark Deleting
 #pragma mark -
 
-- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+- (BOOL)removeArchiveInPath:(LTPath *)path error:(NSError *__autoreleasing *)error {
   LTParameterAssert(path);
 
-  LTPath *archivePath = [self archiveFolderPathFromRelativePath:path];
-  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:archivePath error:error];
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:path error:error];
   if (!archiveMetadata) {
     return NO;
   }
@@ -398,13 +377,13 @@ objection_requires_sel(@selector(fileManager));
   if (textureMetadata.fillColor.isNull()) {
     LTTextureArchiveType *type = archiveMetadata.archiveType;
     NSString *storageKey = [self storageKeyForTextureMetadata:textureMetadata archiveType:type];
-    [self removeExistingArchives:@[archivePath] forStorageKey:storageKey];
+    [self removeExistingArchives:@[path] forStorageKey:storageKey];
   }
 
   NSError *removeError;
-  if (![self.fileManager removeItemAtPath:archivePath.path error:&removeError]) {
+  if (![self.fileManager removeItemAtPath:path.path error:&removeError]) {
     [self setError:error withCode:LTErrorCodeFileRemovalFailed
-              path:archivePath.path underlyingError:removeError];
+              path:path.path underlyingError:removeError];
     return NO;
   }
 
@@ -588,11 +567,6 @@ static NSString * const kContentFilename = @"content";
 - (NSString *)contentPathForArchiveFolderPath:(LTPath *)path fileExtension:(NSString *)extension {
   NSString *filename = [kContentFilename stringByAppendingPathExtension:extension];
   return [path.path stringByAppendingPathComponent:filename];
-}
-
-- (LTPath *)archiveFolderPathFromRelativePath:(NSString *)path {
-  LTParameterAssert(path);
-  return [self.baseDirectory pathByAppendingPathComponent:path];
 }
 
 #pragma mark -
