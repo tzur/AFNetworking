@@ -366,7 +366,7 @@ LTPropertyWithoutSetter(CGFloat, hue, Hue, -1, 1, 0);
   self[[LTAdjustFsh tonalTransform]] = $(tonalTranform);
 }
 
-/// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, kSaturationScaling].
+/// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 1 + kSaturationScaling].
 - (CGFloat)remapSaturation:(CGFloat)saturation {
   return saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
 }
