@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
-// Created by Rouven Lightricks.
+// Created by Rouven Strauss.
 
 @class LTEuclideanSplineControlPoint;
 
