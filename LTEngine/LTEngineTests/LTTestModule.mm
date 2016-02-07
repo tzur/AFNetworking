@@ -26,8 +26,7 @@ static const NSUInteger kTestingSeed = 1234;
 
   [self bindBlock:^id(JSObjectionInjector __unused *context) {
     id<LTTextureArchiverStorage> storage = [[LTTextureArchiverNonPersistentStorage alloc] init];
-    LTPath *path = [LTPath pathWithPath:LTTemporaryPath()];
-    return [[LTTextureArchiver alloc] initWithStorage:storage baseDirectory:path];
+    return [[LTTextureArchiver alloc] initWithStorage:storage];
   } toClass:[LTTextureArchiver class]];
 }
 

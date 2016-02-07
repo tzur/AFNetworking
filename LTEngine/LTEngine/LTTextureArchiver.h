@@ -49,60 +49,47 @@ NS_ASSUME_NONNULL_BEGIN
 /// deleted (one can not by mistake delete the "real" copy of the content shared by multiple
 /// identical archived textures).
 ///
-/// @note all paths provided to the public methods of the archiver are relative to the base
-/// directory given upon initialization.
-///
 /// @note the current implementation does not accept mipmap textures, and will assert in case such a
 /// texture is provided as the source to archive or target to unarchive into.
 @interface LTTextureArchiver : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes the archiver with the given \c storage and the documents directory of the app as its
-/// base directory.
-- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage;
-
-/// Initializes the archiver with the given \c storage and the given directory as the base directory
-/// for all relative paths provided to it.
-- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage
-                  baseDirectory:(LTPath *)baseDirectory NS_DESIGNATED_INITIALIZER;
+/// Initializes the archiver with the given \c storage.
+- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage NS_DESIGNATED_INITIALIZER;
 
 /// Creates an archive of the given \c type in the given \c path, storing the given \c texture.
 /// Returns \c YES in case of success, or \c NO while populating \c error in case of failure.
 ///
 /// @note This method will not overwrite an existing archive, and will return error instead.
-- (BOOL)archiveTexture:(LTTexture *)texture inPath:(NSString *)path
+- (BOOL)archiveTexture:(LTTexture *)texture inPath:(LTPath *)path
        withArchiveType:(LTTextureArchiveType *)type error:(NSError **)error;
 
 /// Loads the texture archive stored in the given \c path into the given \c texture, whose
 /// properties must match the properties of the archived texture. Returns \c YES in case of success,
 /// or \c NO while populating \c error in case of failure.
-- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(NSString *)path error:(NSError **)error;
+- (BOOL)unarchiveToTexture:(LTTexture *)texture fromPath:(LTPath *)path error:(NSError **)error;
 
 /// Loads the texture archive stored in the given \c path into a newly allocated texture. In case of
 /// failure, returns \c nil while populating \c error.
-- (nullable LTTexture *)unarchiveTextureFromPath:(NSString *)path error:(NSError **)error;
+- (nullable LTTexture *)unarchiveTextureFromPath:(LTPath *)path error:(NSError **)error;
 
 /// Loads the texture archive stored in the given \c path into a newly allocated \c UIImage. In case
 /// of failure, returns \c nil while populating \c error.
 ///
 /// @note Only archives of byte RGBA textures can be unarchived to \c UIImage.
-- (nullable UIImage *)unarchiveImageFromPath:(NSString *)path error:(NSError **)error;
+- (nullable UIImage *)unarchiveImageFromPath:(LTPath *)path error:(NSError **)error;
 
 /// Removes the archive stored in the given \c path. Returns \c YES in case of success or \c NO
 /// while populating \c error in case of failure.
 ///
 /// @note In case of failure it is possible that the archive is left in an inconsistent state and
 /// the behavior in case of trying to unarchive it or remove it again is undefined.
-- (BOOL)removeArchiveInPath:(NSString *)path error:(NSError **)error;
+- (BOOL)removeArchiveInPath:(LTPath *)path error:(NSError **)error;
 
 /// Cleans up the storage by removing records referring to files that does not exist and keys that
 /// do not refer to any existing file.
 - (void)performStorageMaintenance;
-
-/// Base directory of the archiver. All paths given as arguments to the archiver are treated as
-/// relative to it.
-@property (readonly, nonatomic) LTPath *baseDirectory;
 
 @end
 
