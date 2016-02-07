@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Path associated with this descriptor.
 @property (strong, nonatomic) NSString *path;
 
-/// Revision associated with this descriptor.
-@property (strong, nonatomic) NSString *revision;
-
 /// Estimated asset count associated with this descriptor.
 @property (nonatomic) NSUInteger assetCount;
 
@@ -30,7 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
                     metadata);
   if (self = [super init]) {
     self.path = metadata.path;
-    self.revision = metadata.rev;
     self.assetCount = [self estimateAssetCount:metadata];
   }
   return self;
@@ -46,8 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSURL *)ptn_identifier {
-  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:self.path
-                                              andRevision:self.revision];
+  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:self.path];
   return [NSURL ptn_dropboxAlbumURLWithEntry:entry];
 }
 
@@ -60,8 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, path: %@, revision: %@, assetCount: %lu>",
-          self.class, self, self.path, self.revision ?: @"latest", (unsigned long)self.assetCount];
+  return [NSString stringWithFormat:@"<%@: %p, path: %@, assetCount: %lu>",
+          self.class, self, self.path, self.assetCount];
 }
 
 - (BOOL)isEqual:(PTNDropboxDirectoryDescriptor *)object {
@@ -73,12 +68,11 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [self.path isEqual:object.path] &&
-         (self.revision == object.revision || [self.revision isEqual:object.revision]) &&
          self.assetCount == object.assetCount;
 }
 
 - (NSUInteger)hash {
-  return self.path.hash ^ self.revision.hash ^ self.assetCount;
+  return self.path.hash ^ self.assetCount;
 }
 
 @end
