@@ -12,18 +12,17 @@
 SpecBegin(PTNDropboxDirectoryDescriptor)
 
 static NSString * const kPath = @"foo/bar";
-static NSString * const kRevision = @"bar";
 
 __block PTNDropboxDirectoryDescriptor *asset;
 __block DBMetadata *metadata;
 
 beforeEach(^{
-  metadata = PTNDropboxCreateDirectoryMetadata(kPath, kRevision);
+  metadata = PTNDropboxCreateDirectoryMetadata(kPath);
   asset = [[PTNDropboxDirectoryDescriptor alloc] initWithMetadata:metadata];
 });
 
 it(@"should return correct identifier", ^{
-  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:kPath andRevision:kRevision];
+  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:kPath];
 
   expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAlbumURLWithEntry:entry]);
 });
@@ -36,7 +35,7 @@ it(@"should return correct asset count if available", ^{
   NSArray *contents = @[
     PTNDropboxCreateFileMetadata(@"foo", nil),
     PTNDropboxCreateFileMetadata(@"bar", nil),
-    PTNDropboxCreateDirectoryMetadata(@"baz", nil)
+    PTNDropboxCreateDirectoryMetadata(@"baz")
   ];
   OCMStub([metadata contents]).andReturn(contents);
   asset = [[PTNDropboxDirectoryDescriptor alloc] initWithMetadata:metadata];

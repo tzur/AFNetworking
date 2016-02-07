@@ -13,8 +13,8 @@ SpecBegin(PTNDropboxAlbum)
 it(@"should initialize with path, subdirectories and files", ^{
   PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:@"foo/bar" andRevision:@"baz"];
 
-  DBMetadata *directoryMetadata1 = PTNDropboxCreateDirectoryMetadata(@"foo/bar/baz", @"gaz");
-  DBMetadata *directoryMetadata2 = PTNDropboxCreateDirectoryMetadata(@"foo/bar/gaz", @"qux");
+  DBMetadata *directoryMetadata1 = PTNDropboxCreateDirectoryMetadata(@"foo/bar/baz");
+  DBMetadata *directoryMetadata2 = PTNDropboxCreateDirectoryMetadata(@"foo/bar/gaz");
 
   PTNDropboxSubdirectories *subdirectories = @[
     [[PTNDropboxDirectoryDescriptor alloc] initWithMetadata:directoryMetadata1],
@@ -46,9 +46,9 @@ context(@"equality", ^{
     id entry = [PTNDropboxEntry entryWithPath:@"foo/bar" andRevision:@"baz"];
     id directories = @[
       [[PTNDropboxDirectoryDescriptor alloc]
-       initWithMetadata:PTNDropboxCreateDirectoryMetadata(@"foo/bar/baz", @"gaz")],
+       initWithMetadata:PTNDropboxCreateDirectoryMetadata(@"foo/bar/baz")],
       [[PTNDropboxDirectoryDescriptor alloc]
-       initWithMetadata:PTNDropboxCreateDirectoryMetadata(@"foo/bar/gaz", @"qux")]
+       initWithMetadata:PTNDropboxCreateDirectoryMetadata(@"foo/bar/gaz")]
     ];
     id files = @[
       [[PTNDropboxFileDescriptor alloc]

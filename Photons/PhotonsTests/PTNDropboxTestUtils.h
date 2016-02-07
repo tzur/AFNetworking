@@ -18,9 +18,9 @@ DBMetadata *PTNDropboxCreateFileMetadataWithModificationDate(NSString *path,
                                                              NSString * _Nullable revision,
                                                              NSDate * _Nullable lastModified);
 
-/// Creates a fake Dropbox metadata object with the given \c path and \c revision and setting
-/// \c isDirectory to \c YES.
-DBMetadata *PTNDropboxCreateDirectoryMetadata(NSString *path, NSString * _Nullable revision);
+/// Creates a fake Dropbox metadata object with the given \c path and setting \c isDirectory to
+/// \c YES.
+DBMetadata *PTNDropboxCreateDirectoryMetadata(NSString *path);
 
 /// Creates an error with \c "Dropbox" domain \c 0 error code and \c path in the info matching the
 /// \c "path" key.
