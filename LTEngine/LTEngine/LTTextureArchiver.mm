@@ -60,8 +60,6 @@ objection_requires_sel(@selector(fileManager));
   LTParameterAssert(type);
   LTParameterAssert(!texture.maxMipmapLevel);
 
-  LogDebug(@"Archiving texture in path: %@", path);
-
   if (![self createArchiveFolderAtPath:path error:error]) {
     return NO;
   }
@@ -77,7 +75,6 @@ objection_requires_sel(@selector(fileManager));
 
   // In case the texture is a solid color texture, no need to actually store it.
   if (!textureMetadata.fillColor.isNull()) {
-    LogDebug(@"Skipped saving of content of solid color texture");
     return YES;
   }
 
@@ -120,7 +117,6 @@ objection_requires_sel(@selector(fileManager));
 
   NSString *storageKey = [self storageKeyForTextureMetadata:texture.metadata archiveType:type];
   if ([self linkContentInPath:path toExistingArchiveWithStorageKey:storageKey]) {
-    LogDebug(@"Linked to existing texture");
     [self addExistingArchiveInPath:path forStorageKey:storageKey];
     return YES;
   }
@@ -129,7 +125,6 @@ objection_requires_sel(@selector(fileManager));
     return NO;
   }
 
-  LogDebug(@"Saved new texture");
   [self setExistingArchives:@[path] forStorageKey:storageKey];
   return YES;
 }
