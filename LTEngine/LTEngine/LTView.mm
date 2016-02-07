@@ -10,7 +10,6 @@
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
-#import "LTGLView.h"
 #import "LTImage.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
