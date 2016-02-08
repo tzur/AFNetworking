@@ -164,6 +164,7 @@
 		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
 		2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */; };
 		2520D4131C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */; };
+		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
 		2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */; };
 		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
@@ -1408,6 +1409,8 @@
 		2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSplineSpec.mm; sourceTree = "<group>"; };
 		2520D4101C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSplineTestUtils.h; sourceTree = "<group>"; };
 		2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSplineTestUtils.mm; sourceTree = "<group>"; };
+		090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
+		090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
 		2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomStateSpec.mm; sourceTree = "<group>"; };
 		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
@@ -4001,6 +4004,8 @@
 				8BAE3A4C18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm */,
 				500AB3E519D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.h */,
 				500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */,
+				090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */,
+				090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */,
 				280F5A0D191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.h */,
 				280F5A0E191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm */,
 				8BAE3A4018B2354E00DA79E1 /* EXPMatchers+equalMat.h */,
@@ -5411,6 +5416,7 @@
 				8BA468981BC517B500AAEC82 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				8BABFD6F188C5D9D004163DA /* LTOneShotProcessingStrategySpec.mm in Sources */,
 				8BAE3A3418AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm in Sources */,
+				090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				8BAECBB618BDEAAC00315425 /* LTSplitComplexMatSpec.mm in Sources */,
 				28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */,
 				2839069E18C4DB0A00BD21CE /* LTBrushSpec.mm in Sources */,
