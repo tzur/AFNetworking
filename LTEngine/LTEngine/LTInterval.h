@@ -37,6 +37,16 @@ public:
       maxValue(std::max(values.first, values.second)),
       minEndpointInclusion(endpointInclusion), maxEndpointInclusion(endpointInclusion) {}
 
+  /// Returns \c true if this interval is empty.
+  bool isEmpty() const {
+    if (minValue == maxValue) {
+      return !minEndpointIncluded() || !maxEndpointIncluded();
+    } else if (!minEndpointIncluded() && !maxEndpointIncluded()) {
+      return std::nextafter(minValue, maxValue) == maxValue;
+    }
+    return false;
+  }
+
   /// Returns \c true if this interval contains the given \c value.
   bool contains(T value) const {
     return (minEndpointIncluded() ? value >= minValue : value > minValue) &&

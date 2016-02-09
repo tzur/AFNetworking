@@ -37,6 +37,30 @@ context(@"initialization", ^{
   });
 });
 
+context(@"empty intervals", ^{
+  it(@"should indicate that a non-empty interval is not empty", ^{
+    LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+    expect(interval.isEmpty()).to.beFalsy();
+
+    interval = LTTestInterval({0, 0}, LTTestInterval::Closed);
+    expect(interval.isEmpty()).to.beFalsy();
+  });
+
+  it(@"should indicate that an empty interval is empty", ^{
+    LTTestInterval interval({0, 0}, LTTestInterval::Closed, LTTestInterval::Open);
+    expect(interval.isEmpty()).to.beTruthy();
+
+    interval = LTTestInterval({0, 0}, LTTestInterval::Closed, LTTestInterval::Open);
+    expect(interval.isEmpty()).to.beTruthy();
+
+    interval = LTTestInterval({0, 0}, LTTestInterval::Open);
+    expect(interval.isEmpty()).to.beTruthy();
+
+    interval = LTTestInterval({0, std::nextafter((CGFloat)0, (CGFloat)1)}, LTTestInterval::Open);
+    expect(interval.isEmpty()).to.beTruthy();
+  });
+});
+
 context(@"value inclusion", ^{
   it(@"should return correct results for containment queries of an open interval", ^{
     LTTestInterval interval({0, 1}, LTTestInterval::Open);
