@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "PTNDropboxPathProvider.h"
 #import "PTNDropboxRestClientProvider.h"
+#import "PTNDropboxThumbnail.h"
 #import "PTNProgress.h"
 #import "RACSignal+Photons.h"
 
@@ -160,41 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Thumbnail fetching
 #pragma mark -
 
-static NSString *PTNSizeNameFromDropboxThumbnailSize(PTNDropboxThumbnailSize size) {
-  switch (size) {
-    case PTNDropboxThumbnailSizeExtraSmall:
-      return @"xs";
-    case PTNDropboxThumbnailSizeSmall:
-      return @"s";
-    case PTNDropboxThumbnailSizeMedium:
-      return @"m";
-    case PTNDropboxThumbnailSizeLarge:
-      return @"l";
-    case PTNDropboxThumbnailSizeExtraLarge:
-      return @"xl";
-  }
-  LTAssert(NO, @"Size must be of type PTNDropboxThumbnailSize");
-}
-
-static CGSize PTNSizeFromDropboxThumbnailSize(PTNDropboxThumbnailSize size) {
-  switch (size) {
-    case PTNDropboxThumbnailSizeExtraSmall:
-      return CGSizeMake(32, 32);
-    case PTNDropboxThumbnailSizeSmall:
-      return CGSizeMake(64, 64);
-    case PTNDropboxThumbnailSizeMedium:
-      return CGSizeMake(128, 128);
-    case PTNDropboxThumbnailSizeLarge:
-      return CGSizeMake(640, 480);
-    case PTNDropboxThumbnailSizeExtraLarge:
-      return CGSizeMake(1024, 768);
-  }
-  LTAssert(NO, @"Size must be of type PTNDropboxThumbnailSize");
-}
-
-- (RACSignal *)fetchThumbnail:(NSString *)path size:(PTNDropboxThumbnailSize)size {
-  NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path
-      size:PTNSizeFromDropboxThumbnailSize(size)];
+- (RACSignal *)fetchThumbnail:(NSString *)path type:(PTNDropboxThumbnailType *)type {
+  NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path size:type.size];
 
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber>  subscriber) {
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
@@ -205,11 +173,10 @@ static CGSize PTNSizeFromDropboxThumbnailSize(PTNDropboxThumbnailSize size) {
     [[self loadThumbnailSuccesful:localPath restClient:restClient] subscribe:subscriber];
     [[self loadThumbnailError:path restClient:restClient] subscribe:subscriber];
 
-    [restClient loadThumbnail:path ofSize:PTNSizeNameFromDropboxThumbnailSize(size)
-                          intoPath:localPath];
+    [restClient loadThumbnail:path ofSize:type.name intoPath:localPath];
 
     return [RACDisposable disposableWithBlock:^{
-      [restClient cancelThumbnailLoad:path size:PTNSizeNameFromDropboxThumbnailSize(size)];
+      [restClient cancelThumbnailLoad:path size:type.name];
     }];
   }];
 }
