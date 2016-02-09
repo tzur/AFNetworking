@@ -85,3 +85,10 @@ private:
 };
 
 } // namespace lt
+
+template <typename T>
+constexpr bool operator==(lt::Interval<T> lhs, lt::Interval<T> rhs) {
+  return lhs.min() == rhs.min() && lhs.max() == rhs.max() &&
+      lhs.minEndpointIncluded() == rhs.minEndpointIncluded() &&
+      lhs.maxEndpointIncluded()== rhs.maxEndpointIncluded();
+}
