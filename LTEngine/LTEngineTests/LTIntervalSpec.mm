@@ -129,4 +129,136 @@ context(@"value inclusion", ^{
   });
 });
 
+context(@"intersection", ^{
+  context(@"intersection indication", ^{
+    it(@"should compute that two equal intervals intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({0, 1}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+    });
+
+    it(@"should compute that two equal intervals with different boundary conditions intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({0, 1}, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0, 1}, LTTestInterval::Closed, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0, 1}, LTTestInterval::Open, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+    });
+
+    it(@"should compute that two overlapping intervals intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({-1, 0}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 0.5}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 0.5}, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 2}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 2}, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0.5, 2}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0.5, 2}, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({1, 2}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beTruthy();
+    });
+
+    it(@"should compute that two non-overlapping intervals do not intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({-2, -1}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beFalsy();
+
+      anotherInterval = LTTestInterval({-1, 0}, LTTestInterval::Closed, LTTestInterval::Open);
+      expect(interval.intersects(anotherInterval)).to.beFalsy();
+
+      anotherInterval = LTTestInterval({1, 2}, LTTestInterval::Open, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beFalsy();
+
+      anotherInterval = LTTestInterval({2, 3}, LTTestInterval::Closed);
+      expect(interval.intersects(anotherInterval)).to.beFalsy();
+    });
+  });
+
+  context(@"intersection computation", ^{
+    it(@"should compute the intersection of two equal intervals", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({0, 1}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
+    });
+
+    it(@"should compute that two equal intervals with different boundary conditions intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({0, 1}, LTTestInterval::Closed, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0, 1}, LTTestInterval::Open, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0, 1}, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
+    });
+
+    it(@"should compute that two overlapping intervals intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({-1, 0}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({0, 0}, LTTestInterval::Closed)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 0.5}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({0, 0.5}, LTTestInterval::Closed)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 0.5}, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({0, 0.5}, LTTestInterval::Closed, LTTestInterval::Open)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 2}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 2}, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0.5, 2}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({0.5, 1}, LTTestInterval::Closed)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({0.5, 2}, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({0.5, 1}, LTTestInterval::Open, LTTestInterval::Closed)).to.beTruthy();
+
+      anotherInterval = LTTestInterval({1, 2}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval) ==
+             LTTestInterval({1, 1}, LTTestInterval::Closed)).to.beTruthy();
+    });
+
+    it(@"should compute that two non-overlapping intervals do not intersect", ^{
+      LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+      LTTestInterval anotherInterval({-2, -1}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
+
+      anotherInterval = LTTestInterval({-1, 0}, LTTestInterval::Closed, LTTestInterval::Open);
+      expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
+
+      anotherInterval = LTTestInterval({1, 2}, LTTestInterval::Open, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
+
+      anotherInterval = LTTestInterval({2, 3}, LTTestInterval::Closed);
+      expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
+    });
+  });
+});
+
 SpecEnd

@@ -53,6 +53,26 @@ public:
         (maxEndpointIncluded() ? value <= maxValue : value < maxValue);
   }
 
+  /// Returns \c true if this interval intersects with the given \c interval.
+  bool intersects(lt::Interval<T> interval) const {
+    return !intersectionWith(interval).isEmpty();
+  }
+
+  /// Returns a new interval constituting the intersection between this interval and the given
+  /// \c interval.
+  lt::Interval<T> intersectionWith(lt::Interval<CGFloat> interval) const {
+    T min = std::max(minValue, interval.minValue);
+    T max = std::min(maxValue, interval.maxValue);
+
+    if (min > max) {
+      return Interval();
+    }
+
+    EndpointInclusion minInclusion = contains(min) && interval.contains(min) ? Closed : Open;
+    EndpointInclusion maxInclusion = contains(max) && interval.contains(max) ? Closed : Open;
+    return Interval({min, max}, minInclusion, maxInclusion);
+  }
+
   /// Minimum value of this interval.
   T min() const {
     return minValue;
