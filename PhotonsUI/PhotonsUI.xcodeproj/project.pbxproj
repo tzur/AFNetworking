@@ -40,6 +40,7 @@
 		848E0A481C592625001D8368 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB11C591B91001D8368 /* Release.xcconfig */; };
 		848E0A491C592639001D8368 /* Application.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB51C591B91001D8368 /* Application.xcconfig */; };
 		848E0A4A1C59263F001D8368 /* StaticLibrary.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */; };
+		849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849AE4A61C6B4F7C00F030CA /* Masonry.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +198,20 @@
 			remoteGlobalIDString = 8B2FD0291AF9F79000757B1F;
 			remoteInfo = PhotonsTests;
 		};
+		849AE4A51C6B4F7C00F030CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED05B71AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
+		849AE4A71C6B4F7C00F030CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
+			remoteInfo = "Masonry OSX";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -266,6 +281,7 @@
 		848EFFC11C591BF5001D8368 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		848EFFCA1C591BFB001D8368 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		848EFFD91C591BFF001D8368 /* Photons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Photons.xcodeproj; path = ../Photons/Photons.xcodeproj; sourceTree = "<group>"; };
+		849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../Vendor/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +289,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */,
 				8414EA2D1C5A00B000014DD1 /* libextobjc_iOS.a in Frameworks */,
 				8414EA2B1C5A00AB00014DD1 /* libLTKit.a in Frameworks */,
 				848E001E1C591E29001D8368 /* ReactiveCocoa.framework in Frameworks */,
@@ -512,6 +529,7 @@
 		848EFFC01C591BE0001D8368 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */,
 				848EFFC11C591BF5001D8368 /* LTKit.xcodeproj */,
 				848EFFCA1C591BFB001D8368 /* ReactiveCocoa.xcodeproj */,
 				848EFFD91C591BFF001D8368 /* Photons.xcodeproj */,
@@ -559,6 +577,15 @@
 				848E001B1C591E10001D8368 /* Photons.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		849AE4971C6B4F7C00F030CA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				849AE4A61C6B4F7C00F030CA /* Masonry.framework */,
+				849AE4A81C6B4F7C00F030CA /* Masonry.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -647,6 +674,10 @@
 				{
 					ProductGroup = 848EFFC21C591BF5001D8368 /* Products */;
 					ProjectRef = 848EFFC11C591BF5001D8368 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 849AE4971C6B4F7C00F030CA /* Products */;
+					ProjectRef = 849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */;
 				},
 				{
 					ProductGroup = 848E00261C5920C1001D8368 /* Products */;
@@ -815,6 +846,20 @@
 			fileType = wrapper.cfbundle;
 			path = PhotonsTests.xctest;
 			remoteRef = 848EFFE01C591BFF001D8368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		849AE4A61C6B4F7C00F030CA /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = 849AE4A51C6B4F7C00F030CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		849AE4A81C6B4F7C00F030CA /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = 849AE4A71C6B4F7C00F030CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1016,6 +1061,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(inherited)",
+					"\"$(SRCROOT)/../Vendor/Masonry\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1064,6 +1110,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(inherited)",
+					"\"$(SRCROOT)/../Vendor/Masonry\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;

@@ -8,6 +8,7 @@
 
   // Third party.
   #import <ReactiveCocoa/ReactiveCocoa.h>
+  #import <Masonry/Masonry.h>
 
   // LTKit.
   #import <LTKit/LTKit-Prefix.pch>
