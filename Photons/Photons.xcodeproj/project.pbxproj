@@ -58,7 +58,7 @@
 		848188871C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 848188831C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.m */; };
 		848188881C3BF48E0070462E /* PTNFileSystemFileDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 848188841C3BF48E0070462E /* PTNFileSystemFileDescriptor.h */; };
 		848188891C3BF48E0070462E /* PTNFileSystemFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 848188851C3BF48E0070462E /* PTNFileSystemFileDescriptor.m */; };
-		848189BD1C3C14720070462E /* PTNMultiplexerAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 848189BB1C3C14720070462E /* PTNMultiplexerAssetManager.h */; };
+		848189BD1C3C14720070462E /* PTNMultiplexerAssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 848189BB1C3C14720070462E /* PTNMultiplexerAssetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		848189BE1C3C14720070462E /* PTNMultiplexerAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 848189BC1C3C14720070462E /* PTNMultiplexerAssetManager.m */; };
 		848189C11C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 848189C01C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.m */; };
 		84818A381C3D21920070462E /* PTNMultiplexingTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84818A371C3D21920070462E /* PTNMultiplexingTestUtils.m */; };
