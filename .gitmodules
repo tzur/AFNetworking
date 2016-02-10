@@ -22,3 +22,6 @@
 [submodule "Vendor/dropbox-ios-sdk"]
 	path = Vendor/dropbox-ios-sdk
 	url = https://github.com/Lightricks/dropbox-ios-sdk.git
+[submodule "Vendor/Masonry"]
+	path = Vendor/Masonry
+	url = https://github.com/Lightricks/Masonry.git
