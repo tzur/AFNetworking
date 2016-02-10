@@ -5,17 +5,16 @@
 
 #import "PTNDropboxFakeDBRestClient.h"
 #import "PTNDropboxPathProvider.h"
+#import "PTNDropboxRestClientProvider.h"
 #import "PTNDropboxTestUtils.h"
+#import "PTNDropboxThumbnail.h"
 #import "PTNProgress.h"
 #import "NSError+Photons.h"
-#import "PTNDropboxRestClientProvider.h"
 
 SpecBegin(PTNDropboxRestClient)
 
 static NSString * const kDropboxPath = @"/foo/bar";
 static NSString * const kRevision = @"baz";
-static NSString * const kSizeName = @"xs";
-static const PTNDropboxThumbnailSize kSize = PTNDropboxThumbnailSizeExtraSmall;
 
 __block PTNDropboxFakeDBRestClient *dbRestClient;
 __block id<PTNDropboxPathProvider> pathProvider;
@@ -299,17 +298,17 @@ context(@"file fetching", ^{
 });
 
 context(@"thumbnail fetching", ^{
-  __block CGSize size;
+  __block PTNDropboxThumbnailType *thumbnailType;
 
   beforeEach(^{
-    size = CGSizeMake(32, 32);
-    localPath = [pathProvider localPathForThumbnailInPath:kDropboxPath size:size];
+    thumbnailType = [PTNDropboxThumbnailType enumWithValue:PTNDropboxThumbnailTypeExtraSmall];
+    localPath = [pathProvider localPathForThumbnailInPath:kDropboxPath size:thumbnailType.size];
   });
 
   it(@"should fetch thumbnail", ^{
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
         .to.equal(localPath);
 
     [dbRestClient deliverThumbnail:localPath];
@@ -324,15 +323,16 @@ context(@"thumbnail fetching", ^{
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
 
     OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
     [values subscribeNext:^(id __unused x) { }];
-    expect([firstDBRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName]).to.beTruthy();
+    expect([firstDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+        .to.beTruthy();
 
     OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
     [values subscribeNext:^(id __unused x) { }];
-    expect([secondDBRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName])
+    expect([secondDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
         .to.beTruthy();
   });
 
@@ -343,7 +343,7 @@ context(@"thumbnail fetching", ^{
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
 
     OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
     LLSignalTestRecorder *firstRecorder = [values testRecorder];
@@ -352,9 +352,9 @@ context(@"thumbnail fetching", ^{
     LLSignalTestRecorder *secondRecorder = [values testRecorder];
 
     NSString *firstThumbnailPath =
-        [pathProvider localPathForThumbnailInPath:kDropboxPath size:size];
+        [pathProvider localPathForThumbnailInPath:kDropboxPath size:thumbnailType.size];
     NSString *secondThumbnailPath =
-        [pathProvider localPathForThumbnailInPath:kDropboxPath size:size];
+        [pathProvider localPathForThumbnailInPath:kDropboxPath size:thumbnailType.size];
     [firstDBRestClient deliverThumbnail:firstThumbnailPath];
     [secondDBRestClient deliverThumbnail:secondThumbnailPath];
 
@@ -364,15 +364,16 @@ context(@"thumbnail fetching", ^{
 
   it(@"should not fetch thumbnail of other requests", ^{
     NSString *otherPath = @"/bar/baz";
-    NSString *otherLocalPath = [pathProvider localPathForThumbnailInPath:otherPath size:size];
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    NSString *otherLocalPath = [pathProvider localPathForThumbnailInPath:otherPath
+                                                                    size:thumbnailType.size];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    RACSignal *otherValues = [restClient fetchThumbnail:otherPath size:kSize];
+    RACSignal *otherValues = [restClient fetchThumbnail:otherPath type:thumbnailType];
     LLSignalTestRecorder *otherRecorder = [otherValues testRecorder];
 
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
         .to.equal(localPath);
-    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:kSizeName])
+    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.name])
         .to.equal(otherLocalPath);
 
     [dbRestClient deliverThumbnail:otherLocalPath];
@@ -382,9 +383,9 @@ context(@"thumbnail fetching", ^{
   });
 
   it(@"should err on thumbnail fetching failure", ^{
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
         .to.equal(localPath);
 
     [dbRestClient deliverThumbnailError:errorWithPath];
@@ -396,14 +397,16 @@ context(@"thumbnail fetching", ^{
   it(@"should not err on file thumbnail failure of other requests", ^{
     NSString *otherPath = @"/bar/baz";
     NSError *errorWithOtherPath = PTNDropboxErrorWithPathInfo(otherPath);
-    NSString *otherLocalPath = [pathProvider localPathForThumbnailInPath:otherPath size:size];
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    NSString *otherLocalPath = [pathProvider localPathForThumbnailInPath:otherPath
+                                                                    size:thumbnailType.size];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    RACSignal *otherValues = [restClient fetchThumbnail:otherPath size:kSize];
+    RACSignal *otherValues = [restClient fetchThumbnail:otherPath type:thumbnailType];
     LLSignalTestRecorder *otherRecorder = [otherValues testRecorder];
 
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName]).to.equal(localPath);
-    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:kSizeName])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+        .to.equal(localPath);
+    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.name])
         .to.equal(otherLocalPath);
 
     [dbRestClient deliverThumbnailError:errorWithOtherPath];
@@ -416,30 +419,21 @@ context(@"thumbnail fetching", ^{
   });
 
   it(@"should cancel request upon disposal", ^{
-    RACSignal *values = [restClient fetchThumbnail:kDropboxPath size:kSize];
+    RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:kSizeName]).will.beTruthy();
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+        .will.beTruthy();
     
     [subscriber dispose];
-    expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath size:kSizeName])
+    expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath size:thumbnailType.name])
         .will.beTruthy();
   });
 
   context(@"thumbnail sizes", ^{
-    NSDictionary *sizeValueToSizeName = @{
-      @(PTNDropboxThumbnailSizeExtraSmall): @"xs",
-      @(PTNDropboxThumbnailSizeSmall): @"s",
-      @(PTNDropboxThumbnailSizeMedium): @"m",
-      @(PTNDropboxThumbnailSizeLarge): @"l",
-      @(PTNDropboxThumbnailSizeExtraLarge): @"xl",
-    };
-
-    [sizeValueToSizeName enumerateKeysAndObjectsUsingBlock:^(NSNumber *size, NSString *sizeName,
-                                                             BOOL * __unused stop) {
-      it(@"hould correctly request thumbnail size", ^{
-        [[restClient fetchThumbnail:kDropboxPath size:size.unsignedIntegerValue]
-         subscribeNext:^(id __unused x) {}];
-        expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:sizeName]).to.beTruthy();
+    [PTNDropboxThumbnailType enumerateEnumUsingBlock:^(PTNDropboxThumbnailType * _Nonnull type) {
+      it(@"should correctly request thumbnail size", ^{
+        [[restClient fetchThumbnail:kDropboxPath type:type] subscribeNext:^(id __unused x) {}];
+        expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:type.name]).to.beTruthy();
       });
     }];
   });

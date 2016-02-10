@@ -1,23 +1,11 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
+@class PTNDropboxThumbnailType;
+
 @protocol PTNDropboxPathProvider, PTNDropboxRestClientProvider;
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Available Dropbox thumbnail sizes.
-typedef NS_ENUM(NSUInteger, PTNDropboxThumbnailSize) {
-  /// 32x32.
-  PTNDropboxThumbnailSizeExtraSmall,
-  /// 64x64.
-  PTNDropboxThumbnailSizeSmall,
-  /// 128x128.
-  PTNDropboxThumbnailSizeMedium,
-  /// 640x480.
-  PTNDropboxThumbnailSizeLarge,
-  /// 1024x768.
-  PTNDropboxThumbnailSizeExtraLarge
-};
 
 /// Wrapper to a linked Dropbox REST client.
 @interface PTNDropboxRestClient : NSObject
@@ -61,18 +49,18 @@ typedef NS_ENUM(NSUInteger, PTNDropboxThumbnailSize) {
 /// @return <tt>RACSignal<PTNProgress<NSString *>></tt>.
 - (RACSignal *)fetchFile:(NSString *)path revision:(nullable NSString *)revision;
 
-/// Fetches the thumbnail of Dropbox entry located at \c path relative to the Dropbox session's root
-/// folder. The returned signal will send an \c NSString object on an arbitrary thread, completes
-/// after result is sent and errs if an error occurred while fetching the thumbnail. The result
-/// type will always be an \c NSString representing the local path in which it thumbnail was saved.
-/// If asset doesn't exist, the signal will err. Disposal of the returned signal's subscription will
-/// abort the current fetch operation, if in progress.
+/// Fetches the thumbnail of type \c type for Dropbox entry located at \c path relative to the
+/// Dropbox session's root folder. The returned signal will send an \c NSString object on an
+/// arbitrary thread, completes after result is sent and errs if an error occurred while fetching
+/// the thumbnail. The result type will always be an \c NSString representing the local path in
+/// which it thumbnail was saved. If asset doesn't exist, the signal will err. Disposal of the
+/// returned signal's subscription will abort the current fetch operation, if in progress.
 ///
 /// @note This is a cold signal and every subscription creates a new REST client and issues a fetch
 /// request to it.
 ///
 /// @return <tt>RACSignal<NSString *></tt>.
-- (RACSignal *)fetchThumbnail:(NSString *)path size:(PTNDropboxThumbnailSize)size;
+- (RACSignal *)fetchThumbnail:(NSString *)path type:(PTNDropboxThumbnailType *)type;
 
 @end
 
