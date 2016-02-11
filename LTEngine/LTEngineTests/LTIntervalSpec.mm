@@ -51,6 +51,14 @@ context(@"equality", ^{
   });
 });
 
+context(@"hash", ^{
+  it(@"should compute a hash of an interval", ^{
+    LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+    LTTestInterval anotherInterval({0, 1}, LTTestInterval::Closed);
+    expect(interval.hash()).to.equal(anotherInterval.hash());
+  });
+});
+
 context(@"empty intervals", ^{
   it(@"should indicate that a non-empty interval is not empty", ^{
     LTTestInterval interval({0, 1}, LTTestInterval::Closed);

@@ -37,6 +37,12 @@ public:
       maxValue(std::max(values.first, values.second)),
       minEndpointInclusion(endpointInclusion), maxEndpointInclusion(endpointInclusion) {}
 
+  /// Return a hash value for this interval.
+  size_t hash() const {
+    return std::hash<T>()(minValue) ^ std::hash<T>()(maxValue) ^
+        std::hash<T>()(minEndpointInclusion) ^ std::hash<T>()(maxEndpointInclusion);
+  }
+
   /// Returns \c true if this interval is empty.
   bool isEmpty() const {
     if (minValue == maxValue) {
