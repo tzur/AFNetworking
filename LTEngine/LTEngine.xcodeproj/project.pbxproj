@@ -482,6 +482,10 @@
 		5006776C1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 5006776A1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h */; };
 		5006776D1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006776B1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm */; };
 		500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500677701C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm */; };
+		500677D21C6A1A4D002C6A24 /* LTBrushGeometryProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 500677D01C6A1A4D002C6A24 /* LTBrushGeometryProvider.h */; };
+		500677F41C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 500677F21C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h */; };
+		500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500677F31C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm */; };
+		5006785B1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006785A1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm */; };
 		500AB3E719D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 500AB3F819D1B2C7000DC814 /* LTGeometry.h */; };
 		500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3F919D1B2C7000DC814 /* LTGeometry.mm */; };
@@ -1787,6 +1791,10 @@
 		5006776A1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFloatSetParametricValueProvider.h; sourceTree = "<group>"; };
 		5006776B1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFloatSetParametricValueProvider.mm; sourceTree = "<group>"; };
 		500677701C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFloatSetParametricValueProviderSpec.mm; sourceTree = "<group>"; };
+		500677D01C6A1A4D002C6A24 /* LTBrushGeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushGeometryProvider.h; sourceTree = "<group>"; };
+		500677F21C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultBrushGeometryProvider.h; sourceTree = "<group>"; };
+		500677F31C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultBrushGeometryProvider.mm; sourceTree = "<group>"; };
+		5006785A1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultBrushGeometryProviderSpec.mm; sourceTree = "<group>"; };
 		500AB3E519D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
 		500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
 		500AB3F819D1B2C7000DC814 /* LTGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGeometry.h; sourceTree = "<group>"; };
@@ -2982,6 +2990,40 @@
 			name = "Value Providers";
 			sourceTree = "<group>";
 		};
+		5006779A1C6A16EF002C6A24 /* Brush Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				500677F11C6A1A5D002C6A24 /* Geometry Stage */,
+			);
+			name = "Brush Pipeline";
+			sourceTree = "<group>";
+		};
+		500677F11C6A1A5D002C6A24 /* Geometry Stage */ = {
+			isa = PBXGroup;
+			children = (
+				500677D01C6A1A4D002C6A24 /* LTBrushGeometryProvider.h */,
+				500677F21C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h */,
+				500677F31C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm */,
+			);
+			name = "Geometry Stage";
+			sourceTree = "<group>";
+		};
+		5006783B1C6A2A24002C6A24 /* Brush Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				500678591C6A2A2C002C6A24 /* Geometry Stage */,
+			);
+			name = "Brush Pipeline";
+			sourceTree = "<group>";
+		};
+		500678591C6A2A2C002C6A24 /* Geometry Stage */ = {
+			isa = PBXGroup;
+			children = (
+				5006785A1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm */,
+			);
+			name = "Geometry Stage";
+			sourceTree = "<group>";
+		};
 		503044D71C3BCF4000355B86 /* Spline */ = {
 			isa = PBXGroup;
 			children = (
@@ -3283,6 +3325,7 @@
 			children = (
 				8B3DEBEC18296B6100EA0C1A /* LTEngine.h */,
 				8B7C6C791B5272E100B90DBE /* Boxing */,
+				5006779A1C6A16EF002C6A24 /* Brush Pipeline */,
 				28EC23881B0CE9ED0099946A /* Compression */,
 				8BF7B1631949BC3100E67079 /* Data Structures */,
 				8B7C6C781B52722900B90DBE /* Extensions */,
@@ -3660,6 +3703,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7C6C7B1B5275C800B90DBE /* Boxing */,
+				5006783B1C6A2A24002C6A24 /* Brush Pipeline */,
 				8B3831F51B56902B00620560 /* Compression */,
 				8BEE674419596F59005E4D53 /* Data Structures */,
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
@@ -4302,6 +4346,7 @@
 				03045D1E19C1711D0075207D /* LTClarityProcessor.h in Headers */,
 				0352FA8D1A1889C70046E002 /* LTBasicOilPaintingProcessor.h in Headers */,
 				8B871FF01924A75F00517F2E /* LTColorConversionProcessor.h in Headers */,
+				500677D21C6A1A4D002C6A24 /* LTBrushGeometryProvider.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
@@ -4346,6 +4391,7 @@
 				8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */,
 				28E8AF111997AB4700C2DD22 /* LTCropDrawerRect.h in Headers */,
 				288F154919A63C7A00E1C6F9 /* LTMeshDrawer.h in Headers */,
+				500677F41C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h in Headers */,
 				28F340661B1EECBF00545B82 /* LTTextureBaseArchiver.h in Headers */,
 				50B6BB231C1E9F310043FE24 /* LTEasyVectorBoxing.h in Headers */,
 				8B8720111924A76100517F2E /* LTRectDrawer+PassthroughShader.h in Headers */,
@@ -5182,6 +5228,7 @@
 				28BBD7F619A20AA40062C803 /* NSValue+LTRect.mm in Sources */,
 				8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */,
 				031338D2191279B30095F99B /* LTImageBorderProcessor.mm in Sources */,
+				500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */,
@@ -5494,6 +5541,7 @@
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,
+				5006785B1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm in Sources */,
 				25AF17641AD50C250055E664 /* LTVGGlyphRunSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
