@@ -3,6 +3,8 @@
 
 #import "LTPeriodicFloatSet.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef struct {
@@ -42,6 +44,30 @@ typedef struct {
     _distanceOfFirstValues = (numberOfValuesPerSequence - 1) * valueDistance + sequenceDistance;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTPeriodicFloatSet *)floatSet {
+  if (floatSet == self) {
+    return YES;
+  }
+
+  if (![floatSet isKindOfClass:[LTPeriodicFloatSet class]]) {
+    return NO;
+  }
+
+  return self.pivotValue == floatSet.pivotValue &&
+      self.numberOfValuesPerSequence == floatSet.numberOfValuesPerSequence &&
+      self.valueDistance == floatSet.valueDistance &&
+      self.sequenceDistance == floatSet.sequenceDistance;
+}
+
+- (NSUInteger)hash {
+  return lt::hash<CGFloat>()(self.pivotValue) ^ self.numberOfValuesPerSequence ^
+      lt::hash<CGFloat>()(self.valueDistance) ^ lt::hash<CGFloat>()(self.sequenceDistance);
 }
 
 #pragma mark -
