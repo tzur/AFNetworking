@@ -45,6 +45,72 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  context(@"equality", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([set isEqual:set]).to.beTruthy();
+    });
+
+    it(@"should return YES when comparing to equal set", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:1
+                                                            numberOfValuesPerSequence:3
+                                                                        valueDistance:5
+                                                                     sequenceDistance:10];
+      expect([set isEqual:anotherSet]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      expect([set isEqual:nil]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([set isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to point with different pivot value", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:2
+                                                            numberOfValuesPerSequence:3
+                                                                        valueDistance:5
+                                                                     sequenceDistance:10];
+      expect([set isEqual:anotherSet]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to point with different number of values", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:1
+                                                            numberOfValuesPerSequence:4
+                                                                        valueDistance:5
+                                                                     sequenceDistance:10];
+      expect([set isEqual:anotherSet]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to point with different value distance", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:1
+                                                            numberOfValuesPerSequence:3
+                                                                        valueDistance:6
+                                                                     sequenceDistance:10];
+      expect([set isEqual:anotherSet]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to point with different sequence distance", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:1
+                                                            numberOfValuesPerSequence:3
+                                                                        valueDistance:5
+                                                                     sequenceDistance:11];
+      expect([set isEqual:anotherSet]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      LTPeriodicFloatSet *anotherSet = [[LTPeriodicFloatSet alloc] initWithPivotValue:1
+                                                            numberOfValuesPerSequence:3
+                                                                        valueDistance:5
+                                                                     sequenceDistance:10];
+      expect([set hash]).to.equal([anotherSet hash]);
+    });
+  });
+});
+
 context(@"LTFloatSet protocol", ^{
   __block NSValue *boxedInterval;
   
