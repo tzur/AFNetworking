@@ -12,10 +12,9 @@ attribute highp vec4 position;
 attribute highp vec3 texcoord;
 
 varying highp vec2 vTexcoord;
-varying highp vec2 vBackTexcoord;
 
 void main() {
+  texture;
   vTexcoord = texcoord.xy;
-  vBackTexcoord = (texture * texcoord).xy;
   gl_Position = projection * modelview * position;
 }
