@@ -27,7 +27,6 @@ uniform highp mat3 frontMatrix;
 uniform highp mat3 maskMatrix;
 
 varying highp vec2 vTexcoord;
-varying highp vec2 vBackTexcoord;
 
 void normal(in mediump vec3 Sca, in mediump vec3 Dca, in mediump float Sa, in mediump float Da) {
   gl_FragColor.rgb = Sca + Dca * (1.0 - Sa);
