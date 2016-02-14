@@ -14,6 +14,7 @@
 #import <LTEngine/LTLinearInterpolant.h>
 #import <LTEngine/LTPainterPoint.h>
 #import <LTEngine/LTPainterStrokeSegment.h>
+#import <LTEngine/LTRotatedRect.h>
 #import <LTEngine/LTTexture+Factory.h>
 #import <LTKit/LTRandom.h>
 
@@ -508,6 +509,52 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(0.1 * 255, 0.2 * 255,
                                                              0.3 * 255, 0.4 * 255));
     expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  context(@"rendering rotated rects", ^{
+    __block NSArray<LTRotatedRect *> *rotatedRects;
+
+    beforeEach(^{
+      CGRect rect0 = CGRectFromSize(fbo.size / 4);
+      CGRect rect1 = CGRectCenteredAt(CGPointFromSize(fbo.size / 2), fbo.size / 2);
+      expected.setTo(0);
+      expected(LTCVRectWithCGRect(rect0)).setTo(cv::Vec4b(255, 255, 255, 255));
+      expected(LTCVRectWithCGRect(rect1)).setTo(cv::Vec4b(255, 255, 255, 255));
+      rotatedRects = @[[LTRotatedRect rect:rect0], [LTRotatedRect rect:rect1]];
+    });
+
+    it(@"should render given rotated rects", ^{
+      [fbo clearWithColor:LTVector4::zeros()];
+      [fbo bindAndExecute:^{
+        [brush renderRotatedRects:rotatedRects inFramebufferWithSize:fbo.size];
+      }];
+
+      expect($(output.image)).to.beCloseToMat($(expected));
+    });
+
+    it(@"should return rotated rects", ^{
+      id scatterEffectMock = OCMClassMock([LTBrushScatterEffect class]);
+      id shapeDynamicsEffectMock = OCMClassMock([LTBrushShapeDynamicsEffect class]);
+      NSArray<LTRotatedRect *> *scatteredRects =
+          @[[LTRotatedRect rect:CGRectFromSize(CGSizeMakeUniform(10))]];
+      NSArray<LTRotatedRect *> *expectedRects =
+          @[[LTRotatedRect rect:CGRectFromSize(CGSizeMakeUniform(5))]];
+      brush.scatterEffect = scatterEffectMock;
+      brush.shapeDynamicsEffect = shapeDynamicsEffectMock;
+
+      OCMExpect([scatterEffectMock scatteredRectsFromRects:rotatedRects]).andReturn(scatteredRects);
+      OCMExpect([shapeDynamicsEffectMock dynamicRectsFromRects:scatteredRects])
+          .andReturn(expectedRects);
+
+      __block NSArray<LTRotatedRect *> *rects;
+      [fbo bindAndExecute:^{
+        rects = [brush renderRotatedRects:rotatedRects inFramebufferWithSize:fbo.size];
+      }];
+
+      expect(rects).to.equal(expectedRects);
+      OCMVerifyAll(scatterEffectMock);
+      OCMVerifyAll(shapeDynamicsEffectMock);
+    });
   });
 
   it(@"should use random angles per stroke", ^{
