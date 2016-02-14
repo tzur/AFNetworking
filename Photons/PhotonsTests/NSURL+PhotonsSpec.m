@@ -17,7 +17,15 @@ beforeEach(^{
   ];
 });
 
-it(@"should return correct dictionary from url query", ^{
+it(@"should return correct dictionary from query", ^{
+  expect([NSURL ptn_dictionaryWithQuery:query]).to.equal(@{
+    @"foo": @"bar",
+    @"bar": @"baz",
+    @"baz": @"gaz"
+  });
+});
+
+it(@"should return correct dictionary from url with query", ^{
   expect(PTNCreateURL(@"foo", @"bar", query).ptn_queryDictionary).to.equal(@{
     @"foo": @"bar",
     @"bar": @"baz",
@@ -33,6 +41,22 @@ it(@"should use the last instance of multiple items with the same query name", ^
     @"baz": @"gaz",
     @"foo": @"qux"
   });
+});
+
+it(@"should append query to url without a query", ^{
+  NSURL *url = PTNCreateURL(@"foo", @"bar", nil);
+  NSURL *urlWithQuery = [url ptn_URLByAppendingQuery:query];
+  expect([NSURLComponents componentsWithURL:urlWithQuery
+                    resolvingAgainstBaseURL:NO].queryItems).to.equal(query);
+});
+
+it(@"should append query to url with existing a query", ^{
+  NSURLQueryItem *existingQuery = [[NSURLQueryItem alloc] initWithName:@"gaz" value:@"qux"];
+  NSArray *completeQuery = [@[existingQuery] arrayByAddingObjectsFromArray:query];
+  NSURL *url = PTNCreateURL(@"foo", @"bar", @[existingQuery]);
+  NSURL *urlWithQuery = [url ptn_URLByAppendingQuery:query];
+  expect([NSURLComponents componentsWithURL:urlWithQuery
+                    resolvingAgainstBaseURL:NO].queryItems).to.equal(completeQuery);
 });
 
 SpecEnd

@@ -60,6 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the strategy for enforcing an output size with no more than \c maxPixels.
 - (instancetype)initWithMaxPixels:(NSUInteger)maxPixels NS_DESIGNATED_INITIALIZER;
 
+/// Maximal pixels to be contained in each returned output size.
+@property (readonly, nonatomic) NSUInteger maxPixels;
+
 @end
 
 /// Resizing strategy for calculating an output size in an aspect fit manner. For example, for a
@@ -71,6 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the strategy with the given \c size to aspect fit to.
 - (instancetype)initWithSize:(CGSize)size NS_DESIGNATED_INITIALIZER;
 
+/// Size to aspect fit to.
+@property (readonly, nonatomic) CGSize size;
+
 @end
 
 /// Resizing strategy for calculating an output size in an aspect fill manner. For example, for a
@@ -81,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes the strategy with the given \c size to aspect fill to.
 - (instancetype)initWithSize:(CGSize)size NS_DESIGNATED_INITIALIZER;
+
+/// Size to aspect fill to.
+@property (readonly, nonatomic) CGSize size;
 
 @end
 

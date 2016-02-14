@@ -3,6 +3,8 @@
 
 #import "PTNResizingStrategy.h"
 
+#import "NSURL+Photons.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNResizingStrategy
@@ -24,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (id<PTNResizingStrategy>)contentMode:(PTNImageContentMode)contentMode
-                                       size:(CGSize)size {
+                                  size:(CGSize)size {
   switch (contentMode) {
     case PTNImageContentModeAspectFill:
       return [[PTNAspectFillResizingStrategy alloc] initWithSize:size];
@@ -57,18 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface PTNMaxPixelsResizingStrategy ()
-
-/// Maximal pixels to be contained in each returned output size.
-@property (nonatomic) NSUInteger maxPixels;
-
-@end
-
 @implementation PTNMaxPixelsResizingStrategy
 
 - (instancetype)initWithMaxPixels:(NSUInteger)maxPixels {
   if (self = [super init]) {
-    self.maxPixels = maxPixels;
+    _maxPixels = maxPixels;
   }
   return self;
 }
@@ -109,18 +104,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface PTNAspectFitResizingStrategy ()
-
-/// Size to aspect fit to.
-@property (nonatomic) CGSize size;
-
-@end
-
 @implementation PTNAspectFitResizingStrategy
 
 - (instancetype)initWithSize:(CGSize)size {
   if (self = [super init]) {
-    self.size = size;
+    _size = size;
   }
   return self;
 }
@@ -144,18 +132,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface PTNAspectFillResizingStrategy ()
-
-/// Size to aspect fill to.
-@property (nonatomic) CGSize size;
-
-@end
-
 @implementation PTNAspectFillResizingStrategy
 
 - (instancetype)initWithSize:(CGSize)size {
   if (self = [super init]) {
-    self.size = size;
+    _size = size;
   }
   return self;
 }

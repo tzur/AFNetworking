@@ -7,16 +7,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSURL (Photons)
 
-- (NSDictionary<NSString *, NSString *> *)ptn_queryDictionary {
-  NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
-
-  // Last query item name overrides previous ones, if exist.
++ (PTNQueryDictionary *)ptn_dictionaryWithQuery:(NSArray<NSURLQueryItem *> *)query {
+  // Last query item name overrides previous one, if exists.
   NSMutableDictionary *items = [NSMutableDictionary dictionary];
-  for (NSURLQueryItem *item in components.queryItems) {
+  for (NSURLQueryItem *item in query) {
     items[item.name] = item.value;
   }
 
   return [items copy];
+}
+
+- (NSURL *)ptn_URLByAppendingQuery:(NSArray<NSURLQueryItem *> *)query {
+  NSURLComponents *components = [[NSURLComponents alloc] initWithString:self.absoluteString];
+  components.queryItems = [components.queryItems ?: @[] arrayByAddingObjectsFromArray:query];
+  return components.URL;
+}
+
+- (NSDictionary<NSString *, NSString *> *)ptn_queryDictionary {
+  NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
+  return [[self class] ptn_dictionaryWithQuery:components.queryItems];
 }
 
 @end
