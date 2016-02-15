@@ -121,6 +121,14 @@ static const CGFloat kMinimumDiameter = 2;
   return [self applyEffectsAndDrawRects:@[targetRect] inFramebuffer:fbo];
 }
 
+- (NSArray<LTRotatedRect *> *)renderRotatedRects:(NSArray<LTRotatedRect *> *)rotatedRects
+                           inFramebufferWithSize:(CGSize)size {
+  rotatedRects = [self targetRectsWithEffectsFromRects:rotatedRects framebufferSize:size];
+  NSArray *sourceRects = [self sourceRectsWithCount:rotatedRects.count];
+  [self drawRects:rotatedRects inFramebufferWithSize:size fromRects:sourceRects];
+  return rotatedRects;
+}
+
 - (NSArray *)drawStrokeSegment:(LTPainterStrokeSegment *)segment
              fromPreviousPoint:(LTPainterPoint *)previousPoint
                  inFramebuffer:(LTFbo *)fbo
@@ -160,16 +168,39 @@ static const CGFloat kMinimumDiameter = 2;
   }
 }
 
+/// Draws the given source rects on the given target rects in the currently bound framebuffer of the
+/// given \c size.
+///
+/// @note This method allows subclasses to replace the drawing mechanism, or perform things before
+/// the actual draw.
+- (void)drawRects:(NSArray<LTRotatedRect *> *)targetRects inFramebufferWithSize:(CGSize)size
+        fromRects:(NSArray<LTRotatedRect *> *)sourceRects {
+  if (self.texture && targetRects.count) {
+    if ([(LTRotatedRect *)targetRects.firstObject color]) {
+      [self drawColoredRects:targetRects inFramebufferWithSize:size fromRects:sourceRects];
+    } else {
+      [self.drawer drawRotatedRects:targetRects inFramebufferWithSize:size
+                   fromRotatedRects:sourceRects];
+    }
+  }
+}
+
 - (void)drawColoredRects:(NSArray *)targetRects inFramebuffer:(LTFbo *)fbo
                fromRects:(NSArray *)sourceRects {
   LTParameterAssert(targetRects.count == sourceRects.count);
   [fbo bindAndDraw:^{
-    for (NSUInteger i = 0; i < targetRects.count; ++i) {
-      self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].lt_ltVector);
-      [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:fbo.size
-                   fromRotatedRect:sourceRects[i]];
-    }
+    [self drawColoredRects:targetRects inFramebufferWithSize:fbo.size fromRects:sourceRects];
   }];
+}
+
+- (void)drawColoredRects:(NSArray *)targetRects inFramebufferWithSize:(CGSize)size
+               fromRects:(NSArray *)sourceRects {
+  LTParameterAssert(targetRects.count == sourceRects.count);
+  for (NSUInteger i = 0; i < targetRects.count; ++i) {
+    self.program[[LTBrushFsh intensity]] = $([(LTRotatedRect *)targetRects[i] color].lt_ltVector);
+    [self.drawer drawRotatedRect:targetRects[i] inFramebufferWithSize:size
+                 fromRotatedRect:sourceRects[i]];
+  }
 }
 
 - (NSArray *)sourceRectsWithCount:(NSUInteger)count {
