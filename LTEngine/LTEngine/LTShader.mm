@@ -58,8 +58,8 @@
     std::unique_ptr<GLchar[]> log(new GLchar[logLength]);
     glGetShaderInfoLog(self.name, logLength, NULL, log.get());
     [LTGLException raise:kLTShaderCompilationFailedException
-                  format:@"Failed compiling shader: log: %s, type: %d, source: %@",
-                         log.get(), (int)self.type, source];
+                  format:@"Failed compiling shader: log: %s, type: %d, source:\n%@",
+                         log.get(), (int)self.type, [self formattedSourceFromSource:source]];
   }
 #endif
   
@@ -67,8 +67,20 @@
   glGetShaderiv(self.name, GL_COMPILE_STATUS, &status);
   if (status == GL_FALSE) {
     [LTGLException raise:kLTShaderCompilationFailedException
-                  format:@"Failed compiling shader: type: %d, source: %@", (int)self.type, source];
+                  format:@"Failed compiling shader: type: %d, source:\n%@",
+                         (int)self.type, [self formattedSourceFromSource:source]];
   }
+}
+
+- (NSString *)formattedSourceFromSource:(NSString *)source {
+  NSArray<NSString *> *lines = [source componentsSeparatedByString:@"\n"];
+
+  NSMutableArray<NSString *> *formattedLines = [NSMutableArray array];
+  [lines enumerateObjectsUsingBlock:^(NSString *line, NSUInteger idx, BOOL *) {
+    [formattedLines addObject:[NSString stringWithFormat:@"%lu: %@", (unsigned long)idx + 1, line]];
+  }];
+
+  return [formattedLines componentsJoinedByString:@"\n"];
 }
 
 #pragma mark -
