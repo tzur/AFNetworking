@@ -41,6 +41,7 @@
 		848E0A491C592639001D8368 /* Application.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB51C591B91001D8368 /* Application.xcconfig */; };
 		848E0A4A1C59263F001D8368 /* StaticLibrary.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */; };
 		849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849AE4A61C6B4F7C00F030CA /* Masonry.framework */; };
+		84F88D761C7A08C6008FFE75 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F88D751C7A08C6008FFE75 /* libc++.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +213,13 @@
 			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
 			remoteInfo = "Masonry OSX";
 		};
+		84C8D1B91C79B6AB00E8F600 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848EFFD91C591BFF001D8368 /* Photons.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BAFDC931B0DED4C003FB8F5;
+			remoteInfo = Photons;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -282,6 +290,7 @@
 		848EFFCA1C591BFB001D8368 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		848EFFD91C591BFF001D8368 /* Photons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Photons.xcodeproj; path = ../Photons/Photons.xcodeproj; sourceTree = "<group>"; };
 		849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../Vendor/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
+		84F88D751C7A08C6008FFE75 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +298,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F88D761C7A08C6008FFE75 /* libc++.tbd in Frameworks */,
 				849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */,
 				8414EA2D1C5A00B000014DD1 /* libextobjc_iOS.a in Frameworks */,
 				8414EA2B1C5A00AB00014DD1 /* libLTKit.a in Frameworks */,
@@ -569,6 +579,7 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84F88D751C7A08C6008FFE75 /* libc++.tbd */,
 				8414EA2C1C5A00B000014DD1 /* libextobjc_iOS.a */,
 				8414EA291C5A008900014DD1 /* libextobjc_iOS.a */,
 				8414EA271C5A006300014DD1 /* libSpecta.a */,
@@ -614,6 +625,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				84C8D1BA1C79B6AB00E8F600 /* PBXTargetDependency */,
 			);
 			name = PhotonsUI;
 			productName = PhotonsUI;
@@ -649,6 +661,7 @@
 				TargetAttributes = {
 					848E00031C591DD1001D8368 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 					848E000C1C591DD1001D8368 = {
 						CreatedOnToolsVersion = 7.2;
@@ -928,12 +941,19 @@
 			target = 848E00031C591DD1001D8368 /* PhotonsUI */;
 			targetProxy = 848E000F1C591DD1001D8368 /* PBXContainerItemProxy */;
 		};
+		84C8D1BA1C79B6AB00E8F600 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Photons;
+			targetProxy = 84C8D1B91C79B6AB00E8F600 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		848E00161C591DD1001D8368 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -955,7 +975,9 @@
 		};
 		848E00171C591DD1001D8368 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -977,6 +999,7 @@
 		};
 		848E00191C591DD1001D8368 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
@@ -997,6 +1020,7 @@
 		};
 		848E001A1C591DD1001D8368 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
@@ -1017,6 +1041,7 @@
 		};
 		848EFF9B1C591B3A001D8368 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB01C591B91001D8368 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1072,6 +1097,7 @@
 		};
 		848EFF9C1C591B3A001D8368 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB11C591B91001D8368 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
