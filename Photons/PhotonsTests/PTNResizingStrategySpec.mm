@@ -62,6 +62,25 @@ it(@"should not have a binding size", ^{
   expect([strategy inputSizeBoundedBySize:CGSizeMake(1024, 1024)]).to.beFalsy();
 });
 
+context(@"equality", ^{
+  __block PTNIdentityResizingStrategy *firstStrategy;
+  __block PTNIdentityResizingStrategy *secondStrategy;
+
+  beforeEach(^{
+    firstStrategy = [[PTNIdentityResizingStrategy alloc] init];
+    secondStrategy = [[PTNIdentityResizingStrategy alloc] init];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstStrategy).to.equal(secondStrategy);
+    expect(secondStrategy).to.equal(firstStrategy);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+  });
+});
+
 SpecEnd
 
 SpecBegin(PTNMaxPixelsResizingStrategy)
@@ -83,6 +102,30 @@ it(@"should be bound by sizes with both dimensions larger than max pixels", ^{
   expect([strategy inputSizeBoundedBySize:CGSizeMake(512, 512)]).to.beFalsy();
   expect([strategy inputSizeBoundedBySize:CGSizeMake(2048, 2048)]).to.beFalsy();
   expect([strategy inputSizeBoundedBySize:CGSizeMake(1024 * 1024, 1024 * 1024)]).to.beTruthy();
+});
+
+context(@"equality", ^{
+  __block PTNMaxPixelsResizingStrategy *firstStrategy;
+  __block PTNMaxPixelsResizingStrategy *secondStrategy;
+  __block PTNMaxPixelsResizingStrategy *otherStrategy;
+
+  beforeEach(^{
+    firstStrategy = [[PTNMaxPixelsResizingStrategy alloc] initWithMaxPixels:1024 * 1024];
+    secondStrategy = [[PTNMaxPixelsResizingStrategy alloc] initWithMaxPixels:512 * 2048];
+    otherStrategy = [[PTNMaxPixelsResizingStrategy alloc] initWithMaxPixels:1024 * 2048];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstStrategy).to.equal(secondStrategy);
+    expect(secondStrategy).to.equal(firstStrategy);
+
+    expect(firstStrategy).notTo.equal(otherStrategy);
+    expect(secondStrategy).notTo.equal(otherStrategy);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+  });
 });
 
 SpecEnd
@@ -114,6 +157,30 @@ it(@"should be bound by sizes larger than strategy's size in both dimensions", ^
   expect([strategy inputSizeBoundedBySize:CGSizeMake(20, 10)]).to.beTruthy();
 });
 
+context(@"equality", ^{
+  __block PTNAspectFitResizingStrategy *firstStrategy;
+  __block PTNAspectFitResizingStrategy *secondStrategy;
+  __block PTNAspectFitResizingStrategy *otherStrategy;
+
+  beforeEach(^{
+    firstStrategy = [[PTNAspectFitResizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+    secondStrategy = [[PTNAspectFitResizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+    otherStrategy = [[PTNAspectFitResizingStrategy alloc] initWithSize:CGSizeMake(10, 5)];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstStrategy).to.equal(secondStrategy);
+    expect(secondStrategy).to.equal(firstStrategy);
+
+    expect(firstStrategy).notTo.equal(otherStrategy);
+    expect(secondStrategy).notTo.equal(otherStrategy);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+  });
+});
+
 SpecEnd
 
 SpecBegin(PTNAspectFillResizingStrategy)
@@ -139,6 +206,30 @@ it(@"should round output size", ^{
 it(@"should not have a binding size", ^{
   expect([strategy inputSizeBoundedBySize:CGSizeMake(20, 10)]).to.beFalsy();
   expect([strategy inputSizeBoundedBySize:CGSizeMake(1024, 1024)]).to.beFalsy();
+});
+
+context(@"equality", ^{
+  __block PTNAspectFillResizingStrategy *firstStrategy;
+  __block PTNAspectFillResizingStrategy *secondStrategy;
+  __block PTNAspectFillResizingStrategy *otherStrategy;
+
+  beforeEach(^{
+    firstStrategy = [[PTNAspectFillResizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+    secondStrategy = [[PTNAspectFillResizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+    otherStrategy = [[PTNAspectFillResizingStrategy alloc] initWithSize:CGSizeMake(10, 5)];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstStrategy).to.equal(secondStrategy);
+    expect(secondStrategy).to.equal(firstStrategy);
+
+    expect(firstStrategy).notTo.equal(otherStrategy);
+    expect(secondStrategy).notTo.equal(otherStrategy);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+  });
 });
 
 SpecEnd

@@ -57,6 +57,25 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNImageContentModeAspectFit;
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNIdentityResizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return YES;
+}
+
+- (NSUInteger)hash {
+  return self.class.hash;
+}
+
 @end
 
 @implementation PTNMaxPixelsResizingStrategy
@@ -102,6 +121,25 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNImageContentModeAspectFit;
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNMaxPixelsResizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return self.maxPixels == object.maxPixels;
+}
+
+- (NSUInteger)hash {
+  return self.maxPixels;
+}
+
 @end
 
 @implementation PTNAspectFitResizingStrategy
@@ -128,6 +166,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNImageContentMode)contentMode {
   return PTNImageContentModeAspectFit;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNAspectFitResizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return CGSizeEqualToSize(self.size, object.size);
+}
+
+- (NSUInteger)hash {
+  return @(self.size.height).hash ^ @(self.size.width).hash;
 }
 
 @end
@@ -164,6 +221,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNImageContentMode)contentMode {
   return PTNImageContentModeAspectFill;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNAspectFillResizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return CGSizeEqualToSize(self.size, object.size);
+}
+
+- (NSUInteger)hash {
+  return @(self.size.height).hash ^ @(self.size.width).hash;
 }
 
 @end
