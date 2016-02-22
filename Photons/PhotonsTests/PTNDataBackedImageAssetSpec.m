@@ -107,4 +107,28 @@ context(@"thread transitions", ^{
   });
 });
 
+context(@"equality", ^{
+  __block PTNDataBackedImageAsset *firstImage;
+  __block PTNDataBackedImageAsset *secondImage;
+  __block PTNDataBackedImageAsset *otherImage;
+
+  beforeEach(^{
+    firstImage = [[PTNDataBackedImageAsset alloc] initWithData:imageData];
+    secondImage = [[PTNDataBackedImageAsset alloc] initWithData:imageData];
+    otherImage = [[PTNDataBackedImageAsset alloc] initWithData:[[NSData alloc] init]];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstImage).to.equal(secondImage);
+    expect(secondImage).to.equal(firstImage);
+
+    expect(firstImage).notTo.equal(otherImage);
+    expect(secondImage).notTo.equal(otherImage);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstImage.hash).to.equal(secondImage.hash);
+  });
+});
+
 SpecEnd

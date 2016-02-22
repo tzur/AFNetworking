@@ -72,6 +72,30 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeOn:RACScheduler.scheduler];
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNDataBackedImageAsset *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return [self.data isEqual:object.data];
+}
+
+- (NSUInteger)hash {
+  return self.data.hash;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, data length: %lu>", self.class, self,
+      (unsigned long)self.data.length];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

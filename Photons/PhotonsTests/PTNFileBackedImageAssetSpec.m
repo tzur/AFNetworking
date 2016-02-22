@@ -156,4 +156,35 @@ context(@"thread transitions", ^{
   });
 });
 
+context(@"equality", ^{
+  __block PTNFileBackedImageAsset *firstImage;
+  __block PTNFileBackedImageAsset *secondImage;
+  __block PTNFileBackedImageAsset *otherImage;
+
+  beforeEach(^{
+    firstImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
+                                                      imageResizer:resizer
+                                                  resizingStrategy:resizingStrategy];
+    secondImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
+                                                       imageResizer:resizer
+                                                   resizingStrategy:resizingStrategy];
+    otherImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"foo"]
+                                                       fileManager:fileManager
+                                                      imageResizer:resizer
+                                                  resizingStrategy:resizingStrategy];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstImage).to.equal(secondImage);
+    expect(secondImage).to.equal(firstImage);
+
+    expect(firstImage).notTo.equal(otherImage);
+    expect(secondImage).notTo.equal(otherImage);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstImage.hash).to.equal(secondImage.hash);
+  });
+});
+
 SpecEnd

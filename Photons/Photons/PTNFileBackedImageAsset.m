@@ -100,6 +100,30 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeOn:RACScheduler.scheduler];
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(PTNFileBackedImageAsset *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return [self.path isEqual:object.path] && [self.resizingStrategy isEqual:object.resizingStrategy];
+}
+
+- (NSUInteger)hash {
+  return self.path.hash ^ self.resizingStrategy.hash;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, path: %@, resizing strategy: %@>", self.class, self,
+      self.path, self.resizingStrategy];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
