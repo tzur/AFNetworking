@@ -53,6 +53,20 @@ struct hash<CGPoint> {
 };
 
 #pragma mark -
+#pragma mark CGSize
+#pragma mark -
+
+template <>
+struct hash<CGSize> {
+  inline size_t operator()(CGSize s) const {
+    size_t seed = 0;
+    detail::hash_combine(seed, s.width);
+    detail::hash_combine(seed, s.height);
+    return seed;
+  }
+};
+
+#pragma mark -
 #pragma mark std::pair
 #pragma mark -
 
