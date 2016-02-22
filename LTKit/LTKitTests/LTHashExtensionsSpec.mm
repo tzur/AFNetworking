@@ -61,6 +61,12 @@ context(@"structs", ^{
     size_t hash1 = lt::hash<CGPoint>()(CGPointMake(0.5, 1.7));
     expect(hash0).to.equal(hash1);
   });
+
+  it(@"should hash CGSize", ^{
+    size_t hash0 = lt::hash<CGSize>()(CGSizeMake(0.5, 1.7));
+    size_t hash1 = lt::hash<CGSize>()(CGSizeMake(0.5, 1.7));
+    expect(hash0).to.equal(hash1);
+  });
 });
 
 SpecEnd
