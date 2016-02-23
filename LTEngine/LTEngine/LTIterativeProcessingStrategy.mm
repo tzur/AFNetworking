@@ -175,6 +175,7 @@
 
 - (void)resetState {
   self.nextOutputIndex = 0;
+  self.currentIteration = 0;
   self.intermediateTexture = nil;
   self.intermediateFbo = nil;
   self.outputTexture = nil;
