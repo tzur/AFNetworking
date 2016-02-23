@@ -91,9 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchFile:(NSString *)path revision:(nullable NSString *)revision {
-  NSString *localPath = [self.pathProvider localPathForFileInPath:path revision:revision];
-
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    NSString *localPath = [self.pathProvider localPathForFileInPath:path revision:revision];
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;
 
@@ -162,9 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchThumbnail:(NSString *)path type:(PTNDropboxThumbnailType *)type {
-  NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path size:type.size];
-
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber>  subscriber) {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path size:type.size];
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;
 
