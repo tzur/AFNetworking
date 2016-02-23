@@ -36,7 +36,7 @@ context(@"initialization", ^{
   it(@"should initialize with more than one output", ^{
     expect((^{
       __unused LTIterativeProcessingStrategy *strategy =
-      [[LTIterativeProcessingStrategy alloc] initWithInput:input andOutputs:@[outputA, outputB]];
+          [[LTIterativeProcessingStrategy alloc] initWithInput:input andOutputs:@[outputA, outputB]];
     })).toNot.raiseAny();
   });
 
@@ -52,6 +52,35 @@ context(@"initialization", ^{
       __unused LTIterativeProcessingStrategy *strategy = [[LTIterativeProcessingStrategy alloc]
                                                           initWithInput:input andOutputs:nil];
     }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"state resetting", ^{
+  __block LTIterativeProcessingStrategy *strategy;
+
+  beforeEach(^{
+    strategy = [[LTIterativeProcessingStrategy alloc] initWithInput:input andOutputs:@[outputA]];
+    strategy.iterationsPerOutput = @[@(1)];
+  });
+
+  afterEach(^{
+    strategy = nil;
+  });
+
+  it(@"should reset current iteration value after calling processingWillBegin", ^{
+    [strategy processingWillBegin];
+    [strategy iterationStarted];
+    [strategy iterationEnded];
+
+    [strategy processingWillBegin];
+
+    __block NSUInteger executedIterations = 0;
+    strategy.iterationStartedBlock = ^(NSUInteger) {
+      ++executedIterations;
+    };
+    [strategy iterationStarted];
+
+    expect(executedIterations).to.equal(1);
   });
 });
 
