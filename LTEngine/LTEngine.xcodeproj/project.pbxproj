@@ -561,6 +561,17 @@
 		651286931B777C2D007A8385 /* MacbethSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 651286921B777C2D007A8385 /* MacbethSmall.png */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
+		854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 854965561C6B27C5009720FF /* LTSolidRectsDrawer.fsh */; };
+		856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */; };
+		85E2B6601C58C5FA006AD39C /* LTSolidRectsDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E2B65E1C58C5FA006AD39C /* LTSolidRectsDrawer.h */; };
+		85E2B6611C58C5FA006AD39C /* LTSolidRectsDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85E2B65F1C58C5FA006AD39C /* LTSolidRectsDrawer.mm */; };
+		85E2B6841C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85E2B6831C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm */; };
+		85E2B68F1C58C649006AD39C /* SolidRectsDrawerOutOfBoundsRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B6851C58C648006AD39C /* SolidRectsDrawerOutOfBoundsRects.png */; };
+		85E2B6901C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B6861C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png */; };
+		85E2B6911C58C649006AD39C /* SolidRectsDrawerRegularRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B6871C58C649006AD39C /* SolidRectsDrawerRegularRects.png */; };
+		85E2B6941C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */; };
+		85E2B6951C58C649006AD39C /* SolidRectsDrawerRotatedRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */; };
+		85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */; };
 		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; };
 		8B0337FC1BD3EA1B00ACDF26 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */; };
 		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; };
@@ -1874,6 +1885,17 @@
 		651286921B777C2D007A8385 /* MacbethSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MacbethSmall.png; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
+		854965561C6B27C5009720FF /* LTSolidRectsDrawer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.fsh; sourceTree = "<group>"; };
+		858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.vsh; sourceTree = "<group>"; };
+		85E2B65E1C58C5FA006AD39C /* LTSolidRectsDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSolidRectsDrawer.h; sourceTree = "<group>"; };
+		85E2B65F1C58C5FA006AD39C /* LTSolidRectsDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSolidRectsDrawer.mm; sourceTree = "<group>"; };
+		85E2B6831C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSolidRectsDrawerSpec.mm; sourceTree = "<group>"; };
+		85E2B6851C58C648006AD39C /* SolidRectsDrawerOutOfBoundsRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerOutOfBoundsRects.png; path = Resources/SolidRectsDrawerOutOfBoundsRects.png; sourceTree = "<group>"; };
+		85E2B6861C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerOverlappingRects.png; path = Resources/SolidRectsDrawerOverlappingRects.png; sourceTree = "<group>"; };
+		85E2B6871C58C649006AD39C /* SolidRectsDrawerRegularRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRegularRects.png; path = Resources/SolidRectsDrawerRegularRects.png; sourceTree = "<group>"; };
+		85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRegularRectsRed.png; path = Resources/SolidRectsDrawerRegularRectsRed.png; sourceTree = "<group>"; };
+		85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRects.png; path = Resources/SolidRectsDrawerRotatedRects.png; sourceTree = "<group>"; };
+		85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRectsRed.png; path = Resources/SolidRectsDrawerRotatedRectsRed.png; sourceTree = "<group>"; };
 		8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageZeroGrayscale.png; path = Resources/ImageZeroGrayscale.png; sourceTree = "<group>"; };
 		8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../LTKit/third_party/testing/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
 		8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
@@ -2657,6 +2679,10 @@
 				28BB81991924DF520071CB0B /* LTShapeDrawer.mm */,
 				280F5A15191A8CFE00F9F80B /* LTShapeDrawerParams.h */,
 				280F5A16191A8CFE00F9F80B /* LTShapeDrawerParams.mm */,
+				85E2B65E1C58C5FA006AD39C /* LTSolidRectsDrawer.h */,
+				85E2B65F1C58C5FA006AD39C /* LTSolidRectsDrawer.mm */,
+				858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */,
+				854965561C6B27C5009720FF /* LTSolidRectsDrawer.fsh */,
 			);
 			name = "Shape Drawer";
 			sourceTree = "<group>";
@@ -2685,6 +2711,7 @@
 				280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */,
 				28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */,
 				28BB81A81924DF650071CB0B /* LTShapeDrawerSpec.mm */,
+				85E2B6831C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm */,
 			);
 			name = "Shape Drawer";
 			sourceTree = "<group>";
@@ -3458,6 +3485,12 @@
 				282AC6941924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png */,
 				282AC6951924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangle.png */,
 				282AC6961924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png */,
+				85E2B6851C58C648006AD39C /* SolidRectsDrawerOutOfBoundsRects.png */,
+				85E2B6861C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png */,
+				85E2B6871C58C649006AD39C /* SolidRectsDrawerRegularRects.png */,
+				85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */,
+				85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */,
+				85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */,
 				03BCFD46191FA6E200529AD6 /* NoisyBorder.png */,
 				03BCFD47191FA6E200529AD6 /* RedBorder.png */,
 				28A4C9351973E3EA00CDA935 /* RedBorderOnClearBackground.png */,
@@ -4374,6 +4407,7 @@
 				28A0C70F1AC0384F00FBC803 /* LTCircularPatchProcessor.h in Headers */,
 				8B8720031924A76000517F2E /* LTMMTexture.h in Headers */,
 				8B8720041924A76000517F2E /* LTProgram.h in Headers */,
+				85E2B6601C58C5FA006AD39C /* LTSolidRectsDrawer.h in Headers */,
 				8B8720051924A76000517F2E /* LTShader.h in Headers */,
 				25AF17481AD50BE00055E664 /* LTVGGlyphRun.h in Headers */,
 				8B8720061924A76000517F2E /* LTTexture.h in Headers */,
@@ -4812,6 +4846,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85E2B68F1C58C649006AD39C /* SolidRectsDrawerOutOfBoundsRects.png in Resources */,
+				85E2B6901C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png in Resources */,
+				85E2B6911C58C649006AD39C /* SolidRectsDrawerRegularRects.png in Resources */,
+				85E2B6941C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png in Resources */,
+				85E2B6951C58C649006AD39C /* SolidRectsDrawerRotatedRects.png in Resources */,
+				85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */,
 				8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */,
 				507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */,
 				287583761B1B225F0000F0CE /* ImageCompressorInput.tiff in Resources */,
@@ -5015,6 +5055,7 @@
 			files = (
 				033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */,
 				03C7B71118D0579000E728F5 /* TiledNoise.png in Resources */,
+				858FC7E01C7A2574000F9625 /* LTSolidRectsDrawer.vsh in Resources */,
 				033DCD8719F2B57A004BF795 /* NegativeHighlightsCurve.png in Resources */,
 				03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */,
 				033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */,
@@ -5050,7 +5091,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */,
 				03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */,
+				854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */,
 				03045D3419C176BA0075207D /* LTClarity.fsh in Sources */,
 				8BABF1B219BC7D6700AED760 /* LTRedBlackEAWProcessor.fsh in Sources */,
 				8BABF1B319BC7D6700AED760 /* LTRedBlackEAWProcessor.vsh in Sources */,
@@ -5188,6 +5231,7 @@
 				283A95A11B70AB36004559BF /* LTMathUtils.mm in Sources */,
 				28C61C0C18B23D930036D66E /* LTTouchCollector.mm in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
+				85E2B6611C58C5FA006AD39C /* LTSolidRectsDrawer.mm in Sources */,
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
 				508C155F1C1C84BF009ADA5C /* LTSampler.mm in Sources */,
 				50A4794719FB7BBC005ABA65 /* LTSingleQuadDrawer.mm in Sources */,
@@ -5476,6 +5520,7 @@
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
 				8BABF0D019B8491800AED760 /* LTEAWProcessorSpec.mm in Sources */,
 				508C156C1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm in Sources */,
+				85E2B6841C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm in Sources */,
 				038DDD8019EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm in Sources */,
 				8BAB7C5218C60065005BE12A /* LTMathUtilsSpec.mm in Sources */,
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
