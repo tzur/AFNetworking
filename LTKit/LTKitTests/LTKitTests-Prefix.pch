@@ -19,5 +19,6 @@ extern "C" {
 // LTKitTests.
 #ifdef __cplusplus
   #import "LTTestUtils.h"
+  #import "EXPMatchers+beBlock.h"
   #import "EXPMatchers+beCloseToPoint.h"
 #endif
