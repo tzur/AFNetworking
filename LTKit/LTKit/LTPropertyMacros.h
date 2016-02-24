@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Define the readonly min/max/default properties of a primitive property.
 #define LTPropertyDeclare(type, name, Name) \
-@property (nonatomic) BOOL __##name##Set; \
+@property (readonly, nonatomic) BOOL __##name##Set; \
 @property (readonly, nonatomic) type min##Name; \
 @property (readonly, nonatomic) type max##Name; \
 @property (readonly, nonatomic) type default##Name;
@@ -105,6 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// called automatically upon initialization, hence will require a manual call to the getter.
 #define LTPropertyWithoutSetter(type, name, Name, minValue, maxValue, defaultValue) \
   @synthesize name = _##name; \
+  @synthesize __##name##Set = ___##name##Set; \
   static const type __kMin##Name = minValue; \
   - (type)min##Name { \
     return __kMin##Name; \
@@ -155,6 +156,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Implement the property proxying to a property with a custom name, without the default setter.
 #define _LTPropertyProxyCustomWithoutSetter(type, name, Name, proxyBase, customName, CustomName) \
+  - (BOOL)__##name##Set { \
+    return proxyBase.__##customName##Set; \
+  } \
   - (type)min##Name { \
     return proxyBase.min##CustomName; \
   } \
