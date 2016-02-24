@@ -31,7 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithSeed:(NSUInteger)seed {
-  auto validSeed = seed % std::numeric_limits<std::default_random_engine::result_type>::max();
+  std::default_random_engine::result_type validSeed =
+      seed % std::numeric_limits<std::default_random_engine::result_type>::max();
   auto engine = std::default_random_engine(validSeed);
 
   std::stringstream stream;
