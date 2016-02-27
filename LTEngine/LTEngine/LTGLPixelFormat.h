@@ -52,6 +52,9 @@ LTEnumDeclare(NSUInteger, LTGLPixelFormat,
 /// Holds \c cv::Mat types that are supported by \c LTGLPixelFormat.
 typedef std::vector<int> LTGLPixelFormatSupportedMatTypes;
 
+/// Holds CVPixelFormatType's that are supported by \c LTGLPixelFormat.
+typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
+
 /// Additions for the basic enumeration type, including ways to initialize itself from external
 /// properties, retrieving OpenGL types that are required for OpenGL object construction and
 /// interaction with OpenCV and CoreVideo.
@@ -76,8 +79,26 @@ typedef std::vector<int> LTGLPixelFormatSupportedMatTypes;
 /// from \c matType, an assert will be raised.
 - (instancetype)initWithMatType:(int)matType;
 
+/// Initializes a new \c LTGLPixelFormat from a CVPixelFormatType. If no pixel format can be derived
+/// from \c cvPixelFormatType, an assert will be raised.
+- (instancetype)initWithCVPixelFormatType:(OSType)cvPixelFormatType;
+
+/// Initializes a new \c LTGLPixelFormat from a planar CVPixelFormatType, using the pixel format of
+/// the plane with the given index. If no pixel format can be derived from \c cvPixelFormatType and
+/// the given \c planeIndex, an assert will be raised.
+- (instancetype)initWithPlanarCVPixelFormatType:(OSType)cvPixelFormatType
+                                     planeIndex:(size_t)planeIndex;
+
 /// Returns a vector of the supported \c cv::Mat types via \c -[LTGLPixelFormat initWithMatType:].
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes;
+
+/// Returns a vector of the supported CVPixelFormatType types via
+/// \c -[LTGLPixelFormat initWithCVPixelFormatType:].
++ (LTGLPixelFormatSupportedCVPixelFormatTypes)supportedCVPixelFormatTypes;
+
+/// Returns a vector of the supported planar CVPixelFormatType types via
+/// \c -[LTGLPixelFormat initWithCVPixelFormatType:planeIndex:].
++ (LTGLPixelFormatSupportedCVPixelFormatTypes)supportedPlanarCVPixelFormatTypes;
 
 /// OpenGL format for the given OpenGL \c version, or \c LTGLInvalidEnum if no such format is
 /// available.

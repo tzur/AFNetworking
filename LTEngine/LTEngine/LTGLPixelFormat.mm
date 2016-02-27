@@ -163,24 +163,61 @@ static const std::unordered_map<int, _LTGLPixelFormat> kMatTypeToPixelFormat{
 /// Returns the pixel format that corresponds to the given \c cv::Mat \c type. Asserts if no such
 /// format is found.
 static _LTGLPixelFormat LTGLPixelFormatForMatType(int type) {
-  const auto it = kMatTypeToPixelFormat.find(type);
-  LTParameterAssert(it != kMatTypeToPixelFormat.cend(), @"Given mat type %d doesn't have a "
+  LTParameterAssert(kMatTypeToPixelFormat.count(type), @"Given mat type %d doesn't have a "
                     "matching internal format", type);
-  return it->second;
+  return kMatTypeToPixelFormat.at(type);
 }
 
-/// Maps between pixel format to CoreVideo pixel format.
-static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
-  {LTGLPixelFormatR8Unorm, kCVPixelFormatType_OneComponent8},
-  {LTGLPixelFormatR16Float, kCVPixelFormatType_OneComponent16Half},
-  {LTGLPixelFormatR32Float, kCVPixelFormatType_OneComponent32Float},
-  {LTGLPixelFormatRG8Unorm, kCVPixelFormatType_TwoComponent8},
-  {LTGLPixelFormatRG16Float, kCVPixelFormatType_TwoComponent16Half},
-  {LTGLPixelFormatRG32Float, kCVPixelFormatType_TwoComponent32Float},
-  {LTGLPixelFormatRGBA8Unorm, kCVPixelFormatType_32BGRA},
-  {LTGLPixelFormatRGBA16Float, kCVPixelFormatType_64RGBAHalf},
-  {LTGLPixelFormatRGBA32Float, kCVPixelFormatType_128RGBAFloat}
+/// Maps between CoreVideo pixel format (CVPixelFormatType) to pixel format.
+static const std::unordered_map<OSType, _LTGLPixelFormat> kCVPixelFormatTypeToPixelFormat{
+  {kCVPixelFormatType_OneComponent8, LTGLPixelFormatR8Unorm},
+  {kCVPixelFormatType_OneComponent16Half, LTGLPixelFormatR16Float},
+  {kCVPixelFormatType_OneComponent32Float, LTGLPixelFormatR32Float},
+  {kCVPixelFormatType_TwoComponent8, LTGLPixelFormatRG8Unorm},
+  {kCVPixelFormatType_TwoComponent16Half, LTGLPixelFormatRG16Float},
+  {kCVPixelFormatType_TwoComponent32Float, LTGLPixelFormatRG32Float},
+  {kCVPixelFormatType_32BGRA, LTGLPixelFormatRGBA8Unorm},
+  {kCVPixelFormatType_64RGBAHalf, LTGLPixelFormatRGBA16Float},
+  {kCVPixelFormatType_128RGBAFloat, LTGLPixelFormatRGBA32Float}
 };
+
+/// Maps between planar CoreVideo pixel format (CVPixelFormatType) to a vector of pixel formats, one
+/// for each plane.
+static const std::unordered_map<OSType, std::vector<_LTGLPixelFormat>>
+    kPlanarCVPixelFormatTypeToPixelFormats{
+  {kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+    {LTGLPixelFormatR8Unorm, LTGLPixelFormatRG8Unorm}},
+  {kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange,
+    {LTGLPixelFormatR8Unorm, LTGLPixelFormatRG8Unorm}},
+  {kCVPixelFormatType_420YpCbCr8Planar,
+    {LTGLPixelFormatR8Unorm, LTGLPixelFormatR8Unorm, LTGLPixelFormatR8Unorm}},
+  {kCVPixelFormatType_420YpCbCr8PlanarFullRange,
+    {LTGLPixelFormatR8Unorm, LTGLPixelFormatR8Unorm, LTGLPixelFormatR8Unorm}},
+};
+
+/// Returns the pixel format that corresponds to the given CVPixelFormatType. Asserts if no such
+/// format is found.
+static _LTGLPixelFormat LTGLPixelFormatForCVPixelFormatType(OSType type) {
+  LTParameterAssert(kCVPixelFormatTypeToPixelFormat.count(type),
+                    @"Given CVPixelFormatType 0x%08X doesn't have a matching internal format",
+                    (unsigned int)type);
+  return kCVPixelFormatTypeToPixelFormat.at(type);
+}
+
+/// Returns the pixel format that corresponds to the given CVPixelFormatType. Asserts if no such
+/// format is found.
+static _LTGLPixelFormat LTGLPixelFormatForPlanarCVPixelFormatType(OSType type, size_t planeIndex) {
+  LTParameterAssert(kPlanarCVPixelFormatTypeToPixelFormats.count(type),
+                    @"Given CVPixelFormatType 0x%08X doesn't have a matching internal format",
+                    (unsigned int)type);
+
+  const auto &planes = kPlanarCVPixelFormatTypeToPixelFormats.at(type);
+  LTParameterAssert(planeIndex < planes.size(),
+                    @"Given CVPixelFormatType %08X doesn't have a plane with index %zu",
+                    (unsigned int)type, planeIndex);
+
+  return planes[planeIndex];
+}
 
 @implementation LTGLPixelFormat (Additions)
 
@@ -201,6 +238,18 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
   return [self initWithValue:pixelFormat];
 }
 
+- (instancetype)initWithCVPixelFormatType:(OSType)cvPixelFormatType {
+  _LTGLPixelFormat pixelFormat = LTGLPixelFormatForCVPixelFormatType(cvPixelFormatType);
+  return [self initWithValue:pixelFormat];
+}
+
+- (instancetype)initWithPlanarCVPixelFormatType:(OSType)cvPixelFormatType
+                                     planeIndex:(size_t)planeIndex {
+  _LTGLPixelFormat pixelFormat = LTGLPixelFormatForPlanarCVPixelFormatType(cvPixelFormatType,
+                                                                           planeIndex);
+  return [self initWithValue:pixelFormat];
+}
+
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes {
   static LTGLPixelFormatSupportedMatTypes supportedTypes;
 
@@ -208,6 +257,37 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
   dispatch_once(&onceToken, ^{
     supportedTypes.resize(kMatTypeToPixelFormat.size());
     std::transform(kMatTypeToPixelFormat.cbegin(), kMatTypeToPixelFormat.cend(),
+                   supportedTypes.begin(), [](auto keyValuePair) {
+                     return keyValuePair.first;
+                   });
+  });
+
+  return supportedTypes;
+}
+
++ (LTGLPixelFormatSupportedCVPixelFormatTypes)supportedCVPixelFormatTypes {
+  static LTGLPixelFormatSupportedCVPixelFormatTypes supportedTypes;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    supportedTypes.resize(kCVPixelFormatTypeToPixelFormat.size());
+    std::transform(kCVPixelFormatTypeToPixelFormat.cbegin(), kCVPixelFormatTypeToPixelFormat.cend(),
+                   supportedTypes.begin(), [](auto keyValuePair) {
+                     return keyValuePair.first;
+                   });
+  });
+
+  return supportedTypes;
+}
+
++ (LTGLPixelFormatSupportedCVPixelFormatTypes)supportedPlanarCVPixelFormatTypes {
+  static LTGLPixelFormatSupportedCVPixelFormatTypes supportedTypes;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    supportedTypes.resize(kPlanarCVPixelFormatTypeToPixelFormats.size());
+    std::transform(kPlanarCVPixelFormatTypeToPixelFormats.cbegin(),
+                   kPlanarCVPixelFormatTypeToPixelFormats.cend(),
                    supportedTypes.begin(), [](auto keyValuePair) {
                      return keyValuePair.first;
                    });
@@ -237,9 +317,8 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
 }
 
 - (LTDescriptorTuple)descriptor {
-  const auto it = kFormatToDescriptor.find(self.value);
-  LTAssert(it != kFormatToDescriptor.cend(), @"No descriptor found for pixel format %@", self);
-  return it->second;
+  LTAssert(kFormatToDescriptor.count(self.value), @"No descriptor found for pixel format %@", self);
+  return kFormatToDescriptor.at(self.value);
 }
 
 - (LTGLPixelComponents)components {
@@ -264,8 +343,12 @@ static const std::unordered_map<int, GLenum> kPixelFormatToCoreVideoPixelFormat{
 }
 
 - (OSType)cvPixelFormatType {
-  const auto it = kPixelFormatToCoreVideoPixelFormat.find(self.value);
-  return it != kPixelFormatToCoreVideoPixelFormat.cend() ? it->second : kUnknownType;
+  for (const auto &pair : kCVPixelFormatTypeToPixelFormat) {
+    if (pair.second == self.value) {
+      return pair.first;
+    }
+  }
+  return kUnknownType;
 }
 
 @end
