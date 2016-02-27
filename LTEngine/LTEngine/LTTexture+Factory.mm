@@ -3,6 +3,7 @@
 
 #import "LTTexture+Factory.h"
 
+#import "LTCVPixelBufferExtensions.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTImage+Texture.h"
@@ -29,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (Class)defaultTextureClass {
   return [LTGLTexture class];
+}
+
++ (BOOL)isMemoryMappedTextureAvailable {
+  return [self textureClass] == [LTMMTexture class];
 }
 
 + (Class)classForPixelFormat:(LTGLPixelFormat *)pixelFormat maxMipmapLevel:(GLint)maxMipmapLevel {
@@ -104,6 +109,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)textureWithMipmapImages:(const Matrices &)images {
   return [[LTGLTexture alloc] initWithMipmapImages:images];
+}
+
++ (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+  if ([self isMemoryMappedTextureAvailable]) {
+    return [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer];
+  } else {
+    __block LTTexture *texture;
+    LTCVPixelBufferImageForReading(pixelBuffer, ^(const cv::Mat &image) {
+      texture = [self textureWithImage:image];
+    });
+    return texture;
+  }
+}
+
++ (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex {
+  if ([self isMemoryMappedTextureAvailable]) {
+    return [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer planeIndex:planeIndex];
+  } else {
+    __block LTTexture *texture;
+    LTCVPixelBufferPlaneImageForReading(pixelBuffer, planeIndex, ^(const cv::Mat &image) {
+      texture = [self textureWithImage:image];
+    });
+    return texture;
+  }
 }
 
 @end

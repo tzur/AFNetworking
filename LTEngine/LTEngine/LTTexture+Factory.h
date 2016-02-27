@@ -109,6 +109,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// or if image loading has failed.
 + (instancetype)textureWithMipmapImages:(const Matrices &)images;
 
+/// Creates a new texture with size and pixel format derived from the given \c pixelBuffer.
+/// If possible, the created texture is backed by the pixel buffer. Otherwise, the data is copied
+/// into the texture.
+///
+/// Throws \c LTGLException if the texture cannot be created, and \c NSInvalidArgumentException if
+/// \c pixelBuffer is a planar pixel buffer.
+///
+/// @note take take extra care when referencing \c pixelBuffer outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
++ (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+
+/// Creates a new texture with size and pixel format derived from a plane with index \c planeIndex
+/// of the given planar \c pixelBuffer. If possible, the created texture is backed by the pixel
+/// buffer. Otherwise, the data is copied into the texture.
+///
+/// Throws \c LTGLException if the texture cannot be created, and \c NSInvalidArgumentException if
+/// \c pixelBuffer is a non-planar pixel buffer or \c planeIndex is out of bounds.
+///
+/// @note take take extra care when referencing \c pixelBuffer outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
++ (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex;
+
 @end
 
 NS_ASSUME_NONNULL_END
