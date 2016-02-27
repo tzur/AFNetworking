@@ -272,6 +272,37 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
     });
 
+    context(@"texture with non continuous image", ^{
+      __block LTTexture *texture;
+      __block cv::Mat4b continuousImage;
+      __block cv::Mat4b nonContinuousImage;
+
+      beforeEach(^{
+        continuousImage.create(100, 100);
+        continuousImage.setTo(cv::Vec4b(0, 0, 255, 0));
+
+        nonContinuousImage = continuousImage(cv::Rect(17, 29, 48, 67));
+        for (int y = 0; y < nonContinuousImage.rows; ++y) {
+          for (int x = 0; x < nonContinuousImage.cols; ++x) {
+            nonContinuousImage(y, x) = cv::Vec4b(x, y, 0, 255);
+          }
+        }
+        expect(nonContinuousImage.isContinuous()).to.beFalsy();
+
+        texture = [(LTTexture *)[textureClass alloc] initWithImage:nonContinuousImage];
+      });
+
+      afterEach(^{
+        texture = nil;
+      });
+
+      it(@"should read entire texture to image", ^{
+        cv::Mat read = [texture image];
+
+        expect(LTCompareMat(nonContinuousImage, read)).to.beTruthy();
+      });
+    });
+
     context(@"cloning", ^{
       dit(@"should clone itself to a new texture", ^{
         LTTexture *cloned = [texture clone];
