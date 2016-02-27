@@ -231,7 +231,6 @@ static void LTVerifyMipmapImages(const Matrices &images) {
                     "(%d, %d)", rect.size.width, rect.size.height, image.cols, image.rows);
   LTParameterAssert(image.type() == [self matType], @"Given image has different type than the "
                     "type derived for this texture (%d vs. %d)", image.type(), [self matType]);
-  LTParameterAssert(image.isContinuous(), @"Given image matrix must be continuous");
 
   [self bindAndExecute:^{
     [self writeRect:rect fromImage:image];
@@ -240,11 +239,13 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 
 - (void)writeRect:(CGRect)rect fromImage:(const cv::Mat &)image {
   cv::Mat storedImage;
-  if ([self matType] == [self matTypeForWriting]) {
+  if ([self matType] == [self matTypeForWriting] && image.isContinuous()) {
     storedImage = image;
   } else {
+    // Conversion has a pleasant side effect of producing continuous matrices.
     LTConvertMat(image, &storedImage, [self matTypeForWriting]);
   }
+  LTAssert(storedImage.isContinuous(), @"Expected converted matrix to be continuous");
 
   [self writeWithBlock:^{
     [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
@@ -260,12 +261,12 @@ static void LTVerifyMipmapImages(const Matrices &images) {
       // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
       if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, rect.size.width, rect.size.height, 0, format,
-                     precision, image.data);
+                     precision, storedImage.data);
       } else {
         // TODO:(yaron) this may create another copy of the texture. This needs to be profiled and
         // if suffers from performance impact, consider using glTexStorage.
         glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
-                        rect.size.width, rect.size.height, format, precision, image.data);
+                        rect.size.width, rect.size.height, format, precision, storedImage.data);
       }
     }];
   }];
