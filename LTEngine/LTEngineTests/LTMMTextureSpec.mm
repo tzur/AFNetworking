@@ -3,10 +3,12 @@
 
 #import "LTMMTexture.h"
 
+#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
+#import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTRectDrawer.h"
 #import "LTShaderStorage+ColorizeFsh.h"
@@ -20,7 +22,7 @@ using half_float::half;
 
 /// Uploads the given \c image to an \c LTMMTexture, draws it to an \c LTGLTexture and fetches the
 /// resulting image.
-cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
+static cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
   LTMMTexture *source = [[LTMMTexture alloc] initWithImage:image];
   LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                 fragmentSource:[PassthroughFsh source]];
@@ -259,6 +261,79 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
         cv::Scalar scalar(value, value, value, value);
         expect(LTFuzzyCompareMatWithValue(scalar, [target image])).to.beTruthy();
       }
+    });
+  });
+
+  context(@"pixel buffer", ^{
+    it(@"should create texture from pixel buffer", ^{
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+      expect(texture).toNot.beNil();
+      expect(texture.size).to.equal(CGSizeMake(1, 1));
+    });
+
+    it(@"should create texture from planes of planar pixel buffer", ^{
+      auto pixelBuffer =
+          LTCVPixelBufferCreate(2, 2, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+
+      LTMMTexture *plane0 = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                           planeIndex:0];
+      LTMMTexture *plane1 = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                           planeIndex:1];
+      expect(plane0).toNot.beNil();
+      expect(plane0.size).to.equal(CGSizeMake(2, 2));
+
+      expect(plane1).toNot.beNil();
+      expect(plane1.size).to.equal(CGSizeMake(1, 1));
+    });
+
+    it(@"should raise when creating texture with invalid plane index", ^{
+      __block auto pixelBuffer =
+          LTCVPixelBufferCreate(2, 2, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+
+      expect(^{
+        LTMMTexture __unused *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                              planeIndex:10];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when creating texture with plane index and non planar pixel buffer", ^{
+      __block auto pixelBuffer = LTCVPixelBufferCreate(2, 2, kCVPixelFormatType_32BGRA);
+
+      expect(^{
+        LTMMTexture __unused *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                                      planeIndex:0];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should preserve pixel buffer content", ^{
+      static const cv::Vec4b kPixelValue{0, 20, 30, 40};
+
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+        image->at<cv::Vec4b>(0, 0) = kPixelValue;
+      });
+
+      LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+      LTVector4 expected = LTCVVec4bToLTVector4(kPixelValue);
+      LTVector4 actual = [texture pixelValue:CGPointMake(0, 0)];
+      expect(actual).to.equal(expected);
+    });
+
+    dit(@"should make pixel buffer content visible to gpu", ^{
+      static const cv::Vec4b kPixelValue{0, 20, 30, 40};
+
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+        image->at<cv::Vec4b>(0, 0) = kPixelValue;
+      });
+
+      // Cloning is done via GPU, thus clonned texture shows only data visible to GPU.
+      LTTexture *cloned = [[[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()] clone];
+
+      LTVector4 expected = LTCVVec4bToLTVector4(kPixelValue);
+      LTVector4 actual = [cloned pixelValue:CGPointMake(0, 0)];
+      expect(actual).to.equal(expected);
     });
   });
 });
