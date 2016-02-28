@@ -31,6 +31,11 @@ NSString * const kLTGPUQueueContextCreationFailedException =
     @"GPU Queue Context Creation Failed Exception";
 NSString * const kLTGPUQueueContextSetFailedException = @"GPU Queue Context Set Failed Exception";
 
+NSString * const kLTCVPixelBufferCreationFailedException =
+    @"Pixel Buffer Creation Failed Exception";
+NSString * const kLTCVPixelBufferLockingFailedException =
+    @"Pixel Buffer Locking Failed Exception";
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -
