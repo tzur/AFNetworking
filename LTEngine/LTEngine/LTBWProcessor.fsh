@@ -146,5 +146,5 @@ void main() {
   // 7. Apply color gradient.
   mediump vec4 outputColor = texture2D(colorGradient, vec2(mix(lum, 0.5, colorGradientFade), 0.0));
   
-  gl_FragColor = vec4(outputColor.rgb, 1.0);
+  gl_FragColor = vec4(outputColor.rgb, color.a);
 }

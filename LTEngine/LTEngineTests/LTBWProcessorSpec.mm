@@ -215,6 +215,28 @@ context(@"processing", ^{
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
+  it(@"should not change alpha", ^{
+    cv::Mat4b input(1, 3);
+    input(0, 0) = cv::Vec4b(0, 0, 0, 255);
+    input(0, 1) = cv::Vec4b(0, 0, 0, 128);
+    input(0, 2) = cv::Vec4b(0, 0, 0, 0);
+    
+    inputTexture = [LTTexture textureWithImage:input];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    
+    cv::Mat4b output(1, 3);
+    output(0, 0) = cv::Vec4b(255, 0, 0, 255);
+    output(0, 1) = cv::Vec4b(255, 0, 0, 128);
+    output(0, 2) = cv::Vec4b(255, 0, 0, 0);
+    
+    // Random changes, to check that the processing doesn't affect the alpha.
+    processor.contrast = 0.5;
+    processor.colorGradient = [LTColorGradient redToRedGradient];
+    [processor process];
+    
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+  });
 });
 
 context(@"integration tests", ^{
