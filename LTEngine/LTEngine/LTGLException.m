@@ -68,7 +68,7 @@ NSString * const kLTGPUQueueContextSetFailedException = @"GPU Queue Context Set 
 #pragma mark NSError+LTGLException
 #pragma mark -
 
-NSString * const kNSErrorLTGLExceptionDomain = @"com.lightricks.LTKit.LTGLExceptionErrorDomain";
+NSString * const kNSErrorLTGLExceptionDomain = @"com.lightricks.LTGLExceptionErrorDomain";
 
 const NSInteger kNSErrorLTGLExceptionCode = 0;
 
