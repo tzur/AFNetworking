@@ -21,6 +21,19 @@ it(@"should return correct identifier", ^{
   expect(asset.modificationDate).to.equal(lastModified);
 });
 
+it(@"should return correct identifier with latest revision", ^{
+  NSDate *lastModified = [[NSDate alloc] init];
+  DBMetadata *metadata =
+      PTNDropboxCreateFileMetadataWithModificationDate(@"foo/bar.jpg", @"bar", lastModified);
+  PTNDropboxFileDescriptor *asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata
+                                                                        latestRevision:YES];
+  PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:@"foo/bar.jpg" andRevision:nil];
+
+  expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAssetURLWithEntry:entry]);
+  expect(asset.localizedTitle).to.equal(@"bar.jpg");
+  expect(asset.modificationDate).to.equal(lastModified);
+});
+
 context(@"equality", ^{
   __block PTNDropboxFileDescriptor *firstFile;
   __block PTNDropboxFileDescriptor *secondFile;

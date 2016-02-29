@@ -13,25 +13,28 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNDropboxFileDescriptor ()
 
 /// Path associated with this descriptor.
-@property (strong, nonatomic) NSString *path;
+@property (readonly, nonatomic) NSString *path;
 
 /// Revision associated with this descriptor.
-@property (strong, nonatomic) NSString *revision;
-
-/// Date the Dropbox entry represented by this descriptor was last modified.
-@property (strong, nonatomic, nullable) NSDate *modificationDate;
+@property (readonly, nonatomic, nullable) NSString *revision;
 
 @end
 
 @implementation PTNDropboxFileDescriptor
 
+@synthesize modificationDate = _modificationDate;
+
 - (instancetype)initWithMetadata:(DBMetadata *)metadata {
+  return [self initWithMetadata:metadata latestRevision:NO];
+}
+
+- (instancetype)initWithMetadata:(DBMetadata *)metadata latestRevision:(BOOL)latestRevision {
   LTParameterAssert(!metadata.isDirectory, @"Given metadata does not represent a file: %@",
                     metadata);
   if (self = [super init]) {
-    self.path = metadata.path;
-    self.revision = metadata.rev;
-    self.modificationDate = metadata.lastModifiedDate;
+    _path = metadata.path;
+    _revision = latestRevision ? nil : metadata.rev;
+    _modificationDate = metadata.lastModifiedDate;
   }
   return self;
 }

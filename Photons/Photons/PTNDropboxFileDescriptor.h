@@ -14,7 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with the Dropbox metadata of the file to be represented by this descriptor.
 /// \c metadata.isDirectory must be \c NO.
-- (instancetype)initWithMetadata:(DBMetadata *)metadata NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithMetadata:(DBMetadata *)metadata;
+
+/// Initializes with the Dropbox metadata of the file to be represented by this descriptor.
+/// \c metadata.isDirectory must be \c NO. If \c latestRevision is \c YES the revision in
+/// \c metadata is overriden and set to \c latest.
+- (instancetype)initWithMetadata:(DBMetadata *)metadata latestRevision:(BOOL)latestRevision
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
