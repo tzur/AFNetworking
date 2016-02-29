@@ -17,9 +17,6 @@ NSString * const kLTProgramLinkFailedException = @"Program Link Failed Exception
 
 NSString * const kLTTextureCreationFailedException = @"Texture Creation Failed Exception";
 
-NSString * const kLTMMTextureBufferLockingFailedException =
-    @"Texture Buffer Locking Failed Exception";
-
 NSString * const kLTArrayBufferMappingFailedException = @"Array Buffer Mapping Failed Exception";
 NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException =
     @"Array Buffer Disallows Static Buffer Update Exception";

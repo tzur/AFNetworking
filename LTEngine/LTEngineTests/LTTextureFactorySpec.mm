@@ -3,6 +3,8 @@
 
 #import "LTTexture+Factory.h"
 
+#import "LTCVPixelBufferExtensions.h"
+
 SpecBegin(LTTextureFactory)
 
 /// Since the class is currently decided in compile time, only verify that the class methods are
@@ -57,6 +59,22 @@ it(@"should initialize mipmap with multiple images", ^{
   LTTexture *texture = [LTTexture textureWithMipmapImages:images];
 
   expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize with pixel buffer", ^{
+  auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+  LTTexture *texture = [LTTexture textureWithPixelBuffer:pixelBuffer.get()];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize with planar pixel buffer", ^{
+  auto pixelBuffer = LTCVPixelBufferCreate(2, 2, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+  LTTexture *plane0 = [LTTexture textureWithPixelBuffer:pixelBuffer.get() planeIndex:0];
+  LTTexture *plane1 = [LTTexture textureWithPixelBuffer:pixelBuffer.get() planeIndex:1];
+
+  expect(plane0).to.beKindOf([LTTexture class]);
+  expect(plane1).to.beKindOf([LTTexture class]);
 });
 
 SpecEnd

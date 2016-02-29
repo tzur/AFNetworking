@@ -4,6 +4,7 @@
 #import "LTMMTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -22,6 +23,9 @@
   /// Reference to the texture cache object.
   lt::Ref<CVOpenGLESTextureCacheRef> _textureCache;
 }
+
+/// Index of the pixel buffer plane backing this texture, or \c 0 if the pixel buffer is not planar.
+@property (readonly, nonatomic) size_t planeIndex;
 
 /// Lock for texture read/write synchronization.
 @property (strong, nonatomic) NSRecursiveLock *lock;
@@ -43,15 +47,63 @@
   LTParameterAssert(!maxMipmapLevel, @"LTMMTexture does not support mipmaps");
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
                   allocateMemory:allocateMemory]) {
-    [self create];
+    _pixelBuffer = [self createPixelBuffer];
+    [self createTexture];
   }
   return self;
 }
 
-- (void)create {
-  // It's impossible to avoid memory allocation since the shared memory texture buffer must be
-  // allocated via CV* functions to allow updates to reflect to OpenGL.
-  [self createPixelBuffer];
+- (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+  LTParameterAssert(pixelBuffer);
+  LTParameterAssert(!CVPixelBufferIsPlanar(pixelBuffer),
+                    @"The given pixel buffer must not be planar");
+
+  CGSize size = CGSizeMake(CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
+  LTGLPixelFormat *pixelFormat =
+      [[LTGLPixelFormat alloc]
+       initWithCVPixelFormatType:CVPixelBufferGetPixelFormatType(pixelBuffer)];
+
+  if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0 allocateMemory:NO]) {
+    _pixelBuffer = lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer));
+    _planeIndex = 0;
+    [self createTexture];
+  }
+  return self;
+}
+
+- (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex {
+  LTParameterAssert(pixelBuffer);
+  LTParameterAssert(CVPixelBufferIsPlanar(pixelBuffer),
+                    @"The given pixel buffer must be planar");
+
+  const size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
+  LTParameterAssert(planeIndex < planeCount, @"The given plane index: %zu is invalid. "
+                    "The given pixel buffer has only %zu planes", planeIndex, planeCount);
+
+  CGSize size = CGSizeMake(CVPixelBufferGetWidthOfPlane(pixelBuffer, planeIndex),
+                           CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex));
+  LTGLPixelFormat *pixelFormat =
+      [[LTGLPixelFormat alloc]
+       initWithPlanarCVPixelFormatType:CVPixelBufferGetPixelFormatType(pixelBuffer)
+       planeIndex:planeIndex];
+
+  if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0 allocateMemory:NO]) {
+    _pixelBuffer = lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer));
+    _planeIndex = planeIndex;
+    [self createTexture];
+  }
+  return self;
+}
+
+- (lt::Ref<CVPixelBufferRef>)createPixelBuffer {
+  OSType pixelFormatType = self.pixelFormat.cvPixelFormatType;
+  LTParameterAssert(pixelFormatType != kUnknownType, @"Pixel format %@ is not compatible with "
+                    "CoreVideo, so no pixel buffer can be created from it", self.pixelFormat);
+
+  return LTCVPixelBufferCreate(self.size.width, self.size.height, pixelFormatType);
+}
+
+- (void)createTexture {
   [self createTextureCache];
   [self allocateTexture];
   [self bindAndExecute:^{
@@ -60,24 +112,6 @@
     [self setWrap:self.wrap];
     [self setMaxMipmapLevel:self.maxMipmapLevel];
   }];
-}
-
-- (void)createPixelBuffer {
-  NSDictionary *attributes = @{(NSString *)kCVPixelBufferIOSurfacePropertiesKey: @{}};
-
-  CVPixelBufferRef pixelBufferRef;
-  OSType pixelFormatType = self.pixelFormat.cvPixelFormatType;
-  LTParameterAssert(pixelFormatType != kUnknownType, @"Pixel format %@ is not compatible with "
-                    "CoreVideo, so no pixel buffer can be created from it", self.pixelFormat);
-  CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault, self.size.width, self.size.height,
-                                        pixelFormatType, (__bridge CFDictionaryRef)attributes,
-                                        &pixelBufferRef);
-  if (result != kCVReturnSuccess) {
-    [LTGLException raise:kLTTextureCreationFailedException
-                  format:@"Failed creating pixel buffer with error %d", result];
-  }
-
-  _pixelBuffer.reset(pixelBufferRef);
 }
 
 - (void)createTextureCache {
@@ -111,7 +145,7 @@
                                                                  self.size.width, self.size.height,
                                                                  format,
                                                                  precision,
-                                                                 0,
+                                                                 self.planeIndex,
                                                                  &textureRef);
   if (result != kCVReturnSuccess) {
     [LTGLException raise:kLTTextureCreationFailedException
@@ -296,7 +330,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
-    LTAssert(_pixelBuffer, @"Pixelbuffer must be created before calling mappedImage:");
+    LTAssert(_pixelBuffer, @"Pixel buffer must be created before calling mappedImage:");
 
     // Make sure everything is written to the texture before reading back to CPU.
     __block BOOL isSync;
@@ -309,12 +343,15 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
       [self waitForGPU];
     }
 
-    [self lockBufferAndExecute:^{
-      void *base = CVPixelBufferGetBaseAddress(_pixelBuffer.get());
-      cv::Mat mat(self.size.height, self.size.width, self.matType, base,
-                  CVPixelBufferGetBytesPerRow(_pixelBuffer.get()));
-      block(&mat, NO);
-    } withFlags:lockFlags];
+    if (!CVPixelBufferIsPlanar(_pixelBuffer.get())) {
+      LTCVPixelBufferImage(_pixelBuffer.get(), lockFlags, ^(cv::Mat *image) {
+        block(image, NO);
+      });
+    } else {
+      LTCVPixelBufferPlaneImage(_pixelBuffer.get(), lockFlags, self.planeIndex, ^(cv::Mat *image) {
+        block(image, NO);
+      });
+    }
   }];
 }
 
@@ -331,22 +368,6 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");
   LTAssert(waitResult != GL_WAIT_FAILED_APPLE, @"Failed waiting on sync object");
-}
-
-- (void)lockBufferAndExecute:(LTVoidBlock)block withFlags:(CVOptionFlags)lockFlags {
-  CVReturn lockResult = CVPixelBufferLockBaseAddress(_pixelBuffer.get(), lockFlags);
-  if (kCVReturnSuccess != lockResult) {
-    [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                  format:@"Failed locking base address of buffer with error %d", lockResult];
-  }
-
-  if (block) block();
-
-  CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(_pixelBuffer.get(), lockFlags);
-  if (kCVReturnSuccess != unlockResult) {
-    [LTGLException raise:kLTMMTextureBufferLockingFailedException
-                  format:@"Failed unlocking base address of buffer with error %d", unlockResult];
-  }
 }
 
 - (void)setSyncObject:(GLsync)syncObject {

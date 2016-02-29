@@ -19,9 +19,6 @@ extern NSString * const kLTProgramLinkFailedException;
 // LTTexture.
 extern NSString * const kLTTextureCreationFailedException;
 
-// LTMMTexture.
-extern NSString * const kLTMMTextureBufferLockingFailedException;
-
 // LTArrayBuffer.
 extern NSString * const kLTArrayBufferMappingFailedException;
 extern NSString * const kLTArrayBufferDisallowsStaticBufferUpdateException;
