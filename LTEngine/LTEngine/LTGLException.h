@@ -34,6 +34,10 @@ extern NSString * const kLTFboCreationFailedException;
 extern NSString * const kLTGPUQueueContextCreationFailedException;
 extern NSString * const kLTGPUQueueContextSetFailedException;
 
+// CVPixelBuffer extensions.
+extern NSString * const kLTCVPixelBufferCreationFailedException;
+extern NSString * const kLTCVPixelBufferLockingFailedException;
+
 #pragma mark -
 #pragma mark LTGLException
 #pragma mark -
