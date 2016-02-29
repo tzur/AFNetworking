@@ -35,39 +35,55 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
 
   it(@"should return valid OpenGL format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-      expect([pixelFormat formatForVersion:version]).toNot.equal(LTGLInvalidEnum);
+      expect([pixelFormat formatForVersion:version]).notTo.equal(LTGLInvalidEnum);
     }];
   });
 
   it(@"should return valid OpenGL precision for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-      expect([pixelFormat precisionForVersion:version]).toNot.equal(LTGLInvalidEnum);
+      expect([pixelFormat precisionForVersion:version]).notTo.equal(LTGLInvalidEnum);
     }];
   });
 
   it(@"should return valid OpenGL texture internal format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-      expect([pixelFormat textureInternalFormatForVersion:version]).toNot.equal(LTGLInvalidEnum);
+      expect([pixelFormat textureInternalFormatForVersion:version]).notTo.equal(LTGLInvalidEnum);
     }];
   });
 
   it(@"should return valid OpenGL renderbuffer internal format for LTGLPixelFormatRGBA8Unorm", ^{
     LTGLPixelFormat *pixelFormat = $(LTGLPixelFormatRGBA8Unorm);
-    expect([pixelFormat textureInternalFormatForVersion:version]).toNot.equal(LTGLInvalidEnum);
+    expect([pixelFormat textureInternalFormatForVersion:version]).notTo.equal(LTGLInvalidEnum);
   });
-});
 
-it(@"should initialize with all supported mat types", ^{
-  for (int matType : [LTGLPixelFormat supportedMatTypes]) {
-    LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:matType];
-    expect(pixelFormat.matType).to.equal(matType);
-  }
-});
+  it(@"should initialize with all supported mat types", ^{
+    for (int matType : [LTGLPixelFormat supportedMatTypes]) {
+      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMatType:matType];
+      expect(pixelFormat.matType).to.equal(matType);
+    }
+  });
 
-it(@"should provide cvPixelFormatType for all pixel formats", ^{
-  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-    expect(pixelFormat.cvPixelFormatType).toNot.equal(kUnknownType);
-  }];
+  it(@"should initialize with all supported CVPixelFormatTypes", ^{
+    for (OSType formatType : [LTGLPixelFormat supportedCVPixelFormatTypes]) {
+      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithCVPixelFormatType:formatType];
+      expect(pixelFormat.cvPixelFormatType).to.equal(formatType);
+    }
+  });
+
+  it(@"should initialize with all supported planar CVPixelFormatTypes", ^{
+    for (OSType formatType : [LTGLPixelFormat supportedPlanarCVPixelFormatTypes]) {
+      expect(^{
+        LTGLPixelFormat __unused *pixelFormat =
+            [[LTGLPixelFormat alloc] initWithPlanarCVPixelFormatType:formatType planeIndex:0];
+      }).toNot.raiseAny();
+    }
+  });
+
+  it(@"should provide cvPixelFormatType for all pixel formats", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+      expect(pixelFormat.cvPixelFormatType).notTo.equal(kUnknownType);
+    }];
+  });
 });
 
 itShouldBehaveLike(kLTGLPixelFormatExamples, @{@"version": @(LTGLVersion2)});
