@@ -6,12 +6,12 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
-#import "PTNImageContainer.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitAlbumType.h"
 #import "PTNPhotoKitFetcher.h"
+#import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitObserver.h"
 #import "PTNProgress.h"
@@ -344,28 +344,8 @@ NS_ASSUME_NONNULL_BEGIN
                                 options:(PTNImageFetchOptions *)options {
   return [[[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
-        RACSignal *assetContent = [self fetchContentForAsset:asset resizingStrategy:resizingStrategy
-                                                     options:[options photoKitOptions]];
-        if (!options.fetchMetadata) {
-          return assetContent;
-        }
-
-        RACSignal *assetContentReplayed = [assetContent ptn_replayLastLazily];
-
-        RACSignal *progressOnly = [assetContentReplayed
-            filter:^BOOL(PTNProgress *progress) {
-              return progress.progress != nil;
-            }];
-
-        RACSignal *resultWithMetadata = [[assetContentReplayed
-            filter:^BOOL(PTNProgress *progress) {
-              return progress.result != nil;
-            }]
-            flattenMap:^(PTNProgress<PTNImageContainer *> *progress) {
-              return [self attachMetadataOfAsset:asset toImage:progress.result.image];
-            }];
-
-        return [progressOnly concat:resultWithMetadata];
+        return [self imageAssetForPhotoKitAsset:asset resizingStrategy:resizingStrategy
+                                        options:[options photoKitOptions]];
       }]
       subscribeOn:RACScheduler.scheduler];
 }
@@ -379,18 +359,9 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (RACSignal *)attachMetadataOfAsset:(PHAsset *)asset toImage:(UIImage *)image {
-  return [[self fetchMetadataForAsset:asset options:nil]
-      map:^id(PTNImageMetadata *metadata) {
-        PTNImageContainer *imageContainer = [[PTNImageContainer alloc]
-                                             initWithImage:image metadata:metadata];
-        return [[PTNProgress alloc] initWithResult:imageContainer];
-      }];
-}
-
-- (RACSignal *)fetchContentForAsset:(PHAsset *)asset
-                   resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
-                            options:(PHImageRequestOptions *)options {
+- (RACSignal *)imageAssetForPhotoKitAsset:(PHAsset *)asset
+                         resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                                  options:(PHImageRequestOptions *)options {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error,
                                 BOOL __unused *stop, NSDictionary __unused *info) {
@@ -417,8 +388,9 @@ NS_ASSUME_NONNULL_BEGIN
                                           underlyingError:info[PHImageErrorKey]];
         [subscriber sendError:wrappedError];
       } else {
-        PTNImageContainer *imageContainer = [[PTNImageContainer alloc] initWithImage:result];
-        PTNProgress *progress = [[PTNProgress alloc] initWithResult:imageContainer];
+        PTNPhotoKitImageAsset *imageAsset = [[PTNPhotoKitImageAsset alloc] initWithImage:result
+                                                                                   asset:asset];
+        PTNProgress *progress = [[PTNProgress alloc] initWithResult:imageAsset];
         [subscriber sendNext:progress];
       }
 
@@ -437,46 +409,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     return [RACDisposable disposableWithBlock:^{
       [self.imageManager cancelImageRequest:requestID];
-    }];
-  }];
-}
-
-- (RACSignal *)fetchMetadataForAsset:(PHAsset *)asset
-                             options:(nullable PHContentEditingInputRequestOptions *)options {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    void (^completionHandler)(PHContentEditingInput *contentEditingInput, NSDictionary *info) =
-        ^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-          // \c PHContentEditingInputResultIsInCloudKey is always \c YES, even if photo has already
-          /// been downloaded. Check the \c fullSizeImageURL instead.
-          if (!contentEditingInput.fullSizeImageURL || info[PHContentEditingInputErrorKey]) {
-            NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                          url:asset.ptn_identifier
-                                              underlyingError:info[PHContentEditingInputErrorKey]];
-            [subscriber sendError:wrappedError];
-            return;
-          }
-
-          NSError *metadataError;
-          PTNImageMetadata *metadata = [[PTNImageMetadata alloc]
-                                        initWithImageURL:contentEditingInput.fullSizeImageURL
-                                        error:&metadataError];
-          if (metadataError) {
-            NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                          url:asset.ptn_identifier
-                                              underlyingError:metadataError];
-            [subscriber sendError:wrappedError];
-            return;
-          }
-
-          [subscriber sendNext:metadata];
-          [subscriber sendCompleted];
-        };
-
-    PHContentEditingInputRequestID requestID =
-        [asset requestContentEditingInputWithOptions:options completionHandler:completionHandler];
-
-    return [RACDisposable disposableWithBlock:^{
-      [asset cancelContentEditingInputRequest:requestID];
     }];
   }];
 }

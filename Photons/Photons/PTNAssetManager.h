@@ -51,8 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// album).
 ///
 /// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
-/// final result is sent and errs if an error occurred while fetching the image. The result type
-/// will always be a \c PTNImageContainer.
+/// final result is sent and errs if an error occurred while fetching the image asset, or if
+/// creation of the image asset has failed. The result type will always be a \c PTNImageAsset.
 ///
 /// If the asset doesn't exist, the signal will err.
 ///

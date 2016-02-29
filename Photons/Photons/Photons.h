@@ -16,8 +16,9 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/PTNAlbumChangesetMove.h>
 #import <Photons/PTNAssetManager.h>
 #import <Photons/PTNCollection.h>
+#import <Photons/PTNDataAsset.h>
 #import <Photons/PTNDescriptor.h>
-#import <Photons/PTNImageContainer.h>
+#import <Photons/PTNImageAsset.h>
 #import <Photons/PTNImageContentMode.h>
 #import <Photons/PTNImageFetchOptions.h>
 #import <Photons/PTNImageMetadata.h>
