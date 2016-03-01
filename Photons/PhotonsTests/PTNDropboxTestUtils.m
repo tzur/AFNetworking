@@ -21,6 +21,13 @@ DBMetadata *PTNDropboxCreateFileMetadataWithModificationDate(NSString *path,
   return metadata;
 }
 
+DBMetadata *PTNDropboxCreateDirectoryMetadataWithContents(NSString *path,
+                                                          NSArray<DBMetadata *> *contents) {
+  DBMetadata *metadata = PTNDropboxCreateDirectoryMetadata(path);
+  OCMStub([metadata contents]).andReturn(contents);
+  return metadata;
+}
+
 DBMetadata *PTNDropboxCreateDirectoryMetadata(NSString *path) {
   DBMetadata *metadata = PTNDropboxCreateMetadata(path, nil);
   OCMStub([metadata isDirectory]).andReturn(YES);
