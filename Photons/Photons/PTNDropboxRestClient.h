@@ -7,17 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Wrapper to a linked Dropbox REST client.
-@interface PTNDropboxRestClient : NSObject
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes an with a \c restClientProvider and \c pathProvider. \c restClientProvider supplies
-/// Dropbox REST clients. \c pathProvider is used to supply file paths in which to save downloaded
-/// assets.
-- (instancetype)initWithRestClientProvider:(id<PTNDropboxRestClientProvider>)restClientProvider
-                              pathProvider:(id<PTNDropboxPathProvider>)pathProvider
-    NS_DESIGNATED_INITIALIZER;
+@protocol PTNDropboxRestClient <NSObject>
 
 /// Fetches the \c DBMetadata located at \c path relative to the Dropbox session's root folder, in
 /// given \c revision. The returned signal will send a \c DBMetadata object on an arbitrary thread,
@@ -61,6 +51,20 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return <tt>RACSignal<NSString *></tt>.
 - (RACSignal *)fetchThumbnail:(NSString *)path type:(PTNDropboxThumbnailType *)type;
+
+@end
+
+/// Wrapper to a linked Dropbox REST client.
+@interface PTNDropboxRestClient : NSObject <PTNDropboxRestClient>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes an with a \c restClientProvider and \c pathProvider. \c restClientProvider supplies
+/// Dropbox REST clients. \c pathProvider is used to supply file paths in which to save downloaded
+/// assets.
+- (instancetype)initWithRestClientProvider:(id<PTNDropboxRestClientProvider>)restClientProvider
+                              pathProvider:(id<PTNDropboxPathProvider>)pathProvider
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
