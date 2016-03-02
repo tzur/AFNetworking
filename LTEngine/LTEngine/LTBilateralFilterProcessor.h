@@ -14,6 +14,13 @@
 /// output textures.
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs;
 
+/// Initializes a new bilateral filter processor with a single input texture, a \c guide texture
+/// from which the weights will be taken during the smoothing process and varying number of output
+/// textures. When \c guide is the same as \c input, the filter operates as a regular bilateral
+/// filer. \c input texture and \c guide texture must have the same size.
+- (instancetype)initWithInput:(LTTexture *)input guide:(LTTexture *)guide
+                      outputs:(NSArray *)outputs;
+
 /// Range sigma used when calculating color differences between neighbour pixels.
 @property (nonatomic) float rangeSigma;
 
