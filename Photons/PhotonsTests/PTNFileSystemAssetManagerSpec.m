@@ -3,13 +3,15 @@
 
 #import "PTNFileSystemAssetManager.h"
 
+#import <LTKit/LTPath.h>
+
 #import "NSError+Photons.h"
+#import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemAlbum.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFakeFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
 #import "PTNFileSystemTestUtils.h"
-#import "PTNImageContainer.h"
 #import "PTNImageResizer.h"
 
 SpecBegin(PTNFileSystemAssetManager)
@@ -154,29 +156,26 @@ context(@"asset fetching", ^{
 context(@"image fetching", ^{
   __block id<PTNResizingStrategy> resizingStrategy;
   __block PTNImageFetchOptions *options;
-  __block UIImage *image;
+  __block id<PTNImageAsset> imageAsset;
   __block id<PTNDescriptor> asset;
 
   beforeEach(^{
     resizingStrategy = [PTNResizingStrategy identity];
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                 resizeMode:PTNImageResizeModeFast
-                                              fetchMetadata:NO];
-    NSURL *fileURL = [NSURL fileURLWithPath:@"/foo.jpg"];
-    image = [[UIImage alloc] init];
-
-    OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
-        .andReturn([RACSignal return:image]);
+                                                 resizeMode:PTNImageResizeModeFast];
+    imageAsset = [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"foo.jpg"]
+                                                       fileManager:fileManager
+                                                      imageResizer:imageResizer
+                                                  resizingStrategy:resizingStrategy];
     asset = PTNFileSystemFileFromString(@"foo.jpg");
   });
 
   context(@"fetch image of asset", ^{
     it(@"should fetch image", ^{
-      expect([manager fetchImageWithDescriptor:asset
-                              resizingStrategy:resizingStrategy
-                                       options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithResult:[[PTNImageContainer alloc] initWithImage:image]]
-      ]);
+      RACSignal *values = [manager fetchImageWithDescriptor:asset
+                                           resizingStrategy:resizingStrategy
+                                                    options:options];
+      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should complete after fetching an image", ^{
@@ -189,42 +188,30 @@ context(@"image fetching", ^{
 
     it(@"should error on non-existing assets", ^{
       asset = PTNFileSystemFileFromString(@"/foo/bar/baz.jpg");
-      NSURL *fileURL = [NSURL fileURLWithPath:@"/foo/bar/baz.jpg"];
-      OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
-          .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
       RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                                     options:options];
 
       expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
-      });
-    });
-
-    context(@"thread transitions", ^{
-      it(@"should not operate on the main thread", ^{
-        RACSignal *values = [manager fetchImageWithDescriptor:asset
-                                             resizingStrategy:resizingStrategy
-                                                      options:options];
-
-        expect(values).will.sendValuesWithCount(1);
-        expect(values).willNot.deliverValuesOnMainThread();
+        return error.code == PTNErrorCodeAssetNotFound;
       });
     });
   });
 
   context(@"fetch image of asset collection", ^{
     beforeEach(^{
-      NSURL *fileURL = [NSURL fileURLWithPath:@"/baz/foo.jpg"];
-      OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
-          .andReturn([RACSignal return:image]);
+      imageAsset =
+          [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz/foo.jpg"]
+                                                fileManager:fileManager
+                                               imageResizer:imageResizer
+                                           resizingStrategy:resizingStrategy];
     });
 
     it(@"should fetch asset collection representative image", ^{
-      expect([manager fetchImageWithDescriptor:PTNFileSystemDirectoryFromString(@"baz")
-                              resizingStrategy:resizingStrategy
-                                       options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithResult:[[PTNImageContainer alloc] initWithImage:image]]
-      ]);
+      id<PTNDescriptor> directoryDesc = PTNFileSystemDirectoryFromString(@"baz");
+      RACSignal *values = [manager fetchImageWithDescriptor:directoryDesc
+                                           resizingStrategy:resizingStrategy
+                                                    options:options];
+      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should error on non-existing key assets", ^{
@@ -255,62 +242,6 @@ context(@"image fetching", ^{
       
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeInvalidDescriptor;
-      });
-    });
-  });
-
-  context(@"metadata fetching", ^{
-    __block PTNImageFetchOptions *fetchMetadataOptions;
-
-    beforeEach(^{
-      fetchMetadataOptions = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                                resizeMode:PTNImageResizeModeFast
-                                                             fetchMetadata:YES];
-      NSURL *metadataURL =
-          [[NSBundle bundleForClass:[self class]] URLForResource:@"PTNImageMetadataImage"
-                                                   withExtension:@"jpg"];
-      OCMStub([imageResizer resizeImageAtURL:metadataURL resizingStrategy:resizingStrategy])
-          .andReturn([RACSignal return:image]);
-      asset = PTNFileSystemFileFromString(metadataURL.path);
-    });
-
-    it(@"should fetch metadata", ^{
-      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
-                                                    options:fetchMetadataOptions];
-
-      expect(values).will.matchValue(0, ^BOOL(PTNProgress<PTNImageContainer *> *progress) {
-        return [progress.result.image isEqual:image] && progress.result.metadata;
-      });
-    });
-
-    it(@"should complete after fetching an image", ^{
-      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
-                                                    options:fetchMetadataOptions];
-
-      expect(values).will.sendValuesWithCount(1);
-      expect(values).will.complete();
-    });
-
-    it(@"should err when file metadata creation fails", ^{
-      asset = PTNFileSystemFileFromString(@"foo.jpg");
-      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
-                                                    options:fetchMetadataOptions];
-
-      expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetMetadataLoadingFailed && error.lt_underlyingError;
-      });
-    });
-
-    it(@"should err when requesting metadata of non existing asset", ^{
-      asset = PTNFileSystemFileFromString(@"/foo/bar/baz.jpg");
-      NSURL *fileURL = [NSURL fileURLWithPath:@"/foo/bar/baz.jpg"];
-      OCMStub([imageResizer resizeImageAtURL:fileURL resizingStrategy:resizingStrategy])
-          .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
-      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
-                                                    options:fetchMetadataOptions];
-
-      expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
       });
     });
   });

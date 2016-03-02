@@ -147,8 +147,7 @@ context(@"image fetching", ^{
   beforeEach(^{
     resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
-                                                 resizeMode:PTNImageResizeModeFast
-                                              fetchMetadata:NO];
+                                                 resizeMode:PTNImageResizeModeFast];
     metadata = PTNDropboxCreateFileMetadata(kAssetPath, nil);
     asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
 
@@ -217,8 +216,7 @@ context(@"image fetching", ^{
 
     it(@"should use thumbnail when delivery mode is fast", ^{
       options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                   resizeMode:PTNImageResizeModeFast
-                                                fetchMetadata:NO];
+                                                   resizeMode:PTNImageResizeModeFast];
       PTNDropboxThumbnailType *type =
           [PTNDropboxThumbnailType enumWithValue:PTNDropboxThumbnailTypeExtraSmall];
       [dropboxClient serveThumbnailAtPath:kAssetPath type:type withLocalPath:kThumbnailLocalPath];
@@ -232,8 +230,7 @@ context(@"image fetching", ^{
 
     it(@"should not use thumbnail when delivery mode is fast if a specific revision is required", ^{
       options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                   resizeMode:PTNImageResizeModeFast
-                                                fetchMetadata:NO];
+                                                   resizeMode:PTNImageResizeModeFast];
       [dropboxClient serveFileAtPath:kAssetPath revision:kRevision withProgress:nil
                            localPath:kImageLocalPath];
       metadata = PTNDropboxCreateFileMetadata(kAssetPath, kRevision);
@@ -320,8 +317,7 @@ context(@"image fetching", ^{
 
     beforeEach(^{
       options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeOpportunistic
-                                                   resizeMode:PTNImageResizeModeFast
-                                                fetchMetadata:NO];
+                                                   resizeMode:PTNImageResizeModeFast];
       thumbnailSubject = [[RACSubject alloc] init];
       imageSubject = [[RACSubject alloc] init];
       PTNDropboxRestClient *client = OCMClassMock([PTNDropboxRestClient class]);

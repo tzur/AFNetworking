@@ -9,11 +9,11 @@
 #import "NSURL+FileSystem.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNCollection.h"
+#import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemAlbum.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
-#import "PTNImageContainer.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
@@ -139,11 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    BOOL isDirectory;
-    BOOL fileExists = [self.fileManager fileExistsAtPath:url.ptn_fileSystemAssetPath.path
-                                             isDirectory:&isDirectory];
-
-    if (!fileExists || isDirectory) {
+    if (![self nonDirectoryExistsAtURL:url]) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url]];
       return nil;
     }
@@ -174,23 +170,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options {
-  RACSignal *assetContent = [self fetchImageContentForDescriptor:descriptor
-                                                resizingStrategy:resizingStrategy
-                                                         options:options];
-  if (!options.fetchMetadata) {
-    return [assetContent subscribeOn:RACScheduler.scheduler];
-  }
-
-  return [[assetContent
-      flattenMap:^(PTNProgress<PTNImageContainer *> *progress) {
-        return [self attachMetadataOfDescriptor:descriptor toImage:progress.result.image];
-      }]
-      subscribeOn:RACScheduler.scheduler];
-}
-
-- (RACSignal *)fetchImageContentForDescriptor:(id<PTNDescriptor>)descriptor
-                             resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
-                                      options:(PTNImageFetchOptions *)options {
   if (![descriptor isKindOfClass:[PTNFileSystemFileDescriptor class]] &&
       ![descriptor isKindOfClass:[PTNFileSystemDirectoryDescriptor class]]) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
@@ -200,52 +179,38 @@ NS_ASSUME_NONNULL_BEGIN
   if ([descriptor isKindOfClass:[PTNFileSystemDirectoryDescriptor class]]) {
     return [[self fetchKeyAssetForDirectoryURL:descriptor.ptn_identifier]
         flattenMap:^(PTNFileSystemFileDescriptor *file) {
-          return [self fetchImageContentForDescriptor:file resizingStrategy:resizingStrategy
-                                              options:options];
+          return [self imageAssetForDescriptor:file resizingStrategy:resizingStrategy
+                                       options:options];
         }];
   }
 
-  NSURL *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath.url;
-  return [[[self.imageResizer resizeImageAtURL:filePath resizingStrategy:resizingStrategy]
-      map:^(UIImage *image) {
-        PTNImageContainer *container = [[PTNImageContainer alloc] initWithImage:image];
-        return [[PTNProgress alloc] initWithResult:container];
-      }]
-      catch:^(NSError *resizeError) {
-        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                      url:descriptor.ptn_identifier
-                                          underlyingError:resizeError];
-        return [RACSignal error:wrappedError];
-      }];
+  return [self imageAssetForDescriptor:descriptor resizingStrategy:resizingStrategy
+                               options:options];
 }
 
-- (RACSignal *)attachMetadataOfDescriptor:(id<PTNDescriptor>)descriptor toImage:(UIImage *)image {
-  return [[self fetchMetadataForDescriptor:descriptor]
-      map:^(PTNImageMetadata *metadata) {
-        PTNImageContainer *imageContainer = [[PTNImageContainer alloc]
-                                             initWithImage:image metadata:metadata];
-        return [[PTNProgress alloc] initWithResult:imageContainer];
-      }];
+- (RACSignal *)imageAssetForDescriptor:(id<PTNDescriptor>)descriptor
+                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                               options:(PTNImageFetchOptions __unused *)options {
+  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+  if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+    NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                           associatedDescriptor:descriptor];
+    return [RACSignal error:error];
+  }
+  
+  PTNFileBackedImageAsset *imageAsset =
+      [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
+                                           imageResizer:self.imageResizer
+                                       resizingStrategy:resizingStrategy];
+
+  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
 }
 
-- (RACSignal *)fetchMetadataForDescriptor:(id<PTNDescriptor>)descriptor {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    NSURL *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath.url;
-    NSError *metadataError;
-    PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithImageURL:filePath
-                                                                      error:&metadataError];
-    if (metadataError) {
-      NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                    url:descriptor.ptn_identifier
-                                        underlyingError:metadataError];
-      [subscriber sendError:wrappedError];
-      return nil;
-    }
-
-    [subscriber sendNext:metadata];
-    [subscriber sendCompleted];
-    return nil;
-  }];
+- (BOOL)nonDirectoryExistsAtURL:(NSURL *)url {
+  BOOL isDirectory;
+  BOOL fileExists = [self.fileManager fileExistsAtPath:url.ptn_fileSystemAssetPath.path
+                                           isDirectory:&isDirectory];
+  return fileExists && !isDirectory;
 }
 
 @end

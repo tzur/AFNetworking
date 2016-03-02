@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PTNImageAsset <NSObject>
 
 /// Fetches the image backed by this asset. The returned signal sends a single \c UIImage object on
-/// an arbitrary thread, and completes. If the image cannott be fetched the signal errs instead.
+/// an arbitrary thread, and completes. If the image cannot be fetched the signal errs instead.
 ///
 /// @return <tt>RACSignal<UIImage *></tt>.
 - (RACSignal *)fetchImage;

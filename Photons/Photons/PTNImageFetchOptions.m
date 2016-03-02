@@ -8,12 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTNImageFetchOptions
 
 + (instancetype)optionsWithDeliveryMode:(PTNImageDeliveryMode)deliveryMode
-                             resizeMode:(PTNImageResizeMode)resizeMode
-                          fetchMetadata:(BOOL)fetchMetadata {
+                             resizeMode:(PTNImageResizeMode)resizeMode {
   PTNImageFetchOptions *options = [[PTNImageFetchOptions alloc] init];
   options->_deliveryMode = deliveryMode;
   options->_resizeMode = resizeMode;
-  options->_fetchMetadata = fetchMetadata;
   return options;
 }
 
