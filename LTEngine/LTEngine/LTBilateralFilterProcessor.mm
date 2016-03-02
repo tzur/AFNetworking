@@ -13,13 +13,20 @@
 @implementation LTBilateralFilterProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs {
+  return [self initWithInput:input guide:input outputs:outputs];
+}
+
+- (instancetype)initWithInput:(LTTexture *)input guide:(LTTexture *)guide
+                      outputs:(NSArray *)outputs {
+  LTParameterAssert(input.size == guide.size, @"Input and guide textures should have the same size "
+                    "(%@ vs. %@)", NSStringFromCGSize(input.size), NSStringFromCGSize(guide.size));
+  
   return [super initWithVertexSource:[LTBilateralFilterVsh source]
                       fragmentSource:[LTBilateralFilterFsh source]
                        sourceTexture:input
-                   auxiliaryTextures:@{[LTBilateralFilterFsh originalTexture]: input}
+                   auxiliaryTextures:@{[LTBilateralFilterFsh originalTexture]: guide}
                              outputs:outputs];
 }
-
 - (void)setRangeSigma:(float)rangeSigma {
   self[[LTBilateralFilterFsh rangeSigma]] = @(rangeSigma);
 }

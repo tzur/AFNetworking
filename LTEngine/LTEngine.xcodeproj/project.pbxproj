@@ -564,6 +564,13 @@
 		6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */; };
 		6AB548C11C81F99700672127 /* LTCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */; };
 		6AB549061C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */; };
+		8518E2641C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */; };
+		8518E2651C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */; };
+		8518E2661C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */; };
+		8518E2671C858D890051FAF3 /* NoiseGuide.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E2601C858D890051FAF3 /* NoiseGuide.png */; };
+		8518E2681C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E2611C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png */; };
+		8518E2691C858D890051FAF3 /* NoiseGuidedSigma01Steps2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E2621C858D890051FAF3 /* NoiseGuidedSigma01Steps2.png */; };
+		8518E26A1C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E2631C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png */; };
 		854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 854965561C6B27C5009720FF /* LTSolidRectsDrawer.fsh */; };
 		856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */; };
 		85E2B6601C58C5FA006AD39C /* LTSolidRectsDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E2B65E1C58C5FA006AD39C /* LTSolidRectsDrawer.h */; };
@@ -861,8 +868,6 @@
 		8BABFD71188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BABFD70188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm */; };
 		8BABFD73188D2177004163DA /* LTGPUImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BABFD72188D2177004163DA /* LTGPUImageProcessorSpec.mm */; };
 		8BABFD8C188D4C15004163DA /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8B188D4C15004163DA /* Noise.png */; };
-		8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8D188D52B4004163DA /* NoiseGoldA.png */; };
-		8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8E188D52B4004163DA /* NoiseGoldB.png */; };
 		8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
 		8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
 		8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
@@ -1891,6 +1896,13 @@
 		6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCVPixelBufferExtensions.h; sourceTree = "<group>"; };
 		6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensions.mm; sourceTree = "<group>"; };
 		6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensionsSpec.mm; sourceTree = "<group>"; };
+		8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps1.png; path = Resources/NoiseBilateralSigma01Steps1.png; sourceTree = "<group>"; };
+		8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps2.png; path = Resources/NoiseBilateralSigma01Steps2.png; sourceTree = "<group>"; };
+		8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma02Steps1.png; path = Resources/NoiseBilateralSigma02Steps1.png; sourceTree = "<group>"; };
+		8518E2601C858D890051FAF3 /* NoiseGuide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGuide.png; path = Resources/NoiseGuide.png; sourceTree = "<group>"; };
+		8518E2611C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGuidedSigma01Steps1.png; path = Resources/NoiseGuidedSigma01Steps1.png; sourceTree = "<group>"; };
+		8518E2621C858D890051FAF3 /* NoiseGuidedSigma01Steps2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGuidedSigma01Steps2.png; path = Resources/NoiseGuidedSigma01Steps2.png; sourceTree = "<group>"; };
+		8518E2631C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGuidedSigma02Steps1.png; path = Resources/NoiseGuidedSigma02Steps1.png; sourceTree = "<group>"; };
 		854965561C6B27C5009720FF /* LTSolidRectsDrawer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.fsh; sourceTree = "<group>"; };
 		858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.vsh; sourceTree = "<group>"; };
 		85E2B65E1C58C5FA006AD39C /* LTSolidRectsDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSolidRectsDrawer.h; sourceTree = "<group>"; };
@@ -2121,8 +2133,6 @@
 		8BABFD70188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIterativeProcessingStrategySpec.mm; sourceTree = "<group>"; };
 		8BABFD72188D2177004163DA /* LTGPUImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUImageProcessorSpec.mm; sourceTree = "<group>"; };
 		8BABFD8B188D4C15004163DA /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise.png; path = Resources/Noise.png; sourceTree = "<group>"; };
-		8BABFD8D188D52B4004163DA /* NoiseGoldA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldA.png; path = Resources/NoiseGoldA.png; sourceTree = "<group>"; };
-		8BABFD8E188D52B4004163DA /* NoiseGoldB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseGoldB.png; path = Resources/NoiseGoldB.png; sourceTree = "<group>"; };
 		8BACB32F199CEFAF000F9238 /* LTPartialProcessing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPartialProcessing.h; sourceTree = "<group>"; };
 		8BAD630D18A3D70100482564 /* ValueSetter.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ValueSetter.fsh; sourceTree = "<group>"; };
 		8BAE1FAD18571B740075A5AB /* LTRectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTRectDrawer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -3564,8 +3574,13 @@
 				8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */,
 				8BA8C6831869782200E6F486 /* Gray.jpg */,
 				8BABFD8B188D4C15004163DA /* Noise.png */,
-				8BABFD8D188D52B4004163DA /* NoiseGoldA.png */,
-				8BABFD8E188D52B4004163DA /* NoiseGoldB.png */,
+				8518E2601C858D890051FAF3 /* NoiseGuide.png */,
+				8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */,
+				8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */,
+				8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */,
+				8518E2611C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png */,
+				8518E2621C858D890051FAF3 /* NoiseGuidedSigma01Steps2.png */,
+				8518E2631C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png */,
 				8BAB99D61869F73400D79554 /* QuadDown.jpg */,
 				8BAB99D71869F73400D79554 /* QuadDownMirrored.jpg */,
 				8BAB99D81869F73400D79554 /* QuadLeft.jpg */,
@@ -4879,11 +4894,13 @@
 				284AA2BD1AC99DD1007F86DB /* CircularPatchVisibleTarget.png in Resources */,
 				280E40DB1990C2F6008C5BD9 /* PerspectiveVertical.png in Resources */,
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,
+				8518E26A1C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png in Resources */,
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
 				283BD0441922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png in Resources */,
 				2881CDA61AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png in Resources */,
 				A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */,
 				2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */,
+				8518E2681C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png in Resources */,
 				284AA2B91AC99DD1007F86DB /* CircularPatchDoubleMirror.png in Resources */,
 				280E40D81990C2F6008C5BD9 /* PerspectiveCompound.png in Resources */,
 				284AA2B01AC99DD1007F86DB /* CircularCloneAlpha.png in Resources */,
@@ -4947,6 +4964,7 @@
 				283BD0411922214300B68A90 /* ShapeDrawerPathShapeLineFromOrigin.png in Resources */,
 				28A2546E19C9D84C0057E1A3 /* ReshapeProcessorUnwarpWithMask.png in Resources */,
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
+				8518E2651C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png in Resources */,
 				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
 				03045D7919C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png in Resources */,
 				A8BDC6401AC9DA64005FC392 /* CircularPatchDrawerDefault.png in Resources */,
@@ -4967,21 +4985,23 @@
 				25AF17861AD50CB60055E664 /* LineTrackingTest.png in Resources */,
 				03AFC15E190CE52100F17063 /* DuoBlueRed.png in Resources */,
 				03694DD9199207C200514BF2 /* MacbethHueChangeRedsAndBlues.png in Resources */,
+				8518E2661C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png in Resources */,
 				03045D7C19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png in Resources */,
 				031DF22C18FFFC3C003FA627 /* MacbethSaturatedBrightenedRedAndOrange.png in Resources */,
 				286A933F18CF743200F203DF /* BristleBrushThickness.0.1.png in Resources */,
 				2881CDB91AF107BC0080847C /* CircularPatchDrawerFlipped.png in Resources */,
 				8BAB99E11869F73400D79554 /* QuadLeftMirrored.jpg in Resources */,
-				8BABFD90188D52B4004163DA /* NoiseGoldB.png in Resources */,
 				03C192B118F67FBA00DC6CA6 /* RadialMaskCenter.png in Resources */,
 				28FB00F11A0AB46D004490AF /* BristleBrushBristles.RoundFan.png in Resources */,
 				2888EEA81993BC910008F1C7 /* CropInput.png in Resources */,
 				03C3152C1965986F00F742B1 /* MacbethColorEdges.png in Resources */,
 				28C709CC1A49B33700489FA1 /* RecomposeMask.png in Resources */,
 				284AA2BB1AC99DD1007F86DB /* CircularPatchMirror.png in Resources */,
+				8518E2671C858D890051FAF3 /* NoiseGuide.png in Resources */,
 				03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */,
 				284AA2B21AC99DD1007F86DB /* CircularCloneFeathering.png in Resources */,
 				28A2546C19C9D84C0057E1A3 /* ReshapeProcessorReshapeWithMask.png in Resources */,
+				8518E2691C858D890051FAF3 /* NoiseGuidedSigma01Steps2.png in Resources */,
 				280E40D91990C2F6008C5BD9 /* PerspectiveHorizontal.png in Resources */,
 				03D5168718B26FA40026B56A /* RoundWhiteFrame.png in Resources */,
 				8B8720C01925167400517F2E /* TextureContentsImage.png in Resources */,
@@ -5002,6 +5022,7 @@
 				288C9B7419C6FF1200CDFF50 /* SmoothPyramidUpsampleGrid4.png in Resources */,
 				28BB81AC192509450071CB0B /* ShapeDrawerActualDrawingOriginal.png in Resources */,
 				2828016B1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png in Resources */,
+				8518E2641C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png in Resources */,
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				284AA2B31AC99DD1007F86DB /* CircularCloneRotation.png in Resources */,
@@ -5042,7 +5063,6 @@
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
 				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
-				8BABFD8F188D52B4004163DA /* NoiseGoldA.png in Resources */,
 				283BD03F1922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png in Resources */,
 				651286931B777C2D007A8385 /* MacbethSmall.png in Resources */,
 				284AA2B71AC99DD1007F86DB /* CircularPatchAlpha.png in Resources */,
