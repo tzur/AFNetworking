@@ -3,6 +3,7 @@
 
 #import "LTAdjustProcessor.h"
 
+#import "LTAdjustOperations.h"
 #import "LTBicubicResizeProcessor.h"
 #import "LTCLAHEProcessor.h"
 #import "LTColorGradient.h"
@@ -58,10 +59,6 @@
 @implementation LTAdjustProcessor
 
 static const ushort kLutSize = 256;
-
-static const CGFloat kSaturationScaling = 1.5;
-static const CGFloat kTemperatureScaling = 0.3;
-static const CGFloat kTintScaling = 0.3;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
@@ -334,59 +331,9 @@ LTPropertyWithoutSetter(CGFloat, hue, Hue, -1, 1, 0);
   [self setNeedsTonalTransformUpdate];
 }
 
-/// This method passes to the shader a 4x4 matrix that encapsulated the following tonal adjustments:
-/// Hue, saturation, temperature and tint.
-/// Using the formalism of the affine transformations, conversion to and from YIQ color space is
-/// a rotation. Saturation is a scaling of y and z axis. Temparature and tint are offsets of these
-/// two axis. Hue is a rotation around x axis.
 - (void)updateTonalTransform {
-  static const GLKMatrix4 kRGBtoYIQ = GLKMatrix4Make(0.299, 0.596, 0.212, 0,
-                                                     0.587, -0.274, -0.523, 0,
-                                                     0.114, -0.322, 0.311, 0,
-                                                     0, 0, 0, 1);
-  static const GLKMatrix4 kYIQtoRGB = GLKMatrix4Make(1, 1, 1, 0,
-                                                     0.9563, -0.2721, -1.107, 0,
-                                                     0.621, -0.6474, 1.7046, 0,
-                                                     0, 0, 0, 1);
-  GLKMatrix4 temperatureAndTint = GLKMatrix4Identity;
-  temperatureAndTint.m31 = [self remapTemperature:self.temperature];
-  temperatureAndTint.m32 = [self remapTint:self.tint];
-
-  GLKMatrix4 saturation = GLKMatrix4Identity;
-  saturation.m11 = [self remapSaturation:self.saturation];
-  saturation.m22 = [self remapSaturation:self.saturation];
-
-  GLKMatrix4 hue = GLKMatrix4MakeXRotation(self.hue * M_PI);
-
-  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(hue, kRGBtoYIQ);
-  tonalTranform = GLKMatrix4Multiply(temperatureAndTint, tonalTranform);
-  tonalTranform = GLKMatrix4Multiply(saturation, tonalTranform);
-  tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
-
-  self[[LTAdjustFsh tonalTransform]] = $(tonalTranform);
-}
-
-/// Remap [-1, 0] -> [0, 1] and [0, 1] to [1, 1 + kSaturationScaling].
-- (CGFloat)remapSaturation:(CGFloat)saturation {
-  return saturation < 0 ? saturation + 1 : 1 + saturation * kSaturationScaling;
-}
-
-- (CGFloat)remapTint:(CGFloat)tint {
-  // Remap [-1, 1] to [-kTintScaling, kTintScaling]
-  // Tint in this processor is an additive scale of the Q channel in YIQ, so theoretically
-  // max value is 0.523 (red-blue) and min value is -0.523 (pure green).
-  // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
-  // that RGB values are always positive.
-  return tint * kTintScaling;
-}
-
-- (CGFloat)remapTemperature:(CGFloat)temperature {
-  // Remap [-1, 1] to [-kTemperatureScaling, kTemperatureScaling]
-  // Temperature in this processor is an additive scale of the I channel in YIQ, so theoretically
-  // max value is 0.596 (pure red) and min value is -0.596 (green-blue color).
-  // Min/max can be easily deduced from the RGB -> YIQ conversion matrix, while taking into account
-  // that RGB values are always positive.
-  return temperature * kTemperatureScaling;
+  self[[LTAdjustFsh tonalTransform]] =
+      $(LTTonalTransformMatrix(self.temperature, self.tint, self.saturation, self.hue));
 }
 
 #pragma mark -
@@ -545,38 +492,9 @@ static const CGFloat kBalanceShift = 0.15;
   }];
 }
 
-// Update brightness, contrast, exposure and offset.
-// Since these manipulations do not differ across RGB channels, they only require luminance update.
-- (cv::Mat1b)applyTone {
-  cv::Mat1b brightnessCurve(1, kLutSize);
-  if (self.brightness >= self.defaultBrightness) {
-    brightnessCurve = [LTCurve positiveBrightness];
-  } else {
-    brightnessCurve = [LTCurve negativeBrightness];
-  }
-  
-  cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= self.defaultContrast) {
-    contrastCurve = [LTCurve positiveContrast];
-  } else {
-    contrastCurve = [LTCurve negativeContrast];
-  }
-  
-  float brightness = std::abs(self.brightness);
-  float contrast = std::abs(self.contrast);
-
-  cv::Mat1b toneCurve(1, kLutSize);
-  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
-          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
-          toneCurve);
-  
-  toneCurve = toneCurve * std::pow(4.0, self.exposure) + self.offset * 255;
-
-  return toneCurve;
-}
-
 - (void)updateToneLUT {
-  cv::Mat1b toneCurve = [self applyTone];
+  cv::Mat1b toneCurve = LTLuminanceCurve(self.brightness, self.contrast, self.exposure,
+                                         self.offset);
 
   std::vector<cv::Mat1b> colorChannels(3);
   cv::LUT(toneCurve, self.redCurve, colorChannels[0]);
