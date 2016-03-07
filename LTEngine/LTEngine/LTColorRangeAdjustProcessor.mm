@@ -3,6 +3,8 @@
 
 #import "LTColorRangeAdjustProcessor.h"
 
+#import <LTEngine/LTAdjustOperations.h>
+
 #import "LTCLAHEProcessor.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -272,29 +274,12 @@ LTPropertyWithoutSetter(CGFloat, contrast, Contrast, -1, 1, 0);
 /// a rotation. Saturation is a scaling of y and z axis. Hue is a rotation around x axis. Exposure
 /// is formulated as scaling in RGB color space.
 - (void)updateTonalTransform {
-  static const GLKMatrix4 kRGBtoYIQ = GLKMatrix4Make(0.299, 0.596, 0.212, 0,
-                                                     0.587, -0.274, -0.523, 0,
-                                                     0.114, -0.322, 0.311, 0,
-                                                     0, 0, 0, 1);
-  static const GLKMatrix4 kYIQtoRGB = GLKMatrix4Make(1, 1, 1, 0,
-                                                     0.9563, -0.2721, -1.107, 0,
-                                                     0.621, -0.6474, 1.7046, 0,
-                                                     0, 0, 0, 1);
-
-  GLKMatrix4 saturation = GLKMatrix4Identity;
-  saturation.m11 = [self remapSaturation:self.saturation];
-  saturation.m22 = [self remapSaturation:self.saturation];
-
-  GLKMatrix4 hue = GLKMatrix4MakeXRotation(self.hue * M_PI);
-
   GLKMatrix4 exposure = GLKMatrix4Identity;
   exposure.m00 = [self remapExposure:self.exposure];
   exposure.m11 = [self remapExposure:self.exposure];
   exposure.m22 = [self remapExposure:self.exposure];
 
-  GLKMatrix4 tonalTranform = GLKMatrix4Multiply(saturation, kRGBtoYIQ);
-  tonalTranform = GLKMatrix4Multiply(hue, tonalTranform);
-  tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
+  GLKMatrix4 tonalTranform = LTTonalTransformMatrix(0.0, 0.0, self.saturation, self.hue);
   tonalTranform = GLKMatrix4Multiply(exposure, tonalTranform);
 
   self[[LTColorRangeAdjustFsh tonalTransform]] = $(tonalTranform);
