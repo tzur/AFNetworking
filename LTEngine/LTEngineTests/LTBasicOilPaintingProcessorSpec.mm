@@ -80,6 +80,29 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MealBasicOilPainting.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
+  
+  it(@"should copy alpha values from input", ^{
+    cv::Mat1b alphaValues = (cv::Mat1b(3, 3) << 10, 100, 50, 20, 200, 15, 1, 75, 0);
+    cv::Mat4b input(3, 3, cv::Vec4b(0, 0, 0, 0));
+    int alphaToRgbaIndexMapping[] = {0, 3};
+    cv::mixChannels(&alphaValues, 1, &input, 1, alphaToRgbaIndexMapping, 1);
+
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTBasicOilPaintingProcessor alloc] initWithInputTexture:inputTexture
+                                                            outputTexture:outputTexture];
+    [processor process];
+
+    int rgbaToAlphaIndexMapping[] = {3, 0};
+    cv::Mat1b expectedOutput(3, 3);
+    cv::mixChannels(&input, 1, &expectedOutput, 1, rgbaToAlphaIndexMapping, 1);
+
+    cv::Mat1b alphaOutput(3, 3);
+    cv::Mat actualOutput = outputTexture.image;
+    cv::mixChannels(&actualOutput, 1, &alphaOutput, 1, rgbaToAlphaIndexMapping, 1);
+
+    expect($(alphaOutput)).to.equalMat($(expectedOutput));
+  });
 });
 
 SpecEnd

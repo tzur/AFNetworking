@@ -3,6 +3,7 @@
 
 #import "LTBasicOilPaintingProcessor.h"
 
+#import "LTMatParallelDispatcher.h"
 #import "LTTexture+Factory.h"
 
 @interface LTBasicOilPaintingProcessor ()
@@ -70,14 +71,16 @@
 /// Notice: since the performance of this algorithm is critical and underwent a considerable
 /// optimization process, make sure that the performance is not degraded after the code is modified.
 static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, int radius,
-                                      int numBins) {
+                                      const cv::Mat &alphaMat, int numBins) {
   int histogram[4][256];
 
   cv::Size size = dstMat.size();
   const uchar *src = srcMat.ptr();
+  const uchar *alpha = alphaMat.ptr();
   uchar *dst = dstMat.ptr();
 
   int srcStep = (int)srcMat.step;
+  int alphaStep = (int)alphaMat.step;
   int dstStep = (int)dstMat.step;
 
   const uchar *srcMax = src + size.height * srcStep;
@@ -85,19 +88,23 @@ static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, in
   // Sweep the image in a snail form: start from top left (0, 0), go down till the bottom, and then
   // move one column to the right. Go up to the top, move one column to the right and continue this
   // process for the entire image.
-  for (int x = 0; x < size.width; ++x, src += 4, dst += 4) {
+  for (int x = 0; x < size.width; ++x, src += 4, dst += 4, ++alpha) {
     uchar *currentDst = dst;
     const uchar *srcTop = src;
     const uchar *srcBottom = src;
+    const uchar *alphaSrc = alpha;
 
     int srcStep1 = srcStep;
+    int alphaStep1 = alphaStep;
     int dstStep1 = dstStep;
 
     // Sweep top->bottom for even columns and bottom->top for odd columns.
     if (x % 2 != 0) {
       srcBottom = srcTop += srcStep * (size.height - 1);
+      alphaSrc += alphaStep * (size.height - 1);
       currentDst += dstStep * (size.height - 1);
       srcStep1 = -srcStep1;
+      alphaStep1 = -alphaStep1;
       dstStep1 = -dstStep1;
     }
 
@@ -105,25 +112,14 @@ static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, in
     memset(histogram, 0, sizeof(histogram[0]) * 4);
 
     for (int y = 0; y <= radius / 2; ++y) {
-      if (y > 0) {
-        for (int i = 0; i < radius * 4; i += 4) {
-          int value = srcBottom[i + 3];
-
-          histogram[0][value] += srcBottom[i + 0];
-          histogram[1][value] += srcBottom[i + 1];
-          histogram[2][value] += srcBottom[i + 2];
-          histogram[3][value]++;
-        }
-      } else {
+      int factor = y > 0 ? 1 : radius / 2 + 1;
+      for (int i = 0; i < radius * 4; i += 4) {
+        int value = srcBottom[i + 3];
         // Boundary - add values of bottom or top row replicated as half the window size.
-        for (int i = 0; i < radius * 4; i += 4) {
-          int value = srcBottom[i + 3];
-          int factor = radius / 2 + 1;
-          histogram[0][value] += factor * srcBottom[i + 0];
-          histogram[1][value] += factor * srcBottom[i + 1];
-          histogram[2][value] += factor * srcBottom[i + 2];
-          histogram[3][value] += factor;
-        }
+        histogram[0][value] += factor * srcBottom[i + 0];
+        histogram[1][value] += factor * srcBottom[i + 1];
+        histogram[2][value] += factor * srcBottom[i + 2];
+        histogram[3][value] += factor;
       }
 
       if ((srcStep1 > 0 && y < size.height - 1) || (srcStep1 < 0 && size.height - y - 1 > 0)) {
@@ -131,7 +127,7 @@ static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, in
       }
     }
 
-    for (int y = 0; y < size.height; y++, currentDst += dstStep1) {
+    for (int y = 0; y < size.height; y++, currentDst += dstStep1, alphaSrc += alphaStep1) {
       // Find maximal bin.
       int maxValue = 0;
       int maxBin = 0;
@@ -147,7 +143,7 @@ static void LTBasicOilProcessInternal(const cv::Mat &srcMat, cv::Mat &dstMat, in
       currentDst[0] = histogram[0][maxBin] / histogram[3][maxBin];
       currentDst[1] = histogram[1][maxBin] / histogram[3][maxBin];
       currentDst[2] = histogram[2][maxBin] / histogram[3][maxBin];
-      currentDst[3] = 255;
+      currentDst[3] = alphaSrc[0];
 
       if (y + 1 == size.height) {
         break;
@@ -188,33 +184,39 @@ static void LTBasicOilPainting(const cv::Mat &src, cv::Mat *dst, int kernelSize,
   cv::copyMakeBorder(src, srcWithBorder, 0, 0, kernelSize / 2, kernelSize / 2,
                      cv::BORDER_REPLICATE);
 
+  cv::Mat1b alphaValues(src.rows, src.cols);
+  int rgbaToAlphaIndexMapping[] = {3, 0};
+  cv::mixChannels(&src, 1, &alphaValues, 1, rgbaToAlphaIndexMapping, 1);
+
   std::transform(srcWithBorder.begin(), srcWithBorder.end(), srcWithBorder.begin(),
                  [numberOfBins](const cv::Vec4b &v) {
     return cv::Vec4b(v[0], v[1], v[2], (v[0] + v[1] + v[2]) / 3.0 * ((numberOfBins - 1) / 255.0));
-  });
+                 });
 
-  // TODO:(yaron) Figure out multithreading interface for image processors.
-  dispatch_queue_t queue = dispatch_queue_create("com.lightricks.LTKit.oil-painting",
-                                                 DISPATCH_QUEUE_CONCURRENT);
-  dispatch_group_t group = dispatch_group_create();
-
-  int shards = (int)[NSProcessInfo processInfo].processorCount;
+  int shards = std::min((int)[NSProcessInfo processInfo].processorCount, dst->cols);
   int colsPerShard = dst->cols / shards;
   int borderSize = srcWithBorder.cols - src.cols;
 
-  for (int i = 0; i < shards; ++i) {
-    dispatch_group_async(group, queue, ^{
-      int startCol = i * colsPerShard;
-      int endCol = (i == shards - 1) ? dst->cols : (i + 1) * colsPerShard;
+  LTMatParallelDispatcher *dispatcher =
+      [[LTMatParallelDispatcher alloc] initWithMaxShardCount:shards];
 
-      cv::Mat srcPart = srcWithBorder(cv::Rect(startCol, 0,
-                                               endCol - startCol + borderSize, src.rows));
-      cv::Mat dstPart = (*dst)(cv::Rect(startCol, 0, endCol - startCol, dst->rows));
-      LTBasicOilProcessInternal(srcPart, dstPart, kernelSize, numberOfBins);
-    });
-  }
-
-  dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+  [dispatcher processMatAndWait:&srcWithBorder
+                  shardingBlock:^(NSUInteger shardIndex, NSUInteger shardCount) {
+                    int startCol = (int)shardIndex * colsPerShard;
+                    int endCol = (shardIndex == shardCount - 1) ?
+                        dst->cols : (int)(shardIndex + 1) * colsPerShard;
+                    return cv::Rect(startCol, 0, endCol - startCol + borderSize, src.rows);
+                  }
+                processingBlock:^(NSUInteger shardIndex, NSUInteger shardCount, cv::Mat srcShard) {
+                  int startCol = (int)shardIndex * colsPerShard;
+                  int endCol = (shardIndex == shardCount - 1) ?
+                      dst->cols : (int)(shardIndex + 1) * colsPerShard;
+                  cv::Mat dstShard = (*dst)(cv::Rect(startCol, 0, endCol - startCol, dst->rows));
+                  cv::Mat alphaShard = alphaValues(cv::Rect(startCol, 0, endCol - startCol,
+                                                             alphaValues.rows));
+                  LTBasicOilProcessInternal(srcShard, dstShard, kernelSize, alphaShard,
+                                            numberOfBins);
+                }];
 }
 
 - (void)process {
