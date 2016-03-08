@@ -10,12 +10,13 @@
 /// \c maskColor.
 @interface LTMaskOverlayProcessor : LTOneShotImageProcessor
 
-/// Initializes with an image, its mask and an output image that will contain the mask composited
-/// over the image, after processing.
+/// Initializes with an image and its mask. The image will contain the mask composited  over the
+/// image, after processing.
 ///
-/// @note In case \c image and \c output are the same texture, the processor will use the current
-/// framebuffer as input during screen processing.
-- (instancetype)initWithImage:(LTTexture *)image mask:(LTTexture *)mask output:(LTTexture *)output;
+/// @note The processor preforms in-situ processing. In particular, it blends the given \c mask with
+/// the content of the currently bound framebuffer. Hence, unless screen processing is used, the
+/// given \c image is updated.
+- (instancetype)initWithImage:(LTTexture *)image mask:(LTTexture *)mask;
 
 /// Color of the mask to display on top of the input image. The alpha component is used to control
 /// the opacity of the mask in a multiplicative way, meaning that the final color of the output will

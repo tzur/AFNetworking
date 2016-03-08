@@ -10,13 +10,12 @@
 
 @implementation LTMaskOverlayProcessor
 
-- (instancetype)initWithImage:(LTTexture *)image mask:(LTTexture *)mask output:(LTTexture *)output {
+- (instancetype)initWithImage:(LTTexture *)image mask:(LTTexture *)mask {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTMaskOverlayFsh source]
                            sourceTexture:image
                        auxiliaryTextures:@{[LTMaskOverlayFsh maskTexture]: mask}
-                               andOutput:output]) {
-    self[[LTMaskOverlayFsh inputOnFramebuffer]] = @(image == output);
+                               andOutput:image]) {
     self.maskColor = self.defaultMaskColor;
   }
   return self;
