@@ -32,7 +32,6 @@
 		848E09821C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E06BF1C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m */; };
 		848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848E0A401C59217D001D8368 /* LTTestUtils.mm */; };
 		84D741891C7A270500BCA294 /* PhotonsUITestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */; };
-		84FF72EC1C8EED6D00D1DA9F /* PhotonsUI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */; };
 		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
 		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
@@ -220,7 +219,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				84FF72EC1C8EED6D00D1DA9F /* PhotonsUI.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,8 +305,6 @@
 		84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonsUITestUtils.m; sourceTree = "<group>"; };
 		84F88D751C7A08C6008FFE75 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonsUI.h; sourceTree = "<group>"; };
-		84FF72ED1C8EED6D00D1DA9F /* PhotonsUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotonsUI.m; sourceTree = "<group>"; };
 		84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -517,7 +513,6 @@
 				848E00111C591DD1001D8368 /* PhotonsUITests */,
 				848EFFAD1C591B91001D8368 /* Configuration */,
 				848EFFC01C591BE0001D8368 /* Libraries */,
-				84FF72EA1C8EED6D00D1DA9F /* PhotonsUI */,
 				848EFF7C1C591B3A001D8368 /* Products */,
 				848EFFE21C591C0D001D8368 /* Frameworks */,
 			);
@@ -627,15 +622,6 @@
 				849AE4A81C6B4F7C00F030CA /* Masonry.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		84FF72EA1C8EED6D00D1DA9F /* PhotonsUI */ = {
-			isa = PBXGroup;
-			children = (
-				84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */,
-				84FF72ED1C8EED6D00D1DA9F /* PhotonsUI.m */,
-			);
-			path = PhotonsUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1014,14 +1000,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -1043,12 +1023,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",
@@ -1072,14 +1047,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -1095,12 +1064,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",

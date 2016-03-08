@@ -42,7 +42,6 @@
 		84A5E65E1C58F3C100B29423 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A5E65D1C58F3C100B29423 /* libSpecta.a */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
 		84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */; };
-		84E55C191C8EC72E00D91339 /* Photons.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84E55C181C8EC72E00D91339 /* Photons.h */; };
 		84E55C1F1C8EC82B00D91339 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
 		84E55C201C8EC82C00D91339 /* NSErrorCodes+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F4E1D1C0BA581007C2962 /* NSErrorCodes+Photons.m */; };
 		84E55C211C8EC83000D91339 /* NSURL+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E27AE71C34307500806A27 /* NSURL+Photons.m */; };
@@ -91,6 +90,7 @@
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
 		84FF72CD1C8EEC8400D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72CC1C8EEC8400D1DA9F /* DropboxSDK.framework */; };
 		84FF72CE1C8EEC9E00D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72CC1C8EEC8400D1DA9F /* DropboxSDK.framework */; };
+		84FF748B1C8F045D00D1DA9F /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9041C58C5C6004E0175 /* ReactiveCocoa.framework */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
 		8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */; };
@@ -289,7 +289,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				84E55C191C8EC72E00D91339 /* Photons.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,8 +386,6 @@
 		84E27AE61C34307500806A27 /* NSURL+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Photons.h"; sourceTree = "<group>"; };
 		84E27AE71C34307500806A27 /* NSURL+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Photons.m"; sourceTree = "<group>"; };
 		84E55C161C8EC72E00D91339 /* libPhotons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotons.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		84E55C181C8EC72E00D91339 /* Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photons.h; sourceTree = "<group>"; };
-		84E55C1A1C8EC72E00D91339 /* Photons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photons.m; sourceTree = "<group>"; };
 		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
 		84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
 		84FF72CC1C8EEC8400D1DA9F /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
@@ -537,6 +534,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FF748B1C8F045D00D1DA9F /* ReactiveCocoa.framework in Frameworks */,
 				84FF72CD1C8EEC8400D1DA9F /* DropboxSDK.framework in Frameworks */,
 				84E55C4A1C8EC89000D91339 /* libLTKit.a in Frameworks */,
 			);
@@ -689,15 +687,6 @@
 			name = Multiplexing;
 			sourceTree = "<group>";
 		};
-		84E55C171C8EC72E00D91339 /* Photons */ = {
-			isa = PBXGroup;
-			children = (
-				84E55C181C8EC72E00D91339 /* Photons.h */,
-				84E55C1A1C8EC72E00D91339 /* Photons.m */,
-			);
-			path = Photons;
-			sourceTree = "<group>";
-		};
 		8B16A7F91BCAB3EA006DAAA7 /* FileSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -753,7 +742,6 @@
 				8B2FD02D1AF9F79000757B1F /* PhotonsTests */,
 				8B1889AA1BF1E52F00E9BD67 /* Configuration */,
 				8BAFDCCB1B0E0B53003FB8F5 /* Libraries */,
-				84E55C171C8EC72E00D91339 /* Photons */,
 				8B2FD01F1AF9F79000757B1F /* Products */,
 				49F615BDE58178359DAFCD59 /* Frameworks */,
 			);
