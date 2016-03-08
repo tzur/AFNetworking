@@ -3,6 +3,7 @@
 
 #import "PTNDropboxFakeRestClient.h"
 
+#import "PTNDropboxRestClient.h"
 #import "PTNProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN

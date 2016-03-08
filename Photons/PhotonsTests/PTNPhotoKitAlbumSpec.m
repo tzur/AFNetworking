@@ -7,6 +7,7 @@
 
 #import "NSURL+PhotoKit.h"
 #import "PTNPhotoKitAlbumType.h"
+#import "PTNCollection.h"
 
 SpecBegin(PTNPhotoKitAlbum)
 

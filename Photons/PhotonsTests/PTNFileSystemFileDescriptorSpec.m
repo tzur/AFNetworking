@@ -5,6 +5,8 @@
 
 #import <LTKit/LTPath.h>
 
+#import "NSURL+FileSystem.h"
+
 SpecBegin(PTNFileSystemFileDescriptor)
 
 static NSString * const kPath = @"/foo";

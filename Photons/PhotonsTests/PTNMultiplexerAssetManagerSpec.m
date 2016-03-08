@@ -4,8 +4,11 @@
 #import "PTNMultiplexerAssetManager.h"
 
 #import "NSError+Photons.h"
+#import "PTNDescriptor.h"
+#import "PTNImageFetchOptions.h"
 #import "PTNMultiplexingTestUtils.h"
 #import "PTNNSURLTestUtils.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNMultiplexerAssetManager)
 

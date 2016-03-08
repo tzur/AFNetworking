@@ -5,6 +5,7 @@
 
 #import <LTKit/LTPath.h>
 
+#import "NSURL+FileSystem.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileDescriptor.h"
 

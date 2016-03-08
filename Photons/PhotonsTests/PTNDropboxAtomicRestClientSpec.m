@@ -5,9 +5,11 @@
 
 #import "NSError+Photons.h"
 #import "PTNDropboxFakeDBRestClient.h"
+#import "PTNDropboxPathProvider.h"
 #import "PTNDropboxRestClientProvider.h"
 #import "PTNDropboxTestUtils.h"
 #import "PTNDropboxThumbnail.h"
+#import "PTNProgress.h"
 
 SpecBegin(PTNDropboxAtomicRestClient)
 

@@ -5,16 +5,23 @@
 
 #import <LTKit/LTPath.h>
 
+#import "NSError+Photons.h"
+#import "NSURL+Dropbox.h"
+#import "PTNAlbumChangeset.h"
 #import "PTNDropboxAlbum.h"
 #import "PTNDropboxDirectoryDescriptor.h"
+#import "PTNDropboxEntry.h"
+#import "PTNDropboxFakeRestClient.h"
 #import "PTNDropboxFileDescriptor.h"
 #import "PTNDropboxTestUtils.h"
 #import "PTNDropboxThumbnail.h"
+#import "PTNDropboxRestClient.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNImageAsset.h"
+#import "PTNImageFetchOptions.h"
+#import "PTNImageResizer.h"
 #import "PTNProgress.h"
-#import "NSError+Photons.h"
-#import "PTNDropboxFakeRestClient.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNDropboxAssetManager)
 

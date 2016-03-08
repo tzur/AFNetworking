@@ -3,6 +3,7 @@
 
 #import "PTNDropboxAlbum.h"
 
+#import "NSURL+Dropbox.h"
 #import "PTNDropboxDirectoryDescriptor.h"
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxFileDescriptor.h"
