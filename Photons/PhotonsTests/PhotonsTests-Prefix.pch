@@ -10,6 +10,4 @@
   #import <LTKitTests/LTTestUtils.h>
   #import <OCMock/OCMock.h>
   #import <Specta/Specta.h>
-
-  #import <Photons/Photons.h>
 #endif

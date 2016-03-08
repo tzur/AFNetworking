@@ -1,9 +1,9 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
-@class DBMetadata;
-
 NS_ASSUME_NONNULL_BEGIN
+
+@class DBMetadata, PTNDropboxThumbnailType;
 
 /// Fake REST client used for testing PTNDropboxAssetManager.
 @interface PTNDropboxFakeRestClient : NSObject

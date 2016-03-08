@@ -6,6 +6,8 @@
 #import <LTKit/LTPath.h>
 
 #import "NSError+Photons.h"
+#import "NSURL+FileSystem.h"
+#import "PTNAlbumChangeset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemAlbum.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
@@ -13,6 +15,9 @@
 #import "PTNFileSystemFileDescriptor.h"
 #import "PTNFileSystemTestUtils.h"
 #import "PTNImageResizer.h"
+#import "PTNImageFetchOptions.h"
+#import "PTNProgress.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNFileSystemAssetManager)
 

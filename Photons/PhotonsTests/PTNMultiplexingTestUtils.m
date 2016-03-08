@@ -3,6 +3,8 @@
 
 #import "PTNMultiplexingTestUtils.h"
 
+#import "PTNAssetManager.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 id<PTNAssetManager> PTNCreateRejectingManager() {

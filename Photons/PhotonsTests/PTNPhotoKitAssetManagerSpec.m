@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNDescriptor.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageAsset.h"
 #import "PTNPhotoKitAlbum.h"
@@ -18,6 +19,8 @@
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
 #import "PTNPhotokitImageAsset.h"
+#import "PTNProgress.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNPhotoKitAssetManager)
 

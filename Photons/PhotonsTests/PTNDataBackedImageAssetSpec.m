@@ -7,6 +7,7 @@
 #import <LTKit/NSFileManager+LTKit.h>
 
 #import "NSError+Photons.h"
+#import "PTNImageMetadata.h"
 
 SpecBegin(PTNDataBackedImageAsset)
 

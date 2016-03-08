@@ -4,6 +4,7 @@
 #import "PTNPhotoKitImageAsset.h"
 
 #import "NSError+Photons.h"
+#import "PTNImageMetadata.h"
 #import "PTNPhotoKitTestUtils.h"
 
 SpecBegin(PTNPhotoKitImageAsset)

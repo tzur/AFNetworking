@@ -10,22 +10,9 @@
 		8414EA241C5A005400014DD1 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848E004D1C5920CB001D8368 /* libExpecta.a */; };
 		8414EA261C5A005F00014DD1 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8414EA251C5A005F00014DD1 /* libOCMock.a */; };
 		8414EA281C5A006300014DD1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8414EA271C5A006300014DD1 /* libSpecta.a */; };
-		8414EA2B1C5A00AB00014DD1 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFC71C591BF5001D8368 /* libLTKit.a */; };
-		8414EA2D1C5A00B000014DD1 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8414EA2C1C5A00B000014DD1 /* libextobjc_iOS.a */; };
-		8414ED591C624E6B00014DD1 /* PTUAlbumChangesetProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */; };
-		8414ED5A1C624E6B00014DD1 /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		8428F3761C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.m */; };
-		8428F3AC1C68E6840007B0A5 /* PTUChangeset.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428F3AA1C68E6840007B0A5 /* PTUChangeset.h */; };
-		8428F3AD1C68E6840007B0A5 /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
 		8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.m */; };
-		846E18911C730F2100B94467 /* PTUChangesetProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 846E18901C730F2100B94467 /* PTUChangesetProvider.h */; };
-		84884C191C70E63500DBB987 /* PTUChangesetMove.h in Headers */ = {isa = PBXBuildFile; fileRef = 84884C171C70E63500DBB987 /* PTUChangesetMove.h */; };
-		84884C1A1C70E63500DBB987 /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
 		84884C7F1C71D83000DBB987 /* PTUChangesetMoveSepc.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */; };
-		848E00071C591DD1001D8368 /* PhotonsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 848E00061C591DD1001D8368 /* PhotonsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		848E000E1C591DD1001D8368 /* PhotonsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848E00041C591DD1001D8368 /* PhotonsUI.framework */; };
-		848E001C1C591E10001D8368 /* Photons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848E001B1C591E10001D8368 /* Photons.framework */; };
-		848E001E1C591E29001D8368 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848E001D1C591E29001D8368 /* ReactiveCocoa.framework */; };
 		848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069B1C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		848E09731C59212F001D8368 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069D1C59212F001D8368 /* LLSignalTestRecorder.m */; };
 		848E09741C59212F001D8368 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069F1C59212F001D8368 /* RACSignal+LLSubscriptionCounting.m */; };
@@ -44,25 +31,18 @@
 		848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E06BD1C59212F001D8368 /* EXPMatchers+sendValues.m */; };
 		848E09821C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E06BF1C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m */; };
 		848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848E0A401C59217D001D8368 /* LTTestUtils.mm */; };
-		848E0A451C59260A001D8368 /* Framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB61C591B91001D8368 /* Framework.xcconfig */; };
-		848E0A461C592615001D8368 /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB01C591B91001D8368 /* Debug.xcconfig */; };
-		848E0A471C59261E001D8368 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFAE1C591B91001D8368 /* Common.xcconfig */; };
-		848E0A481C592625001D8368 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB11C591B91001D8368 /* Release.xcconfig */; };
-		848E0A491C592639001D8368 /* Application.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB51C591B91001D8368 /* Application.xcconfig */; };
-		848E0A4A1C59263F001D8368 /* StaticLibrary.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */; };
-		849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849AE4A61C6B4F7C00F030CA /* Masonry.framework */; };
-		84F88D761C7A08C6008FFE75 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F88D751C7A08C6008FFE75 /* libc++.tbd */; };
 		84D741891C7A270500BCA294 /* PhotonsUITestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */; };
+		84FF72EC1C8EED6D00D1DA9F /* PhotonsUI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */; };
+		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
+		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
+		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
+		84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */; };
+		84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFDF1C591BFF001D8368 /* libPhotons.a */; };
+		84FF72FA1C8EEFE100D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
+		84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		848E000F1C591DD1001D8368 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 848E00031C591DD1001D8368;
-			remoteInfo = PhotonsUI;
-		};
 		848E002D1C5920C1001D8368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
@@ -224,14 +204,27 @@
 			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
 			remoteInfo = "Masonry OSX";
 		};
-		84C8D1B91C79B6AB00E8F600 /* PBXContainerItemProxy */ = {
+		84FF72F21C8EED9300D1DA9F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848EFFD91C591BFF001D8368 /* Photons.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8BAFDC931B0DED4C003FB8F5;
+			remoteGlobalIDString = 84E55C151C8EC72E00D91339;
 			remoteInfo = Photons;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84FF72E71C8EED6D00D1DA9F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				84FF72EC1C8EED6D00D1DA9F /* PhotonsUI.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8414EA251C5A005F00014DD1 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../LTKit/third_party/testing/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
@@ -248,7 +241,6 @@
 		84884C171C70E63500DBB987 /* PTUChangesetMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUChangesetMove.h; sourceTree = "<group>"; };
 		84884C181C70E63500DBB987 /* PTUChangesetMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUChangesetMove.m; sourceTree = "<group>"; };
 		84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUChangesetMoveSepc.m; sourceTree = "<group>"; };
-		848E00041C591DD1001D8368 /* PhotonsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PhotonsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848E00061C591DD1001D8368 /* PhotonsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonsUI.h; sourceTree = "<group>"; };
 		848E00081C591DD1001D8368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		848E000D1C591DD1001D8368 /* PhotonsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotonsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,33 +303,34 @@
 		848EFFCA1C591BFB001D8368 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		848EFFD91C591BFF001D8368 /* Photons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Photons.xcodeproj; path = ../Photons/Photons.xcodeproj; sourceTree = "<group>"; };
 		849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../Vendor/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
-		84F88D751C7A08C6008FFE75 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		84D741871C7A270500BCA294 /* PhotonsUITestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotonsUITestUtils.h; sourceTree = "<group>"; };
 		84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonsUITestUtils.m; sourceTree = "<group>"; };
+		84F88D751C7A08C6008FFE75 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonsUI.h; sourceTree = "<group>"; };
+		84FF72ED1C8EED6D00D1DA9F /* PhotonsUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotonsUI.m; sourceTree = "<group>"; };
+		84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../Vendor/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		848E00001C591DD1001D8368 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				84F88D761C7A08C6008FFE75 /* libc++.tbd in Frameworks */,
-				849AE4B41C6B506300F030CA /* Masonry.framework in Frameworks */,
-				8414EA2D1C5A00B000014DD1 /* libextobjc_iOS.a in Frameworks */,
-				8414EA2B1C5A00AB00014DD1 /* libLTKit.a in Frameworks */,
-				848E001E1C591E29001D8368 /* ReactiveCocoa.framework in Frameworks */,
-				848E001C1C591E10001D8368 /* Photons.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		848E000A1C591DD1001D8368 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */,
+				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
+				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
 				8414EA281C5A006300014DD1 /* libSpecta.a in Frameworks */,
 				8414EA261C5A005F00014DD1 /* libOCMock.a in Frameworks */,
 				8414EA241C5A005400014DD1 /* libExpecta.a in Frameworks */,
-				848E000E1C591DD1001D8368 /* PhotonsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84FF72E61C8EED6D00D1DA9F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84FF72FA1C8EEFE100D1DA9F /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +517,7 @@
 				848E00111C591DD1001D8368 /* PhotonsUITests */,
 				848EFFAD1C591B91001D8368 /* Configuration */,
 				848EFFC01C591BE0001D8368 /* Libraries */,
+				84FF72EA1C8EED6D00D1DA9F /* PhotonsUI */,
 				848EFF7C1C591B3A001D8368 /* Products */,
 				848EFFE21C591C0D001D8368 /* Frameworks */,
 			);
@@ -533,8 +527,8 @@
 		848EFF7C1C591B3A001D8368 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				848E00041C591DD1001D8368 /* PhotonsUI.framework */,
 				848E000D1C591DD1001D8368 /* PhotonsUITests.xctest */,
+				84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -605,7 +599,7 @@
 		848EFFDA1C591BFF001D8368 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				848EFFDF1C591BFF001D8368 /* Photons.framework */,
+				848EFFDF1C591BFF001D8368 /* libPhotons.a */,
 				848EFFE11C591BFF001D8368 /* PhotonsTests.xctest */,
 			);
 			name = Products;
@@ -619,6 +613,7 @@
 				8414EA291C5A008900014DD1 /* libextobjc_iOS.a */,
 				8414EA271C5A006300014DD1 /* libSpecta.a */,
 				8414EA251C5A005F00014DD1 /* libOCMock.a */,
+				84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */,
 				848E001D1C591E29001D8368 /* ReactiveCocoa.framework */,
 				848E001B1C591E10001D8368 /* Photons.framework */,
 			);
@@ -634,43 +629,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		84FF72EA1C8EED6D00D1DA9F /* PhotonsUI */ = {
+			isa = PBXGroup;
+			children = (
+				84FF72EB1C8EED6D00D1DA9F /* PhotonsUI.h */,
+				84FF72ED1C8EED6D00D1DA9F /* PhotonsUI.m */,
+			);
+			path = PhotonsUI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		848E00011C591DD1001D8368 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				848E00071C591DD1001D8368 /* PhotonsUI.h in Headers */,
-				84884C191C70E63500DBB987 /* PTUChangesetMove.h in Headers */,
-				8428F3AC1C68E6840007B0A5 /* PTUChangeset.h in Headers */,
-				846E18911C730F2100B94467 /* PTUChangesetProvider.h in Headers */,
-				8414ED591C624E6B00014DD1 /* PTUAlbumChangesetProvider.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		848E00031C591DD1001D8368 /* PhotonsUI */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 848E00151C591DD1001D8368 /* Build configuration list for PBXNativeTarget "PhotonsUI" */;
-			buildPhases = (
-				848EFFFF1C591DD1001D8368 /* Sources */,
-				848E00001C591DD1001D8368 /* Frameworks */,
-				848E00011C591DD1001D8368 /* Headers */,
-				848E00021C591DD1001D8368 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				84C8D1BA1C79B6AB00E8F600 /* PBXTargetDependency */,
-			);
-			name = PhotonsUI;
-			productName = PhotonsUI;
-			productReference = 848E00041C591DD1001D8368 /* PhotonsUI.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		848E000C1C591DD1001D8368 /* PhotonsUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 848E00181C591DD1001D8368 /* Build configuration list for PBXNativeTarget "PhotonsUITests" */;
@@ -682,12 +652,29 @@
 			buildRules = (
 			);
 			dependencies = (
-				848E00101C591DD1001D8368 /* PBXTargetDependency */,
 			);
 			name = PhotonsUITests;
 			productName = PhotonsUITests;
 			productReference = 848E000D1C591DD1001D8368 /* PhotonsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		84FF72E81C8EED6D00D1DA9F /* PhotonsUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84FF72EF1C8EED6D00D1DA9F /* Build configuration list for PBXNativeTarget "PhotonsUI" */;
+			buildPhases = (
+				84FF72E51C8EED6D00D1DA9F /* Sources */,
+				84FF72E61C8EED6D00D1DA9F /* Frameworks */,
+				84FF72E71C8EED6D00D1DA9F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */,
+			);
+			name = PhotonsUI;
+			productName = PhotonsUI;
+			productReference = 84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -698,12 +685,11 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
-					848E00031C591DD1001D8368 = {
-						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = KG6GWND6BG;
-					};
 					848E000C1C591DD1001D8368 = {
 						CreatedOnToolsVersion = 7.2;
+					};
+					84FF72E81C8EED6D00D1DA9F = {
+						CreatedOnToolsVersion = 7.2.1;
 					};
 				};
 			};
@@ -746,7 +732,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				848E00031C591DD1001D8368 /* PhotonsUI */,
+				84FF72E81C8EED6D00D1DA9F /* PhotonsUI */,
 				848E000C1C591DD1001D8368 /* PhotonsUITests */,
 			);
 		};
@@ -886,10 +872,10 @@
 			remoteRef = 848EFFD71C591BFB001D8368 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		848EFFDF1C591BFF001D8368 /* Photons.framework */ = {
+		848EFFDF1C591BFF001D8368 /* libPhotons.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Photons.framework;
+			fileType = archive.ar;
+			path = libPhotons.a;
 			remoteRef = 848EFFDE1C591BFF001D8368 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -917,19 +903,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		848E00021C591DD1001D8368 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				848E0A4A1C59263F001D8368 /* StaticLibrary.xcconfig in Resources */,
-				848E0A491C592639001D8368 /* Application.xcconfig in Resources */,
-				848E0A481C592625001D8368 /* Release.xcconfig in Resources */,
-				848E0A471C59261E001D8368 /* Common.xcconfig in Resources */,
-				848E0A461C592615001D8368 /* Debug.xcconfig in Resources */,
-				848E0A451C59260A001D8368 /* Framework.xcconfig in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		848E000B1C591DD1001D8368 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -969,80 +942,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		848EFFFF1C591DD1001D8368 /* Sources */ = {
+		84FF72E51C8EED6D00D1DA9F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84884C1A1C70E63500DBB987 /* PTUChangesetMove.m in Sources */,
-				8414ED5A1C624E6B00014DD1 /* PTUAlbumChangesetProvider.m in Sources */,
-				8428F3AD1C68E6840007B0A5 /* PTUChangeset.m in Sources */,
+				84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */,
+				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
+				84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		848E00101C591DD1001D8368 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 848E00031C591DD1001D8368 /* PhotonsUI */;
-			targetProxy = 848E000F1C591DD1001D8368 /* PBXContainerItemProxy */;
-		};
-		84C8D1BA1C79B6AB00E8F600 /* PBXTargetDependency */ = {
+		84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Photons;
-			targetProxy = 84C8D1B91C79B6AB00E8F600 /* PBXContainerItemProxy */;
+			targetProxy = 84FF72F21C8EED9300D1DA9F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		848E00161C591DD1001D8368 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-Prefix.pch";
-				INFOPLIST_FILE = PhotonsUI/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.PhotonsUI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		848E00171C591DD1001D8368 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-Prefix.pch";
-				INFOPLIST_FILE = PhotonsUI/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.PhotonsUI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		848E00191C591DD1001D8368 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
@@ -1109,10 +1029,11 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(SRCROOT)/../LTKit/LTKit",
-					"$(inherited)",
 					"$(SRCROOT)/../Vendor/ReactiveCocoa/build/Debug-iphonesimulator/",
+					"$(SRCROOT)/../Vendor/dropbox-ios-sdk",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1129,10 +1050,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
-					"$(inherited)",
 					"\"$(SRCROOT)/../Vendor/Masonry\"",
+					"\"$(SRCROOT)/../Photons\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1165,10 +1087,11 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(SRCROOT)/../LTKit/LTKit",
-					"$(inherited)",
 					"$(SRCROOT)/../Vendor/ReactiveCocoa/build/Debug-iphonesimulator/",
+					"$(SRCROOT)/../Vendor/dropbox-ios-sdk",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1179,10 +1102,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
-					"$(inherited)",
 					"\"$(SRCROOT)/../Vendor/Masonry\"",
+					"\"$(SRCROOT)/../Photons\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1191,18 +1115,31 @@
 			};
 			name = Release;
 		};
+		84FF72F01C8EED6D00D1DA9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		84FF72F11C8EED6D00D1DA9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		848E00151C591DD1001D8368 /* Build configuration list for PBXNativeTarget "PhotonsUI" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				848E00161C591DD1001D8368 /* Debug */,
-				848E00171C591DD1001D8368 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		848E00181C591DD1001D8368 /* Build configuration list for PBXNativeTarget "PhotonsUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1217,6 +1154,15 @@
 			buildConfigurations = (
 				848EFF9B1C591B3A001D8368 /* Debug */,
 				848EFF9C1C591B3A001D8368 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84FF72EF1C8EED6D00D1DA9F /* Build configuration list for PBXNativeTarget "PhotonsUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84FF72F01C8EED6D00D1DA9F /* Debug */,
+				84FF72F11C8EED6D00D1DA9F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

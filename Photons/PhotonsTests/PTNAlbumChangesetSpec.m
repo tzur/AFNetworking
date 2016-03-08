@@ -3,6 +3,7 @@
 
 #import "PTNAlbumChangeset.h"
 
+#import "PTNAlbum.h"
 #import "PTNAlbumChangesetMove.h"
 
 SpecBegin(PTNAlbumChangeset)

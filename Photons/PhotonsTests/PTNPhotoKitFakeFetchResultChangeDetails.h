@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
+#import <Photos/Photos.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Fake \c PHFetchResultChangeDetails for easier integration testing.

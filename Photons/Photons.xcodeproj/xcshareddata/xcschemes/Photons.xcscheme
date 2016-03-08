@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BAFDC931B0DED4C003FB8F5"
-               BuildableName = "Photons.framework"
+               BlueprintIdentifier = "84E55C151C8EC72E00D91339"
+               BuildableName = "libPhotons.a"
                BlueprintName = "Photons"
                ReferencedContainer = "container:Photons.xcodeproj">
             </BuildableReference>
@@ -56,8 +56,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BAFDC931B0DED4C003FB8F5"
-            BuildableName = "Photons.framework"
+            BlueprintIdentifier = "84E55C151C8EC72E00D91339"
+            BuildableName = "libPhotons.a"
             BlueprintName = "Photons"
             ReferencedContainer = "container:Photons.xcodeproj">
          </BuildableReference>
@@ -78,8 +78,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BAFDC931B0DED4C003FB8F5"
-            BuildableName = "Photons.framework"
+            BlueprintIdentifier = "84E55C151C8EC72E00D91339"
+            BuildableName = "libPhotons.a"
             BlueprintName = "Photons"
             ReferencedContainer = "container:Photons.xcodeproj">
          </BuildableReference>
@@ -96,8 +96,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BAFDC931B0DED4C003FB8F5"
-            BuildableName = "Photons.framework"
+            BlueprintIdentifier = "84E55C151C8EC72E00D91339"
+            BuildableName = "libPhotons.a"
             BlueprintName = "Photons"
             ReferencedContainer = "container:Photons.xcodeproj">
          </BuildableReference>

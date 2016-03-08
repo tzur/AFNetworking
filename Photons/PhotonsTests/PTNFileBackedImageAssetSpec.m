@@ -7,6 +7,9 @@
 #import <LTKit/NSFileManager+LTKit.h>
 
 #import "NSError+Photons.h"
+#import "PTNImageMetadata.h"
+#import "PTNImageResizer.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNFileBackedImageAsset)
 

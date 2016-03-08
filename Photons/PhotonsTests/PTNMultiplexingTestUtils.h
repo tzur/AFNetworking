@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol PTNAssetManager;
+
 /// Returns a fake PTNAssetManager that rejects all requests.
 id<PTNAssetManager> PTNCreateRejectingManager();
 

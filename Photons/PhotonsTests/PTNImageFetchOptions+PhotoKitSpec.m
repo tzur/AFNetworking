@@ -3,6 +3,8 @@
 
 #import "PTNImageFetchOptions+PhotoKit.h"
 
+#import <Photos/Photos.h>
+
 SpecBegin(PTNImageFetchOptions_PhotoKit)
 
 it(@"should create photokit options from photons options", ^{
