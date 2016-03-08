@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "848E00031C591DD1001D8368"
-               BuildableName = "PhotonsUI.framework"
+               BlueprintIdentifier = "84FF72E81C8EED6D00D1DA9F"
+               BuildableName = "libPhotonsUI.a"
                BlueprintName = "PhotonsUI"
                ReferencedContainer = "container:PhotonsUI.xcodeproj">
             </BuildableReference>
@@ -42,8 +42,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "848E00031C591DD1001D8368"
-            BuildableName = "PhotonsUI.framework"
+            BlueprintIdentifier = "84FF72E81C8EED6D00D1DA9F"
+            BuildableName = "libPhotonsUI.a"
             BlueprintName = "PhotonsUI"
             ReferencedContainer = "container:PhotonsUI.xcodeproj">
          </BuildableReference>
@@ -65,8 +65,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "848E00031C591DD1001D8368"
-            BuildableName = "PhotonsUI.framework"
+            BlueprintIdentifier = "84FF72E81C8EED6D00D1DA9F"
+            BuildableName = "libPhotonsUI.a"
             BlueprintName = "PhotonsUI"
             ReferencedContainer = "container:PhotonsUI.xcodeproj">
          </BuildableReference>
@@ -84,8 +84,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "848E00031C591DD1001D8368"
-            BuildableName = "PhotonsUI.framework"
+            BlueprintIdentifier = "84FF72E81C8EED6D00D1DA9F"
+            BuildableName = "libPhotonsUI.a"
             BlueprintName = "PhotonsUI"
             ReferencedContainer = "container:PhotonsUI.xcodeproj">
          </BuildableReference>
