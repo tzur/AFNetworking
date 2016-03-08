@@ -60,6 +60,9 @@
 
 static const ushort kLutSize = 256;
 
+/// Base for the exposure modifier.
+static const CGFloat kExposureBase = 4.0;
+
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTAdjustFsh source] input:input andOutput:output]) {
@@ -493,8 +496,8 @@ static const CGFloat kBalanceShift = 0.15;
 }
 
 - (void)updateToneLUT {
-  cv::Mat1b toneCurve = LTLuminanceCurve(self.brightness, self.contrast, self.exposure,
-                                         self.offset);
+  cv::Mat1b toneCurve = LTLuminanceCurve(self.brightness, self.contrast, kExposureBase,
+                                         self.exposure, self.offset);
 
   std::vector<cv::Mat1b> colorChannels(3);
   cv::LUT(toneCurve, self.redCurve, colorChannels[0]);
