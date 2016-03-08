@@ -12,8 +12,9 @@ GLKMatrix4 LTTonalTransformMatrix(CGFloat temperature, CGFloat tint, CGFloat sat
                                   CGFloat hue);
 
 /// Returns a <tt>1x256</tt> matrix representing a curve adjusting brightness, contrast, exposure
-/// and offset. Since these manipulations do not differ across RGB channels, they only require
-/// luminance update.
-cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposure, CGFloat offset);
+/// as base and exponent, and offset. Since these manipulations do not differ across RGB channels,
+/// they only require luminance update.
+cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposureBase,
+                           CGFloat exposureExponent, CGFloat offset);
 
 NS_ASSUME_NONNULL_END

@@ -21,9 +21,6 @@ static const CGFloat kTemperatureScaling = 0.3;
 /// Ratio by which tint is scaled. See the documentation of \c remappedTint.
 static const CGFloat kTintScaling = 0.3;
 
-/// Base for the exposure modifier.
-static const CGFloat kExposureBase = 4.0;
-
 /// Conversion matrix from RGB to YIQ.
 static const GLKMatrix4 kRGBtoYIQ = GLKMatrix4Make(0.299, 0.596, 0.212, 0,
                                                    0.587, -0.274, -0.523, 0,
@@ -80,7 +77,8 @@ GLKMatrix4 LTTonalTransformMatrix(CGFloat temperature, CGFloat tint, CGFloat sat
   return tonalTranform;
 }
 
-cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposure, CGFloat offset) {
+cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposureBase,
+                           CGFloat exposureExponent, CGFloat offset) {
   cv::Mat1b brightnessCurve(1, kLutSize);
   brightnessCurve = brightness >= 0 ? [LTCurve positiveBrightness] : [LTCurve negativeBrightness];
   
@@ -95,7 +93,7 @@ cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposur
           (1.0 - absBrightness) * [LTCurve identity] + absBrightness * brightnessCurve,
           toneCurve);
   
-  return toneCurve * std::pow(kExposureBase, exposure) + offset * 255;
+  return toneCurve * std::pow(exposureBase, exposureExponent) + offset * 255;
 }
 
 NS_ASSUME_NONNULL_END

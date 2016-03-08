@@ -5,6 +5,8 @@
 
 #import "LTOpenCVExtensions.h"
 
+static const CGFloat kExposureBase = 4.0;
+
 SpecBegin(LTAdjustOperations)
 
 context(@"tonal adjustment", ^{
@@ -68,7 +70,7 @@ context(@"tonal adjustment", ^{
 context(@"luminance adjustment", ^{
   it(@"should return a curve processing positive brightness and contrast correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(101, 101, 101, 255));
-    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.5, 0.15, 0.0, 0.0);
+    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.5, 0.15, kExposureBase, 0.0,  0.0);
     cv::Mat4b output(1, 1, cv::Vec4b(luminanceCurve(0,64), luminanceCurve(0,64),
                                      luminanceCurve(0,64), 255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -77,7 +79,7 @@ context(@"luminance adjustment", ^{
   it(@"should return a curve processing negative contrast correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(174, 134, 88, 255));
     
-    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, -1.0, 0.0, 0.0);
+    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, -1.0, kExposureBase, 0.0, 0.0);
     cv::Mat4b output(1, 1, cv::Vec4b(luminanceCurve(0,192), luminanceCurve(0,128),
                                      luminanceCurve(0,64), 255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -86,7 +88,7 @@ context(@"luminance adjustment", ^{
   it(@"should return a curve processing offset correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(128, 128, 128, 255));
     
-    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, 0.0, 0.0, 0.5);
+    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, 0.0, kExposureBase, 0.0, 0.5);
     cv::Mat4b output(1, 1, cv::Vec4b(luminanceCurve(0,0), luminanceCurve(0,0), luminanceCurve(0,0),
                                      255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -95,7 +97,7 @@ context(@"luminance adjustment", ^{
   it(@"should return a curve processing exposure correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(255, 255, 255, 255));
     
-    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, 0.0, 1.0, 0.0);
+    cv::Mat1b luminanceCurve = LTLuminanceCurve(0.0, 0.0, kExposureBase, 1.0, 0.0);
     cv::Mat4b output(1, 1, cv::Vec4b(luminanceCurve(0,128), luminanceCurve(0,128),
                                      luminanceCurve(0,128), 255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
