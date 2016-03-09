@@ -3,6 +3,7 @@
 
 #import "LTAnalogFilmProcessor.h"
 
+#import "LTAdjustOperations.h"
 #import "LTCLAHEProcessor.h"
 #import "LTColorConversionProcessor.h"
 #import "LTColorGradient.h"
@@ -48,6 +49,9 @@
 @end
 
 @implementation LTAnalogFilmProcessor
+
+/// Base for the exposure modifier.
+static const CGFloat kExposureBase = 2.0;
 
 @synthesize grainTexture = _grainTexture;
 
@@ -273,29 +277,8 @@ LTPropertyWithoutSetter(CGFloat, colorGradientFade, ColorGradientFade, 0, 1, 0);
 #pragma mark -
 
 - (void)updateToneLUT {
-  static const ushort kLutSize = 256;
-  cv::Mat1b toneCurve(1, kLutSize);
-  cv::Mat1b brightnessCurve(1, kLutSize);
-  
-  if (self.brightness >= self.defaultBrightness) {
-    brightnessCurve = [LTCurve positiveBrightness];
-  } else {
-    brightnessCurve = [LTCurve negativeBrightness];
-  }
-  
-  cv::Mat1b contrastCurve(1, kLutSize);
-  if (self.contrast >= self.defaultContrast) {
-    contrastCurve = [LTCurve positiveContrast];
-  } else {
-    contrastCurve = [LTCurve negativeContrast];
-  }
-  
-  float brightness = std::abs(self.brightness);
-  float contrast = std::abs(self.contrast);
-  cv::LUT((1.0 - contrast) * [LTCurve identity] + contrast * contrastCurve,
-          (1.0 - brightness) * [LTCurve identity] + brightness * brightnessCurve,
-          toneCurve);
-  toneCurve = toneCurve * std::pow(2.0, self.exposure) + self.offset * 255;
+  cv::Mat1b toneCurve = LTLuminanceCurve(self.brightness, self.contrast, kExposureBase,
+                                         self.exposure, self.offset);
 
   LTTexture *target = self.shouldUseColorGradientTextureB ?
       self.colorGradientTextureB : self.colorGradientTextureA;
