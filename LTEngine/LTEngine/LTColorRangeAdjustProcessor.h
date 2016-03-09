@@ -68,6 +68,8 @@ LTPropertyDeclare(CGFloat, fuzziness, Fuzziness);
 @property (nonatomic) BOOL disableRangeAttenuation;
 
 /// Sets the rendering mode of the processor. Default value is \c LTColorRangeRenderingModeImage.
+/// When value is \c LTColorRangeRenderingModeMaskOverlay, the processor will retrieve the image
+/// from the bound frame buffer, and will blend it with the mask, using the source-over blend mode.
 @property (nonatomic) LTColorRangeRenderingMode renderingMode;
 
 /// Color of the mask when \c renderingMode is \c LTColorRangeRenderingModeMaskOverlay. Components
