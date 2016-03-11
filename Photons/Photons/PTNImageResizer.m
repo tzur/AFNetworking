@@ -4,6 +4,7 @@
 #import "PTNImageResizer.h"
 
 #import <ImageIO/ImageIO.h>
+#import <LTKit/LTCFExtensions.h>
 #import <LTKit/LTCGExtensions.h>
 
 #import "NSError+Photons.h"
@@ -13,6 +14,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNImageResizer
+
+#pragma mark -
+#pragma mark URL resizing
+#pragma mark -
 
 - (RACSignal *)resizeImageAtURL:(NSURL *)url toSize:(CGSize)size
                     contentMode:(PTNImageContentMode)contentMode {
@@ -27,25 +32,82 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    RACDisposable *disposable = nil;
-
     __block CGImageSourceRef sourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)url, NULL);
-    @onExit {
-      if (sourceRef) {
-        CFRelease(sourceRef);
-      }
-    };
     if (!sourceRef) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed creating image source"]];
-      return disposable;
+      return nil;
+    }
+      
+    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
+    [disposable addDisposable:[[self resizeImageFromImageSource:sourceRef
+                                               resizingStrategy:resizingStrategy
+                                                  fullSizeImage:^{
+      return [UIImage imageWithContentsOfFile:url.path];
+    }] subscribe:subscriber]];
+                                  
+    [disposable addDisposable:[RACDisposable disposableWithBlock:^{
+      LTCFSafeRelease(sourceRef);
+    }]];
+
+    return disposable;
+  }];
+}
+
+#pragma mark -
+#pragma mark Data resizing
+#pragma mark -
+
+- (RACSignal *)resizeImageFromData:(NSData *)data toSize:(CGSize)size
+                       contentMode:(PTNImageContentMode)contentMode {
+  return [self resizeImageFromData:data
+                  resizingStrategy:[PTNResizingStrategy contentMode:contentMode size:size]];
+}
+
+- (RACSignal *)resizeImageFromData:(NSData *)data
+                  resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    __block CGImageSourceRef sourceRef =
+        CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    if (!sourceRef) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
+                                          description:@"Failed creating image source"]];
+      return nil;
     }
 
+    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
+    [disposable addDisposable:[[self resizeImageFromImageSource:sourceRef
+                                               resizingStrategy:resizingStrategy
+                                                  fullSizeImage:^{
+      return [UIImage imageWithData:data];
+    }] subscribe:subscriber]];
+
+    [disposable addDisposable:[RACDisposable disposableWithBlock:^{
+      LTCFSafeRelease(sourceRef);
+    }]];
+
+    return disposable;
+  }];
+}
+
+#pragma mark -
+#pragma mark Source reference resizing
+#pragma mark -
+
+/// Block allocating and returning a \c UIImage.
+typedef UIImage *(^PTNImageBlock)();
+
+// \c imageSource should be released by the caller. \c fullSizeImage should allocate and return the
+// full size image pointed by \c sourceRef.
+- (RACSignal *)resizeImageFromImageSource:(CGImageSourceRef)sourceRef
+                         resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                            fullSizeImage:(PTNImageBlock)fullSizeImage {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(sourceRef, 0, NULL);
     if (!properties) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed copying source properties"]];
-      return disposable;
+      return nil;
     }
 
     NSDictionary *transferredProperties = (__bridge_transfer NSDictionary *)(properties);
@@ -53,14 +115,14 @@ NS_ASSUME_NONNULL_BEGIN
     CGSize size = [resizingStrategy sizeForInputSize:inputSize];
 
     if (inputSize.width == CGSizeNull.width || inputSize.height == CGSizeNull.height) {
-      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor url:url
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor
                                           description:@"Image doesn't have width or height"]];
-      return disposable;
+      return nil;
     } else if (inputSize.width == size.width && inputSize.height == size.height) {
-      [subscriber sendNext:[UIImage imageWithContentsOfFile:url.path]];
+      [subscriber sendNext:fullSizeImage()];
       [subscriber sendCompleted];
 
-      return disposable;
+      return nil;
     }
 
     CGFloat maxPixelSize = [self maxPixelSizeForInputSize:inputSize outputSize:size
@@ -81,13 +143,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (!outputRef) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeDescriptorCreationFailed
                                           description:@"Failed creating output thumbnail"]];
-      return disposable;
+      return nil;
     }
 
     [subscriber sendNext:[UIImage imageWithCGImage:outputRef]];
     [subscriber sendCompleted];
 
-    return disposable;
+    return nil;
   }];
 }
 

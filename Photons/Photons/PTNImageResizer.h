@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Resizes the image located at the given \c url, which must be a file URL, by fitting it to the
 /// given \c size using \c contentMode. If \c size is larger than the image's size, the returned
-/// image will be original one.
+/// image will be the original one.
 ///
 /// The returned signal will return a single \c UIImage and complete on success, and will error if
 /// the image cannot be found or opened.
@@ -22,13 +22,31 @@ NS_ASSUME_NONNULL_BEGIN
                     contentMode:(PTNImageContentMode)contentMode;
 
 /// Resizes the image located at the given \c url, which must be a file URL, by fitting it to the
-/// size returned by the given \c resizingStrategy from the original image's size and its content
-/// mode. If \c size is larger than the image's size, the returned image will be original one.
+/// size returned by the given \c resizingStrategy from the original image's size. If \c size is
+/// larger than the image's size, the returned image will be the original one.
 ///
 /// The returned signal will return a single \c UIImage and complete on success, and will err if the
 /// image cannot be found or opened.
 - (RACSignal *)resizeImageAtURL:(NSURL *)url
                resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy;
+
+/// Resizes the image represented by the given \c data, by fitting it to the given \c size using
+/// \c contentMode. If \c size is larger than the image's size, the returned image will be the
+/// original one.
+///
+/// The returned signal will return a single \c UIImage and complete on success, and will err if the
+/// image cannot be opened.
+- (RACSignal *)resizeImageFromData:(NSData *)data toSize:(CGSize)size
+                       contentMode:(PTNImageContentMode)contentMode;
+
+/// Resizes the image represented by the given \c data, by fitting it to the size returned by the
+/// given \c resizingStrategy from the original image's size. If \c size is larger than the image's
+/// size, the returned image will be the original one.
+///
+/// The returned signal will return a single \c UIImage and complete on success, and will err if the
+/// image cannot be opened.
+- (RACSignal *)resizeImageFromData:(NSData *)data
+                  resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy;
 
 @end
 
