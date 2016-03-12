@@ -31,6 +31,10 @@
 		848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E06BD1C59212F001D8368 /* EXPMatchers+sendValues.m */; };
 		848E09821C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E06BF1C59212F001D8368 /* EXPMatchers+sendValuesWithCount.m */; };
 		848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848E0A401C59217D001D8368 /* LTTestUtils.mm */; };
+		84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */; };
+		84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */; };
+		84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */; };
+		84AB7E771C85DF3A008E254A /* PTUImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E751C85DF3A008E254A /* PTUImageCell.m */; };
 		84D741891C7A270500BCA294 /* PhotonsUITestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */; };
 		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
@@ -39,6 +43,7 @@
 		84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFDF1C591BFF001D8368 /* libPhotons.a */; };
 		84FF72FA1C8EEFE100D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
 		84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
+		84FF774A1C904A9500D1DA9F /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849AE4A61C6B4F7C00F030CA /* Masonry.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +215,13 @@
 			remoteGlobalIDString = 84E55C151C8EC72E00D91339;
 			remoteInfo = Photons;
 		};
+		84FF77481C904A8F00D1DA9F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -301,6 +313,12 @@
 		848EFFCA1C591BFB001D8368 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Vendor/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		848EFFD91C591BFF001D8368 /* Photons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Photons.xcodeproj; path = ../Photons/Photons.xcodeproj; sourceTree = "<group>"; };
 		849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../Vendor/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
+		84A0DC3A1C8747AE005A98F3 /* PTUImageCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCellViewModel.h; sourceTree = "<group>"; };
+		84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellViewModel.m; sourceTree = "<group>"; };
+		84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellViewModelSpec.m; sourceTree = "<group>"; };
+		84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellSpec.m; sourceTree = "<group>"; };
+		84AB7E741C85DF3A008E254A /* PTUImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCell.h; sourceTree = "<group>"; };
+		84AB7E751C85DF3A008E254A /* PTUImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCell.m; sourceTree = "<group>"; };
 		84D741871C7A270500BCA294 /* PhotonsUITestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotonsUITestUtils.h; sourceTree = "<group>"; };
 		84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonsUITestUtils.m; sourceTree = "<group>"; };
 		84F88D751C7A08C6008FFE75 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -313,6 +331,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FF774A1C904A9500D1DA9F /* Masonry.framework in Frameworks */,
 				84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */,
 				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
@@ -336,8 +355,8 @@
 		848E00051C591DD1001D8368 /* PhotonsUI */ = {
 			isa = PBXGroup;
 			children = (
-				848E0A441C5921FE001D8368 /* Base */,
 				848E00061C591DD1001D8368 /* PhotonsUI.h */,
+				848E0A441C5921FE001D8368 /* Base */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
 			);
 			path = PhotonsUI;
@@ -391,6 +410,8 @@
 				84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */,
 				84D741871C7A270500BCA294 /* PhotonsUITestUtils.h */,
 				84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */,
+				84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */,
+				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -502,6 +523,10 @@
 				84884C171C70E63500DBB987 /* PTUChangesetMove.h */,
 				84884C181C70E63500DBB987 /* PTUChangesetMove.m */,
 				846E18901C730F2100B94467 /* PTUChangesetProvider.h */,
+				84AB7E741C85DF3A008E254A /* PTUImageCell.h */,
+				84AB7E751C85DF3A008E254A /* PTUImageCell.m */,
+				84A0DC3A1C8747AE005A98F3 /* PTUImageCellViewModel.h */,
+				84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -638,6 +663,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				84FF77491C904A8F00D1DA9F /* PBXTargetDependency */,
 			);
 			name = PhotonsUITests;
 			productName = PhotonsUITests;
@@ -904,6 +930,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				848E09791C59212F001D8368 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
+				84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.m in Sources */,
 				848E09801C59212F001D8368 /* EXPMatchers+sendEvents.m in Sources */,
 				8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.m in Sources */,
 				848E097B1C59212F001D8368 /* EXPMatchers+finish.m in Sources */,
@@ -915,6 +942,7 @@
 				848E097C1C59212F001D8368 /* EXPMatchers+matchError.m in Sources */,
 				848E09751C59212F001D8368 /* LLReactiveMatchersHelpers.m in Sources */,
 				848E09761C59212F001D8368 /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m in Sources */,
 				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
 				848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */,
@@ -935,6 +963,8 @@
 				84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */,
 				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
 				84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */,
+				84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */,
+				84AB7E771C85DF3A008E254A /* PTUImageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,6 +975,11 @@
 			isa = PBXTargetDependency;
 			name = Photons;
 			targetProxy = 84FF72F21C8EED9300D1DA9F /* PBXContainerItemProxy */;
+		};
+		84FF77491C904A8F00D1DA9F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Masonry iOS";
+			targetProxy = 84FF77481C904A8F00D1DA9F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
