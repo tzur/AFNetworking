@@ -3,6 +3,7 @@
 
 #import "PTNImageResizer.h"
 
+#import "NSError+Photons.h"
 #import "PTNResizingStrategy.h"
 
 static void PTNWriteImageOfSizeToFile(CGSize size, NSString *path, UIImageOrientation orientation) {
@@ -23,166 +24,389 @@ beforeEach(^{
   resizer = [[PTNImageResizer alloc] init];
 });
 
-context(@"portrait image", ^{
-  static NSString * const kImageResizerSharedExamples = @"common resizing operations";
-  static NSString * const kImageResizerContentModeKey = @"contentMode";
+context(@"URL Resizing", ^{
+  context(@"portrait image", ^{
+    static NSString * const kImageResizerSharedExamples = @"common URL resizing operations";
+    static NSString * const kImageResizerContentModeKey = @"contentMode";
 
-  static CGSize kOriginalSize = CGSizeMake(8, 8);
+    static CGSize kOriginalSize = CGSizeMake(8, 8);
 
-  __block NSURL *fileURL;
+    __block NSURL *fileURL;
 
-  sharedExamplesFor(kImageResizerSharedExamples, ^(NSDictionary *data) {
-    __block PTNImageContentMode contentMode;
+    sharedExamplesFor(kImageResizerSharedExamples, ^(NSDictionary *data) {
+      __block PTNImageContentMode contentMode;
+
+      beforeEach(^{
+        contentMode = (PTNImageContentMode)[data[kImageResizerContentModeKey] unsignedIntegerValue];
+      });
+
+      it(@"should return a perfectly resized image and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:contentMode];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kTargetSize.width && value.size.height == kTargetSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return the original image if a larger size is provided", ^{
+        static CGSize kTargetSize = CGSizeMake(10, 9);
+
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:contentMode];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kOriginalSize.width &&
+          value.size.height == kOriginalSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return a resized image according to given strategy", ^{
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                     resizingStrategy:[PTNResizingStrategy identity]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kOriginalSize.width &&
+          value.size.height == kOriginalSize.height;
+        });
+        expect(signal).to.complete();
+      });
+    });
 
     beforeEach(^{
-      contentMode = (PTNImageContentMode)[data[kImageResizerContentModeKey] unsignedIntegerValue];
+      NSString *path = LTTemporaryPath(@"PTNImageResizerTest.jpg");
+      fileURL = [NSURL fileURLWithPath:path];
+
+      PTNWriteImageOfSizeToFile(kOriginalSize, path, UIImageOrientationUp);
     });
 
-    it(@"should return a perfectly resized image and complete", ^{
-      static CGSize kTargetSize = CGSizeMake(4, 4);
+    context(@"aspect fill", ^{
+      itShouldBehaveLike(kImageResizerSharedExamples,
+                         @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFill)});
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:contentMode];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kTargetSize.width && value.size.height == kTargetSize.height;
+      it(@"should return an aspect fitted image with integral scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 4);
+        static CGSize kExpectedSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
       });
-      expect(signal).to.complete();
-    });
 
-    it(@"should return the original image if a larger size is provided", ^{
-      static CGSize kTargetSize = CGSizeMake(10, 9);
+      it(@"should return an aspect fitted image with fractional scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(3, 3);
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:contentMode];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kOriginalSize.width && value.size.height == kOriginalSize.height;
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
       });
-      expect(signal).to.complete();
-    });
 
-    it(@"should return a resized image according to given strategy", ^{
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL
-                                   resizingStrategy:[PTNResizingStrategy identity]];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kOriginalSize.width && value.size.height == kOriginalSize.height;
+      it(@"should return a resized image according to given strategy", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 4);
+        static CGSize kExpectedSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                     resizingStrategy:[PTNResizingStrategy aspectFill:kTargetSize]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
       });
-      expect(signal).to.complete();
     });
-  });
 
-  beforeEach(^{
-    NSString *path = LTTemporaryPath(@"PTNImageResizerTest.jpg");
-    fileURL = [NSURL fileURLWithPath:path];
+    context(@"aspect fit", ^{
+      itShouldBehaveLike(kImageResizerSharedExamples,
+                         @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFit)});
 
-    PTNWriteImageOfSizeToFile(kOriginalSize, path, UIImageOrientationUp);
-  });
+      it(@"should return an aspect fitted image with integral scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(2, 2);
 
-  context(@"aspect fill", ^{
-    itShouldBehaveLike(kImageResizerSharedExamples,
-                       @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFill)});
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFit];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
 
-    it(@"should return an aspect fitted image with integral scale factor and complete", ^{
-      static CGSize kTargetSize = CGSizeMake(2, 4);
-      static CGSize kExpectedSize = CGSizeMake(4, 4);
+      it(@"should return a resized image according to given strategy", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(2, 2);
+
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL
+                                     resizingStrategy:[PTNResizingStrategy aspectFit:kTargetSize]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+    });
+
+    it(@"should err when invalid URL", ^{
+      static CGSize kTargetSize = CGSizeMake(6, 6);
+      fileURL = [NSURL URLWithString:@"http://www.foo.com"];
 
       RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
                                         contentMode:PTNImageContentModeAspectFill];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+
+      expect(signal).to.matchError(^BOOL(NSError *error){
+        return error.code == PTNErrorCodeInvalidURL;
       });
-      expect(signal).to.complete();
     });
 
-    it(@"should return an aspect fitted image with fractional scale factor and complete", ^{
-      static CGSize kTargetSize = CGSizeMake(2, 3);
-      static CGSize kExpectedSize = CGSizeMake(3, 3);
+    it(@"should err when URL with invalid data is given", ^{
+      static CGSize kTargetSize = CGSizeMake(6, 6);
+      NSString *path = LTTemporaryPath(@"foo.jpg");
+      fileURL = [NSURL fileURLWithPath:path];
 
       RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:PTNImageContentModeAspectFill];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
-      });
-      expect(signal).to.complete();
-    });
+                                           contentMode:PTNImageContentModeAspectFill];
 
-    it(@"should return a resized image according to given strategy", ^{
-      static CGSize kTargetSize = CGSizeMake(2, 4);
-      static CGSize kExpectedSize = CGSizeMake(4, 4);
-
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL
-                                   resizingStrategy:[PTNResizingStrategy aspectFill:kTargetSize]];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      expect(signal).to.matchError(^BOOL(NSError *error){
+        return error.code == PTNErrorCodeDescriptorCreationFailed;
       });
-      expect(signal).to.complete();
     });
   });
 
-  context(@"aspect fit", ^{
-    itShouldBehaveLike(kImageResizerSharedExamples,
-                       @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFit)});
+  context(@"rotated image", ^{
+    __block NSURL *fileURL;
 
-    it(@"should return an aspect fitted image with integral scale factor and complete", ^{
-      static CGSize kTargetSize = CGSizeMake(2, 3);
-      static CGSize kExpectedSize = CGSizeMake(2, 2);
+    beforeEach(^{
+      NSString *path = LTTemporaryPath(@"PTNImageResizerRotatedTest.jpg");
+      fileURL = [NSURL fileURLWithPath:path];
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:PTNImageContentModeAspectFit];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
-      });
-      expect(signal).to.complete();
+      PTNWriteImageOfSizeToFile(CGSizeMake(6, 12), path, UIImageOrientationRight);
     });
 
-    it(@"should return a resized image according to given strategy", ^{
-      static CGSize kTargetSize = CGSizeMake(2, 3);
-      static CGSize kExpectedSize = CGSizeMake(2, 2);
+    context(@"aspect fill", ^{
+      it(@"should return a resized aspect filled image", ^{
+        static CGSize kTargetSize = CGSizeMake(3, 4);
+        static CGSize kExpectedSize = CGSizeMake(8, 4);
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL
-                                   resizingStrategy:[PTNResizingStrategy aspectFit:kTargetSize]];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
       });
-      expect(signal).to.complete();
+    });
+
+    context(@"aspect fit", ^{
+      it(@"should return a resized aspect fitted image", ^{
+        static CGSize kTargetSize = CGSizeMake(6, 6);
+        static CGSize kExpectedSize = CGSizeMake(6, 3);
+        
+        RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFit];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
     });
   });
 });
 
-context(@"rotated image", ^{
-  __block NSURL *fileURL;
+context(@"Data Resizing", ^{
+  context(@"portrait image", ^{
+    static NSString * const kImageResizerSharedExamples = @"common data resizing operations";
+    static NSString * const kImageResizerContentModeKey = @"contentMode";
 
-  beforeEach(^{
-    NSString *path = LTTemporaryPath(@"PTNImageResizerRotatedTest.jpg");
-    fileURL = [NSURL fileURLWithPath:path];
+    static CGSize kOriginalSize = CGSizeMake(8, 8);
 
-    PTNWriteImageOfSizeToFile(CGSizeMake(6, 12), path, UIImageOrientationRight);
-  });
+    __block NSData *imageData;
 
-  context(@"aspect fill", ^{
-    it(@"should return a resized aspect filled image", ^{
-      static CGSize kTargetSize = CGSizeMake(3, 4);
-      static CGSize kExpectedSize = CGSizeMake(8, 4);
+    sharedExamplesFor(kImageResizerSharedExamples, ^(NSDictionary *data) {
+      __block PTNImageContentMode contentMode;
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:PTNImageContentModeAspectFill];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+      beforeEach(^{
+        contentMode = (PTNImageContentMode)[data[kImageResizerContentModeKey] unsignedIntegerValue];
       });
-      expect(signal).to.complete();
+
+      it(@"should return a perfectly resized image and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:contentMode];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kTargetSize.width && value.size.height == kTargetSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return the original image if a larger size is provided", ^{
+        static CGSize kTargetSize = CGSizeMake(10, 9);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:contentMode];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kOriginalSize.width &&
+          value.size.height == kOriginalSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return a resized image according to given strategy", ^{
+        RACSignal *signal = [resizer resizeImageFromData:imageData
+                                        resizingStrategy:[PTNResizingStrategy identity]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kOriginalSize.width &&
+          value.size.height == kOriginalSize.height;
+        });
+        expect(signal).to.complete();
+      });
+    });
+
+    beforeEach(^{
+      NSString *path = LTTemporaryPath(@"PTNImageResizerTest.jpg");
+      imageData = [NSData dataWithContentsOfFile:path];
+
+      PTNWriteImageOfSizeToFile(kOriginalSize, path, UIImageOrientationUp);
+    });
+
+    context(@"aspect fill", ^{
+      itShouldBehaveLike(kImageResizerSharedExamples,
+                         @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFill)});
+
+      it(@"should return an aspect fitted image with integral scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 4);
+        static CGSize kExpectedSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return an aspect fitted image with fractional scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(3, 3);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return a resized image according to given strategy", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 4);
+        static CGSize kExpectedSize = CGSizeMake(4, 4);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData
+            resizingStrategy:[PTNResizingStrategy aspectFill:kTargetSize]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+    });
+
+    context(@"aspect fit", ^{
+      itShouldBehaveLike(kImageResizerSharedExamples,
+                         @{kImageResizerContentModeKey: @(PTNImageContentModeAspectFit)});
+
+      it(@"should return an aspect fitted image with integral scale factor and complete", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(2, 2);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                          contentMode:PTNImageContentModeAspectFit];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+
+      it(@"should return a resized image according to given strategy", ^{
+        static CGSize kTargetSize = CGSizeMake(2, 3);
+        static CGSize kExpectedSize = CGSizeMake(2, 2);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData
+            resizingStrategy:[PTNResizingStrategy aspectFit:kTargetSize]];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
+    });
+
+    it(@"should err when invalid data is given", ^{
+      static CGSize kTargetSize = CGSizeMake(6, 6);
+      imageData = nil;
+      
+      RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                           contentMode:PTNImageContentModeAspectFill];
+
+      expect(signal).to.matchError(^BOOL(NSError *error){
+        return error.code == PTNErrorCodeDescriptorCreationFailed;
+      });
     });
   });
 
-  context(@"aspect fit", ^{
-    it(@"should return a resized aspect fitted image", ^{
-      static CGSize kTargetSize = CGSizeMake(6, 6);
-      static CGSize kExpectedSize = CGSizeMake(6, 3);
+  context(@"rotated image", ^{
+    __block NSData *imageData;
 
-      RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
-                                        contentMode:PTNImageContentModeAspectFit];
-      expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
-        return value.size.width == kExpectedSize.width && value.size.height == kExpectedSize.height;
+    beforeEach(^{
+      NSString *path = LTTemporaryPath(@"PTNImageResizerRotatedTest.jpg");
+      imageData = [NSData dataWithContentsOfFile:path];
+
+      PTNWriteImageOfSizeToFile(CGSizeMake(6, 12), path, UIImageOrientationRight);
+    });
+
+    context(@"aspect fill", ^{
+      it(@"should return a resized aspect filled image", ^{
+        static CGSize kTargetSize = CGSizeMake(3, 4);
+        static CGSize kExpectedSize = CGSizeMake(8, 4);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:PTNImageContentModeAspectFill];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
       });
-      expect(signal).to.complete();
+    });
+
+    context(@"aspect fit", ^{
+      it(@"should return a resized aspect fitted image", ^{
+        static CGSize kTargetSize = CGSizeMake(6, 6);
+        static CGSize kExpectedSize = CGSizeMake(6, 3);
+
+        RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
+                                             contentMode:PTNImageContentModeAspectFit];
+        expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
+          return value.size.width == kExpectedSize.width &&
+          value.size.height == kExpectedSize.height;
+        });
+        expect(signal).to.complete();
+      });
     });
   });
 });
