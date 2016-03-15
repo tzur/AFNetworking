@@ -12,6 +12,7 @@
 		8414EA281C5A006300014DD1 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8414EA271C5A006300014DD1 /* libSpecta.a */; };
 		8428F3761C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.m */; };
 		8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.m */; };
+		845161FB1C98559600AD8B5B /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFC71C591BF5001D8368 /* libLTKit.a */; };
 		84884C7F1C71D83000DBB987 /* PTUChangesetMoveSepc.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */; };
 		848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069B1C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		848E09731C59212F001D8368 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069D1C59212F001D8368 /* LLSignalTestRecorder.m */; };
@@ -41,7 +42,6 @@
 		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
 		84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */; };
 		84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFDF1C591BFF001D8368 /* libPhotons.a */; };
-		84FF72FA1C8EEFE100D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
 		84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72F91C8EEFE100D1DA9F /* DropboxSDK.framework */; };
 		84FF774A1C904A9500D1DA9F /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849AE4A61C6B4F7C00F030CA /* Masonry.framework */; };
 /* End PBXBuildFile section */
@@ -331,6 +331,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845161FB1C98559600AD8B5B /* libLTKit.a in Frameworks */,
 				84FF774A1C904A9500D1DA9F /* Masonry.framework in Frameworks */,
 				84FF72FB1C8EEFF900D1DA9F /* DropboxSDK.framework in Frameworks */,
 				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
@@ -345,7 +346,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84FF72FA1C8EEFE100D1DA9F /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1066,7 +1066,7 @@
 					"\"$(SRCROOT)/../Vendor/Masonry\"",
 					"\"$(SRCROOT)/../Photons\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1107,7 +1107,7 @@
 					"\"$(SRCROOT)/../Vendor/Masonry\"",
 					"\"$(SRCROOT)/../Photons\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -25,6 +25,8 @@
 		844C10C11C3A5D54001A6DC9 /* PTNNSURLTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.m */; };
 		844C10E01C3A6440001A6DC9 /* NSURL+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10DF1C3A6440001A6DC9 /* NSURL+PhotonsSpec.m */; };
 		84515E971C96A4DC00AD8B5B /* NSURL+GatewaySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515E961C96A4DC00AD8B5B /* NSURL+GatewaySpec.m */; };
+		845161F91C98557B00AD8B5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9041C58C5C6004E0175 /* ReactiveCocoa.framework */; };
+		845161FA1C98557E00AD8B5B /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9101C58C5DD004E0175 /* libLTKit.a */; };
 		846E18A51C7330B900B94467 /* PTNDropboxAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 846E18A41C7330B900B94467 /* PTNDropboxAssetManagerSpec.m */; };
 		848186E01C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 848186DF1C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m */; };
 		848186FB1C3BCDAB0070462E /* PTNDropboxDirectoryDescriptorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 848186FA1C3BCDAB0070462E /* PTNDropboxDirectoryDescriptorSpec.m */; };
@@ -86,12 +88,9 @@
 		84E55C471C8EC87200D91339 /* PTNPhotoKitFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */; };
 		84E55C481C8EC87400D91339 /* PTNPhotoKitImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C541C71C72E00DBB987 /* PTNPhotoKitImageAsset.m */; };
 		84E55C491C8EC87700D91339 /* PTNPhotoKitObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */; };
-		84E55C4A1C8EC89000D91339 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9101C58C5DD004E0175 /* libLTKit.a */; };
 		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
-		84FF72CD1C8EEC8400D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72CC1C8EEC8400D1DA9F /* DropboxSDK.framework */; };
 		84FF72CE1C8EEC9E00D1DA9F /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72CC1C8EEC8400D1DA9F /* DropboxSDK.framework */; };
-		84FF748B1C8F045D00D1DA9F /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476B9041C58C5C6004E0175 /* ReactiveCocoa.framework */; };
 		84FF77F11C91606500D1DA9F /* NSURL+Gateway.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B16A8A61BCBFCA8006DAAA7 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B16A8A51BCBFCA8006DAAA7 /* libc++.tbd */; };
@@ -142,6 +141,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		845161FE1C98592D00AD8B5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
 		8476B8FF1C58C5C6004E0175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */;
@@ -539,9 +545,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84FF748B1C8F045D00D1DA9F /* ReactiveCocoa.framework in Frameworks */,
-				84FF72CD1C8EEC8400D1DA9F /* DropboxSDK.framework in Frameworks */,
-				84E55C4A1C8EC89000D91339 /* libLTKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +552,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845161FA1C98557E00AD8B5B /* libLTKit.a in Frameworks */,
+				845161F91C98557B00AD8B5B /* ReactiveCocoa.framework in Frameworks */,
 				84FF72CE1C8EEC9E00D1DA9F /* DropboxSDK.framework in Frameworks */,
 				84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */,
 				84A5E65E1C58F3C100B29423 /* libSpecta.a in Frameworks */,
@@ -1115,6 +1120,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				845161FF1C98592D00AD8B5B /* PBXTargetDependency */,
 			);
 			name = Photons;
 			productName = Photons;
@@ -1479,6 +1485,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		845161FF1C98592D00AD8B5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveCocoa-iOS";
+			targetProxy = 845161FE1C98592D00AD8B5B /* PBXContainerItemProxy */;
+		};
 		84E55C4E1C8EC9E900D91339 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84E55C151C8EC72E00D91339 /* Photons */;
@@ -1524,6 +1535,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(SRCROOT)/../Vendor/dropbox-ios-sdk",
+					"$(SRCROOT)/../Vendor/ReactiveCocoa",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1555,6 +1567,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../LTKit/third_party/utils/libextobjc/",
 					"$(SRCROOT)/../Vendor/dropbox-ios-sdk",
+					"$(SRCROOT)/../Vendor/ReactiveCocoa",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
