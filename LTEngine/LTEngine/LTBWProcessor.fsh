@@ -137,7 +137,8 @@ void main() {
     frameCoords = getFrameCoordinates(vTexcoord.yx, frameWidth.yx, 1.0 / combinedAspectRatio).yx;
   }
   frameCoords = mix(frameCoords, frameCoords.yx, flipFrameCoordinates);
-  lum = overlay(lum, texture2D(frameTexture, frameCoords).r, 1.0, 1.0);
+  mediump float frame = texture2D(frameTexture, frameCoords).r;
+  lum = overlay(lum, frame, 1.0, 1.0);
   
   // 6. Grain.
   mediump float grain = dot(texture2D(grainTexture, vGrainTexcoord).rgb, grainChannelMixer);
@@ -146,5 +147,7 @@ void main() {
   // 7. Apply color gradient.
   mediump vec4 outputColor = texture2D(colorGradient, vec2(mix(lum, 0.5, colorGradientFade), 0.0));
   
-  gl_FragColor = vec4(outputColor.rgb, color.a);
+  lowp float fragmentInFrame = float(any(bvec2(frame >= 0.51, frame <= 0.49)));
+  mediump float alpha = mix(color.a, 1.0, fragmentInFrame);
+  gl_FragColor = vec4(outputColor.rgb, alpha);
 }

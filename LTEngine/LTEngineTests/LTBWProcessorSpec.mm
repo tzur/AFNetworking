@@ -124,36 +124,36 @@ context(@"processing", ^{
   });
   
   it(@"should process brightness correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(217, 217, 217, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(217, 217, 217, 255));
     processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
     processor.brightness = 1;
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process contrast correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(104, 104, 104, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(104, 104, 104, 255));
     processor.contrast = 1;
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process offset correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(255, 255, 255, 255));
     processor.offset = 1;
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process exposure correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(233, 233, 233, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(233, 233, 233, 255));
     processor.exposure = 1;
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process structure correctly", ^{
@@ -161,31 +161,31 @@ context(@"processing", ^{
     cv::Mat4b input(2, 2, cv::Vec4b(0, 0, 0, 255));
     input(0, 0) = cv::Vec4b(192, 192, 192, 255);
     
-    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
-    output(0, 0) = cv::Vec4b(255, 255, 255, 255);
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(0, 0, 0, 255));
+    expectedOutput(0, 0) = cv::Vec4b(255, 255, 255, 255);
     
     inputTexture = [LTTexture textureWithImage:input];
     processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
     processor.structure = 1;
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process color filter correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(64, 64, 64, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(64, 64, 64, 255));
     processor.colorFilter = LTVector3(1, 0, 0);
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process color gradient correctly", ^{
-    cv::Mat4b output(2, 2, cv::Vec4b(255, 0, 0, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(255, 0, 0, 255));
     processor.colorGradient = [LTColorGradient redToRedGradient];
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process grain correctly", ^{
@@ -193,13 +193,13 @@ context(@"processing", ^{
     [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
     processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
     
-    cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(255, 255, 255, 255));
     [processor.grainTexture clearWithColor:LTVector4(1, 0, 0, 1)];
     processor.grainAmplitude = 1.0;
     processor.grainChannelMixer = LTVector3(1, 0, 0);
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 2);
   });
   
   it(@"should process frame correctly", ^{
@@ -207,12 +207,12 @@ context(@"processing", ^{
     [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
     processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
     
-    cv::Mat4b output(2, 2, cv::Vec4b(0, 0, 0, 255));
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(0, 0, 0, 255));
     // Only the first channel should be used.
     [processor.frameTexture clearWithColor:LTVector4(0, 1, 1, 1)];
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 1);
   });
   
   it(@"should not change alpha", ^{
@@ -224,18 +224,44 @@ context(@"processing", ^{
     inputTexture = [LTTexture textureWithImage:input];
     outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
-    
-    cv::Mat4b output(1, 3);
-    output(0, 0) = cv::Vec4b(255, 0, 0, 255);
-    output(0, 1) = cv::Vec4b(255, 0, 0, 128);
-    output(0, 2) = cv::Vec4b(255, 0, 0, 0);
+
+    cv::Mat4b expectedOutput(1, 3);
+    expectedOutput(0, 0) = cv::Vec4b(255, 0, 0, 255);
+    expectedOutput(0, 1) = cv::Vec4b(255, 0, 0, 128);
+    expectedOutput(0, 2) = cv::Vec4b(255, 0, 0, 0);
     
     // Random changes, to check that the processing doesn't affect the alpha.
     processor.contrast = 0.5;
     processor.colorGradient = [LTColorGradient redToRedGradient];
     [processor process];
     
-    expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 1);
+    expect($(outputTexture.image)).to.equalMat($(expectedOutput));
+  });
+
+  it(@"should cover alpha with frame when frame is opaque", ^{
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.0)];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+
+    cv::Mat4b expectedOutput(2, 2, cv::Vec4b(0, 0, 0, 255));
+    // Only the first channel should be used.
+    [processor.frameTexture clearWithColor:LTVector4(0, 1, 1, 1)];
+    [processor process];
+
+    expect($(outputTexture.image)).to.equalMat($(expectedOutput));
+  });
+
+  it(@"should not cover alpha with frame, when frame is clear", ^{
+    inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.0)];
+    processor = [[LTBWProcessor alloc] initWithInput:inputTexture output:outputTexture];
+
+    cv::Mat4b expectedOutput = inputTexture.image;
+    // Only the first channel should be used.
+    [processor.frameTexture clearWithColor:LTVector4(0.5, 1, 1, 1)];
+    [processor process];
+
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expectedOutput), 1);
   });
 });
 
