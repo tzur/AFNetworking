@@ -21,7 +21,7 @@ LTEnumImplement(NSUInteger, PTNDropboxThumbnailType,
 
 @implementation PTNDropboxThumbnailType (Additions)
 
-- (NSString *)name {
+- (NSString *)sizeName {
   switch (self.value) {
     case PTNDropboxThumbnailTypeExtraSmall:
       return @"xs";

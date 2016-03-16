@@ -308,7 +308,7 @@ context(@"thumbnail fetching", ^{
   it(@"should fetch thumbnail", ^{
     RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.equal(localPath);
 
     [dbRestClient deliverThumbnail:localPath];
@@ -327,12 +327,12 @@ context(@"thumbnail fetching", ^{
 
     OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
     [values subscribeNext:^(id __unused x) { }];
-    expect([firstDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([firstDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.beTruthy();
 
     OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
     [values subscribeNext:^(id __unused x) { }];
-    expect([secondDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([secondDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.beTruthy();
   });
 
@@ -371,9 +371,9 @@ context(@"thumbnail fetching", ^{
     RACSignal *otherValues = [restClient fetchThumbnail:otherPath type:thumbnailType];
     LLSignalTestRecorder *otherRecorder = [otherValues testRecorder];
 
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.equal(localPath);
-    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.sizeName])
         .to.equal(otherLocalPath);
 
     [dbRestClient deliverThumbnail:otherLocalPath];
@@ -385,7 +385,7 @@ context(@"thumbnail fetching", ^{
   it(@"should err on thumbnail fetching failure", ^{
     RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     LLSignalTestRecorder *recorder = [values testRecorder];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.equal(localPath);
 
     [dbRestClient deliverThumbnailError:errorWithPath];
@@ -404,9 +404,9 @@ context(@"thumbnail fetching", ^{
     RACSignal *otherValues = [restClient fetchThumbnail:otherPath type:thumbnailType];
     LLSignalTestRecorder *otherRecorder = [otherValues testRecorder];
 
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.equal(localPath);
-    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:otherPath size:thumbnailType.sizeName])
         .to.equal(otherLocalPath);
 
     [dbRestClient deliverThumbnailError:errorWithOtherPath];
@@ -421,19 +421,20 @@ context(@"thumbnail fetching", ^{
   it(@"should cancel request upon disposal", ^{
     RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
     RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
-    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.name])
+    expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .will.beTruthy();
     
     [subscriber dispose];
-    expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath size:thumbnailType.name])
-        .will.beTruthy();
+    expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath
+        size:thumbnailType.sizeName]).will.beTruthy();
   });
 
   context(@"thumbnail sizes", ^{
     [PTNDropboxThumbnailType enumerateEnumUsingBlock:^(PTNDropboxThumbnailType * _Nonnull type) {
       it(@"should correctly request thumbnail size", ^{
         [[restClient fetchThumbnail:kDropboxPath type:type] subscribeNext:^(id __unused x) {}];
-        expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:type.name]).to.beTruthy();
+        expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath
+            size:type.sizeName]).to.beTruthy();
       });
     }];
   });
