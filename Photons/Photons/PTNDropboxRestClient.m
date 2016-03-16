@@ -171,10 +171,10 @@ NS_ASSUME_NONNULL_BEGIN
     [[self loadThumbnailSuccesful:localPath restClient:restClient] subscribe:subscriber];
     [[self loadThumbnailError:path restClient:restClient] subscribe:subscriber];
 
-    [restClient loadThumbnail:path ofSize:type.name intoPath:localPath];
+    [restClient loadThumbnail:path ofSize:type.sizeName intoPath:localPath];
 
     return [RACDisposable disposableWithBlock:^{
-      [restClient cancelThumbnailLoad:path size:type.name];
+      [restClient cancelThumbnailLoad:path size:type.sizeName];
     }];
   }];
 }

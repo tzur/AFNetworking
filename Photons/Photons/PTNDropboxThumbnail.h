@@ -22,7 +22,7 @@ LTEnumDeclare(NSUInteger, PTNDropboxThumbnailType,
 @interface PTNDropboxThumbnailType (Additions)
 
 /// Name of this Dropbox thumbnail type according to the Dropbox SDK.
-@property (readonly, nonatomic) NSString *name;
+@property (readonly, nonatomic) NSString *sizeName;
 
 /// Size of this Dropbox thumbnail type according to the Dropbox SDK.
 @property (readonly, nonatomic) CGSize size;

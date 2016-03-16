@@ -114,14 +114,14 @@ context(@"thumbnails", ^{
     [[client fetchThumbnail:kPath type:thumbnailType] subscribeNext:^(id __unused x) {}];
     NSString *firstPath = [dropboxRestClient didRequestFileAtPath:kPath revision:kRevision];
     [[client fetchThumbnail:kPath type:thumbnailType] subscribeNext:^(id __unused x) {}];
-    expect([dropboxRestClient didRequestThumbnailAtPath:kPath size:thumbnailType.name])
+    expect([dropboxRestClient didRequestThumbnailAtPath:kPath size:thumbnailType.sizeName])
         .notTo.equal(firstPath);
   });
 
   it(@"should request thumbnails with a different path but return original path", ^{
     LLSignalTestRecorder *values = [[client fetchThumbnail:kPath type:thumbnailType] testRecorder];
     NSString *requestPath = [dropboxRestClient didRequestThumbnailAtPath:kPath
-                                                                    size:thumbnailType.name];
+                                                                    size:thumbnailType.sizeName];
     NSString *originalPath = [pathProvider localPathForThumbnailInPath:kPath
                                                                   size:thumbnailType.size];
 
@@ -138,7 +138,7 @@ context(@"thumbnails", ^{
   it(@"should return error if moving file fails", ^{
     LLSignalTestRecorder *values = [[client fetchThumbnail:kPath type:thumbnailType] testRecorder];
     NSString *requestPath = [dropboxRestClient didRequestThumbnailAtPath:kPath
-                                                                    size:thumbnailType.name];
+                                                                    size:thumbnailType.sizeName];
     NSString *originalPath = [pathProvider localPathForThumbnailInPath:kPath
                                                                   size:thumbnailType.size];
 
@@ -155,7 +155,7 @@ context(@"thumbnails", ^{
   it(@"should replace file if destenation file existis", ^{
     LLSignalTestRecorder *values = [[client fetchThumbnail:kPath type:thumbnailType] testRecorder];
     NSString *requestPath = [dropboxRestClient didRequestThumbnailAtPath:kPath
-                                                                    size:thumbnailType.name];
+                                                                    size:thumbnailType.sizeName];
     NSString *originalPath = [pathProvider localPathForThumbnailInPath:kPath
                                                                   size:thumbnailType.size];
 
