@@ -582,6 +582,14 @@
 		85E2B6941C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */; };
 		85E2B6951C58C649006AD39C /* SolidRectsDrawerRotatedRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */; };
 		85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */; };
+		85F372B31C8C888300E1D429 /* LT3DLUT.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F372B11C8C888300E1D429 /* LT3DLUT.h */; };
+		85F372B41C8C888300E1D429 /* LT3DLUT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B21C8C888300E1D429 /* LT3DLUT.mm */; };
+		85F372B51C8C88A300E1D429 /* LT3DLUT.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B01C8C888300E1D429 /* LT3DLUT.fsh */; };
+		85F372B81C8C88CC00E1D429 /* LT3DLUTSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B71C8C88CC00E1D429 /* LT3DLUTSpec.mm */; };
+		85F372BA1C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B91C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm */; };
+		85F372BD1C8C88EF00E1D429 /* LT3DLUTProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F372BB1C8C88EF00E1D429 /* LT3DLUTProcessor.h */; };
+		85F372BE1C8C88EF00E1D429 /* LT3DLUTProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F372BC1C8C88EF00E1D429 /* LT3DLUTProcessor.mm */; };
+		85F372C01C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */; };
 		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; };
 		8B0337FC1BD3EA1B00ACDF26 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */; };
 		8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */; };
@@ -1917,6 +1925,14 @@
 		85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRegularRectsRed.png; path = Resources/SolidRectsDrawerRegularRectsRed.png; sourceTree = "<group>"; };
 		85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRects.png; path = Resources/SolidRectsDrawerRotatedRects.png; sourceTree = "<group>"; };
 		85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRectsRed.png; path = Resources/SolidRectsDrawerRotatedRectsRed.png; sourceTree = "<group>"; };
+		85F372B01C8C888300E1D429 /* LT3DLUT.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LT3DLUT.fsh; sourceTree = "<group>"; };
+		85F372B11C8C888300E1D429 /* LT3DLUT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUT.h; sourceTree = "<group>"; };
+		85F372B21C8C888300E1D429 /* LT3DLUT.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUT.mm; sourceTree = "<group>"; };
+		85F372B71C8C88CC00E1D429 /* LT3DLUTSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTSpec.mm; sourceTree = "<group>"; };
+		85F372B91C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTProcessorSpec.mm; sourceTree = "<group>"; };
+		85F372BB1C8C88EF00E1D429 /* LT3DLUTProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUTProcessor.h; sourceTree = "<group>"; };
+		85F372BC1C8C88EF00E1D429 /* LT3DLUTProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTProcessor.mm; sourceTree = "<group>"; };
+		85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LT3DLUTIdentity2x2x2.png; path = Resources/LT3DLUTIdentity2x2x2.png; sourceTree = "<group>"; };
 		8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImageZeroGrayscale.png; path = Resources/ImageZeroGrayscale.png; sourceTree = "<group>"; };
 		8B0337FB1BD3EA1B00ACDF26 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../LTKit/third_party/testing/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
 		8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
@@ -2334,6 +2350,9 @@
 		03BBB30C1887B797001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				85F372B01C8C888300E1D429 /* LT3DLUT.fsh */,
+				85F372BB1C8C88EF00E1D429 /* LT3DLUTProcessor.h */,
+				85F372BC1C8C88EF00E1D429 /* LT3DLUTProcessor.mm */,
 				03D516F618B5DBBD0026B56A /* LTAdjust.fsh */,
 				03D516E718B5DB780026B56A /* LTAdjustProcessor.h */,
 				03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */,
@@ -2491,6 +2510,7 @@
 		03BBB3191887B7AB001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				85F372B91C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm */,
 				658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */,
 				03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */,
 				03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */,
@@ -3184,6 +3204,23 @@
 			name = Sampling;
 			sourceTree = "<group>";
 		};
+		85F3728E1C8C886100E1D429 /* Lookup Tables */ = {
+			isa = PBXGroup;
+			children = (
+				85F372B11C8C888300E1D429 /* LT3DLUT.h */,
+				85F372B21C8C888300E1D429 /* LT3DLUT.mm */,
+			);
+			name = "Lookup Tables";
+			sourceTree = "<group>";
+		};
+		85F372B61C8C88BD00E1D429 /* Lookup Tables */ = {
+			isa = PBXGroup;
+			children = (
+				85F372B71C8C88CC00E1D429 /* LT3DLUTSpec.mm */,
+			);
+			name = "Lookup Tables";
+			sourceTree = "<group>";
+		};
 		8B16C9681BAEABD6002FB750 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3479,6 +3516,7 @@
 				280E40D61990C2F6008C5BD9 /* PerspectiveRotation.png */,
 				280E40D71990C2F6008C5BD9 /* PerspectiveVertical.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
+				85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */,
 				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
 				2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */,
 				8BA8204E197E5CAD00FBE68E /* LTImageNoise@2x.png */,
@@ -4259,6 +4297,7 @@
 				8BFE4399187594F7008B699F /* Base */,
 				03BBB30C1887B797001E7703 /* Blocks */,
 				8BFE439F18759D1F008B699F /* Utils */,
+				85F3728E1C8C886100E1D429 /* Lookup Tables */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -4278,6 +4317,7 @@
 				8BFE43A118759D3D008B699F /* Base */,
 				03BBB3191887B7AB001E7703 /* Blocks */,
 				8BFE43A018759D33008B699F /* Utils */,
+				85F372B61C8C88BD00E1D429 /* Lookup Tables */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -4346,6 +4386,7 @@
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
 				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
+				85F372BD1C8C88EF00E1D429 /* LT3DLUTProcessor.h in Headers */,
 				8BD688E71B6A8E2C003BDA34 /* LTTextureIZArchiver.h in Headers */,
 				8B9F3C081C16FF4B00FEB7C4 /* LTGLPixelFormat.h in Headers */,
 				25CE71E21BF9D82D00E13CB4 /* LTPrimitiveParameterizedObjectFactory.h in Headers */,
@@ -4434,6 +4475,7 @@
 				6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */,
 				8B871FFD1924A76000517F2E /* LTGLException.h in Headers */,
 				8B871FFE1924A76000517F2E /* LTGLTexture.h in Headers */,
+				85F372B31C8C888300E1D429 /* LT3DLUT.h in Headers */,
 				8B871FFF1924A76000517F2E /* LTGPUResource.h in Headers */,
 				5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */,
 				8B8720001924A76000517F2E /* LTGPUStruct.h in Headers */,
@@ -5084,6 +5126,7 @@
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,
 				253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */,
 				280F5A2F191A975500F9F80B /* ShapeDrawerEllipticShapeFilledEllipse.png in Resources */,
+				85F372C01C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png in Resources */,
 				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
 			);
@@ -5131,6 +5174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85F372B51C8C88A300E1D429 /* LT3DLUT.fsh in Sources */,
 				856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */,
 				03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */,
 				854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */,
@@ -5145,6 +5189,7 @@
 				256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */,
 				8BABF18219BC3EC400AED760 /* LTPyramidProcessor.vsh in Sources */,
 				503044FD1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm in Sources */,
+				85F372BE1C8C88EF00E1D429 /* LT3DLUTProcessor.mm in Sources */,
 				285A671419AE1C8300B2CE9E /* LTMeshDrawer.vsh in Sources */,
 				285A670F19ACDF9100B2CE9E /* LTReshapeProcessor.fsh in Sources */,
 				8B22674019979F450049CF26 /* LTProgramFactory.m in Sources */,
@@ -5385,6 +5430,7 @@
 				8B8E51051861F54600821829 /* LTGLContext.mm in Sources */,
 				8BD688BF1B6A7DB6003BDA34 /* LTIZHeader.mm in Sources */,
 				8B9F3C091C16FF4B00FEB7C4 /* LTGLPixelFormat.mm in Sources */,
+				85F372B41C8C888300E1D429 /* LT3DLUT.mm in Sources */,
 				28A4889718D0C014006BD8CF /* LTBrushScatterEffect.mm in Sources */,
 				8BA3E13E182A606600FDD95A /* LTShader.mm in Sources */,
 				28EC239E1B0CEBCB0099946A /* LTImageIOCompressor.mm in Sources */,
@@ -5486,6 +5532,7 @@
 				C72539C71C7DBA19008399A3 /* LTAdjustOperationsSpec.mm in Sources */,
 				2884CDB21B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm in Sources */,
 				28B3348819C84204004B6191 /* LTOneShotBaseImageProcessorSpec.mm in Sources */,
+				85F372B81C8C88CC00E1D429 /* LT3DLUTSpec.mm in Sources */,
 				2830B8CD19C1D70300BF4E8E /* LTMeshDrawerSpec.mm in Sources */,
 				8B871F9019238DAC00517F2E /* LTTextureContentsFileArchiverSpec.mm in Sources */,
 				280F5A0F191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
@@ -5591,6 +5638,7 @@
 				8B2267461997BBC60049CF26 /* LTProgramFactorySpec.mm in Sources */,
 				285B5E431C561E2200F7F641 /* LTTextureArchiveMetadataSpec.mm in Sources */,
 				25705DD21B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm in Sources */,
+				85F372BA1C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm in Sources */,
 				500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
