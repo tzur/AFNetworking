@@ -9,26 +9,29 @@
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual,
-                  cv::Point *firstMismatch = nullptr);
+                  std::vector<int> *firstMismatch = nullptr);
 
 /// Returns \c YES if the two given matrices are equal, up to the given \c range, which is set
 /// across all channels. Matrices are equal if their \c size, \c depth, \c channels and actual data
 /// are all equal.
 BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range = 1,
-                       cv::Point *firstMismatch = nullptr);
+                       std::vector<int> *firstMismatch = nullptr);
 
 /// Returns \c YES if the given \c actual matrix cells are all equal to the given \c expected
 /// scalar.
 BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
-                           cv::Point *firstMismatch = nullptr);
+                           std::vector<int> *firstMismatch = nullptr);
 
 /// Returns \c YES if the given \c actual matrix cells are all equal, up to the given \c range, to
 /// the given \c expected scalar.
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
-                                double range = 1, cv::Point *firstMismatch = nullptr);
+                                double range = 1, std::vector<int> *firstMismatch = nullptr);
+
+/// Returns a string representation of indicies vector \c indices of length \c length.
+NSString *LTIndicesVectorAsString(const std::vector<int> &indices);
 
 /// Returns a string representation of the \c mat cell value at the given \c position.
-NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position);
+NSString *LTMatValueAsString(const cv::Mat &mat, const std::vector<int> &position);
 
 /// Returns a string representation of the \c scalar value.
 NSString *LTScalarAsString(const cv::Scalar &scalar);
