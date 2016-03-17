@@ -16,13 +16,17 @@ using half_float::half;
 #pragma mark -
 
 static cv::Vec4hf LTScalarToHalfFloat(const cv::Scalar &scalar);
-static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, cv::Point position);
+
+template <typename T>
+static NSString *LTMatAsString(const cv::Mat &mat, const std::vector<int> &position);
+
+static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, const std::vector<int> &position);
 
 static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual);
 
 template <typename T>
 static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness,
-                              cv::Point *firstMismatch);
+                              std::vector<int> *firstMismatch);
 
 template <typename T>
 static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
@@ -49,9 +53,11 @@ cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
   return rotated;
 }
 
-BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, cv::Point *firstMismatch) {
+BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<int> *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
-    LTWriteMatrices(expected, actual);
+    if (expected.dims == 2) {
+      LTWriteMatrices(expected, actual);
+    }
     return NO;
   }
 
@@ -81,9 +87,11 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, cv::Point *fir
 }
 
 BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range,
-                       cv::Point *firstMismatch) {
+                       std::vector<int> *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
-    LTWriteMatrices(expected, actual);
+    if (expected.dims == 2) {
+      LTWriteMatrices(expected, actual);
+    }
     return NO;
   }
 
@@ -115,14 +123,14 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
 }
 
 BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
-                           cv::Point *firstMismatch) {
+                           std::vector<int> *firstMismatch) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
   mat.setTo(expected);
   return LTCompareMat(mat, actual, firstMismatch);
 }
 
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual, double range,
-                                cv::Point *firstMismatch) {
+                                std::vector<int> *firstMismatch) {
   cv::Mat mat(actual.rows, actual.cols, actual.type());
   if (mat.depth() == CV_16F) {
     mat.setTo(LTScalarToHalfFloat(expected));
@@ -136,30 +144,60 @@ static cv::Vec4hf LTScalarToHalfFloat(const cv::Scalar &scalar) {
   return cv::Vec4hf(half(scalar[0]), half(scalar[1]), half(scalar[2]), half(scalar[3]));
 }
 
-NSString *LTMatValueAsString(const cv::Mat &mat, cv::Point position) {
-  if (mat.depth() == CV_16F) {
-    return LTHalfFloatMatAsString(mat, position);
-  } else {
-    std::stringstream message;
-    message << mat(cv::Rect(position, cv::Size(1, 1)));
-    return [NSString stringWithCString:message.str().c_str() encoding:NSUTF8StringEncoding];
+NSString *LTIndicesVectorAsString(const std::vector<int> &indices) {
+  LTParameterAssert(indices.size(), @"indices vector cannot be empty");
+
+  std::stringstream stream;
+  stream << "(";
+  std::copy(indices.cbegin(), indices.cend() - 1, std::ostream_iterator<int>(stream, ","));
+  stream << indices.back() << ")";
+  return [NSString stringWithUTF8String:stream.str().c_str()];
+}
+
+NSString *LTMatValueAsString(const cv::Mat &mat, const std::vector<int> &position) {
+  switch (mat.type()) {
+    case CV_8UC1:
+      return LTMatAsString<uchar>(mat, position);
+    case CV_8UC2:
+      return LTMatAsString<cv::Vec2b>(mat, position);
+    case CV_8UC4:
+      return LTMatAsString<cv::Vec4b>(mat, position);
+    case CV_16FC1:
+    case CV_16FC2:
+    case CV_16FC4:
+      return LTHalfFloatMatAsString(mat, position);
+    case CV_32F:
+      return LTMatAsString<float>(mat, position);
+    case CV_32FC4:
+      return LTMatAsString<cv::Vec4f>(mat, position);
+    default:
+      LTAssert(NO, @"Unsupported mat type to retrieve value from: %d", mat.type());
   }
 }
 
-static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, cv::Point position) {
+template <typename T>
+static NSString *LTMatAsString(const cv::Mat &mat, const std::vector<int> &position) {
+  T value = mat.at<T>(position.data());
+  cv::Mat cellMat(1, 1, mat.type(), cv::Scalar(value));
+  std::stringstream message;
+  message << cellMat;
+  return [NSString stringWithCString:message.str().c_str() encoding:NSUTF8StringEncoding];
+}
+
+static NSString *LTHalfFloatMatAsString(const cv::Mat &mat, const std::vector<int> &position) {
   switch (mat.channels()) {
     case 1: {
-      half value(mat.at<half>(position));
+      half value(mat.at<half>(position.data()));
       return [NSString stringWithFormat:@"[%g]", (float)value];
     } case 2: {
-      cv::Vec2hf value(mat.at<cv::Vec2hf>(position));
+      cv::Vec2hf value(mat.at<cv::Vec2hf>(position.data()));
       return [NSString stringWithFormat:@"[%g, %g]", (float)value[0], (float)value[1]];
     } case 3: {
-      cv::Vec3hf value(mat.at<cv::Vec3hf>(position));
+      cv::Vec3hf value(mat.at<cv::Vec3hf>(position.data()));
       return [NSString stringWithFormat:@"[%g, %g, %g]", (float)value[0], (float)value[1],
               (float)value[2]];
     } case 4: {
-      cv::Vec4hf value(mat.at<cv::Vec4hf>(position));
+      cv::Vec4hf value(mat.at<cv::Vec4hf>(position.data()));
       return [NSString stringWithFormat:@"[%g, %g, %g, %g]", (float)value[0], (float)value[1],
               (float)value[2], (float)value[3]];
     } default:
@@ -280,20 +318,33 @@ static BOOL LTCompareMatMetadata(const cv::Mat &expected, const cv::Mat &actual)
 
 template <typename T>
 static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, const T &fuzziness,
-                              cv::Point *firstMismatch) {
-  for (int y = 0; y < expected.rows; ++y) {
-    for (int x = 0; x < expected.cols; ++x) {
-      T va = expected.at<T>(y, x);
-      T vb = actual.at<T>(y, x);
+                              std::vector<int> *firstMismatch) {
+  if (!expected.dims) {
+    return YES;
+  }
+  
+  cv::MatConstIterator_<T> expectedIterator = expected.begin<T>();
+  auto actualIterator = actual.begin<T>();
+  cv::MatConstIterator_<T> endIterator = expected.end<T>();
 
-      if (!LTCompareMatCell(va, vb, fuzziness, std::is_fundamental<T>())) {
+  while (expectedIterator != endIterator) {
+    if (!LTCompareMatCell(*expectedIterator, *actualIterator, fuzziness,
+                          std::is_fundamental<T>())) {
+      if (expected.dims == 2) {
         LTWriteMatrices(expected, actual);
-        if (firstMismatch) {
-          *firstMismatch = cv::Point(x, y);
-        }
-        return NO;
       }
+      if (firstMismatch) {
+        firstMismatch->resize(expected.dims);
+
+        // From unknown reason, the compiler doesn't recognize the pos function directly from
+        // MatConstIterator_ type but only from its ancestor - MatConstIterator.
+        static_cast<cv::MatConstIterator>(actualIterator).pos(firstMismatch->data());
+      }
+      return NO;
     }
+
+    ++expectedIterator;
+    ++actualIterator;
   }
 
   return YES;
@@ -329,6 +380,10 @@ inline BOOL LTCompareMatCell(const half &expected, const half &actual, const hal
 }
 
 static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
+  LTParameterAssert(actual.dims == 2 && expected.dims == 2, @"Non 2-dimenional matrices don't have "
+                    @"writing support. acutal matrix is %d-dimensional and expected matrix is "
+                    @"%d-dimensional", actual.dims, expected.dims);
+
   static NSMutableDictionary *testCaseCallCount = [NSMutableDictionary dictionary];
 
   NSString *testCase = [SPTCurrentSpec description];
@@ -349,6 +404,9 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
 }
 
 static void LTWriteMat(const cv::Mat &mat, NSString *path) {
+  LTParameterAssert(mat.dims == 2, "Non 2-dimenional matrices don't have writing support. "
+                    @"Input matrix is %d-dimensional.", mat.dims);
+  
   switch (mat.type()) {
     case CV_8UC1:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);

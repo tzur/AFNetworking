@@ -8,7 +8,6 @@
 #import "NSValue+OpenCVExtensions.h"
 
 EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
-  __block cv::Point firstMismatch;
   __block NSString *prerequisiteErrorMessage;
 
   prerequisite(^BOOL{
@@ -20,6 +19,8 @@ EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
     return !prerequisiteErrorMessage;
   });
 
+  __block std::vector<int> firstMismatch([actual matValue].dims);
+
   match(^BOOL{
     return LTCompareMatWithValue([scalar scalarValue], [actual matValue], &firstMismatch);
   });
@@ -28,8 +29,9 @@ EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d), got %@",
-            LTScalarAsString([scalar scalarValue]), firstMismatch.x, firstMismatch.y,
+    return [NSString stringWithFormat:@"First failure: expected %@ at %@, got %@",
+            LTScalarAsString([scalar scalarValue]),
+            LTIndicesVectorAsString(firstMismatch),
             LTMatValueAsString([actual matValue], firstMismatch)];
   });
 
@@ -37,9 +39,11 @@ EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected not '%@' at (%d, %d), got '%@'",
-            LTScalarAsString([scalar scalarValue]), firstMismatch.x, firstMismatch.y,
+    return [NSString stringWithFormat:@"First failure: expected not '%@' at %@, got '%@'",
+            LTScalarAsString([scalar scalarValue]),
+            LTIndicesVectorAsString(firstMismatch),
             LTMatValueAsString([actual matValue], firstMismatch)];
   });
 }
+
 EXPMatcherImplementationEnd

@@ -17,7 +17,6 @@ static double LTDefaultRangeForMatType(int type) {
 }
 
 EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within)) {
-  __block cv::Point firstMismatch;
   __block NSString *prerequisiteErrorMessage;
 
   prerequisite(^BOOL{
@@ -32,6 +31,8 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
     }
     return !prerequisiteErrorMessage;
   });
+
+  __block std::vector<int> firstMismatch([expected matValue].dims);
 
   match(^BOOL{
     // Compare pointers.
@@ -50,14 +51,14 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
       return prerequisiteErrorMessage;
     }
     if (within) {
-      return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d) to be close to %@ "
+      return [NSString stringWithFormat:@"First failure: expected %@ at %@ to be close to %@ "
               "within %@", LTMatValueAsString([expected matValue], firstMismatch),
-              firstMismatch.x, firstMismatch.y,
+              LTIndicesVectorAsString(firstMismatch),
               LTMatValueAsString([actual matValue], firstMismatch), within];
     } else {
-      return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d) to be close to %@",
+      return [NSString stringWithFormat:@"First failure: expected %@ at %@ to be close to %@",
               LTMatValueAsString([expected matValue], firstMismatch),
-              firstMismatch.x, firstMismatch.y,
+              LTIndicesVectorAsString(firstMismatch),
               LTMatValueAsString([actual matValue], firstMismatch)];
     }
   });
@@ -67,16 +68,17 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
       return prerequisiteErrorMessage;
     }
     if (within) {
-      return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d) to not be close "
+      return [NSString stringWithFormat:@"First failure: expected %@ at %@  to not be close "
               "to %@ within %@", LTMatValueAsString([expected matValue], firstMismatch),
-              firstMismatch.x, firstMismatch.y,
+              LTIndicesVectorAsString(firstMismatch),
               LTMatValueAsString([actual matValue], firstMismatch), within];
     } else {
-      return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d) to not be close "
+      return [NSString stringWithFormat:@"First failure: expected %@ at %@  to not be close "
               "to %@", LTMatValueAsString([expected matValue], firstMismatch),
-              firstMismatch.x, firstMismatch.y,
+              LTIndicesVectorAsString(firstMismatch),
               LTMatValueAsString([actual matValue], firstMismatch)];
     }
   });
 }
+
 EXPMatcherImplementationEnd

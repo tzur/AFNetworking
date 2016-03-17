@@ -8,7 +8,6 @@
 #import "NSValue+OpenCVExtensions.h"
 
 EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
-  __block cv::Point firstMismatch;
   __block NSString *prerequisiteErrorMessage;
 
   prerequisite(^BOOL{
@@ -17,6 +16,8 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     }
     return !prerequisiteErrorMessage;
   });
+
+  __block std::vector<int> firstMismatch([expected matValue].dims);
 
   match(^BOOL{
     // Compare pointers.
@@ -31,9 +32,9 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected %@ at (%d, %d), got %@",
+    return [NSString stringWithFormat:@"First failure: expected %@ at %@, got %@",
             LTMatValueAsString([expected matValue], firstMismatch),
-            firstMismatch.x, firstMismatch.y,
+            LTIndicesVectorAsString(firstMismatch),
             LTMatValueAsString([actual matValue], firstMismatch)];
   });
 
@@ -41,10 +42,11 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected not '%@' at (%d, %d), got '%@'",
+    return [NSString stringWithFormat:@"First failure: expected not '%@' at %@, got '%@'",
             LTMatValueAsString([expected matValue], firstMismatch),
-            firstMismatch.x, firstMismatch.y,
+            LTIndicesVectorAsString(firstMismatch),
             LTMatValueAsString([actual matValue], firstMismatch)];
   });
 }
+
 EXPMatcherImplementationEnd
