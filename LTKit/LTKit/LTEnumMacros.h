@@ -372,10 +372,14 @@
   @end
 
 /// Declare easy boxing method.
-#define _LTDefineEasyBoxingEnum(NAME) \
-  NS_INLINE NAME __unused *$(const _##NAME value) { \
-    return [NAME enumWithValue:value]; \
-  }
+#ifdef __cplusplus
+  #define _LTDefineEasyBoxingEnum(NAME) \
+    NS_INLINE NAME __unused *$(const _##NAME value) { \
+      return [NAME enumWithValue:value]; \
+    }
+#else
+  #define _LTDefineEasyBoxingEnum(NAME)
+#endif
 
 /// Defines a traits struct used to verify that the declaration and implementation are similar.
 #ifdef __cplusplus
