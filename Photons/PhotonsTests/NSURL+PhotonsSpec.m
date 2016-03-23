@@ -59,4 +59,14 @@ it(@"should append query to url with existing a query", ^{
                     resolvingAgainstBaseURL:NO].queryItems).to.equal(completeQuery);
 });
 
+it(@"should return correct array of NSURLQueryItem objects", ^{
+  NSArray *queryArray = [NSURL ptn_queryWithDictionary:@{
+    @"foo": @"bar",
+    @"bar": @"baz",
+    @"baz": @"gaz"
+  }];
+
+  expect([NSSet setWithArray:queryArray]).to.equal([NSSet setWithArray:query]);
+});
+
 SpecEnd
