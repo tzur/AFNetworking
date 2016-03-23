@@ -161,7 +161,7 @@ context(@"album fetching", ^{
       [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeAlbum
                              andSubtype:PHAssetCollectionSubtypeAny];
 
-      url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeUserAlbums];
+      url = [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeUserAlbums)];
     });
 
     context(@"initial value", ^{
@@ -209,8 +209,8 @@ context(@"album fetching", ^{
       beforeEach(^{
         PHAssetCollectionSubtype userLibrary = PHAssetCollectionSubtypeSmartAlbumUserLibrary;
         PHAssetCollectionSubtype favorites = PHAssetCollectionSubtypeSmartAlbumFavorites;
-        id firstCollection = PTNPhotoKitCreateAssetCollectionOfSubtype(@"foo", favorites);
-        id secondCollection = PTNPhotoKitCreateAssetCollectionOfSubtype(@"bar", userLibrary);
+        id firstCollection = PTNPhotoKitCreateAssetCollection(@"foo", favorites);
+        id secondCollection = PTNPhotoKitCreateAssetCollection(@"bar", userLibrary);
         id thirdCollection = PTNPhotoKitCreateAssetCollection(@"baz");
 
         albums = @[firstCollection, secondCollection, thirdCollection];
@@ -228,8 +228,8 @@ context(@"album fetching", ^{
         [fetcher registerAssetCollection:firstCollection];
         [fetcher registerAssetCollection:secondCollection];
 
-        url = [NSURL
-            ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypePhotosAppSmartAlbums];
+        PTNPhotoKitMetaAlbumType *type = $(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums);
+        url = [NSURL ptn_photoKitMetaAlbumWithType:type];
       });
 
       it(@"should update transient album collection on subalbum change", ^{
@@ -281,7 +281,8 @@ context(@"album fetching", ^{
         [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
             withAssetCollection:secondCollection];
 
-        url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums];
+        PTNPhotoKitMetaAlbumType *type = $(PTNPhotoKitMetaAlbumTypeSmartAlbums);
+        url = [NSURL ptn_photoKitMetaAlbumWithType:type];
       });
 
       it(@"should update smart album collection on subalbum change", ^{
@@ -384,7 +385,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error on non-asset URL", ^{
-    NSURL *url = [NSURL ptn_photoKitAlbumWithType:PTNPhotoKitAlbumTypeCameraRoll];
+    NSURL *url = [NSURL ptn_photoKitAlbumWithType:$(PTNPhotoKitAlbumTypeCameraRoll)];
 
     expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
@@ -585,7 +586,7 @@ context(@"image fetching", ^{
     __block id<PTNResizingStrategy> resizingStrategy;
 
     beforeEach(^{
-      asset = PTNPhotoKitCreateAssetWithSize(@"baz", size);
+      asset = PTNPhotoKitCreateAsset(@"baz", size);
       imageManagerMock = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
       manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                     imageManager:imageManagerMock];
@@ -597,7 +598,7 @@ context(@"image fetching", ^{
         OCMStub([resizingStrategy sizeForInputSize:size]).andReturn(CGSizeMake(1337, 1337));
         OCMExpect([imageManagerMock requestImageForAsset:asset
                                               targetSize:CGSizeMake(1337, 1337)
-                                             contentMode:0
+                                             contentMode:PHImageContentModeDefault
                                                  options:OCMOCK_ANY
                                            resultHandler:OCMOCK_ANY]);
 
@@ -611,7 +612,7 @@ context(@"image fetching", ^{
         OCMStub([resizingStrategy sizeForInputSize:size]).andReturn(size);
         OCMExpect([imageManagerMock requestImageForAsset:asset
                                               targetSize:PHImageManagerMaximumSize
-                                             contentMode:0
+                                             contentMode:PHImageContentModeDefault
                                                  options:OCMOCK_ANY
                                            resultHandler:OCMOCK_ANY]);
 
