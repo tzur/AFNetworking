@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Unique identifier URL of a gateway asset identified by a unique \c key.
 + (NSURL *)ptn_gatewayAlbumURLWithKey:(NSString *)key;
 
+/// Unique key associated with this Gateway URL or \c nil if this URL does not have a Gateway key.
+- (nullable NSString *)ptn_gatewayKey;
+
 @end
 
 NS_ASSUME_NONNULL_END
