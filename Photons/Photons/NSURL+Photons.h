@@ -11,6 +11,10 @@ typedef NSDictionary<NSString *, NSString *> PTNQueryDictionary;
 /// two query keys with the same value, the latter value will be the returned one.
 + (PTNQueryDictionary *)ptn_dictionaryWithQuery:(NSArray<NSURLQueryItem *> *)query;
 
+/// Returns an array of \c NSURLQueryItem, each corresponding to a <tt><key, value></tt> pair in
+/// \c dictionary.
++ (NSArray<NSURLQueryItem *> *)ptn_queryWithDictionary:(PTNQueryDictionary *)dictionary;
+
 /// Returns a new \c NSURL object composed of this URL by appending of \c query. If there are two
 /// query keys with the same name, both will be added into the retuned \c NSURL.
 - (NSURL *)ptn_URLByAppendingQuery:(NSArray<NSURLQueryItem *> *)query;

@@ -17,6 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [items copy];
 }
 
++ (NSArray<NSURLQueryItem *> *)ptn_queryWithDictionary:(PTNQueryDictionary *)dictionary {
+  NSMutableArray *items = [NSMutableArray array];
+  for (NSString *key in dictionary) {
+    NSURLQueryItem *item = [[NSURLQueryItem alloc] initWithName:key value:dictionary[key]];
+    [items addObject:item];
+  }
+
+  return [items copy];
+}
+
 - (NSURL *)ptn_URLByAppendingQuery:(NSArray<NSURLQueryItem *> *)query {
   NSURLComponents *components = [[NSURLComponents alloc] initWithString:self.absoluteString];
   components.queryItems = [components.queryItems ?: @[] arrayByAddingObjectsFromArray:query];
