@@ -14,7 +14,7 @@ SpecBegin(PTNAlbumChangeset_PhotoKit)
 __block NSURL *url;
 
 beforeEach(^{
-  url = [NSURL ptn_photoKitAlbumWithType:PTNPhotoKitAlbumTypeCameraRoll];
+  url = [NSURL ptn_photoKitAlbumWithType:$(PTNPhotoKitAlbumTypeCameraRoll)];
 });
 
 it(@"should construct changeset with fetch result", ^{

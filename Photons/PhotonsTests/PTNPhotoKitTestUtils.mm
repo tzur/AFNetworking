@@ -13,8 +13,8 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localId
   return assetCollection;
 }
 
-PHAssetCollection *PTNPhotoKitCreateAssetCollectionOfSubtype(NSString * _Nullable localIdentifier,
-                                                             PHAssetCollectionSubtype subtype) {
+PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localIdentifier,
+                                                    PHAssetCollectionSubtype subtype) {
   PHAssetCollection *assetCollection = PTNPhotoKitCreateAssetCollection(localIdentifier);
   OCMStub(assetCollection.assetCollectionSubtype).andReturn(subtype);
   return assetCollection;
@@ -27,8 +27,8 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier) {
   return asset;
 }
 
-id PTNPhotoKitCreateAssetWithSize(NSString *localIdentifier, CGSize size) {
-  id asset = PTNPhotoKitCreateAsset(localIdentifier);
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize size) {
+  PHAsset *asset = PTNPhotoKitCreateAsset(localIdentifier);
   OCMStub([asset pixelWidth]).andReturn(size.width);
   OCMStub([asset pixelHeight]).andReturn(size.height);
 

@@ -62,9 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
-  if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum &&
-      url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbumType &&
-      url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbumOfAlbumsType) {
+  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
@@ -96,12 +96,12 @@ NS_ASSUME_NONNULL_BEGIN
           PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
                                                          photoKitFetchResult:assets];
           return RACTuplePack(assets, changeset);
-        } else if (url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumOfAlbumsType) {
+        } else if ([url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
           PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
                                                          photoKitFetchResult:fetchResult];
           return RACTuplePack(fetchResult, changeset);
         } else {
-          LTAssert(NO, @"Fetched URL of invalid type: %lu", (unsigned long)url.ptn_photoKitURLType);
+          LTAssert(NO, @"Fetched URL of invalid type: %@", url.ptn_photoKitURLType);
         }
       }]
       doError:^(NSError __unused *error) {
@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
   // Returns the latest \c PTNAlbumChangeset that is produced from the fetch results.
   RACSignal *changeset = [[[[[RACSignal
       concat:@[initialChangeset, nextChangeset]]
-      reduceEach:^(PHFetchResult __unused *fetchResult, PTNAlbumChangeset *changeset) {
+      reduceEach:(id)^(PHFetchResult __unused *fetchResult, PTNAlbumChangeset *changeset) {
         return changeset;
       }]
       distinctUntilChanged]
@@ -141,10 +141,10 @@ NS_ASSUME_NONNULL_BEGIN
   // This works by scanning the input stream and producing a stream of streams that contain a single
   // tuple.
   return [[self.observer.photoLibraryChanged
-        scanWithStart:initialChangeset reduce:^(RACSignal *previous, PHChange *change) {
+        scanWithStart:initialChangeset reduce:(id)^(RACSignal *previous, PHChange *change) {
           return [[[previous
               takeLast:1]
-              reduceEach:^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
+              reduceEach:(id)^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
                 PHFetchResultChangeDetails *details =
                     [change changeDetailsForFetchResult:fetchResult];
                 if (details) {
@@ -162,8 +162,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)nextChangesetForSmartAlbumCollectionWithURL:(NSURL *)url
                                        andInitialChangeset:(RACSignal *)initialChangeset {
-   return [[initialChangeset reduceEach:^(PHFetchResult *initialFetchResult,
-                                          PTNAlbumChangeset __unused *changeset) {
+   return [[initialChangeset reduceEach:(id)^(PHFetchResult *initialFetchResult,
+                                              PTNAlbumChangeset __unused *changeset) {
      NSMutableArray *signals = [NSMutableArray array];
 
      // Track changes on each subalbum. For each change fetch the smart album collection
@@ -198,14 +198,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)shouldFlattenAlbum:(NSURL *)url {
-  return url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbum ||
-      url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumType;
+  return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] ||
+      [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)];
 }
 
 - (BOOL)shouldObserveChangesRecursively:(NSURL *)url {
-  return url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumOfAlbumsType &&
-      (url.ptn_photoKitAlbumOfAlbumsType == PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums ||
-      url.ptn_photoKitAlbumOfAlbumsType == PTNPhotoKitAlbumOfAlbumsTypePhotosAppSmartAlbums);
+  return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
+      ([url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)] ||
+       [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums)]);
 }
 
 #pragma mark -
@@ -213,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAssetWithURL:(NSURL *)url {
-  if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset) {
+  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
@@ -255,30 +255,50 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchFetchResultWithURL:(NSURL *)url {
-  switch (url.ptn_photoKitURLType) {
+  if (![self urlContainsFetchInfo:url]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+  }
+
+  switch (url.ptn_photoKitURLType.value) {
     case PTNPhotoKitURLTypeAsset:
       return [self fetchAssetWithIdentifier:url.ptn_photoKitAssetIdentifier];
     case PTNPhotoKitURLTypeAlbum:
       return [self fetchAlbumWithIdentifier:url.ptn_photoKitAlbumIdentifier];
     case PTNPhotoKitURLTypeAlbumType:
       return [self fetchAlbumWithType:url.ptn_photoKitAlbumType];
-    case PTNPhotoKitURLTypeAlbumOfAlbumsType:
-      return [self fetchAlbumOfAlbumsWithType:url.ptn_photoKitAlbumOfAlbumsType];
-    default:
-      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+    case PTNPhotoKitURLTypeMetaAlbumType:
+      return [self fetchMetaAlbumWithType:url.ptn_photoKitMetaAlbumType];
+  }
+}
+
+- (BOOL)urlContainsFetchInfo:(NSURL *)url {
+  PTNPhotoKitURLType * _Nullable type = url.ptn_photoKitURLType;
+  if (!type) {
+    return NO;
+  }
+
+  switch (type.value) {
+    case PTNPhotoKitURLTypeAsset:
+      return url.ptn_photoKitAssetIdentifier != nil;
+    case PTNPhotoKitURLTypeAlbum:
+      return url.ptn_photoKitAlbumIdentifier != nil;;
+    case PTNPhotoKitURLTypeAlbumType:
+      return url.ptn_photoKitAlbumType != nil;
+    case PTNPhotoKitURLTypeMetaAlbumType:
+      return url.ptn_photoKitMetaAlbumType != nil;
   }
 }
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
-  if (url.ptn_photoKitURLType != PTNPhotoKitURLTypeAsset &&
-      url.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbum) {
+  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   return [[self fetchFetchResultWithURL:url]
       tryMap:^PHObject *(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
-          switch (url.ptn_photoKitURLType) {
+          switch (url.ptn_photoKitURLType.value) {
             case PTNPhotoKitURLTypeAsset:
               if (errorPtr) {
                 *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url];
@@ -291,7 +311,7 @@ NS_ASSUME_NONNULL_BEGIN
               return nil;
             default:
               // Should never happen, as this handles only assets and albums.
-              return nil;
+              LTAssert(NO, @"Unrecognized photoKitURLType: %@", url.ptn_photoKitURLType);
           }
         }
         
@@ -335,10 +355,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Album types
 #pragma mark -
 
-- (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType)type {
+- (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType *)type {
   return [RACSignal defer:^{
     PTNAssetCollectionsFetchResult *assetCollections;
-    switch (type) {
+    switch (type.value) {
       case PTNPhotoKitAlbumTypeCameraRoll:
         assetCollections =
             [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
@@ -352,17 +372,17 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)fetchAlbumOfAlbumsWithType:(PTNPhotoKitAlbumOfAlbumsType)type {
+- (RACSignal *)fetchMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type {
   return [RACSignal defer:^{
     PTNAssetCollectionsFetchResult *assetCollections;
-    switch (type) {
-      case PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums:
+    switch (type.value) {
+      case PTNPhotoKitMetaAlbumTypeSmartAlbums:
         assetCollections = [self fetchSmartAlbums];
         break;
-      case PTNPhotoKitAlbumOfAlbumsTypeUserAlbums:
+      case PTNPhotoKitMetaAlbumTypeUserAlbums:
         assetCollections = [self fetchUserAlbums];
         break;
-      case PTNPhotoKitAlbumOfAlbumsTypePhotosAppSmartAlbums:
+      case PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums:
         assetCollections = [self fetchPhotosAppSmartAlbums:[self fetchSmartAlbums]];
         break;
       default:
@@ -404,7 +424,7 @@ NS_ASSUME_NONNULL_BEGIN
   // The title of this \c PHCollectionList is never accessed since the returned \c PHFetchResult has
   // no title property, and the \c PHCollectionList created here is never returned as is.
   // \c PHObject objects are returned when performing \c -fetchAsset:, but such an operation isn't
-  // supported on URLs of type \c PTNPhotoKitURLTypeAlbumOfAlbumsType.
+  // supported on URLs of type \c PTNPhotoKitURLTypeMetaAlbumType.
   PHCollectionList *collectionList = [self.fetcher transientCollectionListWithCollections:albums
                                                                                     title:@""];
   return [self.fetcher fetchCollectionsInCollectionList:collectionList options:nil];

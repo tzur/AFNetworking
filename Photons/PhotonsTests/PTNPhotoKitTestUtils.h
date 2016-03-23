@@ -11,8 +11,8 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable name);
 
 /// Creates a fake PhotoKit asset collection with the given \c name and \c subtype.
 /// If a \c nil \c name is passed the asset collection's \c localIdentifier property will be \c nil.
-PHAssetCollection *PTNPhotoKitCreateAssetCollectionOfSubtype(NSString * _Nullable localIdentifier,
-                                                             PHAssetCollectionSubtype subtype);
+PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localIdentifier,
+                                                    PHAssetCollectionSubtype subtype);
 
 /// Creates a fake PhotoKit asset.
 /// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be \c nil.
@@ -20,7 +20,7 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier);
 
 /// Creates a fake PhotoKit asset with \c pixelWidth and \c pixelHeight properties as specified by
 /// \c size.
-id PTNPhotoKitCreateAssetWithSize(NSString *localIdentifier, CGSize size);
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize size);
 
 /// Creates a fake PhotoKit asset with \c -[PHAsset requestContentEditingInput:completion:]
 /// capabilities. The request's completion block will be invoked with \c contentEditingInput and

@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class PHAsset, PHCollection;
 
 /// Possible types of PhotoKit URL.
-typedef NS_ENUM(NSUInteger, PTNPhotoKitURLType) {
+LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
   /// URL of a specific asset.
   PTNPhotoKitURLTypeAsset,
   /// URL of an album by identifier.
@@ -14,30 +14,24 @@ typedef NS_ENUM(NSUInteger, PTNPhotoKitURLType) {
   /// URL of an album by type.
   PTNPhotoKitURLTypeAlbumType,
   /// URL of album of albums by type.
-  PTNPhotoKitURLTypeAlbumOfAlbumsType,
-  /// Invalid URL type.
-  PTNPhotoKitURLTypeInvalid
-};
+  PTNPhotoKitURLTypeMetaAlbumType
+);
 
 /// Possible types of PhotoKit album type.
-typedef NS_ENUM(NSUInteger, PTNPhotoKitAlbumType) {
+LTEnumDeclare(NSUInteger, PTNPhotoKitAlbumType,
   /// Album type of user's camera roll.
-  PTNPhotoKitAlbumTypeCameraRoll,
-  /// Invalid album type.
-  PTNPhotoKitAlbumTypeInvalid
-};
+  PTNPhotoKitAlbumTypeCameraRoll
+);
 
 /// Possible types of PhotoKit albums of album types.
-typedef NS_ENUM(NSUInteger, PTNPhotoKitAlbumOfAlbumsType) {
+LTEnumDeclare(NSUInteger, PTNPhotoKitMetaAlbumType,
   /// Album of album types included in operating system's albums.
-  PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums,
+  PTNPhotoKitMetaAlbumTypeSmartAlbums,
   /// Album of album types included in operating system's albums as displayed in the Photos app.
-  PTNPhotoKitAlbumOfAlbumsTypePhotosAppSmartAlbums,
+  PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums,
   /// Album of user's albums.
-  PTNPhotoKitAlbumOfAlbumsTypeUserAlbums,
-  /// Invalid album of albums type.
-  PTNPhotoKitAlbumOfAlbumsTypeInvalid
-};
+  PTNPhotoKitMetaAlbumTypeUserAlbums
+);
 
 /// Category for easy analysis and synthesis of URLs related to PhotoKit objects.
 ///
@@ -59,14 +53,14 @@ typedef NS_ENUM(NSUInteger, PTNPhotoKitAlbumOfAlbumsType) {
 
 /// Returns a URL for requesting an album which contains the album with the given \c type. The
 /// albums associated with this type of URL are expected to contain assets and no subalbums.
-+ (NSURL *)ptn_photoKitAlbumWithType:(PTNPhotoKitAlbumType)type;
++ (NSURL *)ptn_photoKitAlbumWithType:(PTNPhotoKitAlbumType *)type;
 
 /// Returns a URL for requesting an album which contains the albums included in the given \c type.
 /// The albums associated with this type of URL are expected to contain subalbums and no assets.
-+ (NSURL *)ptn_photoKitAlbumOfAlbumsWithType:(PTNPhotoKitAlbumOfAlbumsType)type;
++ (NSURL *)ptn_photoKitMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type;
 
-/// Type of the URL, or \c PTNPhotoKitURLTypeInvalid if the URL is not of PhotoKit type.
-@property (readonly, nonatomic) PTNPhotoKitURLType ptn_photoKitURLType;
+/// Type of the URL, or \c nil if the URL is not of PhotoKit type.
+@property (readonly, nonatomic, nullable) PTNPhotoKitURLType *ptn_photoKitURLType;
 
 /// The album identifier or \c nil if the URL is not a valid PhotoKit album URL.
 @property (readonly, nonatomic, nullable) NSString *ptn_photoKitAlbumIdentifier;
@@ -74,13 +68,11 @@ typedef NS_ENUM(NSUInteger, PTNPhotoKitAlbumOfAlbumsType) {
 /// The asset identifier or \c nil if the URL is not a valid PhotoKit album URL.
 @property (readonly, nonatomic, nullable) NSString *ptn_photoKitAssetIdentifier;
 
-/// Type of the album to fetch or \c PTNPhotoKitAlbumTypeInvalid if the URL doesn't specify such
-/// type.
-@property (readonly, nonatomic) PTNPhotoKitAlbumType ptn_photoKitAlbumType;
+/// Type of the album to fetch or \c nil if the URL doesn't specify such type.
+@property (readonly, nonatomic, nullable) PTNPhotoKitAlbumType *ptn_photoKitAlbumType;
 
-/// Type of the album of albums to fetch or \c PTNPhotoKitAlbumOfAlbumsTypeInvalid if the URL
-/// doesn't specify such type.
-@property (readonly, nonatomic) PTNPhotoKitAlbumOfAlbumsType ptn_photoKitAlbumOfAlbumsType;
+/// Type of the album of albums to fetch or \c nil if the URL doesn't specify such type.
+@property (readonly, nonatomic, nullable) PTNPhotoKitMetaAlbumType *ptn_photoKitMetaAlbumType;
 
 @end
 

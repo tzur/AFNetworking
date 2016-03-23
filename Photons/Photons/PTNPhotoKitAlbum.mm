@@ -29,14 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTNPhotoKitAlbum
 
 - (instancetype)initWithURL:(NSURL *)url fetchResult:(PHFetchResult *)fetchResult {
-  LTParameterAssert(url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbum ||
-                    url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumType ||
-                    url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumOfAlbumsType,
-                    @"Invalid URL type given: %lu", (unsigned long)url.ptn_photoKitURLType);
+  PTNPhotoKitURLType * _Nullable type = url.ptn_photoKitURLType;
+  LTParameterAssert([type isEqual:$(PTNPhotoKitURLTypeAlbum)] ||
+                    [type isEqual:$(PTNPhotoKitURLTypeAlbumType)] ||
+                    [type isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)],
+                    @"Invalid URL type given: %@", url.ptn_photoKitURLType);
   if (self = [super init]) {
     self.url = url;
 
-    if (url.ptn_photoKitURLType == PTNPhotoKitURLTypeAlbumOfAlbumsType) {
+    if ([type isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
       self.albumsFetchResult = fetchResult;
     } else {
       self.assetsFetchResult = fetchResult;
