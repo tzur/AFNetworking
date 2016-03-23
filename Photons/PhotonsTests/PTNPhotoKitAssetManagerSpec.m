@@ -12,7 +12,6 @@
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageAsset.h"
 #import "PTNPhotoKitAlbum.h"
-#import "PTNPhotoKitAlbumType.h"
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
@@ -162,10 +161,7 @@ context(@"album fetching", ^{
       [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeAlbum
                              andSubtype:PHAssetCollectionSubtypeAny];
 
-      PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
-                                    albumTypeWithType:PHAssetCollectionTypeAlbum
-                                    subtype:PHAssetCollectionSubtypeAny];
-      url = [NSURL ptn_photoKitAlbumsWithType:type];
+      url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeUserAlbums];
     });
 
     context(@"initial value", ^{
@@ -204,6 +200,67 @@ context(@"album fetching", ^{
       });
     });
 
+    context(@"sorted smart album types", ^{
+      __block id albums;
+      __block id albumsSubset;
+      __block NSURL *url;
+      __block PHCollectionList *transientList;
+
+      beforeEach(^{
+        PHAssetCollectionSubtype userLibrary = PHAssetCollectionSubtypeSmartAlbumUserLibrary;
+        PHAssetCollectionSubtype favorites = PHAssetCollectionSubtypeSmartAlbumFavorites;
+        id firstCollection = PTNPhotoKitCreateAssetCollectionOfSubtype(@"foo", favorites);
+        id secondCollection = PTNPhotoKitCreateAssetCollectionOfSubtype(@"bar", userLibrary);
+        id thirdCollection = PTNPhotoKitCreateAssetCollection(@"baz");
+
+        albums = @[firstCollection, secondCollection, thirdCollection];
+        albumsSubset = @[secondCollection, firstCollection];
+
+        [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeSmartAlbum
+                               andSubtype:PHAssetCollectionSubtypeAny];
+
+        transientList = OCMClassMock([PHCollectionList class]);
+        OCMStub(transientList.localIdentifier).andReturn(@[@"foo"]);
+
+        [fetcher registerCollectionList:transientList withAssetCollecitons:albumsSubset];
+        [fetcher registerAssetCollections:albumsSubset withCollectionList:transientList];
+
+        [fetcher registerAssetCollection:firstCollection];
+        [fetcher registerAssetCollection:secondCollection];
+
+        url = [NSURL
+            ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypePhotosAppSmartAlbums];
+      });
+
+      it(@"should update transient album collection on subalbum change", ^{
+        id asset = PTNPhotoKitCreateAsset(nil);
+
+        id changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(@[asset]);
+        id change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [observer sendChange:change];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albumsSubset];
+        NSIndexSet *emptySet = [NSIndexSet indexSet];
+        expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
+          [PTNAlbumChangeset changesetWithAfterAlbum:album],
+          [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                           afterAlbum:album
+                                       removedIndexes:emptySet
+                                      insertedIndexes:emptySet
+                                       updatedIndexes:[NSIndexSet indexSetWithIndex:0]
+                                                moves:@[]],
+          [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                           afterAlbum:album
+                                       removedIndexes:emptySet
+                                      insertedIndexes:emptySet
+                                       updatedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                                moves:@[]]
+        ]]);
+      });
+    });
+
     context(@"smart album collection updates", ^{
       __block id albums;
       __block NSURL *url;
@@ -224,10 +281,7 @@ context(@"album fetching", ^{
         [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
             withAssetCollection:secondCollection];
 
-        PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
-                                      albumTypeWithType:PHAssetCollectionTypeSmartAlbum
-                                      subtype:PHAssetCollectionSubtypeAny];
-        url = [NSURL ptn_photoKitAlbumsWithType:type];
+        url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums];
       });
 
       it(@"should update smart album collection on subalbum change", ^{
@@ -330,10 +384,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error on non-asset URL", ^{
-    PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
-                                  albumTypeWithType:PHAssetCollectionTypeAlbum
-                                  subtype:PHAssetCollectionSubtypeAny];
-    NSURL *url = [NSURL ptn_photoKitAlbumsWithType:type];
+    NSURL *url = [NSURL ptn_photoKitAlbumWithType:PTNPhotoKitAlbumTypeCameraRoll];
 
     expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;

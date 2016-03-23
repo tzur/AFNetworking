@@ -8,17 +8,13 @@
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangesetMove.h"
-#import "PTNPhotoKitAlbumType.h"
 
 SpecBegin(PTNAlbumChangeset_PhotoKit)
 
 __block NSURL *url;
 
 beforeEach(^{
-  PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType
-                                     albumTypeWithType:PHAssetCollectionTypeSmartAlbum
-                                     subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary];
-  url = [NSURL ptn_photoKitAlbumsWithType:albumType];
+  url = [NSURL ptn_photoKitAlbumWithType:PTNPhotoKitAlbumTypeCameraRoll];
 });
 
 it(@"should construct changeset with fetch result", ^{

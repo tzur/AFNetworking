@@ -6,7 +6,6 @@
 #import <Photos/Photos.h>
 
 #import "NSURL+PhotoKit.h"
-#import "PTNPhotoKitAlbumType.h"
 #import "PTNCollection.h"
 
 SpecBegin(PTNPhotoKitAlbum)
@@ -27,10 +26,7 @@ it(@"should initialize with url and assets fetch result", ^{
 });
 
 it(@"should initialize with url and subalbums fetch result", ^{
-  PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType
-                                     albumTypeWithType:PHAssetCollectionTypeSmartAlbum
-                                     subtype:PHAssetCollectionSubtypeAny];
-  NSURL *url = [NSURL ptn_photoKitAlbumsWithType:albumType];
+  NSURL *url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums];
 
   id fetchResult = OCMClassMock([PHFetchResult class]);
 

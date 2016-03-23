@@ -5,8 +5,6 @@
 
 #import <Photos/Photos.h>
 
-#import "PTNPhotoKitAlbumType.h"
-
 SpecBegin(NSURL_PhotoKit)
 
 it(@"should return valid asset URL", ^{
@@ -28,13 +26,17 @@ it(@"should return valid album URL", ^{
 });
 
 it(@"should return valid album type URL", ^{
-  PTNPhotoKitAlbumType *type = [PTNPhotoKitAlbumType
-                                albumTypeWithType:PHAssetCollectionTypeAlbum
-                                subtype:PHAssetCollectionSubtypeSmartAlbumVideos];
-
-  NSURL *url = [NSURL ptn_photoKitAlbumsWithType:type];
+  NSURL *url = [NSURL ptn_photoKitAlbumWithType:PTNPhotoKitAlbumTypeCameraRoll];
   expect(url.ptn_photoKitURLType).to.equal(PTNPhotoKitURLTypeAlbumType);
-  expect(url.ptn_photoKitAlbumType).to.equal(type);
+  expect(url.ptn_photoKitAlbumType).to.equal(PTNPhotoKitAlbumTypeCameraRoll);
+  expect(url.ptn_photoKitAlbumOfAlbumsType).to.equal(PTNPhotoKitAlbumOfAlbumsTypeInvalid);
+});
+
+it(@"should return valid album of albums type URL", ^{
+  NSURL *url = [NSURL ptn_photoKitAlbumOfAlbumsWithType:PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums];
+  expect(url.ptn_photoKitURLType).to.equal(PTNPhotoKitURLTypeAlbumOfAlbumsType);
+  expect(url.ptn_photoKitAlbumType).to.equal(PTNPhotoKitAlbumTypeInvalid);
+  expect(url.ptn_photoKitAlbumOfAlbumsType).to.equal(PTNPhotoKitAlbumOfAlbumsTypeSmartAlbums);
 });
 
 SpecEnd
