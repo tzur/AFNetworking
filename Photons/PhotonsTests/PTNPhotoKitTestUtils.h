@@ -9,6 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// If a \c nil \c name is passed the asset collection's \c localIdentifier property will be \c nil.
 PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable name);
 
+/// Creates a fake PhotoKit asset collection with the given \c name and \c subtype.
+/// If a \c nil \c name is passed the asset collection's \c localIdentifier property will be \c nil.
+PHAssetCollection *PTNPhotoKitCreateAssetCollectionOfSubtype(NSString * _Nullable localIdentifier,
+                                                             PHAssetCollectionSubtype subtype);
+
 /// Creates a fake PhotoKit asset.
 /// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be \c nil.
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier);

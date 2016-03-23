@@ -19,6 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
                         withType:(PHAssetCollectionType)type
                       andSubtype:(PHAssetCollectionSubtype)subtype;
 
+/// Registers the given \c collectionList with \c assetCollections. If a registration already exists
+/// it will be replaced.
+- (void)registerCollectionList:(PHCollectionList *)collectionList
+          withAssetCollecitons:(NSArray<PHCollection *> *)assetCollections;
+
+/// Registers the given \c assetCollections with \c collectionList. If a registration already exists
+/// it will be replaced. Registering and fetching of \c assetCollections is done with the
+/// \c localIdentifer of \c collectionList.
+- (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
+              withCollectionList:(PHCollectionList *)collectionList;
+
 /// Registers the given \c assetCollection so it will be returned when querying for asset
 /// collections with a given local identifiers.
 - (void)registerAssetCollection:(PHAssetCollection *)assetCollection;

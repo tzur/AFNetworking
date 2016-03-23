@@ -3,7 +3,8 @@
 
 #import "PTNPhotoKitFakeFetcher.h"
 
-#import "PTNPhotoKitAlbumType.h"
+#import <Photos/Photos.h>
+
 #import "PTNPhotoKitFakeFetchResultChangeDetails.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps between asset collection's local identifier to its assets array.
 @property (strong, nonatomic) NSMutableDictionary *assetCollectionLocalIdentifierToAssets;
 
+/// Maps between collection list to asset collections.
+@property (strong, nonatomic) NSMutableDictionary *collectionListToAssetCollections;
+
+/// Maps between asset collections to collection list.
+@property (strong, nonatomic) NSMutableDictionary *assetCollectionsToCollectionList;
+
 @end
 
 @implementation PTNPhotoKitFakeFetcher
@@ -36,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.assetCollectionLocalIdentifierToKeyAsset = [NSMutableDictionary dictionary];
     self.typeToAssetCollections = [NSMutableDictionary dictionary];
     self.assetCollectionLocalIdentifierToAssets = [NSMutableDictionary dictionary];
+    self.collectionListToAssetCollections = [NSMutableDictionary dictionary];
+    self.assetCollectionsToCollectionList = [NSMutableDictionary dictionary];
   }
   return self;
 }
@@ -54,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
                         withType:(PHAssetCollectionType)type
                       andSubtype:(PHAssetCollectionSubtype)subtype {
-  PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
+  NSArray *albumType = @[@(type), @(subtype)];
   @synchronized (self.typeToAssetCollections) {
     self.typeToAssetCollections[albumType] = assetCollections;
   }
@@ -62,6 +71,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerAssetCollection:(PHAssetCollection *)assetCollection {
   self.localIdentifierToAssetCollection[assetCollection.localIdentifier] = assetCollection;
+}
+
+- (void)registerCollectionList:(PHCollectionList *)collectionList
+          withAssetCollecitons:(NSArray<PHCollection *> *)assetCollections {
+  self.assetCollectionsToCollectionList[assetCollections] = collectionList;
+}
+
+- (void)registerAssetCollections:(NSArray<PHAssetCollection *> *)assetCollections
+              withCollectionList:(PHCollectionList *)collectionList {
+  self.collectionListToAssetCollections[collectionList.localIdentifier] = assetCollections;
 }
 
 - (void)registerAsset:(PHAsset *)asset {
@@ -93,9 +112,27 @@ NS_ASSUME_NONNULL_BEGIN
   return fetchResult;
 }
 
+- (PHCollectionList *)transientCollectionListWithCollections:(NSArray<PHCollection *> *)collections
+                                                       title:(NSString __unused *)title {
+  PHCollectionList *result;
+  @synchronized (self.typeToAssetCollections) {
+    result = self.assetCollectionsToCollectionList[collections];
+  }
+  return result;
+}
+
+- (PTNCollectionsFetchResult *)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList
+    options:(nullable PHFetchOptions __unused *)options {
+  PTNCollectionsFetchResult *result;
+  @synchronized (self.typeToAssetCollections) {
+    result = self.collectionListToAssetCollections[collectionList.localIdentifier];
+  }
+  return result;
+}
+
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
     subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions __unused *)options {
-  PTNPhotoKitAlbumType *albumType = [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
+  NSArray *albumType = @[@(type), @(subtype)];
   PTNAssetCollectionsFetchResult *result;
   @synchronized (self.typeToAssetCollections) {
     result = self.typeToAssetCollections[albumType];

@@ -12,13 +12,23 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAssetCollection fetchAssetCollectionsWithType:type subtype:subtype options:options];
 }
 
+- (PHCollectionList *)transientCollectionListWithCollections:(NSArray<PHCollection *> *)collections
+                                                       title:(NSString *)title {
+  return [PHCollectionList transientCollectionListWithCollections:collections title:title];
+}
+
+- (PTNCollectionsFetchResult *)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList
+                                                        options:(nullable PHFetchOptions *)options {
+  return [PHCollectionList fetchCollectionsInCollectionList:collectionList options:options];
+}
+
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
     (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options {
   return [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:identifiers options:options];
 }
 
 - (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
-                                        options:(nullable PHFetchOptions *)options {
+                                               options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
 }
 

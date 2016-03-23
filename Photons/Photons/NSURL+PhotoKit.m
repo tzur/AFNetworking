@@ -6,7 +6,6 @@
 #import <Photos/Photos.h>
 
 #import "NSURL+Photons.h"
-#import "PTNPhotoKitAlbumType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,11 +35,27 @@ NS_ASSUME_NONNULL_BEGIN
   return components.URL;
 }
 
-+ (NSURL * __nonnull)ptn_photoKitAlbumsWithType:(PTNPhotoKitAlbumType *)type {
++ (NSURL * __nonnull)ptn_photoKitAlbumWithType:(PTNPhotoKitAlbumType)type {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 
-  NSString *typeString = [NSString stringWithFormat:@"%ld", (long)type.type];
-  NSString *subtypeString = [NSString stringWithFormat:@"%ld", (long)type.subtype];
+  NSString *typeString =
+      [NSString stringWithFormat:@"%lu", (unsigned long)PTNPhotoKitURLTypeAlbumType];
+  NSString *subtypeString = [NSString stringWithFormat:@"%lu", (unsigned long)type];
+
+  components.scheme = [NSURL ptn_photoKitScheme];
+  components.host = @"album";
+  components.queryItems = @[[NSURLQueryItem queryItemWithName:@"type" value:typeString],
+                            [NSURLQueryItem queryItemWithName:@"subtype" value:subtypeString]];
+
+  return components.URL;
+}
+
++ (NSURL * __nonnull)ptn_photoKitAlbumOfAlbumsWithType:(PTNPhotoKitAlbumOfAlbumsType)type {
+  NSURLComponents *components = [[NSURLComponents alloc] init];
+
+  NSString *typeString = [NSString stringWithFormat:@"%lu",
+      (unsigned long)PTNPhotoKitURLTypeAlbumOfAlbumsType];
+  NSString *subtypeString = [NSString stringWithFormat:@"%lu", (unsigned long)type];
 
   components.scheme = [NSURL ptn_photoKitScheme];
   components.host = @"album";
@@ -59,7 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.query) {
       NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
       if (query[@"type"] && query[@"subtype"]) {
-        return PTNPhotoKitURLTypeAlbumType;
+        if (query[@"type"].integerValue == PTNPhotoKitURLTypeAlbumType) {
+          return PTNPhotoKitURLTypeAlbumType;
+        }
+        if (query[@"type"].integerValue == PTNPhotoKitURLTypeAlbumOfAlbumsType) {
+          return PTNPhotoKitURLTypeAlbumOfAlbumsType;
+        }
       }
     } else if (self.path.length > 0) {
       return PTNPhotoKitURLTypeAlbum;
@@ -87,20 +107,30 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.path substringFromIndex:1];
 }
 
-- (nullable PTNPhotoKitAlbumType *)ptn_photoKitAlbumType {
+- (PTNPhotoKitAlbumType)ptn_photoKitAlbumType {
   if (self.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbumType) {
-    return nil;
+    return PTNPhotoKitAlbumTypeInvalid;
   }
 
   NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
-  if (!query[@"type"] || !query[@"subtype"]) {
-    return nil;
+  if (!query[@"subtype"]) {
+    return PTNPhotoKitAlbumTypeInvalid;
   }
 
-  PHAssetCollectionType type = [query[@"type"] integerValue];
-  PHAssetCollectionSubtype subtype = [query[@"subtype"] integerValue];
+  return query[@"subtype"].integerValue;
+}
 
-  return [PTNPhotoKitAlbumType albumTypeWithType:type subtype:subtype];
+- (PTNPhotoKitAlbumOfAlbumsType)ptn_photoKitAlbumOfAlbumsType {
+  if (self.ptn_photoKitURLType != PTNPhotoKitURLTypeAlbumOfAlbumsType) {
+    return PTNPhotoKitAlbumOfAlbumsTypeInvalid;
+  }
+
+  NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
+  if (!query[@"subtype"]) {
+    return PTNPhotoKitAlbumOfAlbumsTypeInvalid;
+  }
+
+  return query[@"subtype"].integerValue;
 }
 
 @end

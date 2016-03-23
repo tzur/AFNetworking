@@ -5,7 +5,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// \c PHFetchResult backing \c PHAsset objects.
 typedef PHFetchResult<PHAsset *> PTNAssetsFetchResult;
+
+/// \c PHFetchResult backing \c PHCollection objects.
+typedef PHFetchResult<PHCollection *> PTNCollectionsFetchResult;
+
+/// \c PHFetchResult backing \c PHAssetCollection objects.
 typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
 
 /// Adapter which converts class method calls on PhotoKit objects to instance methods for easier
@@ -18,10 +24,22 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
     subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions *)options;
 
+/// Retrieves a temporary collection list that contains the specified asset collections.
+///
+/// @see [PHCollectionList transientCollectionListWithCollections:title:].
+- (PHCollectionList *)transientCollectionListWithCollections:(NSArray<PHCollection *> *)collections
+                                                       title:(NSString *)title;
+
+/// Retrieves collections from the specified collection list.
+///
+/// @see [PHCollectionList fetchCollectionsInCollectionList:options:].
+- (PTNCollectionsFetchResult *)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList
+                                                        options:(nullable PHFetchOptions *)options;
+
 /// Retrieves asset collections with the specified local identifiers.
 ///
 /// @see [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:options:].
-- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
+- (PHFetchResult<PHCollection *> *)fetchAssetCollectionsWithLocalIdentifiers:
     (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options;
 
 /// Retrieves assets from the specified asset collection.

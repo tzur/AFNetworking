@@ -13,6 +13,13 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localId
   return assetCollection;
 }
 
+PHAssetCollection *PTNPhotoKitCreateAssetCollectionOfSubtype(NSString * _Nullable localIdentifier,
+                                                             PHAssetCollectionSubtype subtype) {
+  PHAssetCollection *assetCollection = PTNPhotoKitCreateAssetCollection(localIdentifier);
+  OCMStub(assetCollection.assetCollectionSubtype).andReturn(subtype);
+  return assetCollection;
+}
+
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier) {
   PHAsset *asset = OCMClassMock([PHAsset class]);
   OCMStub([asset localIdentifier]).andReturn(localIdentifier);
