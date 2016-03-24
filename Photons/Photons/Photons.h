@@ -10,6 +10,9 @@ FOUNDATION_EXPORT double PhotonsVersionNumber;
 /// Project version string for Photons.
 FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
+/// Authorization
+#import <Photons/PTNAuthorizationManager.h>
+
 /// Base.
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNAlbumChangeset.h>

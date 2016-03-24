@@ -24,5 +24,9 @@ LTErrorCodesImplement(PhotonsErrorCodeProductID,
   /// Caused when descriptor has failed to create itself.
   PTNErrorCodeDescriptorCreationFailed,
   /// Caused when an unrecognized URL scheme has been given.
-  PTNErrorCodeUnrecognizedURLScheme
+  PTNErrorCodeUnrecognizedURLScheme,
+  /// Caused when an authorization process has failed.
+  PTNErrorCodeAuthorizationFailed,
+  /// Caused when an authorization revocation has failed.
+  PTNErrorCodeAuthorizationRevocationFailed
 );

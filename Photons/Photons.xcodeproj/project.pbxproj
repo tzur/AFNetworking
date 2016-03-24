@@ -386,6 +386,7 @@
 		8476B7151C5683E3004E0175 /* PTNDropboxRestClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxRestClientProvider.h; sourceTree = "<group>"; };
 		8476B71B1C56847F004E0175 /* DBSession+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBSession+Photons.h"; sourceTree = "<group>"; };
 		8476B71C1C56847F004E0175 /* DBSession+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBSession+Photons.m"; sourceTree = "<group>"; };
+		8476B8AB1C58BB4A004E0175 /* PTNAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAuthorizationManager.h; sourceTree = "<group>"; };
 		8478045D1CA0047F0092B41E /* PTNGatewayAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayAssetManager.m; sourceTree = "<group>"; };
 		847804711CA01AA10092B41E /* PTNGatewayTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNGatewayTestUtils.h; sourceTree = "<group>"; };
 		847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayTestUtils.m; sourceTree = "<group>"; };
@@ -656,6 +657,14 @@
 			name = Dropbox;
 			sourceTree = "<group>";
 		};
+		84515F761C96A96600AD8B5B /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				84515F771C96A97500AD8B5B /* PTNOpenURLManagerSpec.m */,
+			);
+			name = Authorization;
+			sourceTree = "<group>";
+		};
 		845162DD1C986A4E00AD8B5B /* Cache */ = {
 			isa = PBXGroup;
 			children = (
@@ -671,6 +680,14 @@
 				845162F51C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m */,
 			);
 			name = Cache;
+			sourceTree = "<group>";
+		};
+		8476B8911C58B8D9004E0175 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				8476B8AB1C58BB4A004E0175 /* PTNAuthorizationManager.h */,
+			);
+			name = Authorization;
 			sourceTree = "<group>";
 		};
 		8476B8F91C58C5C6004E0175 /* Products */ = {
@@ -837,6 +854,7 @@
 			isa = PBXGroup;
 			children = (
 				8BAFDC981B0DED4C003FB8F5 /* Photons.h */,
+				8476B8911C58B8D9004E0175 /* Authorization */,
 				8B2FD0711AFA0B5100757B1F /* Base */,
 				845162DD1C986A4E00AD8B5B /* Cache */,
 				84331A751C300C67004502B5 /* Dropbox */,
@@ -882,6 +900,7 @@
 		8B2FD06B1AF9FEDD00757B1F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				84515F761C96A96600AD8B5B /* Authorization */,
 				8B5619421B6508DB006B0DA0 /* Base */,
 				845162F41C986EBF00AD8B5B /* Cache */,
 				84331A931C300C81004502B5 /* Dropbox */,
