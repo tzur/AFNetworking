@@ -25,12 +25,16 @@
 		843CD33C1C46763F007435E8 /* PTNDropboxPathProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 843CD33B1C46763F007435E8 /* PTNDropboxPathProviderSpec.m */; };
 		844C10C11C3A5D54001A6DC9 /* PTNNSURLTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.m */; };
 		844C10E01C3A6440001A6DC9 /* NSURL+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C10DF1C3A6440001A6DC9 /* NSURL+PhotonsSpec.m */; };
+		84515DAA1C95667A00AD8B5B /* DBSession+RACSignalSupportSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515DA91C95667A00AD8B5B /* DBSession+RACSignalSupportSpec.m */; };
 		84515E971C96A4DC00AD8B5B /* NSURL+GatewaySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515E961C96A4DC00AD8B5B /* NSURL+GatewaySpec.m */; };
 		84515FD91C96C98200AD8B5B /* PTNIncrementalChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515FD81C96C98200AD8B5B /* PTNIncrementalChanges.m */; };
 		84515FEE1C96CD5100AD8B5B /* PTNAlbumChangesetIncrementalChangesSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515FED1C96CD5100AD8B5B /* PTNAlbumChangesetIncrementalChangesSpec.m */; };
 		84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA4E1C5A197D00014DD1 /* PTNOpenURLManager.m */; };
+		84515F6F1C96A8AC00AD8B5B /* DBSession+RACSignalSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515DA31C95544F00AD8B5B /* DBSession+RACSignalSupport.m */; };
+		84515F701C96A8D800AD8B5B /* PTNDropboxAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA371C5A106800014DD1 /* PTNDropboxAuthorizationManager.m */; };
 		84515F711C96A8E500AD8B5B /* PTNPhotoKitAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA5D1C5A389B00014DD1 /* PTNPhotoKitAuthorizationManager.m */; };
 		84515F721C96A8E700AD8B5B /* PTNPhotoKitAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F4061C69D5520007B0A5 /* PTNPhotoKitAuthorizer.m */; };
+		84515F731C96A90500AD8B5B /* PTNDropboxAuthorizationManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B41BDA1C69E55800DEE2E6 /* PTNDropboxAuthorizationManagerSpec.m */; };
 		84515F751C96A93D00AD8B5B /* PTNPhotoKitAuthorizationManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515F741C96A93D00AD8B5B /* PTNPhotoKitAuthorizationManagerSpec.m */; };
 		84515F781C96A97500AD8B5B /* PTNOpenURLManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84515F771C96A97500AD8B5B /* PTNOpenURLManagerSpec.m */; };
 		845161691C984B3B00AD8B5B /* PTNGatewayAlbumDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 845161681C984B3B00AD8B5B /* PTNGatewayAlbumDescriptor.m */; };
@@ -321,6 +325,8 @@
 		841229131C9FE57D0078A690 /* PTNGatewayAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNGatewayAssetManager.h; sourceTree = "<group>"; };
 		841229141C9FE57D0078A690 /* PTNGatewayAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayAssetManager.m; sourceTree = "<group>"; };
 		84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PhotoKit+PhotonsSpec.m"; sourceTree = "<group>"; };
+		8414EA361C5A106800014DD1 /* PTNDropboxAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxAuthorizationManager.h; sourceTree = "<group>"; };
+		8414EA371C5A106800014DD1 /* PTNDropboxAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAuthorizationManager.m; sourceTree = "<group>"; };
 		8414EA4D1C5A197D00014DD1 /* PTNOpenURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOpenURLManager.h; sourceTree = "<group>"; };
 		8414EA4E1C5A197D00014DD1 /* PTNOpenURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNOpenURLManager.m; sourceTree = "<group>"; };
 		8414EA5C1C5A389B00014DD1 /* PTNPhotoKitAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitAuthorizationManager.h; sourceTree = "<group>"; };
@@ -380,6 +386,9 @@
 		844C10BF1C3A5D54001A6DC9 /* PTNNSURLTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNNSURLTestUtils.h; sourceTree = "<group>"; };
 		844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNNSURLTestUtils.m; sourceTree = "<group>"; };
 		844C10DF1C3A6440001A6DC9 /* NSURL+PhotonsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PhotonsSpec.m"; sourceTree = "<group>"; };
+		84515DA21C95544F00AD8B5B /* DBSession+RACSignalSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBSession+RACSignalSupport.h"; sourceTree = "<group>"; };
+		84515DA31C95544F00AD8B5B /* DBSession+RACSignalSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBSession+RACSignalSupport.m"; sourceTree = "<group>"; };
+		84515DA91C95667A00AD8B5B /* DBSession+RACSignalSupportSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBSession+RACSignalSupportSpec.m"; sourceTree = "<group>"; };
 		84515E961C96A4DC00AD8B5B /* NSURL+GatewaySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+GatewaySpec.m"; sourceTree = "<group>"; };
 		84515FD71C96C98200AD8B5B /* PTNIncrementalChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNIncrementalChanges.h; sourceTree = "<group>"; };
 		84515FD81C96C98200AD8B5B /* PTNIncrementalChanges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNIncrementalChanges.m; sourceTree = "<group>"; };
@@ -429,6 +438,7 @@
 		848D2E501C4F75BC00491AB3 /* PTNDropboxRestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxRestClient.m; sourceTree = "<group>"; };
 		84A5E6571C58F2A300B29423 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../LTKit/third_party/utils/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		84A5E65D1C58F3C100B29423 /* libSpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpecta.a; path = "../LTKit/third_party/testing/Specta/Specta/build/Debug-iphoneos/libSpecta.a"; sourceTree = "<group>"; };
+		84B41BDA1C69E55800DEE2E6 /* PTNDropboxAuthorizationManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAuthorizationManagerSpec.m; sourceTree = "<group>"; };
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Dropbox.h"; sourceTree = "<group>"; };
@@ -624,6 +634,8 @@
 			children = (
 				8476B71B1C56847F004E0175 /* DBSession+Photons.h */,
 				8476B71C1C56847F004E0175 /* DBSession+Photons.m */,
+				84515DA21C95544F00AD8B5B /* DBSession+RACSignalSupport.h */,
+				84515DA31C95544F00AD8B5B /* DBSession+RACSignalSupport.m */,
 				84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */,
 				84E27ABD1C34287300806A27 /* NSURL+Dropbox.m */,
 				843CD2D41C467102007435E8 /* PTNDropboxAlbum.h */,
@@ -632,6 +644,8 @@
 				8414EB521C5E443800014DD1 /* PTNDropboxAssetManager.m */,
 				841AB6E11C7C61C300A50BD1 /* PTNDropboxAtomicRestClient.h */,
 				841AB6E21C7C61C300A50BD1 /* PTNDropboxAtomicRestClient.m */,
+				8414EA361C5A106800014DD1 /* PTNDropboxAuthorizationManager.h */,
+				8414EA371C5A106800014DD1 /* PTNDropboxAuthorizationManager.m */,
 				844C0F3E1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.h */,
 				844C0F3F1C354FD9001A6DC9 /* PTNDropboxDirectoryDescriptor.m */,
 				84331A8F1C300C7B004502B5 /* PTNDropboxEntry.h */,
@@ -652,10 +666,12 @@
 		84331A931C300C81004502B5 /* Dropbox */ = {
 			isa = PBXGroup;
 			children = (
+				84515DA91C95667A00AD8B5B /* DBSession+RACSignalSupportSpec.m */,
 				848187881C3BE35D0070462E /* NSURL+DropboxSpec.m */,
 				843CD2B91C4670F0007435E8 /* PTNDropboxAlbumSpec.m */,
 				846E18A41C7330B900B94467 /* PTNDropboxAssetManagerSpec.m */,
 				841AB6F91C7C811200A50BD1 /* PTNDropboxAtomicRestClientSpec.m */,
+				84B41BDA1C69E55800DEE2E6 /* PTNDropboxAuthorizationManagerSpec.m */,
 				848186FA1C3BCDAB0070462E /* PTNDropboxDirectoryDescriptorSpec.m */,
 				84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */,
 				848D2E311C4F75A600491AB3 /* PTNDropboxFakeDBRestClient.h */,
@@ -1489,6 +1505,7 @@
 				84E55C471C8EC87200D91339 /* PTNPhotoKitFetcher.m in Sources */,
 				84E55C401C8EC86800D91339 /* NSURL+PhotoKit.mm in Sources */,
 				84E55C461C8EC87100D91339 /* PTNPhotoKitAssetManager.mm in Sources */,
+				84515F701C96A8D800AD8B5B /* PTNDropboxAuthorizationManager.m in Sources */,
 				84E55C3B1C8EC85D00D91339 /* PTNFileSystemAlbum.m in Sources */,
 				84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */,
 				84E55C431C8EC86B00D91339 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
@@ -1501,6 +1518,7 @@
 				84E55C3A1C8EC85B00D91339 /* NSURL+FileSystem.m in Sources */,
 				84741D1C1C99ADF5001D3D1D /* PTNStaticImageAsset.m in Sources */,
 				84E55C3D1C8EC85F00D91339 /* PTNFileSystemDirectoryDescriptor.m in Sources */,
+				84515F6F1C96A8AC00AD8B5B /* DBSession+RACSignalSupport.m in Sources */,
 				84E55C291C8EC83F00D91339 /* PTNImageResizer.m in Sources */,
 				84E55C341C8EC84F00D91339 /* PTNDropboxFileDescriptor.m in Sources */,
 				84E55C2A1C8EC84000D91339 /* PTNProgress.m in Sources */,
@@ -1561,6 +1579,7 @@
 				8B2FD0DA1B09CD0800757B1F /* EXPMatchers+matchValue.m in Sources */,
 				845162F61C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m in Sources */,
 				8B2FD0D31B09CD0800757B1F /* LLReactiveMatchersHelpers.m in Sources */,
+				84515F731C96A90500AD8B5B /* PTNDropboxAuthorizationManagerSpec.m in Sources */,
 				8BCF58561BCD0A74001EE2ED /* PTNImageMetadataSpec.mm in Sources */,
 				84182D9A1C43996400F762DF /* PTNFileSystemAssetManagerSpec.m in Sources */,
 				8B2FD0D41B09CD0800757B1F /* LLReactiveMatchersMessageBuilder.m in Sources */,
@@ -1588,6 +1607,7 @@
 				8B56196A1B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.mm in Sources */,
 				848D2E341C4F75A600491AB3 /* PTNDropboxFakeDBRestClient.m in Sources */,
 				84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */,
+				84515DAA1C95667A00AD8B5B /* DBSession+RACSignalSupportSpec.m in Sources */,
 				8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */,
 				8B2FD0D51B09CD0800757B1F /* EXPMatchers+beSubscribedTo.m in Sources */,
 				848188671C3BF4620070462E /* PTNFileSystemDirectoryDescriptorSpec.m in Sources */,

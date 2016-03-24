@@ -33,6 +33,7 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
 /// Dropbox.
 #import <Photons/NSURL+Dropbox.h>
+#import <Photons/PTNDropboxAuthorizationManager.h>
 #import <Photons/PTNDropboxEntry.h>
 #import <Photons/PTNDropboxPathProvider.h>
 #import <Photons/PTNDropboxRestClient.h>
