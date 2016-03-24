@@ -4,6 +4,7 @@
 #import "PTNAlbumChangeset.h"
 
 #import "PTNAlbum.h"
+#import "PTNIncrementalChanges.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,17 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)changesetWithBeforeAlbum:(nullable id<PTNAlbum>)beforeAlbum
                               afterAlbum:(id<PTNAlbum>)afterAlbum
-                          removedIndexes:(nullable NSIndexSet *)removedIndexes
-                         insertedIndexes:(nullable NSIndexSet *)insertedIndexes
-                          updatedIndexes:(nullable NSIndexSet *)updatedIndexes
-                                   moves:(nullable PTNAlbumChangesetMoves *)moves {
+                         subalbumChanges:(nullable PTNIncrementalChanges *)subalbumChanges
+                            assetChanges:(nullable PTNIncrementalChanges *)assetChanges {
   PTNAlbumChangeset *changeset = [[PTNAlbumChangeset alloc] init];
   changeset->_beforeAlbum = beforeAlbum;
   changeset->_afterAlbum = afterAlbum;
-  changeset->_removedIndexes = removedIndexes;
-  changeset->_insertedIndexes = insertedIndexes;
-  changeset->_updatedIndexes = updatedIndexes;
-  changeset->_moves = moves;
+  changeset->_subalbumChanges = subalbumChanges;
+  changeset->_assetChanges = assetChanges;
   return changeset;
 }
 
@@ -45,10 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [self compare:self.beforeAlbum with:object.beforeAlbum] &&
       [self compare:self.afterAlbum with:object.afterAlbum] &&
-      [self compare:self.removedIndexes with:object.removedIndexes] &&
-      [self compare:self.insertedIndexes with:object.insertedIndexes] &&
-      [self compare:self.updatedIndexes with:object.updatedIndexes] &&
-      [self compare:self.moves with:object.moves];
+      [self compare:self.subalbumChanges with:object.subalbumChanges] &&
+      [self compare:self.assetChanges with:object.assetChanges];
 }
 
 - (BOOL)compare:(nullable id)first with:(nullable id)second {
@@ -56,15 +51,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return [self.beforeAlbum hash] ^ [self.afterAlbum hash] ^ [self.removedIndexes hash] ^
-      [self.insertedIndexes hash] ^ [self.updatedIndexes hash] ^ [self.moves hash];
+  return [self.beforeAlbum hash] ^ [self.afterAlbum hash] ^ [self.subalbumChanges hash] ^
+      [self.assetChanges hash];
 }
 
 - (NSString *)description {
   if (self.beforeAlbum) {
-    return [NSString stringWithFormat:@"<%@: %p, before: %@, after: %@, removed: %@, inserted: %@, "
-            "updated: %@, moved: %@>", self.class, self, self.beforeAlbum, self.afterAlbum,
-            self.removedIndexes, self.insertedIndexes, self.updatedIndexes, self.moves];
+    return [NSString stringWithFormat:@"<%@: %p, before: %@, after: %@, subalbum changes: %@, "
+            "asset changes: %@>", self.class, self, self.beforeAlbum, self.afterAlbum,
+            self.subalbumChanges, self.assetChanges];
   } else {
     return [NSString stringWithFormat:@"<%@: %p, album: %@>", self.class, self, self.afterAlbum];
   }

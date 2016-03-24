@@ -7,31 +7,12 @@
 #import <Photons/PTNAlbumChangeset.h>
 #import <Photons/PTNAlbumChangesetMove.h>
 #import <Photons/PTNAssetManager.h>
-#import <Photons/PTNCollection.h>
+#import <Photons/PTNIncrementalChanges.h>
 
 #import "PTUChangeset.h"
 #import "PTUChangesetMove.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Category over \c NSIndexSet enabling its representation as an array.
-@interface NSIndexSet (PhotonsUI)
-
-/// Array with contents of this \c NSIndexSet mapped to \c NSIndexPath object with \c section in an
-/// undefined order.
-- (NSArray<NSIndexPath *> *)ptn_arrayWithSection:(NSInteger)section;
-
-@end
-
-@implementation NSIndexSet (PhotonsUI)
-
-- (NSArray<NSIndexPath *> *)ptn_arrayWithSection:(NSInteger)section {
-  return [self.rac_sequence map:^id(NSNumber *idx) {
-    return [NSIndexPath indexPathForItem:idx.integerValue inSection:section];
-  }].array;
-}
-
-@end
 
 @interface PTUAlbumChangesetProvider ()
 
@@ -57,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTUChangesetProvider
 #pragma mark -
 
+static const NSUInteger kAlbumSection = 0;
 static const NSUInteger kAssetSection = 1;
 
 - (RACSignal *)fetchChangeset {
@@ -68,22 +50,61 @@ static const NSUInteger kAssetSection = 1;
 
 static PTUChangeset *PTUChangesetFromAlbumChangeset(PTNAlbumChangeset *changeset) {
   PTUDataModel *afterData = @[changeset.afterAlbum.subalbums, changeset.afterAlbum.assets];
-  if (!changeset.beforeAlbum) {
+  if (!changeset.subalbumChanges && !changeset.assetChanges) {
     return [[PTUChangeset alloc] initWithAfterDataModel:afterData];
   }
 
   PTUDataModel *beforeData = @[changeset.beforeAlbum.subalbums, changeset.beforeAlbum.assets];
+  NSArray *deleted = PTUIndexPathArray(changeset.subalbumChanges.removedIndexes,
+                                       changeset.assetChanges.removedIndexes);
+  NSArray *inserted = PTUIndexPathArray(changeset.subalbumChanges.insertedIndexes,
+                                        changeset.assetChanges.insertedIndexes);
+  NSArray *updated = PTUIndexPathArray(changeset.subalbumChanges.updatedIndexes,
+                                       changeset.assetChanges.updatedIndexes);
+  NSArray *moved = PTUMovesIndexPathArray(changeset.subalbumChanges.moves,
+                                          changeset.assetChanges.moves);
+
   return [[PTUChangeset alloc] initWithBeforeDataModel:beforeData afterDataModel:afterData
-      deleted:[changeset.removedIndexes ptn_arrayWithSection:kAssetSection]
-      inserted:[changeset.insertedIndexes ptn_arrayWithSection:kAssetSection]
-      updated:[changeset.updatedIndexes ptn_arrayWithSection:kAssetSection]
-      moved:PTUMovesFromPTNMoves(changeset.moves)];
+                                               deleted:deleted inserted:inserted updated:updated
+                                                 moved:moved];
 }
 
-static PTUChangesetMoves *PTUMovesFromPTNMoves(PTNAlbumChangesetMoves *moves) {
+#pragma mark -
+#pragma mark Changeset mapping
+#pragma mark -
+
+static NSArray *PTUIndexPathArray(NSIndexSet * _Nullable albumIndexSet,
+                                  NSIndexSet * _Nullable assetIndexSet) {
+  NSArray *albumArray = PTUArrayWithSection(albumIndexSet, kAlbumSection) ?: @[];
+  NSArray *assetArray = PTUArrayWithSection(assetIndexSet, kAssetSection) ?: @[];
+
+  return [albumArray arrayByAddingObjectsFromArray:assetArray];
+}
+
+static PTUChangesetMoves *PTUMovesIndexPathArray(PTNAlbumChangesetMoves *albumMoves,
+                                                 PTNAlbumChangesetMoves *assetMoves) {
+  NSArray *albumArray = PTUMovesWithSection(albumMoves, kAlbumSection) ?: @[];
+  NSArray *assetArray = PTUMovesWithSection(assetMoves, kAssetSection) ?: @[];
+
+  return [albumArray arrayByAddingObjectsFromArray:assetArray];
+}
+
+#pragma mark -
+#pragma mark Index path section
+#pragma mark -
+
+static NSArray * _Nullable PTUArrayWithSection(NSIndexSet * _Nullable indexSet,
+                                               NSUInteger section) {
+  return [indexSet.rac_sequence map:^id(NSNumber *idx) {
+    return [NSIndexPath indexPathForItem:idx.integerValue inSection:section];
+  }].array;
+}
+
+static NSArray * _Nullable PTUMovesWithSection(PTNAlbumChangesetMoves * _Nullable moves,
+                                               NSUInteger section) {
   return [moves.rac_sequence map:^id(PTNAlbumChangesetMove *move) {
-    NSIndexPath *from = [NSIndexPath indexPathForItem:move.fromIndex inSection:kAssetSection];
-    NSIndexPath *to = [NSIndexPath indexPathForItem:move.toIndex inSection:kAssetSection];
+    NSIndexPath *from = [NSIndexPath indexPathForItem:move.fromIndex inSection:section];
+    NSIndexPath *to = [NSIndexPath indexPathForItem:move.toIndex inSection:section];
     return [PTUChangesetMove changesetMoveFrom:from to:to];
   }].array;
 }

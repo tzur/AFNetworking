@@ -11,13 +11,14 @@
 #import "PTNDescriptor.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageAsset.h"
+#import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
+#import "PTNPhotokitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
-#import "PTNPhotokitImageAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 
@@ -243,21 +244,28 @@ context(@"album fetching", ^{
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albumsSubset];
         NSIndexSet *emptySet = [NSIndexSet indexSet];
+
+        PTNIncrementalChanges *firstChanges =
+            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
+                                              updatedIndexes:[NSIndexSet indexSetWithIndex:0]
+                                                       moves:@[]];
+
+        PTNIncrementalChanges *secondChanges =
+            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
+                                              updatedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                                       moves:@[]];
+
         expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
           [PTNAlbumChangeset changesetWithAfterAlbum:album],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                       removedIndexes:emptySet
-                                      insertedIndexes:emptySet
-                                       updatedIndexes:[NSIndexSet indexSetWithIndex:0]
-                                                moves:@[]],
+                                      subalbumChanges:firstChanges
+                                         assetChanges:nil],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                       removedIndexes:emptySet
-                                      insertedIndexes:emptySet
-                                       updatedIndexes:[NSIndexSet indexSetWithIndex:1]
-                                                moves:@[]]
-        ]]);
+                                      subalbumChanges:secondChanges
+                                         assetChanges:nil]]
+        ]);
       });
     });
 
@@ -296,24 +304,31 @@ context(@"album fetching", ^{
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
         NSIndexSet *emptySet = [NSIndexSet indexSet];
+
+        PTNIncrementalChanges *firstChanges =
+            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
+                                              updatedIndexes:[NSIndexSet indexSetWithIndex:0]
+                                                       moves:@[]];
+
+        PTNIncrementalChanges *secondChanges =
+            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
+                                              updatedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                                       moves:@[]];
+
         expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
           [PTNAlbumChangeset changesetWithAfterAlbum:album],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                       removedIndexes:emptySet
-                                      insertedIndexes:emptySet
-                                       updatedIndexes:[NSIndexSet indexSetWithIndex:0]
-                                                moves:@[]],
+                                      subalbumChanges:firstChanges
+                                         assetChanges:nil],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                       removedIndexes:emptySet
-                                      insertedIndexes:emptySet
-                                       updatedIndexes:[NSIndexSet indexSetWithIndex:1]
-                                                moves:@[]]
+                                      subalbumChanges:secondChanges
+                                         assetChanges:nil]
         ]]);
       });
     });
-    
+
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];

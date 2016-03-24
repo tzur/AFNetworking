@@ -4,45 +4,41 @@
 #import "PTNAlbumChangeset.h"
 
 #import "PTNAlbum.h"
-#import "PTNAlbumChangesetMove.h"
+#import "PTNIncrementalChanges.h"
 
 SpecBegin(PTNAlbumChangeset)
 
+__block id before;
+__block id after;
+__block id changes;
+
+beforeEach(^{
+  before = OCMProtocolMock(@protocol(PTNAlbum));
+  after = OCMProtocolMock(@protocol(PTNAlbum));
+  changes = OCMClassMock([PTNIncrementalChanges class]);
+});
+
 context(@"construction", ^{
   it(@"should construct changeset with after album", ^{
-    id after = OCMProtocolMock(@protocol(PTNAlbum));
     PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithAfterAlbum:after];
 
     expect(changeset.afterAlbum).to.equal(after);
 
     expect(changeset.beforeAlbum).to.beNil();
-    expect(changeset.removedIndexes).to.beNil();
-    expect(changeset.insertedIndexes).to.beNil();
-    expect(changeset.updatedIndexes).to.beNil();
-    expect(changeset.moves).to.beNil();
+    expect(changeset.subalbumChanges).to.beNil();
+    expect(changeset.assetChanges).to.beNil();
   });
 
   it(@"should construct changeset with changes", ^{
-    id before = OCMProtocolMock(@protocol(PTNAlbum));
-    id after = OCMProtocolMock(@protocol(PTNAlbum));
-    NSIndexSet *removedIndexes = [NSIndexSet indexSetWithIndex:0];
-    NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:1];
-    NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndex:2];
-    PTNAlbumChangesetMoves *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
-
     PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithBeforeAlbum:before
                                                                     afterAlbum:after
-                                                                removedIndexes:removedIndexes
-                                                               insertedIndexes:insertedIndexes
-                                                                updatedIndexes:updatedIndexes
-                                                                         moves:moves];
+                                                               subalbumChanges:nil
+                                                                  assetChanges:changes];
 
     expect(changeset.beforeAlbum).to.equal(before);
     expect(changeset.afterAlbum).to.equal(after);
-    expect(changeset.removedIndexes).to.equal(removedIndexes);
-    expect(changeset.insertedIndexes).to.equal(insertedIndexes);
-    expect(changeset.updatedIndexes).to.equal(updatedIndexes);
-    expect(changeset.moves).to.equal(moves);
+    expect(changeset.subalbumChanges).to.beNil();
+    expect(changeset.assetChanges).to.equal(changes);
   });
 });
 
@@ -52,26 +48,15 @@ context(@"equality", ^{
   __block PTNAlbumChangeset *otherChangeset;
 
   beforeEach(^{
-    id before = OCMProtocolMock(@protocol(PTNAlbum));
-    id after = OCMProtocolMock(@protocol(PTNAlbum));
-    NSIndexSet *removedIndexes = [NSIndexSet indexSetWithIndex:0];
-    NSIndexSet *insertedIndexes = [NSIndexSet indexSetWithIndex:1];
-    NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndex:2];
-    PTNAlbumChangesetMoves *moves = @[[PTNAlbumChangesetMove changesetMoveFrom:0 to:1]];
-
     firstChangeset = [PTNAlbumChangeset changesetWithBeforeAlbum:before
                                                       afterAlbum:after
-                                                  removedIndexes:removedIndexes
-                                                 insertedIndexes:insertedIndexes
-                                                  updatedIndexes:updatedIndexes
-                                                           moves:moves];
+                                                  subalbumChanges:changes
+                                                    assetChanges:changes];
 
     secondChangeset = [PTNAlbumChangeset changesetWithBeforeAlbum:before
                                                        afterAlbum:after
-                                                   removedIndexes:removedIndexes
-                                                  insertedIndexes:insertedIndexes
-                                                   updatedIndexes:updatedIndexes
-                                                            moves:moves];
+                                                  subalbumChanges:changes
+                                                     assetChanges:changes];
 
     otherChangeset = [PTNAlbumChangeset changesetWithAfterAlbum:after];
   });

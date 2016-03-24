@@ -8,6 +8,7 @@
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangesetMove.h"
+#import "PTNIncrementalChanges.h"
 
 SpecBegin(PTNAlbumChangeset_PhotoKit)
 
@@ -52,10 +53,10 @@ it(@"should construct changeset with url and details", ^{
 
   expect(changeset.beforeAlbum.url).to.equal(url);
   expect(changeset.afterAlbum.url).to.equal(url);
-  expect(changeset.removedIndexes).to.equal(removedIndexes);
-  expect(changeset.insertedIndexes).to.equal(insertedIndexes);
-  expect(changeset.updatedIndexes).to.equal(updatedIndexes);
-  expect(changeset.moves).to.equal(@[
+  expect(changeset.assetChanges.removedIndexes).to.equal(removedIndexes);
+  expect(changeset.assetChanges.insertedIndexes).to.equal(insertedIndexes);
+  expect(changeset.assetChanges.updatedIndexes).to.equal(updatedIndexes);
+  expect(changeset.assetChanges.moves).to.equal(@[
     [PTNAlbumChangesetMove changesetMoveFrom:5 to:7],
     [PTNAlbumChangesetMove changesetMoveFrom:7 to:5]
   ]);
