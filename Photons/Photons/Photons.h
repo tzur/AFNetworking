@@ -12,6 +12,8 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
 /// Authorization
 #import <Photons/PTNAuthorizationManager.h>
+#import <Photons/PTNOpenURLHandler.h>
+#import <Photons/PTNOpenURLManager.h>
 
 /// Base.
 #import <Photons/PTNAlbum.h>
