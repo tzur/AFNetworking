@@ -7,6 +7,7 @@
 
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangesetMove.h"
+#import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,12 +25,21 @@ NS_ASSUME_NONNULL_BEGIN
                               initWithURL:url fetchResult:changeDetails.fetchResultBeforeChanges];
   id<PTNAlbum> afterAlbum = [[PTNPhotoKitAlbum alloc]
                              initWithURL:url fetchResult:changeDetails.fetchResultAfterChanges];
+
   NSArray<PTNAlbumChangesetMove *> *moves = [self movesFromChangeDetails:changeDetails];
+  PTNIncrementalChanges *changes =
+      [PTNIncrementalChanges changesWithRemovedIndexes:changeDetails.removedIndexes
+                                       insertedIndexes:changeDetails.insertedIndexes
+                                        updatedIndexes:changeDetails.changedIndexes
+                                                 moves:moves];
+
+  if ([url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
+    return [PTNAlbumChangeset changesetWithBeforeAlbum:beforeAlbum afterAlbum:afterAlbum
+                                       subalbumChanges:changes assetChanges:nil];
+  }
 
   return [PTNAlbumChangeset changesetWithBeforeAlbum:beforeAlbum afterAlbum:afterAlbum
-                                      removedIndexes:changeDetails.removedIndexes
-                                     insertedIndexes:changeDetails.insertedIndexes
-                                      updatedIndexes:changeDetails.changedIndexes moves:moves];
+                                     subalbumChanges:nil assetChanges:changes];
 }
 
 + (PTNAlbumChangesetMoves *)movesFromChangeDetails:(PHFetchResultChangeDetails *)changeDetails {
