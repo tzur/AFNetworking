@@ -10,6 +10,11 @@ FOUNDATION_EXPORT double PhotonsVersionNumber;
 /// Project version string for Photons.
 FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
+/// Authorization
+#import <Photons/PTNAuthorizationManager.h>
+#import <Photons/PTNOpenURLHandler.h>
+#import <Photons/PTNOpenURLManager.h>
+
 /// Base.
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNAlbumChangeset.h>
@@ -28,6 +33,7 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
 /// Dropbox.
 #import <Photons/NSURL+Dropbox.h>
+#import <Photons/PTNDropboxAuthorizationManager.h>
 #import <Photons/PTNDropboxEntry.h>
 #import <Photons/PTNDropboxPathProvider.h>
 #import <Photons/PTNDropboxRestClient.h>
@@ -44,6 +50,8 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/NSURL+PhotoKit.h>
 #import <Photons/PTNPhotoKitAlbum.h>
 #import <Photons/PTNPhotoKitAssetManager.h>
+#import <Photons/PTNPhotoKitAuthorizationManager.h>
+#import <Photons/PTNPhotoKitAuthorizer.h>
 #import <Photons/PTNPhotoKitFetcher.h>
 #import <Photons/PTNPhotoKitImageManager.h>
 #import <Photons/PTNPhotoKitObserver.h>
