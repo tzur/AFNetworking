@@ -1,0 +1,38 @@
+// Copyright (c) 2013 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+// Apple's Frameworks.
+#import <GLKit/GLKit.h>
+#import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES3/gl.h>
+
+// Third party.
+#import <Mantle/Mantle.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnewline-eof"
+#import <Objection-iOS/Objection.h>
+#pragma clang diagnostic pop
+
+#ifdef __cplusplus
+  #pragma clang diagnostic push
+  // Ignore CvForestTree::train and CvBoostTree::train warnings.
+  #pragma clang diagnostic ignored "-Woverloaded-virtual"
+  // Ignore cv::_InputArray and cv::_OutputArray non-virtual destructor.
+  #pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+  #import <opencv2/opencv.hpp>
+  #pragma clang diagnostic pop
+#endif
+
+// LTKit.
+#import <LTKit/LTKit-Prefix.pch>
+
+#import <LTKit/LTCGExtensions.h>
+#import <LTKit/LTKeyPathCoding.h>
+
+// LTEngine.
+#import "LTEasyBoxing+LTEngine.h"
+#import "LTGLCheck.h"
+#import "LTRef+LTEngine.h"
+#import "LTTypedefs+LTEngine.h"
+#import "LTVector.h"
