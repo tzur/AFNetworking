@@ -1,0 +1,22 @@
+// Copyright (c) 2015 Lightricks. All rights reserved.
+// Created by Barak Yoresh.
+
+#ifdef __OBJC__
+  // Apple's Frameworks.
+  #import <Foundation/Foundation.h>
+  #import <UIKit/UIKit.h>
+
+  // Third party.
+  #import <ReactiveCocoa/ReactiveCocoa.h>
+  #import <Masonry/Masonry.h>
+
+  // Undefine macros that were defined by ReactiveCocoa which are redefined by libextobjc.
+  #undef keypath
+  #undef onExit
+  #undef weakify
+  #undef unsafeify
+  #undef strongify
+
+  // LTKit.
+  #import <LTKit/LTKit-Prefix.pch>
+#endif

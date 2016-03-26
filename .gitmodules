@@ -16,3 +16,16 @@
 [submodule "third_party/utils/Mantle"]
 	path = third_party/utils/Mantle
 	url = https://github.com/Lightricks/Mantle.git
+[submodule "third_party/LLReactiveMatchers"]
+	path = third_party/LLReactiveMatchers
+	url = https://github.com/Lightricks/LLReactiveMatchers.git
+	branch = develop
+[submodule "third_party/ReactiveCocoa"]
+	path = third_party/ReactiveCocoa
+	url = https://github.com/Lightricks/ReactiveCocoa.git
+[submodule "third_party/dropbox-ios-sdk"]
+	path = third_party/dropbox-ios-sdk
+	url = https://github.com/Lightricks/dropbox-ios-sdk.git
+[submodule "third_party/Masonry"]
+	path = third_party/Masonry
+	url = https://github.com/Lightricks/Masonry.git

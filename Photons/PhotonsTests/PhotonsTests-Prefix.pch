@@ -1,0 +1,13 @@
+// Copyright (c) 2015 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+#import "Photons-Prefix.pch"
+
+#ifdef __OBJC__
+  #import <Expecta/Expecta.h>
+  #import <LLReactiveMatchers/LLReactiveMatchers.h>
+  #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+  #import <LTKitTests/LTTestUtils.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+#endif
