@@ -1,21 +1,6 @@
-[submodule "third_party/testing/Expecta"]
-	path = third_party/testing/Expecta
-	url = https://github.com/Lightricks/expecta.git
-[submodule "third_party/testing/Specta"]
-	path = third_party/testing/Specta
-	url = https://github.com/Lightricks/specta.git
-[submodule "third_party/utils/libextobjc"]
-	path = third_party/utils/libextobjc
-	url = https://github.com/Lightricks/libextobjc.git
-[submodule "third_party/testing/OCMock"]
-	path = third_party/testing/OCMock
-	url = https://github.com/Lightricks/ocmock.git
 [submodule "Configuration"]
 	path = Configuration
 	url = https://github.com/Lightricks/Configuration.git
-[submodule "third_party/utils/Mantle"]
-	path = third_party/utils/Mantle
-	url = https://github.com/Lightricks/Mantle.git
 [submodule "third_party/LLReactiveMatchers"]
 	path = third_party/LLReactiveMatchers
 	url = https://github.com/Lightricks/LLReactiveMatchers.git
@@ -29,3 +14,18 @@
 [submodule "third_party/Masonry"]
 	path = third_party/Masonry
 	url = https://github.com/Lightricks/Masonry.git
+[submodule "third_party/Specta"]
+	path = third_party/Specta
+	url = https://github.com/Lightricks/Specta.git
+[submodule "third_party/Expecta"]
+	path = third_party/Expecta
+	url = https://github.com/Lightricks/Expecta.git
+[submodule "third_party/OCMock"]
+	path = third_party/OCMock
+	url = https://github.com/Lightricks/OCMock.git
+[submodule "third_party/libextobjc"]
+	path = third_party/libextobjc
+	url = https://github.com/Lightricks/libextobjc.git
+[submodule "third_party/Mantle"]
+	path = third_party/Mantle
+	url = https://github.com/Lightricks/Mantle.git
