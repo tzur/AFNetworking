@@ -82,6 +82,10 @@
 /// The underlying gesture recognizer for double tap gestures. KVO compliant.
 @property (strong, readwrite, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
+/// \c CGRect used upon the most recent initialization of the internal \c eaglView. Is stored in
+/// order to refrain from unnecessarily recreating the \c eaglView upon calls to \c layoutSubviews.
+@property (nonatomic) CGRect mostRecentlyUsedEaglViewFrame;
+
 @end
 
 @implementation LTView
@@ -161,7 +165,13 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.eaglView.multipleTouchEnabled = YES;
 
-  [self addSubview:self.eaglView];
+  if (!self.navigationView) {
+    [self addSubview:self.eaglView];
+  } else {
+    [self insertSubview:self.eaglView aboveSubview:self.navigationView];
+  }
+
+  self.mostRecentlyUsedEaglViewFrame = self.bounds;
 }
 
 - (void)createNavigationViewWithState:(LTViewNavigationState *)state {
@@ -249,6 +259,26 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)dealloc {
   [self teardown];
+}
+
+#pragma mark -
+#pragma mark UIView
+#pragma mark -
+
+- (void)layoutSubviews {
+  [super layoutSubviews];
+
+  if (!self.context || (self.mostRecentlyUsedEaglViewFrame == self.bounds)) {
+    return;
+  }
+
+  // Due to an obscure bug occurring on the iPad Pro leading to freezing of the application upon
+  // device rotations, the internally used \c LTEAGLView must be recreated upon layout change
+  // requests.
+  NSArray<UIGestureRecognizer *> *recognizers = self.eaglView.gestureRecognizers;
+  self.eaglView.gestureRecognizers = @[];
+  [self createEaglView];
+  self.eaglView.gestureRecognizers = recognizers;
 }
 
 #pragma mark -
