@@ -260,6 +260,24 @@ context(@"LTVector3", ^{
     expect(ltVector.z).to.equal(glkVector.z);
   });
 
+  it(@"should cast to cv::Vec3b", ^{
+    LTVector3 ltVector = LTVector3(5, 7, 9);
+    cv::Vec3b cvVector = (cv::Vec3b)(ltVector / UCHAR_MAX);
+
+    expect(cvVector[0]).to.equal(ltVector.x);
+    expect(cvVector[1]).to.equal(ltVector.y);
+    expect(cvVector[2]).to.equal(ltVector.z);
+  });
+
+  it(@"should cast to cv::Vec3f", ^{
+    LTVector3 ltVector = LTVector3(-0.5, 0.7, -1.1);
+    cv::Vec3f cvVector = (cv::Vec3f)ltVector;
+
+    expect(cvVector[0]).to.equal(ltVector.x);
+    expect(cvVector[1]).to.equal(ltVector.y);
+    expect(cvVector[2]).to.equal(ltVector.z);
+  });
+
   it(@"should perform math operations correctly", ^{
     LTVector3 v1(10, 8, 6);
     LTVector3 v2(5, 4, 2);
@@ -337,6 +355,13 @@ context(@"LTVector3", ^{
 
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector3(0, 4, 9))).to.equal(LTVector3(0, 2, 3));
+    });
+
+    it(@"should clamp vector elements between values", ^{
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, 1)).to.equal(LTVector3(0.5, 0, 1));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 1, 0)).to.equal(LTVector3(0.5, 0, 1));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), -1, 0)).to.equal(LTVector3(0, -0.5, 0));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, -1)).to.equal(LTVector3(0, -0.5, 0));
     });
   });
 
@@ -425,9 +450,19 @@ context(@"LTVector4", ^{
     expect(glkVector.w).to.equal(ltVector.w);
   });
 
-  it(@"should cast to cv::Vec4", ^{
+  it(@"should cast to cv::Vec4b", ^{
     LTVector4 ltVector = LTVector4(5, 7, 9, 11);
     cv::Vec4b cvVector = (cv::Vec4b)(ltVector / UCHAR_MAX);
+
+    expect(cvVector[0]).to.equal(ltVector.x);
+    expect(cvVector[1]).to.equal(ltVector.y);
+    expect(cvVector[2]).to.equal(ltVector.z);
+    expect(cvVector[3]).to.equal(ltVector.w);
+  });
+
+  it(@"should cast to cv::Vec4f", ^{
+    LTVector4 ltVector = LTVector4(-0.5, 0.7, 0.9, -1.1);
+    cv::Vec4f cvVector = (cv::Vec4f)ltVector;
 
     expect(cvVector[0]).to.equal(ltVector.x);
     expect(cvVector[1]).to.equal(ltVector.y);
@@ -513,6 +548,15 @@ context(@"LTVector4", ^{
 
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector4(0, 4, 9, 16))).to.equal(LTVector4(0, 2, 3, 4));
+    });
+
+    it(@"should clamp vector elements between values", ^{
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, 1)).to.equal(LTVector4(0.5, 0, 1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 1, 0)).to.equal(LTVector4(0.5, 0, 1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), -1, 0))
+          .to.equal(LTVector4(0, -0.5, 0, -1));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, -1))
+          .to.equal(LTVector4(0, -0.5, 0, -1));
     });
   });
 
