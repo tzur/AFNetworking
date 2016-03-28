@@ -336,6 +336,17 @@ struct LTVector3 {
     return GLKVector3Make(x, y, z);
   }
 
+  /// Cast operator to \c cv::Vec3b, mapping range \c [0,1] to \c [0,255].
+  explicit operator cv::Vec3b() const {
+    return cv::Vec3b(std::round(x * UCHAR_MAX), std::round(y * UCHAR_MAX),
+                     std::round(z * UCHAR_MAX));
+  }
+
+  /// Cast operator to \c cv::Vec3f.
+  explicit operator cv::Vec3f() const {
+    return cv::Vec3f(x, y, z);
+  }
+
   /// Adds the given vector element wise to this vector.
   LTVector3 &operator+=(const LTVector3 &rhs) {
     x += rhs.x;
@@ -575,6 +586,11 @@ namespace std {
   inline LTVector3 sqrt(const LTVector3 &v) {
     return LTVector3(sqrt(v.x), sqrt(v.y), sqrt(v.z));
   }
+
+  /// Constrains vector elements to lie between two values.
+  inline LTVector3 clamp(const LTVector3 &v, const float &a, const float &b) {
+    return LTVector3(clamp(v.x, a, b), clamp(v.y, a, b), clamp(v.z, a, b));
+  }
 }
 
 /// Returns an \c NSString representation of the given vector.
@@ -623,6 +639,11 @@ struct LTVector4 {
   explicit operator cv::Vec4b() const {
     return cv::Vec4b(std::round(x * UCHAR_MAX), std::round(y * UCHAR_MAX),
                      std::round(z * UCHAR_MAX), std::round(w * UCHAR_MAX));
+  }
+
+  /// Cast operator to \c cv::Vec4f.
+  explicit operator cv::Vec4f() const {
+    return cv::Vec4f(x, y, z, w);
   }
 
   /// Initializes a new \c LTVector4 with \c x, \c y, \c z, and w elements.
@@ -895,6 +916,11 @@ namespace std {
   /// Returns the squqre root of each element of the vector.
   inline LTVector4 sqrt(const LTVector4 &v) {
     return LTVector4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w));
+  }
+
+  /// Constrains vector elements to lie between two values.
+  inline LTVector4 clamp(const LTVector4 &v, const float &a, const float &b) {
+    return LTVector4(clamp(v.x, a, b), clamp(v.y, a, b), clamp(v.z, a, b), clamp(v.w, a, b));
   }
 }
 
