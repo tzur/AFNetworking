@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(lattice.dims == 3, @"Lattice must have 3 dimensions but input matrix is "
                     @"%d-dimensional", lattice.dims);
 
-  for (NSUInteger i = 0; i < 3; ++i) {
+  for (int i = 0; i < 3; ++i) {
     LTParameterAssert(lattice.size[i] >= 2 && lattice.size[i] < 256, @"Latice dimension sizes must "
                       "be greater or equal to 2 and be less than 256. Dimension %d size is %d", i,
                       lattice.size[i]);
