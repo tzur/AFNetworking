@@ -332,6 +332,9 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   if (self.animation.isAnimating) {
     return;
   }
+
+  __block NSUInteger animationFrames = 0;
+  __block BOOL addedZoomBounceCenteringAnimation = NO;
   
   // Otherwise, create an animation for updating the LTView according to the scrollView's state.
   @weakify(self);
@@ -341,9 +344,22 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     if (!self) {
       return NO;
     }
-    
-    // Update the current visible content rectangle.
-    [self centerContentViewInScrollView];
+
+    ++animationFrames;
+
+    // Update the current visible content rectangle, animating the centering of the conetnt in case
+    // we're during a zoom bounce animation.
+    if (self.scrollView.isZoomBouncing && !addedZoomBounceCenteringAnimation) {
+      addedZoomBounceCenteringAnimation = YES;
+
+      // Returns 0 in case the layer does not exist or if it has no animation, and in this case the
+      // call below equals to a call to centerContentViewInScrollView.
+      NSTimeInterval remainingDuration =
+          [self remainingDurationForAnimationsOfLayer:self.contentView.layer];
+      [self centerContentViewInScrollViewWithAnimationDuration:remainingDuration];
+    } else {
+      [self centerContentViewInScrollView];
+    }
     CGRect newVisibleContentRect = [self visibleContentRectFromLayers];
     BOOL updated = !CGRectEqualToRect(newVisibleContentRect, self.visibleContentRect);
     
@@ -368,15 +384,29 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
       return YES;
     }
     
-    // Final precaution, in case the visible content rect was changed, give us at least one more
-    // loop call before stopping the animation.
-    if (updated) {
+    // Final precaution, in case the visible content rect was changed or if it the first frame of
+    // the animation, give us at least one more loop call before stopping the animation.
+    if (updated || animationFrames <= 1) {
       return YES;
     }
     
     // The animation can stop now.
     return NO;
   }];
+}
+
+- (NSTimeInterval)remainingDurationForAnimationsOfLayer:(nullable CALayer *)layer {
+  NSTimeInterval remainingDuration = 0;
+  for (NSString *key in layer.animationKeys) {
+    CAAnimation *animation = [layer animationForKey:key];
+    remainingDuration = std::max(remainingDuration, [self remainingDurationForAnimation:animation]);
+  }
+
+  return remainingDuration;
+}
+
+- (NSTimeInterval)remainingDurationForAnimation:(nullable CAAnimation *)animation {
+  return std::max(0.0, animation.duration - (CACurrentMediaTime() - animation.beginTime));
 }
 
 #pragma mark -
@@ -440,7 +470,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   NSUInteger level = [self nextDoubleTapLevel];
   CGPoint tap = [gestureRecognizer locationInView:self.contentView];
   CGRect rect = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
-  [self.scrollView zoomToRect:rect animated:YES];
+  [self zoomToRect:rect animated:YES];
   [self.delegate userDoubleTapped];
 }
 
@@ -508,14 +538,29 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   [self bounceToMinimalZoomIfNecessary];
 }
 
+/// There is no way to control the animation length of \c UIScrollView's \c zoomToRect: method, so
+/// the only solution was to test the actual duration of its animation and use this value.
+static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
+
 - (void)zoomToRect:(CGRect)rect animated:(BOOL)animated {
-  rect.origin = rect.origin / self.contentScaleFactor;
-  rect.size = rect.size / self.contentScaleFactor;
+  if (animated) {
+    [UIView animateWithDuration:kZoomToRectAnimationDuration animations:^{
+      self.scrollView.contentInset = UIEdgeInsetsZero;
+    }];
+  } else {
+    self.scrollView.contentInset = UIEdgeInsetsZero;
+  }
+
   [self.scrollView zoomToRect:rect animated:animated];
-  if (!animated) {
+
+  if (animated) {
+    [self centerContentViewInScrollViewWithAnimationDuration:kZoomToRectAnimationDuration];
+  } else {
     [self centerContentViewInScrollView];
     self.visibleContentRect = [self visibleContentRectFromScrollView];
   }
+
+  [self startAnimationIfNotRunning];
 }
 
 - (void)cancelBogusScrollviewPanGesture {
@@ -534,6 +579,10 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 #pragma mark -
 
 - (void)centerContentViewInScrollView {
+  [self centerContentViewInScrollViewWithAnimationDuration:0];
+}
+
+- (void)centerContentViewInScrollViewWithAnimationDuration:(NSTimeInterval)duration {
   UIOffset inset = UIOffsetZero;
   
   // Center horizontally.
@@ -546,8 +595,15 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
     inset.vertical = (self.scrollView.bounds.size.height - self.contentView.frame.size.height) / 2;
   }
   
-  self.scrollView.contentInset = UIEdgeInsetsMake(inset.vertical, inset.horizontal,
-                                                  inset.vertical, inset.horizontal);
+  UIEdgeInsets insets = UIEdgeInsetsMake(inset.vertical, inset.horizontal,
+                                         inset.vertical, inset.horizontal);
+  if (duration > 0) {
+    [UIView animateWithDuration:duration animations:^{
+      self.scrollView.contentInset = insets;
+    }];
+  } else {
+    self.scrollView.contentInset = insets;
+  }
 }
 
 #pragma mark -

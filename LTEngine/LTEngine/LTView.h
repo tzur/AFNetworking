@@ -71,6 +71,9 @@
 /// properties (bounds, content size, etc.), otherwise it'll be silently ignored.
 - (void)navigateToStateOfView:(LTView *)view;
 
+/// Zooms to the given \c rect given in content coordinates (in pixels) with an optional animation.
+- (void)zoomToContentRect:(CGRect)rect animated:(BOOL)animated;
+
 /// This delegate will be used to update the \c LTView's content.
 @property (weak, nonatomic) id<LTViewDrawDelegate> drawDelegate;
 

@@ -35,7 +35,7 @@ SpecBegin(LTViewNavigationView)
 
 const CGFloat kScale = 100;
 const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
-const CGSize kContentSize = CGSizeMake(6, 4) * kScale;
+const CGSize kContentSize = CGSizeMake(12, 8) * kScale;
 const CGRect kViewFrame = CGRectFromOriginAndSize(CGPointZero, kViewSize);
 const CGPoint kViewCenter = std::round(CGRectCenter(kViewFrame));
 
@@ -193,8 +193,9 @@ context(@"properties", ^{
 
 context(@"navigate", ^{
   const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
-  const CGSize kContentSize = CGSizeMake(12, 8) * kScale;
+  const CGSize kContentSize = CGSizeMake(12, 10) * kScale;
   const CGRect kViewFrame = CGRectFromOriginAndSize(CGPointZero, kViewSize);
+  const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
 
   __block LTViewNavigationView *view;
 
@@ -212,12 +213,24 @@ context(@"navigate", ^{
 
     expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
 
-    const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
     [otherView zoomToRect:targetRect animated:NO];
     expect(view.visibleContentRect).notTo.equal(otherView.visibleContentRect);
 
     [view navigateToState:otherView.state];
     expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
+  });
+
+  it(@"should zoom to rect", ^{
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    [view zoomToRect:targetRect animated:NO];
+    expect(view.visibleContentRect).to.equal(targetRect);
+  });
+
+  it(@"should zoom to rect with animation", ^{
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    [view zoomToRect:targetRect animated:YES];
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    expect(view.visibleContentRect).will.equal(targetRect);
   });
 });
 
