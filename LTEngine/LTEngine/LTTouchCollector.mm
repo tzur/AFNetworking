@@ -142,6 +142,10 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   [self handlePossibleStrokeEndingTouches:touches inView:view];
 }
 
+- (void)ltViewStopTouchHandling:(LTView __unused *)view {
+  [self cancelActiveStroke];
+}
+
 #pragma mark -
 #pragma mark Public Interface
 #pragma mark -
