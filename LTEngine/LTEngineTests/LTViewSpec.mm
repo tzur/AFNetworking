@@ -833,6 +833,19 @@ context(@"touch delegate", ^{
       expect(view.forwardTouchesToDelegate).beFalsy();
     });
   });
+
+  context(@"subview layouts", ^{
+    it(@"should request the touch delegate to stop handling touches upon subview layout changes", ^{
+      id touchDelegateMock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
+      OCMExpect([touchDelegateMock ltViewStopTouchHandling:view]);
+      view.touchDelegate = touchDelegateMock;
+      view.bounds = CGRectFromSize(CGSizeMakeUniform(1));
+
+      [view layoutSubviews];
+
+      OCMVerifyAll(touchDelegateMock);
+    });
+  });
 });
 
 context(@"navigation gesture recognizers", ^{

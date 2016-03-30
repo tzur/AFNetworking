@@ -272,6 +272,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     return;
   }
 
+  if ([self.touchDelegate respondsToSelector:@selector(ltViewStopTouchHandling:)]) {
+    [self.touchDelegate ltViewStopTouchHandling:self];
+  }
+
   // Due to an obscure bug occurring on the iPad Pro leading to freezing of the application upon
   // device rotations, the internally used \c LTEAGLView must be recreated upon layout change
   // requests.

@@ -72,6 +72,10 @@
 /// @note see \c UIResponder \c touchesCancelled:withEvent: for more details.
 - (void)ltView:(LTView *)view touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 
+/// Informs that handling of touches should be stopped gracefully, due to changes of the given
+/// \c view.
+- (void)ltViewStopTouchHandling:(LTView *)view;
+
 @end
 
 /// This protocol is used to get updates on navigation events from the \c LTView.
