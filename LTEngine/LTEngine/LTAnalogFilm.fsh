@@ -158,5 +158,7 @@ void main() {
   // 9. Light Leak
   outputColor = screen(lightLeak * lightLeakIntensity, outputColor, lightLeakIntensity, 1.0);
 
-  gl_FragColor = vec4(outputColor, color.a);
+  lowp float fragmentInFrame = float(any(bvec2(frame >= 0.51, frame <= 0.49)));
+  mediump float alpha = mix(color.a, 1.0, fragmentInFrame);
+  gl_FragColor = vec4(outputColor.rgb * alpha, alpha);
 }
