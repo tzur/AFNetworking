@@ -3,6 +3,7 @@
 
 #import "LTIZCompressor.h"
 
+#import <LTKit/NSBundle+Path.h>
 #import <LTKit/NSError+LTKit.h>
 
 #import "LTIZHeader.h"
@@ -54,19 +55,23 @@ static NSString * const kImageZeroTypeKey = @"type";
 static NSString * const kImageZeroOnePixelKey = @"onePixel";
 static NSString * const kImageZeroComplexImageKey = @"complexImage";
 static NSString * const kImageZeroReadWorldPathKey = @"realWorldPath";
+static NSString * const kImageZeroWithAlphaKey = @"withAlpha";
 
 sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
   __block int type;
+  __block BOOL withAlpha;
 
   beforeEach(^{
     type = [data[kImageZeroTypeKey] intValue];
+    withAlpha = [data[kImageZeroWithAlphaKey] boolValue];
   });
 
   context(@"compression and decompression", ^{
     it(@"should correctly compress and decompress a zero pixel mat", ^{
       cv::Mat image(0, 0, type);
       cv::Mat expected(image.clone());
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(0, 0, type);
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -78,7 +83,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
     it(@"should correctly compress and decompress a one pixel mat", ^{
       cv::Mat image([data[kImageZeroOnePixelKey] matValue]);
       cv::Mat expected(image.clone());
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(image.size(), image.type());
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -91,7 +97,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       LTFillImage(image);
       cv::Mat expected(image.clone());
 
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(image.size(), image.type());
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -104,7 +111,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       LTFillImage(image);
       cv::Mat expected(image.clone());
 
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(image.size(), image.type());
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -118,7 +126,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       cv::Mat expected(image.clone());
 
       cv::Mat subimage = image(cv::Rect(16, 16, 32, 32));
-      expect([compressor compressImage:subimage toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:subimage toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(subimage.size(), subimage.type());
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -132,7 +141,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       LTFillImage(image);
       cv::Mat expected(image.clone());
 
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       cv::Mat output(128, 128, type);
       __block cv::Mat suboutput = output(cv::Rect(32, 32, 32, 32));
@@ -148,7 +158,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       cv::Mat image(32, 32, type);
       LTFillImage(image);
 
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
       expect([[NSFileManager defaultManager] fileExistsAtPath:path]).to.beTruthy();
     });
 
@@ -156,7 +167,8 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       cv::Mat image(LTLoadMat(self.class, data[kImageZeroReadWorldPathKey]));
       cv::Mat expected(image.clone());
 
-      expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
+      expect([compressor compressImage:image toPath:path error:&error withAlpha:withAlpha])
+          .to.beTruthy();
 
       __block cv::Mat output(image.size(), image.type());
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
@@ -168,9 +180,10 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
   context(@"compression size", ^{
     it(@"should not create image larger than the maximal size for a single pixel image", ^{
       cv::Mat image([data[kImageZeroOnePixelKey] matValue]);
-      size_t maximalSize = [LTIZCompressor maximalCompressedSizeForImage:image];
+      size_t maximalSize = [LTIZCompressor maximalCompressedSizeForImage:image
+                                                               withAlpha:withAlpha];
 
-      [compressor compressImage:image toPath:path error:nil];
+      [compressor compressImage:image toPath:path error:nil withAlpha:withAlpha];
       unsigned long long size = [[NSFileManager defaultManager]
                                  attributesOfItemAtPath:path error:nil].fileSize;
 
@@ -179,9 +192,10 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
 
     it(@"should not create image larget than the maximal size for a complex image", ^{
       cv::Mat image([data[kImageZeroComplexImageKey] matValue]);
-      size_t maximalSize = [LTIZCompressor maximalCompressedSizeForImage:image];
+      size_t maximalSize = [LTIZCompressor maximalCompressedSizeForImage:image
+                                                               withAlpha:withAlpha];
 
-      [compressor compressImage:image toPath:path error:nil];
+      [compressor compressImage:image toPath:path error:nil withAlpha:withAlpha];
       unsigned long long size = [[NSFileManager defaultManager]
                                  attributesOfItemAtPath:path error:nil].fileSize;
 
@@ -193,33 +207,74 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
 });
 
 itShouldBehaveLike(kImageZeroSharedExamples, ^{
-  cv::Mat4b image(2, 2, cv::Vec4b(255, 255, 255, 255));
-  image(0, 1) = cv::Vec4b(128, 0, 0, 255);
-  image(1, 0) = cv::Vec4b(0, 128, 128, 255);
-
-  return @{
-    kImageZeroTypeKey: @(CV_8UC1),
-    kImageZeroOnePixelKey: $(cv::Mat4b(1, 1, cv::Vec4b(24, 72, 56, 255))),
-    kImageZeroComplexImageKey: $(image),
-    kImageZeroReadWorldPathKey: @"Lena.png"
-  };
-});
-
-itShouldBehaveLike(kImageZeroSharedExamples, ^{
   cv::Mat1b image(2, 2, 255);
   image(0, 1) = 128;
   image(1, 0) = 0;
 
   return @{
-    kImageZeroTypeKey: @(CV_8UC4),
+    kImageZeroTypeKey: @(CV_8UC1),
     kImageZeroOnePixelKey: $(cv::Mat1b(1, 1, 58)),
     kImageZeroComplexImageKey: $(image),
-    kImageZeroReadWorldPathKey: @"ImageZeroGrayscale.png"
+    kImageZeroReadWorldPathKey: @"ImageZeroGrayscale.png",
+    kImageZeroWithAlphaKey: @NO
+  };
+});
+
+itShouldBehaveLike(kImageZeroSharedExamples, ^{
+  cv::Mat4b image(2, 2, cv::Vec4b(255, 255, 255, 255));
+  image(0, 1) = cv::Vec4b(128, 0, 0, 255);
+  image(1, 0) = cv::Vec4b(0, 128, 128, 255);
+
+  return @{
+    kImageZeroTypeKey: @(CV_8UC4),
+    kImageZeroOnePixelKey: $(cv::Mat4b(1, 1, cv::Vec4b(24, 72, 56, 255))),
+    kImageZeroComplexImageKey: $(image),
+    kImageZeroReadWorldPathKey: @"Lena.png",
+    kImageZeroWithAlphaKey: @NO
+  };
+});
+
+itShouldBehaveLike(kImageZeroSharedExamples, ^{
+  cv::Mat4b image(2, 2, cv::Vec4b(255, 255, 255, 255));
+  image(0, 1) = cv::Vec4b(128, 0, 0, 70);
+  image(1, 0) = cv::Vec4b(0, 128, 128, 150);
+
+  return @{
+    kImageZeroTypeKey: @(CV_8UC4),
+    kImageZeroOnePixelKey: $(cv::Mat4b(1, 1, cv::Vec4b(24, 72, 56, 108))),
+    kImageZeroComplexImageKey: $(image),
+    kImageZeroReadWorldPathKey: @"SemiTransparentLena.png",
+    kImageZeroWithAlphaKey: @YES
   };
 });
 
 context(@"header parsing", ^{
   it(@"should not err when correct header is given", ^{
+    LTIZHeader header = {
+      .signature = kLTIZHeaderSignature,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
+      .channels = 3,
+      .totalWidth = 1,
+      .totalHeight = 1,
+      .shardWidth = 1,
+      .shardHeight = 1,
+      .shardIndex = 0,
+      .shardCount = 1,
+      .alphaChannelStored = 0
+    };
+
+    char bytes[] = {'\xf0', '\xf1', '\x05', '\xe9'};
+    NSMutableData *data = [NSMutableData dataWithBytes:&header length:sizeof(header)];
+    [data appendBytes:bytes length:sizeof(bytes)];
+    [data writeToFile:path atomically:YES];
+
+    __block cv::Mat4b image(1, 1);
+    expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should not err when version 1 header is given", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
       .version = 1,
@@ -232,8 +287,12 @@ context(@"header parsing", ^{
       .shardCount = 1
     };
 
+    uint16_t oldHeaderFields[] = {header.signature, header.version, header.channels,
+        header.totalWidth, header.totalHeight, header.shardWidth, header.shardHeight,
+        header.shardIndex, header.shardCount};
     char bytes[] = {'\xf0', '\xf1', '\x05', '\xe9'};
-    NSMutableData *data = [NSMutableData dataWithBytes:&header length:sizeof(header)];
+    NSMutableData *data = [NSMutableData dataWithBytes:&oldHeaderFields
+                                                length:sizeof(oldHeaderFields)];
     [data appendBytes:bytes length:sizeof(bytes)];
     [data writeToFile:path atomically:YES];
 
@@ -256,14 +315,16 @@ context(@"header parsing", ^{
   it(@"should err when decompressing header with invalid signature", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -278,13 +339,38 @@ context(@"header parsing", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
       .version = 1337,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
+    };
+    NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
+    [data writeToFile:path atomically:YES];
+
+    __block cv::Mat4b image;
+    expect([compressor decompressFromPath:path toImage:&image error:&error]).to.beFalsy();
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(LTErrorCodeBadHeader);
+  });
+
+  it(@"should err when decompressing header with invalid size", ^{
+    LTIZHeader header = {
+      .signature = kLTIZHeaderSignature,
+      .version = 2,
+      .size = 0,
+      .channels = 3,
+      .totalWidth = 1,
+      .totalHeight = 1,
+      .shardWidth = 1,
+      .shardHeight = 1,
+      .shardIndex = 0,
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -298,14 +384,16 @@ context(@"header parsing", ^{
   it(@"should err when decompressing header with invalid number of channels", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1337,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 2,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -319,14 +407,16 @@ context(@"header parsing", ^{
   it(@"should err when decompressing header to mat with invalid number of channels", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1337,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 1,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -337,17 +427,19 @@ context(@"header parsing", ^{
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
   
-  it(@"should err when decompressing to mat with invalid size", ^{
+  it(@"should err when decompressing to mat with invalid image size", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 2,
       .totalHeight = 2,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -361,14 +453,16 @@ context(@"header parsing", ^{
   it(@"should err when shard index is larger than shard count", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 1,
-      .shardCount = 1
+      .shardCount = 1,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -382,14 +476,16 @@ context(@"header parsing", ^{
   it(@"should err when shard size is invalid", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 2,
       .totalHeight = 2,
       .shardWidth = 2,
       .shardHeight = 2,
       .shardIndex = 0,
-      .shardCount = 2
+      .shardCount = 2,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -403,14 +499,16 @@ context(@"header parsing", ^{
   it(@"should err when shard count is zero", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 0
+      .shardCount = 0,
+      .alphaChannelStored = 0
     };
     NSData *data = [NSData dataWithBytes:&header length:sizeof(header)];
     [data writeToFile:path atomically:YES];
@@ -422,11 +520,18 @@ context(@"header parsing", ^{
   });
 });
 
-context(@"large inputs", ^{
+context(@"illegal inputs", ^{
   it(@"should raise when compressing very large images", ^{
     __block cv::Mat4b image(1, 90210);
     expect(^{
-      [compressor compressImage:image toPath:path error:&error];
+      [compressor compressImage:image toPath:path error:&error withAlpha:NO];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when receiving withAlpha for non-RGBA image", ^{
+    __block cv::Mat image(1, 1, CV_8UC1);
+    expect(^{
+      [compressor compressImage:image toPath:path error:&error withAlpha:YES];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -435,14 +540,16 @@ context(@"shard paths", ^{
   it(@"should return all shard paths given the first shard path", ^{
     LTIZHeader header = {
       .signature = ('Z' << CHAR_BIT) + 'I',
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 0,
-      .shardCount = 3
+      .shardCount = 3,
+      .alphaChannelStored = 0
     };
 
     char bytes[] = {'\xf0', '\xf1', '\x05', '\xe9'};
@@ -462,14 +569,16 @@ context(@"shard paths", ^{
   it(@"should error when given a non-initial shard", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,
-      .version = 1,
+      .version = 2,
+      .size = sizeof(LTIZHeader),
       .channels = 3,
       .totalWidth = 1,
       .totalHeight = 1,
       .shardWidth = 1,
       .shardHeight = 1,
       .shardIndex = 1,
-      .shardCount = 3
+      .shardCount = 3,
+      .alphaChannelStored = 0
     };
 
     char bytes[] = {'\xf0', '\xf1', '\x05', '\xe9'};
@@ -480,6 +589,44 @@ context(@"shard paths", ^{
     NSArray *paths = [compressor shardsPathsOfCompressedImageFromPath:path error:&error];
     expect(error).notTo.beNil();
     expect(paths).to.beNil();
+  });
+});
+
+context(@"transparency", ^{
+  it(@"should use alpha when withAlpha is YES", ^{
+    cv::Mat4b image(1, 1, cv::Vec4b(255, 255, 255, 100));
+    cv::Mat expected(image.clone());
+    expect([compressor compressImage:image toPath:path error:&error withAlpha:YES]).to.beTruthy();
+
+    __block cv::Mat4b output(image.size());
+    expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
+
+    // Creating a new Mat since theoretically compression may mutate the input.
+    expect($(output)).to.equalMat($(expected));
+  });
+
+  it(@"should not use alpha when withAlpha is NO", ^{
+    cv::Mat4b image(1, 1, cv::Vec4b(255, 255, 255, 100));
+    cv::Mat4b expected(1, 1, cv::Vec4b(255, 255, 255, 255));
+    expect([compressor compressImage:image toPath:path error:&error withAlpha:NO]).to.beTruthy();
+
+    __block cv::Mat4b output(image.size());
+    expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
+
+    // Creating a new Mat since theoretically compression may mutate the input.
+    expect($(output)).to.equalMat($(expected));
+  });
+});
+
+context(@"backwards compatability", ^{
+  it(@"should support IZ version 1", ^{
+    cv::Mat expected(LTLoadMat(self.class, @"Lena.png"));
+    NSString *testPath = [NSBundle lt_pathForResource:@"ImageZeroVersion1Test.iz"
+                                            nearClass:[self class]];
+
+    __block cv::Mat output(expected.size(), expected.type());
+    expect([compressor decompressFromPath:testPath toImage:&output error:&error]).to.beTruthy();
+    expect($(output)).to.equalMat($(expected));
   });
 });
 

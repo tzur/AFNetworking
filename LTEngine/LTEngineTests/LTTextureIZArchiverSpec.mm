@@ -63,7 +63,7 @@
 }
 
 - (BOOL)compressImage:(const cv::Mat &)image toPath:(NSString *)path
-                error:(NSError * __autoreleasing *)error {
+                error:(NSError * __autoreleasing *)error withAlpha:(BOOL __unused)withAlpha {
   _compressedImage = image.clone();
   _compressedPath = path;
 
