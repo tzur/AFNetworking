@@ -189,5 +189,7 @@ void main() {
   mediump float border = overlay(back, front);
   outputColor = mix(outputColor, outputColor * frameColor, 2.0 * abs(border - 0.5));
 
-  gl_FragColor = vec4(mix(color.rgb, outputColor, opacity), color.a);
+  lowp float fragmentInFrame = float(any(bvec2(back >= 0.51, back <= 0.49)));
+  mediump float alpha = mix(color.a, 1.0, fragmentInFrame);
+  gl_FragColor = vec4(mix(color.rgb, outputColor, opacity), alpha);
 }
