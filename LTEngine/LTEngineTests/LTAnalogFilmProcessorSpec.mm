@@ -223,6 +223,47 @@ context(@"processing", ^{
     cv::Mat4b output(2, 2, cv::Vec4b(112, 112, 112, 255));
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
+
+  it(@"should maintain alpha of input texture, on default", ^{
+    cv::Mat4b input(1, 3);
+    input(0, 0) = cv::Vec4b(0, 0, 0, 255);
+    input(0, 1) = cv::Vec4b(0, 0, 0, 128);
+    input(0, 2) = cv::Vec4b(0, 0, 0, 0);
+
+    inputTexture = [LTTexture textureWithImage:input];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
+
+    // Random changes, to check that the processing doesn't affect the alpha.
+    processor.contrast = 0.5;
+    processor.colorGradient = [LTColorGradient redToRedGradient];
+    [processor process];
+
+    cv::Mat1b expectedOutput(1, 3);
+    int rgbaToAlphaIndexMapping[] = {3, 0};
+    cv::mixChannels(&input, 1, &expectedOutput, 1, rgbaToAlphaIndexMapping, 1);
+
+    cv::Mat1b alphaOutput(1, 3);
+    cv::Mat actualOutput = outputTexture.image;
+    cv::mixChannels(&actualOutput, 1, &alphaOutput, 1, rgbaToAlphaIndexMapping, 1);
+
+    expect($(alphaOutput)).to.equalMat($(expectedOutput));
+  });
+
+  it(@"should cover alpha by frame, where there is a frame", ^{
+    cv::Mat4b greyPatch(3, 3, cv::Vec4b(128, 128, 128, 100));
+    inputTexture = [LTTexture textureWithImage:greyPatch];
+    outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
+    cv::Mat4b frame(3, 3, cv::Vec4b(128, 128, 128, 255));
+    frame(1, 1) = cv::Vec4b(128, 128, 128, 128);
+    processor.assetTexture = [LTTexture textureWithImage:frame];
+    [processor process];
+
+    cv::Mat4b expected(3, 3, cv::Vec4b(255, 255, 255, 255));
+    expected(1, 1) = cv::Vec4b(51, 51, 51, 100);
+    expect($(outputTexture.image)).to.beCloseToMatWithin($(expected),1);
+  });
 });
 
 context(@"light leak rotations", ^{
