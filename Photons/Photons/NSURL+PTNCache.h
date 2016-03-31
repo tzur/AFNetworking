@@ -9,8 +9,11 @@ LTEnumDeclare(NSUInteger, PTNCachePolicy,
   PTNCachePolicyDefault,
   /// Skip cached version and always use origin-server's response.
   PTNCachePolicyReloadIgnoringLocalCacheData,
-  /// Use cache if exists, no matter how out of date without validation.
-  PTNCachePolicyReturnCacheDataElseLoad
+  /// Use cache if exists, no matter how out of date, and without validation.
+  PTNCachePolicyReturnCacheDataElseLoad,
+  /// Use cache if exists, no matter how out of date, and without validation; followed by an updated
+  /// version if the cached version is invalidated.
+  PTNCachePolicyReturnCacheDataThenLoad
 );
 
 /// Category over \c NSURL that injects an additional query field representing the cache policy used
