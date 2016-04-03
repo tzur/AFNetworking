@@ -63,8 +63,9 @@ void main() {
 
   // Saturation.
   outputColor.rgb = mix(vec3(dot(outputColor.rgb, kRGBToYPrime)), outputColor.rgb, saturation);
-  outputColor = (outputColor - blackPoint) / (1.0 - blackPoint);
+  outputColor.rgb = (outputColor.rgb - blackPoint) / (1.0 - blackPoint);
   outputColor = clamp(outputColor, 0.0, 1.0);
+  outputColor.rgb = outputColor.rgb * color.a;
 
   gl_FragColor = outputColor;
 }

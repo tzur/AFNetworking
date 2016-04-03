@@ -133,6 +133,18 @@ context(@"synthetic rendering", ^{
     [processor process];
     expect($(outputTexture.image)).to.beCloseToMat($(output));
   });
+
+  it(@"should premultiply alpha", ^{
+    cv::Mat4b input(1, 1, cv::Vec4b(255, 128, 255, 0));
+    cv::Mat4b expectedOutput(1, 1, cv::Vec4b(0, 0, 0, 0));
+    LTTexture *inputTexture = [LTTexture textureWithImage:input];
+    LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
+                                                                       output:outputTexture];
+    [processor process];
+
+    expect($(outputTexture.image)).to.beCloseToMat($(expectedOutput));
+  });
 });
   
 context(@"real world rendering", ^{
