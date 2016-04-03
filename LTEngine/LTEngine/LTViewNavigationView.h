@@ -66,6 +66,10 @@
 /// Navigates to the given navigation state. The state must be of an LTView with similar properties.
 - (void)navigateToState:(LTViewNavigationState *)state;
 
+/// Zooms to a specific area of the content so that it is visible in the receiver. The given \c rect
+/// is in content coordinates (in points).
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
+
 /// The delegate will be updated whenever the visible content rectangle is changed.
 @property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
 
@@ -120,16 +124,5 @@
 
 /// The underlying gesture recognizer for double tap gestures.
 @property (readonly, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
-
-@end
-
-#pragma mark -
-#pragma mark For Testing
-#pragma mark -
-
-@interface LTViewNavigationView (ForTesting)
-
-/// Zooms to a specific area of the content so that it is visible in the receiver.
-- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
 
 @end

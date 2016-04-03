@@ -851,6 +851,12 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 }
 
+- (void)zoomToContentRect:(CGRect)rect animated:(BOOL)animated {
+  rect.origin = rect.origin / self.contentScaleFactor;
+  rect.size = rect.size / self.contentScaleFactor;
+  [self.navigationView zoomToRect:rect animated:animated];
+}
+
 - (CGRect)visibleContentRect {
   CGRect visibleContentRect = self.navigationView.visibleContentRect;
   visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;

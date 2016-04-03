@@ -464,6 +464,21 @@ context(@"public interface", ^{
     expect(view.visibleContentRect).to.equal(other.visibleContentRect);
   });
 
+  it(@"should zoom to content rect", ^{
+    const CGRect targetRect = CGRectFromSize(kViewSize);
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    [view zoomToContentRect:targetRect animated:NO];
+    expect(view.visibleContentRect).to.equal(targetRect);
+  });
+
+  it(@"should zoom to content rect with animation", ^{
+    const CGRect targetRect = CGRectFromSize(kViewSize);
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    [view zoomToContentRect:targetRect animated:YES];
+    expect(view.visibleContentRect).notTo.equal(targetRect);
+    expect(view.visibleContentRect).will.equal(targetRect);
+  });
+
   it(@"should return transform mapping the visibleContentRect to the entire framebuffer", ^{
     CGAffineTransform transform = [view transformForVisibleContentRect:view.visibleContentRect];
     CGRect transformedRect = CGRectApplyAffineTransform(view.visibleContentRect, transform);
