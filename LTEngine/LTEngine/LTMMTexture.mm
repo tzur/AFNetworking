@@ -348,7 +348,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
         block(image, NO);
       });
     } else {
-      LTCVPixelBufferPlaneImage(_pixelBuffer.get(), lockFlags, self.planeIndex, ^(cv::Mat *image) {
+      LTCVPixelBufferPlaneImage(_pixelBuffer.get(), self.planeIndex, lockFlags, ^(cv::Mat *image) {
         block(image, NO);
       });
     }
