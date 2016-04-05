@@ -8,6 +8,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
+NSString * kPTNErrorAssociatedDescriptorsKey = @"AssociatedDescriptors";
 
 @implementation NSError (Photons)
 
@@ -15,6 +16,13 @@ NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
              associatedDescriptor:(id<PTNDescriptor>)associatedDescriptor {
   return [NSError lt_errorWithCode:code userInfo:@{
     kPTNErrorAssociatedDescriptorKey: (id)associatedDescriptor ?: [NSNull null]
+  }];
+}
+
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+            associatedDescriptors:(NSArray<id<PTNDescriptor>> *)associatedDescriptors {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kPTNErrorAssociatedDescriptorsKey: associatedDescriptors ?: [NSNull null]
   }];
 }
 
@@ -27,6 +35,15 @@ NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
   }];
 }
 
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+            associatedDescriptors:(NSArray<id<PTNDescriptor>> *)associatedDescriptors
+                  underlyingError:(nullable NSError *)underlyingError {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kPTNErrorAssociatedDescriptorsKey: associatedDescriptors ?: [NSNull null],
+    NSUnderlyingErrorKey: underlyingError ?: [NSError ptn_nullValueGivenError]
+  }];
+}
+
 + (instancetype)ptn_nullValueGivenError {
   return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
@@ -34,6 +51,11 @@ NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
 - (nullable id<PTNDescriptor>)ptn_associatedDescriptor {
   return self.userInfo[kPTNErrorAssociatedDescriptorKey] != [NSNull null] ?
       self.userInfo[kPTNErrorAssociatedDescriptorKey] : nil;
+}
+
+- (nullable id<PTNDescriptor>)ptn_associatedDescriptors {
+  return self.userInfo[kPTNErrorAssociatedDescriptorsKey] != [NSNull null] ?
+      self.userInfo[kPTNErrorAssociatedDescriptorsKey] : nil;
 }
 
 @end
