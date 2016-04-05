@@ -17,7 +17,7 @@ uniform sampler2D detailsTexture;
 uniform mediump float detailsBoost;
 
 uniform int mode;
-uniform mediump vec3 rangeColor;
+uniform mediump vec4 rangeColor;
 uniform mediump float edge0;
 // Tonal adjustment.
 uniform mediump mat4 tonalTransform;
@@ -39,8 +39,10 @@ void main() {
   // Construct mask and mix with the original image.
   mediump float mask = texture2D(dualMaskTexture, vTexcoord).r;
   if (!disableRangeAttenuation) {
-    mask *= smoothstep(edge0, 0.0, distance(sqrt(color.rgb), rangeColor));
+    mask *= smoothstep(edge0, 0.0, distance(sqrt(color.rgb / color.a),
+                                            rangeColor.rgb / rangeColor.a));
   }
+  mask = mix(0.0, mask, float(all(bvec2(color.a, rangeColor.a))));
 
   if (mode == kColorRangeModeImage) {
     mediump vec4 outputColor = sqrt(clamp(tonalTransform * (color * color), 0.0, 1.0));
@@ -59,7 +61,7 @@ void main() {
     // If originalLum is 0, set it to 1.
     originalLum = originalLum + step(originalLum, 0.0);
     outputColor.rgb = details * (outputColor.rgb / originalLum);
-    gl_FragColor = mix(color, outputColor, mask);
+    gl_FragColor = mix(color, outputColor, mask * color.a);
   } else if (mode == kColorRangeModeMask) {
     gl_FragColor = vec4(vec3(mask), color.a);
   } else if (mode == kColorRangeModeMaskOverlay) {

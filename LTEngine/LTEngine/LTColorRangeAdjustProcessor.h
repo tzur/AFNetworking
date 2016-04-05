@@ -64,7 +64,7 @@ LTPropertyDeclare(CGFloat, stretch, Stretch);
 
 /// Color at the \c center location of the input texture which is used for range attenuation. Range
 /// attenuation assigns lower values to pixels that are dissimilar from \c rangeColor.
-@property (readonly, nonatomic) LTVector3 rangeColor;
+@property (readonly, nonatomic) LTVector4 rangeColor;
 
 /// Fuzziness of the mask determines how inclusive the range attenuation is. For higher values, the
 /// mask will affect pixels further away from \c rangeColor. Should be in [-1, 1] range. Default
