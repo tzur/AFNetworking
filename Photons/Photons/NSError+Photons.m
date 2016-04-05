@@ -18,6 +18,19 @@ NSString * kPTNErrorAssociatedDescriptorKey = @"AssociatedDescriptor";
   }];
 }
 
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+             associatedDescriptor:(id<PTNDescriptor>)associatedDescriptor
+                  underlyingError:(nullable NSError *)underlyingError {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kPTNErrorAssociatedDescriptorKey: (id)associatedDescriptor ?: [NSNull null],
+    NSUnderlyingErrorKey: underlyingError ?: [NSError ptn_nullValueGivenError]
+  }];
+}
+
++ (instancetype)ptn_nullValueGivenError {
+  return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
+}
+
 - (nullable id<PTNDescriptor>)ptn_associatedDescriptor {
   return self.userInfo[kPTNErrorAssociatedDescriptorKey] != [NSNull null] ?
       self.userInfo[kPTNErrorAssociatedDescriptorKey] : nil;
