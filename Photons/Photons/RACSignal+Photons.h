@@ -16,6 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns the lazily connected, multicasted signal.
 - (instancetype)ptn_replayLastLazily;
 
+/// Catches errors sent by the receiver and maps them to \c error with the original error as its
+/// underlying error. If \c error already has an underlying error, it will be overwritten.
+///
+/// @note Underlying error is stored in the error's \c userInfo property under the
+/// \c NSUnderlyingErrorKey key.
+- (instancetype)ptn_wrapErrorWithError:(NSError *)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

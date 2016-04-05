@@ -90,4 +90,51 @@ context(@"ptn_replayLastLazily", ^{
   });
 });
 
+context(@"ptn_wrapErrorWithError", ^{
+  __block RACSubject *subject;
+  __block NSError *underlyingError;
+
+  beforeEach(^{
+    underlyingError = [NSError lt_errorWithCode:1337];
+    subject = [RACSubject subject];
+  });
+
+  it(@"should not alter values", ^{
+    NSError *error = [[NSError alloc] init];
+
+    LLSignalTestRecorder *recorder = [[subject ptn_wrapErrorWithError:error] testRecorder];
+
+    [subject sendNext:@1];
+    [subject sendNext:@2];
+    [subject sendNext:@3];
+
+    expect(recorder.values).to.equal(@[@1, @2, @3]);
+  });
+
+  it(@"should map errors without altering values", ^{
+    NSError *error = [NSError lt_errorWithCode:1338 path:@"foo"];
+
+    LLSignalTestRecorder *recorder = [[subject ptn_wrapErrorWithError:error] testRecorder];
+
+    [subject sendError:underlyingError];
+
+    expect(recorder.error.code).to.equal(error.code);
+    expect(recorder.error.lt_path).to.equal(@"foo");
+    expect(recorder.error.lt_underlyingError).to.equal(underlyingError);
+  });
+
+  it(@"should overwrite underlying error", ^{
+    NSError *error = [NSError lt_errorWithCode:1338 path:@"foo"
+                               underlyingError:[[NSError alloc] init]];
+
+    LLSignalTestRecorder *recorder = [[subject ptn_wrapErrorWithError:error] testRecorder];
+
+    [subject sendError:underlyingError];
+
+    expect(recorder.error.code).to.equal(error.code);
+    expect(recorder.error.lt_path).to.equal(@"foo");
+    expect(recorder.error.lt_underlyingError).to.equal(underlyingError);
+  });
+});
+
 SpecEnd

@@ -3,6 +3,8 @@
 
 #import "RACSignal+Photons.h"
 
+#import <LTKit/NSError+LTKit.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation RACSignal (Photons)
@@ -48,6 +50,16 @@ NS_ASSUME_NONNULL_BEGIN
     [connection connect];
     return disposable;
   }] setNameWithFormat:@"[%@] -ptn_replayLastLazily", self.name];
+}
+
+- (instancetype)ptn_wrapErrorWithError:(NSError *)error {
+  return [[self
+      catch:^RACSignal *(NSError *underlyingError) {
+        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+        userInfo[NSUnderlyingErrorKey] = underlyingError;
+        return [RACSignal error:[NSError lt_errorWithCode:error.code userInfo:[userInfo copy]]];
+      }]
+      setNameWithFormat:@"[%@] -ptn_wrapErrorWithError: %@", self.name, error];
 }
 
 @end
