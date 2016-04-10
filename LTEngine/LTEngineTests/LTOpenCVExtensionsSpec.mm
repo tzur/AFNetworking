@@ -340,4 +340,72 @@ context(@"pixel value", ^{
   });
 });
 
+context(@"checkerboard pattern", ^{
+  it(@"should raise when providing invalid board width", ^{
+    cv::Vec4b firstColor = cv::Vec4b(1, 100, 200, 200);
+    cv::Vec4b secondColor = cv::Vec4b(150, 50, 20, 255);
+    expect(^{
+      LTCheckerboardPattern(CGSizeMake(0, 1), 1, firstColor, secondColor);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when providing invalid board height", ^{
+    cv::Vec4b firstColor = cv::Vec4b(1, 100, 200, 200);
+    cv::Vec4b secondColor = cv::Vec4b(150, 50, 20, 255);
+    expect(^{
+      LTCheckerboardPattern(CGSizeMake(1, 0), 1, firstColor, secondColor);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when providing invalid tile size", ^{
+    cv::Vec4b firstColor = cv::Vec4b(1, 100, 200, 200);
+    cv::Vec4b secondColor = cv::Vec4b(150, 50, 20, 255);
+    expect(^{
+      LTCheckerboardPattern(CGSizeMake(1, 1), 0, firstColor, secondColor);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should create a checkerboard", ^{
+    cv::Vec4b firstColor = cv::Vec4b(1, 100, 200, 200);
+    cv::Vec4b secondColor = cv::Vec4b(150, 50, 20, 255);
+    cv::Mat4b expected(3, 3, firstColor);
+    expected(0, 1) = secondColor;
+    expected(1, 0) = secondColor;
+    expected(2, 1) = secondColor;
+    expected(1, 2) = secondColor;
+
+    cv::Mat4b board = LTCheckerboardPattern(CGSizeMakeUniform(3), 1, firstColor, secondColor);
+
+    expect($(board)).to.equalMat($(expected));
+  });
+
+  it(@"should create a default gray and white checkerboard", ^{
+    cv::Vec4b white = cv::Vec4b(255, 255, 255, 255);
+    cv::Vec4b gray = cv::Vec4b(193, 193, 193, 255);
+    cv::Mat4b expected(3, 3, gray);
+    expected(0, 1) = white;
+    expected(1, 0) = white;
+    expected(2, 1) = white;
+    expected(1, 2) = white;
+
+    cv::Mat4b board = LTWhiteGrayCheckerboardPattern(CGSizeMakeUniform(3), 1);
+
+    expect($(board)).to.equalMat($(expected));
+  });
+
+  it(@"should create a checkerboard correctly when board size isn't a multiple of the tile size", ^{
+    cv::Vec4b firstColor = cv::Vec4b(70, 70, 200, 200);
+    cv::Vec4b secondColor = cv::Vec4b(23, 150, 210, 255);
+    cv::Mat4b expected(3, 3, firstColor);
+    expected(0, 2) = secondColor;
+    expected(1, 2) = secondColor;
+    expected(2, 0) = secondColor;
+    expected(2, 1) = secondColor;
+
+    cv::Mat4b board = LTCheckerboardPattern(CGSizeMakeUniform(3), 2, firstColor, secondColor);
+
+    expect($(board)).to.equalMat($(expected));
+  });
+});
+
 SpecEnd

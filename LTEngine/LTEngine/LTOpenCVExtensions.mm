@@ -213,3 +213,27 @@ LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
       LTParameterAssert(NO, @"Unsupported matrix type: %d", image.type());
   }
 }
+
+cv::Mat4b LTWhiteGrayCheckerboardPattern(CGSize size, uint tileSize) {
+  return LTCheckerboardPattern(size, tileSize, cv::Vec4b (193, 193, 193, 255),
+                               cv::Vec4b (255, 255, 255, 255));
+}
+
+cv::Mat4b LTCheckerboardPattern(CGSize size, uint tileSize, cv::Vec4b firstColor,
+                                cv::Vec4b secondColor) {
+  LTParameterAssert(size.width > 0, @"Invalid width (%g) provided", size.width);
+  LTParameterAssert(size.height > 0, @"Invalid height (%g) provided", size.height);
+  LTParameterAssert(tileSize, @"Invalid tile size (%u) provided", tileSize);
+  cv::Mat4b checkerboard(size.height, size.width, secondColor);
+
+  int stepSize = 2 * tileSize;
+  for(int i = 0; i < size.width; i += tileSize){
+    for(int j = (i % stepSize); j < size.height; j += stepSize){
+      int width = MIN(tileSize, size.width - i);
+      int height = MIN(tileSize, size.height - j);
+      checkerboard(cv::Rect(i, j, width, height)) = firstColor;
+    }
+  }
+
+  return checkerboard;
+}

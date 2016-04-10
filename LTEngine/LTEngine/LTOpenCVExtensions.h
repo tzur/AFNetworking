@@ -70,6 +70,17 @@ cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix);
 /// @note Half-float images are not supported.
 LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location);
 
+/// Returns a checkerboard with the given \c size. The tiles are colored alternately white
+/// (<tt>255, 255, 255, 255</tt>) and gray (<tt>193, 193, 193, 255</tt>). The size of each tile
+/// equals the given \c tileSize. The tile containing \c mat(0, 0) is grey.
+cv::Mat4b LTWhiteGrayCheckerboardPattern(CGSize size, uint tileSize);
+
+/// Returns a checkerboard with the given \c size. The tiles are colored alternately
+/// \c firstColor and \c secondColor. The size of each tile equals the given \c tileSize. The tile
+/// containing \c mat(0, 0) is \c firstColor.
+cv::Mat4b LTCheckerboardPattern(CGSize size, uint tileSize, cv::Vec4b firstColor,
+                                cv::Vec4b secondColor);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -
