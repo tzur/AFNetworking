@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B283E1B1CBA7EED00B745AE /* WFWireframes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8B283E1A1CBA7EED00B745AE /* WFWireframes.h */; };
-		8B283E1D1CBA7EED00B745AE /* WFWireframes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283E1C1CBA7EED00B745AE /* WFWireframes.mm */; };
-		8B283E731CBA814100B745AE /* WFWireframesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283E721CBA814100B745AE /* WFWireframesSpec.mm */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
 		8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EF21CBA838900B745AE /* libLTKit.a */; };
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
@@ -19,6 +16,8 @@
 		8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */; };
 		8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */; };
 		8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F501CBA88E800B745AE /* LTTestUtils.mm */; };
+		8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */; };
+		8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,7 +191,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				8B283E1B1CBA7EED00B745AE /* WFWireframes.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,8 +198,6 @@
 
 /* Begin PBXFileReference section */
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B283E1A1CBA7EED00B745AE /* WFWireframes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WFWireframes.h; sourceTree = "<group>"; };
-		8B283E1C1CBA7EED00B745AE /* WFWireframes.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WFWireframes.mm; sourceTree = "<group>"; };
 		8B283E621CBA811100B745AE /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		8B283E641CBA811100B745AE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B283E651CBA811100B745AE /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -209,7 +205,6 @@
 		8B283E6A1CBA811100B745AE /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		8B283E6B1CBA811100B745AE /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		8B283E701CBA814100B745AE /* WireframesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WireframesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B283E721CBA814100B745AE /* WFWireframesSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WFWireframesSpec.mm; sourceTree = "<group>"; };
 		8B283E741CBA814100B745AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8B283EBE1CBA834300B745AE /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -224,6 +219,9 @@
 		8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToPoint.mm"; path = "../../LTKit/LTKitTests/EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
 		8B283F4F1CBA88E800B745AE /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = ../../LTKit/LTKitTests/LTTestUtils.h; sourceTree = "<group>"; };
 		8B283F501CBA88E800B745AE /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = ../../LTKit/LTKitTests/LTTestUtils.mm; sourceTree = "<group>"; };
+		8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Containment.h"; sourceTree = "<group>"; };
+		8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Containment.m"; sourceTree = "<group>"; };
+		8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+ContainmentSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,9 +271,8 @@
 		8B283E191CBA7EED00B745AE /* Wireframes */ = {
 			isa = PBXGroup;
 			children = (
+				8B283FA31CBA9DAC00B745AE /* Extensions */,
 				8B283F1A1CBA85C900B745AE /* Supporting FIles */,
-				8B283E1A1CBA7EED00B745AE /* WFWireframes.h */,
-				8B283E1C1CBA7EED00B745AE /* WFWireframes.mm */,
 			);
 			path = Wireframes;
 			sourceTree = "<group>";
@@ -313,9 +310,9 @@
 		8B283E711CBA814100B745AE /* WireframesTests */ = {
 			isa = PBXGroup;
 			children = (
+				8B283FA41CBA9DB200B745AE /* Tests */,
 				8B283F341CBA88AC00B745AE /* Test Utils */,
 				8B283F1B1CBA85CE00B745AE /* Supporting Files */,
-				8B283E721CBA814100B745AE /* WFWireframesSpec.mm */,
 				8B283E741CBA814100B745AE /* Info.plist */,
 			);
 			path = WireframesTests;
@@ -410,6 +407,31 @@
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
 			);
 			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		8B283FA31CBA9DAC00B745AE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
+				8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8B283FA41CBA9DB200B745AE /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8B283FA51CBA9DB700B745AE /* Extensions */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		8B283FA51CBA9DB700B745AE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -675,7 +697,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B283E1D1CBA7EED00B745AE /* WFWireframes.mm in Sources */,
+				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,9 +705,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B283E731CBA814100B745AE /* WFWireframesSpec.mm in Sources */,
 				8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
+				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
