@@ -10,6 +10,7 @@
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
 #import "PTNResizingStrategy.h"
+#import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,11 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchImage {
   return [[[self.imageResizer resizeImageAtURL:self.path.url resizingStrategy:self.resizingStrategy]
-      catch:^RACSignal *(NSError *error) {
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                      url:self.path.url
-                                          underlyingError:error]];
-      }] subscribeOn:RACScheduler.scheduler];
+      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                   url:self.path.url]]
+      subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)fetchImageMetadata {
