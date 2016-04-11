@@ -24,6 +24,7 @@
 #import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -73,10 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
         PTNDropboxAlbum *album = [self albumFromMetadata:metadata path:albumURL];
         return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
       }]
-      catch:^RACSignal *(NSError *error) {
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url
-                                          underlyingError:error]];
-      }];
+      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url]];
 }
 
 - (PTNDropboxAlbum *)albumFromMetadata:(DBMetadata *)metadata path:(NSURL *)path {
@@ -115,10 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
             [[PTNDropboxDirectoryDescriptor alloc] initWithMetadata:metadata] :
             [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
       }]
-      catch:^RACSignal *(NSError *error) {
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed url:url
-                                          underlyingError:error]];
-      }];
+      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed url:url]];
 }
 
 - (RACSignal *)fetchKeyAssetForDirectoryURL:(NSURL *)url {
@@ -158,11 +153,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fetchImageContentWithEntry:entry
                           resizingStrategy:resizingStrategy
                                    options:options]
-      catch:^RACSignal *(NSError *error) {
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                      url:descriptor.ptn_identifier
-                                          underlyingError:error]];
-      }];
+      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                   url:descriptor.ptn_identifier]];
 }
 
 - (RACSignal *)fetchImageContentWithEntry:(PTNDropboxEntry *)entry
