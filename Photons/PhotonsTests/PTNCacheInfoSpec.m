@@ -32,8 +32,8 @@ context(@"creation", ^{
     expect(info.maxAge).to.equal(kMaxAge);
     expect(info.entityTag).to.equal(etag);
 
-    expect([info.responseTime compare:dateBeforeCreation]).to.equal(NSOrderedDescending);
-    expect([info.responseTime compare:dateAfterCreation]).to.equal(NSOrderedAscending);
+    expect(info.responseTime).to.beGreaterThanOrEqualTo(dateBeforeCreation);
+    expect(info.responseTime).to.beLessThanOrEqualTo(dateAfterCreation);
   });
 
   it(@"should initialize cache info by resetting response time", ^{
