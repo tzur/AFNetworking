@@ -137,6 +137,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
       @instanceKeypath(LTTiltShiftProcessor, center),
       @instanceKeypath(LTTiltShiftProcessor, diameter),
       @instanceKeypath(LTTiltShiftProcessor, spread),
+      @instanceKeypath(LTTiltShiftProcessor, stretch),
       @instanceKeypath(LTTiltShiftProcessor, angle),
       @instanceKeypath(LTTiltShiftProcessor, invertMask),
       @instanceKeypath(LTTiltShiftProcessor, intensity)
@@ -224,6 +225,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
+  [self setNeedsDualMaskUpdate];
+}
+
+LTPropertyProxyWithoutSetter(CGFloat, stretch, Stretch, self.dualMaskProcessor);
+- (void)setStretch:(CGFloat)stretch {
+  self.dualMaskProcessor.stretch = stretch;
   [self setNeedsDualMaskUpdate];
 }
 
