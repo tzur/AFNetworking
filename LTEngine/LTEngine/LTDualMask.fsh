@@ -18,7 +18,9 @@ uniform int maskType;
 uniform mediump vec2 center;
 uniform mediump float shift;
 uniform mediump float spread;
+uniform mediump float stretchInversed;
 uniform mediump vec2 normal;
+uniform mediump mat2 rotation;
 
 uniform bool invert;
 
@@ -32,7 +34,8 @@ void main() {
   
   // Distance field.
   if (maskType == kMaskTypeRadial) {
-    dist = length(coords);
+    mediump vec2 coordsRotated = rotation * coords;
+    dist = length(vec2(coordsRotated.x * stretchInversed, coordsRotated.y));
   } else if (maskType == kMaskTypeLinear) {
     dist = -normal.y * coords.x - normal.x * coords.y;
   } else if (maskType == kMaskTypeDoubleLinear) {
