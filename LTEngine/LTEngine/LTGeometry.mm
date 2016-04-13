@@ -7,7 +7,7 @@
 
 static const CGFloat kEpsilon = 1e-6;
 
-LTPointLocation LTPointLocationRelativeToRay (CGPoint point, CGPoint origin, CGPoint direction) {
+LTPointLocation LTPointLocationRelativeToRay(CGPoint point, CGPoint origin, CGPoint direction) {
   LTParameterAssert(direction != CGPointZero,
                     @"Parameter direction may not be the zero point.");
   CGPoint pointOnRayOtherThanOrigin = origin + direction;
