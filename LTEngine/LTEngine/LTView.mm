@@ -11,6 +11,7 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTImage.h"
+#import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
@@ -212,13 +213,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)createBackgroundTextures {
-  cv::Vec4b white(255, 255, 255, 255);
-  cv::Vec4b gray(193, 193, 193, 255);
   unsigned int pixels = (unsigned int)self.pixelsPerCheckerboardSquare;
-  cv::Mat4b checkerboardMat(pixels * 2, pixels * 2);
-  checkerboardMat = white;
-  checkerboardMat(cv::Rect(0, 0, pixels, pixels)) = gray;
-  checkerboardMat(cv::Rect(pixels, pixels, pixels, pixels)) = gray;
+  cv::Mat4b checkerboardMat = LTWhiteGrayCheckerboardPattern(CGSizeMakeUniform(2 * pixels), pixels);
   self.checkerboardTexture = [LTTexture textureWithImage:checkerboardMat];
   self.backgroundTexture =
       [LTTexture textureWithImage:cv::Mat4b(1, 1, self.backgroundColor.lt_cvVector)];
