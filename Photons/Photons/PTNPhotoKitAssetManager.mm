@@ -217,7 +217,8 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  RACSignal *initialFetchResult = [[[self fetchFetchResultWithURL:url]
+  return [RACSignal defer:^{
+    RACSignal *initialFetchResult = [[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
@@ -228,26 +229,26 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       replayLazily];
 
-  RACSignal *nextFetchResults = [[self.observer.photoLibraryChanged
-      scanWithStart:initialFetchResult reduce:^(RACSignal *previous, PHChange *change) {
-        return [[[previous
-            takeLast:1]
-            flattenMap:^(PHAsset *asset) {
-              PHObject *after = [change changeDetailsForObject:asset].objectAfterChanges;
-              return [RACSignal return:after ?: asset];
-            }]
-            replayLazily];
-      }]
-      concat];
+    RACSignal *nextFetchResults = [[self.observer.photoLibraryChanged
+        scanWithStart:initialFetchResult reduce:^(RACSignal *previous, PHChange *change) {
+          return [[[previous
+              takeLast:1]
+              map:^(PHAsset *asset) {
+                PHObject *after = [change changeDetailsForObject:asset].objectAfterChanges;
+                return after ?: asset;
+              }]
+              replayLazily];
+        }]
+        concat];
 
-  // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects are
-  // equal if they back the same asset, even if the asset has changed. This makes sure that only new
-  // fetch results are provided, but avoid sending the same fetch result over and over again.
-  return [[[[RACSignal
-      concat:@[initialFetchResult, nextFetchResults]]
-      ptn_identicallyDistinctUntilChanged]
-      ptn_replayLastLazily]
-      subscribeOn:RACScheduler.scheduler];
+    // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects are
+    // equal if they back the same asset, even if the asset has changed. This makes sure that only new
+    // fetch results are provided, but avoid sending the same fetch result over and over again.
+    return [[[RACSignal
+        concat:@[initialFetchResult, nextFetchResults]]
+        ptn_identicallyDistinctUntilChanged]
+        subscribeOn:RACScheduler.scheduler];
+  }];
 }
 
 #pragma mark -
