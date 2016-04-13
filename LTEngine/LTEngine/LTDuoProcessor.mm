@@ -55,6 +55,7 @@ static const CGFloat kMaskDownscalingFactor = 2;
       @instanceKeypath(LTDuoProcessor, center),
       @instanceKeypath(LTDuoProcessor, diameter),
       @instanceKeypath(LTDuoProcessor, spread),
+      @instanceKeypath(LTDuoProcessor, stretch),
       @instanceKeypath(LTDuoProcessor, angle),
       @instanceKeypath(LTDuoProcessor, blueColor),
       @instanceKeypath(LTDuoProcessor, redColor),
@@ -142,6 +143,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 - (void)setSpread:(CGFloat)spread {
   [self _verifyAndSetSpread:spread];
   self.dualMaskProcessor.spread = spread;
+  [self setNeedsDualMaskUpdate];
+}
+
+LTPropertyProxyWithoutSetter(CGFloat, stretch, Stretch, self.dualMaskProcessor);
+- (void)setStretch:(CGFloat)stretch {
+  self.dualMaskProcessor.stretch = stretch;
   [self setNeedsDualMaskUpdate];
 }
 
