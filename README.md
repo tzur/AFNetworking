@@ -6,7 +6,7 @@
 2. Enter the `LTKit` directory and drag the `LTKit.xcodeproj` directory to your new project.
 3. Click on your new project, then on `Build Settings`: 
 	- Add `-ObjC` to `Other Linker Flags`.
-	- Add references to `LTKit` and `libextobjc` to the `Header Search Paths`. A common setting is to append the string `$(SRCROOT)/../../LTKit $(SRCROOT)/../../third_party/utils/libextobjc`, but it may change if your project's directory has a different relative path to LTKit.
+	- Add references to `LTKit` and `libextobjc` to the `Header Search Paths`. A common setting is to append the string `$(SRCROOT)/../../LTKit $(SRCROOT)/../../third_party/libextobjc`, but it may change if your project's directory has a different relative path to LTKit.
 4. In `Build Phases`, add `LTKit (LTKit)` to the `Target Dependencies`, and `libLTKit.a` to `Link Binary With Libraries`.
 5. Add `#import <LTKit/LTKit.h>` to each file that uses `LTKit`. Remember to always prefer forward declaration of classes instead of including headers in `.h` files to speed up compilation time.
 
@@ -15,9 +15,9 @@
 1. Create a new XCode project.
 2. Drag the following files from LTEngine's directory in Finder into XCode's project-navigator:
   - `LTEngine/LTEngine/LTEngine.xcodeproj`
-  - `LTEngine/third_party/utils/mantle/Mantle.xcodeproj`
-  - `LTEngine/third_party/images/opencv/opencv2.framework` 
-  - `LTEngine/third_party/utils/objection/Objection-iOS.framework`
+  - `LTEngine/third_party/mantle/Mantle.xcodeproj`
+  - `LTEngine/third_party/opencv/opencv2.framework` 
+  - `LTEngine/third_party/objection/Objection-iOS.framework`
 3. Add LTEngine to your project's prefix header file:
   - If your project doesn't have a prefix-header (a `.pch` file):
     - In XCode, create a new file with the `PCH File` template found under iOS -> Other.
@@ -31,12 +31,12 @@
     (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
     *  `<LTEngine Path>/LTEngine`
     *  `<LTEngine Path>/LTKit/LTKit`
-    *  `<LTEngine Path>/third_party/utils/Mantle`
-    *  `<LTEngine Path>/LTKit/third_party/utils/libextobjc`
+    *  `<LTEngine Path>/third_party/Mantle`
+    *  `<LTEngine Path>/LTKit/third_party/libextobjc`
   - If missing, add the following paths to `Framework Search Paths` with `<LTEngine Path>` replaced by the actual path to LTEngine's directory:
     (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
-    *  `<LTEngine Path>/third_party/images/opencv`
-    *  `<LTEngine Path>/third_party/utils/objection`
+    *  `<LTEngine Path>/third_party/opencv`
+    *  `<LTEngine Path>/third_party/objection`
 6. In the `General` tab, add the following to `Linked Frameworks and Binaries`: 
   - `Accelerate`
   - `AVFoundation`
