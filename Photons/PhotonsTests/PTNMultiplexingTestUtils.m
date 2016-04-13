@@ -14,6 +14,7 @@ id<PTNAssetManager> PTNCreateRejectingManager() {
   [[manager reject] fetchImageWithDescriptor:OCMOCK_ANY resizingStrategy:OCMOCK_ANY
                                      options:OCMOCK_ANY];
   [[manager reject] deleteDescriptors:OCMOCK_ANY];
+  [[manager reject] removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY];
   return manager;
 }
 
@@ -24,6 +25,7 @@ id<PTNAssetManager> PTNCreateAcceptingManager(RACSignal * _Nullable value) {
   OCMStub([manager fetchImageWithDescriptor:OCMOCK_ANY resizingStrategy:OCMOCK_ANY
                                     options:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager deleteDescriptors:OCMOCK_ANY]).andReturn(value);
+  OCMStub([manager removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY]).andReturn(value);
   return manager;
 }
 

@@ -97,6 +97,41 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Removal
+#pragma mark -
+
+- (RACSignal *)removeDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                       fromAlbum:(id<PTNAlbumDescriptor>)albumDescriptor {
+  NSString *albumScheme = albumDescriptor.ptn_identifier.scheme;
+  NSDictionary<NSString *, NSArray *> *schemeToDescriptors = [self schemeToDescriptors:descriptors];
+
+  id<PTNAssetManager> assetManager = self.mapping[albumScheme];
+  if (!assetManager) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                  associatedDescriptor:albumDescriptor]];
+  }
+
+  if (![schemeToDescriptors[albumScheme] isEqual:descriptors]) {
+    NSArray *invalidDescriptors = [[[schemeToDescriptors.allKeys.rac_sequence
+        filter:^BOOL(NSString *scheme) {
+          return ![scheme isEqualToString:albumScheme];
+        }]
+        map:^RACSequence *(NSString *scheme) {
+          return schemeToDescriptors[scheme].rac_sequence;
+        }]
+        flatten].array;
+
+    NSString *errorDescription = [NSString stringWithFormat:@"Given descriptors do not match album "
+                                  "descriptor's scheme: %@", albumDescriptor];
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetRemovalFromAlbumFailed
+                                 associatedDescriptors:invalidDescriptors
+                                           description:errorDescription]];
+  }
+
+  return [assetManager removeDescriptors:descriptors fromAlbum:albumDescriptor];
+}
+
+#pragma mark -
 #pragma mark Descriptor array multiplexing
 #pragma mark -
 
