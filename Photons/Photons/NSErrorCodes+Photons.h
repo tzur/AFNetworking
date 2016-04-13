@@ -38,5 +38,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   /// Caused when no authorization was given for the source.
   PTNErrorCodeNotAuthorized,
   /// Caused when deletion of assets has failed.
-  PTNErrorCodeAssetDeletionFailed
+  PTNErrorCodeAssetDeletionFailed,
+  // Caused when removal of assets has from an album has failed.
+  PTNErrorCodeAssetRemovalFromAlbumFailed
 );
