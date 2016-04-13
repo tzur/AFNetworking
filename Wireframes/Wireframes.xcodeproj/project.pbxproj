@@ -20,6 +20,8 @@
 		8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */; };
 		8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FFE1CBE33B200B745AE /* WFTransparentView.m */; };
 		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
+		8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */; };
+		8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +229,9 @@
 		8B283FFD1CBE33B200B745AE /* WFTransparentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTransparentView.h; sourceTree = "<group>"; };
 		8B283FFE1CBE33B200B745AE /* WFTransparentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTransparentView.m; sourceTree = "<group>"; };
 		8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFTransparentViewSpec.mm; sourceTree = "<group>"; };
+		8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
+		8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Utilities.mm"; sourceTree = "<group>"; };
+		8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+UtilitiesSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,6 +423,8 @@
 		8B283FA31CBA9DAC00B745AE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */,
+				8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
 				8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */,
 			);
@@ -436,6 +443,7 @@
 		8B283FA51CBA9DB700B745AE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
 			);
 			name = Extensions;
@@ -722,6 +730,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
+				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -731,6 +740,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */,
+				8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */,
 				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
