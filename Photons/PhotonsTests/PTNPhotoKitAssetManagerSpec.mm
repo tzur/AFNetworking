@@ -391,6 +391,18 @@ context(@"asset fetching", ^{
     expect(recorder).will.sendValues(@[asset, newAsset]);
   });
 
+  it(@"should not cache assets", ^{
+    NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
+    RACSignal *sharedSignal = [manager fetchAssetWithURL:url];
+
+    expect(sharedSignal).will.sendValues(@[asset]);
+
+    id otherAsset = PTNPhotoKitCreateAsset(@"foo");
+    [fetcher registerAsset:otherAsset];
+
+    expect(sharedSignal).will.sendValues(@[otherAsset]);
+  });
+
   it(@"should error on non-existing asset", ^{
     id newAsset = PTNPhotoKitCreateAsset(@"bar");
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:newAsset];
