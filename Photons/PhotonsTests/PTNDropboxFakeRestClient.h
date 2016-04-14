@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)serveThumbnailAtPath:(NSString *)path type:(nullable PTNDropboxThumbnailType *)type
                    withError:(NSError *)error;
 
+/// Link status returned by this REST client. Default value is \c YES.
+@property (nonatomic) BOOL isLinked;
+
 @end
 
 NS_ASSUME_NONNULL_END

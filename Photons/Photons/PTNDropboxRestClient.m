@@ -41,6 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchMetadata:(NSString *)path revision:(nullable NSString *)revision {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    if (![self.restClientProvider isLinked]) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+      return nil;
+    }
+
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;
 
@@ -92,6 +97,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchFile:(NSString *)path revision:(nullable NSString *)revision {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    if (![self.restClientProvider isLinked]) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+      return nil;
+    }
+
     NSString *localPath = [self.pathProvider localPathForFileInPath:path revision:revision];
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;
@@ -162,6 +172,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchThumbnail:(NSString *)path type:(PTNDropboxThumbnailType *)type {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    if (![self.restClientProvider isLinked]) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+      return nil;
+    }
+    
     NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path size:type.size];
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;
