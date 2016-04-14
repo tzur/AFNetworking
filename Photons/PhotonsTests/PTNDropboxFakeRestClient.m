@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   if (self = [super init]) {
     _restClient = OCMClassMock([PTNDropboxRestClient class]);
+    self.isLinked = YES;
   }
   return self;
 }

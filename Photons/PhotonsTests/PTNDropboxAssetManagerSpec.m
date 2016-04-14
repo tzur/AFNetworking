@@ -95,6 +95,16 @@ context(@"album fetching", ^{
         return error.code == PTNErrorCodeAlbumNotFound;
       });
     });
+
+    it(@"should error when not authorized", ^{
+      NSURL *url = [NSURL ptn_dropboxAlbumURLWithEntry:[PTNDropboxEntry entryWithPath:kPath]];
+      [dropboxClient serveMetadataAtPath:kPath revision:nil
+                               withError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+
+      expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
   });
 });
 
@@ -135,6 +145,16 @@ context(@"asset fetching", ^{
 
     expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
+    });
+  });
+
+  it(@"should error when not authorized", ^{
+    NSURL *url = [NSURL ptn_dropboxAssetURLWithEntry:[PTNDropboxEntry entryWithPath:kPath]];
+    [dropboxClient serveMetadataAtPath:kPath revision:nil
+                             withError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+
+    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
     });
   });
 });
@@ -314,6 +334,19 @@ context(@"image fetching", ^{
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      [dropboxClient serveFileAtPath:kAssetPath revision:nil withProgress:nil
+                        finallyError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
+
+      RACSignal *values = [manager fetchImageWithDescriptor:asset
+                                           resizingStrategy:resizingStrategy
+                                                    options:options];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
       });
     });
   });

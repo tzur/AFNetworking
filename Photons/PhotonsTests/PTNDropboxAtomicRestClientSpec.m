@@ -5,6 +5,7 @@
 
 #import "NSError+Photons.h"
 #import "PTNDropboxFakeDBRestClient.h"
+#import "PTNDropboxFakeRestClientProvider.h"
 #import "PTNDropboxPathProvider.h"
 #import "PTNDropboxRestClientProvider.h"
 #import "PTNDropboxTestUtils.h"
@@ -14,7 +15,7 @@
 SpecBegin(PTNDropboxAtomicRestClient)
 
 __block PTNDropboxAtomicRestClient *client;
-__block id<PTNDropboxRestClientProvider> restClientProvider;
+__block PTNDropboxFakeRestClientProvider *restClientProvider;
 __block id<PTNDropboxPathProvider> pathProvider;
 __block id fileManager;
 __block PTNDropboxFakeDBRestClient *dropboxRestClient;
@@ -24,8 +25,7 @@ static NSString * const kRevision = @"bar";
 
 beforeEach(^{
   dropboxRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
-  restClientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-  OCMStub([restClientProvider ptn_restClient]).andReturn(dropboxRestClient);
+  restClientProvider = [[PTNDropboxFakeRestClientProvider alloc] initWithClient:dropboxRestClient];
   pathProvider = [[PTNDropboxPathProvider alloc] init];
   fileManager = OCMClassMock([NSFileManager class]);
   client = [[PTNDropboxAtomicRestClient alloc] initWithRestClientProvider:restClientProvider
@@ -33,13 +33,24 @@ beforeEach(^{
                                                               fileManager:fileManager];
 });
 
-it(@"should deliver metadata like regular rest client", ^{
-  LLSignalTestRecorder *values = [[client fetchMetadata:kPath revision:kRevision] testRecorder];
-  expect([dropboxRestClient didRequestMetadataAtPath:kPath revision:kRevision]).to.beTruthy();
+context(@"metadata", ^{
+  it(@"should deliver metadata like regular rest client", ^{
+    LLSignalTestRecorder *values = [[client fetchMetadata:kPath revision:kRevision] testRecorder];
+    expect([dropboxRestClient didRequestMetadataAtPath:kPath revision:kRevision]).to.beTruthy();
 
-  DBMetadata *metadata = PTNDropboxCreateMetadata(kPath, kRevision);
-  [dropboxRestClient deliverMetadata:metadata];
-  expect(values).to.sendValues(@[metadata]);
+    DBMetadata *metadata = PTNDropboxCreateMetadata(kPath, kRevision);
+    [dropboxRestClient deliverMetadata:metadata];
+    expect(values).to.sendValues(@[metadata]);
+  });
+  
+  it(@"should err if not authorized", ^{
+    restClientProvider.isLinked = NO;
+
+    expect([[client fetchMetadata:kPath revision:kRevision] testRecorder])
+        .will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+  });
 });
 
 context(@"files", ^{
@@ -100,6 +111,14 @@ context(@"files", ^{
     [dropboxRestClient deliverFile:requestPath];
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:originalPath]]);
     OCMVerifyAll(fileManager);
+  });
+
+  it(@"should err if not authorized", ^{
+    restClientProvider.isLinked = NO;
+
+    expect([client fetchFile:kPath revision:kRevision]).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
   });
 });
 
@@ -172,6 +191,14 @@ context(@"thumbnails", ^{
     [dropboxRestClient deliverThumbnail:requestPath];
     expect(values).will.sendValues(@[originalPath]);
     OCMVerifyAll(fileManager);
+  });
+
+  it(@"should err if not authorized", ^{
+    restClientProvider.isLinked = NO;
+
+    expect([client fetchThumbnail:kPath type:thumbnailType]).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
   });
 });
 

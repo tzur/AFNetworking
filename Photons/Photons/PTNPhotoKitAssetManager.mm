@@ -6,6 +6,7 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNAuthorizationManager.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
@@ -25,16 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNPhotoKitAssetManager ()
 
 /// Observer for PhotoKit changes.
-@property (strong, nonatomic) id<PTNPhotoKitObserver> observer;
+@property (readonly, nonatomic) id<PTNPhotoKitObserver> observer;
 
 /// Fetcher adapter for PhotoKit.
-@property (strong, nonatomic) id<PTNPhotoKitFetcher> fetcher;
+@property (readonly, nonatomic) id<PTNPhotoKitFetcher> fetcher;
 
 /// Image manager used to request images.
-@property (strong, nonatomic) PHImageManager *imageManager;
+@property (readonly, nonatomic) PHImageManager *imageManager;
 
 /// Cache from \c NSURL album urls to their \c RACSignal objects.
-@property (strong, nonatomic) PTNSignalCache *albumSignalCache;
+@property (readonly, nonatomic) PTNSignalCache *albumSignalCache;
+
+/// Manager of authorization status.
+@property (readonly, nonatomic) id<PTNAuthorizationManager> authorizationManager;
 
 @end
 
@@ -46,13 +50,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
-                   imageManager:(id<PTNPhotoKitImageManager>)imageManager {
+                   imageManager:(id<PTNPhotoKitImageManager>)imageManager
+           authorizationManager:(id<PTNAuthorizationManager>)authorizationManager {
   if (self = [super init]) {
-    self.fetcher = fetcher;
-    self.observer = observer;
-    self.imageManager = imageManager;
+    _fetcher = fetcher;
+    _observer = observer;
+    _imageManager = imageManager;
+    _authorizationManager = authorizationManager;
 
-    self.albumSignalCache = [[PTNSignalCache alloc] init];
+    _albumSignalCache = [[PTNSignalCache alloc] init];
   }
   return self;
 }
@@ -260,16 +266,22 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  switch (url.ptn_photoKitURLType.value) {
-    case PTNPhotoKitURLTypeAsset:
-      return [self fetchAssetWithIdentifier:url.ptn_photoKitAssetIdentifier];
-    case PTNPhotoKitURLTypeAlbum:
-      return [self fetchAlbumWithIdentifier:url.ptn_photoKitAlbumIdentifier];
-    case PTNPhotoKitURLTypeAlbumType:
-      return [self fetchAlbumWithType:url.ptn_photoKitAlbumType];
-    case PTNPhotoKitURLTypeMetaAlbumType:
-      return [self fetchMetaAlbumWithType:url.ptn_photoKitMetaAlbumType];
-  }
+  return [RACSignal defer:^RACSignal *{
+    if (self.authorizationManager.authorizationStatus != PTNAuthorizationStatusAuthorized) {
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url]];
+    }
+
+    switch (url.ptn_photoKitURLType.value) {
+      case PTNPhotoKitURLTypeAsset:
+        return [self fetchAssetWithIdentifier:url.ptn_photoKitAssetIdentifier];
+      case PTNPhotoKitURLTypeAlbum:
+        return [self fetchAlbumWithIdentifier:url.ptn_photoKitAlbumIdentifier];
+      case PTNPhotoKitURLTypeAlbumType:
+        return [self fetchAlbumWithType:url.ptn_photoKitAlbumType];
+      case PTNPhotoKitURLTypeMetaAlbumType:
+        return [self fetchMetaAlbumWithType:url.ptn_photoKitMetaAlbumType];
+    }
+  }];
 }
 
 - (BOOL)urlContainsFetchInfo:(NSURL *)url {
@@ -321,35 +333,37 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchAssetForDescriptor:(id<PTNDescriptor>)descriptor {
-  if ([descriptor isKindOfClass:[PHAsset class]]) {
-    return [RACSignal return:descriptor];
-  } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
-    return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor];
-  } else {
-    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
-                                  associatedDescriptor:descriptor]];
-  }
+  return [RACSignal defer:^RACSignal *{
+    if (self.authorizationManager.authorizationStatus != PTNAuthorizationStatusAuthorized) {
+      return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeNotAuthorized
+                                    associatedDescriptor:descriptor]];
+    }
+
+    if ([descriptor isKindOfClass:[PHAsset class]]) {
+      return [RACSignal return:descriptor];
+    } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
+      return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor];
+    } else {
+      LTAssert(NO, @"Invalid descriptor given: %@", descriptor);
+    }
+  }];
 }
 
 - (RACSignal *)fetchAssetWithIdentifier:(NSString *)identifier {
-  return [RACSignal defer:^{
-    PTNAssetsFetchResult *fetchResult =
-        [self.fetcher fetchAssetsWithLocalIdentifiers:@[identifier] options:nil];
-    return [RACSignal return:fetchResult];
-  }];
+  PTNAssetsFetchResult *fetchResult =
+      [self.fetcher fetchAssetsWithLocalIdentifiers:@[identifier] options:nil];
+  return [RACSignal return:fetchResult];
 }
 
 - (RACSignal *)fetchKeyAssetForAssetCollection:(PHAssetCollection *)assetCollection {
-  return [RACSignal defer:^{
-    PTNAssetsFetchResult *fetchResult =
-        [self.fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil];
-    if (!fetchResult.firstObject) {
-      NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
-      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeKeyAssetsNotFound url:url]];
-    } else {
-      return [RACSignal return:fetchResult.firstObject];
-    }
-  }];
+  PTNAssetsFetchResult *fetchResult =
+      [self.fetcher fetchKeyAssetsInAssetCollection:assetCollection options:nil];
+  if (!fetchResult.firstObject) {
+    NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:assetCollection];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeKeyAssetsNotFound url:url]];
+  } else {
+    return [RACSignal return:fetchResult.firstObject];
+  }
 }
 
 #pragma mark -
@@ -357,40 +371,36 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType *)type {
-  return [RACSignal defer:^{
-    PTNAssetCollectionsFetchResult *assetCollections;
-    switch (type.value) {
-      case PTNPhotoKitAlbumTypeCameraRoll:
-        assetCollections =
-            [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-            subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
-        break;
-      default:
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
-    }
+  PTNAssetCollectionsFetchResult *assetCollections;
+  switch (type.value) {
+    case PTNPhotoKitAlbumTypeCameraRoll:
+      assetCollections =
+          [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+          subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
+      break;
+    default:
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
+  }
 
-    return [RACSignal return:assetCollections];
-  }];
+  return [RACSignal return:assetCollections];
 }
 
 - (RACSignal *)fetchMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type {
-  return [RACSignal defer:^{
-    PTNAssetCollectionsFetchResult *assetCollections;
-    switch (type.value) {
-      case PTNPhotoKitMetaAlbumTypeSmartAlbums:
-        assetCollections = [self fetchSmartAlbums];
-        break;
-      case PTNPhotoKitMetaAlbumTypeUserAlbums:
-        assetCollections = [self fetchUserAlbums];
-        break;
-      case PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums:
-        assetCollections = [self fetchPhotosAppSmartAlbums:[self fetchSmartAlbums]];
-        break;
-      default:
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
-    }
-    return [RACSignal return:assetCollections];
-  }];
+  PTNAssetCollectionsFetchResult *assetCollections;
+  switch (type.value) {
+    case PTNPhotoKitMetaAlbumTypeSmartAlbums:
+      assetCollections = [self fetchSmartAlbums];
+      break;
+    case PTNPhotoKitMetaAlbumTypeUserAlbums:
+      assetCollections = [self fetchUserAlbums];
+      break;
+    case PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums:
+      assetCollections = [self fetchPhotosAppSmartAlbums:[self fetchSmartAlbums]];
+      break;
+    default:
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
+  }
+  return [RACSignal return:assetCollections];
 }
 
 - (PHFetchResult *)fetchUserAlbums {
@@ -452,11 +462,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchAlbumWithIdentifier:(NSString *)identifier {
-  return [RACSignal defer:^{
-    PTNCollectionsFetchResult *assetCollections =
-        [self.fetcher fetchAssetCollectionsWithLocalIdentifiers:@[identifier] options:nil];
-    return [RACSignal return:assetCollections];
-  }];
+  PTNCollectionsFetchResult *assetCollections =
+      [self.fetcher fetchAssetCollectionsWithLocalIdentifiers:@[identifier] options:nil];
+  return [RACSignal return:assetCollections];
 }
 
 #pragma mark -
@@ -466,6 +474,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options {
+  if (![descriptor isKindOfClass:[PHAsset class]] &&
+      ![descriptor isKindOfClass:[PHAssetCollection class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
   return [[[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
         return [self imageAssetForPhotoKitAsset:asset resizingStrategy:resizingStrategy

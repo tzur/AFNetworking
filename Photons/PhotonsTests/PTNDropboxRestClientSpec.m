@@ -3,13 +3,14 @@
 
 #import "PTNDropboxRestClient.h"
 
+#import "NSError+Photons.h"
 #import "PTNDropboxFakeDBRestClient.h"
+#import "PTNDropboxFakeRestClientProvider.h"
 #import "PTNDropboxPathProvider.h"
 #import "PTNDropboxRestClientProvider.h"
 #import "PTNDropboxTestUtils.h"
 #import "PTNDropboxThumbnail.h"
 #import "PTNProgress.h"
-#import "NSError+Photons.h"
 
 SpecBegin(PTNDropboxRestClient)
 
@@ -19,15 +20,14 @@ static NSString * const kRevision = @"baz";
 __block PTNDropboxFakeDBRestClient *dbRestClient;
 __block id<PTNDropboxPathProvider> pathProvider;
 __block PTNDropboxRestClient *restClient;
-__block id<PTNDropboxRestClientProvider> clientProvider;
+__block PTNDropboxFakeRestClientProvider *clientProvider;
 __block NSError *errorWithPath;
 __block NSString *localPath;
 
 beforeEach(^{
   dbRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
   pathProvider = [[PTNDropboxPathProvider alloc] init];
-  clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-  OCMStub([clientProvider ptn_restClient]).andReturn(dbRestClient);
+  clientProvider = [[PTNDropboxFakeRestClientProvider alloc] initWithClient:dbRestClient];
   restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
                                                            pathProvider:pathProvider];
 
@@ -53,38 +53,32 @@ context(@"metadata fetching", ^{
   });
 
   it(@"should fetch metadata again for every subscription", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchMetadata:kDropboxPath revision:kRevision];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([firstDBRestClient didRequestMetadataAtPath:kDropboxPath revision:kRevision])
         .to.beTruthy();
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([secondDBRestClient didRequestMetadataAtPath:kDropboxPath revision:kRevision])
         .to.beTruthy();
   });
 
   it(@"should not mix metadata requests with the equal parameters", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchMetadata:kDropboxPath revision:kRevision];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     LLSignalTestRecorder *firstRecorder = [values testRecorder];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     LLSignalTestRecorder *secondRecorder = [values testRecorder];
 
     DBMetadata *firstMetadata = PTNDropboxCreateFileMetadata(kDropboxPath, kRevision);
@@ -124,6 +118,20 @@ context(@"metadata fetching", ^{
     });
   });
 
+  it(@"should err when not authorized", ^{
+    clientProvider.isLinked = NO;
+    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
+                                                             pathProvider:pathProvider];
+
+    LLSignalTestRecorder *values =
+        [[restClient fetchMetadata:kDropboxPath revision:kRevision] testRecorder];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+    expect([dbRestClient didRequestMetadataAtPath:kDropboxPath revision:kRevision]).to.beFalsy();
+  });
+
   it(@"should not err on metadata fetching failure of other requests", ^{
     NSString *otherPath = @"/bar/baz";
     NSError *errorWithOtherPath = PTNDropboxErrorWithPathInfo(otherPath);
@@ -161,36 +169,30 @@ context(@"file fetching", ^{
   });
 
   it(@"should fetch file again for every subscription", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchFile:kDropboxPath revision:kRevision];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([firstDBRestClient didRequestFileAtPath:kDropboxPath revision:kRevision]).to.beTruthy();
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([secondDBRestClient didRequestFileAtPath:kDropboxPath revision:kRevision]).to.beTruthy();
   });
 
   it(@"should not mix file requests with the equal parameters", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchFile:kDropboxPath revision:kRevision];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     LLSignalTestRecorder *firstRecorder = [values testRecorder];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     LLSignalTestRecorder *secondRecorder = [values testRecorder];
 
     NSString *firstFilePath = [pathProvider localPathForFileInPath:kDropboxPath revision:kRevision];
@@ -295,6 +297,20 @@ context(@"file fetching", ^{
     expect([dbRestClient didCancelRequestForFileAtPath:kDropboxPath revision:kRevision])
         .will.beTruthy();
   });
+
+  it(@"should err when not authorized", ^{
+    clientProvider.isLinked = NO;
+    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
+                                                             pathProvider:pathProvider];
+
+    LLSignalTestRecorder *values =
+        [[restClient fetchFile:kDropboxPath revision:kRevision] testRecorder];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+    expect([dbRestClient didRequestFileAtPath:kDropboxPath revision:kRevision]).to.beFalsy();
+  });
 });
 
 context(@"thumbnail fetching", ^{
@@ -317,38 +333,32 @@ context(@"thumbnail fetching", ^{
   });
 
   it(@"should fetch thumbnail again for every subscription", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([firstDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.beTruthy();
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     [values subscribeNext:^(id __unused x) { }];
     expect([secondDBRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .to.beTruthy();
   });
 
   it(@"should not mix thumbnail requests with the equal parameters", ^{
-    clientProvider = OCMProtocolMock(@protocol(PTNDropboxRestClientProvider));
-    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
-                                                             pathProvider:pathProvider];
     PTNDropboxFakeDBRestClient *firstDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
     PTNDropboxFakeDBRestClient *secondDBRestClient = [[PTNDropboxFakeDBRestClient alloc] init];
 
     RACSignal *values = [restClient fetchThumbnail:kDropboxPath type:thumbnailType];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(firstDBRestClient);
+    clientProvider.restClient = firstDBRestClient;
     LLSignalTestRecorder *firstRecorder = [values testRecorder];
 
-    OCMExpect([clientProvider ptn_restClient]).andReturn(secondDBRestClient);
+    clientProvider.restClient = secondDBRestClient;
     LLSignalTestRecorder *secondRecorder = [values testRecorder];
 
     NSString *firstThumbnailPath =
@@ -427,6 +437,20 @@ context(@"thumbnail fetching", ^{
     [subscriber dispose];
     expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath
         size:thumbnailType.sizeName]).will.beTruthy();
+  });
+
+  it(@"should err when not authorized", ^{
+    clientProvider.isLinked = NO;
+    restClient = [[PTNDropboxRestClient alloc] initWithRestClientProvider:clientProvider
+                                                             pathProvider:pathProvider];
+
+    LLSignalTestRecorder *values =
+        [[restClient fetchThumbnail:kDropboxPath type:thumbnailType] testRecorder];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+    expect([dbRestClient didRequestFileAtPath:kDropboxPath revision:kRevision]).to.beFalsy();
   });
 
   context(@"thumbnail sizes", ^{

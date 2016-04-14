@@ -41,6 +41,7 @@
 		8451617E1C98500500AD8B5B /* PTNGatewayAlbumDescriptorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8451617D1C98500500AD8B5B /* PTNGatewayAlbumDescriptorSpec.m */; };
 		845162F31C986A5E00AD8B5B /* NSURL+PTNCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 845162F21C986A5E00AD8B5B /* NSURL+PTNCache.m */; };
 		845162F61C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 845162F51C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m */; };
+		846261621CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846261611CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.m */; };
 		846E18A51C7330B900B94467 /* PTNDropboxAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 846E18A41C7330B900B94467 /* PTNDropboxAssetManagerSpec.m */; };
 		84741D1C1C99ADF5001D3D1D /* PTNStaticImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 84741D1B1C99ADF5001D3D1D /* PTNStaticImageAsset.m */; };
 		84741D1E1C99B173001D3D1D /* PTNStaticImageAssetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84741D1D1C99B173001D3D1D /* PTNStaticImageAssetSpec.m */; };
@@ -63,6 +64,7 @@
 		84DD77B71CA9693B000C3197 /* PTNCacheInfoSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DD77B61CA9693B000C3197 /* PTNCacheInfoSpec.m */; };
 		84DD77E91CA96C2E000C3197 /* PTNCacheResponseSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DD77E81CA96C2E000C3197 /* PTNCacheResponseSpec.m */; };
 		84DD77EC1CA96C3C000C3197 /* PTNCacheResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DD77EB1CA96C3C000C3197 /* PTNCacheResponse.m */; };
+		84DD776E1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DD776D1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m */; };
 		84E079E31C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */; };
 		84E279201C33E65900806A27 /* NSURL+FileSystemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.m */; };
 		84E55C1F1C8EC82B00D91339 /* NSError+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0E91B0B2DC200757B1F /* NSError+Photons.m */; };
@@ -454,6 +456,8 @@
 		845162F11C986A5E00AD8B5B /* NSURL+PTNCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+PTNCache.h"; sourceTree = "<group>"; };
 		845162F21C986A5E00AD8B5B /* NSURL+PTNCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PTNCache.m"; sourceTree = "<group>"; };
 		845162F51C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PTNCacheSpec.m"; sourceTree = "<group>"; };
+		846261601CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeAuthorizationManager.h; sourceTree = "<group>"; };
+		846261611CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeAuthorizationManager.m; sourceTree = "<group>"; };
 		846E18A41C7330B900B94467 /* PTNDropboxAssetManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxAssetManagerSpec.m; sourceTree = "<group>"; };
 		84741D1A1C99ADF5001D3D1D /* PTNStaticImageAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNStaticImageAsset.h; sourceTree = "<group>"; };
 		84741D1B1C99ADF5001D3D1D /* PTNStaticImageAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNStaticImageAsset.m; sourceTree = "<group>"; };
@@ -497,6 +501,8 @@
 		84DD77E81CA96C2E000C3197 /* PTNCacheResponseSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNCacheResponseSpec.m; sourceTree = "<group>"; };
 		84DD77EA1CA96C3C000C3197 /* PTNCacheResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNCacheResponse.h; sourceTree = "<group>"; };
 		84DD77EB1CA96C3C000C3197 /* PTNCacheResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNCacheResponse.m; sourceTree = "<group>"; };
+		84DD776C1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxFakeRestClientProvider.h; sourceTree = "<group>"; };
+		84DD776D1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxFakeRestClientProvider.m; sourceTree = "<group>"; };
 		84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetchResultChangeDetails.h; sourceTree = "<group>"; };
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84E27ABC1C34287300806A27 /* NSURL+Dropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Dropbox.h"; sourceTree = "<group>"; };
@@ -740,6 +746,8 @@
 				848D2E331C4F75A600491AB3 /* PTNDropboxRestClientSpec.m */,
 				844C0F651C35502A001A6DC9 /* PTNDropboxTestUtils.h */,
 				844C0F661C35502A001A6DC9 /* PTNDropboxTestUtils.m */,
+				84DD776C1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.h */,
+				84DD776D1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m */,
 			);
 			name = Dropbox;
 			sourceTree = "<group>";
@@ -1087,6 +1095,8 @@
 				8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.mm */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.mm */,
 				84515F741C96A93D00AD8B5B /* PTNPhotoKitAuthorizationManagerSpec.m */,
+				846261601CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.h */,
+				846261611CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.m */,
 				8BF135B81B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.h */,
 				8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */,
 				84E079E11C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.h */,
@@ -1703,12 +1713,14 @@
 				843CD33C1C46763F007435E8 /* PTNDropboxPathProviderSpec.m in Sources */,
 				8BAB93511B7A0EF900B25392 /* PTNPhotoKitFakeObserver.m in Sources */,
 				8B2FD0D91B09CD0800757B1F /* EXPMatchers+matchError.m in Sources */,
+				84DD776E1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m in Sources */,
 				84331A951C300C96004502B5 /* PTNDropboxEntrySpec.m in Sources */,
 				8B2FD0EC1B0B494A00757B1F /* NSURL+PhotoKitSpec.mm in Sources */,
 				848187891C3BE35D0070462E /* NSURL+DropboxSpec.m in Sources */,
 				8BF135BA1B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m in Sources */,
 				84DD77E91CA96C2E000C3197 /* PTNCacheResponseSpec.m in Sources */,
 				8B2FD0D11B09CD0800757B1F /* LLSignalTestRecorder.m in Sources */,
+				846261621CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.m in Sources */,
 				8B2FD0DA1B09CD0800757B1F /* EXPMatchers+matchValue.m in Sources */,
 				845162F61C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m in Sources */,
 				8B2FD0D31B09CD0800757B1F /* LLReactiveMatchersHelpers.m in Sources */,

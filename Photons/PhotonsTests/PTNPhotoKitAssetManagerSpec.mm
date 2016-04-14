@@ -13,6 +13,7 @@
 #import "PTNImageAsset.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
+#import "PTNPhotoKitFakeAuthorizationManager.h"
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
@@ -29,14 +30,17 @@ __block PTNPhotoKitAssetManager *manager;
 __block PTNPhotoKitFakeFetcher *fetcher;
 __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
+__block PTNPhotoKitFakeAuthorizationManager *authorizationManager;
 
 beforeEach(^{
   fetcher = [[PTNPhotoKitFakeFetcher alloc] init];
   observer = [[PTNPhotoKitFakeObserver alloc] init];
   imageManager = [[PTNPhotoKitFakeImageManager alloc] init];
+  authorizationManager = [[PTNPhotoKitFakeAuthorizationManager alloc] init];
 
   manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
-                                                imageManager:imageManager];
+                                                imageManager:imageManager
+                                        authorizationManager:authorizationManager];
 });
 
 context(@"album fetching", ^{
@@ -146,6 +150,14 @@ context(@"album fetching", ^{
         
         expect(values).will.sendValuesWithCount(1);
         expect(values).willNot.deliverValuesOnMainThread();
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+
+      expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
       });
     });
   });
@@ -337,6 +349,14 @@ context(@"album fetching", ^{
         expect(values).willNot.deliverValuesOnMainThread();
       });
     });
+
+    it(@"should error when not authorized", ^{
+      authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+
+      expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
   });
 
   context(@"fetching errors", ^{
@@ -426,7 +446,17 @@ context(@"asset fetching", ^{
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
-  
+
+  it(@"should error when not authorized", ^{
+    NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
+
+    authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+
+    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+  });
+
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
       NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
@@ -608,6 +638,18 @@ context(@"image fetching", ^{
     });
   });
 
+  it(@"should error when not authorized", ^{
+    authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+
+    RACSignal *values = [manager fetchImageWithDescriptor:asset
+                                        resizingStrategy:resizingStrategy
+                                                 options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeNotAuthorized;
+    });
+  });
+
   context(@"resizing strategy", ^{
     __block id imageManagerMock;
     __block id<PTNResizingStrategy> resizingStrategy;
@@ -616,7 +658,8 @@ context(@"image fetching", ^{
       asset = PTNPhotoKitCreateAsset(@"baz", size);
       imageManagerMock = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
       manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
-                                                    imageManager:imageManagerMock];
+                                                    imageManager:imageManagerMock
+                                            authorizationManager:authorizationManager];
       resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
     });
 

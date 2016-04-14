@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// requests.
 - (DBRestClient *)ptn_restClient;
 
+/// \c YES if this Dropbox REST client provider is linked to a valid Dropbox account.
+@property (readonly, nonatomic) BOOL isLinked;
+
 @end
 
 NS_ASSUME_NONNULL_END

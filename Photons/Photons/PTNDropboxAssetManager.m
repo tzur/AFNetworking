@@ -74,7 +74,15 @@ NS_ASSUME_NONNULL_BEGIN
         PTNDropboxAlbum *album = [self albumFromMetadata:metadata path:albumURL];
         return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
       }]
-      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url]];
+      catch:^RACSignal *(NSError *error) {
+        if (error.code == PTNErrorCodeNotAuthorized) {
+          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url
+                                            underlyingError:error]];
+        }
+
+        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url
+                                          underlyingError:error]];
+      }];
 }
 
 - (PTNDropboxAlbum *)albumFromMetadata:(DBMetadata *)metadata path:(NSURL *)path {
@@ -113,7 +121,15 @@ NS_ASSUME_NONNULL_BEGIN
             [[PTNDropboxDirectoryDescriptor alloc] initWithMetadata:metadata] :
             [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
       }]
-      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed url:url]];
+      catch:^RACSignal *(NSError *error) {
+        if (error.code == PTNErrorCodeNotAuthorized) {
+          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url
+                                            underlyingError:error]];
+        }
+
+        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed url:url
+                                          underlyingError:error]];
+      }];
 }
 
 - (RACSignal *)fetchKeyAssetForDirectoryURL:(NSURL *)url {
@@ -153,8 +169,17 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fetchImageContentWithEntry:entry
                           resizingStrategy:resizingStrategy
                                    options:options]
-      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                   url:descriptor.ptn_identifier]];
+      catch:^RACSignal *(NSError *error) {
+        if (error.code == PTNErrorCodeNotAuthorized) {
+          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized
+                                                        url:descriptor.ptn_identifier
+                                            underlyingError:error]];
+        }
+
+        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:descriptor.ptn_identifier
+                                          underlyingError:error]];
+      }];
 }
 
 - (RACSignal *)fetchImageContentWithEntry:(PTNDropboxEntry *)entry

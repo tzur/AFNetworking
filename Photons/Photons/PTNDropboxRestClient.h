@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Wrapper to a linked Dropbox REST client.
+/// Wrapper to a Dropbox REST client.
 @interface PTNDropboxRestClient : NSObject <PTNDropboxRestClient>
 
 - (instancetype)init NS_UNAVAILABLE;
