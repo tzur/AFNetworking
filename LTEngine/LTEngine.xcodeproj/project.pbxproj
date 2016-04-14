@@ -212,6 +212,10 @@
 		25FBF7FC1C32D27900E2E5BC /* LTTouchEventViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25FBF7FB1C32D27900E2E5BC /* LTTouchEventViewSpec.mm */; };
 		280108F9197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png in Resources */ = {isa = PBXBuildFile; fileRef = 280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */; };
 		280A4948188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */; };
+		280A8BA21CBD234100157507 /* RadialMaskCenterInvertedStretched.png in Resources */ = {isa = PBXBuildFile; fileRef = 280A8B9E1CBD234100157507 /* RadialMaskCenterInvertedStretched.png */; };
+		280A8BA31CBD234100157507 /* RadialMaskCenterNonSquareStretched.png in Resources */ = {isa = PBXBuildFile; fileRef = 280A8B9F1CBD234100157507 /* RadialMaskCenterNonSquareStretched.png */; };
+		280A8BA41CBD234100157507 /* RadialMaskCenterStretched.png in Resources */ = {isa = PBXBuildFile; fileRef = 280A8BA01CBD234100157507 /* RadialMaskCenterStretched.png */; };
+		280A8BA51CBD234100157507 /* RadialMaskOffCenterStretched.png in Resources */ = {isa = PBXBuildFile; fileRef = 280A8BA11CBD234100157507 /* RadialMaskOffCenterStretched.png */; };
 		280B143018B3B3B20091B3D7 /* LTPainterPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */; };
 		280B14C118B3C9AE0091B3D7 /* LTPainterStroke.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */; };
 		280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 280B14BF18B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm */; };
@@ -1492,6 +1496,10 @@
 		280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueRedBorderRoundedCorners.png; path = Resources/BlueRedBorderRoundedCorners.png; sourceTree = "<group>"; };
 		280A4946188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRectDrawer+PassthroughShader.h"; sourceTree = "<group>"; };
 		280A4947188BC97400ED3FCD /* LTRectDrawer+PassthroughShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LTRectDrawer+PassthroughShader.m"; sourceTree = "<group>"; };
+		280A8B9E1CBD234100157507 /* RadialMaskCenterInvertedStretched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterInvertedStretched.png; path = Resources/RadialMaskCenterInvertedStretched.png; sourceTree = "<group>"; };
+		280A8B9F1CBD234100157507 /* RadialMaskCenterNonSquareStretched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterNonSquareStretched.png; path = Resources/RadialMaskCenterNonSquareStretched.png; sourceTree = "<group>"; };
+		280A8BA01CBD234100157507 /* RadialMaskCenterStretched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskCenterStretched.png; path = Resources/RadialMaskCenterStretched.png; sourceTree = "<group>"; };
+		280A8BA11CBD234100157507 /* RadialMaskOffCenterStretched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskOffCenterStretched.png; path = Resources/RadialMaskOffCenterStretched.png; sourceTree = "<group>"; };
 		280B142F18B3B3B20091B3D7 /* LTPainterPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterPointSpec.mm; sourceTree = "<group>"; };
 		280B14BC18B3C9AE0091B3D7 /* LTPainterStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPainterStroke.h; sourceTree = "<group>"; };
 		280B14BD18B3C9AE0091B3D7 /* LTPainterStroke.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterStroke.mm; sourceTree = "<group>"; };
@@ -3595,6 +3603,10 @@
 				03C192C118F6F3B200DC6CA6 /* RadialMaskOffCenter.png */,
 				03AFC18C190E813A00F17063 /* RadialMaskCenterNonSquare.png */,
 				03C192B018F67FBA00DC6CA6 /* RadialMaskCenter.png */,
+				280A8B9E1CBD234100157507 /* RadialMaskCenterInvertedStretched.png */,
+				280A8B9F1CBD234100157507 /* RadialMaskCenterNonSquareStretched.png */,
+				280A8BA01CBD234100157507 /* RadialMaskCenterStretched.png */,
+				280A8BA11CBD234100157507 /* RadialMaskOffCenterStretched.png */,
 				03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */,
 				03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */,
 				03B3765618D612830017B705 /* MealBWProcessor.png */,
@@ -4927,6 +4939,7 @@
 				85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */,
 				8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */,
 				507B92B319FE731500BA7EC9 /* SingleQuadDrawerTest0.png in Resources */,
+				280A8BA41CBD234100157507 /* RadialMaskCenterStretched.png in Resources */,
 				287583761B1B225F0000F0CE /* ImageCompressorInput.tiff in Resources */,
 				032DFC511A1A50FB002A4F69 /* MealBasicOilPainting.png in Resources */,
 				03D5169818B2768D0026B56A /* TiledNoise.png in Resources */,
@@ -4964,6 +4977,7 @@
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
+				280A8BA51CBD234100157507 /* RadialMaskOffCenterStretched.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BABF19119BC52C100AED760 /* PyramidGrid6.png in Resources */,
 				284AA2B81AC99DD1007F86DB /* CircularPatchDefault.png in Resources */,
@@ -5020,11 +5034,13 @@
 				284AA2BC1AC99DD1007F86DB /* CircularPatchRotation.png in Resources */,
 				03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */,
 				2840186819C704730003A064 /* FlowerOutput0.7.png in Resources */,
+				280A8BA31CBD234100157507 /* RadialMaskCenterNonSquareStretched.png in Resources */,
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
 				03AFC15F190CE52100F17063 /* DuoRed.png in Resources */,
 				2840187A19C704BF0003A064 /* PyramidGrid1.png in Resources */,
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
+				280A8BA21CBD234100157507 /* RadialMaskCenterInvertedStretched.png in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				037238391AA317F000937EAA /* Indexed.png in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,

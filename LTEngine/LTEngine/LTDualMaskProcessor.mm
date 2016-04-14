@@ -3,6 +3,7 @@
 
 #import "LTDualMaskProcessor.h"
 
+#import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTDualMaskFsh.h"
@@ -54,6 +55,7 @@
       @instanceKeypath(LTDualMaskProcessor, center),
       @instanceKeypath(LTDualMaskProcessor, diameter),
       @instanceKeypath(LTDualMaskProcessor, spread),
+      @instanceKeypath(LTDualMaskProcessor, stretch),
       @instanceKeypath(LTDualMaskProcessor, angle),
       @instanceKeypath(LTDualMaskProcessor, invert)
     ]];
@@ -121,6 +123,12 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
   self[[LTDualMaskFsh spread]] = @([self remapSpread:spread]);
 }
 
+LTPropertyWithoutSetter(CGFloat, stretch, Stretch, 0.1, 10, 1);
+- (void)setStretch:(CGFloat)stretch {
+  [self _verifyAndSetStretch:stretch];
+  self[[LTDualMaskFsh stretchInversed]] = @(1 / stretch);
+}
+
 - (CGFloat)remapSpread:(CGFloat)spread {
   static const CGFloat kSpreadPositiveScaling = 1.5;
   static const CGFloat kSpreadNegativeScaling = 0.49;
@@ -133,6 +141,7 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
 
 - (void)setAngle:(CGFloat)angle {
   _angle = angle;
+  self[[LTDualMaskFsh rotation]] = $(GLKMatrix2MakeRotation(-angle));
   self[[LTDualMaskFsh normal]] = $(LTVector2(cos(angle), -sin(angle)));
 }
 
