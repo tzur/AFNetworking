@@ -42,6 +42,9 @@
 		650F73C21C7A13DF00148CEC /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 650F73C01C7A13DF00148CEC /* NSArray+Functional.m */; };
 		650F73DC1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */; };
 		659361EA1C7C824D00A5F1D2 /* EXPMatchers+beBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659361E91C7C824D00A5F1D2 /* EXPMatchers+beBlock.mm */; };
+		6AB5182E1CC2993D00540CC6 /* NSURL+Query.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB5182C1CC2993D00540CC6 /* NSURL+Query.h */; };
+		6AB5182F1CC2993D00540CC6 /* NSURL+Query.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB5182D1CC2993D00540CC6 /* NSURL+Query.m */; };
+		6AB518801CC2A8D700540CC6 /* NSURL+QuerySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */; };
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
@@ -374,6 +377,9 @@
 		650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+FunctionalSpec.mm"; sourceTree = "<group>"; };
 		659361E81C7C824D00A5F1D2 /* EXPMatchers+beBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beBlock.h"; sourceTree = "<group>"; };
 		659361E91C7C824D00A5F1D2 /* EXPMatchers+beBlock.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beBlock.mm"; sourceTree = "<group>"; };
+		6AB5182C1CC2993D00540CC6 /* NSURL+Query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Query.h"; sourceTree = "<group>"; };
+		6AB5182D1CC2993D00540CC6 /* NSURL+Query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Query.m"; sourceTree = "<group>"; };
+		6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+QuerySpec.mm"; sourceTree = "<group>"; };
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
@@ -592,6 +598,7 @@
 				8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */,
 				8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */,
 				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
+				6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */,
 			);
 			name = IO;
 			sourceTree = "<group>";
@@ -813,6 +820,8 @@
 				8B87D5351C04BA940005410A /* NSBundle+Path.mm */,
 				8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */,
 				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */,
+				6AB5182C1CC2993D00540CC6 /* NSURL+Query.h */,
+				6AB5182D1CC2993D00540CC6 /* NSURL+Query.m */,
 			);
 			name = IO;
 			sourceTree = "<group>";
@@ -930,6 +939,7 @@
 				8B78CFDE197654A900684B1D /* LTEnum.h in Headers */,
 				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
 				8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */,
+				6AB5182E1CC2993D00540CC6 /* NSURL+Query.h in Headers */,
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
 				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
@@ -1237,6 +1247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
+				6AB5182F1CC2993D00540CC6 /* NSURL+Query.m in Sources */,
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
 				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
 				8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */,
@@ -1281,6 +1292,7 @@
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
+				6AB518801CC2A8D700540CC6 /* NSURL+QuerySpec.mm in Sources */,
 				8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */,
 				255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
