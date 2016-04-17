@@ -20,6 +20,8 @@ it(@"should initialize with path", ^{
 
   expect(identifier.ptn_fileSystemURLType).to.equal(PTNFileSystemURLTypeAlbum);
   expect(identifier.ptn_fileSystemAlbumPath).to.equal(path);
+  expect(descriptor.descriptorCapabilites).to.equal(PTNDescriptorCapabilityNone);
+  expect(descriptor.albumDescriptorCapabilites).to.equal(PTNAlbumDescriptorCapabilityNone);
 });
 
 it(@"should use last path component for localized title", ^{
