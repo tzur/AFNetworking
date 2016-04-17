@@ -37,6 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNNotFound;
 }
 
+- (PTNDescriptorCapabilities)descriptorCapabilites {
+  return PTNDescriptorCapabilityNone;
+}
+
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+  return PTNAlbumDescriptorCapabilityNone;
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
