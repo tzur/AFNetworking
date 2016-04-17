@@ -36,5 +36,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   /// Caused when an authorization revocation has failed.
   PTNErrorCodeAuthorizationRevocationFailed,
   /// Caused when no authorization was given for the source.
-  PTNErrorCodeNotAuthorized
+  PTNErrorCodeNotAuthorized,
+  /// Caused when deletion of assets has failed.
+  PTNErrorCodeAssetDeletionFailed
 );
