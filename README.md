@@ -37,11 +37,13 @@
     (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
     *  `<LTEngine Path>/third_party/opencv`
     *  `<LTEngine Path>/third_party/objection`
-6. In the `General` tab, add the following to `Linked Frameworks and Binaries`: 
-  - `Accelerate`
-  - `AVFoundation`
-  - `AssetsLibrary`
-  - `CoreMedia`
+6. a. In the `General` tab, add the following to `Linked Frameworks and Binaries`: 
+		- `Accelerate`
+		- `AVFoundation`
+		- `AssetsLibrary`
+		- `CoreMedia`
+   b. In the `General` tab, add the following to `Embedded Binaries`: 
+		- `Mantle.framework` (from `Mantle-iOS`)
 7. In the `Build Phases` tab:
   - Add the following to `Target Dependencies`:
     * `LTEngine (LTEngine)`
