@@ -17,6 +17,15 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (PTNDescriptorCapabilities)descriptorCapabilites {
+  return [self canPerformEditOperation:PHAssetEditOperationDelete] ?
+      PTNDescriptorCapabilityDelete : PTNDescriptorCapabilityNone;
+}
+
+- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilites {
+  return PTNAssetDescriptorCapabilityNone;
+}
+
 @end
 
 @implementation PHCollection (Photons)
@@ -32,6 +41,16 @@ NS_ASSUME_NONNULL_BEGIN
   
   NSUInteger estimatedAssetCount = [(PHAssetCollection *)self estimatedAssetCount];
   return estimatedAssetCount != NSNotFound ? estimatedAssetCount : PTNNotFound;
+}
+
+- (PTNDescriptorCapabilities)descriptorCapabilites {
+  return [self canPerformEditOperation:PHCollectionEditOperationDelete] ?
+      PTNDescriptorCapabilityDelete : PTNDescriptorCapabilityNone;
+}
+
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+  return [self canPerformEditOperation:PHCollectionEditOperationRemoveContent] ?
+      PTNAlbumDescriptorCapabilityRemoveContent : PTNAlbumDescriptorCapabilityNone;
 }
 
 @end
