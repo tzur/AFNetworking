@@ -38,6 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNNotFound;
 }
 
+- (PTNDescriptorCapabilities)descriptorCapabilites {
+  return PTNDescriptorCapabilityNone;
+}
+
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+  return PTNAlbumDescriptorCapabilityNone;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
