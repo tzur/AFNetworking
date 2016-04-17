@@ -54,6 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (PTNDescriptorCapabilities)descriptorCapabilites {
+  return PTNDescriptorCapabilityNone;
+}
+
+- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilites {
+  return PTNAssetDescriptorCapabilityNone;
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
