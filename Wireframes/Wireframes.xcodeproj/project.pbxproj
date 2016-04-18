@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */; };
+		6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */; };
 		6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3C1CC4E63E00BC2371 /* LLSignalTestRecorder.m */; };
 		6AB2AF611CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3E1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m */; };
@@ -35,10 +37,10 @@
 		8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F501CBA88E800B745AE /* LTTestUtils.mm */; };
 		8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */; };
 		8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */; };
-		8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FFE1CBE33B200B745AE /* WFTransparentView.m */; };
-		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
 		8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */; };
 		8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */; };
+		8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FFE1CBE33B200B745AE /* WFTransparentView.m */; };
+		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,6 +255,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6AB2AAF51CC3945C00BC2371 /* UIView+LayoutSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayoutSignals.h"; sourceTree = "<group>"; };
+		6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+LayoutSignals.mm"; sourceTree = "<group>"; };
+		6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = "UIView+LayoutSignalsSpec.mm"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6AB2AF391CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
 		6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
 		6AB2AF3B1CC4E63E00BC2371 /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
@@ -316,12 +321,12 @@
 		8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Containment.h"; sourceTree = "<group>"; };
 		8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Containment.m"; sourceTree = "<group>"; };
 		8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+ContainmentSpec.mm"; sourceTree = "<group>"; };
-		8B283FFD1CBE33B200B745AE /* WFTransparentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTransparentView.h; sourceTree = "<group>"; };
-		8B283FFE1CBE33B200B745AE /* WFTransparentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTransparentView.m; sourceTree = "<group>"; };
-		8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFTransparentViewSpec.mm; sourceTree = "<group>"; };
 		8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
 		8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Utilities.mm"; sourceTree = "<group>"; };
 		8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+UtilitiesSpec.mm"; sourceTree = "<group>"; };
+		8B283FFD1CBE33B200B745AE /* WFTransparentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTransparentView.h; sourceTree = "<group>"; };
+		8B283FFE1CBE33B200B745AE /* WFTransparentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTransparentView.m; sourceTree = "<group>"; };
+		8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFTransparentViewSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +353,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AB2AB9C1CC4DB5500BC2371 /* RAC Support */ = {
+			isa = PBXGroup;
+			children = (
+				6AB2AAF51CC3945C00BC2371 /* UIView+LayoutSignals.h */,
+				6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */,
+			);
+			name = "RAC Support";
+			sourceTree = "<group>";
+		};
+		6AB2AB9D1CC4DC6C00BC2371 /* RAC Support */ = {
+			isa = PBXGroup;
+			children = (
+				6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */,
+			);
+			name = "RAC Support";
+			sourceTree = "<group>";
+		};
 		6AB2AF371CC4E63E00BC2371 /* LLReactiveMatchers */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,6 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				8B283FA31CBA9DAC00B745AE /* Extensions */,
+				6AB2AB9C1CC4DB5500BC2371 /* RAC Support */,
 				8B283FE61CBE33A500B745AE /* Views */,
 				8B283F1A1CBA85C900B745AE /* Supporting FIles */,
 			);
@@ -599,6 +622,7 @@
 			isa = PBXGroup;
 			children = (
 				8B283FA51CBA9DB700B745AE /* Extensions */,
+				6AB2AB9D1CC4DC6C00BC2371 /* RAC Support */,
 				8B2840001CBE33CA00B745AE /* Views */,
 			);
 			name = Tests;
@@ -929,6 +953,7 @@
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
+				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,8 +965,7 @@
 				6AB2AF6D1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m in Sources */,
 				6AB2AF681CC4E63E00BC2371 /* EXPMatchers+finish.m in Sources */,
 				6AB2AF6E1CC4E63E00BC2371 /* EXPMatchers+sendValues.m in Sources */,
-				6AB2AB021CC3949600BC2371 /* UIView+BoundsSignalSpec.mm in Sources */,
-				6AB2AB001CC3948F00BC2371 /* WFPaintCodeImageProviderSpec.mm in Sources */,
+				6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */,
 				6AB2AF6C1CC4E63E00BC2371 /* EXPMatchers+sendError.m in Sources */,
 				6AB2AF6B1CC4E63E00BC2371 /* EXPMatchers+matchValues.m in Sources */,
 				8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */,
@@ -958,7 +982,6 @@
 				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
-				6AB2AAFF1CC3948F00BC2371 /* WFAssetCatalogImageProviderSpec.mm in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
 				6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */,
