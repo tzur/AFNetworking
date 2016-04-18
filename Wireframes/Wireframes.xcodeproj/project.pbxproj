@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
+		6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3C1CC4E63E00BC2371 /* LLSignalTestRecorder.m */; };
+		6AB2AF611CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3E1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m */; };
+		6AB2AF621CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF421CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m */; };
+		6AB2AF631CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF451CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m */; };
+		6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF481CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m */; };
+		6AB2AF651CC4E63E00BC2371 /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF4A1CC4E63E00BC2371 /* EXPMatchers+complete.m */; };
+		6AB2AF661CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF4C1CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m */; };
+		6AB2AF671CC4E63E00BC2371 /* EXPMatchers+error.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF4E1CC4E63E00BC2371 /* EXPMatchers+error.m */; };
+		6AB2AF681CC4E63E00BC2371 /* EXPMatchers+finish.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF501CC4E63E00BC2371 /* EXPMatchers+finish.m */; };
+		6AB2AF691CC4E63E00BC2371 /* EXPMatchers+matchError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF521CC4E63E00BC2371 /* EXPMatchers+matchError.m */; };
+		6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF541CC4E63E00BC2371 /* EXPMatchers+matchValue.m */; };
+		6AB2AF6B1CC4E63E00BC2371 /* EXPMatchers+matchValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF561CC4E63E00BC2371 /* EXPMatchers+matchValues.m */; };
+		6AB2AF6C1CC4E63E00BC2371 /* EXPMatchers+sendError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF581CC4E63E00BC2371 /* EXPMatchers+sendError.m */; };
+		6AB2AF6D1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF5A1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m */; };
+		6AB2AF6E1CC4E63E00BC2371 /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF5C1CC4E63E00BC2371 /* EXPMatchers+sendValues.m */; };
+		6AB2AF6F1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF5E1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
 		8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EF21CBA838900B745AE /* libLTKit.a */; };
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
@@ -25,6 +42,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6AD130471CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-Mac";
+		};
+		6AD130491CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-MacTests";
+		};
+		6AD1304B1CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		6AD1304D1CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		6AD130631CC4FE8E003A5857 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
 		8B283E761CBA814100B745AE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B283E0F1CBA7EED00B745AE /* Project object */;
@@ -201,6 +253,44 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6AB2AF391CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
+		6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
+		6AB2AF3B1CC4E63E00BC2371 /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
+		6AB2AF3C1CC4E63E00BC2371 /* LLSignalTestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLSignalTestRecorder.m; sourceTree = "<group>"; };
+		6AB2AF3D1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+LLSubscriptionCounting.h"; sourceTree = "<group>"; };
+		6AB2AF3E1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+LLSubscriptionCounting.m"; sourceTree = "<group>"; };
+		6AB2AF3F1CC4E63E00BC2371 /* LLReactiveMatchers-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLReactiveMatchers-Prefix.pch"; sourceTree = "<group>"; };
+		6AB2AF401CC4E63E00BC2371 /* LLReactiveMatchers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchers.h; sourceTree = "<group>"; };
+		6AB2AF411CC4E63E00BC2371 /* LLReactiveMatchersHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersHelpers.h; sourceTree = "<group>"; };
+		6AB2AF421CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersHelpers.m; sourceTree = "<group>"; };
+		6AB2AF431CC4E63E00BC2371 /* LLReactiveMatchersImports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersImports.h; sourceTree = "<group>"; };
+		6AB2AF441CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersMessageBuilder.h; sourceTree = "<group>"; };
+		6AB2AF451CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersMessageBuilder.m; sourceTree = "<group>"; };
+		6AB2AF471CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beSubscribedTo.h"; sourceTree = "<group>"; };
+		6AB2AF481CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+beSubscribedTo.m"; sourceTree = "<group>"; };
+		6AB2AF491CC4E63E00BC2371 /* EXPMatchers+complete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+complete.h"; sourceTree = "<group>"; };
+		6AB2AF4A1CC4E63E00BC2371 /* EXPMatchers+complete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+complete.m"; sourceTree = "<group>"; };
+		6AB2AF4B1CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
+		6AB2AF4C1CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
+		6AB2AF4D1CC4E63E00BC2371 /* EXPMatchers+error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+error.h"; sourceTree = "<group>"; };
+		6AB2AF4E1CC4E63E00BC2371 /* EXPMatchers+error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+error.m"; sourceTree = "<group>"; };
+		6AB2AF4F1CC4E63E00BC2371 /* EXPMatchers+finish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+finish.h"; sourceTree = "<group>"; };
+		6AB2AF501CC4E63E00BC2371 /* EXPMatchers+finish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+finish.m"; sourceTree = "<group>"; };
+		6AB2AF511CC4E63E00BC2371 /* EXPMatchers+matchError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchError.h"; sourceTree = "<group>"; };
+		6AB2AF521CC4E63E00BC2371 /* EXPMatchers+matchError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchError.m"; sourceTree = "<group>"; };
+		6AB2AF531CC4E63E00BC2371 /* EXPMatchers+matchValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValue.h"; sourceTree = "<group>"; };
+		6AB2AF541CC4E63E00BC2371 /* EXPMatchers+matchValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValue.m"; sourceTree = "<group>"; };
+		6AB2AF551CC4E63E00BC2371 /* EXPMatchers+matchValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValues.h"; sourceTree = "<group>"; };
+		6AB2AF561CC4E63E00BC2371 /* EXPMatchers+matchValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValues.m"; sourceTree = "<group>"; };
+		6AB2AF571CC4E63E00BC2371 /* EXPMatchers+sendError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendError.h"; sourceTree = "<group>"; };
+		6AB2AF581CC4E63E00BC2371 /* EXPMatchers+sendError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendError.m"; sourceTree = "<group>"; };
+		6AB2AF591CC4E63E00BC2371 /* EXPMatchers+sendEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendEvents.h"; sourceTree = "<group>"; };
+		6AB2AF5A1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendEvents.m"; sourceTree = "<group>"; };
+		6AB2AF5B1CC4E63E00BC2371 /* EXPMatchers+sendValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValues.h"; sourceTree = "<group>"; };
+		6AB2AF5C1CC4E63E00BC2371 /* EXPMatchers+sendValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValues.m"; sourceTree = "<group>"; };
+		6AB2AF5D1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
+		6AB2AF5E1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
+		6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B283E621CBA811100B745AE /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		8B283E641CBA811100B745AE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -258,6 +348,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AB2AF371CC4E63E00BC2371 /* LLReactiveMatchers */ = {
+			isa = PBXGroup;
+			children = (
+				6AB2AF381CC4E63E00BC2371 /* Helpers */,
+				6AB2AF3F1CC4E63E00BC2371 /* LLReactiveMatchers-Prefix.pch */,
+				6AB2AF401CC4E63E00BC2371 /* LLReactiveMatchers.h */,
+				6AB2AF411CC4E63E00BC2371 /* LLReactiveMatchersHelpers.h */,
+				6AB2AF421CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m */,
+				6AB2AF431CC4E63E00BC2371 /* LLReactiveMatchersImports.h */,
+				6AB2AF441CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.h */,
+				6AB2AF451CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m */,
+				6AB2AF461CC4E63E00BC2371 /* Matchers */,
+			);
+			name = LLReactiveMatchers;
+			path = ../third_party/LLReactiveMatchers/LLReactiveMatchers;
+			sourceTree = "<group>";
+		};
+		6AB2AF381CC4E63E00BC2371 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6AB2AF391CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.h */,
+				6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */,
+				6AB2AF3B1CC4E63E00BC2371 /* LLSignalTestRecorder.h */,
+				6AB2AF3C1CC4E63E00BC2371 /* LLSignalTestRecorder.m */,
+				6AB2AF3D1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.h */,
+				6AB2AF3E1CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6AB2AF461CC4E63E00BC2371 /* Matchers */ = {
+			isa = PBXGroup;
+			children = (
+				6AB2AF471CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.h */,
+				6AB2AF481CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m */,
+				6AB2AF491CC4E63E00BC2371 /* EXPMatchers+complete.h */,
+				6AB2AF4A1CC4E63E00BC2371 /* EXPMatchers+complete.m */,
+				6AB2AF4B1CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.h */,
+				6AB2AF4C1CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m */,
+				6AB2AF4D1CC4E63E00BC2371 /* EXPMatchers+error.h */,
+				6AB2AF4E1CC4E63E00BC2371 /* EXPMatchers+error.m */,
+				6AB2AF4F1CC4E63E00BC2371 /* EXPMatchers+finish.h */,
+				6AB2AF501CC4E63E00BC2371 /* EXPMatchers+finish.m */,
+				6AB2AF511CC4E63E00BC2371 /* EXPMatchers+matchError.h */,
+				6AB2AF521CC4E63E00BC2371 /* EXPMatchers+matchError.m */,
+				6AB2AF531CC4E63E00BC2371 /* EXPMatchers+matchValue.h */,
+				6AB2AF541CC4E63E00BC2371 /* EXPMatchers+matchValue.m */,
+				6AB2AF551CC4E63E00BC2371 /* EXPMatchers+matchValues.h */,
+				6AB2AF561CC4E63E00BC2371 /* EXPMatchers+matchValues.m */,
+				6AB2AF571CC4E63E00BC2371 /* EXPMatchers+sendError.h */,
+				6AB2AF581CC4E63E00BC2371 /* EXPMatchers+sendError.m */,
+				6AB2AF591CC4E63E00BC2371 /* EXPMatchers+sendEvents.h */,
+				6AB2AF5A1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m */,
+				6AB2AF5B1CC4E63E00BC2371 /* EXPMatchers+sendValues.h */,
+				6AB2AF5C1CC4E63E00BC2371 /* EXPMatchers+sendValues.m */,
+				6AB2AF5D1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.h */,
+				6AB2AF5E1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m */,
+			);
+			path = Matchers;
+			sourceTree = "<group>";
+		};
+		6AD130411CC4FCAF003A5857 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6AD130481CC4FCAF003A5857 /* ReactiveCocoa.framework */,
+				6AD1304A1CC4FCAF003A5857 /* ReactiveCocoa-MacTests.xctest */,
+				6AD1304C1CC4FCAF003A5857 /* ReactiveCocoa.framework */,
+				6AD1304E1CC4FCAF003A5857 /* ReactiveCocoa-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8B283E0E1CBA7EED00B745AE = {
 			isa = PBXGroup;
 			children = (
@@ -335,7 +497,9 @@
 				8B283F171CBA84EA00B745AE /* libextobjc_iOS.a */,
 				8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */,
 				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
+				6AB2AF371CC4E63E00BC2371 /* LLReactiveMatchers */,
 				8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */,
+				6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */,
 				8B283EBE1CBA834300B745AE /* Specta.xcodeproj */,
 			);
 			name = Libraries;
@@ -480,6 +644,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6AD130641CC4FE8E003A5857 /* PBXTargetDependency */,
 			);
 			name = Wireframes;
 			productName = Wireframes;
@@ -545,6 +710,10 @@
 					ProjectRef = 8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */;
 				},
 				{
+					ProductGroup = 6AD130411CC4FCAF003A5857 /* Products */;
+					ProjectRef = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B283EBF1CBA834300B745AE /* Products */;
 					ProjectRef = 8B283EBE1CBA834300B745AE /* Specta.xcodeproj */;
 				},
@@ -558,6 +727,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6AD130481CC4FCAF003A5857 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 6AD130471CC4FCAF003A5857 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6AD1304A1CC4FCAF003A5857 /* ReactiveCocoa-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-MacTests.xctest";
+			remoteRef = 6AD130491CC4FCAF003A5857 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6AD1304C1CC4FCAF003A5857 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 6AD1304B1CC4FCAF003A5857 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6AD1304E1CC4FCAF003A5857 /* ReactiveCocoa-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-iOSTests.xctest";
+			remoteRef = 6AD1304D1CC4FCAF003A5857 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8B283EAF1CBA833C00B745AE /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -740,17 +937,42 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */,
+				6AB2AF6D1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m in Sources */,
+				6AB2AF681CC4E63E00BC2371 /* EXPMatchers+finish.m in Sources */,
+				6AB2AF6E1CC4E63E00BC2371 /* EXPMatchers+sendValues.m in Sources */,
+				6AB2AB021CC3949600BC2371 /* UIView+BoundsSignalSpec.mm in Sources */,
+				6AB2AB001CC3948F00BC2371 /* WFPaintCodeImageProviderSpec.mm in Sources */,
+				6AB2AF6C1CC4E63E00BC2371 /* EXPMatchers+sendError.m in Sources */,
+				6AB2AF6B1CC4E63E00BC2371 /* EXPMatchers+matchValues.m in Sources */,
 				8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */,
+				6AB2AF661CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
+				6AB2AF6F1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				6AB2AF671CC4E63E00BC2371 /* EXPMatchers+error.m in Sources */,
+				6AB2AF611CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
+				6AB2AF621CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m in Sources */,
+				6AB2AF631CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
+				6AB2AF651CC4E63E00BC2371 /* EXPMatchers+complete.m in Sources */,
+				6AB2AF691CC4E63E00BC2371 /* EXPMatchers+matchError.m in Sources */,
+				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
+				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
+				6AB2AAFF1CC3948F00BC2371 /* WFAssetCatalogImageProviderSpec.mm in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
+				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
+				6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6AD130641CC4FE8E003A5857 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveCocoa-iOS";
+			targetProxy = 6AD130631CC4FE8E003A5857 /* PBXContainerItemProxy */;
+		};
 		8B283E771CBA814100B745AE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B283E161CBA7EED00B745AE /* Wireframes */;
@@ -783,6 +1005,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/ReactiveCocoa/",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -834,6 +1060,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/ReactiveCocoa/",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -886,6 +1116,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -906,6 +1138,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
