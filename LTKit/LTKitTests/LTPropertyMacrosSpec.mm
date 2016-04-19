@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+#import "LTKeyPathCoding.h"
 #import "LTPropertyMacros.h"
 
 /// Used to test the macro-generated bounded primitive properties.
@@ -83,6 +84,39 @@ LTCategoryCGFloatProperty(categoryFloat, CategoryFloat);
 LTCategoryIntegerProperty(categoryInteger, CategoryInteger);
 LTCategoryUnsignedIntegerProperty(categoryUnsignedInteger, CategoryUnsignedInteger);
 LTCategoryStructProperty(CGSize, categorySize, CategorySize);
+@end
+
+@interface LTPropertyObserver : NSObject
+@property (nonatomic) BOOL basicPropertyObserved;
+@property (nonatomic) BOOL uintPropertyObserved;
+@property (nonatomic) BOOL customProxyPropertyObserved;
+@end
+
+@implementation LTPropertyObserver
+
+- (instancetype)init {
+  if (self = [super init]) {
+    self.basicPropertyObserved = NO;
+    self.uintPropertyObserved = NO;
+    self.customProxyPropertyObserved = NO;
+  }
+
+  return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id __unused)object
+                        change:(NSDictionary<NSString *, id> __unused *)change
+                       context:(void __unused *)context {
+  if ([keyPath isEqualToString:@instanceKeypath(ContainerClass, basicProperty)]) {
+    self.basicPropertyObserved = YES;
+  } else if ([keyPath isEqualToString:@instanceKeypath(ContainerClass, uintProperty)]) {
+    self.uintPropertyObserved = YES;
+  } else if ([keyPath isEqualToString:@instanceKeypath(ContainerClass, customProxyProperty)]) {
+    self.customProxyPropertyObserved = YES;
+  }
+}
+
 @end
 
 SpecBegin(LTPropertyMarcros)
@@ -218,6 +252,29 @@ it(@"should perform custom setter", ^{
   expect(containerObject.didCallCustomSetter).to.beTruthy();
   containerObject.uintProperty = containerObject.defaultUintProperty;
   expect(containerObject.didCallProxySetter).to.beTruthy();
+});
+
+it(@"should observe changes from proxy properties", ^{
+  LTPropertyObserver *observer = [[LTPropertyObserver alloc] init];
+
+  [containerObject addObserver:observer forKeyPath:@keypath(containerObject, basicProperty)
+                       options:NSKeyValueObservingOptionNew context:NULL];
+  containerObject.testClass.basicProperty = containerObject.testClass.defaultBasicProperty;
+  expect(observer.basicPropertyObserved).to.beTruthy();
+  [containerObject removeObserver:observer forKeyPath:@keypath(containerObject, basicProperty)];
+
+  [containerObject addObserver:observer forKeyPath:@keypath(containerObject, uintProperty)
+                       options:NSKeyValueObservingOptionNew context:NULL];
+  containerObject.testClass.uintProperty = containerObject.testClass.defaultUintProperty;
+  expect(observer.uintPropertyObserved).to.beTruthy();
+  [containerObject removeObserver:observer forKeyPath:@keypath(containerObject, uintProperty)];
+
+  [containerObject addObserver:observer forKeyPath:@keypath(containerObject, customProxyProperty)
+                       options:NSKeyValueObservingOptionNew context:NULL];
+  containerObject.testClass.basicProperty = containerObject.testClass.defaultBasicProperty;
+  expect(observer.customProxyPropertyObserved).to.beTruthy();
+  [containerObject removeObserver:observer
+                       forKeyPath:@keypath(containerObject, customProxyProperty)];
 });
 
 context(@"category properties", ^{
