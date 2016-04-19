@@ -22,6 +22,9 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier);
 /// \c size.
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize size);
 
+/// Creates a fake PhotoKit asset collection list with given \c localIdentifier.
+PHCollectionList *PTNPhotoKitCreateCollectionList(NSString * _Nullable localIdentifier);
+
 /// Creates a fake PhotoKit asset with \c -[PHAsset requestContentEditingInput:completion:]
 /// capabilities. The request's completion block will be invoked with \c contentEditingInput and
 /// \c contentEditingInfo.

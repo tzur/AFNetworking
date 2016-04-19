@@ -10,6 +10,7 @@
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
+#import "PTNPhotoKitChangeManager.h"
 #import "PTNPhotoKitFetcher.h"
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
@@ -34,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Image manager used to request images.
 @property (readonly, nonatomic) PHImageManager *imageManager;
 
+/// Change manager used to request changes in the PhotoKit library.
+@property (readonly, nonatomic) id<PTNPhotoKitChangeManager> changeManager;
+
 /// Cache from \c NSURL album urls to their \c RACSignal objects.
 @property (readonly, nonatomic) PTNSignalCache *albumSignalCache;
 
@@ -51,12 +55,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
-           authorizationManager:(id<PTNAuthorizationManager>)authorizationManager {
+           authorizationManager:(id<PTNAuthorizationManager>)authorizationManager
+                  changeManager:(id<PTNPhotoKitChangeManager>)changeManager {
   if (self = [super init]) {
     _fetcher = fetcher;
     _observer = observer;
     _imageManager = imageManager;
     _authorizationManager = authorizationManager;
+    _changeManager = changeManager;
 
     _albumSignalCache = [[PTNSignalCache alloc] init];
   }
@@ -548,6 +554,62 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACDisposable disposableWithBlock:^{
       [self.imageManager cancelImageRequest:requestID];
     }];
+  }];
+}
+
+#pragma mark -
+#pragma mark Delete assets
+#pragma mark -
+
+- (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors {
+  NSMutableArray *assets = [NSMutableArray array];
+  NSMutableArray *assetCollections = [NSMutableArray array];
+  NSMutableArray *collectionLists = [NSMutableArray array];
+
+  for (id<PTNDescriptor> descriptor in descriptors) {
+    if ([descriptor isKindOfClass:[PHAsset class]]) {
+      [assets addObject:descriptor];
+    } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
+      [assetCollections addObject:descriptor];
+    } else if ([descriptor isKindOfClass:[PHCollectionList class]]) {
+      [collectionLists addObject:descriptor];
+    } else {
+      return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                    associatedDescriptor:descriptor]];
+    }
+  }
+
+  return [[self performChanges:^{
+    if (assets.count > 0) {
+      [self.changeManager deleteAssets:assets];
+    }
+    if (assetCollections.count > 0) {
+      [self.changeManager deleteAssetCollections:assetCollections];
+    }
+    if (collectionLists.count > 0) {
+      [self.changeManager deleteCollectionLists:collectionLists];
+    }
+  }] ptn_wrapErrorWithError:[NSError ptn_errorWithCode:PTNErrorCodeAssetDeletionFailed
+                                 associatedDescriptors:descriptors]];
+}
+
+#pragma mark -
+#pragma mark Changes
+#pragma mark -
+
+- (RACSignal *)performChanges:(LTVoidBlock)changeBlock {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    [self.changeManager performChanges:changeBlock
+                     completionHandler:^(BOOL success, NSError * _Nullable error) {
+      if (!success) {
+         [subscriber sendError:error];
+         return;
+      }
+
+      [subscriber sendCompleted];
+    }];
+
+    return nil;
   }];
 }
 
