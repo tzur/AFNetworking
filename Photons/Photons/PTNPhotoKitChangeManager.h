@@ -26,6 +26,18 @@ typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullabl
 /// \c PTNPhotoKitChangeManager protocol.
 - (void)deleteCollectionLists:(id<NSFastEnumeration>)collectionsLists;
 
+/// Requests that the specified \c assets be removed from \c assetColleciton.
+/// Call this method within a photo library change block to delete assets. For details on change
+/// blocks, see the \c PTNPhotoKitChangeManager protocol.
+- (void)removeAssets:(id<NSFastEnumeration>)assets
+ fromAssetCollection:(PHAssetCollection *)assetCollection;
+
+/// Requests that the specified \c collections be removed from \c collectionList.
+/// Call this method within a photo library change block to delete assets. For details on change
+/// blocks, see the \c PTNPhotoKitChangeManager protocol.
+- (void)removeCollections:(id<NSFastEnumeration>)collections
+       fromCollectionList:(PHCollectionList *)collectionList;
+
 /// Asynchronously runs a block that requests changes to be performed in the Photos library. Photos
 /// executes both the change block and the completion handler block on an arbitrary serial queue. To
 /// update your app’s UI as a result of a change, dispatch that work to the main queue.

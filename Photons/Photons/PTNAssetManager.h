@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNDescriptor, PTNResizingStrategy;
+@protocol PTNAlbumDescriptor, PTNDescriptor, PTNResizingStrategy;
 
 @class PTNImageFetchOptions;
 
@@ -74,6 +74,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return RACSignal<>.
 - (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors;
+
+/// Removes the assets backed by the given \c descriptors. \c albumDescriptor must support
+/// \c PTNAlbumDescriptorCapabilityRemoveContent in its \c PTNAlbumDescriptorCapabilities in order
+/// for \c descriptors be eligible for removal from it.
+///
+/// The returned signal completes on an arbitrary thread once the assets were succesfuly removed and
+/// errs if an error occurred while removing the assets. The signal sends no values.
+///
+/// @return RACSignal<>.
+- (RACSignal *)removeDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                       fromAlbum:(id<PTNAlbumDescriptor>)albumDescriptor;
 
 @end
 

@@ -7,6 +7,7 @@
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAuthorizationManager.h"
+#import "PTNCollection.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
@@ -591,6 +592,56 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }] ptn_wrapErrorWithError:[NSError ptn_errorWithCode:PTNErrorCodeAssetDeletionFailed
                                  associatedDescriptors:descriptors]];
+}
+
+#pragma mark -
+#pragma mark Remove from album
+#pragma mark -
+
+- (RACSignal *)removeDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                       fromAlbum:(id<PTNAlbumDescriptor>)albumDescriptor {
+  if ((![albumDescriptor isKindOfClass:[PHAssetCollection class]] &&
+      ![albumDescriptor isKindOfClass:[PHCollectionList class]]) ||
+      !(albumDescriptor.albumDescriptorCapabilites & PTNAlbumDescriptorCapabilityRemoveContent)) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:albumDescriptor]];
+  }
+
+  NSDictionary<Class, Class> *allowedContentForClass = [[self class] allowedContentForClass];
+  for (id<PTNDescriptor> descriptor in descriptors) {
+    if (![descriptor isKindOfClass:allowedContentForClass[[albumDescriptor class]]]) {
+      return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetRemovalFromAlbumFailed
+                                    associatedDescriptor:descriptor]];
+    }
+  }
+
+  return [[self performChanges:^{
+    if ([albumDescriptor isKindOfClass:[PHAssetCollection class]]) {
+      [self.changeManager removeAssets:descriptors
+                   fromAssetCollection:(PHAssetCollection *)albumDescriptor];
+    } else {
+      [self.changeManager removeCollections:descriptors
+                         fromCollectionList:(PHCollectionList *)albumDescriptor];
+    }
+  }] catch:^RACSignal *(NSError *error) {
+    NSArray *allDescriptors = [@[albumDescriptor] arrayByAddingObjectsFromArray:descriptors];
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetRemovalFromAlbumFailed
+                                 associatedDescriptors:allDescriptors underlyingError:error]];
+  }];
+}
+
++ (NSDictionary<Class, Class> *)allowedContentForClass {
+  static NSDictionary<Class, Class> *allowedContentClass;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    allowedContentClass = @{
+      [PHAssetCollection class]: [PHAsset class],
+      [PHCollectionList class]: [PHAssetCollection class]
+    };
+  });
+
+  return allowedContentClass;
 }
 
 #pragma mark -

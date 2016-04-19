@@ -97,6 +97,24 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Removal
+#pragma mark -
+
+- (void)removeAssets:(id<NSFastEnumeration>)assets
+ fromAssetCollection:(PHAssetCollection *)assetCollection {
+  LTAssert(!self.inChangeBlock, @"Attempting to remove assetsDeleted: %@ from collection: %@ "
+           "not within a change block", assets, assetCollection);
+  self.assetsRemovedFromAlbum[assetCollection.localIdentifier] = assets;
+}
+
+- (void)removeCollections:(id<NSFastEnumeration>)collections
+       fromCollectionList:(PHCollectionList *)collectionList {
+  LTAssert(!self.inChangeBlock, @"Attempting to remove collections: %@ from collection list: %@ "
+           "not within a change block", collections, collectionList);
+  self.assetCollectionsRemovedFromAlbum[collectionList.localIdentifier] = collections;
+}
+
+#pragma mark -
 #pragma mark Changes
 #pragma mark -
 

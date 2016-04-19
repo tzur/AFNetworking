@@ -21,6 +21,20 @@ NS_ASSUME_NONNULL_BEGIN
   [PHAssetCollectionChangeRequest deleteAssetCollections:assetCollections];
 }
 
+- (void)removeAssets:(id<NSFastEnumeration>)assets
+ fromAssetCollection:(PHAssetCollection *)assetCollection {
+  PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest
+                                             changeRequestForAssetCollection:assetCollection];
+  [request removeAssets:assets];
+}
+
+- (void)removeCollections:(id<NSFastEnumeration>)collections
+       fromCollectionList:(PHCollectionList *)collectionList {
+  PHCollectionListChangeRequest *request = [PHCollectionListChangeRequest
+                                             changeRequestForCollectionList:collectionList];
+  [request removeChildCollections:collections];
+}
+
 - (void)performChanges:(dispatch_block_t)changeBlock
      completionHandler:(nullable PTNChangeRequestCompletionBlock)completionHandler {
   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:changeBlock
