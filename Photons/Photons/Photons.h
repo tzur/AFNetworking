@@ -52,6 +52,7 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/PTNPhotoKitAssetManager.h>
 #import <Photons/PTNPhotoKitAuthorizationManager.h>
 #import <Photons/PTNPhotoKitAuthorizer.h>
+#import <Photons/PTNPhotoKitChangeManager.h>
 #import <Photons/PTNPhotoKitFetcher.h>
 #import <Photons/PTNPhotoKitImageManager.h>
 #import <Photons/PTNPhotoKitObserver.h>

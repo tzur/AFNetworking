@@ -5,11 +5,16 @@
 
 #import <Photos/Photos.h>
 
+#import "PTNDescriptor.h"
+#import "PhotoKit+Photons.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localIdentifier) {
   PHAssetCollection *assetCollection = OCMClassMock([PHAssetCollection class]);
   OCMStub([assetCollection localIdentifier]).andReturn(localIdentifier);
+  OCMStub([assetCollection albumDescriptorCapabilites])
+      .andReturn(PTNAlbumDescriptorCapabilityRemoveContent);
   return assetCollection;
 }
 
@@ -33,6 +38,14 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize siz
   OCMStub([asset pixelHeight]).andReturn(size.height);
 
   return asset;
+}
+
+PHCollectionList *PTNPhotoKitCreateCollectionList(NSString * _Nullable localIdentifier) {
+  PHCollectionList *collectionList = OCMClassMock([PHCollectionList class]);
+  OCMStub([collectionList localIdentifier]).andReturn(localIdentifier);
+  OCMStub([collectionList albumDescriptorCapabilites])
+      .andReturn(PTNAlbumDescriptorCapabilityRemoveContent);
+  return collectionList;
 }
 
 PHAsset *PTNPhotoKitCreateAssetForContentEditing(NSString *localIdentifier,

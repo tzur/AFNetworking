@@ -5,19 +5,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAuthorizationManager, PTNPhotoKitFetcher, PTNPhotoKitImageManager,
-    PTNPhotoKitObserver;
+@protocol PTNAuthorizationManager, PTNPhotoKitChangeManager, PTNPhotoKitFetcher,
+    PTNPhotoKitImageManager, PTNPhotoKitObserver;
 
 /// Asset manager which backs PhotoKit assets.
 @interface PTNPhotoKitAssetManager : NSObject <PTNAssetManager>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with a fetcher, observer and image manager.
+/// Initializes with a \c PTNPhotoKitFetcher, \c PTNPhotoKitObserver, \c PTNPhotoKitImageManager and
+/// \c PTNPhotoKitChangeManager used to interact with the iOS photo library.
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
            authorizationManager:(id<PTNAuthorizationManager>)authorizationManager
+                  changeManager:(id<PTNPhotoKitChangeManager>)changeManager
     NS_DESIGNATED_INITIALIZER;
 
 @end

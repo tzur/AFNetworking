@@ -14,6 +14,7 @@
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitFakeAuthorizationManager.h"
+#import "PTNPhotoKitFakeChangeManager.h"
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
@@ -22,6 +23,7 @@
 #import "PTNPhotoKitTestUtils.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PhotoKit+Photons.h"
 
 SpecBegin(PTNPhotoKitAssetManager)
 
@@ -31,16 +33,19 @@ __block PTNPhotoKitFakeFetcher *fetcher;
 __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
 __block PTNPhotoKitFakeAuthorizationManager *authorizationManager;
+__block PTNPhotoKitFakeChangeManager *changeManager;
 
 beforeEach(^{
   fetcher = [[PTNPhotoKitFakeFetcher alloc] init];
   observer = [[PTNPhotoKitFakeObserver alloc] init];
   imageManager = [[PTNPhotoKitFakeImageManager alloc] init];
   authorizationManager = [[PTNPhotoKitFakeAuthorizationManager alloc] init];
+  changeManager = [[PTNPhotoKitFakeChangeManager alloc] init];
 
   manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                 imageManager:imageManager
-                                        authorizationManager:authorizationManager];
+                                        authorizationManager:authorizationManager
+                                               changeManager:changeManager];
 });
 
 context(@"album fetching", ^{
@@ -659,7 +664,8 @@ context(@"image fetching", ^{
       imageManagerMock = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
       manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                     imageManager:imageManagerMock
-                                            authorizationManager:authorizationManager];
+                                            authorizationManager:authorizationManager
+                                                   changeManager:changeManager];
       resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
     });
 
@@ -720,6 +726,72 @@ context(@"image fetching", ^{
          subscribeNext:^(id __unused x) {}];
         
         OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
+    });
+  });
+});
+
+context(@"asset changes", ^{
+  __block NSArray *assets;
+  __block NSArray *assetCollections;
+  __block NSArray *collectionLists;
+  __block NSError *error;
+
+  beforeEach(^{
+    assets = @[
+      PTNPhotoKitCreateAsset(@"foo"),
+      PTNPhotoKitCreateAsset(@"bar")
+    ];
+    assetCollections = @[
+      PTNPhotoKitCreateAssetCollection(@"foo of foos"),
+      PTNPhotoKitCreateAssetCollection(@"bar of bars")
+    ];
+    collectionLists = @[
+      PTNPhotoKitCreateCollectionList(@"foo of foos of foos"),
+      PTNPhotoKitCreateCollectionList(@"bar of bars of bars")
+    ];
+    error = [NSError lt_errorWithCode:1337];
+  });
+
+  context(@"deletion", ^{
+    it(@"should delete assets", ^{
+      expect([manager deleteDescriptors:assets]).will.complete();
+      expect((changeManager.assetDeleteRequests)).to.equal(assets);
+    });
+
+    it(@"should delete asset collections", ^{
+      expect([manager deleteDescriptors:assetCollections]).will.complete();
+      expect((changeManager.assetCollectionDeleteRequests)).to.equal(assetCollections);
+    });
+
+    it(@"should delete collection lists", ^{
+      expect([manager deleteDescriptors:collectionLists]).will.complete();
+      expect((changeManager.collectionListDeleteRequests)).to.equal(collectionLists);
+    });
+
+    it(@"should delete a mixture of descriptor types", ^{
+      NSArray *descriptors = [[assets arrayByAddingObjectsFromArray:assetCollections]
+        arrayByAddingObjectsFromArray:collectionLists];
+
+      expect([manager deleteDescriptors:descriptors]).will.complete();
+      expect((changeManager.assetDeleteRequests)).to.equal(assets);
+      expect((changeManager.assetCollectionDeleteRequests)).to.equal(assetCollections);
+      expect((changeManager.collectionListDeleteRequests)).to.equal(collectionLists);
+    });
+
+    it(@"should propogate error when failing to delete descritpors", ^{
+      changeManager.success = NO;
+      changeManager.error = error;
+
+      expect([manager deleteDescriptors:assets]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetDeletionFailed;
+      });
+    });
+
+    it(@"should err when invalid descritpors are given", ^{
+      id<PTNDescriptor> invalidAsset = OCMProtocolMock(@protocol(PTNDescriptor));
+      expect([manager deleteDescriptors:@[invalidAsset]]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor;
       });
     });
   });
