@@ -57,6 +57,72 @@ NS_ASSUME_NONNULL_BEGIN
                                         options:options];
 }
 
+#pragma mark -
+#pragma mark Deletion
+#pragma mark -
+
+- (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors {
+  NSDictionary<NSString *, NSArray<id<PTNDescriptor>> *> *schemeToDescriptors =
+      [self schemeToDescriptors:descriptors];
+
+  NSArray *unsupportedSchemes = [self unsupportedSchemesWithSchemes:schemeToDescriptors.allKeys];
+  if (unsupportedSchemes.count > 0) {
+    NSArray<id<PTNDescriptor>> *unsupportedDescriptors = [[unsupportedSchemes.rac_sequence
+        map:^RACSequence *(NSString *scheme) {
+          return schemeToDescriptors[scheme].rac_sequence;
+        }]
+        flatten].array;
+
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                 associatedDescriptors:unsupportedDescriptors]];
+  }
+
+  NSArray<RACSignal *> *deleteSignals = [schemeToDescriptors.allKeys.rac_sequence
+      map:^RACSignal *(NSString *scheme) {
+        return [self deleteDescriptors:schemeToDescriptors[scheme]
+                           fromManager:self.mapping[scheme]];
+      }].array;
+
+  return [RACSignal merge:deleteSignals];
+}
+
+- (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                     fromManager:(id<PTNAssetManager>)manager {
+  if (![manager respondsToSelector:@selector(deleteDescriptors:)]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetDeletionFailed
+                                 associatedDescriptors:descriptors]];
+  }
+
+  return [manager deleteDescriptors:descriptors];
+}
+
+#pragma mark -
+#pragma mark Descriptor array multiplexing
+#pragma mark -
+
+- (NSDictionary<NSString *, NSArray *> *)schemeToDescriptors:
+    (NSArray<id<PTNDescriptor>> *)descriptors {
+  NSMutableDictionary<NSString *, NSMutableArray *> *schemeToDescriptors =
+      [NSMutableDictionary dictionary];
+
+  for (id<PTNDescriptor> descriptor in descriptors) {
+    NSString *scheme = descriptor.ptn_identifier.scheme;
+    NSMutableArray *sourceDescriptors = schemeToDescriptors[scheme] ?: [NSMutableArray array];
+    [sourceDescriptors addObject:descriptor];
+    schemeToDescriptors[scheme] = sourceDescriptors;
+  }
+
+  return [schemeToDescriptors copy];
+}
+
+- (NSArray<NSString *> *)unsupportedSchemesWithSchemes:(NSArray<NSString *> *)schemes {
+  NSMutableSet *schemeSet = [NSMutableSet setWithArray:schemes];
+  NSSet *supportedSchemeSet = [NSSet setWithArray:self.mapping.allKeys];
+  [schemeSet minusSet:supportedSchemeSet];
+
+  return schemeSet.allObjects;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
