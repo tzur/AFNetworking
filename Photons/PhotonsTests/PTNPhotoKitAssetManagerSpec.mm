@@ -795,6 +795,62 @@ context(@"asset changes", ^{
       });
     });
   });
+
+  context(@"removal of assets from album", ^{
+    it(@"should remove assets from asset collections", ^{
+      PHAssetCollection *collection = assetCollections.firstObject;
+      expect([manager removeDescriptors:assets fromAlbum:collection]).will.complete();
+      expect(changeManager.assetsRemovedFromAlbumRequests[collection.localIdentifier])
+          .to.equal(assets);
+    });
+
+    it(@"should remove assets collections from collection lists", ^{
+      PHCollectionList *collectionList = collectionLists.firstObject;
+      expect([manager removeDescriptors:assetCollections fromAlbum:collectionList]).will.complete();
+      expect(changeManager.assetCollectionsRemovedFromAlbumRequests[collectionList.localIdentifier])
+          .to.equal(assetCollections);
+    });
+
+    it(@"should err when removing assets from collection lists", ^{
+      PHCollectionList *collectionList = collectionLists.firstObject;
+      expect([manager removeDescriptors:assets fromAlbum:collectionList])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetRemovalFromAlbumFailed;
+      });
+    });
+
+    it(@"should err when removing asset collections from asset collection", ^{
+      PHAssetCollection *collection = assetCollections.firstObject;
+      expect([manager removeDescriptors:assetCollections fromAlbum:collection])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetRemovalFromAlbumFailed;
+      });
+    });
+
+    it(@"should err when removing collection lists", ^{
+      PHCollectionList *collectionList = collectionLists.firstObject;
+      expect([manager removeDescriptors:collectionLists fromAlbum:collectionList])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetRemovalFromAlbumFailed;
+      });
+    });
+
+    it(@"should err when removing assets from an invalid album descriptor", ^{
+      id<PTNAlbumDescriptor> invalidDescriptor = OCMProtocolMock(@protocol(PTNAlbumDescriptor));
+      expect([manager removeDescriptors:assets fromAlbum:invalidDescriptor])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor;
+      });
+    });
+
+    it(@"should err when removing assets from an album descriptor that does not support removal", ^{
+      id<PTNAlbumDescriptor> invalidDescriptor = OCMClassMock([PHAssetCollection class]);
+      expect([manager removeDescriptors:assets fromAlbum:invalidDescriptor])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor;
+      });
+    });
+  });
 });
 
 SpecEnd
