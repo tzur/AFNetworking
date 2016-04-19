@@ -9,7 +9,7 @@ SpecBegin(BLUNode)
 
 it(@"should initialize with properties", ^{
   BLUNode<NSNumber *> *child = [BLUNode nodeWithName:@"child" childNodes:@[] value:@7];
-  BLUNode<NSNumber *> *parent = [BLUNode nodeWithName:@"parent" childNodes:@[child] value:@5];
+  BLUNode<NSNumber *> *parent = [BLUNode nodeWithName:@"parent" childNodes:@[child] value:nil];
 
   expect(child.name).to.equal(@"child");
   expect(child.childNodes.count).to.equal(0);
@@ -18,7 +18,7 @@ it(@"should initialize with properties", ^{
   expect(parent.name).to.equal(@"parent");
   expect(parent.childNodes.count).to.equal(1);
   expect(parent.childNodes[0]).to.equal(child);
-  expect(parent.value).to.equal(@5);
+  expect(parent.value).to.beNil();
 });
 
 it(@"should copy initializer parameters", ^{
@@ -47,11 +47,15 @@ context(@"NSObject", ^{
     BLUNode<NSNumber *> *node3 = [BLUNode nodeWithName:@"node3" childNodes:@[] value:@7];
     BLUNode<NSNumber *> *node4 = [BLUNode nodeWithName:@"node" childNodes:@[node2] value:@7];
     BLUNode<NSNumber *> *node5 = [BLUNode nodeWithName:@"node" childNodes:@[] value:@5];
+    BLUNode<NSNumber *> *node6 = [BLUNode nodeWithName:@"node" childNodes:@[] value:nil];
+    BLUNode<NSNumber *> *node7 = [BLUNode nodeWithName:@"node" childNodes:@[] value:nil];
 
     expect(node1).to.equal(node2);
     expect(node1).notTo.equal(node3);
     expect(node1).notTo.equal(node4);
     expect(node1).notTo.equal(node5);
+    expect(node1).notTo.equal(node6);
+    expect(node6).notTo.equal(node7);
   });
 
   it(@"should perform hash correctly", ^{

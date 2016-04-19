@@ -4,16 +4,16 @@
 #import "BLUNode.h"
 
 #import "BLUNodeCollection.h"
+#import "NSArray+BLUNodeCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation BLUNode
 
 - (instancetype)initWithName:(NSString *)name childNodes:(id<BLUNodeCollection>)childNodes
-                       value:(BLUNodeValue)value {
+                       value:(nullable BLUNodeValue)value {
   LTParameterAssert(name);
   LTParameterAssert(childNodes);
-  LTParameterAssert(value);
   if (self = [super init]) {
     _name = [name copy];
     _childNodes = [childNodes copyWithZone:nil];
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)nodeWithName:(NSString *)name childNodes:(id<BLUNodeCollection>)childNodes
-                       value:(BLUNodeValue)value {
+                       value:(nullable BLUNodeValue)value {
   return [[BLUNode alloc] initWithName:name childNodes:childNodes value:value];
 }
 
@@ -40,7 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.name isEqualToString:object.name] && [self.childNodes isEqual:object.childNodes] &&
+  return (self.name == object.name || [self.name isEqualToString:object.name]) &&
+      [self.childNodes isEqual:object.childNodes] &&
       [self.value isEqual:object.value];
 }
 

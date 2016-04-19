@@ -10,7 +10,8 @@ typedef id<NSCopying, NSObject> BLUNodeValue;
 
 /// Represents an immutable node of a tree. A node has three basic properties: \c name which
 /// identifies the node, \c childNodes which is a collection of children nodes with unique names,
-/// and \c value which holds the actual data of the node.
+/// and \c value which holds the actual data of the node and can be \c nil if the node holds no
+/// data.
 ///
 /// The node can be viewed as a root node of a tree (or a sub-tree, if this node is a child of
 /// another node). For such perspective, accessing and manipulating nodes can be very useful, and is
@@ -48,7 +49,7 @@ typedef id<NSCopying, NSObject> BLUNodeValue;
 /// empty collection should be provided. All arguments will be copied to enforce the immutability of
 /// the node.
 + (instancetype)nodeWithName:(NSString *)name childNodes:(id<BLUNodeCollection>)childNodes
-                       value:(ObjectType)value;
+                       value:(nullable ObjectType)value;
 
 /// Name of the node.
 @property (readonly, nonatomic) NSString *name;
@@ -56,8 +57,8 @@ typedef id<NSCopying, NSObject> BLUNodeValue;
 /// Child nodes of this node.
 @property (readonly, nonatomic) id<BLUNodeCollection> childNodes;
 
-/// Value of this node.
-@property (readonly, nonatomic) ObjectType value;
+/// Value of this node. Can be \c nil if the node holds no value.
+@property (readonly, nonatomic, nullable) ObjectType value;
 
 @end
 
