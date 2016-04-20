@@ -44,6 +44,24 @@ NSString * kPTNErrorAssociatedDescriptorsKey = @"AssociatedDescriptors";
   }];
 }
 
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+             associatedDescriptor:(id<PTNDescriptor>)associatedDescriptor
+                      description:(NSString *)description {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kPTNErrorAssociatedDescriptorKey: (id)associatedDescriptor ?: [NSNull null],
+    kLTErrorDescriptionKey: description ?: [NSNull null]
+  }];
+}
+
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+            associatedDescriptors:(NSArray<id<PTNDescriptor>> *)associatedDescriptors
+                      description:(NSString *)description {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kPTNErrorAssociatedDescriptorsKey: associatedDescriptors ?: [NSNull null],
+    kLTErrorDescriptionKey: description ?: [NSNull null]
+  }];
+}
+
 + (instancetype)ptn_nullValueGivenError {
   return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
