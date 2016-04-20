@@ -10,6 +10,9 @@
 		8B0E4D761CC65DED0031B743 /* BLUNode+Builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */; };
 		8B0E4D771CC65DED0031B743 /* BLUNode+Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */; };
 		8B0E4D951CC65E310031B743 /* BLUNode+BuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */; };
+		8B0E4DB61CC67E9A0031B743 /* RACSignal+BLUNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B0E4DB41CC67E9A0031B743 /* RACSignal+BLUNode.h */; };
+		8B0E4DB71CC67E9A0031B743 /* RACSignal+BLUNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4DB51CC67E9A0031B743 /* RACSignal+BLUNode.m */; };
+		8B0E4DD51CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4DD41CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm */; };
 		8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */; };
 		8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */; };
 		8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */; };
@@ -311,6 +314,9 @@
 		8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Builder.h"; sourceTree = "<group>"; };
 		8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Builder.m"; sourceTree = "<group>"; };
 		8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+BuilderSpec.mm"; sourceTree = "<group>"; };
+		8B0E4DB41CC67E9A0031B743 /* RACSignal+BLUNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+BLUNode.h"; sourceTree = "<group>"; };
+		8B0E4DB51CC67E9A0031B743 /* RACSignal+BLUNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+BLUNode.m"; sourceTree = "<group>"; };
+		8B0E4DD41CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BLUNodeSpec.mm"; sourceTree = "<group>"; };
 		8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+BLUNodeCollection.h"; sourceTree = "<group>"; };
 		8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+BLUNodeCollection.mm"; sourceTree = "<group>"; };
 		8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollectionExamples.h; sourceTree = "<group>"; };
@@ -614,6 +620,8 @@
 				8BD00C3C1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.mm */,
 				8BED83021C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h */,
 				8BED83031C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.mm */,
+				8B0E4DB41CC67E9A0031B743 /* RACSignal+BLUNode.h */,
+				8B0E4DB51CC67E9A0031B743 /* RACSignal+BLUNode.m */,
 			);
 			path = Blueprints;
 			sourceTree = "<group>";
@@ -669,6 +677,7 @@
 				8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */,
 				8BD00C571C5E1F9A009A1A2D /* NSIndexPath+BlueprintsSpec.mm */,
 				8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */,
+				8B0E4DD41CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm */,
 			);
 			path = BlueprintsTests;
 			sourceTree = "<group>";
@@ -724,6 +733,7 @@
 				8B3CEA031C4E6BB7008E779B /* BLUModelNodeChange.h in Headers */,
 				8BED83081C3D87480001C6F1 /* BLUNode+Operations.h in Headers */,
 				8BED82FC1C3D6A8A0001C6F1 /* BLUNode.h in Headers */,
+				8B0E4DB61CC67E9A0031B743 /* RACSignal+BLUNode.h in Headers */,
 				8B3CED4D1C590D6F008E779B /* BLUNodeData.h in Headers */,
 				8BD00D631C5FC6FF009A1A2D /* BLUNode+Tree.h in Headers */,
 				8B3CED251C57C1AA008E779B /* BLULazyNodeCollection.h in Headers */,
@@ -1071,6 +1081,7 @@
 				8B3CED4E1C590D6F008E779B /* BLUNodeData.m in Sources */,
 				8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */,
 				8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.m in Sources */,
+				8B0E4DB71CC67E9A0031B743 /* RACSignal+BLUNode.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
 				8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */,
@@ -1104,6 +1115,7 @@
 				8B3CED321C590234008E779B /* BLULazyNodeCollectionSpec.mm in Sources */,
 				8B3CEA711C4E8904008E779B /* EXPMatchers+sendError.m in Sources */,
 				8B3CEA721C4E8904008E779B /* EXPMatchers+sendEvents.m in Sources */,
+				8B0E4DD51CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm in Sources */,
 				8B3CEA731C4E8904008E779B /* EXPMatchers+sendValues.m in Sources */,
 				8B3CEA741C4E8904008E779B /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8B0E4D951CC65E310031B743 /* BLUNode+BuilderSpec.mm in Sources */,
