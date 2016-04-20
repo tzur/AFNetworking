@@ -35,6 +35,18 @@ extern NSString * kPTNErrorAssociatedDescriptorsKey;
             associatedDescriptors:(NSArray<id<PTNDescriptor>> *)associatedDescriptors
                   underlyingError:(nullable NSError *)underlyingError;
 
+/// Creates an error with Lightricks' domain, given error code, associated descriptor and
+/// description.
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+             associatedDescriptor:(id<PTNDescriptor>)associatedDescriptor
+                      description:(NSString *)description;
+
+/// Creates an error with Lightricks' domain, given error code, associated descriptors and
+/// description.
++ (instancetype)ptn_errorWithCode:(NSInteger)code
+            associatedDescriptors:(NSArray<id<PTNDescriptor>> *)associatedDescriptors
+                      description:(NSString *)description;
+
 /// Photons descriptor associated with the error.
 @property (readonly, nonatomic, nullable) id<PTNDescriptor> ptn_associatedDescriptor;
 

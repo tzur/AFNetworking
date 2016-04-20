@@ -45,4 +45,22 @@ it(@"should create an error with associated descriptors and underlying error", ^
   expect(error.lt_underlyingError).to.equal(underlyingError);
 });
 
+it(@"should create an error with an associated descriptor and description", ^{
+  NSError *error = [NSError ptn_errorWithCode:1337 associatedDescriptor:descriptor
+                                  description:@"foo"];
+
+  expect(error.code).to.equal(1337);
+  expect(error.ptn_associatedDescriptor).to.equal(descriptor);
+  expect(error.lt_description).to.equal(@"foo");
+});
+
+it(@"should create an error with associated descriptors and description", ^{
+  NSError *error = [NSError ptn_errorWithCode:1337 associatedDescriptors:@[descriptor, descriptor]
+                                  description:@"foo"];
+  
+  expect(error.code).to.equal(1337);
+  expect(error.ptn_associatedDescriptors).to.equal(@[descriptor, descriptor]);
+  expect(error.lt_description).to.equal(@"foo");
+});
+
 SpecEnd
