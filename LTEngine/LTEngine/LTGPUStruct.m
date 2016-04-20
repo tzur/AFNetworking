@@ -33,6 +33,23 @@
   return self;
 }
 
+- (BOOL)isEqual:(LTGPUStructField *)field {
+  if (self == field) {
+    return YES;
+  }
+
+  if (![field isKindOfClass:[LTGPUStructField class]]) {
+    return NO;
+  }
+
+  return [self.name isEqualToString:field.name] && [self.type isEqualToString:field.type] &&
+      self.size == field.size && self.offset == field.offset;
+}
+
+- (NSUInteger)hash {
+  return self.name.hash ^ self.type.hash ^ self.size ^ self.offset;
+}
+
 + (GLenum)componentTypeForFieldType:(NSString *)type {
   if ([type isEqualToString:@"float"] ||
       [type isEqualToString:@"GLKVector2"] ||
@@ -97,6 +114,23 @@
     self.fields = fieldsDict;
   }
   return self;
+}
+
+- (BOOL)isEqual:(LTGPUStruct *)gpuStruct {
+  if (self == gpuStruct) {
+    return YES;
+  }
+
+  if (![gpuStruct isKindOfClass:[LTGPUStruct class]]) {
+    return NO;
+  }
+
+  return [self.name isEqualToString:gpuStruct.name] && self.size == gpuStruct.size &&
+      [self.fields isEqualToDictionary:gpuStruct.fields];
+}
+
+- (NSUInteger)hash {
+  return self.name.hash ^ self.size ^ self.fields.hash;
 }
 
 @end
