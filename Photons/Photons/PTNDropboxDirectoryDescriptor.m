@@ -50,11 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self.path.lastPathComponent;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return PTNDescriptorCapabilityNone;
 }
 
-- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilities {
   return PTNAlbumDescriptorCapabilityNone;
 }
 

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localIdentifier) {
   PHAssetCollection *assetCollection = OCMClassMock([PHAssetCollection class]);
   OCMStub([assetCollection localIdentifier]).andReturn(localIdentifier);
-  OCMStub([assetCollection albumDescriptorCapabilites])
+  OCMStub([assetCollection albumDescriptorCapabilities])
       .andReturn(PTNAlbumDescriptorCapabilityRemoveContent);
   return assetCollection;
 }
@@ -43,7 +43,7 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize siz
 PHCollectionList *PTNPhotoKitCreateCollectionList(NSString * _Nullable localIdentifier) {
   PHCollectionList *collectionList = OCMClassMock([PHCollectionList class]);
   OCMStub([collectionList localIdentifier]).andReturn(localIdentifier);
-  OCMStub([collectionList albumDescriptorCapabilites])
+  OCMStub([collectionList albumDescriptorCapabilities])
       .andReturn(PTNAlbumDescriptorCapabilityRemoveContent);
   return collectionList;
 }

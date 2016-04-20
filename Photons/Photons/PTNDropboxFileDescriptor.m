@@ -54,11 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return PTNDescriptorCapabilityNone;
 }
 
-- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilites {
+- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
   return PTNAssetDescriptorCapabilityNone;
 }
 

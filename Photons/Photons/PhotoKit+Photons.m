@@ -17,12 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return [self canPerformEditOperation:PHAssetEditOperationDelete] ?
       PTNDescriptorCapabilityDelete : PTNDescriptorCapabilityNone;
 }
 
-- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilites {
+- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
   return PTNAssetDescriptorCapabilityNone;
 }
 
@@ -43,12 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
   return estimatedAssetCount != NSNotFound ? estimatedAssetCount : PTNNotFound;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return [self canPerformEditOperation:PHCollectionEditOperationDelete] ?
       PTNDescriptorCapabilityDelete : PTNDescriptorCapabilityNone;
 }
 
-- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilities {
   return [self canPerformEditOperation:PHCollectionEditOperationRemoveContent] ?
       PTNAlbumDescriptorCapabilityRemoveContent : PTNAlbumDescriptorCapabilityNone;
 }

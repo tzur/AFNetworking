@@ -21,8 +21,8 @@ it(@"should initialize with path", ^{
   expect(identifier.ptn_fileSystemAssetPath).to.equal(path);
   expect(descriptor.creationDate).to.beNil();
   expect(descriptor.modificationDate).to.beNil();
-  expect(descriptor.descriptorCapabilites).to.equal(PTNDescriptorCapabilityNone);
-  expect(descriptor.assetDescriptorCapabilites).to.equal(PTNAssetDescriptorCapabilityNone);
+  expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
+  expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
 });
 
 it(@"should use last path component for localized title", ^{
