@@ -18,14 +18,14 @@ context(@"asset descriptor", ^{
     PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub([asset canPerformEditOperation:PHAssetEditOperationDelete]).andReturn(YES);
 
-    expect(asset.descriptorCapabilites & PTNDescriptorCapabilityDelete).to.beTruthy();
+    expect(asset.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beTruthy();
   });
 
     PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
   it(@"should not reveal delete change capabilities when the underlying asset disallows it", ^{
     OCMStub([asset canPerformEditOperation:PHAssetEditOperationDelete]).andReturn(NO);
 
-    expect(asset.descriptorCapabilites & PTNDescriptorCapabilityDelete).to.beFalsy();
+    expect(asset.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beFalsy();
   });
 });
 
@@ -67,28 +67,28 @@ context(@"album descriptor", ^{
     PHCollection *album = OCMPartialMock([[PHCollection alloc] init]);
     OCMStub([album canPerformEditOperation:PHCollectionEditOperationDelete]).andReturn(YES);
 
-    expect(album.descriptorCapabilites & PTNDescriptorCapabilityDelete).to.beTruthy();
+    expect(album.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beTruthy();
   });
 
   it(@"should not reveal delete change capabilities when the underlying collection disallows it", ^{
     PHCollection *album = OCMPartialMock([[PHCollection alloc] init]);
     OCMStub([album canPerformEditOperation:PHCollectionEditOperationDelete]).andReturn(NO);
 
-    expect(album.descriptorCapabilites & PTNDescriptorCapabilityDelete).to.beFalsy();
+    expect(album.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beFalsy();
   });
 
   it(@"should reveal delete change capabilities when the underlying collection allows it", ^{
     PHCollection *album = OCMPartialMock([[PHCollection alloc] init]);
     OCMStub([album canPerformEditOperation:PHCollectionEditOperationRemoveContent]).andReturn(YES);
 
-    expect(album.albumDescriptorCapabilites & PTNDescriptorCapabilityDelete).to.beTruthy();
+    expect(album.albumDescriptorCapabilities & PTNDescriptorCapabilityDelete).to.beTruthy();
   });
 
   it(@"should not reveal delete change capabilities when the underlying collection disallows it", ^{
     PHCollection *album = OCMPartialMock([[PHCollection alloc] init]);
     OCMStub([album canPerformEditOperation:PHCollectionEditOperationRemoveContent]).andReturn(NO);
 
-    expect(album.albumDescriptorCapabilites & PTNAlbumDescriptorCapabilityRemoveContent)
+    expect(album.albumDescriptorCapabilities & PTNAlbumDescriptorCapabilityRemoveContent)
         .to.beFalsy();
   });
 });

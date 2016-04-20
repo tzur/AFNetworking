@@ -602,7 +602,7 @@ NS_ASSUME_NONNULL_BEGIN
                        fromAlbum:(id<PTNAlbumDescriptor>)albumDescriptor {
   if ((![albumDescriptor isKindOfClass:[PHAssetCollection class]] &&
       ![albumDescriptor isKindOfClass:[PHCollectionList class]]) ||
-      !(albumDescriptor.albumDescriptorCapabilites & PTNAlbumDescriptorCapabilityRemoveContent)) {
+      !(albumDescriptor.albumDescriptorCapabilities & PTNAlbumDescriptorCapabilityRemoveContent)) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:albumDescriptor]];
   }

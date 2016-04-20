@@ -37,11 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNNotFound;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return PTNDescriptorCapabilityNone;
 }
 
-- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilites {
+- (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilities {
   return PTNAlbumDescriptorCapabilityNone;
 }
 

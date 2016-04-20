@@ -46,11 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self.path.relativePath.lastPathComponent;
 }
 
-- (PTNDescriptorCapabilities)descriptorCapabilites {
+- (PTNDescriptorCapabilities)descriptorCapabilities {
   return PTNDescriptorCapabilityNone;
 }
 
-- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilites {
+- (PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
   return PTNAssetDescriptorCapabilityNone;
 }
 

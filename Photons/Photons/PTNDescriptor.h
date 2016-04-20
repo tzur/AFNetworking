@@ -46,7 +46,7 @@ typedef NS_OPTIONS(NSUInteger, PTNAlbumDescriptorCapabilities) {
 @property (readonly, nonatomic, nullable) NSString *localizedTitle;
 
 /// Capabilities supported by this descriptor.
-@property (readonly, nonatomic) PTNDescriptorCapabilities descriptorCapabilites;
+@property (readonly, nonatomic) PTNDescriptorCapabilities descriptorCapabilities;
 
 @end
 
@@ -58,7 +58,7 @@ typedef NS_OPTIONS(NSUInteger, PTNAlbumDescriptorCapabilities) {
 @property (readonly, nonatomic) NSUInteger assetCount;
 
 /// Capabilities supported by the album backed by this descriptor.
-@property (readonly, nonatomic) PTNAlbumDescriptorCapabilities albumDescriptorCapabilites;
+@property (readonly, nonatomic) PTNAlbumDescriptorCapabilities albumDescriptorCapabilities;
 
 @end
 
@@ -74,7 +74,7 @@ typedef NS_OPTIONS(NSUInteger, PTNAlbumDescriptorCapabilities) {
 @property (readonly, nonatomic, nullable) NSDate *modificationDate;
 
 /// Capabilities supported by the asset backed by this descriptor.
-@property (readonly, nonatomic) PTNAssetDescriptorCapabilities assetDescriptorCapabilites;
+@property (readonly, nonatomic) PTNAssetDescriptorCapabilities assetDescriptorCapabilities;
 
 @end
 
