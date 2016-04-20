@@ -170,6 +170,9 @@ NS_ASSUME_NONNULL_BEGIN
   } \
   - (type)name { \
     return proxyBase.customName; \
+  } \
+  + (NSSet *)keyPathsForValuesAffecting##Name { \
+    return [NSSet setWithObject:[NSString stringWithFormat:@"%@.%@", @#proxyBase, @#customName]]; \
   }
 
 /// Implement the category for primitives boxed by \c NSNumber, accepting the name of the selector
