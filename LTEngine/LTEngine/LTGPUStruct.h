@@ -30,7 +30,7 @@
 
 @end
 
-/// Holds data about a struct that can be placed on the GPU.
+/// Value object holding data about a struct that can be placed on the GPU.
 @interface LTGPUStruct : NSObject
 
 /// Initializes with struct name, size in bytes and \c NSArray of \c LTGPUStructField objects.

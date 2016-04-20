@@ -101,4 +101,129 @@ context(@"struct registration", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  context(@"gpu structs", ^{
+    __block LTGPUStruct *gpuStruct;
+    __block NSArray<LTGPUStructField *> *fields;
+
+    beforeEach(^{
+      gpuStruct = [[LTGPUStructRegistry sharedInstance] structForName:@"MyMediumStruct"];
+      fields = [gpuStruct.fields allValues];
+    });
+
+    context(@"equality", ^{
+      it(@"should return YES when comparing to itself", ^{
+        expect([gpuStruct isEqual:gpuStruct]).to.beTruthy();
+      });
+
+      it(@"should return NO when comparing to nil", ^{
+        expect([gpuStruct isEqual:nil]).to.beFalsy();
+      });
+
+      it(@"should return YES when comparing to equal gpu struct", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:gpuStruct.name
+                                                                     size:gpuStruct.size
+                                                                andFields:fields];
+        expect([gpuStruct isEqual:anotherGPUStruct]).to.beTruthy();
+      });
+
+      it(@"should return NO when comparing to an object of a different class", ^{
+        expect([gpuStruct isEqual:[[NSObject alloc] init]]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct with different name", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:@"anotherName"
+                                                                     size:gpuStruct.size
+                                                                andFields:fields];
+        expect([gpuStruct isEqual:anotherGPUStruct]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct with different size", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:gpuStruct.name
+                                                                     size:gpuStruct.size + 1
+                                                                andFields:fields];
+        expect([gpuStruct isEqual:anotherGPUStruct]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct with different fields", ^{
+        NSMutableArray<LTGPUStructField *> *fields = [[gpuStruct.fields allValues] mutableCopy];
+        [fields removeLastObject];
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:gpuStruct.name
+                                                                     size:gpuStruct.size
+                                                                andFields:fields];
+        expect([gpuStruct isEqual:anotherGPUStruct]).to.beFalsy();
+      });
+    });
+
+    context(@"hash", ^{
+      it(@"should return the same hash value for equal objects", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:gpuStruct.name
+                                                                     size:gpuStruct.size
+                                                                andFields:fields];
+        expect(gpuStruct.hash).to.equal(anotherGPUStruct.hash);
+      });
+    });
+  });
+
+  context(@"gpu struct fields", ^{
+    __block LTGPUStructField *field;
+
+    beforeEach(^{
+      field = [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 andOffset:0];
+    });
+
+    context(@"equality", ^{
+      it(@"should return YES when comparing to itself", ^{
+        expect([field isEqual:field]).to.beTruthy();
+      });
+
+      it(@"should return NO when comparing to nil", ^{
+        expect([field isEqual:nil]).to.beFalsy();
+      });
+
+      it(@"should return YES when comparing to equal gpu struct field", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 andOffset:0];
+        expect([field isEqual:anotherField]).to.beTruthy();
+      });
+
+      it(@"should return NO when comparing to an object of a different class", ^{
+        expect([field isEqual:[[NSObject alloc] init]]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct field with different name", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"anotherName" type:@"float" size:1 andOffset:0];
+        expect([field isEqual:anotherField]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct field with different type", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"GLKVector2" size:1 andOffset:0];
+        expect([field isEqual:anotherField]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct field with different size", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:2 andOffset:0];
+        expect([field isEqual:anotherField]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct field with different offset", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 andOffset:1];
+        expect([field isEqual:anotherField]).to.beFalsy();
+      });
+    });
+
+    context(@"hash", ^{
+      it(@"should return the same hash value for equal objects", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 andOffset:0];
+        expect(field.hash).to.equal(anotherField.hash);
+      });
+    });
+  });
+});
+
 SpecEnd
