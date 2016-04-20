@@ -151,6 +151,48 @@ context(@"changes", ^{
       });
     });
   });
+
+  context(@"asset removal", ^{
+    __block id<PTNAlbumDescriptor> albumDescriptorA;
+    __block id<PTNAlbumDescriptor> albumDescriptorB;
+    __block id<PTNAlbumDescriptor> albumDescriptorD;
+
+    beforeEach(^{
+      albumDescriptorA = OCMProtocolMock(@protocol(PTNAlbumDescriptor));
+      OCMStub([albumDescriptorA ptn_identifier]).andReturn(PTNCreateURL(kSchemeA, nil, nil));
+      albumDescriptorB = OCMProtocolMock(@protocol(PTNAlbumDescriptor));
+      OCMStub([albumDescriptorB ptn_identifier]).andReturn(PTNCreateURL(kSchemeB, nil, nil));
+      albumDescriptorD = OCMProtocolMock(@protocol(PTNAlbumDescriptor));
+      OCMStub([albumDescriptorD ptn_identifier]).andReturn(PTNCreateURL(kSchemeD, nil, nil));
+    });
+
+    it(@"should forward remove requests to underlying managers", ^{
+      RACSignal *values = [multiplexerManager removeDescriptors:@[descriptorA, descriptorA]
+                                                      fromAlbum:albumDescriptorA];
+
+      expect(values).to.equal(returnSignalA);
+    });
+
+    it(@"should err when given album descriptor has an unconfigured scheme", ^{
+      RACSignal *values = [multiplexerManager removeDescriptors:@[descriptorA, descriptorA]
+                                                      fromAlbum:albumDescriptorD];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeUnrecognizedURLScheme &&
+            [error.ptn_associatedDescriptor isEqual:albumDescriptorD];
+      });
+    });
+
+    it(@"should err when given descriptors don't match album descriptor scheme", ^{
+      NSArray *descriptors = @[descriptorA, descriptorB, descriptorC];
+      RACSignal *values = [multiplexerManager removeDescriptors:descriptors
+                                                      fromAlbum:albumDescriptorA];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetRemovalFromAlbumFailed;
+      });
+    });
+  });
 });
 
 SpecEnd
