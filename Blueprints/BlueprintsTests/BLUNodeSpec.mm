@@ -55,7 +55,7 @@ context(@"NSObject", ^{
     expect(node1).notTo.equal(node4);
     expect(node1).notTo.equal(node5);
     expect(node1).notTo.equal(node6);
-    expect(node6).notTo.equal(node7);
+    expect(node6).to.equal(node7);
   });
 
   it(@"should perform hash correctly", ^{

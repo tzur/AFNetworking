@@ -40,9 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return (self.name == object.name || [self.name isEqualToString:object.name]) &&
+  return [self.name isEqualToString:object.name] &&
       [self.childNodes isEqual:object.childNodes] &&
-      [self.value isEqual:object.value];
+      (self.value == object.value || [self.value isEqual:object.value]);
 }
 
 - (NSUInteger)hash {
