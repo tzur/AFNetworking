@@ -255,6 +255,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6AAED9F01CC62AAD00B3C62F /* WFImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageProvider.h; sourceTree = "<group>"; };
 		6AB2AAF51CC3945C00BC2371 /* UIView+LayoutSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayoutSignals.h"; sourceTree = "<group>"; };
 		6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+LayoutSignals.mm"; sourceTree = "<group>"; };
 		6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = "UIView+LayoutSignalsSpec.mm"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -353,6 +354,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AAED9D11CC62A7C00B3C62F /* Image Providers */ = {
+			isa = PBXGroup;
+			children = (
+				6AAED9F01CC62AAD00B3C62F /* WFImageProvider.h */,
+			);
+			name = "Image Providers";
+			sourceTree = "<group>";
+		};
 		6AB2AB9C1CC4DB5500BC2371 /* RAC Support */ = {
 			isa = PBXGroup;
 			children = (
