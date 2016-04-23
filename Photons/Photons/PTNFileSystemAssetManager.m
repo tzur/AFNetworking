@@ -7,10 +7,10 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
+#import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNCollection.h"
 #import "PTNFileBackedImageAsset.h"
-#import "PTNFileSystemAlbum.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
@@ -72,8 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray *subdirectories = [self subdirectoriesFromContents:contents withPath:path];
     NSArray *files = [self imageFilesFromContents:contents withPath:path];
 
-    id<PTNAlbum> album = [[PTNFileSystemAlbum alloc] initWithPath:url subdirectories:subdirectories
-                                                            files:files];
+    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:subdirectories
+                                                assets:files];
     PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
 
     [subscriber sendNext:changeset];

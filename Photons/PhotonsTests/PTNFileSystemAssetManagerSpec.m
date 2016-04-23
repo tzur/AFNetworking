@@ -7,9 +7,9 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
+#import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNFileBackedImageAsset.h"
-#import "PTNFileSystemAlbum.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFakeFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
@@ -55,8 +55,7 @@ context(@"album fetching", ^{
       PTNFileSystemFileFromString(@"foo.jpg"),
       PTNFileSystemFileFromString(@"bar.jpg")
     ];
-    id<PTNAlbum> album = [[PTNFileSystemAlbum alloc] initWithPath:url subdirectories:directories
-                                                            files:files];
+    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:directories assets:files];
 
     expect(values).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
   });
@@ -70,9 +69,7 @@ context(@"album fetching", ^{
       PTNFileSystemFileFromString(@"baz/foo.tiff"),
       PTNFileSystemFileFromString(@"baz/foo.jpeg")
     ];
-    id<PTNAlbum> album = [[PTNFileSystemAlbum alloc] initWithPath:url
-                                                   subdirectories:@[]
-                                                            files:files];
+    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:files];
 
     expect(values).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
   });
