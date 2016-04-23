@@ -10,9 +10,9 @@
 #import "NSError+Photons.h"
 #import "NSURL+Dropbox.h"
 #import "NSURL+PTNResizingStrategy.h"
+#import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNCollection.h"
-#import "PTNDropboxAlbum.h"
 #import "PTNDropboxDirectoryDescriptor.h"
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxFileDescriptor.h"
@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
 
         NSURL *albumURL = [NSURL ptn_dropboxAlbumURLWithEntry:url.ptn_dropboxAlbumEntry];
-        PTNDropboxAlbum *album = [self albumFromMetadata:metadata path:albumURL];
+        id<PTNAlbum> album = [self albumFromMetadata:metadata path:albumURL];
         return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
       }]
       catch:^RACSignal *(NSError *error) {
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (PTNDropboxAlbum *)albumFromMetadata:(DBMetadata *)metadata path:(NSURL *)path {
+- (id<PTNAlbum>)albumFromMetadata:(DBMetadata *)metadata path:(NSURL *)path {
   NSArray *subdirectories = [[[metadata.contents rac_sequence]
       filter:^BOOL(DBMetadata *metadata) {
         return metadata.isDirectory;
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
         return [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
       }].array;
 
-  return [[PTNDropboxAlbum alloc] initWithPath:path subdirectories:subdirectories files:files];
+  return [[PTNAlbum alloc] initWithURL:path subalbums:subdirectories assets:files];
 }
 
 #pragma mark -
