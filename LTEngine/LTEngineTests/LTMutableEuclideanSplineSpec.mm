@@ -5,6 +5,7 @@
 
 #import "LTCompoundParameterizedObjectFactory.h"
 #import "LTMutableEuclideanSplineTestUtils.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTPrimitiveParameterizedObjectFactories.h"
 
 static const CGFloat kEpsilon = 3e-6;
@@ -12,20 +13,17 @@ static const CGFloat kEpsilon = 3e-6;
 static BOOL LTCompareParameterizationKeyToValues(LTParameterizationKeyToValues *mapping,
                                                  LTParameterizationKeyToValues *expectedMapping,
                                                  const CGFloat epsilon) {
-  if (![[NSSet setWithArray:[mapping allKeys]]
-        isEqualToSet:[NSSet setWithArray:[expectedMapping allKeys]]]) {
+  if (![[mapping.keys set] isEqualToSet:[expectedMapping.keys set]] ||
+      mapping.numberOfValuesPerKey != expectedMapping.numberOfValuesPerKey) {
     return NO;
   }
 
-  for (NSString *key in mapping) {
-    NSUInteger size = mapping[key].count;
-    if (size != expectedMapping[key].count) {
-      return NO;
-    }
+  for (NSString *key in mapping.keys) {
+    CGFloats values = [mapping valuesForKey:key];
+    CGFloats expectedValues = [expectedMapping valuesForKey:key];
 
-    for (NSUInteger i = 0; i < size; ++i) {
-      if (std::abs([mapping[key][i] CGFloatValue] - [expectedMapping[key][i] CGFloatValue]) >
-          epsilon) {
+    for (NSUInteger i = 0; i < values.size(); ++i) {
+      if (std::abs(values[i] - expectedValues[i]) > epsilon) {
         return NO;
       }
     }
@@ -173,13 +171,17 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         });
 
         it(@"should return the correct mappings for given parametric values", ^{
-          LTParameterizationKeyToValues *expectedMapping = @{
-            @keypath(startPoint, xCoordinateOfLocation):
-                @[@(startPoint.xCoordinateOfLocation), @(endPoint.xCoordinateOfLocation)],
-            @keypath(startPoint, yCoordinateOfLocation):
-                @[@(startPoint.yCoordinateOfLocation), @(endPoint.yCoordinateOfLocation)],
-            @"attribute": @[@7, @8]
-          };
+          NSOrderedSet<NSString *> *keys =
+              [NSOrderedSet orderedSetWithArray:@[@keypath(startPoint, xCoordinateOfLocation),
+                                                  @keypath(startPoint, yCoordinateOfLocation),
+                                                  @"attribute"]];
+          cv::Mat1g values = (cv::Mat1g(3, 2) <<
+              startPoint.xCoordinateOfLocation, endPoint.xCoordinateOfLocation,
+              startPoint.yCoordinateOfLocation, endPoint.yCoordinateOfLocation,
+              7, 8);
+
+          LTParameterizationKeyToValues *expectedMapping =
+              [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:values];
 
           LTParameterizationKeyToValues *mapping =
               [spline mappingForParametricValues:{0, spline.maxParametricValue}];
@@ -253,13 +255,17 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         });
 
         it(@"should return the correct mappings for given parametric values", ^{
-          LTParameterizationKeyToValues *expectedMapping = @{
-            @keypath(startPoint, xCoordinateOfLocation):
-                @[@(startPoint.xCoordinateOfLocation), @(endPoint.xCoordinateOfLocation)],
-            @keypath(startPoint, yCoordinateOfLocation):
-                @[@(startPoint.yCoordinateOfLocation), @(endPoint.yCoordinateOfLocation)],
-            @"attribute": @[@7, @11]
-          };
+          NSOrderedSet<NSString *> *keys =
+              [NSOrderedSet orderedSetWithArray:@[@keypath(startPoint, xCoordinateOfLocation),
+                                                  @keypath(startPoint, yCoordinateOfLocation),
+                                                  @"attribute"]];
+          cv::Mat1g values = (cv::Mat1g(3, 2) <<
+              startPoint.xCoordinateOfLocation, endPoint.xCoordinateOfLocation,
+              startPoint.yCoordinateOfLocation, endPoint.yCoordinateOfLocation,
+              7, 11);
+
+          LTParameterizationKeyToValues *expectedMapping =
+              [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:values];
 
           LTParameterizationKeyToValues *mapping =
               [spline mappingForParametricValues:{0, spline.maxParametricValue}];

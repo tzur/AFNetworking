@@ -3,16 +3,13 @@
 
 #import "LTCompoundParameterizedObject.h"
 
+#import "LTParameterizationKeyToValues.h"
 #import "LTPrimitiveParameterizedObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Represents mutable mapping from key to boxed \c CGFloat returned by parameterized objects.
 typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKeyToValue;
-
-/// Represents mutable mapping from key to ordered collection of boxed \c CGFloat returned by
-/// parameterized objects.
-typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParameterizationKeyToValues;
 
 @interface LTCompoundParameterizedObject ()
 
@@ -21,6 +18,9 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 
 /// See \c LTParameterizedObject protocol.
 @property (strong, nonatomic) NSSet<NSString *> *parameterizationKeys;
+
+/// Ordered set of parameterization keys.
+@property (strong, nonatomic) NSOrderedSet<NSString *> *orderedParameterizationKeys;
 
 /// See \c LTParameterizedObject protocol.
 @property (nonatomic) CGFloat minParametricValue;
@@ -37,10 +37,15 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 #pragma mark -
 
 - (instancetype)initWithMapping:(LTKeyToPrimitiveParameterizedObject *)mapping {
+  LTParameterAssert([mapping allKeys].count <= INT_MAX,
+                    @"Number (%lu) of keys must not exceed INT_MAX",
+                    (unsigned long)[mapping allKeys].count);
+
   if (self = [super init]) {
     [self validateMapping:mapping];
     self.mapping = [mapping copy];
     self.parameterizationKeys = [NSSet setWithArray:[mapping allKeys]];
+    self.orderedParameterizationKeys = [NSOrderedSet orderedSetWithSet:self.parameterizationKeys];
     id<LTPrimitiveParameterizedObject> object = mapping[[mapping allKeys].firstObject];
     self.minParametricValue = object.minParametricValue;
     self.maxParametricValue = object.maxParametricValue;
@@ -104,18 +109,23 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   return [result copy];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
-  LTMutableParameterizationKeyToValues *result =
-      [LTMutableParameterizationKeyToValues dictionaryWithCapacity:self.parameterizationKeys.count];
-  for (NSString *key in self.parameterizationKeys) {
-    NSMutableArray<NSNumber *> *boxedValues = [NSMutableArray arrayWithCapacity:values.size()];
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)parametricValues {
+  LTParameterAssert(parametricValues.size() <= INT_MAX,
+                    @"Number (%lu) of parametric values must not exceed INT_MAX",
+                    (unsigned long)parametricValues.size());
+  __block cv::Mat1g valuesPerKey((int)self.orderedParameterizationKeys.count,
+                                 (int)parametricValues.size());
+
+  [self.orderedParameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i,
+                                                                 BOOL *) {
     id<LTPrimitiveParameterizedObject> object = [self primitiveParameterizedObjectForKey:key];
-    for (const CGFloat &value : values) {
-      [boxedValues addObject:@([object floatForParametricValue:value])];
+    for (int j = 0; j < (int)parametricValues.size(); ++j) {
+      valuesPerKey((int)i, j) = (float)[object floatForParametricValue:parametricValues[j]];
     }
-    result[key] = boxedValues;
-  }
-  return [result copy];
+  }];
+
+  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.orderedParameterizationKeys
+                                                valuesPerKey:valuesPerKey];
 }
 
 - (CGFloat)floatForParametricValue:(CGFloat)value key:(NSString *)key {

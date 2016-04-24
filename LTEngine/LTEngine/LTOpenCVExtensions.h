@@ -5,6 +5,22 @@
 #import "LTOpenCVHalfFloat.h"
 #import "LTVector.h"
 
+namespace cv {
+  /// \c CGFloat specializations of the \c Vec type.
+  typedef Vec<CGFloat, 2> Vec2g;
+  typedef Vec<CGFloat, 3> Vec3g;
+  typedef Vec<CGFloat, 4> Vec4g;
+
+  /// Matrix of \c CGFloats.
+  ///
+  /// @note Since \c CGFloat is \c float or \c double depending on the target architecture, this
+  /// type definition is \c cv::Mat1f if \c CGFloat is \c float, and \c cv::Mat1g otherwise.
+  typedef Mat_<CGFloat> Mat1g;
+  typedef Mat_<Vec2g> Mat2g;
+  typedef Mat_<Vec3g> Mat3g;
+  typedef Mat_<Vec4g> Mat4g;
+}
+
 /// Converts the given \c input mat to a \c mat with the given \c type, and writes the result to
 /// \c type. The \c output matrix will be created with the corresponding type.
 ///

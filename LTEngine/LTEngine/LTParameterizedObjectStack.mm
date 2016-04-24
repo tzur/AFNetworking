@@ -3,13 +3,10 @@
 
 #import "LTParameterizedObjectStack.h"
 
+#import "LTParameterizationKeyToValues.h"
 #import "LTReparameterization.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Represents mutable mapping from key to ordered collection of boxed \c CGFloat returned by
-/// parameterized objects.
-typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParameterizationKeyToValues;
 
 @interface LTParameterizedObjectStack () {
   /// Mapping used to compute the reparameterization.
@@ -26,6 +23,9 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 /// the state of the stack. Used for performance reasons.
 @property (strong, nonatomic, nullable) NSArray<id<LTParameterizedValueObject>> *immutableObjects;
 
+/// Ordered collection of parameterization keys. Stored for optimization.
+@property (strong, nonatomic) NSOrderedSet<NSString *> *orderedParameterizationKeys;
+
 @end
 
 @implementation LTParameterizedObjectStack
@@ -37,6 +37,8 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
 - (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   if (self = [super init]) {
     self.mutableObjects = [NSMutableArray arrayWithObject:parameterizedObject];
+    self.orderedParameterizationKeys =
+        [NSOrderedSet orderedSetWithSet:parameterizedObject.parameterizationKeys];
     [self resetImmutableObjects];
     _mapping.assign({parameterizedObject.minParametricValue,
                      parameterizedObject.maxParametricValue});
@@ -124,24 +126,26 @@ typedef NSMutableDictionary<NSString *, NSArray<NSNumber *> *> LTMutableParamete
   return [self.mutableObjects[index] mappingForParametricValue:value];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
-  std::vector<NSUInteger> indices = [self indicesOfObjectsForParametricValues:values];
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)parametricValues {
+  LTParameterAssert(parametricValues.size() <= INT_MAX,
+                    @"Number (%lu) of parametric values must not exceed INT_MAX",
+                    (unsigned long)parametricValues.size());
 
-  LTMutableParameterizationKeyToValues *resultMapping =
-      [NSMutableDictionary dictionaryWithCapacity:self.parameterizationKeys.count];
+  std::vector<NSUInteger> indices = [self indicesOfObjectsForParametricValues:parametricValues];
 
-  for (NSString *key in self.parameterizationKeys) {
-    NSMutableArray<NSNumber *> *mutableArray = [NSMutableArray arrayWithCapacity:values.size()];
+  __block cv::Mat1g valuesPerKey((int)self.orderedParameterizationKeys.count,
+                                 (int)parametricValues.size());
 
-    for (CGFloats::size_type i = 0; i < values.size(); ++i) {
-      CGFloat value = [self.mutableObjects[indices[i]] floatForParametricValue:values[i] key:key];
-      [mutableArray addObject:@(value)];
+  [self.orderedParameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i,
+                                                                 BOOL *) {
+    for (int j = 0; j < (int)parametricValues.size(); ++j) {
+      valuesPerKey((int)i, j) =
+          [self.mutableObjects[indices[j]] floatForParametricValue:parametricValues[j] key:key];
     }
+  }];
 
-    resultMapping[key] = [mutableArray copy];
-  }
-
-  return [resultMapping copy];
+  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.orderedParameterizationKeys
+                                                valuesPerKey:valuesPerKey];
 }
 
 - (CGFloat)floatForParametricValue:(CGFloat)value key:(NSString *)key {

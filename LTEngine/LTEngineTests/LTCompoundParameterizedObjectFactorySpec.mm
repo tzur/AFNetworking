@@ -5,6 +5,7 @@
 
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTPrimitiveParameterizedObject.h"
 #import "LTPrimitiveParameterizedObjectFactory.h"
 
@@ -154,10 +155,19 @@ context(@"parameterized object computation", ^{
       OCMExpect([primitiveObjectMockForY floatForParametricValue:1]).andReturn(12);
       OCMExpect([primitiveObjectMockForX floatForParametricValue:2]).andReturn(13);
       OCMExpect([primitiveObjectMockForY floatForParametricValue:2]).andReturn(14);
+
       LTParameterizationKeyToValues *mapping = [result mappingForParametricValues:{1, 2}];
-      expect([NSSet setWithArray:[mapping allKeys]]).to.equal(keys);
-      expect(mapping[@"x"]).to.equal(@[@11, @13]);
-      expect(mapping[@"y"]).to.equal(@[@12, @14]);
+
+      CGFloats xValues = [mapping valuesForKey:@"x"];
+      CGFloats yValues = [mapping valuesForKey:@"y"];
+
+      expect([mapping.keys set]).to.equal(keys);
+      expect(xValues.size()).to.equal(2);
+      expect(xValues[0]).to.equal(11);
+      expect(xValues[1]).to.equal(13);
+      expect(yValues.size()).to.equal(2);
+      expect(yValues[0]).to.equal(12);
+      expect(yValues[1]).to.equal(14);
       OCMVerifyAll(primitiveObjectMockForY);
 
       OCMExpect([primitiveObjectMockForX floatForParametricValue:3]).andReturn(15);

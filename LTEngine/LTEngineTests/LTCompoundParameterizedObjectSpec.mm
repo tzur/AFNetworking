@@ -3,6 +3,7 @@
 
 #import "LTCompoundParameterizedObject.h"
 
+#import "LTParameterizationKeyToValues.h"
 #import "LTPrimitiveParameterizedObject.h"
 
 SpecBegin(LTCompoundParameterizedObject)
@@ -111,7 +112,7 @@ context(@"NSCopying protocol", ^{
 });
 
 context(@"LTParameterizedObject protocol", ^{
-  __block NSSet *expectedKeys;
+  __block NSSet<NSString *> *expectedKeys;
 
   beforeEach(^{
     expectedKeys = [NSSet setWithArray:@[@"x", @"y"]];
@@ -138,9 +139,16 @@ context(@"LTParameterizedObject protocol", ^{
 
     LTParameterizationKeyToValues *result = [object mappingForParametricValues:{0, 0.5}];
 
-    expect([NSSet setWithArray:[result allKeys]]).to.equal(expectedKeys);
-    expect(result[@"x"]).to.equal(@[@9, @11]);
-    expect(result[@"y"]).to.equal(@[@10, @12]);
+    CGFloats xValues = [result valuesForKey:@"x"];
+    CGFloats yValues = [result valuesForKey:@"y"];
+
+    expect([result.keys set]).to.equal(expectedKeys);
+    expect(xValues.size()).to.equal(2);
+    expect(xValues[0]).to.equal(9);
+    expect(xValues[1]).to.equal(11);
+    expect(yValues.size()).to.equal(2);
+    expect(yValues[0]).to.equal(10);
+    expect(yValues[1]).to.equal(12);
     OCMVerifyAll(primitiveMock);
     OCMVerifyAll(anotherPrimitiveMock);
   });

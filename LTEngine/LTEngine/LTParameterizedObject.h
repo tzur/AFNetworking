@@ -6,9 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Represents mapping from key to boxed \c CGFloat returned by parameterized objects.
 typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 
-/// Represents mapping from key to ordered collection of boxed \c CGFloat returned by parameterized
-/// objects.
-typedef NSDictionary<NSString *, NSArray<NSNumber *> *> LTParameterizationKeyToValues;
+@class LTParameterizationKeyToValues;
 
 /// Protocol which should be implemented by objects constituting a mapping from a single real-valued
 /// parameter \c t to a mapping from keys to real values. In practice, a parameterized object
@@ -38,7 +36,8 @@ typedef NSDictionary<NSString *, NSArray<NSNumber *> *> LTParameterizationKeyToV
 - (LTParameterizationKeyToValue *)mappingForParametricValue:(CGFloat)value;
 
 /// Returns the mapping from all \c parameterizationKeys to ordered collections of the corresponding
-/// real values, for the given parametric \c values.
+/// real values, for the given parametric \c values. The number of values in the given \c values
+/// must not exceed \c INT_MAX.
 ///
 /// @note This is a convenience method aimed at improving the performance of mapping retrieval for
 /// several parametric values.
@@ -49,13 +48,14 @@ typedef NSDictionary<NSString *, NSArray<NSNumber *> *> LTParameterizationKeyToV
 - (CGFloat)floatForParametricValue:(CGFloat)value key:(NSString *)key;
 
 /// Returns the values for the mapped \c key, for the given parametric \c values. The given \c key
-/// must be in the set of \c parameterizationKeys.
+/// must be in the set of \c parameterizationKeys. The number of values in the given \c values must
+/// not exceed \c INT_MAX.
 ///
 /// @note This is a convenience method aimed at improving the performance of value retrieval for
 /// several parametric values.
 - (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key;
 
-/// Keys of the mappings returned by this object.
+/// Keys of the mappings returned by this object. Number of keys does not exceed \c INT_MAX.
 @property (readonly, nonatomic) NSSet<NSString *> *parameterizationKeys;
 
 /// Lower bound of the intrinsic parametric range of this instance. Is smaller than or equal to

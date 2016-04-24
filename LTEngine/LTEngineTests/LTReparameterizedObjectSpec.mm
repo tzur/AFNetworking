@@ -3,6 +3,7 @@
 
 #import "LTReparameterizedObject.h"
 
+#import "LTParameterizationKeyToValues.h"
 #import "LTReparameterization.h"
 
 @interface LTReparameterizedObjectTestObject : NSObject <LTParameterizedValueObject>
