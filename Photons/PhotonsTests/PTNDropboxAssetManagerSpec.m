@@ -7,8 +7,8 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+Dropbox.h"
+#import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
-#import "PTNDropboxAlbum.h"
 #import "PTNDropboxDirectoryDescriptor.h"
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxFakeRestClient.h"
@@ -61,8 +61,7 @@ context(@"album fetching", ^{
       [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadataContents[1]],
       [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadataContents[2]]
     ];
-    id<PTNAlbum> album = [[PTNDropboxAlbum alloc] initWithPath:url subdirectories:directories
-                                                         files:files];
+    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:directories assets:files];
 
     expect(values).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
   });
