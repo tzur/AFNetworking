@@ -4,6 +4,7 @@
 #import "LTSampler.h"
 
 #import "LTFloatSet.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 
 @interface LTTestParameterizedObject : NSObject <LTParameterizedObject>
@@ -68,7 +69,10 @@ beforeEach(^{
   parameterizedObject = [[LTTestParameterizedObject alloc] init];
   parameterizedObject.minParametricValue = 0;
   parameterizedObject.maxParametricValue = 10;
-  parameterizedObject.returnedMapping = [[LTParameterizationKeyToValues alloc] init];
+  NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[@"a"]];
+  cv::Mat1g values = (cv::Mat1g(1, 1) << 1);
+  parameterizedObject.returnedMapping = [[LTParameterizationKeyToValues alloc] initWithKeys:keys
+                                                                               valuesPerKey:values];
 });
 
 it(@"should correcly sample parameterized object using discrete CGFloat set, in given interval", ^{

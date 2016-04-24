@@ -6,6 +6,7 @@
 #import <LTKit/LTHashExtensions.h>
 
 #import "LTEuclideanSplineControlPoint.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 #import "LTRotatedRect.h"
 
@@ -95,20 +96,19 @@ static NSString * const kYCoordinateKey = @instanceKeypath(LTEuclideanSplineCont
 }
 
 - (NSArray<LTRotatedRect *> *)rectsFromMapping:(LTParameterizationKeyToValues *)mapping {
-  NSArray<NSNumber *> *xCoordinates = [mapping valueForKey:kXCoordinateKey];
-  NSArray<NSNumber *> *yCoordinates = [mapping valueForKey:kYCoordinateKey];
+  CGFloats xCoordinates = [mapping valuesForKey:kXCoordinateKey];
+  CGFloats yCoordinates = [mapping valuesForKey:kYCoordinateKey];
 
-  LTAssert(xCoordinates.count == yCoordinates.count,
+  LTAssert(xCoordinates.size() == yCoordinates.size(),
            @"Number (%lu) of x-coordinates does not match number (%lu) of y-coordinates",
-           (unsigned long)xCoordinates.count, (unsigned long)yCoordinates.count);
+           (unsigned long)xCoordinates.size(), (unsigned long)yCoordinates.size());
 
   NSMutableArray<LTRotatedRect *> *mutableRects =
-      [NSMutableArray arrayWithCapacity:xCoordinates.count];
+      [NSMutableArray arrayWithCapacity:xCoordinates.size()];
 
-  for (NSUInteger i = 0; i < xCoordinates.count; ++i) {
+  for (NSUInteger i = 0; i < xCoordinates.size(); ++i) {
     LTRotatedRect *rotatedRect =
-        [LTRotatedRect rectWithCenter:CGPointMake([xCoordinates[i] CGFloatValue],
-                                                  [yCoordinates[i] CGFloatValue])
+        [LTRotatedRect rectWithCenter:CGPointMake(xCoordinates[i], yCoordinates[i])
                                  size:self.rectSize angle:0];
     [mutableRects addObject:rotatedRect];
   }

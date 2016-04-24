@@ -3,6 +3,9 @@
 
 #import "LTParameterizedObjectStack.h"
 
+#import "LTEasyVectorBoxing.h"
+#import "LTParameterizationKeyToValues.h"
+
 SpecBegin(LTParameterizedObjectStack)
 
 __block LTParameterizedObjectStack *object;
@@ -244,9 +247,16 @@ context(@"LTParameterizedObject protocol", ^{
 
         LTParameterizationKeyToValues *result = [object mappingForParametricValues:{3.5, 5.5}];
 
-        expect([NSSet setWithArray:[result allKeys]]).to.equal(parameterizationKeys);
-        expect(result[@"key0"]).to.equal(@[@0, @10]);
-        expect(result[@"key1"]).to.equal(@[@1, @11]);
+        CGFloats values0 = [result valuesForKey:@"key0"];
+        CGFloats values1 = [result valuesForKey:@"key1"];
+
+        expect([result.keys set]).to.equal(parameterizationKeys);
+        expect(values0.size()).to.equal(2);
+        expect(values0[0]).to.equal(0);
+        expect(values0[1]).to.equal(10);
+        expect(values1.size()).to.equal(2);
+        expect(values1[0]).to.equal(1);
+        expect(values1[1]).to.equal(11);
         OCMVerifyAll(strictParameterizedObjectMock);
         OCMVerifyAll(anotherStrictParameterizedObjectMock);
       });

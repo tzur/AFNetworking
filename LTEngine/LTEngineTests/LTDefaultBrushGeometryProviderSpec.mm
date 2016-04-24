@@ -4,6 +4,7 @@
 #import "LTDefaultBrushGeometryProvider.h"
 
 #import "LTEuclideanSplineControlPoint.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 #import "LTRotatedRect.h"
 
@@ -39,9 +40,15 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
                                                  yCoordinateOfLocation)]];
       OCMStub([parameterizedObjectMock parameterizationKeys]).andReturn(parameterizationKeys);
 
+      NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[
+        @instanceKeypath(LTEuclideanSplineControlPoint, xCoordinateOfLocation),
+        @instanceKeypath(LTEuclideanSplineControlPoint, yCoordinateOfLocation)
+      ]];
+      cv::Mat1g values = (cv::Mat1g(2, 2) << 0, 1, 1, 2);
+
       LTParameterizationKeyToValues *mapping =
-          @{@instanceKeypath(LTEuclideanSplineControlPoint, xCoordinateOfLocation): @[@0, @1],
-            @instanceKeypath(LTEuclideanSplineControlPoint, yCoordinateOfLocation): @[@1, @2]};
+          [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:values];
+
       OCMStub([[parameterizedObjectMock ignoringNonObjectArgs] mappingForParametricValues:{}])
           .andReturn(mapping);
 
