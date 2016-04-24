@@ -6,40 +6,62 @@
 #import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
 
-#import "PTNImageMetadata.h"
 #import "NSError+Photons.h"
+#import "PTNImageMetadata.h"
+#import "PTNImageResizer.h"
+#import "PTNResizingStrategy.h"
+#import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNDataBackedImageAsset ()
 
 /// Underlying \c NSData buffer backing this image asset.
-@property (strong, nonatomic) NSData *data;
+@property (readonly, nonatomic) NSData *data;
+
+/// Used to resize underlying buffer according to given \c resizingStrategy.
+@property (readonly, nonatomic) PTNImageResizer *resizer;
+
+/// Strategy to use when resizing the image backed by \c data.
+@property (readonly, nonatomic) id<PTNResizingStrategy> resizingStrategy;
 
 @end
 
 @implementation PTNDataBackedImageAsset
 
-- (instancetype)initWithData:(NSData *)data {
+- (instancetype)initWithData:(NSData *)data resizer:(PTNImageResizer *)resizer
+            resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   if (self = [super init]) {
-    self.data = data;
+    _data = data;
+    _resizer = resizer;
+    _resizingStrategy = resizingStrategy;
   }
   return self;
 }
 
+- (instancetype)initWithData:(NSData *)data
+            resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  return [self initWithData:data resizer:[[PTNImageResizer alloc] init]
+           resizingStrategy:resizingStrategy];
+}
+
+- (instancetype)initWithData:(NSData *)data {
+  return [self initWithData:data resizingStrategy:[PTNResizingStrategy identity]];
+}
+
+#pragma mark -
+#pragma mark PTNImageAsset
+#pragma mark -
+
 - (RACSignal *)fetchImage {
-  return [[RACSignal defer:^RACSignal *{
-        UIImage *image = [UIImage imageWithData:self.data];
-        if (!image) {
-          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed]];
-        }
-        return [RACSignal return:image];
-      }]
+  return [[[self.resizer resizeImageFromData:self.data resizingStrategy:self.resizingStrategy]
+      ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed]]
       subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)fetchImageMetadata {
-  return [[RACSignal defer:^RACSignal *{
+  return [[RACSignal
+      defer:^RACSignal *{
         NSError *error;
         PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithImageData:self.data
                                                                            error:&error];
@@ -52,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       subscribeOn:RACScheduler.scheduler];
 }
+
+#pragma mark -
+#pragma mark PTNDataAsset
+#pragma mark -
 
 - (RACSignal *)fetchData {
   return [RACSignal return:self.data];

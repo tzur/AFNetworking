@@ -8,31 +8,52 @@
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
+#import "PTNImageResizer.h"
+#import "PTNResizingStrategy.h"
 
 SpecBegin(PTNDataBackedImageAsset)
 
 __block id<PTNDataAsset, PTNImageAsset> asset;
 __block NSFileManager *fileManager;
 __block NSData *imageData;
+__block UIImage *image;
 __block LTPath *path;
+__block PTNImageResizer *resizer;
+__block id<PTNResizingStrategy> resizingStrategy;
 
 beforeEach(^{
   NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
                                                                           ofType:@"jpg"];
   path = [LTPath pathWithPath:pathString];
   imageData = [NSData dataWithContentsOfFile:path.path];
+  image = [[UIImage alloc] init];
   fileManager = OCMClassMock([NSFileManager class]);
-  asset = [[PTNDataBackedImageAsset alloc] initWithData:imageData];
+  resizingStrategy = [PTNResizingStrategy identity];
+  resizer = OCMClassMock([PTNImageResizer class]);
+  OCMStub([resizer resizeImageFromData:imageData resizingStrategy:resizingStrategy])
+      .andReturn([RACSignal return:image]);
+  asset = [[PTNDataBackedImageAsset alloc] initWithData:imageData resizer:resizer
+                                       resizingStrategy:resizingStrategy];
 });
 
-it(@"should return underlying image", ^{
-  UIImage *image = [[UIImage alloc] initWithContentsOfFile:path.path];
+it(@"should return underlying image using resizer and resizing strategy", ^{
+  RACSignal *values = [asset fetchImage];
+
+  expect(values).will.sendValues(@[image]);
+  expect(values).will.complete();
+});
+
+it(@"should use resizing strategy to resize image", ^{
+  UIImage *otherImage = [[UIImage alloc] init];
+  id<PTNResizingStrategy> otherResizingStrategy = [PTNResizingStrategy maxPixels:1337];
+  OCMStub([resizer resizeImageFromData:imageData resizingStrategy:otherResizingStrategy])
+      .andReturn([RACSignal return:otherImage]);
+  asset = [[PTNDataBackedImageAsset alloc] initWithData:imageData resizer:resizer
+                                       resizingStrategy:otherResizingStrategy];
 
   RACSignal *values = [asset fetchImage];
 
-  expect(values).will.matchValue(0, ^(UIImage *fetchedImage) {
-    return [UIImagePNGRepresentation(fetchedImage) isEqual:UIImagePNGRepresentation(image)];
-  });
+  expect(values).will.sendValues(@[otherImage]);
   expect(values).will.complete();
 });
 
@@ -65,7 +86,10 @@ context(@"unsupported data", ^{
   beforeEach(^{
     char data[] = "foo";
     imageData = [[NSData alloc] initWithBytes:data length:sizeof(data)];
-    asset = [[PTNDataBackedImageAsset alloc] initWithData:imageData];
+    OCMStub([resizer resizeImageFromData:imageData resizingStrategy:OCMOCK_ANY])
+        .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
+    asset = [[PTNDataBackedImageAsset alloc] initWithData:imageData resizer:resizer
+                                         resizingStrategy:resizingStrategy];
   });
 
   it(@"should err when fetching image of unsupported image data", ^{
