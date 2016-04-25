@@ -36,6 +36,31 @@ NS_ASSUME_NONNULL_BEGIN
   return [self isFreshComparedTo:[NSDate date]];
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, max age: %g, response time: %@, entity tag: %@>",
+          self.class, self, self.maxAge, self.responseTime, self.entityTag];
+}
+
+- (BOOL)isEqual:(PTNCacheInfo *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return self.maxAge == object.maxAge && [self.responseTime isEqual:object.responseTime] &&
+      (self.entityTag == object.entityTag || [self.entityTag isEqualToString:object.entityTag]);
+}
+
+- (NSUInteger)hash {
+  return self.responseTime.hash ^ self.entityTag.hash ^ @(self.maxAge).hash;
+}
+
 @end
 
 @implementation PTNCacheInfo (Serialization)
