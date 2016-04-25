@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbum, PTNDataAsset, PTNDescriptor, PTNResizingStrategy;
+@protocol PTNAlbum, PTNDataAsset, PTNDataCache, PTNDescriptor, PTNResizingStrategy;
 
 @class PTNCacheInfo;
 
@@ -71,6 +71,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Clears the cache from all stored data.
 - (void)clearCache;
+
+@end
+
+/// Implementation of \c PTNDataAssetCache using a \c PTNDataCache as its underlying caching system.
+@interface PTNDataAssetCache : NSObject <PTNDataAssetCache>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c cache as underlying caching system.
+- (instancetype)initWithCache:(id<PTNDataCache>)cache NS_DESIGNATED_INITIALIZER;
 
 @end
 
