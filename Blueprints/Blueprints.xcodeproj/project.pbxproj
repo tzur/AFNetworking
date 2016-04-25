@@ -54,6 +54,9 @@
 		8B5E6CC21CC6478B00E6A9BC /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5E6CC11CC6478B00E6A9BC /* libextobjc_iOS.a */; };
 		8B5E6CC31CC647E700E6A9BC /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5E6C261CC5528400E6A9BC /* libLTKit.a */; };
 		8B5E6D0F1CC64F3900E6A9BC /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5E6D0E1CC64F3900E6A9BC /* libExpecta.a */; };
+		8B97B0261CC8BEC4001CD91B /* BLUFileListProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B97B0241CC8BEC4001CD91B /* BLUFileListProvider.h */; };
+		8B97B0271CC8BEC4001CD91B /* BLUFileListProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B97B0251CC8BEC4001CD91B /* BLUFileListProvider.m */; };
+		8B97B0451CC8D54D001CD91B /* BLUFileListProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B97B0441CC8D54D001CD91B /* BLUFileListProviderSpec.mm */; };
 		8BA08DB21CCE06AC00C866CC /* NSIndexSet+Blueprints.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA08DB01CCE06AC00C866CC /* NSIndexSet+Blueprints.h */; };
 		8BA08DB31CCE06AC00C866CC /* NSIndexSet+Blueprints.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA08DB11CCE06AC00C866CC /* NSIndexSet+Blueprints.mm */; };
 		8BA08DD11CCE078500C866CC /* NSIndexSet+BlueprintsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BA08DD01CCE078500C866CC /* NSIndexSet+BlueprintsSpec.mm */; };
@@ -376,6 +379,9 @@
 		8B3CED741C593523008E779B /* BLUModelTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUModelTestUtils.m; sourceTree = "<group>"; };
 		8B5E6CC11CC6478B00E6A9BC /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../../Library/Developer/Xcode/DerivedData/Facetune-dxvfzfqrspaetfatburplqwtxmvf/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B5E6D0E1CC64F3900E6A9BC /* libExpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libExpecta.a; path = "../../../Library/Developer/Xcode/DerivedData/Facetune-dxvfzfqrspaetfatburplqwtxmvf/Build/Products/Debug-iphonesimulator/libExpecta.a"; sourceTree = "<group>"; };
+		8B97B0241CC8BEC4001CD91B /* BLUFileListProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUFileListProvider.h; sourceTree = "<group>"; };
+		8B97B0251CC8BEC4001CD91B /* BLUFileListProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUFileListProvider.m; sourceTree = "<group>"; };
+		8B97B0441CC8D54D001CD91B /* BLUFileListProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUFileListProviderSpec.mm; sourceTree = "<group>"; };
 		8BA08DB01CCE06AC00C866CC /* NSIndexSet+Blueprints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Blueprints.h"; sourceTree = "<group>"; };
 		8BA08DB11CCE06AC00C866CC /* NSIndexSet+Blueprints.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSIndexSet+Blueprints.mm"; sourceTree = "<group>"; };
 		8BA08DD01CCE078500C866CC /* NSIndexSet+BlueprintsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSIndexSet+BlueprintsSpec.mm"; sourceTree = "<group>"; };
@@ -585,6 +591,8 @@
 			isa = PBXGroup;
 			children = (
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
+				8B97B0241CC8BEC4001CD91B /* BLUFileListProvider.h */,
+				8B97B0251CC8BEC4001CD91B /* BLUFileListProvider.m */,
 				8B3CEC711C54B673008E779B /* BLUProvider.h */,
 				8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */,
 				8B3CE9641C4E57C9008E779B /* BLUModel.h */,
@@ -653,6 +661,7 @@
 			isa = PBXGroup;
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
+				8B97B0441CC8D54D001CD91B /* BLUFileListProviderSpec.mm */,
 				8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */,
 				8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */,
 				8B3CED731C593523008E779B /* BLUModelTestUtils.h */,
@@ -726,6 +735,7 @@
 				8BA08DB21CCE06AC00C866CC /* NSIndexSet+Blueprints.h in Headers */,
 				8BED82FC1C3D6A8A0001C6F1 /* BLUNode.h in Headers */,
 				8B0E4DB61CC67E9A0031B743 /* RACSignal+BLUNode.h in Headers */,
+				8B97B0261CC8BEC4001CD91B /* BLUFileListProvider.h in Headers */,
 				8B3CED4D1C590D6F008E779B /* BLUNodeData.h in Headers */,
 				8BD00D631C5FC6FF009A1A2D /* BLUNode+Tree.h in Headers */,
 				8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */,
@@ -1072,6 +1082,7 @@
 				8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.m in Sources */,
 				8B0E4DB71CC67E9A0031B743 /* RACSignal+BLUNode.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
+				8B97B0271CC8BEC4001CD91B /* BLUFileListProvider.m in Sources */,
 				8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */,
 				8BA08DB31CCE06AC00C866CC /* NSIndexSet+Blueprints.mm in Sources */,
 				8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */,
@@ -1090,6 +1101,7 @@
 				8B3CED751C593523008E779B /* BLUModelTestUtils.m in Sources */,
 				8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */,
 				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.mm in Sources */,
+				8B97B0451CC8D54D001CD91B /* BLUFileListProviderSpec.mm in Sources */,
 				8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */,
 				8BED830B1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm in Sources */,
 				8B3CEA661C4E88FC008E779B /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
