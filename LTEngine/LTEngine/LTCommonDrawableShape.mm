@@ -81,11 +81,11 @@ static NSMutableDictionary *cachedPrograms;
 
 - (LTVertexArray *)createVertexArray {
   LTAssert(self.arrayBuffer, @"Array buffer must be initialized before creating the vertex array");
-  LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                initWithAttributes:[self vertexShaderAttributes]];
-  LTVertexArrayElement *element = [self createVertexArrayElementWithArrayBuffer:self.arrayBuffer];
-  [vertexArray addElement:element];
-  return vertexArray;
+
+  NSSet<LTVertexArrayElement *> *elements =
+      [NSSet setWithObject:[self createVertexArrayElementWithArrayBuffer:self.arrayBuffer]];
+
+  return [[LTVertexArray alloc] initWithElements:elements];
 }
 
 - (LTVertexArrayElement *)createVertexArrayElementWithArrayBuffer:(LTArrayBuffer *)arrayBuffer {

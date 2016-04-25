@@ -44,12 +44,10 @@ LTGPUStructMake(LTSingleRectDrawerVertex,
 - (LTVertexArray *)createVertexArray {
   LTArrayBuffer *arrayBuffer = [self createArrayBuffer];
   
-  LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                initWithAttributes:@[@"position", @"texcoord"]];
-  LTVertexArrayElement *element = [self createVertexArrayElementWithArrayBuffer:arrayBuffer];
-  [vertexArray addElement:element];
-  
-  return vertexArray;
+  NSSet<LTVertexArrayElement *> *elements =
+      [NSSet setWithObject:[self createVertexArrayElementWithArrayBuffer:arrayBuffer]];
+
+  return [[LTVertexArray alloc] initWithElements:elements];
 }
 
 - (LTVertexArrayElement *)createVertexArrayElementWithArrayBuffer:(LTArrayBuffer *)arrayBuffer {
