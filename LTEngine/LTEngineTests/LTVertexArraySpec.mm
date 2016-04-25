@@ -12,18 +12,24 @@
 LTGPUStructMake(SingleFieldStruct,
                 LTVector4, intensity);
 
+LTGPUStructMake(AnotherSingleFieldStruct,
+                LTVector4, color);
+
 LTGPUStructMake(MultipleFieldsStruct,
                 LTVector2, position,
                 LTVector2, texcoord);
 
+static LTArrayBuffer *LTDummyArrayBuffer() {
+  return [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                       usage:LTArrayBufferUsageStaticDraw];
+}
+
 static LTVertexArrayElement *LTArrayElementForMultipleFieldsStruct() {
   NSDictionary *attributeMap = @{@"position": @"position", @"texcoord": @"texcoord"};
-  LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                             usage:LTArrayBufferUsageStaticDraw];
 
   LTVertexArrayElement *element = [[LTVertexArrayElement alloc]
                                    initWithStructName:@"MultipleFieldsStruct"
-                                   arrayBuffer:arrayBuffer
+                                   arrayBuffer:LTDummyArrayBuffer()
                                    attributeMap:attributeMap];
 
   return element;
@@ -31,12 +37,10 @@ static LTVertexArrayElement *LTArrayElementForMultipleFieldsStruct() {
 
 static LTVertexArrayElement *LTArrayElementForSingleFieldsStruct() {
   NSDictionary *attributeMap = @{@"intensity": @"intensity"};
-  LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                             usage:LTArrayBufferUsageStaticDraw];
 
   return [[LTVertexArrayElement alloc]
           initWithStructName:@"SingleFieldStruct"
-          arrayBuffer:arrayBuffer
+          arrayBuffer:LTDummyArrayBuffer()
           attributeMap:attributeMap];
 }
 
@@ -44,14 +48,8 @@ static LTVertexArray *LTVertexArrayWithTwoStructs() {
   LTVertexArrayElement *singleFieldElement = LTArrayElementForSingleFieldsStruct();
   LTVertexArrayElement *multipleFieldsElement = LTArrayElementForMultipleFieldsStruct();
 
-  NSArray *attributes = [singleFieldElement.attributeToField.allKeys
-      arrayByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
-
-  LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
-  [vertexArray addElement:singleFieldElement];
-  [vertexArray addElement:multipleFieldsElement];
-
-  return vertexArray;
+  return [[LTVertexArray alloc] initWithElements:[NSSet setWithArray:@[singleFieldElement,
+                                                                       multipleFieldsElement]]];
 }
 
 typedef void (^LTVertexArrayEnumerationBlock)(NSString *attribute, LTGPUStruct *gpuStruct,
@@ -81,8 +79,7 @@ context(@"initialization", ^{
   NSDictionary *attributeMap = @{@"position": @"position", @"texcoord": @"texcoord"};
 
   it(@"should initialize with a valid configuration", ^{
-    LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                               usage:LTArrayBufferUsageStaticDraw];
+    LTArrayBuffer *arrayBuffer = LTDummyArrayBuffer();
 
     LTVertexArrayElement *element = [[LTVertexArrayElement alloc]
                                      initWithStructName:@"MultipleFieldsStruct"
@@ -147,17 +144,48 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
     [LTGLContext setCurrentContext:context];
   });
 
-  it(@"should fail initializing with empty attribute", ^{
-    expect(^{
-      __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[]];
-    }).to.raise(NSInternalInconsistencyException);
+  context(@"initialization", ^{
+    it(@"should fail initializing with empty attribute", ^{
+      expect(^{
+        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet set]];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should fail initializing with elements with identical gpu struct names", ^{
+      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+      NSDictionary<NSString *, NSString *> *attributeMap =
+          @{@"anotherAttribute": @"intensity"};
+      LTVertexArrayElement *anotherElement =
+          [[LTVertexArrayElement alloc] initWithStructName:element.gpuStruct.name
+                                               arrayBuffer:LTDummyArrayBuffer()
+                                              attributeMap:attributeMap];
+      NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
+
+      expect(^{
+        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should fail initializing with elements with overlapping attributes", ^{
+      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+      LTVertexArrayElement *anotherElement =
+          [[LTVertexArrayElement alloc] initWithStructName:@"AnotherSingleFieldStruct"
+                                               arrayBuffer:LTDummyArrayBuffer()
+                                              attributeMap:@{@"intensity": @"color"}];
+      NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
+
+      expect(^{
+        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 
   context(@"binding", ^{
     __block LTVertexArray *vertexArray;
 
     beforeEach(^{
-      vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"foo"]];
+      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+      vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
     });
 
     afterEach(^{
@@ -181,104 +209,25 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
     });
   });
 
-  context(@"adding elements", ^{
-    it(@"should be initially incomplete", ^{
-      LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"dummy"]];
-      expect(vertexArray.complete).toNot.beTruthy();
-    });
-
-    it(@"should fail when adding an existing struct", ^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                    initWithAttributes:element.attributeToField.allKeys];
-      [vertexArray addElement:element];
-
-      expect(^{
-        [vertexArray addElement:element];
-      }).to.raise(NSInternalInconsistencyException);
-    });
-
-    it(@"should fail when adding element with unknown attribute", ^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:@[@"dummy"]];
-
-      expect(^{
-        [vertexArray addElement:element];
-      }).to.raise(NSInternalInconsistencyException);
-    });
-  });
-
   context(@"retrieving elements", ^{
     __block LTVertexArray *vertexArray;
     __block LTVertexArrayElement *element;
 
     beforeEach(^{
       element = LTArrayElementForSingleFieldsStruct();
-      vertexArray = [[LTVertexArray alloc] initWithAttributes:element.attributeToField.allKeys];
-      [vertexArray addElement:element];
+      vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
     });
 
     it(@"should retrieve element with correct struct name", ^{
-      expect([vertexArray elementForStructName:@"SingleFieldStruct"]).to.equal(element);
       expect(vertexArray[@"SingleFieldStruct"]).to.equal(element);
     });
 
     it(@"should return nil with invalid struct name", ^{
-      expect([vertexArray elementForStructName:@"Foo"]).to.beNil();
       expect(vertexArray[@"Foo"]).to.beNil();
     });
 
     it(@"should retrieve element list", ^{
-      expect(vertexArray.elements).to.equal(@[vertexArray[@"SingleFieldStruct"]]);
-    });
-  });
-
-  context(@"one struct single field", ^{
-    it(@"should become complete", ^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                    initWithAttributes:element.attributeToField.allKeys];
-      [vertexArray addElement:element];
-
-      expect(vertexArray.complete).to.beTruthy();
-    });
-  });
-
-  context(@"one struct multiple fields", ^{
-    it(@"should become complete", ^{
-      LTVertexArrayElement *element = LTArrayElementForMultipleFieldsStruct();
-      LTVertexArray *vertexArray = [[LTVertexArray alloc]
-                                    initWithAttributes:element.attributeToField.allKeys];
-      [vertexArray addElement:element];
-
-      expect(vertexArray.complete).to.beTruthy();
-    });
-  });
-
-  context(@"multiple structs multiple fields", ^{
-    __block LTVertexArrayElement *singleFieldElement;
-    __block LTVertexArrayElement *multipleFieldsElement;
-    __block LTVertexArray *vertexArray;
-
-    beforeEach(^{
-      singleFieldElement = LTArrayElementForSingleFieldsStruct();
-      multipleFieldsElement = LTArrayElementForMultipleFieldsStruct();
-
-      NSArray *attributes =
-          [singleFieldElement.attributeToField.allKeys
-           arrayByAddingObjectsFromArray:multipleFieldsElement.attributeToField.allKeys];
-      vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
-    });
-
-    it(@"should not become complete when adding single element", ^{
-      [vertexArray addElement:singleFieldElement];
-      expect(vertexArray.complete).toNot.beTruthy();
-    });
-
-    it(@"should become complete after adding all elements", ^{
-      [vertexArray addElement:singleFieldElement];
-      [vertexArray addElement:multipleFieldsElement];
-      expect(vertexArray.complete).to.beTruthy();
+      expect(vertexArray.elements).to.equal([NSSet setWithObject:vertexArray[@"SingleFieldStruct"]]);
     });
   });
 

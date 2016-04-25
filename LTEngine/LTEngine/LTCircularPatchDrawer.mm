@@ -98,17 +98,11 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
 }
 
 - (LTVertexArray *)createVertexArray {
-  LTVertexArrayElement *vertexElement = [self createVertexArrayElement];
-  LTVertexArrayElement *membraneColorElement = [self createMembraneColorArrayElement];
-  NSArray *attributes =
-      [vertexElement.attributeToField.allKeys
-       arrayByAddingObjectsFromArray:membraneColorElement.attributeToField.allKeys];
+  NSSet<LTVertexArrayElement *> *elements =
+      [NSSet setWithArray:@[[self createVertexArrayElement],
+                            [self createMembraneColorArrayElement]]];
 
-  LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithAttributes:attributes];
-  [vertexArray addElement:vertexElement];
-  [vertexArray addElement:membraneColorElement];
-  
-  return vertexArray;
+  return [[LTVertexArray alloc] initWithElements:elements];
 }
 
 - (LTVertexArrayElement *)createVertexArrayElement {

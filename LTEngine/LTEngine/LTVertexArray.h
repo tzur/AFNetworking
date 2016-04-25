@@ -43,29 +43,24 @@
 
 @end
 
-/// Encapsulates an OpenGL vertex array object. The vertex array object is composed of multiple
-/// \c LTVertexArrayElements, enabling the use of multiple \c LTGPUStruct objects in a single vertex
-/// array. This makes program binding easy, since all the vertex attribute data required to map
-/// buffer arrays to program attributes are contained in this class.
+/// Immutable object representing an OpenGL vertex array object. The vertex array object is composed
+/// of multiple \c LTVertexArrayElements, enabling the use of multiple \c LTGPUStruct objects in a
+/// single vertex array. This makes program binding easy, since all the vertex attribute data
+/// required to map buffer arrays to program attributes are contained in this class.
 @interface LTVertexArray : NSObject <LTGPUResource>
 
-/// Initializes a vertex array with a set of attributes. The array should contain at least one
-/// attribute. Duplicate attributes will be ignored. Before drawing, all the given attributes must
-/// be defined using \c addElement:.
-- (instancetype)initWithAttributes:(NSArray *)attributes;
+- (instancetype)init NS_UNAVAILABLE;
 
-/// Adds the given \c LTVertexArrayElement as an element in this vertex array. The element must
-/// contain a GPU struct that don't exist in this vertex array, and attributes that are defined in
-/// the initializer.
-- (void)addElement:(LTVertexArrayElement *)element;
+/// Initializes with the given \c elements. The \c elements must contain at least one element. The
+/// \c name of the \c LTGPUStruct object of an element must be different from the \c name of
+/// \c LTGPUStruct object of any other element. Analogously, the attribute names of an element must
+/// be different from the attribute names of any other element.
+- (instancetype)initWithElements:(NSSet<LTVertexArrayElement *> *)elements
+    NS_DESIGNATED_INITIALIZER;
 
-/// Returns an already added \c LTVertexArrayElement that corresponds to the given struct name. If
-/// the given name is not mapped to an \c LTVertexArrayElement, \c nil will be returned.
-- (LTVertexArrayElement *)elementForStructName:(NSString *)name;
-
-/// Subscript getter that returns the matching \c LTVertexArrayElement for a given struct name.
-///
-/// @see elementForStructName: for more information.
+/// Subscript getter that returns an already added \c LTVertexArrayElement that corresponds to the
+/// given struct name. If the given name is not mapped to an \c LTVertexArrayElement, \c nil will
+/// be returned.
 - (id)objectForKeyedSubscript:(NSString *)key;
 
 /// Attaches the receiver to concrete vertex attribute indices, using the given attribute to index
@@ -79,14 +74,10 @@
 /// and that each buffer size is an integer multiplication of it's corresponding struct size.
 - (GLsizei)count;
 
-/// Returns \c YES if the added elements contains a complete representation of this vertex array's
-/// attributes.
-@property (readonly, nonatomic) BOOL complete;
-
 /// Returns all \c LTVertexArrayElement objects in this vertex array.
-@property (readonly, nonatomic) NSArray *elements;
+@property (readonly, nonatomic) NSSet<LTVertexArrayElement *> *elements;
 
 /// Vertex attributes that are being used in this vertex array.
-@property (readonly, nonatomic) NSSet *attributes;
+@property (readonly, nonatomic) NSSet<NSString *> *attributes;
 
 @end
