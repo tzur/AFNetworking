@@ -31,8 +31,8 @@
     LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance] structForName:structName];
     LTAssert(gpuStruct, @"Given struct name '%@' is not registered as a GPU struct", structName);
 
-    NSSet *gpuStructFields = [NSSet setWithArray:gpuStruct.fields.allKeys];
-    NSSet *attributeFields = [NSSet setWithArray:attributeMap.allValues];
+    NSSet<NSString *> *gpuStructFields = [NSSet setWithArray:gpuStruct.fields.allKeys];
+    NSSet<NSString *> *attributeFields = [NSSet setWithArray:attributeMap.allValues];
     LTAssert([gpuStructFields isEqualToSet:attributeFields], @"GPU struct fields must match the "
              "fields that are mapped from the given attribute list (%@ vs %@", gpuStructFields,
              attributeFields);
@@ -59,14 +59,13 @@
 @interface LTVertexArray ()
 
 /// Vertex attributes that are being used in this vertex array.
-@property (strong, nonatomic) NSSet *attributes;
+@property (strong, nonatomic) NSSet<NSString *> *attributes;
 
-/// Vertex attributes the are left unattached. For the vertex array to be complete, this set needs
-/// to be empty.
-@property (strong, nonatomic) NSSet *unattachedAttributes;
+/// Vertex attributes that are being used in this vertex array.
+@property (strong, nonatomic) NSSet<LTVertexArrayElement *> *elements;
 
 /// Maps struct name to an \c LTVertexArrayElement.
-@property (strong, nonatomic) NSMutableDictionary *structNameToElement;
+@property (strong, nonatomic) NSDictionary<NSString *, LTVertexArrayElement *> *structNameToElement;
 
 /// Set to the previously bound vertex array, or \c 0 if the vertex array is not bound.
 @property (nonatomic) GLint previousVertexArray;
@@ -85,13 +84,13 @@
 #pragma mark Initialization and destruction
 #pragma mark -
 
-- (instancetype)initWithAttributes:(NSArray *)attributes {
+- (instancetype)initWithElements:(NSSet<LTVertexArrayElement *> *)elements {
+  LTParameterAssert(elements.count,
+                    @"Given vertex array element set must contain at least one element");
+
   if (self = [super init]) {
-    LTAssert(attributes.count, @"Given attributes set must contain at least one attribute");
-    
-    self.attributes = [NSSet setWithArray:attributes];
-    self.unattachedAttributes = self.attributes;
-    self.structNameToElement = [NSMutableDictionary dictionary];
+    [self validateElements:elements];
+    [self setupWithElements:elements];
 
     [[LTGLContext currentContext] executeForOpenGLES2:^{
       glGenVertexArraysOES(1, &_name);
@@ -113,35 +112,46 @@
   LTGLCheck(@"Failed deleting vertex array");
 }
 
-#pragma mark -
-#pragma mark Elements
-#pragma mark -
+- (void)validateElements:(NSSet<LTVertexArrayElement *> *)elements {
+  NSMutableSet<NSString *> *gpuStructNames = [NSMutableSet setWithCapacity:elements.count];
+  NSMutableSet<NSString *> *attributes = [NSMutableSet set];
 
-- (void)addElement:(LTVertexArrayElement *)element {
-  LTAssert(!self.structNameToElement[element.gpuStruct.name], @"Given struct name '%@' already "
-           "added to this vertex array", element.gpuStruct.name);
+  for (LTVertexArrayElement *element in elements) {
+    LTParameterAssert(![gpuStructNames containsObject:element.gpuStruct.name],
+                      @"At least two GPU structs with equal name (%@) found",
+                      element.gpuStruct.name);
+    [gpuStructNames addObject:element.gpuStruct.name];
 
-  NSSet *attributes = [NSSet setWithArray:element.attributeToField.allKeys];
-  LTAssert([attributes isSubsetOfSet:self.unattachedAttributes],
-           @"Given attributes are not a subset of the unattached array attributes (%@ vs. %@)",
-           attributes, self.unattachedAttributes);
+    NSSet<NSString *> *additionalAttributes = [NSSet setWithArray:element.attributeToField.allKeys];
+    LTParameterAssert(![additionalAttributes intersectsSet:attributes], @"Attributes (%@) of "
+                      "element (%@) intersect with attributes (%@) of previous elements",
+                      additionalAttributes, element, attributes);
 
-  self.structNameToElement[element.gpuStruct.name] = element;
-
-  // Remove given attributes from the set of the unattached attributes.
-  NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *attribute,
-                                                                 NSDictionary *) {
-    return ![attributes containsObject:attribute];
-  }];
-  self.unattachedAttributes = [self.unattachedAttributes filteredSetUsingPredicate:predicate];
+    [attributes addObjectsFromArray:[additionalAttributes allObjects]];
+  }
 }
 
-- (LTVertexArrayElement *)elementForStructName:(NSString *)name {
-  return self.structNameToElement[name];
+- (void)setupWithElements:(NSSet<LTVertexArrayElement *> *)elements {
+  NSMutableDictionary<NSString *, LTVertexArrayElement *> *mapping =
+      [NSMutableDictionary dictionary];
+  NSMutableSet<NSString *> *attributes = [NSMutableSet set];
+
+  for (LTVertexArrayElement *element in elements) {
+    mapping[element.gpuStruct.name] = element;
+    [attributes addObjectsFromArray:element.attributeToField.allKeys];
+  }
+
+  self.attributes = [attributes copy];
+  self.elements = [elements copy];
+  self.structNameToElement = [mapping copy];
 }
+
+#pragma mark -
+#pragma mark Keyed Subscript
+#pragma mark -
 
 - (id)objectForKeyedSubscript:(NSString *)key {
-  return [self elementForStructName:key];
+  return self.structNameToElement[key];
 }
 
 #pragma mark -
@@ -191,9 +201,7 @@
 }
 
 - (void)attachAttributesToIndices:(NSDictionary *)attributeToIndex {
-  LTAssert(self.complete, @"Vertex array must be complete before attaching a program");
-
-  NSSet *attributes = [NSSet setWithArray:[attributeToIndex allKeys]];
+  NSSet<NSString *> *attributes = [NSSet setWithArray:[attributeToIndex allKeys]];
   LTAssert([attributes isEqualToSet:self.attributes],
            @"Program contains different set of attibutes than the ones specified in the vertex "
            "array (%@ vs %@)", attributes, self.attributes);
@@ -241,14 +249,6 @@
   }
 
   return elementCount;
-}
-
-- (BOOL)complete {
-  return !self.unattachedAttributes.count;
-}
-
-- (NSArray *)elements {
-  return [self.structNameToElement allValues];
 }
 
 @end
