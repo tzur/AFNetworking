@@ -1682,8 +1682,6 @@
 				84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */,
 				84E55C431C8EC86B00D91339 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
 				84E55C3E1C8EC86000D91339 /* PTNFileSystemFileDescriptor.m in Sources */,
-				84E55C2F1C8EC84900D91339 /* PTNDropboxAlbum.m in Sources */,
-				84E9E9091CBE7D8D006EBDB3 /* PTNCacheAlbum.m in Sources */,
 				84E55C321C8EC84D00D91339 /* PTNDropboxDirectoryDescriptor.m in Sources */,
 				845161691C984B3B00AD8B5B /* PTNGatewayAlbumDescriptor.m in Sources */,
 				84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.m in Sources */,
