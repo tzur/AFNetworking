@@ -62,6 +62,33 @@ it(@"should correctly calculate freshness from current time", ^{
   expect([info isFresh]).to.beFalsy();
 });
 
+context(@"equality", ^{
+  __block PTNCacheInfo *firstInfo;
+  __block PTNCacheInfo *secondInfo;
+  __block PTNCacheInfo *otherInfo;
+
+  beforeEach(^{
+    firstInfo = [[PTNCacheInfo alloc] initWithMaxAge:kMaxAge responseTime:responseTime
+                                           entityTag:etag];
+    secondInfo = [[PTNCacheInfo alloc] initWithMaxAge:kMaxAge responseTime:responseTime
+                                            entityTag:etag];
+    otherInfo = [[PTNCacheInfo alloc] initWithMaxAge:1338 responseTime:responseTime
+                                           entityTag:@"bar"];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstInfo).to.equal(secondInfo);
+    expect(secondInfo).to.equal(firstInfo);
+
+    expect(firstInfo).notTo.equal(otherInfo);
+    expect(secondInfo).notTo.equal(otherInfo);
+  });
+
+  it(@"should create proper hash", ^{
+    expect(firstInfo.hash).to.equal(secondInfo.hash);
+  });
+});
+
 context(@"serializing", ^{
   it(@"should serialize and deserialize", ^{
     PTNCacheInfo *info = [[PTNCacheInfo alloc] initWithMaxAge:kMaxAge responseTime:responseTime
