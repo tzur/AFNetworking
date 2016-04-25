@@ -6,6 +6,7 @@
 #import "BLUNode.h"
 #import "BLUNodeCollection.h"
 #import "NSArray+BLUNodeCollection.h"
+#import "NSIndexSet+Blueprints.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -50,6 +51,20 @@ sharedExamplesFor(kBLUNodeCollectionExamples, ^(NSDictionary *data) {
 
       expect(newCollection.count).to.equal(collection.count + 1);
       expect(newCollection.lastObject).to.equal(node);
+    });
+
+    it(@"should return new collection by inserting nodes at indexes", ^{
+      BLUNode *first = [BLUNode nodeWithName:@"foo" childNodes:@[] value:@15];
+      BLUNode *second = [BLUNode nodeWithName:@"bar" childNodes:@[] value:@25];
+
+      NSIndexSet *indexSet = [NSIndexSet blu_indexSetWithIndexes:{0, collection.count + 1}];
+      id<BLUNodeCollection> newCollection = [collection
+                                             blu_nodeCollectionByInsertingNodes:@[first, second]
+                                             atIndexes:indexSet];
+
+      expect(newCollection.count).to.equal(collection.count + 2);
+      expect(newCollection.firstObject).to.equal(first);
+      expect(newCollection.lastObject).to.equal(second);
     });
   });
 

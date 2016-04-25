@@ -23,6 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [mutableCollection copy];
 }
 
+- (instancetype)blu_nodeCollectionByInsertingNodes:(NSArray<BLUNode *> *)nodes
+                                         atIndexes:(NSIndexSet *)indexes {
+  NSMutableArray *mutableCollection = [self mutableCopy];
+  [mutableCollection insertObjects:nodes atIndexes:indexes];
+  return [mutableCollection copy];
+}
+
 - (instancetype)blu_nodeCollectionByReplacingNodesAtIndexes:(NSIndexSet *)indexes
                                                   withNodes:(NSArray<BLUNode *> *)nodes {
   LTParameterAssert(indexes.count == nodes.count, @"Length of indexes (%lu) is not equal to the "

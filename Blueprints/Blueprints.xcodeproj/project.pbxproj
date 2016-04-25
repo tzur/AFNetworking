@@ -15,7 +15,7 @@
 		8B0E4DD51CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4DD41CC67EA30031B743 /* RACSignal+BLUNodeSpec.mm */; };
 		8B3CE80E1C43D9D8008E779B /* NSArray+BLUNodeCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */; };
 		8B3CE80F1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */; };
-		8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */; };
+		8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.mm */; };
 		8B3CE8141C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */; };
 		8B3CE8161C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */; };
 		8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */; };
@@ -323,7 +323,7 @@
 		8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+BLUNodeCollection.h"; sourceTree = "<group>"; };
 		8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+BLUNodeCollection.mm"; sourceTree = "<group>"; };
 		8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNodeCollectionExamples.h; sourceTree = "<group>"; };
-		8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNodeCollectionExamples.m; sourceTree = "<group>"; };
+		8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUNodeCollectionExamples.mm; sourceTree = "<group>"; };
 		8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+BLUNodeCollectionSpec.mm"; sourceTree = "<group>"; };
 		8B3CE8151C4410A3008E779B /* NSOrderedSet+BLUNodeCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSOrderedSet+BLUNodeCollectionSpec.mm"; sourceTree = "<group>"; };
 		8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+OperationSpec.mm"; sourceTree = "<group>"; };
@@ -678,7 +678,7 @@
 				8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */,
 				8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */,
 				8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */,
-				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.m */,
+				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.mm */,
 				8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */,
 				8BED830A1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm */,
 				8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */,
@@ -1111,7 +1111,7 @@
 				8B3CE8181C441329008E779B /* BLUNode+OperationSpec.mm in Sources */,
 				8B3CED751C593523008E779B /* BLUModelTestUtils.m in Sources */,
 				8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */,
-				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.m in Sources */,
+				8B3CE8121C440D8E008E779B /* BLUNodeCollectionExamples.mm in Sources */,
 				8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */,
 				8BED830B1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm in Sources */,
 				8B3CEA661C4E88FC008E779B /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,

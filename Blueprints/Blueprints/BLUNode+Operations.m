@@ -20,6 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [BLUNode nodeWithName:self.name childNodes:childNodes value:self.value];
 }
 
+- (instancetype)nodeByInsertingChildNodes:(NSArray<BLUNode *> *)nodes
+                                atIndexes:(NSIndexSet *)indexes {
+  id<BLUNodeCollection> childNodes = [self.childNodes blu_nodeCollectionByInsertingNodes:nodes
+                                                                               atIndexes:indexes];
+  return [BLUNode nodeWithName:self.name childNodes:childNodes value:self.value];
+}
+
 - (instancetype)nodeByReplacingChildNodesAtIndexes:(NSIndexSet *)indexes
                                     withChildNodes:(NSArray<BLUNode *> *)nodes {
   id<BLUNodeCollection> childNodes = [self.childNodes

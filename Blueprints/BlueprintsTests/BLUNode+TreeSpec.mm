@@ -5,6 +5,7 @@
 
 #import "NSArray+BLUNodeCollection.h"
 #import "NSIndexPath+Blueprints.h"
+#import "NSIndexSet+Blueprints.h"
 
 SpecBegin(BLUNode_Tree)
 
@@ -103,7 +104,7 @@ context(@"adding nodes", ^{
   });
 });
 
-context(@"inserting nodes", ^{
+context(@"inserting single node", ^{
   __block BLUNode *node;
 
   beforeEach(^{
@@ -158,6 +159,79 @@ context(@"inserting nodes", ^{
   it(@"should raise when inserting node to invalid index", ^{
     expect(^{
       [root nodeByInsertingChildNode:node toNodeAtPath:@"/left/leftRight" atIndex:1];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"inserting multiple nodes", ^{
+  __block NSArray<BLUNode *> *nodes;
+
+  beforeEach(^{
+    nodes = @[
+      [BLUNode nodeWithName:@"first" childNodes:@[] value:@8],
+      [BLUNode nodeWithName:@"second" childNodes:@[] value:@10]
+    ];
+  });
+
+  it(@"should insert new nodes to beginning of root", ^{
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{0, 1}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/" atIndexes:indexes];
+    expect(newNode[@"/"].childNodes[0]).to.equal(nodes[0]);
+    expect(newNode[@"/"].childNodes[1]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to middle of root", ^{
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{1, 3}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/" atIndexes:indexes];
+    expect(newNode[@"/"].childNodes[1]).to.equal(nodes[0]);
+    expect(newNode[@"/"].childNodes[3]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to end of root", ^{
+    NSUInteger count = root[@"/"].childNodes.count;
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{count, count + 1}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/" atIndexes:indexes];
+    expect(newNode[@"/"].childNodes[count]).to.equal(nodes[0]);
+    expect(newNode[@"/"].childNodes[count + 1]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to beginning of middle node", ^{
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{0, 1}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/left"
+                                             atIndexes:indexes];
+    expect(newNode[@"/left"].childNodes[0]).to.equal(nodes[0]);
+    expect(newNode[@"/left"].childNodes[1]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to middle of middle node", ^{
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{0, 2}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/left"
+                                             atIndexes:indexes];
+    expect(newNode[@"/left"].childNodes[0]).to.equal(nodes[0]);
+    expect(newNode[@"/left"].childNodes[2]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to end of middle node", ^{
+    NSUInteger count = root[@"/left"].childNodes.count;
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{count, count + 1}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/left"
+                                             atIndexes:indexes];
+    expect(newNode[@"/left"].childNodes[count]).to.equal(nodes[0]);
+    expect(newNode[@"/left"].childNodes[count + 1]).to.equal(nodes[1]);
+  });
+
+  it(@"should insert new nodes to leaf node", ^{
+    NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{0, 1}];
+    BLUNode *newNode = [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/left/leftRight"
+                                             atIndexes:indexes];
+    expect(newNode[@"/left/leftRight"].childNodes[0]).to.equal(nodes[0]);
+    expect(newNode[@"/left/leftRight"].childNodes[1]).to.equal(nodes[1]);
+  });
+
+  it(@"should raise when inserting nodes to invalid index", ^{
+    expect(^{
+      NSIndexSet *indexes = [NSIndexSet blu_indexSetWithIndexes:{}];
+      [root nodeByInsertingChildNodes:nodes toNodeAtPath:@"/left/leftRight" atIndexes:indexes];
     }).to.raise(NSInvalidArgumentException);
   });
 });

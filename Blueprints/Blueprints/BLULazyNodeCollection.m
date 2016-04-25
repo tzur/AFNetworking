@@ -108,6 +108,11 @@
   LTParameterAssert(NO, @"Node collection cannot be recreated with new nodes");
 }
 
+- (instancetype)blu_nodeCollectionByInsertingNodes:(NSArray<BLUNode *> __unused *)nodes
+                                         atIndexes:(NSIndexSet __unused *)indexes {
+  LTParameterAssert(NO, @"Node collection cannot be recreated with new nodes");
+}
+
 #pragma mark -
 #pragma mark NSFastEnumeration
 #pragma mark -

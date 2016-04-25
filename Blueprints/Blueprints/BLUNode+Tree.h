@@ -16,23 +16,34 @@ typedef NS_ENUM(NSUInteger, BLUTreeEnumerationType) {
 
 /// Returns a new node that is formed by removing the node from the receiver at the given \c path.
 /// If the given \c path does not point to any node, the returned node will be equal to the
-/// receiver. If \c path points to the receiver, an assert will be raised.
+/// receiver. If \c path points to the receiver, an exception will be raised.
 - (instancetype)nodeByRemovingNodeAtPath:(NSString *)path;
 
 /// Returns a new node that is formed by adding the given \c node as a child to the node at the
-/// given \c path. If \c path does not point to any node, an assert will be raised.
+/// given \c path. If \c path does not point to any node, an exception will be raised.
 - (instancetype)nodeByAddingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path;
 
 /// Returns a new node that is formed by inserting the given \c node as a child to the node at the
 /// given \c path at the given \c index. If \c index is already occupied, the objects at \c index
 /// and beyond are shifted by adding \c 1 to their indexes to make room. The valid value range of
-/// \c index is <tt>[0..childNodes.count]</tt>. If an invalid index is given, an assert will be
-/// raised. If \c path does not point to any node, an assert will be raised.
+/// \c index is <tt>[0..childNodes.count]</tt>. If an invalid index is given, an exception will be
+/// raised. If \c path does not point to any node, an exception will be raised.
 - (instancetype)nodeByInsertingChildNode:(BLUNode *)node toNodeAtPath:(NSString *)path
                                  atIndex:(NSUInteger)index;
 
+/// Returns a new node that is formed by inserting the given \c nodes as childs to the node at the
+/// given \c path at the given \c indexes. Each node in \c nodes is inserted in turn at the
+/// corresponding location specified in \c indexes after earlier insertions have been made. If one
+/// of the indexes, at the time of the insert, exceeds <tt>[0..childNodes.count]</tt>, an exception
+/// will be raised. If \c path does not point to any node, an exception will be raised.
+///
+/// @important \c indexes is a sorted collection, thus creating a non-sorted \c NSIndexSet and
+/// passing it to this method will produce unexpected results.
+- (instancetype)nodeByInsertingChildNodes:(NSArray<BLUNode *> *)nodes toNodeAtPath:(NSString *)path
+                                atIndexes:(NSIndexSet *)indexes;
+
 /// Returns a new node that is formed by replacing the node at the given \c path with the given
-/// \c node. If \c path does not point to any node, an assert will be raised.
+/// \c node. If \c path does not point to any node, an exception will be raised.
 - (instancetype)nodeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node;
 
 /// Returns the node at the given \c path or \c nil if no such node is found. \c path can be either

@@ -49,6 +49,19 @@ NS_ASSUME_NONNULL_BEGIN
   return [self nodeByUpdatingPathToRootFromNode:newParentNode path:nodes];
 }
 
+- (instancetype)nodeByInsertingChildNodes:(NSArray<BLUNode *> *)nodes toNodeAtPath:(NSString *)path
+                                atIndexes:(NSIndexSet *)indexes {
+  NSArray<BLUNode *> * _Nullable nodesForPath = [self nodesForPath:path];
+  LTParameterAssert(nodesForPath, @"Trying to insert nodes %@ to a non-existing path: %@", nodes,
+                    path);
+
+  // Insert nodes to their parent.
+  BLUNode *parentNode = nodesForPath.lastObject;
+  BLUNode *newParentNode = [parentNode nodeByInsertingChildNodes:nodes atIndexes:indexes];
+
+  return [self nodeByUpdatingPathToRootFromNode:newParentNode path:nodesForPath];
+}
+
 - (instancetype)nodeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node {
   NSArray<BLUNode *> * _Nullable nodes = [self nodesForPath:path];
   LTParameterAssert(nodes, @"Trying to replace node %@ with a non-existing node: %@", node, path);
