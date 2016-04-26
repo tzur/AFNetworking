@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Storage is taking place in memory. Therefore the album and it's cache information may be
 /// unserializable, but are assumed to be immutable.
-- (void)storeAlbum:(id<PTNAlbum>)album andCacheInfo:(PTNCacheInfo *)cacheInfo withURL:(NSURL *)url;
+- (void)storeAlbum:(id<PTNAlbum>)album withCacheInfo:(PTNCacheInfo *)cacheInfo forURL:(NSURL *)url;
 
 /// Retrieves \c PTNAlbum and \c PTNCacheInfo previously stored with \c url. The returned signal
 /// will send a single \c PTNCacheResponse and complete if album and its cache information were
@@ -35,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Storage is taking place in memory. Therefore the descriptor and it's cache information may
 /// be unserializable, but are assumed to be immutable.
-- (void)storeDescriptor:(id<PTNDescriptor>)descriptor andCacheInfo:(PTNCacheInfo *)cacheInfo
-                withURL:(NSURL *)url;
+- (void)storeDescriptor:(id<PTNDescriptor>)descriptor withCacheInfo:(PTNCacheInfo *)cacheInfo
+                forURL:(NSURL *)url;
 
 /// Retrieves \c PTNDescriptor and \c PTNCacheInfo previously stored with \c url. The returned
 /// signal will send a single \c PTNCacheResponse and complete if descriptor and its cache
@@ -53,8 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Storage is taking place in memory or in disk as determined by the underlying caching
 /// system.
-- (void)storeImageAsset:(id<PTNDataAsset>)imageAsset andCacheInfo:(PTNCacheInfo *)cacheInfo
-                withURL:(NSURL *)url;
+- (void)storeImageAsset:(id<PTNDataAsset>)imageAsset withCacheInfo:(PTNCacheInfo *)cacheInfo
+                 forURL:(NSURL *)url;
 
 /// Retrieves \c PTNDataBackedAsset constructed from \c resizingStrategy and image data previously
 /// stored with \c url along with \c PTNCacheInfo also stored for \c url. The returned signal will
