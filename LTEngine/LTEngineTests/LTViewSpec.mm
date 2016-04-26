@@ -438,6 +438,29 @@ context(@"drawing", ^{
     [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newSize]];
     expect(view.pixelGrid.gridDrawer.size).to.equal(newSize);
   });
+
+  it(@"should reset navigation state for textures with different size", ^{
+    CGRect navigationDestination = CGRectMake(view.contentSize.width / 2, 0,
+        view.contentSize.width / 2, view.contentSize.height / 2);
+    [view zoomToContentRect:navigationDestination animated:NO];
+    LTViewNavigationState *navigationState = [view navigationState];
+
+    CGSize newTextureSize = view.contentSize * 2;
+    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newTextureSize]];
+    LTViewNavigationState *newNavigationState = [view navigationState];
+    expect(newNavigationState).toNot.equal(navigationState);
+  });
+
+  it(@"should not reset navigation state for textures with the same size", ^{
+    CGRect navigationDestination = CGRectMake(view.contentSize.width / 2, 0,
+        view.contentSize.width / 2, view.contentSize.height / 2);
+    [view zoomToContentRect:navigationDestination animated:NO];
+    LTViewNavigationState *navigationState = [view navigationState];
+
+    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:view.contentSize]];
+    LTViewNavigationState *newNavigationState = [view navigationState];
+    expect(newNavigationState).to.equal(navigationState);
+  });
 });
 
 context(@"public interface", ^{

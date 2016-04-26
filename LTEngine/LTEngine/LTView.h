@@ -40,8 +40,10 @@
 /// will do nothing.
 - (void)teardown;
 
-/// Replaces the content texture with the given texture, updating the view's content size to match
-/// the new texture. This operation resets the navgiation state of the view to the default one.
+/// Replaces the content texture with the given \c texture, updating the view's content size to
+/// match the new \c texture. If the given \c texture is of the same size as the current texture,
+/// the view's navigation state will remain the same, otherwise it will reset to the default
+/// navigation state.
 - (void)replaceContentWith:(LTTexture *)texture;
 
 /// Temporary detaches the from the content texture. This should be called when going to the
