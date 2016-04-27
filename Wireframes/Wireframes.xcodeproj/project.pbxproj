@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */; };
 		6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */; };
 		6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */; };
 		6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
@@ -255,6 +256,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A7E53021CCE4236000AAAF3 /* NSErrorCodes+Wireframes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Wireframes.h"; sourceTree = "<group>"; };
+		6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Wireframes.m"; sourceTree = "<group>"; };
 		6AAED9F01CC62AAD00B3C62F /* WFImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageProvider.h; sourceTree = "<group>"; };
 		6AB2AAF51CC3945C00BC2371 /* UIView+LayoutSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayoutSignals.h"; sourceTree = "<group>"; };
 		6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+LayoutSignals.mm"; sourceTree = "<group>"; };
@@ -354,6 +357,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A7E53011CCE420E000AAAF3 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				6A7E53021CCE4236000AAAF3 /* NSErrorCodes+Wireframes.h */,
+				6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
 		6AAED9D11CC62A7C00B3C62F /* Image Providers */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +486,7 @@
 		8B283E191CBA7EED00B745AE /* Wireframes */ = {
 			isa = PBXGroup;
 			children = (
+				6A7E53011CCE420E000AAAF3 /* Base */,
 				8B283FA31CBA9DAC00B745AE /* Extensions */,
 				6AB2AB9C1CC4DB5500BC2371 /* RAC Support */,
 				8B283FE61CBE33A500B745AE /* Views */,
@@ -960,6 +973,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
+				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
