@@ -25,6 +25,10 @@ LTEnumDeclare(NSUInteger, PTNCachePolicy,
 /// has a cache policy query field it will be overwritten by \c cachePolicy.
 - (instancetype)ptn_cacheURLWithCachePolicy:(PTNCachePolicy *)cachePolicy;
 
+/// Returns the receiver with cache policy query field removed. If the receiver doesn't have a cache
+/// policy query field, it's returned as is.
+- (instancetype)ptn_cacheURLByStrippingCachePolicy;
+
 /// Caching policy to use when fetching objects associated with this URL. If this URL has no cache
 /// policy set, \c PTNCachePolicyDefault will be returned.
 @property (readonly, nonatomic) PTNCachePolicy *ptn_cacheCachePolicy;
