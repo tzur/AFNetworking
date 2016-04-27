@@ -48,6 +48,8 @@
 		84455E441CD0F2AB00042CB7 /* LTFastEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */; };
 		84455E451CD0F2AB00042CB7 /* LTFastEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 84455E431CD0F2AB00042CB7 /* LTFastEnumerator.m */; };
 		84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */; };
+		84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */; };
+		84455E4E1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */; };
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
@@ -386,6 +388,9 @@
 		84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFastEnumerator.h; sourceTree = "<group>"; };
 		84455E431CD0F2AB00042CB7 /* LTFastEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTFastEnumerator.m; sourceTree = "<group>"; };
 		84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFastEnumeratorSpec.mm; sourceTree = "<group>"; };
+		84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTMappingRandomAccessCollection.m; sourceTree = "<group>"; };
+		84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMappingRandomAccessCollectionSpec.mm; sourceTree = "<group>"; };
+		84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMappingRandomAccessCollection.h; sourceTree = "<group>"; };
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
@@ -908,6 +913,7 @@
 				259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */,
 				5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */,
 				84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */,
+				84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */,
 				255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */,
 				5067223019EA811A003AF8D2 /* LTQueueSpec.mm */,
 				28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */,
@@ -931,6 +937,8 @@
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
 				5067221719EA80B5003AF8D2 /* LTQueue.mm */,
 				8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */,
+				84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */,
+				84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */,
 				28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */,
 				28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */,
 			);
@@ -1273,6 +1281,7 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
+				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */,
 				8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */,
@@ -1304,6 +1313,7 @@
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
 				84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */,
+				84455E4E1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm in Sources */,
 				6AB518801CC2A8D700540CC6 /* NSURL+QuerySpec.mm in Sources */,
 				8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */,
 				255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */,
