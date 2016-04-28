@@ -43,6 +43,21 @@ static NSString * const kCachePolicy = @"cachepolicy";
   return [PTNCachePolicy enumWithName:cachePolicyName];
 }
 
+- (instancetype)ptn_cacheURLByStrippingCachePolicy {
+  NSMutableDictionary *query = [self.ptn_queryDictionary mutableCopy];
+  if (!query[kCachePolicy]) {
+    return self;
+  }
+
+  NSURLComponents *components = [[NSURLComponents alloc] initWithURL:self
+                                             resolvingAgainstBaseURL:NO];
+  [query removeObjectForKey:kCachePolicy];
+  NSArray *queryItems = [NSURL ptn_queryWithDictionary:query];
+  components.queryItems = queryItems.count ? queryItems : nil;
+
+  return components.URL;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
