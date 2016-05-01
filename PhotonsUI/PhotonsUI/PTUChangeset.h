@@ -3,13 +3,13 @@
 
 @class PTUChangesetMove;
 
-@protocol PTNCollection;
+@protocol LTRandomAccessCollection;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Array of \c PTNCollection each representing a section in the data source, together forming the
-/// all of the sections in the data source.
-typedef NSArray<id<PTNCollection>> PTUDataModel;
+/// Array of \c LTRandomAccessCollection each representing a section in the data source, together
+/// forming the all of the sections in the data source.
+typedef NSArray<id<LTRandomAccessCollection>> PTUDataModel;
 
 /// Dictionary of moved indexes mapping \c from index to \c to index.
 typedef NSArray<PTUChangesetMove *> PTUChangesetMoves;
@@ -39,12 +39,14 @@ typedef NSArray<PTUChangesetMove *> PTUChangesetMoves;
 /// @see -initWithBeforeData:afterData:deleted:inserted:updated:moved:.
 - (instancetype)initWithAfterDataModel:(PTUDataModel *)afterDataModel;
 
-/// Array of \c PTNCollection objects, each representing a section in the collection view, and
-/// together forming all of the sections as they were before the changes in this changeset.
+/// Array of \c LTRandomAccessCollection objects, each representing a section in the collection
+/// view, and together forming all of the sections as they were before the changes in this
+/// changeset.
 @property (readonly, nonatomic, nullable) PTUDataModel *beforeDataModel;
 
-/// Array of \c PTNCollection objects, each representing a section in the collection view; And
-/// together forming all of the sections as they are currently, after the changes in this changeset.
+/// Array of \c LTRandomAccessCollection objects, each representing a section in the collection
+/// view, and together forming all of the sections as they are currently, after the changes in this
+/// changeset.
 @property (readonly, nonatomic) PTUDataModel *afterDataModel;
 
 /// \c YES if this update contains changes that can be made incrementally or \c NO the updates in
