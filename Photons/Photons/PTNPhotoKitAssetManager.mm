@@ -3,11 +3,12 @@
 
 #import "PTNPhotoKitAssetManager.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAuthorizationManager.h"
-#import "PTNCollection.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"

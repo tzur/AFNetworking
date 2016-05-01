@@ -7,8 +7,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<PTNCollection> _Nullable assets,
-                            id<PTNCollection> _Nullable subalbums) {
+id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> _Nullable assets,
+                            id<LTRandomAccessCollection> _Nullable subalbums) {
   id<PTNAlbum> album = OCMProtocolMock(@protocol(PTNAlbum));
   OCMStub([album url]).andReturn(url);
   OCMStub([album assets]).andReturn(assets);

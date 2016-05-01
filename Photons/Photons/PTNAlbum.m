@@ -3,7 +3,7 @@
 
 #import "PTNAlbum.h"
 
-#import "PTNCollection.h"
+#import <LTKit/LTRandomAccessCollection.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize assets = _assets;
 
 - (instancetype)initWithURL:(NSURL *)url
-                  subalbums:(NSArray<id<PTNAlbumDescriptor>> *)subalbums
-                     assets:(NSArray<id<PTNAssetDescriptor>> *)assets {
+                  subalbums:(id<LTRandomAccessCollection>)subalbums
+                     assets:(id<LTRandomAccessCollection>)assets {
   if (self = [super init]) {
     _url = url;
     _subalbums = subalbums;

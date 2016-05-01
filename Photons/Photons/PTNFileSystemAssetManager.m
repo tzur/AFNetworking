@@ -4,12 +4,12 @@
 #import "PTNFileSystemAssetManager.h"
 
 #import <LTKit/LTPath.h>
+#import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
-#import "PTNCollection.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileManager.h"

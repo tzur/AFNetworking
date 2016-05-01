@@ -562,7 +562,6 @@
 		8B2FD0391AF9F93A00757B1F /* Photons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photons-Prefix.pch"; sourceTree = "<group>"; };
 		8B2FD06E1AF9FF2200757B1F /* PhotonsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotonsTests-Prefix.pch"; sourceTree = "<group>"; };
 		8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAlbum.h; sourceTree = "<group>"; };
-		8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNCollection.h; sourceTree = "<group>"; };
 		8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAssetManager.h; sourceTree = "<group>"; };
 		8B2FD07C1AFB809B00757B1F /* PTNPhotoKitAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitAssetManager.h; sourceTree = "<group>"; };
 		8B2FD07D1AFB809B00757B1F /* PTNPhotoKitAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNPhotoKitAssetManager.mm; sourceTree = "<group>"; };
@@ -1064,7 +1063,6 @@
 				8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */,
 				8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */,
 				8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */,
-				8B2FD07A1AFB4CE900757B1F /* PTNCollection.h */,
 				842A3C281C54C70400BD10C1 /* PTNDataAsset.h */,
 				842A3C421C54D33A00BD10C1 /* PTNDataBackedImageAsset.h */,
 				842A3C431C54D33A00BD10C1 /* PTNDataBackedImageAsset.m */,

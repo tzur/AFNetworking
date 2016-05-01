@@ -6,13 +6,13 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+Dropbox.h"
 #import "NSURL+PTNResizingStrategy.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
-#import "PTNCollection.h"
 #import "PTNDropboxDirectoryDescriptor.h"
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxFileDescriptor.h"
