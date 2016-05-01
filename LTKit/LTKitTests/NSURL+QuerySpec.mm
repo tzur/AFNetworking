@@ -8,17 +8,17 @@ SpecBegin(NSURL_Query)
 context(@"queryDictionary", ^{
   it(@"should return empty dictionary for missing query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar"];
-    expect(url.queryDictionary).to.equal(@{});
+    expect(url.lt_queryDictionary).to.equal(@{});
   });
 
   it(@"should return empty dictionary for empty query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?"];
-    expect(url.queryDictionary).to.equal(@{});
+    expect(url.lt_queryDictionary).to.equal(@{});
   });
 
   it(@"should contain correct query items with keys and values", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key1=value1&key2=value2"];
-    expect(url.queryDictionary).to.equal(@{
+    expect(url.lt_queryDictionary).to.equal(@{
       @"key1": @"value1",
       @"key2": @"value2"
     });
@@ -26,39 +26,39 @@ context(@"queryDictionary", ^{
 
   it(@"should return last value for duplicate keys", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key=value1&key=value2"];
-    expect(url.queryDictionary[@"key"]).to.equal(@"value2");
+    expect(url.lt_queryDictionary[@"key"]).to.equal(@"value2");
   });
 
   it(@"should return empty string for missing value", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key"];
-    expect(url.queryDictionary[@"key"]).to.equal(@"");
+    expect(url.lt_queryDictionary[@"key"]).to.equal(@"");
   });
 
   it(@"should return empty string for empty value", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key="];
-    expect(url.queryDictionary[@"key"]).to.equal(@"");
+    expect(url.lt_queryDictionary[@"key"]).to.equal(@"");
   });
 
   it(@"should return empty key and value for empty item", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?&"];
-    expect(url.queryDictionary[@""]).to.equal(@"");
+    expect(url.lt_queryDictionary[@""]).to.equal(@"");
   });
 });
 
 context(@"queryItems", ^{
   it(@"should return nil for missing query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar"];
-    expect(url.queryItems).to.beNil();
+    expect(url.lt_queryItems).to.beNil();
   });
 
   it(@"should return empty array for empty query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?"];
-    expect(url.queryItems).to.equal(@[]);
+    expect(url.lt_queryItems).to.equal(@[]);
   });
 
   it(@"should contain correct query items with keys and values", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key1=value1&key2=value2"];
-    expect(url.queryItems).to.equal(@[
+    expect(url.lt_queryItems).to.equal(@[
       [NSURLQueryItem queryItemWithName:@"key1" value:@"value1"],
       [NSURLQueryItem queryItemWithName:@"key2" value:@"value2"]
     ]);
@@ -66,7 +66,7 @@ context(@"queryItems", ^{
 
   it(@"should contain duplicate query items in correct order for duplicate keys", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key=value1&key=value2"];
-    expect(url.queryItems).to.equal(@[
+    expect(url.lt_queryItems).to.equal(@[
       [NSURLQueryItem queryItemWithName:@"key" value:@"value1"],
       [NSURLQueryItem queryItemWithName:@"key" value:@"value2"]
     ]);
@@ -74,17 +74,17 @@ context(@"queryItems", ^{
 
   it(@"should return nil value for missing value in query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key"];
-    expect(url.queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"key" value:nil]);
+    expect(url.lt_queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"key" value:nil]);
   });
 
   it(@"should return empty value for empty value in query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key="];
-    expect(url.queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"key" value:@""]);
+    expect(url.lt_queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"key" value:@""]);
   });
 
   it(@"should return empty key and nil value for empty item", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?&"];
-    expect(url.queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"" value:nil]);
+    expect(url.lt_queryItems[0]).to.equal([NSURLQueryItem queryItemWithName:@"" value:nil]);
   });
 });
 
@@ -99,7 +99,7 @@ context(@"lt_URLByAppendingQueryItems", ^{
     NSURLQueryItem *item = [NSURLQueryItem queryItemWithName:@"key" value:@"value"];
 
     NSURL *urlWithQuery = [url lt_URLByAppendingQueryItems:@[item]];
-    expect(urlWithQuery.queryItems).to.equal(@[item]);
+    expect(urlWithQuery.lt_queryItems).to.equal(@[item]);
   });
 
   it(@"should append query to url with existing query", ^{
@@ -108,7 +108,7 @@ context(@"lt_URLByAppendingQueryItems", ^{
     NSURLQueryItem *appended = [[NSURLQueryItem alloc] initWithName:@"key" value:@"value2"];
 
     NSURL *urlWithQuery = [url lt_URLByAppendingQueryItems:@[appended]];
-    expect(urlWithQuery.queryItems).to.equal(@[existing, appended]);
+    expect(urlWithQuery.lt_queryItems).to.equal(@[existing, appended]);
   });
 
   it(@"should preserve relative URL", ^{
@@ -120,7 +120,7 @@ context(@"lt_URLByAppendingQueryItems", ^{
     NSURL *urlWithQuery = [relativeURL lt_URLByAppendingQueryItems:@[appended]];
 
     expect(urlWithQuery.baseURL).to.equal(baseURL);
-    expect(urlWithQuery.queryItems).to.equal(@[existing, appended]);
+    expect(urlWithQuery.lt_queryItems).to.equal(@[existing, appended]);
   });
 });
 
