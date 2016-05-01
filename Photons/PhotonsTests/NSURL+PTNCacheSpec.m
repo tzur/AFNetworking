@@ -3,6 +3,8 @@
 
 #import "NSURL+PTNCache.h"
 
+#import <LTKit/NSURL+Query.h>
+
 SpecBegin(NSURL_PTNCache)
 
 __block NSURL *url;
