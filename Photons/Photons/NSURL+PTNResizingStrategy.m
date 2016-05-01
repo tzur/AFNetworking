@@ -6,8 +6,7 @@
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/LTCGExtensions.h>
 #import <LTKit/NSNumber+CGFloat.h>
-
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,11 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes this object using the entries in \c query. If the entries in \c query aren't
 /// sufficient for the initialization of this object the returned value will be \c nil.
-- (instancetype)initWithQuery:(NSArray<NSURLQueryItem *> *)query;
+- (instancetype)initWithQuery:(NSDictionary<NSString *, NSString *> *)query;
 
 /// Returns an array of \c NSURLQuery items sufficient to re-initialize this object with an \c NSURL
 /// containing the returned query.
-- (NSArray<NSURLQueryItem *> *)serializedQuery;
+- (NSDictionary<NSString *, NSString *> *)serializedQuery;
 
 @end
 
@@ -39,15 +38,14 @@ static NSString * const kResizingStrategyName = @"resizingstrategy";
     return self;
   }
 
-  NSArray<NSURLQueryItem *> *query = [((id<PTNQuerySerialization>)strategy) serializedQuery];
-  return [self ptn_URLByAppendingQuery:query];
+  NSDictionary *query = [((id<PTNQuerySerialization>)strategy) serializedQuery];
+  return [self lt_URLByAppendingQueryDictionary:query];
 }
 
 - (nullable id<PTNResizingStrategy>)ptn_resizingStrategy {
-  NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
-  NSArray<NSURLQueryItem *> *query = components.queryItems;
+  NSDictionary *query = self.lt_queryDictionary;
 
-  NSString *strategyName = self.ptn_queryDictionary[kResizingStrategyName];
+  NSString *strategyName = query[kResizingStrategyName];
   if (!strategyName) {
     return nil;
   }
@@ -89,21 +87,19 @@ static NSString * const kResizingStrategyName = @"resizingstrategy";
 static NSString * const kWidthParameter = @"width";
 static NSString * const kHeightParameter = @"height";
 
-static NSArray<NSURLQueryItem *> *PTNQueryFromSize(CGSize size) {
+static NSDictionary<NSString *, NSString *> *PTNQueryFromSize(CGSize size) {
   NSString *heightString = [NSString stringWithFormat:@"%g", size.height];
   NSString *widthString = [NSString stringWithFormat:@"%g", size.width];
 
-  return @[
-    [[NSURLQueryItem alloc] initWithName:kWidthParameter value:widthString],
-    [[NSURLQueryItem alloc] initWithName:kHeightParameter value:heightString]
-  ];
+  return @{
+    kWidthParameter: widthString,
+    kHeightParameter: heightString
+  };
 }
 
-static CGSize PTNSizeFromQuery(NSArray<NSURLQueryItem *> *query) {
-  NSDictionary *queryDict = [NSURL ptn_dictionaryWithQuery:query];
-
-  NSString *widthString = queryDict[kWidthParameter];
-  NSString *heightString = queryDict[kHeightParameter];
+static CGSize PTNSizeFromQuery(NSDictionary<NSString *, NSString *> *query) {
+  NSString *widthString = query[kWidthParameter];
+  NSString *heightString = query[kHeightParameter];
   if (!widthString || !heightString) {
     return CGSizeNull;
   }
@@ -126,13 +122,12 @@ static NSString *PTNStrategyName(NSObject *startegy) {
 
 static NSString * const kIdentityStrategyName = @"foo";
 
-- (NSArray<NSURLQueryItem *> *)serializedQuery {
-  return @[[[NSURLQueryItem alloc] initWithName:kResizingStrategyName value:PTNStrategyName(self)]];
+- (NSDictionary<NSString *, NSString *> *)serializedQuery {
+  return @{kResizingStrategyName: PTNStrategyName(self)};
 }
 
-- (instancetype)initWithQuery:(NSArray<NSURLQueryItem *> *)query {
-  NSDictionary *queryDict = [NSURL ptn_dictionaryWithQuery:query];
-  if (![queryDict[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
+- (instancetype)initWithQuery:(NSDictionary<NSString *, NSString *> *)query {
+  if (![query[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
     return nil;
   }
 
@@ -152,13 +147,12 @@ static NSString * const kIdentityStrategyName = @"foo";
 
 static NSString * const kMaxPixelsParameter = @"maxpixels";
 
-- (instancetype)initWithQuery:(NSArray<NSURLQueryItem *> *)query {
-  NSDictionary *queryDict = [NSURL ptn_dictionaryWithQuery:query];
-  if (![queryDict[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
+- (instancetype)initWithQuery:(NSDictionary<NSString *, NSString *> *)query {
+  if (![query[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
     return nil;
   }
 
-  NSString *maxPixelsString = queryDict[kMaxPixelsParameter];
+  NSString *maxPixelsString = query[kMaxPixelsParameter];
   if (!maxPixelsString) {
     return nil;
   }
@@ -171,13 +165,13 @@ static NSString * const kMaxPixelsParameter = @"maxpixels";
   return [self initWithMaxPixels:(unsigned long)maxPixels];
 }
 
-- (NSArray<NSURLQueryItem *> *)serializedQuery {
+- (NSDictionary<NSString *, NSString *> *)serializedQuery {
   NSString *maxPixelsString = [NSString stringWithFormat:@"%lu", (unsigned long)self.maxPixels];
 
-  return @[
-    [[NSURLQueryItem alloc] initWithName:kResizingStrategyName value:PTNStrategyName(self)],
-    [[NSURLQueryItem alloc] initWithName:kMaxPixelsParameter value:maxPixelsString]
-  ];
+  return @{
+    kResizingStrategyName: PTNStrategyName(self),
+    kMaxPixelsParameter: maxPixelsString
+  };
 }
 
 @end
@@ -191,9 +185,8 @@ static NSString * const kMaxPixelsParameter = @"maxpixels";
 
 @implementation PTNAspectFitResizingStrategy (NSURL)
 
-- (instancetype)initWithQuery:(NSArray<NSURLQueryItem *> *)query {
-  NSDictionary *queryDict = [NSURL ptn_dictionaryWithQuery:query];
-  if (![queryDict[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
+- (instancetype)initWithQuery:(NSDictionary<NSString *, NSString *> *)query {
+  if (![query[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
     return nil;
   }
 
@@ -205,11 +198,10 @@ static NSString * const kMaxPixelsParameter = @"maxpixels";
   return [self initWithSize:size];
 }
 
-- (NSArray<NSURLQueryItem *> *)serializedQuery {
-  NSArray *query = @[[[NSURLQueryItem alloc] initWithName:kResizingStrategyName
-                                                    value:PTNStrategyName(self)]];
-
-  return [query arrayByAddingObjectsFromArray:PTNQueryFromSize(self.size)];
+- (NSDictionary<NSString *, NSString *> *)serializedQuery {
+  NSMutableDictionary *query = [@{kResizingStrategyName: PTNStrategyName(self)} mutableCopy];
+  [query addEntriesFromDictionary:PTNQueryFromSize(self.size)];
+  return [query copy];
 }
 
 @end
@@ -223,9 +215,8 @@ static NSString * const kMaxPixelsParameter = @"maxpixels";
 
 @implementation PTNAspectFillResizingStrategy (NSURL)
 
-- (instancetype)initWithQuery:(NSArray<NSURLQueryItem *> *)query {
-  NSDictionary *queryDict = [NSURL ptn_dictionaryWithQuery:query];
-  if (![queryDict[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
+- (instancetype)initWithQuery:(NSDictionary<NSString *, NSString *> *)query {
+  if (![query[kResizingStrategyName] isEqualToString:PTNStrategyName(self)]) {
     return nil;
   }
 
@@ -237,11 +228,10 @@ static NSString * const kMaxPixelsParameter = @"maxpixels";
   return [self initWithSize:size];
 }
 
-- (NSArray<NSURLQueryItem *> *)serializedQuery {
-  NSArray *query = @[[[NSURLQueryItem alloc] initWithName:kResizingStrategyName
-                                                    value:PTNStrategyName(self)]];
-
-  return [query arrayByAddingObjectsFromArray:PTNQueryFromSize(self.size)];
+- (NSDictionary<NSString *, NSString *> *)serializedQuery {
+  NSMutableDictionary *query = [@{kResizingStrategyName: PTNStrategyName(self)} mutableCopy];
+  [query addEntriesFromDictionary:PTNQueryFromSize(self.size)];
+  return [query copy];
 }
 
 @end
