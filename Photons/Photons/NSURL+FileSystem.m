@@ -5,8 +5,7 @@
 
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/LTPath.h>
-
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -72,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable LTPath *)ptn_fileSystemPath {
-  NSDictionary *query = self.ptn_queryDictionary;
+  NSDictionary *query = self.lt_queryDictionary;
   if (!query[@"base"] || !query[@"relative"]) {
     return nil;
   }
@@ -94,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
     return PTNFileSystemURLTypeInvalid;
   }
 
-  NSDictionary *query = self.ptn_queryDictionary;
+  NSDictionary *query = self.lt_queryDictionary;
   if (!query[@"base"] || !query[@"relative"]) {
     return PTNFileSystemURLTypeInvalid;
   }
