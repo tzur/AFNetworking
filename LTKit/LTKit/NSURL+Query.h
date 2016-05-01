@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// <tt>"scheme://host/path/foo?"</tt> -> \c @[]
 ///
 /// @see <tt>-[NSURLComponents queryItems]</tt> for the details of this representation.
-@property (readonly, nonatomic, nullable) NSArray<NSURLQueryItem *> *queryItems;
+@property (readonly, nonatomic, nullable) NSArray<NSURLQueryItem *> *lt_queryItems;
 
 /// Query items as a dictionary mapping query keys to query values. If there are multiple query
 /// items with the same key, only the last such item is present in the dictionary. Missing query
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Use \c queryItems when a one-to-one representation of the \c query string is required (and it is
 /// if there is anything remotely related to security).
-@property (readonly, nonatomic) NSDictionary<NSString *, NSString *> *queryDictionary;
+@property (readonly, nonatomic) NSDictionary<NSString *, NSString *> *lt_queryDictionary;
 
 @end
 

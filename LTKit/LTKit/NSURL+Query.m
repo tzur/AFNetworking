@@ -46,12 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
   return [components URLRelativeToURL:self.baseURL];
 }
 
-- (nullable NSArray<NSURLQueryItem *> *)queryItems {
+- (nullable NSArray<NSURLQueryItem *> *)lt_queryItems {
   NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
   return components.queryItems;
 }
 
-- (NSDictionary<NSString *, NSString *> *)queryDictionary {
+- (NSDictionary<NSString *, NSString *> *)lt_queryDictionary {
   NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
   if (!components) {
     return @{};
