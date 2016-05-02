@@ -227,7 +227,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAssetWithURL:(NSURL *)url {
-  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)]) {
+  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
