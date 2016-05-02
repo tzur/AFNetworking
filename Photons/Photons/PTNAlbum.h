@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbumDescriptor, PTNAssetDescriptor, PTNCollection;
+@protocol LTRandomAccessCollection, PTNAlbumDescriptor, PTNAssetDescriptor;
 
 /// Represents a collection of assets and subalbums. Classes implementing this protocol are advised
 /// to be immutable value objects.
@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Asset implementing the \c PTNAssetDescriptor protocol contained in this album. If there are no
 /// assets, an empty collection will be returned.
-@property (readonly, nonatomic) id<PTNCollection> assets;
+@property (readonly, nonatomic) id<LTRandomAccessCollection> assets;
 
 /// Sub albums contained in this album implementing the \c PTNAlbumDescriptor protocol. If there are
 /// no subalbums, an empty collection will be returned.
-@property (readonly, nonatomic) id<PTNCollection> subalbums;
+@property (readonly, nonatomic) id<LTRandomAccessCollection> subalbums;
 
 @end
 
@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c url, subalbums and assets.
 - (instancetype)initWithURL:(NSURL *)url
-                  subalbums:(NSArray<id<PTNAlbumDescriptor>> *)subalbums
-                     assets:(NSArray<id<PTNAssetDescriptor>> *)assets NS_DESIGNATED_INITIALIZER;
+                  subalbums:(id<LTRandomAccessCollection>)subalbums
+                     assets:(id<LTRandomAccessCollection>)assets NS_DESIGNATED_INITIALIZER;
 
 @end
 

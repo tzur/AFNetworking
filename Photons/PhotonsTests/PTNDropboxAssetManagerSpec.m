@@ -4,6 +4,7 @@
 #import "PTNDropboxAssetManager.h"
 
 #import <LTKit/LTPath.h>
+#import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+Dropbox.h"

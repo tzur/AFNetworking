@@ -3,6 +3,8 @@
 
 #import "PTNAlbum.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTNDescriptor.h"
 
 SpecBegin(PTNAlbum)

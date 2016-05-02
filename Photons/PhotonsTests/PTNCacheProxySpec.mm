@@ -3,8 +3,9 @@
 
 #import "PTNCacheProxy.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTNAlbum.h"
-#import "PTNCollection.h"
 #import "PTNCacheInfo.h"
 #import "PTNTestUtils.h"
 

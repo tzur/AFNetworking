@@ -3,10 +3,10 @@
 
 #import "PTNPhotoKitAlbum.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
 #import <Photos/Photos.h>
 
 #import "NSURL+PhotoKit.h"
-#import "PTNCollection.h"
 
 SpecBegin(PTNPhotoKitAlbum)
 

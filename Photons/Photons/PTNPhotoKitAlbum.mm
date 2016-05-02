@@ -3,14 +3,14 @@
 
 #import "PTNPhotoKitAlbum.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
 #import <Photos/Photos.h>
 
 #import "NSURL+PhotoKit.h"
-#import "PTNCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PHFetchResult () <PTNCollection>
+@interface PHFetchResult () <LTRandomAccessCollection>
 @end
 
 @interface PTNPhotoKitAlbum ()
@@ -46,11 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (id<PTNCollection>)assets {
+- (id<LTRandomAccessCollection>)assets {
   return self.assetsFetchResult ?: @[];
 }
 
-- (id<PTNCollection>)subalbums {
+- (id<LTRandomAccessCollection>)subalbums {
   return self.albumsFetchResult ?: @[];
 }
 

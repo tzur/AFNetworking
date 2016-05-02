@@ -3,9 +3,10 @@
 
 #import "PTNDataAssetCache.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTNAlbum.h"
 #import "PTNCacheInfo.h"
-#import "PTNCollection.h"
 #import "PTNDataAsset.h"
 #import "PTNDataBackedImageAsset.h"
 #import "PTNDescriptor.h"

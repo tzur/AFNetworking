@@ -3,11 +3,11 @@
 
 #import "PTUAlbumChangesetProvider.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNAlbumChangeset.h>
 #import <Photons/PTNAlbumChangesetMove.h>
 #import <Photons/PTNAssetManager.h>
-#import <Photons/PTNCollection.h>
 #import <Photons/PTNIncrementalChanges.h>
 
 #import "PTUChangeset.h"
