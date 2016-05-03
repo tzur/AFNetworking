@@ -1,0 +1,934 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97511CD75586001962A0 /* libSpecta.a */; };
+		836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F972F1CD75504001962A0 /* libExpecta.a */; };
+		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
+		836C65CE1CD75F2000BE4496 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F973A1CD7557C001962A0 /* libLTKit.a */; };
+		836C65D01CD75F2700BE4496 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */; };
+		836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97731CD7559E001962A0 /* ReactiveCocoa.framework */; };
+		83FF06DF1CD7266B00383C6B /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06DE1CD7266B00383C6B /* Camera.mm */; };
+		83FF06F51CD7272F00383C6B /* CameraSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06F41CD7272F00383C6B /* CameraSpec.mm */; };
+		83FF06F71CD7272F00383C6B /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		832F97241CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		832F97261CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		832F97281CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		832F972A1CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		832F972C1CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		832F972E1CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		832F97301CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		832F97321CD75504001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		832F97391CD7557C001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97341CD7557C001962A0 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
+		832F973B1CD7557C001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97341CD7557C001962A0 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
+		832F97461CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		832F97481CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		832F974A1CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		832F974C1CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		832F974E1CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		832F97501CD75586001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		832F975B1CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		832F975D1CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		832F975F1CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		832F97611CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		832F97631CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
+		832F97651CD75591001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 817EB1621BD765130047E85A;
+			remoteInfo = "OCMock tvOS";
+		};
+		832F976E1CD7559E001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-Mac";
+		};
+		832F97701CD7559E001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveCocoa-MacTests";
+		};
+		832F97721CD7559E001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		832F97741CD7559E001962A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		836C66171CD76F4500BE4496 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		83FF06F81CD7272F00383C6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83FF06D11CD7266B00383C6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83FF06D81CD7266B00383C6B;
+			remoteInfo = Camera;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		836C66161CD76F2C00BE4496 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		832F97191CD75504001962A0 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		832F97341CD7557C001962A0 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		832F973D1CD75586001962A0 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		832F97521CD75591001962A0 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
+		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
+		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		83FF06D91CD7266B00383C6B /* libCamera.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCamera.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		83FF06DC1CD7266B00383C6B /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		83FF06DE1CD7266B00383C6B /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
+		83FF06E61CD7270300383C6B /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		83FF06E81CD7270300383C6B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		83FF06E91CD7270300383C6B /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		83FF06EB1CD7270300383C6B /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		83FF06EC1CD7270300383C6B /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		83FF06F21CD7272F00383C6B /* CameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		83FF06F41CD7272F00383C6B /* CameraSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraSpec.mm; sourceTree = "<group>"; };
+		83FF06F61CD7272F00383C6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		83FF06D61CD7266B00383C6B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83FF06EF1CD7272F00383C6B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
+				83FF06F71CD7272F00383C6B /* libCamera.a in Frameworks */,
+				836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */,
+				836C65CE1CD75F2000BE4496 /* libLTKit.a in Frameworks */,
+				836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */,
+				836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */,
+				836C65D01CD75F2700BE4496 /* libextobjc_iOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		832F971A1CD75504001962A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				832F97251CD75504001962A0 /* Expecta.framework */,
+				832F97271CD75504001962A0 /* Expecta.framework */,
+				832F97291CD75504001962A0 /* ExpectaTests.xctest */,
+				832F972B1CD75504001962A0 /* Expecta-iOSTests.xctest */,
+				832F972D1CD75504001962A0 /* libExpecta.a */,
+				832F972F1CD75504001962A0 /* libExpecta.a */,
+				832F97311CD75504001962A0 /* libExpectaTests.xctest */,
+				832F97331CD75504001962A0 /* libExpecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		832F97351CD7557C001962A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				832F973A1CD7557C001962A0 /* libLTKit.a */,
+				832F973C1CD7557C001962A0 /* LTKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		832F973E1CD75586001962A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				832F97471CD75586001962A0 /* Specta.framework */,
+				832F97491CD75586001962A0 /* SpectaTests.xctest */,
+				832F974B1CD75586001962A0 /* Specta.framework */,
+				832F974D1CD75586001962A0 /* Specta-iOSTests.xctest */,
+				832F974F1CD75586001962A0 /* libSpecta.a */,
+				832F97511CD75586001962A0 /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		832F97531CD75591001962A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				832F975C1CD75591001962A0 /* OCMock.framework */,
+				832F975E1CD75591001962A0 /* OCMockTests.xctest */,
+				832F97601CD75591001962A0 /* libOCMock.a */,
+				832F97621CD75591001962A0 /* OCMockLibTests.xctest */,
+				832F97641CD75591001962A0 /* OCMock.framework */,
+				832F97661CD75591001962A0 /* OCMock.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		832F97681CD7559E001962A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				832F976F1CD7559E001962A0 /* ReactiveCocoa.framework */,
+				832F97711CD7559E001962A0 /* ReactiveCocoa-MacTests.xctest */,
+				832F97731CD7559E001962A0 /* ReactiveCocoa.framework */,
+				832F97751CD7559E001962A0 /* ReactiveCocoa-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8352E9A81CD747150008C22B /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				832F97191CD75504001962A0 /* Expecta.xcodeproj */,
+				832F97341CD7557C001962A0 /* LTKit.xcodeproj */,
+				832F97521CD75591001962A0 /* OCMock.xcodeproj */,
+				832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */,
+				832F973D1CD75586001962A0 /* Specta.xcodeproj */,
+				836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		83FF06D01CD7266B00383C6B = {
+			isa = PBXGroup;
+			children = (
+				83FF06DB1CD7266B00383C6B /* Camera */,
+				83FF06F31CD7272F00383C6B /* CameraTests */,
+				83FF06E51CD726C500383C6B /* Configuration */,
+				8352E9A81CD747150008C22B /* Libraries */,
+				83FF06DA1CD7266B00383C6B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		83FF06DA1CD7266B00383C6B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06D91CD7266B00383C6B /* libCamera.a */,
+				83FF06F21CD7272F00383C6B /* CameraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		83FF06DB1CD7266B00383C6B /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06DC1CD7266B00383C6B /* Camera.h */,
+				83FF06DE1CD7266B00383C6B /* Camera.mm */,
+				8352E9C61CD74D250008C22B /* Camera-Prefix.pch */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		83FF06E51CD726C500383C6B /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06E61CD7270300383C6B /* Common.xcconfig */,
+				83FF06E71CD7270300383C6B /* Configurations */,
+				83FF06EA1CD7270300383C6B /* Targets */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		83FF06E71CD7270300383C6B /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06E81CD7270300383C6B /* Debug.xcconfig */,
+				83FF06E91CD7270300383C6B /* Release.xcconfig */,
+			);
+			name = Configurations;
+			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		83FF06EA1CD7270300383C6B /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06EB1CD7270300383C6B /* Application.xcconfig */,
+				83FF06EC1CD7270300383C6B /* Framework.xcconfig */,
+				83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */,
+			);
+			name = Targets;
+			path = ../Configuration/Targets;
+			sourceTree = "<group>";
+		};
+		83FF06F31CD7272F00383C6B /* CameraTests */ = {
+			isa = PBXGroup;
+			children = (
+				83FF06F41CD7272F00383C6B /* CameraSpec.mm */,
+				8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */,
+				83FF06F61CD7272F00383C6B /* Info.plist */,
+			);
+			path = CameraTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		83FF06D81CD7266B00383C6B /* Camera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83FF06E21CD7266B00383C6B /* Build configuration list for PBXNativeTarget "Camera" */;
+			buildPhases = (
+				83FF06D51CD7266B00383C6B /* Sources */,
+				83FF06D61CD7266B00383C6B /* Frameworks */,
+				836C66161CD76F2C00BE4496 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				836C66181CD76F4500BE4496 /* PBXTargetDependency */,
+			);
+			name = Camera;
+			productName = Camera;
+			productReference = 83FF06D91CD7266B00383C6B /* libCamera.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		83FF06F11CD7272F00383C6B /* CameraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83FF06FA1CD7272F00383C6B /* Build configuration list for PBXNativeTarget "CameraTests" */;
+			buildPhases = (
+				83FF06EE1CD7272F00383C6B /* Sources */,
+				83FF06EF1CD7272F00383C6B /* Frameworks */,
+				83FF06F01CD7272F00383C6B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				83FF06F91CD7272F00383C6B /* PBXTargetDependency */,
+			);
+			name = CameraTests;
+			productName = CameraTests;
+			productReference = 83FF06F21CD7272F00383C6B /* CameraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83FF06D11CD7266B00383C6B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = CAM;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					83FF06D81CD7266B00383C6B = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					83FF06F11CD7272F00383C6B = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 83FF06D41CD7266B00383C6B /* Build configuration list for PBXProject "Camera" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 83FF06D01CD7266B00383C6B;
+			productRefGroup = 83FF06DA1CD7266B00383C6B /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 832F971A1CD75504001962A0 /* Products */;
+					ProjectRef = 832F97191CD75504001962A0 /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = 832F97351CD7557C001962A0 /* Products */;
+					ProjectRef = 832F97341CD7557C001962A0 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 832F97531CD75591001962A0 /* Products */;
+					ProjectRef = 832F97521CD75591001962A0 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = 832F97681CD7559E001962A0 /* Products */;
+					ProjectRef = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+				},
+				{
+					ProductGroup = 832F973E1CD75586001962A0 /* Products */;
+					ProjectRef = 832F973D1CD75586001962A0 /* Specta.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				83FF06D81CD7266B00383C6B /* Camera */,
+				83FF06F11CD7272F00383C6B /* CameraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		832F97251CD75504001962A0 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 832F97241CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97271CD75504001962A0 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 832F97261CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97291CD75504001962A0 /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 832F97281CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F972B1CD75504001962A0 /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 832F972A1CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F972D1CD75504001962A0 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 832F972C1CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F972F1CD75504001962A0 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 832F972E1CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97311CD75504001962A0 /* libExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = libExpectaTests.xctest;
+			remoteRef = 832F97301CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97331CD75504001962A0 /* libExpecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 832F97321CD75504001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F973A1CD7557C001962A0 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = 832F97391CD7557C001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F973C1CD7557C001962A0 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = 832F973B1CD7557C001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97471CD75586001962A0 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 832F97461CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97491CD75586001962A0 /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 832F97481CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F974B1CD75586001962A0 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 832F974A1CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F974D1CD75586001962A0 /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 832F974C1CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F974F1CD75586001962A0 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 832F974E1CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97511CD75586001962A0 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 832F97501CD75586001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F975C1CD75591001962A0 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 832F975B1CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F975E1CD75591001962A0 /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 832F975D1CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97601CD75591001962A0 /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 832F975F1CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97621CD75591001962A0 /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 832F97611CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97641CD75591001962A0 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 832F97631CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97661CD75591001962A0 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 832F97651CD75591001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F976F1CD7559E001962A0 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 832F976E1CD7559E001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97711CD7559E001962A0 /* ReactiveCocoa-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-MacTests.xctest";
+			remoteRef = 832F97701CD7559E001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97731CD7559E001962A0 /* ReactiveCocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveCocoa.framework;
+			remoteRef = 832F97721CD7559E001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		832F97751CD7559E001962A0 /* ReactiveCocoa-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveCocoa-iOSTests.xctest";
+			remoteRef = 832F97741CD7559E001962A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		83FF06F01CD7272F00383C6B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		83FF06D51CD7266B00383C6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FF06DF1CD7266B00383C6B /* Camera.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83FF06EE1CD7272F00383C6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FF06F51CD7272F00383C6B /* CameraSpec.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		836C66181CD76F4500BE4496 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveCocoa-iOS";
+			targetProxy = 836C66171CD76F4500BE4496 /* PBXContainerItemProxy */;
+		};
+		83FF06F91CD7272F00383C6B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83FF06D81CD7266B00383C6B /* Camera */;
+			targetProxy = 83FF06F81CD7272F00383C6B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		83FF06E01CD7266B00383C6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83FF06E81CD7270300383C6B /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		83FF06E11CD7266B00383C6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83FF06E91CD7270300383C6B /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		83FF06E31CD7266B00383C6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Camera/Camera-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		83FF06E41CD7266B00383C6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Camera/Camera-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		83FF06FB1CD7272F00383C6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
+				GCC_PREFIX_HEADER = "CameraTests/CameraTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+				);
+				INFOPLIST_FILE = CameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		83FF06FC1CD7272F00383C6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "CameraTests/CameraTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+				);
+				INFOPLIST_FILE = CameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		83FF06D41CD7266B00383C6B /* Build configuration list for PBXProject "Camera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FF06E01CD7266B00383C6B /* Debug */,
+				83FF06E11CD7266B00383C6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83FF06E21CD7266B00383C6B /* Build configuration list for PBXNativeTarget "Camera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FF06E31CD7266B00383C6B /* Debug */,
+				83FF06E41CD7266B00383C6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83FF06FA1CD7272F00383C6B /* Build configuration list for PBXNativeTarget "CameraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FF06FB1CD7272F00383C6B /* Debug */,
+				83FF06FC1CD7272F00383C6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83FF06D11CD7266B00383C6B /* Project object */;
+}
