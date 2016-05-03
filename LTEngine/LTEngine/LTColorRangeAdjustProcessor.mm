@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTAdjustOperations.h>
 
+#import "LTAdjustOperations.h"
 #import "LTCLAHEProcessor.h"
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -22,12 +23,16 @@
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
 
 /// Color that is used to construct a mask that defines a color range upon which tonal manipulation
-/// is applied. Components should be in [-1, 1] range. Default value is green (0, 1, 0).
-@property (nonatomic) LTVector3 rangeColor;
-LTPropertyDeclare(LTVector3, rangeColor, RangeColor);
+/// is applied. Components must be in <tt>[0, 1]<> range. Default value is green
+/// <tt>(0, 1, 0)</tt>.
+@property (nonatomic) LTVector4 rangeColor;
+LTPropertyDeclare(LTVector4, rangeColor, RangeColor);
 
-/// If \c YES, tonal transform update should run at the next processing round of this processor.
+/// If \c YES, tonal transform update will run at the next processing round of this processor.
 @property (nonatomic) BOOL shouldUpdateTonalTransform;
+
+/// If \c YES, color range update will run at the next processing round of this processor.
+@property (nonatomic) BOOL shouldUpdateColorRange;
 
 /// The generation id of the input texture that was used to create the current details textures.
 @property (nonatomic) id inputTextureGenerationID;
@@ -140,6 +145,10 @@ static const CGFloat kMaskDownscalingFactor = 4;
     [self.dualMaskProcessor process];
     self.needsDualMaskProcessing = NO;
   }
+  if(self.shouldUpdateColorRange) {
+    [self updateColorRange];
+    self.shouldUpdateColorRange = NO;
+  }
   if (self.shouldUpdateTonalTransform) {
     [self updateTonalTransform];
     self.shouldUpdateTonalTransform = NO;
@@ -179,7 +188,7 @@ static const CGFloat kMaskDownscalingFactor = 4;
   _center = center;
   self.dualMaskProcessor.center = center / kMaskDownscalingFactor;
   [self setNeedsDualMaskUpdate];
-  self.rangeColor = [self.inputTexture pixelValue:(CGPoint)center].rgb();
+  self.rangeColor = [self.inputTexture pixelValue:(CGPoint)center];
 }
 
 - (void)setDiameter:(CGFloat)diameter {
@@ -213,12 +222,16 @@ LTPropertyProxyWithoutSetter(CGFloat, stretch, Stretch, self.dualMaskProcessor);
   return self.dualMaskProcessor.angle;
 }
 
-LTPropertyWithoutSetter(LTVector3, rangeColor, RangeColor, LTVector3::zeros(), LTVector3::ones(),
-                        LTVector3(1, 0, 0));
-- (void)setRangeColor:(LTVector3)rangeColor {
+- (void)updateColorRange {
+  self[[LTColorRangeAdjustFsh rangeColor]] = $(std::sqrt(self.rangeColor));
+}
+
+LTPropertyWithoutSetter(LTVector4, rangeColor, RangeColor, LTVector4::zeros(), LTVector4::ones(),
+                        LTVector4(1, 0, 0, 1));
+- (void)setRangeColor:(LTVector4)rangeColor {
   [self _verifyAndSetRangeColor:rangeColor];
-  self[[LTColorRangeAdjustFsh rangeColor]] = $(std::sqrt(rangeColor));
-  [self updateTonalTransform];
+  self.shouldUpdateTonalTransform = YES;
+  self.shouldUpdateColorRange = YES;
 }
 
 LTPropertyWithoutSetter(CGFloat, fuzziness, Fuzziness, -1, 1, 0);

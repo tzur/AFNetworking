@@ -17,7 +17,7 @@
 
 /// Color that is used to construct a mask that defines a color range upon which tonal manipulation
 /// is applied. Components should be in [-1, 1] range. Default value is green (0, 1, 0).
-@property (nonatomic) LTVector3 rangeColor;
+@property (nonatomic) LTVector4 rangeColor;
 
 @end
 
@@ -120,16 +120,16 @@ context(@"properties", ^{
 
     it(@"should select the target color correctly", ^{
       processor.center = LTVector2::zeros();
-      expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
+      expect(processor.rangeColor).to.equal(LTVector4(128, 64, 255, 255) / 255);
 
       processor.center = LTVector2(0.5, 0.5);
-      expect(processor.rangeColor).to.equal(LTVector3(128, 64, 255) / 255);
+      expect(processor.rangeColor).to.equal(LTVector4(128, 64, 255, 255) / 255);
 
       processor.center = LTVector2::ones();
-      expect(processor.rangeColor).to.equal(LTVector3(1, 1, 1));
+      expect(processor.rangeColor).to.equal(LTVector4(1, 1, 1, 1));
 
       processor.center = LTVector2(2, 2);
-      expect(processor.rangeColor).to.equal(LTVector3(1, 1, 1));
+      expect(processor.rangeColor).to.equal(LTVector4(1, 1, 1, 1));
     });
   });
 });
@@ -226,6 +226,38 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
   });
+
+  it(@"should not modify image if center is on transparent area", ^{
+    cv::Mat4b inputImage = cv::Mat4b(4, 4, cv::Vec4b(128, 64, 255, 255));
+    inputImage(0, 0) = cv::Vec4b(128, 64, 255, 0);
+    inputImage(1, 1) = cv::Vec4b(255, 255, 255, 255);
+    input = [LTTexture textureWithImage:inputImage];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+    processor.center = LTVector2(0, 0);
+    processor.diameter = 10;
+
+    [processor process];
+
+    expect($(output.image)).to.equalMat($(input.image));
+  });
+
+  it(@"should not affect transparent colors", ^{
+    cv::Mat4b inputImage = cv::Mat4b(4, 4, cv::Vec4b(128, 64, 255, 255));
+    inputImage(0, 0) = cv::Vec4b(128, 64, 255, 0);
+    input = [LTTexture textureWithImage:inputImage];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+    processor.center = LTVector2(4, 4);
+    processor.diameter = 10;
+    processor.hue = 1.0;
+    cv::Mat4b expectedImage(4, 4, cv::Vec4b(114, 159, 0, 255));
+    expectedImage(0, 0) = cv::Vec4b(128, 64, 255, 0);
+
+    [processor process];
+
+    expect($(output.image)).to.equalMat($(expectedImage));
+  });
 });
 
 context(@"masks", ^{
@@ -237,6 +269,7 @@ context(@"masks", ^{
   it(@"should render mask correctly", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 255, 255, 255));
     processor.renderingMode = LTColorRangeRenderingModeMask;
+
     [processor process];
     
     expect($(output.image)).to.beCloseToMat($(expected));
@@ -245,9 +278,24 @@ context(@"masks", ^{
   it(@"should render mask as overlay correctly ", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 0, 0, 255));
     processor.renderingMode = LTColorRangeRenderingModeMaskOverlay;
+
     [processor process];
     
     expect($(output.image)).to.beCloseToMat($(expected));
+  });
+
+  it(@"should not overlay mask over transparent pixels", ^{
+    cv::Mat4b inputMat(1, 1, cv::Vec4b(128, 64, 255, 0));
+    input = [LTTexture textureWithImage:inputMat];
+    output = [LTTexture textureWithPropertiesOf:input];
+    processor = [[LTColorRangeAdjustProcessor alloc] initWithInput:input output:output];
+
+    processor.renderingMode = LTColorRangeRenderingModeImage;
+    [processor process];
+    processor.renderingMode = LTColorRangeRenderingModeMaskOverlay;
+    [processor process];
+
+    expect($(output.image)).to.beCloseToMat($(inputMat));
   });
 });
 
