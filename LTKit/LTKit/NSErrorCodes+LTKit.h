@@ -34,6 +34,7 @@
 // LTEngine -> 1.
 // Enlight -> 2.
 // Photons -> 3.
+// Wireframes -> 4.
 
 /// Defines error codes for a given product ID. The first given parameter is the product ID or a
 /// constant representing it. Error codes follow. Example:
