@@ -25,9 +25,6 @@ void sit(NSString *name, id block);
 /// Executes the given test if running on the device.
 void dit(NSString *name, id block);
 
-/// Returns \c YES if currently running application tests (and not logic tests).
-BOOL LTRunningApplicationTests();
-
 #define _LTTemporaryPath(...) \
   metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \
   (_LTTemporaryPath1(0, @""))(_LTTemporaryPath1(__VA_ARGS__))
