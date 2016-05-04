@@ -119,6 +119,12 @@ context(@"retrieving keys and values", ^{
     expect([map keyForObject:@"foo"]).to.beNil();
   });
 
+  it(@"should return all keys", ^{
+    map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
+    expect([[map allKeys] sortedArrayUsingSelector:@selector(compare:)])
+        .to.equal(@[@"a", @"b", @"c"]);
+  });
+
   it(@"should return all values", ^{
     map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
     expect([[map allValues] sortedArrayUsingSelector:@selector(compare:)]).to.equal(@[@1, @2, @7]);

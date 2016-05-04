@@ -70,6 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.valuesToKeys objectForKey:object];
 }
 
+- (NSArray *)allKeys {
+  return [self.keysToValues allKeys];
+}
+
 - (NSArray *)allValues {
   return [self.keysToValues allValues];
 }
