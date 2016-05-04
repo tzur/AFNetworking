@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// given \c object.
 - (nullable KeyType)keyForObject:(ObjectType)object;
 
+/// Returns an array containing all the keys.
+- (NSArray<KeyType> *)allKeys;
+
 /// Returns an array containing all the values.
 - (NSArray<ObjectType> *)allValues;
 
