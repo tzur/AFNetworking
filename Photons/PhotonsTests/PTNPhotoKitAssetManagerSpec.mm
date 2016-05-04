@@ -391,10 +391,13 @@ context(@"album fetching", ^{
 
 context(@"asset fetching", ^{
   __block id asset;
+  __block id albumAsset;
 
   beforeEach(^{
     asset = PTNPhotoKitCreateAsset(@"foo");
+    albumAsset = PTNPhotoKitCreateAssetCollection(@"bar");
     [fetcher registerAsset:asset];
+    [fetcher registerAssetCollection:albumAsset];
   });
 
   it(@"should fetch asset with URL", ^{
@@ -428,6 +431,37 @@ context(@"asset fetching", ^{
     expect(sharedSignal).will.sendValues(@[otherAsset]);
   });
 
+  it(@"should fetch album asset with URL", ^{
+    NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
+    expect([manager fetchAssetWithURL:url]).will.sendValues(@[albumAsset]);
+  });
+
+  it(@"should send new album asset upon update", ^{
+    id newAlbumAsset = PTNPhotoKitCreateAssetCollection(nil);
+
+    id changeDetails = PTNPhotoKitCreateChangeDetailsForAsset(newAlbumAsset);
+    id change = PTNPhotoKitCreateChangeForObjectDetails(changeDetails);
+
+    NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
+    LLSignalTestRecorder *recorder = [[manager fetchAssetWithURL:url] testRecorder];
+
+    [observer sendChange:change];
+
+    expect(recorder).will.sendValues(@[albumAsset, newAlbumAsset]);
+  });
+
+  it(@"should not cache album assets", ^{
+    NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
+    RACSignal *sharedSignal = [manager fetchAssetWithURL:url];
+
+    expect(sharedSignal).will.sendValues(@[albumAsset]);
+
+    id otherAlbumAsset = PTNPhotoKitCreateAssetCollection(@"bar");
+    [fetcher registerAssetCollection:otherAlbumAsset];
+
+    expect(sharedSignal).will.sendValues(@[otherAlbumAsset]);
+  });
+
   it(@"should error on non-existing asset", ^{
     id newAsset = PTNPhotoKitCreateAsset(@"bar");
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:newAsset];
@@ -436,8 +470,8 @@ context(@"asset fetching", ^{
     });
   });
 
-  it(@"should error on non-asset URL", ^{
-    NSURL *url = [NSURL ptn_photoKitAlbumWithType:$(PTNPhotoKitAlbumTypeCameraRoll)];
+  it(@"should error on meta album URL", ^{
+    NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)];
 
     expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
