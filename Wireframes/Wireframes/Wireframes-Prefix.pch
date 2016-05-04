@@ -2,4 +2,13 @@
 // Created by Yaron Inger.
 
 #import <LTKit/LTKit-Prefix.pch>
+
+// The following macros are defined by libextobjc above (through LTKit) and also below
+// (through ReactiveCocoa). Undefine to avoid warnings.
+#undef keypath
+#undef onExit
+#undef weakify
+#undef unsafeify
+#undef strongify
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
