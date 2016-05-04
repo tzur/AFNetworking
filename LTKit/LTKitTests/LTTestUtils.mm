@@ -24,9 +24,4 @@ void dit(NSString __unused *name, id __unused block) {
 #endif
 }
 
-BOOL LTRunningApplicationTests() {
-  NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-  return environment[@"XCInjectBundle"] != nil;
-}
-
 NS_ASSUME_NONNULL_END

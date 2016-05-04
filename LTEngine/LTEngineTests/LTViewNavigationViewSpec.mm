@@ -262,18 +262,6 @@ context(@"delegate", ^{
     [view zoomToRect:targetRect animated:YES];
     OCMVerifyAll(delegate);
   });
-  
-  if (LTRunningApplicationTests()) {
-    xit(@"should not update the delegate on navigation with animation", ^{
-      const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
-      __block BOOL delegateUpdated = NO;
-      [[[[delegate stub] ignoringNonObjectArgs] andDo:^(NSInvocation *) {
-        delegateUpdated = YES;
-      }] didNavigateToRect:targetRect];
-      [view zoomToRect:targetRect animated:YES];
-      expect(delegateUpdated).will.beTruthy();
-    });
-  }
 
   context(@"gesture recognizers change", ^{
     beforeEach(^{
