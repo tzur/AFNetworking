@@ -1,5 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <LTKit/LTKit-Prefix.pch>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
+// The following macros are defined by libextobjc above (through ReactiveCocoa) and also below
+// (through LTKit). Undefine to avoid warnings.
+#undef keypath
+#undef onExit
+#undef weakify
+#undef unsafeify
+#undef strongify
+
+#import <LTKit/LTKit-Prefix.pch>
