@@ -13,10 +13,14 @@
 		83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729841CD8D6890090C0BF /* libSpecta.a */; };
 		83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7299B1CD8D68D0090C0BF /* libExpecta.a */; };
 		83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729AE1CD8D6940090C0BF /* libOCMock.a */; };
-		83B729E31CD8D7D00090C0BF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7295E1CD8D67B0090C0BF /* libLTKit.a */; };
 		83B729E51CD8D7D40090C0BF /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729E41CD8D7D40090C0BF /* libextobjc_iOS.a */; };
 		83B729E61CD8D7D90090C0BF /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7296D1CD8D6830090C0BF /* ReactiveCocoa.framework */; };
 		83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72A1D1CD8E0B30090C0BF /* libCamera.a */; };
+		83B731B11CDB92600090C0BF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B01CDB92600090C0BF /* AVFoundation.framework */; };
+		83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B21CDB92640090C0BF /* AssetsLibrary.framework */; };
+		83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B41CDB92670090C0BF /* CoreMedia.framework */; };
+		83B731C31CDB92A20090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
+		83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,20 +30,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 83B728EA1CD8D1090090C0BF;
 			remoteInfo = CameraUI;
-		};
-		83B7295D1CD8D67B0090C0BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83B729581CD8D67B0090C0BF /* LTKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
-			remoteInfo = LTKit;
-		};
-		83B7295F1CD8D67B0090C0BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83B729581CD8D67B0090C0BF /* LTKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
-			remoteInfo = LTKitTests;
 		};
 		83B729681CD8D6830090C0BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -230,6 +220,27 @@
 			remoteGlobalIDString = 83FF06F21CD7272F00383C6B;
 			remoteInfo = CameraTests;
 		};
+		83B731BC1CDB928A0090C0BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		83B731BE1CDB928A0090C0BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
+		};
+		83B731C01CDB928A0090C0BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -259,13 +270,17 @@
 		83B7290E1CD8D2900090C0BF /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		83B7293C1CD8D5610090C0BF /* CameraUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraUI-Prefix.pch"; sourceTree = "<group>"; };
 		83B7293D1CD8D5780090C0BF /* CameraUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraUITests-Prefix.pch"; sourceTree = "<group>"; };
-		83B729581CD8D67B0090C0BF /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		83B729611CD8D6830090C0BF /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		83B729701CD8D6890090C0BF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		83B729A01CD8D6930090C0BF /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		83B729E41CD8D7D40090C0BF /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
+		83B731B01CDB92600090C0BF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		83B731B21CDB92640090C0BF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		83B731B41CDB92670090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
+		83B731C21CDB92A20090C0BF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B731C31CDB92A20090C0BF /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,14 +296,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B731B11CDB92600090C0BF /* AVFoundation.framework in Frameworks */,
+				83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */,
+				83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */,
 				83B729E61CD8D7D90090C0BF /* ReactiveCocoa.framework in Frameworks */,
 				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
 				83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */,
 				83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */,
-				83B729E31CD8D7D00090C0BF /* libLTKit.a in Frameworks */,
 				83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */,
 				83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */,
 				83B729E51CD8D7D40090C0BF /* libextobjc_iOS.a in Frameworks */,
+				83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +338,7 @@
 			children = (
 				83B728EE1CD8D1090090C0BF /* CameraUI.h */,
 				83B728F01CD8D1090090C0BF /* CameraUI.mm */,
-				83B7293C1CD8D5610090C0BF /* CameraUI-Prefix.pch */,
+				83B731931CDB922A0090C0BF /* Supporting Files */,
 			);
 			path = CameraUI;
 			sourceTree = "<group>";
@@ -328,8 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */,
-				83B7293D1CD8D5780090C0BF /* CameraUITests-Prefix.pch */,
-				83B728FF1CD8D2080090C0BF /* Info.plist */,
+				83B731AF1CDB92320090C0BF /* Supporting Files */,
 			);
 			path = CameraUITests;
 			sourceTree = "<group>";
@@ -368,24 +386,19 @@
 		83B729571CD8D65C0090C0BF /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				83B731B01CDB92600090C0BF /* AVFoundation.framework */,
+				83B731B21CDB92640090C0BF /* AssetsLibrary.framework */,
 				83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */,
+				83B731B41CDB92670090C0BF /* CoreMedia.framework */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
-				83B729581CD8D67B0090C0BF /* LTKit.xcodeproj */,
+				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
 				83B729A01CD8D6930090C0BF /* OCMock.xcodeproj */,
 				83B729611CD8D6830090C0BF /* ReactiveCocoa.xcodeproj */,
 				83B729701CD8D6890090C0BF /* Specta.xcodeproj */,
 				83B729E41CD8D7D40090C0BF /* libextobjc_iOS.a */,
+				83B731C21CDB92A20090C0BF /* opencv2.framework */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		83B729591CD8D67B0090C0BF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				83B7295E1CD8D67B0090C0BF /* libLTKit.a */,
-				83B729601CD8D67B0090C0BF /* LTKitTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		83B729621CD8D6830090C0BF /* Products */ = {
@@ -445,6 +458,33 @@
 			children = (
 				83B72A1D1CD8E0B30090C0BF /* libCamera.a */,
 				83B72A1F1CD8E0B30090C0BF /* CameraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		83B731931CDB922A0090C0BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				83B7293C1CD8D5610090C0BF /* CameraUI-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		83B731AF1CDB92320090C0BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				83B7293D1CD8D5780090C0BF /* CameraUITests-Prefix.pch */,
+				83B728FF1CD8D2080090C0BF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		83B731B71CDB928A0090C0BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				83B731BD1CDB928A0090C0BF /* libLTEngine.a */,
+				83B731BF1CDB928A0090C0BF /* LTEngine.bundle */,
+				83B731C11CDB928A0090C0BF /* LTEngineTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -526,8 +566,8 @@
 					ProjectRef = 83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */;
 				},
 				{
-					ProductGroup = 83B729591CD8D67B0090C0BF /* Products */;
-					ProjectRef = 83B729581CD8D67B0090C0BF /* LTKit.xcodeproj */;
+					ProductGroup = 83B731B71CDB928A0090C0BF /* Products */;
+					ProjectRef = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
 				},
 				{
 					ProductGroup = 83B729A11CD8D6930090C0BF /* Products */;
@@ -551,20 +591,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		83B7295E1CD8D67B0090C0BF /* libLTKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLTKit.a;
-			remoteRef = 83B7295D1CD8D67B0090C0BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		83B729601CD8D67B0090C0BF /* LTKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTKitTests.xctest;
-			remoteRef = 83B7295F1CD8D67B0090C0BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		83B729691CD8D6830090C0BF /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -747,6 +773,27 @@
 			remoteRef = 83B72A1E1CD8E0B30090C0BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		83B731BD1CDB928A0090C0BF /* libLTEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTEngine.a;
+			remoteRef = 83B731BC1CDB928A0090C0BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		83B731BF1CDB928A0090C0BF /* LTEngine.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngine.bundle;
+			remoteRef = 83B731BE1CDB928A0090C0BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		83B731C11CDB928A0090C0BF /* LTEngineTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineTests.xctest;
+			remoteRef = 83B731C01CDB928A0090C0BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -816,6 +863,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../third_party/objection",
+					"$(SRCROOT)/../third_party/opencv",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -833,7 +884,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Camera",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../third_party/Mantle",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -866,6 +919,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../third_party/objection",
+					"$(SRCROOT)/../third_party/opencv",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -877,7 +934,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Camera",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../third_party/Mantle",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
