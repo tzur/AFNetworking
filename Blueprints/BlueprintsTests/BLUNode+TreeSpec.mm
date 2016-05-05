@@ -279,6 +279,76 @@ context(@"replacing nodes", ^{
   });
 });
 
+context(@"filtering child nodes", ^{
+  it(@"should return equal tree when no filter is applied", ^{
+    BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *) {
+      return YES;
+    } atPath:@"/left"];
+
+    expect(filtered).to.equal(root);
+  });
+
+  it(@"should return no childnodes when filtering all nodes", ^{
+    BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *) {
+      return NO;
+    } atPath:@"/left"];
+
+    expect(filtered[@"/left"].childNodes.count).to.equal(0);
+  });
+
+  it(@"should return filtered node with the same name", ^{
+    BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *) {
+      return NO;
+    } atPath:@"/left"];
+
+    expect(filtered[@"/left"].name).to.equal(root[@"/left"].name);
+  });
+
+  it(@"should return filtered node with the same value", ^{
+    BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *) {
+      return NO;
+    } atPath:@"/left"];
+
+    expect(filtered[@"/left"].value).to.equal(root[@"/left"].value);
+  });
+
+  it(@"should filter child nodes", ^{
+    BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *node) {
+      return [node.name isEqual:@"leftLeft"];
+    } atPath:@"/left"];
+
+    BLUNode *first = filtered[@"/left"];
+
+    expect(first.childNodes.count).to.equal(1);
+    expect(first.childNodes.firstObject).to.equal(root[@"/left/leftLeft"]);
+  });
+});
+
+context(@"mapping child nodes", ^{
+  it(@"should return equal node when given identity mapping", ^{
+    BLUNode *mapped = [root nodeByMappingChildNodes:^BLUNode *(BLUNode *node) {
+      return node;
+    } atPath:@"/left"];
+
+    expect(mapped).to.equal(root);
+  });
+
+  it(@"should map child nodes", ^{
+    BLUNode *mapped = [root nodeByMappingChildNodes:^BLUNode *(BLUNode *node) {
+      return [BLUNode nodeWithName:[node.value stringValue] childNodes:@[] value:node.name];
+    } atPath:@"/left"];
+
+    for (NSUInteger i = 0; i < mapped.childNodes.count; ++i) {
+      BLUNode *mappedChild = mapped[@"/first"].childNodes[i];
+      BLUNode *originalChild = root[@"/first"].childNodes[i];
+
+      expect(mappedChild.name).to.equal([originalChild.value stringValue]);
+      expect(mappedChild.value).to.equal(originalChild.name);
+      expect(mappedChild.childNodes.count).to.equal(0);
+    }
+  });
+});
+
 context(@"enumeration", ^{
   it(@"should enumerate tree pre-order", ^{
     NSMutableArray *nodes = [NSMutableArray array];

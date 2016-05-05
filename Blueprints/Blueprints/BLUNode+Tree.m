@@ -5,6 +5,7 @@
 
 #import "BLUNode+Operations.h"
 #import "BLUNodeCollection.h"
+#import "NSArray+BLUNodeCollection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -100,6 +101,34 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return currentNode;
+}
+
+- (instancetype)nodeByFilteringChildNodes:(BLUNodeFilterBlock)filter atPath:(NSString *)path {
+  BLUNode * _Nullable subtree = self[path];
+  LTParameterAssert(subtree, @"Trying to filter child nodes of a non-existing path: %@", path);
+
+  NSMutableArray *childNodes = [NSMutableArray array];
+  for (BLUNode *childNode in subtree.childNodes) {
+    if (filter(childNode)) {
+      [childNodes addObject:childNode];
+    }
+  }
+
+  BLUNode *newNode = [BLUNode nodeWithName:subtree.name childNodes:childNodes value:subtree.value];
+  return [self nodeByReplacingNodeAtPath:path withNode:newNode];
+}
+
+- (instancetype)nodeByMappingChildNodes:(BLUNodeMapBlock)map atPath:(NSString *)path {
+  BLUNode * _Nullable subtree = self[path];
+  LTParameterAssert(subtree, @"Trying to map child nodes of a non-existing path: %@", path);
+
+  NSMutableArray *childNodes = [NSMutableArray array];
+  for (BLUNode *childNode in subtree.childNodes) {
+    [childNodes addObject:map(childNode)];
+  }
+
+  BLUNode *newNode = [BLUNode nodeWithName:subtree.name childNodes:childNodes value:subtree.value];
+  return [self nodeByReplacingNodeAtPath:path withNode:newNode];
 }
 
 - (nullable BLUNode *)objectForKeyedSubscript:(id)path {

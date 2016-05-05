@@ -46,6 +46,33 @@ typedef NS_ENUM(NSUInteger, BLUTreeEnumerationType) {
 /// \c node. If \c path does not point to any node, an exception will be raised.
 - (instancetype)nodeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node;
 
+/// Block used for filtering child nodes at a given path. If \c NO is returned from the block, the
+/// child is filtered from the result.
+typedef BOOL (^BLUNodeFilterBlock)(BLUNode *child);
+
+/// Returns a new node that filters the child nodes at the given \c path by applying \c filter on
+/// each child node. The rest of the tree hierarchy remains unchanged.
+///
+/// If \c path does not point to any node, an exception is raised.
+///
+/// @note the returned filtered child nodes collection is not lazy, therefore the filtering takes
+/// place on the entire collection each time a new node is sent. This may be a heavy operation for
+/// large collections, or for collections that are not memory backed.
+- (instancetype)nodeByFilteringChildNodes:(BLUNodeFilterBlock)filter atPath:(NSString *)path;
+
+/// Block used for mapping child nodes at a given path.
+typedef BLUNode * _Nonnull(^BLUNodeMapBlock)(BLUNode *childNodes);
+
+/// Returns a new node that maps the child nodes at the given \c path by applying \c map on each
+/// child node. The rest of the tree hierarchy remains unchanged.
+///
+/// If \c path does not point to any node, an exception is raised.
+///
+/// @note the returned mapped child nodes collection is not lazy, therefore the mapping takes place
+/// on the entire collection each time a new node is sent. This may be a heavy operation for large
+/// collections, or for collections that are not memory backed.
+- (instancetype)nodeByMappingChildNodes:(BLUNodeMapBlock)map atPath:(NSString *)path;
+
 /// Returns the node at the given \c path or \c nil if no such node is found. \c path can be either
 /// an \c NSString or an \c NSIndexPath. If \c path is an \c NSString, the returned node will be
 /// resolved by traversing the names of the node, starting from the receiver. If \c path is
