@@ -12,22 +12,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// manipulating this texture.
 @interface LTMeshProcessor : LTOneShotBaseImageProcessor
 
-/// Initializes with the given \c input texture, the given \c meshSize determining the size of the
-/// \c meshDisplacementTexture to create and the given \c output texture. A passthrough fragment
-/// shader is used for drawing.
-- (instancetype)initWithInput:(LTTexture *)input meshSize:(CGSize)meshSize
-                       output:(LTTexture *)output;
+/// Initializes with the given \c input texture, the given \c meshDisplacementTexture and the given
+/// \c output texture. A passthrough fragment shader is used for drawing. \c meshDisplacementTexture
+/// must have an \c LTGLPixelFormatRGBA16Float pixel format.
+- (instancetype)initWithInput:(LTTexture *)input
+      meshDisplacementTexture:(LTTexture *)meshDisplacementTexture output:(LTTexture *)output;
 
-/// Designated initializer: initializes with the given \c fragmentSource, the given \c input texture
-/// the given \c meshSize determining the size of the \c meshDisplacementTexture to create and the
-/// given \c output texture. The given size must be integral and each dimension must be greater than
-/// \c 0.
+/// Initializes with the given \c fragmentSource, the given \c input texture the given \c
+/// meshDisplacementTexture and the given \c output texture. \c meshDisplacementTexture must have an
+/// \c LTGLPixelFormatRGBA16Float pixel format.
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
-                              meshSize:(CGSize)meshSize
+               meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
                                 output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;
-
-/// Resets the mesh to its original state (no displacement).
-- (void)resetMesh;
 
 /// Mesh displacement texture used to alter the mesh vertices. The warp applied to the mesh is
 /// according to the content of this texture, as offsets (in normalized texture coordinates) of the

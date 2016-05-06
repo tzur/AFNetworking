@@ -21,6 +21,7 @@ static NSString * const kFragmentRedFilter =
     "}";
 
 __block LTTexture *input;
+__block LTTexture *meshTexture;
 __block LTTexture *output;
 __block LTMeshProcessor *processor;
 
@@ -30,6 +31,9 @@ static const CGSize kMeshSize = CGSizeMake(9, 17);
 
 beforeEach(^{
   input = [LTTexture byteRGBATextureWithSize:kInputSize];
+  meshTexture = [LTTexture textureWithSize:kMeshSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                            allocateMemory:YES];
+  [meshTexture clearWithColor:LTVector4::zeros()];
   output = [LTTexture byteRGBATextureWithSize:kOutputSize];
 });
 
@@ -37,20 +41,42 @@ afterEach(^{
   processor = nil;
   output = nil;
   input = nil;
+  meshTexture = nil;
 });
 
 context(@"initialization", ^{
-  it(@"should initialize with input, mesh size and output", ^{
-    processor = [[LTMeshProcessor alloc] initWithInput:input meshSize:kMeshSize output:output];
-    expect(processor.meshDisplacementTexture).toNot.beNil();
-    expect(processor.meshDisplacementTexture.size).to.equal(kMeshSize);
+  it(@"should initialize with input, mesh texture and output", ^{
+    processor = [[LTMeshProcessor alloc] initWithInput:input meshDisplacementTexture:meshTexture
+                                                output:output];
+    expect(processor.inputSize).to.equal(input.size);
+    expect(processor.outputSize).to.equal(output.size);
+    expect(processor.inputTexture).to.beIdenticalTo(input);
+    expect(processor.outputTexture).to.beIdenticalTo(output);
+    expect(processor.meshDisplacementTexture).to.beIdenticalTo(meshTexture);
   });
-  
-  it(@"should initialize with fragment shader source, input, mesh size and output", ^{
-    processor = [[LTMeshProcessor alloc] initWithFragmentSource:[PassthroughFsh source] input:input
-                                                       meshSize:kMeshSize output:output];
-    expect(processor.meshDisplacementTexture).toNot.beNil();
-    expect(processor.meshDisplacementTexture.size).to.equal(kMeshSize);
+
+  it(@"should initialize with fragment source, input, mesh texture and output", ^{
+    processor = [[LTMeshProcessor alloc] initWithFragmentSource:[PassthroughFsh source]
+                                                          input:input
+                                        meshDisplacementTexture:meshTexture output:output];
+    expect(processor.inputSize).to.equal(input.size);
+    expect(processor.outputSize).to.equal(output.size);
+    expect(processor.inputTexture).to.beIdenticalTo(input);
+    expect(processor.outputTexture).to.beIdenticalTo(output);
+    expect(processor.meshDisplacementTexture).to.beIdenticalTo(meshTexture);
+  });
+
+  it(@"should raise when initializing with a mesh texture that has an invalid pixel format", ^{
+    static LTGLPixelFormat * const kInvalidMeshPixelFormat = $(LTGLPixelFormatRGBA8Unorm);
+
+    LTTexture *invalidMeshTexture = [LTTexture textureWithSize:kMeshSize
+                                                   pixelFormat:kInvalidMeshPixelFormat
+                                                allocateMemory:YES];
+    expect(^{
+      processor = [[LTMeshProcessor alloc] initWithFragmentSource:[PassthroughFsh source]
+                                                            input:input
+                                          meshDisplacementTexture:invalidMeshTexture output:output];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
@@ -63,7 +89,8 @@ context(@"processing", ^{
   __block cv::Mat4b expected;
 
   beforeEach(^{
-    processor = [[LTMeshProcessor alloc] initWithInput:input meshSize:kMeshSize output:output];
+    processor = [[LTMeshProcessor alloc] initWithInput:input meshDisplacementTexture:meshTexture
+                                                output:output];
 
     meshSize = processor.meshDisplacementTexture.size - CGSizeMakeUniform(1);
     cellSize = processor.inputSize / meshSize;
@@ -117,9 +144,8 @@ context(@"processing", ^{
   
   context(@"custom fragment shader", ^{
     beforeEach(^{
-      processor = [[LTMeshProcessor alloc] initWithFragmentSource:kFragmentRedFilter
-                                                            input:input meshSize:kMeshSize
-                                                           output:output];
+      processor = [[LTMeshProcessor alloc] initWithFragmentSource:kFragmentRedFilter input:input
+                                          meshDisplacementTexture:meshTexture output:output];
     });
     
     it(@"should process with default displacement", ^{

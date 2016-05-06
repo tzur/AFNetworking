@@ -18,39 +18,41 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTMeshProcessor
 
-- (instancetype)initWithInput:(LTTexture *)input meshSize:(CGSize)meshSize
-                       output:(LTTexture *)output {
-  return [self initWithFragmentSource:[LTPassthroughShaderFsh source] input:input meshSize:meshSize
-                               output:output];
+- (instancetype)initWithInput:(LTTexture *)input
+      meshDisplacementTexture:(LTTexture *)meshDisplacementTexture output:(LTTexture *)output {
+  return [self initWithFragmentSource:[LTPassthroughShaderFsh source] input:input
+              meshDisplacementTexture:meshDisplacementTexture output:output];
 }
 
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
-                              meshSize:(CGSize)meshSize output:(LTTexture *)output {
+               meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
+                                output:(LTTexture *)output {
   LTParameterAssert(fragmentSource);
   LTParameterAssert(input);
+  LTParameterAssert(meshDisplacementTexture);
   LTParameterAssert(output);
-  LTTexture *meshTexture = [self meshTextureWithSize:meshSize];
-  LTMeshDrawer *drawer = [[LTMeshDrawer alloc] initWithSourceTexture:input meshTexture:meshTexture
+  [LTMeshProcessor assertMeshTextureFormatOfTexture:meshDisplacementTexture];
+  
+  LTMeshDrawer *drawer = [[LTMeshDrawer alloc] initWithSourceTexture:input
+                                                         meshTexture:meshDisplacementTexture
                                                       fragmentSource:fragmentSource];
+
   if (self = [super initWithDrawer:drawer sourceTexture:input
                  auxiliaryTextures:nil andOutput:output]) {
-    self.meshTexture = meshTexture;
-    [self.meshTexture clearWithColor:LTVector4::zeros()];
+    self.meshTexture = meshDisplacementTexture;
   }
+
   return self;
 }
 
-- (LTTexture *)meshTextureWithSize:(CGSize)size {
-  return [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatRGBA16Float)
-                     allocateMemory:YES];
-}
++ (void)assertMeshTextureFormatOfTexture:(LTTexture *)meshDisplacementTexture {
+  /// Pixel format of a mesh texture.
+  static LTGLPixelFormat * const kMeshTexturePixelFormat = $(LTGLPixelFormatRGBA16Float);
 
-#pragma mark -
-#pragma mark Reset
-#pragma mark -
-
-- (void)resetMesh {
-  [self.meshTexture clearWithColor:LTVector4::zeros()];
+  LTParameterAssert(meshDisplacementTexture.pixelFormat.value == kMeshTexturePixelFormat.value,
+                    @"mesh texture pixel format must be %@ but input mesh pixel format is %@",
+                    kMeshTexturePixelFormat.description,
+                    meshDisplacementTexture.pixelFormat.description);
 }
 
 #pragma mark -
