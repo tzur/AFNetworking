@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Product ID.
 NS_ENUM(NSInteger) {
   /// Product ID of Blueprints.
-  BlueprintsErrorCodeProductID = 4
+  BlueprintsErrorCodeProductID = 5
 };
 
 /// All error codes available in Blueprints.
