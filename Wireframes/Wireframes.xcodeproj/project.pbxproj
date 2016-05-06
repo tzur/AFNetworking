@@ -53,6 +53,8 @@
 		8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */; };
 		8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FFE1CBE33B200B745AE /* WFTransparentView.m */; };
 		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
+		8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234A81CDCB45B00057F11 /* WFGradientView.m */; };
+		8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -358,6 +360,9 @@
 		8B283FFD1CBE33B200B745AE /* WFTransparentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTransparentView.h; sourceTree = "<group>"; };
 		8B283FFE1CBE33B200B745AE /* WFTransparentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTransparentView.m; sourceTree = "<group>"; };
 		8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFTransparentViewSpec.mm; sourceTree = "<group>"; };
+		8BB234A71CDCB45B00057F11 /* WFGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFGradientView.h; sourceTree = "<group>"; };
+		8BB234A81CDCB45B00057F11 /* WFGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFGradientView.m; sourceTree = "<group>"; };
+		8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFGradientViewSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -722,6 +727,8 @@
 		8B283FE61CBE33A500B745AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8BB234A71CDCB45B00057F11 /* WFGradientView.h */,
+				8BB234A81CDCB45B00057F11 /* WFGradientView.m */,
 				8B283FFD1CBE33B200B745AE /* WFTransparentView.h */,
 				8B283FFE1CBE33B200B745AE /* WFTransparentView.m */,
 			);
@@ -731,6 +738,7 @@
 		8B2840001CBE33CA00B745AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */,
 				8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */,
 			);
 			name = Views;
@@ -1037,6 +1045,7 @@
 				6AAED9F51CC62AAD00B3C62F /* WFPaintCodeImageProvider.mm in Sources */,
 				6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */,
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
+				8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */,
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
@@ -1062,6 +1071,7 @@
 				8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */,
 				6AB2AF661CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				6AB2AF6F1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */,
 				6AB2AF671CC4E63E00BC2371 /* EXPMatchers+error.m in Sources */,
 				6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */,
 				6AB2AF611CC4E63E00BC2371 /* RACSignal+LLSubscriptionCounting.m in Sources */,
