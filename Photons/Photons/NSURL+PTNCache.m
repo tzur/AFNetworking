@@ -3,7 +3,7 @@
 
 #import "NSURL+PTNCache.h"
 
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,17 +25,26 @@ LTEnumImplement(NSUInteger, PTNCachePolicy,
 static NSString * const kCachePolicy = @"cachepolicy";
 
 - (instancetype)ptn_cacheURLWithCachePolicy:(PTNCachePolicy *)cachePolicy {
-  NSMutableDictionary *query = [self.ptn_queryDictionary mutableCopy];
-  query[kCachePolicy] = cachePolicy.name;
+  if (!self.lt_queryDictionary[kCachePolicy]) {
+    return [self lt_URLByAppendingQueryDictionary:@{kCachePolicy: cachePolicy.name}];
+  }
 
   NSURLComponents *components = [[NSURLComponents alloc] initWithURL:self
                                              resolvingAgainstBaseURL:NO];
-  components.queryItems = [NSURL ptn_queryWithDictionary:query];
+
+  components.queryItems = [self.lt_queryItems.rac_sequence
+      map:^NSURLQueryItem *(NSURLQueryItem *item) {
+        if (![item.name isEqualToString:kCachePolicy]) {
+          return item;
+        }
+        return [[NSURLQueryItem alloc] initWithName:kCachePolicy value:cachePolicy.name];
+      }].array;
+
   return components.URL;
 }
 
 - (PTNCachePolicy *)ptn_cacheCachePolicy {
-  NSString * _Nullable cachePolicyName = self.ptn_queryDictionary[kCachePolicy];
+  NSString * _Nullable cachePolicyName = self.lt_queryDictionary[kCachePolicy];
   if (!cachePolicyName) {
     return [PTNCachePolicy enumWithValue:PTNCachePolicyDefault];
   }
@@ -44,17 +53,19 @@ static NSString * const kCachePolicy = @"cachepolicy";
 }
 
 - (instancetype)ptn_cacheURLByStrippingCachePolicy {
-  NSMutableDictionary *query = [self.ptn_queryDictionary mutableCopy];
-  if (!query[kCachePolicy]) {
+  if (!self.lt_queryDictionary[kCachePolicy]) {
     return self;
   }
 
   NSURLComponents *components = [[NSURLComponents alloc] initWithURL:self
                                              resolvingAgainstBaseURL:NO];
-  [query removeObjectForKey:kCachePolicy];
-  NSArray *queryItems = [NSURL ptn_queryWithDictionary:query];
-  components.queryItems = queryItems.count ? queryItems : nil;
 
+  NSArray *filteredQueryItems = [self.lt_queryItems.rac_sequence
+      filter:^BOOL(NSURLQueryItem *item) {
+        return ![item.name isEqualToString:kCachePolicy];
+      }].array;
+
+  components.queryItems = filteredQueryItems.count ? filteredQueryItems : nil;
   return components.URL;
 }
 

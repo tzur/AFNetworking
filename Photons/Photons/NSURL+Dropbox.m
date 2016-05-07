@@ -3,7 +3,8 @@
 
 #import "NSURL+Dropbox.h"
 
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
+
 #import "PTNDropboxEntry.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -27,8 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 
   components.scheme = [NSURL ptn_dropboxScheme];
   components.host = type == PTNDropboxURLTypeAsset ? @"asset" : @"album";
-  components.queryItems = @[[NSURLQueryItem queryItemWithName:@"path" value:entry.path],
-                            [NSURLQueryItem queryItemWithName:@"revision" value:entry.revision]];
+
+  NSMutableArray *queryItems = [@[[NSURLQueryItem queryItemWithName:@"path" value:entry.path]]
+                                mutableCopy];
+  if (entry.revision) {
+    [queryItems addObject:[NSURLQueryItem queryItemWithName:@"revision" value:entry.revision]];
+  }
+  components.queryItems = queryItems;
 
   return components.URL;
 }
@@ -50,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable PTNDropboxEntry *)ptn_dropboxEntry {
-  NSDictionary *query = self.ptn_queryDictionary;
+  NSDictionary *query = self.lt_queryDictionary;
   if (!query[@"path"]) {
     return nil;
   }
@@ -63,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
     return PTNDropboxURLTypeInvalid;
   }
 
-  NSDictionary *query = self.ptn_queryDictionary;
+  NSDictionary *query = self.lt_queryDictionary;
   if (!query[@"path"]) {
     return PTNDropboxURLTypeInvalid;
   }

@@ -3,7 +3,7 @@
 
 #import "PTNResizingStrategy.h"
 
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

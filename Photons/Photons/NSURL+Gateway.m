@@ -3,7 +3,7 @@
 
 #import "NSURL+Gateway.h"
 
-#import "NSURL+Photons.h"
+#import <LTKit/NSURL+Query.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +25,7 @@ static NSString * const kGatewayKeyKey = @"key";
 }
 
 - (nullable NSString *)ptn_gatewayKey {
-  return self.ptn_queryDictionary[kGatewayKeyKey];
+  return self.lt_queryDictionary[kGatewayKeyKey];
 }
 
 @end

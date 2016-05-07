@@ -3,9 +3,8 @@
 
 #import "NSURL+PhotoKit.h"
 
+#import <LTKit/NSURL+Query.h>
 #import <Photos/Photos.h>
-
-#import "NSURL+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -101,7 +100,7 @@ static NSString * const kSubtypeKey = @"subtype";
 
   if ([self.host isEqual:kAlbumKey]) {
     if (self.query) {
-      NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
+      NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
       if (query[kTypeKey] && query[kSubtypeKey]) {
         PTNPhotoKitURLType *type = [PTNPhotoKitURLType enumWithName:query[kTypeKey]];
         if (type.value == PTNPhotoKitURLTypeAlbumType) {
@@ -142,7 +141,7 @@ static NSString * const kSubtypeKey = @"subtype";
     return nil;
   }
 
-  NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
+  NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
   if (!query[kSubtypeKey]) {
     return nil;
   }
@@ -155,7 +154,7 @@ static NSString * const kSubtypeKey = @"subtype";
     return nil;
   }
 
-  NSDictionary<NSString *, NSString *> *query = self.ptn_queryDictionary;
+  NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
   if (!query[kSubtypeKey]) {
     return nil;
   }
