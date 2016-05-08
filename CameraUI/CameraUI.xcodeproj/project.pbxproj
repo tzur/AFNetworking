@@ -257,8 +257,8 @@
 
 /* Begin PBXFileReference section */
 		83B728EB1CD8D1090090C0BF /* libCameraUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCameraUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		83B728EE1CD8D1090090C0BF /* CameraUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraUI.h; sourceTree = "<group>"; };
-		83B728F01CD8D1090090C0BF /* CameraUI.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraUI.mm; sourceTree = "<group>"; };
+		83B728EE1CD8D1090090C0BF /* CameraUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CameraUI.h; path = CameraUI/CameraUI.h; sourceTree = "<group>"; };
+		83B728F01CD8D1090090C0BF /* CameraUI.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CameraUI.mm; path = CameraUI/CameraUI.mm; sourceTree = "<group>"; };
 		83B728FB1CD8D2080090C0BF /* CameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraUISpec.mm; sourceTree = "<group>"; };
 		83B728FF1CD8D2080090C0BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -317,6 +317,8 @@
 			isa = PBXGroup;
 			children = (
 				83B728ED1CD8D1090090C0BF /* CameraUI */,
+				83B728EE1CD8D1090090C0BF /* CameraUI.h */,
+				83B728F01CD8D1090090C0BF /* CameraUI.mm */,
 				83B728FC1CD8D2080090C0BF /* CameraUITests */,
 				83B729061CD8D27F0090C0BF /* Configuration */,
 				83B729571CD8D65C0090C0BF /* Libraries */,
@@ -336,8 +338,9 @@
 		83B728ED1CD8D1090090C0BF /* CameraUI */ = {
 			isa = PBXGroup;
 			children = (
-				83B728EE1CD8D1090090C0BF /* CameraUI.h */,
-				83B728F01CD8D1090090C0BF /* CameraUI.mm */,
+				BE4629501CDF1EE400D9F7E2 /* Bars */,
+				BE46294E1CDF1E0900D9F7E2 /* Preview */,
+				BE4629521CDF23C400D9F7E2 /* Utils */,
 				83B731931CDB922A0090C0BF /* Supporting Files */,
 			);
 			path = CameraUI;
@@ -346,8 +349,11 @@
 		83B728FC1CD8D2080090C0BF /* CameraUITests */ = {
 			isa = PBXGroup;
 			children = (
-				83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */,
+				BE4629531CDF245600D9F7E2 /* Bars */,
+				BE4629541CDF246400D9F7E2 /* Preview */,
+				BE4629551CDF248200D9F7E2 /* Utils */,
 				83B731AF1CDB92320090C0BF /* Supporting Files */,
+				83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */,
 			);
 			path = CameraUITests;
 			sourceTree = "<group>";
@@ -487,6 +493,80 @@
 				83B731C11CDB928A0090C0BF /* LTEngineTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BE4629311CDF1DE700D9F7E2 /* Assistance Bar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Assistance Bar";
+			sourceTree = "<group>";
+		};
+		BE46294E1CDF1E0900D9F7E2 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Preview;
+			sourceTree = "<group>";
+		};
+		BE46294F1CDF1E2500D9F7E2 /* Modes Bar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Modes Bar";
+			sourceTree = "<group>";
+		};
+		BE4629501CDF1EE400D9F7E2 /* Bars */ = {
+			isa = PBXGroup;
+			children = (
+				BE4629311CDF1DE700D9F7E2 /* Assistance Bar */,
+				BE46294F1CDF1E2500D9F7E2 /* Modes Bar */,
+			);
+			name = Bars;
+			sourceTree = "<group>";
+		};
+		BE4629521CDF23C400D9F7E2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		BE4629531CDF245600D9F7E2 /* Bars */ = {
+			isa = PBXGroup;
+			children = (
+				BE4629571CDF24D200D9F7E2 /* Assistance Bar */,
+				BE4629561CDF24C700D9F7E2 /* Modes Bar */,
+			);
+			name = Bars;
+			sourceTree = "<group>";
+		};
+		BE4629541CDF246400D9F7E2 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Preview;
+			sourceTree = "<group>";
+		};
+		BE4629551CDF248200D9F7E2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		BE4629561CDF24C700D9F7E2 /* Modes Bar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Modes Bar";
+			sourceTree = "<group>";
+		};
+		BE4629571CDF24D200D9F7E2 /* Assistance Bar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Assistance Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
