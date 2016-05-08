@@ -75,6 +75,14 @@ typedef struct {
 /// Maximal number of texture units that can be used on the device GPU.
 @property (readwrite, nonatomic) GLint maxTextureUnits;
 
+/// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
+/// held in uniform variable storage by the device GPU for a vertex shader.
+@property (readwrite, nonatomic) GLint maxNumberOfVertexUniforms;
+
+/// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
+/// held in uniform variable storage by the device GPU for a fragment shader.
+@property (readwrite, nonatomic) GLint maxNumberOfFragmentUniforms;
+
 @end
 
 @implementation LTGLContext
@@ -473,6 +481,22 @@ typedef struct {
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
   }
   return _maxTextureUnits;
+}
+
+- (GLint)maxNumberOfVertexUniforms {
+  if (!_maxNumberOfVertexUniforms) {
+    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, &_maxNumberOfVertexUniforms);
+
+  }
+  return _maxNumberOfVertexUniforms;
+}
+
+- (GLint)maxNumberOfFragmentUniforms {
+  if (!_maxNumberOfFragmentUniforms) {
+    glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, &_maxNumberOfFragmentUniforms);
+
+  }
+  return _maxNumberOfFragmentUniforms;
 }
 
 - (BOOL)canRenderToHalfFloatTextures {

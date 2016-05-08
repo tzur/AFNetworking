@@ -157,6 +157,14 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Maximal number of texture units that can be used on the device GPU.
 @property (readonly, nonatomic) GLint maxTextureUnits;
 
+/// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
+/// held in uniform variable storage by the device GPU for a vertex shader.
+@property (readonly, nonatomic) GLint maxNumberOfVertexUniforms;
+
+/// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
+/// held in uniform variable storage by the device GPU for a fragment shader.
+@property (readonly, nonatomic) GLint maxNumberOfFragmentUniforms;
+
 /// \c YES if writing to half-float textures is supported.
 @property (readonly, nonatomic) BOOL canRenderToHalfFloatTextures;
 

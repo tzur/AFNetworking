@@ -73,7 +73,7 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
       expect(^{
         id texture = [OCMockObject niceMockForClass:[LTTexture class]];
         [context attachUniform:@"z" toTexture:texture];
-      }).to.raise(NSInternalInconsistencyException);
+      }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when attaching nil texture", ^{
