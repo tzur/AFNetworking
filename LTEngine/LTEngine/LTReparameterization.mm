@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTPrimitiveParameterizedObject
+#pragma mark LTBasicParameterizedObject
 #pragma mark -
 
 - (CGFloat)floatForParametricValue:(CGFloat)value {

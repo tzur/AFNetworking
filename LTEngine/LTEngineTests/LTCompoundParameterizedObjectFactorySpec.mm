@@ -6,8 +6,8 @@
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
 #import "LTParameterizationKeyToValues.h"
-#import "LTPrimitiveParameterizedObject.h"
-#import "LTPrimitiveParameterizedObjectFactory.h"
+#import "LTBasicParameterizedObject.h"
+#import "LTBasicParameterizedObjectFactory.h"
 
 @interface LTTestInterpolatableObject : NSObject <LTInterpolatableObject>
 @end
@@ -20,13 +20,12 @@
 
 @end
 
-@interface LTTestPrimitiveFactory : NSObject <LTPrimitiveParameterizedObjectFactory>
+@interface LTBasicTestFactory : NSObject <LTBasicParameterizedObjectFactory>
 @end
 
-@implementation LTTestPrimitiveFactory
+@implementation LTBasicTestFactory
 
-- (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:
-    (__unused CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
   return nil;
 }
 
@@ -43,25 +42,25 @@
 SpecBegin(LTCompoundParameterizedObjectFactory)
 
 __block LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> *factory;
-__block id<LTPrimitiveParameterizedObjectFactory> primitiveFactory;
-__block id primitiveFactoryMock;
+__block id<LTBasicParameterizedObjectFactory> basicFactory;
+__block id basicFactoryMock;
 
 beforeEach(^{
-  primitiveFactory = [[LTTestPrimitiveFactory alloc] init];
-  primitiveFactoryMock = OCMPartialMock(primitiveFactory);
+  basicFactory = [[LTBasicTestFactory alloc] init];
+  basicFactoryMock = OCMPartialMock(basicFactory);
   factory =
       [[LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> alloc]
-       initWithPrimitiveFactory:primitiveFactoryMock];
+       initWithBasicFactory:basicFactoryMock];
 });
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     expect(factory.numberOfRequiredInterpolatableObjects)
-        .to.equal([[primitiveFactory class] numberOfRequiredValues]);
+        .to.equal([[basicFactory class] numberOfRequiredValues]);
     expect(factory.intrinsicParametricRange.location)
-        .to.equal([[primitiveFactory class] intrinsicParametricRange].location);
+        .to.equal([[basicFactory class] intrinsicParametricRange].location);
     expect(factory.intrinsicParametricRange.length)
-        .to.equal([[primitiveFactory class] intrinsicParametricRange].length);
+        .to.equal([[basicFactory class] intrinsicParametricRange].length);
   });
 });
 
@@ -94,67 +93,67 @@ context(@"parameterized object computation", ^{
   context(@"valid API calls", ^{
     __block NSArray<id<LTInterpolatableObject>> *keyFrames;
     __block NSSet<NSString *> *keys;
-    __block id primitiveObjectMockForX;
-    __block id primitiveObjectMockForY;
+    __block id basicObjectMockForX;
+    __block id basicObjectMockForY;
 
     beforeEach(^{
       keys = [NSSet setWithArray:@[@"x", @"y"]];
       OCMStub([interpolatableObjectMock propertiesToInterpolate]).andReturn(keys);
       keyFrames = @[interpolatableObjectMock];
-      primitiveObjectMockForX = OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-      primitiveObjectMockForY = OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-      OCMStub([primitiveObjectMockForX minParametricValue]).andReturn(7);
-      OCMStub([primitiveObjectMockForX maxParametricValue]).andReturn(8.5);
-      OCMStub([primitiveObjectMockForY minParametricValue]).andReturn(7);
-      OCMStub([primitiveObjectMockForY maxParametricValue]).andReturn(8.5);
+      basicObjectMockForX = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+      basicObjectMockForY = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+      OCMStub([basicObjectMockForX minParametricValue]).andReturn(7);
+      OCMStub([basicObjectMockForX maxParametricValue]).andReturn(8.5);
+      OCMStub([basicObjectMockForY minParametricValue]).andReturn(7);
+      OCMStub([basicObjectMockForY maxParametricValue]).andReturn(8.5);
     });
 
-    it(@"should construct a parameterized object from primitive parameterized objects", ^{
+    it(@"should construct a parameterized object from basic parameterized objects", ^{
       OCMExpect([interpolatableObjectMock valueForKey:@"x"]).andReturn(@1);
       OCMExpect([interpolatableObjectMock valueForKey:@"y"]).andReturn(@2);
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForX);
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
 
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
 
       expect(result).toNot.beNil();
       OCMVerifyAll(interpolatableObjectMock);
-      OCMVerifyAll(primitiveFactoryMock);
+      OCMVerifyAll(basicFactoryMock);
     });
 
     it(@"should return parameterized object computing correct key to value mappings", ^{
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForX);
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
-      OCMVerifyAll(primitiveFactoryMock);
+      OCMVerifyAll(basicFactoryMock);
 
-      OCMExpect([primitiveObjectMockForX floatForParametricValue:0]).andReturn(9);
-      OCMExpect([primitiveObjectMockForY floatForParametricValue:0]).andReturn(10);
+      OCMExpect([basicObjectMockForX floatForParametricValue:0]).andReturn(9);
+      OCMExpect([basicObjectMockForY floatForParametricValue:0]).andReturn(10);
       LTParameterizationKeyToValue *mapping = [result mappingForParametricValue:0];
       expect(mapping).to.equal(@{@"x": @9, @"y": @10});
-      OCMVerifyAll(primitiveObjectMockForX);
-      OCMVerifyAll(primitiveObjectMockForY);
+      OCMVerifyAll(basicObjectMockForX);
+      OCMVerifyAll(basicObjectMockForY);
     });
 
     it(@"should return parameterized object computing correct key to values mappings", ^{
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForX);
-      OCMExpect([[primitiveFactoryMock ignoringNonObjectArgs]
-                 primitiveParameterizedObjectsFromValues:{}]).andReturn(primitiveObjectMockForY);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
+      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
+                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
-      OCMVerifyAll(primitiveFactoryMock);
+      OCMVerifyAll(basicFactoryMock);
 
-      OCMExpect([primitiveObjectMockForX floatForParametricValue:1]).andReturn(11);
-      OCMExpect([primitiveObjectMockForY floatForParametricValue:1]).andReturn(12);
-      OCMExpect([primitiveObjectMockForX floatForParametricValue:2]).andReturn(13);
-      OCMExpect([primitiveObjectMockForY floatForParametricValue:2]).andReturn(14);
+      OCMExpect([basicObjectMockForX floatForParametricValue:1]).andReturn(11);
+      OCMExpect([basicObjectMockForY floatForParametricValue:1]).andReturn(12);
+      OCMExpect([basicObjectMockForX floatForParametricValue:2]).andReturn(13);
+      OCMExpect([basicObjectMockForY floatForParametricValue:2]).andReturn(14);
 
       LTParameterizationKeyToValues *mapping = [result mappingForParametricValues:{1, 2}];
 
@@ -168,20 +167,20 @@ context(@"parameterized object computation", ^{
       expect(yValues.size()).to.equal(2);
       expect(yValues[0]).to.equal(12);
       expect(yValues[1]).to.equal(14);
-      OCMVerifyAll(primitiveObjectMockForY);
+      OCMVerifyAll(basicObjectMockForY);
 
-      OCMExpect([primitiveObjectMockForX floatForParametricValue:3]).andReturn(15);
+      OCMExpect([basicObjectMockForX floatForParametricValue:3]).andReturn(15);
       CGFloat value = [result floatForParametricValue:3 key:@"x"];
       expect(value).to.equal(15);
-      OCMVerifyAll(primitiveObjectMockForX);
+      OCMVerifyAll(basicObjectMockForX);
 
-      OCMExpect([primitiveObjectMockForY floatForParametricValue:4]).andReturn(16);
-      OCMExpect([primitiveObjectMockForY floatForParametricValue:5]).andReturn(17);
+      OCMExpect([basicObjectMockForY floatForParametricValue:4]).andReturn(16);
+      OCMExpect([basicObjectMockForY floatForParametricValue:5]).andReturn(17);
       CGFloats values = [result floatsForParametricValues:{4, 5} key:@"y"];
       expect(values.size()).to.equal(2);
       expect(values[0]).to.equal(16);
       expect(values[1]).to.equal(17);
-      OCMVerifyAll(primitiveObjectMockForY);
+      OCMVerifyAll(basicObjectMockForY);
 
       expect(result.parameterizationKeys).to.equal(keys);
       expect(result.minParametricValue).to.equal(7);

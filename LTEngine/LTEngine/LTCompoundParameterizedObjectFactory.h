@@ -5,25 +5,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTCompoundParameterizedObject;
 
-@protocol LTInterpolatableObject, LTPrimitiveParameterizedObjectFactory;
+@protocol LTInterpolatableObject, LTBasicParameterizedObjectFactory;
 
 /// Factory for creating \c LTCompoundParameterizedObject objects constituted by a set of
-/// \c id<LTPrimitiveParameterizedObject> objects. The factory is initialized with a factory for
-/// creating the primitive parameterized objects and constructs parameterized objects from the
-/// interpolatable properties of given \c id<LTInterpolatableObject> objects.
+/// \c id<LTBasicParameterizedObject> objects. The factory is initialized with a factory for creating
+/// the basic parameterized objects and constructs parameterized objects from the interpolatable
+/// properties of given \c id<LTInterpolatableObject> objects.
 @interface LTCompoundParameterizedObjectFactory<__covariant ObjectType:id<LTInterpolatableObject>> :
     NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c factory used to create the primitive parameterized objects
+/// Initializes with the given \c factory used to create the basic parameterized objects
 /// constituting the parameterized objects which can be created by this instance.
-- (instancetype)initWithPrimitiveFactory:(id<LTPrimitiveParameterizedObjectFactory>)factory
+- (instancetype)initWithBasicFactory:(id<LTBasicParameterizedObjectFactory>)factory
     NS_DESIGNATED_INITIALIZER;
 
 /// Returns a parameterized object mapping each of the interpolatable properties of the given
-/// \c objects to a corresponding primitive parameterized object created by the \c primitiveFactory.
-/// The number of given \c objects must equal the \c numberOfRequiredInterpolatableObjects.
+/// \c objects to a corresponding basic parameterized object created by the \c factory provided
+/// upon initialization. The number of given \c objects must equal the
+/// \c numberOfRequiredInterpolatableObjects.
 - (LTCompoundParameterizedObject *)parameterizedObjectFromInterpolatableObjects:
     (NSArray<ObjectType> *)objects;
 

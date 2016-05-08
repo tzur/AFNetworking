@@ -1,24 +1,24 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTPrimitiveParameterizedObjectFactories.h"
+#import "LTBasicParameterizedObjectFactories.h"
 
-#import "LTPrimitivePolynomialInterpolant.h"
+#import "LTBasicPolynomialInterpolant.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
-#pragma mark LTPrimitiveDegenerateInterpolantFactory
+#pragma mark LTBasicDegenerateInterpolantFactory
 #pragma mark -
 
-@implementation LTPrimitiveDegenerateInterpolantFactory
+@implementation LTBasicDegenerateInterpolantFactory
 
-- (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
                     (unsigned long)[[self class] numberOfRequiredValues]);
-  return [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{values.front()}];
+  return [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{values.front()}];
 }
 
 + (NSUInteger)numberOfRequiredValues {
@@ -32,17 +32,17 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-#pragma mark LTPrimitiveLinearInterpolantFactory
+#pragma mark LTBasicLinearInterpolantFactory
 #pragma mark -
 
-@implementation LTPrimitiveLinearInterpolantFactory
+@implementation LTBasicLinearInterpolantFactory
 
-- (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
                     (unsigned long)[[self class] numberOfRequiredValues]);
-  return [[LTPrimitivePolynomialInterpolant alloc]
+  return [[LTBasicPolynomialInterpolant alloc]
           initWithCoefficients:{values.back() - values.front(), values.front()}];
 }
 
@@ -57,10 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-#pragma mark LTPrimitiveCatmullRomInterpolantFactory
+#pragma mark LTBasicCatmullRomInterpolantFactory
 #pragma mark -
 
-@implementation LTPrimitiveCatmullRomInterpolantFactory
+@implementation LTBasicCatmullRomInterpolantFactory
 
 /// M such that f(x) = [1, x, x^2, x^3] * M * [p0, p1, p2, p3].
 /// @see http://www.lighthouse3d.com/tutorials/maths/catmull-rom-spline/
@@ -69,7 +69,7 @@ static const GLKMatrix4 kCoefficients = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
                                                                    1, -2.5, 2, -0.5,
                                                                    -0.5, 1.5, -1.5, 0.5);
 
-- (id<LTPrimitiveParameterizedObject>)primitiveParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
@@ -77,8 +77,8 @@ static const GLKMatrix4 kCoefficients = GLKMatrix4MakeAndTranspose(0, 1, 0, 0,
   GLKVector4 vector =
       GLKMatrix4MultiplyVector4(kCoefficients,
                                 GLKVector4Make(values[0], values[1], values[2], values[3]));
-  return [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{vector.v[3], vector.v[2],
-                                                                         vector.v[1], vector.v[0]}];
+  return [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{vector.v[3], vector.v[2],
+                                                                     vector.v[1], vector.v[0]}];
 }
 
 + (NSUInteger)numberOfRequiredValues {

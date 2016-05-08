@@ -1,19 +1,19 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTPrimitivePolynomialInterpolant.h"
+#import "LTBasicPolynomialInterpolant.h"
 
 #import <LTKit/LTHashExtensions.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTPrimitivePolynomialInterpolant () {
+@interface LTBasicPolynomialInterpolant () {
   /// Coefficients determining the polynomial used for interpolation.
   CGFloats _coefficients;
 }
 @end
 
-@implementation LTPrimitivePolynomialInterpolant
+@implementation LTBasicPolynomialInterpolant
 
 #pragma mark -
 #pragma mark Initialization
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(LTPrimitivePolynomialInterpolant *)interpolant {
+- (BOOL)isEqual:(LTBasicPolynomialInterpolant *)interpolant {
   if (self == interpolant) {
     return YES;
   }
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTPrimitiveParameterizedObject
+#pragma mark LTBasicParameterizedObject
 #pragma mark -
 
 - (CGFloat)floatForParametricValue:(CGFloat)parametricValue {
