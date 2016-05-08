@@ -4,32 +4,32 @@
 #import "LTCompoundParameterizedObject.h"
 
 #import "LTParameterizationKeyToValues.h"
-#import "LTPrimitiveParameterizedObject.h"
+#import "LTBasicParameterizedObject.h"
 
 SpecBegin(LTCompoundParameterizedObject)
 
 __block LTCompoundParameterizedObject *object;
-__block LTKeyToPrimitiveParameterizedObject *mapping;
-__block id primitiveMock;
-__block id anotherPrimitiveMock;
+__block LTKeyToBaseParameterizedObject *mapping;
+__block id basicMock;
+__block id anotherBasicMock;
 
 beforeEach(^{
-  primitiveMock = OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-  anotherPrimitiveMock = OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-  OCMStub([primitiveMock minParametricValue]).andReturn(0);
-  OCMStub([primitiveMock maxParametricValue]).andReturn(1);
-  OCMStub([anotherPrimitiveMock minParametricValue]).andReturn(0);
-  OCMStub([anotherPrimitiveMock maxParametricValue]).andReturn(1);
+  basicMock = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+  anotherBasicMock = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+  OCMStub([basicMock minParametricValue]).andReturn(0);
+  OCMStub([basicMock maxParametricValue]).andReturn(1);
+  OCMStub([anotherBasicMock minParametricValue]).andReturn(0);
+  OCMStub([anotherBasicMock maxParametricValue]).andReturn(1);
   mapping = @{
-    @"x": primitiveMock,
-    @"y": anotherPrimitiveMock
+    @"x": basicMock,
+    @"y": anotherBasicMock
   };
   object = [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
 });
 
 afterEach(^{
-  primitiveMock = nil;
-  anotherPrimitiveMock = nil;
+  basicMock = nil;
+  anotherBasicMock = nil;
 });
 
 context(@"initialization", ^{
@@ -38,7 +38,7 @@ context(@"initialization", ^{
   });
 
   it(@"should initialize with a copy of the provided mapping", ^{
-    LTKeyToPrimitiveParameterizedObject *mutableMapping = [mapping mutableCopy];
+    LTKeyToBaseParameterizedObject *mutableMapping = [mapping mutableCopy];
     object = [[LTCompoundParameterizedObject alloc] initWithMapping:mutableMapping];
     expect(object.mapping).to.equal(mutableMapping);
     expect(object.mapping).toNot.beIdenticalTo(mutableMapping);
@@ -50,14 +50,14 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should raise when attempting to initialize with invalid primitive parameterized objects", ^{
-    id anotherPrimitiveMockWithDifferentParametricRange =
-        OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-    OCMStub([anotherPrimitiveMockWithDifferentParametricRange minParametricValue]).andReturn(0.5);
-    OCMStub([anotherPrimitiveMockWithDifferentParametricRange maxParametricValue]).andReturn(1);
+  it(@"should raise when attempting to initialize with invalid basic parameterized objects", ^{
+    id anotherBasicMockWithDifferentParametricRange =
+        OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+    OCMStub([anotherBasicMockWithDifferentParametricRange minParametricValue]).andReturn(0.5);
+    OCMStub([anotherBasicMockWithDifferentParametricRange maxParametricValue]).andReturn(1);
     mapping = @{
-      @"x": primitiveMock,
-      @"y": anotherPrimitiveMockWithDifferentParametricRange
+      @"x": basicMock,
+      @"y": anotherBasicMockWithDifferentParametricRange
     };
     expect(^{
       object = [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
@@ -87,9 +87,8 @@ context(@"NSObject protocol", ^{
     });
 
     it(@"should return NO when comparing to an object with different properties", ^{
-      id primitiveParameterizedObjectMock =
-          OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-      LTKeyToPrimitiveParameterizedObject *mapping = @{@"test": primitiveParameterizedObjectMock};
+      id baseParameterizedObjectMock = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+      LTKeyToBaseParameterizedObject *mapping = @{@"test": baseParameterizedObjectMock};
       LTCompoundParameterizedObject *anotherObject =
           [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
       expect([object isEqual:anotherObject]).to.beFalsy();
@@ -119,23 +118,23 @@ context(@"LTParameterizedObject protocol", ^{
   });
 
   it(@"should return the correct mapping for a given parametric value", ^{
-    OCMExpect([primitiveMock floatForParametricValue:0]).andReturn(9);
-    OCMExpect([anotherPrimitiveMock floatForParametricValue:0]).andReturn(10);
+    OCMExpect([basicMock floatForParametricValue:0]).andReturn(9);
+    OCMExpect([anotherBasicMock floatForParametricValue:0]).andReturn(10);
 
     LTParameterizationKeyToValue *result = [object mappingForParametricValue:0];
 
     expect([NSSet setWithArray:[result allKeys]]).to.equal(expectedKeys);
     expect(result[@"x"]).to.equal(@9);
     expect(result[@"y"]).to.equal(@10);
-    OCMVerifyAll(primitiveMock);
-    OCMVerifyAll(anotherPrimitiveMock);
+    OCMVerifyAll(basicMock);
+    OCMVerifyAll(anotherBasicMock);
   });
 
   it(@"should return the correct mappings for given parametric values", ^{
-    OCMExpect([primitiveMock floatForParametricValue:0]).andReturn(9);
-    OCMExpect([anotherPrimitiveMock floatForParametricValue:0]).andReturn(10);
-    OCMExpect([primitiveMock floatForParametricValue:0.5]).andReturn(11);
-    OCMExpect([anotherPrimitiveMock floatForParametricValue:0.5]).andReturn(12);
+    OCMExpect([basicMock floatForParametricValue:0]).andReturn(9);
+    OCMExpect([anotherBasicMock floatForParametricValue:0]).andReturn(10);
+    OCMExpect([basicMock floatForParametricValue:0.5]).andReturn(11);
+    OCMExpect([anotherBasicMock floatForParametricValue:0.5]).andReturn(12);
 
     LTParameterizationKeyToValues *result = [object mappingForParametricValues:{0, 0.5}];
 
@@ -149,41 +148,41 @@ context(@"LTParameterizedObject protocol", ^{
     expect(yValues.size()).to.equal(2);
     expect(yValues[0]).to.equal(10);
     expect(yValues[1]).to.equal(12);
-    OCMVerifyAll(primitiveMock);
-    OCMVerifyAll(anotherPrimitiveMock);
+    OCMVerifyAll(basicMock);
+    OCMVerifyAll(anotherBasicMock);
   });
 
   it(@"should return the correct float value for a given parametric value and key", ^{
-    OCMExpect([primitiveMock floatForParametricValue:0]).andReturn(9);
+    OCMExpect([basicMock floatForParametricValue:0]).andReturn(9);
 
     CGFloat value = [object floatForParametricValue:0 key:@"x"];
 
     expect(value).to.equal(9);
-    OCMVerifyAll(primitiveMock);
+    OCMVerifyAll(basicMock);
   });
 
   it(@"should return the correct float values for given parametric values and key", ^{
-    OCMExpect([primitiveMock floatForParametricValue:0]).andReturn(9);
-    OCMExpect([primitiveMock floatForParametricValue:0.5]).andReturn(10);
+    OCMExpect([basicMock floatForParametricValue:0]).andReturn(9);
+    OCMExpect([basicMock floatForParametricValue:0.5]).andReturn(10);
 
     CGFloats values = [object floatsForParametricValues:{0, 0.5} key:@"x"];
 
     expect(values.size()).to.equal(2);
     expect(values.front()).to.equal(9);
     expect(values.back()).to.equal(10);
-    OCMVerifyAll(primitiveMock);
+    OCMVerifyAll(basicMock);
   });
 
   it(@"should return the correct parameterization keys", ^{
     expect(object.parameterizationKeys).to.equal(expectedKeys);
   });
 
-  it(@"should use the intrinsic parametric range of the primitive parameterized objects", ^{
-    primitiveMock = OCMProtocolMock(@protocol(LTPrimitiveParameterizedObject));
-    OCMStub([primitiveMock minParametricValue]).andReturn(5.5);
-    OCMStub([primitiveMock maxParametricValue]).andReturn(7);
+  it(@"should use the intrinsic parametric range of the basic parameterized objects", ^{
+    basicMock = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
+    OCMStub([basicMock minParametricValue]).andReturn(5.5);
+    OCMStub([basicMock maxParametricValue]).andReturn(7);
 
-    object = [[LTCompoundParameterizedObject alloc] initWithMapping:@{@"x": primitiveMock}];
+    object = [[LTCompoundParameterizedObject alloc] initWithMapping:@{@"x": basicMock}];
 
     expect(object.minParametricValue).to.equal(5.5);
     expect(object.maxParametricValue).to.equal(7);

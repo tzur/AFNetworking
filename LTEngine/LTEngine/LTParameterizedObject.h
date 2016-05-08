@@ -10,7 +10,7 @@ typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 
 /// Protocol which should be implemented by objects constituting a mapping from a single real-valued
 /// parameter \c t to a mapping from keys to real values. In practice, a parameterized object
-/// usually consists of primitive parameterized objects (e.g. polynomial interpolants) each of which
+/// usually consists of basic parameterized objects (e.g. polynomial interpolants) each of which
 /// is addressed by a unique key and which is used to compute a specific result value for a given
 /// value of \c t. A convenient way to think of parameterized objects is as mapping from a real
 /// value to a point in \c R^n, where the keys represent the axes names of the underlying coordinate

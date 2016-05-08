@@ -6,7 +6,7 @@
 #import "LTCompoundParameterizedObjectFactory.h"
 #import "LTMutableEuclideanSplineTestUtils.h"
 #import "LTParameterizationKeyToValues.h"
-#import "LTPrimitiveParameterizedObjectFactories.h"
+#import "LTBasicParameterizedObjectFactories.h"
 
 static const CGFloat kEpsilon = 3e-6;
 
@@ -36,8 +36,8 @@ SpecBegin(LTMutableEuclideanSpline)
 
 static NSString * const kLTMutableEuclideanSplineExamples = @"LTMutableEuclideanSplineExamples";
 
-static NSString * const kLTMutableEuclideanSplinePrimitiveFactory =
-    @"LTMutableEuclideanSplinePrimitiveFactory";
+static NSString * const kLTMutableEuclideanSplineBaseFactory =
+    @"LTMutableEuclideanSplineBaseFactory";
 
 static NSString * const kLTMutableEuclideanSplineInitialPoints =
     @"LTMutableEuclideanSplineInitialPoints";
@@ -55,16 +55,15 @@ static NSString * const kLTMutableEuclideanSplineMaxParametericValueAfterPushing
     @"LTMutableEuclideanSplineMaxParametericValueAfterPushing";
 
 sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
-  __block id<LTPrimitiveParameterizedObjectFactory> primitiveFactory;
+  __block id<LTBasicParameterizedObjectFactory> baseFactory;
   __block LTCompoundParameterizedObjectFactory *factory;
   __block NSArray<LTEuclideanSplineControlPoint *> *initialPoints;
   __block NSArray<LTEuclideanSplineControlPoint *> *additionalPoints;
   __block LTMutableEuclideanSpline *spline;
 
   beforeEach(^{
-    primitiveFactory = data[kLTMutableEuclideanSplinePrimitiveFactory];
-    factory =
-        [[LTCompoundParameterizedObjectFactory alloc] initWithPrimitiveFactory:primitiveFactory];
+    baseFactory = data[kLTMutableEuclideanSplineBaseFactory];
+    factory = [[LTCompoundParameterizedObjectFactory alloc] initWithBasicFactory:baseFactory];
     initialPoints = data[kLTMutableEuclideanSplineInitialPoints];
     additionalPoints = data[kLTMutableEuclideanSplineAdditionalPoints];
     spline = [[LTMutableEuclideanSpline alloc] initWithFactory:factory
@@ -153,7 +152,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         __block LTEuclideanSplineControlPoint *endPoint;
 
         beforeEach(^{
-          NSRange range = [[primitiveFactory class] intrinsicParametricRange];
+          NSRange range = [[baseFactory class] intrinsicParametricRange];
           startPoint = spline.controlPoints[range.location];
           endPoint = spline.controlPoints[range.location + range.length - 1];
         });
@@ -236,7 +235,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         __block LTEuclideanSplineControlPoint *endPoint;
 
         beforeEach(^{
-          NSRange range = [[primitiveFactory class] intrinsicParametricRange];
+          NSRange range = [[baseFactory class] intrinsicParametricRange];
           startPoint = spline.controlPoints[range.location];
           endPoint = spline.controlPoints[spline.controlPoints.count -
                                           (range.location + range.length - 1)];
@@ -305,7 +304,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 });
 
 itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplinePrimitiveFactory: [[LTPrimitiveLinearInterpolantFactory alloc] init],
+  kLTMutableEuclideanSplineBaseFactory: [[LTBasicLinearInterpolantFactory alloc] init],
   kLTMutableEuclideanSplineInitialPoints:
       LTCreateSplinePoints({0, 1}, {CGPointZero, CGPointMake(1, 1)}, @"attribute", @[@7, @8]),
   kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
@@ -317,7 +316,7 @@ itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
 });
 
 itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplinePrimitiveFactory: [[LTPrimitiveCatmullRomInterpolantFactory alloc] init],
+  kLTMutableEuclideanSplineBaseFactory: [[LTBasicCatmullRomInterpolantFactory alloc] init],
   kLTMutableEuclideanSplineInitialPoints:
       LTCreateSplinePoints({0, 1, 2, 3},
                            {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},

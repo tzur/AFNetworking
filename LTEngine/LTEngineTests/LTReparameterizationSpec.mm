@@ -119,7 +119,7 @@ context(@"reparameterization with shifted mapping", ^{
   });
 });
 
-context(@"LTPrimitiveParameterizedObject", ^{
+context(@"LTBasicParameterizedObject", ^{
   it(@"should have the correct minParametricValue and maxParametricValue", ^{
     reparameterization = [[LTReparameterization alloc] initWithMapping:{0, 1}];
     expect(reparameterization.minParametricValue).to.equal(0);

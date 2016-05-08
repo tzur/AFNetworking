@@ -5,15 +5,15 @@
 
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
-#import "LTPrimitiveParameterizedObjectFactory.h"
+#import "LTBasicParameterizedObjectFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTCompoundParameterizedObjectFactory ()
 
-/// Factory used to create the primitive parameterized objects constituting the parameterized
+/// Factory used to create the basic parameterized objects constituting the parameterized
 /// objects which can be created by this instance.
-@property (strong, readwrite, nonatomic) id<LTPrimitiveParameterizedObjectFactory> primitiveFactory;
+@property (strong, readwrite, nonatomic) id<LTBasicParameterizedObjectFactory> factory;
 
 @end
 
@@ -23,9 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithPrimitiveFactory:(id<LTPrimitiveParameterizedObjectFactory>)factory {
+- (instancetype)initWithBasicFactory:(id<LTBasicParameterizedObjectFactory>)factory {
   if (self = [super init]) {
-    self.primitiveFactory = factory;
+    self.factory = factory;
   }
   return self;
 }
@@ -36,14 +36,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTCompoundParameterizedObject *)parameterizedObjectFromInterpolatableObjects:
     (NSArray<id<LTInterpolatableObject>> *)objects {
-  LTParameterAssert(objects.count == [[self.primitiveFactory class] numberOfRequiredValues],
+  LTParameterAssert(objects.count == [[self.factory class] numberOfRequiredValues],
                     @"Number of provided interpolatable objects (%lu) does not match number of "
                     "required values (%lu)", (unsigned long)objects.count,
-                    (unsigned long)[[self.primitiveFactory class] numberOfRequiredValues]);
+                    (unsigned long)[[self.factory class] numberOfRequiredValues]);
   NSSet<NSString *> *propertiesToInterpolate = [objects.firstObject propertiesToInterpolate];
-  LTMutableKeyToPrimitiveParameterizedObject *mapping =
-      [LTMutableKeyToPrimitiveParameterizedObject
-       dictionaryWithCapacity:propertiesToInterpolate.count];
+  LTMutableKeyToBaseParameterizedObject *mapping =
+      [LTMutableKeyToBaseParameterizedObject dictionaryWithCapacity:propertiesToInterpolate.count];
 
   // TODO(rouven): If required, parallelize the iterations of this loop.
   for (NSString *propertyName in propertiesToInterpolate) {
@@ -51,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSObject<LTInterpolatableObject> *object in objects) {
       values.push_back([[object valueForKey:propertyName] CGFloatValue]);
     }
-    mapping[propertyName] = [self.primitiveFactory primitiveParameterizedObjectsFromValues:values];
+    mapping[propertyName] = [self.factory baseParameterizedObjectsFromValues:values];
   }
   return [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
 }
@@ -61,11 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (NSUInteger)numberOfRequiredInterpolatableObjects {
-  return [[self.primitiveFactory class] numberOfRequiredValues];
+  return [[self.factory class] numberOfRequiredValues];
 }
 
 - (NSRange)intrinsicParametricRange {
-  return [[self.primitiveFactory class] intrinsicParametricRange];
+  return [[self.factory class] intrinsicParametricRange];
 }
 
 @end

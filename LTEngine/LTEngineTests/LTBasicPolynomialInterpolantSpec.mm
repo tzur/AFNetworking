@@ -1,17 +1,17 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTPrimitivePolynomialInterpolant.h"
+#import "LTBasicPolynomialInterpolant.h"
 
-SpecBegin(LTPrimitivePolynomialInterpolant)
+SpecBegin(LTBasicPolynomialInterpolant)
 
 static const CGFloat kEpsilon = 1e-6;
 
-__block LTPrimitivePolynomialInterpolant *interpolant;
+__block LTBasicPolynomialInterpolant *interpolant;
 
 beforeEach(^{
   CGFloats coefficients{1, 2, 3, 4};
-  interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:coefficients];
+  interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:coefficients];
 });
 
 context(@"initialization", ^{
@@ -26,7 +26,7 @@ context(@"initialization", ^{
 
   it(@"should raise when attempting to initialize without coefficients", ^{
     expect(^{
-      interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{}];
+      interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{}];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -38,13 +38,13 @@ context(@"NSObject protocol", ^{
     });
 
     it(@"should return YES when comparing to an object with the same properties", ^{
-      LTPrimitivePolynomialInterpolant *anotherInterpolant =
-          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
+      LTBasicPolynomialInterpolant *anotherInterpolant =
+          [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
       expect([interpolant isEqual:anotherInterpolant]).to.beTruthy();
     });
 
     it(@"should return NO when comparing to nil", ^{
-      LTPrimitivePolynomialInterpolant *anotherInterpolant = nil;
+      LTBasicPolynomialInterpolant *anotherInterpolant = nil;
       expect([interpolant isEqual:anotherInterpolant]).to.beFalsy();
     });
 
@@ -53,16 +53,16 @@ context(@"NSObject protocol", ^{
     });
 
     it(@"should return NO when comparing to an object with different properties", ^{
-      LTPrimitivePolynomialInterpolant *anotherInterpolant =
-          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
+      LTBasicPolynomialInterpolant *anotherInterpolant =
+          [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
       expect([interpolant isEqual:anotherInterpolant]).to.beFalsy();
     });
   });
 
   context(@"hash", ^{
     it(@"should return the same hash value for equal objects", ^{
-      LTPrimitivePolynomialInterpolant *anotherInterpolant =
-          [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
+      LTBasicPolynomialInterpolant *anotherInterpolant =
+          [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
       expect([interpolant hash]).to.equal([anotherInterpolant hash]);
     });
   });
@@ -74,14 +74,14 @@ context(@"NSCopying protocol", ^{
   });
 });
 
-context(@"LTPrimitiveParameterizedObject protocol", ^{
+context(@"LTBasicParameterizedObject protocol", ^{
   it(@"should have the correct intrinsic parametric range", ^{
     expect(interpolant.minParametricValue).to.equal(0);
     expect(interpolant.maxParametricValue).to.equal(1);
   });
 
   it(@"should return the correct linearly interpolated result for a given value", ^{
-    interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{2, 5}];
+    interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{2, 5}];
     expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(3, kEpsilon);
     expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(5, kEpsilon);
     expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(7, kEpsilon);
@@ -89,7 +89,7 @@ context(@"LTPrimitiveParameterizedObject protocol", ^{
   });
 
   it(@"should return the correct quadratically interpolated result for a given value", ^{
-    interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
+    interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3}];
     expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(2, kEpsilon);
     expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(3, kEpsilon);
     expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(6, kEpsilon);
@@ -97,7 +97,7 @@ context(@"LTPrimitiveParameterizedObject protocol", ^{
   });
 
   it(@"should return the correct cubically interpolated result for a given value", ^{
-    interpolant = [[LTPrimitivePolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
+    interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:{1, 2, 3, 4}];
     expect([interpolant floatForParametricValue:-1]).to.beCloseToWithin(2, kEpsilon);
     expect([interpolant floatForParametricValue:0]).to.beCloseToWithin(4, kEpsilon);
     expect([interpolant floatForParametricValue:1]).to.beCloseToWithin(10, kEpsilon);
