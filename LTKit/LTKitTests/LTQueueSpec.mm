@@ -5,11 +5,12 @@
 
 #import "LTKeyPathCoding.h"
 
-@interface LTQueueTestObserver : NSObject
+@interface LTQueueCountTestObserver : NSObject
 @property (nonatomic) NSUInteger count;
+@property (nonatomic) NSUInteger numberOfNotifications;
 @end
 
-@implementation LTQueueTestObserver
+@implementation LTQueueCountTestObserver
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
@@ -18,6 +19,26 @@
   LTAssert([keyPath isEqualToString:@instanceKeypath(LTQueue, count)]);
   LTAssert([object isKindOfClass:[LTQueue class]]);
   self.count = [change[@"new"] unsignedIntegerValue];
+  self.numberOfNotifications = self.numberOfNotifications + 1;
+}
+
+@end
+
+@interface LTQueueArrayTestObserver : NSObject
+@property (nonatomic) NSKeyValueChange changeKind;
+@property (nonatomic) NSArray *objects;
+@end
+
+@implementation LTQueueArrayTestObserver
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString*, id> *)change
+                       context:(void __unused *)context {
+  LTParameterAssert([keyPath isEqualToString:@instanceKeypath(LTQueue, array)]);
+  LTParameterAssert([object isKindOfClass:[LTQueue class]]);
+  self.changeKind = (NSKeyValueChange)[change[NSKeyValueChangeKindKey] unsignedIntegerValue];
+  self.objects = ((LTQueue *)object).array;
 }
 
 @end
@@ -185,35 +206,114 @@ it(@"should provide access to the most recently added object", ^{
   expect(queue.lastObject).to.beIdenticalTo(thirdObject);
 });
 
-context(@"KVO compatibility", ^{
-  it(@"should have a KVO-compatible count", ^{
-    LTQueueTestObserver *observer = [[LTQueueTestObserver alloc] init];
+context(@"KVO compliance", ^{
+  __block LTQueueArrayTestObserver *observer;
+
+  context(@"array property", ^{
+    beforeEach(^{
+      observer = [[LTQueueArrayTestObserver alloc] init];
+      [queue addObserver:observer forKeyPath:@keypath(queue, array)
+                 options:NSKeyValueObservingOptionNew context:NULL];
+    });
+
+    afterEach(^{
+      [queue removeObserver:observer forKeyPath:@keypath(queue, array)];
+      observer = nil;
+    });
+
+    it(@"should send KVO notification when objects are pushed", ^{
+      [queue pushObject:@1];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeInsertion);
+      expect(observer.objects).to.equal(@[@1]);
+    });
+
+    it(@"should send KVO notification when objects are popped", ^{
+      [queue pushObject:@1];
+      [queue popObject];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeRemoval);
+      expect(observer.objects).to.equal(@[]);
+    });
+
+    it(@"should send KVO notification when objects are replaced", ^{
+      [queue pushObject:@1];
+      [queue replaceObjectAtIndex:0 withObject:@2];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeReplacement);
+      expect(observer.objects).to.equal(@[@2]);
+    });
+
+    it(@"should send KVO notification when first object is removed", ^{
+      [queue pushObject:@1];
+      [queue pushObject:@2];
+      [queue removeFirstObject];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeRemoval);
+      expect(observer.objects).to.equal(@[@2]);
+    });
+
+    it(@"should send KVO notification when last object is removed", ^{
+      [queue pushObject:@1];
+      [queue pushObject:@2];
+      [queue removeLastObject];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeRemoval);
+      expect(observer.objects).to.equal(@[@1]);
+    });
+
+    it(@"should send KVO notification when a certain object is removed", ^{
+      [queue pushObject:@1];
+      [queue pushObject:@2];
+      [queue removeObject:@1];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeRemoval);
+      expect(observer.objects).to.equal(@[@2]);
+    });
+
+    it(@"should send KVO notification when all objects are removed", ^{
+      [queue pushObject:@1];
+      [queue pushObject:@2];
+      [queue removeLastObject];
+      expect(observer.changeKind).to.equal(NSKeyValueChangeRemoval);
+      expect(observer.objects).to.equal(@[@1]);
+    });
+  });
+
+  it(@"should have a KVO-compliant count property", ^{
+    LTQueueCountTestObserver *observer = [[LTQueueCountTestObserver alloc] init];
     [queue addObserver:observer forKeyPath:@keypath(queue, count)
                options:NSKeyValueObservingOptionNew context:NULL];
 
     expect(observer.count).to.equal(0);
+    expect(observer.numberOfNotifications).to.equal(0);
     [queue pushObject:@1];
     expect(observer.count).to.equal(1);
+    expect(observer.numberOfNotifications).to.equal(1);
     [queue popObject];
     expect(observer.count).to.equal(0);
+    expect(observer.numberOfNotifications).to.equal(2);
     [queue pushObject:@1];
     expect(observer.count).to.equal(1);
+    expect(observer.numberOfNotifications).to.equal(3);
     [queue pushObject:@2];
     expect(observer.count).to.equal(2);
+    expect(observer.numberOfNotifications).to.equal(4);
     [queue replaceObjectAtIndex:0 withObject:@1];
     expect(observer.count).to.equal(2);
+    expect(observer.numberOfNotifications).to.equal(4);
     [queue removeFirstObject];
     expect(observer.count).to.equal(1);
+    expect(observer.numberOfNotifications).to.equal(5);
     [queue removeLastObject];
     expect(observer.count).to.equal(0);
+    expect(observer.numberOfNotifications).to.equal(6);
     [queue pushObject:@1];
     expect(observer.count).to.equal(1);
+    expect(observer.numberOfNotifications).to.equal(7);
     [queue pushObject:@2];
     expect(observer.count).to.equal(2);
+    expect(observer.numberOfNotifications).to.equal(8);
     [queue removeObject:queue.lastObject];
     expect(observer.count).to.equal(1);
+    expect(observer.numberOfNotifications).to.equal(9);
     [queue removeAllObjects];
     expect(observer.count).to.equal(0);
+    expect(observer.numberOfNotifications).to.equal(10);
 
     [queue removeObserver:observer forKeyPath:@keypath(queue, count)];
   });
