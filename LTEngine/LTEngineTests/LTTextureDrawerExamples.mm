@@ -395,7 +395,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     it(@"should raise when setting a non existing name", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"foo"];
-      }).to.raise(NSInternalInconsistencyException);
+      }).to.raise(NSInvalidArgumentException);
     });
     
     it(@"should draw multiple inputs correctly", ^{

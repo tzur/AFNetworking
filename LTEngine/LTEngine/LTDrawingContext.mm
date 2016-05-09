@@ -100,8 +100,9 @@
 
 - (void)attachUniform:(NSString *)uniform toTexture:(LTTexture *)texture {
   LTParameterAssert(texture);
-  LTAssert([self.program.uniforms containsObject:uniform], @"Given uniform '%@' is not one of the "
-           "program's uniforms: %@", uniform, self.program.uniforms);
+  LTParameterAssert([self.program.uniforms containsObject:uniform],
+                    @"Given uniform '%@' is not one of the program's uniforms: %@", uniform,
+                    self.program.uniforms);
 
   self.uniformToTexture[uniform] = texture;
 }
