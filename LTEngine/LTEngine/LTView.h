@@ -149,16 +149,6 @@
 /// @endcode
 @property (readonly, nonatomic) UIView *viewForContentCoordinates;
 
-/// The underlying gesture recognizer for pinch gestures. KVO compliant.
-@property (readonly, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
-
-/// The underlying gesture recognizer for pinch gestures. Will return \c nil when zooming is
-/// disabled. KVO compliant.
-@property (readonly, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
-
-/// The underlying gesture recognizer for double tap gestures. KVO compliant.
-@property (readonly, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
-
 @end
 
 #pragma mark -

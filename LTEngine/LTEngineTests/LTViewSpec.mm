@@ -18,6 +18,9 @@
 @property (strong, nonatomic) LTViewNavigationView *navigationView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
+@property (readonly, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+@property (readonly, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (readonly, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @end
 
 @interface LTViewPixelGrid ()
