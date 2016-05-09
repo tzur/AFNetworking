@@ -128,6 +128,29 @@ context(@"GLKMatrix3", ^{
     expect(GLKMatrix3Determinant(b)).to.equal(0);
     expect(GLKMatrix3Determinant(c)).to.beCloseToWithin(92.279884, kEpsilon);
   });
+  
+  it(@"should construct a correct matrix from affine transform", ^{
+    CGAffineTransform transform = CGAffineTransformMake(1, 2, 3, 4, 5, 6);
+    GLKMatrix3 result = GLKMatrix3WithTransform(transform);
+    
+    GLKVector3 resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(5, 10, 1));
+    CGPoint resultPoint = CGPointApplyAffineTransform(CGPointMake(5, 10), transform);
+    expect(resultVector.x).to.equal(resultPoint.x);
+    expect(resultVector.y).to.equal(resultPoint.y);
+    expect(resultVector.z).to.equal(1);
+    
+    resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(5, 1, 1));
+    resultPoint = CGPointApplyAffineTransform(CGPointMake(5, 1), transform);
+    expect(resultVector.x).to.equal(resultPoint.x);
+    expect(resultVector.y).to.equal(resultPoint.y);
+    expect(resultVector.z).to.equal(1);
+    
+    resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(10, 10, 1));
+    resultPoint = CGPointApplyAffineTransform(CGPointMake(10, 10), transform);
+    expect(resultVector.x).to.equal(resultPoint.x);
+    expect(resultVector.y).to.equal(resultPoint.y);
+    expect(resultVector.z).to.equal(1);
+  });
 });
 
 context(@"GLKMatrix4", ^{

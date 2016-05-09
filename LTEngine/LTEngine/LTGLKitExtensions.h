@@ -65,6 +65,12 @@ GLK_INLINE CGFloat GLKMatrix3Determinant(GLKMatrix3 m) {
       - (m.m02 * m.m11 * m.m20 + m.m01 * m.m10 * m.m22 + m.m00 * m.m12 * m.m21);
 }
 
+/// Creates a \c GLKMatrix3 from the given \c transform.
+GLK_INLINE GLKMatrix3 GLKMatrix3WithTransform(CGAffineTransform transform) {
+  return GLKMatrix3Make(transform.a, transform.b, 0, transform.c, transform.d, 0, transform.tx,
+                        transform.ty, 1);
+}
+
 #ifdef __cplusplus
 
 /// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
