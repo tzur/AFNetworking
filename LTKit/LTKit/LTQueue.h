@@ -35,11 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c NSInvalidArgumentException is raised.
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(ObjectType)object;
 
-/// Returns a copy of the queue in form of an array. The first entry of the array is the object
-/// which has been pushed to the queue least recently, while the last entry is the object which has
-/// been pushed most recently.
-- (NSArray *)array;
-
 /// Returns \c YES if the provided \c object is contained in the queue.
 - (BOOL)containsObject:(ObjectType)object;
 
@@ -49,7 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The most recently added object in the queue. Returns \c nil if the queue is empty.
 @property (readonly, nonatomic, nullable) ObjectType lastObject;
 
-/// Number of objects in queue. KVO-compatible.
+/// Copy of the queue in form of an array. The first entry of the array is the object which has been
+/// pushed to the queue least recently, while the last entry is the object which has been pushed
+/// most recently. KVO-compliant.
+@property (readonly, nonatomic) NSArray<ObjectType> *array;
+
+/// Number of objects in queue. KVO-compliant.
 @property (readonly, nonatomic) NSUInteger count;
 
 @end

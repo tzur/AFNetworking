@@ -5,14 +5,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTQueue <ObjectType> ()
+@interface LTQueue ()
 
-/// Underlying data structure used for storing the objects.
-@property (strong, nonatomic) NSMutableArray<ObjectType> *queue;
+/// Internally used ordered collection holding the queue content.
+@property (strong, nonatomic) NSMutableArray *queue;
 
 @end
 
 @implementation LTQueue
+
+- (instancetype)init {
+  if (self = [super init]) {
+    self.queue = [NSMutableArray array];
+  }
+  return self;
+}
 
 #pragma mark -
 #pragma mark Properties
@@ -30,11 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self.queue.lastObject;
 }
 
-- (NSMutableArray *)queue {
-  if(!_queue) {
-    _queue = [NSMutableArray array];
-  }
-  return _queue;
+- (NSArray *)array {
+  return [self.queue copy];
 }
 
 #pragma mark -
@@ -43,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)pushObject:(id)object {
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue addObject:object];
+  [self insertObject:object inArrayAtIndex:self.queue.count];
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
@@ -55,15 +59,20 @@ NS_ASSUME_NONNULL_BEGIN
   id result = self.queue.firstObject;
 
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue removeObjectAtIndex:0];
+  [self removeObjectFromArrayAtIndex:0];
   [self didChangeValueForKey:@keypath(self, count)];
 
   return result;
 }
 
 - (void)removeObject:(id)object {
+  NSUInteger index = [self.queue indexOfObject:object];
+  if (index == NSNotFound) {
+    return;
+  }
+
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue removeObject:object];
+  [self removeObjectFromArrayAtIndex:index];
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
@@ -73,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue removeObjectAtIndex:0];
+  [self removeObjectFromArrayAtIndex:0];
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
@@ -83,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue removeObjectAtIndex:self.queue.count - 1];
+  [self removeObjectFromArrayAtIndex:self.queue.count - 1];
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
@@ -93,7 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   [self willChangeValueForKey:@keypath(self, count)];
-  [self.queue removeAllObjects];
+  NSRange range = NSMakeRange(0, self.queue.count);
+  [self removeArrayAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
   [self didChangeValueForKey:@keypath(self, count)];
 }
 
@@ -102,19 +112,43 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object {
-  [self.queue replaceObjectAtIndex:index withObject:object];
+  [self replaceObjectInArrayAtIndex:index withObject:object];
 }
 
 #pragma mark -
 #pragma mark Retrieval of information about queue
 #pragma mark -
 
-- (NSArray *)array {
-  return [self.queue copy];
-}
-
 - (BOOL)containsObject:(id)object {
   return [self.queue containsObject:object];
+}
+
+#pragma mark -
+#pragma mark Collection Accessor Patterns
+#pragma mark -
+
+- (NSUInteger)countOfArray {
+  return self.queue.count;
+}
+
+- (NSArray *)arrayAtIndexes:(NSIndexSet *)indexes {
+  return [self.queue objectsAtIndexes:indexes];
+}
+
+- (void)insertObject:(id)object inArrayAtIndex:(NSUInteger)index {
+  [self.queue insertObject:object atIndex:index];
+}
+
+- (void)removeArrayAtIndexes:(NSIndexSet *)indexes {
+  [self.queue removeObjectsAtIndexes:indexes];
+}
+
+- (void)removeObjectFromArrayAtIndex:(NSUInteger)index {
+  [self.queue removeObjectAtIndex:index];
+}
+
+- (void)replaceObjectInArrayAtIndex:(NSUInteger)index withObject:(id)object {
+  [self.queue replaceObjectAtIndex:index withObject:object];
 }
 
 #pragma mark -
