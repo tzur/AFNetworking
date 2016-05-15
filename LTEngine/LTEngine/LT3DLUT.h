@@ -6,14 +6,23 @@ NS_ASSUME_NONNULL_BEGIN
 @class LTTexture;
 
 /// Struct for describing the 3-dimensional lattice sizes of a 3D LUT.
-typedef struct {
+struct LT3DLUTLatticeSize {
   /// Size of the red channel in the lattice.
   int rDimensionSize;
   /// Size of the green channel in the lattice.
   int gDimensionSize;
   /// Size of the blue channel in the lattice.
   int bDimensionSize;
-} LT3DLUTLatticeSize;
+};
+
+constexpr bool operator==(const LT3DLUTLatticeSize &lhs, const LT3DLUTLatticeSize &rhs) {
+  return lhs.rDimensionSize == rhs.rDimensionSize && lhs.gDimensionSize == rhs.gDimensionSize &&
+      lhs.bDimensionSize == rhs.bDimensionSize;
+}
+
+constexpr bool operator!=(const LT3DLUTLatticeSize &lhs, const LT3DLUTLatticeSize &rhs) {
+  return !(lhs == rhs);
+}
 
 /// 3D Lookup Table. The table defines a map from one 3D color space to another. The table itself
 /// is a 3D lattice matrix of type \c CV_8UC4. Each axis of the lattice represents a single channel

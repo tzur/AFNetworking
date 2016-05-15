@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   LT3DLUT *other = (LT3DLUT *)object;
 
-  if (![self isEqualInLatticeSizesTo:other.latticeSizes]) {
+  if (self.latticeSizes != other.latticeSizes) {
     return NO;
   }
 
@@ -118,12 +118,6 @@ NS_ASSUME_NONNULL_BEGIN
 
   return std::equal(self.mat.begin<cv::Vec4b>(), self.mat.end<cv::Vec4b>(),
                     other.mat.begin<cv::Vec4b>());
-}
-
-- (BOOL)isEqualInLatticeSizesTo:(const LT3DLUTLatticeSize &)otherSize {
-  return (self.latticeSizes.rDimensionSize == otherSize.rDimensionSize) &&
-      (self.latticeSizes.gDimensionSize == otherSize.gDimensionSize) &&
-      (self.latticeSizes.bDimensionSize == otherSize.bDimensionSize);
 }
 
 #pragma mark -
