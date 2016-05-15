@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (self = [super init]) {
     [self validateDimensionsOfLattice:lattice];
-    _latticeSizes = {lattice.size[2], lattice.size[1], lattice.size[0]};
+    _latticeSize = {lattice.size[2], lattice.size[1], lattice.size[0]};
     _mat = lattice.clone();
   }
   
@@ -47,18 +47,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithPackedMat:(const cv::Mat &)packedMat
-                     latticeSizes:(LT3DLUTLatticeSize)latticeSizes {
+                     latticeSize:(LT3DLUTLatticeSize)latticeSize {
   LTParameterAssert(packedMat.dims == 2, @"packed mat must be a 2D matrix but input matrix is "
                     @"%d-dimensional", packedMat.dims);
-  LTParameterAssert(packedMat.cols == latticeSizes.rDimensionSize &&
-                    packedMat.rows == (latticeSizes.bDimensionSize * latticeSizes.gDimensionSize),
+  LTParameterAssert(packedMat.cols == latticeSize.rDimensionSize &&
+                    packedMat.rows == (latticeSize.bDimensionSize * latticeSize.gDimensionSize),
                     @"packedMat size must match the lattice size such that packedMat.cols = "
-                    "latticeSizes.rDimensionSize and packedMat.rows = latticeSizes.gDimensionSize "
-                    @"* latticeSizes.bDimensionSize. packedMat size is (%d, %d)",
+                    "latticeSize.rDimensionSize and packedMat.rows = latticeSize.gDimensionSize * "
+                    @"latticeSize.bDimensionSize. packedMat size is (%d, %d)",
                     packedMat.rows, packedMat.cols);
 
-  int latticeDims[] = {latticeSizes.bDimensionSize, latticeSizes.gDimensionSize,
-      latticeSizes.rDimensionSize};
+  int latticeDims[] = {latticeSize.bDimensionSize, latticeSize.gDimensionSize,
+      latticeSize.rDimensionSize};
   cv::Mat lattice(3, latticeDims, packedMat.type(), packedMat.data);
 
   return [self initWithLatticeMat:lattice];
@@ -73,18 +73,18 @@ NS_ASSUME_NONNULL_BEGIN
   return [[LT3DLUT alloc] initWithLatticeMat:lattice];
 }
 
-+ (cv::Mat)identityLatticeWithDimensionSizes:(LT3DLUTLatticeSize)latticeSizes {
-  int latticeDims[] = {latticeSizes.bDimensionSize, latticeSizes.gDimensionSize,
-      latticeSizes.rDimensionSize};
++ (cv::Mat)identityLatticeWithDimensionSizes:(LT3DLUTLatticeSize)latticeSize {
+  int latticeDims[] = {latticeSize.bDimensionSize, latticeSize.gDimensionSize,
+      latticeSize.rDimensionSize};
   cv::Mat4b lattice(3, latticeDims);
   int largestValue = 255;
-  for (int b = 0; b < latticeSizes.bDimensionSize; ++b) {
-    for (int g = 0; g < latticeSizes.gDimensionSize; ++g) {
-      for (int r = 0; r < latticeSizes.rDimensionSize; ++r) {
+  for (int b = 0; b < latticeSize.bDimensionSize; ++b) {
+    for (int g = 0; g < latticeSize.gDimensionSize; ++g) {
+      for (int r = 0; r < latticeSize.rDimensionSize; ++r) {
         cv::Vec4b &rgbaColor = lattice(b, g, r);
-        rgbaColor[0] = (uchar)(r * largestValue / (latticeSizes.rDimensionSize - 1));
-        rgbaColor[1] = (uchar)(g * largestValue / (latticeSizes.gDimensionSize - 1));
-        rgbaColor[2] = (uchar)(b * largestValue / (latticeSizes.bDimensionSize - 1));
+        rgbaColor[0] = (uchar)(r * largestValue / (latticeSize.rDimensionSize - 1));
+        rgbaColor[1] = (uchar)(g * largestValue / (latticeSize.gDimensionSize - 1));
+        rgbaColor[2] = (uchar)(b * largestValue / (latticeSize.bDimensionSize - 1));
         rgbaColor[3] = (uchar)largestValue;
       }
     }
@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)lutFromPackedMat:(const cv::Mat &)packedMat {
   int lutSize = packedMat.cols;
-  return [[LT3DLUT alloc] initWithPackedMat:packedMat latticeSizes:{lutSize, lutSize, lutSize}];
+  return [[LT3DLUT alloc] initWithPackedMat:packedMat latticeSize:{lutSize, lutSize, lutSize}];
 }
 
 #pragma mark -
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   LT3DLUT *other = (LT3DLUT *)object;
 
-  if (![self isEqualInLatticeSizesTo:other.latticeSizes]) {
+  if (self.latticeSize != other.latticeSize) {
     return NO;
   }
 
@@ -120,19 +120,13 @@ NS_ASSUME_NONNULL_BEGIN
                     other.mat.begin<cv::Vec4b>());
 }
 
-- (BOOL)isEqualInLatticeSizesTo:(const LT3DLUTLatticeSize &)otherSize {
-  return (self.latticeSizes.rDimensionSize == otherSize.rDimensionSize) &&
-      (self.latticeSizes.gDimensionSize == otherSize.gDimensionSize) &&
-      (self.latticeSizes.bDimensionSize == otherSize.bDimensionSize);
-}
-
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
 - (cv::Mat)packedMat {
-  cv::Mat packedMat(self.latticeSizes.bDimensionSize * self.latticeSizes.gDimensionSize,
-                    self.latticeSizes.rDimensionSize, self.mat.type(), self.mat.data);
+  cv::Mat packedMat(self.latticeSize.bDimensionSize * self.latticeSize.gDimensionSize,
+                    self.latticeSize.rDimensionSize, self.mat.type(), self.mat.data);
 
   return packedMat.clone();
 }
