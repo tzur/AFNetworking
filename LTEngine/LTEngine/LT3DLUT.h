@@ -46,12 +46,12 @@ constexpr bool operator!=(const LT3DLUTLatticeSize &lhs, const LT3DLUTLatticeSiz
 /// <tt>(x, y % m, z / m)</tt> of a corresponding 3D matrix.
 + (instancetype)lutFromPackedMat:(const cv::Mat &)packedMat;
 
-/// Returns a copy of the 3D LUT as a 2D matrix. The matrix size is <tt>(latticeSizes.gDimensionSize
-/// * latticeSizes.bDimensionSize, latticeSizes.rDimensionSize)</tt>, consists of \c
-/// latticeSizes.bDimensionSize <tt>latticeSizes.gDimensionSize * latticeSizes.rDimensionSize</tt>
+/// Returns a copy of the 3D LUT as a 2D matrix. The matrix size is <tt>(latticeSize.gDimensionSize
+/// * latticeSize.bDimensionSize, latticeSize.rDimensionSize)</tt>, consists of \c
+/// latticeSize.bDimensionSize <tt>latticeSize.gDimensionSize * latticeSize.rDimensionSize</tt>
 /// submatrices, thereby constituting a 3D LUT in a serialized fashion. The element <tt>(x, y)</tt>
-/// of the matrix corresponds to the element <tt>(x, y % latticeSizes.bDimensionSize,
-/// z / latticeSizes.bDimensionSize)</tt> of a corresponding 3D matrix.
+/// of the matrix corresponds to the element <tt>(x, y % latticeSize.bDimensionSize,
+/// z / latticeSize.bDimensionSize)</tt> of a corresponding 3D matrix.
 - (cv::Mat)packedMat;
 
 /// Matrix representing this 3D lookup table, of type \c CV_8UC4. The dimensions of the matrix are
@@ -60,7 +60,7 @@ constexpr bool operator!=(const LT3DLUTLatticeSize &lhs, const LT3DLUTLatticeSiz
 @property (readonly, nonatomic) const cv::Mat &mat;
 
 /// Dimension sizes of the 3D lattice matrix \c mat.
-@property (readonly, nonatomic) LT3DLUTLatticeSize latticeSizes;
+@property (readonly, nonatomic) LT3DLUTLatticeSize latticeSize;
 
 @end
 

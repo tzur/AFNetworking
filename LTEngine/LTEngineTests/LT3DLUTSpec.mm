@@ -81,9 +81,9 @@ context(@"3D mat initialization", ^{
       int matDims[] = {2, 3, 4};
       cv::Mat4b lattice(3, matDims);
       LT3DLUT *lut = [[LT3DLUT alloc] initWithLatticeMat:lattice];
-      expect(lut.latticeSizes.rDimensionSize).to.equal(4);
-      expect(lut.latticeSizes.gDimensionSize).to.equal(3);
-      expect(lut.latticeSizes.bDimensionSize).to.equal(2);
+      expect(lut.latticeSize.rDimensionSize).to.equal(4);
+      expect(lut.latticeSize.gDimensionSize).to.equal(3);
+      expect(lut.latticeSize.bDimensionSize).to.equal(2);
     });
   });
 
@@ -207,9 +207,9 @@ context(@"factory", ^{
         cv::Mat4b packedMat(2, textureDims);
         LT3DLUT *lut = [LT3DLUT lutFromPackedMat:packedMat];
 
-        expect(lut.latticeSizes.rDimensionSize).to.equal(2);
-        expect(lut.latticeSizes.gDimensionSize).to.equal(2);
-        expect(lut.latticeSizes.bDimensionSize).to.equal(2);
+        expect(lut.latticeSize.rDimensionSize).to.equal(2);
+        expect(lut.latticeSize.gDimensionSize).to.equal(2);
+        expect(lut.latticeSize.bDimensionSize).to.equal(2);
       });
 
     });
@@ -270,9 +270,9 @@ context(@"factory", ^{
       });
 
       it(@"should have correct size", ^{
-        expect(identity.latticeSizes.rDimensionSize).to.equal(2);
-        expect(identity.latticeSizes.gDimensionSize).to.equal(2);
-        expect(identity.latticeSizes.bDimensionSize).to.equal(2);
+        expect(identity.latticeSize.rDimensionSize).to.equal(2);
+        expect(identity.latticeSize.gDimensionSize).to.equal(2);
+        expect(identity.latticeSize.bDimensionSize).to.equal(2);
       });
     });
   });

@@ -40,9 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
   _lookupTable = lookupTable;
   
   self.lutTexture = [LTTexture textureWithImage:lookupTable.packedMat];
-  self[[LT3DLUTFsh rgbDimensionSizes]] = $(LTVector3(lookupTable.latticeSizes.rDimensionSize,
-                                                     lookupTable.latticeSizes.gDimensionSize,
-                                                     lookupTable.latticeSizes.bDimensionSize));
+  self[[LT3DLUTFsh rgbDimensionSizes]] = $(LTVector3(lookupTable.latticeSize.rDimensionSize,
+                                                     lookupTable.latticeSize.gDimensionSize,
+                                                     lookupTable.latticeSize.bDimensionSize));
 }
 
 - (void)setLutTexture:(LTTexture *)lutTexture {
