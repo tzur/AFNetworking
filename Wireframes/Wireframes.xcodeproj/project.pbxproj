@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */; };
+		6A34F60A1CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */; };
 		6A7E52FB1CCE3964000AAAF3 /* SmallImageInBundle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */; };
 		6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */; };
 		6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AAED9ED1CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm */; };
@@ -276,6 +278,9 @@
 
 /* Begin PBXFileReference section */
 		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
+		6A34F6061CD7939E00B91A58 /* WFDynamicImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFDynamicImageViewModel.h; sourceTree = "<group>"; };
+		6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFDynamicImageViewModel.m; sourceTree = "<group>"; };
+		6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFDynamicImageViewModelSpec.mm; sourceTree = "<group>"; };
 		6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SmallImageInBundle.jpg; sourceTree = "<group>"; };
 		6A7E53021CCE4236000AAAF3 /* NSErrorCodes+Wireframes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Wireframes.h"; sourceTree = "<group>"; };
 		6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Wireframes.m"; sourceTree = "<group>"; };
@@ -413,6 +418,8 @@
 				6AAEDB891CD77B9800B3C62F /* UIButton+ViewModel.mm */,
 				6AAEDB821CD7381700B3C62F /* UIImageView+ViewModel.h */,
 				6AAEDB831CD7381700B3C62F /* UIImageView+ViewModel.m */,
+				6A34F6061CD7939E00B91A58 /* WFDynamicImageViewModel.h */,
+				6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */,
 				6A2990271CD36C600046C4ED /* WFImageViewModel.h */,
 			);
 			name = "View Models";
@@ -461,6 +468,7 @@
 			children = (
 				6AAEDB8B1CD7861100B3C62F /* UIButton+ViewModelSpec.mm */,
 				6AAEDB861CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm */,
+				6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */,
 				6AAEDB8D1CD7863900B3C62F /* WFFakeImageViewModel.h */,
 				6AAEDB8E1CD7863900B3C62F /* WFFakeImageViewModel.m */,
 			);
@@ -1090,6 +1098,7 @@
 				6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */,
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
 				8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */,
+				6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */,
 				6AAEDB8A1CD77B9800B3C62F /* UIButton+ViewModel.mm in Sources */,
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
@@ -1112,6 +1121,7 @@
 				6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */,
 				6AB2AF6C1CC4E63E00BC2371 /* EXPMatchers+sendError.m in Sources */,
 				6AAED9F81CC62ABE00B3C62F /* WFAssetCatalogImageProviderSpec.mm in Sources */,
+				6A34F60A1CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm in Sources */,
 				6AB2AF6B1CC4E63E00BC2371 /* EXPMatchers+matchValues.m in Sources */,
 				6AAEDB8C1CD7861100B3C62F /* UIButton+ViewModelSpec.mm in Sources */,
 				6AAED9F91CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm in Sources */,
