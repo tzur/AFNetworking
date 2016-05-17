@@ -27,6 +27,10 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
                                 double range = 1, std::vector<int> *firstMismatch = nullptr);
 
+/// Writes the given matrices in the \c /tmp/ folder, using running numbers concatenated to the
+/// current test case for the filenames.
+void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
+
 /// Returns a string representation of indicies vector \c indices of length \c length.
 NSString *LTIndicesVectorAsString(const std::vector<int> &indices);
 

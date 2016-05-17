@@ -47,6 +47,10 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
   });
 
   failureMessageForTo(^NSString *{
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -64,6 +68,10 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
   });
 
   failureMessageForNotTo(^NSString *{
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
