@@ -269,6 +269,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
 		6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SmallImageInBundle.jpg; sourceTree = "<group>"; };
 		6A7E53021CCE4236000AAAF3 /* NSErrorCodes+Wireframes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Wireframes.h"; sourceTree = "<group>"; };
 		6A7E53031CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Wireframes.m"; sourceTree = "<group>"; };
@@ -389,6 +390,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A2990431CD4DA420046C4ED /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				6A2990271CD36C600046C4ED /* WFImageViewModel.h */,
+			);
+			name = "View Models";
+			sourceTree = "<group>";
+		};
 		6A7E53011CCE420E000AAAF3 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,6 +434,13 @@
 				6AAED9F71CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm */,
 			);
 			name = "Image Providers";
+			sourceTree = "<group>";
+		};
+		6AAEDB851CD73AA100B3C62F /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "View Models";
 			sourceTree = "<group>";
 		};
 		6AB2AB9C1CC4DB5500BC2371 /* RAC Support */ = {
@@ -553,6 +569,7 @@
 				6AAED9D11CC62A7C00B3C62F /* Image Providers */,
 				6AB2AB9C1CC4DB5500BC2371 /* RAC Support */,
 				8B283FE61CBE33A500B745AE /* Views */,
+				6A2990431CD4DA420046C4ED /* View Models */,
 				8B283F1A1CBA85C900B745AE /* Supporting FIles */,
 			);
 			path = Wireframes;
@@ -711,6 +728,7 @@
 				6AAED9EB1CC62A8C00B3C62F /* Image Providers */,
 				6AB2AB9D1CC4DC6C00BC2371 /* RAC Support */,
 				8B2840001CBE33CA00B745AE /* Views */,
+				6AAEDB851CD73AA100B3C62F /* View Models */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
