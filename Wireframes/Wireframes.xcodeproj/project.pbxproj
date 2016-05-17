@@ -15,6 +15,9 @@
 		6AAED9F81CC62ABE00B3C62F /* WFAssetCatalogImageProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AAED9F61CC62ABE00B3C62F /* WFAssetCatalogImageProviderSpec.mm */; };
 		6AAED9F91CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AAED9F71CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm */; };
 		6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAED9FB1CC62B9000B3C62F /* NSURL+WFImageProvider.m */; };
+		6AAEDB841CD7381700B3C62F /* UIImageView+ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEDB831CD7381700B3C62F /* UIImageView+ViewModel.m */; };
+		6AAEDB871CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEDB861CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm */; };
+		6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEDB8E1CD7863900B3C62F /* WFFakeImageViewModel.m */; };
 		6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */; };
 		6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */; };
 		6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2AF3A1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
@@ -285,6 +288,11 @@
 		6AAED9F71CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFPaintCodeImageProviderSpec.mm; sourceTree = "<group>"; };
 		6AAED9FA1CC62B9000B3C62F /* NSURL+WFImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+WFImageProvider.h"; sourceTree = "<group>"; };
 		6AAED9FB1CC62B9000B3C62F /* NSURL+WFImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+WFImageProvider.m"; sourceTree = "<group>"; };
+		6AAEDB821CD7381700B3C62F /* UIImageView+ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ViewModel.h"; sourceTree = "<group>"; };
+		6AAEDB831CD7381700B3C62F /* UIImageView+ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ViewModel.m"; sourceTree = "<group>"; };
+		6AAEDB861CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImageView+ViewModelSpec.mm"; sourceTree = "<group>"; };
+		6AAEDB8D1CD7863900B3C62F /* WFFakeImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFFakeImageViewModel.h; sourceTree = "<group>"; };
+		6AAEDB8E1CD7863900B3C62F /* WFFakeImageViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFFakeImageViewModel.m; sourceTree = "<group>"; };
 		6AB2AAF51CC3945C00BC2371 /* UIView+LayoutSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayoutSignals.h"; sourceTree = "<group>"; };
 		6AB2AAF61CC3945C00BC2371 /* UIView+LayoutSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+LayoutSignals.mm"; sourceTree = "<group>"; };
 		6AB2AB011CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = "UIView+LayoutSignalsSpec.mm"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -396,6 +404,8 @@
 		6A2990431CD4DA420046C4ED /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				6AAEDB821CD7381700B3C62F /* UIImageView+ViewModel.h */,
+				6AAEDB831CD7381700B3C62F /* UIImageView+ViewModel.m */,
 				6A2990271CD36C600046C4ED /* WFImageViewModel.h */,
 			);
 			name = "View Models";
@@ -442,6 +452,9 @@
 		6AAEDB851CD73AA100B3C62F /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				6AAEDB861CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm */,
+				6AAEDB8D1CD7863900B3C62F /* WFFakeImageViewModel.h */,
+				6AAEDB8E1CD7863900B3C62F /* WFFakeImageViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -1075,6 +1088,7 @@
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
+				6AAEDB841CD7381700B3C62F /* UIImageView+ViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1101,6 +1115,8 @@
 				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
 				6AB2AF621CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m in Sources */,
 				6AB2AF631CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				6AAEDB871CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm in Sources */,
+				6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
 				6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */,
 				6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */,
