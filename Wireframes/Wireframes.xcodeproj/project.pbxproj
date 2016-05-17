@@ -38,6 +38,7 @@
 		6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518DB1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm */; };
 		6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518DD1CCA420B00540CC6 /* WFImageLoaderSpec.mm */; };
 		6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518E01CCA454300540CC6 /* WFFakePaintCodeModule.m */; };
+		6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
 		8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EF21CBA838900B745AE /* libLTKit.a */; };
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
@@ -330,6 +331,8 @@
 		6AB518DF1CCA454300540CC6 /* WFFakePaintCodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFFakePaintCodeModule.h; sourceTree = "<group>"; };
 		6AB518E01CCA454300540CC6 /* WFFakePaintCodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFFakePaintCodeModule.m; sourceTree = "<group>"; };
 		6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTestUtils.h; sourceTree = "<group>"; };
+		6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTestUtils.m; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B283E621CBA811100B745AE /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		8B283E641CBA811100B745AE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -706,6 +709,8 @@
 				8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */,
 				8B283F4F1CBA88E800B745AE /* LTTestUtils.h */,
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
+				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
+				6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -1106,6 +1111,7 @@
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
+				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.m in Sources */,
 				6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
