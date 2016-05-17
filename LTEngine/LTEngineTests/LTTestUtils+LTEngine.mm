@@ -36,7 +36,6 @@ template <typename T>
 static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::false_type &isFundamental);
 
-static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
 static void LTWriteMat(const cv::Mat &mat, NSString *name);
 static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index);
 
@@ -55,9 +54,6 @@ cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
 
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<int> *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
-    if (expected.dims == 2) {
-      LTWriteMatrices(expected, actual);
-    }
     return NO;
   }
 
@@ -89,9 +85,6 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<in
 BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double range,
                        std::vector<int> *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
-    if (expected.dims == 2) {
-      LTWriteMatrices(expected, actual);
-    }
     return NO;
   }
 
@@ -330,9 +323,6 @@ static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, co
   while (expectedIterator != endIterator) {
     if (!LTCompareMatCell(*expectedIterator, *actualIterator, fuzziness,
                           std::is_fundamental<T>())) {
-      if (expected.dims == 2) {
-        LTWriteMatrices(expected, actual);
-      }
       if (firstMismatch) {
         firstMismatch->resize(expected.dims);
 
@@ -379,7 +369,7 @@ inline BOOL LTCompareMatCell(const half &expected, const half &actual, const hal
   return std::abs(expected - actual) <= fuzziness;
 }
 
-static void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
+void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
   LTParameterAssert(actual.dims == 2 && expected.dims == 2, @"Non 2-dimenional matrices don't have "
                     @"writing support. acutal matrix is %d-dimensional and expected matrix is "
                     @"%d-dimensional", actual.dims, expected.dims);

@@ -29,6 +29,10 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
   });
 
   failureMessageForTo(^NSString *{
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -39,6 +43,10 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
   });
 
   failureMessageForNotTo(^NSString *{
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
