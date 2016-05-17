@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A0C328C1CE7476800809579 /* WFImageViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */; };
+		6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2D0FE01CE1DC7000B439C6 /* WFImageViewModelBuilder.m */; };
 		6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */; };
 		6A34F60A1CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */; };
 		6A7E52FB1CCE3964000AAAF3 /* SmallImageInBundle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */; };
@@ -277,7 +279,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFImageViewModelBuilderSpec.mm; sourceTree = "<group>"; };
 		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
+		6A2D0FDF1CE1DC7000B439C6 /* WFImageViewModelBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModelBuilder.h; sourceTree = "<group>"; };
+		6A2D0FE01CE1DC7000B439C6 /* WFImageViewModelBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFImageViewModelBuilder.m; sourceTree = "<group>"; };
 		6A34F6061CD7939E00B91A58 /* WFDynamicImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFDynamicImageViewModel.h; sourceTree = "<group>"; };
 		6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFDynamicImageViewModel.m; sourceTree = "<group>"; };
 		6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFDynamicImageViewModelSpec.mm; sourceTree = "<group>"; };
@@ -421,6 +426,8 @@
 				6A34F6061CD7939E00B91A58 /* WFDynamicImageViewModel.h */,
 				6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */,
 				6A2990271CD36C600046C4ED /* WFImageViewModel.h */,
+				6A2D0FDF1CE1DC7000B439C6 /* WFImageViewModelBuilder.h */,
+				6A2D0FE01CE1DC7000B439C6 /* WFImageViewModelBuilder.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -471,6 +478,7 @@
 				6A34F6091CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm */,
 				6AAEDB8D1CD7863900B3C62F /* WFFakeImageViewModel.h */,
 				6AAEDB8E1CD7863900B3C62F /* WFFakeImageViewModel.m */,
+				6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -1103,6 +1111,7 @@
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
+				6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */,
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
@@ -1114,6 +1123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A0C328C1CE7476800809579 /* WFImageViewModelBuilderSpec.mm in Sources */,
 				8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				6AB2AF6D1CC4E63E00BC2371 /* EXPMatchers+sendEvents.m in Sources */,
 				6AB2AF681CC4E63E00BC2371 /* EXPMatchers+finish.m in Sources */,
