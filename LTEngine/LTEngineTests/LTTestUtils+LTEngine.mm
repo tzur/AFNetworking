@@ -426,7 +426,11 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
-    case CV_16F:
+    case CV_16F: {
+      cv::Mat1b converted;
+      LTConvertMat(mat, &converted, converted.type());
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
+    } break;
     case CV_16FC4: {
       cv::Mat4b converted;
       LTConvertMat(mat, &converted, converted.type());
