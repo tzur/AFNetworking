@@ -99,7 +99,14 @@ NS_ASSUME_NONNULL_BEGIN
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
   RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
-        if (!fetchResult.count) {
+        // A fetched empty album is an error, unless it's specifically UserAlbums meta album.
+        // This is so since a fetch result is all collections that match the fetch request, and so
+        // an empty album will be returned as a fetch result with a single album, but when User
+        // Albums is requested, if there are no user albums the result will be empty and it won't
+        // be an error.
+        if (!fetchResult.count &&
+            !([url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
+              [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeUserAlbums)])) {
           if (errorPtr) {
             *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url];
           }
