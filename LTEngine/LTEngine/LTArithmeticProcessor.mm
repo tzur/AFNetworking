@@ -9,6 +9,8 @@
 #import "LTShaderStorage+LTArithmeticFsh.h"
 #import "LTTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTArithmeticProcessor
 
 - (instancetype)initWithFirstOperand:(LTTexture *)first secondOperand:(LTTexture *)second
@@ -16,10 +18,14 @@
   LTParameterAssert(first.size == second.size, @"Operand textures must be of the same size");
 
   NSDictionary *auxiliaryTextures = @{[LTArithmeticFsh secondTexture]: second};
-  return [super initWithVertexSource:[LTPassthroughShaderVsh source]
-                      fragmentSource:[LTArithmeticFsh source]
-                       sourceTexture:first auxiliaryTextures:auxiliaryTextures
-                           andOutput:output];
+  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                          fragmentSource:[LTArithmeticFsh source]
+                           sourceTexture:first auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
+    self[[LTArithmeticFsh firstInSituProcessing]] = @(first == output);
+    self[[LTArithmeticFsh secondInSituProcessing]] = @(second == output);
+  }
+  return self;
 }
 
 - (void)setOperation:(LTArithmeticOperation)operation {
@@ -28,3 +34,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

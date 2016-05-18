@@ -3,6 +3,8 @@
 
 #import "LTOneShotImageProcessor.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Available arithmetic operations.
 typedef NS_ENUM(NSUInteger, LTArithmeticOperation) {
   LTArithmeticOperationAdd = 0,
@@ -11,14 +13,16 @@ typedef NS_ENUM(NSUInteger, LTArithmeticOperation) {
   LTArithmeticOperationDivide = 3
 };
 
-/// Processor for calculating an arithmetic operation between two input textures, \c first and \c
-/// second. After processing, the \c output is set to \c first \c operation \c second.
+/// Processor for calculating an elementwise arithmetic operation between two input textures,
+/// \c first and \c second. After processing, the \c output is set to
+/// <tt>first operation second</tt>.
 ///
-/// @note only the RGB channels are affected by this arithmetic operation. The alpha channel of the
-/// output will always be \c 1.
+/// @important Only the RGB channels are affected by this arithmetic \c operation.
+/// The alpha channel of the output will always be \c 1.
 @interface LTArithmeticProcessor : LTOneShotImageProcessor
 
 /// Initializes with two operands and an output texture. The operands must be of the same size.
+/// The output texture may be the same as one of the input textures for in-place processing.
 - (instancetype)initWithFirstOperand:(LTTexture *)first secondOperand:(LTTexture *)second
                               output:(LTTexture *)output;
 
@@ -26,3 +30,5 @@ typedef NS_ENUM(NSUInteger, LTArithmeticOperation) {
 @property (nonatomic) LTArithmeticOperation operation;
 
 @end
+
+NS_ASSUME_NONNULL_END
