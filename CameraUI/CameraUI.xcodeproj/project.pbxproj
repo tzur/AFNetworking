@@ -281,6 +281,7 @@
 		83B731B41CDB92670090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		83B731C21CDB92A20090C0BF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
+		BE4629621CDF52D700D9F7E2 /* CUIMenuItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemViewModel.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -495,11 +496,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BE4629311CDF1DE700D9F7E2 /* Assistance Bar */ = {
+		BE4629311CDF1DE700D9F7E2 /* Drop Down Bar */ = {
 			isa = PBXGroup;
 			children = (
+				BE4629621CDF52D700D9F7E2 /* CUIMenuItemViewModel.h */,
 			);
-			name = "Assistance Bar";
+			name = "Drop Down Bar";
 			sourceTree = "<group>";
 		};
 		BE46294E1CDF1E0900D9F7E2 /* Preview */ = {
@@ -519,7 +521,7 @@
 		BE4629501CDF1EE400D9F7E2 /* Bars */ = {
 			isa = PBXGroup;
 			children = (
-				BE4629311CDF1DE700D9F7E2 /* Assistance Bar */,
+				BE4629311CDF1DE700D9F7E2 /* Drop Down Bar */,
 				BE46294F1CDF1E2500D9F7E2 /* Modes Bar */,
 			);
 			name = Bars;
@@ -535,7 +537,7 @@
 		BE4629531CDF245600D9F7E2 /* Bars */ = {
 			isa = PBXGroup;
 			children = (
-				BE4629571CDF24D200D9F7E2 /* Assistance Bar */,
+				BE4629571CDF24D200D9F7E2 /* Drop Down Bar */,
 				BE4629561CDF24C700D9F7E2 /* Modes Bar */,
 			);
 			name = Bars;
@@ -562,11 +564,11 @@
 			name = "Modes Bar";
 			sourceTree = "<group>";
 		};
-		BE4629571CDF24D200D9F7E2 /* Assistance Bar */ = {
+		BE4629571CDF24D200D9F7E2 /* Drop Down Bar */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "Assistance Bar";
+			name = "Drop Down Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
