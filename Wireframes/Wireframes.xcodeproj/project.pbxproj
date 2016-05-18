@@ -65,6 +65,7 @@
 		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
 		8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234A81CDCB45B00057F11 /* WFGradientView.m */; };
 		8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */; };
+		8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -390,6 +391,8 @@
 		8BB234A71CDCB45B00057F11 /* WFGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFGradientView.h; sourceTree = "<group>"; };
 		8BB234A81CDCB45B00057F11 /* WFGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFGradientView.m; sourceTree = "<group>"; };
 		8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFGradientViewSpec.mm; sourceTree = "<group>"; };
+		8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Retrieval.h"; sourceTree = "<group>"; };
+		8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Retrieval.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -746,6 +749,8 @@
 				8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */,
 				8B283F4F1CBA88E800B745AE /* LTTestUtils.h */,
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
+				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
+				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
 				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
 				6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */,
 			);
@@ -1156,6 +1161,7 @@
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
+				8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */,
 				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
 				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.m in Sources */,
 				6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */,
