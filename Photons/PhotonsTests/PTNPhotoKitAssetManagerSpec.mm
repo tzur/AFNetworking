@@ -72,6 +72,19 @@ context(@"album fetching", ^{
         expect(albumSignal).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
       });
 
+      it(@"should fetch results of an empty User Albums meta album", ^{
+        id assetCollection = PTNPhotoKitCreateCollectionList(@"baz");
+        NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeUserAlbums)];
+        [fetcher registerAssetCollection:assetCollection];
+        [fetcher registerAssets:@[] withAssetCollection:assetCollection];
+
+        id noAssets = @[];
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:noAssets];
+
+        expect([manager fetchAlbumWithURL:url]).will.
+            sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      });
+
       it(@"should fetch initial value again if there was an error on the first fetch", ^{
         id otherAssetCollection = PTNPhotoKitCreateAssetCollection(@"bar");
 
