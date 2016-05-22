@@ -8,10 +8,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Defines the concrete class to use as Objection module in tests. If \c LTKIT_TEST_MODULE_CLASS
+/// Defines the concrete class to use as Objection module in tests. If \c LT_TEST_MODULE_CLASS
 /// macro is defined this class will be used. The default module class is \c LTTestModule.
-#ifdef LTKIT_TEST_MODULE_CLASS
-  #define _LTTestModule LTKIT_TEST_MODULE_CLASS
+#ifdef LT_TEST_MODULE_CLASS
+  #define _LTTestModule LT_TEST_MODULE_CLASS
 #else
   #define _LTTestModule LTTestModule
 #endif
