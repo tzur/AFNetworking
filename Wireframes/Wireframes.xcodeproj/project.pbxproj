@@ -67,6 +67,7 @@
 		8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */; };
 		8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 		8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */; };
+		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
 		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
 /* End PBXBuildFile section */
@@ -397,6 +398,8 @@
 		8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Retrieval.h"; sourceTree = "<group>"; };
 		8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Retrieval.m"; sourceTree = "<group>"; };
 		8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
+		8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFLoggingImageProvider.h; sourceTree = "<group>"; };
+		8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFLoggingImageProvider.mm; sourceTree = "<group>"; };
 		8BC7B6531CF1EE280047BEDE /* LTSpectaObjectionHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaObjectionHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.h; sourceTree = "<group>"; };
 		8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
 		8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
@@ -765,6 +768,8 @@
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
 				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
 				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
+				8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */,
+				8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */,
 				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
 				6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */,
 			);
@@ -1172,6 +1177,7 @@
 				6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */,
 				6AB2AF651CC4E63E00BC2371 /* EXPMatchers+complete.m in Sources */,
 				6AB2AF691CC4E63E00BC2371 /* EXPMatchers+matchError.m in Sources */,
+				8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */,
 				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
 				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,

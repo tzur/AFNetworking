@@ -7,4 +7,5 @@
 #import <LLReactiveMatchers/LLReactiveMatchers.h>
 #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 
+#import "WFLoggingImageProvider.h"
 #import "WFTestUtils.h"
