@@ -111,19 +111,6 @@ inline WFImageViewModelBuilder *WFImageViewModel(NSURL *imageURL) {
   return [WFImageViewModelBuilder builderWithImageURL:imageURL];
 }
 
-/// Returns an instance of image provider, used by \c WFImageViewModelBuilder to dynamically
-/// load images (unless another image provider is explicitly specified).
-///
-/// Wireframes library provides an implementation of this function, that shares a global singleton
-/// instance of \c WFImageLoader, created with a default configuration.
-///
-/// It is possible to override Wireframes' implementation, by providing your own. Simply implement
-/// this function in your project.
-///
-/// @note The function uses C linkage. If implemented in .mm file, it must be placed inside
-/// <tt>extern "C"</tt> scope, or marked as <tt>extern "C"</tt>.
-extern id<WFImageProvider> WFDefaultImageProvider();
-
 #ifdef __cplusplus
 }
 #endif
