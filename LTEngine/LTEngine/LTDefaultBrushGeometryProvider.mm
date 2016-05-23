@@ -59,7 +59,7 @@ static NSString * const kYCoordinateKey = @instanceKeypath(LTEuclideanSplineCont
 }
 
 - (NSUInteger)hash {
-  return lt::hash<CGFloat>()(self.edgeLength);
+  return std::hash<CGFloat>()(self.edgeLength);
 }
 
 #pragma mark -

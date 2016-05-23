@@ -1,27 +1,18 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-// Adds \c lt::hash template specializations for selected \c std value types and structs.
+// Adds \c std::hash template specializations for selected \c std value types and structs.
 // References:
 // http://stackoverflow.com/questions/7222143/unordered-map-hash-function-c
 // http://stackoverflow.com/questions/7110301/generic-hash-for-tuples-in-unordered-map-unordered-set
 
 namespace lt {
-
-/// Default hash function which falls back to \c std::hash.
-template <typename T>
-struct hash {
-  inline size_t operator()(const T &t) const {
-    return std::hash<T>()(t);
-  }
-};
-
 namespace detail {
 
 /// Hash function borrowed from Boost.
 template <class T>
 inline void hash_combine(std::size_t &seed, const T &v) {
-  lt::hash<T> hasher;
+  std::hash<T> hasher;
   seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
@@ -37,17 +28,18 @@ inline void hash_range(std::size_t &seed, It first, It last) {
 }
 
 } // namespace detail
+} // namespace lt
 
 #pragma mark -
 #pragma mark CGPoint
 #pragma mark -
 
 template <>
-struct hash<CGPoint> {
+struct ::std::hash<CGPoint> {
   inline size_t operator()(CGPoint p) const {
     size_t seed = 0;
-    detail::hash_combine(seed, p.x);
-    detail::hash_combine(seed, p.y);
+    lt::detail::hash_combine(seed, p.x);
+    lt::detail::hash_combine(seed, p.y);
     return seed;
   }
 };
@@ -57,11 +49,11 @@ struct hash<CGPoint> {
 #pragma mark -
 
 template <>
-struct hash<CGSize> {
+struct ::std::hash<CGSize> {
   inline size_t operator()(CGSize s) const {
     size_t seed = 0;
-    detail::hash_combine(seed, s.width);
-    detail::hash_combine(seed, s.height);
+    lt::detail::hash_combine(seed, s.width);
+    lt::detail::hash_combine(seed, s.height);
     return seed;
   }
 };
@@ -72,11 +64,11 @@ struct hash<CGSize> {
 
 /// Hash specialization for \c std::pair.
 template <typename T, typename U>
-struct hash<std::pair<T, U>> {
+struct ::std::hash<std::pair<T, U>> {
   inline size_t operator()(const std::pair<T, U> &v) const {
     size_t seed = 0;
-    detail::hash_combine(seed, v.first);
-    detail::hash_combine(seed, v.second);
+    lt::detail::hash_combine(seed, v.first);
+    lt::detail::hash_combine(seed, v.second);
     return seed;
   }
 };
@@ -85,6 +77,7 @@ struct hash<std::pair<T, U>> {
 #pragma mark std::tuple
 #pragma mark -
 
+namespace lt {
 namespace detail {
 
 /// Recursive template for performing hash on \c std::tuple.
@@ -92,7 +85,7 @@ template <class T, size_t Index = std::tuple_size<T>::value - 1>
 struct TupleHash {
   static void apply(size_t &seed, const T &tuple) {
     TupleHash<T, Index - 1>::apply(seed, tuple);
-    detail::hash_combine(seed, std::get<Index>(tuple));
+    lt::detail::hash_combine(seed, std::get<Index>(tuple));
   }
 };
 
@@ -105,13 +98,14 @@ struct TupleHash<T, 0> {
 };
 
 } // namespace detail
+} // namespace lt
 
 /// Hash specialization for \c std::tuple.
 template <typename ... T>
-struct hash<std::tuple<T...>> {
+struct ::std::hash<std::tuple<T...>> {
   inline size_t operator()(const std::tuple<T...> &t) const {
     size_t seed = 0;
-    detail::TupleHash<std::tuple<T...>>::apply(seed, t);
+    lt::detail::TupleHash<std::tuple<T...>>::apply(seed, t);
     return seed;
   }
 };
@@ -122,10 +116,10 @@ struct hash<std::tuple<T...>> {
 
 /// Hash specialization for \c std::vector.
 template <typename T>
-struct hash<std::vector<T>> {
+struct ::std::hash<std::vector<T>> {
   inline size_t operator()(const std::vector<T> &v) const {
     size_t seed = 0;
-    detail::hash_range(seed, v.begin(), v.end());
+    lt::detail::hash_range(seed, v.begin(), v.end());
     return seed;
   }
 };
@@ -134,6 +128,7 @@ struct hash<std::vector<T>> {
 #pragma mark std::array
 #pragma mark -
 
+namespace lt {
 namespace detail {
 
 /// Recursive template for performing hash on \c std::array.
@@ -141,7 +136,7 @@ template <class T, size_t Index>
 struct ArrayHash {
   static void apply(size_t &seed, const T &array) {
     ArrayHash<T, Index - 1>::apply(seed, array);
-    detail::hash_combine(seed, std::get<Index - 1>(array));
+    lt::detail::hash_combine(seed, std::get<Index - 1>(array));
   }
 };
 
@@ -154,15 +149,15 @@ struct ArrayHash<T, 1> {
 };
 
 } // namespace detail
+} // namespace lt
 
 /// Hash specialization for \c std::array.
 template <typename T, size_t N>
-struct hash<std::array<T, N>> {
+struct ::std::hash<std::array<T, N>> {
   inline size_t operator()(const std::array<T, N> &a) const {
     size_t seed = 0;
-    detail::ArrayHash<std::array<T, N>, N>::apply(seed, a);
+    lt::detail::ArrayHash<std::array<T, N>, N>::apply(seed, a);
     return seed;
   }
 };
 
-} // namespace lt

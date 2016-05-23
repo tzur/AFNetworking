@@ -121,7 +121,7 @@ namespace std {
 template <>
 struct hash<lt::Triangle> : public unary_function<lt::Triangle, size_t> {
   size_t operator()(lt::Triangle triangle) const noexcept {
-    return lt::hash<LTTriangleCorners>()(triangle.corners());
+    return std::hash<LTTriangleCorners>()(triangle.corners());
   }
 };
 

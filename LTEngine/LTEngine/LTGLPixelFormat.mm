@@ -23,7 +23,7 @@ LTEnumImplement(NSUInteger, LTGLPixelFormat,
 
 /// Unordered map with \c lt::hash as hashing function.
 template <typename K, typename V>
-using LTUnorderedMap = std::unordered_map<K, V, lt::hash<K>>;
+using LTUnorderedMap = std::unordered_map<K, V, std::hash<K>>;
 
 /// Tuple of (components, bit depth, data type) that describes the pixel format.
 typedef std::tuple<LTGLPixelComponents, LTGLPixelBitDepth, LTGLPixelDataType> LTDescriptorTuple;
