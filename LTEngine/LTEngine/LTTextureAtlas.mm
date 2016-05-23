@@ -30,11 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   [areas enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSValue *areaRectValue, BOOL *) {
     CGRect areaRect = [areaRectValue CGRectValue];
-    LTParameterAssert(areaRect.size.width > 0 && areaRect.size.height > 0, "Area rects must have "
+    LTParameterAssert(areaRect.size.width > 0 && areaRect.size.height > 0, @"Area rects must have "
                       "positive widths and heights but rect size of image identifier %@ is "
-                      "(%f, %f)", key, areaRect.size.width, areaRect.size.height);
-    LTParameterAssert(CGRectContainsRect(textureRect, areaRect), "Area rect of image identifier "
-                      "%@: (%f, %f, %f, %f) is out of the input texture size bounds: (%f, %f)",
+                      "(%g, %g)", key, areaRect.size.width, areaRect.size.height);
+    LTParameterAssert(CGRectContainsRect(textureRect, areaRect), @"Area rect of image identifier "
+                      "%@: (%g, %g, %g, %g) is out of the input texture size bounds: (%g, %g)",
                       key, areaRect.origin.x, areaRect.origin.y, areaRect.size.width,
                       areaRect.size.height, texture.size.width, texture.size.height);
   }];
