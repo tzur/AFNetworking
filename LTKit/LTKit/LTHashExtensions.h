@@ -170,6 +170,8 @@ struct ::std::hash<std::array<T, N>> {
   template <> \
   struct ::std::hash<CLASS *> { \
     inline size_t operator()(CLASS *object) const { \
+      static_assert(sizeof(size_t) == sizeof(NSUInteger), \
+          "size_t size must be equal to NSUInteger size"); \
       return [object hash]; \
     } \
   }
