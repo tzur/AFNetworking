@@ -21,12 +21,7 @@ extern inline WFImageViewModelBuilder *WFImageViewModel(NSURL *imageURL);
 #pragma mark WFDefaultImageProvider
 #pragma mark -
 
-// This function is (re-)declared with weak linkage in order to allow another implementation (with
-// strong linkage) to replace the one provided below. In the header file, the same function declared
-// as strong (that is, it is not weak) to force other implementations to be strong by default.
-__attribute__((weak)) id<WFImageProvider> WFDefaultImageProvider();
-
-id<WFImageProvider> WFDefaultImageProvider() {
+static inline id<WFImageProvider> WFBuiltinImageProvider() {
   static id<WFImageProvider> imageProvider;
 
   static dispatch_once_t onceToken;
@@ -35,6 +30,10 @@ id<WFImageProvider> WFDefaultImageProvider() {
   });
 
   return imageProvider;
+}
+
+static id<WFImageProvider> WFDefaultImageProvider() {
+  return [JSObjection defaultInjector][@protocol(WFImageProvider)] ?: WFBuiltinImageProvider();
 }
 
 #pragma mark -

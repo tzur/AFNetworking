@@ -66,6 +66,10 @@
 		8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234A81CDCB45B00057F11 /* WFGradientView.m */; };
 		8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */; };
 		8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
+		8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */; };
+		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
+		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
+		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -393,6 +397,13 @@
 		8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFGradientViewSpec.mm; sourceTree = "<group>"; };
 		8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Retrieval.h"; sourceTree = "<group>"; };
 		8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Retrieval.m"; sourceTree = "<group>"; };
+		8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
+		8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFLoggingImageProvider.h; sourceTree = "<group>"; };
+		8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFLoggingImageProvider.mm; sourceTree = "<group>"; };
+		8BC7B6531CF1EE280047BEDE /* LTSpectaObjectionHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaObjectionHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.h; sourceTree = "<group>"; };
+		8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
+		8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
+		8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -413,6 +424,7 @@
 				8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */,
 				8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */,
 				8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */,
+				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,6 +679,7 @@
 				8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */,
 				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
 				6AB2AF371CC4E63E00BC2371 /* LLReactiveMatchers */,
+				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
 				8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */,
 				6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */,
 				8B283EBE1CBA834300B745AE /* Specta.xcodeproj */,
@@ -747,10 +760,16 @@
 				8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */,
 				8B283F4D1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.h */,
 				8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */,
+				8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */,
+				8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */,
+				8BC7B6531CF1EE280047BEDE /* LTSpectaObjectionHook.h */,
+				8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */,
 				8B283F4F1CBA88E800B745AE /* LTTestUtils.h */,
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
 				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
 				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
+				8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */,
+				8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */,
 				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
 				6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */,
 			);
@@ -1151,14 +1170,17 @@
 				6AB2AF621CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m in Sources */,
 				6AB2AF631CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				6AAEDB871CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm in Sources */,
+				8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */,
 				6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
 				6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */,
 				6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */,
 				6AB2AF651CC4E63E00BC2371 /* EXPMatchers+complete.m in Sources */,
 				6AB2AF691CC4E63E00BC2371 /* EXPMatchers+matchError.m in Sources */,
+				8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */,
 				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
+				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 				8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */,
@@ -1210,6 +1232,7 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/objection/",
 					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1265,6 +1288,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/objection/",
 					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1315,8 +1339,14 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
 				GCC_PREFIX_HEADER = "WireframesTests/WireframesTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"LT_TEST_MODULE_CLASS=LTObjectionModule",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
@@ -1339,6 +1369,8 @@
 				GCC_PREFIX_HEADER = "WireframesTests/WireframesTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
