@@ -161,3 +161,22 @@ struct ::std::hash<std::array<T, N>> {
   }
 };
 
+#pragma mark -
+#pragma mark Objective-C objects
+#pragma mark -
+
+/// Creates an \c std::hash specialization for the given Objective-C \c CLASS.
+#define LTObjectiveCHashMake(CLASS) \
+  template <> \
+  struct ::std::hash<CLASS *> { \
+    inline size_t operator()(CLASS *object) const { \
+      return [object hash]; \
+    } \
+  }
+
+LTObjectiveCHashMake(NSArray);
+LTObjectiveCHashMake(NSDate);
+LTObjectiveCHashMake(NSDictionary);
+LTObjectiveCHashMake(NSNumber);
+LTObjectiveCHashMake(NSString);
+LTObjectiveCHashMake(NSValue);

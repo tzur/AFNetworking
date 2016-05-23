@@ -69,4 +69,36 @@ context(@"structs", ^{
   });
 });
 
+context(@"Objective-C objects", ^{
+  it(@"should hash NSArray", ^{
+    size_t hash0 = std::hash<NSArray *>()(@[@"foo"]);
+    size_t hash1 = std::hash<NSArray *>()(@[@"foo"]);
+    expect(hash0).to.equal(hash1);
+  });
+
+  it(@"should hash NSDate", ^{
+    size_t hash0 = std::hash<NSDate *>()([NSDate distantPast]);
+    size_t hash1 = std::hash<NSDate *>()([NSDate distantPast]);
+    expect(hash0).to.equal(hash1);
+  });
+
+  it(@"should hash NSDictionary", ^{
+    size_t hash0 = std::hash<NSDictionary *>()(@{@"foo": @7});
+    size_t hash1 = std::hash<NSDictionary *>()(@{@"foo": @7});
+    expect(hash0).to.equal(hash1);
+  });
+
+  it(@"should hash NSString", ^{
+    size_t hash0 = std::hash<NSString *>()(@"foo");
+    size_t hash1 = std::hash<NSString *>()(@"foo");
+    expect(hash0).to.equal(hash1);
+  });
+
+  it(@"should hash NSValue", ^{
+    size_t hash0 = std::hash<NSValue *>()($(CGPointMake(1, 2)));
+    size_t hash1 = std::hash<NSValue *>()($(CGPointMake(1, 2)));
+    expect(hash0).to.equal(hash1);
+  });
+});
+
 SpecEnd
