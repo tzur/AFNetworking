@@ -30,9 +30,9 @@ void LTMyTypeRelease(const LTMyType *myType) {
   }
 }
 
-LTMakeRefReleaser(LTMyType *, LTMyTypeRelease);
-LTMakeRefReleaser(const LTMyType *, LTMyTypeRelease);
-LTMakeRefReleaser(LTMyDerivedType *, LTMyTypeRelease);
+LTRefReleaserMake(LTMyType *, LTMyTypeRelease);
+LTRefReleaserMake(const LTMyType *, LTMyTypeRelease);
+LTRefReleaserMake(LTMyDerivedType *, LTMyTypeRelease);
 
 SpecBegin(LTRef)
 
