@@ -137,4 +137,66 @@ context(@"ptn_wrapErrorWithError", ^{
   });
 });
 
+context(@"ptn_combineLatestWithIndex", ^{
+  __block RACSubject *subjectA;
+  __block RACSubject *subjectB;
+
+  beforeEach(^{
+    subjectA = [RACSubject subject];
+    subjectB = [RACSubject subject];
+  });
+
+  it(@"should send the latest values when all signals sent at least one next", ^{
+    LLSignalTestRecorder *recorder = [[RACSignal ptn_combineLatestWithIndex:@[subjectA, subjectB]]
+                                      testRecorder];
+
+    [subjectA sendNext:@"a"];
+    [subjectA sendNext:@"b"];
+    [subjectA sendNext:@"c"];
+    [subjectB sendNext:@1];
+
+    expect(recorder).to.sendValues(@[RACTuplePack(RACTuplePack(@"c", @1), nil)]);
+  });
+
+  it(@"should send the latest values with the index of the signal that initiated them", ^{
+    LLSignalTestRecorder *recorder = [[RACSignal ptn_combineLatestWithIndex:@[subjectA, subjectB]]
+                                      testRecorder];
+
+    [subjectA sendNext:@"a"];
+    [subjectB sendNext:@1];
+    [subjectB sendNext:@2];
+    [subjectA sendNext:@"b"];
+
+    expect(recorder).to.sendValues(@[
+      RACTuplePack(RACTuplePack(@"a", @1), nil),
+      RACTuplePack(RACTuplePack(@"a", @2), @1),
+      RACTuplePack(RACTuplePack(@"b", @2), @0)
+    ]);
+  });
+
+  it(@"should complete immediately when no signals are given", ^{
+    expect([RACSignal ptn_combineLatestWithIndex:@[]]).to.complete();
+  });
+
+  it(@"should let errors through", ^{
+    LLSignalTestRecorder *recorder = [[RACSignal ptn_combineLatestWithIndex:@[subjectA, subjectB]]
+                                      testRecorder];
+
+    [subjectA sendError:[NSError lt_errorWithCode:1337]];
+
+    expect(recorder).to.sendError([NSError lt_errorWithCode:1337]);
+  });
+
+  it(@"should complete when all given signals complete", ^{
+    LLSignalTestRecorder *recorder = [[RACSignal ptn_combineLatestWithIndex:@[subjectA, subjectB]]
+                                      testRecorder];
+
+    [subjectA sendCompleted];
+    expect(recorder).toNot.complete();
+
+    [subjectB sendCompleted];
+    expect(recorder).to.complete();
+  });
+});
+
 SpecEnd

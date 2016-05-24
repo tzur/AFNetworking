@@ -62,6 +62,41 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"[%@] -ptn_wrapErrorWithError: %@", self.name, error];
 }
 
++ (RACSignal *)ptn_combineLatestWithIndex:(id<NSFastEnumeration>)signals {
+  NSMutableArray *taggedSignals = [NSMutableArray array];
+
+  for (RACSignal *signal in signals) {
+    [taggedSignals addObject:[signal
+        scanWithStart:nil reduceWithIndex:^id(id __unused running, id next, NSUInteger index) {
+          return RACTuplePack(next, @(index));
+        }]];
+  }
+
+  return [[[RACSignal
+      zip:@[[RACSignal combineLatest:taggedSignals], [RACSignal combineLatest:signals]]]
+      combinePreviousWithStart:nil reduce:^id(RACTuple * _Nullable previous, RACTuple *current) {
+        if (!previous) {
+          return RACTuplePack(current.second, nil);
+        }
+
+        RACTuple *previousCombineTagged = previous.first;
+        RACTuple *currentCombineTagged = current.first;
+        for (unsigned int i = 0; i < currentCombineTagged.count; ++i) {
+          RACTuple *previousTaggedValue = previousCombineTagged[i];
+          RACTuple *taggedValue = currentCombineTagged[i];
+
+          if (![previousTaggedValue.second isEqualToNumber:taggedValue.second]) {
+            return RACTuplePack(current.second, @(i));
+          }
+        }
+
+        LTAssert(NO, @"Expected latest value tags to differ from the previous latest value tags "
+                 "in at least one signal. Latest values with tags: %@, previous latest values with "
+                 "tags: %@", currentCombineTagged, previousCombineTagged);
+      }]
+      setNameWithFormat:@"+ptn_combineLatestWithIndex: %@", signals];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
