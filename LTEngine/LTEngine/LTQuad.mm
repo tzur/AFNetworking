@@ -476,7 +476,7 @@ static const CGFloat kEpsilon = 1e-10;
 }
 
 - (NSUInteger)hash {
-  return lt::hash<LTQuadCorners>()(_corners);
+  return std::hash<LTQuadCorners>()(_corners);
 }
 
 - (BOOL)isSimilarTo:(LTQuad *)quad upToDeviation:(CGFloat)deviation {

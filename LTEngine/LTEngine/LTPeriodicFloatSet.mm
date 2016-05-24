@@ -66,8 +66,8 @@ typedef struct {
 }
 
 - (NSUInteger)hash {
-  return lt::hash<CGFloat>()(self.pivotValue) ^ self.numberOfValuesPerSequence ^
-      lt::hash<CGFloat>()(self.valueDistance) ^ lt::hash<CGFloat>()(self.sequenceDistance);
+  return std::hash<CGFloat>()(self.pivotValue) ^ self.numberOfValuesPerSequence ^
+      std::hash<CGFloat>()(self.valueDistance) ^ std::hash<CGFloat>()(self.sequenceDistance);
 }
 
 #pragma mark -

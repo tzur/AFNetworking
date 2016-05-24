@@ -51,7 +51,7 @@ struct RefReleaser {
 /// \c RELEASE_FUNCTION, an unary function that accepts a pointer to type \c TYPE and releases
 /// the object. \c RELEASE_FUNCTION will never be called with \c nullptr argument, thus no manual
 /// null-check is required.
-#define LTMakeRefReleaser(TYPE, RELEASE_FUNCTION) \
+#define LTRefReleaserMake(TYPE, RELEASE_FUNCTION) \
   template <> \
   struct ::lt::RefReleaser<TYPE, false> { \
     constexpr RefReleaser() noexcept = default; \

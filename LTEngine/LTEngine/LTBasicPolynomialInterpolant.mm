@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return lt::hash<CGFloats>()(_coefficients);
+  return std::hash<CGFloats>()(_coefficients);
 }
 
 #pragma mark -

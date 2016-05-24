@@ -19,7 +19,7 @@ typedef std::pair<Class, SEL> LTMethodSignatureCacheEntry;
 
   /// Cache of method signatures identified by class and selector.
   std::unordered_map<LTMethodSignatureCacheEntry, BOOL,
-      lt::hash<LTMethodSignatureCacheEntry>> _cache;
+      std::hash<LTMethodSignatureCacheEntry>> _cache;
 }
 
 /// \c YES if the \c selector defined on the the given \c classObject returns void. If the method

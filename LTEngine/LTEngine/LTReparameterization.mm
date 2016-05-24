@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return lt::hash<CGFloats>()(_mapping);
+  return std::hash<CGFloats>()(_mapping);
 }
 
 #pragma mark -
