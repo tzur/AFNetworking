@@ -10,12 +10,80 @@
 		6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F341CE22279001F36FA /* libExpecta.a */; };
 		6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F4D1CE2228C001F36FA /* libSpecta.a */; };
 		6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F5C1CE22299001F36FA /* libOCMock.a */; };
-		6501C2461CE22D0B0061BD9E /* Bazaar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6501C2451CE22D0B0061BD9E /* Bazaar.m */; };
 		6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FA32981CE2185D00901304 /* libBazaar.a */; };
-		654B1F641CE2231C001F36FA /* BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 654B1F631CE2231C001F36FA /* BazaarSpec.mm */; };
+		6506094C1CEDE5F60012202D /* BZRReceiptModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.m */; };
+		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */; };
+		6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */; };
+		65329ED41CFEEA190029CE4F /* NSError+Bazaar.m in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */; };
+		65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */; };
+		657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F83D1CEB608B00FBABFE /* Mantle.framework */; };
+		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */; };
+		6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */; };
+		6584CE8A1CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */; };
+		6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */; };
+		6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B4031CFA346C00525BB7 /* libLTKit.a */; };
+		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
+		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
+		65F03B6C1CFC3E0C008B1847 /* BZRModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6529F8381CEB608B00FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC3C15F72B23004E8054;
+			remoteInfo = "Mantle-Mac";
+		};
+		6529F83A1CEB608B00FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC5415F72B23004E8054;
+			remoteInfo = "Mantle-MacTests";
+		};
+		6529F83C1CEB608B00FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C35719F6DB38000D427D;
+			remoteInfo = "Mantle-iOS";
+		};
+		6529F83E1CEB608B00FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
+			remoteInfo = "Mantle-iOSTests";
+		};
+		6529F85C1CEB65E900FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		6529F85E1CEB65E900FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		6529F8601CEB65E900FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		6529F8621CEB65E900FBABFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
+		};
 		654B1F101CE22030001F36FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65FA32901CE2185D00901304 /* Project object */;
@@ -163,6 +231,20 @@
 			remoteGlobalIDString = 817EB1621BD765130047E85A;
 			remoteInfo = "OCMock tvOS";
 		};
+		6599B4021CFA346C00525BB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
+		6599B4041CFA346C00525BB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -178,7 +260,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6501C2451CE22D0B0061BD9E /* Bazaar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bazaar.m; sourceTree = "<group>"; };
+		6506094A1CEDE5F60012202D /* BZRReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptModel.h; sourceTree = "<group>"; };
+		6506094B1CEDE5F60012202D /* BZRReceiptModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptModel.m; sourceTree = "<group>"; };
+		6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationError.h; sourceTree = "<group>"; };
+		6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationError.m; sourceTree = "<group>"; };
+		6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		6529F8671CEB6F0E00FBABFE /* BZRReceiptValidationParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationParameters.h; sourceTree = "<group>"; };
+		6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationParameters.m; sourceTree = "<group>"; };
+		65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Bazaar.h"; sourceTree = "<group>"; };
+		65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+Bazaar.m"; sourceTree = "<group>"; };
+		65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+BazaarSpec.mm"; sourceTree = "<group>"; };
 		654B1EB41CE21975001F36FA /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		654B1EB61CE21975001F36FA /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		654B1EB71CE21975001F36FA /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -192,7 +284,18 @@
 		654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		654B1F391CE2228C001F36FA /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		654B1F631CE2231C001F36FA /* BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BazaarSpec.mm; sourceTree = "<group>"; };
+		6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidator.h; sourceTree = "<group>"; };
+		6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationResponse.h; sourceTree = "<group>"; };
+		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationResponse.m; sourceTree = "<group>"; };
+		6580F0751CEB319F007EABDD /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptEnvironment.h; sourceTree = "<group>"; };
+		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptEnvironment.m; sourceTree = "<group>"; };
+		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
+		6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponseSpec.mm; sourceTree = "<group>"; };
+		65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModelSpec.mm; sourceTree = "<group>"; };
+		65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModelSpec.mm; sourceTree = "<group>"; };
+		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
+		65F03B6B1CFC3E0C008B1847 /* BZRModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRModel.m; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65FA329B1CE2185E00901304 /* Bazaar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bazaar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,6 +305,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
+				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
 				6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */,
@@ -219,6 +324,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6529F8281CEB608B00FBABFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6529F8391CEB608B00FBABFE /* Mantle.framework */,
+				6529F83B1CEB608B00FBABFE /* Mantle-MacTests.xctest */,
+				6529F83D1CEB608B00FBABFE /* Mantle.framework */,
+				6529F83F1CEB608B00FBABFE /* Mantle-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6529F8561CEB65E800FBABFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6529F85D1CEB65E900FBABFE /* libextobjc_OSX.a */,
+				6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */,
+				6529F8611CEB65E900FBABFE /* Logic Tests.octest */,
+				6529F8631CEB65E900FBABFE /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		654B1EB31CE21975001F36FA /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,7 +405,8 @@
 		654B1F1C1CE221C6001F36FA /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				654B1F631CE2231C001F36FA /* BazaarSpec.mm */,
+				6584CE831CF4671A002C6F86 /* Receipt Validation */,
+				65F03B691CFC32CE008B1847 /* Utils */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -287,8 +415,11 @@
 			isa = PBXGroup;
 			children = (
 				654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */,
-				654B1F391CE2228C001F36FA /* Specta.xcodeproj */,
+				6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */,
+				6580F0751CEB319F007EABDD /* LTKit.xcodeproj */,
+				6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */,
 				654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */,
+				654B1F391CE2228C001F36FA /* Specta.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -334,6 +465,63 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6580F0701CEB2D97007EABDD /* Receipt Validation */ = {
+			isa = PBXGroup;
+			children = (
+				6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */,
+				6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */,
+				6506094A1CEDE5F60012202D /* BZRReceiptModel.h */,
+				6506094B1CEDE5F60012202D /* BZRReceiptModel.m */,
+				6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */,
+				6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */,
+				6529F8671CEB6F0E00FBABFE /* BZRReceiptValidationParameters.h */,
+				6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */,
+				6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */,
+				6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */,
+				6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */,
+			);
+			name = "Receipt Validation";
+			sourceTree = "<group>";
+		};
+		6580F0761CEB319F007EABDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6599B4031CFA346C00525BB7 /* libLTKit.a */,
+				6599B4051CFA346C00525BB7 /* LTKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6584CE831CF4671A002C6F86 /* Receipt Validation */ = {
+			isa = PBXGroup;
+			children = (
+				65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */,
+				6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */,
+				6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */,
+			);
+			name = "Receipt Validation";
+			sourceTree = "<group>";
+		};
+		6599B4291CFA444200525BB7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F03B6A1CFC3E0C008B1847 /* BZRModel.h */,
+				65F03B6B1CFC3E0C008B1847 /* BZRModel.m */,
+				65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */,
+				65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		65F03B691CFC32CE008B1847 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */,
+				65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		65FA328F1CE2185D00901304 = {
 			isa = PBXGroup;
 			children = (
@@ -357,9 +545,10 @@
 		65FA329A1CE2185E00901304 /* Bazaar */ = {
 			isa = PBXGroup;
 			children = (
-				654B1F041CE21F6D001F36FA /* Supporting Files */,
 				65FA329B1CE2185E00901304 /* Bazaar.h */,
-				6501C2451CE22D0B0061BD9E /* Bazaar.m */,
+				6580F0701CEB2D97007EABDD /* Receipt Validation */,
+				6599B4291CFA444200525BB7 /* Utils */,
+				654B1F041CE21F6D001F36FA /* Supporting Files */,
 			);
 			path = Bazaar;
 			sourceTree = "<group>";
@@ -435,6 +624,18 @@
 					ProjectRef = 654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */;
 				},
 				{
+					ProductGroup = 6529F8561CEB65E800FBABFE /* Products */;
+					ProjectRef = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 6580F0761CEB319F007EABDD /* Products */;
+					ProjectRef = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 6529F8281CEB608B00FBABFE /* Products */;
+					ProjectRef = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
+				},
+				{
 					ProductGroup = 654B1F4F1CE22299001F36FA /* Products */;
 					ProjectRef = 654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */;
 				},
@@ -452,6 +653,62 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6529F8391CEB608B00FBABFE /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 6529F8381CEB608B00FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F83B1CEB608B00FBABFE /* Mantle-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-MacTests.xctest";
+			remoteRef = 6529F83A1CEB608B00FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F83D1CEB608B00FBABFE /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 6529F83C1CEB608B00FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F83F1CEB608B00FBABFE /* Mantle-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-iOSTests.xctest";
+			remoteRef = 6529F83E1CEB608B00FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F85D1CEB65E900FBABFE /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = 6529F85C1CEB65E900FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = 6529F85E1CEB65E900FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F8611CEB65E900FBABFE /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = 6529F8601CEB65E900FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6529F8631CEB65E900FBABFE /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = 6529F8621CEB65E900FBABFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		654B1F2A1CE22279001F36FA /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -592,6 +849,20 @@
 			remoteRef = 654B1F611CE22299001F36FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6599B4031CFA346C00525BB7 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = 6599B4021CFA346C00525BB7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6599B4051CFA346C00525BB7 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = 6599B4041CFA346C00525BB7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -609,7 +880,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				654B1F641CE2231C001F36FA /* BazaarSpec.mm in Sources */,
+				65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */,
+				65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */,
+				65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */,
+				6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */,
+				6584CE8A1CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,7 +892,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6501C2461CE22D0B0061BD9E /* Bazaar.m in Sources */,
+				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m in Sources */,
+				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.m in Sources */,
+				6506094C1CEDE5F60012202D /* BZRReceiptModel.m in Sources */,
+				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.m in Sources */,
+				65F03B6C1CFC3E0C008B1847 /* BZRModel.m in Sources */,
+				65329ED41CFEEA190029CE4F /* NSError+Bazaar.m in Sources */,
+				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,6 +1016,13 @@
 			baseConfigurationReference = 654B1EB61CE21975001F36FA /* Debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				SDKROOT = iphoneos;
@@ -746,6 +1034,13 @@
 			baseConfigurationReference = 654B1EB71CE21975001F36FA /* Release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
