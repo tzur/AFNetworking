@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		83B728F11CD8D1090090C0BF /* CameraUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83B728F01CD8D1090090C0BF /* CameraUI.mm */; };
-		83B728FE1CD8D2080090C0BF /* CameraUISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */; };
 		83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B728EB1CD8D1090090C0BF /* libCameraUI.a */; };
 		83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729841CD8D6890090C0BF /* libSpecta.a */; };
 		83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7299B1CD8D68D0090C0BF /* libExpecta.a */; };
@@ -267,10 +265,7 @@
 
 /* Begin PBXFileReference section */
 		83B728EB1CD8D1090090C0BF /* libCameraUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCameraUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		83B728EE1CD8D1090090C0BF /* CameraUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CameraUI.h; path = CameraUI/CameraUI.h; sourceTree = "<group>"; };
-		83B728F01CD8D1090090C0BF /* CameraUI.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CameraUI.mm; path = CameraUI/CameraUI.mm; sourceTree = "<group>"; };
 		83B728FB1CD8D2080090C0BF /* CameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraUISpec.mm; sourceTree = "<group>"; };
 		83B728FF1CD8D2080090C0BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B729071CD8D2900090C0BF /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		83B729091CD8D2900090C0BF /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -346,8 +341,6 @@
 			isa = PBXGroup;
 			children = (
 				83B728ED1CD8D1090090C0BF /* CameraUI */,
-				83B728EE1CD8D1090090C0BF /* CameraUI.h */,
-				83B728F01CD8D1090090C0BF /* CameraUI.mm */,
 				83B728FC1CD8D2080090C0BF /* CameraUITests */,
 				83B729061CD8D27F0090C0BF /* Configuration */,
 				83B729571CD8D65C0090C0BF /* Libraries */,
@@ -383,7 +376,6 @@
 				BE4629541CDF246400D9F7E2 /* Preview */,
 				BE4629551CDF248200D9F7E2 /* Utils */,
 				83B731AF1CDB92320090C0BF /* Supporting Files */,
-				83B728FD1CD8D2080090C0BF /* CameraUISpec.mm */,
 			);
 			path = CameraUITests;
 			sourceTree = "<group>";
@@ -943,7 +935,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
-				83B728F11CD8D1090090C0BF /* CameraUI.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -951,7 +942,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B728FE1CD8D2080090C0BF /* CameraUISpec.mm in Sources */,
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
