@@ -168,6 +168,9 @@
 		2524DB6B1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */; };
 		253512E81AE78DCD00766C5D /* LinesTestCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E61AE78DCD00766C5D /* LinesTestCenter.png */; };
 		253512E91AE78DCD00766C5D /* LinesTestRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 253512E71AE78DCD00766C5D /* LinesTestRight.png */; };
+		253EF9691CDF93FE00530C58 /* LTParameterizedObjectType.h in Headers */ = {isa = PBXBuildFile; fileRef = 253EF9671CDF93FE00530C58 /* LTParameterizedObjectType.h */; };
+		253EF96A1CDF93FE00530C58 /* LTParameterizedObjectType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253EF9681CDF93FE00530C58 /* LTParameterizedObjectType.mm */; };
+		253EF98A1CDF941400530C58 /* LTParameterizedObjectTypeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253EF9891CDF941400530C58 /* LTParameterizedObjectTypeSpec.mm */; };
 		253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */ = {isa = PBXBuildFile; fileRef = 253F60781B3FC979009C6A5F /* LTBrushRandomState.h */; };
 		253F607B1B3FC979009C6A5F /* LTBrushRandomState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */; };
 		254DD74E1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 254DD74C1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.h */; };
@@ -1477,6 +1480,9 @@
 		2524DB6A1B3FD6CD00899FAC /* LTBrushRandomStateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomStateSpec.mm; sourceTree = "<group>"; };
 		253512E61AE78DCD00766C5D /* LinesTestCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestCenter.png; path = Resources/LinesTestCenter.png; sourceTree = "<group>"; };
 		253512E71AE78DCD00766C5D /* LinesTestRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LinesTestRight.png; path = Resources/LinesTestRight.png; sourceTree = "<group>"; };
+		253EF9671CDF93FE00530C58 /* LTParameterizedObjectType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizedObjectType.h; sourceTree = "<group>"; };
+		253EF9681CDF93FE00530C58 /* LTParameterizedObjectType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectType.mm; sourceTree = "<group>"; };
+		253EF9891CDF941400530C58 /* LTParameterizedObjectTypeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectTypeSpec.mm; sourceTree = "<group>"; };
 		253F60781B3FC979009C6A5F /* LTBrushRandomState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrushRandomState.h; sourceTree = "<group>"; };
 		253F60791B3FC979009C6A5F /* LTBrushRandomState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrushRandomState.mm; sourceTree = "<group>"; };
 		254DD74C1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBasicParameterizedObjectFactories.h; sourceTree = "<group>"; };
@@ -2652,11 +2658,13 @@
 		254DD76D1BF9FA2600972C0A /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */,
-				50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */,
 				254DD74C1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.h */,
 				254DD74D1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.mm */,
 				25CE71E01BF9D82D00E13CB4 /* LTBasicParameterizedObjectFactory.h */,
+				50D82E701BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h */,
+				50D82E711BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm */,
+				253EF9671CDF93FE00530C58 /* LTParameterizedObjectType.h */,
+				253EF9681CDF93FE00530C58 /* LTParameterizedObjectType.mm */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -2696,10 +2704,11 @@
 		254DD7701BF9FA4900972C0A /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				50D82E951BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm */,
 				254DD7711BF9FA5900972C0A /* LTBasicParameterizedObjectFactoriesExamples.h */,
 				254DD7721BF9FA5900972C0A /* LTBasicParameterizedObjectFactoriesExamples.mm */,
 				254DD7731BF9FA5900972C0A /* LTBasicParameterizedObjectFactoriesSpec.mm */,
+				50D82E951BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm */,
+				253EF9891CDF941400530C58 /* LTParameterizedObjectTypeSpec.mm */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -4558,6 +4567,7 @@
 				03676D091A4097B100072966 /* LTHistogramProcessor.h in Headers */,
 				8B871FEE1924A75F00517F2E /* LTPatchSolverProcessor.h in Headers */,
 				8B871FEF1924A75F00517F2E /* LTProceduralFrameProcessor.h in Headers */,
+				253EF9691CDF93FE00530C58 /* LTParameterizedObjectType.h in Headers */,
 				50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */,
 				8B9F3BE61C15DC6800FEB7C4 /* LTRenderbuffer.h in Headers */,
 				C72539EB1C7DBA2A008399A3 /* LTAdjustOperations.h in Headers */,
@@ -5302,6 +5312,7 @@
 				85F3F9E31CC62ED300E5753E /* LTDisplacementMapDrawer.fsh in Sources */,
 				85F372B51C8C88A300E1D429 /* LT3DLUT.fsh in Sources */,
 				856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */,
+				253EF96A1CDF93FE00530C58 /* LTParameterizedObjectType.mm in Sources */,
 				03045C5019C037930075207D /* LTSmoothPyramid.fsh in Sources */,
 				854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */,
 				03045D3419C176BA0075207D /* LTClarity.fsh in Sources */,
@@ -5721,6 +5732,7 @@
 				8B3F94D7187C340D00FAA265 /* LTTextureBasicExamples.mm in Sources */,
 				2833789B1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm in Sources */,
 				2520D4131C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm in Sources */,
+				253EF98A1CDF941400530C58 /* LTParameterizedObjectTypeSpec.mm in Sources */,
 				8BC1C9FA19FA5B0F00107580 /* LTAspectFillResizeProcessorSpec.mm in Sources */,
 				8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */,
 				283906A118C4DB0A00BD21CE /* LTRoundBrushSpec.mm in Sources */,
