@@ -42,6 +42,9 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/NSURL+FileSystem.h>
 #import <Photons/PTNFileSystemAssetManager.h>
 
+/// Intercepting.
+#import <Photons/PTNInterceptingAssetManager.h>
+
 /// Multiplexing
 #import <Photons/PTNMultiplexerAssetManager.h>
 
