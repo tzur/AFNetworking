@@ -3,4 +3,4 @@
 
 #import "CameraUI-Prefix.pch"
 
-#import <LTKitTests/LTKitTests-Prefix.pch>
+#import <LTEngineTests/LTEngineTests-Prefix.pch>
