@@ -72,8 +72,12 @@ typedef struct {
 /// Maximal texture size that can be used on the device's GPU.
 @property (readwrite, nonatomic) GLint maxTextureSize;
 
-/// Maximal number of texture units that can be used on the device GPU.
+/// Maximal number of texture units that can be used in the vertex and fragment shader combined on
+/// the device GPU. A texture used both in the vertex and fragment shader is counted as 2 textures.
 @property (readwrite, nonatomic) GLint maxTextureUnits;
+
+/// Maximal number of texture units that can be used in the fragment shader on the device GPU.
+@property (readwrite, nonatomic) GLint maxFragmentTextureUnits;
 
 /// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
 /// held in uniform variable storage by the device GPU for a vertex shader.
@@ -481,6 +485,13 @@ typedef struct {
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
   }
   return _maxTextureUnits;
+}
+
+- (GLint)maxFragmentTextureUnits {
+  if (!_maxFragmentTextureUnits) {
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxFragmentTextureUnits);
+  }
+  return _maxFragmentTextureUnits;
 }
 
 - (GLint)maxNumberOfVertexUniforms {
