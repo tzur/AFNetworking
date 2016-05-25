@@ -87,4 +87,23 @@ context(@"image bindings", ^{
   });
 });
 
+context(@"UIImageView highlightedImage bug", ^{
+  it(@"should show new highlighted image when image view is already in highlighted state", ^{
+    WFFakeImageViewModel *viewModel = [[WFFakeImageViewModel alloc] init];
+    viewModel.image = WFCreateSolidImage(1, 1, [UIColor redColor]);
+    viewModel.highlightedImage = WFCreateSolidImage(1, 1, [UIColor blueColor]);
+
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    imageView.highlighted = YES;
+
+    imageView.wf_viewModel = viewModel;
+    [imageView layoutIfNeeded];
+
+    UIImage *snapshot = WFTakeViewSnapshot(imageView);
+
+    UIColor *color = WFGetPixelColor(snapshot, 0, 0);
+    expect(color).to.equal([UIColor blueColor]);
+  });
+});
+
 SpecEnd

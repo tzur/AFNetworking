@@ -51,8 +51,18 @@ static const void *kBindingDisposableKey = &kBindingDisposableKey;
         @strongify(self);
         RACTupleUnpack(UIImage * _Nullable image, UIImage * _Nullable highlightedImage) = values;
 
+        // UIImageView has a curious bug where image is shown instead of highlightedImage, when
+        // image view is in highlighted state and highlightedImage is changed from nil to an actual
+        // highlighted image. A solution is to reset its highlighted state.
+        BOOL resetHighlightedState = self.highlighted && !self.highlightedImage && highlightedImage;
+
         self.image = image;
         self.highlightedImage = highlightedImage;
+
+        if (resetHighlightedState) {
+          self.highlighted = NO;
+          self.highlighted = YES;
+        }
       }];
 
   return [[RACDisposable disposableWithBlock:^{
