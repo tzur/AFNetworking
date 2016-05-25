@@ -99,10 +99,18 @@ context(@"UIImageView highlightedImage bug", ^{
     imageView.wf_viewModel = viewModel;
     [imageView layoutIfNeeded];
 
-    UIImage *snapshot = WFTakeViewSnapshot(imageView);
+    UIColor *highlightedColor = WFGetPixelColor(WFTakeViewSnapshot(imageView), 0, 0);
+    expect(highlightedColor).to.equal([UIColor blueColor]);
 
-    UIColor *color = WFGetPixelColor(snapshot, 0, 0);
-    expect(color).to.equal([UIColor blueColor]);
+    viewModel.highlightedImage = WFCreateSolidImage(1, 1, [UIColor greenColor]);
+
+    UIColor *updatedHighlightedColor = WFGetPixelColor(WFTakeViewSnapshot(imageView), 0, 0);
+    expect(updatedHighlightedColor).to.equal([UIColor greenColor]);
+
+    viewModel.highlightedImage = nil;
+
+    UIColor *imageColor = WFGetPixelColor(WFTakeViewSnapshot(imageView), 0, 0);
+    expect(imageColor).to.equal([UIColor redColor]);
   });
 });
 
