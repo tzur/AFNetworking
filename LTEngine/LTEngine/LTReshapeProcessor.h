@@ -3,45 +3,43 @@
 
 #import "LTImageProcessor.h"
 #import "LTPartialProcessing.h"
+#import "LTReshapeBrushParams.h"
 #import "LTScreenProcessing.h"
 
-@class LTTexture;
+NS_ASSUME_NONNULL_BEGIN
 
-/// Container holding the parameters determining the mesh adjustments of the \c LTReshapeProcessor.
-typedef struct {
-  /// Diameter, in normalized coordinates (where 1.0 corresponds to the larger texture dimension).
-  /// Should be (but not enforced) in range [0,1] for reasonable results.
-  CGFloat diameter;
-  /// Density controlling the falloff of the effect's intensity as the distance from the center of
-  /// the brush grows. Lower values yield a rapid falloff. Should be (but not enforced) in range
-  /// [0,1] for reasonable results.
-  CGFloat density;
-  /// Distance invariant factor adjusting the intensity of the effect. Should be (but not enforced)
-  /// in range [0,1] for reasonable results.
-  CGFloat pressure;
-} LTReshapeBrushParams;
+@class LTDisplacementMapDrawer, LTMeshProcessor, LTTexture;
 
 /// Processor for reshaping a texture placed on a grid mesh. The processor provides an interface for
 /// applying common reshape operations on the mesh, performed on GPU. Additionally, by accessing and
 /// updating its \c meshDisplacementTexture any custom displacement map can be set.
 @interface LTReshapeProcessor : LTImageProcessor <LTPartialProcessing, LTScreenProcessing>
 
-/// Initializes the processor with with a given \c input texture and \c output texture, and without
-/// a freeze mask support.
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes the processor with an \c input texture an \c output texture and without a freeze
+/// mask support. \c meshDisplacementTexture is initialized to an RGBA half float texture of size
+/// <tt>std::ceil(input.size / 8) + CGSizeMakeUniform(1)</tt> with zeros.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
-/// Initializes the processor with a passthrough fragment shader, the given \c input texture,
-/// \c mask which indicates areas to freeze (values lower than \c 1) while adjusting the mesh
-/// texture, and an \c output texture to write the results into.
-- (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output;
+/// Initializes the processor with a passthrough fragment shader, an \c input texture, a \c mask
+/// which indicates areas to freeze (values lower than \c 1) while adjusting the displacement map
+/// texture and an \c output texture to write the results into. \c mask can be set to \c nil for
+/// canceling freeze mask support. \c meshDisplacementTexture is initialized to an RGBA half float
+/// texture of size <tt>std::ceil(input.size / 8) + CGSizeMakeUniform(1)</tt> with zeros.
+- (instancetype)initWithInput:(LTTexture *)input mask:(nullable LTTexture *)mask
+                       output:(LTTexture *)output;
 
-/// Designated initializer: initializes the processor with the given fragment shader, \c input
-/// texture, \c mask which indicates areas to freeze (values lower than \c 1) while adjusting the
-/// mesh texture, and an \c output texture to write the results into.
+/// Initializes the processor with a fragment shader, an \c input texture, a \c mask which indicates
+/// areas to freeze (values lower than \c 1) while adjusting the displacement map texture, and an \c
+/// output texture to write the results into. \c mask can be set to \c nil for canceling freeze mask
+/// support. \c meshDisplacementTexture is initialized to an RGBA half float texture of size
+/// <tt>std::ceil(input.size / 8) + CGSizeMakeUniform(1)</tt> with zeros.
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
-                                  mask:(LTTexture *)mask output:(LTTexture *)output;
+                                  mask:(nullable LTTexture *)mask output:(LTTexture *)output
+    NS_DESIGNATED_INITIALIZER;
 
-/// Resets the mesh to its original state (no displacement).
+/// Clears the displacement map texture with zeros (no displacement).
 - (void)resetMesh;
 
 /// Reshape the current mesh at the given center in the given direction according to the given brush
@@ -49,20 +47,20 @@ typedef struct {
 ///
 /// @note \c center and \c direction are given in normalized texture coordinates ([0,1]x[0,1]).
 - (void)reshapeWithCenter:(CGPoint)center direction:(CGPoint)direction
-              brushParams:(LTReshapeBrushParams)params;
+              brushParams:(const LTReshapeBrushParams &)params;
 
 /// Resizes the current mesh at the given center with the given scale according to the given brush
 /// parameters, with respect to the current mask.
 ///
 /// @note \c center is given in normalized texture coordinates ([0,1]x[0,1]).
 - (void)resizeWithCenter:(CGPoint)center scale:(CGFloat)scale
-             brushParams:(LTReshapeBrushParams)params;
+             brushParams:(const LTReshapeBrushParams &)params;
 
 /// Unwarps the current mesh at the given center (towards its default state) according to the given
 /// brush parameters. The mask (if set) is ignored.
 ///
 /// @note \c center is given in normalized texture coordinates ([0,1]x[0,1]).
-- (void)unwarpWithCenter:(CGPoint)center brushParams:(LTReshapeBrushParams)params;
+- (void)unwarpWithCenter:(CGPoint)center brushParams:(const LTReshapeBrushParams &)params;
 
 /// Mesh displacement texture used to alter the mesh vertices. The warp applied to the mesh is
 /// according to the content of this texture, as offsets (in normalized texture coordinates) of the
@@ -84,3 +82,5 @@ typedef struct {
 @property (readonly, nonatomic) LTTexture *outputTexture;
 
 @end
+
+NS_ASSUME_NONNULL_END

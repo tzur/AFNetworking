@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note \c center is given in normalized texture coordinates ([0,1]x[0,1]).
 - (void)unwarpWithCenter:(CGPoint)center brushParams:(const LTReshapeBrushParams &)params;
 
-/// Resets the displacement map to a neutral state (no displacement).
+/// Clears the displacement map with zeros (no displacement).
 - (void)resetDisplacementMap;
 
 /// Displacement map texture that is deformed.
