@@ -340,7 +340,6 @@
 		284ED1301895668800414A8A /* LTCatmullRomInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12F1895668800414A8A /* LTCatmullRomInterpolantSpec.mm */; };
 		285660221B1761A800807A4F /* LTImageJPGCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */; };
 		2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */; };
-		285A670F19ACDF9100B2CE9E /* LTReshapeProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */; };
 		285A671419AE1C8300B2CE9E /* LTMeshDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 285A671219AE1C7000B2CE9E /* LTMeshDrawer.vsh */; };
 		285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 285A671919AE313400B2CE9E /* LTReshapeProcessor.h */; };
 		285A671C19AE313400B2CE9E /* LTReshapeProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */; };
@@ -1691,7 +1690,6 @@
 		284ED131189568AC00414A8A /* LTPolynomialInterpolantExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPolynomialInterpolantExamples.h; sourceTree = "<group>"; };
 		285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageJPGCompressorSpec.mm; sourceTree = "<group>"; };
 		2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveOverflow.png; path = Resources/PerspectiveOverflow.png; sourceTree = "<group>"; };
-		285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTReshapeProcessor.fsh; sourceTree = "<group>"; };
 		285A671219AE1C7000B2CE9E /* LTMeshDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMeshDrawer.vsh; sourceTree = "<group>"; };
 		285A671919AE313400B2CE9E /* LTReshapeProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTReshapeProcessor.h; sourceTree = "<group>"; };
 		285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReshapeProcessor.mm; sourceTree = "<group>"; };
@@ -2565,7 +2563,6 @@
 				0368E6C419C0270200B99FF5 /* LTSmoothPyramidProcessor.mm */,
 				285A671919AE313400B2CE9E /* LTReshapeProcessor.h */,
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
-				285A670B19ACDF4F00B2CE9E /* LTReshapeProcessor.fsh */,
 				0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */,
 				0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */,
 			);
@@ -5328,7 +5325,6 @@
 				503044FD1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm in Sources */,
 				85F372BE1C8C88EF00E1D429 /* LT3DLUTProcessor.mm in Sources */,
 				285A671419AE1C8300B2CE9E /* LTMeshDrawer.vsh in Sources */,
-				285A670F19ACDF9100B2CE9E /* LTReshapeProcessor.fsh in Sources */,
 				8B22674019979F450049CF26 /* LTProgramFactory.m in Sources */,
 				2897A8C6197F041E004EE8B5 /* LTPerspectiveProcessor.fsh in Sources */,
 				2881A1A6196BDD2C00E7F523 /* LTRoundBrush.fsh in Sources */,

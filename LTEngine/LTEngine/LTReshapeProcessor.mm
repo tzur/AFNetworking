@@ -3,108 +3,109 @@
 
 #import "LTReshapeProcessor.h"
 
-#import "LTFbo.h"
-#import "LTFboPool.h"
-#import "LTGLContext.h"
+#import "LTDisplacementMapDrawer.h"
 #import "LTMeshProcessor.h"
-#import "LTProgramFactory.h"
-#import "LTRectDrawer.h"
-#import "LTShaderStorage+LTReshapeProcessorFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
-// Possible modes for the adjustment fragment shader.
-typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
-  LTReshapeAdjustmentModeReshape,
-  LTReshapeAdjustmentModeResize,
-  LTReshapeAdjustmentModeUnwarp
-};
+NS_ASSUME_NONNULL_BEGIN
 
 @interface LTReshapeProcessor ()
 
-/// Fragment source of the processor.
-@property (readonly, nonatomic) NSString *fragmentSource;
-
-/// Mask texture used for freezing certain areas while making adjustments to the mesh texture.
-@property (strong, nonatomic) LTTexture *maskTexture;
-
-/// Framebuffer object used to update the mesh texture.
-@property (strong, nonatomic) LTFbo *meshFbo;
+/// Drawer for adjusting the mesh displacement texture to reshape operations.
+@property (readonly, nonatomic) LTDisplacementMapDrawer *displacementMapDrawer;
 
 /// Internally used mesh processor.
-@property (readonly, nonatomic) LTMeshProcessor *meshProcessor;
+@property (strong, nonatomic) LTMeshProcessor *meshProcessor;
 
-/// Used for adjusting the mesh displacement texture.
-@property (strong, nonatomic) LTRectDrawer *adjustmentDrawer;
-
-/// Factor used to reflect the texture's aspect ratio in order to have accurate distance
-/// calculations in normalized coordinates.
-@property (readonly, nonatomic) CGSize aspectFactor;
+/// Initializes the processor with a \c displacementMapDrawer and a \c meshProcessor. \c
+/// meshDisplacementTexture property is set from the \c displacementMapDrawer displacement map. \c
+/// \c inputTexture, \c outputTexture, \c inputSize and \c outputSize properties are determined from
+/// the \c meshProcessor corresponding properties. \c displacementMapDrawer is used for adjusting
+/// the displacement map texture to reshape operations. \c meshProcessor is used to deform its input
+/// texture using the same displacement map texture into its output textute. Therefore, \c
+/// displacementMapDrawer.displacementMap and \c meshProcessor.meshDisplacementTexture must be
+/// identical or an error will be raised.
+- (instancetype)initWithDisplacementMapDrawer:(LTDisplacementMapDrawer *)displacementMapDrawer
+                                meshProcessor:(LTMeshProcessor *)meshProcessor
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @implementation LTReshapeProcessor
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   return [self initWithInput:input mask:nil output:output];
 }
 
-- (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output {
+- (instancetype)initWithInput:(LTTexture *)input mask:(nullable LTTexture *)mask
+                       output:(LTTexture *)output {
   return [self initWithFragmentSource:[LTPassthroughShaderFsh source]
                                 input:input mask:mask output:output];
 }
 
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
-                                  mask:(LTTexture *)mask output:(LTTexture *)output {
+                                  mask:(nullable LTTexture *)mask output:(LTTexture *)output {
   LTParameterAssert(fragmentSource);
   LTParameterAssert(input);
   LTParameterAssert(output);
 
   if (self = [super init]) {
-    _fragmentSource = fragmentSource;
-    _inputTexture = input;
-    _outputTexture = output;
-
-    [self createMeshTexture];
-    [self createMeshProcessor];
-
-    self.maskTexture = mask ?: self.defaultMaskTexture;
-    self.meshFbo = [[LTFboPool currentPool] fboWithTexture:self.meshDisplacementTexture];
-    [self createAdjustmentDrawer];
+    LTTexture *displacementMap = [self displacementMapForTexture:input];
+    _meshProcessor = [[LTMeshProcessor alloc] initWithFragmentSource:fragmentSource input:input
+                                             meshDisplacementTexture:displacementMap output:output];
+    _displacementMapDrawer = [self displacementMapDrawerForDisplacementMap:displacementMap mask:mask
+                                                                      size:input.size];
+    [self.displacementMapDrawer resetDisplacementMap];
   }
 
   return self;
 }
 
-- (void)createMeshTexture {
-  _meshDisplacementTexture = [LTTexture textureWithSize:[self meshTextureSize]
-                                            pixelFormat:$(LTGLPixelFormatRGBA16Float)
-                                         allocateMemory:YES];
-  [self.meshDisplacementTexture clearWithColor:LTVector4::zeros()];
+- (LTTexture *)displacementMapForTexture:(LTTexture *)texture {
+  LTTexture *displacementMap =
+      [LTTexture textureWithSize:[self displacementMapSizeForTexture:texture]
+                     pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
+
+  return displacementMap;
 }
 
-- (CGSize)meshTextureSize {
+- (CGSize)displacementMapSizeForTexture:(LTTexture *)texture {
   // TODO:(amit) add a device-dependant logic to determine the maximum size.
-  return std::ceil(self.inputSize / 8) + CGSizeMakeUniform(1);
+  return std::ceil(texture.size / 8) + CGSizeMakeUniform(1);
 }
 
-- (void)createMeshProcessor {
-  _meshProcessor = [[LTMeshProcessor alloc] initWithFragmentSource:self.fragmentSource
-                                                             input:self.inputTexture
-                                           meshDisplacementTexture:self.meshDisplacementTexture
-                                                            output:self.outputTexture];
+- (LTDisplacementMapDrawer *)displacementMapDrawerForDisplacementMap:(LTTexture *)displacementMap
+                                                                mask:(nullable LTTexture *)mask
+                                                                size:(CGSize)size {
+  return mask ? [[LTDisplacementMapDrawer alloc] initWithDisplacementMap:displacementMap mask:mask
+                                                        deformedAreaSize:size] :
+                [[LTDisplacementMapDrawer alloc] initWithDisplacementMap:displacementMap
+                                                        deformedAreaSize:size];
 }
 
-- (void)createAdjustmentDrawer {
-  LTParameterAssert(self.meshDisplacementTexture);
-  LTParameterAssert(self.maskTexture);
-  LTBasicProgramFactory *factory = [[LTBasicProgramFactory alloc] init];
-  LTProgram *program = [factory programWithVertexSource:[LTPassthroughShaderVsh source]
-                                         fragmentSource:[LTReshapeProcessorFsh source]];
-  self.adjustmentDrawer =
-      [[LTRectDrawer alloc] initWithProgram:program sourceTexture:self.meshDisplacementTexture
-        auxiliaryTextures:@{[LTReshapeProcessorFsh maskTexture]: self.maskTexture}];
+- (instancetype)initWithDisplacementMapDrawer:(LTDisplacementMapDrawer *)displacementMapDrawer
+                                meshProcessor:(LTMeshProcessor *)meshProcessor {
+  LTParameterAssert(displacementMapDrawer);
+  LTParameterAssert(meshProcessor);
+  LTParameterAssert(displacementMapDrawer.displacementMap == meshProcessor.meshDisplacementTexture,
+                    @"displacementMapDrawer.displacementMap and "
+                    @"meshProcessor.meshDisplacementTexture must be identical but input "
+                    @"displacementMapDrawer.displacementMap points to %p and input "
+                    @"meshProcessor.meshDisplacementTexture points to %p",
+                    displacementMapDrawer.displacementMap, meshProcessor.meshDisplacementTexture);
+
+  if (self = [super init]) {
+    _displacementMapDrawer = displacementMapDrawer;
+    [self.displacementMapDrawer resetDisplacementMap];
+    _meshProcessor = meshProcessor;
+  }
+
+  return self;
 }
 
 #pragma mark -
@@ -112,7 +113,6 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 #pragma mark -
 
 - (void)process {
-  [self.outputTexture clearWithColor:LTVector4::zeros()];
   [self.meshProcessor process];
 }
 
@@ -129,82 +129,51 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 #pragma mark -
 
 - (void)resetMesh {
-  [self.meshDisplacementTexture clearWithColor:LTVector4::zeros()];
+  [self.displacementMapDrawer resetDisplacementMap];
 }
 
 #pragma mark -
 #pragma mark Reshape
 #pragma mark -
 
-- (void)adjustMeshWithMode:(LTReshapeAdjustmentMode)mode brushParams:(LTReshapeBrushParams)params {
-  [self prepareDrawerForMode:mode params:params];
-
-  // Use the scissor box to make sure the boundary vertices are not affected by the adjustment.
-  // Note that binding an fbo resets the scissor box, so we need to bind first, then update the
-  // scissor box, and finally use drawRect:inFramebufferWithSize:fromRect: for drawing.
-  [self.meshFbo bindAndDraw:^{
-    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
-      context.scissorTestEnabled = YES;
-      context.scissorBox = CGRectInset(CGRectFromSize(self.meshDisplacementTexture.size), 1, 1);
-      [self.adjustmentDrawer drawRect:CGRectFromSize(self.meshDisplacementTexture.size)
-                inFramebufferWithSize:self.meshFbo.size
-                             fromRect:CGRectFromSize(self.meshDisplacementTexture.size)];
-    }];
-  }];
-}
-
-- (void)prepareDrawerForMode:(LTReshapeAdjustmentMode)mode params:(LTReshapeBrushParams)params {
-  self.adjustmentDrawer[[LTReshapeProcessorFsh mode]] = @(mode);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh diameter]] = @(params.diameter);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh density]] = @(params.density);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh pressure]] = @(params.pressure);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh aspectFactor]] = $(LTVector2(self.aspectFactor));
-}
-
 - (void)reshapeWithCenter:(CGPoint)center direction:(CGPoint)direction
-              brushParams:(LTReshapeBrushParams)params {
-  self.adjustmentDrawer[[LTReshapeProcessorFsh center]] = $(LTVector2(center * self.aspectFactor));
-  self.adjustmentDrawer[[LTReshapeProcessorFsh direction]] = $(LTVector2(direction));
-  [self adjustMeshWithMode:LTReshapeAdjustmentModeReshape brushParams:params];
+              brushParams:(const LTReshapeBrushParams &)params {
+  [self.displacementMapDrawer reshapeWithCenter:center direction:direction brushParams:params];
 }
 
 - (void)resizeWithCenter:(CGPoint)center scale:(CGFloat)scale
-             brushParams:(LTReshapeBrushParams)params {
-  scale = (scale > 1) ? scale - 1 : -(1 / scale - 1);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh scale]] = @(scale);
-  self.adjustmentDrawer[[LTReshapeProcessorFsh center]] = $(LTVector2(center * self.aspectFactor));
-  [self adjustMeshWithMode:LTReshapeAdjustmentModeResize brushParams:params];
+             brushParams:(const LTReshapeBrushParams &)params {
+  [self.displacementMapDrawer resizeWithCenter:center scale:scale brushParams:params];
 }
 
-- (void)unwarpWithCenter:(CGPoint)center brushParams:(LTReshapeBrushParams)params {
-  self.adjustmentDrawer[[LTReshapeProcessorFsh center]] = $(LTVector2(center * self.aspectFactor));
-  [self adjustMeshWithMode:LTReshapeAdjustmentModeUnwarp brushParams:params];
+- (void)unwarpWithCenter:(CGPoint)center brushParams:(const LTReshapeBrushParams &)params {
+  [self.displacementMapDrawer unwarpWithCenter:center brushParams:params];
 }
 
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
-- (CGSize)aspectFactor {
-  return self.inputSize.width > self.inputSize.height ?
-      CGSizeMake(1.0, self.inputSize.height / self.inputSize.width) :
-      CGSizeMake(self.inputSize.width / self.inputSize.height, 1.0);
-}
-
-- (LTTexture *)defaultMaskTexture {
-  LTTexture *texture = [LTTexture textureWithImage:cv::Mat1b(1, 1)];
-  [texture clearWithColor:LTVector4::ones()];
-  texture.minFilterInterpolation = LTTextureInterpolationNearest;
-  texture.magFilterInterpolation = LTTextureInterpolationNearest;
-  return texture;
+- (LTTexture *)meshDisplacementTexture {
+  return self.meshProcessor.meshDisplacementTexture;
 }
 
 - (CGSize)inputSize {
-  return self.inputTexture.size;
+  return self.meshProcessor.inputSize;
 }
 
 - (CGSize)outputSize {
-  return self.outputTexture.size;
+  return self.meshProcessor.outputSize;
+}
+
+- (LTTexture *)inputTexture {
+  return self.meshProcessor.inputTexture;
+}
+
+- (LTTexture *)outputTexture {
+  return self.meshProcessor.outputTexture;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
