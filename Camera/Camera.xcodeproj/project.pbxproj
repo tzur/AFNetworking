@@ -14,6 +14,8 @@
 		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
 		836C65D01CD75F2700BE4496 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */; };
 		836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97731CD7559E001962A0 /* ReactiveCocoa.framework */; };
+		8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */; };
+		8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */; };
 		83B72D351CDA421C0090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72D191CDA3F1E0090C0BF /* opencv2.framework */; };
 		83B7304A1CDB56770090C0BF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730491CDB56770090C0BF /* AVFoundation.framework */; };
 		83B730661CDB567B0090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730651CDB567B0090C0BF /* AssetsLibrary.framework */; };
@@ -252,6 +254,9 @@
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDevice+Configure.h"; sourceTree = "<group>"; };
+		8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+Configure.mm"; sourceTree = "<group>"; };
+		8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+ConfigureSpec.mm"; sourceTree = "<group>"; };
 		83B72CC61CDA3E5E0090C0BF /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		83B72D191CDA3F1E0090C0BF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
 		83B730491CDB56770090C0BF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -379,6 +384,31 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		8395AE4E1CFDCA2C00C91C9E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */,
+				8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		8395AE6C1CFDCA4000C91C9E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8395AE6D1CFDCA4400C91C9E /* Utils */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		8395AE6D1CFDCA4400C91C9E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		83B72CC71CDA3E5E0090C0BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				8351F9901CF6EDCE00DEB376 /* Base */,
+				8395AE4E1CFDCA2C00C91C9E /* Utils */,
 				83FF06DC1CD7266B00383C6B /* Camera.h */,
 				83FF06DE1CD7266B00383C6B /* Camera.mm */,
 				83B72D801CDA44B40090C0BF /* Supporting Files */,
@@ -471,6 +502,7 @@
 		83FF06F31CD7272F00383C6B /* CameraTests */ = {
 			isa = PBXGroup;
 			children = (
+				8395AE6C1CFDCA4000C91C9E /* Tests */,
 				83FF06F41CD7272F00383C6B /* CameraSpec.mm */,
 				83B72D811CDA44B80090C0BF /* Supporting Files */,
 			);
@@ -782,6 +814,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83FF06DF1CD7266B00383C6B /* Camera.mm in Sources */,
+				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -790,6 +823,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */,
 				83FF06F51CD7272F00383C6B /* CameraSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
