@@ -8,7 +8,7 @@
 // file with the following structure:
 //
 // NS_ENUM(NSInteger) {
-//   <product prefix>ErrorCodeProductID = <product ID>
+//   <product prefix>ErrorCodeProductID = <Product ID>
 // }
 //
 // LTErrorCodesDeclare(<product prefix>ErrorCodeProductID,
