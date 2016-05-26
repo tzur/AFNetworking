@@ -92,6 +92,12 @@ context(@"LTVector2", ^{
     expect(v2.isNull()).to.beFalsy();
     expect(v3.isNull()).to.beFalsy();
   });
+  
+  it(@"should return a unit vector specified by an angle", ^{
+    LTVector2 vector = LTVector2::angle(M_PI);
+    expect(vector.x).to.beCloseToWithin(-1, kEpsilon);
+    expect(vector.y).to.beCloseToWithin(0, kEpsilon);
+  });
 
   it(@"should access rgb values correctly", ^{
     LTVector2 v(1, 2);

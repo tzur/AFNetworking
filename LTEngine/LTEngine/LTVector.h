@@ -193,6 +193,11 @@ struct LTVector2 {
   constexpr static LTVector2 null() {
     return LTVector2(NAN);
   }
+  
+  /// Returns a unit vector in the direction specified by the given \c angle.
+  inline static LTVector2 angle(float angle) {
+    return LTVector2(std::cosf(angle), std::sinf(angle));
+  }
 
   float x;
   float y;
