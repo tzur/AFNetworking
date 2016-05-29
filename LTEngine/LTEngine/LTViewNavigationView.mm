@@ -6,6 +6,8 @@
 #import <LTKit/LTAnimation.h>
 #import <LTKit/NSObject+AddToContainer.h>
 
+#import "LTViewNavigationViewDelegate.h"
+
 #pragma mark -
 #pragma mark LTViewNavigationViewState
 #pragma mark -
@@ -21,17 +23,17 @@
 
 @implementation LTViewNavigationState
 
-- (BOOL)isEqual:(id)object {
+- (BOOL)isEqual:(LTViewNavigationState *)object {
   if (![object isKindOfClass:[self class]]) {
     return NO;
   }
   
-  return self.visibleContentRect == [object visibleContentRect] &&
-         self.scrollViewContentOffset == [object scrollViewContentOffset] &&
-         self.scrollViewContentInset == [object scrollViewContentInset] &&
-         self.navigationViewContentInset == [object navigationViewContentInset] &&
-         self.zoomScale == [object zoomScale] &&
-         self.animationActive == [object animationActive];
+  return self.visibleContentRect == object.visibleContentRect &&
+         self.scrollViewContentOffset == object.scrollViewContentOffset &&
+         self.scrollViewContentInset == object.scrollViewContentInset &&
+         self.navigationViewContentInset == object.navigationViewContentInset &&
+         self.zoomScale == object.zoomScale &&
+         self.animationActive == object.animationActive;
 }
 
 - (NSString *)description {
@@ -54,9 +56,6 @@
 
 @interface LTViewNavigationView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
-/// Screen property used for scale factor extration.
-@property (strong, nonatomic) UIScreen *screen;
-
 /// Underlying scroll view used to generate native-feel bouncing feedback when scrolling
 /// out of bounds.
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -74,6 +73,9 @@
 /// Underlying gesture recognizer for double tap gestures.
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
+/// Gesture recognizers provided by (but not added to) this view.
+@property (strong, nonatomic) NSArray<UIGestureRecognizer *> *navigationGestureRecognizers;
+
 /// Animation for updating the LTView according to the scrollView's state.
 @property (strong, nonatomic) LTAnimation *animation;
 
@@ -86,6 +88,30 @@
 /// State if underlying scrollview deceleration.
 @property (nonatomic) BOOL scrollViewDecelerating;
 
+// Number of different levels of zoom that the double tap switches between. Default is \c 3.
+@property (readonly, nonatomic) NSUInteger doubleTapLevels;
+
+/// Rectangular subregion of the content rectangle, in point units of the content coordinate
+/// system, intersecting with the view enclosing the content rectangle.
+@property (readwrite, nonatomic) CGRect visibleContentRect;
+
+/// The distance between the content and the enclosing view.
+@property (nonatomic) UIEdgeInsets contentInset;
+
+// Zoom factor of the double tap gesture between the different levels. Double tapping will zoom to a
+// scale of this factor multiplied by the previous zoom scale (except when in the maximal level
+/// which will zoom out to the minimal zoom scale). Default is \c 3.
+@property (readonly, nonatomic) CGFloat doubleTapZoomFactor;
+
+/// Number of floating-point pixel units of the screen coordinate system per pixel unit of the
+/// content coordinate system, at the maximum zoom level.
+@property (readwrite, nonatomic) CGFloat maxZoomScale;
+
+/// Factor applied to the calculated \c minZoomScale (fits the image exactly inside the view).
+/// Setting this to values smaller than \c 0 will make the image smaller than the view when fully
+/// zoomed out, and vice versa. Default is \c 0.
+@property (readwrite, nonatomic) CGFloat minZoomScaleFactor;
+
 @end
 
 @implementation LTViewNavigationView
@@ -93,35 +119,28 @@
 /// Name of the notification indicating an update during the scroll view animation.
 static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAnimation";
 
-@synthesize visibleContentRect = _visibleContentRect;
-
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize {
-  return [self initWithFrame:frame contentSize:contentSize state:nil];
-}
-
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
-                        state:(LTViewNavigationState *)state {
-  return [self initWithFrame:frame contentSize:contentSize state:state
-                      screen:[UIScreen mainScreen]];
-}
+           contentScaleFactor:(CGFloat)contentScaleFactor
+              navigationState:(LTViewNavigationState *)initialNavigationState {
+  LTParameterAssert(contentScaleFactor > 0, @"Given content scale factor (%g) must be positive",
+                    contentScaleFactor);
 
-- (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
-                        state:(LTViewNavigationState *)state screen:(UIScreen *)screen {
   if (self = [super initWithFrame:frame]) {
     self.contentSize = contentSize;
-    self.screen = screen;
+    [super setContentScaleFactor:contentScaleFactor];
+    self.hidden = YES;
     [self setDefaults];
     [self createScrollView];
     [self createContentView];
     [self createDoubleTapRecognizer];
     [self updateNavigationGestureRecognizers];
     [self registerAnimationNotification];
-    if (state) {
-      [self navigateToState:state];
+    if (initialNavigationState) {
+      [self navigateToState:initialNavigationState];
     } else {
       [self navigateToDefaultState];
     }
@@ -129,10 +148,21 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   return self;
 }
 
+/// Default maximal zoom scale.
+static const CGFloat kDefaultMaxZoomScale = 16;
+
+/// Default zoom factor for the double tap gesture.
+static const CGFloat kDefaultDoubleTapZoomFactor = 3;
+
+/// Default number of levels that the double tap gesture iterates between.
+static const NSUInteger kDefaultDoubleTapLevels = 3;
+
 - (void)setDefaults {
-  self.mode = LTViewNavigationFull;
-  self.maxZoomScale = CGFLOAT_MAX;
-  self.contentScaleFactor = self.screen.nativeScale;
+  self.navigationMode = LTViewNavigationFull;
+  self.maxZoomScale = kDefaultMaxZoomScale;
+  _doubleTapLevels = kDefaultDoubleTapLevels;
+  _doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
+  self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 - (void)createScrollView {
@@ -156,6 +186,8 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.scrollView.backgroundColor = [UIColor clearColor];
   self.scrollView.showsHorizontalScrollIndicator = NO;
   self.scrollView.showsVerticalScrollIndicator = NO;
+
+  self.scrollView.gestureRecognizers = @[];
 
   // Add the scrollview to the current view.
   [self addSubview:self.scrollView];
@@ -227,14 +259,18 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
   self.panGestureRecognizer = self.scrollView.panGestureRecognizer;
   self.pinchGestureRecognizer = self.scrollView.pinchGestureRecognizer;
 
+  // Remove any gesture recognizer from the scroll view since they should be attached to another
+  // view, if required.
+  self.scrollView.gestureRecognizers = @[];
+
   NSMutableArray *newRecognizers = [NSMutableArray array];
   [self.panGestureRecognizer addToArray:newRecognizers];
   [self.pinchGestureRecognizer addToArray:newRecognizers];
   [self.doubleTapGestureRecognizer addToArray:newRecognizers];
 
-  if (![newRecognizers isEqual:oldRecognizers]) {
-    [self.delegate navigationGestureRecognizersDidChangeFrom:[NSSet setWithArray:oldRecognizers]
-                                                          to:[NSSet setWithArray:newRecognizers]];
+  if (![newRecognizers isEqual:oldRecognizers] ||
+      ![self.gestureRecognizers isEqual:newRecognizers]) {
+    self.navigationGestureRecognizers = [newRecognizers copy];
   }
 }
 
@@ -249,10 +285,24 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 #pragma mark -
+#pragma mark UIView
+#pragma mark -
+
+- (CGFloat)contentScaleFactor {
+  // Explicitely proxy the \c contentScaleFactor of \c contentScaleFactor in order to avoid Xcode
+  // warnings of unsynthesized protocol property.
+  return super.contentScaleFactor;
+}
+
+- (void)setContentScaleFactor:(__unused CGFloat)contentScaleFactor {
+  // Disallow updates of the content scale factor.
+}
+
+#pragma mark -
 #pragma mark ScrollView
 #pragma mark -
 
-/// Congifures the scrollview's minimal and maximal zoom scale according to the bounds and content
+/// Configures the scrollview's minimum and maximum zoom scale according to the bounds and content
 /// size.
 - (void)configureScrollViewZoomLimits {
   // Set minimal zoom scale by finding the dimension that can be minimally scaled.
@@ -502,7 +552,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 /// Bounces to the minimal zoom scale if the LTViewNavigationBounceToMinimalScale mode, and the
 /// scrollView is not in the minimal zoom scale.
 - (void)bounceToMinimalZoomIfNecessary {
-  if (self.mode == LTViewNavigationBounceToMinimalScale &&
+  if (self.navigationMode == LTViewNavigationBounceToMinimalScale &&
       !self.scrollViewZooming && !self.scrollViewDragging &&
       self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
     [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
@@ -510,7 +560,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 }
 
 - (void)configureNavigationGesturesForCurrentMode {
-  switch (self.mode) {
+  switch (self.navigationMode) {
     case LTViewNavigationFull:
     case LTViewNavigationZoomAndScroll:
     case LTViewNavigationBounceToMinimalScale:
@@ -525,15 +575,17 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
       break;
   }
   
-  self.doubleTapGestureRecognizer.enabled = (self.mode == LTViewNavigationFull);
-  self.scrollView.delaysContentTouches = (self.mode != LTViewNavigationNone);
-  self.scrollView.canCancelContentTouches = (self.mode != LTViewNavigationNone);
-  self.scrollView.panGestureRecognizer.enabled = (self.mode != LTViewNavigationNone);
-  self.scrollView.pinchGestureRecognizer.enabled = (self.mode != LTViewNavigationNone);
+  self.doubleTapGestureRecognizer.enabled = (self.navigationMode == LTViewNavigationFull);
+  self.scrollView.delaysContentTouches = (self.navigationMode != LTViewNavigationNone);
+  self.scrollView.canCancelContentTouches = (self.navigationMode != LTViewNavigationNone);
+  self.scrollView.panGestureRecognizer.enabled = (self.navigationMode != LTViewNavigationNone);
+  self.scrollView.pinchGestureRecognizer.enabled = (self.navigationMode != LTViewNavigationNone);
 }
 
-- (void)setMode:(LTViewNavigationMode)mode {
-  _mode = mode;
+@synthesize navigationMode = _navigationMode;
+
+- (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
+  _navigationMode = navigationMode;
   [self configureNavigationGesturesForCurrentMode];
   [self bounceToMinimalZoomIfNecessary];
 }
@@ -567,7 +619,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   if (self.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan &&
       self.scrollView.panGestureRecognizer.numberOfTouches == 1 &&
       self.scrollView.panGestureRecognizer.minimumNumberOfTouches == 2 &&
-      self.mode == LTViewNavigationTwoFingers) {
+      self.navigationMode == LTViewNavigationTwoFingers) {
     LogDebug(@"Detected a bogus iphone 6 plus scrolling gesture, discarding it");
     self.scrollView.panGestureRecognizer.enabled = NO;
     self.scrollView.panGestureRecognizer.enabled = YES;
@@ -677,7 +729,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 #pragma mark Properties
 #pragma mark -
 
-- (LTViewNavigationState *)state {
+- (LTViewNavigationState *)navigationState {
   LTViewNavigationState *state = [[LTViewNavigationState alloc] init];
   state.visibleContentRect = self.visibleContentRect;
   state.zoomScale = self.scrollView.zoomScale;
@@ -691,6 +743,8 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 - (UIView *)viewForContentCoordinates {
   return self.contentView;
 }
+
+@synthesize contentSize = _contentSize;
 
 - (void)setContentSize:(CGSize)contentSize {
   if (_contentSize == contentSize) {
@@ -731,10 +785,6 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
     [self centerContentViewInScrollView];
   }
   self.visibleContentRect = [self visibleContentRectFromScrollView];
-}
-
-- (void)setDoubleTapZoomFactor:(CGFloat)doubleTapZoomFactor {
-  _doubleTapZoomFactor = MAX(0, doubleTapZoomFactor);
 }
 
 - (void)setPanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
