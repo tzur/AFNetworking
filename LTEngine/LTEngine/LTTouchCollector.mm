@@ -3,6 +3,7 @@
 
 #import "LTTouchCollector.h"
 
+#import "LTContentLocationProvider.h"
 #import "LTTouchCollectorDistanceFilter.h"
 #import "LTTouchCollectorFilter.h"
 #import "LTTouchCollectorTimeIntervalFilter.h"
@@ -224,9 +225,10 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 - (LTPainterPoint *)pointFromTouch:(UITouch *)touch inView:(LTView *)view {
   LTPainterPoint *point = [[LTPainterPoint alloc] initWithCurrentTimestamp];
   point.contentPosition =
-      [touch locationInView:view.viewForContentCoordinates] * view.contentScaleFactor;
+      [touch locationInView:view.contentLocationProvider.viewForContentCoordinates] *
+          view.contentLocationProvider.contentScaleFactor;
   point.screenPosition = [touch locationInView:view];
-  point.zoomScale = view.zoomScale;
+  point.zoomScale = view.contentLocationProvider.zoomScale;
   point.touchRadius = touch.majorRadius;
   point.touchRadiusTolerance = touch.majorRadiusTolerance;
   return point;
