@@ -3,42 +3,55 @@
 
 #import "LTViewDelegates.h"
 #import "LTViewNavigationMode.h"
+#import "LTViewNavigationViewDelegate.h"
 
 @class LTFbo, LTGLContext, LTImage, LTTexture, LTViewNavigationState;
 
-/// The \c LTView class is used for displaying zoomable and scrollable openGL output.
+@protocol LTContentLocationManager, LTContentLocationProvider;
+
+/// Model used to initialize an \c LTView with parameters related to rendering and displaying.
+@interface LTViewRenderingModel : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Returns a model with the given \c context and \c contentTexture.
++ (instancetype)modelWithContext:(LTGLContext *)context contentTexture:(LTTexture *)contentTexture;
+
+/// OpenGL context to be used by the \c LTView.
+@property (readonly, nonatomic) LTGLContext *context;
+
+/// Texture to be displayed by the \c LTView.
+@property (readonly, nonatomic) LTTexture *contentTexture;
+
+@end
+
+/// View for displaying rectangular, axis-aligned image content, using OpenGL.
 ///
+/// Uses an \c LTContentLocationManager responsible for the location of the rectangle bounding the
+/// displayed image content.
 /// Uses an \c LTViewDrawDelegate to update the content and control the displayed output (overlays,
 /// postprocessing, etc.).
 /// Uses an \c LTViewTouchDelegate to handle touch events received by the view.
+@interface LTView : UIView <LTViewNavigationViewDelegate>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
+/// Initializes with the given \c frame, \c contentLocationManager and \c renderingModel. The
+/// \c size of the \c contentTexture in the given \c renderingModel must be equal to the
+/// \c contentSize of the given \c contentLocationManager. The returned view uses the
+/// \c contentScaleFactor provided by the given \c contentLocationManager.
 ///
-/// @note The \c setupWithContext: method must be called for the view to start displaying the openGL
-/// content.
-@interface LTView : UIView
-
-/// Initializes and returns a newly allocated \c LTView object with the
-/// specified \c frame rectangle and \c screen as its content screen.
-- (instancetype)initWithFrame:(CGRect)frame screen:(UIScreen *)screen NS_DESIGNATED_INITIALIZER;
-
-/// Initializes an object initialized from data in a given unarchiver \c decoder.
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
-
-/// Setup the LTView by providing an \c LTGLCcontext, a content texture to use for content, and an
-/// \c LTViewNavigationState with the initial state of the view (zoom, offset, etc.). In case a
-/// \c nil state is given, the \c LTView will automatically zoom out such that the whole content is
-/// visible.
-///
-/// @note Calling this method when the \c LTView was already set (and before \c teardown was called)
-/// will do nothing.
-- (void)setupWithContext:(LTGLContext *)context contentTexture:(LTTexture *)texture
-                   state:(LTViewNavigationState *)state;
-
-/// Cleanup resources, reducing the memory signature of the \c LTView while it is not used.
-/// \c setupWithContext: must be called before the \c LTView can be used again.
-///
-/// @note Calling this method after before the \c LTView was set (or after a previous \c teardown)
-/// will do nothing.
-- (void)teardown;
+/// The view displays the content of the \c contentTexture of the given \c renderingModel, in the
+/// content rectangle provided by the given \c contentLocationManager. The \c contentLocationManager
+/// is used to retrieve information about the content rectangle and is informed about changes of the
+/// content texture, following calls to the \c replaceContentWith: method.
+- (instancetype)initWithFrame:(CGRect)frame
+       contentLocationManager:(id<LTContentLocationManager>)contentLocationManager
+               renderingModel:(LTViewRenderingModel *)renderingModel NS_DESIGNATED_INITIALIZER;
 
 /// Replaces the content texture with the given \c texture, updating the view's content size to
 /// match the new \c texture. If the given \c texture is of the same size as the current texture,
@@ -69,12 +82,12 @@
 /// framebuffer.
 - (CGAffineTransform)transformForVisibleContentRect:(CGRect)rect;
 
-/// Navigates to the navigation state of the given \c LTView. The \c LTView must have similar
-/// properties (bounds, content size, etc.), otherwise it'll be silently ignored.
-- (void)navigateToStateOfView:(LTView *)view;
+/// Currently visible rectangle of the content, in floating-point pixel units of the content
+/// coordinate system.
+@property (readonly, nonatomic) CGRect visibleContentRect;
 
-/// Zooms to the given \c rect given in content coordinates (in pixels) with an optional animation.
-- (void)zoomToContentRect:(CGRect)rect animated:(BOOL)animated;
+/// Provider of information about the location of the content rectangle.
+@property (readonly, nonatomic) id<LTContentLocationProvider> contentLocationProvider;
 
 /// This delegate will be used to update the \c LTView's content.
 @property (weak, nonatomic) id<LTViewDrawDelegate> drawDelegate;
@@ -87,14 +100,14 @@
 /// @see LTViewNavigationView.
 @property (weak, nonatomic) id<LTViewNavigationDelegate> navigationDelegate;
 
-/// Size of the \c LTView's content, in pixels.
-@property (readonly, nonatomic) CGSize contentSize;
-
 /// Delegate informed about framebuffer changes.
 @property (weak, nonatomic) id<LTViewFramebufferDelegate> framebufferDelegate;
 
 /// Size of the \c LTView's framebuffer, in pixels.
 @property (readonly, nonatomic) CGSize framebufferSize;
+
+/// View to which gesture recognizers should be attached.
+@property (readonly, nonatomic) UIView *gestureView;
 
 /// If \c YES, the alpha channel of the content will be used for transparency, and a checkerboard
 /// background will be used to visualize the transparent conetnt pixels.
@@ -113,41 +126,6 @@
 /// view, if mode other than \c LTViewNavigationNone or \c LTViewNavigationTwoFingers, touch events
 /// will not be forwarded to the \c touchDelegate.
 @property (nonatomic) LTViewNavigationMode navigationMode;
-
-/// The distance between the content and the enclosing view.
-@property (nonatomic) UIEdgeInsets contentInset;
-
-/// The ratio of device screen pixels per content pixel at the maximal zoom level. Default is \c 16.
-@property (nonatomic) CGFloat maxZoomScale;
-
-/// The factor applied to the calculated minZoomScale (fits the image exactly inside the view).
-/// Setting this to values smaller than 1 will make the image smaller than the \c LTView when fully
-/// zoomed out, and vice versa. Default is \c 0, meaning the value is ignored.
-@property (nonatomic) CGFloat minZoomScaleFactor;
-
-// The zoom factor of the double tap gesture between the different levels. Double tapping will zoom
-// to a scale of this factor multiplied by the previous zoom scale (except when in the maximal level
-// which will zoom out to the minimal zoom scale). Default is \c 3.
-@property (nonatomic) CGFloat doubleTapZoomFactor;
-
-// Number of different levels of zoom that the double tap switches between. Default is \c 3.
-@property (nonatomic) NSUInteger doubleTapLevels;
-
-/// Returns the current navigation state of the view, see \c LTViewNavigationState.
-@property (readonly, nonatomic) LTViewNavigationState *navigationState;
-
-/// Returns the current visible rectangle of the content, in pixels.
-@property (readonly, nonatomic) CGRect visibleContentRect;
-
-/// Returns the current zoom scale of the \c LTView.
-@property (readonly, nonatomic) CGFloat zoomScale;
-
-/// A view that can be used for acquiring touch and gesture locations in content coordinates.
-/// For example, the following will return the gesture location in content coordinates (in points):
-/// @code
-/// [gesture locationInView:ltView.viewForContentCoordinates]
-/// @endcode
-@property (readonly, nonatomic) UIView *viewForContentCoordinates;
 
 @end
 

@@ -19,16 +19,35 @@
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@interface LTView () <LTEAGLViewDelegate, LTViewNavigationViewDelegate>
+@implementation LTViewRenderingModel
 
-/// Screen to get native scale from.
-@property (strong, nonatomic) UIScreen *screen;
+- (instancetype)initWithContext:(LTGLContext *)context contentTexture:(LTTexture *)contentTexture {
+  LTParameterAssert(context);
+  LTParameterAssert(contentTexture);
+
+  if (self = [super init]) {
+    _context = context;
+    _contentTexture = contentTexture;
+  }
+  return self;
+}
+
++ (instancetype)modelWithContext:(LTGLContext *)context contentTexture:(LTTexture *)contentTexture {
+  return [[LTViewRenderingModel alloc] initWithContext:context contentTexture:contentTexture];
+}
+
+@end
+
+@interface LTView () <LTEAGLViewDelegate>
+
+/// Manager of the location of the content rectangle.
+@property (strong, nonatomic) id<LTContentLocationManager> contentLocationManager;
+
+/// Default content scale factor to be used by this view.
+@property (nonatomic, readonly) CGFloat defaultContentScaleFactor;
 
 /// OpenGL context to use while drawing on the view.
 @property (strong, nonatomic) LTGLContext *context;
-
-/// Manages the navigation behavior of the view.
-@property (strong, nonatomic) LTViewNavigationView *navigationView;
 
 /// Target rendering view. The \c LTView's content will be drawn on this view.
 @property (strong, nonatomic) LTEAGLView *eaglView;
@@ -73,16 +92,6 @@
 /// While set to \c YES, the \c forwardTouchesToDelegate property will not be updated.
 @property (nonatomic) BOOL isForwardTouchesToDelegateLocked;
 
-/// The underlying gesture recognizer for pinch gestures. KVO compliant.
-@property (strong, readwrite, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
-
-/// The underlying gesture recognizer for pinch gestures. Will return \c nil when zooming is
-/// disabled. KVO compliant.
-@property (strong, readwrite, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
-
-/// The underlying gesture recognizer for double tap gestures. KVO compliant.
-@property (strong, readwrite, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
-
 /// \c CGRect used upon the most recent initialization of the internal \c eaglView. Is stored in
 /// order to refrain from unnecessarily recreating the \c eaglView upon calls to \c layoutSubviews.
 @property (nonatomic) CGRect mostRecentlyUsedEaglViewFrame;
@@ -98,56 +107,37 @@ static NSString * const kSetNeedsDisplayNotification = @"LTViewSetNeedsDisplay";
 // content on the LTView.
 static const CGFloat kMinimalZoomScaleForNNInterpolation = 3;
 
-/// Default maximal zoom scale.
-static const CGFloat kDefaultMaxZoomScale = 16;
-
-/// Default zoom factor for the double tap gesture.
-static const CGFloat kDefaultDoubleTapZoomFactor = 3;
-
-/// Default number of levels that the double tap gesture iterates between.
-static const NSUInteger kDefaultDoubleTapLevels = 3;
-
 /// Number of pixels per checkerboard square, must be a power of two.
 static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
-- (instancetype)initWithFrame:(CGRect)frame {
-  return [self initWithFrame:frame screen:[UIScreen mainScreen]];
-}
+- (instancetype)initWithFrame:(CGRect)frame
+       contentLocationManager:(id<LTContentLocationManager>)contentLocationManager
+               renderingModel:(LTViewRenderingModel *)renderingModel {
+  LTParameterAssert(renderingModel.contentTexture.size == contentLocationManager.contentSize,
+                    @"Size of content texture must match content size provided by content location "
+                    "manager");
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-  if (self = [super initWithCoder:aDecoder]) {
-    [self setDefaultsWithScreen:[UIScreen mainScreen]];
-  }
-  return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame screen:(UIScreen *)screen {
   if (self = [super initWithFrame:frame]) {
-    [self setDefaultsWithScreen:screen];
+    _defaultContentScaleFactor = contentLocationManager.contentScaleFactor;
+    [super setContentScaleFactor:self.defaultContentScaleFactor];
+    self.pixelsPerCheckerboardSquare = kDefaultPixelsPerCheckerboardSquare * 2;
+    [self setupWithContext:renderingModel.context
+            contentTexture:renderingModel.contentTexture
+    contentLocationManager:contentLocationManager];
   }
   return self;
-}
-
-- (void)setDefaultsWithScreen:(UIScreen *)screen {
-  self.screen = screen;
-  self.maxZoomScale = kDefaultMaxZoomScale;
-  self.doubleTapLevels = kDefaultDoubleTapLevels;
-  self.doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
-  self.pixelsPerCheckerboardSquare = kDefaultPixelsPerCheckerboardSquare * 2;
 }
 
 - (void)setupWithContext:(LTGLContext *)context contentTexture:(LTTexture *)texture
-                   state:(LTViewNavigationState *)state {
+  contentLocationManager:(id<LTContentLocationManager>)contentLocationManager {
   LTParameterAssert(context);
   LTParameterAssert(texture);
-  if (self.context) {
-    return;
-  }
+
   self.context = context;
   self.contentTexture = texture;
   self.contentRectToUpdate = CGRectNull;
+  self.contentLocationManager = contentLocationManager;
   [self createEaglView];
-  [self createNavigationViewWithState:state];
   [self createContentFbo];
   [self createRectDrawer];
   [self createBackgroundDrawer];
@@ -166,37 +156,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.eaglView.multipleTouchEnabled = YES;
 
-  if (!self.navigationView) {
-    [self addSubview:self.eaglView];
-  } else {
-    [self insertSubview:self.eaglView aboveSubview:self.navigationView];
-  }
+  [self addSubview:self.eaglView];
 
   self.mostRecentlyUsedEaglViewFrame = self.bounds;
-}
-
-- (void)createNavigationViewWithState:(LTViewNavigationState *)state {
-  self.navigationView = [[LTViewNavigationView alloc] initWithFrame:self.bounds
-                                                        contentSize:self.contentTexture.size
-                                                              state:state screen:self.screen];
-  self.navigationView.delegate = self;
-  self.navigationView.mode = self.navigationMode;
-  self.navigationView.contentInset = self.contentInset;
-  self.navigationView.maxZoomScale = self.maxZoomScale;
-  self.navigationView.doubleTapLevels = self.doubleTapLevels;
-  self.navigationView.doubleTapZoomFactor = self.doubleTapZoomFactor;
-  
-  self.navigationView.autoresizingMask =
-      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  
-  [self insertSubview:self.navigationView belowSubview:self.eaglView];
-  [self updateNavigationGestureRecognizers];
-}
-
-- (void)updateNavigationGestureRecognizers {
-  self.panGestureRecognizer = self.navigationView.panGestureRecognizer;
-  self.pinchGestureRecognizer = self.navigationView.pinchGestureRecognizer;
-  self.doubleTapGestureRecognizer = self.navigationView.doubleTapGestureRecognizer;
 }
 
 - (void)createContentFbo {
@@ -228,7 +190,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)createPixelGrid {
   self.pixelGrid = [[LTViewPixelGrid alloc] initWithContentSize:self.contentSize];
-  self.pixelGrid.maxZoomScale = self.maxZoomScale;
+  self.pixelGrid.maxZoomScale = self.contentLocationManager.maxZoomScale;
 }
 
 - (void)registerNotifications {
@@ -248,7 +210,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.rectDrawer = nil;
   self.contentFbo = nil;
   self.contentTexture = nil;
-  self.navigationView = nil;
   self.eaglView = nil;
   self.context = nil;
 }
@@ -290,11 +251,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   _eaglView = eaglView;
 }
 
-- (void)setNavigationView:(LTViewNavigationView *)navigationView {
-  [_navigationView removeFromSuperview];
-  _navigationView = navigationView;
-}
-
 #pragma mark -
 #pragma mark Content Texture
 #pragma mark -
@@ -305,7 +261,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self createContentFbo];
   [self createRectDrawer];
   [self createPixelGrid];
-  self.navigationView.contentSize = self.contentTexture.size;
+
+  if (self.contentLocationManager.contentSize != self.contentTexture.size) {
+    self.contentLocationManager.contentSize = self.contentTexture.size;
+  }
 }
 
 - (void)detachFbo {
@@ -347,11 +306,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 }
 
-- (void)navigationGestureRecognizersDidChangeFrom:(NSArray __unused *)oldRecognizers
-                                               to:(NSArray __unused *)newRecognizers {
-  [self updateNavigationGestureRecognizers];
-}
-
 #pragma mark -
 #pragma mark LTEAGLViewDelegate
 #pragma mark -
@@ -390,7 +344,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
   // Workaround for the iPhone 6 Plus bogus detection of pan gesture.
-  [self.navigationView cancelBogusScrollviewPanGesture];
+  [self.contentLocationManager cancelBogusScrollviewPanGesture];
 
   [super touchesBegan:touches withEvent:event];
   if (self.forwardCallsToTouchDelegate) {
@@ -452,14 +406,17 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   self.isForwardTouchesToDelegateLocked = NO;
 }
 
+- (LTViewNavigationMode)navigationMode {
+  return self.contentLocationManager.navigationMode;
+}
+
 - (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
   if (self.isNavigationModeLocked) {
     return;
   }
 
   self.isNavigationModeLocked = YES;
-  _navigationMode = navigationMode;
-  self.navigationView.mode = navigationMode;
+  self.contentLocationManager.navigationMode = navigationMode;
   self.forwardCallsToTouchDelegate = [self shouldForwardTouchEvents];
   self.isNavigationModeLocked = NO;
 }
@@ -518,10 +475,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   [self.context clearWithColor:self.backgroundColor.lt_ltVector];
   
-  // Get the visible content rectangle, in pixels.
-  CGRect visibleContentRect = self.navigationView.visibleContentRect;
-  visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
-  visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
+  // Get the visible content rectangle, in floating-point pixel units of the content coordinate
+  // system.
+  CGRect visibleContentRect = self.visibleContentRect;
   
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Set the scissor box to draw only inside the visible content rect.
@@ -597,10 +553,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // the correct value. The interpolation method of the content texture is set anyway, and there is
   // no need to restore it, this avoids unnecessary updates to this texture.
   self.contentTexture.magFilterInterpolation =
-      [self textureInterpolationForZoomScale:self.navigationView.zoomScale];
+      [self textureInterpolationForZoomScale:self.zoomScale];
   [textureToDraw executeAndPreserveParameters:^{
-    textureToDraw.magFilterInterpolation =
-        [self textureInterpolationForZoomScale:self.navigationView.zoomScale];
+    textureToDraw.magFilterInterpolation = [self textureInterpolationForZoomScale:self.zoomScale];
     
     [self.context executeAndPreserveState:^(LTGLContext *) {
       // If the draw delegate supports the drawProcessedContent mechanism, use it to draw.
@@ -647,7 +602,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
   
-  UIEdgeInsets insets = self.navigationView.contentInset * self.contentScaleFactor;
+  UIEdgeInsets insets = self.contentLocationManager.contentInset * self.contentScaleFactor;
   CGRect paddingBox = UIEdgeInsetsInsetRect(self.framebufferBounds, insets);
   CGRect box = CGRectIntersection(visibleBox, paddingBox);
   
@@ -736,67 +691,15 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
-#pragma mark Navigation Gesture Recognizers
-#pragma mark -
-
-- (void)setPanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
-  if (panGestureRecognizer == _panGestureRecognizer) {
-    return;
-  }
-
-  if (_panGestureRecognizer) {
-    [self.eaglView removeGestureRecognizer:_panGestureRecognizer];
-  }
-  _panGestureRecognizer = panGestureRecognizer;
-  if (_panGestureRecognizer) {
-    [self.eaglView addGestureRecognizer:_panGestureRecognizer];
-  }
-}
-
-- (void)setPinchGestureRecognizer:(UIPinchGestureRecognizer *)pinchGestureRecognizer {
-  if (pinchGestureRecognizer == _pinchGestureRecognizer) {
-    return;
-  }
-
-  if (_pinchGestureRecognizer) {
-    [self.eaglView removeGestureRecognizer:_pinchGestureRecognizer];
-  }
-  _pinchGestureRecognizer = pinchGestureRecognizer;
-  if (_pinchGestureRecognizer) {
-    [self.eaglView addGestureRecognizer:_pinchGestureRecognizer];
-  }
-}
-
-- (void)setDoubleTapGestureRecognizer:(UITapGestureRecognizer *)doubleTapGestureRecognizer {
-  if (doubleTapGestureRecognizer == _doubleTapGestureRecognizer) {
-    return;
-  }
-
-  if (_doubleTapGestureRecognizer) {
-    [self.eaglView removeGestureRecognizer:_doubleTapGestureRecognizer];
-  }
-  _doubleTapGestureRecognizer = doubleTapGestureRecognizer;
-  if (_doubleTapGestureRecognizer) {
-    [self.eaglView addGestureRecognizer:_doubleTapGestureRecognizer];
-  }
-}
-
-#pragma mark -
 #pragma mark Properties
 #pragma mark -
 
 - (CGFloat)contentScaleFactor {
-  return self.screen.nativeScale;
+  return self.defaultContentScaleFactor;
 }
 
 - (void)setContentScaleFactor:(CGFloat __unused)contentScaleFactor {
-  [super setContentScaleFactor:self.screen.nativeScale];
-}
-
-- (void)setMaxZoomScale:(CGFloat)maxZoomScale {
-  _maxZoomScale = MAX(0, maxZoomScale);
-  self.pixelGrid.maxZoomScale = maxZoomScale;
-  self.navigationView.maxZoomScale = maxZoomScale;
+  // Disallow updating of the content scale factor after initialization.
 }
 
 - (LTTexture *)textureForBackground {
@@ -813,59 +716,23 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self.backgroundTexture clearWithColor:backgroundColor.lt_ltVector];
 }
 
-#pragma mark -
-#pragma mark NavigationView Passthrough Properties
-#pragma mark -
-
-- (void)setContentInset:(UIEdgeInsets)contentInset {
-  _contentInset = contentInset;
-  self.navigationView.contentInset = contentInset;
+- (id<LTContentLocationProvider>)contentLocationProvider {
+  return self.contentLocationManager;
 }
 
-- (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
-  _minZoomScaleFactor = minZoomScaleFactor;
-  self.navigationView.minZoomScaleFactor = minZoomScaleFactor;
-}
-
-- (void)setDoubleTapLevels:(NSUInteger)doubleTapLevels {
-  _doubleTapLevels = doubleTapLevels;
-  self.navigationView.doubleTapLevels = doubleTapLevels;
-}
-
-- (void)setDoubleTapZoomFactor:(CGFloat)doubleTapZoomFactor {
-  _doubleTapZoomFactor = doubleTapZoomFactor;
-  self.navigationView.doubleTapZoomFactor = doubleTapZoomFactor;
-}
-
-- (LTViewNavigationState *)navigationState {
-  return self.navigationView.state;
-}
-
-- (void)navigateToStateOfView:(LTView *)view {
-  if (view.bounds.size == self.bounds.size && view.contentSize == self.contentSize) {
-    [self.navigationView navigateToState:view.navigationState];
-  }
-}
-
-- (void)zoomToContentRect:(CGRect)rect animated:(BOOL)animated {
-  rect.origin = rect.origin / self.contentScaleFactor;
-  rect.size = rect.size / self.contentScaleFactor;
-  [self.navigationView zoomToRect:rect animated:animated];
+- (UIView *)gestureView {
+  return self.eaglView;
 }
 
 - (CGRect)visibleContentRect {
-  CGRect visibleContentRect = self.navigationView.visibleContentRect;
+  CGRect visibleContentRect = self.contentLocationManager.visibleContentRect;
   visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
   visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
   return visibleContentRect;
 }
 
 - (CGFloat)zoomScale {
-  return self.navigationView.zoomScale;
-}
-
-- (UIView *)viewForContentCoordinates {
-  return self.navigationView.viewForContentCoordinates;
+  return self.contentLocationManager.zoomScale;
 }
 
 @end
