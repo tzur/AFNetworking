@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */; };
+		8351FB2B1CFC230100DEB376 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8351FB2A1CFC230100DEB376 /* libLTKit.a */; };
 		836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97511CD75586001962A0 /* libSpecta.a */; };
 		836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F972F1CD75504001962A0 /* libExpecta.a */; };
 		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
@@ -247,6 +248,7 @@
 		832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		8351F9AB1CF6EDD800DEB376 /* NSErrorCodes+Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Camera.h"; sourceTree = "<group>"; };
 		8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Camera.m"; sourceTree = "<group>"; };
+		8351FB2A1CFC230100DEB376 /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/Camera-cqwiemxlmbfioqhculfcrzynbcwv/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
 				83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */,
 				836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */,
+				8351FB2B1CFC230100DEB376 /* libLTKit.a in Frameworks */,
 				836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */,
 				836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */,
 				836C65D01CD75F2700BE4496 /* libextobjc_iOS.a in Frameworks */,
@@ -369,6 +372,7 @@
 				832F97521CD75591001962A0 /* OCMock.xcodeproj */,
 				832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */,
 				832F973D1CD75586001962A0 /* Specta.xcodeproj */,
+				8351FB2A1CFC230100DEB376 /* libLTKit.a */,
 				836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */,
 				83B72D191CDA3F1E0090C0BF /* opencv2.framework */,
 			);
