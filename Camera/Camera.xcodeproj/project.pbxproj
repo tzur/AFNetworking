@@ -21,8 +21,6 @@
 		83B730661CDB567B0090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730651CDB567B0090C0BF /* AssetsLibrary.framework */; };
 		83B730681CDB56870090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730671CDB56870090C0BF /* CoreMedia.framework */; };
 		83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
-		83FF06DF1CD7266B00383C6B /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06DE1CD7266B00383C6B /* Camera.mm */; };
-		83FF06F51CD7272F00383C6B /* CameraSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06F41CD7272F00383C6B /* CameraSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,8 +261,6 @@
 		83B730651CDB567B0090C0BF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		83B730671CDB56870090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		83FF06D91CD7266B00383C6B /* libCamera.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCamera.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		83FF06DC1CD7266B00383C6B /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		83FF06DE1CD7266B00383C6B /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
 		83FF06E61CD7270300383C6B /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		83FF06E81CD7270300383C6B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		83FF06E91CD7270300383C6B /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -272,7 +268,6 @@
 		83FF06EC1CD7270300383C6B /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		83FF06F21CD7272F00383C6B /* CameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		83FF06F41CD7272F00383C6B /* CameraSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraSpec.mm; sourceTree = "<group>"; };
 		83FF06F61CD7272F00383C6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -461,8 +456,6 @@
 			children = (
 				8351F9901CF6EDCE00DEB376 /* Base */,
 				8395AE4E1CFDCA2C00C91C9E /* Utils */,
-				83FF06DC1CD7266B00383C6B /* Camera.h */,
-				83FF06DE1CD7266B00383C6B /* Camera.mm */,
 				83B72D801CDA44B40090C0BF /* Supporting Files */,
 			);
 			path = Camera;
@@ -503,7 +496,6 @@
 			isa = PBXGroup;
 			children = (
 				8395AE6C1CFDCA4000C91C9E /* Tests */,
-				83FF06F41CD7272F00383C6B /* CameraSpec.mm */,
 				83B72D811CDA44B80090C0BF /* Supporting Files */,
 			);
 			path = CameraTests;
@@ -813,7 +805,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83FF06DF1CD7266B00383C6B /* Camera.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
 			);
@@ -824,7 +815,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */,
-				83FF06F51CD7272F00383C6B /* CameraSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
