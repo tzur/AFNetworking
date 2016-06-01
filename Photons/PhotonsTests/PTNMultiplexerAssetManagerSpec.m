@@ -76,13 +76,13 @@ context(@"album fetching", ^{
 context(@"asset fetching", ^{
   it(@"should correctly forward asset requests", ^{
     NSURL *url = PTNCreateURL(kSchemeA, nil, nil);
-    expect([multiplexerManager fetchAssetWithURL:url]).to.equal(returnSignalA);
-    OCMVerify([managerA fetchAssetWithURL:url]);
+    expect([multiplexerManager fetchDescriptorWithURL:url]).to.equal(returnSignalA);
+    OCMVerify([managerA fetchDescriptorWithURL:url]);
   });
 
   it(@"should error on asset requests with unconfigured scheme", ^{
     NSURL *url = PTNCreateURL(kSchemeD, nil, nil);
-    expect([multiplexerManager fetchAssetWithURL:url]).to.matchError(^BOOL(NSError *error){
+    expect([multiplexerManager fetchDescriptorWithURL:url]).to.matchError(^BOOL(NSError *error){
       return error.code == PTNErrorCodeUnrecognizedURLScheme;
     });
   });

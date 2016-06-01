@@ -116,7 +116,7 @@ context(@"asset fetching", ^{
   it(@"should fetch asset with URL", ^{
     NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/foo.jpg")];
 
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       PTNFileSystemFileFromString(@"baz/foo.jpg")
     ]);
   });
@@ -124,7 +124,7 @@ context(@"asset fetching", ^{
   it(@"should error on non-existing asset", ^{
     NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetNotFound;
     });
   });
@@ -132,7 +132,7 @@ context(@"asset fetching", ^{
   it(@"should error on directory URL", ^{
     NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -140,7 +140,7 @@ context(@"asset fetching", ^{
   it(@"should error on invalid URL", ^{
     NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -148,7 +148,7 @@ context(@"asset fetching", ^{
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
       NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
-      RACSignal *values = [manager fetchAssetWithURL:url];
+      RACSignal *values = [manager fetchDescriptorWithURL:url];
 
       expect(values).will.sendValuesWithCount(1);
       expect(values).willNot.deliverValuesOnMainThread();

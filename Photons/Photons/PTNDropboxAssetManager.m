@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Asset fetching
 #pragma mark -
 
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (url.ptn_dropboxURLType != PTNDropboxURLTypeAsset) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
