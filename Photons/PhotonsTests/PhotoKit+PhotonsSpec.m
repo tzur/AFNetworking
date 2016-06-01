@@ -21,8 +21,8 @@ context(@"asset descriptor", ^{
     expect(asset.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beTruthy();
   });
 
-    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
   it(@"should not reveal delete change capabilities when the underlying asset disallows it", ^{
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub([asset canPerformEditOperation:PHAssetEditOperationDelete]).andReturn(NO);
 
     expect(asset.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beFalsy();
