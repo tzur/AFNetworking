@@ -114,7 +114,7 @@ context(@"asset fetching", ^{
     NSURL *url = [NSURL ptn_dropboxAssetURLWithEntry:[PTNDropboxEntry entryWithPath:kPath]];
     [dropboxClient serveMetadataAtPath:kPath revision:nil withMetadata:metadata];
 
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata]
     ]);
   });
@@ -125,7 +125,7 @@ context(@"asset fetching", ^{
                                                                         andRevision:kRevision]];
     [dropboxClient serveMetadataAtPath:kPath revision:kRevision withMetadata:metadata];
 
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata]
     ]);
   });
@@ -135,7 +135,7 @@ context(@"asset fetching", ^{
     [dropboxClient serveMetadataAtPath:kPath revision:nil
                              withError:[NSError lt_errorWithCode:1337]];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetLoadingFailed;
     });
   });
@@ -143,7 +143,7 @@ context(@"asset fetching", ^{
   it(@"should error on invalid URL", ^{
     NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -153,7 +153,7 @@ context(@"asset fetching", ^{
     [dropboxClient serveMetadataAtPath:kPath revision:nil
                              withError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeNotAuthorized;
     });
   });

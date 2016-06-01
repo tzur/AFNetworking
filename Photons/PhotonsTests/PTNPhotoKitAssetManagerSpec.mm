@@ -415,7 +415,7 @@ context(@"asset fetching", ^{
 
   it(@"should fetch asset with URL", ^{
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[asset]);
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[asset]);
   });
 
   it(@"should send new asset upon update", ^{
@@ -425,7 +425,7 @@ context(@"asset fetching", ^{
     id change = PTNPhotoKitCreateChangeForObjectDetails(changeDetails);
 
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-    LLSignalTestRecorder *recorder = [[manager fetchAssetWithURL:url] testRecorder];
+    LLSignalTestRecorder *recorder = [[manager fetchDescriptorWithURL:url] testRecorder];
 
     [observer sendChange:change];
 
@@ -434,7 +434,7 @@ context(@"asset fetching", ^{
 
   it(@"should not cache assets", ^{
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-    RACSignal *sharedSignal = [manager fetchAssetWithURL:url];
+    RACSignal *sharedSignal = [manager fetchDescriptorWithURL:url];
 
     expect(sharedSignal).will.sendValues(@[asset]);
 
@@ -446,7 +446,7 @@ context(@"asset fetching", ^{
 
   it(@"should fetch album asset with URL", ^{
     NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
-    expect([manager fetchAssetWithURL:url]).will.sendValues(@[albumAsset]);
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[albumAsset]);
   });
 
   it(@"should send new album asset upon update", ^{
@@ -456,7 +456,7 @@ context(@"asset fetching", ^{
     id change = PTNPhotoKitCreateChangeForObjectDetails(changeDetails);
 
     NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
-    LLSignalTestRecorder *recorder = [[manager fetchAssetWithURL:url] testRecorder];
+    LLSignalTestRecorder *recorder = [[manager fetchDescriptorWithURL:url] testRecorder];
 
     [observer sendChange:change];
 
@@ -465,7 +465,7 @@ context(@"asset fetching", ^{
 
   it(@"should not cache album assets", ^{
     NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:albumAsset];
-    RACSignal *sharedSignal = [manager fetchAssetWithURL:url];
+    RACSignal *sharedSignal = [manager fetchDescriptorWithURL:url];
 
     expect(sharedSignal).will.sendValues(@[albumAsset]);
 
@@ -478,7 +478,7 @@ context(@"asset fetching", ^{
   it(@"should error on non-existing asset", ^{
     id newAsset = PTNPhotoKitCreateAsset(@"bar");
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:newAsset];
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetNotFound;
     });
   });
@@ -486,7 +486,7 @@ context(@"asset fetching", ^{
   it(@"should error on meta album URL", ^{
     NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -494,7 +494,7 @@ context(@"asset fetching", ^{
   it(@"should error on invalid URL", ^{
     NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });
@@ -504,7 +504,7 @@ context(@"asset fetching", ^{
 
     authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
 
-    expect([manager fetchAssetWithURL:url]).will.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeNotAuthorized;
     });
   });
@@ -513,7 +513,7 @@ context(@"asset fetching", ^{
     it(@"should not operate on the main thread", ^{
       NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
       
-      RACSignal *values = [manager fetchAssetWithURL:url];
+      RACSignal *values = [manager fetchDescriptorWithURL:url];
       
       expect(values).will.sendValuesWithCount(1);
       expect(values).willNot.deliverValuesOnMainThread();

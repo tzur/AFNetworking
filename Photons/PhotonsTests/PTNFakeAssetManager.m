@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self.albumRequests[url];
 }
 
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (!self.descriptorRequests[url]) {
     self.descriptorRequests[url] = [RACSubject subject];
   }

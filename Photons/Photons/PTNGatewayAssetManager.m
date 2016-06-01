@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   return descriptor.albumSignal;
 }
 
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   PTNGatewayAlbumDescriptor * _Nullable descriptor = [self descriptorForURL:url];
   if (!descriptor) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];

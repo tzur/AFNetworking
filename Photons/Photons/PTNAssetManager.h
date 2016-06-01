@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<PTNAlbumChangeset>.
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url;
 
-/// Fetches the asset identified by the given \url, and continues to stream updates about the asset
-/// in the returned signal.
+/// Fetches the \c PTNDescriptor of the asset identified by the given \url, and continues to stream
+/// updates about the asset in the returned signal.
 ///
 /// The returned signal sends \c id<PTNDescriptor> objects that represent the asset, on an arbitrary
 /// thread. The signal can be infinite or contain a single value, depending on the capabilities of
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///     be sent upon fetch, and then the signal will complete.
 ///
 /// @return RACSignal<id<PTNDescriptor>>.
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url;
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url;
 
 /// Fetches the image which is backed by the given \c descriptor. For asset descriptors, the
 /// returned image is the image represented by the asset. For album descriptors, the returned image

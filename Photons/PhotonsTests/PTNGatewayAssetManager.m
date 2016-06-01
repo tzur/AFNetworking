@@ -54,7 +54,7 @@ context(@"asset fetching", ^{
   it(@"should fetch asset of registered for asset", ^{
     NSURL *url = fooDescriptor.ptn_identifier;
 
-    expect([manager fetchAssetWithURL:url]).to.sendValues(@[fooDescriptor]);
+    expect([manager fetchDescriptorWithURL:url]).to.sendValues(@[fooDescriptor]);
   });
 
   it(@"should return error for invalid URLs", ^{
@@ -68,7 +68,7 @@ context(@"asset fetching", ^{
   it(@"should return error for valid unregistered URLs", ^{
     NSURL *url = [NSURL ptn_gatewayAlbumURLWithKey:@"baz"];
 
-    expect([manager fetchAssetWithURL:url]).to.matchError(^BOOL(NSError *error) {
+    expect([manager fetchDescriptorWithURL:url]).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
     });
   });

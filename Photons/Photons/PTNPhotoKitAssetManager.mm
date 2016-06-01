@@ -233,7 +233,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Asset fetching
 #pragma mark -
 
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)] &&
       ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] &&
       ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)]) {
@@ -317,36 +317,6 @@ NS_ASSUME_NONNULL_BEGIN
     case PTNPhotoKitURLTypeMetaAlbumType:
       return url.ptn_photoKitMetaAlbumType != nil;
   }
-}
-
-- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
-  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)] &&
-      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)]) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
-  }
-
-  return [[self fetchFetchResultWithURL:url]
-      tryMap:^PHObject *(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
-        if (!fetchResult.count) {
-          switch (url.ptn_photoKitURLType.value) {
-            case PTNPhotoKitURLTypeAsset:
-              if (errorPtr) {
-                *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url];
-              }
-              return nil;
-            case PTNPhotoKitURLTypeAlbum:
-              if (errorPtr) {
-                *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url];
-              }
-              return nil;
-            default:
-              // Should never happen, as this handles only assets and albums.
-              LTAssert(NO, @"Unrecognized photoKitURLType: %@", url.ptn_photoKitURLType);
-          }
-        }
-        
-        return fetchResult.firstObject;
-      }];
 }
 
 - (RACSignal *)fetchAssetForDescriptor:(id<PTNDescriptor>)descriptor {

@@ -33,12 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Asset fetching
 #pragma mark -
 
-- (RACSignal *)fetchAssetWithURL:(NSURL *)url {
+- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   id<PTNAssetManager> assetManager = self.mapping[url.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme url:url]];
   }
-  return [assetManager fetchAssetWithURL:url];
+  return [assetManager fetchDescriptorWithURL:url];
 }
 
 #pragma mark -
