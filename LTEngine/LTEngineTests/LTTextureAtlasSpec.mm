@@ -19,31 +19,35 @@ context(@"initialization", ^{
   });
 
   it(@"should initialize with atlas texture and image areas correctly", ^{
-    NSDictionary<NSString *, NSValue *> *areas = @{@"1": $(CGRectMake(0, 0, 1, 1)),
-                                                   @"2": $(CGRectMake(1, 1, 1, 1))};
+    lt::unordered_map<NSString *, CGRect> areas{{@"1", CGRectMake(0, 0, 1, 1)},
+                                                {@"2", CGRectMake(1, 1, 1, 1)}};
+
     LTTextureAtlas *textureAtlas =
         [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:areas];
 
     expect(textureAtlas.texture).to.beIdenticalTo(texture);
-    expect(textureAtlas.areas).to.beIdenticalTo(areas);
+    expect(textureAtlas.areas == areas).to.beTruthy();
   });
 
   it(@"should raise when initializing with an empty areas dictionary", ^{
     expect(^{
-      LTTextureAtlas __unused *textureAtlas = [[LTTextureAtlas alloc] initWithAtlasTexture:texture
-                                                                                imageAreas:@{}];
+      LTTextureAtlas __unused *textureAtlas =
+          [[LTTextureAtlas alloc] initWithAtlasTexture:texture
+                                            imageAreas:lt::unordered_map<NSString *, CGRect>{}];
+
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should raise when passing an image area without positive width or height", ^{
-    NSDictionary<NSString *, NSValue *> *zeroWidthAreas = @{@"1": $(CGRectMake(0, 0, 0, 1))};
+    lt::unordered_map<NSString *, CGRect> zeroWidthAreas{{@"1", CGRectMake(0, 0, 0, 1)}};
 
     expect(^{
       LTTextureAtlas __unused *textureAtlas =
           [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:zeroWidthAreas];
     }).to.raise(NSInvalidArgumentException);
 
-    NSDictionary<NSString *, NSValue *> *zeroHeightAreas = @{@"1": $(CGRectMake(0, 0, 1, 0))};
+    lt::unordered_map<NSString *, CGRect> zeroHeightAreas{{@"1", CGRectMake(0, 0, 1, 0)}};
+    
     expect(^{
       LTTextureAtlas __unused *textureAtlas =
           [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:zeroHeightAreas];
@@ -51,16 +55,14 @@ context(@"initialization", ^{
   });
 
   it(@"should raise when passing an image area that is outside of the atlas texture bounds", ^{
-    NSDictionary<NSString *, NSValue *> *outOfBoundsWidthAreas =
-        @{@"1": $(CGRectMake(0, 0, 3, 1))};
+    lt::unordered_map<NSString *, CGRect> outOfBoundsWidthAreas{{@"1", CGRectMake(0, 0, 3, 1)}};
 
     expect(^{
       LTTextureAtlas __unused *textureAtlas =
           [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:outOfBoundsWidthAreas];
     }).to.raise(NSInvalidArgumentException);
 
-    NSDictionary<NSString *, NSValue *> *outOfBoundsHeightAreas =
-        @{@"1": $(CGRectMake(0, 0, 1, 3))};
+    lt::unordered_map<NSString *, CGRect> outOfBoundsHeightAreas{{@"1", CGRectMake(0, 0, 1, 3)}};
 
     expect(^{
       LTTextureAtlas __unused *textureAtlas =
