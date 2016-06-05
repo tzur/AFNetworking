@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if the item is selected.
 @property (readonly, nonatomic) BOOL selected;
 
-/// \c Yes if the view should be hidden.
+/// \c YES if the view should be hidden.
 @property (readonly, nonatomic) BOOL hidden;
 
 /// List of subitems of this item. \c nil value means the item has no subitems.

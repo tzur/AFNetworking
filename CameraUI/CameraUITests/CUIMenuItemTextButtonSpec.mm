@@ -1,0 +1,74 @@
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Reuven Siman Tov.
+
+#import "CUIMenuItemTextButton.h"
+
+#import "CUISimpleMenuItemViewModel.h"
+#import "CUISharedTheme.h"
+
+SpecBegin(CUIMenuItemTextButton)
+
+static NSString * const kTitle = @"Title text";
+static UIColor * const kTitleColor = [UIColor greenColor];
+static UIColor * const kTitleHighlightedColor = [UIColor redColor];
+static UIFont * const kTitleFont = [UIFont italicSystemFontOfSize:25];
+
+__block CUIMenuItemTextButton *button;
+__block CUISimpleMenuItemViewModel *model;
+__block id themeMock;
+
+beforeEach(^{
+  themeMock = LTMockProtocol(@protocol(CUITheme));
+  OCMStub([themeMock titleColor]).andReturn(kTitleColor);
+  OCMStub([themeMock titleHighlightedColor]).andReturn(kTitleHighlightedColor);
+  OCMStub([themeMock titleFont]).andReturn(kTitleFont);
+  model = [[CUISimpleMenuItemViewModel alloc] init];
+  model.title = kTitle;
+  button = [[CUIMenuItemTextButton alloc] initWithModel:model];
+});
+
+it(@"should raise an exception when initialized with nil model", ^{
+  id<CUIMenuItemViewModel> model = nil;
+  expect(^{
+    CUIMenuItemTextButton __unused *button = [[CUIMenuItemTextButton alloc] initWithModel:model];
+  }).to.raise(NSInvalidArgumentException);
+});
+
+it(@"should set the model property correctly", ^{
+  expect(button.model).to.beIdenticalTo(model);
+});
+
+it(@"should update the text property according to the model", ^{
+  expect(button.currentTitle).will.equal(kTitle);
+  model.title = @"New title";
+  expect(button.currentTitle).will.equal(@"New title");
+});
+
+it(@"should update the selected property according to the model", ^{
+  model.selected = YES;
+  expect(button.selected).will.equal(YES);
+  model.selected = NO;
+  expect(button.selected).will.equal(NO);
+});
+
+it(@"should update the hidden property according to the model", ^{
+  model.hidden = YES;
+  expect(button.hidden).will.equal(YES);
+  model.hidden = NO;
+  expect(button.hidden).will.equal(NO);
+});
+
+it(@"should set the text format according to the shared theme", ^{
+  expect(button.titleLabel.textColor).to.equal(kTitleColor);
+  expect([button titleColorForState:UIControlStateSelected]).to.equal(kTitleHighlightedColor);
+  expect([button titleColorForState:UIControlStateHighlighted]).to.equal(kTitleHighlightedColor);
+  expect(button.titleLabel.font).to.equal(kTitleFont);
+});
+
+it(@"should call didTap when the button is tapped", ^{
+  expect(model.didTapCounter).to.equal(0);
+  [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+  expect(model.didTapCounter).will.equal(1);
+});
+
+SpecEnd
