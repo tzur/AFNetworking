@@ -493,6 +493,9 @@
 		5004CAC91CC92BD400D1CE7A /* LTControlPointModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 5004CAC71CC92BD400D1CE7A /* LTControlPointModel.h */; };
 		5004CACA1CC92BD400D1CE7A /* LTControlPointModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004CAC81CC92BD400D1CE7A /* LTControlPointModel.mm */; };
 		5004CAEA1CC92C8E00D1CE7A /* LTControlPointModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004CAE91CC92C8E00D1CE7A /* LTControlPointModelSpec.mm */; };
+		5004CAED1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5004CAEB1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h */; };
+		5004CAEE1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004CAEC1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm */; };
+		5004CAF01CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004CAEF1CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm */; };
 		500677471C69BFE7002C6A24 /* LTContinuousParametricValueProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 500677451C69BFE7002C6A24 /* LTContinuousParametricValueProvider.h */; };
 		5006776C1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 5006776A1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h */; };
 		5006776D1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006776B1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm */; };
@@ -1863,6 +1866,9 @@
 		5004CAC71CC92BD400D1CE7A /* LTControlPointModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTControlPointModel.h; sourceTree = "<group>"; };
 		5004CAC81CC92BD400D1CE7A /* LTControlPointModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTControlPointModel.mm; sourceTree = "<group>"; };
 		5004CAE91CC92C8E00D1CE7A /* LTControlPointModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTControlPointModelSpec.mm; sourceTree = "<group>"; };
+		5004CAEB1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizedObjectConstructor.h; sourceTree = "<group>"; };
+		5004CAEC1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectConstructor.mm; sourceTree = "<group>"; };
+		5004CAEF1CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizedObjectConstructorSpec.mm; sourceTree = "<group>"; };
 		500677451C69BFE7002C6A24 /* LTContinuousParametricValueProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTContinuousParametricValueProvider.h; sourceTree = "<group>"; };
 		5006776A1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFloatSetParametricValueProvider.h; sourceTree = "<group>"; };
 		5006776B1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFloatSetParametricValueProvider.mm; sourceTree = "<group>"; };
@@ -3211,6 +3217,8 @@
 				503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */,
 				2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */,
 				2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */,
+				5004CAEB1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h */,
+				5004CAEC1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm */,
 			);
 			name = Spline;
 			sourceTree = "<group>";
@@ -3223,6 +3231,7 @@
 				2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */,
 				2520D4101C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.h */,
 				2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */,
+				5004CAEF1CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm */,
 			);
 			name = Spline;
 			sourceTree = "<group>";
@@ -4586,6 +4595,7 @@
 				500677D21C6A1A4D002C6A24 /* LTBrushGeometryProvider.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				85F3FD701CC677E700E5753E /* LTReshapeBrushParams.h in Headers */,
+				5004CAED1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h in Headers */,
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
 				8B871FF51924A75F00517F2E /* LTSplitComplexMat.h in Headers */,
@@ -5496,6 +5506,7 @@
 				288419401BD3A04A00B09F6B /* LTTextureArchiveMetadata.mm in Sources */,
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
+				5004CAEE1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm in Sources */,
 				038DDD6D19EFBEB80018F9E4 /* LTCLAHEProcessor.mm in Sources */,
 				502B1CC419FA91FB00985F30 /* LTQuadMapping.mm in Sources */,
 				03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */,
@@ -5832,6 +5843,7 @@
 				2884CDAC1B176EC200A58EE4 /* LTImageTIFFCompressorSpec.mm in Sources */,
 				03734AC2188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm in Sources */,
 				28C207B21AEF6F51007214A5 /* LTTextureJpegArchiverSpec.mm in Sources */,
+				5004CAF01CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm in Sources */,
 				8BB92F9B1906601B00954124 /* LTInverseTransformSamplerSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 				8BA8229B198805D300FBE68E /* LTJSONSerializationAdapterSpec.mm in Sources */,
