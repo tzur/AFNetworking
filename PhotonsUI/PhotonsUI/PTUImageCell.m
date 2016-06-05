@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Grouping of both title and subtitle labels for layout purposes.
 @property (readonly, nonatomic) UIView *labelsView;
 
+/// Manual disposal handle for the signals of the \c viewModel.
+@property (strong, nonatomic) RACCompoundDisposable *viewModelDisposable;
+
 @end
 
 @implementation PTUImageCell
@@ -32,13 +35,16 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (void)dealloc {
+  [self.viewModelDisposable dispose];
+}
+
 #pragma mark -
 #pragma mark Setup
 #pragma mark -
 
 - (void)setup {
   self.backgroundColor = [UIColor darkGrayColor];
-  [self bindViewModel];
   [self setupImageView];
   [self setupLabels];
 }
@@ -153,10 +159,48 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark View model
 #pragma mark -
 
-- (void)bindViewModel {
-  RAC(self, imageView.image) = RACObserve(self, viewModel.image);
-  RAC(self, titleLabel.text) = RACObserve(self, viewModel.title);
-  RAC(self, subtitleLabel.text) = RACObserve(self, viewModel.subtitle);
+- (void)setViewModel:(nullable id<PTUImageCellViewModel>)viewModel {
+  [self.viewModelDisposable dispose];
+
+  if (!viewModel) {
+    self.imageView.image = nil;
+    self.titleLabel.text = nil;
+    self.subtitleLabel.text = nil;
+    return;
+  }
+
+  self.viewModelDisposable = [RACCompoundDisposable compoundDisposable];
+
+  @weakify(self)
+  [self.viewModelDisposable addDisposable:[[viewModel.imageSignal
+      deliverOnMainThread]
+      subscribeNext:^(UIImage *image) {
+        @strongify(self)
+        self.imageView.image = image;
+      } error:^(NSError __unused *error) {
+        @strongify(self)
+        self.imageView.image = nil;
+      }]];
+
+  [self.viewModelDisposable addDisposable:[[viewModel.titleSignal
+      deliverOnMainThread]
+      subscribeNext:^(NSString *title) {
+        @strongify(self)
+        self.titleLabel.text = title;
+      } error:^(NSError __unused *error) {
+        @strongify(self)
+        self.titleLabel.text = nil;
+      }]];
+
+  [self.viewModelDisposable addDisposable:[[viewModel.subtitleSignal
+      deliverOnMainThread]
+      subscribeNext:^(NSString *subtitle) {
+        @strongify(self)
+        self.subtitleLabel.text = subtitle;
+      } error:^(NSError __unused *error) {
+        @strongify(self)
+        self.subtitleLabel.text = nil;
+      }]];
 }
 
 #pragma mark -

@@ -30,9 +30,13 @@
 		848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848E0A401C59217D001D8368 /* LTTestUtils.mm */; };
 		84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */; };
 		84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */; };
-		84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */; };
+		84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.mm */; };
 		84AB7E771C85DF3A008E254A /* PTUImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E751C85DF3A008E254A /* PTUImageCell.m */; };
 		84D741891C7A270500BCA294 /* PhotonsUITestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */; };
+		84F467791D0806880060EFAA /* PTNTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F467781D0806880060EFAA /* PTNTestUtils.mm */; };
+		84F4677F1D08076C0060EFAA /* PTNFakeDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4677E1D08076C0060EFAA /* PTNFakeDescriptor.m */; };
+		84F4679E1D080B620060EFAA /* PTNDisposableRetainingSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */; };
+		84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */; };
 		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
 		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
@@ -339,11 +343,19 @@
 		84A0DC3A1C8747AE005A98F3 /* PTUImageCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCellViewModel.h; sourceTree = "<group>"; };
 		84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellViewModel.m; sourceTree = "<group>"; };
 		84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellViewModelSpec.m; sourceTree = "<group>"; };
-		84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCellSpec.m; sourceTree = "<group>"; };
+		84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUImageCellSpec.mm; sourceTree = "<group>"; };
 		84AB7E741C85DF3A008E254A /* PTUImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCell.h; sourceTree = "<group>"; };
 		84AB7E751C85DF3A008E254A /* PTUImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUImageCell.m; sourceTree = "<group>"; };
 		84D741871C7A270500BCA294 /* PhotonsUITestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotonsUITestUtils.h; sourceTree = "<group>"; };
 		84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonsUITestUtils.m; sourceTree = "<group>"; };
+		84F467771D0806880060EFAA /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNTestUtils.h; path = ../../Photons/PhotonsTests/PTNTestUtils.h; sourceTree = "<group>"; };
+		84F467781D0806880060EFAA /* PTNTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PTNTestUtils.mm; path = ../../Photons/PhotonsTests/PTNTestUtils.mm; sourceTree = "<group>"; };
+		84F4677D1D08076C0060EFAA /* PTNFakeDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFakeDescriptor.h; path = ../../Photons/PhotonsTests/PTNFakeDescriptor.h; sourceTree = "<group>"; };
+		84F4677E1D08076C0060EFAA /* PTNFakeDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFakeDescriptor.m; path = ../../Photons/PhotonsTests/PTNFakeDescriptor.m; sourceTree = "<group>"; };
+		84F4679C1D080B620060EFAA /* PTNDisposableRetainingSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNDisposableRetainingSignal.h; path = ../../Photons/PhotonsTests/PTNDisposableRetainingSignal.h; sourceTree = "<group>"; };
+		84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNDisposableRetainingSignal.m; path = ../../Photons/PhotonsTests/PTNDisposableRetainingSignal.m; sourceTree = "<group>"; };
+		84F467AE1D0839F20060EFAA /* PTNFakeAssetDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFakeAssetDescriptor.h; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.h; sourceTree = "<group>"; };
+		84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFakeAssetDescriptor.m; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.m; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B0B9A1E1CA6BF6A00ED2334 /* libExpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libExpecta.a; path = "../third_party/Expecta/build/Debug-iphoneos/libExpecta.a"; sourceTree = "<group>"; };
 		8B0B9A1F1CA6BF6A00ED2334 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
@@ -427,6 +439,7 @@
 				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
 				848E06C11C59212F001D8368 /* LLReactiveMatchers */,
 				848E0A3E1C592153001D8368 /* LTTestUtils */,
+				84F4677A1D0806AF0060EFAA /* PTNTestUtils */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -439,7 +452,7 @@
 				84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */,
 				84D741871C7A270500BCA294 /* PhotonsUITestUtils.h */,
 				84D741881C7A270500BCA294 /* PhotonsUITestUtils.m */,
-				84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.m */,
+				84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.mm */,
 				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m */,
 			);
 			name = Tests;
@@ -617,6 +630,21 @@
 				8B0B9A221CA6BF6A00ED2334 /* libSpecta.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84F4677A1D0806AF0060EFAA /* PTNTestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				84F4679C1D080B620060EFAA /* PTNDisposableRetainingSignal.h */,
+				84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */,
+				84F467AE1D0839F20060EFAA /* PTNFakeAssetDescriptor.h */,
+				84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */,
+				84F4677D1D08076C0060EFAA /* PTNFakeDescriptor.h */,
+				84F4677E1D08076C0060EFAA /* PTNFakeDescriptor.m */,
+				84F467771D0806880060EFAA /* PTNTestUtils.h */,
+				84F467781D0806880060EFAA /* PTNTestUtils.mm */,
+			);
+			name = PTNTestUtils;
 			sourceTree = "<group>";
 		};
 		8B368F3B1CA6ABF8003E34CF /* Products */ = {
@@ -994,8 +1022,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F4677F1D08076C0060EFAA /* PTNFakeDescriptor.m in Sources */,
 				848E09791C59212F001D8368 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
-				84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.m in Sources */,
+				84AB7E5D1C85DF2D008E254A /* PTUImageCellSpec.mm in Sources */,
 				848E09801C59212F001D8368 /* EXPMatchers+sendEvents.m in Sources */,
 				8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.m in Sources */,
 				848E097B1C59212F001D8368 /* EXPMatchers+finish.m in Sources */,
@@ -1008,12 +1037,15 @@
 				848E09751C59212F001D8368 /* LLReactiveMatchersHelpers.m in Sources */,
 				848E09761C59212F001D8368 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.m in Sources */,
+				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
 				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
 				848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */,
 				848E097E1C59212F001D8368 /* EXPMatchers+matchValues.m in Sources */,
 				848E09771C59212F001D8368 /* EXPMatchers+beSubscribedTo.m in Sources */,
 				848E097F1C59212F001D8368 /* EXPMatchers+sendError.m in Sources */,
+				84F4679E1D080B620060EFAA /* PTNDisposableRetainingSignal.m in Sources */,
+				84F467791D0806880060EFAA /* PTNTestUtils.mm in Sources */,
 				8428F3761C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.m in Sources */,
 				848E097A1C59212F001D8368 /* EXPMatchers+error.m in Sources */,
 				84D741891C7A270500BCA294 /* PhotonsUITestUtils.m in Sources */,
@@ -1057,6 +1089,7 @@
 					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
 					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
 					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+					"\"$(SRCROOT)/../Photons/Photons\"",
 				);
 				INFOPLIST_FILE = PhotonsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1078,6 +1111,7 @@
 					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
 					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
 					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+					"\"$(SRCROOT)/../Photons/Photons\"",
 				);
 				INFOPLIST_FILE = PhotonsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

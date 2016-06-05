@@ -3,32 +3,39 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// View model object mapping signals of \c UIImage and \c NSString objects into managable
-/// properties to be observed by the cell.
-@protocol PTUImageCellViewModel
+@protocol PTNAssetManager, PTNDescriptor;
 
-/// Currently set title. Guaranteed to change on the main thread.
-@property (readonly, nonatomic, nullable) NSString *title;
+/// Protocol for collection view image cells view models to conform to in order to be used by the
+/// Photons framework.
+@protocol PTUImageCellViewModel <NSObject>
 
-/// Currently set subtitle. Guaranteed to change on the main thread.
-@property (readonly, nonatomic, nullable) NSString *subtitle;
+/// Signal carrying image to display, or \c nil if no values should be set for the image to display,
+/// and it should be set to \c nil.
+@property (readonly, nonatomic, nullable) RACSignal *imageSignal;
 
-/// Currently set image. Guaranteed to change on the main thread.
-@property (readonly, nonatomic, nullable) UIImage *image;
+/// Signal carrying title to display, or \c nil if no values should be set for the title to display,
+/// and it should be set to \c nil.
+@property (readonly, nonatomic, nullable) RACSignal *titleSignal;
+
+/// Signal carrying subtitle to display, or \c nil if no values should be set for the subtitle to
+/// display, and it should be set to \c nil.
+@property (readonly, nonatomic, nullable) RACSignal *subtitleSignal;
 
 @end
 
-/// Implementation of \c PTUImageCellViewModel that receievs signals upon initialization and updates
-/// values according to latest values sent on the signals.
+/// \c PTUImageCellViewModel implementation mapping signals of \c UIImage and \c NSString objects
+/// into properties required by the protocol.
 @interface PTUImageCellViewModel : NSObject <PTUImageCellViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initialize with \c imageSignal to determine the \c image property, \c titleSignal to determine
-/// the \c title property and \c subtitleSignal to determine the \c subtitle property. All errors
-/// and invalid value types on these signals are ignored, and the latest valid value is set.
-- (instancetype)initWithImageSignal:(RACSignal *)imageSignal titleSignal:(RACSignal *)titleSignal
-                     subtitleSignal:(RACSignal *)subtitleSignal;
+/// the \c title property and \c subtitleSignal to determine the \c subtitle property. If any of
+/// the signals are \c nil the value represented by that signal will remain \c nil and will not
+/// update.
+- (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
+                        titleSignal:(nullable RACSignal *)titleSignal
+                     subtitleSignal:(nullable RACSignal *)subtitleSignal NS_DESIGNATED_INITIALIZER;
 
 @end
 
