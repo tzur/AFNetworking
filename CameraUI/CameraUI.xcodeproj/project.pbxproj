@@ -32,6 +32,7 @@
 		F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F965C9EC1CF318CE00005627 /* Accelerate.framework */; };
 		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
 		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
+		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -309,6 +310,8 @@
 		F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISharedTheme.h; sourceTree = "<group>"; };
 		F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedTheme.mm; sourceTree = "<group>"; };
 		F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedThemeSpec.mm; sourceTree = "<group>"; };
+		F9D4FE771D043FBD00CE9A54 /* CUIFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFocusView.h; sourceTree = "<group>"; };
+		F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFocusView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -544,6 +547,8 @@
 		BE46294E1CDF1E0900D9F7E2 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				F9D4FE771D043FBD00CE9A54 /* CUIFocusView.h */,
+				F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -949,6 +954,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
 				BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */,
 			);
