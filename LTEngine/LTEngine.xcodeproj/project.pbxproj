@@ -160,6 +160,9 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */; };
+		06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */; };
+		06372CF91D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */; };
 		064F3FA51CF4792500E6D358 /* LTMeanShaderGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 064F3FA31CF4792500E6D358 /* LTMeanShaderGenerator.h */; };
 		064F3FA61CF4792500E6D358 /* LTMeanShaderGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 064F3FA41CF4792500E6D358 /* LTMeanShaderGenerator.m */; };
 		064F3FA81CF5E4FD00E6D358 /* LTMeanShaderGeneratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064F3FA71CF5E4FD00E6D358 /* LTMeanShaderGeneratorSpec.mm */; };
@@ -1496,6 +1499,9 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid4.png; path = Resources/SmoothPyramidUpsampleUpdateGrid4.png; sourceTree = "<group>"; };
+		06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid5.png; path = Resources/SmoothPyramidUpsampleUpdateGrid5.png; sourceTree = "<group>"; };
+		06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid6.png; path = Resources/SmoothPyramidUpsampleUpdateGrid6.png; sourceTree = "<group>"; };
 		064F3FA31CF4792500E6D358 /* LTMeanShaderGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeanShaderGenerator.h; sourceTree = "<group>"; };
 		064F3FA41CF4792500E6D358 /* LTMeanShaderGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTMeanShaderGenerator.m; sourceTree = "<group>"; };
 		064F3FA71CF5E4FD00E6D358 /* LTMeanShaderGeneratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeanShaderGeneratorSpec.mm; sourceTree = "<group>"; };
@@ -2621,8 +2627,8 @@
 				039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */,
 				0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */,
 				0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */,
-				0368E6C319C0270200B99FF5 /* LTSmoothPyramidProcessor.h */,
 				03045C3919C037540075207D /* LTSmoothPyramid.fsh */,
+				0368E6C319C0270200B99FF5 /* LTSmoothPyramidProcessor.h */,
 				0368E6C419C0270200B99FF5 /* LTSmoothPyramidProcessor.mm */,
 				285A671919AE313400B2CE9E /* LTReshapeProcessor.h */,
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
@@ -3697,6 +3703,9 @@
 				03045D7519C5FBBD0075207D /* SmoothPyramidUpsampleGrid4.png */,
 				03045D7619C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png */,
 				03045D7719C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png */,
+				06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */,
+				06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */,
+				06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */,
 				2840187919C704BF0003A064 /* PyramidGrid1.png */,
 				8BABF18619BC52C100AED760 /* PyramidGrid2.png */,
 				8BABF18719BC52C100AED760 /* PyramidGrid3.png */,
@@ -5173,6 +5182,7 @@
 				038DDD8219EFD19D0018F9E4 /* Lena128CLAHE.png in Resources */,
 				65057CA71B7773400029A164 /* Island.png in Resources */,
 				282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */,
+				06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */,
 				03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */,
 				A8BDC63F1AC9DA64005FC392 /* CircularPatchDrawerColors.png in Resources */,
 				8BABF18F19BC52C100AED760 /* PyramidGrid4.png in Resources */,
@@ -5180,6 +5190,7 @@
 				28842E9219DB2E4900BD8FEE /* PerspectivePincushionCorrection.png in Resources */,
 				03BBB389188CFB60001E7703 /* RedGradient.png in Resources */,
 				034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */,
+				06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				85F599A91CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithMask.png in Resources */,
 				280A8BA51CBD234100157507 /* RadialMaskOffCenterStretched.png in Resources */,
@@ -5304,6 +5315,7 @@
 				25AF178B1AD50CBF0055E664 /* GlyphRunTrackingTest.png in Resources */,
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
+				06372CF91D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png in Resources */,
 				8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */,
 				284AA2B51AC99DD1007F86DB /* CircularHealDefault.png in Resources */,
 				8BFA8F541917C97B0088310E /* MixerTilingComplex.png in Resources */,

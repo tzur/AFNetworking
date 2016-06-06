@@ -9,32 +9,46 @@
 SpecBegin(LTSmoothPyramidProcessor)
 
 __block LTTexture *input;
-__block LTTexture *output;
-__block LTSmoothPyramidProcessor *processor;
 
 beforeEach(^{
   input = [LTTexture textureWithImage:LTLoadMat([self class], @"PyramidGrid7.png")];
 });
 
 afterEach(^{
-  processor = nil;
   input = nil;
-  output = nil;
 });
 
 context(@"properties", ^{
-  it(@"should create correct pyramid", ^{
+  it(@"should upsample correctly using subsampled smoothing kernels", ^{
     NSArray *outputs = @[[LTTexture byteRGBATextureWithSize:input.size * 2],
                          [LTTexture byteRGBATextureWithSize:input.size * 4],
                          [LTTexture byteRGBATextureWithSize:input.size * 8]];
-    processor = [[LTSmoothPyramidProcessor alloc] initWithInput:input outputs:outputs];
-    
+    LTSmoothPyramidProcessor *processor = [[LTSmoothPyramidProcessor alloc] initWithInput:input
+                                                                                  outputs:outputs];
     [processor process];
 
     for (NSUInteger i = 0; i < outputs.count; ++i) {
       cv::Mat expected = LTLoadMat([self class],
                                    [NSString stringWithFormat:@"SmoothPyramidUpsampleGrid%lu.png",
                                     (unsigned long)6 - i]);
+      expect($([(LTTexture *)outputs[i] image])).to.equalMat($(expected));
+    }
+  });
+
+  it(@"should upsample correctly using canonical smoothing kernels", ^{
+    NSArray *outputs = @[[LTTexture byteRGBATextureWithSize:input.size * 2],
+                         [LTTexture byteRGBATextureWithSize:input.size * 4],
+                         [LTTexture byteRGBATextureWithSize:input.size * 8]];
+    LTSmoothPyramidProcessor *processor = [[LTSmoothPyramidProcessor alloc] initWithInput:input
+                                                                                  outputs:outputs];
+    processor.updateTexelStepInUpsample = YES;
+    [processor process];
+
+    for (NSUInteger i = 0; i < outputs.count; ++i) {
+      cv::Mat expected =
+          LTLoadMat([self class],
+                    [NSString stringWithFormat:@"SmoothPyramidUpsampleUpdateGrid%lu.png",
+                     (unsigned long)6 - i]);
       expect($([(LTTexture *)outputs[i] image])).to.equalMat($(expected));
     }
   });
