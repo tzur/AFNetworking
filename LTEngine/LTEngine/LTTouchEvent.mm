@@ -210,8 +210,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self.sequenceID ^
       std::hash<NSTimeInterval>()(self.timestamp) ^
       self.view.hash ^
-      lt::hash<CGPoint>()(self.viewLocation) ^
-      lt::hash<CGPoint>()(self.previousViewLocation) ^
+      std::hash<CGPoint>()(self.viewLocation) ^
+      std::hash<CGPoint>()(self.previousViewLocation) ^
       self.phase ^
       self.tapCount ^
       std::hash<CGFloat>()(self.majorRadius) ^
@@ -220,7 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
       self.force.hash ^
       self.maximumPossibleForce.hash ^
       self.azimuthAngle.hash ^
-      lt::hash<CGPoint>()((CGPoint)self.azimuthUnitVector) ^
+      std::hash<CGPoint>()((CGPoint)self.azimuthUnitVector) ^
       self.altitudeAngle.hash ^
       self.estimationUpdateIndex.hash ^
       self.estimatedProperties ^

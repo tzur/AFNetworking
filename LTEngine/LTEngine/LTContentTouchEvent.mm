@@ -99,8 +99,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return self.touchEvent.hash ^ lt::hash<CGPoint>()(self.contentLocation) ^
-      lt::hash<CGPoint>()(self.previousContentLocation) ^ lt::hash<CGSize>()(self.contentSize) ^
+  return self.touchEvent.hash ^ std::hash<CGPoint>()(self.contentLocation) ^
+      std::hash<CGPoint>()(self.previousContentLocation) ^ std::hash<CGSize>()(self.contentSize) ^
       std::hash<CGFloat>()(self.contentZoomScale);
 }
 
