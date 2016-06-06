@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, readwrite, nonatomic) id<LTTouchEventDelegate> delegate;
 
 /// Mapping of weakly held \c UITouch objects to its corresponding boxed sequence ID.
+///
+/// @important The \c UITouch objects are weakly held since the iOS documentation explicitly forbids
+/// strongly holding \c UITouch objects.
 @property (strong, nonatomic) NSMapTable<UITouch *, NSNumber *> *touchToSequenceID;
 
 /// Number to use as sequence ID of next starting touch event sequence.
@@ -86,6 +89,22 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark LTTouchEventCancellation
+#pragma mark -
+
+- (void)cancelTouchEventSequences {
+  NSSet<NSNumber *> *sequenceIDs =
+      [NSSet setWithArray:[[self.touchToSequenceID objectEnumerator] allObjects]];
+  if (!sequenceIDs.count) {
+    return;
+  }
+
+  [self.delegate touchEventSequencesWithIDs:sequenceIDs
+                        terminatedWithState:LTTouchEventSequenceStateCancellation];
+  [self.touchToSequenceID removeAllObjects];
+}
+
+#pragma mark -
 #pragma mark Auxiliary methods - Map Table
 #pragma mark -
 
@@ -114,7 +133,14 @@ NS_ASSUME_NONNULL_BEGIN
   NSArray<UITouch *> *sortedMainTouches = [self sortedTouches:[touches allObjects]];
 
   for (UITouch *mainTouch in sortedMainTouches) {
-    NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:mainTouch] unsignedIntegerValue];
+    NSNumber *boxedSequenceID = [self.touchToSequenceID objectForKey:mainTouch];
+    if (!boxedSequenceID) {
+      // The sequenceID does not exist, since it has been removed due to an external termination
+      /// request.
+      continue;
+    }
+
+    NSUInteger sequenceID = [boxedSequenceID unsignedIntegerValue];
     [self.delegate receivedTouchEvents:[self touchEventsForMainTouch:mainTouch
                                                       withSequenceID:sequenceID inEvent:event]
                                  predictedEvents:[self predictedTouchEventsForMainTouch:mainTouch

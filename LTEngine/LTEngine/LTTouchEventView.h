@@ -1,13 +1,15 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import "LTTouchEventCancellation.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol LTTouchEventDelegate;
 
 /// View converting incoming \c UITouch objects to \c LTTouchEvent objects and passing them on to
 /// its delegate.
-@interface LTTouchEventView : UIView
+@interface LTTouchEventView : UIView <LTTouchEventCancellation>
 
 - (instancetype)init NS_UNAVAILABLE;
 
