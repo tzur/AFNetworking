@@ -12,4 +12,11 @@
 /// \c +levelsForInput: to generate the output textures before calling this initializer.
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray *)outputs;
 
+/// Determines whether the texel step for the multiple taps should be updated between iterations
+/// when upsampling using this processor. Default is \c NO which creates subsampled kernels and
+/// allows approximation of larger smoothing kernels when upsampling.
+///
+/// @note When downsampling the texel step is always being updated.
+@property (nonatomic) BOOL updateTexelStepInUpsample;
+
 @end
