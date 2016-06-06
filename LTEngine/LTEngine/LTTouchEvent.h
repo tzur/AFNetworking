@@ -3,30 +3,36 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTTouchEvent;
+@protocol LTTouchEvent;
 
-/// Ordered collection of \c LTTouchEvent objects.
-typedef NSArray<LTTouchEvent *> LTTouchEvents;
+/// Ordered collection of \c id<LTTouchEvent> objects.
+typedef NSArray<id<LTTouchEvent>> LTTouchEvents;
 
-/// Mutable ordered collection of \c LTTouchEvent objects.
-typedef NSMutableArray<LTTouchEvent *> LTMutableTouchEvents;
+/// Mutable ordered collection of \c id<LTTouchEvent> objects.
+typedef NSMutableArray<id<LTTouchEvent>> LTMutableTouchEvents;
 
-/// Immmutable value object representing the discrete state of a touch (event) sequence associated
-/// with a view. A touch event sequence starts with an input device (e.g. finger, stylus, etc.)
-/// entering the area in which touches are sensorically recognized and ends either due to the input
-/// device leaving that area or due to cancellation. A sequence consists of a discrete series of
-/// touch events which are result of the discretization of the sequence according to the sampling
-/// rate of the device sensors. In iOS, a touch event sequence is represented by a single \c UITouch
-/// object that persists during the entire sequence. According to the documentation of \c UITouch,
-/// any such object should never be retained. Hence, this class is used to store the current state
-/// of a given \c UITouch object.
-@interface LTTouchEvent : NSObject <NSCopying>
+/// Possible states of a touch event sequence.
+typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
+  /// Indicates that the touch event sequences has just started.
+  LTTouchEventSequenceStateStart,
+  /// Indicates that the touch event sequence is currently being continued.
+  LTTouchEventSequenceStateContinuation,
+  /// Indicates that the touch event sequence has just ended.
+  LTTouchEventSequenceStateEnd,
+  /// Indicates that the touch event sequence has just been cancelled.
+  LTTouchEventSequenceStateCancellation
+};
 
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with the properties of the given \c touch and the given \c sequenceID. The given
-/// \c touch is not retained by the returned object.
-+ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID;
+/// Protocol to be implemented by objects representing the discrete state of a touch (event)
+/// sequence associated with a view. A touch event sequence starts with an input device (e.g.
+/// finger, stylus, etc.) entering the area in which touches are sensorically recognized and ends
+/// either due to the input device leaving that area or due to cancellation. A sequence consists of
+/// a discrete series of touch events which are result of the discretization of the sequence
+/// according to the sampling rate of the device sensors. In iOS, a touch event sequence is
+/// represented by a single \c UITouch object that persists during the entire sequence. According to
+/// the documentation of \c UITouch, any such object should never be retained. Hence, this class is
+/// used to store the current state of a given \c UITouch object.
+@protocol LTTouchEvent <NSObject, NSCopying>
 
 /// ID of the sequence to which this touch belongs.
 ///
@@ -120,18 +126,30 @@ typedef NSMutableArray<LTTouchEvent *> LTMutableTouchEvents;
 /// estimation update index or does not expect/represent an update.
 ///
 /// @see Homonymous property of \c UITouch.
-@property (nonatomic, readonly, nullable) NSNumber *estimationUpdateIndex;
+@property (readonly, nonatomic, nullable) NSNumber *estimationUpdateIndex;
 
 /// Set of properties of the touch event that have estimated values.
 ///
 /// @see Homonymous property of \c UITouch.
-@property (nonatomic,readonly) UITouchProperties estimatedProperties;
+@property (readonly, nonatomic) UITouchProperties estimatedProperties;
 
 /// Set of properties of the touch event whose estimated values are expected to be updated in the
 /// future.
 ///
 /// @see Homonymous property of \c UITouch.
-@property (nonatomic,readonly) UITouchProperties estimatedPropertiesExpectingUpdates;
+@property (readonly, nonatomic) UITouchProperties estimatedPropertiesExpectingUpdates;
+
+@end
+
+/// Immmutable value class constituting a touch event. Refer to the \c LTTouchEvent protocol for
+/// more information.
+@interface LTTouchEvent : NSObject <LTTouchEvent>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the properties of the given \c touch and the given \c sequenceID. The given
+/// \c touch is not retained by the returned object.
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID;
 
 @end
 

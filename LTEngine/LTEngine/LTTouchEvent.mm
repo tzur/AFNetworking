@@ -7,11 +7,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTTouchEvent
 
+@synthesize sequenceID = _sequenceID;
+@synthesize timestamp = _timestamp;
+@synthesize view = _view;
+@synthesize viewLocation = _viewLocation;
+@synthesize previousViewLocation = _previousViewLocation;
+@synthesize phase = _phase;
+@synthesize tapCount = _tapCount;
+@synthesize majorRadius = _majorRadius;
+@synthesize majorRadiusTolerance = _majorRadiusTolerance;
+@synthesize type = _type;
+@synthesize force = _force;
+@synthesize maximumPossibleForce = _maximumPossibleForce;
+@synthesize azimuthAngle = _azimuthAngle;
+@synthesize azimuthUnitVector = _azimuthUnitVector;
+@synthesize altitudeAngle = _altitudeAngle;
+@synthesize estimationUpdateIndex = _estimationUpdateIndex;
+@synthesize estimatedProperties = _estimatedProperties;
+@synthesize estimatedPropertiesExpectingUpdates = _estimatedPropertiesExpectingUpdates;
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithSequenceID:(NSUInteger)sequenceID timeStamp:(NSTimeInterval)timeStamp
+- (instancetype)initWithSequenceID:(NSUInteger)sequenceID timestamp:(NSTimeInterval)timestamp
                               view:(nullable UIView *)view viewLocation:(CGPoint)viewLocation
               previousViewLocation:(CGPoint)previousViewLocation
                              phase:(UITouchPhase)phase tapCount:(NSUInteger)tapCount
@@ -28,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
         propertiesExpectingUpdates:(UITouchProperties)propertiesExpectingUpdates {
   if (self = [super init]) {
     _sequenceID = sequenceID;
-    _timestamp = timeStamp;
+    _timestamp = timestamp;
     _view = view;
     _viewLocation = viewLocation;
     _previousViewLocation = previousViewLocation;
@@ -50,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID {
-  return [[LTTouchEvent alloc] initWithSequenceID:sequenceID timeStamp:touch.timestamp
+  return [[LTTouchEvent alloc] initWithSequenceID:sequenceID timestamp:touch.timestamp
                                              view:touch.view
                                      viewLocation:[touch locationInView:touch.view]
                              previousViewLocation:[touch previousLocationInView:touch.view]
