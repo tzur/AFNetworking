@@ -17,6 +17,8 @@
   for (NSUInteger i = 0; i < levelCount; ++i) {
     LTTexture *texture = [LTTexture textureWithSize:std::ceil(input.size / std::pow(2, i + 1))
                                         pixelFormat:input.pixelFormat allocateMemory:YES];
+    texture.minFilterInterpolation = input.minFilterInterpolation;
+    texture.magFilterInterpolation = input.magFilterInterpolation;
     [levels addObject:texture];
   }
 

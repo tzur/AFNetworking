@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-void LTGridMake(CGSize size, cv::Mat4b *grid, cv::Mat4b *downsampled) {
+static void LTGridMake(CGSize size, cv::Mat4b *grid, cv::Mat4b *downsampled) {
   grid->create(cv::Size(size.width, size.height));
   grid->setTo(cv::Vec4b(0, 0, 0, 255));
   downsampled->create(std::ceil(size.height / 2), std::ceil(size.width / 2));
@@ -24,12 +24,23 @@ void LTGridMake(CGSize size, cv::Mat4b *grid, cv::Mat4b *downsampled) {
   }
 }
 
+static cv::Mat4b LTSubsample(cv::Mat4b const &input) {
+  cv::Mat4b downsampled;
+  downsampled.create(std::ceil(input.rows / 2.0), std::ceil(input.cols / 2.0));
+  for (int y = 0; y < input.rows; y += 2) {
+    for (int x = 0; x < input.cols; x += 2) {
+      downsampled(y / 2, x / 2) = (input)(y, x);
+    }
+  }
+  return downsampled;
+}
+
 SpecBegin(LTPyramidProcessor)
 
 static NSString * const kSubsamplingExamples = @"subsample image correctly using nearest neighbour";
 
 sharedExamples(kSubsamplingExamples, ^(NSDictionary *data) {
-  it(@"should subsample correctly", ^{
+  it(@"should subsample first pyramid level correctly", ^{
     cv::Mat4b grid, expected;
     CGSize size = [data[@"size"] CGSizeValue];
     LTGridMake(size, &grid, &expected);
@@ -45,6 +56,29 @@ sharedExamples(kSubsamplingExamples, ^(NSDictionary *data) {
     [processor process];
 
     expect($(output.image)).to.equalMat($(expected));
+  });
+
+  it(@"should subsample between every pyramid level correctly", ^{
+    cv::Mat4b grid, expected;
+    CGSize size = [data[@"size"] CGSizeValue];
+    LTGridMake(size, &grid, &expected);
+
+    LTTexture *input = [LTTexture textureWithImage:grid];
+    input.minFilterInterpolation = LTTextureInterpolationNearest;
+    input.magFilterInterpolation = LTTextureInterpolationNearest;
+
+    NSArray<LTTexture *> *outputs = [LTPyramidProcessor levelsForInput:input];
+
+    LTPyramidProcessor *processor = [[LTPyramidProcessor alloc] initWithInput:input
+                                                                      outputs:outputs];
+    [processor process];
+
+    expect($(outputs.firstObject.image)).to.equalMat($(expected));
+    for (NSUInteger i = 1; i < outputs.count; ++i) {
+      cv::Mat4b downsampled = LTSubsample(expected);
+      expected = downsampled;
+      expect($(outputs[i].image)).to.equalMat($(expected));
+    }
   });
 });
 
