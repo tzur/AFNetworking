@@ -252,6 +252,7 @@
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		8395AE161CFDC9AF00C91C9E /* CAMDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevice.h; sourceTree = "<group>"; };
 		8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDevice+Configure.h"; sourceTree = "<group>"; };
 		8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+Configure.mm"; sourceTree = "<group>"; };
 		8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+ConfigureSpec.mm"; sourceTree = "<group>"; };
@@ -260,6 +261,15 @@
 		83B730491CDB56770090C0BF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		83B730651CDB567B0090C0BF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		83B730671CDB56870090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		83D3189C1D0548D9008A8D7E /* CAMPreviewLayerDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMPreviewLayerDevice.h; sourceTree = "<group>"; };
+		83D318B71D0548E8008A8D7E /* CAMFocusDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMFocusDevice.h; sourceTree = "<group>"; };
+		83D318B81D0548F3008A8D7E /* CAMExposureDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMExposureDevice.h; sourceTree = "<group>"; };
+		83D318B91D054902008A8D7E /* CAMWhiteBalanceDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMWhiteBalanceDevice.h; sourceTree = "<group>"; };
+		83D318BA1D054913008A8D7E /* CAMZoomDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMZoomDevice.h; sourceTree = "<group>"; };
+		83D318BB1D054920008A8D7E /* CAMFlashDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMFlashDevice.h; sourceTree = "<group>"; };
+		83D318BC1D05492A008A8D7E /* CAMFlipDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMFlipDevice.h; sourceTree = "<group>"; };
+		83D318BD1D054A0E008A8D7E /* CAMVideoDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMVideoDevice.h; sourceTree = "<group>"; };
+		83D318BE1D054A17008A8D7E /* CAMAudioDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMAudioDevice.h; sourceTree = "<group>"; };
 		83FF06D91CD7266B00383C6B /* libCamera.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCamera.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83FF06E61CD7270300383C6B /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		83FF06E81CD7270300383C6B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -379,6 +389,23 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		8395ADFB1CFDC9A700C91C9E /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				83D318BE1D054A17008A8D7E /* CAMAudioDevice.h */,
+				8395AE161CFDC9AF00C91C9E /* CAMDevice.h */,
+				83D318B81D0548F3008A8D7E /* CAMExposureDevice.h */,
+				83D318BB1D054920008A8D7E /* CAMFlashDevice.h */,
+				83D318BC1D05492A008A8D7E /* CAMFlipDevice.h */,
+				83D318B71D0548E8008A8D7E /* CAMFocusDevice.h */,
+				83D3189C1D0548D9008A8D7E /* CAMPreviewLayerDevice.h */,
+				83D318BD1D054A0E008A8D7E /* CAMVideoDevice.h */,
+				83D318B91D054902008A8D7E /* CAMWhiteBalanceDevice.h */,
+				83D318BA1D054913008A8D7E /* CAMZoomDevice.h */,
+			);
+			name = Device;
+			sourceTree = "<group>";
+		};
 		8395AE4E1CFDCA2C00C91C9E /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				8351F9901CF6EDCE00DEB376 /* Base */,
+				8395ADFB1CFDC9A700C91C9E /* Device */,
 				8395AE4E1CFDCA2C00C91C9E /* Utils */,
 				83B72D801CDA44B40090C0BF /* Supporting Files */,
 			);
