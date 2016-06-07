@@ -898,6 +898,60 @@ context(@"asset changes", ^{
       });
     });
   });
+
+  context(@"favorite", ^{
+    __block id<PTNAssetDescriptor> firstAsset;
+    __block id<PTNAssetDescriptor> secondAsset;
+
+    beforeEach(^{
+      firstAsset = PTNPhotoKitCreateAsset(@"foo");
+      OCMStub([firstAsset assetDescriptorCapabilities])
+          .andReturn(PTNAssetDescriptorCapabilityFavorite);
+      secondAsset = PTNPhotoKitCreateAsset(@"bar");
+      OCMStub([secondAsset assetDescriptorCapabilities])
+          .andReturn(PTNAssetDescriptorCapabilityFavorite);
+    });
+
+    it(@"should favorite and unfavorite assets", ^{
+      expect([manager favoriteDescriptors:@[firstAsset, secondAsset] favorite:YES]).will.complete();
+      expect([changeManager favoriteAssets]).to.contain(firstAsset);
+      expect([changeManager favoriteAssets]).to.contain(secondAsset);
+      expect([manager favoriteDescriptors:@[firstAsset] favorite:NO]).will.complete();
+      expect([changeManager favoriteAssets]).toNot.contain(firstAsset);
+      expect([changeManager favoriteAssets]).to.contain(secondAsset);
+    });
+
+    it(@"should err when failing to change favorite status", ^{
+      changeManager.success = NO;
+      changeManager.error = error;
+
+      expect([manager favoriteDescriptors:@[firstAsset, secondAsset] favorite:YES])
+          .will.sendError(error);
+      expect([manager favoriteDescriptors:@[firstAsset] favorite:NO]).will.sendError(error);
+    });
+
+    it(@"should err when favoring non-asset descriptors", ^{
+      id<PTNDescriptor> albumDescriptor = PTNPhotoKitCreateAssetCollection(@"foo");
+
+      expect([manager favoriteDescriptors:@[firstAsset, albumDescriptor] favorite:YES])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == PTNErrorCodeInvalidDescriptor &&
+            error.ptn_associatedDescriptor == albumDescriptor;
+      });
+    });
+
+    it(@"should err when favoring non-PhotoKit descriptors", ^{
+      id<PTNAssetDescriptor> invalidDescriptor = OCMProtocolMock(@protocol(PTNAssetDescriptor));
+      OCMStub([invalidDescriptor assetDescriptorCapabilities])
+          .andReturn(PTNAssetDescriptorCapabilityFavorite);
+
+      expect([manager favoriteDescriptors:@[firstAsset, invalidDescriptor] favorite:YES])
+          .will.matchError(^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == PTNErrorCodeInvalidDescriptor &&
+            error.ptn_associatedDescriptor == invalidDescriptor;
+      });
+    });
+  });
 });
 
 SpecEnd

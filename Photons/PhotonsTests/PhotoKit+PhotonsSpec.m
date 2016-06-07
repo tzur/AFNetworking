@@ -27,6 +27,12 @@ context(@"asset descriptor", ^{
 
     expect(asset.descriptorCapabilities & PTNDescriptorCapabilityDelete).to.beFalsy();
   });
+
+  it(@"should reveal favorite change capabilities", ^{
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+
+    expect(asset.descriptorCapabilities & PTNAssetDescriptorCapabilityFavorite).to.beTruthy();
+  });
 });
 
 context(@"album descriptor", ^{

@@ -40,5 +40,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   /// Caused when deletion of assets has failed.
   PTNErrorCodeAssetDeletionFailed,
   // Caused when removal of assets has from an album has failed.
-  PTNErrorCodeAssetRemovalFromAlbumFailed
+  PTNErrorCodeAssetRemovalFromAlbumFailed,
+  // Caused when attemping to make an unsupported operation.
+  PTNErrorCodeUnsupportedOperation
 );

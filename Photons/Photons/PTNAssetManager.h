@@ -69,8 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// support \c PTNDescriptorCapabilityDelete in their \c PTNDescriptorCapabilities in order to be
 /// eligible for deletion.
 ///
-/// The returned signal completes on an arbitrary thread once the assets were succesfuly deleted and
-/// errs if an error occurred while deleting the assets. The signal sends no values.
+/// The returned signal completes on an arbitrary thread once the assets were successfully deleted
+/// and errs if an error occurred while deleting the assets. The signal sends no values.
 ///
 /// @return RACSignal<>.
 - (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors;
@@ -79,12 +79,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTNAlbumDescriptorCapabilityRemoveContent in its \c PTNAlbumDescriptorCapabilities in order
 /// for \c descriptors be eligible for removal from it.
 ///
-/// The returned signal completes on an arbitrary thread once the assets were succesfuly removed and
-/// errs if an error occurred while removing the assets. The signal sends no values.
+/// The returned signal completes on an arbitrary thread once the assets were successfuly removed
+/// and errs if an error occurred while removing the assets. The signal sends no values.
 ///
 /// @return RACSignal<>.
 - (RACSignal *)removeDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
                        fromAlbum:(id<PTNAlbumDescriptor>)albumDescriptor;
+
+/// Sets the favorite value of the assets backed the given by \c descriptors to \c favorite.
+/// \c descriptors must all support \c PTNAssetDescriptorCapabilityFavorite in their
+/// \c PTNAssetDescriptorCapabilities in order to be eligible for favoring.
+///
+/// The returned signal completes on an arbitrary thread once all the assets favorite value was
+/// successfully set to \c favorite, and errs if an error occurred while favoring the assets. The
+/// signal sends no values.
+///
+/// @return RACSignal<>.
+- (RACSignal *)favoriteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                          favorite:(BOOL)favorite;
 
 @end
 

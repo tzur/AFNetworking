@@ -17,4 +17,13 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSString * _Nullable localizedTitle,
                                       PTNDescriptorCapabilities capabilites);
 
+/// Creates and returns a \c PTNAssetDescriptor with \c identifier, \c localizedTitle,
+/// \c capabilities, \c creationDate, \c modificationDate and \c assetCapabilities.
+id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
+                                                NSString * _Nullable localizedTitle,
+                                                PTNDescriptorCapabilities capabilites,
+                                                NSDate * _Nullable creationDate,
+                                                NSDate * _Nullable modificationDate,
+                                                PTNAssetDescriptorCapabilities assetCapabilities);
+
 NS_ASSUME_NONNULL_END

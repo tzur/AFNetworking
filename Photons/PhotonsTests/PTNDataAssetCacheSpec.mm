@@ -11,6 +11,7 @@
 #import "PTNDataBackedImageAsset.h"
 #import "PTNDescriptor.h"
 #import "PTNFakeDataCache.h"
+#import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
 
 SpecBegin(PTNDataAssetCache)

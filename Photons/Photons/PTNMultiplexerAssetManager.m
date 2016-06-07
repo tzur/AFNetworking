@@ -62,20 +62,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors {
-  NSDictionary<NSString *, NSArray<id<PTNDescriptor>> *> *schemeToDescriptors =
-      [self schemeToDescriptors:descriptors];
-
-  NSArray *unsupportedSchemes = [self unsupportedSchemesWithSchemes:schemeToDescriptors.allKeys];
-  if (unsupportedSchemes.count > 0) {
-    NSArray<id<PTNDescriptor>> *unsupportedDescriptors = [[unsupportedSchemes.rac_sequence
-        map:^RACSequence *(NSString *scheme) {
-          return schemeToDescriptors[scheme].rac_sequence;
-        }]
-        flatten].array;
-
+  NSArray *unsupportedDescriptors = [self unsupportedDescriptors:descriptors];
+  if (unsupportedDescriptors.count) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
                                  associatedDescriptors:unsupportedDescriptors]];
   }
+
+  NSDictionary<NSString *, NSArray<id<PTNDescriptor>> *> *schemeToDescriptors =
+      [self schemeToDescriptors:descriptors];
 
   NSArray<RACSignal *> *deleteSignals = [schemeToDescriptors.allKeys.rac_sequence
       map:^RACSignal *(NSString *scheme) {
@@ -89,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)deleteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
                      fromManager:(id<PTNAssetManager>)manager {
   if (![manager respondsToSelector:@selector(deleteDescriptors:)]) {
-    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetDeletionFailed
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                  associatedDescriptors:descriptors]];
   }
 
@@ -128,7 +122,55 @@ NS_ASSUME_NONNULL_BEGIN
                                            description:errorDescription]];
   }
 
+  if (![assetManager respondsToSelector:@selector(removeDescriptors:fromAlbum:)]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                 associatedDescriptors:descriptors]];
+  }
+
   return [assetManager removeDescriptors:descriptors fromAlbum:albumDescriptor];
+}
+
+#pragma mark -
+#pragma mark Favorite
+#pragma mark -
+
+- (RACSignal *)favoriteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                          favorite:(BOOL)favorite {
+  NSArray *unsupportedDescriptors = [self unsupportedDescriptors:descriptors];
+  if (unsupportedDescriptors.count) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                 associatedDescriptors:unsupportedDescriptors]];
+  }
+
+  NSArray *unfavorableDescriptors = [descriptors.rac_sequence
+      filter:^BOOL(id<PTNDescriptor> descriptor) {
+        return ![descriptor conformsToProtocol:@protocol(PTNAssetDescriptor)] ||
+            !(((id<PTNAssetDescriptor>)descriptor).assetDescriptorCapabilities &
+            PTNAssetDescriptorCapabilityFavorite);
+      }].array;
+  if (unfavorableDescriptors.count) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                 associatedDescriptors:unfavorableDescriptors]];
+  }
+
+  NSDictionary<NSString *, NSArray *> *schemeToDescriptors = [self schemeToDescriptors:descriptors];
+  NSArray<RACSignal *> *favoriteSignals = [schemeToDescriptors.allKeys.rac_sequence
+      map:^RACSignal *(NSString *scheme) {
+        return [self favoriteDescriptors:schemeToDescriptors[scheme] favorite:favorite
+                             fromManager:self.mapping[scheme]];
+      }].array;
+
+  return [RACSignal merge:favoriteSignals];
+}
+
+- (RACSignal *)favoriteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors favorite:(BOOL)favorite
+                       fromManager:(id<PTNAssetManager>)manager {
+  if (![manager respondsToSelector:@selector(favoriteDescriptors:favorite:)]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                 associatedDescriptors:descriptors]];
+  }
+
+  return [manager favoriteDescriptors:descriptors favorite:favorite];
 }
 
 #pragma mark -
@@ -148,6 +190,12 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [schemeToDescriptors copy];
+}
+
+- (NSArray<id<PTNDescriptor>> *)unsupportedDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors {
+  return [descriptors.rac_sequence filter:^BOOL(id<PTNDescriptor> descriptor) {
+    return ![self.mapping.allKeys containsObject:descriptor.ptn_identifier.scheme];
+  }].array;
 }
 
 - (NSArray<NSString *> *)unsupportedSchemesWithSchemes:(NSArray<NSString *> *)schemes {

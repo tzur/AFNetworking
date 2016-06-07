@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Assets collections removed from an album.
 @property (readonly, nonatomic) NSMutableDictionary *assetCollectionsRemovedFromAlbum;
 
+/// Current assets favorited by the manager.
+@property (readonly, nonatomic) NSMutableArray *mutableFavoriteAssets;
+
 @end
 
 @implementation PTNPhotoKitFakeChangeManager
@@ -38,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
     _collectionListsDeleted = [NSMutableArray array];
     _assetsRemovedFromAlbum = [NSMutableDictionary dictionary];
     _assetCollectionsRemovedFromAlbum = [NSMutableDictionary dictionary];
+    _mutableFavoriteAssets = [NSMutableArray array];
     self.inChangeBlock = YES;
     self.success = YES;
   }
@@ -62,6 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary *)assetCollectionsRemovedFromAlbumRequests {
   return [self.assetCollectionsRemovedFromAlbum copy];
+}
+
+- (NSArray *)favoriteAssets {
+  return [self.mutableFavoriteAssets copy];
 }
 
 #pragma mark -
@@ -112,6 +120,18 @@ NS_ASSUME_NONNULL_BEGIN
   LTAssert(!self.inChangeBlock, @"Attempting to remove collections: %@ from collection list: %@ "
            "not within a change block", collections, collectionList);
   self.assetCollectionsRemovedFromAlbum[collectionList.localIdentifier] = collections;
+}
+
+#pragma mark -
+#pragma mark Favorite
+#pragma mark -
+
+- (void)favoriteAsset:(PHAsset *)asset favorite:(BOOL)favorite {
+  if (favorite) {
+    [self.mutableFavoriteAssets addObject:asset];
+  } else {
+    [self.mutableFavoriteAssets removeObject:asset];
+  }
 }
 
 #pragma mark -

@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
-  return PTNAssetDescriptorCapabilityNone;
+  return PTNAssetDescriptorCapabilityFavorite;
 }
 
 @end

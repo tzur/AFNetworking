@@ -625,6 +625,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Favorite
+#pragma mark -
+
+- (RACSignal *)favoriteDescriptors:(NSArray<id<PTNDescriptor>> *)descriptors
+                          favorite:(BOOL)favorite {
+  for (id<PTNDescriptor> descriptor in descriptors) {
+    if (![descriptor isKindOfClass:[PHAsset class]] ||
+        !(((PHAsset *)descriptor).assetDescriptorCapabilities &
+        PTNAssetDescriptorCapabilityFavorite)) {
+      return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                    associatedDescriptor:descriptor]];
+    }
+  }
+
+  return [self performChanges:^{
+    for (id<PTNDescriptor> descriptor in descriptors) {
+      [self.changeManager favoriteAsset:(PHAsset *)descriptor favorite:favorite];
+    }
+  }];
+}
+
+#pragma mark -
 #pragma mark Changes
 #pragma mark -
 
