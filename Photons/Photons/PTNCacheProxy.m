@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector {
-  return [self.underlyingObject respondsToSelector:selector] ? self.underlyingObject : self;
+  return [self.underlyingObject respondsToSelector:selector] ?
+      self.underlyingObject : [super forwardingTargetForSelector:selector];;
 }
 
 #pragma mark -
