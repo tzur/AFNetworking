@@ -38,6 +38,7 @@
 // Blueprints -> 5.
 // Camera -> 6.
 // CameraUI -> 7.
+// Facetune -> 8.
 
 /// Defines error codes for a given product ID. The first given parameter is the product ID or a
 /// constant representing it. Error codes follow. Example:
