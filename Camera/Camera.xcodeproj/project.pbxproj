@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */; };
 		8351FB2B1CFC230100DEB376 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8351FB2A1CFC230100DEB376 /* libLTKit.a */; };
+		8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9A1CFC2ECC00DEB376 /* CAMFormatStrategy.mm */; };
+		8351FB9F1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */; };
 		836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97511CD75586001962A0 /* libSpecta.a */; };
 		836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F972F1CD75504001962A0 /* libExpecta.a */; };
 		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
@@ -249,6 +251,9 @@
 		8351F9AB1CF6EDD800DEB376 /* NSErrorCodes+Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Camera.h"; sourceTree = "<group>"; };
 		8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Camera.m"; sourceTree = "<group>"; };
 		8351FB2A1CFC230100DEB376 /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/Camera-cqwiemxlmbfioqhculfcrzynbcwv/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
+		8351FB991CFC2ECC00DEB376 /* CAMFormatStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMFormatStrategy.h; sourceTree = "<group>"; };
+		8351FB9A1CFC2ECC00DEB376 /* CAMFormatStrategy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMFormatStrategy.mm; sourceTree = "<group>"; };
+		8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMFormatStrategySpec.mm; sourceTree = "<group>"; };
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
@@ -371,6 +376,14 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
+		8351FB9D1CFC2ED600DEB376 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */,
+			);
+			name = Device;
+			sourceTree = "<group>";
+		};
 		8352E9A81CD747150008C22B /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +411,8 @@
 				83D318BB1D054920008A8D7E /* CAMFlashDevice.h */,
 				83D318BC1D05492A008A8D7E /* CAMFlipDevice.h */,
 				83D318B71D0548E8008A8D7E /* CAMFocusDevice.h */,
+				8351FB991CFC2ECC00DEB376 /* CAMFormatStrategy.h */,
+				8351FB9A1CFC2ECC00DEB376 /* CAMFormatStrategy.mm */,
 				83D3189C1D0548D9008A8D7E /* CAMPreviewLayerDevice.h */,
 				83D318BD1D054A0E008A8D7E /* CAMVideoDevice.h */,
 				83D318B91D054902008A8D7E /* CAMWhiteBalanceDevice.h */,
@@ -418,6 +433,7 @@
 		8395AE6C1CFDCA4000C91C9E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8351FB9D1CFC2ED600DEB376 /* Device */,
 				8395AE6D1CFDCA4400C91C9E /* Utils */,
 			);
 			name = Tests;
@@ -835,6 +851,7 @@
 			files = (
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
+				8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +859,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8351FB9F1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm in Sources */,
 				8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
