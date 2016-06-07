@@ -22,6 +22,15 @@ beforeEach(^{
   imageProvider = OCMProtocolMock(@protocol(WFImageProvider));
 });
 
+it(@"should build view model with no image when nil URL is given", ^{
+  id<WFImageViewModel> viewModel = [WFImageViewModelBuilder builderWithImageURL:nil]
+      .imageProvider(imageProvider)
+      .build();
+  
+  expect(viewModel.image).to.beNil();
+  expect(viewModel.highlightedImage).to.beNil();
+});
+
 it(@"should build view model with image and no size", ^{
   NSURL *imageURL = [NSURL URLWithString:@"image"];
   UIImage *image = WFCreateBlankImage(1, 1);

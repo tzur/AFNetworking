@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark WFImageViewModel
 #pragma mark -
 
-extern inline WFImageViewModelBuilder *WFImageViewModel(NSURL *imageURL);
+extern inline WFImageViewModelBuilder *WFImageViewModel(NSURL * _Nullable imageURL);
 
 #pragma mark -
 #pragma mark WFDefaultImageProvider
@@ -53,12 +53,11 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 @implementation WFImageViewModelBuilder
 
-+ (instancetype)builderWithImageURL:(NSURL *)imageURL {
++ (instancetype)builderWithImageURL:(NSURL * _Nullable)imageURL {
   return [[self alloc] initWithImageURL:imageURL];
 }
 
-- (instancetype)initWithImageURL:(NSURL *)imageURL {
-  LTParameterAssert(imageURL);
+- (instancetype)initWithImageURL:(NSURL * _Nullable)imageURL {
   if (self = [super init]) {
     _imageURL = imageURL;
   }
@@ -77,8 +76,8 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   };
 }
 
-- (WFImageViewModelBuilder *(^)(NSURL *))highlightedImageURL {
-  return ^(NSURL *highlightedImageURL) {
+- (WFImageViewModelBuilder *(^)(NSURL * _Nullable))highlightedImageURL {
+  return ^(NSURL * _Nullable highlightedImageURL) {
     LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_highlightedImageURL, "URL for highlighted image has already been "
@@ -169,7 +168,8 @@ static id<WFImageProvider> WFDefaultImageProvider() {
       imagesSignal = [RACSignal
           combineLatest:@[imagesSignal, _sizeSignal]
           reduce:^RACTuple *(RACTuple *images, NSValue *sizeValue) {
-            RACTupleUnpack(NSURL *imageURL, NSURL * _Nullable highlightedImageURL) = images;
+            RACTupleUnpack(NSURL * _Nullable imageURL,
+                           NSURL * _Nullable highlightedImageURL) = images;
             CGSize size = [sizeValue CGSizeValue];
             return RACTuplePack([imageURL wf_URLWithImageSize:size],
                                 [highlightedImageURL wf_URLWithImageSize:size]);
@@ -182,7 +182,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   };
 }
 
-- (NSURL *)transformedImageURL {
+- (nullable NSURL *)transformedImageURL {
   return _color ? [_imageURL wf_URLWithImageColor:_color] : _imageURL;
 }
 

@@ -32,9 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
           LTParameterAssert(value.count == 2, @"Signal must carry only RACTuple instances with "
                             "exactly 2 items, got %lu instead", (unsigned long)value.count);
 
-          RACTupleUnpack(NSURL *imageURL, NSURL * _Nullable highlightedImageURL) = value;
-          LTParameterAssert([imageURL isKindOfClass:NSURL.class], @"Signal must carry only tuples "
-                             "of NSURL instances, got %@ instead", imageURL.class);
+          RACTupleUnpack(NSURL * _Nullable imageURL, NSURL * _Nullable highlightedImageURL) = value;
+          LTParameterAssert(!imageURL || [imageURL isKindOfClass:NSURL.class], @"Signal must carry "
+                            "only tuples with NSURL instances for image URLs, got %@ instead",
+                            imageURL.class);
+          LTParameterAssert(!highlightedImageURL || [highlightedImageURL isKindOfClass:NSURL.class],
+                            @"Signal must carry only tuples with NSURL instances for highlighted "
+                            "image URLs, got %@ instead", highlightedImageURL.class);
 
           if ([imageURL isEqual:highlightedImageURL]) {
             // Image view model protocol states that image is used instead of highlightedImage when
@@ -46,9 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
         }]
         distinctUntilChanged]
         map:^RACStream *(RACTuple *value) {
-          RACTupleUnpack(NSURL *imageURL, NSURL * _Nullable highlightedImageURL) = value;
+          RACTupleUnpack(NSURL * _Nullable imageURL, NSURL * _Nullable highlightedImageURL) = value;
 
-          RACSignal *image = [imageProvider imageWithURL:imageURL];
+          RACSignal *image = imageURL ?
+              [imageProvider imageWithURL:imageURL] : [RACSignal return:nil];
           RACSignal *highlightedImage = highlightedImageURL ?
               [imageProvider imageWithURL:highlightedImageURL] : [RACSignal return:nil];
 
@@ -61,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
         switchToLatest]
         subscribeNext:^(RACTuple *value) {
           @strongify(self);
-          RACTupleUnpack(UIImage *image, UIImage * _Nullable highlightedImage) = value;
+          RACTupleUnpack(UIImage * _Nullable image, UIImage * _Nullable highlightedImage) = value;
           self.image = image;
           self.highlightedImage = highlightedImage;
         } error:^(NSError *error) {

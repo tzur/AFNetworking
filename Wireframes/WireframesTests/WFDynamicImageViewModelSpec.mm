@@ -68,6 +68,20 @@ it(@"should fetch correct images", ^{
   expect(viewModel.highlightedImage).will.equal(highlightedImage);
 });
 
+it(@"should not fetch image when its url is nil", ^{
+  UIImage *image = WFCreateBlankImage(2, 1);
+  UIImage *highlightedImage = WFCreateBlankImage(2, 1);
+
+  OCMStub([imageProvider imageWithURL:imageURL]).andReturn([RACSignal return:image]);
+  OCMStub([imageProvider imageWithURL:highlightedImageURL])
+      .andReturn([RACSignal return:highlightedImage]);
+
+  [imagesSignal sendNext:RACTuplePack(nil, nil)];
+
+  expect(viewModel.image).will.beNil();
+  expect(viewModel.highlightedImage).will.beNil();
+});
+
 it(@"should not fetch highlighted image when its url is nil", ^{
   UIImage *image = WFCreateBlankImage(2, 1);
   UIImage *highlightedImage = WFCreateBlankImage(2, 1);
@@ -79,7 +93,7 @@ it(@"should not fetch highlighted image when its url is nil", ^{
   [imagesSignal sendNext:RACTuplePack(imageURL, nil)];
 
   expect(viewModel.image).will.equal(image);
-  expect(viewModel.highlightedImage).will.equal(nil);
+  expect(viewModel.highlightedImage).will.beNil();
 });
 
 it(@"should update images together", ^{
