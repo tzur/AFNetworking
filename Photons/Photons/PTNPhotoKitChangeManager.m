@@ -35,6 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
   [request removeChildCollections:collections];
 }
 
+- (void)favoriteAsset:(PHAsset *)asset favorite:(BOOL)favorite {
+  PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
+  request.favorite = favorite;
+}
+
 - (void)performChanges:(dispatch_block_t)changeBlock
      completionHandler:(nullable PTNChangeRequestCompletionBlock)completionHandler {
   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:changeBlock

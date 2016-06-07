@@ -9,6 +9,7 @@
 #import "PTNMultiplexingTestUtils.h"
 #import "PTNNSURLTestUtils.h"
 #import "PTNResizingStrategy.h"
+#import "PTNTestUtils.h"
 
 SpecBegin(PTNMultiplexerAssetManager)
 
@@ -48,14 +49,10 @@ beforeEach(^{
     kSchemeC: managerC
   }];
 
-  descriptorA = OCMProtocolMock(@protocol(PTNDescriptor));
-  OCMStub([descriptorA ptn_identifier]).andReturn(PTNCreateURL(kSchemeA, nil, nil));
-  descriptorB = OCMProtocolMock(@protocol(PTNDescriptor));
-  OCMStub([descriptorB ptn_identifier]).andReturn(PTNCreateURL(kSchemeB, nil, nil));
-  descriptorC = OCMProtocolMock(@protocol(PTNDescriptor));
-  OCMStub([descriptorC ptn_identifier]).andReturn(PTNCreateURL(kSchemeC, nil, nil));
-  descriptorD = OCMProtocolMock(@protocol(PTNDescriptor));
-  OCMStub([descriptorD ptn_identifier]).andReturn(PTNCreateURL(kSchemeD, nil, nil));
+  descriptorA = PTNCreateDescriptor((PTNCreateURL(kSchemeA, nil, nil)), nil, 0);
+  descriptorB = PTNCreateDescriptor((PTNCreateURL(kSchemeB, nil, nil)), nil, 0);
+  descriptorC = PTNCreateDescriptor((PTNCreateURL(kSchemeC, nil, nil)), nil, 0);
+  descriptorD = PTNCreateDescriptor((PTNCreateURL(kSchemeD, nil, nil)), nil, 0);
 });
 
 context(@"album fetching", ^{
@@ -150,6 +147,19 @@ context(@"changes", ^{
             [error.ptn_associatedDescriptors isEqual:@[descriptorD]];
       });
     });
+
+    it(@"should err when relevant underlying descriptor does not respond to delete selector", ^{
+      id<PTNAssetManager> nonRespondingAssetManager = OCMProtocolMock(@protocol(NSObject));
+      multiplexerManager = [[PTNMultiplexerAssetManager alloc] initWithSources:@{
+        kSchemeA: nonRespondingAssetManager
+      }];
+
+      RACSignal *values = [multiplexerManager deleteDescriptors:@[descriptorA]];
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeUnsupportedOperation &&
+            [error.ptn_associatedDescriptors isEqual:@[descriptorA]];
+      });
+    });
   });
 
   context(@"asset removal", ^{
@@ -190,6 +200,86 @@ context(@"changes", ^{
 
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAssetRemovalFromAlbumFailed;
+      });
+    });
+
+    it(@"should err when relevant underlying descriptor does not respond to delete selector", ^{
+      id<PTNAssetManager> nonRespondingAssetManager = OCMProtocolMock(@protocol(NSObject));
+      multiplexerManager = [[PTNMultiplexerAssetManager alloc] initWithSources:@{
+        kSchemeA: nonRespondingAssetManager
+      }];
+
+      RACSignal *values = [multiplexerManager removeDescriptors:@[descriptorA]
+                                                      fromAlbum:albumDescriptorA];
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeUnsupportedOperation &&
+            [error.ptn_associatedDescriptors isEqual:@[descriptorA]];
+      });
+    });
+  });
+
+  context(@"favorite", ^{
+    beforeEach(^{
+      descriptorA = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil,
+                                             PTNAssetDescriptorCapabilityFavorite);
+      descriptorB = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeB, nil, nil), nil, 0, nil, nil,
+                                             PTNAssetDescriptorCapabilityFavorite);
+    });
+
+    it(@"should forward favorite requests to underlying managers", ^{
+      RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, descriptorB]
+                                                         favorite:YES];
+
+      [returnSignalA sendCompleted];
+      expect(values).toNot.complete();
+      [returnSignalB sendCompleted];
+      expect(values).will.complete();
+      OCMVerify([managerA favoriteDescriptors:@[descriptorA] favorite:YES]);
+      OCMVerify([managerB favoriteDescriptors:@[descriptorB] favorite:YES]);
+    });
+
+    it(@"should err when given descriptor have an unconfigured scheme", ^{
+      RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, descriptorD]
+                                                         favorite:YES];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeUnrecognizedURLScheme &&
+            [error.ptn_associatedDescriptors isEqual:@[descriptorD]];
+      });
+    });
+
+    it(@"should err when any descriptors do not conform to PTNAssetDescriptor", ^{
+      RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, descriptorC]
+                                                         favorite:YES];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor &&
+            [error.ptn_associatedDescriptors isEqual:@[descriptorC]];
+      });
+    });
+
+    it(@"should err when any descriptors don't support PTNAssetDescriptorCapabilityFavorite", ^{
+      id<PTNAssetDescriptor> Unfavorable =
+          PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil, 0);
+      RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, Unfavorable]
+                                                         favorite:YES];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor &&
+            [error.ptn_associatedDescriptors isEqual:@[Unfavorable]];
+      });
+    });
+
+    it(@"should err when relevant underlying descriptor does not respond to favorite selector", ^{
+      id<PTNAssetManager> nonRespondingAssetManager = OCMProtocolMock(@protocol(NSObject));
+      multiplexerManager = [[PTNMultiplexerAssetManager alloc] initWithSources:@{
+        kSchemeA: nonRespondingAssetManager
+      }];
+
+      RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA] favorite:YES];
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeUnsupportedOperation &&
+            [error.ptn_associatedDescriptors isEqual:@[descriptorA]];
       });
     });
   });

@@ -76,6 +76,13 @@ typedef NS_OPTIONS(NSUInteger, PTNAlbumDescriptorCapabilities) {
 /// Capabilities supported by the asset backed by this descriptor.
 @property (readonly, nonatomic) PTNAssetDescriptorCapabilities assetDescriptorCapabilities;
 
+@optional
+
+/// Current favorite status of the asset backed by this descriptor. This property must be available
+/// on any \c PTNDescriptor with \c PTNAssetDescriptorCapabilityFavorite in its
+/// \c PTNAssetDescriptorCapabilities.
+@property (readonly, nonatomic) BOOL isFavorite;
+
 @end
 
 NS_ASSUME_NONNULL_END

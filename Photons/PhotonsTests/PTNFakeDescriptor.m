@@ -39,8 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.ptn_identifier isEqual:object.ptn_identifier] &&
-      [self.localizedTitle isEqual:object.localizedTitle] &&
+  return (self.ptn_identifier == object.ptn_identifier ||
+      [self.ptn_identifier isEqual:object.ptn_identifier]) &&
+      (self.localizedTitle == object.localizedTitle ||
+      [self.localizedTitle isEqual:object.localizedTitle]) &&
       self.descriptorCapabilities == object.descriptorCapabilities;
 }
 

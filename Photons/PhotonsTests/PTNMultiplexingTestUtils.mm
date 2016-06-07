@@ -15,6 +15,7 @@ id<PTNAssetManager> PTNCreateRejectingManager() {
                                      options:OCMOCK_ANY];
   [[manager reject] deleteDescriptors:OCMOCK_ANY];
   [[manager reject] removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY];
+  [[[manager reject] ignoringNonObjectArgs] favoriteDescriptors:OCMOCK_ANY favorite:YES];
   return manager;
 }
 
@@ -26,6 +27,9 @@ id<PTNAssetManager> PTNCreateAcceptingManager(RACSignal * _Nullable value) {
                                     options:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager deleteDescriptors:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY]).andReturn(value);
+  [[[[manager stub] ignoringNonObjectArgs] andReturn:value]
+      favoriteDescriptors:OCMOCK_ANY favorite:YES];
+
   return manager;
 }
 
