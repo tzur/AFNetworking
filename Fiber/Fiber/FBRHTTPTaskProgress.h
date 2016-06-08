@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProgress:(double)progress NS_DESIGNATED_INITIALIZER;
 
 /// Initializes a completed task progress object with the given \c responseData.
-- (instancetype)initWithResponse:(nullable NSData *)responseData NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithResponseData:(nullable NSData *)responseData NS_DESIGNATED_INITIALIZER;
 
 /// Fraction of the overall work completed by the task. Value of \c 0 indicates that the task hasn't
 /// started, a value of \c 1 indicates that the task has completed.
