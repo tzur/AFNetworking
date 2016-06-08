@@ -7,34 +7,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTUImageCellViewModel
 
-@synthesize image = _image, title = _title, subtitle = _subtitle;
+@synthesize imageSignal = _imageSignal;
+@synthesize titleSignal = _titleSignal;
+@synthesize subtitleSignal = _subtitleSignal;
 
-- (instancetype)initWithImageSignal:(RACSignal *)imageSignal titleSignal:(RACSignal *)titleSignal
-                     subtitleSignal:(RACSignal *)subtitleSignal {
+- (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
+                        titleSignal:(nullable RACSignal *)titleSignal
+                     subtitleSignal:(nullable RACSignal *)subtitleSignal {
   if (self = [super init]) {
-    RAC(self, image) = [[[[imageSignal
-        filter:^BOOL(id value) {
-          return [value isKindOfClass:[UIImage class]];
-        }]
-        catchTo:[RACSignal empty]]
-        takeUntil:[self rac_willDeallocSignal]]
-        deliverOnMainThread];
-
-    RAC(self, title) = [[[[titleSignal
-        filter:^BOOL(id value) {
-          return [value isKindOfClass:[NSString class]];
-        }]
-        catchTo:[RACSignal empty]]
-        takeUntil:[self rac_willDeallocSignal]]
-        deliverOnMainThread];
-
-    RAC(self, subtitle) = [[[[subtitleSignal
-        filter:^BOOL(id value) {
-          return [value isKindOfClass:[NSString class]];
-        }]
-        catchTo:[RACSignal empty]]
-        takeUntil:[self rac_willDeallocSignal]]
-        deliverOnMainThread];
+    _imageSignal = imageSignal;
+    _titleSignal = titleSignal;
+    _subtitleSignal = subtitleSignal;
   }
   return self;
 }

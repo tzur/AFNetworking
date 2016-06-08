@@ -4,6 +4,7 @@
 #import "PTNTestUtils.h"
 
 #import "PTNAlbum.h"
+#import "PTNDisposableRetainingSignal.h"
 #import "PTNFakeAssetDescriptor.h"
 #import "PTNFakeDescriptor.h"
 
@@ -30,6 +31,10 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
   return [[PTNFakeAssetDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
       descriptorCapabilities:capabilites creationDate:creationDate modificationDate:modificationDate
       assetDescriptorCapabilities:assetCapabilities];
+}
+
+PTNDisposableRetainingSignal *PTNCreateDisposableRetainingSignal() {
+  return [[PTNDisposableRetainingSignal alloc] init];
 }
 
 NS_ASSUME_NONNULL_END

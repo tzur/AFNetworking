@@ -10,8 +10,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// other.
 @interface PTUImageCell : UICollectionViewCell
 
-/// View model to determine the properties displayed by this cell.
-@property (strong, nonatomic, nullable) id<PTUImageCellViewModel> viewModel;
+/// View model to determine the properties displayed by this cell. Changing the view model will
+/// first set all the relevant properties to \c nil followed by the latest value sent from each
+/// signal of the \c viewModel. Errors on these signals are mapped to \c nil and all values are
+/// explicitly delivered on the main thread.
+- (void)setViewModel:(nullable id<PTUImageCellViewModel>)viewModel;
 
 /// Currently set title.
 @property (readonly, nonatomic, nullable) NSString *title;
