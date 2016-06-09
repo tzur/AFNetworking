@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c imagesSignal is a signal of \c RACTuple of two \c NSURL objects: URL for \c image and URL
 /// for \c highlightedImage.
 ///
+/// URL for \c image can be \c nil, in which case \c image would also be \c nil.
+///
 /// URL for \c highlightedImage can be \c nil, in which case \c highlightedImage would also be
 /// \c nil. This is useful when there is no special image for highlighted state.
 ///

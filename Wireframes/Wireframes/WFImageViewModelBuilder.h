@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// default image provider.
 ///
 /// @note prefer the shorter version, by calling \c WFImageViewModel().
-+ (instancetype)builderWithImageURL:(NSURL *)imageURL;
++ (instancetype)builderWithImageURL:(NSURL * _Nullable)imageURL;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -107,7 +107,7 @@ extern "C" {
 
 /// Creates a new instance of \c WFImageViewModelBuilder. This is essentially a shortcut for
 /// <tt>+[WFImageViewModelBuilder builderWithImageURL:]</tt>.
-inline WFImageViewModelBuilder *WFImageViewModel(NSURL *imageURL) {
+inline WFImageViewModelBuilder *WFImageViewModel(NSURL * _Nullable imageURL) {
   return [WFImageViewModelBuilder builderWithImageURL:imageURL];
 }
 
