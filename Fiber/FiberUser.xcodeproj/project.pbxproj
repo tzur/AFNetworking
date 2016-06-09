@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		65AE676A1D04618E0083D1CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AE67691D04618E0083D1CE /* main.m */; };
+		65AE676D1D04618E0083D1CE /* FBRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AE676C1D04618E0083D1CE /* FBRAppDelegate.m */; };
+		65AE67751D04618E0083D1CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65AE67741D04618E0083D1CE /* Assets.xcassets */; };
+		65AE67781D04618E0083D1CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65AE67761D04618E0083D1CE /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6535FE6D1D047C92002EEB8F /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		6535FE6F1D047C92002EEB8F /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		6535FE701D047C92002EEB8F /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		6535FE741D047C92002EEB8F /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		6535FE751D047C92002EEB8F /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		6535FE761D047C92002EEB8F /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		65AE67651D04618E0083D1CE /* FiberUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiberUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65AE67691D04618E0083D1CE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		65AE676B1D04618E0083D1CE /* FBRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBRAppDelegate.h; sourceTree = "<group>"; };
+		65AE676C1D04618E0083D1CE /* FBRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBRAppDelegate.m; sourceTree = "<group>"; };
+		65AE67741D04618E0083D1CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		65AE67771D04618E0083D1CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		65AE67791D04618E0083D1CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65C62B691D046243000FCE99 /* FiberUser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FiberUser-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		65AE67621D04618E0083D1CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6535FE6C1D047C92002EEB8F /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				6535FE6D1D047C92002EEB8F /* Common.xcconfig */,
+				6535FE6E1D047C92002EEB8F /* Configurations */,
+				6535FE731D047C92002EEB8F /* Targets */,
+			);
+			name = Configuration;
+			path = ../Configuration;
+			sourceTree = "<group>";
+		};
+		6535FE6E1D047C92002EEB8F /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				6535FE6F1D047C92002EEB8F /* Debug.xcconfig */,
+				6535FE701D047C92002EEB8F /* Release.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		6535FE731D047C92002EEB8F /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				6535FE741D047C92002EEB8F /* Application.xcconfig */,
+				6535FE751D047C92002EEB8F /* Framework.xcconfig */,
+				6535FE761D047C92002EEB8F /* StaticLibrary.xcconfig */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		65AE675C1D04618E0083D1CE = {
+			isa = PBXGroup;
+			children = (
+				6535FE6C1D047C92002EEB8F /* Configuration */,
+				65AE67671D04618E0083D1CE /* FiberUser */,
+				65AE67661D04618E0083D1CE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65AE67661D04618E0083D1CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65AE67651D04618E0083D1CE /* FiberUser.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65AE67671D04618E0083D1CE /* FiberUser */ = {
+			isa = PBXGroup;
+			children = (
+				65AE67691D04618E0083D1CE /* main.m */,
+				65AE676B1D04618E0083D1CE /* FBRAppDelegate.h */,
+				65AE676C1D04618E0083D1CE /* FBRAppDelegate.m */,
+				65AE67741D04618E0083D1CE /* Assets.xcassets */,
+				65AE67681D04618E0083D1CE /* Supporting Files */,
+			);
+			path = FiberUser;
+			sourceTree = "<group>";
+		};
+		65AE67681D04618E0083D1CE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				65AE67791D04618E0083D1CE /* Info.plist */,
+				65AE67761D04618E0083D1CE /* LaunchScreen.storyboard */,
+				65C62B691D046243000FCE99 /* FiberUser-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		65AE67641D04618E0083D1CE /* FiberUser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65AE677C1D04618E0083D1CE /* Build configuration list for PBXNativeTarget "FiberUser" */;
+			buildPhases = (
+				65AE67611D04618E0083D1CE /* Sources */,
+				65AE67621D04618E0083D1CE /* Frameworks */,
+				65AE67631D04618E0083D1CE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FiberUser;
+			productName = FiberUser;
+			productReference = 65AE67651D04618E0083D1CE /* FiberUser.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		65AE675D1D04618E0083D1CE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					65AE67641D04618E0083D1CE = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 65AE67601D04618E0083D1CE /* Build configuration list for PBXProject "FiberUser" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 65AE675C1D04618E0083D1CE;
+			productRefGroup = 65AE67661D04618E0083D1CE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				65AE67641D04618E0083D1CE /* FiberUser */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		65AE67631D04618E0083D1CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65AE67781D04618E0083D1CE /* LaunchScreen.storyboard in Resources */,
+				65AE67751D04618E0083D1CE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65AE67611D04618E0083D1CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65AE676D1D04618E0083D1CE /* FBRAppDelegate.m in Sources */,
+				65AE676A1D04618E0083D1CE /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		65AE67761D04618E0083D1CE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65AE67771D04618E0083D1CE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		65AE677A1D04618E0083D1CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6535FE6F1D047C92002EEB8F /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		65AE677B1D04618E0083D1CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6535FE701D047C92002EEB8F /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		65AE677D1D04618E0083D1CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6535FE741D047C92002EEB8F /* Application.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FiberUser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberUser;
+				PRODUCT_NAME = FiberUser;
+			};
+			name = Debug;
+		};
+		65AE677E1D04618E0083D1CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6535FE741D047C92002EEB8F /* Application.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FiberUser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberUser;
+				PRODUCT_NAME = FiberUser;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		65AE67601D04618E0083D1CE /* Build configuration list for PBXProject "FiberUser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65AE677A1D04618E0083D1CE /* Debug */,
+				65AE677B1D04618E0083D1CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		65AE677C1D04618E0083D1CE /* Build configuration list for PBXNativeTarget "FiberUser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65AE677D1D04618E0083D1CE /* Debug */,
+				65AE677E1D04618E0083D1CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 65AE675D1D04618E0083D1CE /* Project object */;
+}
