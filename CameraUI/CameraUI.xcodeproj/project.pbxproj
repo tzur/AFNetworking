@@ -33,8 +33,8 @@
 		F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99540C11D054B94004C54D4 /* CUIOvalButton.mm */; };
 		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
 		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
-		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
 		F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */; };
+		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,12 +311,13 @@
 		F965C9EC1CF318CE00005627 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F99540C11D054B94004C54D4 /* CUIOvalButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButton.mm; sourceTree = "<group>"; };
 		F99540C21D054B94004C54D4 /* CUIOvalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIOvalButton.h; sourceTree = "<group>"; };
+		F9B97A3B1D095BE700B4E670 /* CUIMutableMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMutableMenuItemView.h; sourceTree = "<group>"; };
 		F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISharedTheme.h; sourceTree = "<group>"; };
 		F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedTheme.mm; sourceTree = "<group>"; };
 		F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedThemeSpec.mm; sourceTree = "<group>"; };
+		F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButtonSpec.mm; sourceTree = "<group>"; };
 		F9D4FE771D043FBD00CE9A54 /* CUIFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFocusView.h; sourceTree = "<group>"; };
 		F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFocusView.mm; sourceTree = "<group>"; };
-		F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButtonSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -563,6 +564,7 @@
 		BE46294F1CDF1E2500D9F7E2 /* Modes Bar */ = {
 			isa = PBXGroup;
 			children = (
+				F9B97A3B1D095BE700B4E670 /* CUIMutableMenuItemView.h */,
 			);
 			name = "Modes Bar";
 			sourceTree = "<group>";
