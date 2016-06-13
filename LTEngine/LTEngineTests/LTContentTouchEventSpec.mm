@@ -26,6 +26,7 @@ static const UITouchProperties kPropertiesExpectingUpdates = UITouchPropertyAzim
 static const CGPoint kContentLocation = CGPointMake(1, 2);
 static const CGPoint kPreviousContentLocation = CGPointMake(3, 4);
 static const CGFloat kContentZoomScale = 5;
+static const CGSize kContentSize = CGSizeMake(1, 2);
 
 __block id<LTTouchEvent> initialTouchEventMock;
 __block id<LTTouchEvent> touchEventMock;
@@ -65,6 +66,7 @@ context(@"initialization", ^{
         [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
                                         contentLocation:kContentLocation
                                 previousContentLocation:kPreviousContentLocation
+                                            contentSize:kContentSize
                                        contentZoomScale:kContentZoomScale];
 
     // LTTouchEvent protocol
@@ -88,6 +90,7 @@ context(@"initialization", ^{
     // LTContentTouchEvent protocol
     expect(contentTouchEvent.contentLocation).to.equal(kContentLocation);
     expect(contentTouchEvent.previousContentLocation).to.equal(kPreviousContentLocation);
+    expect(contentTouchEvent.contentSize).to.equal(kContentSize);
     expect(contentTouchEvent.contentZoomScale).to.equal(kContentZoomScale);
   });
 });
@@ -98,6 +101,7 @@ context(@"copying", ^{
         [[LTContentTouchEvent alloc] initWithTouchEvent:touchEventMock
                                         contentLocation:kContentLocation
                                 previousContentLocation:kPreviousContentLocation
+                                            contentSize:kContentSize
                                        contentZoomScale:kContentZoomScale];
     expect([contentTouchEvent copy]).to.beIdenticalTo(contentTouchEvent);
   });

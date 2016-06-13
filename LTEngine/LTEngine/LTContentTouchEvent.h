@@ -23,6 +23,9 @@ typedef NSMutableArray<id<LTContentTouchEvent>> LTMutableContentTouchEvents;
 /// content coordinate system.
 @property (readonly, nonatomic) CGPoint previousContentLocation;
 
+/// Size, in integer pixel units, of the content rectangle when the touch event occurred.
+@property (readonly, nonatomic) CGSize contentSize;
+
 /// Zoom scale of the content rectangle in relation to the content view when the touch event
 /// occurred. In particular, the zoom scale is defined as the ratio between the width of the view
 /// and the corresponding dimension of the content rectangle.
@@ -48,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithTouchEvent:(id<LTTouchEvent>)touchEvent
                    contentLocation:(CGPoint)contentLocation
            previousContentLocation:(CGPoint)previousContentLocation
+                       contentSize:(CGSize)contentSize
                   contentZoomScale:(CGFloat)contentZoomScale;
 
 @end

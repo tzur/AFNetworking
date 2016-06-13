@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize contentLocation = _contentLocation;
 @synthesize previousContentLocation = _previousContentLocation;
+@synthesize contentSize = _contentSize;
 @synthesize contentZoomScale = _contentZoomScale;
 
 @dynamic sequenceID;
@@ -44,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithTouchEvent:(id<LTTouchEvent>)touchEvent
                    contentLocation:(CGPoint)contentLocation
            previousContentLocation:(CGPoint)previousContentLocation
+                       contentSize:(CGSize)contentSize
                   contentZoomScale:(CGFloat)contentZoomScale {
   LTParameterAssert(touchEvent);
 
@@ -51,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
     _touchEvent = [touchEvent copyWithZone:nil];
     _contentLocation = contentLocation;
     _previousContentLocation = previousContentLocation;
+    _contentSize = contentSize;
     _contentZoomScale = contentZoomScale;
   }
   return self;
