@@ -281,6 +281,7 @@
 		84884C171C70E63500DBB987 /* PTUChangesetMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUChangesetMove.h; sourceTree = "<group>"; };
 		84884C181C70E63500DBB987 /* PTUChangesetMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUChangesetMove.m; sourceTree = "<group>"; };
 		84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUChangesetMoveSepc.m; sourceTree = "<group>"; };
+		848D31321D0F0415006BC52F /* PTUImageCellViewModelProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCellViewModelProvider.h; sourceTree = "<group>"; };
 		848E00061C591DD1001D8368 /* PhotonsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonsUI.h; sourceTree = "<group>"; };
 		848E00081C591DD1001D8368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		848E000D1C591DD1001D8368 /* PhotonsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotonsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -542,6 +543,7 @@
 				84AB7E751C85DF3A008E254A /* PTUImageCell.m */,
 				84A0DC3A1C8747AE005A98F3 /* PTUImageCellViewModel.h */,
 				84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */,
+				848D31321D0F0415006BC52F /* PTUImageCellViewModelProvider.h */,
 			);
 			name = Base;
 			sourceTree = "<group>";
