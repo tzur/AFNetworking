@@ -159,19 +159,23 @@ context(@"LTVector2", ^{
   });
 
   context(@"std", ^{
-    it(@"clamping", ^{
-      expect(std::clamp(LTVector2(0.5, -0.5), 0, 1)).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), 1, 0)).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), -1, 0)).to.equal(LTVector2(0, -0.5));
-      expect(std::clamp(LTVector2(0.5, -0.5), 0, -1)).to.equal(LTVector2(0, -0.5));
-
+    it(@"should clamp point elements between two points elements", ^{
       expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(0, 0),
                         LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
       expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, 0),
                         LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
       expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, -1),
                         LTVector2(0, 1))).to.equal(LTVector2(0, -0.5));
+    });
 
+    it(@"should clamp point elements between two scalars", ^{
+      expect(std::clamp(LTVector2(0.5, -0.5), 0, 1)).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), 1, 0)).to.equal(LTVector2(0.5, 0));
+      expect(std::clamp(LTVector2(0.5, -0.5), -1, 0)).to.equal(LTVector2(0, -0.5));
+      expect(std::clamp(LTVector2(0.5, -0.5), 0, -1)).to.equal(LTVector2(0, -0.5));
+    });
+
+    it(@"should clamp point in a given rect", ^{
       expect(std::clamp(LTVector2(0.5, -0.5),
                         CGRectMake(0, 0, 1, 1))).to.equal(LTVector2(0.5, 0));
       expect(std::clamp(LTVector2(0.5, -0.5),
@@ -197,12 +201,54 @@ context(@"LTVector2", ^{
       expect(std::min(LTVector2(1, 7))).to.equal(1);
     });
 
+    it(@"should return maximal vector", ^{
+      LTVector2 v1(1, 4);
+      LTVector2 v2(2, 3);
+      expect(std::max(v1, v2)).to.equal(LTVector2(2, 4));
+    });
+
     it(@"should return maximal component", ^{
       expect(std::max(LTVector2(1, 7))).to.equal(7);
     });
 
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector2(0, 4))).to.equal(LTVector2(0, 2));
+    });
+
+    it(@"should mix using a given scalar", ^{
+      LTVector2 vector1(2, 4);
+      LTVector2 vector2(4, 8);
+
+      expect(std::mix(vector1, vector2, 0)).to.equal(vector1);
+      expect(std::mix(vector1, vector2, 1)).to.equal(vector2);
+      expect(std::mix(vector1, vector2, 0.5)).to.equal(LTVector2(3, 6));
+    });
+
+    it(@"should mix using an interpolation vector ", ^{
+      LTVector2 vector1(2, 4);
+      LTVector2 vector2(4, 8);
+
+      expect(std::mix(vector1, vector2, LTVector2::zeros())).to.equal(vector1);
+      expect(std::mix(vector1, vector2, LTVector2::ones())).to.equal(vector2);
+      expect(std::mix(vector1, vector2, LTVector2(0.5, 0.25))).to.equal(LTVector2(3, 5));
+    });
+
+    it(@"should step with an edge scalar", ^{
+      LTVector2 vector1(2, 4);
+      LTVector2 vector2(4, 2);
+      LTVector2 vector3(3, 3);
+
+      expect(std::step(3, vector1)).to.equal(LTVector2(0, 1));
+      expect(std::step(3, vector2)).to.equal(LTVector2(1, 0));
+      expect(std::step(3, vector3)).to.equal(LTVector2(1, 1));
+    });
+
+    it(@"should step with an edge vector", ^{
+      LTVector2 vector(2, 4);
+
+      expect(std::step(LTVector2(3, 3), vector)).to.equal(LTVector2(0, 1));
+      expect(std::step(LTVector2(1, 5), vector)).to.equal(LTVector2(1, 0));
+      expect(std::step(LTVector2(2, 4), vector)).to.equal(LTVector2(1, 1));
     });
   });
 
@@ -355,6 +401,12 @@ context(@"LTVector3", ^{
       expect(std::min(LTVector3(1, 7, -5))).to.equal(-5);
     });
 
+    it(@"should return maximal vector", ^{
+      LTVector3 v1(1, 4, 5);
+      LTVector3 v2(2, 3, 4);
+      expect(std::max(v1, v2)).to.equal(LTVector3(2, 4, 5));
+    });
+
     it(@"should return maximal component", ^{
       expect(std::max(LTVector3(1, 7, -5))).to.equal(7);
     });
@@ -363,11 +415,61 @@ context(@"LTVector3", ^{
       expect(std::sqrt(LTVector3(0, 4, 9))).to.equal(LTVector3(0, 2, 3));
     });
 
-    it(@"should clamp vector elements between values", ^{
+    it(@"should clamp vector elements between two vectors elements", ^{
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(0, 0, 0),
+                        LTVector3(1, 1, 1))).to.equal(LTVector3(0.5, 0, 1));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(0, -1, 0),
+                        LTVector3(1, 1, 1))).to.equal(LTVector3(0.5, -0.5, 1));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(-1, -1, 0),
+                        LTVector3(0, 1, 1))).to.equal(LTVector3(0, -0.5, 1));
+      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(-1, -1, 0),
+                        LTVector3(0, 1, 1.5))).to.equal(LTVector3(0, -0.5, 1.1));
+    });
+
+    it(@"should clamp vector elements between two scalars", ^{
       expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, 1)).to.equal(LTVector3(0.5, 0, 1));
       expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 1, 0)).to.equal(LTVector3(0.5, 0, 1));
       expect(std::clamp(LTVector3(0.5, -0.5, 1.1), -1, 0)).to.equal(LTVector3(0, -0.5, 0));
       expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, -1)).to.equal(LTVector3(0, -0.5, 0));
+    });
+
+    it(@"should mix using a given scalar", ^{
+      LTVector3 vector1(2, 4, 6);
+      LTVector3 vector2(4, 8, 12);
+
+      expect(std::mix(vector1, vector2, 0)).to.equal(vector1);
+      expect(std::mix(vector1, vector2, 1)).to.equal(vector2);
+      expect(std::mix(vector1, vector2, 0.5)).to.equal(LTVector3(3, 6, 9));
+    });
+
+    it(@"should mix using an interpolation vector ", ^{
+      LTVector3 vector1(2, 4, 6);
+      LTVector3 vector2(4, 8, 12);
+
+      expect(std::mix(vector1, vector2, LTVector3::zeros())).to.equal(vector1);
+      expect(std::mix(vector1, vector2, LTVector3::ones())).to.equal(vector2);
+      expect(std::mix(vector1, vector2, LTVector3(0.5, 0.25, 1))).to.equal(LTVector3(3, 5, 12));
+    });
+
+    it(@"should step with an edge scalar", ^{
+      LTVector3 vector1(2, 4, 4);
+      LTVector3 vector2(4, 2, 4);
+      LTVector3 vector3(4, 4, 2);
+      LTVector3 vector4(3, 3, 3);
+
+      expect(std::step(3, vector1)).to.equal(LTVector3(0, 1, 1));
+      expect(std::step(3, vector2)).to.equal(LTVector3(1, 0, 1));
+      expect(std::step(3, vector3)).to.equal(LTVector3(1, 1, 0));
+      expect(std::step(3, vector4)).to.equal(LTVector3(1, 1, 1));
+    });
+
+    it(@"should step with an edge vector", ^{
+      LTVector3 vector(2, 4, 6);
+
+      expect(std::step(LTVector3(3, 3, 5), vector)).to.equal(LTVector3(0, 1, 1));
+      expect(std::step(LTVector3(1, 5, 5), vector)).to.equal(LTVector3(1, 0, 1));
+      expect(std::step(LTVector3(1, 3, 7), vector)).to.equal(LTVector3(1, 1, 0));
+      expect(std::step(LTVector3(2, 4, 6), vector)).to.equal(LTVector3(1, 1, 1));
     });
   });
 
@@ -548,6 +650,12 @@ context(@"LTVector4", ^{
       expect(std::min(LTVector4(1, 7, -5, 100))).to.equal(-5);
     });
 
+    it(@"should return maximal vector", ^{
+      LTVector4 v1(1, 4, 5, 0);
+      LTVector4 v2(2, 3, 4, -1);
+      expect(std::max(v1, v2)).to.equal(LTVector4(2, 4, 5, 0));
+    });
+
     it(@"should return maximal component", ^{
       expect(std::max(LTVector4(1, 7, -5, 100))).to.equal(100);
     });
@@ -556,13 +664,69 @@ context(@"LTVector4", ^{
       expect(std::sqrt(LTVector4(0, 4, 9, 16))).to.equal(LTVector4(0, 2, 3, 4));
     });
 
-    it(@"should clamp vector elements between values", ^{
+    it(@"should clamp vector elements between two vectors elements", ^{
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(0, 0, 0, 0),
+                        LTVector4(1, 1, 1, 1))).to.equal(LTVector4(0.5, 0, 1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(0, -1, 0 ,0),
+                        LTVector4(1, 1, 1, 1))).to.equal(LTVector4(0.5, -0.5, 1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, 0),
+                        LTVector4(0, 1, 1, 1))).to.equal(LTVector4(0, -0.5, 1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, 0),
+                        LTVector4(0, 1, 1.5, 1))).to.equal(LTVector4(0, -0.5, 1.1, 0));
+      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, -1.5),
+                        LTVector4(0, 1, 1.5, 1))).to.equal(LTVector4(0, -0.5, 1.1, -1.1));
+    });
+
+    it(@"should clamp vector elements between two scalars", ^{
       expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, 1)).to.equal(LTVector4(0.5, 0, 1, 0));
       expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 1, 0)).to.equal(LTVector4(0.5, 0, 1, 0));
       expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), -1, 0))
           .to.equal(LTVector4(0, -0.5, 0, -1));
       expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, -1))
           .to.equal(LTVector4(0, -0.5, 0, -1));
+    });
+
+    it(@"should mix using a given scalar", ^{
+      LTVector4 vector1(2, 4, 6, 8);
+      LTVector4 vector2(4, 8, 12, 16);
+
+      expect(std::mix(vector1, vector2, 0)).to.equal(vector1);
+      expect(std::mix(vector1, vector2, 1)).to.equal(vector2);
+      expect(std::mix(vector1, vector2, 0.5)).to.equal(LTVector4(3, 6, 9, 12));
+    });
+
+    it(@"should mix using an interpolation vector ", ^{
+      LTVector4 vector1(2, 4, 6, 8);
+      LTVector4 vector2(4, 8, 12, 16);
+
+      expect(std::mix(vector1, vector2, LTVector4::zeros())).to.equal(vector1);
+      expect(std::mix(vector1, vector2, LTVector4::ones())).to.equal(vector2);
+      expect(std::mix(vector1, vector2, LTVector4(0.5, 0.25, 1, 0.125)))
+          .to.equal(LTVector4(3, 5, 12, 9));
+    });
+
+    it(@"should step with an edge scalar", ^{
+      LTVector4 vector1(2, 4, 4, 4);
+      LTVector4 vector2(4, 2, 4, 4);
+      LTVector4 vector3(4, 4, 2, 4);
+      LTVector4 vector4(4, 4, 4, 2);
+      LTVector4 vector5(3, 3, 3, 3);
+
+      expect(std::step(3, vector1)).to.equal(LTVector4(0, 1, 1, 1));
+      expect(std::step(3, vector2)).to.equal(LTVector4(1, 0, 1, 1));
+      expect(std::step(3, vector3)).to.equal(LTVector4(1, 1, 0, 1));
+      expect(std::step(3, vector4)).to.equal(LTVector4(1, 1, 1, 0));
+      expect(std::step(3, vector5)).to.equal(LTVector4(1, 1, 1, 1));
+    });
+
+    it(@"should step with an edge vector", ^{
+      LTVector4 vector(2, 4, 6, 8);
+
+      expect(std::step(LTVector4(3, 3, 5, 7), vector)).to.equal(LTVector4(0, 1, 1, 1));
+      expect(std::step(LTVector4(1, 5, 5, 7), vector)).to.equal(LTVector4(1, 0, 1, 1));
+      expect(std::step(LTVector4(1, 3, 7, 7), vector)).to.equal(LTVector4(1, 1, 0, 1));
+      expect(std::step(LTVector4(1, 3, 5, 9), vector)).to.equal(LTVector4(1, 1, 1, 0));
+      expect(std::step(LTVector4(2, 4, 6, 8), vector)).to.equal(LTVector4(1, 1, 1, 1));
     });
   });
 

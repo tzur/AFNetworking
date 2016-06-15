@@ -263,17 +263,17 @@ inline LTVector2 operator/(const CGFloat lhs, LTVector2 rhs) {
 }
 
 namespace std {
-  /// Constrains a point to lie between two values (for both axes).
-  inline LTVector2 clamp(const LTVector2 &point, const float &a, const float &b) {
-    return LTVector2(clamp(point.x, a, b), clamp(point.y, a, b));
-  }
-
-  /// Constrains a point to lie between two points.
+  /// Constrains point elements to lie between two points elements.
   inline LTVector2 clamp(const LTVector2 &point, const LTVector2 &a, const LTVector2 &b) {
     return LTVector2(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
   }
 
-  /// Constrains a point to lie inside the given rect.
+  /// Constrains point elements to lie between two scalars.
+  inline LTVector2 clamp(const LTVector2 &point, const float &a, const float &b) {
+    return clamp(point, LTVector2(a), LTVector2(b));
+  }
+
+  /// Constrains point to lie inside the given rect.
   inline LTVector2 clamp(const LTVector2 &point, const CGRect &rect) {
     return LTVector2(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
                      clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
@@ -294,6 +294,11 @@ namespace std {
     return min(a.x, a.y);
   }
 
+  /// Return element-wise maximal vector.
+  inline LTVector2 max(const LTVector2 &a, const LTVector2 &b) {
+    return LTVector2(max(a.x, b.x), max(a.y, b.y));
+  }
+
   /// Returns the maximal element of the vector.
   inline float max(const LTVector2 &a) {
     return max(a.x, a.y);
@@ -302,6 +307,30 @@ namespace std {
   /// Returns the squqre root of each element of the vector.
   inline LTVector2 sqrt(const LTVector2 &v) {
     return LTVector2(sqrt(v.x), sqrt(v.y));
+  }
+
+  /// Returns a linear interpolation between two values using a scalar.
+  inline LTVector2 mix(const LTVector2 &a, const LTVector2 &b, float alpha) {
+    return (1 - alpha) * a + alpha * b;
+  }
+
+  /// Returns a linear interpolation between two values using an element wise interpolation vector.
+  inline LTVector2 mix(const LTVector2 &a, const LTVector2 &b, const LTVector2 &alpha) {
+    return (LTVector2::ones() - alpha) * a + alpha * b;
+  }
+
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector2 step(const LTVector2 &edge, const LTVector2 &v) {
+    return LTVector2(v.x >= edge.x, v.y >= edge.y);
+  }
+  
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector2 step(float edge, const LTVector2 &v) {
+    return step(LTVector2(edge), v);
   }
 }
 
@@ -582,6 +611,11 @@ namespace std {
     return min(min(a.x, a.y), a.z);
   }
 
+  /// Return element-wise maximal vector.
+  inline LTVector3 max(const LTVector3 &a, const LTVector3 &b) {
+    return LTVector3(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z));
+  }
+
   /// Returns the maximal element of the vector.
   inline float max(const LTVector3 &a) {
     return max(max(a.x, a.y), a.z);
@@ -592,9 +626,38 @@ namespace std {
     return LTVector3(sqrt(v.x), sqrt(v.y), sqrt(v.z));
   }
 
-  /// Constrains vector elements to lie between two values.
+  /// Constrains vector elements to lie between two vectors elements.
+  inline LTVector3 clamp(const LTVector3 &point, const LTVector3 &a, const LTVector3 &b) {
+    return LTVector3(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z));
+  }
+
+  /// Constrains vector elements to lie between two scalars.
   inline LTVector3 clamp(const LTVector3 &v, const float &a, const float &b) {
-    return LTVector3(clamp(v.x, a, b), clamp(v.y, a, b), clamp(v.z, a, b));
+    return clamp(v, LTVector3(a), LTVector3(b));
+  }
+
+  /// Returns a linear interpolation between two values using a scalar.
+  inline LTVector3 mix(const LTVector3 &a, const LTVector3 &b, float alpha) {
+    return (1 - alpha) * a + alpha * b;
+  }
+
+  /// Returns a linear interpolation between two values using an element wise interpolation vector.
+  inline LTVector3 mix(const LTVector3 &a, const LTVector3 &b, const LTVector3 &alpha) {
+    return (LTVector3::ones() - alpha) * a + alpha * b;
+  }
+
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector3 step(const LTVector3 &edge, const LTVector3 &v) {
+    return LTVector3(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z);
+  }
+  
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector3 step(float edge, const LTVector3 &v) {
+    return step(LTVector3(edge), v);
   }
 }
 
@@ -913,6 +976,11 @@ namespace std {
     return min(min(min(a.x, a.y), a.z), a.w);
   }
 
+  /// Return element-wise maximal vector.
+  inline LTVector4 max(const LTVector4 &a, const LTVector4 &b) {
+    return LTVector4(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z), max(a.w, b.w));
+  }
+
   /// Returns the maximal element of the vector.
   inline float max(const LTVector4 &a) {
     return max(max(max(a.x, a.y), a.z), a.w);
@@ -923,9 +991,39 @@ namespace std {
     return LTVector4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w));
   }
 
-  /// Constrains vector elements to lie between two values.
+  /// Constrains vector elements to lie between two vectors elements.
+  inline LTVector4 clamp(const LTVector4 &point, const LTVector4 &a, const LTVector4 &b) {
+    return LTVector4(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z),
+                     clamp(point.w, a.w, b.w));
+  }
+
+  /// Constrains vector elements to lie between two scalars.
   inline LTVector4 clamp(const LTVector4 &v, const float &a, const float &b) {
-    return LTVector4(clamp(v.x, a, b), clamp(v.y, a, b), clamp(v.z, a, b), clamp(v.w, a, b));
+    return clamp(v, LTVector4(a), LTVector4(b));
+  }
+
+  /// Returns a linear interpolation between two values using a scalar.
+  inline LTVector4 mix(const LTVector4 &a, const LTVector4 &b, float alpha) {
+    return (1 - alpha) * a + alpha * b;
+  }
+
+  /// Returns a linear interpolation between two values using an element wise interpolation vector.
+  inline LTVector4 mix(const LTVector4 &a, const LTVector4 &b, const LTVector4 &alpha) {
+    return (LTVector4::ones() - alpha) * a + alpha * b;
+  }
+
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector4 step(const LTVector4 &edge, const LTVector4 &v) {
+    return LTVector4(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z, v.w >= edge.w);
+  }
+  
+  /// Returns a vector with the result of an element wise comparison between a given vector to an
+  /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
+  /// and \c 1 is returned otherwise.
+  inline LTVector4 step(float edge, const LTVector4 &v) {
+    return step(LTVector4(edge), v);
   }
 }
 
