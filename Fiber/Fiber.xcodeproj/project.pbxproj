@@ -33,6 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		651304921D11608100F2B03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
+		};
 		6535FE541D047911002EEB8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */;
@@ -558,6 +565,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				651304931D11608100F2B03C /* PBXTargetDependency */,
 			);
 			name = Fiber;
 			productName = Fiber;
@@ -870,6 +878,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		651304931D11608100F2B03C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveCocoa-iOS";
+			targetProxy = 651304921D11608100F2B03C /* PBXContainerItemProxy */;
+		};
 		65C62B8D1D0474D5000FCE99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 65AE674F1D0461350083D1CE /* Fiber */;
@@ -882,7 +895,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B6D1D046B22000FCE99 /* Debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -892,7 +904,6 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)../third_party/ReactiveCocoa",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -903,7 +914,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B6E1D046B22000FCE99 /* Release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -913,7 +923,6 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)../third_party/ReactiveCocoa",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -945,7 +954,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUNDLE_LOADER)";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -959,7 +967,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberTests;
 				PRODUCT_NAME = FiberTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
@@ -967,7 +974,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUNDLE_LOADER)";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -981,7 +987,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberTests;
 				PRODUCT_NAME = FiberTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};
