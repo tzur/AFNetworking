@@ -13,5 +13,6 @@
   #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 
   // LTKitTests.
+  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
   #import <LTKitTests/LTTestUtils.h>
 #endif
