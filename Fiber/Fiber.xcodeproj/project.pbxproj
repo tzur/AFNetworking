@@ -895,7 +895,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B6D1D046B22000FCE99 /* Debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -915,7 +914,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B6E1D046B22000FCE99 /* Release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -956,7 +954,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUNDLE_LOADER)";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -970,7 +967,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberTests;
 				PRODUCT_NAME = FiberTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
@@ -978,7 +974,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUNDLE_LOADER)";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -992,7 +987,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberTests;
 				PRODUCT_NAME = FiberTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};
