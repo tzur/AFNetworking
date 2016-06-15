@@ -263,8 +263,20 @@ LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value) {
   return result;
 }
 
+LTVector4 LTCVVec4fToLTVector4(cv::Vec4f value) {
+  LTVector4 result;
+  for (int i = 0; i < value.channels; ++i) {
+    result.data()[i] = value(i);
+  }
+  return result;
+}
+
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value) {
   return (cv::Vec4b)value;
+}
+
+cv::Vec4f LTLTVector4ToVec4f(LTVector4 value) {
+  return (cv::Vec4f)value;
 }
 
 cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position) {
