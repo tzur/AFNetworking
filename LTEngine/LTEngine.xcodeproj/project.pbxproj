@@ -630,6 +630,9 @@
 		8559885C1CE31CF800EC4648 /* LTTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */; };
 		855988611CE31D4200EC4648 /* LTTextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */; };
 		856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */; };
+		85A8013D1D07128100E8CFAC /* LT3DLUTTextureAtlas.h in Headers */ = {isa = PBXBuildFile; fileRef = 85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */; };
+		85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */; };
+		85A8015F1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85A8015E1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm */; };
 		85CDE5381CFED51C00229787 /* LTForegroundBackgroundDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CDE5361CFED51C00229787 /* LTForegroundBackgroundDrawer.h */; };
 		85CDE5391CFED51C00229787 /* LTForegroundBackgroundDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85CDE5371CFED51C00229787 /* LTForegroundBackgroundDrawer.mm */; };
 		85CDE56E1CFEF89900229787 /* LTForegroundBackgroundDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85CDE56D1CFEF89900229787 /* LTForegroundBackgroundDrawerSpec.mm */; };
@@ -2036,6 +2039,9 @@
 		8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlas.mm; sourceTree = "<group>"; };
 		855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlasSpec.mm; sourceTree = "<group>"; };
 		858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.vsh; sourceTree = "<group>"; };
+		85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUTTextureAtlas.h; sourceTree = "<group>"; };
+		85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTTextureAtlas.mm; sourceTree = "<group>"; };
+		85A8015E1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTTextureAtlasSpec.mm; sourceTree = "<group>"; };
 		85CDE5361CFED51C00229787 /* LTForegroundBackgroundDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTForegroundBackgroundDrawer.h; sourceTree = "<group>"; };
 		85CDE5371CFED51C00229787 /* LTForegroundBackgroundDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTForegroundBackgroundDrawer.mm; sourceTree = "<group>"; };
 		85CDE56D1CFEF89900229787 /* LTForegroundBackgroundDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTForegroundBackgroundDrawerSpec.mm; sourceTree = "<group>"; };
@@ -3406,6 +3412,8 @@
 			children = (
 				85F372B11C8C888300E1D429 /* LT3DLUT.h */,
 				85F372B21C8C888300E1D429 /* LT3DLUT.mm */,
+				85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */,
+				85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */,
 			);
 			name = "Lookup Tables";
 			sourceTree = "<group>";
@@ -3414,6 +3422,7 @@
 			isa = PBXGroup;
 			children = (
 				85F372B71C8C88CC00E1D429 /* LT3DLUTSpec.mm */,
+				85A8015E1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm */,
 			);
 			name = "Lookup Tables";
 			sourceTree = "<group>";
@@ -4602,6 +4611,7 @@
 				8B871FCF1924A75E00517F2E /* LTOneShotBaseImageProcessor.h in Headers */,
 				8B871FD01924A75E00517F2E /* LTProcessingStrategy.h in Headers */,
 				5006776C1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h in Headers */,
+				85A8013D1D07128100E8CFAC /* LT3DLUTTextureAtlas.h in Headers */,
 				28F3CA9F1D004B2B007FC2E9 /* LTLinearProcessor.h in Headers */,
 				50E998A41C075F67004F15C9 /* LTReparameterizedObject.h in Headers */,
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,
@@ -5627,6 +5637,7 @@
 				5050DF851CCE0994009BB1A0 /* LTPrimitiveQuad.mm in Sources */,
 				031338D2191279B30095F99B /* LTImageBorderProcessor.mm in Sources */,
 				500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */,
+				85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */,
@@ -5756,6 +5767,7 @@
 				285B5ECB1C565FF200F7F641 /* LTTextureArchiverNonPersistentStorageSpec.mm in Sources */,
 				8BFA8F87191A2F9F0088310E /* LTGLKitExtensionsSpec.mm in Sources */,
 				50B627101CBE8B0F00F9FAF7 /* LTParameterizationKeyToValuesSpec.mm in Sources */,
+				85A8015F1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm in Sources */,
 				8BABFD73188D2177004163DA /* LTGPUImageProcessorSpec.mm in Sources */,
 				8BC87EAF1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm in Sources */,
 				8BAE3A4218B2354E00DA79E1 /* EXPMatchers+equalMat.mm in Sources */,
