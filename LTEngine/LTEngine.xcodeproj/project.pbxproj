@@ -645,6 +645,14 @@
 		85E2B6941C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */; };
 		85E2B6951C58C649006AD39C /* SolidRectsDrawerRotatedRects.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */; };
 		85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */; };
+		85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F154EA1D1283CF00967A90 /* LTPackingRectsProvider.h */; };
+		85F1550C1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F1550A1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h */; };
+		85F1550D1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F1550B1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm */; };
+		85F1550F1D12840200967A90 /* LTTextureAtlasProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F1550E1D12840200967A90 /* LTTextureAtlasProvider.h */; };
+		85F155121D12840800967A90 /* LTTextureAtlasFromMatsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F155101D12840800967A90 /* LTTextureAtlasFromMatsProvider.h */; };
+		85F155131D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F155111D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm */; };
+		85F155151D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F155141D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm */; };
+		85F155171D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F155161D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm */; };
 		85F372B31C8C888300E1D429 /* LT3DLUT.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F372B11C8C888300E1D429 /* LT3DLUT.h */; };
 		85F372B41C8C888300E1D429 /* LT3DLUT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B21C8C888300E1D429 /* LT3DLUT.mm */; };
 		85F372B51C8C88A300E1D429 /* LT3DLUT.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 85F372B01C8C888300E1D429 /* LT3DLUT.fsh */; };
@@ -2054,6 +2062,14 @@
 		85E2B68A1C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRegularRectsRed.png; path = Resources/SolidRectsDrawerRegularRectsRed.png; sourceTree = "<group>"; };
 		85E2B68B1C58C649006AD39C /* SolidRectsDrawerRotatedRects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRects.png; path = Resources/SolidRectsDrawerRotatedRects.png; sourceTree = "<group>"; };
 		85E2B68E1C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SolidRectsDrawerRotatedRectsRed.png; path = Resources/SolidRectsDrawerRotatedRectsRed.png; sourceTree = "<group>"; };
+		85F154EA1D1283CF00967A90 /* LTPackingRectsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPackingRectsProvider.h; sourceTree = "<group>"; };
+		85F1550A1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHorizontalPackingRectsProvider.h; sourceTree = "<group>"; };
+		85F1550B1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHorizontalPackingRectsProvider.mm; sourceTree = "<group>"; };
+		85F1550E1D12840200967A90 /* LTTextureAtlasProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureAtlasProvider.h; sourceTree = "<group>"; };
+		85F155101D12840800967A90 /* LTTextureAtlasFromMatsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureAtlasFromMatsProvider.h; sourceTree = "<group>"; };
+		85F155111D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlasFromMatsProvider.mm; sourceTree = "<group>"; };
+		85F155141D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHorizontalPackingRectsProviderSpec.mm; sourceTree = "<group>"; };
+		85F155161D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlasFromMatsProviderSpec.mm; sourceTree = "<group>"; };
 		85F372B01C8C888300E1D429 /* LT3DLUT.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LT3DLUT.fsh; sourceTree = "<group>"; };
 		85F372B11C8C888300E1D429 /* LT3DLUT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUT.h; sourceTree = "<group>"; };
 		85F372B21C8C888300E1D429 /* LT3DLUT.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUT.mm; sourceTree = "<group>"; };
@@ -4559,10 +4575,16 @@
 				C72539EA1C7DBA2A008399A3 /* LTAdjustOperations.mm */,
 				8B7DC39B18328063008D004B /* LTBoundaryCondition.h */,
 				8B7DC39C18328063008D004B /* LTBoundaryCondition.mm */,
+				85F154EA1D1283CF00967A90 /* LTPackingRectsProvider.h */,
+				85F1550A1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h */,
+				85F1550B1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm */,
 				8BB14D8118BF490700701A1B /* LTPatchKernel.h */,
 				8BB14D8218BF490700701A1B /* LTPatchKernel.mm */,
 				855988591CE31CF800EC4648 /* LTTextureAtlas.h */,
 				8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */,
+				85F1550E1D12840200967A90 /* LTTextureAtlasProvider.h */,
+				85F155101D12840800967A90 /* LTTextureAtlasFromMatsProvider.h */,
+				85F155111D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4572,8 +4594,10 @@
 			children = (
 				C72539C61C7DBA19008399A3 /* LTAdjustOperationsSpec.mm */,
 				8B7DC3A8183292F9008D004B /* LTBoundaryConditionSpec.mm */,
+				85F155141D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm */,
 				8BB14D8418BF54B900701A1B /* LTPatchKernelSpec.mm */,
 				855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */,
+				85F155161D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4643,6 +4667,7 @@
 				8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */,
 				25FBF7DC1C32D26D00E2E5BC /* LTTouchEventView.h in Headers */,
 				50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */,
+				85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */,
 				0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */,
 				288419411BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.h in Headers */,
 				8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */,
@@ -4669,9 +4694,11 @@
 				502B1CC319FA91FB00985F30 /* LTQuadMapping.h in Headers */,
 				2888EEAB1993D2F70008F1C7 /* LTCropDrawer.h in Headers */,
 				064F3FA51CF4792500E6D358 /* LTMeanShaderGenerator.h in Headers */,
+				85F155121D12840800967A90 /* LTTextureAtlasFromMatsProvider.h in Headers */,
 				8B871FE91924A75F00517F2E /* LTMultiscaleNoiseProcessor.h in Headers */,
 				8B871FEA1924A75F00517F2E /* LTPassthroughProcessor.h in Headers */,
 				8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */,
+				85F1550C1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h in Headers */,
 				8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */,
 				28B117A319C8587E007E2F17 /* LTOneShotBaseImageProcessor+Protected.h in Headers */,
 				8BABF0CD19B8486500AED760 /* LTEAWProcessor.h in Headers */,
@@ -4741,6 +4768,7 @@
 				8B87200D1924A76100517F2E /* LTCommonDrawableShapeStructs.h in Headers */,
 				50795EDB1C0F4F1100773A71 /* LTParameterizedObjectStack.h in Headers */,
 				8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */,
+				85F1550F1D12840200967A90 /* LTTextureAtlasProvider.h in Headers */,
 				28B3346819C826D3004B6191 /* LTOneShotImageProcessor.h in Headers */,
 				8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */,
 				28E8AF111997AB4700C2DD22 /* LTCropDrawerRect.h in Headers */,
@@ -5494,6 +5522,7 @@
 				03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */,
 				03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */,
 				283906C918C6217A00BD21CE /* LTPainterMergeShader.fsh in Sources */,
+				85F1550D1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm in Sources */,
 				8BB92FB01906AEB900954124 /* LTMaskOverlay.fsh in Sources */,
 				8BA822C1198954AE00FBE68E /* LTTransformers.mm in Sources */,
 				286A936C18D0513000F203DF /* LTTextureBrush.mm in Sources */,
@@ -5540,6 +5569,7 @@
 				03BBB386188CF732001E7703 /* LTFractionalNoise.fsh in Sources */,
 				03C192FD18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.mm in Sources */,
 				8BAE3A0D18ACFEF700DA79E1 /* LTPatchBoundaryProcessor.mm in Sources */,
+				85F155131D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm in Sources */,
 				280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */,
 				28C61C0218B23D430036D66E /* LTTouchCollectorFilter.mm in Sources */,
 				506F826919FE5CFA00A15D9D /* LTQuadDrawer.mm in Sources */,
@@ -5839,6 +5869,7 @@
 				283BD0561922217500B68A90 /* LTShapeDrawerPathShapeSpec.mm in Sources */,
 				25BBC57C1CBCE93100C182B3 /* LTPrimitiveTriangleSpec.mm in Sources */,
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,
+				85F155151D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm in Sources */,
 				039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */,
 				5070CA3219FE819800381A36 /* LTQuadMixerProcessorSpec.mm in Sources */,
 				50D82E961BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm in Sources */,
@@ -5942,6 +5973,7 @@
 				285B5E431C561E2200F7F641 /* LTTextureArchiveMetadataSpec.mm in Sources */,
 				25705DD21B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm in Sources */,
 				85F372BA1C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm in Sources */,
+				85F155171D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm in Sources */,
 				500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
