@@ -204,14 +204,79 @@ NSString *LTScalarAsString(const cv::Scalar &scalar) {
 }
 
 LTVector4 LTBlendNormal(const LTVector4 &src, const LTVector4 &dst) {
-  CGFloat a = src.a() + dst.a() - src.a() * dst.a();
   LTVector3 rgb = src.rgb() + dst.rgb() * (1 - src.a());
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendDraken(const LTVector4 &src, const LTVector4 &dst) {
+  LTVector3 rgb = std::min(src.rgb() * dst.a(), dst.rgb() * src.a()) + src.rgb() * (1 - dst.a()) +
+      dst.rgb() * (1 - src.a());
+  float a = src.a() + dst.a() - src.a() * dst.a();
   return LTVector4(rgb, a);
 }
 
 LTVector4 LTBlendMultiply(const LTVector4 &src, const LTVector4 &dst) {
-  CGFloat a = src.a() + dst.a() - src.a() * dst.a();
   LTVector3 rgb = src.rgb() * dst.rgb() + src.rgb() * (1 - dst.a()) + dst.rgb() * (1 - src.a());
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendHardLight(const LTVector4 &src, const LTVector4 &dst) {
+  LTVector3 below = 2 * src.rgb() * dst.rgb() + src.rgb() * (1 - dst.a()) +
+      dst.rgb() * (1 - src.a());
+  LTVector3 above = src.rgb() * (1 + dst.a()) + dst.rgb() * (1 + src.a()) -
+      LTVector3(src.a() * dst.a()) - 2 * src.rgb() * dst.rgb();
+
+  LTVector3 rgb = std::mix(below, above, std::step(0.5 * src.a(), src.rgb()));
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendSoftLight(const LTVector4 &src, const LTVector4 &dst) {
+  float safeDa = (dst.a() > 0) ? dst.a() : dst.a() + 1;
+
+  LTVector3 below = 2 * src.rgb() * dst.rgb() +
+      dst.rgb() * (dst.rgb() / safeDa) * (LTVector3(src.a()) - 2 * src.rgb()) +
+      src.rgb() * (1 - dst.a()) + dst.rgb() * (1 - src.a());
+  LTVector3 above = 2 * dst.rgb() * (LTVector3(src.a()) - src.rgb()) +
+      std::sqrt(dst.rgb() * dst.a()) * (2 * src.rgb() - LTVector3(src.a())) +
+      src.rgb() * (1 - dst.a()) + dst.rgb() * (1 - src.a());
+
+  LTVector3 rgb = std::mix(below, above, std::step(0.5 * src.a(), src.rgb()));
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendLighten(const LTVector4 &src, const LTVector4 &dst) {
+  LTVector3 rgb = std::max(src.rgb() * dst.a(), dst.rgb() * src.a()) +
+      src.rgb() * (1 - dst.a()) + dst.rgb() * (1 - src.a());
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendScreen(const LTVector4 &src, const LTVector4 &dst) {
+  return src + dst - src * dst;
+}
+
+LTVector4 LTBlendOverlay(const LTVector4 &src, const LTVector4 &dst) {
+  LTVector3 below = 2 * src.rgb() * dst.rgb() + src.rgb() * (1 - dst.a()) +
+      dst.rgb() * (1 - src.a());
+  LTVector3 above = src.rgb() * (1 + dst.a()) + dst.rgb() * (1 + src.a()) -
+      2 * dst.rgb() * src.rgb() - LTVector3(dst.a() * src.a());
+
+  LTVector3 rgb = std::mix(below, above, std::step(0.5 * dst.a(), dst.rgb()));
+  float a = src.a() + dst.a() - src.a() * dst.a();
+  return LTVector4(rgb, a);
+}
+
+LTVector4 LTBlendPlusLighter(const LTVector4 &src, const LTVector4 &dst) {
+  return src + dst;
+}
+
+LTVector4 LTBlendPlusDarker(const LTVector4 &src, const LTVector4 &dst) {
+  LTVector3 rgb = src.rgb() + dst.rgb() - LTVector3::ones();
+  float a = src.a() + dst.a();
   return LTVector4(rgb, a);
 }
 
@@ -219,27 +284,56 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool pre
                   LTBlendMode mode) {
   LTVector4 src = LTCVVec4bToLTVector4(newColor);
   LTVector4 dst = LTCVVec4bToLTVector4(oldColor);
-  LTVector4 blended;
+
   if (!premultiplied) {
     src = LTVector4(src.rgb() * src.a(), src.a());
     dst = LTVector4(dst.rgb() * dst.a(), dst.a());
   }
+
+  LTVector4 blended;
   switch (mode) {
     case LTBlendModeNormal:
       blended = LTBlendNormal(src, dst);
       break;
+    case LTBlendModeDarken:
+      blended = LTBlendDraken(src, dst);
+      break;
     case LTBlendModeMultiply:
       blended = LTBlendMultiply(src, dst);
+      break;
+    case LTBlendModeHardLight:
+      blended = LTBlendHardLight(src, dst);
+      break;
+    case LTBlendModeSoftLight:
+      blended = LTBlendSoftLight(src, dst);
+      break;
+    case LTBlendModeLighten:
+      blended = LTBlendLighten(src, dst);
+      break;
+    case LTBlendModeScreen:
+      blended = LTBlendScreen(src, dst);
+      break;
+    case LTBlendModeOverlay:
+      blended = LTBlendOverlay(src, dst);
+      break;
+    case LTBlendModePlusLighter:
+      blended = LTBlendPlusLighter(src, dst);
+      break;
+    case LTBlendModePlusDarker:
+      blended = LTBlendPlusDarker(src, dst);
       break;
     default:
       LTMethodNotImplemented();
   }
+
   if (!premultiplied) {
     blended = blended.a() > 0 ?
         LTVector4(blended.rgb() / blended.a(), blended.a()) :
         LTVector4::zeros();
   }
   blended = std::round(blended * UCHAR_MAX) / UCHAR_MAX;
+  blended = std::clamp(blended, LTVector4::zeros(), LTVector4::ones());
+
   return LTLTVector4ToVec4b(blended);
 }
 
