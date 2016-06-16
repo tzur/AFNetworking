@@ -6,6 +6,7 @@
 #import <UIKit/UIKit.h>
 
 #ifdef __OBJC__
+  /// Third Party.
   #import <ReactiveCocoa/ReactiveCocoa.h>
 
   // Undefine macros that were defined by ReactiveCocoa which are redefined by libextobjc.
@@ -15,5 +16,6 @@
   #undef unsafeify
   #undef strongify
 
+  /// LTKit.
   #import <LTKit/LTKit-Prefix.pch>
 #endif
