@@ -3,38 +3,7 @@
 
 #import "AVCaptureDevice+Configure.h"
 
-/// Fake \c AVCaptureDevice for testing purposes. Records whether \c lockForConfiguration: and
-/// \c unlockForConfiguration were called, and in what order they were called. Can be configured to
-/// err in \c lockForConfiguration:.
-@interface CAMFakeAVCaptureDevice : AVCaptureDevice
-@property (strong, nonatomic) NSError *lockError;
-@property (nonatomic) BOOL didLock;
-@property (nonatomic) BOOL didUnlock;
-@property (nonatomic) BOOL didUnlockWhileLocked;
-@end
-
-@implementation CAMFakeAVCaptureDevice
-
-- (BOOL)lockForConfiguration:(NSError *__autoreleasing *)errorPtr {
-  self.didLock = YES;
-
-  if (self.lockError) {
-    *errorPtr = self.lockError;
-    return NO;
-  } else {
-    return YES;
-  }
-}
-
-- (void)unlockForConfiguration {
-  if (self.didLock) {
-    self.didUnlockWhileLocked = YES;
-  }
-
-  self.didUnlock = YES;
-}
-
-@end
+#import "CAMFakeAVCaptureDevice.h"
 
 SpecBegin(AVCaptureDevice_Configure)
 
