@@ -13,6 +13,8 @@
 		6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6535FE591D047911002EEB8F /* ReactiveCocoa.framework */; };
 		65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */; };
 		65892E661D16EF630049815D /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65AE67501D0461350083D1CE /* libFiber.a */; };
+		65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */; };
+		65892E931D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */; };
 		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
 		65A694241D06F521001DE328 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A694161D05999B001DE328 /* libLTKit.a */; };
 		65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */; };
@@ -286,6 +288,8 @@
 		6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6535FE5F1D047B22002EEB8F /* Fiber-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Fiber-Prefix.pch"; path = "Fiber/Fiber-Prefix.pch"; sourceTree = "<group>"; };
 		65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTaskProgressSpec.mm; sourceTree = "<group>"; };
+		65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionSecurityPolicy.mm; sourceTree = "<group>"; };
+		65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionSecurityPolicySpec.mm; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
@@ -386,6 +390,7 @@
 			isa = PBXGroup;
 			children = (
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
+				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -416,6 +421,7 @@
 				65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */,
 				65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */,
 				65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */,
+				65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -969,6 +975,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -978,6 +985,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C62C0E1D047727000FCE99 /* EXPMatchers+matchValues.m in Sources */,
+				65892E931D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm in Sources */,
 				65C62C0F1D047727000FCE99 /* EXPMatchers+sendError.m in Sources */,
 				65C62C061D047727000FCE99 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				65C62C021D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
