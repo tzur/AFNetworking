@@ -11,6 +11,8 @@ LTErrorCodesImplement(CameraErrorCodeProductID,
   CAMErrorCodeDroppedFrame,
   /// Caused when there was an error locking the video device for configuration.
   CAMErrorCodeFailedLockingVideoDevice,
+  /// Caused when there was an error configuring the video device.
+  CAMErrorCodeFailedConfiguringVideoDevice,
   /// Caused when there was an error creating the video input.
   CAMErrorCodeFailedCreatingVideoInput,
   /// Caused when there was an error attaching the video input to the session.

@@ -16,6 +16,8 @@
 		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
 		836C65D01CD75F2700BE4496 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */; };
 		836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97731CD7559E001962A0 /* ReactiveCocoa.framework */; };
+		83893A511D128288002B64B4 /* CAMHardwareSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A501D128288002B64B4 /* CAMHardwareSession.mm */; };
+		83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */; };
 		83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */; };
 		8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */; };
 		8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */; };
@@ -260,6 +262,9 @@
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		83893A4F1D128288002B64B4 /* CAMHardwareSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMHardwareSession.h; sourceTree = "<group>"; };
+		83893A501D128288002B64B4 /* CAMHardwareSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareSession.mm; sourceTree = "<group>"; };
+		83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareSessionSpec.mm; sourceTree = "<group>"; };
 		83893A561D12C827002B64B4 /* CAMFakeAVCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMFakeAVCaptureDevice.h; sourceTree = "<group>"; };
 		83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMFakeAVCaptureDevice.mm; sourceTree = "<group>"; };
 		8395AE161CFDC9AF00C91C9E /* CAMDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevice.h; sourceTree = "<group>"; };
@@ -387,6 +392,7 @@
 		8351FB9D1CFC2ED600DEB376 /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				83893A521D12828D002B64B4 /* Hardware */,
 				8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */,
 				8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */,
 			);
@@ -411,6 +417,23 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		83893A341D12827E002B64B4 /* Hardware */ = {
+			isa = PBXGroup;
+			children = (
+				83893A4F1D128288002B64B4 /* CAMHardwareSession.h */,
+				83893A501D128288002B64B4 /* CAMHardwareSession.mm */,
+			);
+			name = Hardware;
+			sourceTree = "<group>";
+		};
+		83893A521D12828D002B64B4 /* Hardware */ = {
+			isa = PBXGroup;
+			children = (
+				83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */,
+			);
+			name = Hardware;
+			sourceTree = "<group>";
+		};
 		83893A551D12C7F8002B64B4 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +446,7 @@
 		8395ADFB1CFDC9A700C91C9E /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				83893A341D12827E002B64B4 /* Hardware */,
 				83D318BE1D054A17008A8D7E /* CAMAudioDevice.h */,
 				8395AE161CFDC9AF00C91C9E /* CAMDevice.h */,
 				8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */,
@@ -872,6 +896,7 @@
 			files = (
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
+				83893A511D128288002B64B4 /* CAMHardwareSession.mm in Sources */,
 				8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */,
 				8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */,
 			);
@@ -885,6 +910,7 @@
 				8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */,
 				8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */,
 				83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */,
+				83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
