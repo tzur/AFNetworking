@@ -11,6 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns a new \c PHImageRequestOptions with \c deliveryMode and \c resizeMode options from this
 /// object.
+///
+/// @note \c PTNImageResizeModeFast is mapped to \c PHImageRequestOptionsResizeModeNone rather than
+/// \c PHImageRequestOptionsResizeModeFast. This is for performance reasons as it's assumed that the
+/// images are subsampled to a manageable size prior to fetching, causing the cost of memory
+/// consumption along with the downsampling taking place in the displaying view to be smaller than
+/// the cost of resizing the image.
 - (PHImageRequestOptions *)photoKitOptions;
 
 @end

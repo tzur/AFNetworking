@@ -45,7 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
     case PTNImageResizeModeExact:
       return PHImageRequestOptionsResizeModeExact;
     case PTNImageResizeModeFast:
-      return PHImageRequestOptionsResizeModeFast;
+      // According to the PhotoKit development team, as discovered in WWDC2016, the best results in
+      // terms of performance are achieved with \c PHImageRequestOptionsResizeModeNone.
+      return PHImageRequestOptionsResizeModeNone;
   }
 }
 
