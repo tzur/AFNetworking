@@ -4,6 +4,7 @@
 #import "PTNGatewayAlbumDescriptor.h"
 
 #import "NSURL+Gateway.h"
+#import "PTNProgress.h"
 #import "PTNStaticImageAsset.h"
 
 SpecBegin(PTNGatewayAlbumDescriptor)
@@ -35,7 +36,9 @@ it(@"should initialize a gateway album descriptor with a static image", ^{
                                                       image:image albumSignal:albumSignal];
   expect(descriptor.ptn_identifier).to.equal(identifier);
   expect(descriptor.localizedTitle).to.equal(@"foo");
-  expect(descriptor.imageSignal).to.sendValues(@[[[PTNStaticImageAsset alloc] initWithImage:image]]);
+  id<PTNImageAsset> asset = [[PTNStaticImageAsset alloc] initWithImage:image];
+  PTNProgress *progress = [[PTNProgress alloc] initWithResult:asset];
+  expect(descriptor.imageSignal).to.sendValues(@[progress]);
   expect(descriptor.albumSignal).to.equal(albumSignal);
   expect(descriptor.assetCount).to.equal(PTNNotFound);
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
