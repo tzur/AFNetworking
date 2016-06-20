@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// values are treated as parameters names and their values respectively. Parameters values must
 /// serializable according to the request encoding applied by the session.
 ///
-/// @see FBRHTTPRequestEncoding.
+/// @see FBRHTTPRequestParametersEncoding.
 typedef NSDictionary<NSString *, NSObject *> FBRHTTPRequestParameters;
 
 /// \c FBRHTTPSession encapsulates an HTTP session and allows easy customization of some session
