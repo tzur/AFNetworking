@@ -59,7 +59,7 @@
   CGSize inputSize = inputTexture.size;
   
   // If texture uses a nearest neigbour interpolation, texelOffset and texelScaling are set to
-  // ensure (1:2:end) sampling pattern (in Matlab notation).
+  // ensure (1:2:end) sampling pattern (in Matlab notation) for downsampling.
   // In case of bilinear interpolation texelOffset is set to zero and texelScaling to one. This will
   // result in default OpenGL behavior when writing from input to output texture of different sizes.
   LTTextureInterpolation inputInterpolation;
@@ -75,10 +75,12 @@
     case LTTextureInterpolationNearest:
       if (outputTexture.size.width < inputTexture.size.width) {
         texelScaling = LTVector2([self.outputTextures[iteration] size] * 2 / inputSize);
+        texelOffset = LTVector2(CGSizeMakeUniform(-1) / (inputSize * 2));
       } else {
         texelScaling = LTVector2([self.outputTextures[iteration] size] / (inputSize * 2));
+        // \c texelOffset needs to be 0 during upsampling to avoid sampling from incorrect pixels.
+        texelOffset = LTVector2::zeros();
       }
-      texelOffset = LTVector2(CGSizeMakeUniform(-1) / (inputSize * 2));
       break;
     default:
       texelScaling = LTVector2::ones();

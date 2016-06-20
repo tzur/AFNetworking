@@ -169,6 +169,15 @@
 		06744AC61CEDB5AB00DB68DC /* LTMeanProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 06744AC41CEDB5AB00DB68DC /* LTMeanProcessor.h */; };
 		06744AC71CEDB5AB00DB68DC /* LTMeanProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06744AC51CEDB5AB00DB68DC /* LTMeanProcessor.mm */; };
 		06744AE81CEDB7B700DB68DC /* LTMeanProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06744AE71CEDB7B700DB68DC /* LTMeanProcessorSpec.mm */; };
+		06B5C1CF1D181A5C00401556 /* LTHatPyramidProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 06B5C1CC1D181A5C00401556 /* LTHatPyramidProcessor.h */; };
+		06B5C1D01D181A5C00401556 /* LTHatPyramidProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1CD1D181A5C00401556 /* LTHatPyramidProcessor.mm */; };
+		06B5C1F01D181A7300401556 /* LTHatPyramidProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1EF1D181A7300401556 /* LTHatPyramidProcessorSpec.mm */; };
+		06B5C1F51D181A9400401556 /* HorizontalStepFunction32.png in Resources */ = {isa = PBXBuildFile; fileRef = 06B5C1F11D181A9400401556 /* HorizontalStepFunction32.png */; };
+		06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */ = {isa = PBXBuildFile; fileRef = 06B5C1F21D181A9400401556 /* HorizontalStepFunction33.png */; };
+		06B5C1F71D181A9400401556 /* VerticalStepFunction32.png in Resources */ = {isa = PBXBuildFile; fileRef = 06B5C1F31D181A9400401556 /* VerticalStepFunction32.png */; };
+		06B5C1F81D181A9400401556 /* VerticalStepFunction33.png in Resources */ = {isa = PBXBuildFile; fileRef = 06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */; };
+		06B5C1F91D181AA600401556 /* LTHatPyramidDown.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1CB1D181A5C00401556 /* LTHatPyramidDown.fsh */; };
+		06B5C1FA1D181AAB00401556 /* LTHatPyramidUp.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1CE1D181A5C00401556 /* LTHatPyramidUp.fsh */; };
 		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
 		2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */; };
 		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
@@ -1526,6 +1535,15 @@
 		06744AC41CEDB5AB00DB68DC /* LTMeanProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeanProcessor.h; sourceTree = "<group>"; };
 		06744AC51CEDB5AB00DB68DC /* LTMeanProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeanProcessor.mm; sourceTree = "<group>"; };
 		06744AE71CEDB7B700DB68DC /* LTMeanProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeanProcessorSpec.mm; sourceTree = "<group>"; };
+		06B5C1CB1D181A5C00401556 /* LTHatPyramidDown.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTHatPyramidDown.fsh; sourceTree = "<group>"; };
+		06B5C1CC1D181A5C00401556 /* LTHatPyramidProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHatPyramidProcessor.h; sourceTree = "<group>"; };
+		06B5C1CD1D181A5C00401556 /* LTHatPyramidProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHatPyramidProcessor.mm; sourceTree = "<group>"; };
+		06B5C1CE1D181A5C00401556 /* LTHatPyramidUp.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTHatPyramidUp.fsh; sourceTree = "<group>"; };
+		06B5C1EF1D181A7300401556 /* LTHatPyramidProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHatPyramidProcessorSpec.mm; sourceTree = "<group>"; };
+		06B5C1F11D181A9400401556 /* HorizontalStepFunction32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStepFunction32.png; path = Resources/HorizontalStepFunction32.png; sourceTree = "<group>"; };
+		06B5C1F21D181A9400401556 /* HorizontalStepFunction33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStepFunction33.png; path = Resources/HorizontalStepFunction33.png; sourceTree = "<group>"; };
+		06B5C1F31D181A9400401556 /* VerticalStepFunction32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction32.png; path = Resources/VerticalStepFunction32.png; sourceTree = "<group>"; };
+		06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction33.png; path = Resources/VerticalStepFunction33.png; sourceTree = "<group>"; };
 		090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
 		090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
 		2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSpline.h; sourceTree = "<group>"; };
@@ -2587,6 +2605,10 @@
 				8BAE3A8518B3B11500DA79E1 /* LTFFTConvolutionProcessor.mm */,
 				8BAE3A3518B121E800DA79E1 /* LTFFTProcessor.h */,
 				8BAE3A3618B121E800DA79E1 /* LTFFTProcessor.mm */,
+				06B5C1CB1D181A5C00401556 /* LTHatPyramidDown.fsh */,
+				06B5C1CC1D181A5C00401556 /* LTHatPyramidProcessor.h */,
+				06B5C1CD1D181A5C00401556 /* LTHatPyramidProcessor.mm */,
+				06B5C1CE1D181A5C00401556 /* LTHatPyramidUp.fsh */,
 				03676D071A4097B100072966 /* LTHistogramProcessor.h */,
 				03676D081A4097B100072966 /* LTHistogramProcessor.mm */,
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
@@ -2702,6 +2724,7 @@
 				03BBB382188C0B98001E7703 /* LTFractionalNoiseSpec.mm */,
 				8BAE3A8918B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm */,
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
+				06B5C1EF1D181A7300401556 /* LTHatPyramidProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				28F3CAA11D004B59007FC2E9 /* LTLinearProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
@@ -3924,6 +3947,10 @@
 				85F599A71CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithMask.png */,
 				85F599A81CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png */,
 				287583751B1B225F0000F0CE /* ImageCompressorInput.tiff */,
+				06B5C1F11D181A9400401556 /* HorizontalStepFunction32.png */,
+				06B5C1F21D181A9400401556 /* HorizontalStepFunction33.png */,
+				06B5C1F31D181A9400401556 /* VerticalStepFunction32.png */,
+				06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -4772,6 +4799,7 @@
 				28B3346819C826D3004B6191 /* LTOneShotImageProcessor.h in Headers */,
 				8B87200F1924A76100517F2E /* LTMultiRectDrawer.h in Headers */,
 				28E8AF111997AB4700C2DD22 /* LTCropDrawerRect.h in Headers */,
+				06B5C1CF1D181A5C00401556 /* LTHatPyramidProcessor.h in Headers */,
 				288F154919A63C7A00E1C6F9 /* LTMeshDrawer.h in Headers */,
 				8559885B1CE31CF800EC4648 /* LTTextureAtlas.h in Headers */,
 				500677F41C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h in Headers */,
@@ -5206,6 +5234,7 @@
 				85E2B6901C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png in Resources */,
 				85F599AC1CDF2166009A47B4 /* LTDisplacementMapDrawerResizedWithoutMask.png in Resources */,
 				85E2B6911C58C649006AD39C /* SolidRectsDrawerRegularRects.png in Resources */,
+				06B5C1F51D181A9400401556 /* HorizontalStepFunction32.png in Resources */,
 				85E2B6941C58C649006AD39C /* SolidRectsDrawerRegularRectsRed.png in Resources */,
 				85E2B6951C58C649006AD39C /* SolidRectsDrawerRotatedRects.png in Resources */,
 				85E2B6981C58C649006AD39C /* SolidRectsDrawerRotatedRectsRed.png in Resources */,
@@ -5288,6 +5317,7 @@
 				28FB00EE1A0AB46D004490AF /* BristleBrushBristles.FlatFan.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				85F599AD1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithMask.png in Resources */,
+				06B5C1F81D181A9400401556 /* VerticalStepFunction33.png in Resources */,
 				8BBEE93819FC032300A2FA6B /* AspectFittedFlower.png in Resources */,
 				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
@@ -5387,6 +5417,7 @@
 				28A366A319754475009F0A4D /* SemiTransparentGray.png in Resources */,
 				A8BDC6411AC9DA64005FC392 /* CircularPatchDrawerHeal.png in Resources */,
 				28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */,
+				06B5C1F71D181A9400401556 /* VerticalStepFunction32.png in Resources */,
 				03B3765718D612830017B705 /* MealBWProcessor.png in Resources */,
 				8BA82040197E55C800FBE68E /* RectRotated.jpg in Resources */,
 				03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */,
@@ -5404,6 +5435,7 @@
 				03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
+				06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
 				286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */,
@@ -5466,6 +5498,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06B5C1FA1D181AAB00401556 /* LTHatPyramidUp.fsh in Sources */,
+				06B5C1F91D181AA600401556 /* LTHatPyramidDown.fsh in Sources */,
 				28F3CAA31D004BB5007FC2E9 /* LTLinear.fsh in Sources */,
 				8527B3A21CF316A3009CA3BB /* LTChannelsPacking.fsh in Sources */,
 				85F3F9E31CC62ED300E5753E /* LTDisplacementMapDrawer.fsh in Sources */,
@@ -5509,6 +5543,7 @@
 				25AF17491AD50BE00055E664 /* LTVGGlyphRun.mm in Sources */,
 				03C1930E18FADCA300DC6CA6 /* LTSelectiveAdjust.fsh in Sources */,
 				285EEA551B15C52A002D10EE /* LTImageJPEGCompressor.m in Sources */,
+				06B5C1D01D181A5C00401556 /* LTHatPyramidProcessor.mm in Sources */,
 				50D82E731BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
@@ -6016,6 +6051,7 @@
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,
 				5006785B1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm in Sources */,
+				06B5C1F01D181A7300401556 /* LTHatPyramidProcessorSpec.mm in Sources */,
 				25AF17641AD50C250055E664 /* LTVGGlyphRunSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
