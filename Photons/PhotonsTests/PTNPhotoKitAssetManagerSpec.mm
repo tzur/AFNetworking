@@ -253,7 +253,7 @@ context(@"album fetching", ^{
         transientList = OCMClassMock([PHCollectionList class]);
         OCMStub(transientList.localIdentifier).andReturn(@[@"foo"]);
 
-        [fetcher registerCollectionList:transientList withAssetCollecitons:albumsSubset];
+        [fetcher registerCollectionList:transientList withAssetCollections:albumsSubset];
         [fetcher registerAssetCollections:albumsSubset withCollectionList:transientList];
 
         [fetcher registerAssetCollection:firstCollection];
