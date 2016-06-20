@@ -10,7 +10,7 @@ FOUNDATION_EXPORT double PhotonsVersionNumber;
 /// Project version string for Photons.
 FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 
-/// Authorization
+/// Authorization.
 #import <Photons/PTNAuthorizationManager.h>
 #import <Photons/PTNOpenURLHandler.h>
 #import <Photons/PTNOpenURLManager.h>
@@ -42,10 +42,15 @@ FOUNDATION_EXPORT const unsigned char PhotonsVersionString[];
 #import <Photons/NSURL+FileSystem.h>
 #import <Photons/PTNFileSystemAssetManager.h>
 
+/// Gateway.
+#import <Photons/NSURL+Gateway.h>
+#import <Photons/PTNGatewayAlbumDescriptor.h>
+#import <Photons/PTNGatewayAssetManager.h>
+
 /// Intercepting.
 #import <Photons/PTNInterceptingAssetManager.h>
 
-/// Multiplexing
+/// Multiplexing.
 #import <Photons/PTNMultiplexerAssetManager.h>
 
 /// PhotoKit.
