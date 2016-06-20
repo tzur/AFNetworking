@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Registers the given \c collectionList with \c assetCollections. If a registration already exists
 /// it will be replaced.
 - (void)registerCollectionList:(PHCollectionList *)collectionList
-          withAssetCollecitons:(NSArray<PHCollection *> *)assetCollections;
+          withAssetCollections:(NSArray<PHCollection *> *)assetCollections;
 
 /// Registers the given \c assetCollections with \c collectionList. If a registration already exists
 /// it will be replaced. Registering and fetching of \c assetCollections is done with the

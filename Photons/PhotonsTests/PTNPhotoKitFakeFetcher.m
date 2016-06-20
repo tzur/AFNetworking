@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)registerCollectionList:(PHCollectionList *)collectionList
-          withAssetCollecitons:(NSArray<PHCollection *> *)assetCollections {
+          withAssetCollections:(NSArray<PHCollection *> *)assetCollections {
   self.assetCollectionsToCollectionList[assetCollections] = collectionList;
 }
 
