@@ -11,12 +11,14 @@
 		6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BAB1D0476F6000FCE99 /* libExpecta.a */; };
 		6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BBE1D0476FE000FCE99 /* libOCMock.a */; };
 		6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6535FE591D047911002EEB8F /* ReactiveCocoa.framework */; };
+		65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */; };
+		65892E661D16EF630049815D /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65AE67501D0461350083D1CE /* libFiber.a */; };
+		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
 		65A694241D06F521001DE328 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A694161D05999B001DE328 /* libLTKit.a */; };
 		65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */; };
 		65A694421D083D4D001DE328 /* FBRHTTPSessionRequestMarshalling.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */; };
 		65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */; };
 		65A694441D083D4D001DE328 /* FBRHTTPSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694091D05948F001DE328 /* FBRHTTPSession.h */; };
-		65A694B71D087E23001DE328 /* FiberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A694B61D087E23001DE328 /* FiberSpec.mm */; };
 		65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BDFC151D0EC56D00C86D36 /* libextobjc_iOS.a */; };
 		65C62C021D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDD1D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDF1D047727000FCE99 /* LLSignalTestRecorder.m */; };
@@ -283,13 +285,14 @@
 /* Begin PBXFileReference section */
 		6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6535FE5F1D047B22002EEB8F /* Fiber-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Fiber-Prefix.pch"; path = "Fiber/Fiber-Prefix.pch"; sourceTree = "<group>"; };
+		65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTaskProgressSpec.mm; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
+		65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTaskProgress.mm; sourceTree = "<group>"; };
 		65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionConfiguration.h; sourceTree = "<group>"; };
 		65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionSecurityPolicy.h; sourceTree = "<group>"; };
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
-		65A694B61D087E23001DE328 /* FiberSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FiberSpec.mm; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		65C62B6B1D046B22000FCE99 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
@@ -358,6 +361,7 @@
 				6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */,
 				6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */,
 				65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */,
+				65892E661D16EF630049815D /* libFiber.a in Frameworks */,
 				65A694241D06F521001DE328 /* libLTKit.a in Frameworks */,
 				6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */,
 				6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */,
@@ -378,6 +382,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		65892E461D16EC250049815D /* HTTP Session */ = {
+			isa = PBXGroup;
+			children = (
+				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
+			);
+			name = "HTTP Session";
+			sourceTree = "<group>";
+		};
 		65A6940D1D05999B001DE328 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +405,7 @@
 				65A694391D082170001DE328 /* Configuration */,
 				65A694091D05948F001DE328 /* FBRHTTPSession.h */,
 				65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */,
+				65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -507,7 +520,7 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				65A694B61D087E23001DE328 /* FiberSpec.mm */,
+				65892E461D16EC250049815D /* HTTP Session */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -956,6 +969,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,9 +984,9 @@
 				65C62C101D047727000FCE99 /* EXPMatchers+sendEvents.m in Sources */,
 				65C62C0C1D047727000FCE99 /* EXPMatchers+matchError.m in Sources */,
 				65C62C071D047727000FCE99 /* EXPMatchers+beSubscribedTo.m in Sources */,
+				65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */,
 				65C62C0D1D047727000FCE99 /* EXPMatchers+matchValue.m in Sources */,
 				65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */,
-				65A694B71D087E23001DE328 /* FiberSpec.mm in Sources */,
 				65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */,
 				65C62C0A1D047727000FCE99 /* EXPMatchers+error.m in Sources */,
 				65C62C091D047727000FCE99 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
