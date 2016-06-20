@@ -22,16 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Returns the affine transform mapping the given visible content rectangle to the entire
-/// framebuffer.
-- (CGAffineTransform)transformForVisibleContentRect:(CGRect)rect;
 /// Protocol to be implemented by objects responsible for rendering and displaying rectangular image
 /// content.
 @protocol LTContentDisplayManager <NSObject>
 
-/// Currently visible rectangle of the content, in floating-point pixel units of the content
-/// coordinate system.
-@property (readonly, nonatomic) CGRect visibleContentRect;
 /// Replaces the content texture with the given \c texture, updating the view's content size to
 /// match the new \c texture. If the given \c texture is of the same size as the current texture,
 /// the view's navigation state will remain the same, otherwise it will reset to the default
