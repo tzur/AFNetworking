@@ -21,6 +21,8 @@
 		65A694421D083D4D001DE328 /* FBRHTTPSessionRequestMarshalling.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */; };
 		65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */; };
 		65A694441D083D4D001DE328 /* FBRHTTPSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694091D05948F001DE328 /* FBRHTTPSession.h */; };
+		65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */; };
+		65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */; };
 		65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BDFC151D0EC56D00C86D36 /* libextobjc_iOS.a */; };
 		65C62C021D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDD1D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDF1D047727000FCE99 /* LLSignalTestRecorder.m */; };
@@ -298,6 +300,8 @@
 		65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionSecurityPolicy.h; sourceTree = "<group>"; };
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
+		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		65C62B6B1D046B22000FCE99 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		65C62B6D1D046B22000FCE99 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 		65892E461D16EC250049815D /* HTTP Session */ = {
 			isa = PBXGroup;
 			children = (
+				65B7F18E1D18696F005810C9 /* Configuration */,
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
 				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
@@ -420,6 +425,7 @@
 			children = (
 				65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */,
 				65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */,
+				65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */,
 				65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */,
 				65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */,
 			);
@@ -453,6 +459,14 @@
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
 			path = Fiber;
+			sourceTree = "<group>";
+		};
+		65B7F18E1D18696F005810C9 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */,
+			);
+			name = Configuration;
 			sourceTree = "<group>";
 		};
 		65BDFC041D0EC56D00C86D36 /* Products */ = {
@@ -977,6 +991,7 @@
 			files = (
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
+				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,6 +1005,7 @@
 				65C62C061D047727000FCE99 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				65C62C021D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				65C62C101D047727000FCE99 /* EXPMatchers+sendEvents.m in Sources */,
+				65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */,
 				65C62C0C1D047727000FCE99 /* EXPMatchers+matchError.m in Sources */,
 				65C62C071D047727000FCE99 /* EXPMatchers+beSubscribedTo.m in Sources */,
 				65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */,
