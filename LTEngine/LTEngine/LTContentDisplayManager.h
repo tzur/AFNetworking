@@ -7,15 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol LTViewDrawDelegate, LTViewFramebufferDelegate;
 
-/// Protocol to be implemented by objects responsible for rendering and displaying rectangular image
-/// content.
-@protocol LTContentDisplayManager <NSObject>
-
-/// Replaces the content texture with the given \c texture, updating the view's content size to
-/// match the new \c texture. If the given \c texture is of the same size as the current texture,
-/// the view's navigation state will remain the same, otherwise it will reset to the default
-/// navigation state.
-- (void)replaceContentWith:(LTTexture *)texture;
+/// Protocol to be implemented by objects responsible for triggering the refreshing of displayed
+/// rectangular image content.
+@protocol LTContentRefreshDelegate <NSObject>
 
 /// Indicate that the content in the given rect should be updated.
 - (void)setNeedsDisplayContentInRect:(CGRect)rect;
@@ -26,16 +20,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// Indicates that the content needs to be presented from scratch.
 - (void)setNeedsDisplay;
 
-/// Takes a snapshot of the view.
-- (LTImage *)snapshotView;
+@end
 
 /// Returns the affine transform mapping the given visible content rectangle to the entire
 /// framebuffer.
 - (CGAffineTransform)transformForVisibleContentRect:(CGRect)rect;
+/// Protocol to be implemented by objects responsible for rendering and displaying rectangular image
+/// content.
+@protocol LTContentDisplayManager <NSObject>
 
 /// Currently visible rectangle of the content, in floating-point pixel units of the content
 /// coordinate system.
 @property (readonly, nonatomic) CGRect visibleContentRect;
+/// Replaces the content texture with the given \c texture, updating the view's content size to
+/// match the new \c texture. If the given \c texture is of the same size as the current texture,
+/// the view's navigation state will remain the same, otherwise it will reset to the default
+/// navigation state.
+- (void)replaceContentWith:(LTTexture *)texture;
+
+/// Takes a snapshot of the view.
+- (LTImage *)snapshotView;
 
 /// Delegate used to render the image content.
 @property (weak, nonatomic, nullable) id<LTViewDrawDelegate> drawDelegate;
