@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Thread safe cache for \c RACSignal entities based on URLs.
-@interface PTNSignalCache : NSObject
+/// Protocol for a thread safe cache for \c RACSignal entities based on URLs.
+@protocol PTNSignalCache <NSObject>
 
 /// Stores \c signal in the cache for \c url. If \c signal is \c nil the cached entry for \c url
 /// will be removed.
@@ -27,6 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Removes signal stored for \c url if exists from the cache.
 - (void)removeSignalForURL:(NSURL *)url;
 
+@end
+
+/// Default implementation of \c PTNSignalCache.
+@interface PTNSignalCache : NSObject <PTNSignalCache>
 @end
 
 NS_ASSUME_NONNULL_END
