@@ -15,7 +15,7 @@
 1. Create a new XCode project.
 2. Drag the following files from LTEngine's directory in Finder into XCode's project-navigator:
   - `LTEngine/LTEngine/LTEngine.xcodeproj`
-  - `LTEngine/third_party/mantle/Mantle.xcodeproj`
+  - `LTEngine/third_party/Mantle/Mantle.xcodeproj`
   - `LTEngine/third_party/opencv/opencv2.framework` 
   - `LTEngine/third_party/objection/Objection-iOS.framework`
 3. Add LTEngine to your project's prefix header file:
@@ -32,7 +32,7 @@
     *  `<LTEngine Path>/LTEngine`
     *  `<LTEngine Path>/LTKit/LTKit`
     *  `<LTEngine Path>/third_party/Mantle`
-    *  `<LTEngine Path>/LTKit/third_party/libextobjc`
+    *  `<LTEngine Path>/third_party/libextobjc`
   - If missing, add the following paths to `Framework Search Paths` with `<LTEngine Path>` replaced by the actual path to LTEngine's directory:
     (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
     *  `<LTEngine Path>/third_party/opencv`
