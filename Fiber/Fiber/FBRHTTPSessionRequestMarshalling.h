@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
-#pragma mark FBRHTTPRequestEncoding
+#pragma mark FBRHTTPRequestParametersEncoding
 #pragma mark -
 
 /// Encoding formats for HTTP request parameters.
@@ -13,20 +13,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// various methods (as part of the request URL or as the body of the request) and can be encoded
 /// using various encodings and formats. This enum defines the set of supported encoding formats
 /// for HTTP requests parameters.
-typedef NS_ENUM(NSUInteger, FBRHTTPRequestEncoding) {
+typedef NS_ENUM(NSUInteger, FBRHTTPRequestParametersEncoding) {
   /// Specifies URL query encoding using \c %HH escaping.
   ///
   /// When used for 'GET', 'HEAD' and 'DELETE' requests parameters will be encoded as query string
   /// and appended to the request URL. For other requests the query string will be embedded in the
   /// request body.
-  FBRHTTPRequestEncodingURLQuery,
+  FBRHTTPRequestParametersEncodingURLQuery,
   /// Specifies JSON encoding.
   ///
   /// When used for 'GET', 'HEAD' and 'DELETE' requests parameters will be encoded using URL query
   /// encoding since it is uncommon to send data as the request body for these type of requests. For
   /// other requests the parameters will be encoded into JSON string and embedded in the request's
   /// body.
-  FBRHTTPRequestEncodingJSON
+  FBRHTTPRequestParametersEncodingJSON
 };
 
 #pragma mark -
@@ -47,16 +47,17 @@ typedef NSDictionary<NSString *, NSString *> FBRHTTPRequestHeaders;
 
 /// Initializes the receiver with the given parameters.
 ///
-/// @param requestEncoding determines how to encode request parameters.
+/// @param parametersEncoding determines how to encode request parameters.
 /// @param baseURL an optional base URL for new requests made by the session.
 /// @param headers an optional set of HTTP headers to add to new requests made by the session.
-- (instancetype)initWithRequestEncoding:(FBRHTTPRequestEncoding)requestEncoding
-                                baseURL:(nullable NSURL *)baseURL
-                                headers:(nullable FBRHTTPRequestHeaders *)headers
+- (instancetype)initWithParametersEncoding:(FBRHTTPRequestParametersEncoding)parametersEncoding
+                                   baseURL:(nullable NSURL *)baseURL
+                                   headers:(nullable FBRHTTPRequestHeaders *)headers
     NS_DESIGNATED_INITIALIZER;
 
-/// HTTP request parameters encoding to use. Default value is \c FBRHTTPRequestEncodingURLQuery.
-@property (readonly, nonatomic) FBRHTTPRequestEncoding requestEncoding;
+/// HTTP request parameters encoding to use. The default value is
+/// \c FBRHTTPRequestParametersEncodingURLQuery.
+@property (readonly, nonatomic) FBRHTTPRequestParametersEncoding parametersEncoding;
 
 /// Base URL to be used as prefix for requests URLs or \c nil if no base URL should be used. The
 /// default value is \c nil.
