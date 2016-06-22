@@ -66,6 +66,10 @@ NSString *LTSystemErrorMessageForError(int error);
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
                 underlyingErrors:(NSArray<NSError *> *)underlyingErrors;
 
+/// Creates an error with Lightricks' domain, given error code, related file path and description.
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
+                     description:(NSString *)description;
+
 /// Creates an error with Lightricks' domain, given error code and the given related URL.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url;
 

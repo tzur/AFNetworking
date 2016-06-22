@@ -84,6 +84,14 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
++ (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
+                     description:(NSString *)description {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    NSFilePathErrorKey: path ?: [NSNull null],
+    kLTErrorDescriptionKey: description ?: [NSNull null]
+  }];
+}
+
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url {
   return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null]
