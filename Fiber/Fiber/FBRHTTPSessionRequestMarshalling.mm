@@ -10,11 +10,11 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation FBRHTTPSessionRequestMarshalling
 
 - (instancetype)init {
-  return [self initWithParametersEncoding:FBRHTTPRequestParametersEncodingURLQuery baseURL:nil
+  return [self initWithParametersEncoding:$(FBRHTTPRequestParametersEncodingURLQuery) baseURL:nil
                                   headers:nil];
 }
 
-- (instancetype)initWithParametersEncoding:(FBRHTTPRequestParametersEncoding)parametersEncoding
+- (instancetype)initWithParametersEncoding:(FBRHTTPRequestParametersEncoding *)parametersEncoding
                                    baseURL:(nullable NSURL *)baseURL
                                    headers:(nullable FBRHTTPRequestHeaders *)headers {
   if (self = [super init]) {
@@ -37,13 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   FBRHTTPSessionRequestMarshalling *requestMarshalling = object;
-  return self.parametersEncoding == requestMarshalling.parametersEncoding &&
+  return FBRCompare(self.parametersEncoding, requestMarshalling.parametersEncoding) &&
       FBRCompare(self.baseURL, requestMarshalling.baseURL) &&
       FBRCompare(self.headers, requestMarshalling.headers);
 }
 
 - (NSUInteger)hash {
-  return self.parametersEncoding ^ self.baseURL.hash ^ self.headers.hash;
+  return self.parametersEncoding.hash ^ self.baseURL.hash ^ self.headers.hash;
 }
 
 #pragma mark -

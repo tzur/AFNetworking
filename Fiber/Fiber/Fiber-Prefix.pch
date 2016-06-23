@@ -9,13 +9,7 @@
   /// Third Party.
   #import <ReactiveCocoa/ReactiveCocoa.h>
 
-  // Undefine macros that were defined by ReactiveCocoa which are redefined by libextobjc.
-  #undef keypath
-  #undef onExit
-  #undef weakify
-  #undef unsafeify
-  #undef strongify
-
   /// LTKit.
-  #import <LTKit/LTKit-Prefix.pch>
+  #import <LTKit/LTAssert.h>
+  #import <LTKit/LTEnum.h>
 #endif

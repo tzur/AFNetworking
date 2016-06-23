@@ -1,16 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
+#import "FBRHTTPRequest.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FBRHTTPSessionConfiguration;
-
-/// Represents a set of parameters that can be appended to an HTTP request. The dictionary keys and
-/// values are treated as parameters names and their values respectively. Parameters values must
-/// serializable according to the request encoding applied by the session.
-///
-/// @see FBRHTTPRequestParametersEncoding.
-typedef NSDictionary<NSString *, NSObject *> FBRHTTPRequestParameters;
 
 /// \c FBRHTTPSession encapsulates an HTTP session and allows easy customization of some session
 /// parameters such as SSL pinning, caching, serialization and more. A session object is initialized

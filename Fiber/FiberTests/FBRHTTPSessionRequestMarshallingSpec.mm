@@ -12,7 +12,7 @@ context(@"defualt initializer", ^{
 
     expect(requestMarshalling).toNot.beNil();
     expect(requestMarshalling.parametersEncoding).
-        to.equal(FBRHTTPRequestParametersEncodingURLQuery);
+        to.equal($(FBRHTTPRequestParametersEncodingURLQuery));
     expect(requestMarshalling.baseURL).to.beNil();
     expect(requestMarshalling.headers).to.beNil();
   });
@@ -20,7 +20,7 @@ context(@"defualt initializer", ^{
 
 context(@"initializer with parameters", ^{
   it(@"should initialize with the given parameters", ^{
-    FBRHTTPRequestParametersEncoding parametersEncoding = FBRHTTPRequestParametersEncodingJSON;
+    FBRHTTPRequestParametersEncoding *parametersEncoding = $(FBRHTTPRequestParametersEncodingJSON);
     NSURL *baseURL = [NSURL URLWithString:@"http://foo.bar"];
     FBRHTTPRequestHeaders *headers = @{@"Foo": @"Bar"};
     FBRHTTPSessionRequestMarshalling *requestMarshalling =
@@ -35,7 +35,7 @@ context(@"initializer with parameters", ^{
   });
 
   it(@"should allow base URL and headers to be nil", ^{
-    FBRHTTPRequestParametersEncoding parametersEncoding = FBRHTTPRequestParametersEncodingJSON;
+    FBRHTTPRequestParametersEncoding *parametersEncoding = $(FBRHTTPRequestParametersEncodingJSON);
     FBRHTTPSessionRequestMarshalling *requestMarshalling =
         [[FBRHTTPSessionRequestMarshalling alloc] initWithParametersEncoding:parametersEncoding
                                                                      baseURL:nil headers:nil];
@@ -70,7 +70,8 @@ context(@"equality", ^{
         [[FBRHTTPSessionRequestMarshalling alloc] init];
     FBRHTTPSessionRequestMarshalling *anotherRequestMarshalling =
         [[FBRHTTPSessionRequestMarshalling alloc]
-         initWithParametersEncoding:FBRHTTPRequestParametersEncodingJSON baseURL:nil headers:@{}];
+         initWithParametersEncoding:$(FBRHTTPRequestParametersEncodingJSON) baseURL:nil
+         headers:@{}];
 
     expect([requestMarshalling isEqual:anotherRequestMarshalling]).to.beFalsy();
   });
