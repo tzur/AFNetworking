@@ -7,9 +7,10 @@
 #import "LTDualMaskProcessor.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
+#import "LTMaskedBlurProcessor.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTTiltShiftFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTShaderStorage+LTTiltShiftFsh.h"
 #import "LTSmoothPyramidProcessor.h"
 #import "LTTexture+Factory.h"
 
@@ -25,8 +26,8 @@
 /// Internal dual mask processor.
 @property (strong, nonatomic) LTDualMaskProcessor *dualMaskProcessor;
 
-/// The generation id of the input texture that was used to create the current smooth textures.
-@property (nonatomic) id smoothTextureGenerationID;
+/// Internal processor that applies blur on input according to result of \c dualMaskProcessor.
+@property (strong, nonatomic) LTMaskedBlurProcessor *maskedBlurProcessor;
 
 @end
 
@@ -45,12 +46,12 @@ static const CGFloat kMaskScalingFactor = 4.0;
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask output:(LTTexture *)output {
   // Setup dual mask.
   LTTexture *dualMaskTexture = [self createDualMaskTextureWithOutput:output];
-  self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
-  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
-                          fragmentSource:[LTTiltShiftFsh source] sourceTexture:input
-                       auxiliaryTextures:@{[LTTiltShiftFsh dualMaskTexture]: dualMaskTexture,
-                                           [LTTiltShiftFsh userMaskTexture]: mask}
-                               andOutput:output]) {
+
+  if (self = [super init]) {
+    self.dualMaskProcessor = [[LTDualMaskProcessor alloc] initWithOutput:dualMaskTexture];
+    self.maskedBlurProcessor = [[LTMaskedBlurProcessor alloc] initWithInput:input mask:mask
+                                                                   blurMask:dualMaskTexture
+                                                                     output:output];
     [self resetInputModel];
   }
   return self;
@@ -60,67 +61,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
   CGSize maskSize = CGSizeMake(MAX(1, std::round(output.size.width / kMaskScalingFactor)),
                                MAX(1, std::round(output.size.height / kMaskScalingFactor)));
   return [LTTexture byteRedTextureWithSize:maskSize];
-}
-
-- (NSArray *)createSmoothTextures:(LTTexture *)input {
-  NSArray *pyramidLevels = [LTPyramidProcessor levelsForInput:input];
-  
-  // Pyramid processor bilinearly downsamples the signal.
-  LTPyramidProcessor *pyramidProcessor =
-      [[LTPyramidProcessor alloc] initWithInput:input outputs:pyramidLevels];
-  [pyramidProcessor process];
-  
-  // Second to fifth levels upsampled back with smooth pyramid processor to half of the input image
-  // resolution.
-  static const NSUInteger kNumberOfLevels = 4;
-  NSMutableArray *textures = [NSMutableArray arrayWithCapacity:kNumberOfLevels];
-  for (NSUInteger i = 0; i < kNumberOfLevels; ++i) {
-    @autoreleasepool {
-      NSUInteger index = std::min(i + 1, pyramidLevels.count - 1);
-      if (index) {
-        [textures addObject:[self upsampleWithOutputs:pyramidLevels atIndex:index]];
-      } else {
-        // Highest level of the outputs (largest image) doesn't require upsampling.
-        [textures addObject:pyramidLevels[0]];
-      }
-    }
-  }
-  return textures;
-}
-
-- (LTTexture *)upsampleWithOutputs:(NSArray *)outputs atIndex:(NSUInteger)index {
-  NSArray *upOutputs = [self outputsForTextures:outputs index:index];
-  LTSmoothPyramidProcessor *pyramidProcessor =
-      [[LTSmoothPyramidProcessor alloc] initWithInput:outputs[index] outputs:upOutputs];
-  [pyramidProcessor process];
-  
-  return [upOutputs lastObject];
-}
-
-- (NSArray *)outputsForTextures:(NSArray *)textures index:(NSUInteger)index {
-  NSMutableArray *levels = [NSMutableArray array];
-  
-  for (NSUInteger i = 0; i < index; ++i) {
-    LTTexture *texture = [LTTexture textureWithPropertiesOf:textures[i]];
-    [levels insertObject:texture atIndex:0];
-  }
-  return levels;
-}
-
-- (void)updateSmoothTexturesIfNecessary {
-  if (![self.smoothTextureGenerationID isEqual:self.inputTexture.generationID] ||
-      !self.auxiliaryTextures[[LTTiltShiftFsh fineTexture]] ||
-      !self.auxiliaryTextures[[LTTiltShiftFsh mediumTexture]] ||
-      !self.auxiliaryTextures[[LTTiltShiftFsh coarseTexture]] ||
-      !self.auxiliaryTextures[[LTTiltShiftFsh veryCoarseTexture]]) {
-    self.smoothTextureGenerationID = self.inputTexture.generationID;
-    
-    NSArray *smoothTextures = [self createSmoothTextures:self.inputTexture];
-    [self setAuxiliaryTexture:smoothTextures[0] withName:[LTTiltShiftFsh fineTexture]];
-    [self setAuxiliaryTexture:smoothTextures[1] withName:[LTTiltShiftFsh mediumTexture]];
-    [self setAuxiliaryTexture:smoothTextures[2] withName:[LTTiltShiftFsh coarseTexture]];
-    [self setAuxiliaryTexture:smoothTextures[3] withName:[LTTiltShiftFsh veryCoarseTexture]];
-  }
 }
 
 #pragma mark -
@@ -174,13 +114,30 @@ static const CGFloat kMaskScalingFactor = 4.0;
 - (void)preprocess {
   [super preprocess];
 
-  [self updateSmoothTexturesIfNecessary];
-
   if (self.needsDualMaskProcessing) {
     [self.dualMaskProcessor process];
     self.needsDualMaskProcessing = NO;
   }
 }
+
+- (void)process {
+  [self preprocess];
+
+  [self.maskedBlurProcessor process];
+}
+
+- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self preprocess];
+
+  [self.maskedBlurProcessor processToFramebufferWithSize:size outputRect:rect];
+}
+
+- (void)processInRect:(CGRect)rect {
+  [self preprocess];
+
+  [self.maskedBlurProcessor processInRect:rect];
+}
+
 
 - (void)setNeedsDualMaskUpdate {
   self.needsDualMaskProcessing = YES;
@@ -247,11 +204,7 @@ LTPropertyProxyWithoutSetter(CGFloat, stretch, Stretch, self.dualMaskProcessor);
 #pragma mark Blur
 #pragma mark -
 
-LTPropertyWithoutSetter(CGFloat, intensity, Intensity, 0, 1, 1);
-- (void)setIntensity:(CGFloat)intensity {
-  [self _verifyAndSetIntensity:intensity];
-  self[[LTTiltShiftFsh intensity]] = @(intensity);
-}
+LTPropertyProxy(CGFloat, intensity, Intensity, self.maskedBlurProcessor);
 
 - (void)setInvertMask:(BOOL)invertMask {
   _invertMask = invertMask;
