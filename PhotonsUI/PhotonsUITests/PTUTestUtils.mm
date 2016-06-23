@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
-#import "PhotonsUITestUtils.h"
+#import "PTUTestUtils.h"
 
 #import "PTUChangesetMove.h"
 

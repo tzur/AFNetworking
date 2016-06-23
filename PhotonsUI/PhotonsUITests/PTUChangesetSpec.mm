@@ -4,7 +4,7 @@
 #import "PTUChangeset.h"
 
 #import "PTUChangesetMove.h"
-#import "PhotonsUITestUtils.h"
+#import "PTUTestUtils.h"
 
 SpecBegin(PTUChangeset)
 
