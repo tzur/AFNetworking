@@ -3,9 +3,6 @@
 
 #import "PhotonsUITestUtils.h"
 
-#import <LTKit/LTRandomAccessCollection.h>
-#import <Photons/PTNAlbum.h>
-
 #import "PTUChangesetMove.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,15 +11,6 @@ PTUChangesetMove *PTUCreateChangesetMove(NSUInteger from, NSUInteger to, NSUInte
   NSIndexPath *fromPath = [NSIndexPath indexPathForItem:from inSection:section];
   NSIndexPath *toPath = [NSIndexPath indexPathForItem:to inSection:section];
   return [PTUChangesetMove changesetMoveFrom:fromPath to:toPath];
-}
-
-id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> _Nullable assets,
-                            id<LTRandomAccessCollection> _Nullable subalbums) {
-  id<PTNAlbum> album = OCMProtocolMock(@protocol(PTNAlbum));
-  OCMStub([album url]).andReturn(url);
-  OCMStub([album assets]).andReturn(assets);
-  OCMStub([album subalbums]).andReturn(subalbums);
-  return album;
 }
 
 NS_ASSUME_NONNULL_END
