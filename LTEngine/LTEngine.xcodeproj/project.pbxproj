@@ -5367,7 +5367,7 @@
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				85F599AD1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithMask.png in Resources */,
 				06B5C1F81D181A9400401556 /* VerticalStepFunction33.png in Resources */,
-				30DDD6B51CFC8A7500AE72B8 /* GaussianFilterDelta51.png in Resources */,				
+				30DDD6B51CFC8A7500AE72B8 /* GaussianFilterDelta51.png in Resources */,
 				8BBEE93819FC032300A2FA6B /* AspectFittedFlower.png in Resources */,
 				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
@@ -5551,7 +5551,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30DDD6A71CFC8A1E00AE72B8 /* LTGaussianFilterProcessor.vsh in Sources */,
-				30DDD6A81CFC8A2200AE72B8 /* LTGaussianFilterProcessor.fsh in Sources */,				
+				30DDD6A81CFC8A2200AE72B8 /* LTGaussianFilterProcessor.fsh in Sources */,
 				06B5C1FA1D181AAB00401556 /* LTHatPyramidUp.fsh in Sources */,
 				06B5C1F91D181AA600401556 /* LTHatPyramidDown.fsh in Sources */,
 				28F3CAA31D004BB5007FC2E9 /* LTLinear.fsh in Sources */,
