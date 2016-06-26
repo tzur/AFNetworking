@@ -3,25 +3,9 @@
 
 #import "LTHatPyramidProcessor.h"
 
+#import "LTPyramidTestUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
-
-static std::vector<cv::Mat1f> LTGaussianPyramidOpenCV(cv::Mat1f const &input) {
-  std::vector<cv::Mat1f> gaussianPyramid;
-  cv::Size size = input.size();
-  int maxlevel = static_cast<int>(logf(static_cast<float>(cv::min(size.width, size.height))) /
-                                  logf(2.0f));
-  cv::buildPyramid(input, gaussianPyramid, maxlevel);
-  return gaussianPyramid;
-}
-
-static void LTGaussianUpsamplePyramidOpenCV(std::vector<cv::Mat1f> &imagePyramid) {
-  for(size_t lvl = 0; lvl < imagePyramid.size() - 1; ++lvl) {
-    cv::Mat1f up;
-    cv::pyrUp(imagePyramid[lvl + 1], up, imagePyramid[lvl].size());
-    imagePyramid[lvl] = up;
-  }
-}
 
 SpecBegin(LTHatPyramidProcessor)
 
