@@ -400,7 +400,6 @@
 			children = (
 				65B7F18E1D18696F005810C9 /* Configuration */,
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
-				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -471,6 +470,7 @@
 			isa = PBXGroup;
 			children = (
 				65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */,
+				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";

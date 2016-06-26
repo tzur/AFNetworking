@@ -68,4 +68,33 @@ context(@"public key pinning security policy", ^{
   });
 });
 
+context(@"equality", ^{
+  it(@"should inidcate that two identical objects are equal", ^{
+    FBRHTTPSessionSecurityPolicy *securityPolicy =
+        [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
+    FBRHTTPSessionSecurityPolicy *anotherSecurityPolicy =
+        [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
+
+    expect([securityPolicy isEqual:anotherSecurityPolicy]).to.beTruthy();
+  });
+
+  it(@"should return the same hash for identical objects", ^{
+    FBRHTTPSessionSecurityPolicy *securityPolicy =
+        [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
+    FBRHTTPSessionSecurityPolicy *anotherSecurityPolicy =
+        [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
+
+    expect(securityPolicy.hash).to.equal(anotherSecurityPolicy.hash);
+  });
+
+  it(@"should indicate that two non identical objects are not equal", ^{
+    FBRHTTPSessionSecurityPolicy *securityPolicy =
+        [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
+    FBRHTTPSessionSecurityPolicy *anotherSecurityPolicy =
+        [FBRHTTPSessionSecurityPolicy securityPolicyWithPinnedCertificates:[NSSet set]];
+
+    expect([securityPolicy isEqual:anotherSecurityPolicy]).to.beFalsy();
+  });
+});
+
 SpecEnd
