@@ -41,6 +41,8 @@
 		65C62C101D047727000FCE99 /* EXPMatchers+sendEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BFD1D047727000FCE99 /* EXPMatchers+sendEvents.m */; };
 		65C62C111D047727000FCE99 /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BFF1D047727000FCE99 /* EXPMatchers+sendValues.m */; };
 		65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */; };
+		65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F5139E1D1C19FC000687A7 /* FBRCompare.mm */; };
+		65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -352,6 +354,9 @@
 		65C62BFF1D047727000FCE99 /* EXPMatchers+sendValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValues.m"; sourceTree = "<group>"; };
 		65C62C001D047727000FCE99 /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
 		65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
+		65F5139D1D1C19FC000687A7 /* FBRCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRCompare.h; sourceTree = "<group>"; };
+		65F5139E1D1C19FC000687A7 /* FBRCompare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompare.mm; sourceTree = "<group>"; };
+		65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompareSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -455,6 +460,7 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
+				65F5137F1D1C19DE000687A7 /* Internal Utils */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
@@ -540,6 +546,7 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				65F513A01D1C1C65000687A7 /* Internal Utils */,
 				65892E461D16EC250049815D /* HTTP Session */,
 			);
 			name = Tests;
@@ -659,6 +666,23 @@
 				65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */,
 			);
 			path = Matchers;
+			sourceTree = "<group>";
+		};
+		65F5137F1D1C19DE000687A7 /* Internal Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F5139D1D1C19FC000687A7 /* FBRCompare.h */,
+				65F5139E1D1C19FC000687A7 /* FBRCompare.mm */,
+			);
+			name = "Internal Utils";
+			sourceTree = "<group>";
+		};
+		65F513A01D1C1C65000687A7 /* Internal Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */,
+			);
+			name = "Internal Utils";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -992,6 +1016,7 @@
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
+				65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,6 +1042,7 @@
 				65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				65C62C111D047727000FCE99 /* EXPMatchers+sendValues.m in Sources */,
 				65C62C0B1D047727000FCE99 /* EXPMatchers+finish.m in Sources */,
+				65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */,
 				65C62C081D047727000FCE99 /* EXPMatchers+complete.m in Sources */,
 				65C62C051D047727000FCE99 /* LLReactiveMatchersHelpers.m in Sources */,
 			);
