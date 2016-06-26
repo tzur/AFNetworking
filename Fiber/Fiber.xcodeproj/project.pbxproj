@@ -15,6 +15,8 @@
 		65892E661D16EF630049815D /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65AE67501D0461350083D1CE /* libFiber.a */; };
 		65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */; };
 		65892E931D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */; };
+		65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */; };
+		658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */; };
 		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
 		65A694241D06F521001DE328 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A694161D05999B001DE328 /* libLTKit.a */; };
 		65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */; };
@@ -41,6 +43,8 @@
 		65C62C101D047727000FCE99 /* EXPMatchers+sendEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BFD1D047727000FCE99 /* EXPMatchers+sendEvents.m */; };
 		65C62C111D047727000FCE99 /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BFF1D047727000FCE99 /* EXPMatchers+sendValues.m */; };
 		65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */; };
+		65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F5139E1D1C19FC000687A7 /* FBRCompare.mm */; };
+		65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,6 +296,8 @@
 		65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTaskProgressSpec.mm; sourceTree = "<group>"; };
 		65892E711D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionSecurityPolicy.mm; sourceTree = "<group>"; };
 		65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionSecurityPolicySpec.mm; sourceTree = "<group>"; };
+		65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfiguration.mm; sourceTree = "<group>"; };
+		658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfigurationSpec.mm; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
@@ -352,6 +358,9 @@
 		65C62BFF1D047727000FCE99 /* EXPMatchers+sendValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValues.m"; sourceTree = "<group>"; };
 		65C62C001D047727000FCE99 /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
 		65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
+		65F5139D1D1C19FC000687A7 /* FBRCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRCompare.h; sourceTree = "<group>"; };
+		65F5139E1D1C19FC000687A7 /* FBRCompare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompare.mm; sourceTree = "<group>"; };
+		65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompareSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,7 +404,6 @@
 			children = (
 				65B7F18E1D18696F005810C9 /* Configuration */,
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
-				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -424,6 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */,
+				65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */,
 				65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */,
 				65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */,
 				65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */,
@@ -455,6 +464,7 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
+				65F5137F1D1C19DE000687A7 /* Internal Utils */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
@@ -464,7 +474,9 @@
 		65B7F18E1D18696F005810C9 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */,
 				65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */,
+				65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -540,6 +552,7 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				65F513A01D1C1C65000687A7 /* Internal Utils */,
 				65892E461D16EC250049815D /* HTTP Session */,
 			);
 			name = Tests;
@@ -659,6 +672,23 @@
 				65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */,
 			);
 			path = Matchers;
+			sourceTree = "<group>";
+		};
+		65F5137F1D1C19DE000687A7 /* Internal Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F5139D1D1C19FC000687A7 /* FBRCompare.h */,
+				65F5139E1D1C19FC000687A7 /* FBRCompare.mm */,
+			);
+			name = "Internal Utils";
+			sourceTree = "<group>";
+		};
+		65F513A01D1C1C65000687A7 /* Internal Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */,
+			);
+			name = "Internal Utils";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -989,9 +1019,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */,
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
+				65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1040,7 @@
 				65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */,
 				65C62C0C1D047727000FCE99 /* EXPMatchers+matchError.m in Sources */,
 				65C62C071D047727000FCE99 /* EXPMatchers+beSubscribedTo.m in Sources */,
+				658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */,
 				65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */,
 				65C62C0D1D047727000FCE99 /* EXPMatchers+matchValue.m in Sources */,
 				65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */,
@@ -1017,6 +1050,7 @@
 				65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				65C62C111D047727000FCE99 /* EXPMatchers+sendValues.m in Sources */,
 				65C62C0B1D047727000FCE99 /* EXPMatchers+finish.m in Sources */,
+				65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */,
 				65C62C081D047727000FCE99 /* EXPMatchers+complete.m in Sources */,
 				65C62C051D047727000FCE99 /* LLReactiveMatchersHelpers.m in Sources */,
 			);

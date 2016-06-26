@@ -46,4 +46,34 @@ context(@"initializer with parameters", ^{
   });
 });
 
+context(@"equality", ^{
+  it(@"should inidcate that two identical request marshalling are equal", ^{
+    FBRHTTPSessionRequestMarshalling *requestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc] init];
+    FBRHTTPSessionRequestMarshalling *anotherRequestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc] init];
+
+    expect([requestMarshalling isEqual:anotherRequestMarshalling]).to.beTruthy();
+  });
+
+  it(@"should return the same hash for identical objects", ^{
+    FBRHTTPSessionRequestMarshalling *requestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc] init];
+    FBRHTTPSessionRequestMarshalling *anotherRequestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc] init];
+
+    expect(requestMarshalling.hash).to.equal(anotherRequestMarshalling.hash);
+  });
+
+  it(@"should indicate that two non identical objects are not equal", ^{
+    FBRHTTPSessionRequestMarshalling *requestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc] init];
+    FBRHTTPSessionRequestMarshalling *anotherRequestMarshalling =
+        [[FBRHTTPSessionRequestMarshalling alloc]
+         initWithParametersEncoding:FBRHTTPRequestParametersEncodingJSON baseURL:nil headers:@{}];
+
+    expect([requestMarshalling isEqual:anotherRequestMarshalling]).to.beFalsy();
+  });
+});
+
 SpecEnd

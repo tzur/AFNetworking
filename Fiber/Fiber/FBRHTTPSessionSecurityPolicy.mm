@@ -3,6 +3,8 @@
 
 #import "FBRHTTPSessionSecurityPolicy.h"
 
+#import "FBRCompare.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation FBRHTTPSessionSecurityPolicy
@@ -33,6 +35,26 @@ NS_ASSUME_NONNULL_BEGIN
     _pinnedCertificates = [certificates copy];
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(id)object {
+  if (object == self) {
+    return YES;
+  } else if (![object isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  FBRHTTPSessionSecurityPolicy *securityPolicy = object;
+  return self.validationMode == securityPolicy.validationMode &&
+      FBRCompare(self.pinnedCertificates, securityPolicy.pinnedCertificates);
+}
+
+- (NSUInteger)hash {
+  return self.validationMode ^ self.pinnedCertificates.hash;
 }
 
 #pragma mark -
