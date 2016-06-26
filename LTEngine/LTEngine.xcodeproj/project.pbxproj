@@ -160,6 +160,7 @@
 		03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FB6B5519DAAC4E00255085 /* LenaClarity.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */; };
 		06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */; };
 		06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */; };
 		06372CF91D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */; };
@@ -178,6 +179,10 @@
 		06B5C1F81D181A9400401556 /* VerticalStepFunction33.png in Resources */ = {isa = PBXBuildFile; fileRef = 06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */; };
 		06B5C1F91D181AA600401556 /* LTHatPyramidDown.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1CB1D181A5C00401556 /* LTHatPyramidDown.fsh */; };
 		06B5C1FA1D181AAB00401556 /* LTHatPyramidUp.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C1CE1D181A5C00401556 /* LTHatPyramidUp.fsh */; };
+		06B5C2381D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C2371D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm */; };
+		06B5C25A1D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 06B5C2581D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h */; };
+		06B5C25B1D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C2591D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm */; };
+		06B5C25C1D181D0500401556 /* LTLaplacianLevelConstruct.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06B5C2571D181CEC00401556 /* LTLaplacianLevelConstruct.fsh */; };
 		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
 		2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */; };
 		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
@@ -1541,6 +1546,8 @@
 		03FB6B5519DAAC4E00255085 /* LenaClarity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaClarity.png; path = Resources/LenaClarity.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		0627C5261D1A953C00EFEC6B /* LTPyramidTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPyramidTestUtils.h; sourceTree = "<group>"; };
+		0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPyramidTestUtils.mm; sourceTree = "<group>"; };
 		06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid4.png; path = Resources/SmoothPyramidUpsampleUpdateGrid4.png; sourceTree = "<group>"; };
 		06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid5.png; path = Resources/SmoothPyramidUpsampleUpdateGrid5.png; sourceTree = "<group>"; };
 		06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid6.png; path = Resources/SmoothPyramidUpsampleUpdateGrid6.png; sourceTree = "<group>"; };
@@ -1559,6 +1566,10 @@
 		06B5C1F21D181A9400401556 /* HorizontalStepFunction33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStepFunction33.png; path = Resources/HorizontalStepFunction33.png; sourceTree = "<group>"; };
 		06B5C1F31D181A9400401556 /* VerticalStepFunction32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction32.png; path = Resources/VerticalStepFunction32.png; sourceTree = "<group>"; };
 		06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction33.png; path = Resources/VerticalStepFunction33.png; sourceTree = "<group>"; };
+		06B5C2371D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelConstructProcessorSpec.mm; sourceTree = "<group>"; };
+		06B5C2571D181CEC00401556 /* LTLaplacianLevelConstruct.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTLaplacianLevelConstruct.fsh; sourceTree = "<group>"; };
+		06B5C2581D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLaplacianLevelConstructProcessor.h; sourceTree = "<group>"; };
+		06B5C2591D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelConstructProcessor.mm; sourceTree = "<group>"; };
 		090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
 		090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
 		2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSpline.h; sourceTree = "<group>"; };
@@ -2652,6 +2663,9 @@
 				031338DF19127A0C0095F99B /* LTImageBorder.fsh */,
 				031338D0191279B30095F99B /* LTImageBorderProcessor.h */,
 				031338D1191279B30095F99B /* LTImageBorderProcessor.mm */,
+				06B5C2571D181CEC00401556 /* LTLaplacianLevelConstruct.fsh */,
+				06B5C2581D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h */,
+				06B5C2591D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm */,
 				28F3CA7D1D004B20007FC2E9 /* LTLinear.fsh */,
 				28F3CA9D1D004B2B007FC2E9 /* LTLinearProcessor.h */,
 				28F3CA9E1D004B2B007FC2E9 /* LTLinearProcessor.mm */,
@@ -2767,6 +2781,7 @@
 				8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */,
 				06B5C1EF1D181A7300401556 /* LTHatPyramidProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
+				06B5C2371D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm */,
 				28F3CAA11D004B59007FC2E9 /* LTLinearProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
@@ -4521,6 +4536,8 @@
 				50B6BB221C1E9F310043FE24 /* LTEasyVectorBoxing.h */,
 				8BD0745F19A5D4D9005F2C37 /* LTObjectionModule.h */,
 				8BD0746019A5D4D9005F2C37 /* LTObjectionModule.mm */,
+				0627C5261D1A953C00EFEC6B /* LTPyramidTestUtils.h */,
+				0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */,
 				8BD0748119A614DF005F2C37 /* LTTestModule.h */,
 				8BD0748219A614DF005F2C37 /* LTTestModule.mm */,
 				8BBE8941183503CD006C58AA /* LTTestUtils+LTEngine.h */,
@@ -4840,6 +4857,7 @@
 				8B87200B1924A76100517F2E /* LTShapeDrawerParams.h in Headers */,
 				8B87200C1924A76100517F2E /* LTDrawableShape.h in Headers */,
 				8B87200D1924A76100517F2E /* LTCommonDrawableShapeStructs.h in Headers */,
+				06B5C25A1D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h in Headers */,
 				50795EDB1C0F4F1100773A71 /* LTParameterizedObjectStack.h in Headers */,
 				8B87200E1924A76100517F2E /* LTGridDrawer.h in Headers */,
 				85F1550F1D12840200967A90 /* LTTextureAtlasProvider.h in Headers */,
@@ -5552,6 +5570,7 @@
 			files = (
 				30DDD6A71CFC8A1E00AE72B8 /* LTGaussianFilterProcessor.vsh in Sources */,
 				30DDD6A81CFC8A2200AE72B8 /* LTGaussianFilterProcessor.fsh in Sources */,
+				06B5C25C1D181D0500401556 /* LTLaplacianLevelConstruct.fsh in Sources */,
 				06B5C1FA1D181AAB00401556 /* LTHatPyramidUp.fsh in Sources */,
 				06B5C1F91D181AA600401556 /* LTHatPyramidDown.fsh in Sources */,
 				28F3CAA31D004BB5007FC2E9 /* LTLinear.fsh in Sources */,
@@ -5803,6 +5822,7 @@
 				039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */,
 				280F59FF191A61FB00F9F80B /* LTGLKitExtensions.mm in Sources */,
 				8BABF16F19BC3AC000AED760 /* LTPyramidProcessor.mm in Sources */,
+				06B5C25B1D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm in Sources */,
 				25AF17471AD50BE00055E664 /* LTVGGlyph.mm in Sources */,
 				8B57713718CF4A60009AF6E5 /* LTPatchSolverProcessor.mm in Sources */,
 				283906B318C4E27300BD21CE /* LTPainter.mm in Sources */,
@@ -5923,6 +5943,7 @@
 				2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
+				0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */,
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
@@ -5972,6 +5993,7 @@
 				282AC6A91924B9D0006CAA2B /* LTShapeDrawerTriangularMeshShapeSpec.mm in Sources */,
 				8B2DAE73184B821000F1623B /* LTGPUQueueSpec.mm in Sources */,
 				03CA15C81965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm in Sources */,
+				06B5C2381D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm in Sources */,
 				288AB4031835203300A11FA4 /* LTFboSpec.mm in Sources */,
 				8B4890D418A126C500598AEE /* LTOpenCVExtensionsSpec.mm in Sources */,
 				8BAE3A8818B3B15A00DA79E1 /* LTColorGradientSpec.mm in Sources */,
