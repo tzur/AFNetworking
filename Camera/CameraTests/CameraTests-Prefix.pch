@@ -4,3 +4,17 @@
 #import "Camera-Prefix.pch"
 
 #import <LTKitTests/LTKitTests-Prefix.pch>
+
+#ifdef __cplusplus
+  // LTKitTests.
+  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTests/LTTestUtils.h>
+
+  // LTEngineTests.
+  #import <LTEngineTests/LTTestUtils+LTEngine.h>
+  #import <LTEngineTests/EXPMatchers+equalMat.h>
+  #import <LTEngineTests/EXPMatchers+equalScalar.h>
+  #import <LTEngineTests/EXPMatchers+beCloseToMat.h>
+  #import <LTEngineTests/EXPMatchers+beCloseToScalar.h>
+  #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>
+#endif
