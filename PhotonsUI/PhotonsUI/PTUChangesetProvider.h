@@ -19,6 +19,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<PTUChangeset *></tt>.
 - (RACSignal *)fetchChangeset;
 
+/// Fetches changeset metadata of the data backed by this provider. If supported, the signal will
+/// continue to send updates as the underlying metadata is changed. If no such continuous updates
+/// are available the signal will complete. If the fetching of updates cannot be made the signal
+/// will err with an appropriate error.
+///
+/// @note This is a cold signal and will perform work only once subscribed to.
+///
+/// @return <tt>RACSignal<PTUChangesetMetadata *></tt>.
+- (RACSignal *)fetchChangesetMetadata;
+
 @end
 
 NS_ASSUME_NONNULL_END

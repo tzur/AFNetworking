@@ -7,9 +7,11 @@
 #import <Photons/PTNAlbumChangeset.h>
 #import <Photons/PTNAlbumChangesetMove.h>
 #import <Photons/PTNAssetManager.h>
+#import <Photons/PTNDescriptor.h>
 #import <Photons/PTNIncrementalChanges.h>
 
 #import "PTUChangeset.h"
+#import "PTUChangesetMetadata.h"
 #import "PTUChangesetMove.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -43,10 +45,25 @@ static const NSUInteger kAssetSection = 1;
 
 - (RACSignal *)fetchChangeset {
   return [[self.manager fetchAlbumWithURL:self.url]
-      map:^id(PTNAlbumChangeset *changeset) {
+      map:^PTUChangeset *(PTNAlbumChangeset *changeset) {
         return PTUChangesetFromAlbumChangeset(changeset);
       }];
 }
+
+- (RACSignal *)fetchChangesetMetadata {
+  return [[self.manager fetchDescriptorWithURL:self.url]
+      map:^PTUChangesetMetadata *(id<PTNDescriptor> descriptor) {
+        return [[PTUChangesetMetadata alloc] initWithTitle:descriptor.localizedTitle
+                                             sectionTitles:@{
+          @(kAlbumSection): @"Albums",
+          @(kAssetSection): @"Photos"
+        }];
+      }];
+}
+
+#pragma mark -
+#pragma mark Changeset mapping
+#pragma mark -
 
 static PTUChangeset *PTUChangesetFromAlbumChangeset(PTNAlbumChangeset *changeset) {
   PTUDataModel *afterData = @[changeset.afterAlbum.subalbums, changeset.afterAlbum.assets];
@@ -68,10 +85,6 @@ static PTUChangeset *PTUChangesetFromAlbumChangeset(PTNAlbumChangeset *changeset
                                                deleted:deleted inserted:inserted updated:updated
                                                  moved:moved];
 }
-
-#pragma mark -
-#pragma mark Changeset mapping
-#pragma mark -
 
 static NSArray *PTUIndexPathArray(NSIndexSet * _Nullable albumIndexSet,
                                   NSIndexSet * _Nullable assetIndexSet) {
