@@ -75,7 +75,6 @@ sharedExamples(kLaplacianLevelConstructionExamples, ^(NSDictionary *data) {
     it(@"should create correct laplacian pyramid level for given image", ^{
       NSString *fileName = data[@"fileName"];
       cv::Mat inputImage = LTLoadMat([self class], fileName);
-
       LTTexture *input = [LTTexture textureWithImage:inputImage];
       input.minFilterInterpolation = LTTextureInterpolationNearest;
       input.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -90,8 +89,11 @@ sharedExamples(kLaplacianLevelConstructionExamples, ^(NSDictionary *data) {
           [[LTHatPyramidProcessor alloc] initWithInput:input outputs:@[higherGaussianLevel]];
       [pyramidProcessor process];
 
+      LTGLPixelFormat *laplacianFormat = input.pixelFormat.components == LTGLPixelComponentsR ?
+          $(LTGLPixelFormatR16Float) : $(LTGLPixelFormatRGBA16Float);
+
       LTTexture *output = [LTTexture textureWithSize:input.size
-                                         pixelFormat:$(LTGLPixelFormatR16Float)
+                                         pixelFormat:laplacianFormat
                                       allocateMemory:YES];
 
       LTLaplacianLevelConstructProcessor *processor =
@@ -104,13 +106,14 @@ sharedExamples(kLaplacianLevelConstructionExamples, ^(NSDictionary *data) {
       cv::Rect roi(boundaryPixelsForRemoval, boundaryPixelsForRemoval,
                    inputImage.size().width - 2 * boundaryPixelsForRemoval,
                    inputImage.size().height - 2 * boundaryPixelsForRemoval);
-      cv::Mat1f outputFloat;
-      LTConvertMat([output image](roi), &outputFloat, CV_32F);
 
-      cv::Mat1f inputFloat;
-      LTConvertMat(inputImage, &inputFloat, CV_32F);
-      std::vector<cv::Mat1f> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat);
-      cv::Mat1f expected = expectedLaplacianPyramid[0](roi);
+      cv::Mat outputFloat;
+      LTConvertMat([output image](roi), &outputFloat, CV_MAKETYPE(CV_32F, inputImage.channels()));
+
+      cv::Mat inputFloat;
+      LTConvertMat(inputImage, &inputFloat, CV_MAKETYPE(CV_32F, inputImage.channels()));
+      std::vector<cv::Mat> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat);
+      cv::Mat expected = expectedLaplacianPyramid[0](roi);
 
       expect($(outputFloat)).to.beCloseToMatWithin($(expected), 1 / 255.0);
     });

@@ -68,12 +68,15 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
           [[LTHatPyramidProcessor alloc] initWithInput:input outputs:hatPyramid];
       [pyramidProcessor process];
 
-      std::vector<cv::Mat1f> expectedPyramid = LTGaussianPyramidOpenCV(inputImage / 255.0);
+      cv::Mat inputFloat;
+      LTConvertMat(inputImage, &inputFloat, CV_MAKETYPE(CV_32F, inputImage.channels()));
+      std::vector<cv::Mat> expectedPyramid = LTGaussianPyramidOpenCV(inputFloat);
 
       // Run loop without last texture due to different boundary condition (replicate vs symmetric)
       for (NSUInteger i = 0; i < hatPyramid.count - 1; ++i) {
-        cv::Mat1b expectedImage;
-        LTConvertMat(expectedPyramid[i + 1], &expectedImage, CV_8U);
+        cv::Mat expectedImage;
+        LTConvertMat(expectedPyramid[i + 1], &expectedImage,
+                     CV_MAKETYPE(CV_8U, expectedPyramid[i + 1].channels()));
         expect($([hatPyramid[i] image])).to.equalMat($(expectedImage));
       }
     });
@@ -97,14 +100,17 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
         hatFullPyramid[i] = output;
       }
 
-      std::vector<cv::Mat1f> expectedPyramid = LTGaussianPyramidOpenCV(inputImage / 255.0);
+      cv::Mat inputFloat;
+      LTConvertMat(inputImage, &inputFloat, CV_MAKETYPE(CV_32F, inputImage.channels()));
+      std::vector<cv::Mat> expectedPyramid = LTGaussianPyramidOpenCV(inputFloat);
       LTGaussianUpsamplePyramidOpenCV(expectedPyramid);
 
       // Run loop without two last textures since upsampling propogates the boundary conditions
       // From the last texture to the one before last which differs from openCV boundary conditions.
       for (NSUInteger i = 0; i < hatFullPyramid.count - 2; ++i) {
-        cv::Mat1b expectedImage;
-        LTConvertMat(expectedPyramid[i], &expectedImage, CV_8U);
+        cv::Mat expectedImage;
+        LTConvertMat(expectedPyramid[i], &expectedImage,
+                     CV_MAKETYPE(CV_8U, expectedPyramid[i].channels()));
         expect($([hatFullPyramid[i] image])).to.beCloseToMat($(expectedImage));
       }
     });
