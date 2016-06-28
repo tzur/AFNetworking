@@ -74,9 +74,19 @@ NS_ASSUME_NONNULL_BEGIN
   [self enableRecognizer:self.defaultGestureRecognizers.tapGestureRecognizer
                  forMode:LTInteractionModeTap];
   [self enableRecognizer:self.defaultGestureRecognizers.panGestureRecognizer
-                 forMode:LTInteractionModePan];
+                 forMode:LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches];
   [self enableRecognizer:self.defaultGestureRecognizers.pinchGestureRecognizer
                  forMode:LTInteractionModePinch];
+
+  if (!self.defaultGestureRecognizers.panGestureRecognizer ||
+      !(self.interactionMode & (LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches))) {
+    return;
+  }
+
+  self.defaultGestureRecognizers.panGestureRecognizer.minimumNumberOfTouches =
+      (self.interactionMode & LTInteractionModePanOneTouch) ? 1 : 2;
+  self.defaultGestureRecognizers.panGestureRecognizer.maximumNumberOfTouches =
+      (self.interactionMode & LTInteractionModePanTwoTouches) ? 2 : 1;
 }
 
 - (void)enableRecognizer:(UIGestureRecognizer *)recognizer forMode:(LTInteractionMode)mode {

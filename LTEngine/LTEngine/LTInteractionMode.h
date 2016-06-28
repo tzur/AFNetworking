@@ -11,13 +11,16 @@ typedef NS_OPTIONS(NSUInteger, LTInteractionMode) {
   LTInteractionModeTouchEvents = 1 << 0,
   /// Tap gesture recognition is enabled.
   LTInteractionModeTap = 1 << 1,
-  /// Pan gesture recognition is enabled.
-  LTInteractionModePan = 1 << 2,
+  /// Recognition of pan gestures involving one touch is enabled.
+  LTInteractionModePanOneTouch = 1 << 2,
+  /// Recognition of pan gestures involving two touches is enabled.
+  LTInteractionModePanTwoTouches = 1 << 3,
   /// Pinch gesture recognition is enabled.
-  LTInteractionModePinch = 1 << 3,
+  LTInteractionModePinch = 1 << 4,
   /// Recognition of all gestures is enabled.
   LTInteractionModeAllGestures =
-      LTInteractionModeTap | LTInteractionModePan | LTInteractionModePinch
+      LTInteractionModeTap | LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches |
+      LTInteractionModePinch
 };
 
 NS_ASSUME_NONNULL_END

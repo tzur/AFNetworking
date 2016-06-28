@@ -3,6 +3,7 @@
 
 #import "LTContentInteractionManager.h"
 
+#import "LTContentInteractionManagerExamples.h"
 #import "LTContentTouchEventDelegate.h"
 
 SpecBegin(LTContentInteractionManager)
@@ -162,11 +163,13 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(pinchRecognizerMock);
     });
 
-    it(@"should setup recognizers according to pan interaction mode", ^{
-      manager.interactionMode = LTInteractionModePan;
+    it(@"should setup recognizers according to one touch pan interaction mode", ^{
+      manager.interactionMode = LTInteractionModePanOneTouch;
 
       OCMExpect([tapRecognizerMock setEnabled:NO]);
       OCMExpect([panRecognizerMock setEnabled:YES]);
+      OCMExpect([panRecognizerMock setMinimumNumberOfTouches:1]);
+      OCMExpect([panRecognizerMock setMaximumNumberOfTouches:1]);
       OCMExpect([pinchRecognizerMock setEnabled:NO]);
 
       manager.defaultGestureRecognizers = recognizers;
@@ -176,12 +179,14 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(pinchRecognizerMock);
     });
 
-    it(@"should setup recognizers according to pinch interaction mode", ^{
-      manager.interactionMode = LTInteractionModePinch;
+    it(@"should setup recognizers according to two touch pan interaction mode", ^{
+      manager.interactionMode = LTInteractionModePanTwoTouches;
 
       OCMExpect([tapRecognizerMock setEnabled:NO]);
-      OCMExpect([panRecognizerMock setEnabled:NO]);
-      OCMExpect([pinchRecognizerMock setEnabled:YES]);
+      OCMExpect([panRecognizerMock setEnabled:YES]);
+      OCMExpect([panRecognizerMock setMinimumNumberOfTouches:2]);
+      OCMExpect([panRecognizerMock setMaximumNumberOfTouches:2]);
+      OCMExpect([pinchRecognizerMock setEnabled:NO]);
 
       manager.defaultGestureRecognizers = recognizers;
 
@@ -190,12 +195,14 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(pinchRecognizerMock);
     });
 
-    it(@"should enable all recognizers if required", ^{
-      manager.interactionMode = LTInteractionModeAllGestures;
+    it(@"should setup recognizers according to one or two touch pan interaction mode", ^{
+      manager.interactionMode = LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches;
 
-      OCMExpect([tapRecognizerMock setEnabled:YES]);
+      OCMExpect([tapRecognizerMock setEnabled:NO]);
       OCMExpect([panRecognizerMock setEnabled:YES]);
-      OCMExpect([pinchRecognizerMock setEnabled:YES]);
+      OCMExpect([panRecognizerMock setMinimumNumberOfTouches:1]);
+      OCMExpect([panRecognizerMock setMaximumNumberOfTouches:2]);
+      OCMExpect([pinchRecognizerMock setEnabled:NO]);
 
       manager.defaultGestureRecognizers = recognizers;
 
@@ -296,12 +303,42 @@ context(@"setting interaction mode", ^{
     OCMVerifyAll(pinchRecognizerMock);
   });
 
-  it(@"should setup recognizers according to pan interaction mode", ^{
+  it(@"should setup recognizers according to one touch pan interaction mode", ^{
     OCMExpect([tapRecognizerMock setEnabled:NO]);
     OCMExpect([panRecognizerMock setEnabled:YES]);
+    OCMExpect([panRecognizerMock setMinimumNumberOfTouches:1]);
+    OCMExpect([panRecognizerMock setMaximumNumberOfTouches:1]);
     OCMExpect([pinchRecognizerMock setEnabled:NO]);
 
-    manager.interactionMode = LTInteractionModePan;
+    manager.interactionMode = LTInteractionModePanOneTouch;
+
+    OCMVerifyAll(tapRecognizerMock);
+    OCMVerifyAll(panRecognizerMock);
+    OCMVerifyAll(pinchRecognizerMock);
+  });
+
+  it(@"should setup recognizers according to two touch pan interaction mode", ^{
+    OCMExpect([tapRecognizerMock setEnabled:NO]);
+    OCMExpect([panRecognizerMock setEnabled:YES]);
+    OCMExpect([panRecognizerMock setMinimumNumberOfTouches:2]);
+    OCMExpect([panRecognizerMock setMaximumNumberOfTouches:2]);
+    OCMExpect([pinchRecognizerMock setEnabled:NO]);
+
+    manager.interactionMode = LTInteractionModePanTwoTouches;
+
+    OCMVerifyAll(tapRecognizerMock);
+    OCMVerifyAll(panRecognizerMock);
+    OCMVerifyAll(pinchRecognizerMock);
+  });
+
+  it(@"should setup recognizers according to one or two touch pan interaction mode", ^{
+    OCMExpect([tapRecognizerMock setEnabled:NO]);
+    OCMExpect([panRecognizerMock setEnabled:YES]);
+    OCMExpect([panRecognizerMock setMinimumNumberOfTouches:1]);
+    OCMExpect([panRecognizerMock setMaximumNumberOfTouches:2]);
+    OCMExpect([pinchRecognizerMock setEnabled:NO]);
+
+    manager.interactionMode = LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches;
 
     OCMVerifyAll(tapRecognizerMock);
     OCMVerifyAll(panRecognizerMock);
