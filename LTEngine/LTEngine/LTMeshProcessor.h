@@ -9,19 +9,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Processor for drawing a texture placed on a grid mesh constructed using a mesh displacement map.
 /// The displacement map is represented by the \c meshDisplacementTexture and can be adjusted by
-/// manipulating this texture.
+/// manipulating this texture. The displacement texture is mapped to deform a specific area in the
+/// input texture using a given displacement source rect. The rest of the input texture area will be
+/// processed without displacement.
 @interface LTMeshProcessor : LTOneShotBaseImageProcessor
 
 /// Initializes with the given \c input texture, the given \c meshDisplacementTexture and the given
-/// \c output texture. A passthrough fragment shader is used for drawing. \c meshDisplacementTexture
-/// must have an \c LTGLPixelFormatRGBA16Float pixel format.
+/// \c output texture. A passthrough fragment shader is used for drawing. The displacement map soure
+/// rect is set to be the entire \c input size rect. \c meshDisplacementTexture must have at least
+/// two channels (only the first two will be considrered) of half-float precision.
 - (instancetype)initWithInput:(LTTexture *)input
       meshDisplacementTexture:(LTTexture *)meshDisplacementTexture output:(LTTexture *)output;
 
 /// Initializes with the given \c fragmentSource, the given \c input texture the given \c
-/// meshDisplacementTexture and the given \c output texture. \c meshDisplacementTexture must have an
-/// \c LTGLPixelFormatRGBA16Float pixel format.
+/// meshDisplacementTexture and the given \c output texture. The displacement map soure rect is set
+/// to be the entire \c input size rect. \c meshDisplacementTexture must have at least two channels
+/// (only the first two will be considrered) of half-float precision.
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
+               meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
+                                output:(LTTexture *)output;
+
+/// Initializes with the given \c fragmentSource, the given \c input texture, the given \c
+/// displacementSourceRect, the given \c meshDisplacementTexture and the given \c output texture. \c
+/// displacementSourceRect must be inclusively contained in the \c input size rect. \c
+/// \c meshDisplacementTexture must have at least two channels (only the first two will be
+/// considrered) of half-float precision.
+- (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
+                displacementSourceRect:(CGRect)displacementSourceRect
                meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
                                 output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;
 

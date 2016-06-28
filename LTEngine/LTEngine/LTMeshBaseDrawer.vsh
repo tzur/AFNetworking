@@ -7,6 +7,7 @@ uniform highp mat3 texture;
 
 uniform highp vec2 meshDisplacementScale;
 uniform highp sampler2D meshTexture;
+uniform highp mat3 meshPosition;
 
 attribute highp vec4 position;
 attribute highp vec3 texcoord;
@@ -17,7 +18,9 @@ void main() {
   position;
   vTexcoord = (texture * vec3(texcoord.xy, 1.0)).xy;
 
-  highp vec2 offset = texture2D(meshTexture, vTexcoord).rg;
+  highp vec2 meshTexcoord = (meshPosition * vec3(vTexcoord.xy, 1.0)).xy;
+  highp vec2 offset = texture2D(meshTexture, meshTexcoord).rg;
+
   gl_Position = projection * modelview * position +
       vec4(meshDisplacementScale * offset * 2.0, 0.0, 0.0);
 }

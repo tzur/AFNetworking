@@ -87,4 +87,20 @@ extern NSString * const kLTSourceTextureUniform;
 /// @note subclasses must implement the abstract \c createDrawingContext method, which creates a
 /// context for drawing, and supply an appropriate drawing methods based on the drawer's intents.
 @interface LTTextureDrawer : NSObject <LTTextureDrawer>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given program, source texture and auxiliary
+/// textures. The source coordinate system of the drawer is defined by the source texture (when used
+/// in the \c drawRect:inFramebuffer:fromRect: and \c drawRect:inFramebufferWithSize:fromRect:
+/// methods).
+///
+/// @param program program used while drawing. Must include the uniforms \c projection (projection
+/// matrix), \c modelview (modelview matrix) and \c texture (texture matrix).
+/// @param uniformToauxiliaryTexture mapping between uniform name (\c NSString) and its
+/// corresponding \c LTTexture object.
+- (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
+              auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture NS_DESIGNATED_INITIALIZER;
+
+
 @end
