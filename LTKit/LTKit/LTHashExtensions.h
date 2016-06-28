@@ -7,14 +7,34 @@
 // http://stackoverflow.com/questions/7110301/generic-hash-for-tuples-in-unordered-map-unordered-set
 
 namespace lt {
-namespace detail {
 
-/// Hash function borrowed from Boost.
+#ifdef __LP64__
+/// 64-bit hash function borrowed from Boost.
+template <class T>
+inline void hash_combine(std::size_t &seed, const T &v) {
+  std::hash<T> hasher;
+  uint64_t k = hasher(v);
+  const uint64_t m = UINT64_C(0xc6a4a7935bd1e995);
+  const int r = 47;
+
+  k *= m;
+  k ^= k >> r;
+  k *= m;
+
+  seed ^= k;
+  seed *= m;
+
+  // Completely arbitrary number, to prevent 0's from hashing to 0.
+  seed += 0xe6546b64;
+}
+#else
+/// 32-bit hash function borrowed from Boost.
 template <class T>
 inline void hash_combine(std::size_t &seed, const T &v) {
   std::hash<T> hasher;
   seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
+#endif
 
 /// Template for calculating the combined hash value of the elements in an iterator range.
 ///
@@ -27,7 +47,6 @@ inline void hash_range(std::size_t &seed, It first, It last) {
   }
 }
 
-} // namespace detail
 } // namespace lt
 
 #pragma mark -
@@ -38,8 +57,8 @@ template <>
 struct ::std::hash<CGPoint> {
   inline size_t operator()(CGPoint p) const {
     size_t seed = 0;
-    lt::detail::hash_combine(seed, p.x);
-    lt::detail::hash_combine(seed, p.y);
+    lt::hash_combine(seed, p.x);
+    lt::hash_combine(seed, p.y);
     return seed;
   }
 };
@@ -52,8 +71,8 @@ template <>
 struct ::std::hash<CGSize> {
   inline size_t operator()(CGSize s) const {
     size_t seed = 0;
-    lt::detail::hash_combine(seed, s.width);
-    lt::detail::hash_combine(seed, s.height);
+    lt::hash_combine(seed, s.width);
+    lt::hash_combine(seed, s.height);
     return seed;
   }
 };
@@ -66,10 +85,10 @@ template <>
 struct ::std::hash<CGRect> {
   inline size_t operator()(CGRect r) const {
     size_t seed = 0;
-    lt::detail::hash_combine(seed, r.origin.x);
-    lt::detail::hash_combine(seed, r.origin.y);
-    lt::detail::hash_combine(seed, r.size.width);
-    lt::detail::hash_combine(seed, r.size.height);
+    lt::hash_combine(seed, r.origin.x);
+    lt::hash_combine(seed, r.origin.y);
+    lt::hash_combine(seed, r.size.width);
+    lt::hash_combine(seed, r.size.height);
     return seed;
   }
 };
@@ -82,12 +101,12 @@ template <>
 struct ::std::hash<CGAffineTransform> {
   inline size_t operator()(CGAffineTransform t) const {
     size_t seed = 0;
-    lt::detail::hash_combine(seed, t.a);
-    lt::detail::hash_combine(seed, t.b);
-    lt::detail::hash_combine(seed, t.c);
-    lt::detail::hash_combine(seed, t.d);
-    lt::detail::hash_combine(seed, t.tx);
-    lt::detail::hash_combine(seed, t.ty);
+    lt::hash_combine(seed, t.a);
+    lt::hash_combine(seed, t.b);
+    lt::hash_combine(seed, t.c);
+    lt::hash_combine(seed, t.d);
+    lt::hash_combine(seed, t.tx);
+    lt::hash_combine(seed, t.ty);
     return seed;
   }
 };
@@ -101,8 +120,8 @@ template <typename T, typename U>
 struct ::std::hash<std::pair<T, U>> {
   inline size_t operator()(const std::pair<T, U> &v) const {
     size_t seed = 0;
-    lt::detail::hash_combine(seed, v.first);
-    lt::detail::hash_combine(seed, v.second);
+    lt::hash_combine(seed, v.first);
+    lt::hash_combine(seed, v.second);
     return seed;
   }
 };
@@ -119,7 +138,7 @@ template <class T, size_t Index = std::tuple_size<T>::value - 1>
 struct TupleHash {
   static void apply(size_t &seed, const T &tuple) {
     TupleHash<T, Index - 1>::apply(seed, tuple);
-    lt::detail::hash_combine(seed, std::get<Index>(tuple));
+    lt::hash_combine(seed, std::get<Index>(tuple));
   }
 };
 
@@ -127,7 +146,7 @@ struct TupleHash {
 template <class T>
 struct TupleHash<T, 0> {
   static void apply(size_t &seed, const T &tuple) {
-    lt::detail::hash_combine(seed, std::get<0>(tuple));
+    lt::hash_combine(seed, std::get<0>(tuple));
   }
 };
 
@@ -153,7 +172,7 @@ template <typename T>
 struct ::std::hash<std::vector<T>> {
   inline size_t operator()(const std::vector<T> &v) const {
     size_t seed = 0;
-    lt::detail::hash_range(seed, v.begin(), v.end());
+    lt::hash_range(seed, v.begin(), v.end());
     return seed;
   }
 };
@@ -170,7 +189,7 @@ template <class T, size_t Index>
 struct ArrayHash {
   static void apply(size_t &seed, const T &array) {
     ArrayHash<T, Index - 1>::apply(seed, array);
-    lt::detail::hash_combine(seed, std::get<Index - 1>(array));
+    lt::hash_combine(seed, std::get<Index - 1>(array));
   }
 };
 
@@ -178,7 +197,7 @@ struct ArrayHash {
 template <class T>
 struct ArrayHash<T, 1> {
   static void apply(size_t &seed, const T &array) {
-    lt::detail::hash_combine(seed, std::get<0>(array));
+    lt::hash_combine(seed, std::get<0>(array));
   }
 };
 
