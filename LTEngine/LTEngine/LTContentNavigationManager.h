@@ -15,15 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// instance, except for properties held by the given navigation \c state.
 - (void)navigateToState:(LTContentNavigationState *)state;
 
-/// Updates the rectangle visible within the bounds of this instance to be the given \c rect, in
-/// point units of the content coordinate system.
-- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
-
-/// Delegate to be informed about navigation events.
+/// Delegate to be informed about navigation events. Initial value is \c nil.
 @property (weak, nonatomic) id<LTContentNavigationDelegate> navigationDelegate;
 
 /// \c YES if this instance should cause the content rectangle to bounce to an aspect-fit state
-/// inside its view at the end of any navigation request.
+/// inside its view at the end of any navigation request. Initial value is \c NO.
 @property (nonatomic) BOOL bounceToMinimumScale;
 
 /// Current navigation state of this instance.
