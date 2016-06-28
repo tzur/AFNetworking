@@ -27,37 +27,44 @@ context(@"initialization", ^{
 context(@"conversion", ^{
   it(@"should convert points from content coordinate system to presentation coordinate system", ^{
     LTContentCoordinateConverter *converter = LTTestConverter(CGRectMake(0, 0, 1, 1), 1, 1);
-    CGPoint convertedPoint = [converter convertPointFromContentToView:CGPointMake(2, 3)];
+    CGPoint convertedPoint =
+        [converter convertPointFromContentToPresentationCoordinates:CGPointMake(2, 3)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
 
     converter = LTTestConverter(CGRectMake(1, 1, 1, 1), 1, 1);
-    convertedPoint = [converter convertPointFromContentToView:CGPointMake(2, 3)];
+    convertedPoint =
+        [converter convertPointFromContentToPresentationCoordinates:CGPointMake(2, 3)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(1, 2));
 
     converter = LTTestConverter(CGRectMake(100, 200, 300, 400), 0.5, 3);
-    convertedPoint = [converter convertPointFromContentToView:CGPointMake(250, 400)];
+    convertedPoint =
+        [converter convertPointFromContentToPresentationCoordinates:CGPointMake(250, 400)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(25, 100 / 3.0));
 
     converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
-    convertedPoint = [converter convertPointFromContentToView:CGPointMake(0, 0)];
+    convertedPoint =
+        [converter convertPointFromContentToPresentationCoordinates:CGPointMake(0, 0)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(0, 10));
   });
 
   it(@"should convert points from presentation coordinate system to content coordinate system", ^{
     LTContentCoordinateConverter *converter = LTTestConverter(CGRectMake(0, 0, 1, 1), 1, 1);
-    CGPoint convertedPoint = [converter convertPointFromViewToContent:CGPointMake(2, 3)];
+    CGPoint convertedPoint =
+        [converter convertPointFromPresentationToContentCoordinates:CGPointMake(2, 3)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
 
     converter = LTTestConverter(CGRectMake(1, 1, 1, 1), 1, 1);
-    convertedPoint = [converter convertPointFromViewToContent:CGPointMake(1, 2)];
+    convertedPoint = [converter convertPointFromPresentationToContentCoordinates:CGPointMake(1, 2)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
 
     converter = LTTestConverter(CGRectMake(100, 200, 300, 400), 0.5, 3);
-    convertedPoint = [converter convertPointFromViewToContent:CGPointMake(25, 100 / 3.0)];
+    convertedPoint =
+        [converter convertPointFromPresentationToContentCoordinates:CGPointMake(25, 100 / 3.0)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(250, 400));
 
     converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
-    convertedPoint = [converter convertPointFromViewToContent:CGPointMake(0, 10)];
+    convertedPoint =
+        [converter convertPointFromPresentationToContentCoordinates:CGPointMake(0, 10)];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(0, 0));
   });
 });

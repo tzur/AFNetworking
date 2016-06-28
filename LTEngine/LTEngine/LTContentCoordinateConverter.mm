@@ -32,12 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTContentCoordinateConverter
 #pragma mark -
 
-- (CGPoint)convertPointFromContentToView:(CGPoint)point {
+- (CGPoint)convertPointFromContentToPresentationCoordinates:(CGPoint)point {
   return (point - self.provider.visibleContentRect.origin) * self.provider.zoomScale /
       self.provider.contentScaleFactor;
 }
 
-- (CGPoint)convertPointFromViewToContent:(CGPoint)point {
+- (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point {
   return point * self.provider.contentScaleFactor / self.provider.zoomScale +
       self.provider.visibleContentRect.origin;
 }

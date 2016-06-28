@@ -11,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Converts the given \c point, given in floating-point pixel units of the content coordinate
 /// system, to the corresponding point in point units of presentation coordinate system.
-- (CGPoint)convertPointFromContentToView:(CGPoint)point;
+- (CGPoint)convertPointFromContentToPresentationCoordinates:(CGPoint)point;
 
 /// Converts the given \c point, given in point units of presentation coordinate system, to the
 /// corresponding point in floating-point pixel units of the content coordinate system.
-- (CGPoint)convertPointFromViewToContent:(CGPoint)point;
+- (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point;
 
 @end
 
