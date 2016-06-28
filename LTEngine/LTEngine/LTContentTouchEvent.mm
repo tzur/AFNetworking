@@ -3,6 +3,8 @@
 
 #import "LTContentTouchEvent.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTContentTouchEvent ()
@@ -80,11 +82,35 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
+- (BOOL)isEqual:(LTContentTouchEvent *)contentTouchEvent {
+  if (contentTouchEvent == self) {
+    return YES;
+  }
+
+  if (![contentTouchEvent isKindOfClass:[LTContentTouchEvent class]]) {
+    return NO;
+  }
+
+  return [self.touchEvent isEqual:contentTouchEvent.touchEvent] &&
+      self.contentLocation == contentTouchEvent.contentLocation &&
+      self.previousContentLocation == contentTouchEvent.previousContentLocation &&
+      self.contentSize == contentTouchEvent.contentSize &&
+      self.contentZoomScale == contentTouchEvent.contentZoomScale;
+}
+
+- (NSUInteger)hash {
+  return self.touchEvent.hash ^ lt::hash<CGPoint>()(self.contentLocation) ^
+      lt::hash<CGPoint>()(self.previousContentLocation) ^ lt::hash<CGSize>()(self.contentSize) ^
+      std::hash<CGFloat>()(self.contentZoomScale);
+}
+
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, touch event: %@, content location: (%g, %g), "
-          "previous content location: (%g, %g)>", [self class], self, [self.touchEvent description],
-          self.contentLocation.x, self.contentLocation.y, self.previousContentLocation.x,
-          self.previousContentLocation.y];
+  return [NSString stringWithFormat:@"<%@: %p, touch event: %@, content location: %@, "
+          "previous content location: %@, content size: %@, content zoom scale: %g>",
+          [self class], self, [self.touchEvent description],
+          NSStringFromCGPoint(self.contentLocation),
+          NSStringFromCGPoint(self.previousContentLocation), NSStringFromCGSize(self.contentSize),
+          self.contentZoomScale];
 }
 
 #pragma mark -

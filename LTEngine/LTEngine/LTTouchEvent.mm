@@ -3,6 +3,8 @@
 
 #import "LTTouchEvent.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTTouchEvent
@@ -170,6 +172,60 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
+
+- (BOOL)isEqual:(LTTouchEvent *)touchEvent {
+  if (touchEvent == self) {
+    return YES;
+  }
+
+  if (![touchEvent isKindOfClass:[LTTouchEvent class]]) {
+    return NO;
+  }
+
+  return self.sequenceID == touchEvent.sequenceID &&
+      self.timestamp == touchEvent.timestamp &&
+      self.view == touchEvent.view &&
+      self.viewLocation == touchEvent.viewLocation &&
+      self.previousViewLocation == touchEvent.previousViewLocation &&
+      self.phase == touchEvent.phase &&
+      self.tapCount == touchEvent.tapCount &&
+      self.majorRadius == touchEvent.majorRadius &&
+      self.majorRadiusTolerance == touchEvent.majorRadiusTolerance &&
+      self.type == touchEvent.type &&
+      (self.force == touchEvent.force || [self.force isEqual:touchEvent.force]) &&
+      (self.maximumPossibleForce == touchEvent.maximumPossibleForce ||
+       [self.maximumPossibleForce isEqual:touchEvent.maximumPossibleForce]) &&
+      (self.azimuthAngle == touchEvent.azimuthAngle ||
+       [self.azimuthAngle isEqual:touchEvent.azimuthAngle]) &&
+      ((self.azimuthUnitVector.isNull() && touchEvent.azimuthUnitVector.isNull()) ||
+       self.azimuthUnitVector == touchEvent.azimuthUnitVector) &&
+      (self.altitudeAngle == touchEvent.altitudeAngle ||
+       [self.altitudeAngle isEqual:touchEvent.altitudeAngle]) &&
+      [self.estimationUpdateIndex isEqual:touchEvent.estimationUpdateIndex] &&
+      self.estimatedProperties == touchEvent.estimatedProperties &&
+      self.estimatedPropertiesExpectingUpdates == touchEvent.estimatedPropertiesExpectingUpdates;
+}
+
+- (NSUInteger)hash {
+  return self.sequenceID ^
+      std::hash<NSTimeInterval>()(self.timestamp) ^
+      self.view.hash ^
+      lt::hash<CGPoint>()(self.viewLocation) ^
+      lt::hash<CGPoint>()(self.previousViewLocation) ^
+      self.phase ^
+      self.tapCount ^
+      std::hash<CGFloat>()(self.majorRadius) ^
+      std::hash<CGFloat>()(self.majorRadiusTolerance) ^
+      self.type ^
+      self.force.hash ^
+      self.maximumPossibleForce.hash ^
+      self.azimuthAngle.hash ^
+      lt::hash<CGPoint>()((CGPoint)self.azimuthUnitVector) ^
+      self.altitudeAngle.hash ^
+      self.estimationUpdateIndex.hash ^
+      self.estimatedProperties ^
+      self.estimatedPropertiesExpectingUpdates;
+}
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, sequence ID: %lu, timestamp: %g, view: %@, "

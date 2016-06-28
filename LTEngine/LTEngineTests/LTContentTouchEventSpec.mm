@@ -95,6 +95,59 @@ context(@"initialization", ^{
   });
 });
 
+context(@"NSObject protocol", ^{
+  __block LTContentTouchEvent *contentTouchEvent;
+  __block LTContentTouchEvent *equalContentTouchEvent;
+
+  beforeEach(^{
+    contentTouchEvent = [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                                        contentLocation:kContentLocation
+                                                previousContentLocation:kPreviousContentLocation
+                                                            contentSize:kContentSize
+                                                       contentZoomScale:kContentZoomScale];
+    equalContentTouchEvent =
+        [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                        contentLocation:kContentLocation
+                                previousContentLocation:kPreviousContentLocation
+                                            contentSize:kContentSize
+                                       contentZoomScale:kContentZoomScale];
+  });
+
+  context(@"equality", ^{
+    it(@"should return YES when comparing to itself", ^{
+      expect([contentTouchEvent isEqual:contentTouchEvent]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to nil", ^{
+      expect([contentTouchEvent isEqual:nil]).to.beFalsy();
+    });
+
+    it(@"should return YES when comparing to equal content touch event", ^{
+      expect([contentTouchEvent isEqual:equalContentTouchEvent]).to.beTruthy();
+    });
+
+    it(@"should return NO when comparing to an object of a different class", ^{
+      expect([contentTouchEvent isEqual:[[NSObject alloc] init]]).to.beFalsy();
+    });
+
+    it(@"should return NO when comparing to different content touch event", ^{
+      LTContentTouchEvent *anotherContentTouchEvent =
+          [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                          contentLocation:kContentLocation
+                                  previousContentLocation:kPreviousContentLocation
+                                              contentSize:kContentSize
+                                         contentZoomScale:kContentZoomScale * 2];
+      expect([contentTouchEvent isEqual:anotherContentTouchEvent]).to.beFalsy();
+    });
+  });
+
+  context(@"hash", ^{
+    it(@"should return the same hash value for equal objects", ^{
+      expect(contentTouchEvent.hash).to.equal(equalContentTouchEvent.hash);
+    });
+  });
+});
+
 context(@"copying", ^{
   it(@"should return itself as copy, due to immutability", ^{
     LTContentTouchEvent *contentTouchEvent =
