@@ -203,53 +203,33 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(panRecognizerMock);
       OCMVerifyAll(pinchRecognizerMock);
     });
-  });
-});
 
-context(@"setting custom gesture recognizers", ^{
-  __block LTContentInteractionManager *manager;
+    it(@"should setup recognizers according to pinch interaction mode", ^{
+      manager.interactionMode = LTInteractionModePinch;
 
-  beforeEach(^{
-    manager = [[LTContentInteractionManager alloc] initWithView:view];
-  });
+      OCMExpect([tapRecognizerMock setEnabled:NO]);
+      OCMExpect([panRecognizerMock setEnabled:NO]);
+      OCMExpect([pinchRecognizerMock setEnabled:YES]);
 
-  afterEach(^{
-    manager = nil;
-  });
+      manager.defaultGestureRecognizers = recognizers;
 
-  context(@"attaching custom gesture recognizers", ^{
-    __block UITapGestureRecognizer *recognizer;
-
-    beforeEach(^{
-      recognizer = [[UITapGestureRecognizer alloc] init];
+      OCMVerifyAll(tapRecognizerMock);
+      OCMVerifyAll(panRecognizerMock);
+      OCMVerifyAll(pinchRecognizerMock);
     });
 
-    afterEach(^{
-      recognizer = nil;
-    });
+    it(@"should enable all recognizers if required", ^{
+      manager.interactionMode = LTInteractionModeAllGestures;
 
-    it(@"should attach new custom gesture recognizers to view", ^{
-      manager.customGestureRecognizers = @[recognizer];
+      OCMExpect([tapRecognizerMock setEnabled:YES]);
+      OCMExpect([panRecognizerMock setEnabled:YES]);
+      OCMExpect([pinchRecognizerMock setEnabled:YES]);
 
-      expect(view.gestureRecognizers).to.haveACountOf(1);
-      expect(view.gestureRecognizers.firstObject).to.beIdenticalTo(recognizer);
-    });
+      manager.defaultGestureRecognizers = recognizers;
 
-    it(@"should detach old custom gesture recognizers from view", ^{
-      manager.customGestureRecognizers = @[recognizer];
-      manager.customGestureRecognizers = nil;
-
-      expect(view.gestureRecognizers).to.haveACountOf(0);
-    });
-
-    it(@"should replace custom gesture recognizers", ^{
-      manager.customGestureRecognizers = @[recognizer];
-      UIPinchGestureRecognizer *anotherRecognizer = [[UIPinchGestureRecognizer alloc] init];
-
-      manager.customGestureRecognizers = @[anotherRecognizer];
-
-      expect(view.gestureRecognizers).to.haveACountOf(1);
-      expect(view.gestureRecognizers.firstObject).to.beIdenticalTo(anotherRecognizer);
+      OCMVerifyAll(tapRecognizerMock);
+      OCMVerifyAll(panRecognizerMock);
+      OCMVerifyAll(pinchRecognizerMock);
     });
   });
 });
@@ -353,64 +333,14 @@ context(@"setting interaction mode", ^{
   });
 });
 
-context(@"touch event forwarding", ^{
-  __block LTContentInteractionManager *manager;
-  __block LTContentTouchEvents *contentTouchEvents;
-  __block LTContentTouchEvents *predictedContentTouchEvents;
-  __block id contentTouchEventDelegateMock;
+context(@"LTContentInteractionManager protocol", ^{
+  static UIView * const kView = [[UIView alloc] initWithFrame:CGRectZero];
+  static LTContentInteractionManager * const kManager =
+      [[LTContentInteractionManager alloc] initWithView:kView];
 
-  beforeEach(^{
-    contentTouchEvents = @[];
-    predictedContentTouchEvents = @[];
-    contentTouchEventDelegateMock = OCMProtocolMock(@protocol(LTContentTouchEventDelegate));
-    manager = [[LTContentInteractionManager alloc] initWithView:view];
-    manager.contentTouchEventDelegate = contentTouchEventDelegateMock;
-  });
-
-  afterEach(^{
-    contentTouchEventDelegateMock = nil;
-    manager = nil;
-    predictedContentTouchEvents = nil;
-    contentTouchEvents = nil;
-  });
-
-  it(@"should not forward touch events on default", ^{
-    [[[contentTouchEventDelegateMock reject] ignoringNonObjectArgs]
-     receivedContentTouchEvents:[OCMArg any] predictedEvents:[OCMArg any]
-     touchEventSequenceState:LTTouchEventSequenceStateStart];
-
-    [manager receivedContentTouchEvents:contentTouchEvents
-                        predictedEvents:predictedContentTouchEvents
-                touchEventSequenceState:LTTouchEventSequenceStateStart];
-
-    OCMVerifyAll(contentTouchEventDelegateMock);
-  });
-
-  it(@"should forward touch events if required", ^{
-    OCMExpect([contentTouchEventDelegateMock
-               receivedContentTouchEvents:contentTouchEvents
-               predictedEvents:predictedContentTouchEvents
-               touchEventSequenceState:LTTouchEventSequenceStateStart]);
-
-    manager.interactionMode = LTInteractionModeTouchEvents;
-    [manager receivedContentTouchEvents:contentTouchEvents
-                        predictedEvents:predictedContentTouchEvents
-                touchEventSequenceState:LTTouchEventSequenceStateStart];
-
-    OCMVerifyAll(contentTouchEventDelegateMock);
-  });
-
-  it(@"should not forward touch events if required", ^{
-    [[[contentTouchEventDelegateMock reject] ignoringNonObjectArgs]
-     receivedContentTouchEvents:[OCMArg any] predictedEvents:[OCMArg any]
-     touchEventSequenceState:LTTouchEventSequenceStateStart];
-
-    manager.interactionMode = LTInteractionModeNone;
-    [manager receivedContentTouchEvents:contentTouchEvents
-                        predictedEvents:predictedContentTouchEvents
-                touchEventSequenceState:LTTouchEventSequenceStateStart];
-
-    OCMVerifyAll(contentTouchEventDelegateMock);
+  itShouldBehaveLike(kLTContentInteractionManagerExamples, @{
+      kLTContentInteractionManager: kManager,
+      kLTContentInteractionManagerView: kView
   });
 });
 
