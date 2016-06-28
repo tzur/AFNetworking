@@ -9,15 +9,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol to be implemented by objects responsible for triggering the refreshing of displayed
 /// rectangular image content.
-@protocol LTContentRefreshDelegate <NSObject>
+@protocol LTContentRefreshing <NSObject>
 
-/// Indicate that the content in the given rect should be updated.
+/// Triggers an update of the content in the given \c rect. Specifically, after calling this method,
+/// the \c drawDelegate of the used \c LTContentDisplayManager is requested to update the content in
+/// the given \c rect. The update request is performed immediately following the next trigger event
+/// of the display link, ensuring that the update exploits the next frame as much as possible.
 - (void)setNeedsDisplayContentInRect:(CGRect)rect;
 
-/// Indicates that the whole content should be updated.
+/// Triggers an update of the entire content. Identical to calling
+///
+/// @code
+/// [setNeedsDisplayContentInRect:contentSize]
+/// @endcode
+///
+/// where \c contentSize is the size of the content rectangle.
 - (void)setNeedsDisplayContent;
 
-/// Indicates that the content needs to be presented from scratch.
+/// Triggers a presentation of the content.
+///
+/// @important In contrast to the \c setNeedsDisplayContentInRect: and \c setNeedsDisplayContent
+///            methods, no updates of the content are performed but the content is presented in its
+///            current state.
 - (void)setNeedsDisplay;
 
 @end
@@ -47,18 +60,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Size, in pixels, of the content texture managed by this instance.
 @property (readonly, nonatomic) CGSize contentTextureSize;
 
-/// If \c YES, the alpha channel of the content will be used for transparency, and a checkerboard
-/// background will be used to visualize the transparent conetnt pixels.
-/// Otherwise, the content texture will be opaque.
+/// If \c YES, the alpha channel of the content will be used for transparency. The content texture
+/// is assumed to be in premultiplied format. If \c NO and the alpha channel of the content texture
+/// is not \c 1, the result is undefined.
 @property (nonatomic) BOOL contentTransparency;
 
 /// If \c YES, a checkerboard pattern will be drawn on the background, to indicate transparent
-/// areas. Otherwise, the background color will be used.
+/// areas. Otherwise, the background color will be used. Irrelevant if \c contentTransparency is
+/// \c NO.
 @property (nonatomic) BOOL checkerboardPattern;
 
-/// Background color behind content rectangle. Default value is \c nil in which case the black
-/// color is used as background color.
-@property (nonatomic, copy, nullable) UIColor *backgroundColor;
+/// Background color behind the displayed content rectangle. Default value is
+/// <tt>UIColor blackColor</tt>. The opacity of any used background color is \c 1, independent of
+/// the opacity value of provided colors. Setting this property to \c nil results in usage of
+/// default value.
+@property (strong, nonatomic, nullable) UIColor *backgroundColor;
 
 @end
 
