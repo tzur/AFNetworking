@@ -5,6 +5,7 @@
 
 #import <LTKit/LTAnimation.h>
 
+#import "LTContentLocationProvider.h"
 #import "LTEAGLView.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
@@ -15,33 +16,14 @@
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
-#import "LTViewNavigationView.h"
+#import "LTViewDelegates.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@implementation LTViewRenderingModel
-
-- (instancetype)initWithContext:(LTGLContext *)context contentTexture:(LTTexture *)contentTexture {
-  LTParameterAssert(context);
-  LTParameterAssert(contentTexture);
-
-  if (self = [super init]) {
-    _context = context;
-    _contentTexture = contentTexture;
-  }
-  return self;
-}
-
-+ (instancetype)modelWithContext:(LTGLContext *)context contentTexture:(LTTexture *)contentTexture {
-  return [[LTViewRenderingModel alloc] initWithContext:context contentTexture:contentTexture];
-}
-
-@end
-
 @interface LTView () <LTEAGLViewDelegate>
 
-/// Manager of the location of the content rectangle.
-@property (strong, nonatomic) id<LTContentLocationManager> contentLocationManager;
+/// Provider of information about the content rectangle.
+@property (strong, nonatomic) id<LTContentLocationProvider> contentLocationProvider;
 
 /// Default content scale factor to be used by this view.
 @property (nonatomic, readonly) CGFloat defaultContentScaleFactor;
@@ -110,33 +92,34 @@ static const CGFloat kMinimalZoomScaleForNNInterpolation = 3;
 /// Number of pixels per checkerboard square, must be a power of two.
 static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
-- (instancetype)initWithFrame:(CGRect)frame
-       contentLocationManager:(id<LTContentLocationManager>)contentLocationManager
-               renderingModel:(LTViewRenderingModel *)renderingModel {
-  LTParameterAssert(renderingModel.contentTexture.size == contentLocationManager.contentSize,
+- (instancetype)initWithFrame:(CGRect)frame context:(LTGLContext *)context
+               contentTexture:(LTTexture *)contentTexture
+      contentLocationProvider:(id<LTContentLocationProvider>)contentLocationProvider {
+  LTParameterAssert(contentTexture.size == contentLocationProvider.contentSize,
                     @"Size of content texture must match content size provided by content location "
                     "manager");
 
   if (self = [super initWithFrame:frame]) {
-    _defaultContentScaleFactor = contentLocationManager.contentScaleFactor;
+    _defaultContentScaleFactor = contentLocationProvider.contentScaleFactor;
     [super setContentScaleFactor:self.defaultContentScaleFactor];
     self.pixelsPerCheckerboardSquare = kDefaultPixelsPerCheckerboardSquare * 2;
-    [self setupWithContext:renderingModel.context
-            contentTexture:renderingModel.contentTexture
-    contentLocationManager:contentLocationManager];
+    [self setupWithContext:context
+            contentTexture:contentTexture
+    contentLocationProvider:contentLocationProvider];
+    self.backgroundColor = [self defaultBackgroundColor];
   }
   return self;
 }
 
 - (void)setupWithContext:(LTGLContext *)context contentTexture:(LTTexture *)texture
-  contentLocationManager:(id<LTContentLocationManager>)contentLocationManager {
+ contentLocationProvider:(id<LTContentLocationProvider>)contentLocationProvider {
   LTParameterAssert(context);
   LTParameterAssert(texture);
 
   self.context = context;
   self.contentTexture = texture;
   self.contentRectToUpdate = CGRectNull;
-  self.contentLocationManager = contentLocationManager;
+  self.contentLocationProvider = contentLocationProvider;
   [self createEaglView];
   [self createContentFbo];
   [self createRectDrawer];
@@ -190,7 +173,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)createPixelGrid {
   self.pixelGrid = [[LTViewPixelGrid alloc] initWithContentSize:self.contentSize];
-  self.pixelGrid.maxZoomScale = self.contentLocationManager.maxZoomScale;
+  self.pixelGrid.maxZoomScale = self.contentLocationProvider.maxZoomScale;
 }
 
 - (void)registerNotifications {
@@ -229,17 +212,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     return;
   }
 
-  if ([self.touchDelegate respondsToSelector:@selector(ltViewStopTouchHandling:)]) {
-    [self.touchDelegate ltViewStopTouchHandling:self];
-  }
-
   // Due to an obscure bug occurring on the iPad Pro leading to freezing of the application upon
   // device rotations, the internally used \c LTEAGLView must be recreated upon layout change
   // requests.
-  NSArray<UIGestureRecognizer *> *recognizers = self.eaglView.gestureRecognizers;
-  self.eaglView.gestureRecognizers = @[];
   [self createEaglView];
-  self.eaglView.gestureRecognizers = recognizers;
 }
 
 #pragma mark -
@@ -261,49 +237,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self createContentFbo];
   [self createRectDrawer];
   [self createPixelGrid];
-
-  if (self.contentLocationManager.contentSize != self.contentTexture.size) {
-    self.contentLocationManager.contentSize = self.contentTexture.size;
-  }
-}
-
-- (void)detachFbo {
-  self.contentFbo = nil;
-}
-
-- (void)reattachFbo {
-  if (self.contentTexture) {
-    [self createContentFbo];
-  }
-}
-
-#pragma mark -
-#pragma mark LTViewNavigationViewDelegate
-#pragma mark -
-
-- (void)didNavigateToRect:(CGRect)visibleRect {
-  if ([self.navigationDelegate respondsToSelector:@selector(ltViewDidNavigateToRect:)]) {
-    [self.navigationDelegate ltViewDidNavigateToRect:visibleRect];
-  }
   [self setNeedsDisplay];
-}
-
-- (void)userPanned {
-  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserPanned)]) {
-    [self.navigationDelegate ltViewUserPanned];
-  }
-}
-
-- (void)userPinched {
-  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserPinched)]) {
-    [self.navigationDelegate ltViewUserPinched];
-  }
-}
-
-- (void)userDoubleTapped {
-  if ([self.navigationDelegate respondsToSelector:@selector(ltViewUserDoubleTapped)]) {
-    [self.navigationDelegate ltViewUserDoubleTapped];
-  }
 }
 
 #pragma mark -
@@ -339,134 +273,6 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 #pragma mark -
-#pragma mark Touch events
-#pragma mark -
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  // Workaround for the iPhone 6 Plus bogus detection of pan gesture.
-  [self.contentLocationManager cancelBogusScrollviewPanGesture];
-
-  [super touchesBegan:touches withEvent:event];
-  if (self.forwardCallsToTouchDelegate) {
-    if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesBegan:withEvent:)]) {
-      [self.touchDelegate ltView:self touchesBegan:touches withEvent:event];
-    }
-  }
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  [super touchesMoved:touches withEvent:event];
-  if (self.forwardCallsToTouchDelegate) {
-    if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesMoved:withEvent:)]) {
-      [self.touchDelegate ltView:self touchesMoved:touches withEvent:event];
-    }
-  }
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  [super touchesEnded:touches withEvent:event];
-  if (self.forwardCallsToTouchDelegate) {
-    if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesEnded:withEvent:)]) {
-      [self.touchDelegate ltView:self touchesEnded:touches withEvent:event];
-    }
-  }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-  [super touchesCancelled:touches withEvent:event];
-  if (self.forwardCallsToTouchDelegate) {
-    if ([self.touchDelegate respondsToSelector:@selector(ltView:touchesCancelled:withEvent:)]) {
-      [self.touchDelegate ltView:self touchesCancelled:touches withEvent:event];
-    }
-  }
-}
-
-- (void)setTouchDelegate:(id<LTViewTouchDelegate>)touchDelegate {
-  if (touchDelegate == _touchDelegate) {
-    return;
-  }
-
-  if (self.forwardCallsToTouchDelegate) {
-    [_touchDelegate ltViewDetachedFromDelegate:self];
-  }
-  _touchDelegate = touchDelegate;
-  if (self.forwardCallsToTouchDelegate) {
-    [_touchDelegate ltViewAttachedToDelegate:self];
-  }
-}
-
-- (void)setForwardTouchesToDelegate:(BOOL)forwardTouchesToDelegate {
-  if (self.isForwardTouchesToDelegateLocked) {
-    return;
-  }
-
-  self.isForwardTouchesToDelegateLocked = YES;
-  _forwardTouchesToDelegate = forwardTouchesToDelegate;
-  self.forwardCallsToTouchDelegate = [self shouldForwardTouchEvents];
-  self.isForwardTouchesToDelegateLocked = NO;
-}
-
-- (LTViewNavigationMode)navigationMode {
-  return self.contentLocationManager.navigationMode;
-}
-
-- (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
-  if (self.isNavigationModeLocked) {
-    return;
-  }
-
-  self.isNavigationModeLocked = YES;
-  self.contentLocationManager.navigationMode = navigationMode;
-  self.forwardCallsToTouchDelegate = [self shouldForwardTouchEvents];
-  self.isNavigationModeLocked = NO;
-}
-
-- (BOOL)shouldForwardTouchEvents {
-  return self.forwardTouchesToDelegate && self.shouldForwardTouchEventsOnCurrentNavigationMode;
-}
-
-- (BOOL)shouldForwardTouchEventsOnCurrentNavigationMode {
-  return self.navigationMode == LTViewNavigationNone ||
-         self.navigationMode == LTViewNavigationTwoFingers;
-}
-
-- (void)setForwardCallsToTouchDelegate:(BOOL)forwardCallsToTouchDelegate {
-  if (forwardCallsToTouchDelegate == _forwardCallsToTouchDelegate) {
-    return;
-  }
-
-  _forwardCallsToTouchDelegate = forwardCallsToTouchDelegate;
-  if (forwardCallsToTouchDelegate) {
-    [self.touchDelegate ltViewAttachedToDelegate:self];
-  } else {
-    [self.touchDelegate ltViewDetachedFromDelegate:self];
-  }
-}
-
-#pragma mark -
-#pragma mark For Testing
-#pragma mark -
-
-- (void)simulateTouchesOfPhase:(UITouchPhase)phase {
-  switch (phase) {
-  case UITouchPhaseBegan:
-      [self touchesBegan:[NSSet set] withEvent:nil];
-    break;
-  case UITouchPhaseMoved:
-      [self touchesMoved:[NSSet set] withEvent:nil];
-    break;
-  case UITouchPhaseEnded:
-      [self touchesEnded:[NSSet set] withEvent:nil];
-    break;
-  case UITouchPhaseCancelled:
-      [self touchesCancelled:[NSSet set] withEvent:nil];
-    break;
-  default:
-    break;
-  }
-}
-
-#pragma mark -
 #pragma mark Drawing
 #pragma mark -
 
@@ -477,7 +283,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   
   // Get the visible content rectangle, in floating-point pixel units of the content coordinate
   // system.
-  CGRect visibleContentRect = self.visibleContentRect;
+  CGRect visibleContentRect = self.contentLocationProvider.visibleContentRect;
   
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Set the scissor box to draw only inside the visible content rect.
@@ -602,7 +408,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
   
-  UIEdgeInsets insets = self.contentLocationManager.contentInset * self.contentScaleFactor;
+  UIEdgeInsets insets = self.contentLocationProvider.contentInset * self.contentScaleFactor;
   CGRect paddingBox = UIEdgeInsetsInsetRect(self.framebufferBounds, insets);
   CGRect box = CGRectIntersection(visibleBox, paddingBox);
   
@@ -626,7 +432,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (CGRect)framebufferBounds {
-  return CGRectFromOriginAndSize(CGPointZero, self.framebufferSize);
+  return CGRectFromSize(self.framebufferSize);
 }
 
 - (CGSize)contentSize {
@@ -634,7 +440,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (CGRect)contentBounds {
-  return CGRectFromOriginAndSize(CGPointZero, self.contentSize);
+  return CGRectFromSize(self.contentSize);
 }
 
 #pragma mark -
@@ -706,33 +512,34 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   return self.checkerboardPattern ? self.checkerboardTexture : self.backgroundTexture;
 }
 
+@synthesize drawDelegate = _drawDelegate;
+@synthesize framebufferDelegate = _framebufferDelegate;
+@synthesize contentTransparency = _contentTransparency;
+@synthesize checkerboardPattern = _checkerboardPattern;
+
 - (void)setCheckerboardPattern:(BOOL)checkerboardPattern {
   _checkerboardPattern = checkerboardPattern;
   [self.backgroundDrawer setSourceTexture:self.textureForBackground];
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-  [super setBackgroundColor:backgroundColor];
-  [self.backgroundTexture clearWithColor:backgroundColor.lt_ltVector];
+@dynamic backgroundColor;
+
+- (void)setBackgroundColor:(nullable UIColor *)backgroundColor {
+  backgroundColor = [backgroundColor colorWithAlphaComponent:1] ?: [self defaultBackgroundColor];
+  super.backgroundColor = backgroundColor;
+  [self.backgroundTexture clearWithColor:[backgroundColor lt_ltVector]];
 }
 
-- (id<LTContentLocationProvider>)contentLocationProvider {
-  return self.contentLocationManager;
+- (UIColor *)defaultBackgroundColor {
+  return [UIColor blackColor];
 }
 
-- (UIView *)gestureView {
-  return self.eaglView;
-}
-
-- (CGRect)visibleContentRect {
-  CGRect visibleContentRect = self.contentLocationManager.visibleContentRect;
-  visibleContentRect.origin = visibleContentRect.origin * self.contentScaleFactor;
-  visibleContentRect.size = visibleContentRect.size * self.contentScaleFactor;
-  return visibleContentRect;
+- (CGSize)contentTextureSize {
+  return self.contentTexture.size;
 }
 
 - (CGFloat)zoomScale {
-  return self.contentLocationManager.zoomScale;
+  return self.contentLocationProvider.zoomScale;
 }
 
 @end

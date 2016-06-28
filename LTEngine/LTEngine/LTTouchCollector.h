@@ -1,11 +1,12 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewDelegates.h"
+#import "LTContentTouchEventDelegate.h"
 
 #import "LTPainterPoint.h"
 
-@protocol LTTouchCollectorFilter;
+@protocol LTContentTouchEventProvider, LTInteractionModeDelegate, LTTouchCollectorFilter;
+
 @class LTTouchCollector;
 
 /// This protocol is used to receive collection events from the \c LTTouchCollector.
@@ -33,13 +34,22 @@
 /// Additionally, the collector can be configured with a \c LTTouchCollectorFilter for filtering
 /// the events based on differences (distance, time interval, etc.) between the last collected touch
 /// and the newly collected one.
-@interface LTTouchCollector : NSObject <LTViewTouchDelegate>
+@interface LTTouchCollector : NSObject <LTContentTouchEventDelegate>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c delegate.
+- (instancetype)initWithInteractionModeDelegate:(id<LTInteractionModeDelegate>)delegate
+    NS_DESIGNATED_INITIALIZER;
 
 /// Cancels the currently active stroke, or do nothing in case there is no active stroke.
 - (void)cancelActiveStroke;
 
 /// This delegate will be notified on collected events.
 @property (weak, nonatomic) id<LTTouchCollectorDelegate> delegate;
+
+/// Provider of content touch events.
+@property (weak, nonatomic) id<LTContentTouchEventProvider> touchEventProvider;
 
 /// Filter used to decide whether to collect a new touch event, based on the differences with the
 /// previously collected touch. When the object is initialized, or when filter is set to nil, a

@@ -175,8 +175,10 @@ LTCategoryProperty(LTPainterStroke *, currentStroke, CurrentStroke);
 LTCategoryProperty(LTTouchCollector *, touchCollector, TouchCollector);
 LTCategoryProperty(LTSlidingWindowFilter *, touchRadiusFilter, TouchRadiusFilter);
 LTCategoryWeakProperty(LTTouchCollector *, delegate, Delegate);
+LTCategoryWeakProperty(id<LTInteractionModeDelegate>, interactionModeDelegate,
+                       InteractionModeDelegate);
 
-- (id<LTViewTouchDelegate>)touchDelegateForLTView {
+- (id<LTContentTouchEventDelegate>)touchDelegateForLTView {
   if (!self.touchCollector) {
     self.touchCollector = [self createTouchCollector];
   }
@@ -185,7 +187,8 @@ LTCategoryWeakProperty(LTTouchCollector *, delegate, Delegate);
 }
 
 - (LTTouchCollector *)createTouchCollector {
-  LTTouchCollector *collector = [[LTTouchCollector alloc] init];
+  LTTouchCollector *collector =
+      [[LTTouchCollector alloc] initWithInteractionModeDelegate:self.interactionModeDelegate];
   collector.delegate = self;
   collector.filter = [self createDefaultTouchCollectorFilter];
   return collector;

@@ -44,59 +44,6 @@
 
 @end
 
-/// This protocol is used to receive touch events from the \c LTView.
-/// To use, implement this protocol and set the \c LTView's touchDelegate to the class implementing
-/// the protocol.
-@protocol LTViewTouchDelegate <NSObject>
-
-/// Sent to the receiver when it is attached to the \c LTView, or when it starts forwarding events
-/// to it.
-- (void)ltViewAttachedToDelegate:(LTView *)view;
-
-/// Sent to the receiver when it is detached from the \c LTView, or when it stops forwarding events
-/// to it.
-- (void)ltViewDetachedFromDelegate:(LTView *)view;
-
-@optional
-
-/// Tells the receiver when one or more fingers touch down in the \c LTView.
-- (void)ltView:(LTView *)view touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
-
-/// Tells the receiver when one or more fingers associated with an event move within the \c LTView.
-- (void)ltView:(LTView *)view touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
-
-/// Tells the receiver when one or more fingers are raised from the \c LTView.
-- (void)ltView:(LTView *)view touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
-
-/// Sent to the receiver when a system event (such as a low-memory warning) cancels a touch event.
-/// @note see \c UIResponder \c touchesCancelled:withEvent: for more details.
-- (void)ltView:(LTView *)view touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
-
-/// Informs that handling of touches should be stopped gracefully, due to changes of the given
-/// \c view.
-- (void)ltViewStopTouchHandling:(LTView *)view;
-
-@end
-
-/// This protocol is used to get updates on navigation events from the \c LTView.
-@protocol LTViewNavigationDelegate <NSObject>
-
-@optional
-
-/// Notify the delegate that the LTView scrolled/zoomed to the current visible rectangle.
-- (void)ltViewDidNavigateToRect:(CGRect)visibleRect;
-
-/// Notify the delegate that the \b user performed pan gesture.
-- (void)ltViewUserPanned;
-
-/// Notify the delegate that the \b user performed pinch gesture.
-- (void)ltViewUserPinched;
-
-/// Notify the delegate that the \b user performed double tap.
-- (void)ltViewUserDoubleTapped;
-
-@end
-
 /// Protocol used to get updates on changes of the \c LTView's framebuffer.
 @protocol LTViewFramebufferDelegate <NSObject>
 

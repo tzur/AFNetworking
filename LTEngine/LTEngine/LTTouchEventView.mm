@@ -105,6 +105,25 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark LTTouchEventRetrieval
+#pragma mark -
+
+- (NSSet<id<LTTouchEvent>> *)stationaryTouchEvents {
+  NSMutableSet<id<LTTouchEvent>> *stationaryTouchEvents = [NSMutableSet set];
+
+  NSEnumerator *keyEnumerator = [self.touchToSequenceID keyEnumerator];
+
+  while (UITouch *touch = [keyEnumerator nextObject]) {
+    if (touch.phase == UITouchPhaseStationary) {
+      NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:touch] unsignedIntegerValue];
+      [stationaryTouchEvents addObject:[LTTouchEvent touchEventWithPropertiesOfTouch:touch
+                                                                          sequenceID:sequenceID]];
+    }
+  }
+  return [stationaryTouchEvents copy];
+}
+
+#pragma mark -
 #pragma mark Auxiliary methods - Map Table
 #pragma mark -
 

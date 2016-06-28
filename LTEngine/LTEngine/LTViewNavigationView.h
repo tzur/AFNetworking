@@ -1,16 +1,29 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewNavigationMode.h"
+#import "LTContentLocationProvider.h"
+#import "LTContentNavigationManager.h"
+#import "LTContentNavigationState.h"
 
-#import "LTContentLocationManager.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@protocol LTViewNavigationViewDelegate;
+@class LTViewNavigationView;
+
+@protocol LTInteractionModeProvider;
 
 /// Value class representing the state of an \c LTViewNavigationView. Can be used to create
 /// additional \c LTViewNavigationView objects with the same zoom, offset, and visible rectangle as
 /// another \c LTViewNavigationView.
-@interface LTViewNavigationState : NSObject
+@interface LTViewNavigationState : LTContentNavigationState
+@end
+
+/// Protocol to be implemented by delegates of \c LTViewNavigationView objects.
+@protocol LTNavigationViewDelegate <NSObject>
+
+/// Called when at least one of the gesture recognizers of the given \c navigationView has been
+/// replaced.
+- (void)navigationViewReplacedGestureRecognizers:(LTViewNavigationView *)navigationView;
+
 @end
 
 /// View imitating the behavior of a \c UIScrollView holding arbitrary rectangular, non-rotatable
@@ -18,12 +31,17 @@
 /// content inside the view. The delegate of this class is updated on every update of the spatial
 /// location of the content.
 ///
-/// The view recognizes pan, pinch and double tap gestures used to manipulate the spatial location
-/// of the content. Refer to the \c navigationMode property for more information.
+/// The view provides pan, pinch and double tap gestures that can be used to manipulate the spatial
+/// location of the content. The gesture recognizers are not added to this instance but can be added
+/// to a suitable view in order to recognize gestures, automatically triggering appropriate
+/// navigation events modifying the content rectangle of this instance. Refer to the
+/// \c interactionMode property for more information.
 ///
 /// @note The content scale factor of this class equals the one given upon initialization and cannot
 ///       be updated.
-@interface LTViewNavigationView : UIView <LTContentLocationManager>
+///
+/// @important The \c gestureRecognizers property of this instance is an empty array.
+@interface LTViewNavigationView : UIView <LTContentLocationProvider, LTContentNavigationManager>
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
@@ -38,26 +56,37 @@
 - (instancetype)initWithFrame:(CGRect)frame
                   contentSize:(CGSize)contentSize
            contentScaleFactor:(CGFloat)contentScaleFactor
-              navigationState:(LTViewNavigationState *)initialNavigationState
+              navigationState:(nullable LTViewNavigationState *)initialNavigationState
     NS_DESIGNATED_INITIALIZER;
 
-/// Navigates to the given navigation \c state. The \c state must have been extracted from an
-/// \c LTViewNavigationView with the same properties as this instance, except for properties held by
-/// the given navigation \c state.
-- (void)navigateToState:(LTViewNavigationState *)state;
+/// Informs the instance that the \c interactionMode of the \c interactionModeProvider has been
+/// updated.
+- (void)interactionModeUpdated;
 
 /// Updates the rectangle visible within the bounds of this instance to be as close as possible to
-/// the given \c rect, in point units of the content coordinate system, of the content.
+/// the given \c rect, in point units of the content coordinate system.
 - (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
 
-/// The delegate will be updated whenever the visible content rectangle is changed.
-@property (weak, nonatomic) id<LTViewNavigationViewDelegate> delegate;
+/// Size, in integer pixel units of the content coordinate system, of the rectangle managed by this
+/// instance.
+@property (nonatomic) CGSize contentSize;
 
-/// Gesture recognizers provided by this view. The gesture recognizers are not added to this
-/// instance but can be added to a suitable view in order to recognize gestures, automatically
-/// triggering appropriate navigation events modifying the content rectangle of this instance.
-///
-/// @important The \c gestureRecognizers property of this instance is an empty array.
-@property (readonly, nonatomic) NSArray<UIGestureRecognizer *> *navigationGestureRecognizers;
+/// Object providing the mode defining the currently used interaction of users via gestures and/or
+/// touch events.
+@property (weak, nonatomic, nullable) id<LTInteractionModeProvider> interactionModeProvider;
+
+/// Delegate of this instance.
+@property (weak, nonatomic, nullable) id<LTNavigationViewDelegate> delegate;
+
+/// Recognizer of pinch gestures.
+@property (readonly, nonatomic, nullable) UIPanGestureRecognizer *panGestureRecognizer;
+
+/// Recognizer of pinch gestures. Returns \c nil when zooming is disabled.
+@property (readonly, nonatomic, nullable) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
+/// Recognizer of double tap gestures.
+@property (readonly, nonatomic, nullable) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @end
+
+NS_ASSUME_NONNULL_END

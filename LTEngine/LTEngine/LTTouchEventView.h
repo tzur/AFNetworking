@@ -2,6 +2,7 @@
 // Created by Rouven Strauss.
 
 #import "LTTouchEventCancellation.h"
+#import "LTTouchEventProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View converting incoming \c UITouch objects to \c LTTouchEvent objects and passing them on to
 /// its delegate.
-@interface LTTouchEventView : UIView <LTTouchEventCancellation>
+@interface LTTouchEventView : UIView <LTTouchEventCancellation, LTTouchEventProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
 

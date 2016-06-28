@@ -6,14 +6,17 @@
 #import <LTKit/LTAnimation.h>
 #import <LTKit/NSObject+AddToContainer.h>
 
-#import "LTViewNavigationViewDelegate.h"
+#import "LTContentInteraction.h"
+#import "LTContentNavigationDelegate.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 #pragma mark LTViewNavigationViewState
 #pragma mark -
 
 @interface LTViewNavigationState ()
-@property (nonatomic) CGRect visibleContentRect;
+@property (nonatomic) CGRect visibleContentRectInPoints;
 @property (nonatomic) CGPoint scrollViewContentOffset;
 @property (nonatomic) UIEdgeInsets scrollViewContentInset;
 @property (nonatomic) UIEdgeInsets navigationViewContentInset;
@@ -28,7 +31,7 @@
     return NO;
   }
   
-  return self.visibleContentRect == object.visibleContentRect &&
+  return self.visibleContentRectInPoints == object.visibleContentRectInPoints &&
          self.scrollViewContentOffset == object.scrollViewContentOffset &&
          self.scrollViewContentInset == object.scrollViewContentInset &&
          self.navigationViewContentInset == object.navigationViewContentInset &&
@@ -37,11 +40,11 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, visibleContentRect: %@, "
+  return [NSString stringWithFormat:@"<%@: %p, visibleContentRectInPoints: %@, "
           "scrollViewContentOffset: %@, scrollViewContentInset: %@, "
           "navigationViewContentInset: %@, zoomScale: %g, animationActive: %d>",
           [self class], self,
-          NSStringFromCGRect(self.visibleContentRect),
+          NSStringFromCGRect(self.visibleContentRectInPoints),
           NSStringFromCGPoint(self.scrollViewContentOffset),
           NSStringFromUIEdgeInsets(self.scrollViewContentInset),
           NSStringFromUIEdgeInsets(self.navigationViewContentInset),
@@ -93,7 +96,7 @@
 
 /// Rectangular subregion of the content rectangle, in point units of the content coordinate
 /// system, intersecting with the view enclosing the content rectangle.
-@property (readwrite, nonatomic) CGRect visibleContentRect;
+@property (nonatomic) CGRect visibleContentRectInPoints;
 
 /// The distance between the content and the enclosing view.
 @property (nonatomic) UIEdgeInsets contentInset;
@@ -125,7 +128,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
            contentScaleFactor:(CGFloat)contentScaleFactor
-              navigationState:(LTViewNavigationState *)initialNavigationState {
+              navigationState:(nullable LTViewNavigationState *)initialNavigationState {
   LTParameterAssert(contentScaleFactor > 0, @"Given content scale factor (%g) must be positive",
                     contentScaleFactor);
 
@@ -158,7 +161,6 @@ static const CGFloat kDefaultDoubleTapZoomFactor = 3;
 static const NSUInteger kDefaultDoubleTapLevels = 3;
 
 - (void)setDefaults {
-  self.navigationMode = LTViewNavigationFull;
   self.maxZoomScale = kDefaultMaxZoomScale;
   _doubleTapLevels = kDefaultDoubleTapLevels;
   _doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
@@ -195,7 +197,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 
 - (void)createContentView {
   LTAssert(self.scrollView, @"Content view must be set after the scrollview is set.");
-  CGRect contentBounds = CGRectFromOriginAndSize(CGPointZero, self.scrollView.contentSize);
+  CGRect contentBounds = CGRectFromSize(self.scrollView.contentSize);
   self.contentView = [[UIImageView alloc] initWithFrame:contentBounds];
   self.contentView.contentScaleFactor = self.contentScaleFactor;
   [self.scrollView addSubview:self.self.contentView];
@@ -215,14 +217,15 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 
 - (void)navigateToState:(LTViewNavigationState *)state {
   LTParameterAssert(state);
-  
+  LTParameterAssert([state isMemberOfClass:[LTViewNavigationState class]]);
+
   self.scrollView.zoomScale = state.zoomScale;
   self.contentInset = state.navigationViewContentInset;
   // Setting the contentOffset will round to the nearest integer.
   self.scrollView.bounds = CGRectFromOriginAndSize(state.scrollViewContentOffset,
                                                    self.scrollView.bounds.size);
   self.scrollView.contentInset = state.scrollViewContentInset;
-  self.visibleContentRect = state.visibleContentRect;
+  self.visibleContentRectInPoints = state.visibleContentRectInPoints;
   if (state.animationActive) {
     [self startAnimationIfNotRunning];
   }
@@ -231,7 +234,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 - (void)navigateToDefaultState {
   self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
   [self centerContentViewInScrollView];
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 /// Creates the double tap gesture recognizer for easy zoom in/out.
@@ -271,6 +274,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   if (![newRecognizers isEqual:oldRecognizers] ||
       ![self.gestureRecognizers isEqual:newRecognizers]) {
     self.navigationGestureRecognizers = [newRecognizers copy];
+    [self.delegate navigationViewReplacedGestureRecognizers:self];
   }
 }
 
@@ -358,14 +362,18 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 }
 
 - (void)scrollViewUserPanned:(UIPanGestureRecognizer *)panGesture {
-  if (panGesture.state == UIGestureRecognizerStateEnded) {
-    [self.delegate userPanned];
+  if (panGesture.state == UIGestureRecognizerStateEnded &&
+      [self.navigationDelegate
+       respondsToSelector:@selector(navigationManagerDidHandlePanGesture:)]) {
+    [self.navigationDelegate navigationManagerDidHandlePanGesture:self];
   }
 }
 
 - (void)scrollViewUserPinched:(UIPinchGestureRecognizer *)pinchGesture {
-  if (pinchGesture.state == UIGestureRecognizerStateEnded) {
-    [self.delegate userPinched];
+  if (pinchGesture.state == UIGestureRecognizerStateEnded &&
+      [self.navigationDelegate
+       respondsToSelector:@selector(navigationManagerDidHandlePinchGesture:)]) {
+    [self.navigationDelegate navigationManagerDidHandlePinchGesture:self];
   }
 }
 
@@ -374,7 +382,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 #pragma mark -
 
 - (void)updateVisibleContentRectDuringAnimation {
-  self.visibleContentRect = [self visibleContentRectFromLayers];
+  self.visibleContentRectInPoints = [self visibleContentRectFromLayers];
 }
 
 - (void)startAnimationIfNotRunning {
@@ -411,7 +419,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
       [self centerContentViewInScrollView];
     }
     CGRect newVisibleContentRect = [self visibleContentRectFromLayers];
-    BOOL updated = !CGRectEqualToRect(newVisibleContentRect, self.visibleContentRect);
+    BOOL updated = !CGRectEqualToRect(newVisibleContentRect, self.visibleContentRectInPoints);
     
     // Instead of updating the content rect here (which will lead to a setNeedsDisplay and in some
     // scenarios hogs the display link, causing the scrollview to get stuck), post a notification on
@@ -472,18 +480,18 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 #pragma mark UIScrollViewDelegate
 #pragma mark -
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView __unused *)scrollView {
+- (nullable UIView *)viewForZoomingInScrollView:(UIScrollView __unused *)scrollView {
   return self.contentView;
 }
 
 - (void)scrollViewWillBeginZooming:(UIScrollView __unused *)scrollView
-                          withView:(UIView __unused *)view {
+                          withView:(nullable UIView __unused *)view {
   self.scrollViewZooming = YES;
   [self startAnimationIfNotRunning];
 }
 
-- (void)scrollViewDidEndZooming:(UIScrollView __unused *)scrollView withView:(UIView __unused *)view
-                        atScale:(CGFloat __unused)scale {
+- (void)scrollViewDidEndZooming:(UIScrollView __unused *)scrollView
+                       withView:(nullable UIView __unused *)view atScale:(CGFloat __unused)scale {
   self.scrollViewZooming = NO;
   [self bounceToMinimalZoomIfNecessary];
 }
@@ -521,7 +529,10 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   CGPoint tap = [gestureRecognizer locationInView:self.contentView];
   CGRect rect = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
   [self zoomToRect:rect animated:YES];
-  [self.delegate userDoubleTapped];
+  if ([self.navigationDelegate
+       respondsToSelector:@selector(navigationManagerDidHandleDoubleTapGesture:)]) {
+    [self.navigationDelegate navigationManagerDidHandleDoubleTapGesture:self];
+  }
 }
 
 /// Returns the next double tap zoom level if the current zoom scale is already one of the levels,
@@ -549,45 +560,28 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 #pragma mark Navigation
 #pragma mark -
 
-/// Bounces to the minimal zoom scale if the LTViewNavigationBounceToMinimalScale mode, and the
-/// scrollView is not in the minimal zoom scale.
+/// Bounces to the minimal zoom scale if necessary.
 - (void)bounceToMinimalZoomIfNecessary {
-  if (self.navigationMode == LTViewNavigationBounceToMinimalScale &&
-      !self.scrollViewZooming && !self.scrollViewDragging &&
+  if (self.bounceToMinimumScale && !self.scrollViewZooming && !self.scrollViewDragging &&
       self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
     [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
   }
 }
 
 - (void)configureNavigationGesturesForCurrentMode {
-  switch (self.navigationMode) {
-    case LTViewNavigationFull:
-    case LTViewNavigationZoomAndScroll:
-    case LTViewNavigationBounceToMinimalScale:
-      self.scrollView.panGestureRecognizer.minimumNumberOfTouches = 1;
-      self.scrollView.panGestureRecognizer.maximumNumberOfTouches = 2;
-      break;
-    case LTViewNavigationTwoFingers:
-      self.scrollView.panGestureRecognizer.minimumNumberOfTouches = 2;
-      self.scrollView.panGestureRecognizer.maximumNumberOfTouches = 2;
-      break;
-    default:
-      break;
-  }
-  
-  self.doubleTapGestureRecognizer.enabled = (self.navigationMode == LTViewNavigationFull);
-  self.scrollView.delaysContentTouches = (self.navigationMode != LTViewNavigationNone);
-  self.scrollView.canCancelContentTouches = (self.navigationMode != LTViewNavigationNone);
-  self.scrollView.panGestureRecognizer.enabled = (self.navigationMode != LTViewNavigationNone);
-  self.scrollView.pinchGestureRecognizer.enabled = (self.navigationMode != LTViewNavigationNone);
+  LTInteractionMode interactionMode = self.interactionModeProvider.interactionMode;
+
+  self.doubleTapGestureRecognizer.enabled = (interactionMode & LTInteractionModeTap);
+  self.scrollView.delaysContentTouches = (interactionMode != LTInteractionModeNone);
+  self.scrollView.canCancelContentTouches = (interactionMode != LTInteractionModeNone);
+  self.scrollView.panGestureRecognizer.enabled =
+      (interactionMode & LTInteractionModePanOneTouch) |
+      (interactionMode & LTInteractionModePanTwoTouches);
+  self.scrollView.pinchGestureRecognizer.enabled = (interactionMode & LTInteractionModePinch);
 }
 
-@synthesize navigationMode = _navigationMode;
-
-- (void)setNavigationMode:(LTViewNavigationMode)navigationMode {
-  _navigationMode = navigationMode;
+- (void)interactionModeUpdated {
   [self configureNavigationGesturesForCurrentMode];
-  [self bounceToMinimalZoomIfNecessary];
 }
 
 /// There is no way to control the animation length of \c UIScrollView's \c zoomToRect: method, so
@@ -609,21 +603,10 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
     [self centerContentViewInScrollViewWithAnimationDuration:kZoomToRectAnimationDuration];
   } else {
     [self centerContentViewInScrollView];
-    self.visibleContentRect = [self visibleContentRectFromScrollView];
+    self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
   }
 
   [self startAnimationIfNotRunning];
-}
-
-- (void)cancelBogusScrollviewPanGesture {
-  if (self.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan &&
-      self.scrollView.panGestureRecognizer.numberOfTouches == 1 &&
-      self.scrollView.panGestureRecognizer.minimumNumberOfTouches == 2 &&
-      self.navigationMode == LTViewNavigationTwoFingers) {
-    LogDebug(@"Detected a bogus iphone 6 plus scrolling gesture, discarding it");
-    self.scrollView.panGestureRecognizer.enabled = NO;
-    self.scrollView.panGestureRecognizer.enabled = YES;
-  }
 }
 
 #pragma mark -
@@ -679,9 +662,20 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   }
 }
 
-- (void)setVisibleContentRect:(CGRect)visibleContentRect {
-  _visibleContentRect = visibleContentRect;
-  [self.delegate didNavigateToRect:visibleContentRect];
+- (void)setVisibleContentRectInPoints:(CGRect)visibleContentRectInPoints {
+  _visibleContentRectInPoints = visibleContentRectInPoints;
+  if ([self.navigationDelegate
+       respondsToSelector:@selector(navigationManager:didNavigateToVisibleRect:)]) {
+    [self.navigationDelegate navigationManager:self
+                      didNavigateToVisibleRect:self.visibleContentRect];
+  }
+}
+
+- (CGRect)visibleContentRect {
+  CGRect rect = self.visibleContentRectInPoints;
+  rect.origin = rect.origin * self.contentScaleFactor;
+  rect.size = rect.size * self.contentScaleFactor;
+  return rect;
 }
 
 #pragma mark -
@@ -709,7 +703,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   
   // Re-center the content view, and update the visible content rect.
   [self centerContentViewInScrollView];
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -722,26 +716,32 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   }
   
   [self centerContentViewInScrollView];
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
 
+@synthesize bounceToMinimumScale = _bounceToMinimumScale;
+
+- (void)setBounceToMinimumScale:(BOOL)bounceToMinimumScale {
+  _bounceToMinimumScale = bounceToMinimumScale;
+  [self bounceToMinimalZoomIfNecessary];
+}
+
+@synthesize interactionModeProvider = _interactionModeProvider;
+@synthesize navigationDelegate = _navigationDelegate;
+
 - (LTViewNavigationState *)navigationState {
   LTViewNavigationState *state = [[LTViewNavigationState alloc] init];
-  state.visibleContentRect = self.visibleContentRect;
+  state.visibleContentRectInPoints = self.visibleContentRectInPoints;
   state.zoomScale = self.scrollView.zoomScale;
   state.scrollViewContentOffset = self.scrollView.contentOffset;
   state.scrollViewContentInset = self.scrollView.contentInset;
   state.navigationViewContentInset = self.contentInset;
   state.animationActive = (self.animation) ? (self.animation.isAnimating) : NO;
   return state;
-}
-
-- (UIView *)viewForContentCoordinates {
-  return self.contentView;
 }
 
 @synthesize contentSize = _contentSize;
@@ -756,14 +756,14 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   self.scrollView.minimumZoomScale = 1;
   self.scrollView.zoomScale = 1;
   self.scrollView.contentSize = contentSize / self.contentScaleFactor;
-  self.contentView.frame = CGRectFromOriginAndSize(CGPointZero, self.scrollView.contentSize);
+  self.contentView.frame = CGRectFromSize(self.scrollView.contentSize);
   self.scrollView.minimumZoomScale = previousMinimumZoomscale;
   [self configureScrollViewZoomLimits];
   [self navigateToDefaultState];
 }
 
 - (CGFloat)zoomScale {
-  return std::min(self.bounds.size / self.visibleContentRect.size);
+  return std::min(self.bounds.size / self.visibleContentRectInPoints.size);
 }
 
 - (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
@@ -774,7 +774,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
     [self centerContentViewInScrollView];
   }
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {
@@ -784,7 +784,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   if (self.scrollView.zoomScale != oldScale) {
     [self centerContentViewInScrollView];
   }
-  self.visibleContentRect = [self visibleContentRectFromScrollView];
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 - (void)setPanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
@@ -808,3 +808,5 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

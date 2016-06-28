@@ -3,56 +3,40 @@
 
 #import "LTView.h"
 
+#import "LTContentDisplayManager.h"
+#import "LTContentLocationProvider.h"
 #import "LTEAGLView.h"
-#import "LTContentLocationManager.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGridDrawer.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
+#import "LTViewDelegates.h"
 #import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@interface LTTestContentLocationManager : NSObject <LTContentLocationManager>
+@interface LTTestContentLocationProvider : NSObject <LTContentLocationProvider>
+@property (nonatomic) CGSize contentSize;
 @property (nonatomic) CGRect visibleContentRect;
 @property (nonatomic) CGFloat zoomScale;
 @property (nonatomic) CGFloat maxZoomScale;
-@property (nonatomic) BOOL updatedContentSize;
 @end
 
-@implementation LTTestContentLocationManager
+@implementation LTTestContentLocationProvider
 
 - (UIEdgeInsets)contentInset {
   return UIEdgeInsetsZero;
 }
 
 - (CGFloat)contentScaleFactor {
+  // Avoid fractional content scale factor since the tests were adjusted for pixels to fit without
+  // interpolation.
   return 2;
 }
 
-- (UIView *)viewForContentCoordinates {
-  return nil;
-}
-
-- (LTViewNavigationState *)navigationState {
-  return nil;
-}
-
-- (void)cancelBogusScrollviewPanGesture {
-}
-
-@synthesize contentSize = _contentSize;
-
-- (void)setContentSize:(__unused CGSize)contentSize {
-  _contentSize = contentSize;
-  self.updatedContentSize = YES;
-}
-
-@synthesize navigationMode = _navigationMode;
-
 @end
 
-@interface LTView () <LTViewNavigationViewDelegate>
+@interface LTView ()
 @property (strong, nonatomic) LTEAGLView *eaglView;
 @property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
@@ -68,7 +52,7 @@
 
 SpecBegin(LTView)
 
-__block LTTestContentLocationManager *contentLocationManager;
+__block LTTestContentLocationProvider *contentLocationProvider;
 
 __block LTTexture *contentTexture;
 __block LTTexture *outputTexture;
@@ -80,42 +64,35 @@ __block cv::Mat4b expectedOutput;
 __block cv::Mat4b resizedContent;
 __block cv::Rect contentAreaInOutput;
 
-__block LTViewRenderingModel *renderingModel;
-
-// Avoid fractional content scale factor since the tests were adjusted for pixels to fit without
-// interpolation.
-static const CGFloat kContentScaleFactor = 2;
-
 static const CGFloat kMaxZoomScale = 16;
 
 static const CGSize kViewSize = CGSizeMake(32, 64);
 static const CGRect kViewFrame = CGRectFromSize(kViewSize);
 static const CGSize kContentSize = CGSizeMake(256, 256);
 static const CGRect kContentFrame = CGRectFromSize(kContentSize);
-static const CGRect kVisibleContentRect = CGRectMake(0, -kContentSize.height / 4,
-                                                     kContentSize.width / 2, kContentSize.height);
+static const CGRect kVisibleContentRect = CGRectMake(0, -kContentSize.height / 2,
+                                                     kContentSize.width, kContentSize.height * 2);
 
-static const cv::Vec4b clear(0, 0, 0, 0);
-static const cv::Vec4b red(255, 0, 0, 255);
-static const cv::Vec4b green(0, 255, 0, 255);
-static const cv::Vec4b blue(0, 0, 255, 255);
-static const cv::Vec4b yellow(255, 255, 0, 255);
+static const cv::Vec4b kRed(255, 0, 0, 255);
+static const cv::Vec4b kGreen(0, 255, 0, 255);
+static const cv::Vec4b kBlue(0, 0, 255, 255);
+static const cv::Vec4b kYellow(255, 255, 0, 255);
 
 beforeEach(^{
-  contentLocationManager = [[LTTestContentLocationManager alloc] init];
-  contentLocationManager.contentSize = kContentSize;
-  contentLocationManager.zoomScale = 1;
-  contentLocationManager.maxZoomScale = kMaxZoomScale;
-  contentLocationManager.visibleContentRect = kVisibleContentRect;
+  contentLocationProvider = [[LTTestContentLocationProvider alloc] init];
+  contentLocationProvider.contentSize = kContentSize;
+  contentLocationProvider.zoomScale = 1;
+  contentLocationProvider.maxZoomScale = kMaxZoomScale;
+  contentLocationProvider.visibleContentRect = kVisibleContentRect;
 
   CGSize framebufferSize = kViewSize * 2;
   short width = kContentSize.width / 2;
   short height = kContentSize.height / 2;
   inputContent = cv::Mat4b(kContentSize.height, kContentSize.width);
-  inputContent(cv::Rect(0, 0, width, height)).setTo(red);
-  inputContent(cv::Rect(width, 0, width, height)).setTo(green);
-  inputContent(cv::Rect(0, height, width, height)).setTo(blue);
-  inputContent(cv::Rect(width, height, width, height)).setTo(yellow);
+  inputContent(cv::Rect(0, 0, width, height)).setTo(kRed);
+  inputContent(cv::Rect(width, 0, width, height)).setTo(kGreen);
+  inputContent(cv::Rect(0, height, width, height)).setTo(kBlue);
+  inputContent(cv::Rect(width, height, width, height)).setTo(kYellow);
   contentTexture = [LTTexture textureWithImage:inputContent];
   
   output = cv::Mat4b(framebufferSize.height, framebufferSize.width);
@@ -128,23 +105,20 @@ beforeEach(^{
   CGRect rect = CGRectCenteredAt(targetCenter,
                                  CGSizeMake(resizedContent.cols, resizedContent.rows));
   contentAreaInOutput = cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-
-  renderingModel = [LTViewRenderingModel modelWithContext:[LTGLContext currentContext]
-                                           contentTexture:contentTexture];
 });
 
 afterEach(^{
-  contentLocationManager = nil;
+  contentLocationProvider = nil;
   fbo = nil;
   outputTexture = nil;
   contentTexture = nil;
-  renderingModel = nil;
 });
 
 context(@"initialization", ^{
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame
-                  contentLocationManager:contentLocationManager renderingModel:renderingModel];
+    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                          contentTexture:contentTexture
+                 contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
   });
   
@@ -153,12 +127,11 @@ context(@"initialization", ^{
   });
   
   it(@"should have default values", ^{
-    expect(view.contentScaleFactor).to.equal(kContentScaleFactor);
+    expect(view.contentScaleFactor).to.equal(contentLocationProvider.contentScaleFactor);
     expect(view.framebufferSize).to.equal(view.bounds.size * view.contentScaleFactor);
-    expect(view.forwardTouchesToDelegate).to.beFalsy();
     expect(view.contentTransparency).to.beFalsy();
     expect(view.checkerboardPattern).to.beFalsy();
-    expect(view.navigationMode).to.equal(LTViewNavigationFull);
+    expect(view.backgroundColor).to.equal([UIColor blackColor]);
   });
   
   it(@"should set contentTransparency", ^{
@@ -171,52 +144,14 @@ context(@"initialization", ^{
     expect(view.checkerboardPattern).to.beTruthy();
   });
 
-  it(@"should set forwardTouchesToDelegate", ^{
-    view.forwardTouchesToDelegate = YES;
-    expect(view.forwardTouchesToDelegate).to.beTruthy();
-  });
-
   context(@"invalid initialization calls", ^{
     it(@"should raise when initializing with texture and content rectangle of mismatching sizes", ^{
-      contentLocationManager.contentSize = 2 * kContentSize;
+      contentLocationProvider.contentSize = 2 * kContentSize;
       expect(^{
-        view = [[LTView alloc] initWithFrame:kViewFrame
-                      contentLocationManager:contentLocationManager renderingModel:renderingModel];
+        view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                              contentTexture:contentTexture
+                     contentLocationProvider:contentLocationProvider];
       }).to.raise(NSInvalidArgumentException);
-    });
-  });
-});
-
-context(@"properties", ^{
-  beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
-    [view layoutIfNeeded];
-  });
-
-  afterEach(^{
-    view = nil;
-  });
-
-  it(@"should provide a view to which gestures should be added", ^{
-    expect(view.gestureView).toNot.beNil();
-  });
-
-  context(@"navigation mode", ^{
-    it(@"should proxy navigation mode to the content location manager", ^{
-      contentLocationManager.navigationMode = LTViewNavigationNone;
-      view.navigationMode = LTViewNavigationTwoFingers;
-      expect(contentLocationManager.navigationMode).to.equal(LTViewNavigationTwoFingers);
-    });
-
-    it(@"should proxy navigation mode from the content location manager", ^{
-      contentLocationManager.navigationMode = LTViewNavigationTwoFingers;
-      LTViewNavigationMode mode = view.navigationMode;
-      expect(mode).to.equal(LTViewNavigationTwoFingers);
-
-      contentLocationManager.navigationMode = LTViewNavigationZoomAndScroll;
-      mode = view.navigationMode;
-      expect(mode).to.equal(LTViewNavigationZoomAndScroll);
     });
   });
 });
@@ -225,8 +160,9 @@ context(@"drawing", ^{
   __block LTView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
+    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                          contentTexture:contentTexture
+                 contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
   });
 
@@ -235,13 +171,13 @@ context(@"drawing", ^{
   });
 
   it(@"should draw according to provided visible content rect", ^{
-    CGSize pixelSize = CGSizeMake(1, 1) / view.contentScaleFactor;
-    CGSize contentSizeInPoints = contentTexture.size / view.contentScaleFactor;
-    CGRect bottomRightPixel = CGRectFromOriginAndSize(CGPointMake(contentSizeInPoints.width - 1,
-                                                                  contentSizeInPoints.height - 1),
+    CGSize pixelSize = CGSizeMake(1, 1);
+    CGSize contentSizeInPixels = contentTexture.size;
+    CGRect bottomRightPixel = CGRectFromOriginAndSize(CGPointMake(contentSizeInPixels.width - 1,
+                                                                  contentSizeInPixels.height - 1),
                                                       pixelSize);
 
-    contentLocationManager.visibleContentRect = bottomRightPixel;
+    contentLocationProvider.visibleContentRect = bottomRightPixel;
 
     view.pixelGrid = nil;
 
@@ -250,7 +186,7 @@ context(@"drawing", ^{
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(expectedOutput, output)).to.beTruthy();
+    expect($(output)).to.equalMat($(expectedOutput));
   });
 
   it(@"should draw the downsampled content on the center of the framebuffer", ^{
@@ -320,7 +256,7 @@ context(@"drawing", ^{
     it(@"should blend transparent pixels with backgroundColor if checkerboardPattern is NO", ^{
       view.contentTransparency = YES;
       view.checkerboardPattern = NO;
-      view.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+      view.backgroundColor = [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:1];
       [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         cv::Vec4b semiTransparent(128, 0, 0, 128);
         cv::Vec4b blendedGray = LTBlend(cv::Vec4b(193, 193, 193, 255), semiTransparent);
@@ -341,14 +277,11 @@ context(@"drawing", ^{
   context(@"magnifying interpolation", ^{
     // Tests if zooming by the given factor uses the expected interpolation.
     void (^testInterpolation)(CGFloat, int) = ^(CGFloat zoomFactor, int expectedInterpolation) {
-      CGRect contentBoundsInPoints = CGRectFromSize(kContentSize / view.contentScaleFactor);
-      CGRect targetInPoints = CGRectCenteredAt(CGRectCenter(contentBoundsInPoints),
-                                               kViewSize / zoomFactor);
       CGRect targetInPixels = CGRectCenteredAt(CGRectCenter(kContentFrame),
                                                kViewSize / zoomFactor * view.contentScaleFactor);
 
-      contentLocationManager.visibleContentRect = targetInPoints;
-      contentLocationManager.zoomScale = zoomFactor;
+      contentLocationProvider.visibleContentRect = targetInPixels;
+      contentLocationProvider.zoomScale = zoomFactor;
       view.pixelGrid = nil;
       
       cv::resize(inputContent(LTCVRectWithCGRect(targetInPixels)), expectedOutput,
@@ -380,19 +313,19 @@ context(@"drawing", ^{
   it(@"should replace content", ^{
     CGSize newSize = kViewSize * view.contentScaleFactor;
     cv::Mat4b newMat(newSize.height, newSize.width);
-    newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = red;
-    newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = blue;
+    newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = kRed;
+    newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = kBlue;
     LTTexture *newTexture = [LTTexture textureWithImage:newMat];
     
     [view replaceContentWith:newTexture];
 
-    contentLocationManager.contentSize = newSize;
-    contentLocationManager.visibleContentRect = CGRectFromSize(kViewSize);
+    contentLocationProvider.contentSize = newSize;
+    contentLocationProvider.visibleContentRect = CGRectFromSize(newSize);
 
     cv::flip(newMat, newMat, 0);
     [view drawToFbo:fbo];
     output = [outputTexture image];
-    expect(LTCompareMat(newMat, output)).to.beTruthy();
+    expect($(output)).to.equalMat($(newMat));
   });
 
   it(@"should update pixel grid when replacing content", ^{
@@ -400,37 +333,20 @@ context(@"drawing", ^{
     [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newSize]];
     expect(view.pixelGrid.gridDrawer.size).to.equal(newSize);
   });
-
-  it(@"should update content location manager upon texture size changes", ^{
-    CGSize newTextureSize = kContentSize * 2;
-    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:newTextureSize]];
-    expect(contentLocationManager.contentSize).to.equal(newTextureSize);
-  });
-
-  it(@"should not update content location manager upon change to texture with the same size", ^{
-    contentLocationManager.updatedContentSize = NO;
-    [view replaceContentWith:[LTTexture byteRGBATextureWithSize:kContentSize]];
-    expect(contentLocationManager.updatedContentSize).to.beFalsy();
-  });
 });
 
 context(@"public interface", ^{
   __block LTView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
+    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                          contentTexture:contentTexture
+                 contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
   });
 
   afterEach(^{
     view = nil;
-  });
-
-  it(@"should return transform mapping the visibleContentRect to the entire framebuffer", ^{
-    CGAffineTransform transform = [view transformForVisibleContentRect:view.visibleContentRect];
-    CGRect transformedRect = CGRectApplyAffineTransform(view.visibleContentRect, transform);
-    expect(transformedRect).to.equal(CGRectFromSize(view.framebufferSize));
   });
 
   pending(@"should take a snapshot of the view");
@@ -442,8 +358,9 @@ context(@"draw delegate", ^{
   
   beforeEach(^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTViewDrawDelegate)];
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
+    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                          contentTexture:contentTexture
+                 contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
     view.drawDelegate = mock;
   });
@@ -460,7 +377,7 @@ context(@"draw delegate", ^{
     }] ltView:view updateContentInRect:kContentFrame];
     [view setNeedsDisplayContent];
     expectedOutput = view.backgroundColor.lt_cvVector;
-    expectedOutput(contentAreaInOutput) = green;
+    expectedOutput(contentAreaInOutput) = kGreen;
 
     [view drawToFbo:fbo];
 
@@ -502,7 +419,7 @@ context(@"draw delegate", ^{
     
     // The overlay should affect only the visible content rectangle (scissor box).
     expectedOutput = view.backgroundColor.lt_cvVector;
-    expectedOutput(contentAreaInOutput) = green;
+    expectedOutput(contentAreaInOutput) = kGreen;
     
     [view drawToFbo:fbo];
     output = [outputTexture image];
@@ -511,12 +428,12 @@ context(@"draw delegate", ^{
 
   it(@"should use delegate to provide an alternative content texture", ^{
     cv::Mat4b altMat(kContentSize.height, kContentSize.width);
-    altMat = red;
+    altMat = kRed;
     LTTexture *altTexture = [LTTexture textureWithImage:altMat];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     
     expectedOutput = view.backgroundColor.lt_cvVector;
-    expectedOutput(contentAreaInOutput) = red;
+    expectedOutput(contentAreaInOutput) = kRed;
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -538,14 +455,14 @@ context(@"draw delegate", ^{
   it(@"should provide the correct texture and visible content to the drawProcessedContent", ^{
     // When there's no alternativeContentTexture, the content texture should be provided.
     [[mock expect] ltView:view drawProcessedContent:contentTexture
-                   withVisibleContentRect:view.visibleContentRect];
+                   withVisibleContentRect:kVisibleContentRect];
     [view drawToFbo:fbo];
     
     // When there's an alternativeContentTexture, it should be provided instead.
     LTTexture *altTexture = [LTTexture textureWithImage:inputContent];
     [[[mock stub] andReturn:altTexture] alternativeContentTexture];
     [[mock expect] ltView:view drawProcessedContent:altTexture
-                   withVisibleContentRect:view.visibleContentRect];
+                   withVisibleContentRect:kVisibleContentRect];
     [view drawToFbo:fbo];
     OCMVerifyAll(mock);
   });
@@ -554,17 +471,17 @@ context(@"draw delegate", ^{
     [[[[mock stub] ignoringNonObjectArgs] andDo:^(NSInvocation *invocation) {
       expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
       cv::Mat4b altMat(kContentSize.height, kContentSize.width);
-      altMat = blue;
+      altMat = kBlue;
       LTTexture *altTexture = [LTTexture textureWithImage:altMat];
       LTRectDrawer *rectDrawer = [[LTRectDrawer alloc] initWithSourceTexture:altTexture];
       [rectDrawer drawRect:CGRectFromSize(view.framebufferSize)
-       inFramebufferWithSize:view.framebufferSize fromRect:view.visibleContentRect];
+       inFramebufferWithSize:view.framebufferSize fromRect:kVisibleContentRect];
       BOOL returnValue = YES;
       [invocation setReturnValue:&returnValue];
     }] ltView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
     
     expectedOutput = view.backgroundColor.lt_cvVector;
-    expectedOutput(contentAreaInOutput) = blue;
+    expectedOutput(contentAreaInOutput) = kBlue;
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -585,264 +502,6 @@ context(@"draw delegate", ^{
   });
 });
 
-context(@"touch delegate", ^{
-  __block LTView *view;
-  __block id mock;
-  
-  beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
-    [view layoutIfNeeded];
-    view.forwardTouchesToDelegate = YES;
-    view.navigationMode = LTViewNavigationNone;
-
-    mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
-    OCMStub([mock ltViewAttachedToDelegate:view]);
-    OCMStub([mock ltViewDetachedFromDelegate:view]);
-    view.touchDelegate = mock;
-  });
-  
-  afterEach(^{
-    mock = nil;
-    view = nil;
-  });
-  
-  it(@"should forward touchesBegan event", ^{
-    [[mock expect] ltView:view touchesBegan:[NSSet set] withEvent:nil];
-    [view simulateTouchesOfPhase:UITouchPhaseBegan];
-    OCMVerifyAll(mock);
-  });
-  
-  it(@"should forward touchesMoved event", ^{
-    [[mock expect] ltView:view touchesMoved:[NSSet set] withEvent:nil];
-    [view simulateTouchesOfPhase:UITouchPhaseMoved];
-    OCMVerifyAll(mock);
-  });
-  
-  it(@"should forward touchesEnded event", ^{
-    [[mock expect] ltView:view touchesEnded:[NSSet set] withEvent:nil];
-    [view simulateTouchesOfPhase:UITouchPhaseEnded];
-    OCMVerifyAll(mock);
-  });
-  
-  it(@"should forward touchesCancelled event", ^{
-    [[mock expect] ltView:view touchesCancelled:[NSSet set] withEvent:nil];
-    [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-    OCMVerifyAll(mock);
-  });
-  
-  it(@"should not forward events if property is set to NO", ^{
-    [[mock reject] ltView:OCMOCK_ANY touchesBegan:OCMOCK_ANY withEvent:OCMOCK_ANY];
-    [[mock reject] ltView:OCMOCK_ANY touchesMoved:OCMOCK_ANY withEvent:OCMOCK_ANY];
-    [[mock reject] ltView:OCMOCK_ANY touchesEnded:OCMOCK_ANY withEvent:OCMOCK_ANY];
-    [[mock reject] ltView:OCMOCK_ANY touchesCancelled:OCMOCK_ANY withEvent:OCMOCK_ANY];
-    view.forwardTouchesToDelegate = NO;
-    [view simulateTouchesOfPhase:UITouchPhaseBegan];
-    [view simulateTouchesOfPhase:UITouchPhaseMoved];
-    [view simulateTouchesOfPhase:UITouchPhaseEnded];
-    [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-    OCMVerifyAll(mock);
-  });
-
-  it(@"should only forward events if navigation mode is none or two fingers", ^{
-    NSArray *validModes = @[@(LTViewNavigationNone), @(LTViewNavigationTwoFingers)];
-    for (NSUInteger i = 0; i < LTViewNavigationNone; ++i) {
-      mock = [OCMockObject niceMockForProtocol:@protocol(LTViewTouchDelegate)];
-      OCMStub([mock ltViewAttachedToDelegate:view]);
-      OCMStub([mock ltViewDetachedFromDelegate:view]);
-
-      view.touchDelegate = mock;
-      view.navigationMode = (LTViewNavigationMode)i;
-      if ([validModes containsObject:@(i)]) {
-        [[mock expect] ltView:OCMOCK_ANY touchesBegan:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock expect] ltView:OCMOCK_ANY touchesMoved:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock expect] ltView:OCMOCK_ANY touchesEnded:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock expect] ltView:OCMOCK_ANY touchesCancelled:OCMOCK_ANY withEvent:OCMOCK_ANY];
-      } else {
-        [[mock reject] ltView:OCMOCK_ANY touchesBegan:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock reject] ltView:OCMOCK_ANY touchesMoved:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock reject] ltView:OCMOCK_ANY touchesEnded:OCMOCK_ANY withEvent:OCMOCK_ANY];
-        [[mock reject] ltView:OCMOCK_ANY touchesCancelled:OCMOCK_ANY withEvent:OCMOCK_ANY];
-      }
-      [view simulateTouchesOfPhase:UITouchPhaseBegan];
-      [view simulateTouchesOfPhase:UITouchPhaseMoved];
-      [view simulateTouchesOfPhase:UITouchPhaseEnded];
-      [view simulateTouchesOfPhase:UITouchPhaseCancelled];
-      OCMVerifyAll(mock);
-    }
-  });
-
-  context(@"attach and detach", ^{
-    __block id mock;
-    __block id otherMock;
-    __block BOOL attached;
-    __block BOOL otherAttached;
-
-    beforeEach(^{
-      attached = NO;
-      otherAttached = NO;
-      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
-      otherMock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
-
-      OCMStub([mock ltViewAttachedToDelegate:view]).andDo(^(NSInvocation *) {
-        attached = YES;
-      });
-      OCMStub([mock ltViewDetachedFromDelegate:view]).andDo(^(NSInvocation *) {
-        attached = NO;
-      });
-
-      OCMStub([otherMock ltViewAttachedToDelegate:view]).andDo(^(NSInvocation *) {
-        otherAttached = YES;
-      });
-      OCMStub([otherMock ltViewDetachedFromDelegate:view]).andDo(^(NSInvocation *) {
-        otherAttached = NO;
-      });
-    });
-
-    afterEach(^{
-      mock = nil;
-      otherMock = nil;
-    });
-    
-    it(@"updating forwardTouchesToDelegate should trigger attach or detach", ^{
-      view.forwardTouchesToDelegate = NO;
-      view.touchDelegate = mock;
-      view.navigationMode = LTViewNavigationNone;
-      expect(attached).to.beFalsy();
-      view.forwardTouchesToDelegate = YES;
-      expect(attached).to.beTruthy();
-      view.forwardTouchesToDelegate = NO;
-      expect(attached).to.beFalsy();
-    });
-
-    it(@"updating navigationMode should trigger attach or detach", ^{
-      view.navigationMode = LTViewNavigationFull;
-      view.touchDelegate = mock;
-      view.forwardTouchesToDelegate = YES;
-      expect(attached).to.beFalsy();
-      view.navigationMode = LTViewNavigationNone;
-      expect(attached).to.beTruthy();
-      view.navigationMode = LTViewNavigationFull;
-      expect(attached).to.beFalsy();
-      view.navigationMode = LTViewNavigationTwoFingers;
-      expect(attached).to.beTruthy();
-      view.navigationMode = LTViewNavigationBounceToMinimalScale;
-      expect(attached).to.beFalsy();
-    });
-
-    it(@"should detach from previous if replacing attached delegate", ^{
-      view.navigationMode = LTViewNavigationNone;
-      view.forwardTouchesToDelegate = YES;
-      view.touchDelegate = mock;
-      expect(attached).to.beTruthy();
-      view.touchDelegate = otherMock;
-      expect(attached).to.beFalsy();
-    });
-
-    it(@"should attach to new delegate if replacing attached delegate", ^{
-      view.navigationMode = LTViewNavigationNone;
-      view.forwardTouchesToDelegate = YES;
-      view.touchDelegate = mock;
-      expect(attached).to.beTruthy();
-      expect(otherAttached).to.beFalsy();
-      view.touchDelegate = otherMock;
-      expect(otherAttached).to.beTruthy();
-    });
-
-    it(@"should not detach if replacing a detached delegate", ^{
-      view.navigationMode = LTViewNavigationNone;
-      view.forwardTouchesToDelegate = NO;
-      view.touchDelegate = mock;
-      expect(attached).to.beFalsy();
-      [[mock reject] ltViewDetachedFromDelegate:[OCMArg any]];
-      view.touchDelegate = otherMock;
-      OCMVerifyAll(mock);
-    });
-
-    it(@"should not attach if replacing a detached delegate", ^{
-      view.navigationMode = LTViewNavigationNone;
-      view.forwardTouchesToDelegate = NO;
-      view.touchDelegate = mock;
-      expect(attached).to.beFalsy();
-      [[otherMock reject] ltViewAttachedToDelegate:[OCMArg any]];
-      view.touchDelegate = otherMock;
-      OCMVerifyAll(otherMock);
-    });
-
-    it(@"should not be able to change navigation mode from detach due to such change", ^{
-      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
-      view.touchDelegate = mock;
-
-      OCMExpect([mock ltViewDetachedFromDelegate:[OCMArg checkWithBlock:^BOOL(LTView *view) {
-        view.navigationMode = LTViewNavigationBounceToMinimalScale;
-        return YES;
-      }]]);
-
-      view.navigationMode = LTViewNavigationFull;
-      OCMVerifyAll(mock);
-      expect(view.navigationMode).to.equal(LTViewNavigationFull);
-    });
-
-    it(@"should not be able to change forwardTouchesToDelegate from detach due to such change", ^{
-      mock = OCMProtocolMock(@protocol(LTViewTouchDelegate));
-      view.touchDelegate = mock;
-
-      OCMExpect([mock ltViewDetachedFromDelegate:[OCMArg checkWithBlock:^BOOL(LTView *view) {
-        view.forwardTouchesToDelegate = YES;
-        return YES;
-      }]]);
-
-      view.forwardTouchesToDelegate = NO;
-      OCMVerifyAll(mock);
-      expect(view.forwardTouchesToDelegate).beFalsy();
-    });
-  });
-});
-
-context(@"navigation delegate", ^{
-  __block id delegate;
-  __block LTView *view;
-  
-  beforeEach(^{
-    delegate = [OCMockObject mockForProtocol:@protocol(LTViewNavigationDelegate)];
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
-    view.navigationDelegate = delegate;
-  });
-  
-  afterEach(^{
-    delegate = nil;
-    view = nil;
-  });
-  
-  it(@"should forward event to delegate", ^{
-    const CGRect targetRect = CGRectFromOriginAndSize(CGPointZero, view.bounds.size);
-    [[[delegate expect] ignoringNonObjectArgs] ltViewDidNavigateToRect:targetRect];
-    [view didNavigateToRect:targetRect];
-    OCMVerifyAll(delegate);
-  });
-});
-
-context(@"content location delegate", ^{
-  __block LTView *view;
-
-  beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame contentLocationManager:contentLocationManager
-                          renderingModel:renderingModel];
-  });
-
-  afterEach(^{
-    view = nil;
-  });
-
-  it(@"should update the content location manager upon replacement of texture", ^{
-    CGSize newSize = CGSizeMake(1, 2);
-    LTTexture *newTexture = [LTTexture byteRGBATextureWithSize:newSize];
-    [view replaceContentWith:newTexture];
-    expect(contentLocationManager.contentSize).to.equal(newSize);
-  });
-});
-
 context(@"framebuffer delegate", ^{
   __block id delegateMock;
   __block id eaglViewMock;
@@ -853,8 +512,9 @@ context(@"framebuffer delegate", ^{
     eaglViewMock = [OCMockObject niceMockForClass:[LTEAGLView class]];
     [[[eaglViewMock stub] andReturnValue:$(CGSizeMake(20, 10))] drawableSize];
 
-    view = [[LTView alloc] initWithFrame:kViewFrame
-                  contentLocationManager:contentLocationManager renderingModel:renderingModel];
+    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                          contentTexture:contentTexture
+                 contentLocationProvider:contentLocationProvider];
     view.eaglView = eaglViewMock;
     view.framebufferDelegate = delegateMock;
   });
