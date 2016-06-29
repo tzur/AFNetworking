@@ -19,6 +19,7 @@
 		65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */; };
 		65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892F671D1AAF510049815D /* FBRHTTPRequest.mm */; };
 		658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */; };
+		659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */; };
 		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
 		65A694241D06F521001DE328 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A694161D05999B001DE328 /* libLTKit.a */; };
 		65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */; };
@@ -304,6 +305,7 @@
 		65892F671D1AAF510049815D /* FBRHTTPRequest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPRequest.mm; sourceTree = "<group>"; };
 		658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfigurationSpec.mm; sourceTree = "<group>"; };
 		659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Fiber.h"; sourceTree = "<group>"; };
+		659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Fiber.mm"; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */,
+				659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */,
 			);
 			name = Errors;
 			sourceTree = "<group>";
@@ -1040,6 +1043,7 @@
 				65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */,
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */,
+				659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
 				65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */,
