@@ -5,6 +5,7 @@
 
 #import "PTNAlbum.h"
 #import "PTNDisposableRetainingSignal.h"
+#import "PTNFakeAlbumDescriptor.h"
 #import "PTNFakeAssetDescriptor.h"
 #import "PTNFakeDescriptor.h"
 
@@ -31,6 +32,16 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
   return [[PTNFakeAssetDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
       descriptorCapabilities:capabilites creationDate:creationDate modificationDate:modificationDate
       assetDescriptorCapabilities:assetCapabilities];
+}
+
+id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
+                                                NSString * _Nullable localizedTitle,
+                                                PTNDescriptorCapabilities capabilites,
+                                                NSUInteger assetCount,
+                                                PTNAlbumDescriptorCapabilities albumCapabilities) {
+  return [[PTNFakeAlbumDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
+                                     descriptorCapabilities:capabilites assetCount:assetCount
+                                albumDescriptorCapabilities:albumCapabilities];
 }
 
 PTNDisposableRetainingSignal *PTNCreateDisposableRetainingSignal() {

@@ -28,6 +28,14 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSDate * _Nullable modificationDate,
                                                 PTNAssetDescriptorCapabilities assetCapabilities);
 
+/// Creates and returns a \c PTNAlbumDescriptor with \c identifier, \c localizedTitle,
+/// \c capabilities, \c assetCount and \c albumCapabilities.
+id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
+                                                NSString * _Nullable localizedTitle,
+                                                PTNDescriptorCapabilities capabilites,
+                                                NSUInteger assetCount,
+                                                PTNAlbumDescriptorCapabilities albumCapabilities);
+
 /// Creates and returns a \c RACSignal that holds bookkeeping of disposables given on subscriptions.
 /// This signal sends no events.
 PTNDisposableRetainingSignal *PTNCreateDisposableRetainingSignal();

@@ -3,23 +3,71 @@
 
 #import "PTUImageCellViewModel.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+#import <Photons/PTNAlbum.h>
+#import <Photons/PTNAlbumChangeset.h>
+#import <Photons/PTNAssetManager.h>
+#import <Photons/PTNDescriptor.h>
+#import <Photons/PTNImageAsset.h>
+#import <Photons/PTNImageFetchOptions.h>
+#import <Photons/PTNProgress.h>
+#import <Photons/PTNResizingStrategy.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTUImageCellViewModel
 
-@synthesize imageSignal = _imageSignal;
-@synthesize titleSignal = _titleSignal;
-@synthesize subtitleSignal = _subtitleSignal;
-
-- (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
-                        titleSignal:(nullable RACSignal *)titleSignal
-                     subtitleSignal:(nullable RACSignal *)subtitleSignal {
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager
+                          descriptor:(id<PTNDescriptor>)descriptor
+                   imageFetchOptions:(PTNImageFetchOptions *)imageFetchOptions {
   if (self = [super init]) {
-    _imageSignal = imageSignal;
-    _titleSignal = titleSignal;
-    _subtitleSignal = subtitleSignal;
+    _assetManager = assetManager;
+    _descriptor = descriptor;
+    _imageFetchOptions = imageFetchOptions;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark PTUImageCellViewModel
+#pragma mark -
+
+- (nullable RACSignal *)imageSignalForCellSize:(CGSize)cellSize {
+  return [[[self.assetManager fetchImageWithDescriptor:self.descriptor
+                                      resizingStrategy:[PTNResizingStrategy aspectFill:cellSize]
+                                               options:self.imageFetchOptions]
+      filter:^BOOL(PTNProgress *progress) {
+        return progress.result != nil;
+      }]
+      flattenMap:^(PTNProgress<id<PTNImageAsset>> *progress) {
+        return [progress.result fetchImage];
+      }];
+}
+
+- (nullable RACSignal *)titleSignal {
+  return [RACSignal return:self.descriptor.localizedTitle];
+}
+
+- (nullable RACSignal *)subtitleSignal {
+  if ([self.descriptor conformsToProtocol:@protocol(PTNAlbumDescriptor)]) {
+    id<PTNAlbumDescriptor> albumDescriptor = (id<PTNAlbumDescriptor>)self.descriptor;
+    if (albumDescriptor.assetCount != PTNNotFound) {
+      return [RACSignal return:[self stringWithImageCount:albumDescriptor.assetCount]];
+    }
+
+    return [[self.assetManager fetchAlbumWithURL:self.descriptor.ptn_identifier]
+        map:^NSString *(PTNAlbumChangeset *changeset) {
+          return [self stringWithImageCount:changeset.afterAlbum.assets.count];
+        }];
+  }
+
+  return nil;
+}
+
+- (NSString *)stringWithImageCount:(NSUInteger)count {
+  return [NSString stringWithFormat:@"%@ %@",
+          (count > 0 ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"No"),
+          (count == 1 ? @"photo" : @"photos")];
 }
 
 @end
