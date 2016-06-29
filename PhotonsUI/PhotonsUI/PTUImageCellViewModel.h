@@ -9,9 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Photons framework.
 @protocol PTUImageCellViewModel <NSObject>
 
-/// Signal carrying image to display, or \c nil if no values should be set for the image to display,
-/// and it should be set to \c nil.
-@property (readonly, nonatomic, nullable) RACSignal *imageSignal;
+/// Returns a signal carrying latest image to dispay in a cell of size \c cellSize in pixels, or
+/// \c nil if no image should be set for such a cell.
+- (nullable RACSignal *)imageSignalForCellSize:(CGSize)cellSize;
 
 /// Signal carrying title to display, or \c nil if no values should be set for the title to display,
 /// and it should be set to \c nil.
