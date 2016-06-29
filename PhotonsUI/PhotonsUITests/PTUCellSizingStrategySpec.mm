@@ -78,6 +78,30 @@ context(@"PTUConstantCellSizingStrategy", ^{
     expect([strategy cellSizeForViewSize:CGSizeMake(100, 200) itemSpacing:4.0 lineSpacing:7.0])
         .to.equal(size);
   });
+
+  context(@"equality", ^{
+    __block PTUConstantCellSizingStrategy *firstStrategy;
+    __block PTUConstantCellSizingStrategy *secondStrategy;
+    __block PTUConstantCellSizingStrategy *otherStrategy;
+
+    beforeEach(^{
+      firstStrategy = [[PTUConstantCellSizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+      secondStrategy = [[PTUConstantCellSizingStrategy alloc] initWithSize:CGSizeMake(20, 10)];
+      otherStrategy = [[PTUConstantCellSizingStrategy alloc] initWithSize:CGSizeMake(10, 5)];
+    });
+
+    it(@"should handle isEqual correctly", ^{
+      expect(firstStrategy).to.equal(secondStrategy);
+      expect(secondStrategy).to.equal(firstStrategy);
+
+      expect(firstStrategy).notTo.equal(otherStrategy);
+      expect(secondStrategy).notTo.equal(otherStrategy);
+    });
+
+    it(@"should create proper hash", ^{
+      expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+    });
+  });
 });
 
 context(@"PTUAdaptiveCellSizingStrategy", ^{
@@ -134,6 +158,33 @@ context(@"PTUAdaptiveCellSizingStrategy", ^{
     expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
         .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
   });
+
+  context(@"equality", ^{
+    __block PTUAdaptiveCellSizingStrategy *firstStrategy;
+    __block PTUAdaptiveCellSizingStrategy *secondStrategy;
+    __block PTUAdaptiveCellSizingStrategy *otherStrategy;
+
+    beforeEach(^{
+      firstStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+      secondStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+      otherStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initMatchingHeightWithSize:CGSizeMake(20, 15) maximumScale:1.4];
+    });
+
+    it(@"should handle isEqual correctly", ^{
+      expect(firstStrategy).to.equal(secondStrategy);
+      expect(secondStrategy).to.equal(firstStrategy);
+
+      expect(firstStrategy).notTo.equal(otherStrategy);
+      expect(secondStrategy).notTo.equal(otherStrategy);
+    });
+
+    it(@"should create proper hash", ^{
+      expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+    });
+  });
 });
 
 context(@"PTURowSizingStrategy", ^{
@@ -144,6 +195,30 @@ context(@"PTURowSizingStrategy", ^{
         .to.beCloseToPointWithin(CGSizeMake(200, 20), 0.1);
     expect([strategy cellSizeForViewSize:CGSizeMake(100, 100) itemSpacing:1.0 lineSpacing:1.0])
         .to.beCloseToPointWithin(CGSizeMake(100, 20), 0.1);
+  });
+
+  context(@"equality", ^{
+    __block PTURowSizingStrategy *firstStrategy;
+    __block PTURowSizingStrategy *secondStrategy;
+    __block PTURowSizingStrategy *otherStrategy;
+
+    beforeEach(^{
+      firstStrategy = [[PTURowSizingStrategy alloc] initWithHeight:20];
+      secondStrategy = [[PTURowSizingStrategy alloc] initWithHeight:20];
+      otherStrategy = [[PTURowSizingStrategy alloc] initWithHeight:25];
+    });
+
+    it(@"should handle isEqual correctly", ^{
+      expect(firstStrategy).to.equal(secondStrategy);
+      expect(secondStrategy).to.equal(firstStrategy);
+
+      expect(firstStrategy).notTo.equal(otherStrategy);
+      expect(secondStrategy).notTo.equal(otherStrategy);
+    });
+
+    it(@"should create proper hash", ^{
+      expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+    });
   });
 });
 
@@ -166,6 +241,30 @@ context(@"PTUDynamicRowSizingStrategy", ^{
         .to.beCloseToPointWithin(CGSizeMake(200, 250), 0.1);
     expect([strategy cellSizeForViewSize:CGSizeMake(100, 100) itemSpacing:1.0 lineSpacing:1.0])
         .to.beCloseToPointWithin(CGSizeMake(100, 125), 0.1);
+  });
+
+  context(@"equality", ^{
+    __block PTUDynamicRowSizingStrategy *firstStrategy;
+    __block PTUDynamicRowSizingStrategy *secondStrategy;
+    __block PTUDynamicRowSizingStrategy *otherStrategy;
+
+    beforeEach(^{
+      firstStrategy = [[PTUDynamicRowSizingStrategy alloc] initWithWidthRatio:0.5];
+      secondStrategy = [[PTUDynamicRowSizingStrategy alloc] initWithWidthRatio:0.5];
+      otherStrategy = [[PTUDynamicRowSizingStrategy alloc] initWithWidthRatio:0.2];
+    });
+
+    it(@"should handle isEqual correctly", ^{
+      expect(firstStrategy).to.equal(secondStrategy);
+      expect(secondStrategy).to.equal(firstStrategy);
+
+      expect(firstStrategy).notTo.equal(otherStrategy);
+      expect(secondStrategy).notTo.equal(otherStrategy);
+    });
+
+    it(@"should create proper hash", ^{
+      expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+    });
   });
 });
 
@@ -190,6 +289,30 @@ context(@"PTUGridSizingStrategy", ^{
         .to.beCloseToPointWithin(CGSizeMake(50, 50), 0.1);
     expect([strategy cellSizeForViewSize:CGSizeMake(200, 200) itemSpacing:1.0 lineSpacing:1.0])
         .to.beCloseToPointWithin(CGSizeMake(49.25, 49.25), 0.1);
+  });
+
+  context(@"equality", ^{
+    __block PTUGridSizingStrategy *firstStrategy;
+    __block PTUGridSizingStrategy *secondStrategy;
+    __block PTUGridSizingStrategy *otherStrategy;
+
+    beforeEach(^{
+      firstStrategy = [[PTUGridSizingStrategy alloc] initWithItemsPerRow:4];
+      secondStrategy = [[PTUGridSizingStrategy alloc] initWithItemsPerRow:4];
+      otherStrategy = [[PTUGridSizingStrategy alloc] initWithItemsPerRow:3];
+    });
+
+    it(@"should handle isEqual correctly", ^{
+      expect(firstStrategy).to.equal(secondStrategy);
+      expect(secondStrategy).to.equal(firstStrategy);
+
+      expect(firstStrategy).notTo.equal(otherStrategy);
+      expect(secondStrategy).notTo.equal(otherStrategy);
+    });
+
+    it(@"should create proper hash", ^{
+      expect(firstStrategy.hash).to.equal(secondStrategy.hash);
+    });
   });
 });
 

@@ -68,6 +68,30 @@ NS_ASSUME_NONNULL_BEGIN
   return self.size;
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, size: %@>", self.class, self,
+          NSStringFromCGSize(self.size)];
+}
+
+- (BOOL)isEqual:(PTUConstantCellSizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return CGSizeEqualToSize(self.size, object.size);
+}
+
+- (NSUInteger)hash {
+  return @(self.size.height).hash ^ @(self.size.width).hash;
+}
+
 @end
 
 #pragma mark -
@@ -144,6 +168,33 @@ NS_ASSUME_NONNULL_BEGIN
       CGSizeMake(self.size.width * scale, itemFittingSize);
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, size: %@, maximum scale: %g, %@>", self.class, self,
+          NSStringFromCGSize(self.size), self.maximumScale,
+          self.matchWidth ? @"fit row" : @"fit column"];
+}
+
+- (BOOL)isEqual:(PTUAdaptiveCellSizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return CGSizeEqualToSize(self.size, object.size) && self.maximumScale == object.maximumScale &&
+      self.matchWidth == object.matchWidth;
+}
+
+- (NSUInteger)hash {
+  return @(self.size.height).hash ^ @(self.size.width).hash ^ @(self.maximumScale).hash ^
+      @(self.matchWidth).hash;
+}
+
 @end
 
 #pragma mark -
@@ -172,6 +223,29 @@ NS_ASSUME_NONNULL_BEGIN
   return CGSizeMake(viewSize.width, self.height);
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, height: %g>", self.class, self, self.height];
+}
+
+- (BOOL)isEqual:(PTURowSizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return self.height == object.height;
+}
+
+- (NSUInteger)hash {
+  return @(self.height).hash;
+}
+
 @end
 
 #pragma mark -
@@ -198,6 +272,29 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)cellSizeForViewSize:(CGSize)viewSize itemSpacing:(CGFloat __unused)itemSpacing
                   lineSpacing:(CGFloat __unused)lineSpacing {
   return CGSizeMake(viewSize.width, viewSize.width * self.ratio);
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, ratio: %g>", self.class, self, self.ratio];
+}
+
+- (BOOL)isEqual:(PTUDynamicRowSizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return self.ratio == object.ratio;
+}
+
+- (NSUInteger)hash {
+  return @(self.ratio).hash;
 }
 
 @end
@@ -245,6 +342,30 @@ NS_ASSUME_NONNULL_BEGIN
   CGFloat spacing = self.matchRow ? itemSpacing : lineSpacing;
   CGFloat itemSize = (sizeToMatch - (spacing * (self.items - 1))) / self.items;
   return CGSizeMake(itemSize, itemSize);
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, items: %lu, %@>", self.class, self,
+          (unsigned long)self.items, self.matchRow ? @"fit row" : @"fit column"];
+}
+
+- (BOOL)isEqual:(PTUGridSizingStrategy *)object {
+  if (object == self) {
+    return YES;
+  }
+  if (![object isKindOfClass:self.class]) {
+    return NO;
+  }
+
+  return self.items == object.items && self.matchRow == object.matchRow;
+}
+
+- (NSUInteger)hash {
+  return @(self.items).hash ^ @(self.matchRow).hash;
 }
 
 @end
