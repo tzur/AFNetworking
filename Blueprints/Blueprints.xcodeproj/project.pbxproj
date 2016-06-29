@@ -64,7 +64,7 @@
 		8BD00C3E1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD00C3C1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.mm */; };
 		8BD00C581C5E1F9A009A1A2D /* NSIndexPath+BlueprintsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD00C571C5E1F9A009A1A2D /* NSIndexPath+BlueprintsSpec.mm */; };
 		8BD00D631C5FC6FF009A1A2D /* BLUNode+Tree.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD00D611C5FC6FF009A1A2D /* BLUNode+Tree.h */; };
-		8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.m */; };
+		8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.mm */; };
 		8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED80071C3A66E90001C6F1 /* libBlueprints.a */; };
 		8BED82C51C3D32F90001C6F1 /* BLUNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED82C41C3D32F80001C6F1 /* BLUNode.m */; };
 		8BED82E31C3D66590001C6F1 /* BLUNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */; };
@@ -389,7 +389,7 @@
 		8BD00C3C1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSIndexPath+Blueprints.mm"; sourceTree = "<group>"; };
 		8BD00C571C5E1F9A009A1A2D /* NSIndexPath+BlueprintsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSIndexPath+BlueprintsSpec.mm"; sourceTree = "<group>"; };
 		8BD00D611C5FC6FF009A1A2D /* BLUNode+Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Tree.h"; sourceTree = "<group>"; };
-		8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Tree.m"; sourceTree = "<group>"; };
+		8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+Tree.mm"; sourceTree = "<group>"; };
 		8BED80071C3A66E90001C6F1 /* libBlueprints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBlueprints.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BED808C1C3A68080001C6F1 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8BED808E1C3A68080001C6F1 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -606,7 +606,7 @@
 				8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */,
 				8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */,
 				8BD00D611C5FC6FF009A1A2D /* BLUNode+Tree.h */,
-				8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.m */,
+				8BD00D621C5FC6FF009A1A2D /* BLUNode+Tree.mm */,
 				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
 				8B3CED4B1C590D6F008E779B /* BLUNodeData.h */,
 				8B3CED4C1C590D6F008E779B /* BLUNodeData.m */,
@@ -1079,7 +1079,7 @@
 				8B3CE9671C4E57C9008E779B /* BLUModel.mm in Sources */,
 				8B3CED4E1C590D6F008E779B /* BLUNodeData.m in Sources */,
 				8B3CEA041C4E6BB7008E779B /* BLUModelNodeChange.m in Sources */,
-				8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.m in Sources */,
+				8BD00D641C5FC6FF009A1A2D /* BLUNode+Tree.mm in Sources */,
 				8B0E4DB71CC67E9A0031B743 /* RACSignal+BLUNode.m in Sources */,
 				8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */,
 				8B97B0271CC8BEC4001CD91B /* BLUFileListProvider.m in Sources */,

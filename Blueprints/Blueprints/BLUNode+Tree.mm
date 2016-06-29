@@ -6,6 +6,7 @@
 #import "BLUNode+Operations.h"
 #import "BLUNodeCollection.h"
 #import "NSArray+BLUNodeCollection.h"
+#import "NSIndexPath+Blueprints.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -189,13 +190,14 @@ NS_ASSUME_NONNULL_BEGIN
 
   BOOL stop = NO;
   [self enumerateNode:self withEnumerationType:enumerationType stop:&stop
-       pathComponents:@[@"/"] usingBlock:block];
+       pathComponents:@[@"/"] indexPath:[NSIndexPath blu_empty] usingBlock:block];
 }
 
 - (void)enumerateNode:(BLUNode *)node
   withEnumerationType:(BLUTreeEnumerationType)enumerationType
                  stop:(BOOL *)stop
        pathComponents:(NSArray *)pathComponents
+            indexPath:(NSIndexPath *)indexPath
            usingBlock:(BLUTreeEnumerationBlock)block {
   if (*stop) {
     return;
@@ -204,29 +206,34 @@ NS_ASSUME_NONNULL_BEGIN
   NSString *path = [NSString pathWithComponents:pathComponents];
 
   if (enumerationType == BLUTreeEnumerationTypePreOrder) {
-    block(node, path, stop);
+    block(node, path, indexPath, stop);
     if (*stop) {
       return;
     }
   }
 
-  for (BLUNode *childNode in node.childNodes) {
+  for (NSUInteger index = 0; index < node.childNodes.count; ++index) {
+    BLUNode *childNode = node.childNodes[index];
     [self enumerateNode:childNode withEnumerationType:enumerationType stop:stop
-         pathComponents:[pathComponents arrayByAddingObject:childNode.name] usingBlock:block];
+         pathComponents:[pathComponents arrayByAddingObject:childNode.name]
+              indexPath:[indexPath indexPathByAddingIndex:index]
+             usingBlock:block];
     if (*stop) {
       return;
     }
   }
 
   if (enumerationType == BLUTreeEnumerationTypePostOrder) {
-    block(node, path, stop);
+    block(node, path, indexPath, stop);
   }
 }
 
 - (NSString *)treeDescription {
+  
   __block NSMutableArray *nodeDescriptions = [NSMutableArray array];
   [self enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
-                              usingBlock:^(BLUNode *node, NSString *path, BOOL __unused *stop) {
+                              usingBlock:^(BLUNode *node, NSString *path,
+                                           NSIndexPath * __unused indexPath, BOOL __unused *stop) {
     NSArray<NSString *> *components = [path pathComponents];
     NSString *nodeDescription;
     switch (components.count) {

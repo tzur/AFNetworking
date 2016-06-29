@@ -353,19 +353,32 @@ context(@"enumeration", ^{
   it(@"should enumerate tree pre-order", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
     [root enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
-                                usingBlock:^(BLUNode *node, NSString *path, BOOL *) {
+                                usingBlock:^(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                             BOOL *) {
       [nodes addObject:node];
       [paths addObject:path];
+      [indexPaths addObject:indexPath];
     }];
 
+    NSArray *expectedIndexPaths = @[
+      [NSIndexPath blu_empty],
+      [NSIndexPath blu_indexPathWithIndexes:{0}],
+      [NSIndexPath blu_indexPathWithIndexes:{0, 0}],
+      [NSIndexPath blu_indexPathWithIndexes:{0, 1}],
+      [NSIndexPath blu_indexPathWithIndexes:{0, 2}],
+      [NSIndexPath blu_indexPathWithIndexes:{1}],
+      [NSIndexPath blu_indexPathWithIndexes:{1, 0}]
+    ];
     NSArray *expectedPaths = @[@"/", @"/left", @"/left/leftLeft", @"/left/leftMiddle",
                                @"/left/leftRight", @"/right", @"/right/rightMiddle"];
     NSArray *expectedNodes = [expectedPaths.rac_sequence map:^BLUNode *(NSString *path) {
       return root[path];
     }].array;
 
+    expect(indexPaths).to.equal(expectedIndexPaths);
     expect(paths).to.equal(expectedPaths);
     expect(nodes).to.equal(expectedNodes);
   });
@@ -373,19 +386,32 @@ context(@"enumeration", ^{
   it(@"should enumerate tree post-order", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
     [root enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePostOrder
-                                usingBlock:^(BLUNode *node, NSString *path, BOOL *) {
+                                usingBlock:^(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                             BOOL *) {
       [nodes addObject:node];
       [paths addObject:path];
+      [indexPaths addObject:indexPath];
     }];
 
+    NSArray *expectedIndexPaths = @[
+      [NSIndexPath blu_indexPathWithIndexes:{0, 0}],
+      [NSIndexPath blu_indexPathWithIndexes:{0, 1}],
+      [NSIndexPath blu_indexPathWithIndexes:{0, 2}],
+      [NSIndexPath blu_indexPathWithIndexes:{0}],
+      [NSIndexPath blu_indexPathWithIndexes:{1, 0}],
+      [NSIndexPath blu_indexPathWithIndexes:{1}],
+      [NSIndexPath blu_empty]
+    ];
     NSArray *expectedPaths = @[@"/left/leftLeft", @"/left/leftMiddle", @"/left/leftRight", @"/left",
                                @"/right/rightMiddle", @"/right", @"/"];
     NSArray *expectedNodes = [expectedPaths.rac_sequence map:^BLUNode *(NSString *path) {
       return root[path];
     }].array;
 
+    expect(indexPaths).to.equal(expectedIndexPaths);
     expect(paths).to.equal(expectedPaths);
     expect(nodes).to.equal(expectedNodes);
   });
@@ -393,14 +419,18 @@ context(@"enumeration", ^{
   it(@"should stop while enumerating pre order", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
     [root enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
-                                usingBlock:^(BLUNode *node, NSString *path, BOOL *stop) {
+                                usingBlock:^(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                             BOOL *stop) {
       *stop = YES;
       [nodes addObject:node];
       [paths addObject:path];
+      [indexPaths addObject:indexPath];
     }];
 
+    expect(indexPaths).to.equal(@[[NSIndexPath blu_empty]]);
     expect(paths).to.equal(@[@"/"]);
     expect(nodes).to.equal(@[root[@"/"]]);
   });
@@ -408,16 +438,21 @@ context(@"enumeration", ^{
   it(@"should stop while enumerating childs", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
     [root enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
-                                usingBlock:^(BLUNode *node, NSString *path, BOOL *stop) {
+                                usingBlock:^(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                             BOOL *stop) {
       if ([path isEqualToString:@"/left"]) {
         *stop = YES;
       }
       [nodes addObject:node];
       [paths addObject:path];
+      [indexPaths addObject:indexPath];
     }];
 
+    expect(indexPaths).to.equal(@[[NSIndexPath blu_empty],
+                                  [NSIndexPath blu_indexPathWithIndexes:{0}]]);
     expect(paths).to.equal(@[@"/", @"/left"]);
     expect(nodes).to.equal(@[root[@"/"], root[@"/left"]]);
   });
@@ -425,14 +460,18 @@ context(@"enumeration", ^{
   it(@"should stop while enumerating post order", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
     [root enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePostOrder
-                                usingBlock:^(BLUNode *node, NSString *path, BOOL *stop) {
+                                usingBlock:^(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                             BOOL *stop) {
       *stop = YES;
       [nodes addObject:node];
       [paths addObject:path];
+      [indexPaths addObject:indexPath];
     }];
 
+    expect(indexPaths).to.equal(@[[NSIndexPath blu_indexPathWithIndexes:{0, 0}]]);
     expect(paths).to.equal(@[@"/left/leftLeft"]);
     expect(nodes).to.equal(@[root[@"/left/leftLeft"]]);
   });

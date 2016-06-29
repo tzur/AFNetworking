@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
   [rootNode enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
                                   usingBlock:^(BLUNode *node,
                                                NSString *path,
+                                               NSIndexPath *,
                                                BOOL *) {
     if ([node.value conformsToProtocol:@protocol(BLUProviderDescriptor)]) {
       providersNodeAndPath.push_back({node, path});

@@ -80,9 +80,11 @@ typedef BLUNode * _Nonnull(^BLUNodeMapBlock)(BLUNode *childNodes);
 /// starting from the receiver. An empty index path refers to the receiver.
 - (nullable BLUNode *)objectForKeyedSubscript:(id)path;
 
-/// Enumeration block that provides the next \c node at the given \c path in the tree and an
-/// out-only argument \c stop used to stop the enumeration by setting it to \c YES, if needed.
-typedef void (^BLUTreeEnumerationBlock)(BLUNode *node, NSString *path, BOOL *stop);
+/// Enumeration block that provides the next \c node at the given \c path and \c indexPath in the
+/// tree and an out-only argument \c stop used to stop the enumeration by setting it to \c YES, if
+/// needed.
+typedef void (^BLUTreeEnumerationBlock)(BLUNode *node, NSString *path, NSIndexPath *indexPath,
+                                        BOOL *stop);
 
 /// Enumerates the tree with the given \c enumerationType, by calling \c block with the next node.
 /// If \c stop is set to \c YES, the enumeration will be stopped.
