@@ -60,14 +60,29 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestParametersEncoding,
 
 @implementation FBRHTTPRequest
 
-- (instancetype)initWithURL:(NSURL *)URL method:(FBRHTTPRequestMethod *)method {
-  return [self initWithURL:URL method:method parameters:nil parametersEncoding:nil headers:nil];
++ (BOOL)isProtocolSupported:(NSURL *)URL {
+  return [[self supportedProtocols] containsObject:[URL.scheme lowercaseString]];
 }
+
++ (NSSet<NSString *> *)supportedProtocols {
+  return [NSSet setWithObjects:@"http", @"https", nil];
+}
+
+- (instancetype)initWithURL:(NSURL *)URL method:(FBRHTTPRequestMethod *)method {
+  return [self initWithURL:URL method:method parameters:nil parametersEncoding:nil
+                   headers:nil];
+}
+
+
 
 - (instancetype)initWithURL:(NSURL *)URL method:(FBRHTTPRequestMethod *)method
                  parameters:(nullable FBRHTTPRequestParameters *)parameters
          parametersEncoding:(nullable FBRHTTPRequestParametersEncoding *)parametersEncoding
                     headers:(nullable FBRHTTPRequestHeaders *)headers {
+  LTParameterAssert([[self class] isProtocolSupported:URL], @"Invalid URL specified, the protocol "
+                    "%@ is not valid for HTTP requests. Supported protocols: %@", URL.scheme,
+                    [[self class] supportedProtocols]);
+                    
   if (self = [super init]) {
     _URL = [URL copy];
     _method = [method copy];
@@ -98,6 +113,13 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestParametersEncoding,
 - (NSUInteger)hash {
   return self.URL.hash ^ self.method.hash ^ self.parameters.hash ^ self.parametersEncoding.hash ^
       self.headers.hash;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, URL: %@, method: %@, parameters: %@, "
+          "parameters-encoding: %@, headers: %@>",
+          [self class], self, self.URL, self.method.HTTPMethod, self.parameters,
+          self.parametersEncoding, self.headers];
 }
 
 #pragma mark -
