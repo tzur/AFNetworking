@@ -1419,12 +1419,6 @@
 			baseConfigurationReference = 83B7290E1CD8D2900090C0BF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "CameraUI/CameraUI-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTEngine",
-					"$(SRCROOT)/../LTKit",
-					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)/../Wireframes",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1436,12 +1430,6 @@
 			baseConfigurationReference = 83B7290E1CD8D2900090C0BF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "CameraUI/CameraUI-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTEngine",
-					"$(SRCROOT)/../LTKit",
-					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)/../Wireframes",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
