@@ -303,6 +303,7 @@
 		65892F661D1AAF510049815D /* FBRHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPRequest.h; sourceTree = "<group>"; };
 		65892F671D1AAF510049815D /* FBRHTTPRequest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPRequest.mm; sourceTree = "<group>"; };
 		658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfigurationSpec.mm; sourceTree = "<group>"; };
+		659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Fiber.h"; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
@@ -414,6 +415,14 @@
 			name = "HTTP Session";
 			sourceTree = "<group>";
 		};
+		659F3AB91D23DD750097F3D0 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */,
+			);
+			name = Errors;
+			sourceTree = "<group>";
+		};
 		65A6940D1D05999B001DE328 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -472,8 +481,9 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
-				65F5137F1D1C19DE000687A7 /* Internal Utils */,
+				659F3AB91D23DD750097F3D0 /* Errors */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
+				65F5137F1D1C19DE000687A7 /* Internal Utils */,
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
 			path = Fiber;
