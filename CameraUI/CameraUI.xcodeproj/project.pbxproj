@@ -39,6 +39,8 @@
 		F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99540C11D054B94004C54D4 /* CUIOvalButton.mm */; };
 		F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */; };
 		F9A684261D1BE0F100E0F319 /* CUIGridView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684251D1BE0F100E0F319 /* CUIGridView.mm */; };
+		F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684571D1FB95000E0F319 /* CUILayerView.mm */; };
+		F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */; };
 		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
 		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
 		F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */; };
@@ -350,6 +352,9 @@
 		F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIIconWithTitleCellSpec.mm; sourceTree = "<group>"; };
 		F9A684241D1BE0F100E0F319 /* CUIGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridView.h; sourceTree = "<group>"; };
 		F9A684251D1BE0F100E0F319 /* CUIGridView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridView.mm; sourceTree = "<group>"; };
+		F9A684571D1FB95000E0F319 /* CUILayerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUILayerView.mm; sourceTree = "<group>"; };
+		F9A684581D1FB95000E0F319 /* CUILayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUILayerView.h; sourceTree = "<group>"; };
+		F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUILayerViewSpec.mm; sourceTree = "<group>"; };
 		F9B97A3B1D095BE700B4E670 /* CUIMutableMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMutableMenuItemView.h; sourceTree = "<group>"; };
 		F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISharedTheme.h; sourceTree = "<group>"; };
 		F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedTheme.mm; sourceTree = "<group>"; };
@@ -604,6 +609,8 @@
 				F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */,
 				F9A684241D1BE0F100E0F319 /* CUIGridView.h */,
 				F9A684251D1BE0F100E0F319 /* CUIGridView.mm */,
+				F9A684581D1FB95000E0F319 /* CUILayerView.h */,
+				F9A684571D1FB95000E0F319 /* CUILayerView.mm */,
 				F99540C21D054B94004C54D4 /* CUIOvalButton.h */,
 				F99540C11D054B94004C54D4 /* CUIOvalButton.mm */,
 			);
@@ -655,6 +662,7 @@
 		BE4629541CDF246400D9F7E2 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */,
 				F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */,
 			);
 			name = Preview;
@@ -1060,6 +1068,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9A684261D1BE0F100E0F319 /* CUIGridView.mm in Sources */,
+				F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */,
 				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
 				F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */,
 				F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */,
@@ -1083,6 +1092,7 @@
 				BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */,
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,
 				F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */,
+				F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */,
 				F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
 				F965C9E01CF317A100005627 /* LTSpectaObjectionHook.mm in Sources */,
