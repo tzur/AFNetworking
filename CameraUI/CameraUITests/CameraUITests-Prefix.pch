@@ -4,3 +4,6 @@
 #import "CameraUI-Prefix.pch"
 
 #import <LTEngineTests/LTEngineTests-Prefix.pch>
+
+#import <LLReactiveMatchers/LLReactiveMatchers.h>
+#import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>

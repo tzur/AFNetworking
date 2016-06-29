@@ -24,6 +24,26 @@
 		BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */; };
 		BE97556D1D0075A80081A766 /* CUIMenuItemIconButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */; };
 		BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */; };
+		BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */; };
+		BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */; };
+		BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC7B1AB1D1FFC0C0012C286 /* Masonry.framework */; };
+		BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */; };
+		BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */; };
+		BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */; };
+		BEEE6D311D21385D00579F5D /* LLReactiveMatchersHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */; };
+		BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */; };
+		BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */; };
+		BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */; };
+		BEEE6D351D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */; };
+		BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */; };
+		BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */; };
+		BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */; };
+		BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */; };
+		BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */; };
+		BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */; };
+		BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */; };
+		BEEE6D3D1D21385D00579F5D /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */; };
+		BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */; };
 		F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */; };
 		F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */; };
 		F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F965C9BF1CF316E100005627 /* Objection-iOS.framework */; };
@@ -268,6 +288,20 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTEngineTests;
 		};
+		BEC7B1AA1D1FFC0C0012C286 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED05B71AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
+		BEC7B1AC1D1FFC0C0012C286 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
+			remoteInfo = "Masonry OSX";
+		};
 		F9F42B0A1CF47E620050877E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9F42B001CF47E610050877E /* Wireframes.xcodeproj */;
@@ -329,6 +363,48 @@
 		BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemIconButton.h; sourceTree = "<group>"; };
 		BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemIconButton.mm; sourceTree = "<group>"; };
 		BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemIconButtonSpec.mm; sourceTree = "<group>"; };
+		BEC7B1831D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownMenuItemsEntry.h; sourceTree = "<group>"; };
+		BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownMenuItemsEntry.mm; sourceTree = "<group>"; };
+		BEC7B1851D1FF4E50012C286 /* CUIDropDownEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownEntry.h; sourceTree = "<group>"; };
+		BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
+		BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownMenuItemsEntrySpec.mm; sourceTree = "<group>"; };
+		BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
+		BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
+		BEEE6D0A1D21385D00579F5D /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
+		BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLSignalTestRecorder.m; sourceTree = "<group>"; };
+		BEEE6D0C1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+LLSubscriptionCounting.h"; sourceTree = "<group>"; };
+		BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+LLSubscriptionCounting.m"; sourceTree = "<group>"; };
+		BEEE6D0E1D21385D00579F5D /* LLReactiveMatchers-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLReactiveMatchers-Prefix.pch"; sourceTree = "<group>"; };
+		BEEE6D0F1D21385D00579F5D /* LLReactiveMatchers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchers.h; sourceTree = "<group>"; };
+		BEEE6D101D21385D00579F5D /* LLReactiveMatchersHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersHelpers.h; sourceTree = "<group>"; };
+		BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersHelpers.m; sourceTree = "<group>"; };
+		BEEE6D121D21385D00579F5D /* LLReactiveMatchersImports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersImports.h; sourceTree = "<group>"; };
+		BEEE6D131D21385D00579F5D /* LLReactiveMatchersMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersMessageBuilder.h; sourceTree = "<group>"; };
+		BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersMessageBuilder.m; sourceTree = "<group>"; };
+		BEEE6D161D21385D00579F5D /* EXPMatchers+beSubscribedTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beSubscribedTo.h"; sourceTree = "<group>"; };
+		BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+beSubscribedTo.m"; sourceTree = "<group>"; };
+		BEEE6D181D21385D00579F5D /* EXPMatchers+complete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+complete.h"; sourceTree = "<group>"; };
+		BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+complete.m"; sourceTree = "<group>"; };
+		BEEE6D1A1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
+		BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
+		BEEE6D1C1D21385D00579F5D /* EXPMatchers+error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+error.h"; sourceTree = "<group>"; };
+		BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+error.m"; sourceTree = "<group>"; };
+		BEEE6D1E1D21385D00579F5D /* EXPMatchers+finish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+finish.h"; sourceTree = "<group>"; };
+		BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+finish.m"; sourceTree = "<group>"; };
+		BEEE6D201D21385D00579F5D /* EXPMatchers+matchError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchError.h"; sourceTree = "<group>"; };
+		BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchError.m"; sourceTree = "<group>"; };
+		BEEE6D221D21385D00579F5D /* EXPMatchers+matchValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValue.h"; sourceTree = "<group>"; };
+		BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValue.m"; sourceTree = "<group>"; };
+		BEEE6D241D21385D00579F5D /* EXPMatchers+matchValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValues.h"; sourceTree = "<group>"; };
+		BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValues.m"; sourceTree = "<group>"; };
+		BEEE6D261D21385D00579F5D /* EXPMatchers+sendError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendError.h"; sourceTree = "<group>"; };
+		BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendError.m"; sourceTree = "<group>"; };
+		BEEE6D281D21385D00579F5D /* EXPMatchers+sendEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendEvents.h"; sourceTree = "<group>"; };
+		BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendEvents.m"; sourceTree = "<group>"; };
+		BEEE6D2A1D21385D00579F5D /* EXPMatchers+sendValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValues.h"; sourceTree = "<group>"; };
+		BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValues.m"; sourceTree = "<group>"; };
+		BEEE6D2C1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
+		BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
 		F95418881CFC55E800C6BE2E /* CUIMenuItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemModel.h; sourceTree = "<group>"; };
 		F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModel.mm; sourceTree = "<group>"; };
 		F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModelSpec.mm; sourceTree = "<group>"; };
@@ -385,6 +461,7 @@
 				83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */,
 				83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */,
 				F965C9EB1CF3185100005627 /* Mantle.framework in Frameworks */,
+				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
 				83B729E61CD8D7D90090C0BF /* ReactiveCocoa.framework in Frameworks */,
 				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
@@ -486,7 +563,9 @@
 				83B731B41CDB92670090C0BF /* CoreMedia.framework */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
 				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
+				BEEE6D061D21385D00579F5D /* LLReactiveMatchers */,
 				F965C9EA1CF3185100005627 /* Mantle.framework */,
+				BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */,
 				83B729A01CD8D6930090C0BF /* OCMock.xcodeproj */,
 				F965C9BF1CF316E100005627 /* Objection-iOS.framework */,
 				83B729611CD8D6830090C0BF /* ReactiveCocoa.xcodeproj */,
@@ -592,6 +671,9 @@
 		BE4629311CDF1DE700D9F7E2 /* Drop Down Bar */ = {
 			isa = PBXGroup;
 			children = (
+				BEC7B1851D1FF4E50012C286 /* CUIDropDownEntry.h */,
+				BEC7B1831D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.h */,
+				BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */,
 				BE0D7A7B1CF49705009899F9 /* CUIMenuItemButton.h */,
 				BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */,
 				BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */,
@@ -688,12 +770,83 @@
 		BE4629571CDF24D200D9F7E2 /* Drop Down Bar */ = {
 			isa = PBXGroup;
 			children = (
+				BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */,
 				BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */,
 				BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */,
 				BE0D7A9B1CF4978F009899F9 /* CUISimpleMenuItemViewModel.h */,
 				BE0D7A9C1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m */,
 			);
 			name = "Drop Down Bar";
+			sourceTree = "<group>";
+		};
+		BEC7B1A61D1FFC0C0012C286 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BEC7B1AB1D1FFC0C0012C286 /* Masonry.framework */,
+				BEC7B1AD1D1FFC0C0012C286 /* Masonry.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BEEE6D061D21385D00579F5D /* LLReactiveMatchers */ = {
+			isa = PBXGroup;
+			children = (
+				BEEE6D071D21385D00579F5D /* Helpers */,
+				BEEE6D0E1D21385D00579F5D /* LLReactiveMatchers-Prefix.pch */,
+				BEEE6D0F1D21385D00579F5D /* LLReactiveMatchers.h */,
+				BEEE6D101D21385D00579F5D /* LLReactiveMatchersHelpers.h */,
+				BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */,
+				BEEE6D121D21385D00579F5D /* LLReactiveMatchersImports.h */,
+				BEEE6D131D21385D00579F5D /* LLReactiveMatchersMessageBuilder.h */,
+				BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */,
+				BEEE6D151D21385D00579F5D /* Matchers */,
+			);
+			name = LLReactiveMatchers;
+			path = ../third_party/LLReactiveMatchers/LLReactiveMatchers;
+			sourceTree = "<group>";
+		};
+		BEEE6D071D21385D00579F5D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */,
+				BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */,
+				BEEE6D0A1D21385D00579F5D /* LLSignalTestRecorder.h */,
+				BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */,
+				BEEE6D0C1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.h */,
+				BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BEEE6D151D21385D00579F5D /* Matchers */ = {
+			isa = PBXGroup;
+			children = (
+				BEEE6D161D21385D00579F5D /* EXPMatchers+beSubscribedTo.h */,
+				BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */,
+				BEEE6D181D21385D00579F5D /* EXPMatchers+complete.h */,
+				BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */,
+				BEEE6D1A1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.h */,
+				BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */,
+				BEEE6D1C1D21385D00579F5D /* EXPMatchers+error.h */,
+				BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */,
+				BEEE6D1E1D21385D00579F5D /* EXPMatchers+finish.h */,
+				BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */,
+				BEEE6D201D21385D00579F5D /* EXPMatchers+matchError.h */,
+				BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */,
+				BEEE6D221D21385D00579F5D /* EXPMatchers+matchValue.h */,
+				BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */,
+				BEEE6D241D21385D00579F5D /* EXPMatchers+matchValues.h */,
+				BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */,
+				BEEE6D261D21385D00579F5D /* EXPMatchers+sendError.h */,
+				BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */,
+				BEEE6D281D21385D00579F5D /* EXPMatchers+sendEvents.h */,
+				BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */,
+				BEEE6D2A1D21385D00579F5D /* EXPMatchers+sendValues.h */,
+				BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */,
+				BEEE6D2C1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.h */,
+				BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */,
+			);
+			path = Matchers;
 			sourceTree = "<group>";
 		};
 		F965C9DD1CF3178C00005627 /* LTEngineTests */ = {
@@ -806,6 +959,10 @@
 				{
 					ProductGroup = 83B731B71CDB928A0090C0BF /* Products */;
 					ProjectRef = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
+				},
+				{
+					ProductGroup = BEC7B1A61D1FFC0C0012C286 /* Products */;
+					ProjectRef = BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */;
 				},
 				{
 					ProductGroup = 83B729A11CD8D6930090C0BF /* Products */;
@@ -1036,6 +1193,20 @@
 			remoteRef = 83B731C01CDB928A0090C0BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BEC7B1AB1D1FFC0C0012C286 /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = BEC7B1AA1D1FFC0C0012C286 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BEC7B1AD1D1FFC0C0012C286 /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = BEC7B1AC1D1FFC0C0012C286 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F9F42B0B1CF47E620050877E /* libWireframes.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1072,6 +1243,7 @@
 				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
 				F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */,
 				F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */,
+				BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */,
 				F965CD621CF478F100005627 /* CUISelectableMenuItemViewModel.mm in Sources */,
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
 				F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */,
@@ -1084,18 +1256,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */,
+				BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				F9E1E9801D117E0B007B5F6F /* CUISelectableMenuItemViewModelSpec.mm in Sources */,
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
+				BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */,
+				BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */,
+				BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */,
+				BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */,
+				BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */,
+				BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */,
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
+				BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */,
 				F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */,
 				BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */,
 				BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */,
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,
+				BEEE6D351D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */,
 				F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */,
+				BEEE6D3D1D21385D00579F5D /* EXPMatchers+sendValues.m in Sources */,
 				F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */,
+				BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */,
+				BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
+				BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */,
 				F965C9E01CF317A100005627 /* LTSpectaObjectionHook.mm in Sources */,
+				BEEE6D311D21385D00579F5D /* LLReactiveMatchersHelpers.m in Sources */,
+				BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */,
+				BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1269,6 +1459,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1288,6 +1479,7 @@
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
