@@ -1,18 +1,19 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTView.h"
+#import "LTPresentationView.h"
 
 #import "LTContentDisplayManager.h"
 #import "LTContentLocationProvider.h"
+#import "LTDrawDelegate.h"
 #import "LTEAGLView.h"
 #import "LTFbo.h"
+#import "LTFramebufferSizeDelegate.h"
 #import "LTGLContext.h"
 #import "LTGridDrawer.h"
+#import "LTGridDrawingManager.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
-#import "LTViewDelegates.h"
-#import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
 @interface LTTestContentLocationProvider : NSObject <LTContentLocationProvider>
@@ -36,13 +37,13 @@
 
 @end
 
-@interface LTView ()
+@interface LTPresentationView ()
 @property (strong, nonatomic) LTEAGLView *eaglView;
-@property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
+@property (strong, nonatomic) LTGridDrawingManager *pixelGrid;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 @end
 
-@interface LTViewPixelGrid ()
+@interface LTGridDrawingManager ()
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
 @end
 
@@ -50,14 +51,14 @@
 @property (nonatomic) CGSize size;
 @end
 
-SpecBegin(LTView)
+SpecBegin(LTPresentationView)
 
 __block LTTestContentLocationProvider *contentLocationProvider;
 
 __block LTTexture *contentTexture;
 __block LTTexture *outputTexture;
 __block LTFbo *fbo;
-__block LTView *view;
+__block LTPresentationView *view;
 __block cv::Mat4b inputContent;
 __block cv::Mat4b output;
 __block cv::Mat4b expectedOutput;
@@ -116,7 +117,7 @@ afterEach(^{
 
 context(@"initialization", ^{
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
                           contentTexture:contentTexture
                  contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
@@ -148,19 +149,20 @@ context(@"initialization", ^{
     it(@"should raise when initializing with texture and content rectangle of mismatching sizes", ^{
       contentLocationProvider.contentSize = 2 * kContentSize;
       expect(^{
-        view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
-                              contentTexture:contentTexture
-                     contentLocationProvider:contentLocationProvider];
+        view = [[LTPresentationView alloc] initWithFrame:kViewFrame
+                                                 context:[LTGLContext currentContext]
+                                          contentTexture:contentTexture
+                                 contentLocationProvider:contentLocationProvider];
       }).to.raise(NSInvalidArgumentException);
     });
   });
 });
 
 context(@"drawing", ^{
-  __block LTView *view;
+  __block LTPresentationView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
                           contentTexture:contentTexture
                  contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
@@ -336,10 +338,10 @@ context(@"drawing", ^{
 });
 
 context(@"public interface", ^{
-  __block LTView *view;
+  __block LTPresentationView *view;
 
   beforeEach(^{
-    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
                           contentTexture:contentTexture
                  contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
@@ -353,12 +355,12 @@ context(@"public interface", ^{
 });
 
 context(@"draw delegate", ^{
-  __block LTView *view;
+  __block LTPresentationView *view;
   __block id mock;
   
   beforeEach(^{
-    mock = [OCMockObject niceMockForProtocol:@protocol(LTViewDrawDelegate)];
-    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+    mock = [OCMockObject niceMockForProtocol:@protocol(LTDrawDelegate)];
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
                           contentTexture:contentTexture
                  contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
@@ -430,7 +432,7 @@ context(@"draw delegate", ^{
     cv::Mat4b altMat(kContentSize.height, kContentSize.width);
     altMat = kRed;
     LTTexture *altTexture = [LTTexture textureWithImage:altMat];
-    [[[mock stub] andReturn:altTexture] alternativeContentTexture];
+    [[[mock stub] andReturn:altTexture] alternativeContentTextureToUseByView:view];
     
     expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = kRed;
@@ -440,7 +442,7 @@ context(@"draw delegate", ^{
   });
   
   it(@"should use content texture if alternativeContentTexture returns nil", ^{
-    [[[mock stub] andReturn:nil] alternativeContentTexture];
+    [[[mock stub] andReturn:nil] alternativeContentTextureToUseByView:view];
     
     expectedOutput = view.backgroundColor.lt_cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
@@ -460,7 +462,7 @@ context(@"draw delegate", ^{
     
     // When there's an alternativeContentTexture, it should be provided instead.
     LTTexture *altTexture = [LTTexture textureWithImage:inputContent];
-    [[[mock stub] andReturn:altTexture] alternativeContentTexture];
+    [[[mock stub] andReturn:altTexture] alternativeContentTextureToUseByView:view];
     [[mock expect] ltView:view drawProcessedContent:altTexture
                    withVisibleContentRect:kVisibleContentRect];
     [view drawToFbo:fbo];
@@ -505,14 +507,14 @@ context(@"draw delegate", ^{
 context(@"framebuffer delegate", ^{
   __block id delegateMock;
   __block id eaglViewMock;
-  __block LTView *view;
+  __block LTPresentationView *view;
 
   beforeEach(^{
-    delegateMock = [OCMockObject mockForProtocol:@protocol(LTViewFramebufferDelegate)];
+    delegateMock = [OCMockObject mockForProtocol:@protocol(LTFramebufferSizeDelegate)];
     eaglViewMock = [OCMockObject niceMockForClass:[LTEAGLView class]];
     [[[eaglViewMock stub] andReturnValue:$(CGSizeMake(20, 10))] drawableSize];
 
-    view = [[LTView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
                           contentTexture:contentTexture
                  contentLocationProvider:contentLocationProvider];
     view.eaglView = eaglViewMock;

@@ -11,14 +11,14 @@
 ///
 /// Uses an \c LTContentLocationProvider responsible for the location of the rectangle bounding the
 /// displayed image content.
-/// Uses an \c LTViewDrawDelegate to update the content and control the displayed output (overlays,
+/// Uses an \c LTDrawDelegate to update the content and control the displayed output (overlays,
 /// postprocessing, etc.).
 ///
 /// @note Due to implementation details, the content scale factor of the view must not be changed
 /// after the view has been laid out. To achieve this, setting the \c contentScaleFactor is disabled
 /// in this view and the \c contentScaleFactor provided by the content location provider is used to
 /// permanently set the content scale factor of the view.
-@interface LTView : UIView <LTContentDisplayManager, LTContentRefreshing>
+@interface LTPresentationView : UIView <LTContentDisplayManager, LTContentRefreshing>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -52,10 +52,11 @@
 #pragma mark For Testing
 #pragma mark -
 
-@interface LTView (ForTesting)
+@interface LTPresentationView (ForTesting)
 
-/// Renders the LTView at its current state into the given Fbo, acting as if rendering to a screen
-/// framebuffer.
+/// Binds the given \c fbo, acting as if rendering was performed to a screen framebuffer, and
+/// executes the internal rendering pipeline, including the appropriate call to the
+/// \c LTDrawDelegate of this instance.
 - (void)drawToFbo:(LTFbo *)fbo;
 
 @end

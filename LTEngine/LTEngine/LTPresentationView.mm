@@ -1,26 +1,27 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTView.h"
+#import "LTPresentationView.h"
 
 #import <LTKit/LTAnimation.h>
 
 #import "LTContentLocationProvider.h"
+#import "LTDrawDelegate.h"
 #import "LTEAGLView.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
+#import "LTFramebufferSizeDelegate.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
+#import "LTGridDrawingManager.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
-#import "LTViewDelegates.h"
-#import "LTViewPixelGrid.h"
 #import "UIColor+Vector.h"
 
-@interface LTView () <LTEAGLViewDelegate>
+@interface LTPresentationView () <LTEAGLViewDelegate>
 
 /// Provider of information about the content rectangle.
 @property (strong, nonatomic) id<LTContentLocationProvider> contentLocationProvider;
@@ -31,7 +32,8 @@
 /// OpenGL context to use while drawing on the view.
 @property (strong, nonatomic) LTGLContext *context;
 
-/// Target rendering view. The \c LTView's content will be drawn on this view.
+/// Internal presentation view. The content created by the internal render pipeline will be
+/// presented by this view.
 @property (strong, nonatomic) LTEAGLView *eaglView;
 
 /// Holds the rectangle that needs to be updated in the next draw.
@@ -46,10 +48,10 @@
 /// Texture used for visualizing the transparent pixels when checkerboardPattern is \c NO.
 @property (strong, nonatomic) LTTexture *backgroundTexture;
 
-/// Texture used for displaying the content of the LTView.
+/// Texture used for storing the content created by the internal render pipeline of this instance.
 @property (strong, nonatomic) LTTexture *contentTexture;
 
-/// Fbo used for updating the LTView's content texture.
+/// Fbo to the content texture of this instance.
 @property (strong, nonatomic) LTFbo *contentFbo;
 
 /// Rect drawer used for drawing the content texture on the \c LTEAGLView.
@@ -58,15 +60,12 @@
 /// Rect drawer used for drawing the checkerboard background.
 @property (strong, nonatomic) LTRectDrawer *backgroundDrawer;
 
-/// Manages the pixel grid drawn on the LTView on certain zoom levels.
-@property (strong, nonatomic) LTViewPixelGrid *pixelGrid;
+/// Object managing the pixel grid drawn at certain zoom levels.
+@property (strong, nonatomic) LTGridDrawingManager *pixelGrid;
 
-/// Size of the \c LTView's framebuffer, in pixels, before the next redrawing of the underlying
+/// Size of the framebuffer, in pixels, before the next redrawing of the underlying
 /// \c LTEAGLView.
 @property (nonatomic) CGSize previousFramebufferSize;
-
-/// When set to \c YES, the \c LTView will forward touch events to its delegate.
-@property (nonatomic) BOOL forwardCallsToTouchDelegate;
 
 /// While set to \c YES, the \c navigationMode property will not be updated.
 @property (nonatomic) BOOL isNavigationModeLocked;
@@ -80,13 +79,13 @@
 
 @end
 
-@implementation LTView
+@implementation LTPresentationView
 
 /// Name of the notification indicating a setNeedsDisplay is needed.
 static NSString * const kSetNeedsDisplayNotification = @"LTViewSetNeedsDisplay";
 
-// The minimal zoom scale that will start using nearest neighbor interpolation for displaying the
-// content on the LTView.
+/// Minimum zoom scale at which nearest neighbor interpolation will be used to present the output of
+/// the internal render pipeline.
 static const CGFloat kMinimalZoomScaleForNNInterpolation = 3;
 
 /// Number of pixels per checkerboard square, must be a power of two.
@@ -172,7 +171,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (void)createPixelGrid {
-  self.pixelGrid = [[LTViewPixelGrid alloc] initWithContentSize:self.contentSize];
+  self.pixelGrid = [[LTGridDrawingManager alloc] initWithContentSize:self.contentSize];
   self.pixelGrid.maxZoomScale = self.contentLocationProvider.maxZoomScale;
 }
 
@@ -350,8 +349,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)drawContentForVisibleContentRect:(CGRect)visibleContentRect {
   // If the draw delegate supports the content texture override mechanism, get it.
   LTTexture *textureToDraw = self.contentTexture;
-  if ([self.drawDelegate respondsToSelector:@selector(alternativeContentTexture)]) {
-    textureToDraw = [self.drawDelegate alternativeContentTexture] ?: textureToDraw;
+  if ([self.drawDelegate respondsToSelector:@selector(alternativeContentTextureToUseByView:)]) {
+    textureToDraw = [self.drawDelegate alternativeContentTextureToUseByView:self] ?: textureToDraw;
   }
 
   // Set the magnifying filter interpolation according to the current zoom scale.
@@ -404,7 +403,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 }
 
 - (CGRect)scissorBoxForVisibleContentRect:(CGRect)rect {
-  // Transform the visible content rect from content coordinates into the LTView's coordaintes.
+  // Transform the visible content rect from floating-point pixel units of the content coordinate
+  /// system into point units of the presentation coordinate system.
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
   
