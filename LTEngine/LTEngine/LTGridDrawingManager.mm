@@ -1,20 +1,20 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewPixelGrid.h"
+#import "LTGridDrawingManager.h"
 
 #import "LTGLContext.h"
 #import "LTGridDrawer.h"
 #import "UIColor+Vector.h"
 
-@interface LTViewPixelGrid ()
+@interface LTGridDrawingManager ()
 
 /// Drawer used for drawing the pixel grid.
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
 
 @end
 
-@implementation LTViewPixelGrid
+@implementation LTGridDrawingManager
 
 /// Default Values.
 static UIColor * const kDefaultColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
@@ -22,8 +22,8 @@ static const CGFloat kDefaultMaxOpacity = 0.5;
 static const CGFloat kDefaultMinZoomScale = 5.0;
 static const CGFloat kDefaultMaxZoomScale = 5.0;
 
-/// Blend function used for drawing the LTView's pixel grid, keeping the target's alpha value.
-/// The sourceRGB factor is not FuncOne since we're expecting a premultiplied result.
+/// Blend function used for drawing the pixel grid, keeping the target's alpha value. The
+/// \c sourceRGB factor is not \c FuncOne since a premultiplied result is expected.
 static const LTGLContextBlendFuncArgs kLTGLContextBlendFuncGrid = {
   .sourceRGB = LTGLContextBlendFuncDstAlpha,
   .destinationRGB = LTGLContextBlendFuncOneMinusSrcAlpha,
