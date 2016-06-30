@@ -698,6 +698,7 @@
 		50FEAFAC19DC0510009C6E22 /* LTCGPathExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FEAFAA19DC0510009C6E22 /* LTCGPathExtensions.h */; };
 		50FEAFAD19DC0510009C6E22 /* LTCGPathExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */; };
 		50FEAFBF19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */; };
+		642736871D3B7A57000CC59E /* LTProceduralVignetting+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 642736851D3B7A57000CC59E /* LTProceduralVignetting+Protected.h */; };
 		65057CA71B7773400029A164 /* Island.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CA61B7773400029A164 /* Island.png */; };
 		65057CC31B7773BC0029A164 /* Meal.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CC21B7773BC0029A164 /* Meal.png */; };
 		65057CC51B7778200029A164 /* SanFrancisco.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CC41B7778200029A164 /* SanFrancisco.png */; };
@@ -2210,6 +2211,7 @@
 		50FEAFAA19DC0510009C6E22 /* LTCGPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCGPathExtensions.h; sourceTree = "<group>"; };
 		50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensions.mm; sourceTree = "<group>"; };
 		50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensionsSpec.mm; sourceTree = "<group>"; };
+		642736851D3B7A57000CC59E /* LTProceduralVignetting+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTProceduralVignetting+Protected.h"; sourceTree = "<group>"; };
 		65057CA61B7773400029A164 /* Island.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Island.png; path = Resources/Island.png; sourceTree = "<group>"; };
 		65057CC21B7773BC0029A164 /* Meal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Meal.png; path = Resources/Meal.png; sourceTree = "<group>"; };
 		65057CC41B7778200029A164 /* SanFrancisco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SanFrancisco.png; path = Resources/SanFrancisco.png; sourceTree = "<group>"; };
@@ -2888,6 +2890,7 @@
 				285A671A19AE313400B2CE9E /* LTReshapeProcessor.mm */,
 				0352FA8B1A1889C70046E002 /* LTBasicOilPaintingProcessor.h */,
 				0352FA8C1A1889C70046E002 /* LTBasicOilPaintingProcessor.mm */,
+				642736851D3B7A57000CC59E /* LTProceduralVignetting+Protected.h */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -5050,6 +5053,7 @@
 				8B871FD01924A75E00517F2E /* LTProcessingStrategy.h in Headers */,
 				5006776C1C69C025002C6A24 /* LTFloatSetParametricValueProvider.h in Headers */,
 				85A8013D1D07128100E8CFAC /* LT3DLUTTextureAtlas.h in Headers */,
+				642736871D3B7A57000CC59E /* LTProceduralVignetting+Protected.h in Headers */,
 				28F3CA9F1D004B2B007FC2E9 /* LTLinearProcessor.h in Headers */,
 				50E998A41C075F67004F15C9 /* LTReparameterizedObject.h in Headers */,
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,

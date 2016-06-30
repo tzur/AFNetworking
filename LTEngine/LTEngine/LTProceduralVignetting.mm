@@ -2,6 +2,7 @@
 // Created by Zeev Farbman.
 
 #import "LTProceduralVignetting.h"
+#import "LTProceduralVignetting+Protected.h"
 
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
@@ -13,14 +14,19 @@
 @implementation LTProceduralVignetting
 
 - (instancetype)initWithOutput:(LTTexture *)output { 
+  return [self initWithVertexSource:[LTPassthroughShaderVsh source]
+                     fragmentSource:[LTProceduralVignettingFsh source] andOutput:output];
+}
+
+- (instancetype)initWithVertexSource:(NSString *)vertexSource
+                      fragmentSource:(NSString *)fragmentSource andOutput:(LTTexture *)output {
   LTTexture *defaultNoise = [self createNeutralNoise];
   NSDictionary *auxiliaryTextures = @{[LTProceduralVignettingFsh noiseTexture]: defaultNoise};
-  if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
-                          fragmentSource:[LTProceduralVignettingFsh source] sourceTexture:output
-                       auxiliaryTextures:auxiliaryTextures
-                          andOutput:output]) {
+  if (self = [super initWithVertexSource:vertexSource fragmentSource:fragmentSource
+                           sourceTexture:output auxiliaryTextures:auxiliaryTextures
+                               andOutput:output]) {
     [self resetInputModel];
-    [self precomputeDistanceShift:output.size];
+    self[[LTProceduralVignettingFsh distanceShift]] = $([self computeDistanceShift:output.size]);
   }
   return self;
 }
@@ -64,18 +70,15 @@
   return [LTTexture textureWithImage:input];
 }
 
-// Precompute the distance shift that is used to correct aspect ratio in the shader.
-// Aspect ratio is corrected by zeroing the longer dimension near the center, so non-zero part
-// of both dimensions is equal. Such strategy (instead of simple scaling) is needed in order to
-// preserve the correct transition behaviour.
-- (void)precomputeDistanceShift:(CGSize)size {
+- (LTVector2)computeDistanceShift:(CGSize)size {
   LTVector2 distanceShift;
   if (size.width > size.height) {
     distanceShift = LTVector2(1.0 - size.height / size.width, 0.0);
   } else {
     distanceShift = LTVector2(0.0, 1.0 - size.width / size.height);
   }
-  self[[LTProceduralVignettingFsh distanceShift]] = $(distanceShift);
+
+  return distanceShift;
 }
 
 LTPropertyWithoutSetter(CGFloat, spread, Spread, 0, 100, 100);
