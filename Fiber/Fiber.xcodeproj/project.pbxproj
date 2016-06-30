@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794391D255E8700187A5D /* FBRHTTPResponse.mm */; };
+		650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */; };
 		6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BD91D047711000FCE99 /* libSpecta.a */; };
 		6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BAB1D0476F6000FCE99 /* libExpecta.a */; };
 		6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BBE1D0476FE000FCE99 /* libOCMock.a */; };
@@ -293,6 +295,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		650794381D255E8700187A5D /* FBRHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPResponse.h; sourceTree = "<group>"; };
+		650794391D255E8700187A5D /* FBRHTTPResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponse.mm; sourceTree = "<group>"; };
+		650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponseSpec.mm; sourceTree = "<group>"; };
 		6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6535FE5F1D047B22002EEB8F /* Fiber-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Fiber-Prefix.pch"; path = "Fiber/Fiber-Prefix.pch"; sourceTree = "<group>"; };
 		653FB1851D2035920000D2CA /* FBRHTTPRequestSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPRequestSpec.mm; sourceTree = "<group>"; };
@@ -410,6 +415,7 @@
 				65B7F18E1D18696F005810C9 /* Configuration */,
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
 				653FB1851D2035920000D2CA /* FBRHTTPRequestSpec.mm */,
+				650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -430,6 +436,8 @@
 				65A694091D05948F001DE328 /* FBRHTTPSession.h */,
 				65892F661D1AAF510049815D /* FBRHTTPRequest.h */,
 				65892F671D1AAF510049815D /* FBRHTTPRequest.mm */,
+				650794381D255E8700187A5D /* FBRHTTPResponse.h */,
+				650794391D255E8700187A5D /* FBRHTTPResponse.mm */,
 				65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */,
 				65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */,
 			);
@@ -1028,6 +1036,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */,
+				6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */,
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
@@ -1055,6 +1064,7 @@
 				65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */,
 				65C62C0A1D047727000FCE99 /* EXPMatchers+error.m in Sources */,
+				650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */,
 				65C62C091D047727000FCE99 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				653FB1861D2035920000D2CA /* FBRHTTPRequestSpec.mm in Sources */,
