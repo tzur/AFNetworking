@@ -12,4 +12,5 @@
   /// LTKit.
   #import <LTKit/LTAssert.h>
   #import <LTKit/LTEnum.h>
+  #import <LTKit/NSError+LTKit.h>
 #endif
