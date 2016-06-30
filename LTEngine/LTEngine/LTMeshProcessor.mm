@@ -27,13 +27,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
                meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
                                 output:(LTTexture *)output {
+  return [self initWithFragmentSource:fragmentSource input:input
+               displacementSourceRect:CGRectFromSize(input.size)
+              meshDisplacementTexture:meshDisplacementTexture output:output];
+}
+
+- (instancetype)initWithFragmentSource:(NSString *)fragmentSource input:(LTTexture *)input
+                displacementSourceRect:(CGRect)displacementSourceRect
+               meshDisplacementTexture:(LTTexture *)meshDisplacementTexture
+                                output:(LTTexture *)output {
   LTParameterAssert(fragmentSource);
   LTParameterAssert(input);
   LTParameterAssert(meshDisplacementTexture);
   LTParameterAssert(output);
   [LTMeshProcessor assertMeshTextureFormatOfTexture:meshDisplacementTexture];
-  
+
   LTMeshDrawer *drawer = [[LTMeshDrawer alloc] initWithSourceTexture:input
+                                                      meshSourceRect:displacementSourceRect
                                                          meshTexture:meshDisplacementTexture
                                                       fragmentSource:fragmentSource];
 
@@ -46,13 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (void)assertMeshTextureFormatOfTexture:(LTTexture *)meshDisplacementTexture {
-  /// Pixel format of a mesh texture.
-  static LTGLPixelFormat * const kMeshTexturePixelFormat = $(LTGLPixelFormatRGBA16Float);
-
-  LTParameterAssert(meshDisplacementTexture.pixelFormat.value == kMeshTexturePixelFormat.value,
-                    @"mesh texture pixel format must be %@ but input mesh pixel format is %@",
-                    kMeshTexturePixelFormat.description,
-                    meshDisplacementTexture.pixelFormat.description);
+  LTParameterAssert(meshDisplacementTexture.pixelFormat.value == LTGLPixelFormatRG16Float ||
+                    meshDisplacementTexture.pixelFormat.value == LTGLPixelFormatRGBA16Float,
+                    @"mesh displacement texture must have at least two channels of half-float "
+                    "precision but input texture pixel format is %@",
+                    meshDisplacementTexture.pixelFormat);
 }
 
 #pragma mark -
