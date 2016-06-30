@@ -6,11 +6,11 @@
 #import "LTContentInteractionManager.h"
 #import "LTContentNavigationDelegate.h"
 #import "LTContentTouchEventDelegate.h"
+#import "LTNavigationView.h"
 #import "LTPresentationView.h"
 #import "LTTexture+Factory.h"
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventView.h"
-#import "LTViewNavigationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View responsible for managing the navigation of the content rectangle (both programmatically and
 /// via gestures) and providing information about its current location.
-@property (readonly, nonatomic) LTViewNavigationView *navigationView;
+@property (readonly, nonatomic) LTNavigationView *navigationView;
 
 /// Object used to convert between content coordinates and presentation coordinates.
 @property (readonly, nonatomic) id<LTContentCoordinateConverter> converter;
@@ -114,13 +114,13 @@ NS_ASSUME_NONNULL_BEGIN
                    contentScaleFactor:(CGFloat)contentScaleFactor
                       navigationState:(nullable LTContentNavigationState *)navigationState {
   LTParameterAssert(!navigationState ||
-                    [navigationState isKindOfClass:[LTViewNavigationState class]],
+                    [navigationState isKindOfClass:[LTNavigationViewState class]],
                     @"Provided navigation state (%@) of invalid class", navigationState);
 
   _navigationView =
-      [[LTViewNavigationView alloc] initWithFrame:frame contentSize:contentSize
-                               contentScaleFactor:contentScaleFactor
-                                  navigationState:(LTViewNavigationState *)navigationState];
+      [[LTNavigationView alloc] initWithFrame:frame contentSize:contentSize
+                           contentScaleFactor:contentScaleFactor
+                              navigationState:(LTNavigationViewState *)navigationState];
   self.navigationView.hidden = YES;
   [self addSubview:self.navigationView];
 }
@@ -411,7 +411,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTNavigationViewDelegate
 #pragma mark -
 
-- (void)navigationViewReplacedGestureRecognizers:(LTViewNavigationView *)navigationView {
+- (void)navigationViewReplacedGestureRecognizers:(LTNavigationView *)navigationView {
   LTAssert(navigationView == self.navigationView, @"Received invalid navigation view (%@)",
            navigationView);
   [self updateDefaultGestureRecognizers];

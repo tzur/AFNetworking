@@ -7,22 +7,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTViewNavigationView;
+@class LTNavigationView;
 
 @protocol LTInteractionModeProvider;
 
-/// Value class representing the state of an \c LTViewNavigationView. Can be used to create
-/// additional \c LTViewNavigationView objects with the same zoom, offset, and visible rectangle as
-/// another \c LTViewNavigationView.
-@interface LTViewNavigationState : LTContentNavigationState
+/// Value class representing the state of an \c LTNavigationView. Can be used to create additional
+/// \c LTNavigationView objects with the same zoom, offset, and visible rectangle as another
+/// \c LTNavigationView.
+@interface LTNavigationViewState : LTContentNavigationState
 @end
 
-/// Protocol to be implemented by delegates of \c LTViewNavigationView objects.
+/// Protocol to be implemented by delegates of \c LTNavigationView objects.
 @protocol LTNavigationViewDelegate <NSObject>
 
 /// Called when at least one of the gesture recognizers of the given \c navigationView has been
 /// replaced.
-- (void)navigationViewReplacedGestureRecognizers:(LTViewNavigationView *)navigationView;
+- (void)navigationViewReplacedGestureRecognizers:(LTNavigationView *)navigationView;
 
 @end
 
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///       be updated.
 ///
 /// @important The \c gestureRecognizers property of this instance is an empty array.
-@interface LTViewNavigationView : UIView <LTContentLocationProvider, LTContentNavigationManager>
+@interface LTNavigationView : UIView <LTContentLocationProvider, LTContentNavigationManager>
 
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect)frame
                   contentSize:(CGSize)contentSize
            contentScaleFactor:(CGFloat)contentScaleFactor
-              navigationState:(nullable LTViewNavigationState *)initialNavigationState
+              navigationState:(nullable LTNavigationViewState *)initialNavigationState
     NS_DESIGNATED_INITIALIZER;
 
 /// Informs the instance that the \c interactionMode of the \c interactionModeProvider has been

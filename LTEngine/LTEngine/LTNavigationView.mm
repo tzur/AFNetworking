@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewNavigationView.h"
+#import "LTNavigationView.h"
 
 #import <LTKit/LTAnimation.h>
 #import <LTKit/NSObject+AddToContainer.h>
@@ -12,10 +12,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
-#pragma mark LTViewNavigationViewState
+#pragma mark LTNavigationViewState
 #pragma mark -
 
-@interface LTViewNavigationState ()
+@interface LTNavigationViewState ()
 @property (nonatomic) CGRect visibleContentRectInPoints;
 @property (nonatomic) CGPoint scrollViewContentOffset;
 @property (nonatomic) UIEdgeInsets scrollViewContentInset;
@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL animationActive;
 @end
 
-@implementation LTViewNavigationState
+@implementation LTNavigationViewState
 
-- (BOOL)isEqual:(LTViewNavigationState *)object {
+- (BOOL)isEqual:(LTNavigationViewState *)object {
   if (![object isKindOfClass:[self class]]) {
     return NO;
   }
@@ -54,10 +54,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-#pragma mark LTViewNavigationView
+#pragma mark LTNavigationView
 #pragma mark -
 
-@interface LTViewNavigationView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface LTNavigationView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 /// Underlying scroll view used to generate native-feel bouncing feedback when scrolling
 /// out of bounds.
@@ -117,10 +117,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation LTViewNavigationView
+@implementation LTNavigationView
 
 /// Name of the notification indicating an update during the scroll view animation.
-static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAnimation";
+static NSString * const kScrollAnimationNotification = @"LTNavigationViewAnimation";
 
 #pragma mark -
 #pragma mark Initialization
@@ -128,7 +128,7 @@ static NSString * const kScrollAnimationNotification = @"LTViewNavigationViewAni
 
 - (instancetype)initWithFrame:(CGRect)frame contentSize:(CGSize)contentSize
            contentScaleFactor:(CGFloat)contentScaleFactor
-              navigationState:(nullable LTViewNavigationState *)initialNavigationState {
+              navigationState:(nullable LTNavigationViewState *)initialNavigationState {
   LTParameterAssert(contentScaleFactor > 0, @"Given content scale factor (%g) must be positive",
                     contentScaleFactor);
 
@@ -215,9 +215,9 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
                                                 object:self];
 }
 
-- (void)navigateToState:(LTViewNavigationState *)state {
+- (void)navigateToState:(LTNavigationViewState *)state {
   LTParameterAssert(state);
-  LTParameterAssert([state isMemberOfClass:[LTViewNavigationState class]]);
+  LTParameterAssert([state isMemberOfClass:[LTNavigationViewState class]]);
 
   self.scrollView.zoomScale = state.zoomScale;
   self.contentInset = state.navigationViewContentInset;
@@ -734,8 +734,8 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 @synthesize interactionModeProvider = _interactionModeProvider;
 @synthesize navigationDelegate = _navigationDelegate;
 
-- (LTViewNavigationState *)navigationState {
-  LTViewNavigationState *state = [[LTViewNavigationState alloc] init];
+- (LTNavigationViewState *)navigationState {
+  LTNavigationViewState *state = [[LTNavigationViewState alloc] init];
   state.visibleContentRectInPoints = self.visibleContentRectInPoints;
   state.zoomScale = self.scrollView.zoomScale;
   state.scrollViewContentOffset = self.scrollView.contentOffset;

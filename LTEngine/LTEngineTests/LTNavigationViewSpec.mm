@@ -1,24 +1,24 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewNavigationView.h"
+#import "LTNavigationView.h"
 
-@interface LTViewNavigationView ()
+@interface LTNavigationView ()
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *contentView;
 @end
 
-@interface LTViewNavigationState ()
+@interface LTNavigationViewState ()
 @property (nonatomic) CGPoint scrollViewContentOffset;
 @property (nonatomic) UIEdgeInsets scrollViewContentInset;
 @end
 
-static CGPoint LTContentCenter(LTViewNavigationView *view) {
+static CGPoint LTContentCenter(LTNavigationView *view) {
   CGRect contentFrame = [view.scrollView convertRect:view.contentView.frame toView:view];
   return std::round(CGRectCenter(CGRectIntersection(contentFrame, view.bounds)));
 }
 
-SpecBegin(LTViewNavigationView)
+SpecBegin(LTNavigationView)
 
 const CGFloat kScale = 100;
 const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
@@ -29,10 +29,10 @@ const CGFloat kContentScaleFactor = 3;
 
 context(@"initialization", ^{
   it(@"should initialize correctly with default navigation state", ^{
-    LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
-                                                                 contentSize:kContentSize
-                                                          contentScaleFactor:kContentScaleFactor
-                                                             navigationState:nil];
+    LTNavigationView *view = [[LTNavigationView alloc] initWithFrame:kViewFrame
+                                                         contentSize:kContentSize
+                                                  contentScaleFactor:kContentScaleFactor
+                                                     navigationState:nil];
     expect(view.frame).to.equal(kViewFrame);
     expect(view.contentSize).to.equal(kContentSize);
     expect(view.contentScaleFactor).to.equal(kContentScaleFactor);
@@ -41,15 +41,15 @@ context(@"initialization", ^{
 
   it(@"should initialize correctly with given navigation state", ^{
     const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale,kScale), kViewSize);
-    LTViewNavigationView *view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame
-                                                                 contentSize:kContentSize
-                                                          contentScaleFactor:kContentScaleFactor
-                                                             navigationState:nil];
+    LTNavigationView *view = [[LTNavigationView alloc] initWithFrame:kViewFrame
+                                                         contentSize:kContentSize
+                                                  contentScaleFactor:kContentScaleFactor
+                                                     navigationState:nil];
     [view zoomToRect:targetRect animated:NO];
-    LTViewNavigationView *otherView =
-        [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
-                                 contentScaleFactor:kContentScaleFactor
-                                    navigationState:(LTViewNavigationState *)view.navigationState];
+    LTNavigationView *otherView =
+        [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
+                             contentScaleFactor:kContentScaleFactor
+                                navigationState:(LTNavigationViewState *)view.navigationState];
     expect(view.frame).to.equal(kViewFrame);
     expect(view.contentSize).to.equal(kContentSize);
     expect(otherView.visibleContentRect).to.equal(view.visibleContentRect);
@@ -57,11 +57,11 @@ context(@"initialization", ^{
 });
 
 context(@"properties", ^{
-  __block LTViewNavigationView *view;
+  __block LTNavigationView *view;
   
   beforeEach(^{
-    view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
-                                    contentScaleFactor:kContentScaleFactor navigationState:nil];
+    view = [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
+                                contentScaleFactor:kContentScaleFactor navigationState:nil];
   });
   
   afterEach(^{
@@ -115,11 +115,11 @@ context(@"navigation", ^{
   const CGRect kViewFrame = CGRectFromSize(kViewSize);
   const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale, kScale), kViewSize);
 
-  __block LTViewNavigationView *view;
+  __block LTNavigationView *view;
 
   beforeEach(^{
-    view = [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
-                                    contentScaleFactor:kContentScaleFactor navigationState:nil];
+    view = [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
+                                contentScaleFactor:kContentScaleFactor navigationState:nil];
   });
 
   afterEach(^{
@@ -128,9 +128,9 @@ context(@"navigation", ^{
 
   context(@"LTContentNavigationManager", ^{
     it(@"should navigate to a given state", ^{
-      LTViewNavigationView *otherView =
-          [[LTViewNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
-                                   contentScaleFactor:kContentScaleFactor navigationState:nil];
+      LTNavigationView *otherView =
+          [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
+                               contentScaleFactor:kContentScaleFactor navigationState:nil];
 
       expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
 
