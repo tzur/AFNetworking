@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns an empty \c NSIndexPath with a zero \c length and no indexes.
 + (instancetype)blu_empty;
 
+/// Returns a new \c NSIndexPath by adding (appending) indexes of \c indexPath to the receiver.
+- (NSIndexPath *)blu_indexPathByAddingIndexPath:(NSIndexPath *)indexPath;
+
+/// Returns the indexes as a vector.
+- (std::vector<NSUInteger>)blu_indexes;
+
 @end
 
 NS_ASSUME_NONNULL_END

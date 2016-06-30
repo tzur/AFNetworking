@@ -30,6 +30,19 @@ NS_ASSUME_NONNULL_BEGIN
   return indexPath;
 }
 
+- (NSIndexPath *)blu_indexPathByAddingIndexPath:(NSIndexPath *)indexPath {
+  std::vector<NSUInteger> indexes(self.length + indexPath.length);
+  [self getIndexes:&indexes[0] range:NSMakeRange(0, self.length)];
+  [indexPath getIndexes:&indexes[self.length] range:NSMakeRange(0, indexPath.length)];
+  return [NSIndexPath blu_indexPathWithIndexes:indexes];
+}
+
+- (std::vector<NSUInteger>)blu_indexes {
+  std::vector<NSUInteger> indexes(self.length);
+  [self getIndexes:indexes.data() range:NSMakeRange(0, indexes.size())];
+  return indexes;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
