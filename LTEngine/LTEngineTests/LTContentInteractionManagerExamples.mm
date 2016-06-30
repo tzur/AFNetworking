@@ -11,10 +11,24 @@ NSString * const kLTContentInteractionManagerExamples = @"LTContentInteractionMa
 NSString * const kLTContentInteractionManager = @"LTContentInteractionManager";
 NSString * const kLTContentInteractionManagerView = @"LTContentInteractionManagerView";
 
+@interface LTContentInteractionManagerObserver : NSObject
+@property (strong, nonatomic) NSArray<UIGestureRecognizer *> *customGestureRecognizers;
+@end
+
+@implementation LTContentInteractionManagerObserver
+
+- (void)observeValueForKeyPath:(NSString __unused *)keyPath ofObject:(__unused id)object
+                        change:(NSDictionary<NSString *, id> *)change
+                       context:(void __unused *)context {
+  self.customGestureRecognizers = change[@"new"];
+}
+
+@end
+
 SharedExamplesBegin(LTContentInteractionManager)
 
 sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
-  __block id<LTContentInteractionManager, LTContentTouchEventDelegate> manager;
+  __block NSObject<LTContentInteractionManager, LTContentTouchEventDelegate> *manager;
   __block UIView *view;
 
   beforeEach(^{
@@ -74,6 +88,30 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
         expect(gestureRecognizers).to.haveACountOf(1);
         expect([gestureRecognizers anyObject]).to.beIdenticalTo(anotherRecognizer);
       });
+    });
+  });
+
+  context(@"KVO compliance", ^{
+    __block LTContentInteractionManagerObserver *observer;
+    __block NSString *keypath;
+
+    beforeEach(^{
+      observer = [[LTContentInteractionManagerObserver alloc] init];
+      keypath = @keypath(manager, customGestureRecognizers);
+      [manager addObserver:observer forKeyPath:keypath options:NSKeyValueObservingOptionNew
+                   context:NULL];
+    });
+
+    afterEach(^{
+      [manager removeObserver:observer forKeyPath:keypath];
+    });
+
+    it(@"should send KVO notification when custom gesture recognizers are modified", ^{
+      expect(observer.customGestureRecognizers).to.beNil();
+      manager.customGestureRecognizers = @[[[UITapGestureRecognizer alloc] init]];
+      expect(observer.customGestureRecognizers).to.equal(manager.customGestureRecognizers);
+      manager.customGestureRecognizers = @[];
+      expect(observer.customGestureRecognizers).to.equal(manager.customGestureRecognizers);
     });
   });
 

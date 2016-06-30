@@ -291,6 +291,16 @@ NS_ASSUME_NONNULL_BEGIN
   [self.navigationView interactionModeUpdated];
 }
 
+// Manually override getter in order to correctly support KVO compliance.
+- (nullable NSArray<UIGestureRecognizer *> *)customGestureRecognizers {
+  return self.interactionManager.customGestureRecognizers;
+}
+
++ (NSSet<NSString *> *)keyPathsForValuesAffectingCustomGestureRecognizers {
+  return [NSSet setWithObject:@instanceKeypath(LTContentView,
+                                               interactionManager.customGestureRecognizers)];
+}
+
 #pragma mark -
 #pragma mark LTContentCoordinateConverter
 #pragma mark -

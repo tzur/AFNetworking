@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// detached from the view and the new gesture recognizers are attached to it. The object performing
 /// the modification of this property is responsible for enabling/disabling the gesture recognizers
 /// according to its requirements.
+///
+/// KVO compliant.
 @property (strong, nonatomic, nullable) NSArray<UIGestureRecognizer *> *customGestureRecognizers;
 
 /// Delegate informed about content touch event sequences.
