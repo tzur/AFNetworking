@@ -5,7 +5,7 @@
 
 #import "LTTouchCollector.h"
 
-@protocol LTInteractionModeDelegate;
+@protocol LTInteractionModeManager;
 
 #pragma mark -
 #pragma mark LTPainterDelegate
@@ -48,8 +48,8 @@
 /// Delegate notified on painter events.
 @property (weak, nonatomic) id<LTPainterDelegate> delegate;
 
-/// Delegate used to update the content interaction mode.
-@property (weak, nonatomic) id<LTInteractionModeDelegate> interactionModeDelegate;
+/// Object managing the interaction mode.
+@property (weak, nonatomic) id<LTInteractionModeManager> interactionModeManager;
 
 /// Painter component acting as \c LTContentTouchEventDelegate, used for converting incoming touch
 /// events into corresponding painting strokes.

@@ -5,7 +5,7 @@
 
 #import "LTPainterPoint.h"
 
-@protocol LTContentTouchEventProvider, LTInteractionModeDelegate, LTTouchCollectorFilter;
+@protocol LTContentTouchEventProvider, LTInteractionModeManager, LTTouchCollectorFilter;
 
 @class LTTouchCollector;
 
@@ -30,15 +30,15 @@
 
 /// The \c LTTouchCollector class is used to filter content touch events of a single content touch
 /// event sequence and convert them to corresponding \c LTPainterPoint objects. This class also
-/// handles the logic of updating the interaction mode of a given \c LTInteractionModeDelegate
+/// handles the logic of updating the interaction mode of a given \c LTInteractionModeManager
 /// during occurring touch event sequences. The filtering of the incoming content touch events is
 /// performed by an \c LTTouchCollectorFilter.
 @interface LTTouchCollector : NSObject <LTContentTouchEventDelegate>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c delegate.
-- (instancetype)initWithInteractionModeDelegate:(id<LTInteractionModeDelegate>)delegate
+/// Initializes with the given \c manager.
+- (instancetype)initWithInteractionModeManager:(id<LTInteractionModeManager>)manager
     NS_DESIGNATED_INITIALIZER;
 
 /// Cancels the currently active stroke, or do nothing in case there is no active stroke.

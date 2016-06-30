@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Protocol to be implemented by objects maintaining the mode defining the user interaction via
+/// Protocol to be implemented by objects managing the mode defining the user interaction via
 /// gestures and/or touches on a content view.
-@protocol LTInteractionModeDelegate <LTInteractionModeProvider>
+@protocol LTInteractionModeManager <LTInteractionModeProvider>
 
 /// Mode defining the interaction. See \c LTInteractionModeProvider for more details.
 ///
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol to be implemented by objects managing the user interaction via gestures and/or touches
 /// on a content view.
-@protocol LTContentInteractionManager <LTInteractionModeDelegate>
+@protocol LTContentInteractionManager <LTInteractionModeManager>
 
 /// Ordered collection of custom gesture recognizers to be used to recognize gestures on the view
 /// managed by this instance. Upon modificiation of this property, the old gesture recognizers are

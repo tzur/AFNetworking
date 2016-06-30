@@ -20,7 +20,7 @@
 
 /// Filter accepting points with a sufficient distance from the first point of the most recent
 /// content touch event sequence. Used to decide when to update the interaction mode of the
-/// \c interactionModeDelegate of this instance.
+/// \c interactionModeManager of this instance.
 @property (strong, nonatomic) id<LTTouchCollectorFilter> filterForDisablingNavigation;
 
 /// Timer used to trigger touch events based on time, even if there was no movement.
@@ -31,7 +31,7 @@
 @property (strong, nonatomic, nullable) NSNumber *sequenceID;
 
 /// Object via which the interaction mode can be updated.
-@property (strong, nonatomic) id<LTInteractionModeDelegate> interactionModeDelegate;
+@property (strong, nonatomic) id<LTInteractionModeManager> interactionModeManager;
 
 /// Array with all touch points collected during the current stroke.
 @property (strong, nonatomic) NSMutableArray *strokeTouchPoints;
@@ -63,12 +63,12 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithInteractionModeDelegate:(id<LTInteractionModeDelegate>)delegate {
+- (instancetype)initWithInteractionModeManager:(id<LTInteractionModeManager>)manager {
   if (self = [super init]) {
     self.filter = [self createDefaultFilter];
     self.filterForDisablingNavigation = [self createFilterForDisablingNavigation];
     self.previousInteractionMode = LTInteractionModeNone;
-    self.interactionModeDelegate = delegate;
+    self.interactionModeManager = manager;
   }
   return self;
 }
@@ -155,8 +155,8 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
     if ([self.filterForDisablingNavigation acceptNewPoint:newPoint withOldPoint:self.firstPoint]) {
       if (!self.useStrokeInteractionMode) {
         self.useStrokeInteractionMode = YES;
-        self.previousInteractionMode = self.interactionModeDelegate.interactionMode;
-        self.interactionModeDelegate.interactionMode = LTInteractionModeTouchEvents;
+        self.previousInteractionMode = self.interactionModeManager.interactionMode;
+        self.interactionModeManager.interactionMode = LTInteractionModeTouchEvents;
       }
     }
   }
@@ -180,8 +180,8 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   self.sequenceID = nil;
   [self endTimer];
   if (self.useStrokeInteractionMode &&
-      self.interactionModeDelegate.interactionMode == LTInteractionModeTouchEvents) {
-    self.interactionModeDelegate.interactionMode = self.previousInteractionMode;
+      self.interactionModeManager.interactionMode == LTInteractionModeTouchEvents) {
+    self.interactionModeManager.interactionMode = self.previousInteractionMode;
     self.previousInteractionMode = LTInteractionModeNone;
     self.useStrokeInteractionMode = NO;
   }
