@@ -9,10 +9,11 @@
 #import "LTGLContext.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPresentationViewDrawDelegate.h"
+#import "LTPresentationViewFramebufferDelegate.h"
 #import "LTTexture+Factory.h"
 #import "LTTouchEvent.h"
 #import "LTTouchEventView.h"
-#import "LTViewDelegates.h"
 
 @interface LTContentView ()
 - (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
@@ -214,11 +215,11 @@ context(@"protocols", ^{
         expect(view.drawDelegate).to.beNil();
       });
 
-      it(@"should use given framebuffer delegate", ^{
-        id delegateMock = OCMProtocolMock(@protocol(LTViewDrawDelegate));
+      it(@"should use given draw delegate", ^{
+        id delegateMock = OCMProtocolMock(@protocol(LTPresentationViewDrawDelegate));
         view.drawDelegate = delegateMock;
-        OCMExpect([delegateMock ltView:OCMOCK_ANY drawProcessedContent:OCMOCK_ANY
-                withVisibleContentRect:CGRectFromSize(CGSizeMakeUniform(1))]);
+        OCMExpect([delegateMock presentationView:OCMOCK_ANY drawProcessedContent:OCMOCK_ANY
+                          withVisibleContentRect:CGRectFromSize(CGSizeMakeUniform(1))]);
 
         [view snapshotView];
 
@@ -475,7 +476,7 @@ context(@"protocols", ^{
                                contentScaleFactor:kContentScaleFactor context:currentContext
                                    contentTexture:nil navigationState:nil];
       [view layoutIfNeeded];
-      drawDelegateMock = OCMProtocolMock(@protocol(LTViewDrawDelegate));
+      drawDelegateMock = OCMProtocolMock(@protocol(LTPresentationViewDrawDelegate));
       view.drawDelegate = drawDelegateMock;
     });
 
@@ -485,7 +486,7 @@ context(@"protocols", ^{
     });
 
     it(@"should request delegate to update the image content", ^{
-      OCMExpect([drawDelegateMock ltView:OCMOCK_ANY updateContentInRect:kContentRect]);
+      OCMExpect([drawDelegateMock presentationView:OCMOCK_ANY updateContentInRect:kContentRect]);
 
       [view setNeedsDisplayContent];
 
@@ -495,7 +496,7 @@ context(@"protocols", ^{
 
     it(@"should request delegate to update a part of the image content", ^{
       CGRect rect = CGRectFromSize(CGSizeMakeUniform(0.5));
-      OCMExpect([drawDelegateMock ltView:OCMOCK_ANY updateContentInRect:rect]);
+      OCMExpect([drawDelegateMock presentationView:OCMOCK_ANY updateContentInRect:rect]);
 
       [view setNeedsDisplayContentInRect:rect];
 
@@ -504,8 +505,8 @@ context(@"protocols", ^{
     });
 
     it(@"should not request delegate to update any part of the image content if not required", ^{
-      [[[drawDelegateMock reject] ignoringNonObjectArgs] ltView:OCMOCK_ANY
-                                            updateContentInRect:CGRectZero];
+      [[[drawDelegateMock reject] ignoringNonObjectArgs] presentationView:OCMOCK_ANY
+                                                      updateContentInRect:CGRectZero];
 
       [view setNeedsDisplay];
 
@@ -515,7 +516,7 @@ context(@"protocols", ^{
 
     it(@"should request delegate to update the image content only once per update request", ^{
       __block NSUInteger numberOfDelegateCalls = 0;
-      OCMStub([drawDelegateMock ltView:OCMOCK_ANY updateContentInRect:kContentRect])
+      OCMStub([drawDelegateMock presentationView:OCMOCK_ANY updateContentInRect:kContentRect])
           .andDo(^(NSInvocation *) {
         ++numberOfDelegateCalls;
       });

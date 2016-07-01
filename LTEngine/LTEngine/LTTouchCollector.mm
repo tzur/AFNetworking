@@ -11,7 +11,6 @@
 #import "LTTouchEvent.h"
 #import "LTTouchEventProvider.h"
 #import "LTPainterPoint.h"
-#import "LTView.h"
 
 @interface LTTouchCollector ()
 
@@ -19,8 +18,9 @@
 /// beginning of two finger gestures as touches.
 @property (strong, nonatomic) id<LTTouchCollectorFilter> filterForInitialMovement;
 
-/// Filter used for disabling the navigation gestures of the \c LTView after a stroke started and
-/// gained enough momentum.
+/// Filter accepting points with a sufficient distance from the first point of the most recent
+/// content touch event sequence. Used to decide when to update the interaction mode of the
+/// \c interactionModeDelegate of this instance.
 @property (strong, nonatomic) id<LTTouchCollectorFilter> filterForDisablingNavigation;
 
 /// Timer used to trigger touch events based on time, even if there was no movement.
@@ -40,7 +40,7 @@
 /// \c LTInteractionModeNone, and that it should be restored when the stroke ends.
 @property (nonatomic) BOOL useStrokeInteractionMode;
 
-/// Navigation mode of the LTView prior to the stroke.
+/// Interaction mode right before a currently occuring content touch event sequence.
 @property (nonatomic) LTInteractionMode previousInteractionMode;
 
 @end

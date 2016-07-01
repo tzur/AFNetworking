@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTImage, LTTexture;
 
-@protocol LTViewDrawDelegate, LTViewFramebufferDelegate;
+@protocol LTPresentationViewDrawDelegate, LTPresentationViewFramebufferDelegate;
 
 /// Protocol to be implemented by objects responsible for triggering the refreshing of displayed
 /// rectangular image content.
@@ -49,10 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (LTImage *)snapshotView;
 
 /// Delegate used to render the image content.
-@property (weak, nonatomic, nullable) id<LTViewDrawDelegate> drawDelegate;
+@property (weak, nonatomic, nullable) id<LTPresentationViewDrawDelegate> drawDelegate;
 
-/// Delegate informed about framebuffer changes.
-@property (weak, nonatomic, nullable) id<LTViewFramebufferDelegate> framebufferDelegate;
+/// Delegate informed about framebuffer size changes.
+@property (weak, nonatomic, nullable) id<LTPresentationViewFramebufferDelegate> framebufferDelegate;
 
 /// Size, in pixels, of the framebuffer storing the image content.
 @property (readonly, nonatomic) CGSize framebufferSize;

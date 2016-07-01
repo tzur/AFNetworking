@@ -11,8 +11,8 @@
 ///
 /// Uses an \c LTContentLocationProvider responsible for the location of the rectangle bounding the
 /// displayed image content.
-/// Uses an \c LTDrawDelegate to update the content and control the displayed output (overlays,
-/// postprocessing, etc.).
+/// Uses an \c LTPresentationViewDrawDelegate to update the content and control the displayed
+/// output (overlays, postprocessing, etc.).
 ///
 /// @note Due to implementation details, the content scale factor of the view must not be changed
 /// after the view has been laid out. To achieve this, setting the \c contentScaleFactor is disabled
@@ -56,7 +56,7 @@
 
 /// Binds the given \c fbo, acting as if rendering was performed to a screen framebuffer, and
 /// executes the internal rendering pipeline, including the appropriate call to the
-/// \c LTDrawDelegate of this instance.
+/// \c LTPresentationViewDrawDelegate of this instance.
 - (void)drawToFbo:(LTFbo *)fbo;
 
 @end

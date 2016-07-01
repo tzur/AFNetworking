@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Gesture recognizers provided by (but not added to) this view.
 @property (strong, nonatomic) NSArray<UIGestureRecognizer *> *navigationGestureRecognizers;
 
-/// Animation for updating the LTView according to the scrollView's state.
+/// Animation for updating the content rectangle according to the scrollView's state.
 @property (strong, nonatomic) LTAnimation *animation;
 
 /// State if underlying scrollview dragging.
@@ -394,10 +394,11 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   __block NSUInteger animationFrames = 0;
   __block BOOL addedZoomBounceCenteringAnimation = NO;
   
-  // Otherwise, create an animation for updating the LTView according to the scrollView's state.
+  // Otherwise, create an animation for updating the content rectangle according to the state of the
+  /// \c scrollView.
   @weakify(self);
   self.animation = [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
-    // If the LTView was deallocated, the animation shouldn't continue.
+    // If this instance was deallocated, the animation should not continue.
     @strongify(self)
     if (!self) {
       return NO;

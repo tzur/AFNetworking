@@ -6,10 +6,10 @@
 #import "LTContentInteractionManager.h"
 #import "LTContentNavigationDelegate.h"
 #import "LTContentTouchEventDelegate.h"
+#import "LTPresentationView.h"
 #import "LTTexture+Factory.h"
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventView.h"
-#import "LTView.h"
 #import "LTViewNavigationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object used to convert between content coordinates and presentation coordinates.
 @property (readonly, nonatomic) id<LTContentCoordinateConverter> converter;
 
-/// View used for displaying the image content.
-@property (readonly, nonatomic) LTView *displayView;
+/// View used for presenting the image content.
+@property (readonly, nonatomic) LTPresentationView *presentationView;
 
 @end
 
@@ -98,7 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
     [super setContentScaleFactor:contentScaleFactor];
     [self createNavigationViewWithFrame:self.bounds contentSize:contentTexture.size
                      contentScaleFactor:contentScaleFactor navigationState:navigationState];
-    [self createDisplayViewWithFrame:self.bounds context:context contentTexture:contentTexture];
+    [self createPresentationViewWithFrame:self.bounds context:context
+                           contentTexture:contentTexture];
     [self createTouchEventViewWithFrame:self.bounds];
     [self createInteractionManager];
     [self createConverter];
@@ -124,17 +125,18 @@ NS_ASSUME_NONNULL_BEGIN
   [self addSubview:self.navigationView];
 }
 
-- (void)createDisplayViewWithFrame:(CGRect)frame context:(LTGLContext *)context
-                    contentTexture:(LTTexture *)contentTexture {
+- (void)createPresentationViewWithFrame:(CGRect)frame context:(LTGLContext *)context
+                         contentTexture:(LTTexture *)contentTexture {
   LTAssert(self.navigationView);
 
-  _displayView = [[LTView alloc] initWithFrame:frame context:context contentTexture:contentTexture
-                       contentLocationProvider:self.navigationView];
-  [self addSubview:self.displayView];
+  _presentationView = [[LTPresentationView alloc] initWithFrame:frame context:context
+                                                 contentTexture:contentTexture
+                                        contentLocationProvider:self.navigationView];
+  [self addSubview:self.presentationView];
 }
 
 - (void)createTouchEventViewWithFrame:(CGRect)frame {
-  LTAssert(self.displayView);
+  LTAssert(self.presentationView);
 
   _touchEventView = [[LTTouchEventView alloc] initWithFrame:frame delegate:self];
   [self addSubview:self.touchEventView];
@@ -157,10 +159,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)bindNavigationViewComponents {
   LTAssert(self.navigationView);
   LTAssert(self.interactionManager);
-  LTAssert(self.displayView);
+  LTAssert(self.presentationView);
 
   self.navigationView.interactionModeProvider = self.interactionManager;
-  self.navigationView.contentSize = self.displayView.contentTextureSize;
+  self.navigationView.contentSize = self.presentationView.contentTextureSize;
   self.navigationView.navigationDelegate = self;
   self.navigationView.delegate = self;
 }
@@ -182,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)layoutSubviews {
   [super layoutSubviews];
 
-  self.displayView.frame = self.bounds;
+  self.presentationView.frame = self.bounds;
   self.navigationView.frame = self.bounds;
   self.touchEventView.frame = self.bounds;
 }
@@ -251,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)conformsToProtocol:(Protocol *)protocol {
   return [self.interactionManager conformsToProtocol:protocol] ||
       [self.navigationView conformsToProtocol:protocol] ||
-      [self.displayView conformsToProtocol:protocol] ||
+      [self.presentationView conformsToProtocol:protocol] ||
       [self.converter conformsToProtocol:protocol] ||
       [super conformsToProtocol:protocol];
 }
@@ -259,7 +261,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)respondsToSelector:(SEL)selector {
   return [self.interactionManager respondsToSelector:selector] ||
       [self.navigationView respondsToSelector:selector] ||
-      [self.displayView respondsToSelector:selector] ||
+      [self.presentationView respondsToSelector:selector] ||
       [self.converter respondsToSelector:selector] ||
       [super respondsToSelector:selector];
 }
@@ -271,8 +273,8 @@ NS_ASSUME_NONNULL_BEGIN
   else if ([self.navigationView respondsToSelector:selector]) {
     return self.navigationView;
   }
-  else if ([self.displayView respondsToSelector:selector]) {
-    return self.displayView;
+  else if ([self.presentationView respondsToSelector:selector]) {
+    return self.presentationView;
   }
   else if ([self.converter respondsToSelector:selector]) {
     return self.converter;
@@ -314,15 +316,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setNeedsDisplay {
-  [self.displayView setNeedsDisplay];
+  [self.presentationView setNeedsDisplay];
 }
 
 - (void)setNeedsDisplayContentInRect:(CGRect)rect {
-  [self.displayView setNeedsDisplayContentInRect:rect];
+  [self.presentationView setNeedsDisplayContentInRect:rect];
 }
 
 - (void)setNeedsDisplayContent {
-  [self.displayView setNeedsDisplayContent];
+  [self.presentationView setNeedsDisplayContent];
 }
 
 #pragma mark -
@@ -331,19 +333,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)replaceContentWith:(LTTexture *)texture {
   self.navigationView.contentSize = texture.size;
-  [self.displayView replaceContentWith:texture];
+  [self.presentationView replaceContentWith:texture];
 }
 
 - (LTImage *)snapshotView {
-  return [self.displayView snapshotView];
+  return [self.presentationView snapshotView];
 }
 
 - (nullable UIColor *)backgroundColor {
-  return self.displayView.backgroundColor;
+  return self.presentationView.backgroundColor;
 }
 
 - (void)setBackgroundColor:(nullable UIColor *)backgroundColor {
-  self.displayView.backgroundColor = backgroundColor;
+  self.presentationView.backgroundColor = backgroundColor;
 }
 
 #pragma mark -
@@ -358,7 +360,7 @@ NS_ASSUME_NONNULL_BEGIN
        respondsToSelector:@selector(navigationManager:didNavigateToVisibleRect:)]) {
     [self.navigationDelegate navigationManager:self didNavigateToVisibleRect:visibleRect];
   }
-  [self.displayView setNeedsDisplay];
+  [self.presentationView setNeedsDisplay];
 }
 
 - (void)navigationManagerDidHandlePanGesture:(id<LTContentNavigationManager>)manager {

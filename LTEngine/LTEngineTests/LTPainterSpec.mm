@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter+LTView.h"
+#import "LTPainter+Interaction.h"
 
 #import "LTBrush.h"
 #import "LTCatmullRomInterpolant.h"

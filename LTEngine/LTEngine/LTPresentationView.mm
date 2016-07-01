@@ -6,16 +6,16 @@
 #import <LTKit/LTAnimation.h>
 
 #import "LTContentLocationProvider.h"
-#import "LTDrawDelegate.h"
 #import "LTEAGLView.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
-#import "LTFramebufferSizeDelegate.h"
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTGridDrawingManager.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPresentationViewDrawDelegate.h"
+#import "LTPresentationViewFramebufferDelegate.h"
 #import "LTProgram.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Factory.h"
@@ -265,8 +265,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   CGSize currentFramebufferSize = self.framebufferSize;
   if (currentFramebufferSize != self.previousFramebufferSize) {
     self.previousFramebufferSize = currentFramebufferSize;
-    if ([self.framebufferDelegate respondsToSelector:@selector(ltView:framebufferChangedToSize:)]) {
-      [self.framebufferDelegate ltView:self framebufferChangedToSize:currentFramebufferSize];
+    if ([self.framebufferDelegate
+         respondsToSelector:@selector(presentationView:framebufferChangedToSize:)]) {
+      [self.framebufferDelegate presentationView:self
+                        framebufferChangedToSize:currentFramebufferSize];
     }
   }
 }
@@ -311,8 +313,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   if (!CGRectIsNull(self.contentRectToUpdate) && !CGRectIsEmpty(self.contentRectToUpdate)) {
     // Bind to offscreen framebuffer, and call the delegate to draw the content on it.
     [self.contentFbo bindAndExecute:^{
-      if ([self.drawDelegate respondsToSelector:@selector(ltView:updateContentInRect:)]) {
-        [self.drawDelegate ltView:self updateContentInRect:self.contentRectToUpdate];
+      if ([self.drawDelegate respondsToSelector:@selector(presentationView:updateContentInRect:)]) {
+        [self.drawDelegate presentationView:self updateContentInRect:self.contentRectToUpdate];
       }
     }];
     
@@ -365,10 +367,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     [self.context executeAndPreserveState:^(LTGLContext *) {
       // If the draw delegate supports the drawProcessedContent mechanism, use it to draw.
       BOOL didDrawProcessedContent = NO;
-      if ([self.drawDelegate respondsToSelector:@selector(ltView:drawProcessedContent:
+      if ([self.drawDelegate respondsToSelector:@selector(presentationView:drawProcessedContent:
                                                           withVisibleContentRect:)]) {
-        didDrawProcessedContent = [self.drawDelegate ltView:self drawProcessedContent:textureToDraw
-                                     withVisibleContentRect:visibleContentRect];
+        didDrawProcessedContent = [self.drawDelegate presentationView:self
+                                                 drawProcessedContent:textureToDraw
+                                               withVisibleContentRect:visibleContentRect];
       }
       
       // Otherwise, use the default rectDrawer to draw the content.
@@ -385,9 +388,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   [self.pixelGrid drawContentRegion:visibleContentRect toFramebufferWithSize:self.framebufferSize];
   
   if ([self.drawDelegate
-          respondsToSelector:@selector(ltView:drawOverlayAboveContentWithTransform:)]) {
+          respondsToSelector:@selector(presentationView:drawOverlayAboveContentWithTransform:)]) {
     CGAffineTransform transform = [self transformForVisibleContentRect:visibleContentRect];
-    [self.drawDelegate ltView:self drawOverlayAboveContentWithTransform:transform];
+    [self.drawDelegate presentationView:self drawOverlayAboveContentWithTransform:transform];
   }
 }
 
@@ -404,7 +407,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (CGRect)scissorBoxForVisibleContentRect:(CGRect)rect {
   // Transform the visible content rect from floating-point pixel units of the content coordinate
-  /// system into point units of the presentation coordinate system.
+  // system into point units of the presentation coordinate system.
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
   

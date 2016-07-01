@@ -28,12 +28,11 @@
 
 @end
 
-/// The \c LTTouchCollector class is used to collect single-finger painting touch events on an \c
-/// LTView. This class handles the logic of ignoring the multi-finger events, disabling navigation
-/// on the \c LTView after a stroke started, etc.
-/// Additionally, the collector can be configured with a \c LTTouchCollectorFilter for filtering
-/// the events based on differences (distance, time interval, etc.) between the last collected touch
-/// and the newly collected one.
+/// The \c LTTouchCollector class is used to filter content touch events of a single content touch
+/// event sequence and convert them to corresponding \c LTPainterPoint objects. This class also
+/// handles the logic of updating the interaction mode of a given \c LTInteractionModeDelegate
+/// during occurring touch event sequences. The filtering of the incoming content touch events is
+/// performed by an \c LTTouchCollectorFilter.
 @interface LTTouchCollector : NSObject <LTContentTouchEventDelegate>
 
 - (instancetype)init NS_UNAVAILABLE;

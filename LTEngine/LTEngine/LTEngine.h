@@ -93,7 +93,7 @@
 #import <LTEngine/LTShapeDrawer.h>
 
 // GPU/Painting.
-#import <LTEngine/LTPainter+LTView.h>
+#import <LTEngine/LTPainter+Interaction.h>
 #import <LTEngine/LTPainterStroke.h>
 
 // GPU/Painting/Brushes.
@@ -114,9 +114,6 @@
 // GPU/Painting/Interpolants.
 #import <LTEngine/LTCatmullRomInterpolant.h>
 #import <LTEngine/LTLinearInterpolant.h>
-
-// UI.
-#import <LTEngine/LTView.h>
 
 // LTEngineBundle.
 #import <LTEngine/NSBundle+LTEngineBundle.h>
