@@ -3,6 +3,9 @@
 
 #import "FBRHTTPTaskProgress.h"
 
+#import "FBRCompare.h"
+#import "FBRHTTPResponse.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation FBRHTTPTaskProgress
@@ -20,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (instancetype)initWithResponseData:(nullable NSData *)responseData {
+- (instancetype)initWithResponse:(FBRHTTPResponse *)response {
   if (self = [super init]) {
     _progress = 1;
-    _responseData = responseData;
+    _response = response;
   }
   return self;
 }
@@ -34,6 +37,37 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)hasCompleted {
   return self.progress == 1;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(FBRHTTPTaskProgress *)object {
+  if (object == self) {
+    return YES;
+  } else if (![object isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return self.progress == object.progress && FBRCompare(self.response, object.response);
+}
+
+- (NSUInteger)hash {
+  return (NSUInteger)self.progress ^ self.response.hash;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, progress: %g, response: %@>", [self class], self,
+          self.progress, self.response];
+}
+
+#pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
 }
 
 @end

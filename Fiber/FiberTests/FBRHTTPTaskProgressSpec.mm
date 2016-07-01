@@ -3,6 +3,8 @@
 
 #import "FBRHTTPTaskProgress.h"
 
+#import "FBRHTTPResponse.h"
+
 SpecBegin(FBRHTTPTaskProgress)
 
 context(@"default initialization", ^{
@@ -13,7 +15,7 @@ context(@"default initialization", ^{
     expect(progress.progress).to.equal(0);
     expect(progress.hasStarted).to.beFalsy();
     expect(progress.hasCompleted).to.beFalsy();
-    expect(progress.responseData).to.beNil();
+    expect(progress.response).to.beNil();
   });
 });
 
@@ -21,7 +23,7 @@ context(@"initialization with progress", ^{
   it(@"should initialize with the specified progress", ^{
     FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:0.5];
     expect(progress.progress).to.beCloseToWithin(0.5, DBL_EPSILON);
-    expect(progress.responseData).to.beNil();
+    expect(progress.response).to.beNil();
   });
 
   it(@"should indicate that the task has started if progress value is between 0 to 1", ^{
@@ -59,42 +61,59 @@ context(@"initialization with progress", ^{
   });
 });
 
-context(@"initialization with response data", ^{
-  context(@"non null response data", ^{
-    __block NSData *responseData;
+context(@"initialization with response", ^{
+  __block FBRHTTPResponse *response;
 
-    beforeEach(^{
-      responseData = [@"Foo" dataUsingEncoding:NSUTF8StringEncoding];
-    });
-
-    it(@"should initialize with the given response data", ^{
-      FBRHTTPTaskProgress *progress =
-          [[FBRHTTPTaskProgress alloc] initWithResponseData:responseData];
-      expect(progress.responseData).to.equal(responseData);
-    });
-
-    it(@"should indicate that the task has started and completed", ^{
-      FBRHTTPTaskProgress *progress =
-          [[FBRHTTPTaskProgress alloc] initWithResponseData:responseData];
-      expect(progress.hasStarted).to.beTruthy();
-      expect(progress.hasCompleted).to.beTruthy();
-    });
+  beforeEach(^{
+    NSURL *URL = [NSURL URLWithString:@"http://foo.bar"];
+    NSHTTPURLResponse *responseMetadata =
+        [[NSHTTPURLResponse alloc] initWithURL:URL statusCode:200 HTTPVersion:nil headerFields:nil];
+    NSData *responseContent = [@"Foo" dataUsingEncoding:NSUTF8StringEncoding];
+    response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata content:responseContent];
   });
 
+  it(@"should initialize with the given response", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponse:response];
+    expect(progress.response).to.equal(response);
+  });
+  
+  it(@"should indicate that the task has started and completed", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponse:response];
+    expect(progress.progress).to.equal(1);
+    expect(progress.hasStarted).to.beTruthy();
+    expect(progress.hasCompleted).to.beTruthy();
+  });
+});
 
-  context(@"nil response data", ^{
-    it(@"should initialize with nil response data", ^{
-      FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponseData:nil];
-      expect(progress).toNot.beNil();
-      expect(progress.responseData).to.beNil();
-      expect(progress.progress).to.equal(1);
-    });
+context(@"equality", ^{
+  it(@"should indicate that two identical objects are equal", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
+    FBRHTTPTaskProgress *anotherProgress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
 
-    it(@"should indicate that the task has started and completed", ^{
-      FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponseData:nil];
-      expect(progress.hasStarted).to.beTruthy();
-      expect(progress.hasCompleted).to.beTruthy();
-    });
+    expect([progress isEqual:anotherProgress]).to.beTruthy();
+  });
+
+  it(@"should return the same hash for identical objects", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
+    FBRHTTPTaskProgress *anotherProgress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
+
+    expect(progress.hash).to.equal(anotherProgress.hash);
+  });
+
+  it(@"should indicate that two non identical objects are not equal", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
+    FBRHTTPTaskProgress *anotherProgress = [[FBRHTTPTaskProgress alloc] initWithProgress:0.5];
+
+    expect([progress isEqual:anotherProgress]).to.beFalsy();
+  });
+});
+
+context(@"copying", ^{
+  it(@"should return a configuration identical to the copied configuration", ^{
+    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
+    FBRHTTPTaskProgress *anotherProgress = [progress copy];
+
+    expect(progress).to.equal(anotherProgress);
   });
 });
 
