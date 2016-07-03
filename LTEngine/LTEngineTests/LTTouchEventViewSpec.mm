@@ -18,6 +18,8 @@
 
 @interface LTTestTouchEventDelegate : NSObject <LTTouchEventDelegate>
 @property (strong, nonatomic) NSMutableArray<LTTestTouchEventDelegateCall *> *calls;
+@property (strong, nonatomic) NSSet<NSNumber *> *idsOfCancelledSequences;
+@property (nonatomic) LTTouchEventSequenceState terminationState;
 @end
 
 @implementation LTTestTouchEventDelegate
@@ -36,6 +38,12 @@
 }
 
 - (void)receivedUpdatesOfTouchEvents:(LTTouchEvents __unused *)events {
+}
+
+- (void)touchEventSequencesWithIDs:(NSSet<NSNumber *> *)sequenceIDs
+               terminatedWithState:(LTTouchEventSequenceState)state {
+  self.idsOfCancelledSequences = sequenceIDs;
+  self.terminationState = state;
 }
 
 - (void)storeEvents:(LTTouchEvents *)events predictedEvents:(LTTouchEvents *)predictedEvents
@@ -324,6 +332,126 @@ context(@"initialization", ^{
     LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:frame delegate:delegateMock];
     expect(view.frame).to.equal(frame);
     expect(view.delegate).to.beIdenticalTo(delegateMock);
+  });
+});
+
+context(@"cancellation", ^{
+  __block LTTestTouchEventDelegate *delegate;
+  __block LTTouchEventView *view;
+  __block id mainTouch;
+  __block id anotherMainTouch;
+  __block id eventMock;
+  __block NSSet<id<LTTouchEvent>> *allTouches;
+
+  beforeEach(^{
+    delegate = [[LTTestTouchEventDelegate alloc] init];
+    view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+    mainTouch = LTTouchEventViewCreateTouch(0);
+    anotherMainTouch = LTTouchEventViewCreateTouch(1);
+    eventMock = LTTouchEventViewCreateEvent();
+    allTouches = [NSSet setWithArray:@[mainTouch, anotherMainTouch]];
+  });
+
+  afterEach(^{
+    allTouches = nil;
+    eventMock = nil;
+    mainTouch = nil;
+    anotherMainTouch = nil;
+    view = nil;
+    delegate = nil;
+  });
+
+  it(@"should ignore cancellation requests if no touch event sequences are currently occurring", ^{
+    [view cancelTouchEventSequences];
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should cancel existing touch event sequences", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+    [view cancelTouchEventSequences];
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.contain(@0);
+    expect(delegate.idsOfCancelledSequences).to.contain(@1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should cancel existing touch event sequences and not report another termination", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [view cancelTouchEventSequences];
+    [delegate.calls removeAllObjects];
+    [view touchesEnded:allTouches withEvent:eventMock];
+    expect(delegate.calls).to.haveACountOf(0);
+  });
+
+  it(@"should cancel existing touch event sequences and not report another cancellation", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [view cancelTouchEventSequences];
+    [delegate.calls removeAllObjects];
+    [view touchesCancelled:allTouches withEvent:eventMock];
+    expect(delegate.calls).to.haveACountOf(0);
+  });
+
+  it(@"should ignore cancellation requests if termination has already been reported", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    [view touchesEnded:allTouches withEvent:eventMock];
+    expect(delegate.calls).to.haveACountOf(2);
+    [view cancelTouchEventSequences];
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should ignore cancellation requests if cancellation has already been reported", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    [view touchesCancelled:allTouches withEvent:eventMock];
+    expect(delegate.calls).to.haveACountOf(2);
+    [view cancelTouchEventSequences];
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+  });
+});
+
+context(@"retrieval", ^{
+  __block id mainTouch0;
+  __block id mainTouch1;
+  __block id mainTouch2;
+  __block LTTouchEventView *view;
+
+  beforeEach(^{
+    mainTouch0 = LTTouchEventViewCreateTouch(0);
+    mainTouch1 = LTTouchEventViewCreateTouch(1);
+    mainTouch2 = LTTouchEventViewCreateTouch(2);
+    id eventMock = LTTouchEventViewCreateEvent();
+
+    view = [[LTTouchEventView alloc] initWithFrame:CGRectZero
+                                          delegate:[[LTTestTouchEventDelegate alloc] init]];
+
+    [view touchesBegan:[NSSet setWithArray:@[mainTouch0, mainTouch1]] withEvent:eventMock];
+    [view touchesBegan:[NSSet setWithArray:@[mainTouch2]] withEvent:eventMock];
+  });
+
+  it(@"should correctly retrieve touch events of currently stationary touch event sequences", ^{
+    OCMStub([mainTouch0 phase]).andReturn(UITouchPhaseStationary);
+    OCMStub([mainTouch1 phase]).andReturn(UITouchPhaseStationary);
+    OCMStub([mainTouch2 phase]).andReturn(UITouchPhaseBegan);
+
+    NSArray<id<LTTouchEvent>> *stationaryTouchEvents = [[view stationaryTouchEvents] allObjects];
+
+    expect(stationaryTouchEvents).to.haveACountOf(2);
+
+    id<LTTouchEvent> touchEvent = !stationaryTouchEvents.firstObject.sequenceID ?
+        stationaryTouchEvents.firstObject : stationaryTouchEvents.lastObject;
+    id<LTTouchEvent> otherTouchEvent = stationaryTouchEvents.firstObject.sequenceID ?
+        stationaryTouchEvents.firstObject : stationaryTouchEvents.lastObject;
+
+    expect(touchEvent.sequenceID).to.equal(0);
+    expect(otherTouchEvent.sequenceID).to.equal(1);
+    expect(touchEvent.phase).to.equal(UITouchPhaseStationary);
+    expect(otherTouchEvent.phase).to.equal(UITouchPhaseStationary);
   });
 });
 

@@ -5,6 +5,8 @@
 
 #import "LTTouchCollector.h"
 
+@protocol LTInteractionModeManager;
+
 #pragma mark -
 #pragma mark LTPainterDelegate
 #pragma mark -
@@ -35,19 +37,22 @@
 @end
 
 #pragma mark -
-#pragma mark LTPainter (LTView)
+#pragma mark LTPainter (Interaction)
 #pragma mark -
 
-/// Category providing an interface for drawing using the \c LTPainter using touch gestures on an
-/// \c LTView.
-@interface LTPainter (LTView) <LTTouchCollectorDelegate>
+/// Category augmenting the \c LTPainter class with functionality to draw according to incoming
+/// touch events of a single touch event sequence and update the interaction mode during the
+/// processed touch event sequence.
+@interface LTPainter (Interaction) <LTTouchCollectorDelegate>
 
 /// Delegate notified on painter events.
 @property (weak, nonatomic) id<LTPainterDelegate> delegate;
 
-/// The painter component acting as \c LTViewTouchDelegate, used for converting the touch events on
-/// the \c LTView into painting strokes. the \c LTView's \c touchDelegate property should be set to
-/// this object.
-@property (readonly, nonatomic) id<LTViewTouchDelegate> touchDelegateForLTView;
+/// Object managing the interaction mode.
+@property (weak, nonatomic) id<LTInteractionModeManager> interactionModeManager;
+
+/// Painter component acting as \c LTContentTouchEventDelegate, used for converting incoming touch
+/// events into corresponding painting strokes.
+@property (readonly, nonatomic) id<LTContentTouchEventDelegate> touchDelegateForLTView;
 
 @end

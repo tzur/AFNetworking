@@ -1,10 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter+LTView.h"
+#import "LTPainter+Interaction.h"
 
 #import "LTBrush.h"
 #import "LTCatmullRomInterpolant.h"
+#import "LTContentTouchEventDelegate.h"
 #import "LTLinearInterpolant.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
@@ -78,7 +79,7 @@ context(@"properties", ^{
 
   it(@"should have default properties", ^{
     expect(painter.delegate).to.beNil();
-    expect(painter.touchDelegateForLTView).to.conformTo(@protocol(LTViewTouchDelegate));
+    expect(painter.touchDelegateForLTView).to.conformTo(@protocol(LTContentTouchEventDelegate));
     expect(painter.brush).to.beKindOf([LTBrush class]);
     expect(painter.splineFactory).to.beKindOf([LTCatmullRomInterpolantFactory class]);
     expect(painter.airbrush).to.beFalsy();

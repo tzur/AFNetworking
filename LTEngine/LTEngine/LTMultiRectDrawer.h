@@ -20,8 +20,7 @@
 /// bound offscreen framebuffer with the given size. The rects are defined in the source and target
 /// coordinate systems accordingly, in pixels.
 ///
-/// This method is useful when drawing to a renderbuffer managed by a different class, for example
-/// the \c LTView's content fbo.
+/// This method is useful when drawing to a renderbuffer managed by a different class.
 ///
 /// @note this method assumes that the framebuffer/renderbuffer is already bound for drawing.
 /// @note \c sourceTexture must be set prior to drawing, otherwise an exception will be thrown.

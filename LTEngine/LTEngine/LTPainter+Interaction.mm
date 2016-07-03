@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter+LTView.h"
+#import "LTPainter+Interaction.h"
 
 #import "LTBrush.h"
 #import "LTFbo.h"
@@ -17,7 +17,7 @@
 #import "LTTouchCollectorTimeIntervalFilter.h"
 
 #pragma mark -
-#pragma mark LTPainter+LTView
+#pragma mark LTPainter+Interaction
 #pragma mark -
 
 @interface LTPainter ()
@@ -34,7 +34,7 @@
 #pragma mark Category Properties
 #pragma mark -
 
-/// Touch collector used for receiving touch events from an \c LTView.
+/// Touch collector used for processing and filtering incoming content touch events.
 @property (readonly, nonatomic) LTTouchCollector *touchCollector;
 
 /// Currently active stroke.
@@ -48,7 +48,7 @@
 
 @end
 
-@implementation LTPainter (LTView)
+@implementation LTPainter (Interaction)
 
 #pragma mark -
 #pragma mark LTTouchCollectorDelegate
@@ -175,8 +175,10 @@ LTCategoryProperty(LTPainterStroke *, currentStroke, CurrentStroke);
 LTCategoryProperty(LTTouchCollector *, touchCollector, TouchCollector);
 LTCategoryProperty(LTSlidingWindowFilter *, touchRadiusFilter, TouchRadiusFilter);
 LTCategoryWeakProperty(LTTouchCollector *, delegate, Delegate);
+LTCategoryWeakProperty(id<LTInteractionModeManager>, interactionModeManager,
+                       InteractionModeManager);
 
-- (id<LTViewTouchDelegate>)touchDelegateForLTView {
+- (id<LTContentTouchEventDelegate>)touchDelegateForLTView {
   if (!self.touchCollector) {
     self.touchCollector = [self createTouchCollector];
   }
@@ -185,7 +187,8 @@ LTCategoryWeakProperty(LTTouchCollector *, delegate, Delegate);
 }
 
 - (LTTouchCollector *)createTouchCollector {
-  LTTouchCollector *collector = [[LTTouchCollector alloc] init];
+  LTTouchCollector *collector =
+      [[LTTouchCollector alloc] initWithInteractionModeManager:self.interactionModeManager];
   collector.delegate = self;
   collector.filter = [self createDefaultTouchCollectorFilter];
   return collector;

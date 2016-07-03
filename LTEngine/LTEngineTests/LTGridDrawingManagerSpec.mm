@@ -1,26 +1,26 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTViewPixelGrid.h"
+#import "LTGridDrawingManager.h"
 
 #import "LTFbo.h"
 #import "LTGridDrawer.h"
 #import "LTTexture+Factory.h"
 
-@interface LTViewPixelGrid ()
+@interface LTGridDrawingManager ()
 @property (strong, nonatomic) LTGridDrawer *gridDrawer;
 @end
 
-SpecBegin(LTViewPixelGrid)
+SpecBegin(LTGridDrawingManager)
 
 const CGSize contentSize = CGSizeMake(256, 512);
 const CGRect contentBounds = CGRectFromOriginAndSize(CGPointZero, contentSize);
 
 context(@"properties", ^{
-  __block LTViewPixelGrid *grid;
+  __block LTGridDrawingManager *grid;
   
   beforeEach(^{
-    grid = [[LTViewPixelGrid alloc] initWithContentSize:contentSize];
+    grid = [[LTGridDrawingManager alloc] initWithContentSize:contentSize];
   });
   
   afterEach(^{
@@ -72,7 +72,7 @@ context(@"properties", ^{
 });
 
 context(@"drawing", ^{
-  __block LTViewPixelGrid *grid;
+  __block LTGridDrawingManager *grid;
   __block LTGridDrawer *realDrawer;
   __block id mockDrawer;
   __block LTFbo *fbo;
@@ -80,7 +80,7 @@ context(@"drawing", ^{
   static const CGFloat kSmallValue = 0.01;
   
   beforeEach(^{
-    grid = [[LTViewPixelGrid alloc] initWithContentSize:contentSize];
+    grid = [[LTGridDrawingManager alloc] initWithContentSize:contentSize];
     realDrawer = grid.gridDrawer;
     mockDrawer = [OCMockObject partialMockForObject:realDrawer];
     grid.gridDrawer = mockDrawer;

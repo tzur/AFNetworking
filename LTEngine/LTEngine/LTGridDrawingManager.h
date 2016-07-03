@@ -1,10 +1,10 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-/// The \c LTViewPixelGrid class is used for drawing the pixel grid on an LTView.
-@interface LTViewPixelGrid : NSObject
+/// Object responsible for managing the rendering of a grid onto a render target.
+@interface LTGridDrawingManager : NSObject
 
-/// Creates an \c LTViewPixelGrid for the given content size (in pixels).
+/// Initializes with the given \c size, provided in pixel units, of the grid.
 - (instancetype)initWithContentSize:(CGSize)size;
 
 /// Draws the grid for the given content region to the currently bound screen framebuffer, whose
