@@ -21,7 +21,9 @@
 		65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */; };
 		65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892F671D1AAF510049815D /* FBRHTTPRequest.mm */; };
 		658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */; };
+		659F3AB61D23C81B0097F3D0 /* FBRHTTPClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */; };
 		659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */; };
+		659F3ABE1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */; };
 		659F3B691D2448D70097F3D0 /* NSError+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3B681D2448D70097F3D0 /* NSError+Fiber.mm */; };
 		659F3BDA1D2459AA0097F3D0 /* NSError+FiberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3BD91D2459AA0097F3D0 /* NSError+FiberSpec.mm */; };
 		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
@@ -29,7 +31,7 @@
 		65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694251D06F7C5001DE328 /* FBRHTTPSessionConfiguration.h */; };
 		65A694421D083D4D001DE328 /* FBRHTTPSessionRequestMarshalling.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */; };
 		65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */; };
-		65A694441D083D4D001DE328 /* FBRHTTPSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694091D05948F001DE328 /* FBRHTTPSession.h */; };
+		65A694441D083D4D001DE328 /* FBRHTTPClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65A694091D05948F001DE328 /* FBRHTTPClient.h */; };
 		65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */; };
 		65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */; };
 		65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BDFC151D0EC56D00C86D36 /* libextobjc_iOS.a */; };
@@ -291,7 +293,7 @@
 				65A694411D083D4D001DE328 /* FBRHTTPSessionConfiguration.h in CopyFiles */,
 				65A694421D083D4D001DE328 /* FBRHTTPSessionRequestMarshalling.h in CopyFiles */,
 				65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in CopyFiles */,
-				65A694441D083D4D001DE328 /* FBRHTTPSession.h in CopyFiles */,
+				65A694441D083D4D001DE328 /* FBRHTTPClient.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,12 +313,15 @@
 		65892F661D1AAF510049815D /* FBRHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPRequest.h; sourceTree = "<group>"; };
 		65892F671D1AAF510049815D /* FBRHTTPRequest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPRequest.mm; sourceTree = "<group>"; };
 		658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfigurationSpec.mm; sourceTree = "<group>"; };
+		659F3AB41D23C78A0097F3D0 /* FBRHTTPSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
+		659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPClient.mm; sourceTree = "<group>"; };
 		659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Fiber.h"; sourceTree = "<group>"; };
 		659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Fiber.mm"; sourceTree = "<group>"; };
+		659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPClientSpec.mm; sourceTree = "<group>"; };
 		659F3B671D2448D70097F3D0 /* NSError+Fiber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Fiber.h"; sourceTree = "<group>"; };
 		659F3B681D2448D70097F3D0 /* NSError+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Fiber.mm"; sourceTree = "<group>"; };
 		659F3BD91D2459AA0097F3D0 /* NSError+FiberSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+FiberSpec.mm"; sourceTree = "<group>"; };
-		65A694091D05948F001DE328 /* FBRHTTPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
+		65A694091D05948F001DE328 /* FBRHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClient.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
 		65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTaskProgress.mm; sourceTree = "<group>"; };
@@ -421,9 +426,10 @@
 			isa = PBXGroup;
 			children = (
 				65B7F18E1D18696F005810C9 /* Configuration */,
-				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
+				659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */,
 				653FB1851D2035920000D2CA /* FBRHTTPRequestSpec.mm */,
 				650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */,
+				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
 			);
 			name = "HTTP Session";
 			sourceTree = "<group>";
@@ -460,11 +466,13 @@
 			isa = PBXGroup;
 			children = (
 				65A694391D082170001DE328 /* Configuration */,
-				65A694091D05948F001DE328 /* FBRHTTPSession.h */,
+				65A694091D05948F001DE328 /* FBRHTTPClient.h */,
+				659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */,
 				65892F661D1AAF510049815D /* FBRHTTPRequest.h */,
 				65892F671D1AAF510049815D /* FBRHTTPRequest.mm */,
 				650794381D255E8700187A5D /* FBRHTTPResponse.h */,
 				650794391D255E8700187A5D /* FBRHTTPResponse.mm */,
+				659F3AB41D23C78A0097F3D0 /* FBRHTTPSession.h */,
 				65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */,
 				65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */,
 			);
@@ -1072,6 +1080,7 @@
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
 				659F3B691D2448D70097F3D0 /* NSError+Fiber.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
+				659F3AB61D23C81B0097F3D0 /* FBRHTTPClient.mm in Sources */,
 				65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1102,6 +1111,7 @@
 				65C62C111D047727000FCE99 /* EXPMatchers+sendValues.m in Sources */,
 				65C62C0B1D047727000FCE99 /* EXPMatchers+finish.m in Sources */,
 				65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */,
+				659F3ABE1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm in Sources */,
 				659F3BDA1D2459AA0097F3D0 /* NSError+FiberSpec.mm in Sources */,
 				65C62C081D047727000FCE99 /* EXPMatchers+complete.m in Sources */,
 				65C62C051D047727000FCE99 /* LLReactiveMatchersHelpers.m in Sources */,
