@@ -22,6 +22,8 @@
 		BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */; };
 		BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9C1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m */; };
 		BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */; };
+		BE1C90AA1D20213500FF20CA /* CUIDropDownView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE1C90A91D20213500FF20CA /* CUIDropDownView.mm */; };
+		BE1D01091D203656008FA64F /* CUIDropDownViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */; };
 		BE97556D1D0075A80081A766 /* CUIMenuItemIconButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */; };
 		BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */; };
 		BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */; };
@@ -359,6 +361,9 @@
 		BE0D7A9B1CF4978F009899F9 /* CUISimpleMenuItemViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISimpleMenuItemViewModel.h; sourceTree = "<group>"; };
 		BE0D7A9C1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUISimpleMenuItemViewModel.m; sourceTree = "<group>"; };
 		BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemTextButtonSpec.mm; sourceTree = "<group>"; };
+		BE1C90A81D20213500FF20CA /* CUIDropDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownView.h; sourceTree = "<group>"; };
+		BE1C90A91D20213500FF20CA /* CUIDropDownView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownView.mm; sourceTree = "<group>"; };
+		BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownViewSpec.mm; sourceTree = "<group>"; };
 		BE4629621CDF52D700D9F7E2 /* CUIMenuItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemViewModel.h; sourceTree = "<group>"; };
 		BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemIconButton.h; sourceTree = "<group>"; };
 		BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemIconButton.mm; sourceTree = "<group>"; };
@@ -674,6 +679,8 @@
 				BEC7B1851D1FF4E50012C286 /* CUIDropDownEntry.h */,
 				BEC7B1831D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.h */,
 				BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */,
+				BE1C90A81D20213500FF20CA /* CUIDropDownView.h */,
+				BE1C90A91D20213500FF20CA /* CUIDropDownView.mm */,
 				BE0D7A7B1CF49705009899F9 /* CUIMenuItemButton.h */,
 				BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */,
 				BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */,
@@ -771,6 +778,7 @@
 			isa = PBXGroup;
 			children = (
 				BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */,
+				BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */,
 				BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */,
 				BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */,
 				BE0D7A9B1CF4978F009899F9 /* CUISimpleMenuItemViewModel.h */,
@@ -1249,6 +1257,7 @@
 				F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */,
 				BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */,
 				BE97556D1D0075A80081A766 /* CUIMenuItemIconButton.mm in Sources */,
+				BE1C90AA1D20213500FF20CA /* CUIDropDownView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1270,6 +1279,7 @@
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
 				BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */,
 				F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */,
+				BE1D01091D203656008FA64F /* CUIDropDownViewSpec.mm in Sources */,
 				BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */,
 				BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */,
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,
