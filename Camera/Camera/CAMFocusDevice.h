@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Instructs the camera to lock the current focus.
 ///
-/// Returned signal sends no values and completes when focus is locked, or errs if there is a
+/// Returned signal sends \c CGPointNull and completes when focus is locked, or errs if there is a
 /// problem locking the focus. All events are sent on an arbitrary thread.
 - (RACSignal *)setLockedFocus;
 
