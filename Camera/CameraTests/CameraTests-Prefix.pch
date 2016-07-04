@@ -4,6 +4,8 @@
 #import "Camera-Prefix.pch"
 
 #import <LTKitTests/LTKitTests-Prefix.pch>
+#import <LLReactiveMatchers/LLReactiveMatchers.h>
+#import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 
 #ifdef __cplusplus
   // LTKitTests.
