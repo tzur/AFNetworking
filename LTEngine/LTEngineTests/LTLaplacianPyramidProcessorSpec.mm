@@ -112,7 +112,7 @@ sharedExamples(kLaplacianPyramidConstructionExamples, ^(NSDictionary *data) {
 
       cv::Mat1f inputFloat;
       LTConvertMat(inputImage, &inputFloat, CV_32F);
-      std::vector<cv::Mat1f> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat);
+      std::vector<cv::Mat> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat);
 
       int boundaryPixelsForRemoval = (int)[data[@"boundaryPixelsForRemoval"] unsignedIntegerValue];
       /// Loop stopping condition is determined based on boundary conditions and ROI crop.
