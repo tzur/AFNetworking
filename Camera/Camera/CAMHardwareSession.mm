@@ -61,6 +61,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setupVideoInputWithDevice:(AVCaptureDevice *)device
                    formatStrategy:(id<CAMFormatStrategy>)formatStrategy
                             error:(NSError * __autoreleasing *)error {
+  if (!device) {
+    *error = [NSError lt_errorWithCode:CAMErrorCodeMissingVideoDevice];
+    return NO;
+  }
+
   LTParameterAssert(error, @"error output pointer must be non-null");
   LTParameterAssert([device hasMediaType:AVMediaTypeVideo], @"device must provide video");
   NSError *internalError;
@@ -152,6 +157,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device
                             error:(NSError * __autoreleasing *)error {
+  if (!device) {
+    *error = [NSError lt_errorWithCode:CAMErrorCodeMissingAudioDevice];
+    return NO;
+  }
+
   LTParameterAssert(error, @"error output pointer must be non-null");
   LTParameterAssert([device hasMediaType:AVMediaTypeAudio], @"device must provide audio");
   NSError *internalError;
