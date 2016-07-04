@@ -11,10 +11,10 @@
 		8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.mm */; };
 		8449B5DB1D1AD5410054272C /* PTUChangesetMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 8449B5DA1D1AD5410054272C /* PTUChangesetMetadata.m */; };
 		8449B5F81D1AD6F10054272C /* PTUChangesetMetadataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8449B5F71D1AD6F10054272C /* PTUChangesetMetadataSpec.mm */; };
-		8482E0151D2143690084D565 /* PTUCollectionViewConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E0141D2143690084D565 /* PTUCollectionViewConfiguration.mm */; };
-		8482E0321D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E0311D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm */; };
 		8449EC361D10443E008FD345 /* PTUDataSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */; };
 		8449ECB41D104B99008FD345 /* PTNFakeAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8449ECB31D104B99008FD345 /* PTNFakeAssetManager.m */; };
+		8482E0151D2143690084D565 /* PTUCollectionViewConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E0141D2143690084D565 /* PTUCollectionViewConfiguration.mm */; };
+		8482E0321D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E0311D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm */; };
 		84884C7F1C71D83000DBB987 /* PTUChangesetMoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */; };
 		848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069B1C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		848E09731C59212F001D8368 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069D1C59212F001D8368 /* LLSignalTestRecorder.m */; };
@@ -480,12 +480,11 @@
 				8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.mm */,
 				84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */,
 				8482E0311D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm */,
+				8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */,
 				84AB7E5C1C85DF2D008E254A /* PTUImageCellSpec.mm */,
 				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */,
 				84D741871C7A270500BCA294 /* PTUTestUtils.h */,
 				84D741881C7A270500BCA294 /* PTUTestUtils.mm */,
-				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */,
-				8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";

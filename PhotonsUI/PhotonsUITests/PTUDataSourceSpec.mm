@@ -5,6 +5,7 @@
 
 #import "PTNFakeAssetManager.h"
 #import "PTUChangeset.h"
+#import "PTUChangesetProvider.h"
 #import "PTUImageCell.h"
 
 SpecBegin(PTUDataSource)
@@ -12,22 +13,26 @@ SpecBegin(PTUDataSource)
 __block PTUDataSource *dataSource;
 __block RACSubject *dataSignal;
 __block UICollectionView *collectionView;
-__block id<PTUImageCellViewModelProvider> provider;
+__block id<PTUChangesetProvider> changesetProvider;
+__block id<PTUImageCellViewModelProvider> viewModelProvider;
 __block Class cellClass;
 
 beforeEach(^{
   cellClass = [PTUImageCell class];
   collectionView = OCMClassMock([UICollectionView class]);
-  provider = OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
   dataSignal = [RACSubject subject];
+  changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
+  OCMStub([changesetProvider fetchChangeset]).andReturn(dataSignal);
+  viewModelProvider = OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
   dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
-                                                  dataSignal:dataSignal
-                                       cellViewModelProvider:provider
+                                           changesetProvider:changesetProvider
+                                       cellViewModelProvider:viewModelProvider
                                                    cellClass:cellClass];
 });
 
 it(@"should start with empty data", ^{
   expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.beNil();
+  expect(dataSource.hasData).to.beFalsy();
 });
 
 it(@"should register given cell class for reuse", ^{
@@ -48,6 +53,16 @@ it(@"should remain up to date with sent data", ^{
   expect([dataSource indexPathOfObject:(id<PTNDescriptor>)@2])
       .to.equal([NSIndexPath indexPathForItem:0 inSection:1]);
   expect([dataSource indexPathOfObject:(id<PTNDescriptor>)@4]).to.beNil();
+  expect(dataSource.hasData).to.beTruthy();
+});
+
+it(@"should properly update error and error flag", ^{
+  expect(dataSource.error).to.beNil();
+
+  NSError *error = [NSError lt_errorWithCode:1337];
+  [dataSignal sendError:error];
+
+  expect(dataSource.error).to.equal(error);
 });
 
 context(@"updates", ^{
