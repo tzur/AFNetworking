@@ -11,6 +11,7 @@
 extern "C" {
 #endif
   #import <Expecta/Expecta.h>
+  #import <LLReactiveMatchers/LLReactiveMatchers.h>
   #import <OCMock/OCMock.h>
   #import <Specta/Specta.h>
 #ifdef __cplusplus

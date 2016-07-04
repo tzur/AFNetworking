@@ -19,8 +19,24 @@ SpecEnd
 
 SpecBegin(FBRHTTPRequest)
 
+context(@"supported protocols", ^{
+  it(@"should indicate that HTTP and HTTPS protocols are supported", ^{
+    expect([FBRHTTPRequest isProtocolSupported:[NSURL URLWithString:@"http://foo.bar"]])
+        .to.beTruthy();
+    expect([FBRHTTPRequest isProtocolSupported:[NSURL URLWithString:@"https://foo.bar"]])
+        .to.beTruthy();
+  });
+
+  it(@"should indicate that non HTTP protocols are not supported", ^{
+    expect([FBRHTTPRequest isProtocolSupported:[NSURL URLWithString:@"ftp://foo.bar"]])
+        .to.beFalsy();
+    expect([FBRHTTPRequest isProtocolSupported:[NSURL URLWithString:@"smtp://foo.bar"]])
+        .to.beFalsy();
+  });
+});
+
 context(@"convenience initializer", ^{
-  it(@"should initialize with the given URL string and HTTP method", ^{
+  it(@"should initialize with the given URL and HTTP method", ^{
     NSURL *URL = [NSURL URLWithString:@"http://foo.bar"];
     FBRHTTPRequestMethod *method = $(FBRHTTPRequestMethodGet);
     FBRHTTPRequest *request = [[FBRHTTPRequest alloc] initWithURL:URL method:method];
@@ -51,6 +67,28 @@ context(@"designated initializer", ^{
     expect(request.parameters).to.equal(parameters);
     expect(request.parametersEncoding).to.equal(parametersEncoding);
     expect(request.headers).to.equal(headers);
+  });
+
+  it(@"should raise exception if protocol is not supported", ^{
+    NSURL *URL = [NSURL URLWithString:@"ftp://foo.bar"];
+    FBRHTTPRequestMethod *method = $(FBRHTTPRequestMethodGet);
+
+    expect(^{
+      FBRHTTPRequest __unused *request =
+          [[FBRHTTPRequest alloc] initWithURL:URL method:method parameters:nil
+                           parametersEncoding:nil headers:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should initialize successfully if protocol is HTTPS", ^{
+    NSURL *URL = [NSURL URLWithString:@"https://foo.bar"];
+    FBRHTTPRequestMethod *method = $(FBRHTTPRequestMethodGet);
+    FBRHTTPRequest *request =
+          [[FBRHTTPRequest alloc] initWithURL:URL method:method parameters:nil
+                           parametersEncoding:nil headers:nil];
+
+    expect(request.URL).to.equal(URL);
+    expect(request.method).to.equal(method);
   });
 });
 

@@ -91,8 +91,12 @@ typedef NSDictionary<NSString *, NSString *> FBRHTTPRequestHeaders;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes an HTTP request to the given \c URL using the given HTTP \c method. No
-/// parameters or headers will be added to the request. The \c URLString must be a valid
+/// Returns \c YES if \c URL specifies a protocol that is valid for HTTP requests. The supported
+/// protocols are `HTTP` and `HTTPS`. The validation is case insensitive.
++ (BOOL)isProtocolSupported:(NSURL *)URL;
+
+/// Initializes an HTTP request to the given \c URL using the given HTTP \c method. No parameters or
+/// headers will be added to the request.
 ///
 /// @note If the session used to send this request specifies common headers, these headers will be
 /// appended to the request without changing the request object.

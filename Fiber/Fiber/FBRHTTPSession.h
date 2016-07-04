@@ -1,123 +1,50 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "FBRHTTPRequest.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FBRHTTPSessionConfiguration;
+@class FBRHTTPRequest, FBRHTTPResponse, FBRHTTPSessionConfiguration;
 
 /// \c FBRHTTPSession encapsulates an HTTP session and allows easy customization of some session
-/// parameters such as SSL pinning, caching, serialization and more. A session object is initialized
-/// with a \c FBRHTTPSessionConfiguration which specifies configuration parameters for the session.
-///
-/// @note Two HTTP headers are added to each HTTP requests regardless of whether they are specified
-/// in the session configuration. These are the 'Accept-Languages' and 'User-Agent' headers. The
-/// values for these headers can be overridden by the configuration but they can not be removed.
-///
-/// @see FBRHTTPSessionConfiguration, NSURLSession
-@interface FBRHTTPSession : NSObject
+/// parameters such as SSL pinning, caching, serialization and more.
+@protocol FBRHTTPSession <NSObject>
 
-/// Initializes the session with default configuration as returned by
-/// \c -[FBRHTTPSessionConfiguration init].
-- (instancetype)init;
+/// Callback used by \c FBRHTTPSession implementors to report the progress of an HTTP task.
+///
+/// The \c progress parameter indicates the progress of the task.
+typedef void (^FBRHTTPTaskProgressBlock)(NSProgress *progress);
 
-/// Initializes the session with the given \c configuration.
-- (instancetype)initWithConfiguration:(FBRHTTPSessionConfiguration *)configuration
-    NS_DESIGNATED_INITIALIZER;
+/// Callback used by \c FBRHTTPSession implementors to report successful completion of an HTTP task.
+///
+/// The \c response parameter contains metadata of the server response and the response's content if
+/// the server attached body to the response.
+typedef void (^FBRHTTPTaskSuccessBlock)(FBRHTTPResponse *response);
 
-/// Initiates a GET request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Callback used by \c FBRHTTPSession implementors to report an error during the execution of an
+/// HTTP task.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
-///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)GET:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+/// The \c error parameters specifies the error that occurred during task execution.
+typedef void (^FBRHTTPTaskFailureBlock)(NSError *error);
 
-/// Initiates a HEAD request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
-///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
-///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)HEAD:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+/// Initializes the receiver with the given session \c configuration.
+- (instancetype)iniWithConfiguration:(FBRHTTPSessionConfiguration *)configuration;
 
-/// Initiates a POST request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates and returns a data task for the given HTTP \c request. Returns \c nil if failed to
+/// initiate a task, in that case the \c failure block will be invoked with the relevant error.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
+/// If \c progress block is not \c nil, it may be invoked zero or more times during the task's
+/// lifetime in order to report task progress. The \c success block is called upon successful
+/// completion and the \c failure block is invoked if the task has ended with error or was
+/// cancelled.
 ///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)POST:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
-
-/// Initiates a PUT request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
-///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
-///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)PUT:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters;
-
-/// Initiates a PATCH request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
-///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
-///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)PATCH:(NSString *)URLString
-      withParameters:(nullable FBRHTTPRequestParameters *)parameters;
-
-/// Initiates a DELETE request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
-///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progress until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range \c [200, 299]).
-/// Values and errors are delivered on the main queue.
-///
-/// @see FBRHTTPRequestParameters, FBRHTTPSessionRequestConfiguration.
-- (RACSignal *)DELETE:(NSString *)URLString
-       withParameters:(nullable FBRHTTPRequestParameters *)parameters;
-
-/// Session configuration.
-@property (readonly, nonatomic) id<FBRHTTPSessionConfiguration> configuration;
+/// @note An HTTP task is considered a successfully completed one if the following conditions are
+/// met: 1. the request sent successfully (with no serialization errors, communication errors etc.)
+/// and 2. the server response was received with no errors and with status code that indicates a
+/// successful processing of the request (i.e. status code in the range <tt>[200, 299]<tt>).
+- (nullable NSURLSessionDataTask *)dataTaskWithRequest:(FBRHTTPRequest *)request
+                                              progress:(nullable FBRHTTPTaskProgressBlock)progress
+                                               success:(FBRHTTPTaskSuccessBlock)success
+                                               failure:(FBRHTTPTaskFailureBlock)failure;
 
 @end
 
