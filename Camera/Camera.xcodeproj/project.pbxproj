@@ -59,6 +59,7 @@
 		83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
+		BED1577F1D2A9B50005D83F7 /* CAMDeviceStub.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -441,6 +442,8 @@
 		8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevicePreset.h; sourceTree = "<group>"; };
 		8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePreset.mm; sourceTree = "<group>"; };
 		8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePresetSpec.mm; sourceTree = "<group>"; };
+		BED1577D1D2A9B50005D83F7 /* CAMDeviceStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceStub.h; sourceTree = "<group>"; };
+		BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceStub.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -693,6 +696,8 @@
 		83893A551D12C7F8002B64B4 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				BED1577D1D2A9B50005D83F7 /* CAMDeviceStub.h */,
+				BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */,
 				83893A561D12C827002B64B4 /* CAMFakeAVCaptureDevice.h */,
 				83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */,
 			);
@@ -770,7 +775,6 @@
 			isa = PBXGroup;
 			children = (
 				06C02F6F1D195C9500745557 /* LTEngineTests */,
-				83893A551D12C7F8002B64B4 /* Test Utils */,
 				8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */,
 				83FF06F61CD7272F00383C6B /* Info.plist */,
 			);
@@ -844,6 +848,7 @@
 			isa = PBXGroup;
 			children = (
 				8395AE6C1CFDCA4000C91C9E /* Tests */,
+				83893A551D12C7F8002B64B4 /* Test Utils */,
 				83B72D811CDA44B80090C0BF /* Supporting Files */,
 			);
 			path = CameraTests;
@@ -1210,6 +1215,7 @@
 				835205A01D2A5B2700000EEC /* EXPMatchers+finish.m in Sources */,
 				8352059B1D2A5B2700000EEC /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				8352059C1D2A5B2700000EEC /* EXPMatchers+beSubscribedTo.m in Sources */,
+				BED1577F1D2A9B50005D83F7 /* CAMDeviceStub.mm in Sources */,
 				835205A21D2A5B2700000EEC /* EXPMatchers+matchValue.m in Sources */,
 				835205A51D2A5B2700000EEC /* EXPMatchers+sendEvents.m in Sources */,
 				8352059D1D2A5B2700000EEC /* EXPMatchers+complete.m in Sources */,
