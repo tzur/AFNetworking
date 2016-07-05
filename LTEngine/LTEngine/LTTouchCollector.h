@@ -5,7 +5,7 @@
 
 #import "LTPainterPoint.h"
 
-@protocol LTContentTouchEventProvider, LTInteractionModeManager, LTTouchCollectorFilter;
+@protocol LTInteractionModeManager, LTTouchCollectorFilter;
 
 @class LTTouchCollector;
 
@@ -46,9 +46,6 @@
 
 /// This delegate will be notified on collected events.
 @property (weak, nonatomic) id<LTTouchCollectorDelegate> delegate;
-
-/// Provider of content touch events.
-@property (weak, nonatomic) id<LTContentTouchEventProvider> touchEventProvider;
 
 /// Filter used to decide whether to collect a new touch event, based on the differences with the
 /// previously collected touch. When the object is initialized, or when filter is set to nil, a
