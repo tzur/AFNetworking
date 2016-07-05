@@ -4,6 +4,7 @@
 #import "NSError+Fiber.h"
 
 #import "FBRHTTPRequest.h"
+#import "FBRHTTPResponse.h"
 
 SpecBegin(NSError_Fiber)
 
@@ -37,8 +38,9 @@ it(@"should create an error with the specified code, HTTP request and response",
   FBRHTTPRequest *request =
       [[FBRHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://foo.bar"]
                                    method:$(FBRHTTPRequestMethodGet)];
-  NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:request.URL statusCode:200
-                                                           HTTPVersion:nil headerFields:nil];
+  FBRHTTPResponse *response =
+      [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
+                                        content:nil];
   NSError *error = [NSError fbr_errorWithCode:1337 HTTPRequest:request HTTPResponse:response
                               underlyingError:nil];
 
@@ -53,8 +55,9 @@ it(@"should create an error with the specified code, HTTP request and response",
   FBRHTTPRequest *request =
       [[FBRHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://foo.bar"]
                                    method:$(FBRHTTPRequestMethodGet)];
-  NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:request.URL statusCode:200
-                                                           HTTPVersion:nil headerFields:nil];
+  FBRHTTPResponse *response =
+      [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
+                                        content:nil];
   NSError *underlyingError = [NSError errorWithDomain:@"Foo" code:1 userInfo:nil];
   NSError *error = [NSError fbr_errorWithCode:1337 HTTPRequest:request HTTPResponse:response
                               underlyingError:underlyingError];

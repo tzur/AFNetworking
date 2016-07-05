@@ -11,7 +11,7 @@ LTErrorCodesImplement(FiberErrorCodeProductID,
   FBRErrorCodeHTTPRequestSerializationFailed,
   /// Initiation of an HTTP task failed.
   FBRErrorCodeHTTPTaskInitiationFailed,
-  /// HTTP task completed prematurely with error.
+  /// HTTP task completed prematurely due to client error.
   FBRErrorCodeHTTPTaskFailed,
   /// HTTP task terminated prematurely due to cancellation.
   FBRErrorCodeHTTPTaskCancelled,

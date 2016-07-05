@@ -20,10 +20,13 @@
 		65892E931D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892E921D16F97B0049815D /* FBRHTTPSessionSecurityPolicySpec.mm */; };
 		65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */; };
 		65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892F671D1AAF510049815D /* FBRHTTPRequest.mm */; };
+		65892FA91D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65892FA81D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm */; };
 		658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */; };
 		659F3AB61D23C81B0097F3D0 /* FBRHTTPClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */; };
 		659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */; };
 		659F3ABE1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */; };
+		659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A693E41D0593D5001DE328 /* AFNetworking.framework */; };
+		659F3B661D243B630097F3D0 /* AFNetworking+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3B651D243B630097F3D0 /* AFNetworking+Fiber.mm */; };
 		659F3B691D2448D70097F3D0 /* NSError+Fiber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3B681D2448D70097F3D0 /* NSError+Fiber.mm */; };
 		659F3BDA1D2459AA0097F3D0 /* NSError+FiberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 659F3BD91D2459AA0097F3D0 /* NSError+FiberSpec.mm */; };
 		65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65A6941A1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm */; };
@@ -35,6 +38,10 @@
 		65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */; };
 		65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */; };
 		65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BDFC151D0EC56D00C86D36 /* libextobjc_iOS.a */; };
+		65C3C24C1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C3C24B1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm */; };
+		65C3C24E1D29718400C8F288 /* NSError+AFNetworkingAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C3C24D1D29718400C8F288 /* NSError+AFNetworkingAdapterSpec.mm */; };
+		65C3C2501D2987A700C8F288 /* AFNetworking+FiberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C3C24F1D2987A700C8F288 /* AFNetworking+FiberSpec.mm */; };
+		65C3C28D1D2A5A3900C8F288 /* FBRAFNetworkingSessionAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C3C28C1D2A5A3900C8F288 /* FBRAFNetworkingSessionAdapterSpec.mm */; };
 		65C62C021D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDD1D047727000FCE99 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BDF1D047727000FCE99 /* LLSignalTestRecorder.m */; };
 		65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62BE11D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m */; };
@@ -91,6 +98,62 @@
 			proxyType = 2;
 			remoteGlobalIDString = D047261619E49F82006002AA;
 			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		659F3B621D2438160097F3D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 299522381BBF104D00859F49;
+			remoteInfo = "AFNetworking iOS";
+		};
+		65A693E31D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522391BBF104D00859F49;
+			remoteInfo = "AFNetworking iOS";
+		};
+		65A693E51D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522651BBF129200859F49;
+			remoteInfo = "AFNetworking watchOS";
+		};
+		65A693E71D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522771BBF136400859F49;
+			remoteInfo = "AFNetworking OS X";
+		};
+		65A693E91D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0A51BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS";
+		};
+		65A693EB1D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C3B1BC2C79500FD3B3E;
+			remoteInfo = "AFNetworking iOS Tests";
+		};
+		65A693ED1D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C4A1BC2C7B200FD3B3E;
+			remoteInfo = "AFNetworking Mac OS X Tests";
+		};
+		65A693EF1D0593D5001DE328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0AE1BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS Tests";
 		};
 		65A694151D05999B001DE328 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -312,15 +375,20 @@
 		65892EC71D19606D0049815D /* FBRHTTPSessionConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfiguration.mm; sourceTree = "<group>"; };
 		65892F661D1AAF510049815D /* FBRHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPRequest.h; sourceTree = "<group>"; };
 		65892F671D1AAF510049815D /* FBRHTTPRequest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPRequest.mm; sourceTree = "<group>"; };
+		65892FA71D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRAFNetworkingSessionAdapter.h; sourceTree = "<group>"; };
+		65892FA81D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRAFNetworkingSessionAdapter.mm; sourceTree = "<group>"; };
 		658930261D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionConfigurationSpec.mm; sourceTree = "<group>"; };
 		659F3AB41D23C78A0097F3D0 /* FBRHTTPSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSession.h; sourceTree = "<group>"; };
 		659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPClient.mm; sourceTree = "<group>"; };
 		659F3ABA1D23DE140097F3D0 /* NSErrorCodes+Fiber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Fiber.h"; sourceTree = "<group>"; };
 		659F3ABB1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Fiber.mm"; sourceTree = "<group>"; };
 		659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPClientSpec.mm; sourceTree = "<group>"; };
+		659F3B641D243B630097F3D0 /* AFNetworking+Fiber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFNetworking+Fiber.h"; sourceTree = "<group>"; };
+		659F3B651D243B630097F3D0 /* AFNetworking+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AFNetworking+Fiber.mm"; sourceTree = "<group>"; };
 		659F3B671D2448D70097F3D0 /* NSError+Fiber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Fiber.h"; sourceTree = "<group>"; };
 		659F3B681D2448D70097F3D0 /* NSError+Fiber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Fiber.mm"; sourceTree = "<group>"; };
 		659F3BD91D2459AA0097F3D0 /* NSError+FiberSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+FiberSpec.mm"; sourceTree = "<group>"; };
+		65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AFNetworking.xcodeproj; path = ../third_party/AFNetworking/AFNetworking.xcodeproj; sourceTree = "<group>"; };
 		65A694091D05948F001DE328 /* FBRHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClient.h; sourceTree = "<group>"; };
 		65A6940C1D05999B001DE328 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65A694191D05AAD0001DE328 /* FBRHTTPTaskProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTaskProgress.h; sourceTree = "<group>"; };
@@ -332,6 +400,11 @@
 		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
 		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		65C3C24A1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+AFNetworkingAdapter.h"; sourceTree = "<group>"; };
+		65C3C24B1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+AFNetworkingAdapter.mm"; sourceTree = "<group>"; };
+		65C3C24D1D29718400C8F288 /* NSError+AFNetworkingAdapterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+AFNetworkingAdapterSpec.mm"; sourceTree = "<group>"; };
+		65C3C24F1D2987A700C8F288 /* AFNetworking+FiberSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AFNetworking+FiberSpec.mm"; sourceTree = "<group>"; };
+		65C3C28C1D2A5A3900C8F288 /* FBRAFNetworkingSessionAdapterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRAFNetworkingSessionAdapterSpec.mm; sourceTree = "<group>"; };
 		65C62B6B1D046B22000FCE99 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		65C62B6D1D046B22000FCE99 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		65C62B6E1D046B22000FCE99 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -398,6 +471,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */,
 				6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */,
 				6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */,
 				65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */,
@@ -425,6 +499,7 @@
 		65892E461D16EC250049815D /* HTTP Session */ = {
 			isa = PBXGroup;
 			children = (
+				65C3C2261D29651B00C8F288 /* Internal */,
 				65B7F18E1D18696F005810C9 /* Configuration */,
 				659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */,
 				653FB1851D2035920000D2CA /* FBRHTTPRequestSpec.mm */,
@@ -432,6 +507,19 @@
 				65892E641D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm */,
 			);
 			name = "HTTP Session";
+			sourceTree = "<group>";
+		};
+		65892F7E1D1ACC340049815D /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				659F3B641D243B630097F3D0 /* AFNetworking+Fiber.h */,
+				659F3B651D243B630097F3D0 /* AFNetworking+Fiber.mm */,
+				65892FA71D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.h */,
+				65892FA81D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm */,
+				65C3C24A1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.h */,
+				65C3C24B1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm */,
+			);
+			name = Internal;
 			sourceTree = "<group>";
 		};
 		659F3AB91D23DD750097F3D0 /* Errors */ = {
@@ -453,6 +541,20 @@
 			name = Errors;
 			sourceTree = "<group>";
 		};
+		65A693DA1D0593D5001DE328 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65A693E41D0593D5001DE328 /* AFNetworking.framework */,
+				65A693E61D0593D5001DE328 /* AFNetworking.framework */,
+				65A693E81D0593D5001DE328 /* AFNetworking.framework */,
+				65A693EA1D0593D5001DE328 /* AFNetworking.framework */,
+				65A693EC1D0593D5001DE328 /* AFNetworking iOS Tests.xctest */,
+				65A693EE1D0593D5001DE328 /* AFNetworking Mac OS X Tests.xctest */,
+				65A693F01D0593D5001DE328 /* AFNetworking tvOS Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		65A6940D1D05999B001DE328 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,6 +567,7 @@
 		65A694351D081FA1001DE328 /* HTTP Session */ = {
 			isa = PBXGroup;
 			children = (
+				65892F7E1D1ACC340049815D /* Internal */,
 				65A694391D082170001DE328 /* Configuration */,
 				65A694091D05948F001DE328 /* FBRHTTPClient.h */,
 				659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */,
@@ -544,6 +647,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		65C3C2261D29651B00C8F288 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				65C3C24F1D2987A700C8F288 /* AFNetworking+FiberSpec.mm */,
+				65C3C28C1D2A5A3900C8F288 /* FBRAFNetworkingSessionAdapterSpec.mm */,
+				65C3C24D1D29718400C8F288 /* NSError+AFNetworkingAdapterSpec.mm */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
 		65C62B6A1D046B22000FCE99 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -614,6 +727,7 @@
 		65C62B941D0476BB000FCE99 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */,
 				65C62B951D0476F6000FCE99 /* Expecta.xcodeproj */,
 				65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */,
 				65C62BDA1D047727000FCE99 /* LLReactiveMatchers */,
@@ -758,6 +872,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				659F3B631D2438160097F3D0 /* PBXTargetDependency */,
 				651304931D11608100F2B03C /* PBXTargetDependency */,
 			);
 			name = Fiber;
@@ -811,6 +926,10 @@
 			productRefGroup = 65AE67511D0461350083D1CE /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 65A693DA1D0593D5001DE328 /* Products */;
+					ProjectRef = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
+				},
 				{
 					ProductGroup = 65C62B961D0476F6000FCE99 /* Products */;
 					ProjectRef = 65C62B951D0476F6000FCE99 /* Expecta.xcodeproj */;
@@ -871,6 +990,55 @@
 			fileType = wrapper.cfbundle;
 			path = "ReactiveCocoa-iOSTests.xctest";
 			remoteRef = 6535FE5A1D047911002EEB8F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693E41D0593D5001DE328 /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65A693E31D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693E61D0593D5001DE328 /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65A693E51D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693E81D0593D5001DE328 /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65A693E71D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693EA1D0593D5001DE328 /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65A693E91D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693EC1D0593D5001DE328 /* AFNetworking iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking iOS Tests.xctest";
+			remoteRef = 65A693EB1D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693EE1D0593D5001DE328 /* AFNetworking Mac OS X Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking Mac OS X Tests.xctest";
+			remoteRef = 65A693ED1D0593D5001DE328 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65A693F01D0593D5001DE328 /* AFNetworking tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking tvOS Tests.xctest";
+			remoteRef = 65A693EF1D0593D5001DE328 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65A694161D05999B001DE328 /* libLTKit.a */ = {
@@ -1075,9 +1243,12 @@
 				65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */,
 				6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */,
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
+				65892FA91D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm in Sources */,
 				65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */,
 				659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */,
+				659F3B661D243B630097F3D0 /* AFNetworking+Fiber.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
+				65C3C24C1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm in Sources */,
 				659F3B691D2448D70097F3D0 /* NSError+Fiber.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
 				659F3AB61D23C81B0097F3D0 /* FBRHTTPClient.mm in Sources */,
@@ -1098,10 +1269,13 @@
 				65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */,
 				65C62C0C1D047727000FCE99 /* EXPMatchers+matchError.m in Sources */,
 				65C62C071D047727000FCE99 /* EXPMatchers+beSubscribedTo.m in Sources */,
+				65C3C28D1D2A5A3900C8F288 /* FBRAFNetworkingSessionAdapterSpec.mm in Sources */,
+				65C3C24E1D29718400C8F288 /* NSError+AFNetworkingAdapterSpec.mm in Sources */,
 				658930271D1BCA060049815D /* FBRHTTPSessionConfigurationSpec.mm in Sources */,
 				65892E651D16EC3E0049815D /* FBRHTTPTaskProgressSpec.mm in Sources */,
 				65C62C0D1D047727000FCE99 /* EXPMatchers+matchValue.m in Sources */,
 				65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */,
+				65C3C2501D2987A700C8F288 /* AFNetworking+FiberSpec.mm in Sources */,
 				65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */,
 				65C62C0A1D047727000FCE99 /* EXPMatchers+error.m in Sources */,
 				650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */,
@@ -1126,6 +1300,11 @@
 			name = "ReactiveCocoa-iOS";
 			targetProxy = 651304921D11608100F2B03C /* PBXContainerItemProxy */;
 		};
+		659F3B631D2438160097F3D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AFNetworking iOS";
+			targetProxy = 659F3B621D2438160097F3D0 /* PBXContainerItemProxy */;
+		};
 		65C62B8D1D0474D5000FCE99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 65AE674F1D0461350083D1CE /* Fiber */;
@@ -1146,6 +1325,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/AFNetworking",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1165,6 +1345,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/AFNetworking",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
