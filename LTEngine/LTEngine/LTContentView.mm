@@ -401,23 +401,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTContentTouchEventProvider
-#pragma mark -
-
-- (NSSet<id<LTContentTouchEvent>> *)stationaryContentTouchEvents {
-  NSSet<id<LTTouchEvent>> *touchEvents = [self.touchEventView stationaryTouchEvents];
-
-  NSMutableSet<id<LTContentTouchEvent>> *contentTouchEvents =
-      [NSMutableSet setWithCapacity:touchEvents.count];
-
-  for (id<LTTouchEvent> touchEvent in touchEvents) {
-    [contentTouchEvents addObject:[self contentTouchEventFromTouchEvent:touchEvent]];
-  }
-
-  return [contentTouchEvents copy];
-}
-
-#pragma mark -
 #pragma mark LTNavigationViewDelegate
 #pragma mark -
 
