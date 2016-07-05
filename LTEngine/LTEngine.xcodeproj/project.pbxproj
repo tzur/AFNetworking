@@ -551,7 +551,6 @@
 		500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3F919D1B2C7000DC814 /* LTGeometry.mm */; };
 		500AB3FD19D1B840000DC814 /* LTGeometrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3FC19D1B840000DC814 /* LTGeometrySpec.mm */; };
 		500CA9E11D26B013009CF19F /* LTTouchEventCancellation.h in Headers */ = {isa = PBXBuildFile; fileRef = 500CA9DF1D26B013009CF19F /* LTTouchEventCancellation.h */; };
-		500CA9E21D26B013009CF19F /* LTTouchEventProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 500CA9E01D26B013009CF19F /* LTTouchEventProvider.h */; };
 		500CA9E41D26B022009CF19F /* LTInteractionMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 500CA9E31D26B022009CF19F /* LTInteractionMode.h */; };
 		500CA9E81D26B031009CF19F /* LTContentInteraction.h in Headers */ = {isa = PBXBuildFile; fileRef = 500CA9E51D26B031009CF19F /* LTContentInteraction.h */; };
 		500CA9E91D26B031009CF19F /* LTContentInteractionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 500CA9E61D26B031009CF19F /* LTContentInteractionManager.h */; };
@@ -2026,7 +2025,6 @@
 		500AB3F919D1B2C7000DC814 /* LTGeometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGeometry.mm; sourceTree = "<group>"; };
 		500AB3FC19D1B840000DC814 /* LTGeometrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGeometrySpec.mm; sourceTree = "<group>"; };
 		500CA9DF1D26B013009CF19F /* LTTouchEventCancellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventCancellation.h; sourceTree = "<group>"; };
-		500CA9E01D26B013009CF19F /* LTTouchEventProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventProvider.h; sourceTree = "<group>"; };
 		500CA9E31D26B022009CF19F /* LTInteractionMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTInteractionMode.h; sourceTree = "<group>"; };
 		500CA9E51D26B031009CF19F /* LTContentInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTContentInteraction.h; sourceTree = "<group>"; };
 		500CA9E61D26B031009CF19F /* LTContentInteractionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTContentInteractionManager.h; sourceTree = "<group>"; };
@@ -3474,7 +3472,6 @@
 				50802FC21C2402E1008607C7 /* LTTouchEvent.mm */,
 				500CA9DF1D26B013009CF19F /* LTTouchEventCancellation.h */,
 				25FBF7D81C32D26D00E2E5BC /* LTTouchEventDelegate.h */,
-				500CA9E01D26B013009CF19F /* LTTouchEventProvider.h */,
 				25FBF7D91C32D26D00E2E5BC /* LTTouchEventView.h */,
 				25FBF7DA1C32D26D00E2E5BC /* LTTouchEventView.mm */,
 			);
@@ -5112,7 +5109,6 @@
 				50D672481D26B81E00005CC7 /* LTContentLocationProvider.h in Headers */,
 				038DDD6C19EFBEB80018F9E4 /* LTCLAHEProcessor.h in Headers */,
 				8B8720211924A76300517F2E /* LTBrush.h in Headers */,
-				500CA9E21D26B013009CF19F /* LTTouchEventProvider.h in Headers */,
 				8B8720221924A76300517F2E /* LTCatmullRomInterpolant.h in Headers */,
 				8B8720231924A76300517F2E /* LTDegenerateInterpolant.h in Headers */,
 				28C2079D1AECC5CD007214A5 /* LTTextureUncompressedMatArchiver.h in Headers */,
