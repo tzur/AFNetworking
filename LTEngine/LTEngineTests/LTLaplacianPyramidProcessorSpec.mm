@@ -3,8 +3,8 @@
 
 #import "LTLaplacianPyramidProcessor.h"
 
-#import "LTPyramidTestUtils.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPyramidTestUtils.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTLaplacianPyramidProcessor)
@@ -140,7 +140,7 @@ itBehavesLike(kLaplacianPyramidConstructionExamples, @{@"fileName": @"Horizontal
                                                        @"boundaryPixelsForRemoval": @1});
 itBehavesLike(kLaplacianPyramidConstructionExamples, @{@"fileName": @"HorizontalStepFunction32.png",
                                                        @"boundaryPixelsForRemoval": @1});
-itBehavesLike(kLaplacianPyramidConstructionExamples, @{@"fileName": @"Lena.png",
+itBehavesLike(kLaplacianPyramidConstructionExamples, @{@"fileName": @"LenaCrop.png",
                                                        @"boundaryPixelsForRemoval": @5});
 
 SpecEnd

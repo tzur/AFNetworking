@@ -142,6 +142,6 @@ itBehavesLike(kLaplacianLevelReconstructionExamples,
 itBehavesLike(kLaplacianLevelReconstructionExamples,
               @{@"fileName": @"HorizontalStepFunction32.png"});
 
-itBehavesLike(kLaplacianLevelReconstructionExamples, @{@"fileName": @"Lena.png"});
+itBehavesLike(kLaplacianLevelReconstructionExamples, @{@"fileName": @"LenaCrop.png"});
 
 SpecEnd
