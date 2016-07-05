@@ -534,6 +534,50 @@ context(@"album fetching", ^{
         return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
       });
     });
+
+    it(@"should correctly handle updates on indexes outside original range", ^{
+      [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+
+      LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
+                                      testRecorder];
+
+      [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
+      [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
+
+      PTNAlbum *newAlbum = [[PTNAlbum alloc] initWithURL:albumURL
+          subalbums:@[subalbumDescriptor, otherDescriptor]
+          assets:@[assetDescriptor, otherDescriptor, otherDescriptor]];
+      PTNIncrementalChanges *outOfBoundsChanges =
+          [PTNIncrementalChanges changesWithRemovedIndexes:nil
+                                           insertedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                            updatedIndexes:[NSIndexSet indexSetWithIndex:2]
+                                                     moves:nil];
+      PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithBeforeAlbum:album
+          afterAlbum:newAlbum subalbumChanges:nil assetChanges:outOfBoundsChanges];
+      [underlyingAssetManager serveAlbumURL:albumURL withAlbumChangeset:newChangeset];
+
+      expect(values).will.sendValuesWithCount(2);
+      expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *afterAlbumChangeset =
+            [PTNAlbumChangeset changesetWithAfterAlbum:interceptedAssetAlbum];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, afterAlbumChangeset);
+      });
+      expect(values).will.matchValue(1, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        NSArray *updatedInteceptedAssets = @[
+          interceptingDescriptor,
+          otherDescriptor,
+          otherDescriptor
+        ];
+        id<PTNAlbum> updatedInterceptedAfterAlbum =
+            [[PTNAlbum alloc] initWithURL:albumURL subalbums:album.subalbums
+                                   assets:updatedInteceptedAssets];
+        PTNAlbumChangeset *interceptedChangeset =
+            [PTNAlbumChangeset changesetWithBeforeAlbum:interceptedAssetAlbum
+                                             afterAlbum:updatedInterceptedAfterAlbum
+                                        subalbumChanges:nil assetChanges:outOfBoundsChanges];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+    });
   });
 
   context(@"memory management", ^{
