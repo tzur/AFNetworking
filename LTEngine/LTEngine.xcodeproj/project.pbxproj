@@ -526,6 +526,9 @@
 		28FC0E7D1D2AAEB700237FF8 /* LTContentTouchEventOrPredicateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0E7C1D2AAEB700237FF8 /* LTContentTouchEventOrPredicateSpec.mm */; };
 		28FC0E7F1D2AAEC100237FF8 /* LTContentTouchEventDistancePredicateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0E7E1D2AAEC100237FF8 /* LTContentTouchEventDistancePredicateSpec.mm */; };
 		28FC0E811D2AAECE00237FF8 /* LTContentTouchEventTimeIntervalPredicateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0E801D2AAECE00237FF8 /* LTContentTouchEventTimeIntervalPredicateSpec.mm */; };
+		28FC0FD51D2E967C00237FF8 /* LTContentTouchEventFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 28FC0FD31D2E967C00237FF8 /* LTContentTouchEventFilter.h */; };
+		28FC0FD61D2E967C00237FF8 /* LTContentTouchEventFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0FD41D2E967C00237FF8 /* LTContentTouchEventFilter.mm */; };
+		28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */; };
 		28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */; };
 		30DDD6A11CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */; };
 		30DDD6A21CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30DDD69A1CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm */; };
@@ -2015,6 +2018,9 @@
 		28FC0E7C1D2AAEB700237FF8 /* LTContentTouchEventOrPredicateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventOrPredicateSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		28FC0E7E1D2AAEC100237FF8 /* LTContentTouchEventDistancePredicateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventDistancePredicateSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		28FC0E801D2AAECE00237FF8 /* LTContentTouchEventTimeIntervalPredicateSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventTimeIntervalPredicateSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		28FC0FD31D2E967C00237FF8 /* LTContentTouchEventFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LTContentTouchEventFilter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		28FC0FD41D2E967C00237FF8 /* LTContentTouchEventFilter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventFilter.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventFilterSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRotatedRect+UIColor.h"; sourceTree = "<group>"; };
 		28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTRotatedRect+UIColor.mm"; sourceTree = "<group>"; };
 		30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTConsistentGaussianFilterProcessor.h; sourceTree = "<group>"; };
@@ -3441,6 +3447,8 @@
 		28FC0E491D2A8E5800237FF8 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
+				28FC0FD31D2E967C00237FF8 /* LTContentTouchEventFilter.h */,
+				28FC0FD41D2E967C00237FF8 /* LTContentTouchEventFilter.mm */,
 				28FC0E681D2A8E7E00237FF8 /* LTContentTouchEventPredicate.h */,
 				28FC0E691D2A9FEC00237FF8 /* LTContentTouchEventAndPredicate.h */,
 				28FC0E6A1D2A9FEC00237FF8 /* LTContentTouchEventAndPredicate.mm */,
@@ -3457,6 +3465,7 @@
 		28FC0E791D2AAE8A00237FF8 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
+				28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */,
 				28FC0E7A1D2AAEAD00237FF8 /* LTContentTouchEventAndPredicateSpec.mm */,
 				28FC0E7C1D2AAEB700237FF8 /* LTContentTouchEventOrPredicateSpec.mm */,
 				28FC0E7E1D2AAEC100237FF8 /* LTContentTouchEventDistancePredicateSpec.mm */,
@@ -5084,6 +5093,7 @@
 				500677D21C6A1A4D002C6A24 /* LTBrushGeometryProvider.h in Headers */,
 				8B871FF21924A75F00517F2E /* LTRecomposeProcessor.h in Headers */,
 				85F3FD701CC677E700E5753E /* LTReshapeBrushParams.h in Headers */,
+				28FC0FD51D2E967C00237FF8 /* LTContentTouchEventFilter.h in Headers */,
 				5004CAED1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h in Headers */,
 				8B871FF31924A75F00517F2E /* LTSelectiveAdjustProcessor.h in Headers */,
 				8B871FF41924A75F00517F2E /* LTSeparableImageProcessor.h in Headers */,
@@ -6009,6 +6019,7 @@
 				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				50CF199719D16BB60010D52F /* LTQuad.mm in Sources */,
 				30DDD6A61CFC8A0700AE72B8 /* LTGaussianFilterProcessor.mm in Sources */,
+				28FC0FD61D2E967C00237FF8 /* LTContentTouchEventFilter.mm in Sources */,
 				03D516A418B3A6500026B56A /* LTProceduralVignetting.mm in Sources */,
 				28FC0E781D2AA28700237FF8 /* LTContentTouchEventTimeIntervalPredicate.mm in Sources */,
 				8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */,
@@ -6245,6 +6256,7 @@
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */,
+				28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */,
 				28E8AF141997B5FB00C2DD22 /* LTCropDrawerSpec.mm in Sources */,
 				855988611CE31D4200EC4648 /* LTTextureAtlasSpec.mm in Sources */,
 				50D6724F1D26B84A00005CC7 /* LTContentCoordinateConverterSpec.mm in Sources */,
