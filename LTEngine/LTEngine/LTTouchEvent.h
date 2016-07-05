@@ -13,13 +13,23 @@ typedef NSMutableArray<id<LTTouchEvent>> LTMutableTouchEvents;
 
 /// Possible states of a touch event sequence.
 typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
-  /// Indicates that the touch event sequences has just started.
+  /// Indicates that the touch event sequences has just started. Initial state of a touch event
+  /// sequence. Possible next states are \c LTTouchEventSequenceStateContinuation and
+  /// \c LTTouchEventSequenceStateContinuationStationary.
   LTTouchEventSequenceStateStart,
-  /// Indicates that the touch event sequence is currently being continued.
+  /// Indicates that the touch event sequence is currently being continued. Possible next states are
+  /// \c LTTouchEventSequenceStateContinuation, \c LTTouchEventSequenceStateContinuationStationary,
+  /// \c LTTouchEventSequenceStateEnd, and \c LTTouchEventSequenceStateCancellation.
   LTTouchEventSequenceStateContinuation,
-  /// Indicates that the touch event sequence has just ended.
+  /// Indicates that the touch event sequence is currently being continued, but the touch events
+  /// are occurring at the same location as before. Possible next states are
+  /// \c LTTouchEventSequenceStateContinuation, \c LTTouchEventSequenceStateContinuationStationary,
+  /// \c LTTouchEventSequenceStateEnd, and \c LTTouchEventSequenceStateCancellation.
+  LTTouchEventSequenceStateContinuationStationary,
+  /// Indicates that the touch event sequence has just ended. Final state of a touch event sequence.
   LTTouchEventSequenceStateEnd,
-  /// Indicates that the touch event sequence has just been cancelled.
+  /// Indicates that the touch event sequence has just been cancelled. Final state of a touch event
+  /// sequence.
   LTTouchEventSequenceStateCancellation
 };
 
