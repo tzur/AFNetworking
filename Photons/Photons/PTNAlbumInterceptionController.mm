@@ -34,11 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
   PTNIncrementalChanges * _Nullable nonInterceptedSubalbumChanges =
         [[self class] stripInterceptedUpdates:parameters.changeset.subalbumChanges
                                inteceptionMap:parameters.interceptionMap
-                           originalCollection:parameters.changeset.beforeAlbum.subalbums];
+                           originalCollection:parameters.changeset.afterAlbum.subalbums];
   PTNIncrementalChanges * _Nullable nonInterceptedAssetChanges =
       [[self class] stripInterceptedUpdates:parameters.changeset.assetChanges
                              inteceptionMap:parameters.interceptionMap
-                         originalCollection:parameters.changeset.beforeAlbum.assets];
+                         originalCollection:parameters.changeset.afterAlbum.assets];
 
   if ((parameters.changeset.subalbumChanges || parameters.changeset.assetChanges) &&
       !nonInterceptedSubalbumChanges && !nonInterceptedAssetChanges) {
