@@ -21,4 +21,5 @@ extern "C" {
   #import "LTTestUtils.h"
   #import "EXPMatchers+beBlock.h"
   #import "EXPMatchers+beCloseToPoint.h"
+  #import "EXPMatchers+beCloseToSize.h"
 #endif

@@ -348,61 +348,53 @@ context(@"fitting cgsizes", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(10, 4.871795),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
       
       CGSize fillSize = CGSizeMake(10, 2);
       outputSize = CGSizeAspectFillWithoutRounding(inputSize, fillSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(10, 4.871795),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
     
     it(@"should aspect fit by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(10, 4.871795),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
     
     it(@"should aspect fit by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(8.5, 20.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(2.902439, 7),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(2.902439, 7), kEpsilon);
     });
     
     it(@"should aspect fit by scaling up size", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(40, 40);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(40, 19.487181),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(40, 19.487181), kEpsilon);
     });
     
     it(@"should aspect fill by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(10, 2);
       CGSize outputSize = CGSizeAspectFillWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(10, 4.871795),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
     
     it(@"should aspect fill by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(44.5, 20.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFillWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(15.195122, 7),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(15.195122, 7), kEpsilon);
     });
     
     it(@"should aspect fill by scaling up size", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(40, 40);
       CGSize outputSize = CGSizeAspectFillWithoutRounding(inputSize, fitSize);
-      expect(CGPointFromSize(outputSize)).to.beCloseToPointWithin(CGPointMake(82.105263, 40),
-                                                                  kEpsilon);
+      expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(82.105263, 40), kEpsilon);
     });
   });
 });
