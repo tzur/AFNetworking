@@ -3,13 +3,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class FBRHTTPRequest;
+@class FBRHTTPRequest, FBRHTTPResponse;
 
 /// Key in the \c userInfo dictionary mapping to an \c FBRHTTPRequest object that the error is
 /// related to.
 extern NSString * const kFBRFailingHTTPRequestKey;
 
-/// Key in the \c userInfo dictionary mapping to an \c NSHTTPURLResponse object that the error is
+/// Key in the \c userInfo dictionary mapping to an \c FBRHTTPResponse object that the error is
 /// related to.
 extern NSString * const kFBRFailingHTTPResponseKey;
 
@@ -29,14 +29,14 @@ extern NSString * const kFBRFailingHTTPResponseKey;
 /// not \c nil it will also be added to the \c userInfo dictionary with \c NSUnderlyingErrorKey as
 /// its key.
 + (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(FBRHTTPRequest *)request
-                  HTTPResponse:(NSHTTPURLResponse *)response
+                  HTTPResponse:(nullable FBRHTTPResponse *)response
                underlyingError:(nullable NSError *)underlyingError;
 
 /// HTTP request that is related to this error.
 @property (readonly, nonatomic, nullable) FBRHTTPRequest *fbr_HTTPRequest;
 
 /// HTTP response that is related to this error.
-@property (readonly, nonatomic, nullable) FBRHTTPRequest *fbr_HTTPResponse;
+@property (readonly, nonatomic, nullable) FBRHTTPResponse *fbr_HTTPResponse;
 
 @end
 
