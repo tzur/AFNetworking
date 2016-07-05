@@ -24,10 +24,16 @@ LTEnumDeclare(NSUInteger, FBRHTTPRequestMethod,
 );
 
 /// Provides the HTTP method as a string that can be embedded inside an HTTP request.
-@interface FBRHTTPRequestMethod (HTTPMethod)
+@interface FBRHTTPRequestMethod (Fiber)
 
 /// HTTP method in string representation.
 @property (readonly, nonatomic) NSString *HTTPMethod;
+
+/// \c YES if this request downloads data from the server.
+@property (readonly, nonatomic) BOOL downloadsData;
+
+/// \c YES if this request uploads data to the server.
+@property (readonly, nonatomic) BOOL uploadsData;
 
 @end
 

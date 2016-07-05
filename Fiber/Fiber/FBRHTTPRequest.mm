@@ -20,7 +20,7 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestMethod,
   FBRHTTPRequestMethodDelete
 );
 
-@implementation FBRHTTPRequestMethod (HTTPMethod)
+@implementation FBRHTTPRequestMethod (Fiber)
 
 + (NSDictionary<FBRHTTPRequestMethod *, NSString *> *)enumToHTTPMethodMap {
   static NSDictionary<FBRHTTPRequestMethod *, NSString *> *enumToHTTPMethodMap;
@@ -41,6 +41,15 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestMethod,
 
 - (NSString *)HTTPMethod {
   return [FBRHTTPRequestMethod enumToHTTPMethodMap][self];
+}
+
+- (BOOL)downloadsData {
+  return self.value == FBRHTTPRequestMethodGet;
+}
+
+- (BOOL)uploadsData {
+  return self.value == FBRHTTPRequestMethodPost || self.value == FBRHTTPRequestMethodPut ||
+      self.value == FBRHTTPRequestMethodPatch;
 }
 
 @end

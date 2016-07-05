@@ -15,6 +15,22 @@ it(@"should provide HTTP method string for every enum value", ^{
   }];
 });
 
+context(@"data transmission direction", ^{
+  NSArray<FBRHTTPRequestMethod *> * const kDownloadMethods = @[$(FBRHTTPRequestMethodGet)];
+  NSArray<FBRHTTPRequestMethod *> * const kUploadMethods = @[
+    $(FBRHTTPRequestMethodPost),
+    $(FBRHTTPRequestMethodPut),
+    $(FBRHTTPRequestMethodPatch)
+  ];
+
+  it(@"should correctly indicate data transmission direction for all methods", ^{
+    [FBRHTTPRequestMethod enumerateEnumUsingBlock:^(FBRHTTPRequestMethod *value) {
+      expect(value.downloadsData).to.equal([kDownloadMethods containsObject:value]);
+      expect(value.uploadsData).to.equal([kUploadMethods containsObject:value]);
+    }];
+  });
+});
+
 SpecEnd
 
 SpecBegin(FBRHTTPRequest)
@@ -93,7 +109,7 @@ context(@"designated initializer", ^{
 });
 
 context(@"equality", ^{
-  it(@"should inidcate that two identical objects are equal", ^{
+  it(@"should indicate that two identical objects are equal", ^{
     NSURL *URL = [NSURL URLWithString:@"http://foo.bar"];
     FBRHTTPRequest *request =
         [[FBRHTTPRequest alloc] initWithURL:URL method:$(FBRHTTPRequestMethodGet)];
