@@ -27,7 +27,7 @@ typedef void (^FBRHTTPTaskSuccessBlock)(FBRHTTPResponse *response);
 typedef void (^FBRHTTPTaskFailureBlock)(NSError *error);
 
 /// Initializes the receiver with the given session \c configuration.
-- (instancetype)iniWithConfiguration:(FBRHTTPSessionConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(FBRHTTPSessionConfiguration *)configuration;
 
 /// Initiates and returns a data task for the given HTTP \c request. Returns \c nil if failed to
 /// initiate a task, in that case the \c failure block will be invoked with the relevant error.
