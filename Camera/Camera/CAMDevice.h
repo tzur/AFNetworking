@@ -1,10 +1,17 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Nir Bruner.
 
-@class CAMDevicePreset;
+#import "CAMAudioDevice.h"
+#import "CAMExposureDevice.h"
+#import "CAMFlashDevice.h"
+#import "CAMFlipDevice.h"
+#import "CAMFocusDevice.h"
+#import "CAMPreviewLayerDevice.h"
+#import "CAMVideoDevice.h"
+#import "CAMWhiteBalanceDevice.h"
+#import "CAMZoomDevice.h"
 
-@protocol CAMAudioDevice, CAMExposureDevice, CAMFlashDevice, CAMFlipDevice, CAMFocusDevice,
-    CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice, CAMZoomDevice;
+@class CAMDevicePreset;
 
 NS_ASSUME_NONNULL_BEGIN
 
