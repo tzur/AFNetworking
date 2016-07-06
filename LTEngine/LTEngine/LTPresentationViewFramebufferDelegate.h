@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LTPresentationView;
+
 /// Protocol which should be implemented by objects that should be informed about size changes of
 /// the framebuffer of an \c LTPresentationView.
 @protocol LTPresentationViewFramebufferDelegate <NSObject>
