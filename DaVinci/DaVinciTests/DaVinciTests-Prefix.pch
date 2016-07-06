@@ -1,0 +1,38 @@
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Rouven Strauss.
+
+#import "DaVinci-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+#import <XCTest/XCTest.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <Expecta/Expecta.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+  #import <LTEngine/LTOpenCVExtensions.h>
+  #import <LTEngineTests/LTTestUtils+LTEngine.h>
+  #import <LTKitTests/LTTestUtils.h>
+
+  // Matchers.
+  #import <LTEngineTests/EXPMatchers+beCloseToGLKVector.h>
+  #import <LTEngineTests/EXPMatchers+beCloseToMat.h>
+  #import <LTEngineTests/EXPMatchers+beCloseToScalar.h>
+  #import <LTEngineTests/EXPMatchers+equalMat.h>
+  #import <LTEngineTests/EXPMatchers+equalScalar.h>
+  #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>
+  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+
+  // Specta hooks.
+  #import <LTEngineTests/LTSpectaKeyWindowViewHook.h>
+  #import <LTEngineTests/LTSpectaObjectionHook.h>
+  #import <LTEngineTests/LTSpectaOpenGLContextHook.h>
+#endif
