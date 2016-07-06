@@ -432,7 +432,7 @@ context(@"draw delegate", ^{
     cv::Mat4b altMat(kContentSize.height, kContentSize.width);
     altMat = kRed;
     LTTexture *altTexture = [LTTexture textureWithImage:altMat];
-    [[[mock stub] andReturn:altTexture] alternativeContentTextureToUseByView:view];
+    OCMStub([mock alternativeTextureForView:view]).andReturn(altTexture);
     
     expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = kRed;
@@ -441,8 +441,8 @@ context(@"draw delegate", ^{
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
   
-  it(@"should use content texture if alternativeContentTexture returns nil", ^{
-    [[[mock stub] andReturn:nil] alternativeContentTextureToUseByView:view];
+  it(@"should use content texture if alternative content texture is nil", ^{
+    OCMStub([mock alternativeTextureForView:view]);
     
     expectedOutput = view.backgroundColor.lt_cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
@@ -455,16 +455,16 @@ context(@"draw delegate", ^{
   });
 
   it(@"should provide the correct texture and visible content to the drawProcessedContent", ^{
-    // When there's no alternativeContentTexture, the content texture should be provided.
-    [[mock expect] presentationView:view drawProcessedContent:contentTexture
-                   withVisibleContentRect:kVisibleContentRect];
+    // When there's no alternative content texture, the content texture should be provided.
+    OCMExpect([mock presentationView:view drawProcessedContent:contentTexture
+              withVisibleContentRect:kVisibleContentRect]);
     [view drawToFbo:fbo];
     
-    // When there's an alternativeContentTexture, it should be provided instead.
+    // When there's an alternative content texture, it should be provided instead.
     LTTexture *altTexture = [LTTexture textureWithImage:inputContent];
-    [[[mock stub] andReturn:altTexture] alternativeContentTextureToUseByView:view];
-    [[mock expect] presentationView:view drawProcessedContent:altTexture
-                   withVisibleContentRect:kVisibleContentRect];
+    OCMStub([mock alternativeTextureForView:view]).andReturn(altTexture);
+    OCMExpect([mock presentationView:view drawProcessedContent:altTexture
+              withVisibleContentRect:kVisibleContentRect]);
     [view drawToFbo:fbo];
     OCMVerifyAll(mock);
   });
