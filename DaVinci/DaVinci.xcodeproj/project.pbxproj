@@ -21,6 +21,8 @@
 		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
 		5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154BD1D1AEB0300420FA9 /* Mantle.framework */; };
+		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
+		50574B0D1D2D66420076C60D /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50574B0C1D2D66420076C60D /* libLTKit.a */; };
 		50B586F51D2BA297007556A6 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B586F41D2BA297007556A6 /* libextobjc_iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -263,7 +265,7 @@
 		250155171D1AF15B00420FA9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		5084041D1D24F93A005AF327 /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
+		50574B0C1D2D66420076C60D /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
 		50B586F41D2BA297007556A6 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		50FF1A531D2CDFF400E24B4D /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		50FF1A551D2CDFF400E24B4D /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -295,6 +297,8 @@
 				250155301D1AF1B600420FA9 /* libSpecta.a in Frameworks */,
 				250154851D1AE92900420FA9 /* libDaVinci.a in Frameworks */,
 				2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */,
+				50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */,
+				50574B0D1D2D66420076C60D /* libLTKit.a in Frameworks */,
 				2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */,
 				50B586F51D2BA297007556A6 /* libextobjc_iOS.a in Frameworks */,
 			);
@@ -484,7 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				50B586F41D2BA297007556A6 /* libextobjc_iOS.a */,
-				5084041D1D24F93A005AF327 /* libLTKit.a */,
+				50574B0C1D2D66420076C60D /* libLTKit.a */,
 			);
 			name = "Static Libaries";
 			sourceTree = "<group>";
