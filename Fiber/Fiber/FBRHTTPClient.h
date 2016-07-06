@@ -17,6 +17,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Creates a new HTTP client using the default \c FBRHTTPSession implementation. The underlying
+/// session is initialized with the configuration provided by
+/// \c -[FBRHTTPSessionConfiguration init].
++ (instancetype)client;
+
+/// Creates a new HTTP client using the default \c FBRHTTPSession implementation. The underlying
+/// session is initialized with the given \c configuration. If \c baseURL is not \c nil it will be
+/// used as prefix URL for all HTTP requests issued by this client.
++ (instancetype)clientWithSessionConfiguration:(FBRHTTPSessionConfiguration *)configuration
+                                       baseURL:(nullable NSURL *)baseURL;
+
 /// Initializes the receiver with a custom underlying HTTP \c session. If \c baseURL is not \c nil
 /// it will be used as prefix URL for all HTTP requests issued by this client. \c baseURL must not
 /// specify \c fragment or \c query string, if either is present or if the \c scheme of the URL
