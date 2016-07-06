@@ -7,6 +7,10 @@
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventViewTestUtils.h"
 
+@interface LTTouchEventView ()
+- (void)forwardStationaryTouchEvents:(CADisplayLink *)link;
+@end
+
 @interface LTTestTouchEventDelegateCall : NSObject
 @property (strong, nonatomic) LTTouchEvents *events;
 @property (strong, nonatomic) LTTouchEvents *predictedEvents;
@@ -125,6 +129,8 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
             [delegate.calls removeAllObjects];
             [view touchesMoved:allTouches withEvent:eventMock];
             break;
+          case LTTouchEventSequenceStateContinuationStationary:
+            break;
           case LTTouchEventSequenceStateEnd:
             [view touchesBegan:allTouches withEvent:eventMock];
             [delegate.calls removeAllObjects];
@@ -164,6 +170,8 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
               [view touchesBegan:allTouches withEvent:eventMock];
               [delegate.calls removeAllObjects];
               [view touchesMoved:allTouches withEvent:event];
+              break;
+            case LTTouchEventSequenceStateContinuationStationary:
               break;
             case LTTouchEventSequenceStateEnd:
               [view touchesBegan:allTouches withEvent:eventMock];
@@ -256,6 +264,8 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
               [view touchesBegan:allTouches withEvent:eventMock];
               [delegate.calls removeAllObjects];
               [view touchesMoved:allTouches withEvent:event];
+              break;
+            case LTTouchEventSequenceStateContinuationStationary:
               break;
             case LTTouchEventSequenceStateEnd:
               [view touchesBegan:allTouches withEvent:eventMock];
@@ -415,11 +425,12 @@ context(@"cancellation", ^{
   });
 });
 
-context(@"retrieval", ^{
+context(@"forwarding of stationary touch events", ^{
   __block id mainTouch0;
   __block id mainTouch1;
   __block id mainTouch2;
   __block LTTouchEventView *view;
+  __block LTTestTouchEventDelegate *delegate;
 
   beforeEach(^{
     mainTouch0 = LTTouchEventViewCreateTouch(0);
@@ -427,26 +438,33 @@ context(@"retrieval", ^{
     mainTouch2 = LTTouchEventViewCreateTouch(2);
     id eventMock = LTTouchEventViewCreateEvent();
 
-    view = [[LTTouchEventView alloc] initWithFrame:CGRectZero
-                                          delegate:[[LTTestTouchEventDelegate alloc] init]];
+    delegate = [[LTTestTouchEventDelegate alloc] init];
 
+    view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
     [view touchesBegan:[NSSet setWithArray:@[mainTouch0, mainTouch1]] withEvent:eventMock];
     [view touchesBegan:[NSSet setWithArray:@[mainTouch2]] withEvent:eventMock];
+    [delegate.calls removeAllObjects];
   });
 
-  it(@"should correctly retrieve touch events of currently stationary touch event sequences", ^{
+  it(@"should correctly forward stationary touch events, according to CADisplayLink", ^{
     OCMStub([mainTouch0 phase]).andReturn(UITouchPhaseStationary);
     OCMStub([mainTouch1 phase]).andReturn(UITouchPhaseStationary);
     OCMStub([mainTouch2 phase]).andReturn(UITouchPhaseBegan);
 
-    NSArray<id<LTTouchEvent>> *stationaryTouchEvents = [[view stationaryTouchEvents] allObjects];
+    [view forwardStationaryTouchEvents:OCMClassMock([CADisplayLink class])];
 
-    expect(stationaryTouchEvents).to.haveACountOf(2);
+    expect(delegate.calls).to.haveACountOf(2);
+    expect(delegate.calls[0].events).to.haveACountOf(1);
+    expect(delegate.calls[0].predictedEvents).to.haveACountOf(0);
+    expect(delegate.calls[0].state).to.equal(LTTouchEventSequenceStateContinuationStationary);
+    expect(delegate.calls[1].events).to.haveACountOf(1);
+    expect(delegate.calls[1].predictedEvents).to.haveACountOf(0);
+    expect(delegate.calls[1].state).to.equal(LTTouchEventSequenceStateContinuationStationary);
 
-    id<LTTouchEvent> touchEvent = !stationaryTouchEvents.firstObject.sequenceID ?
-        stationaryTouchEvents.firstObject : stationaryTouchEvents.lastObject;
-    id<LTTouchEvent> otherTouchEvent = stationaryTouchEvents.firstObject.sequenceID ?
-        stationaryTouchEvents.firstObject : stationaryTouchEvents.lastObject;
+    id<LTTouchEvent> touchEvent = !delegate.calls[0].events[0].sequenceID ?
+        delegate.calls[0].events[0] : delegate.calls[1].events[0];
+    id<LTTouchEvent> otherTouchEvent = delegate.calls[0].events[0].sequenceID ?
+        delegate.calls[0].events[0] : delegate.calls[1].events[0];
 
     expect(touchEvent.sequenceID).to.equal(0);
     expect(otherTouchEvent.sequenceID).to.equal(1);
