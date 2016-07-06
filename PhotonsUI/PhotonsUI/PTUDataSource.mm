@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Collection view to keep up to date with \c changesetProvider.
 @property (readonly, nonatomic) UICollectionView *collectionView;
 
+/// Provider of signals used to determine the data displayed using this data source.
+@property (readonly, nonatomic) id<PTUChangesetProvider> changesetProvider;
+
 /// Factory class for cell view model objects.
 @property (readonly, nonatomic) id<PTUImageCellViewModelProvider> cellViewModelProvider;
 
@@ -28,12 +31,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current data model.
 @property (strong, nonatomic) PTUDataModel *dataModel;
 
+/// \c YES if the latest value sent by the data signal provided by \c changesetProvider indicated
+/// the existance of at least one object. This property is KVO compliant.
+@property (readwrite, nonatomic) BOOL hasData;
+
+/// Error sent on data signal provided by \c changesetProvider or \c nil of no such error was sent.
+/// This property is KVO compliant.
+@property (strong, nonatomic, nullable) NSError *error;
+
 @end
 
 @implementation PTUDataSource
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
-                            dataSignal:(RACSignal *)dataSignal
+                     changesetProvider:(id<PTUChangesetProvider>)changesetProvider
                  cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
                              cellClass:(Class)cellClass {
   LTParameterAssert([cellClass isSubclassOfClass:[UICollectionViewCell class]] &&
@@ -42,20 +53,20 @@ NS_ASSUME_NONNULL_BEGIN
                     "PTUImageCell protocol: %@", NSStringFromClass(cellClass));
   if (self = [super init]) {
     _cellViewModelProvider = cellViewModelProvider;
+    _changesetProvider = changesetProvider;
     _cellClass = cellClass;
     self.dataModel = @[];
-    [self setupCollectionView:collectionView withDataSignal:dataSignal];
+    [self setupCollectionView:collectionView];
   }
   return self;
 }
 
-- (void)setupCollectionView:(UICollectionView *)collectionView
-             withDataSignal:(RACSignal *)dataSignal {
+- (void)setupCollectionView:(UICollectionView *)collectionView {
   _collectionView = collectionView;
   self.collectionView.dataSource = self;
   [self.collectionView registerClass:self.cellClass
           forCellWithReuseIdentifier:NSStringFromClass(self.cellClass)];
-  [self bindCollectionViewToDataSignal:dataSignal];
+  [self bindCollectionViewToDataSignal:[self.changesetProvider fetchChangeset]];
 }
 
 - (void)bindCollectionViewToDataSignal:(RACSignal *)dataSignal {
@@ -66,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeNext:^(PTUChangeset *changeset) {
         @strongify(self)
         self.dataModel = changeset.afterDataModel;
+        self.hasData = YES;
 
         if (!changeset.hasIncrementalChanges) {
           [self.collectionView reloadData];
@@ -95,6 +107,9 @@ NS_ASSUME_NONNULL_BEGIN
             [self.collectionView moveItemAtIndexPath:move.fromIndex toIndexPath:move.toIndex];
           }
         } completion:nil];
+      } error:^(NSError *error) {
+        @strongify(self)
+        self.error = error;
       }];
 }
 

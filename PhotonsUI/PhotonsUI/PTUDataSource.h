@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
-@protocol PTNAssetManager, PTNDescriptor, PTUImageCellViewModelProvider;
+@protocol PTNAssetManager, PTNDescriptor, PTUChangesetProvider, PTUImageCellViewModelProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,15 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c collectionView as the view to keep up to date with the given \c dataSignal,
-/// \c dataSignal as signal sending \c PTUChangeset objects defining the data displayed,
-/// \c cellViewModelProvider as provider of \c PTUImageCellViewModel objects and \c cellClass as the
-/// class to use for each cell. Errors on \c dataSignal are ignored.
+/// Initializes with \c collectionView as the view to keep up to date with the signals of the given
+/// \c changesetProvider defining the data managed, \c cellViewModelProvider as provider of
+/// \c PTUImageCellViewModel objects and \c cellClass as the class to use for each cell.
 ///
 /// @note \c cellClass must be a subclass of \c UICollectionViewCell that conforms to the
 /// \c PTUImageCell.
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
-                            dataSignal:(RACSignal *)dataSignal
+                     changesetProvider:(id<PTUChangesetProvider>)changesetProvider
                  cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
                              cellClass:(Class)cellClass NS_DESIGNATED_INITIALIZER;
 
@@ -32,6 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c object isn't in this data source. If \c object exists in multiple sections, the first one
 /// will be returned.
 - (nullable NSIndexPath *)indexPathOfObject:(id<PTNDescriptor>)object;
+
+/// \c YES if the latest value sent by the data signal provided by \c changesetProvider indicated
+/// the existance of at least one object. This property is KVO compliant.
+@property (readonly, nonatomic) BOOL hasData;
+
+/// Error sent on data signal provided by \c changesetProvider or \c nil of no such error was sent.
+/// This property is KVO compliant.
+@property (readonly, nonatomic, nullable) NSError *error;
 
 @end
 
