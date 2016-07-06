@@ -27,7 +27,7 @@ it(@"should return the correct security policy for standard security policy", ^{
   expect(securityPolicy.pinnedCertificates).to.beNil();
 });
 
-it(@"should return the correct security policy for security policy with pinned certificates ", ^{
+it(@"should return the correct security policy for security policy with pinned certificates", ^{
   NSSet<NSData *> *certificates =
       [NSSet setWithObjects:[@"Foo" dataUsingEncoding:NSUTF8StringEncoding], nil];
   FBRHTTPSessionSecurityPolicy *fiberSecurityPolicy =
@@ -40,7 +40,7 @@ it(@"should return the correct security policy for security policy with pinned c
   expect(securityPolicy.pinnedCertificates).to.equal(certificates);
 });
 
-it(@"should return the correct security policy for security policy with pinned certificates ", ^{
+it(@"should return the correct security policy for security policy with pinned certificate keys", ^{
   NSSet<NSData *> *certificates =
       [NSSet setWithObjects:[@"Foo" dataUsingEncoding:NSUTF8StringEncoding], nil];
   FBRHTTPSessionSecurityPolicy *fiberSecurityPolicy =
