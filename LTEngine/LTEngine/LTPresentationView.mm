@@ -351,8 +351,8 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)drawContentForVisibleContentRect:(CGRect)visibleContentRect {
   // If the draw delegate supports the content texture override mechanism, get it.
   LTTexture *textureToDraw = self.contentTexture;
-  if ([self.drawDelegate respondsToSelector:@selector(alternativeContentTextureToUseByView:)]) {
-    textureToDraw = [self.drawDelegate alternativeContentTextureToUseByView:self] ?: textureToDraw;
+  if ([self.drawDelegate respondsToSelector:@selector(alternativeTextureForView:)]) {
+    textureToDraw = [self.drawDelegate alternativeTextureForView:self] ?: textureToDraw;
   }
 
   // Set the magnifying filter interpolation according to the current zoom scale.

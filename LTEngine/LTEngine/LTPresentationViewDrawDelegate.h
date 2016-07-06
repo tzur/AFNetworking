@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// This method can be used in scenarios where a different texture should be displayed temporarily,
 /// for example when comparing to a different image.
-- (nullable LTTexture *)alternativeContentTextureToUseByView:(LTPresentationView *)presentationView;
+- (nullable LTTexture *)alternativeTextureForView:(LTPresentationView *)presentationView;
 
 /// This method will be used to draw the content texture instead of the regular drawing method, for
 /// example when the content should be drawn with an applied postprocessing effect.
