@@ -163,9 +163,6 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
 - (void)handleStationaryTouchEvents:(LTContentTouchEvents *)stationaryTouchEvents {
   LTAssert(self.sequenceID);
 
-- (void)cancelActiveStroke {
-  if (self.sequenceID) {
-    [self finishStroke:YES];
   for (id<LTContentTouchEvent> contentTouchEvent in stationaryTouchEvents) {
     if (contentTouchEvent.sequenceID != [self.sequenceID unsignedIntegerValue]) {
       continue;
