@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTPrimitiveQuad.h"
+#import "LTQuad.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
