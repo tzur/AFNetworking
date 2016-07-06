@@ -8,6 +8,7 @@
 #import "FBRHTTPRequest.h"
 #import "FBRHTTPResponse.h"
 #import "FBRHTTPSession.h"
+#import "FBRHTTPSessionConfiguration.h"
 #import "FBRHTTPTaskProgress.h"
 #import "NSErrorCodes+Fiber.h"
 
@@ -181,6 +182,25 @@ context(@"initialization", ^{
       FBRHTTPClient __unused *client =
           [[FBRHTTPClient alloc] initWithSession:session baseURL:baseURL];
     }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"factory methods", ^{
+  it(@"should create a client with the default session and no base URL", ^{
+    FBRHTTPClient *client = [FBRHTTPClient client];
+
+    expect(client.session).toNot.beNil();
+    expect(client.baseURL).to.beNil();
+  });
+
+  it(@"should create a client with the default session and the given base URL", ^{
+    FBRHTTPSessionConfiguration *configuration = [[FBRHTTPSessionConfiguration alloc] init];
+    NSURL *baseURL = [NSURL URLWithString:@"http://foo.bar"];
+    FBRHTTPClient *client = [FBRHTTPClient clientWithSessionConfiguration:configuration
+                                                                  baseURL:baseURL];
+
+    expect(client.session).toNot.beNil();
+    expect(client.baseURL).to.equal(baseURL);
   });
 });
 

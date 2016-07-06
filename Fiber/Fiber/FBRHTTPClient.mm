@@ -3,6 +3,7 @@
 
 #import "FBRHTTPClient.h"
 
+#import "FBRAFNetworkingSessionAdapter.h"
 #import "FBRHTTPRequest.h"
 #import "FBRHTTPResponse.h"
 #import "FBRHTTPSession.h"
@@ -58,6 +59,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 @implementation FBRHTTPClient
+
++ (instancetype)client {
+  return [self clientWithSessionConfiguration:[[FBRHTTPSessionConfiguration alloc] init]
+                                      baseURL:nil];
+}
+
++ (instancetype)clientWithSessionConfiguration:(FBRHTTPSessionConfiguration *)configuration
+                                       baseURL:(nullable NSURL *)baseURL {
+  id<FBRHTTPSession> session =
+      [[FBRAFNetworkingSessionAdapter alloc] initWithConfiguration:configuration];
+  return [[self alloc] initWithSession:session baseURL:baseURL];
+}
 
 - (instancetype)initWithSession:(id<FBRHTTPSession>)session baseURL:(nullable NSURL *)baseURL {
   LTParameterAssert(!baseURL || [FBRHTTPRequest isProtocolSupported:baseURL], @"Base URL must be a "
