@@ -22,6 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Number to use as sequence ID of next starting touch event sequence.
 @property (nonatomic) NSUInteger sequenceID;
 
+/// Display link used to trigger forwarding of stationary touch events.
+@property (readonly, nonatomic) CADisplayLink *displayLink;
+
+/// Lock used used to prevent potential race conditions where a beginning or terminating touch event
+/// sequence is currently being handled on a thread \c A and the \c displayLink triggers the
+/// forwarding of stationary touch events on a different thread \c B, causing an interleaved
+/// execution pattern of the two relevant methods.
+@property (readonly, nonatomic) NSLock *lock;
+
 @end
 
 @implementation LTTouchEventView
@@ -36,8 +45,25 @@ NS_ASSUME_NONNULL_BEGIN
     self.delegate = delegate;
     self.touchToSequenceID = [NSMapTable weakToStrongObjectsMapTable];
     self.sequenceID = 0;
+    _lock = [[NSLock alloc] init];
   }
   return self;
+}
+
+- (CADisplayLink *)displayLinkForStationaryTouchEvents {
+  CADisplayLink *displayLink =
+      [CADisplayLink displayLinkWithTarget:self
+                                  selector:@selector(forwardStationaryTouchEvents:)];
+  [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+  return displayLink;
+}
+
+#pragma mark -
+#pragma mark Deallocation
+#pragma mark -
+
+- (void)dealloc {
+  [self.displayLink invalidate];
 }
 
 #pragma mark -
@@ -45,9 +71,17 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [super touchesBegan:touches withEvent:event];
-  [self updateMapTableWithBeginningTouches:touches];
-  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
+  [self lockAndExecute:^{
+    [super touchesBegan:touches withEvent:event];
+    [self updateMapTableWithBeginningTouches:touches];
+    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
+  }];
+}
+
+- (void)lockAndExecute:(void(^)())block {
+  [self.lock lock];
+  block();
+  [self.lock unlock];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
@@ -56,15 +90,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [super touchesEnded:touches withEvent:event];
-  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
-  [self updateMapTableWithTerminatingTouches:touches];
+  [self lockAndExecute:^{
+    [super touchesEnded:touches withEvent:event];
+    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
+    [self updateMapTableWithTerminatingTouches:touches];
+  }];
 }
 
 - (void)touchesCancelled:(nullable NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [super touchesCancelled:touches withEvent:event];
-  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
-  [self updateMapTableWithTerminatingTouches:touches];
+  [self lockAndExecute:^{
+    [super touchesCancelled:touches withEvent:event];
+    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
+    [self updateMapTableWithTerminatingTouches:touches];
+  }];
 }
 
 - (void)touchesEstimatedPropertiesUpdated:(NSSet<UITouch *> *)touches {
@@ -105,22 +143,30 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTTouchEventRetrieval
+#pragma mark Forwarding of stationary touches
 #pragma mark -
 
-- (NSSet<id<LTTouchEvent>> *)stationaryTouchEvents {
-  NSMutableSet<id<LTTouchEvent>> *stationaryTouchEvents = [NSMutableSet set];
+- (void)forwardStationaryTouchEvents:(CADisplayLink __unused *)link {
+  if (![self.lock tryLock]) {
+    return;
+  }
 
   NSEnumerator *keyEnumerator = [self.touchToSequenceID keyEnumerator];
 
   while (UITouch *touch = [keyEnumerator nextObject]) {
-    if (touch.phase == UITouchPhaseStationary) {
-      NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:touch] unsignedIntegerValue];
-      [stationaryTouchEvents addObject:[LTTouchEvent touchEventWithPropertiesOfTouch:touch
-                                                                          sequenceID:sequenceID]];
+    if (touch.phase != UITouchPhaseStationary) {
+      continue;
     }
+
+    NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:touch] unsignedIntegerValue];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touch
+                                                                  sequenceID:sequenceID];
+    [self.delegate
+     receivedTouchEvents:@[touchEvent]
+     predictedEvents:@[]
+     touchEventSequenceState:LTTouchEventSequenceStateContinuationStationary];
   }
-  return [stationaryTouchEvents copy];
+  [self.lock unlock];
 }
 
 #pragma mark -
@@ -186,9 +232,10 @@ NS_ASSUME_NONNULL_BEGIN
     return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
   }
 
-  // Note that according one is supposed to use either main touches or coalesced touches. Never
-  // should one mix them. Hence, the coalesced touches "include the main touch" in the form of a
-  // separate instance and the main touch itself can be ignored when working with coalesced touches.
+  // Note that, according to Apple's documentation, one is supposed to use either main touches or
+  // coalesced touches. Never should one mix them. Hence, the coalesced touches "include the main
+  // touch" in the form of a separate instance and the main touch itself can be ignored when working
+  // with coalesced touches.
   //
   // @see https://developer.apple.com/videos/play/wwdc2015-233/ for more details.
 

@@ -2,15 +2,17 @@
 // Created by Rouven Strauss.
 
 #import "LTTouchEventCancellation.h"
-#import "LTTouchEventProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol LTTouchEventDelegate;
 
 /// View converting incoming \c UITouch objects to \c LTTouchEvent objects and passing them on to
-/// its delegate.
-@interface LTTouchEventView : UIView <LTTouchEventCancellation, LTTouchEventProvider>
+/// its delegate. In particular, the view informs its delegate about a) \c LTTouchEvent objects
+/// generated due to calls to the <tt>touchesBegan/Moved/Ended/Cancelled:withEvent:</tt>methods
+/// of \c UIView, and b) possibly existing stationary \c LTTouchEvent objects generated once per
+/// frame.
+@interface LTTouchEventView : UIView <LTTouchEventCancellation>
 
 - (instancetype)init NS_UNAVAILABLE;
 

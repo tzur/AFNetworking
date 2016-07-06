@@ -9,7 +9,6 @@
 #import "LTTouchCollectorFilter.h"
 #import "LTTouchCollectorTimeIntervalFilter.h"
 #import "LTTouchEvent.h"
-#import "LTTouchEventProvider.h"
 #import "LTPainterPoint.h"
 
 @interface LTTouchCollector ()
@@ -23,11 +22,8 @@
 /// \c interactionModeManager of this instance.
 @property (strong, nonatomic) id<LTTouchCollectorFilter> filterForDisablingNavigation;
 
-/// Timer used to trigger touch events based on time, even if there was no movement.
-@property (strong, nonatomic) NSTimer *timer;
-
-/// ID of the currently occurring touch event sequence. \c nil if no touch event sequence is
-/// currently occurring.
+/// ID of the currently tracked touch event sequence. \c nil if no touch event sequence is currently
+/// occurring.
 @property (strong, nonatomic, nullable) NSNumber *sequenceID;
 
 /// Object via which the interaction mode can be updated.
@@ -114,6 +110,9 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
     case LTTouchEventSequenceStateContinuation:
       [self handleContinuingTouchEvents:touchEvents];
       return;
+    case LTTouchEventSequenceStateContinuationStationary:
+      [self handleStationaryTouchEvents:touchEvents];
+      return;
     case LTTouchEventSequenceStateEnd:
       [self finishStroke:NO];
       return;
@@ -138,7 +137,6 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   LTPainterPoint *point = [self pointFromTouchEvent:touchEvent];
   self.strokeTouchPoints = [NSMutableArray arrayWithObject:point];
   [self.delegate ltTouchCollector:self startedStrokeAt:point];
-  [self startTimer];
 }
 
 - (void)handleContinuingTouchEvents:(LTContentTouchEvents *)touchEvents {
@@ -162,61 +160,8 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
   }
 }
 
-#pragma mark -
-#pragma mark Public Interface
-#pragma mark -
-
-- (void)cancelActiveStroke {
-  if (self.sequenceID) {
-    [self finishStroke:YES];
-  }
-}
-
-#pragma mark -
-#pragma mark Painting Utilities
-#pragma mark -
-
-- (void)finishStroke:(BOOL)cancelled {
-  self.sequenceID = nil;
-  [self endTimer];
-  if (self.useStrokeInteractionMode &&
-      self.interactionModeManager.interactionMode == LTInteractionModeTouchEvents) {
-    self.interactionModeManager.interactionMode = self.previousInteractionMode;
-    self.previousInteractionMode = LTInteractionModeNone;
-    self.useStrokeInteractionMode = NO;
-  }
-  [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
-}
-
-- (id<LTTouchCollectorFilter>)filterForCurrentStrokeState {
-  return (self.strokeTouchPoints.count > 1) ? self.filter : self.filterForInitialMovement;
-}
-
-#pragma mark -
-#pragma mark Timer-Based Touches
-#pragma mark -
-
-/// Creates and starts the timer running during the stroke, triggering time-based touch events when
-/// the touches are stationary.
-- (void)startTimer {
-  LTAssert(!self.timer, @"Starting a stroke timer, but timer already exists.");
-  self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(touchTimerFired:)
-                                     userInfo:nil repeats:YES];
-  [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
-}
-
-- (void)endTimer {
-  [self.timer invalidate];
-  self.timer = nil;
-}
-
-/// Triggered by a timer during a stroke, collects time-based events for stationary toches.
-- (void)touchTimerFired:(NSTimer __unused *)timer {
-  if (!self.sequenceID) {
-    return;
-  }
-  NSSet<id<LTContentTouchEvent>> *stationaryTouchEvents =
-      [self.touchEventProvider stationaryContentTouchEvents];
+- (void)handleStationaryTouchEvents:(LTContentTouchEvents *)stationaryTouchEvents {
+  LTAssert(self.sequenceID);
 
   for (id<LTContentTouchEvent> contentTouchEvent in stationaryTouchEvents) {
     if (contentTouchEvent.sequenceID != [self.sequenceID unsignedIntegerValue]) {
@@ -231,6 +176,25 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
       [self.delegate ltTouchCollector:self collectedTimerTouch:newPoint];
     }
   }
+}
+
+#pragma mark -
+#pragma mark Painting Utilities
+#pragma mark -
+
+- (void)finishStroke:(BOOL)cancelled {
+  self.sequenceID = nil;
+  if (self.useStrokeInteractionMode &&
+      self.interactionModeManager.interactionMode == LTInteractionModeTouchEvents) {
+    self.interactionModeManager.interactionMode = self.previousInteractionMode;
+    self.previousInteractionMode = LTInteractionModeNone;
+    self.useStrokeInteractionMode = NO;
+  }
+  [self.delegate ltTouchCollectorFinishedStroke:self cancelled:cancelled];
+}
+
+- (id<LTTouchCollectorFilter>)filterForCurrentStrokeState {
+  return (self.strokeTouchPoints.count > 1) ? self.filter : self.filterForInitialMovement;
 }
 
 #pragma mark -

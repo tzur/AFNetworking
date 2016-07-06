@@ -528,62 +528,6 @@ context(@"protocols", ^{
       expect(numberOfDelegateCalls).to.equal(1);
     });
   });
-
-  context(@"LTContentTouchEventProvider", ^{
-    __block LTContentView *view;
-
-    beforeEach(^{
-      view = [[LTContentView alloc] initWithFrame:CGRectMake(0, 0, 1, 2)
-                               contentScaleFactor:kContentScaleFactor context:currentContext
-                                   contentTexture:nil navigationState:nil];
-      [view layoutIfNeeded];
-    });
-
-    afterEach(^{
-      view = nil;
-    });
-
-    it(@"should correctly provide stationary content touch events", ^{
-      id touchEventViewMock = OCMPartialMock(view.touchEventView);
-
-      id touchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
-      id anotherTouchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
-      OCMStub([touchEventMock copyWithZone:nil]).andReturn(touchEventMock);
-      OCMStub([touchEventMock sequenceID]).andReturn(0);
-      OCMStub([touchEventMock viewLocation]).andReturn(CGPointMake(0.5, 1));
-      OCMStub([touchEventMock previousViewLocation]).andReturn(CGPointZero);
-      OCMStub([anotherTouchEventMock copyWithZone:nil]).andReturn(anotherTouchEventMock);
-      OCMStub([anotherTouchEventMock sequenceID]).andReturn(1);
-      OCMStub([anotherTouchEventMock viewLocation]).andReturn(CGPointMake(1, 2));
-      OCMStub([anotherTouchEventMock previousViewLocation]).andReturn(CGPointZero);
-
-      NSSet<id<LTTouchEvent>> *stationaryTouchEvents =
-          [NSSet setWithArray:@[touchEventMock, anotherTouchEventMock]];
-
-      OCMStub([touchEventViewMock stationaryTouchEvents]).andReturn(stationaryTouchEvents);
-
-      LTContentTouchEvents *touchEvents = [[view stationaryContentTouchEvents] allObjects];
-
-      expect(touchEvents).to.haveACountOf(2);
-
-      id<LTContentTouchEvent> contentTouchEvent = !touchEvents.firstObject.sequenceID ?
-          touchEvents.firstObject : touchEvents.lastObject;
-      id<LTContentTouchEvent> otherContentTouchEvent = touchEvents.firstObject.sequenceID ?
-          touchEvents.firstObject : touchEvents.lastObject;
-
-      expect(contentTouchEvent.sequenceID).to.equal(0);
-      expect(contentTouchEvent.contentLocation).to.equal(CGPointMake(0.5, 0));
-      expect(contentTouchEvent.previousContentLocation).to.equal(CGPointMake(0, -1));
-      expect(contentTouchEvent.contentSize).to.equal(CGSizeMakeUniform(1));
-      expect(contentTouchEvent.contentZoomScale).to.equal(1);
-
-      expect(otherContentTouchEvent.sequenceID).to.equal(1);
-      expect(otherContentTouchEvent.contentLocation).to.equal(CGPointMake(1, 1));
-      expect(otherContentTouchEvent.previousContentLocation).to.equal(CGPointMake(0, -1));
-      expect(otherContentTouchEvent.contentSize).to.equal(CGSizeMakeUniform(1));
-      expect(otherContentTouchEvent.contentZoomScale).to.equal(1);
-    });
-  });
 });
 
 SpecEnd

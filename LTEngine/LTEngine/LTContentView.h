@@ -6,7 +6,6 @@
 #import "LTContentInteraction.h"
 #import "LTContentLocationProvider.h"
 #import "LTContentNavigationManager.h"
-#import "LTTouchEventProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///            gesture recognizers, refer to the API of the \c LTContentInteractionManager protocol.
 @interface LTContentView : UIView <LTContentCoordinateConverter, LTContentDisplayManager,
     LTContentInteractionManager, LTContentLocationProvider, LTContentNavigationManager,
-    LTContentRefreshing, LTContentTouchEventProvider>
+    LTContentRefreshing>
 
 - (instancetype)init NS_UNAVAILABLE;
 
