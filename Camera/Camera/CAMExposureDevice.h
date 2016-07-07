@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Instructs the camera to lock the current exposure.
 ///
-/// Returned signal sends no values and completes when exposure is locked, or errs if there is a
-/// problem locking the exposure. All events are sent on an arbitrary thread.
+/// Returned signal sends \c CGPointNull and completes when exposure is locked, or errs if there is
+/// a problem locking the exposure. All events are sent on an arbitrary thread.
 - (RACSignal *)setLockedExposure;
 
 /// Instructs the camera to over- or under- expose frames. \c value will be added to the scene
