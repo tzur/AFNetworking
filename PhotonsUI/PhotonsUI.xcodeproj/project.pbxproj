@@ -23,6 +23,7 @@
 		8463DA081D1009C300FF4935 /* PTNFakeAlbumDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463DA071D1009C300FF4935 /* PTNFakeAlbumDescriptor.m */; };
 		84884C7F1C71D83000DBB987 /* PTUChangesetMoveSepc.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84884C7E1C71D83000DBB987 /* PTUChangesetMoveSepc.mm */; };
 		848D31341D0F0415006BC52F /* PTUImageCellViewModelProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */; };
+		848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */; };
 		848D31541D0F0939006BC52F /* PTNFakeAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 848D31531D0F0939006BC52F /* PTNFakeAssetManager.m */; };
 		848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069B1C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		848E09731C59212F001D8368 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 848E069D1C59212F001D8368 /* LLSignalTestRecorder.m */; };
@@ -319,6 +320,8 @@
 		84884C181C70E63500DBB987 /* PTUChangesetMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUChangesetMove.m; sourceTree = "<group>"; };
 		84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUChangesetMoveSpec.mm; sourceTree = "<group>"; };
 		848D31321D0F0415006BC52F /* PTUImageCellViewModelProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUImageCellViewModelProvider.h; sourceTree = "<group>"; };
+		848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUImageCellViewModelProvider.mm; sourceTree = "<group>"; };
+		848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUImageCellViewModelProviderSpec.mm; sourceTree = "<group>"; };
 		848D31521D0F0939006BC52F /* PTNFakeAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFakeAssetManager.h; path = ../../Photons/PhotonsTests/PTNFakeAssetManager.h; sourceTree = "<group>"; };
 		848D31531D0F0939006BC52F /* PTNFakeAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFakeAssetManager.m; path = ../../Photons/PhotonsTests/PTNFakeAssetManager.m; sourceTree = "<group>"; };
 		848E00061C591DD1001D8368 /* PhotonsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonsUI.h; sourceTree = "<group>"; };
@@ -508,6 +511,7 @@
 				84D741881C7A270500BCA294 /* PTUTestUtils.mm */,
 				84765E311D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm */,
 				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */,
+				848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -613,6 +617,7 @@
 				84765E111D29393600D3D5C5 /* PTUChangesetProviderReverser.m */,
 				84765E2E1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.h */,
 				84765E2F1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.m */,
+				848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1118,6 +1123,7 @@
 				84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm in Sources */,
 				8482E0321D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm in Sources */,
 				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
+				848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */,
 				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
 				848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				84765E321D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm in Sources */,
