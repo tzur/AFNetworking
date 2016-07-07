@@ -1971,7 +1971,7 @@
 		28E8AF0F1997AB4700C2DD22 /* LTCropDrawerRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCropDrawerRect.h; sourceTree = "<group>"; };
 		28E8AF101997AB4700C2DD22 /* LTCropDrawerRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCropDrawerRect.mm; sourceTree = "<group>"; };
 		28E8AF131997B5FB00C2DD22 /* LTCropDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCropDrawerSpec.mm; sourceTree = "<group>"; };
-		28EC239A1B0CEA190099946A /* LTImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageCompression.h; sourceTree = "<group>"; };
+		28EC239A1B0CEA190099946A /* LTImageCompressor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageCompressor.h; sourceTree = "<group>"; };
 		28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImageIOCompressor.h; sourceTree = "<group>"; };
 		28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOCompressor.mm; sourceTree = "<group>"; };
 		28ED10E918CC9EFE00EE1633 /* LTBristleBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBristleBrush.h; sourceTree = "<group>"; };
@@ -3828,7 +3828,7 @@
 		8B3831F31B568FB300620560 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				28EC239A1B0CEA190099946A /* LTImageCompression.h */,
+				28EC239A1B0CEA190099946A /* LTImageCompressor.h */,
 				28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */,
 				28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */,
 				285EEA521B15C52A002D10EE /* LTImageJPEGCompressor.h */,

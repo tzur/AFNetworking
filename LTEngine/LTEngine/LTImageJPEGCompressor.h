@@ -1,12 +1,12 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Amit Shabtay.
 
-#import "LTImageCompression.h"
+#import "LTImageCompressor.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Apply JPEG compression on images. User can define the compression \c quality.
-@interface LTImageJPEGCompressor : NSObject <LTImageCompression>
+@interface LTImageJPEGCompressor : NSObject <LTImageCompressor>
 
 /// Initialize \c LTImageJPEGCompressor with \c defaultQuality.
 - (instancetype)init;
