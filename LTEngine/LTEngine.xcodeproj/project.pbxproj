@@ -589,6 +589,7 @@
 		503044FD1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */; };
 		503044FF1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */; };
 		50501ABE1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50501ABD1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm */; };
+		5050F05B1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5050F05A1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm */; };
 		5054C6E31CC68D7B00976EA1 /* LTDynamicDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5054C6E11CC68D7B00976EA1 /* LTDynamicDrawer.h */; };
 		5054C6E41CC68D7B00976EA1 /* LTDynamicDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5054C6E21CC68D7B00976EA1 /* LTDynamicDrawer.mm */; };
 		5054C72C1CC6956200976EA1 /* LTDynamicDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5054C72B1CC6956200976EA1 /* LTDynamicDrawerSpec.mm */; };
@@ -2069,6 +2070,8 @@
 		503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEuclideanSplineControlPointSpec.mm; sourceTree = "<group>"; };
 		50501ABC1C34381A005FFDEB /* LTTouchEventViewTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventViewTestUtils.h; sourceTree = "<group>"; };
 		50501ABD1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEventViewTestUtils.mm; sourceTree = "<group>"; };
+		5050F0591D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTContentNavigationManagerExamples.h; sourceTree = "<group>"; };
+		5050F05A1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTContentNavigationManagerExamples.mm; sourceTree = "<group>"; };
 		5054C6E11CC68D7B00976EA1 /* LTDynamicDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDynamicDrawer.h; sourceTree = "<group>"; };
 		5054C6E21CC68D7B00976EA1 /* LTDynamicDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicDrawer.mm; sourceTree = "<group>"; };
 		5054C72B1CC6956200976EA1 /* LTDynamicDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicDrawerSpec.mm; sourceTree = "<group>"; };
@@ -3527,6 +3530,8 @@
 		500CA9F71D26B0F6009CF19F /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				5050F0591D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.h */,
+				5050F05A1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm */,
 				500CA9F81D26B109009CF19F /* LTNavigationViewSpec.mm */,
 			);
 			name = Navigation;
@@ -6324,6 +6329,7 @@
 				85F372BA1C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm in Sources */,
 				85F155171D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm in Sources */,
 				500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */,
+				5050F05B1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				500CAA091D26B18F009CF19F /* LTGridDrawingManagerSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
