@@ -7,3 +7,5 @@
 
 #import <LLReactiveMatchers/LLReactiveMatchers.h>
 #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+
+#import "CAMDeviceStub.h"
