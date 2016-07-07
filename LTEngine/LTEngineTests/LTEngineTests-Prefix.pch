@@ -18,6 +18,7 @@ extern "C" {
 #ifdef __cplusplus
   // LTKitTests.
   #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTests/EXPMatchers+beCloseToSize.h>
   #import <LTKitTests/LTTestUtils.h>
 
   // LTEngineTests.
