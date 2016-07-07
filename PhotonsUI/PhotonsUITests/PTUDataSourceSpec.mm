@@ -31,7 +31,7 @@ beforeEach(^{
 });
 
 it(@"should start with empty data", ^{
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.beNil();
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.beNil();
   expect(dataSource.hasData).to.beFalsy();
 });
 
@@ -42,17 +42,23 @@ it(@"should register given cell class for reuse", ^{
 it(@"should remain up to date with sent data", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
   [dataSignal sendNext:changeset];
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.equal(@1);
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]]).to.equal(@2);
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:1]]).to.equal(@3);
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]]).to.beNil();
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:1]]).to.beNil();
-  expect([dataSource objectAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:2]]).to.beNil();
-  expect([dataSource indexPathOfObject:(id<PTNDescriptor>)@1])
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]])
+      .to.equal(@1);
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]])
+      .to.equal(@2);
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:1]])
+      .to.equal(@3);
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]])
+      .to.beNil();
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:1]])
+      .to.beNil();
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:2]])
+      .to.beNil();
+  expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@1])
       .to.equal([NSIndexPath indexPathForItem:0 inSection:0]);
-  expect([dataSource indexPathOfObject:(id<PTNDescriptor>)@2])
+  expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@2])
       .to.equal([NSIndexPath indexPathForItem:0 inSection:1]);
-  expect([dataSource indexPathOfObject:(id<PTNDescriptor>)@4]).to.beNil();
+  expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@4]).to.beNil();
   expect(dataSource.hasData).to.beTruthy();
 });
 
