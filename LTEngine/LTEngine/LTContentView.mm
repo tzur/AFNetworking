@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic interactionMode;
 
 // LTContentNavigationManager protocol
-@dynamic bounceToMinimumScale;
+@dynamic bounceToAspectFit;
 @dynamic navigationState;
 
 // LTContentLocationProvider protocol
