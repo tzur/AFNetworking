@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for applying compression on images.
-@protocol LTImageCompression
+@protocol LTImageCompressor
 
 /// Apply compression on \c image and add \c metadata to the resulting \c NSData. An error will be
 /// raised if the \c image is \c nil. The \c metadata may be \c nil, or it may include make, model,

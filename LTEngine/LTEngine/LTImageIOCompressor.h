@@ -1,14 +1,14 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Amit Shabtay.
 
-#import "LTImageCompression.h"
+#import "LTImageCompressor.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Applies compression on input images using the ImageIO framework. Allows specifying the 
 /// compression format by specifying the \c UTI. It also allows parameterization of the compression
 /// via \c options dictionary.
-@interface LTImageIOCompressor : NSObject <LTImageCompression>
+@interface LTImageIOCompressor : NSObject <LTImageCompressor>
 
 - (instancetype)init NS_UNAVAILABLE;
 
