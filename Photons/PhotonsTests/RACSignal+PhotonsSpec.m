@@ -3,6 +3,9 @@
 
 #import "RACSignal+Photons.h"
 
+#import "PTNImageAsset.h"
+#import "PTNProgress.h"
+
 SpecBegin(RACSignal_Photons)
 
 context(@"ptn_replayLastLazily", ^{
@@ -196,6 +199,121 @@ context(@"ptn_combineLatestWithIndex", ^{
 
     [subjectB sendCompleted];
     expect(recorder).to.complete();
+  });
+});
+
+context(@"deserialize JSON operator", ^{
+  __block RACSubject *subject;
+  __block LLSignalTestRecorder *recorder;
+  __block id<PTNImageAsset> asset;
+  
+  beforeEach(^{
+    subject = [RACSubject subject];
+    recorder = [[subject ptn_image] testRecorder];
+    asset = OCMProtocolMock(@protocol(PTNImageAsset));
+  });
+  
+  it(@"should raise exception if the underlying signal sends unexpected values", ^{
+    expect(^{
+      [subject sendNext:@"foo"];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+  
+  it(@"should ignore incomplete progress values", ^{
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@1]];
+    
+    expect(recorder).to.sendValuesWithCount(0);
+  });
+  
+  it(@"should send the underlying image", ^{
+    UIImage *image = [[UIImage alloc] init];
+    OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
+    
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    
+    expect(recorder).to.sendValues(@[image, image]);
+    expect(recorder).toNot.complete();
+  });
+  
+  it(@"should complete when the underlying signal completes before sending a result", ^{
+    [subject sendCompleted];
+    expect(recorder).to.complete();
+  });
+  
+  it(@"should complete when the underlying signal completes and the image signal completes", ^{
+    UIImage *image = [[UIImage alloc] init];
+    OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
+    
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    expect(recorder).toNot.complete();
+
+    [subject sendCompleted];
+    expect(recorder).to.complete();
+  });
+  
+  it(@"should err if the underlying signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [subject sendError:error];
+    
+    expect(recorder).to.sendError(error);
+  });
+  
+  it(@"should err if the image signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([asset fetchImage]).andReturn([RACSignal error:error]);
+    
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    
+    expect(recorder).to.sendError(error);
+  });
+});
+
+context(@"ptn_skipProgress", ^{
+  __block RACSubject *subject;
+  __block LLSignalTestRecorder *recorder;
+  
+  beforeEach(^{
+    subject = [RACSubject subject];
+    recorder = [[subject ptn_skipProgress] testRecorder];
+  });
+  
+  it(@"should raise exception if the signal sends unexpected values", ^{
+    expect(^{
+      [subject sendNext:@"foo"];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+  
+  it(@"should ignore incomplete progress values", ^{
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.1]];
+    
+    expect(recorder).to.sendValuesWithCount(0);
+  });
+  
+  it(@"should send the asset embedded in the completed progress value", ^{
+    id<PTNImageAsset> asset = OCMProtocolMock(@protocol(PTNImageAsset));
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.25]];
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    
+    expect(recorder).to.sendValues(@[asset, asset]);
+    expect(recorder).toNot.complete();
+  });
+  
+  it(@"should complete when the underlying signal completes", ^{
+    [subject sendCompleted];
+    expect(recorder).to.complete();
+  });
+  
+  it(@"should err when the underlying signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [subject sendError:error];
+    
+    expect(recorder).to.sendError(error);
   });
 });
 
