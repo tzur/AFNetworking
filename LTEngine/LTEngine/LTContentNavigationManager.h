@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if this instance should cause the content rectangle to bounce to an aspect-fit state
 /// inside its view at the end of any navigation request. Initial value is \c NO.
-@property (nonatomic) BOOL bounceToMinimumScale;
+@property (nonatomic) BOOL bounceToAspectFit;
 
 /// Current navigation state of this instance.
 @property (readonly, nonatomic) LTContentNavigationState *navigationState;
