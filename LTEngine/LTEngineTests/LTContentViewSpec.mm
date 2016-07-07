@@ -5,6 +5,7 @@
 
 #import "LTContentInteractionManagerExamples.h"
 #import "LTContentNavigationDelegate.h"
+#import "LTContentNavigationManagerExamples.h"
 #import "LTContentTouchEvent.h"
 #import "LTGLContext.h"
 #import "LTImage.h"
@@ -16,7 +17,6 @@
 #import "LTTouchEventView.h"
 
 @interface LTContentView ()
-- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
 @property (readonly, nonatomic) LTTouchEventView *touchEventView;
 @end
 
@@ -409,59 +409,36 @@ context(@"protocols", ^{
   });
 
   context(@"LTContentNavigationManager", ^{
-    static const CGSize kViewSize = CGSizeMake(100, 200);
+    static const CGSize kViewSize = CGSizeMake(10, 20);
     static const CGRect kViewFrame = CGRectFromSize(kViewSize);
+    static const CGSize kContentSize = CGSizeMakeUniform(100);
+    static const CGRect kTargetRect = CGRectMake(25, 0, 50, 100);
+    static const CGRect kUnreachableTargetRect = CGRectMake(-1, 0, 50, 100);
+    static const CGRect kExpectedRect = CGRectMake(0, 0, 50, 100);
+    static const CGFloat kContentScaleFactor = 3;
 
     __block LTContentView *view;
     __block LTContentView *otherView;
-    __block CGRect targetRect;
 
     beforeEach(^{
+      LTTexture *texture = [LTTexture byteRGBATextureWithSize:kContentSize];
       view = [[LTContentView alloc] initWithFrame:kViewFrame contentScaleFactor:kContentScaleFactor
-                                          context:[LTGLContext currentContext] contentTexture:nil
-                                  navigationState:nil];
+                                          context:[LTGLContext currentContext]
+                                   contentTexture:texture navigationState:nil];
       otherView = [[LTContentView alloc] initWithFrame:kViewFrame
                                     contentScaleFactor:kContentScaleFactor
                                                context:[LTGLContext currentContext]
-                                        contentTexture:nil navigationState:nil];
-      targetRect = CGRectFromOriginAndSize(CGPointMake(1, 1), view.contentSize);
-      [view zoomToRect:targetRect animated:NO];
+                                        contentTexture:texture navigationState:nil];
     });
 
-    it(@"should navigate to a given state", ^{
-      expect(otherView.navigationState).notTo.equal(view.navigationState);
-      [otherView navigateToState:view.navigationState];
-      expect(otherView.navigationState).to.equal(view.navigationState);
-    });
-
-    context(@"delegate", ^{
-      it(@"should initially not have a delegate", ^{
-        view = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
-        expect(view.navigationDelegate).to.beNil();
-      });
-
-      it(@"should inform its delegate about navigation events", ^{
-        id navigationDelegateMock = OCMProtocolMock(@protocol(LTContentNavigationDelegate));
-        otherView.navigationDelegate = navigationDelegateMock;
-        CGRect visibleRect = CGRectMake(0, -0.5, 1, 2);
-        OCMExpect([navigationDelegateMock navigationManager:otherView
-                                   didNavigateToVisibleRect:visibleRect]);
-
-        [otherView navigateToState:view.navigationState];
-
-        OCMVerifyAll(navigationDelegateMock);
-      });
-    });
-
-    context(@"bouncing", ^{
-      it(@"should initially not enforce bouncing to minimum scale", ^{
-        expect(view.bounceToMinimumScale).to.beFalsy();
-      });
-
-      it(@"should update whether bouncing to minimum scale is enforced", ^{
-        view.bounceToMinimumScale = YES;
-        expect(view.bounceToMinimumScale).to.beTruthy();
-      });
+    itShouldBehaveLike(kLTContentNavigationManagerExamples, ^{
+      return @{
+        kLTContentNavigationManager: view,
+        kLTContentNavigationManagerReachableRect: $(kTargetRect),
+        kLTContentNavigationManagerUnreachableRect: $(kUnreachableTargetRect),
+        kLTContentNavigationManagerExpectedRect: $(kExpectedRect),
+        kAnotherLTContentNavigationManager: otherView
+      };
     });
   });
 

@@ -3,6 +3,8 @@
 
 #import "LTNavigationView.h"
 
+#import "LTContentNavigationManagerExamples.h"
+
 @interface LTNavigationView ()
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *contentView;
@@ -84,7 +86,7 @@ context(@"properties", ^{
 
     // LTContentNavigationManager protocol.
     expect(view.navigationDelegate).to.beNil();
-    expect(view.bounceToMinimumScale).to.beFalsy();
+    expect(view.bounceToAspectFit).to.beFalsy();
     expect(view.navigationState).toNot.beNil();
   });
   
@@ -109,54 +111,37 @@ context(@"properties", ^{
   });
 });
 
-context(@"navigation", ^{
-  const CGSize kViewSize = CGSizeMake(1, 2) * kScale;
-  const CGSize kContentSize = CGSizeMake(12, 10) * kScale;
-  const CGRect kViewFrame = CGRectFromSize(kViewSize);
-  const CGRect targetRect = CGRectFromOriginAndSize(CGPointMake(kScale, kScale), kViewSize);
+context(@"LTContentNavigationManager", ^{
+  static const CGSize kViewSize = CGSizeMake(10, 20);
+  static const CGRect kViewFrame = CGRectFromSize(kViewSize);
+  static const CGSize kContentSize = CGSizeMakeUniform(100);
+  static const CGRect kTargetRect = CGRectMake(25, 0, 50, 100);
+  static const CGRect kUnreachableTargetRect = CGRectMake(-1, 0, 50, 100);
+  static const CGRect kExpectedRect = CGRectMake(0, 0, 50, 100);
 
   __block LTNavigationView *view;
+  __block LTNavigationView *anotherView;
 
   beforeEach(^{
     view = [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
                                 contentScaleFactor:kContentScaleFactor navigationState:nil];
+    anotherView = [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
+                                       contentScaleFactor:kContentScaleFactor navigationState:nil];
   });
 
   afterEach(^{
+    anotherView = nil;
     view = nil;
   });
 
-  context(@"LTContentNavigationManager", ^{
-    it(@"should navigate to a given state", ^{
-      LTNavigationView *otherView =
-          [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
-                               contentScaleFactor:kContentScaleFactor navigationState:nil];
-
-      expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
-
-      [otherView zoomToRect:targetRect animated:NO];
-      expect(view.visibleContentRect).notTo.equal(otherView.visibleContentRect);
-
-      [view navigateToState:otherView.navigationState];
-      expect(view.visibleContentRect).to.equal(otherView.visibleContentRect);
-    });
-  });
-
-  it(@"should zoom to rect", ^{
-    CGRect targetRectInPixels = CGRectFromOriginAndSize(targetRect.origin * kContentScaleFactor,
-                                                        targetRect.size * kContentScaleFactor);
-    expect(view.visibleContentRect).notTo.equal(targetRectInPixels);
-    [view zoomToRect:targetRect animated:NO];
-    expect(view.visibleContentRect).to.equal(targetRectInPixels);
-  });
-
-  it(@"should zoom to rect with animation", ^{
-    CGRect targetRectInPixels = CGRectFromOriginAndSize(targetRect.origin * kContentScaleFactor,
-                                                        targetRect.size * kContentScaleFactor);
-    expect(view.visibleContentRect).notTo.equal(targetRectInPixels);
-    [view zoomToRect:targetRect animated:YES];
-    expect(view.visibleContentRect).notTo.equal(targetRectInPixels);
-    expect(view.visibleContentRect).will.equal(targetRectInPixels);
+  itShouldBehaveLike(kLTContentNavigationManagerExamples, ^{
+    return @{
+      kLTContentNavigationManager: view,
+      kLTContentNavigationManagerReachableRect: $(kTargetRect),
+      kLTContentNavigationManagerUnreachableRect: $(kUnreachableTargetRect),
+      kLTContentNavigationManagerExpectedRect: $(kExpectedRect),
+      kAnotherLTContentNavigationManager: anotherView
+    };
   });
 });
 

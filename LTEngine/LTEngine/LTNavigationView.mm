@@ -110,11 +110,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// content coordinate system, at the maximum zoom level.
 @property (readwrite, nonatomic) CGFloat maxZoomScale;
 
-/// Factor applied to the calculated \c minZoomScale (fits the image exactly inside the view).
-/// Setting this to values smaller than \c 0 will make the image smaller than the view when fully
-/// zoomed out, and vice versa. Default is \c 0.
-@property (readwrite, nonatomic) CGFloat minZoomScaleFactor;
-
 @end
 
 @implementation LTNavigationView
@@ -313,11 +308,6 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   CGSize scrollViewSize = UIEdgeInsetsInsetRect(self.bounds, self.contentInset).size;
   CGSize scrollViewContentSize = self.contentSize / self.contentScaleFactor;
   CGFloat minimumZoomScale = std::min(scrollViewSize / scrollViewContentSize);
-
-  // Apply the minimal zoom scale factor, if valid.
-  if (self.minZoomScaleFactor > 0) {
-    minimumZoomScale *= self.minZoomScaleFactor;
-  }
   
   // End case - if the minimal zoom scale is going to be larger than the maximal zoom scale, set the
   // maximal zoom scale to be the minimal one. This is relevant to small images and will prevent
@@ -494,7 +484,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 - (void)scrollViewDidEndZooming:(UIScrollView __unused *)scrollView
                        withView:(nullable UIView __unused *)view atScale:(CGFloat __unused)scale {
   self.scrollViewZooming = NO;
-  [self bounceToMinimalZoomIfNecessary];
+  [self bounceToAspectFitIfNecessary];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView __unused *)scrollView {
@@ -505,7 +495,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 - (void)scrollViewDidEndDragging:(UIScrollView __unused *)scrollView
                   willDecelerate:(BOOL __unused)decelerate {
   self.scrollViewDragging = NO;
-  [self bounceToMinimalZoomIfNecessary];
+  [self bounceToAspectFitIfNecessary];
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView __unused *)scrollView {
@@ -515,7 +505,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView __unused *)scrollView {
   self.scrollViewDecelerating = NO;
-  [self bounceToMinimalZoomIfNecessary];
+  [self bounceToAspectFitIfNecessary];
 }
 
 #pragma mark -
@@ -528,8 +518,10 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   // Zoom to a rect centered at the tap location, with the zoom scale according to the level.
   NSUInteger level = [self nextDoubleTapLevel];
   CGPoint tap = [gestureRecognizer locationInView:self.contentView];
-  CGRect rect = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
-  [self zoomToRect:rect animated:YES];
+  CGRect rectInPointUnits = [self zoomRectForScale:[self zoomScaleForLevel:level] withCenter:tap];
+  CGRect rectInPixelUnits = [self rectInPixelUnitsFromRectInPointUnits:rectInPointUnits];
+
+  [self zoomToRect:rectInPixelUnits animated:YES];
   if ([self.navigationDelegate
        respondsToSelector:@selector(navigationManagerDidHandleDoubleTapGesture:)]) {
     [self.navigationDelegate navigationManagerDidHandleDoubleTapGesture:self];
@@ -558,12 +550,26 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 }
 
 #pragma mark -
+#pragma mark Conversion
+#pragma mark -
+
+- (CGRect)rectInPixelUnitsFromRectInPointUnits:(CGRect)rectInPointUnits {
+  return CGRectFromOriginAndSize(rectInPointUnits.origin * self.contentScaleFactor,
+                                 rectInPointUnits.size * self.contentScaleFactor);
+}
+
+- (CGRect)rectInPointUnitsFromRectInPixelUnits:(CGRect)rectInPixelUnits {
+  return CGRectFromOriginAndSize(rectInPixelUnits.origin / self.contentScaleFactor,
+                                 rectInPixelUnits.size / self.contentScaleFactor);
+}
+
+#pragma mark -
 #pragma mark Navigation
 #pragma mark -
 
-/// Bounces to the minimal zoom scale if necessary.
-- (void)bounceToMinimalZoomIfNecessary {
-  if (self.bounceToMinimumScale && !self.scrollViewZooming && !self.scrollViewDragging &&
+/// Bounces such that the content rectangle is aspect fit, if necessary.
+- (void)bounceToAspectFitIfNecessary {
+  if (self.bounceToAspectFit && !self.scrollViewZooming && !self.scrollViewDragging &&
       self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
     [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
   }
@@ -598,7 +604,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
     self.scrollView.contentInset = UIEdgeInsetsZero;
   }
 
-  [self.scrollView zoomToRect:rect animated:animated];
+  [self.scrollView zoomToRect:[self rectInPointUnitsFromRectInPixelUnits:rect] animated:animated];
 
   if (animated) {
     [self centerContentViewInScrollViewWithAnimationDuration:kZoomToRectAnimationDuration];
@@ -673,10 +679,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 }
 
 - (CGRect)visibleContentRect {
-  CGRect rect = self.visibleContentRectInPoints;
-  rect.origin = rect.origin * self.contentScaleFactor;
-  rect.size = rect.size * self.contentScaleFactor;
-  return rect;
+  return [self rectInPixelUnitsFromRectInPointUnits:self.visibleContentRectInPoints];
 }
 
 #pragma mark -
@@ -724,11 +727,11 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 #pragma mark Properties
 #pragma mark -
 
-@synthesize bounceToMinimumScale = _bounceToMinimumScale;
+@synthesize bounceToAspectFit = _bounceToAspectFit;
 
-- (void)setBounceToMinimumScale:(BOOL)bounceToMinimumScale {
-  _bounceToMinimumScale = bounceToMinimumScale;
-  [self bounceToMinimalZoomIfNecessary];
+- (void)setBounceToAspectFit:(BOOL)bounceToAspectFit {
+  _bounceToAspectFit = bounceToAspectFit;
+  [self bounceToAspectFitIfNecessary];
 }
 
 @synthesize interactionModeProvider = _interactionModeProvider;
@@ -765,17 +768,6 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 
 - (CGFloat)zoomScale {
   return std::min(self.bounds.size / self.visibleContentRectInPoints.size);
-}
-
-- (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
-  _minZoomScaleFactor = MAX(0, minZoomScaleFactor);
-  BOOL atMinimalScale = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
-  [self configureScrollViewZoomLimits];
-  if (atMinimalScale) {
-    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
-    [self centerContentViewInScrollView];
-  }
-  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
 
 - (void)setMaxZoomScale:(CGFloat)maxZoomScale {

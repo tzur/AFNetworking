@@ -63,10 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// updated.
 - (void)interactionModeUpdated;
 
-/// Updates the rectangle visible within the bounds of this instance to be as close as possible to
-/// the given \c rect, in point units of the content coordinate system.
-- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
-
 /// Size, in integer pixel units of the content coordinate system, of the rectangle managed by this
 /// instance.
 @property (nonatomic) CGSize contentSize;
