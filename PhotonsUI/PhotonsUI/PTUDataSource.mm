@@ -161,10 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
       [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(self.cellClass)
                                                 forIndexPath:indexPath];
 
-  CGSize cellSize = [collectionView layoutAttributesForItemAtIndexPath:indexPath].size;
-  CGSize cellSizeInPixels = cellSize * cell.contentScaleFactor;
-  cell.viewModel = [self.cellViewModelProvider viewModelWithDescriptor:descriptor
-                                                              cellSize:cellSizeInPixels];
+  cell.viewModel = [self.cellViewModelProvider viewModelForDescriptor:descriptor];
 
   return cell;
 }
