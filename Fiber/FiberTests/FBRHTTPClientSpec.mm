@@ -67,6 +67,20 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
     OCMVerifyAll(session);
   });
 
+  it(@"should resume the task when subscribed to", ^{
+    FBRHTTPRequestParameters *parameters = @{@"Foo": @"Bar"};
+    FBRHTTPRequest *expectedRequest =
+        [[FBRHTTPRequest alloc] initWithURL:URL method:method parameters:parameters
+                         parametersEncoding:nil headers:nil];
+    OCMStub([session dataTaskWithRequest:expectedRequest progress:OCMOCK_ANY success:OCMOCK_ANY
+                                 failure:OCMOCK_ANY]).andReturn(task);
+    RACSignal *signal = requestInitiator(client, URL.absoluteString, parameters);
+    OCMExpect([task resume]);
+
+    [signal subscribeNext:^(id) {}];
+    OCMVerifyAll(task);
+  });
+
   it(@"should forward progress values when reported by the session", ^{
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
     __block FBRHTTPTaskProgressBlock progressBlock;

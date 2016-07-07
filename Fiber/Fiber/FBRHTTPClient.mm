@@ -142,7 +142,8 @@ NS_ASSUME_NONNULL_BEGIN
         } failure:^(NSError *error) {
           [subscriber sendError:error];
         }];
-        
+    [task resume];
+    
     return [RACDisposable disposableWithBlock:^{
       [task cancel];
     }];
