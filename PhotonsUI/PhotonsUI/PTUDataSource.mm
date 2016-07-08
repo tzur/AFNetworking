@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (nullable id<PTNDescriptor>)objectAtIndexPath:(NSIndexPath *)index {
+- (nullable id<PTNDescriptor>)descriptorAtIndexPath:(NSIndexPath *)index {
   id<LTRandomAccessCollection> _Nullable items = [self objectsInSection:index.section];
   if (index.item < 0 || (NSUInteger)index.item >= items.count) {
     return nil;
@@ -129,10 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self.dataModel[section];
 }
 
-- (nullable NSIndexPath *)indexPathOfObject:(id<PTNDescriptor>)object {
+- (nullable NSIndexPath *)indexPathOfDescriptor:(id<PTNDescriptor>)descriptor {
   NSUInteger index;
   for (NSUInteger i = 0; i < self.dataModel.count; ++i) {
-    index = [self.dataModel[i] indexOfObject:object];
+    index = [self.dataModel[i] indexOfObject:descriptor];
     if (index != NSNotFound) {
       return [NSIndexPath indexPathForItem:index inSection:i];
     }
@@ -155,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  id<PTNDescriptor> descriptor = [self objectAtIndexPath:indexPath];
+  id<PTNDescriptor> descriptor = [self descriptorAtIndexPath:indexPath];
 
   UICollectionViewCell<PTUImageCell> *cell =
       [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(self.cellClass)
