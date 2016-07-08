@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)hasCompleted {
-  return self.progress == 1;
+  return self.progress == 1 && self.response;
 }
 
 #pragma mark -
