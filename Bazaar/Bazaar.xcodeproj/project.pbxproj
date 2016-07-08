@@ -231,6 +231,20 @@
 			remoteGlobalIDString = 817EB1621BD765130047E85A;
 			remoteInfo = "OCMock tvOS";
 		};
+		658355421D2F9D6C00B88A70 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AE67501D0461350083D1CE;
+			remoteInfo = Fiber;
+		};
+		658355441D2F9D6C00B88A70 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65C62B861D0474D4000FCE99;
+			remoteInfo = FiberTests;
+		};
 		6599B4021CFA346C00525BB7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
@@ -288,6 +302,7 @@
 		6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationResponse.h; sourceTree = "<group>"; };
 		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationResponse.m; sourceTree = "<group>"; };
 		6580F0751CEB319F007EABDD /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptEnvironment.h; sourceTree = "<group>"; };
 		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptEnvironment.m; sourceTree = "<group>"; };
 		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
@@ -416,6 +431,7 @@
 			children = (
 				654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */,
 				6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */,
+				6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */,
 				6580F0751CEB319F007EABDD /* LTKit.xcodeproj */,
 				6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */,
 				654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */,
@@ -488,6 +504,15 @@
 			children = (
 				6599B4031CFA346C00525BB7 /* libLTKit.a */,
 				6599B4051CFA346C00525BB7 /* LTKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6583552B1D2F9D6B00B88A70 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				658355431D2F9D6C00B88A70 /* libFiber.a */,
+				658355451D2F9D6C00B88A70 /* FiberTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -626,6 +651,10 @@
 				{
 					ProductGroup = 6529F8561CEB65E800FBABFE /* Products */;
 					ProjectRef = 6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 6583552B1D2F9D6B00B88A70 /* Products */;
+					ProjectRef = 6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */;
 				},
 				{
 					ProductGroup = 6580F0761CEB319F007EABDD /* Products */;
@@ -847,6 +876,20 @@
 			fileType = wrapper.framework;
 			path = OCMock.framework;
 			remoteRef = 654B1F611CE22299001F36FA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		658355431D2F9D6C00B88A70 /* libFiber.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFiber.a;
+			remoteRef = 658355421D2F9D6C00B88A70 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		658355451D2F9D6C00B88A70 /* FiberTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FiberTests.xctest;
+			remoteRef = 658355441D2F9D6C00B88A70 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6599B4031CFA346C00525BB7 /* libLTKit.a */ = {
