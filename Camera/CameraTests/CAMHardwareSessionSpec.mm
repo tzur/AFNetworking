@@ -106,6 +106,17 @@ context(@"video input", ^{
     expect(session.videoInput.device).to.beIdenticalTo(device);
   });
 
+  it(@"should return error when device is nil", ^{
+    device = nil;
+    BOOL success;
+    NSError *error;
+    success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
+
+    expect(success).to.beFalsy();
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(CAMErrorCodeMissingVideoDevice);
+  });
+
   it(@"should return error when unable to select format", ^{
     BOOL success;
     NSError *error;
@@ -291,6 +302,17 @@ context(@"audio input", ^{
     expect(session.audioDevice).to.beIdenticalTo(device);
     expect(session.audioInput).toNot.beNil();
     expect(session.audioInput.device).to.beIdenticalTo(device);
+  });
+
+  it(@"should return error when device is nil", ^{
+    device = nil;
+    BOOL success;
+    NSError *error;
+    success = [session setupAudioInputWithDevice:device error:&error];
+
+    expect(success).to.beFalsy();
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(CAMErrorCodeMissingAudioDevice);
   });
 
   it(@"should return error when unable to create input", ^{

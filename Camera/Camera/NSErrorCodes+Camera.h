@@ -15,6 +15,8 @@ NS_ENUM(NSInteger) {
 LTErrorCodesDeclare(CameraErrorCodeProductID,
   /// Caused when a frame was dropped.
   CAMErrorCodeDroppedFrame,
+  /// Caused when a video device was not found.
+  CAMErrorCodeMissingVideoDevice,
   /// Caused when there was an error locking the video device for configuration.
   CAMErrorCodeFailedLockingVideoDevice,
   /// Caused when there was an error configuring the video device.
@@ -27,6 +29,8 @@ LTErrorCodesDeclare(CameraErrorCodeProductID,
   CAMErrorCodeFailedAttachingVideoOutput,
   /// Caused when there was an error creating the audio input.
   CAMErrorCodeFailedCreatingAudioInput,
+  /// Caused when an audio device was not found.
+  CAMErrorCodeMissingAudioDevice,
   /// Caused when there was an error attaching the audio input to the session.
   CAMErrorCodeFailedAttachingAudioInput,
   /// Caused when there was an error attaching the audio output to the session.
