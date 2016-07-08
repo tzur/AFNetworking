@@ -11,20 +11,20 @@
 		6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F4D1CE2228C001F36FA /* libSpecta.a */; };
 		6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F5C1CE22299001F36FA /* libOCMock.a */; };
 		6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FA32981CE2185D00901304 /* libBazaar.a */; };
-		6506094C1CEDE5F60012202D /* BZRReceiptModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.m */; };
-		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */; };
-		6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */; };
-		65329ED41CFEEA190029CE4F /* NSError+Bazaar.m in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */; };
+		6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */; };
+		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */; };
+		6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm */; };
+		65329ED41CFEEA190029CE4F /* NSError+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */; };
 		65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */; };
 		657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F83D1CEB608B00FBABFE /* Mantle.framework */; };
-		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */; };
-		6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */; };
+		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */; };
+		6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */; };
 		6584CE8A1CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */; };
 		6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */; };
 		6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B4031CFA346C00525BB7 /* libLTKit.a */; };
 		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
 		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
-		65F03B6C1CFC3E0C008B1847 /* BZRModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.m */; };
+		65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,15 +261,15 @@
 
 /* Begin PBXFileReference section */
 		6506094A1CEDE5F60012202D /* BZRReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptModel.h; sourceTree = "<group>"; };
-		6506094B1CEDE5F60012202D /* BZRReceiptModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptModel.m; sourceTree = "<group>"; };
+		6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModel.mm; sourceTree = "<group>"; };
 		6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationError.h; sourceTree = "<group>"; };
-		6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationError.m; sourceTree = "<group>"; };
+		6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationError.mm; sourceTree = "<group>"; };
 		6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		6529F8671CEB6F0E00FBABFE /* BZRReceiptValidationParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationParameters.h; sourceTree = "<group>"; };
-		6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationParameters.m; sourceTree = "<group>"; };
+		6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParameters.mm; sourceTree = "<group>"; };
 		65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Bazaar.h"; sourceTree = "<group>"; };
-		65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+Bazaar.m"; sourceTree = "<group>"; };
+		65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Bazaar.mm"; sourceTree = "<group>"; };
 		65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+BazaarSpec.mm"; sourceTree = "<group>"; };
 		654B1EB41CE21975001F36FA /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		654B1EB61CE21975001F36FA /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -286,16 +286,16 @@
 		654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidator.h; sourceTree = "<group>"; };
 		6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationResponse.h; sourceTree = "<group>"; };
-		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptValidationResponse.m; sourceTree = "<group>"; };
+		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponse.mm; sourceTree = "<group>"; };
 		6580F0751CEB319F007EABDD /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptEnvironment.h; sourceTree = "<group>"; };
-		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRReceiptEnvironment.m; sourceTree = "<group>"; };
+		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptEnvironment.mm; sourceTree = "<group>"; };
 		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
 		6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponseSpec.mm; sourceTree = "<group>"; };
 		65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModelSpec.mm; sourceTree = "<group>"; };
 		65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModelSpec.mm; sourceTree = "<group>"; };
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
-		65F03B6B1CFC3E0C008B1847 /* BZRModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZRModel.m; sourceTree = "<group>"; };
+		65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModel.mm; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65FA329B1CE2185E00901304 /* Bazaar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bazaar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -469,15 +469,15 @@
 			isa = PBXGroup;
 			children = (
 				6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */,
-				6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.m */,
+				6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */,
 				6506094A1CEDE5F60012202D /* BZRReceiptModel.h */,
-				6506094B1CEDE5F60012202D /* BZRReceiptModel.m */,
+				6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */,
 				6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */,
-				6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.m */,
+				6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */,
 				6529F8671CEB6F0E00FBABFE /* BZRReceiptValidationParameters.h */,
-				6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m */,
+				6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm */,
 				6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */,
-				6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.m */,
+				6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */,
 				6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */,
 			);
 			name = "Receipt Validation";
@@ -506,9 +506,9 @@
 			isa = PBXGroup;
 			children = (
 				65F03B6A1CFC3E0C008B1847 /* BZRModel.h */,
-				65F03B6B1CFC3E0C008B1847 /* BZRModel.m */,
+				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
 				65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */,
-				65329ED31CFEEA190029CE4F /* NSError+Bazaar.m */,
+				65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -892,13 +892,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.m in Sources */,
-				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.m in Sources */,
-				6506094C1CEDE5F60012202D /* BZRReceiptModel.m in Sources */,
-				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.m in Sources */,
-				65F03B6C1CFC3E0C008B1847 /* BZRModel.m in Sources */,
-				65329ED41CFEEA190029CE4F /* NSError+Bazaar.m in Sources */,
-				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.m in Sources */,
+				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
+				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */,
+				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
+				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */,
+				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
+				65329ED41CFEEA190029CE4F /* NSError+Bazaar.mm in Sources */,
+				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
