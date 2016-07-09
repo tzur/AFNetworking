@@ -41,9 +41,9 @@ context(@"initialization with progress", ^{
     expect(progress.hasStarted).to.beFalsy();
   });
 
-  it(@"should indicate that the task has completed if progress value is 1", ^{
+  it(@"should indicate that the task has not completed if no resposne object is provided", ^{
     FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithProgress:1];
-    expect(progress.hasCompleted).to.beTruthy();
+    expect(progress.hasCompleted).to.beFalsy();
   });
 
   it(@"should raise exception if progress is less than 0", ^{

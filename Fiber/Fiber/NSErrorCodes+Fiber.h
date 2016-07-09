@@ -24,7 +24,9 @@ LTErrorCodesDeclare(FiberErrorCodeProductID,
   /// HTTP response with status code that indicates unseccessful processing of the request received.
   FBRErrorCodeHTTPUnsuccessfulResponseReceived,
   /// Deserialization of an HTTP response failed.
-  FBRErrorCodeHTTPResponseDeserializationFailed
+  FBRErrorCodeHTTPResponseDeserializationFailed,
+  /// Deserialization of a JSON object failed.
+  FBRErrorCodeJSONDeserializationFailed
 );
 
 NS_ASSUME_NONNULL_END
