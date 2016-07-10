@@ -18,6 +18,7 @@
 		65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */; };
 		657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F83D1CEB608B00FBABFE /* Mantle.framework */; };
 		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */; };
+		6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */; };
 		6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */; };
 		6584CE8A1CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */; };
 		6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */; };
@@ -303,6 +304,8 @@
 		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponse.mm; sourceTree = "<group>"; };
 		6580F0751CEB319F007EABDD /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
+		658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Bazaar.h"; sourceTree = "<group>"; };
+		658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Bazaar.mm"; sourceTree = "<group>"; };
 		6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptEnvironment.h; sourceTree = "<group>"; };
 		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptEnvironment.mm; sourceTree = "<group>"; };
 		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
@@ -534,6 +537,8 @@
 				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
 				65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */,
 				65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */,
+				658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */,
+				658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -936,11 +941,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
+				6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */,
 				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */,
 				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */,
 				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
 				65329ED41CFEEA190029CE4F /* NSError+Bazaar.mm in Sources */,
+				65329ED41CFEEA190029CE4F /* NSError+Bazaar.m in Sources */,
 				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
