@@ -162,6 +162,20 @@ context(@"valid API calls", ^{
       expect(receivedValuesForYKey).to.equal(expectedValues);
     });
   });
+
+  context(@"non-reparametrizable parameterized objects", ^{
+    it(@"should return nil if the parameterized object returns the same point for all samples", ^{
+      parameterizedObject.returnedValuesForXKey = {1, 1, 1};
+      parameterizedObject.returnedValuesForYKey = {2, 2, 2};
+      LTReparameterization *reparameterization =
+          [LTReparameterization arcLengthReparameterizationForObject:parameterizedObject
+                                                     numberOfSamples:3
+                                                  minParametricValue:0
+                                   parameterizationKeyForXCoordinate:@"xCoordinate"
+                                   parameterizationKeyForYCoordinate:@"yCoordinate"];
+      expect(reparameterization).to.beNil();
+    });
+  });
 });
 
 context(@"invalid API calls", ^{
