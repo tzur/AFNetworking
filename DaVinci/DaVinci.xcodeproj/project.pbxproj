@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2501546A1D1ACA1300420FA9 /* DaVinci.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 250154691D1ACA1300420FA9 /* DaVinci.h */; };
-		2501546C1D1ACA1300420FA9 /* DaVinci.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2501546B1D1ACA1300420FA9 /* DaVinci.mm */; };
-		250154831D1AE92900420FA9 /* DaVinciTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 250154821D1AE92900420FA9 /* DaVinciTests.mm */; };
 		250154851D1AE92900420FA9 /* libDaVinci.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154661D1ACA1300420FA9 /* libDaVinci.a */; };
 		2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154F51D1AF13900420FA9 /* libOCMock.a */; };
 		2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250155121D1AF14C00420FA9 /* libExpecta.a */; };
@@ -20,6 +17,15 @@
 		282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154D81D1AEF1400420FA9 /* Accelerate.framework */; };
 		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
+		500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */; };
+		500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */; };
+		500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */; };
+		500F77D41D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */; };
+		500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77E01D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm */; };
+		500F77E51D2D4EB600023343 /* DVNTexCoordProviderExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77E21D2D43DE00023343 /* DVNTexCoordProviderExamples.mm */; };
+		500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77E61D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm */; };
+		500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */; };
+		500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */; };
 		5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154BD1D1AEB0300420FA9 /* Mantle.framework */; };
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
@@ -240,7 +246,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				2501546A1D1ACA1300420FA9 /* DaVinci.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,10 +253,7 @@
 
 /* Begin PBXFileReference section */
 		250154661D1ACA1300420FA9 /* libDaVinci.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDaVinci.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		250154691D1ACA1300420FA9 /* DaVinci.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DaVinci.h; sourceTree = "<group>"; };
-		2501546B1D1ACA1300420FA9 /* DaVinci.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DaVinci.mm; sourceTree = "<group>"; };
 		250154801D1AE92900420FA9 /* DaVinciTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DaVinciTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		250154821D1AE92900420FA9 /* DaVinciTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DaVinciTests.mm; sourceTree = "<group>"; };
 		250154841D1AE92900420FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2501549B1D1AEAF000420FA9 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		250154B11D1AEB0300420FA9 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
@@ -266,6 +268,21 @@
 		250155171D1AF15B00420FA9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		500A3ADB1D2D348700043E18 /* DVNRandomTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNRandomTexCoordProvider.h; sourceTree = "<group>"; };
+		500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRandomTexCoordProvider.mm; sourceTree = "<group>"; };
+		500A3ADD1D2D348700043E18 /* DVNTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTexCoordProvider.h; sourceTree = "<group>"; };
+		500A3ADE1D2D348700043E18 /* DVNTextureMappingStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTextureMappingStageConfiguration.h; sourceTree = "<group>"; };
+		500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTextureMappingStageConfiguration.mm; sourceTree = "<group>"; };
+		500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRandomTexCoordProviderSpec.mm; sourceTree = "<group>"; };
+		500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTextureMappingStageConfigurationSpec.mm; sourceTree = "<group>"; };
+		500F77DF1D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNCanonicalTexCoordProvider.h; sourceTree = "<group>"; };
+		500F77E01D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNCanonicalTexCoordProvider.mm; sourceTree = "<group>"; };
+		500F77E21D2D43DE00023343 /* DVNTexCoordProviderExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTexCoordProviderExamples.mm; sourceTree = "<group>"; };
+		500F77E31D2D43DE00023343 /* DVNTexCoordProviderExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTexCoordProviderExamples.h; sourceTree = "<group>"; };
+		500F77E61D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNCanonicalTexCoordProviderSpec.mm; sourceTree = "<group>"; };
+		500F77ED1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DVNTextureMappingStageConfiguration+TextureAtlas.h"; sourceTree = "<group>"; };
+		500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlas.mm"; sourceTree = "<group>"; };
+		500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm"; sourceTree = "<group>"; };
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		50574B0C1D2D66420076C60D /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
@@ -333,7 +350,7 @@
 		250154681D1ACA1300420FA9 /* DaVinci */ = {
 			isa = PBXGroup;
 			children = (
-				250154C61D1AEB5900420FA9 /* Base */,
+				500F77CD1D2D35F500023343 /* Base */,
 				250154C51D1AEB4E00420FA9 /* Supporting Files */,
 			);
 			path = DaVinci;
@@ -391,13 +408,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		250154C61D1AEB5900420FA9 /* Base */ = {
+		250154C61D1AEB5900420FA9 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
-				250154691D1ACA1300420FA9 /* DaVinci.h */,
-				2501546B1D1ACA1300420FA9 /* DaVinci.mm */,
+				500F77CA1D2D35C600023343 /* API */,
+				500F77CE1D2D35FF00023343 /* Building Blocks */,
 			);
-			name = Base;
+			name = Pipeline;
 			sourceTree = "<group>";
 		};
 		250154D61D1AEE9100420FA9 /* Supporting Files */ = {
@@ -458,10 +475,174 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		500F77CA1D2D35C600023343 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				500F77CB1D2D35CC00023343 /* Configuration */,
+				500F77CC1D2D35E000023343 /* Stage Component API */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		500F77CB1D2D35CC00023343 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				500A3ADE1D2D348700043E18 /* DVNTextureMappingStageConfiguration.h */,
+				500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		500F77CC1D2D35E000023343 /* Stage Component API */ = {
+			isa = PBXGroup;
+			children = (
+				500A3ADD1D2D348700043E18 /* DVNTexCoordProvider.h */,
+			);
+			name = "Stage Component API";
+			sourceTree = "<group>";
+		};
+		500F77CD1D2D35F500023343 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				250154C61D1AEB5900420FA9 /* Pipeline */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		500F77CE1D2D35FF00023343 /* Building Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				500F77CF1D2D363E00023343 /* Geometry Stage */,
+				500F77D01D2D364400023343 /* Texture Mapping Stage */,
+			);
+			name = "Building Blocks";
+			sourceTree = "<group>";
+		};
+		500F77CF1D2D363E00023343 /* Geometry Stage */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Geometry Stage";
+			sourceTree = "<group>";
+		};
+		500F77D01D2D364400023343 /* Texture Mapping Stage */ = {
+			isa = PBXGroup;
+			children = (
+				500F77EA1D2D55DC00023343 /* Configurations */,
+				500F77E91D2D55D200023343 /* Providers */,
+			);
+			name = "Texture Mapping Stage";
+			sourceTree = "<group>";
+		};
+		500F77D51D2D3A4700023343 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				500F77D61D2D3A5300023343 /* Geometry Stage */,
+				500F77D71D2D3A5700023343 /* Texture Mapping Stage */,
+			);
+			name = Implementations;
+			sourceTree = "<group>";
+		};
+		500F77D61D2D3A5300023343 /* Geometry Stage */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Geometry Stage";
+			sourceTree = "<group>";
+		};
+		500F77D71D2D3A5700023343 /* Texture Mapping Stage */ = {
+			isa = PBXGroup;
+			children = (
+				500F77EC1D2D560000023343 /* Configurations */,
+				500F77EB1D2D55F900023343 /* Providers */,
+			);
+			name = "Texture Mapping Stage";
+			sourceTree = "<group>";
+		};
+		500F77D81D2D3A6900023343 /* Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				500F77D91D2D3A7700023343 /* API */,
+				500F77D51D2D3A4700023343 /* Implementations */,
+			);
+			name = Pipeline;
+			sourceTree = "<group>";
+		};
+		500F77D91D2D3A7700023343 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				500F77DA1D2D3AA400023343 /* Configuration */,
+				500F77DB1D2D3AA900023343 /* Stage Component API */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		500F77DA1D2D3AA400023343 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		500F77DB1D2D3AA900023343 /* Stage Component API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Stage Component API";
+			sourceTree = "<group>";
+		};
+		500F77E81D2D522A00023343 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				500F77E31D2D43DE00023343 /* DVNTexCoordProviderExamples.h */,
+				500F77E21D2D43DE00023343 /* DVNTexCoordProviderExamples.mm */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		500F77E91D2D55D200023343 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				500F77DF1D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.h */,
+				500F77E01D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm */,
+				500A3ADB1D2D348700043E18 /* DVNRandomTexCoordProvider.h */,
+				500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */,
+			);
+			name = Providers;
+			sourceTree = "<group>";
+		};
+		500F77EA1D2D55DC00023343 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				500F77ED1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.h */,
+				500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
+		500F77EB1D2D55F900023343 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				500F77E81D2D522A00023343 /* Examples */,
+				500F77E61D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm */,
+				500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */,
+			);
+			name = Providers;
+			sourceTree = "<group>";
+		};
+		500F77EC1D2D560000023343 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
 		5021E09D1D252363002EE897 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				250154821D1AE92900420FA9 /* DaVinciTests.mm */,
+				500F77D81D2D3A6900023343 /* Pipeline */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -840,7 +1021,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2501546C1D1ACA1300420FA9 /* DaVinci.mm in Sources */,
+				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
+				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
+				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
+				500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,7 +1032,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				250154831D1AE92900420FA9 /* DaVinciTests.mm in Sources */,
+				500F77E51D2D4EB600023343 /* DVNTexCoordProviderExamples.mm in Sources */,
+				500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */,
+				500F77D41D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm in Sources */,
+				500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */,
+				500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
