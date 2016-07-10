@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Euclidean space, for the given parameterized \c object. The reparameterization is computed by
 /// approximating the parameterized object with piecewise linear segments. The mapping with which
 /// the returned reparameterization is initialized is the ordered collection of the sums of line
-/// segment lengths.
+/// segment lengths. Returns \c nil if the parameterized object returns the same point for any
+/// sample used to construct aforementioned linear segments.
 ///
 /// @param \c object is the object for which the arc-length reparameterization is computed.
 ///
@@ -40,11 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note the \c numberOfSamples affects the performance of value retrieval of the returned
 /// reparameterization. Refer to \c LTReparameterization for exact time complexities.
-+ (instancetype)arcLengthReparameterizationForObject:(id<LTParameterizedObject>)object
-                                     numberOfSamples:(NSUInteger)numberOfSamples
-                                  minParametricValue:(CGFloat)minParametricValue
-                   parameterizationKeyForXCoordinate:(NSString *)xKey
-                   parameterizationKeyForYCoordinate:(NSString *)yKey;
++ (nullable instancetype)arcLengthReparameterizationForObject:(id<LTParameterizedObject>)object
+                                              numberOfSamples:(NSUInteger)numberOfSamples
+                                           minParametricValue:(CGFloat)minParametricValue
+                            parameterizationKeyForXCoordinate:(NSString *)xKey
+                            parameterizationKeyForYCoordinate:(NSString *)yKey;
 
 @end
 

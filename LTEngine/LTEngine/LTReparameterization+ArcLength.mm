@@ -9,11 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTReparameterization (ArcLength)
 
-+ (instancetype)arcLengthReparameterizationForObject:(id<LTParameterizedObject>)object
-                                     numberOfSamples:(NSUInteger)numberOfSamples
-                                  minParametricValue:(CGFloat)minParametricValue
-                   parameterizationKeyForXCoordinate:(NSString *)xKey
-                   parameterizationKeyForYCoordinate:(NSString *)yKey {
++ (nullable instancetype)arcLengthReparameterizationForObject:(id<LTParameterizedObject>)object
+                                              numberOfSamples:(NSUInteger)numberOfSamples
+                                           minParametricValue:(CGFloat)minParametricValue
+                            parameterizationKeyForXCoordinate:(NSString *)xKey
+                            parameterizationKeyForYCoordinate:(NSString *)yKey {
   LTParameterAssert(numberOfSamples > 1, @"The given number of samples must be greater than 1");
   LTParameterAssert([object.parameterizationKeys containsObject:xKey],
                     @"Key (%@) not contained in parameterization keys (%@)", xKey,
@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   CGFloats distances = [self distancesForXCoordinates:xCoordinates yCoordinates:yCoordinates
                                    minParametricValue:minParametricValue];
+  if (distances.front() == distances.back()) {
+    // Object cannot be reparameterized.
+    return nil;
+  }
   return [[LTReparameterization alloc] initWithMapping:distances];
 }
 
