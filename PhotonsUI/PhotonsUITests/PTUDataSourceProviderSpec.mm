@@ -9,28 +9,39 @@
 
 SpecBegin(PTUDataSourceProvider)
 
-__block PTUDataSourceProvider *provider;
-__block UICollectionView *collectionView;
-
-beforeEach(^{
-  id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
-  id<PTUImageCellViewModelProvider> cellViewModelProvider =
-      OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
-  provider = [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
-                                                cellViewModelProvider:cellViewModelProvider
-                                                            cellClass:[PTUImageCell class]];
-
-  collectionView = OCMClassMock([UICollectionView class]);
+it(@"should correctly initialize with convenience initializer", ^{
+  id<PTNAssetManager> assetManager = OCMProtocolMock(@protocol(PTNAssetManager));
+  NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
+  PTUDataSourceProvider *provider = [[PTUDataSourceProvider alloc] initWithAssetManager:assetManager
+                                                                               albumURL:url];
+  
+  expect(provider).toNot.beNil();
 });
 
-it(@"should return instances of PTUDataSource", ^{
-  expect([provider dataSourceForCollectionView:collectionView])
-      .to.beInstanceOf([PTUDataSource class]);
-});
-
-it(@"should return a new instance on every call", ^{
-  expect([provider dataSourceForCollectionView:collectionView])
-      .toNot.equal([provider dataSourceForCollectionView:collectionView]);
+context(@"designated initializer", ^{
+  __block PTUDataSourceProvider *provider;
+  __block UICollectionView *collectionView;
+  
+  beforeEach(^{
+    id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
+    id<PTUImageCellViewModelProvider> cellViewModelProvider =
+        OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
+    provider = [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
+                                                  cellViewModelProvider:cellViewModelProvider
+                                                              cellClass:[PTUImageCell class]];
+    
+    collectionView = OCMClassMock([UICollectionView class]);
+  });
+  
+  it(@"should return instances of PTUDataSource", ^{
+    expect([provider dataSourceForCollectionView:collectionView])
+        .to.beInstanceOf([PTUDataSource class]);
+  });
+  
+  it(@"should return a new instance on every call", ^{
+    expect([provider dataSourceForCollectionView:collectionView])
+        .toNot.equal([provider dataSourceForCollectionView:collectionView]);
+  });
 });
 
 SpecEnd

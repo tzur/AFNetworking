@@ -27,7 +27,7 @@ it(@"should correctly initialize", ^{
   expect(configuration.enablePaging).to.beTruthy();
 });
 
-it(@"should correctly initalize with convenient initializer", ^{
+it(@"should correctly initalize with default initializer", ^{
   PTUCollectionViewConfiguration *configuration =
       [PTUCollectionViewConfiguration defaultConfiguration];
 
@@ -37,6 +37,19 @@ it(@"should correctly initalize with convenient initializer", ^{
   expect(configuration.minimumLineSpacing).to.equal(1);
   expect(configuration.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
   expect(configuration.showsVerticalScrollIndicator).to.beTruthy();
+  expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
+  expect(configuration.enablePaging).to.beFalsy();
+});
+
+it(@"should correctly initalize with photo strip initializer", ^{
+  PTUCollectionViewConfiguration *configuration = [PTUCollectionViewConfiguration photoStrip];
+  
+  expect(configuration.assetCellSizingStrategy).to.beKindOf([PTUGridSizingStrategy class]);
+  expect(configuration.albumCellSizingStrategy).to.beKindOf([PTUGridSizingStrategy class]);
+  expect(configuration.minimumItemSpacing).to.equal(1);
+  expect(configuration.minimumLineSpacing).to.equal(0);
+  expect(configuration.scrollDirection).to.equal(UICollectionViewScrollDirectionHorizontal);
+  expect(configuration.showsVerticalScrollIndicator).to.beFalsy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beFalsy();
 });

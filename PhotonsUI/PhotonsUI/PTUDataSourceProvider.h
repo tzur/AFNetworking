@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTUChangesetProvider, PTUDataSource, PTUImageCellViewModelProvider;
+@protocol PTNAssetManager, PTUChangesetProvider, PTUDataSource, PTUImageCellViewModelProvider;
 
 /// Protocol for providers of \c PTUDataSource conforming objects.
 @protocol PTUDataSourceProvider <NSObject>
@@ -26,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithChangesetProvider:(id<PTUChangesetProvider>)changesetProvider
                     cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
                                 cellClass:(Class)cellClass NS_DESIGNATED_INITIALIZER;
+
+/// Initializes with a \c asset manager and \c url used to create and use the default
+/// \c PTUAlbumChangesetProvider and \c PTUImageCellViewModelProvider and uses \c PTUImageCell as
+/// \c cellClass.
+///
+/// @see -initWithChangesetProvider:cellViewModelProvider:cellClass:
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url;
 
 @end
 

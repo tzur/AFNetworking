@@ -95,8 +95,8 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
     NS_DESIGNATED_INITIALIZER;
 
 /// Initializes with an \c assetManager and \c url used to create the default
-/// \c PTUChangesetProvider and in turn using it to create the default \c PTUDataSourceProvider.
-/// The default \c PTUCollectionViewConfiguration is used as the \c initialConfiguration.
+/// \c PTUDataSourceProvider and default \c PTUCollectionViewConfiguration used as the
+/// \c initialConfiguration.
 ///
 /// @see initWithDataSourceProvider:initialConfiguration:.
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url;
