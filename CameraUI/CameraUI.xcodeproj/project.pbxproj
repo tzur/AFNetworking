@@ -74,6 +74,8 @@
 		F9B088A21D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9B088A11D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm */; };
 		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
 		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
+		F9CDB5D31D2D12A300B11D82 /* RACSignal+CameraUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */; };
+		F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */; };
 		F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */; };
 		F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */; };
 		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
@@ -464,6 +466,9 @@
 		F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISharedTheme.h; sourceTree = "<group>"; };
 		F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedTheme.mm; sourceTree = "<group>"; };
 		F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedThemeSpec.mm; sourceTree = "<group>"; };
+		F9CDB5CF1D2D12A300B11D82 /* RACSignal+CameraUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+CameraUI.h"; sourceTree = "<group>"; };
+		F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUI.mm"; sourceTree = "<group>"; };
+		F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUISpec.mm"; sourceTree = "<group>"; };
 		F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButtonSpec.mm; sourceTree = "<group>"; };
 		F9D0D2261D06BACB0033A4A5 /* WFFakePaintCodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WFFakePaintCodeModule.h; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.h; sourceTree = "<group>"; };
 		F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WFFakePaintCodeModule.m; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.m; sourceTree = "<group>"; };
@@ -777,6 +782,8 @@
 		BE4629521CDF23C400D9F7E2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F9CDB5CF1D2D12A300B11D82 /* RACSignal+CameraUI.h */,
+				F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -803,6 +810,7 @@
 		BE4629551CDF248200D9F7E2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1294,6 +1302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9A684261D1BE0F100E0F319 /* CUIGridView.mm in Sources */,
+				F9CDB5D31D2D12A300B11D82 /* RACSignal+CameraUI.mm in Sources */,
 				F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */,
 				F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuView.mm in Sources */,
 				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
@@ -1317,6 +1326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */,
+				F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */,
 				BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				F9E1E9801D117E0B007B5F6F /* CUISelectableMenuItemViewModelSpec.mm in Sources */,
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
