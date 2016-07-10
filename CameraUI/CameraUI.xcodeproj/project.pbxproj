@@ -52,6 +52,7 @@
 		BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */; };
 		BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */; };
 		BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */; };
+		F935E5711D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */; };
 		F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */; };
 		F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */; };
 		F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F965C9BF1CF316E100005627 /* Objection-iOS.framework */; };
@@ -78,7 +79,9 @@
 		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
 		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
 		F9CDB5D31D2D12A300B11D82 /* RACSignal+CameraUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */; };
+		F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */; };
 		F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */; };
+		F9CDB5F81D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F71D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm */; };
 		F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */; };
 		F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */; };
 		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
@@ -434,6 +437,8 @@
 		BEFF87FF1D22682200DEAA97 /* CUIFlashModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlashModeViewModel.h; sourceTree = "<group>"; };
 		BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashModeViewModel.mm; sourceTree = "<group>"; };
 		F908F6441D2A5B50007A988B /* CUIMenuViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuViewModel.h; sourceTree = "<group>"; };
+		F935E56F1D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFakeNSNotificationCenter.h; sourceTree = "<group>"; };
+		F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFakeNSNotificationCenter.mm; sourceTree = "<group>"; };
 		F95418881CFC55E800C6BE2E /* CUIMenuItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemModel.h; sourceTree = "<group>"; };
 		F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModel.mm; sourceTree = "<group>"; };
 		F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModelSpec.mm; sourceTree = "<group>"; };
@@ -475,7 +480,10 @@
 		F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedThemeSpec.mm; sourceTree = "<group>"; };
 		F9CDB5CF1D2D12A300B11D82 /* RACSignal+CameraUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+CameraUI.h"; sourceTree = "<group>"; };
 		F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUI.mm"; sourceTree = "<group>"; };
+		F9CDB5D11D2D12A300B11D82 /* UIViewController+LifecycleSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LifecycleSignals.h"; sourceTree = "<group>"; };
+		F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+LifecycleSignals.mm"; sourceTree = "<group>"; };
 		F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUISpec.mm"; sourceTree = "<group>"; };
+		F9CDB5F71D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+LifecycleSignalsSpec.mm"; sourceTree = "<group>"; };
 		F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButtonSpec.mm; sourceTree = "<group>"; };
 		F9D0D2261D06BACB0033A4A5 /* WFFakePaintCodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WFFakePaintCodeModule.h; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.h; sourceTree = "<group>"; };
 		F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WFFakePaintCodeModule.m; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.m; sourceTree = "<group>"; };
@@ -558,6 +566,7 @@
 			children = (
 				BE4629531CDF245600D9F7E2 /* Bars */,
 				BE4629541CDF246400D9F7E2 /* Preview */,
+				F935E5921D33DFD6003DEEE5 /* Test Utils */,
 				BE4629551CDF248200D9F7E2 /* Utils */,
 				83B731AF1CDB92320090C0BF /* Supporting Files */,
 			);
@@ -795,6 +804,8 @@
 			children = (
 				F9CDB5CF1D2D12A300B11D82 /* RACSignal+CameraUI.h */,
 				F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */,
+				F9CDB5D11D2D12A300B11D82 /* UIViewController+LifecycleSignals.h */,
+				F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -822,6 +833,7 @@
 			isa = PBXGroup;
 			children = (
 				F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */,
+				F9CDB5F71D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -922,6 +934,15 @@
 				BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */,
 			);
 			path = Matchers;
+			sourceTree = "<group>";
+		};
+		F935E5921D33DFD6003DEEE5 /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F935E56F1D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.h */,
+				F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */,
+			);
+			name = "Test Utils";
 			sourceTree = "<group>";
 		};
 		F965C9DD1CF3178C00005627 /* LTEngineTests */ = {
@@ -1318,6 +1339,7 @@
 				F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */,
 				F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuView.mm in Sources */,
 				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
+				F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */,
 				F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */,
 				F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */,
 				BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */,
@@ -1341,6 +1363,7 @@
 				BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */,
 				F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */,
 				BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */,
+				F9CDB5F81D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm in Sources */,
 				F9E1E9801D117E0B007B5F6F /* CUISelectableMenuItemViewModelSpec.mm in Sources */,
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
 				BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */,
@@ -1360,6 +1383,7 @@
 				F9660E691D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm in Sources */,
 				BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */,
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,
+				F935E5711D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm in Sources */,
 				BEEE6D351D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */,
 				F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */,
