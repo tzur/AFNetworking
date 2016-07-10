@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2501546A1D1ACA1300420FA9 /* DaVinci.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 250154691D1ACA1300420FA9 /* DaVinci.h */; };
-		2501546C1D1ACA1300420FA9 /* DaVinci.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2501546B1D1ACA1300420FA9 /* DaVinci.mm */; };
-		250154831D1AE92900420FA9 /* DaVinciTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 250154821D1AE92900420FA9 /* DaVinciTests.mm */; };
 		250154851D1AE92900420FA9 /* libDaVinci.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154661D1ACA1300420FA9 /* libDaVinci.a */; };
 		2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154F51D1AF13900420FA9 /* libOCMock.a */; };
 		2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250155121D1AF14C00420FA9 /* libExpecta.a */; };
@@ -240,7 +237,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				2501546A1D1ACA1300420FA9 /* DaVinci.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,10 +244,7 @@
 
 /* Begin PBXFileReference section */
 		250154661D1ACA1300420FA9 /* libDaVinci.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDaVinci.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		250154691D1ACA1300420FA9 /* DaVinci.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DaVinci.h; sourceTree = "<group>"; };
-		2501546B1D1ACA1300420FA9 /* DaVinci.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DaVinci.mm; sourceTree = "<group>"; };
 		250154801D1AE92900420FA9 /* DaVinciTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DaVinciTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		250154821D1AE92900420FA9 /* DaVinciTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DaVinciTests.mm; sourceTree = "<group>"; };
 		250154841D1AE92900420FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2501549B1D1AEAF000420FA9 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		250154B11D1AEB0300420FA9 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
@@ -394,8 +387,6 @@
 		250154C61D1AEB5900420FA9 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				250154691D1ACA1300420FA9 /* DaVinci.h */,
-				2501546B1D1ACA1300420FA9 /* DaVinci.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -461,7 +452,6 @@
 		5021E09D1D252363002EE897 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				250154821D1AE92900420FA9 /* DaVinciTests.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -840,7 +830,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2501546C1D1ACA1300420FA9 /* DaVinci.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,7 +837,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				250154831D1AE92900420FA9 /* DaVinciTests.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
