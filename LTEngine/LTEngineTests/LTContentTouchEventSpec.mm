@@ -23,10 +23,19 @@ static const UITouchProperties kEstimatedProperties =
     UITouchPropertyForce | UITouchPropertyLocation;
 static const UITouchProperties kPropertiesExpectingUpdates = UITouchPropertyAzimuth;
 
-static const CGPoint kContentLocation = CGPointMake(1, 2);
-static const CGPoint kPreviousContentLocation = CGPointMake(3, 4);
+static const CGFloat kScaleFactor = 2;
+static const CGPoint kTranslation = CGPointMake(1, 2);
+static const CGAffineTransform kTranslationTransform =
+    CGAffineTransformMakeTranslation(kTranslation.x, kTranslation.y);
+static const CGAffineTransform kTransform = CGAffineTransformScale(kTranslationTransform,
+                                                                   kScaleFactor, kScaleFactor);
+static const CGPoint kContentLocation = (kScaleFactor * kViewLocation) + kTranslation;
+static const CGPoint kPreviousContentLocation =
+    (kScaleFactor * kPreviousViewLocation) + kTranslation;
 static const CGFloat kContentZoomScale = 5;
 static const CGSize kContentSize = CGSizeMake(1, 2);
+static const CGFloat kMajorContentRadius = kScaleFactor * kMajorRadius;
+static const CGFloat kMajorContentRadiusTolerance = kScaleFactor * kMajorRadiusTolerance;
 
 __block id<LTTouchEvent> initialTouchEventMock;
 __block id<LTTouchEvent> touchEventMock;
@@ -53,6 +62,11 @@ beforeEach(^{
   OCMStub([touchEventMock estimatedProperties]).andReturn(kEstimatedProperties);
   OCMStub([touchEventMock estimatedPropertiesExpectingUpdates])
       .andReturn(kPropertiesExpectingUpdates);
+
+  OCMStub([initialTouchEventMock viewLocation]).andReturn(kViewLocation);
+  OCMStub([initialTouchEventMock previousViewLocation]).andReturn(kPreviousViewLocation);
+  OCMStub([initialTouchEventMock majorRadius]).andReturn(kMajorRadius);
+  OCMStub([initialTouchEventMock majorRadiusTolerance]).andReturn(kMajorRadiusTolerance);
 });
 
 afterEach(^{
@@ -64,10 +78,9 @@ context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     LTContentTouchEvent *contentTouchEvent =
         [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
-                                        contentLocation:kContentLocation
-                                previousContentLocation:kPreviousContentLocation
                                             contentSize:kContentSize
-                                       contentZoomScale:kContentZoomScale];
+                                       contentZoomScale:kContentZoomScale
+                                              transform:kTransform];
 
     // LTTouchEvent protocol
     expect(contentTouchEvent.timestamp).to.equal(kTimestamp);
@@ -92,6 +105,8 @@ context(@"initialization", ^{
     expect(contentTouchEvent.previousContentLocation).to.equal(kPreviousContentLocation);
     expect(contentTouchEvent.contentSize).to.equal(kContentSize);
     expect(contentTouchEvent.contentZoomScale).to.equal(kContentZoomScale);
+    expect(contentTouchEvent.majorContentRadius).to.equal(kMajorContentRadius);
+    expect(contentTouchEvent.majorContentRadiusTolerance).to.equal(kMajorContentRadiusTolerance);
   });
 });
 
@@ -101,16 +116,13 @@ context(@"NSObject protocol", ^{
 
   beforeEach(^{
     contentTouchEvent = [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
-                                                        contentLocation:kContentLocation
-                                                previousContentLocation:kPreviousContentLocation
                                                             contentSize:kContentSize
-                                                       contentZoomScale:kContentZoomScale];
-    equalContentTouchEvent =
-        [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
-                                        contentLocation:kContentLocation
-                                previousContentLocation:kPreviousContentLocation
-                                            contentSize:kContentSize
-                                       contentZoomScale:kContentZoomScale];
+                                                       contentZoomScale:kContentZoomScale
+                                                              transform:kTransform];
+    equalContentTouchEvent = [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                                                 contentSize:kContentSize
+                                                            contentZoomScale:kContentZoomScale
+                                                                   transform:kTransform];
   });
 
   context(@"equality", ^{
@@ -133,10 +145,9 @@ context(@"NSObject protocol", ^{
     it(@"should return NO when comparing to different content touch event", ^{
       LTContentTouchEvent *anotherContentTouchEvent =
           [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
-                                          contentLocation:kContentLocation
-                                  previousContentLocation:kPreviousContentLocation
                                               contentSize:kContentSize
-                                         contentZoomScale:kContentZoomScale * 2];
+                                         contentZoomScale:kContentZoomScale * 2
+                                                transform:kTransform];
       expect([contentTouchEvent isEqual:anotherContentTouchEvent]).to.beFalsy();
     });
   });
@@ -151,11 +162,8 @@ context(@"NSObject protocol", ^{
 context(@"copying", ^{
   it(@"should return itself as copy, due to immutability", ^{
     LTContentTouchEvent *contentTouchEvent =
-        [[LTContentTouchEvent alloc] initWithTouchEvent:touchEventMock
-                                        contentLocation:kContentLocation
-                                previousContentLocation:kPreviousContentLocation
-                                            contentSize:kContentSize
-                                       contentZoomScale:kContentZoomScale];
+        [[LTContentTouchEvent alloc] initWithTouchEvent:touchEventMock contentSize:kContentSize
+                                       contentZoomScale:kContentZoomScale transform:kTransform];
     expect([contentTouchEvent copy]).to.beIdenticalTo(contentTouchEvent);
   });
 });

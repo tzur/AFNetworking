@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize previousContentLocation = _previousContentLocation;
 @synthesize contentSize = _contentSize;
 @synthesize contentZoomScale = _contentZoomScale;
+@synthesize majorContentRadius = _majorContentRadius;
+@synthesize majorContentRadiusTolerance = _majorContentRadiusTolerance;
 
 @dynamic sequenceID;
 @dynamic viewLocation;
@@ -44,21 +46,32 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithTouchEvent:(id<LTTouchEvent>)touchEvent
-                   contentLocation:(CGPoint)contentLocation
-           previousContentLocation:(CGPoint)previousContentLocation
-                       contentSize:(CGSize)contentSize
-                  contentZoomScale:(CGFloat)contentZoomScale {
+- (instancetype)initWithTouchEvent:(id<LTTouchEvent>)touchEvent contentSize:(CGSize)contentSize
+                  contentZoomScale:(CGFloat)contentZoomScale
+                         transform:(CGAffineTransform)transform {
   LTParameterAssert(touchEvent);
 
   if (self = [super init]) {
     _touchEvent = [touchEvent copyWithZone:nil];
-    _contentLocation = contentLocation;
-    _previousContentLocation = previousContentLocation;
+    _contentLocation = CGPointApplyAffineTransform(touchEvent.viewLocation, transform);
+    _previousContentLocation = CGPointApplyAffineTransform(touchEvent.previousViewLocation,
+                                                           transform);
     _contentSize = contentSize;
     _contentZoomScale = contentZoomScale;
+    _majorContentRadius =
+        [self convertDistanceFromPresentationToContentCoordinates:touchEvent.majorRadius
+                                                   usingTransform:transform];
+    _majorContentRadiusTolerance =
+        [self convertDistanceFromPresentationToContentCoordinates:touchEvent.majorRadiusTolerance
+                                                   usingTransform:transform];
   }
   return self;
+}
+
+- (CGFloat)convertDistanceFromPresentationToContentCoordinates:(CGFloat)distance
+                                                usingTransform:(CGAffineTransform)transform {
+  return CGPointDistance(CGPointApplyAffineTransform(CGPointMake(distance, 0), transform),
+                         CGPointApplyAffineTransform(CGPointZero, transform));
 }
 
 #pragma mark -
