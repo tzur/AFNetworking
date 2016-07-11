@@ -46,14 +46,33 @@ typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
 
 /// Control points constituting this object.
 ///
-/// Time complexity: \c O(n), where \c n is the number of control points held by this object.
-@property (readonly, copy, nonatomic) LTEuclideanSplineControlPoints *controlPoints;
+/// Time complexity: \c O(n), where \c n is the number of control points held by this object. The
+///                  time complexity is linear since a copy of the underlying container is returned.
+///
+/// @important For retrieval of the \c count of this array, use the \c numberOfControlPoints
+/// property.
+@property (readonly, nonatomic) NSArray<LTEuclideanSplineControlPoint *> *controlPoints;
+
+/// Number of control points constituting this object.
+///
+/// Time complexity: \c O(1).
+@property (readonly, nonatomic) NSUInteger numberOfControlPoints;
 
 /// Parameterized objects constituting the segments of this spline.
 ///
 /// Time complexity: \c O(n), where \c n is the number of spline segments held by this object. The
-/// number of spline segments is \c O(1) smaller than the number of control points.
-@property (readonly, copy, nonatomic) NSArray<id<LTParameterizedObject>> *segments;
+///                  number of spline segments is \c O(1) smaller than the number of control points.
+///                  The time complexity is linear since a copy of the underlying container is
+///                  returned.
+///
+/// @important For retrieval of the \c count of this array, use the \c numberOfSegments
+/// property.
+@property (readonly, nonatomic) NSArray<id<LTParameterizedObject>> *segments;
+
+/// Number of parameterized object constituting the segments of this object.
+///
+/// Time complexity: \c O(1).
+@property (readonly, nonatomic) NSUInteger numberOfSegments;
 
 @end
 

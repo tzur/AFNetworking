@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Stack of parameterized objects each of which represents a spline segment of this instance.
 @property (strong, nonatomic) LTParameterizedObjectStack *mutableStack;
 
-/// Index of the control point constituting the end of the intrinsic parameteric range of this
+/// Index of the control point constituting the end of the intrinsic parametric range of this
 /// spline.
 @property (nonatomic) NSUInteger indexOfControlPointAtEndOfIntrinsicParametricRange;
 
@@ -71,11 +71,11 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   [self addControlPointsToDataStructures:controlPoints];
 
   NSUInteger index = [self startIndexOfInvolvedControlPoints];
-  LTAssert(index < self.mutableControlPoints.count,
+  LTAssert(index < self.numberOfControlPoints,
            @"Computed index (%lu) must be smaller than the current number of control points (%lu)",
-           (unsigned long)index, (unsigned long)self.mutableControlPoints.count);
+           (unsigned long)index, (unsigned long)self.numberOfControlPoints);
 
-  if (self.mutableControlPoints.count - index < self.numberOfRequiredInterpolatableObjects) {
+  if (self.numberOfControlPoints - index < self.numberOfRequiredInterpolatableObjects) {
     // No new spline segments have to be created since the number of control points which should be
     // used for the creation of the corresponding parameterized object is lower than the number of
     // interpolatable objects required by the factory.
@@ -100,7 +100,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 }
 
 - (NSUInteger)startIndexOfInvolvedControlPoints {
-  if (!self.segments.count) {
+  if (!self.numberOfSegments) {
     return 0;
   }
 
@@ -121,16 +121,15 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   NSUInteger windowSize = self.numberOfRequiredInterpolatableObjects;
   NSUInteger stepSize = range.length - 1;
 
-  if (index + windowSize - 1 >= self.mutableControlPoints.count) {
+  if (index + windowSize - 1 >= self.numberOfControlPoints) {
     return;
   }
 
-  for (NSUInteger i = index; i < self.mutableControlPoints.count - windowSize + 1; i += stepSize) {
+  for (NSUInteger i = index; i < self.numberOfControlPoints - windowSize + 1; i += stepSize) {
     [self extendSplineWithSingleSegmentUsingControlPointsStartingAtIndex:i windowSize:windowSize];
   }
 
-  NSUInteger numberOfIterations =
-      (self.mutableControlPoints.count - windowSize + 1 - index) / stepSize;
+  NSUInteger numberOfIterations = (self.numberOfControlPoints - windowSize + 1 - index) / stepSize;
 
   self.indexOfControlPointAtEndOfIntrinsicParametricRange =
       index + numberOfIterations * stepSize + range.location;
@@ -142,14 +141,14 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
       [self.mutableControlPoints subarrayWithRange:NSMakeRange(index, windowSize)];
   LTCompoundParameterizedObject *segment =
       [self.factory parameterizedObjectFromInterpolatableObjects:controlPointsInWindow];
-  LTReparameterizedObject *reparameterizedSegment =
+  id<LTParameterizedValueObject> reparameterizedSegment =
       [self segmentFromSegment:segment reparameterizedWithMinValue:self.maxParametricValue];
 
   [self addSegment:reparameterizedSegment forControlPoints:controlPointsInWindow];
 }
 
-- (LTReparameterizedObject *)segmentFromSegment:(LTCompoundParameterizedObject *)segment
-                    reparameterizedWithMinValue:(CGFloat)minParametricValue {
+- (id<LTParameterizedValueObject>)segmentFromSegment:(LTCompoundParameterizedObject *)segment
+                         reparameterizedWithMinValue:(CGFloat)minParametricValue {
   LTReparameterization *reparameterization =
       [LTReparameterization
        arcLengthReparameterizationForObject:segment
@@ -159,11 +158,14 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
                                                   xCoordinateOfLocation)
        parameterizationKeyForYCoordinate:@keypath(self.mutableControlPoints.firstObject,
                                                   yCoordinateOfLocation)];
+  if (!reparameterization) {
+    return segment;
+  }
   return [[LTReparameterizedObject alloc] initWithParameterizedObject:segment
                                                    reparameterization:reparameterization];
 }
 
-- (void)addSegment:(LTReparameterizedObject *)segment
+- (void)addSegment:(id<LTParameterizedValueObject>)segment
   forControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
   [self.mutableGraph addVertex:segment toPartition:LTBipartiteGraphPartitionB];
   [self.mutableGraph addEdgesBetweenVertex:segment andVertices:[NSSet setWithArray:controlPoints]];
@@ -212,11 +214,19 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 #pragma mark -
 
 - (NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
-  return self.mutableControlPoints;
+  return [self.mutableControlPoints copy];
+}
+
+- (NSUInteger)numberOfControlPoints {
+  return self.mutableControlPoints.count;
 }
 
 - (NSArray<id<LTParameterizedObject>> *)segments {
-  return self.mutableStack.parameterizedObjects;
+  return [self.mutableStack.parameterizedObjects copy];
+}
+
+- (NSUInteger)numberOfSegments {
+  return self.mutableStack.count;
 }
 
 #pragma mark -
