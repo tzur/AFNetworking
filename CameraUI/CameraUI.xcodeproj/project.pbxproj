@@ -28,6 +28,7 @@
 		BE40FECA1D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE40FEC91D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm */; };
 		BE97556D1D0075A80081A766 /* CUIMenuItemIconButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */; };
 		BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */; };
+		BEA275981D3284A2001BB8ED /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA275971D3284A2001BB8ED /* CoreMotion.framework */; };
 		BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */; };
 		BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */; };
 		BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC7B1AB1D1FFC0C0012C286 /* Masonry.framework */; };
@@ -384,6 +385,7 @@
 		BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemIconButton.h; sourceTree = "<group>"; };
 		BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemIconButton.mm; sourceTree = "<group>"; };
 		BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemIconButtonSpec.mm; sourceTree = "<group>"; };
+		BEA275971D3284A2001BB8ED /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		BEC7B1831D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownMenuItemsEntry.h; sourceTree = "<group>"; };
 		BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownMenuItemsEntry.mm; sourceTree = "<group>"; };
 		BEC7B1851D1FF4E50012C286 /* CUIDropDownEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownEntry.h; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 				F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */,
 				83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */,
 				83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */,
+				BEA275981D3284A2001BB8ED /* CoreMotion.framework in Frameworks */,
 				F965C9EB1CF3185100005627 /* Mantle.framework in Frameworks */,
 				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
@@ -600,6 +603,7 @@
 				83B731B21CDB92640090C0BF /* AssetsLibrary.framework */,
 				83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */,
 				83B731B41CDB92670090C0BF /* CoreMedia.framework */,
+				BEA275971D3284A2001BB8ED /* CoreMotion.framework */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
 				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
 				BEEE6D061D21385D00579F5D /* LLReactiveMatchers */,

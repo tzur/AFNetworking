@@ -46,7 +46,11 @@ LTErrorCodesDeclare(CameraErrorCodeProductID,
   /// Caused when the requested white balance setting is not supported.
   CAMErrorCodeWhiteBalanceSettingUnsupported,
   /// Caused when the requested flash setting is not supported.
-  CAMErrorCodeFlashModeSettingUnsupported
+  CAMErrorCodeFlashModeSettingUnsupported,
+  /// Caused when the <tt>CMMotionManager</tt>'s device motion is unavailable.
+  CAMErrorCodeDeviceMotionUnavailable,
+  /// Caused when the \c CMDeviceMotionHandler receives an error.
+  CAMErrorCodeDeviceMotionUpdateError
 );
 
 NS_ASSUME_NONNULL_END

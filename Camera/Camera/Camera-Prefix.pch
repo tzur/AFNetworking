@@ -10,3 +10,5 @@
 #undef strongify
 
 #import <LTEngine/LTEngine-Prefix.pch>
+
+#import "NSErrorCodes+Camera.h"

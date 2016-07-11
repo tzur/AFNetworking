@@ -4,7 +4,6 @@
 #import "CAMHardwareSession.h"
 
 #import "CAMFormatStrategy.h"
-#import "NSErrorCodes+Camera.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

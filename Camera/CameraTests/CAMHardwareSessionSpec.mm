@@ -5,7 +5,6 @@
 
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMFormatStrategy.h"
-#import "NSErrorCodes+Camera.h"
 
 /// Fake \c CAMFormatStrategy for testing.
 @interface CAMFakeFormatStrategy : NSObject <CAMFormatStrategy>
