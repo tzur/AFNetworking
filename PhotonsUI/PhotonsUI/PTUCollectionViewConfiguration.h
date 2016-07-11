@@ -23,16 +23,27 @@ NS_ASSUME_NONNULL_BEGIN
     NS_DESIGNATED_INITIALIZER;
 
 /// Creates and returns a \c PTUCollectionViewConfiguration resembling that of the Photos app.
-///     - \c assetSizingStrategy is set to
-///       \c [PTUCellSizingStrategy adaptiveFitRow:(100, 100) maximumScale:1.2].
-///     - \c albumSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:100].
-///     - \c itemSpacing of \c 1.
-///     - \c lineSpacing of \c 1.
-///     - \c scrollDirection set to \c UICollectionViewScrollDirectionVertical.
-///     - \c showVerticalScrollIndicator set to \c YES.
-///     - \c showHorizontalScrollIndicator set to \c NO.
-///     - \c enablePaging set to \c NO.
+///   - \c assetSizingStrategy is set to
+///     \c [PTUCellSizingStrategy adaptiveFitRow:(100, 100) maximumScale:1.2].
+///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:100].
+///   - \c itemSpacing of \c 1.
+///   - \c lineSpacing of \c 1.
+///   - \c scrollDirection set to \c UICollectionViewScrollDirectionVertical.
+///   - \c showVerticalScrollIndicator set to \c YES.
+///   - \c showHorizontalScrollIndicator set to \c NO.
+///   - \c enablePaging set to \c NO.
 + (instancetype)defaultConfiguration;
+
+/// Creates and returns a \c PTUCollectionViewConfiguration suitable for a Photo selection strip.
+///   - \c assetSizingStrategy is set to \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
+///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
+///   - \c itemSpacing of \c 1.
+///   - \c lineSpacing of \c 0.
+///   - \c scrollDirection set to \c UICollectionViewScrollDirectionHorizontal.
+///   - \c showVerticalScrollIndicator set to \c NO.
+///   - \c showHorizontalScrollIndicator set to \c NO.
+///   - \c enablePaging set to \c NO.
++ (instancetype)photoStrip;
 
 /// Cell sizing strategy to determine the size of cells representing descriptors conforming to
 /// \c PTNAssetDescriptor.

@@ -3,7 +3,10 @@
 
 #import "PTUDataSourceProvider.h"
 
+#import "PTUAlbumChangesetProvider.h"
 #import "PTUDataSource.h"
+#import "PTUImageCell.h"
+#import "PTUImageCellViewModelProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,6 +34,16 @@ NS_ASSUME_NONNULL_BEGIN
     _cellClass = cellClass;
   }
   return self;
+}
+
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url; {
+  PTUAlbumChangesetProvider *changesetProvider =
+      [[PTUAlbumChangesetProvider alloc] initWithManager:assetManager albumURL:url];
+  PTUImageCellViewModelProvider *viewModelProvider =
+      [[PTUImageCellViewModelProvider alloc] initWithAssetManager:assetManager];
+  
+  return [self initWithChangesetProvider:changesetProvider cellViewModelProvider:viewModelProvider
+                               cellClass:[PTUImageCell class]];
 }
 
 #pragma mark -
