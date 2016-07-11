@@ -9,7 +9,9 @@
 #import <Mantle/Mantle.h>
 
 // LTKit.
-#import <LTKit/LTKit-Prefix.pch>
+#import <LTKit/LTAssert.h>
+#import <LTKit/LTEasyBoxing.h>
 #import <LTKit/LTEnum.h>
-#import <LTKit/LTKeyPathCoding.h>
+#import <LTKit/LTKeypathCoding.h>
+#import <LTKit/NSError+LTKit.h>
 #import <LTKit/NSErrorCodes+LTKit.h>

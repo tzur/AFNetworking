@@ -11,6 +11,8 @@
 		6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F4D1CE2228C001F36FA /* libSpecta.a */; };
 		6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F5C1CE22299001F36FA /* libOCMock.a */; };
 		6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FA32981CE2185D00901304 /* libBazaar.a */; };
+		6505DC421D312B26008F4053 /* NSValueTransformer+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */; };
+		6505DC441D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */; };
 		6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */; };
 		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */; };
 		6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm */; };
@@ -275,6 +277,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6505DC401D312B26008F4053 /* NSValueTransformer+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Bazaar.h"; sourceTree = "<group>"; };
+		6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Bazaar.mm"; sourceTree = "<group>"; };
+		6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+BazaarSpec.mm"; sourceTree = "<group>"; };
 		6506094A1CEDE5F60012202D /* BZRReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptModel.h; sourceTree = "<group>"; };
 		6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModel.mm; sourceTree = "<group>"; };
 		6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
@@ -539,6 +544,8 @@
 				65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */,
 				658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */,
 				658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */,
+				6505DC401D312B26008F4053 /* NSValueTransformer+Bazaar.h */,
+				6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -548,6 +555,7 @@
 			children = (
 				65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */,
 				65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */,
+				6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -929,6 +937,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */,
+				6505DC441D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm in Sources */,
 				65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */,
 				65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */,
 				6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */,
@@ -943,6 +952,7 @@
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */,
 				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */,
+				6505DC421D312B26008F4053 /* NSValueTransformer+Bazaar.mm in Sources */,
 				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */,
 				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
