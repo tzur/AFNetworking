@@ -33,13 +33,27 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (CGPoint)convertPointFromContentToPresentationCoordinates:(CGPoint)point {
-  return (point - self.provider.visibleContentRect.origin) * self.provider.zoomScale /
-      self.provider.contentScaleFactor;
+  return CGPointApplyAffineTransform(point, self.contentToPresentationCoordinateTransform);
 }
 
 - (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point {
-  return point * self.provider.contentScaleFactor / self.provider.zoomScale +
-      self.provider.visibleContentRect.origin;
+  return CGPointApplyAffineTransform(point, self.presentationToContentCoordinateTransform);
+}
+
+- (CGAffineTransform)contentToPresentationCoordinateTransform {
+  CGFloat scaleFactor = self.provider.zoomScale / self.provider.contentScaleFactor;
+  CGAffineTransform scaling = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+  return CGAffineTransformTranslate(scaling,
+                                    -self.provider.visibleContentRect.origin.x,
+                                    -self.provider.visibleContentRect.origin.y);
+}
+
+- (CGAffineTransform)presentationToContentCoordinateTransform {
+  CGAffineTransform translation =
+      CGAffineTransformMakeTranslation(self.provider.visibleContentRect.origin.x,
+                                       self.provider.visibleContentRect.origin.y);
+  CGFloat scaleFactor = self.provider.contentScaleFactor / self.provider.zoomScale;
+  return CGAffineTransformScale(translation, scaleFactor, scaleFactor);
 }
 
 @end

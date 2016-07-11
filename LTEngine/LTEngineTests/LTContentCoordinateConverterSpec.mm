@@ -17,6 +17,8 @@ static LTContentCoordinateConverter *LTTestConverter(CGRect visibleContentRect, 
 
 SpecBegin(LTContentCoordinateConverter)
 
+static const CGFloat kEpsilon = 1e-14;
+
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     LTContentCoordinateConverter *converter = LTTestConverter(CGRectMake(0, 0, 1, 1), 1, 1);
@@ -39,11 +41,11 @@ context(@"conversion", ^{
     converter = LTTestConverter(CGRectMake(100, 200, 300, 400), 0.5, 3);
     convertedPoint =
         [converter convertPointFromContentToPresentationCoordinates:CGPointMake(250, 400)];
-    expect(convertedPoint).to.beCloseToPoint(CGPointMake(25, 100 / 3.0));
+    expect(convertedPoint).to.beCloseToPointWithin(CGPointMake(25, 100 / 3.0), kEpsilon);
 
     converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
     convertedPoint =
-        [converter convertPointFromContentToPresentationCoordinates:CGPointMake(0, 0)];
+        [converter convertPointFromContentToPresentationCoordinates:CGPointZero];
     expect(convertedPoint).to.beCloseToPoint(CGPointMake(0, 10));
   });
 
@@ -65,7 +67,53 @@ context(@"conversion", ^{
     converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
     convertedPoint =
         [converter convertPointFromPresentationToContentCoordinates:CGPointMake(0, 10)];
-    expect(convertedPoint).to.beCloseToPoint(CGPointMake(0, 0));
+    expect(convertedPoint).to.beCloseToPoint(CGPointZero);
+  });
+});
+
+context(@"transform", ^{
+  it(@"should provide a transform for converting points into the presentation coordinate system", ^{
+    LTContentCoordinateConverter *converter = LTTestConverter(CGRectMake(0, 0, 1, 1), 1, 1);
+    CGAffineTransform transform = converter.contentToPresentationCoordinateTransform;
+    CGPoint convertedPoint = CGPointApplyAffineTransform(CGPointMake(2, 3), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
+
+    converter = LTTestConverter(CGRectMake(1, 1, 1, 1), 1, 1);
+    transform = converter.contentToPresentationCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointMake(2, 3), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(1, 2));
+
+    converter = LTTestConverter(CGRectMake(100, 200, 300, 400), 0.5, 3);
+    transform = converter.contentToPresentationCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointMake(250, 400), transform);
+    expect(convertedPoint).to.beCloseToPointWithin(CGPointMake(25, 100 / 3.0), kEpsilon);
+
+    converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
+    transform = converter.contentToPresentationCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointZero, transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(0, 10));
+  });
+
+  it(@"should provide a transform for converting points into the content coordinate system", ^{
+    LTContentCoordinateConverter *converter = LTTestConverter(CGRectMake(0, 0, 1, 1), 1, 1);
+    CGAffineTransform transform = converter.presentationToContentCoordinateTransform;
+    CGPoint convertedPoint = CGPointApplyAffineTransform(CGPointMake(2, 3), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
+
+    converter = LTTestConverter(CGRectMake(1, 1, 1, 1), 1, 1);
+    transform = converter.presentationToContentCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointMake(1, 2), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(2, 3));
+
+    converter = LTTestConverter(CGRectMake(100, 200, 300, 400), 0.5, 3);
+    transform = converter.presentationToContentCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointMake(25, 100 / 3.0), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointMake(250, 400));
+
+    converter = LTTestConverter(CGRectMake(0, -100, 300, 400), 0.2, 2);
+    transform = converter.presentationToContentCoordinateTransform;
+    convertedPoint = CGPointApplyAffineTransform(CGPointMake(0, 10), transform);
+    expect(convertedPoint).to.beCloseToPoint(CGPointZero);
   });
 });
 
