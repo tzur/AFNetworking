@@ -100,6 +100,42 @@ context(@"collection view", ^{
     viewController.view.frame = CGRectMake(0, 0, 200, 300);
     [viewController.view layoutIfNeeded];
   });
+  
+  it(@"should correctly apply initial configuration", ^{
+    UICollectionViewFlowLayout *layout =
+        (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
+    
+    expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
+    expect(layout.minimumInteritemSpacing).to.equal(@1);
+    expect(layout.minimumLineSpacing).to.equal(@1);
+
+    expect(collectionView.showsHorizontalScrollIndicator).to.beFalsy();
+    expect(collectionView.showsVerticalScrollIndicator).to.beTruthy();
+    expect(collectionView.pagingEnabled).to.beFalsy();
+  });
+  
+  it(@"should correctly apply new configuration", ^{
+    PTUCollectionViewConfiguration *configuration =
+        [[PTUCollectionViewConfiguration alloc]
+        initWithAssetCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
+        albumCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
+        minimumItemSpacing:3 minimumLineSpacing:4
+        scrollDirection:UICollectionViewScrollDirectionHorizontal
+        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:YES enablePaging:YES];
+    
+    [viewController setConfiguration:configuration animated:NO];
+    
+    UICollectionViewFlowLayout *layout =
+        (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
+    
+    expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionHorizontal);
+    expect(layout.minimumInteritemSpacing).to.equal(@3);
+    expect(layout.minimumLineSpacing).to.equal(@4);
+    
+    expect(collectionView.showsHorizontalScrollIndicator).to.beTruthy();
+    expect(collectionView.showsVerticalScrollIndicator).to.beFalsy;
+    expect(collectionView.pagingEnabled).to.beTruthy();
+  });
 
   it(@"should size asset cells according to strategy", ^{
     dataSource.data = @[@[asset]];
