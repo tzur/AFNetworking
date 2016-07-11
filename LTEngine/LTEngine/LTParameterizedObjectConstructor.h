@@ -7,8 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTControlPointModel, LTEuclideanSplineControlPoint;
 
-@protocol LTPrimitiveParameterizedObjectFactory;
-
 /// Mutable object responsible for constructing and iteratively extending an
 /// \c LTParameterizedObject using a given \c LTControlPointModel, specifying the type of the
 /// factory for basic parameterized objects and a possibly existing ordered collection of initial
