@@ -5,8 +5,17 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-// Mantle.
+// Third Party Frameworks.
 #import <Mantle/Mantle.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
+#undef keypath
+#undef onExit
+#undef strongify
+#undef weakify
+#undef unsafeify
+
+#import <extobjc/extobjc.h>
 
 // LTKit.
 #import <LTKit/LTAssert.h>
