@@ -20,52 +20,52 @@ it(@"should raise an exception for no tuple", ^{
 });
 
 context(@"signal with tuples of size one", ^{
-  static NSNumber * const value0 = @0;
-  static NSNumber * const value1 = @1;
+  static NSNumber * const kValue0 = @0;
+  static NSNumber * const kValue1 = @1;
 
   it(@"should unpack first", ^{
     LLSignalTestRecorder *recorder = [[sender cui_unpackFirst] testRecorder];
-    [sender sendNext:RACTuplePack(value0)];
-    [sender sendNext:RACTuplePack(value1)];
-    expect(recorder).to.sendValues(@[value0, value1]);
+    [sender sendNext:RACTuplePack(kValue0)];
+    [sender sendNext:RACTuplePack(kValue1)];
+    expect(recorder).to.sendValues(@[kValue0, kValue1]);
   });
 
   it(@"should unpack 0", ^{
     LLSignalTestRecorder *recorder = [[sender cui_unpack:0] testRecorder];
-    [sender sendNext:RACTuplePack(value0)];
-    [sender sendNext:RACTuplePack(value1)];
-    expect(recorder).to.sendValues(@[value0, value1]);
+    [sender sendNext:RACTuplePack(kValue0)];
+    [sender sendNext:RACTuplePack(kValue1)];
+    expect(recorder).to.sendValues(@[kValue0, kValue1]);
   });
 });
 
 context(@"signal with tuples of size 3", ^{
-  static NSNumber * const value00 = @00;
-  static NSNumber * const value01 = @01;
-  static NSNumber * const value02 = @02;
-  static NSNumber * const value10 = @10;
-  static NSNumber * const value11 = @11;
-  static NSNumber * const value12 = @12;
-  static RACTuple * const pack1 = RACTuplePack(value00, value01, value02);
-  static RACTuple * const pack2 = RACTuplePack(value10, value11, value12);
+  static NSNumber * const kValue00 = @00;
+  static NSNumber * const kValue01 = @01;
+  static NSNumber * const kValue02 = @02;
+  static NSNumber * const kValue10 = @10;
+  static NSNumber * const kValue11 = @11;
+  static NSNumber * const kValue12 = @12;
+  static RACTuple * const kPack1 = RACTuplePack(kValue00, kValue01, kValue02);
+  static RACTuple * const kPack2 = RACTuplePack(kValue10, kValue11, kValue12);
 
   it(@"should unpack first", ^{
     LLSignalTestRecorder *recorder = [[sender cui_unpackFirst] testRecorder];
-    [sender sendNext:pack1];
-    [sender sendNext:pack2];
-    expect(recorder).to.sendValues(@[value00, value10]);
+    [sender sendNext:kPack1];
+    [sender sendNext:kPack2];
+    expect(recorder).to.sendValues(@[kValue00, kValue10]);
   });
 
   it(@"should unpack 1", ^{
     LLSignalTestRecorder *recorder = [[sender cui_unpack:1] testRecorder];
-    [sender sendNext:pack1];
-    [sender sendNext:pack2];
-    expect(recorder).to.sendValues(@[value01, value11]);
+    [sender sendNext:kPack1];
+    [sender sendNext:kPack2];
+    expect(recorder).to.sendValues(@[kValue01, kValue11]);
   });
 
   it(@"should raise an exception for index out of bounds", ^{
     LLSignalTestRecorder *recorder = [[sender cui_unpack:3] testRecorder];
     expect(^{
-      [sender sendNext:pack1];
+      [sender sendNext:kPack1];
     }).to.raise(NSInvalidArgumentException);
     expect(recorder).to.sendValuesWithCount(0);
   });
