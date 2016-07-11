@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @important This class overrides the \c valueForKey: method declared in \c NSKeyValueCoding. If
 /// the \c attributes provided upon initialization contain a given \c key, the corresponding value
 /// is returned. Otherwise, the regular implementation of \c super is called.
-@interface LTEuclideanSplineControlPoint : NSObject <LTInterpolatableObject, NSCopying>
+@interface LTSplineControlPoint : NSObject <LTInterpolatableObject, NSCopying>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns \c YES if the receiver \c isEqual: to the given \c controlPoint, ignoring the
 /// \c timestamp.
-- (BOOL)isEqualIgnoringTimestamp:(LTEuclideanSplineControlPoint *)controlPoint;
+- (BOOL)isEqualIgnoringTimestamp:(LTSplineControlPoint *)controlPoint;
 
 /// Timestamp of this control point.
 @property (readonly, nonatomic) NSTimeInterval timestamp;

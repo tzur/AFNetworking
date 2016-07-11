@@ -19,15 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// rect has the \c edgeLength provided upon initialization and an \c angle of \c 0.
 ///
 /// @important The \c parameterizationKeys of the given parameterized \c object must contain
-/// <tt>@instanceKeypath(LTEuclideanSplineControlPoint, xCoordinateOfLocation)</tt> and
-/// <tt>@instanceKeypath(LTEuclideanSplineControlPoint, yCoordinateOfLocation)</tt>.
+/// <tt>@instanceKeypath(LTSplineControlPoint, xCoordinateOfLocation)</tt> and
+/// <tt>@instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation)</tt>.
 - (NSArray<LTRotatedRect *> *)rotatedRectsFromParameterizedObject:(id<LTParameterizedObject>)object
                                                atParametricValues:(CGFloats)parametricValues;
 
 /// Returns a single rotated rect representing geometry constructed from the given \c point. The
 /// returned rotated rect has the \c edgeLength provided upon initialization and an \c angle of
 /// \c 0.
-- (LTRotatedRect *)rotatedRectFromControlPoint:(LTEuclideanSplineControlPoint *)point;
+- (LTRotatedRect *)rotatedRectFromControlPoint:(LTSplineControlPoint *)point;
 
 /// Returns this object, due to immutability.
 - (id<LTBrushGeometryProviderModel>)currentModel;

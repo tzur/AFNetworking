@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTEuclideanSplineControlPoint, LTParameterizedObjectType;
+@class LTParameterizedObjectType, LTSplineControlPoint;
 
 /// Value class holding control points of a Euclidean spline and the type of a factory which can be
 /// used to construct a corresponding Euclidean spline from the control points.
@@ -17,14 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with the given \c type and a copy of the given \c controlPoints.
 - (instancetype)initWithType:(LTParameterizedObjectType *)type
-               controlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints
+               controlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints
     NS_DESIGNATED_INITIALIZER;
 
 /// Type of factory used to construct segments of a Euclidean spline.
 @property (readonly, nonatomic) LTParameterizedObjectType *type;
 
 /// Control points of a Euclidean spline.
-@property (readonly, nonatomic) NSArray<LTEuclideanSplineControlPoint *> *controlPoints;
+@property (readonly, nonatomic) NSArray<LTSplineControlPoint *> *controlPoints;
 
 @end
 

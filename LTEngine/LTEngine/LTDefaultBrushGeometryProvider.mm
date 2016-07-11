@@ -5,10 +5,10 @@
 
 #import <LTKit/LTHashExtensions.h>
 
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 #import "LTRotatedRect.h"
+#import "LTSplineControlPoint.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,12 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTDefaultBrushGeometryProvider
 
-/// Key of x-coordinate property of an \c LTEuclideanSplineControlPoint.
-static NSString * const kXCoordinateKey = @instanceKeypath(LTEuclideanSplineControlPoint,
+/// Key of x-coordinate property of an \c LTSplineControlPoint.
+static NSString * const kXCoordinateKey = @instanceKeypath(LTSplineControlPoint,
                                                            xCoordinateOfLocation);
 
-/// Key of y-coordinate property of an \c LTEuclideanSplineControlPoint.
-static NSString * const kYCoordinateKey = @instanceKeypath(LTEuclideanSplineControlPoint,
+/// Key of y-coordinate property of an \c LTSplineControlPoint.
+static NSString * const kYCoordinateKey = @instanceKeypath(LTSplineControlPoint,
                                                            yCoordinateOfLocation);
 
 #pragma mark -
@@ -120,7 +120,7 @@ static NSString * const kYCoordinateKey = @instanceKeypath(LTEuclideanSplineCont
   return CGSizeMakeUniform(self.edgeLength);
 }
 
-- (LTRotatedRect *)rotatedRectFromControlPoint:(LTEuclideanSplineControlPoint *)point {
+- (LTRotatedRect *)rotatedRectFromControlPoint:(LTSplineControlPoint *)point {
   return [LTRotatedRect rectWithCenter:point.location size:self.rectSize angle:0];
 }
 

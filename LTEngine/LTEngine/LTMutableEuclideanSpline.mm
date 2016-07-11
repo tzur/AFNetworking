@@ -7,10 +7,10 @@
 
 #import "LTCompoundParameterizedObject.h"
 #import "LTCompoundParameterizedObjectFactory.h"
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizedObjectStack.h"
 #import "LTReparameterization+Arclength.h"
 #import "LTReparameterizedObject.h"
+#import "LTSplineControlPoint.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) LTCompoundParameterizedObjectFactory *factory;
 
 /// Mutable ordered collection of control points of this instance.
-@property (strong, nonatomic) NSMutableArray<LTEuclideanSplineControlPoint *> *mutableControlPoints;
+@property (strong, nonatomic) NSMutableArray<LTSplineControlPoint *> *mutableControlPoints;
 
 /// Bipartite graph connecting control points and spline segments.
 @property (strong, nonatomic) LTBipartiteGraph *mutableGraph;
@@ -44,7 +44,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 #pragma mark -
 
 - (instancetype)initWithFactory:(LTCompoundParameterizedObjectFactory *)factory
-           initialControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)initialControlPoints {
+           initialControlPoints:(NSArray<LTSplineControlPoint *> *)initialControlPoints {
   LTParameterAssert(initialControlPoints.count >= factory.numberOfRequiredInterpolatableObjects,
                     @"Number (%lu) of control points must not be smaller than number (%lu) of "
                     "required interpolatable objects", (unsigned long)initialControlPoints.count,
@@ -63,7 +63,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 #pragma mark Pushing Control Points
 #pragma mark -
 
-- (void)pushControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+- (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
   if (!controlPoints.count) {
     return;
   }
@@ -85,9 +85,9 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   [self extendSplineWithSegmentsUsingControlPointsStartingAtIndex:index];
 }
 
-- (void)addControlPointsToDataStructures:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
-  LTEuclideanSplineControlPoint *previousControlPoint = self.mutableControlPoints.lastObject;
-  for (LTEuclideanSplineControlPoint *controlPoint in controlPoints) {
+- (void)addControlPointsToDataStructures:(NSArray<LTSplineControlPoint *> *)controlPoints {
+  LTSplineControlPoint *previousControlPoint = self.mutableControlPoints.lastObject;
+  for (LTSplineControlPoint *controlPoint in controlPoints) {
     if (previousControlPoint) {
       LTParameterAssert(previousControlPoint.timestamp <= controlPoint.timestamp,
                         @"Timestamp of control point (%@) must not be greater than timestamp of "
@@ -137,7 +137,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 
 - (void)extendSplineWithSingleSegmentUsingControlPointsStartingAtIndex:(NSUInteger)index
                                                             windowSize:(NSUInteger)windowSize {
-  NSArray<LTEuclideanSplineControlPoint *> *controlPointsInWindow =
+  NSArray<LTSplineControlPoint *> *controlPointsInWindow =
       [self.mutableControlPoints subarrayWithRange:NSMakeRange(index, windowSize)];
   LTCompoundParameterizedObject *segment =
       [self.factory parameterizedObjectFromInterpolatableObjects:controlPointsInWindow];
@@ -165,8 +165,8 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
                                                    reparameterization:reparameterization];
 }
 
-- (void)addSegment:(id<LTParameterizedValueObject>)segment
-  forControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+- (void)addSegment:(LTReparameterizedObject *)segment
+  forControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
   [self.mutableGraph addVertex:segment toPartition:LTBipartiteGraphPartitionB];
   [self.mutableGraph addEdgesBetweenVertex:segment andVertices:[NSSet setWithArray:controlPoints]];
 
@@ -213,7 +213,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 #pragma mark Public Properties
 #pragma mark -
 
-- (NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+- (NSArray<LTSplineControlPoint *> *)controlPoints {
   return [self.mutableControlPoints copy];
 }
 
