@@ -72,8 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
                       initialConfiguration:(PTUCollectionViewConfiguration *)initialConfiguration {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _dataSourceProvider = dataSourceProvider;
-    _configuration = initialConfiguration;
     [self setup];
+    [self setConfiguration:initialConfiguration animated:NO];
   }
   return self;
 }
@@ -274,6 +274,7 @@ NS_ASSUME_NONNULL_BEGIN
   
   self.collectionView.showsHorizontalScrollIndicator = configuration.showsHorizontalScrollIndicator;
   self.collectionView.showsVerticalScrollIndicator = configuration.showsVerticalScrollIndicator;
+  self.collectionView.pagingEnabled = configuration.enablePaging;
 
   [self.collectionView setCollectionViewLayout:layout animated:animated];
 }
