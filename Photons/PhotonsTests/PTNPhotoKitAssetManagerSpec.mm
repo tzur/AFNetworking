@@ -48,6 +48,19 @@ beforeEach(^{
                                                changeManager:changeManager];
 });
 
+context(@"convenience initializers", ^{
+  it(@"should correctly initialize with authorization manager initializer", ^{
+    PTNPhotoKitAssetManager *manager =
+        [[PTNPhotoKitAssetManager alloc] initWithAuthorizationManager:authorizationManager];
+    expect(manager).toNot.beNil();
+  });
+  
+  it(@"should correctly initialize with default initializer", ^{
+    PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc] init];
+    expect(manager).toNot.beNil();
+  });
+});
+
 context(@"album fetching", ^{
   context(@"fetching album by identifier", ^{
     __block id assets;
