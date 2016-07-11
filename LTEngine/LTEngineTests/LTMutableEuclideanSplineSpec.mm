@@ -74,7 +74,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     it(@"should initialize correctly", ^{
       expect(spline).toNot.beNil();
       expect(spline.controlPoints).to.equal(initialPoints);
-      expect(spline.segments.count).to.equal(1);
+      expect(spline.numberOfSegments).to.equal(1);
     });
 
     it(@"should raise when attempting to initialize with insufficient number of control points", ^{
@@ -115,12 +115,12 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
       [spline pushControlPoints:insufficientAdditionalPoints];
 
-      expect(spline.segments.count).to.equal(1);
+      expect(spline.numberOfSegments).to.equal(1);
     });
 
     it(@"should add segments if number of new control points is sufficient for creation", ^{
       [spline pushControlPoints:additionalPoints];
-      expect(spline.segments.count).to.equal(3);
+      expect(spline.numberOfSegments).to.equal(3);
     });
 
     it(@"should raise when attempting to push control points with decreasing timestamps", ^{
@@ -237,7 +237,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         beforeEach(^{
           NSRange range = [[baseFactory class] intrinsicParametricRange];
           startPoint = spline.controlPoints[range.location];
-          endPoint = spline.controlPoints[spline.controlPoints.count -
+          endPoint = spline.controlPoints[spline.numberOfControlPoints -
                                           (range.location + range.length - 1)];
         });
 
@@ -300,6 +300,38 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
   it(@"should have the correct parametrization keys", ^{
     expect(spline.parameterizationKeys)
         .to.equal([initialPoints.firstObject propertiesToInterpolate]);
+  });
+
+  context(@"properties", ^{
+    it(@"should return copies of its control points", ^{
+      NSArray<LTEuclideanSplineControlPoint *> *controlPoints = spline.controlPoints;
+      [spline pushControlPoints:additionalPoints];
+      expect(controlPoints).toNot.beIdenticalTo(spline.controlPoints);
+    });
+
+    it(@"should return copies of its segments", ^{
+      NSArray<id<LTParameterizedObject>> *segments = spline.segments;
+      [spline pushControlPoints:additionalPoints];
+      expect(segments).toNot.beIdenticalTo(spline.segments);
+    });
+
+    it(@"should return the correct number of control points", ^{
+      expect(spline.numberOfControlPoints).to.equal(initialPoints.count);
+      expect(spline.numberOfControlPoints).to.equal(spline.controlPoints.count);
+
+      [spline pushControlPoints:additionalPoints];
+      expect(spline.numberOfControlPoints).to.equal(initialPoints.count + additionalPoints.count);
+      expect(spline.numberOfControlPoints).to.equal(spline.controlPoints.count);
+    });
+
+    it(@"should return the correct number of segments", ^{
+      expect(spline.numberOfSegments).to.equal(1);
+      expect(spline.numberOfSegments).to.equal(spline.segments.count);
+
+      [spline pushControlPoints:additionalPoints];
+      expect(spline.numberOfSegments).to.equal(3);
+      expect(spline.numberOfSegments).to.equal(spline.segments.count);
+    });
   });
 });
 

@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
     LTEuclideanSplineControlPointFactory;
 
-/// Ordered collection of \c LTEuclideanSplineControlPoint objects.
-typedef NSArray<LTEuclideanSplineControlPoint *> LTEuclideanSplineControlPoints;
-
 /// Mutable, univariately parameterized object constituting an extensible spline consisting of
 /// several segments, in Euclidean space. The segments are parameterized objects constructed by
 /// \c LTEuclideanSplineControlPoint objects which represent the control points of the spline, in
@@ -35,7 +32,7 @@ typedef NSArray<LTEuclideanSplineControlPoint *> LTEuclideanSplineControlPoints;
 /// spline. The number of given \c initialControlPoints must be equal or greater than the
 /// \c numberOfRequiredInterpolatableObjects of the given \c factory.
 - (instancetype)initWithFactory:(LTEuclideanSplineControlPointFactory *)factory
-           initialControlPoints:(LTEuclideanSplineControlPoints *)initialControlPoints;
+           initialControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)initialControlPoints;
 
 /// Adds the given \c controlPoints at the end of the ordered collection of control points of this
 /// spline, possibly resulting in the creation of one or several spline segments. If the control
@@ -45,18 +42,37 @@ typedef NSArray<LTEuclideanSplineControlPoint *> LTEuclideanSplineControlPoints;
 ///
 /// Time complexity: <tt>O(n * m)</tt>, where \c n is the number of given \c controlPoints and \c m
 /// is the number of spline segments held by this object.
-- (void)pushControlPoints:(LTEuclideanSplineControlPoints *)controlPoints;
+- (void)pushControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints;
 
 /// Control points constituting this object.
 ///
-/// Time complexity: \c O(n), where \c n is the number of control points held by this object.
-@property (readonly, copy, nonatomic) LTEuclideanSplineControlPoints *controlPoints;
+/// Time complexity: \c O(n), where \c n is the number of control points held by this object. The
+///                  time complexity is linear since a copy of the underlying container is returned.
+///
+/// @important For retrieval of the \c count of this array, use the \c numberOfControlPoints
+/// property.
+@property (readonly, nonatomic) NSArray<LTEuclideanSplineControlPoint *> *controlPoints;
+
+/// Number of control points constituting this object.
+///
+/// Time complexity: \c O(1).
+@property (readonly, nonatomic) NSUInteger numberOfControlPoints;
 
 /// Parameterized objects constituting the segments of this spline.
 ///
 /// Time complexity: \c O(n), where \c n is the number of spline segments held by this object. The
-/// number of spline segments is \c O(1) smaller than the number of control points.
-@property (readonly, copy, nonatomic) NSArray<id<LTParameterizedObject>> *segments;
+///                  number of spline segments is \c O(1) smaller than the number of control points.
+///                  The time complexity is linear since a copy of the underlying container is
+///                  returned.
+///
+/// @important For retrieval of the \c count of this array, use the \c numberOfSegments
+/// property.
+@property (readonly, nonatomic) NSArray<id<LTParameterizedObject>> *segments;
+
+/// Number of parameterized object constituting the segments of this object.
+///
+/// Time complexity: \c O(1).
+@property (readonly, nonatomic) NSUInteger numberOfSegments;
 
 @end
 
