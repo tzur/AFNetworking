@@ -329,7 +329,8 @@ NS_ASSUME_NONNULL_BEGIN
     if ([descriptor isKindOfClass:[PHAsset class]]) {
       return [RACSignal return:descriptor];
     } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
-      return [self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor];
+      return [[self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor]
+          subscribeOn:[RACScheduler scheduler]];
     } else {
       LTAssert(NO, @"Invalid descriptor given: %@", descriptor);
     }
@@ -467,12 +468,11 @@ NS_ASSUME_NONNULL_BEGIN
                                   associatedDescriptor:descriptor]];
   }
 
-  return [[[self fetchAssetForDescriptor:descriptor]
+  return [[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
         return [self imageAssetForPhotoKitAsset:asset resizingStrategy:resizingStrategy
                                         options:[options photoKitOptions]];
-      }]
-      subscribeOn:RACScheduler.scheduler];
+      }];
 }
 
 - (PHImageContentMode)photoKitContentModeForContentMode:(PTNImageContentMode)contentMode {
