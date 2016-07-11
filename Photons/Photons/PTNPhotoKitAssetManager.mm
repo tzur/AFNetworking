@@ -12,6 +12,8 @@
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
+#import "PTNPhotoKitAuthorizationManager.h"
+#import "PTNPhotoKitAuthorizer.h"
 #import "PTNPhotoKitChangeManager.h"
 #import "PTNPhotoKitFetcher.h"
 #import "PTNPhotoKitImageAsset.h"
@@ -50,10 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitAssetManager
 
-- (instancetype)init {
-  return nil;
-}
-
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
@@ -69,6 +67,25 @@ NS_ASSUME_NONNULL_BEGIN
     _albumSignalCache = [[PTNSignalCache alloc] init];
   }
   return self;
+}
+
+- (instancetype)initWithAuthorizationManager:(id<PTNAuthorizationManager>)authorizationManager {
+  id<PTNPhotoKitFetcher> fetcher = [[PTNPhotoKitFetcher alloc] init];
+  id<PTNPhotoKitObserver> observer =
+      [[PTNPhotoKitObserver alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+  id<PTNPhotoKitImageManager> imageManager = [PHCachingImageManager defaultManager];
+  id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
+  
+  return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
+          authorizationManager:authorizationManager changeManager:changeManager];
+}
+
+- (instancetype)init {
+  PTNPhotoKitAuthorizer *authorizer = [[PTNPhotoKitAuthorizer alloc] init];
+  PTNPhotoKitAuthorizationManager *authorizationManager =
+      [[PTNPhotoKitAuthorizationManager alloc] initWithPhotoKitAuthorizer:authorizer];
+  
+  return [self initWithAuthorizationManager:authorizationManager];
 }
 
 #pragma mark -
