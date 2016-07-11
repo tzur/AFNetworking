@@ -81,12 +81,13 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 /// @see Homonymous property of \c UITouch.
 @property (readonly, nonatomic) NSUInteger tapCount;
 
-/// Radius, in points, of the touch during the event.
+/// Radius, in point units of the presentation coordinate system, of the touch during the event.
 ///
 /// @see Homonymous property of \c UITouch.
 @property (readonly, nonatomic) CGFloat majorRadius;
 
-/// Tolerance, in points, of the radius of this touch event.
+/// Tolerance, in point units of the presentation coordinate system, of the radius of this touch
+/// event.
 ///
 /// @see Homonymous property of \c UITouch.
 @property (readonly, nonatomic) CGFloat majorRadiusTolerance;
