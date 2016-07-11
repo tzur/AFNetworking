@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
       UIViewAutoresizingFlexibleHeight;
   
   [self.contentView addSubview:self.highlightingView];
+  [self updateHighlightingViewVisibility];
 }
 
 - (void)setSelected:(BOOL)selected {
