@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithType:(LTParameterizedObjectType *)type
-                  controlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+                  controlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
   if (self = [super init]) {
     _type = type;
     _controlPoints = [controlPoints copy];

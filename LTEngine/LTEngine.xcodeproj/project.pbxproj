@@ -561,6 +561,8 @@
 		500677F41C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 500677F21C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h */; };
 		500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500677F31C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm */; };
 		5006785B1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006785A1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm */; };
+		5008BCF41D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5008BCF31D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm */; };
+		5008BCF61D3286FA0021ACD1 /* LTSplineControlPoint+ContentTouchEventSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5008BCF51D3286FA0021ACD1 /* LTSplineControlPoint+ContentTouchEventSpec.mm */; };
 		500AB3E719D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 500AB3F819D1B2C7000DC814 /* LTGeometry.h */; };
 		500AB3FB19D1B2C7000DC814 /* LTGeometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500AB3F919D1B2C7000DC814 /* LTGeometry.mm */; };
@@ -600,9 +602,9 @@
 		502B1CC319FA91FB00985F30 /* LTQuadMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 502B1CC119FA91FB00985F30 /* LTQuadMapping.h */; };
 		502B1CC419FA91FB00985F30 /* LTQuadMapping.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502B1CC219FA91FB00985F30 /* LTQuadMapping.mm */; };
 		502B1CC619FA936700985F30 /* LTQuadMappingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502B1CC519FA936700985F30 /* LTQuadMappingSpec.mm */; };
-		503044FC1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 503044FA1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h */; };
-		503044FD1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */; };
-		503044FF1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */; };
+		503044FC1C3BCF5F00355B86 /* LTSplineControlPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 503044FA1C3BCF5F00355B86 /* LTSplineControlPoint.h */; };
+		503044FD1C3BCF5F00355B86 /* LTSplineControlPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FB1C3BCF5F00355B86 /* LTSplineControlPoint.mm */; };
+		503044FF1C3BCF7000355B86 /* LTSplineControlPointSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503044FE1C3BCF7000355B86 /* LTSplineControlPointSpec.mm */; };
 		50501ABE1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50501ABD1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm */; };
 		5050F05B1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5050F05A1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm */; };
 		5054C6E31CC68D7B00976EA1 /* LTDynamicDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5054C6E11CC68D7B00976EA1 /* LTDynamicDrawer.h */; };
@@ -645,6 +647,10 @@
 		508C15671C1C84E5009ADA5C /* LTSamplerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 508C15661C1C84E5009ADA5C /* LTSamplerSpec.mm */; };
 		508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 508C15691C1C84ED009ADA5C /* LTFloatSetExamples.mm */; };
 		508C156C1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 508C156B1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm */; };
+		509CE8A51D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 509CE8A31D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h */; };
+		509CE8A61D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 509CE8A41D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.mm */; };
+		509CE8A81D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 509CE8A71D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h */; };
+		509CE8AA1D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm in Sources */ = {isa = PBXBuildFile; fileRef = 509CE8A91D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm */; };
 		50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */; };
 		50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */; };
 		50A4794719FB7BBC005ABA65 /* LTSingleQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */; };
@@ -2054,6 +2060,8 @@
 		500677F21C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultBrushGeometryProvider.h; sourceTree = "<group>"; };
 		500677F31C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultBrushGeometryProvider.mm; sourceTree = "<group>"; };
 		5006785A1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultBrushGeometryProviderSpec.mm; sourceTree = "<group>"; };
+		5008BCF31D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTSplineControlPoint+AttributeKeysSpec.mm"; sourceTree = "<group>"; };
+		5008BCF51D3286FA0021ACD1 /* LTSplineControlPoint+ContentTouchEventSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTSplineControlPoint+ContentTouchEventSpec.mm"; sourceTree = "<group>"; };
 		500AB3E519D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
 		500AB3E619D17F8F000DC814 /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
 		500AB3F819D1B2C7000DC814 /* LTGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGeometry.h; sourceTree = "<group>"; };
@@ -2096,9 +2104,9 @@
 		502B1CC119FA91FB00985F30 /* LTQuadMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadMapping.h; sourceTree = "<group>"; };
 		502B1CC219FA91FB00985F30 /* LTQuadMapping.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMapping.mm; sourceTree = "<group>"; };
 		502B1CC519FA936700985F30 /* LTQuadMappingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadMappingSpec.mm; sourceTree = "<group>"; };
-		503044FA1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEuclideanSplineControlPoint.h; sourceTree = "<group>"; };
-		503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEuclideanSplineControlPoint.mm; sourceTree = "<group>"; };
-		503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEuclideanSplineControlPointSpec.mm; sourceTree = "<group>"; };
+		503044FA1C3BCF5F00355B86 /* LTSplineControlPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSplineControlPoint.h; sourceTree = "<group>"; };
+		503044FB1C3BCF5F00355B86 /* LTSplineControlPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSplineControlPoint.mm; sourceTree = "<group>"; };
+		503044FE1C3BCF7000355B86 /* LTSplineControlPointSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSplineControlPointSpec.mm; sourceTree = "<group>"; };
 		50501ABC1C34381A005FFDEB /* LTTouchEventViewTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventViewTestUtils.h; sourceTree = "<group>"; };
 		50501ABD1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEventViewTestUtils.mm; sourceTree = "<group>"; };
 		5050F0591D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTContentNavigationManagerExamples.h; sourceTree = "<group>"; };
@@ -2144,6 +2152,10 @@
 		508C15681C1C84ED009ADA5C /* LTFloatSetExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFloatSetExamples.h; sourceTree = "<group>"; };
 		508C15691C1C84ED009ADA5C /* LTFloatSetExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFloatSetExamples.mm; sourceTree = "<group>"; };
 		508C156B1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPeriodicFloatSetSpec.mm; sourceTree = "<group>"; };
+		509CE8A31D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTSplineControlPoint+ContentTouchEvent.h"; sourceTree = "<group>"; };
+		509CE8A41D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTSplineControlPoint+ContentTouchEvent.mm"; sourceTree = "<group>"; };
+		509CE8A71D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTSplineControlPoint+AttributeKeys.h"; sourceTree = "<group>"; };
+		509CE8A91D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTSplineControlPoint+AttributeKeys.mm"; sourceTree = "<group>"; };
 		50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMixerMaskMode.h; sourceTree = "<group>"; };
 		50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSingleQuadDrawer.h; sourceTree = "<group>"; };
 		50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleQuadDrawer.mm; sourceTree = "<group>"; };
@@ -3526,6 +3538,16 @@
 			name = "Geometry Stage";
 			sourceTree = "<group>";
 		};
+		5008BCD41D3285F20021ACD1 /* Control Points */ = {
+			isa = PBXGroup;
+			children = (
+				503044FE1C3BCF7000355B86 /* LTSplineControlPointSpec.mm */,
+				5008BCF31D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm */,
+				5008BCF51D3286FA0021ACD1 /* LTSplineControlPoint+ContentTouchEventSpec.mm */,
+			);
+			name = "Control Points";
+			sourceTree = "<group>";
+		};
 		500CA9BF1D26AFCF009CF19F /* Touches */ = {
 			isa = PBXGroup;
 			children = (
@@ -3603,10 +3625,9 @@
 		503044D71C3BCF4000355B86 /* Spline */ = {
 			isa = PBXGroup;
 			children = (
+				509CE8841D325BBE00D496D6 /* Control Points */,
 				5004CAC71CC92BD400D1CE7A /* LTControlPointModel.h */,
 				5004CAC81CC92BD400D1CE7A /* LTControlPointModel.mm */,
-				503044FA1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h */,
-				503044FB1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm */,
 				2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */,
 				2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */,
 				5004CAEB1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.h */,
@@ -3618,8 +3639,8 @@
 		503044F91C3BCF4E00355B86 /* Spline */ = {
 			isa = PBXGroup;
 			children = (
+				5008BCD41D3285F20021ACD1 /* Control Points */,
 				5004CAE91CC92C8E00D1CE7A /* LTControlPointModelSpec.mm */,
-				503044FE1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm */,
 				2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */,
 				2520D4101C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.h */,
 				2520D4111C4B8CC9004A3A94 /* LTMutableEuclideanSplineTestUtils.mm */,
@@ -3644,6 +3665,19 @@
 				500CA9EB1D26B040009CF19F /* Touches */,
 			);
 			name = Interaction;
+			sourceTree = "<group>";
+		};
+		509CE8841D325BBE00D496D6 /* Control Points */ = {
+			isa = PBXGroup;
+			children = (
+				503044FA1C3BCF5F00355B86 /* LTSplineControlPoint.h */,
+				503044FB1C3BCF5F00355B86 /* LTSplineControlPoint.mm */,
+				509CE8A71D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h */,
+				509CE8A91D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm */,
+				509CE8A31D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h */,
+				509CE8A41D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.mm */,
+			);
+			name = "Control Points";
 			sourceTree = "<group>";
 		};
 		50D672401D26B74800005CC7 /* Content Management */ = {
@@ -4998,7 +5032,7 @@
 				28F3CA9F1D004B2B007FC2E9 /* LTLinearProcessor.h in Headers */,
 				50E998A41C075F67004F15C9 /* LTReparameterizedObject.h in Headers */,
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,
-				503044FC1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.h in Headers */,
+				503044FC1C3BCF5F00355B86 /* LTSplineControlPoint.h in Headers */,
 				8BA822C0198954AE00FBE68E /* LTTransformers.h in Headers */,
 				50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */,
 				500CA9FE1D26B11F009CF19F /* LTPresentationView.h in Headers */,
@@ -5029,6 +5063,7 @@
 				507BDD391D116D3C00EF0997 /* LTContinuousSampler.h in Headers */,
 				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
 				8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */,
+				509CE8A81D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h in Headers */,
 				28FC0E731D2AA27000237FF8 /* LTContentTouchEventDistancePredicate.h in Headers */,
 				50C371461BF0DD7E003EC78D /* LTBasicPolynomialInterpolant.h in Headers */,
 				8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */,
@@ -5252,6 +5287,7 @@
 				28C207A51AEF5FC2007214A5 /* LTTextureArchiveType.h in Headers */,
 				25FBF7DB1C32D26D00E2E5BC /* LTTouchEventDelegate.h in Headers */,
 				285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */,
+				509CE8A51D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h in Headers */,
 				8B539FF41B4A882600036743 /* LTFboPool.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5886,7 +5922,7 @@
 				039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */,
 				256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */,
 				8BABF18219BC3EC400AED760 /* LTPyramidProcessor.vsh in Sources */,
-				503044FD1C3BCF5F00355B86 /* LTEuclideanSplineControlPoint.mm in Sources */,
+				503044FD1C3BCF5F00355B86 /* LTSplineControlPoint.mm in Sources */,
 				85F372BE1C8C88EF00E1D429 /* LT3DLUTProcessor.mm in Sources */,
 				285A671419AE1C8300B2CE9E /* LTMeshBaseDrawer.vsh in Sources */,
 				8B22674019979F450049CF26 /* LTProgramFactory.m in Sources */,
@@ -6018,6 +6054,7 @@
 				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
 				8B8E50EA1861AA8900821829 /* LTShaderStorage.m in Sources */,
 				50CF199719D16BB60010D52F /* LTQuad.mm in Sources */,
+				509CE8A61D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.mm in Sources */,
 				30DDD6A61CFC8A0700AE72B8 /* LTGaussianFilterProcessor.mm in Sources */,
 				28FC0FD61D2E967C00237FF8 /* LTContentTouchEventFilter.mm in Sources */,
 				03D516A418B3A6500026B56A /* LTProceduralVignetting.mm in Sources */,
@@ -6084,6 +6121,7 @@
 				500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */,
 				85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
+				509CE8AA1D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */,
 				2843B6F818A7E1050044B87A /* LTRotatedRect.mm in Sources */,
@@ -6202,7 +6240,7 @@
 				28B8BC0C1B692F8400CF9F73 /* LTSlidingWindowFilterSpec.mm in Sources */,
 				8BAE3A4718B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm in Sources */,
 				8B8E50F11861CE1800821829 /* Shader.vsh in Sources */,
-				503044FF1C3BCF7000355B86 /* LTEuclideanSplineControlPointSpec.mm in Sources */,
+				503044FF1C3BCF7000355B86 /* LTSplineControlPointSpec.mm in Sources */,
 				8BABF11819B891AD00AED760 /* LTRectCopyProcessorSpec.mm in Sources */,
 				2839069F18C4DB0A00BD21CE /* LTEdgeAvoidingBrushSpec.mm in Sources */,
 				8B3F94A7187AEA0200FAA265 /* Passthrough.fsh in Sources */,
@@ -6222,6 +6260,7 @@
 				8BAE3A4218B2354E00DA79E1 /* EXPMatchers+equalMat.mm in Sources */,
 				8BA3E142182A773300FDD95A /* LTShaderSpec.mm in Sources */,
 				284ED1301895668800414A8A /* LTCatmullRomInterpolantSpec.mm in Sources */,
+				5008BCF61D3286FA0021ACD1 /* LTSplineControlPoint+ContentTouchEventSpec.mm in Sources */,
 				28A34847198F983E00031866 /* LTPerspectiveProcessorSpec.mm in Sources */,
 				28C207B41AEF6F9C007214A5 /* LTTextureUncompressedMatArchiverSpec.mm in Sources */,
 				286A937A18D0513F00F203DF /* LTTextureBrushExamples.mm in Sources */,
@@ -6248,6 +6287,7 @@
 				28BBD79219A109D80062C803 /* LTRectSpec.mm in Sources */,
 				50D672511D26B86600005CC7 /* LTContentViewSpec.mm in Sources */,
 				50D61F4A1C4416CE00EED798 /* LTQuadSpec.mm in Sources */,
+				5008BCF41D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm in Sources */,
 				2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,

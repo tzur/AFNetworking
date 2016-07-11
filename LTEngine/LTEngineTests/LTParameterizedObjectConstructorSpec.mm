@@ -4,8 +4,8 @@
 #import "LTParameterizedObjectConstructor.h"
 
 #import "LTControlPointModel.h"
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizedObjectType.h"
+#import "LTSplineControlPoint.h"
 
 static NSString * const kLTParameterizedObjectConstructorExamples =
     @"LTParameterizedObjectConstructorExamples";
@@ -108,7 +108,7 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
         LTParameterizedObjectConstructor *constructor =
             [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:sufficientModel];
         id<LTParameterizedObject> parameterizedObject = [constructor parameterizedObject];
-        NSString *key = @instanceKeypath(LTEuclideanSplineControlPoint, yCoordinateOfLocation);
+        NSString *key = @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation);
         expect(parameterizedObject.minParametricValue).to.equal(0);
         expect(parameterizedObject.maxParametricValue).to.equal(1);
         expect([parameterizedObject floatForParametricValue:0 key:key]).to.equal(1);
@@ -122,11 +122,11 @@ SharedExamplesEnd
 
 SpecBegin(LTParameterizedObjectConstructor)
 
-static const NSArray<LTEuclideanSplineControlPoint *> *points =
-    @[[[LTEuclideanSplineControlPoint alloc] initWithTimestamp:0 location:CGPointZero],
-      [[LTEuclideanSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 1)],
-      [[LTEuclideanSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 2)],
-      [[LTEuclideanSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 3)]];
+static const NSArray<LTSplineControlPoint *> *points =
+    @[[[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointZero],
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 1)],
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 2)],
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 3)]];
 
 itShouldBehaveLike(kLTParameterizedObjectConstructorExamples, ^{
   return @{kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeLinear),

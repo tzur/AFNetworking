@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTControlPointModel, LTEuclideanSplineControlPoint;
+@class LTControlPointModel, LTSplineControlPoint;
 
 /// Mutable object responsible for constructing and iteratively extending an
 /// \c LTParameterizedObject using a given \c LTControlPointModel, specifying the type of the
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithControlPointModel:(LTControlPointModel *)model NS_DESIGNATED_INITIALIZER;
 
 /// Adds the given \c control points.
-- (void)pushControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints;
+- (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints;
 
 /// Model representing the current \c parameterizedObject.
 - (LTControlPointModel *)controlPointModel;

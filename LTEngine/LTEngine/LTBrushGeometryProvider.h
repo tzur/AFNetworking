@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTEuclideanSplineControlPoint, LTRotatedRect;
+@class LTRotatedRect, LTSplineControlPoint;
 
 @protocol LTBrushGeometryProviderModel, LTParameterizedObject;
 
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                atParametricValues:(CGFloats)parametricValues;
 
 /// Returns a single rotated rect representing geometry constructed from the given \c point.
-- (LTRotatedRect *)rotatedRectFromControlPoint:(LTEuclideanSplineControlPoint *)point;
+- (LTRotatedRect *)rotatedRectFromControlPoint:(LTSplineControlPoint *)point;
 
 /// Returns an immutable model representing the current state of this object.
 - (id<LTBrushGeometryProviderModel>)currentModel;

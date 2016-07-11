@@ -1,18 +1,18 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTEuclideanSplineControlPoint.h"
+#import "LTSplineControlPoint.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTEuclideanSplineControlPoint ()
+@interface LTSplineControlPoint ()
 
 /// Set of keys of interpolatable attributes.
 @property (strong, nonatomic) NSSet<NSString *> *propertiesToInterpolate;
 
 @end
 
-@implementation LTEuclideanSplineControlPoint
+@implementation LTSplineControlPoint
 
 #pragma mark -
 #pragma mark Initialization
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(LTEuclideanSplineControlPoint *)controlPoint {
+- (BOOL)isEqual:(LTSplineControlPoint *)controlPoint {
   if (self == controlPoint) {
     return YES;
   }
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self.timestamp == controlPoint.timestamp && [self isEqualIgnoringTimestamp:controlPoint];
 }
 
-- (BOOL)isEqualIgnoringTimestamp:(LTEuclideanSplineControlPoint *)controlPoint {
+- (BOOL)isEqualIgnoringTimestamp:(LTSplineControlPoint *)controlPoint {
   return CGPointEqualToPoint(self.location, controlPoint.location) &&
       [self.attributes isEqualToDictionary:controlPoint.attributes];
 }

@@ -3,10 +3,10 @@
 
 #import "LTDefaultBrushGeometryProvider.h"
 
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 #import "LTRotatedRect.h"
+#import "LTSplineControlPoint.h"
 
 SpecBegin(LTDefaultBrushGeometryProvider)
 
@@ -34,15 +34,13 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
       id parameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
 
       NSSet<NSString *> *parameterizationKeys =
-          [NSSet setWithArray:@[@instanceKeypath(LTEuclideanSplineControlPoint,
-                                                 xCoordinateOfLocation),
-                                @instanceKeypath(LTEuclideanSplineControlPoint,
-                                                 yCoordinateOfLocation)]];
+          [NSSet setWithArray:@[@instanceKeypath(LTSplineControlPoint, xCoordinateOfLocation),
+                                @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation)]];
       OCMStub([parameterizedObjectMock parameterizationKeys]).andReturn(parameterizationKeys);
 
       NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[
-        @instanceKeypath(LTEuclideanSplineControlPoint, xCoordinateOfLocation),
-        @instanceKeypath(LTEuclideanSplineControlPoint, yCoordinateOfLocation)
+        @instanceKeypath(LTSplineControlPoint, xCoordinateOfLocation),
+        @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation)
       ]];
       cv::Mat1g values = (cv::Mat1g(2, 2) << 0, 1, 1, 2);
 
@@ -66,8 +64,8 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
     });
 
     it(@"should provide a rotated rect for a Euclidean spline control point", ^{
-      LTEuclideanSplineControlPoint *controlPoint =
-          [[LTEuclideanSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(1, 2)];
+      LTSplineControlPoint *controlPoint =
+          [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(1, 2)];
 
       LTRotatedRect *rotatedRect = [provider rotatedRectFromControlPoint:controlPoint];
 

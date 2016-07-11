@@ -41,23 +41,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize navigationDelegate = _navigationDelegate;
 
-// LTContentInteractionManager protocol
+// LTContentCoordinateConverter protocol.
+@dynamic contentToPresentationCoordinateTransform;
+@dynamic presentationToContentCoordinateTransform;
+
+// LTContentInteractionManager protocol.
 @dynamic customGestureRecognizers;
 @dynamic contentTouchEventDelegate;
 @dynamic interactionMode;
 
-// LTContentNavigationManager protocol
+// LTContentNavigationManager protocol.
 @dynamic bounceToAspectFit;
 @dynamic navigationState;
 
-// LTContentLocationProvider protocol
+// LTContentLocationProvider protocol.
 @dynamic contentInset;
 @dynamic contentScaleFactor;
 @dynamic contentSize;
 @dynamic maxZoomScale;
 @dynamic zoomScale;
 
-// LTContentDisplayManager protocol
+// LTContentDisplayManager protocol.
 @dynamic visibleContentRect;
 @dynamic drawDelegate;
 @dynamic framebufferDelegate;
@@ -236,14 +240,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id<LTContentTouchEvent>)contentTouchEventFromTouchEvent:(id<LTTouchEvent>)touchEvent {
-  CGPoint location =
-      [self convertPointFromPresentationToContentCoordinates:touchEvent.viewLocation];
-  CGPoint previousLocation =
-      [self convertPointFromPresentationToContentCoordinates:touchEvent.previousViewLocation];
-  return [[LTContentTouchEvent alloc] initWithTouchEvent:touchEvent contentLocation:location
-                                 previousContentLocation:previousLocation
-                                             contentSize:self.navigationView.contentSize
-                                        contentZoomScale:self.navigationView.zoomScale];
+  return [[LTContentTouchEvent alloc]
+          initWithTouchEvent:touchEvent
+          contentSize:self.navigationView.contentSize
+          contentZoomScale:self.navigationView.zoomScale
+          transform:self.presentationToContentCoordinateTransform];
 }
 
 #pragma mark -

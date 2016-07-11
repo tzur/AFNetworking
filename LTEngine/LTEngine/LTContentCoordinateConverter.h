@@ -17,6 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// corresponding point in floating-point pixel units of the content coordinate system.
 - (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point;
 
+/// Affine transform converting a \c CGPoint, given in floating-point pixel units of the content
+/// coordinate system, into the corresponding \c CGPoint, in point units of the presentation
+/// coordinate system.
+@property (readonly, nonatomic) CGAffineTransform contentToPresentationCoordinateTransform;
+
+/// Affine transform converting a \c CGPoint, given in point units of the presentation coordinate
+/// system, into the corresponding \c CGPoint, in floating-point pixel units of the content
+/// coordinate system.
+@property (readonly, nonatomic) CGAffineTransform presentationToContentCoordinateTransform;
+
 @end
 
 @interface LTContentCoordinateConverter : NSObject <LTContentCoordinateConverter>

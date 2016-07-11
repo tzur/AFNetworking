@@ -57,8 +57,8 @@ static NSString * const kLTMutableEuclideanSplineMaxParametericValueAfterPushing
 sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
   __block id<LTBasicParameterizedObjectFactory> baseFactory;
   __block LTCompoundParameterizedObjectFactory *factory;
-  __block NSArray<LTEuclideanSplineControlPoint *> *initialPoints;
-  __block NSArray<LTEuclideanSplineControlPoint *> *additionalPoints;
+  __block NSArray<LTSplineControlPoint *> *initialPoints;
+  __block NSArray<LTSplineControlPoint *> *additionalPoints;
   __block LTMutableEuclideanSpline *spline;
 
   beforeEach(^{
@@ -78,7 +78,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     });
 
     it(@"should raise when attempting to initialize with insufficient number of control points", ^{
-      NSMutableArray<LTEuclideanSplineControlPoint *> *insufficientInitialPoints =
+      NSMutableArray<LTSplineControlPoint *> *insufficientInitialPoints =
           [initialPoints mutableCopy];
       [insufficientInitialPoints removeLastObject];
       initialPoints = [insufficientInitialPoints copy];
@@ -91,7 +91,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     });
 
     it(@"should raise upon attempt to initialize with control points with decreasing timestamp", ^{
-      NSArray<LTEuclideanSplineControlPoint *> *reversedInitialPoints =
+      NSArray<LTSplineControlPoint *> *reversedInitialPoints =
           [[initialPoints reverseObjectEnumerator] allObjects];
 
       expect(^{
@@ -110,7 +110,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     });
 
     it(@"should not add segment if number of new control points is insufficient for creation", ^{
-      NSArray<LTEuclideanSplineControlPoint *> *insufficientAdditionalPoints =
+      NSArray<LTSplineControlPoint *> *insufficientAdditionalPoints =
           data[kLTMutableEuclideanSplineInsufficientAdditionalPoints];
 
       [spline pushControlPoints:insufficientAdditionalPoints];
@@ -124,7 +124,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     });
 
     it(@"should raise when attempting to push control points with decreasing timestamps", ^{
-      NSArray<LTEuclideanSplineControlPoint *> *reversedAdditionalPoints =
+      NSArray<LTSplineControlPoint *> *reversedAdditionalPoints =
           [[additionalPoints reverseObjectEnumerator] allObjects];
 
       expect(^{
@@ -148,8 +148,8 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
       });
 
       context(@"mapping", ^{
-        __block LTEuclideanSplineControlPoint *startPoint;
-        __block LTEuclideanSplineControlPoint *endPoint;
+        __block LTSplineControlPoint *startPoint;
+        __block LTSplineControlPoint *endPoint;
 
         beforeEach(^{
           NSRange range = [[baseFactory class] intrinsicParametricRange];
@@ -231,8 +231,8 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
       });
 
       context(@"mapping", ^{
-        __block LTEuclideanSplineControlPoint *startPoint;
-        __block LTEuclideanSplineControlPoint *endPoint;
+        __block LTSplineControlPoint *startPoint;
+        __block LTSplineControlPoint *endPoint;
 
         beforeEach(^{
           NSRange range = [[baseFactory class] intrinsicParametricRange];
@@ -304,7 +304,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
   context(@"properties", ^{
     it(@"should return copies of its control points", ^{
-      NSArray<LTEuclideanSplineControlPoint *> *controlPoints = spline.controlPoints;
+      NSArray<LTSplineControlPoint *> *controlPoints = spline.controlPoints;
       [spline pushControlPoints:additionalPoints];
       expect(controlPoints).toNot.beIdenticalTo(spline.controlPoints);
     });

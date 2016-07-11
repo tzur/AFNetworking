@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+- (NSArray<LTSplineControlPoint *> *)controlPoints {
   return self.spline ? self.spline.controlPoints : @[];
 }
 
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Ordered collection used for temporarily buffering control points before construction of spline
 /// becomes feasible. Is set to \c nil upon construction of the spline.
-@property (strong, nonatomic, nullable) NSMutableArray<LTEuclideanSplineControlPoint *> *buffer;
+@property (strong, nonatomic, nullable) NSMutableArray<LTSplineControlPoint *> *buffer;
 
 @end
 
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)pushControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints {
+- (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
   if (self.spline) {
     [self.spline pushControlPoints:controlPoints];
     return;

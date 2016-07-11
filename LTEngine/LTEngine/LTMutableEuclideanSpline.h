@@ -1,8 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizedObject.h"
+#import "LTSplineControlPoint.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,20 +10,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTCompoundParameterizedObjectFactory<ObjectType:id<LTInterpolatableObject>>;
 
-/// Factory constructing compound parameterized objects from \c LTEuclideanSplineControlPoint
-/// objects.
-typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
-    LTEuclideanSplineControlPointFactory;
+/// Factory constructing compound parameterized objects from \c LTSplineControlPoint objects.
+typedef LTCompoundParameterizedObjectFactory<LTSplineControlPoint *> LTSplineControlPointFactory;
 
 /// Mutable, univariately parameterized object constituting an extensible spline consisting of
 /// several segments, in Euclidean space. The segments are parameterized objects constructed by
-/// \c LTEuclideanSplineControlPoint objects which represent the control points of the spline, in
-/// their given order. The spline is approximately arc-length parameterized, in Euclidean space,
-/// according to the \c location of the provided control points. The object is initialized with an
-/// ordered collection of control points and a factory for creating spline segments from them. The
-/// object can be extended by adding control points. The \c minParametricValue of the spline equals
-/// the \c minParametricValue of the first spline segment, while its \c maxParametricValue equals
-/// the \c maxParametricValue of the last spline segment. The \c parameterizationKeys of the spline
+/// \c LTSplineControlPoint objects which represent the control points of the spline, in their given
+/// order. The spline is approximately arc-length parameterized, in Euclidean space, according to
+/// the \c location of the provided control points. The object is initialized with an ordered
+/// collection of control points and a factory for creating spline segments from them. The object
+/// can be extended by adding control points. The \c minParametricValue of the spline equals the
+/// \c minParametricValue of the first spline segment, while its \c maxParametricValue equals the
+/// \c maxParametricValue of the last spline segment. The \c parameterizationKeys of the spline
 /// equal the \c propertiesToInterpolate of the control points.
 @interface LTMutableEuclideanSpline : NSObject <LTParameterizedObject>
 
@@ -31,8 +29,8 @@ typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
 /// \c factory is used to create the spline segments constituting the underlying components of this
 /// spline. The number of given \c initialControlPoints must be equal or greater than the
 /// \c numberOfRequiredInterpolatableObjects of the given \c factory.
-- (instancetype)initWithFactory:(LTEuclideanSplineControlPointFactory *)factory
-           initialControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)initialControlPoints;
+- (instancetype)initWithFactory:(LTSplineControlPointFactory *)factory
+           initialControlPoints:(NSArray<LTSplineControlPoint *> *)initialControlPoints;
 
 /// Adds the given \c controlPoints at the end of the ordered collection of control points of this
 /// spline, possibly resulting in the creation of one or several spline segments. If the control
@@ -42,7 +40,7 @@ typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
 ///
 /// Time complexity: <tt>O(n * m)</tt>, where \c n is the number of given \c controlPoints and \c m
 /// is the number of spline segments held by this object.
-- (void)pushControlPoints:(NSArray<LTEuclideanSplineControlPoint *> *)controlPoints;
+- (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints;
 
 /// Control points constituting this object.
 ///
@@ -51,7 +49,7 @@ typedef LTCompoundParameterizedObjectFactory<LTEuclideanSplineControlPoint *>
 ///
 /// @important For retrieval of the \c count of this array, use the \c numberOfControlPoints
 /// property.
-@property (readonly, nonatomic) NSArray<LTEuclideanSplineControlPoint *> *controlPoints;
+@property (readonly, copy, nonatomic) NSArray<LTSplineControlPoint *> *controlPoints;
 
 /// Number of control points constituting this object.
 ///

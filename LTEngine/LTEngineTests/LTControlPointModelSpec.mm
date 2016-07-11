@@ -3,8 +3,8 @@
 
 #import "LTControlPointModel.h"
 
-#import "LTEuclideanSplineControlPoint.h"
 #import "LTParameterizedObjectType.h"
+#import "LTSplineControlPoint.h"
 
 SpecBegin(LTControlPointModel)
 
@@ -14,7 +14,7 @@ __block NSArray *controlPointMocks;
 
 beforeEach(^{
   typeMock = OCMClassMock([LTParameterizedObjectType class]);
-  controlPointMocks = @[OCMClassMock([LTEuclideanSplineControlPoint class])];
+  controlPointMocks = @[OCMClassMock([LTSplineControlPoint class])];
   model = [[LTControlPointModel alloc] initWithType:typeMock controlPoints:controlPointMocks];
 });
 
