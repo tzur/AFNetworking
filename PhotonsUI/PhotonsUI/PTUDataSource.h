@@ -19,12 +19,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// be returned.
 - (nullable NSIndexPath *)indexPathOfDescriptor:(id<PTNDescriptor>)descriptor;
 
+/// Title associated with the data provided in this data source, or \c nil if no such title exists.
+/// This property is KVO compliant.
+@property (readonly, nonatomic, nullable) NSString *title;
+
 /// \c YES if the data source currently represents data of at least one section with at least one
 /// item. This property is KVO compliant.
 @property (readonly, nonatomic) BOOL hasData;
 
-/// Error that occurred while fetching data or applying updates to the collection view, or \c nil if
-/// no such error occurred. This property is KVO compliant.
+/// Error that occurred while fetching data, fetching metadata or applying updates to the collection
+/// view, or \c nil if no such error occurred. This property is KVO compliant.
 @property (readonly, nonatomic, nullable) NSError *error;
 
 @end
@@ -32,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTUDataSource implementation for keeping a given \c UICollectionView up to date with a given
 /// \c changesetProvider. The receiver subscribes to the \c fetchChangeset signal of
 /// \c changesetProvider and uses that signal to maintain the latest data and deliver appropriate
-/// updates as they arrive. \c cellViewModelProvder and \c cellClass are used when configuring the
+/// updates as they arrive as well as the \c fetchChangesetMetadata signal to update the latest
+/// \c title property. \c cellViewModelProvder and \c cellClass are used when configuring the
 /// given \c collectionView content.
 @interface PTUDataSource : NSObject <PTUDataSource>
 

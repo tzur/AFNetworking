@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTUFakeDataSource
 
+@synthesize title = _title;
+
 - (nullable id<PTNDescriptor>)descriptorAtIndexPath:(NSIndexPath *)index {
   if (self.data.count <= (NSUInteger)index.section) {
     return nil;

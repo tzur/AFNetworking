@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current data represented by the receiever.
 @property (strong, nonatomic) NSArray<NSArray<id<PTNDescriptor>> *> *data;
 
+/// Title associated with this data.
+@property (strong, nonatomic, nullable) NSString *title;
+
 /// \c YES if the reciever has any data.
 @property (readonly, nonatomic) BOOL hasData;
 

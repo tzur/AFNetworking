@@ -5,6 +5,7 @@
 
 #import "PTNFakeAssetManager.h"
 #import "PTUChangeset.h"
+#import "PTUChangesetMetadata.h"
 #import "PTUChangesetProvider.h"
 #import "PTUImageCell.h"
 
@@ -12,6 +13,7 @@ SpecBegin(PTUDataSource)
 
 __block PTUDataSource *dataSource;
 __block RACSubject *dataSignal;
+__block RACSubject *metadataSignal;
 __block UICollectionView *collectionView;
 __block id<PTUChangesetProvider> changesetProvider;
 __block id<PTUImageCellViewModelProvider> viewModelProvider;
@@ -21,8 +23,10 @@ beforeEach(^{
   cellClass = [PTUImageCell class];
   collectionView = OCMClassMock([UICollectionView class]);
   dataSignal = [RACSubject subject];
+  metadataSignal = [RACSubject subject];
   changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
   OCMStub([changesetProvider fetchChangeset]).andReturn(dataSignal);
+  OCMStub([changesetProvider fetchChangesetMetadata]).andReturn(metadataSignal);
   viewModelProvider = OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
   dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
                                            changesetProvider:changesetProvider
@@ -33,6 +37,7 @@ beforeEach(^{
 it(@"should start with empty data", ^{
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.beNil();
   expect(dataSource.hasData).to.beFalsy();
+  expect(dataSource.title).to.beNil();
 });
 
 it(@"should register given cell class for reuse", ^{
@@ -62,11 +67,32 @@ it(@"should remain up to date with sent data", ^{
   expect(dataSource.hasData).to.beTruthy();
 });
 
-it(@"should properly update error and error flag", ^{
+it(@"should remain up to date with title of sent metadata", ^{
+  PTUChangesetMetadata *changesetMetadata = [[PTUChangesetMetadata alloc] initWithTitle:@"foo"
+                                                                          sectionTitles:@{}];
+  [metadataSignal sendNext:changesetMetadata];
+  expect(dataSource.title).to.equal(@"foo");
+  
+  PTUChangesetMetadata *otherChangesetMetadata = [[PTUChangesetMetadata alloc] initWithTitle:@"bar"
+                                                                               sectionTitles:@{}];
+  [metadataSignal sendNext:otherChangesetMetadata];
+  expect(dataSource.title).to.equal(@"bar");
+});
+
+it(@"should properly update error and error flag on data fetch error", ^{
   expect(dataSource.error).to.beNil();
 
   NSError *error = [NSError lt_errorWithCode:1337];
   [dataSignal sendError:error];
+
+  expect(dataSource.error).to.equal(error);
+});
+
+it(@"should properly update error and error flag on metadata fetch error", ^{
+  expect(dataSource.error).to.beNil();
+
+  NSError *error = [NSError lt_errorWithCode:1337];
+  [metadataSignal sendError:error];
 
   expect(dataSource.error).to.equal(error);
 });
