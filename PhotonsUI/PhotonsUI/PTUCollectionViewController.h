@@ -71,6 +71,10 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// \c YES if the receiver is in multiple selection mode.
 @property (nonatomic) BOOL allowsMultipleSelection;
 
+/// Title of the data associated with this collection view controller. This property is KVO
+/// compliant.
+@property (readonly, nonatomic, nullable) NSString *localizedTitle;
+
 @end
 
 /// Implementation of \c PTUCollectionController that displays the content of a given
@@ -79,6 +83,9 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 ///
 /// The view controller contains views with the <tt>{CollectionView, Empty, Error}</tt>
 /// accessibility identifiers.
+///
+/// @note The \c title property of this view controller is bound to \c localizedTitle and should not
+/// be manually set.
 @interface PTUCollectionViewController : UIViewController <PTUCollectionViewController>
 
 - (instancetype)init NS_UNAVAILABLE;
