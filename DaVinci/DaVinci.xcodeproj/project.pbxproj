@@ -26,6 +26,8 @@
 		500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77E61D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm */; };
 		500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */; };
 		500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */; };
+		50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */; };
+		50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */; };
 		5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154BD1D1AEB0300420FA9 /* Mantle.framework */; };
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
@@ -283,6 +285,10 @@
 		500F77ED1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DVNTextureMappingStageConfiguration+TextureAtlas.h"; sourceTree = "<group>"; };
 		500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlas.mm"; sourceTree = "<group>"; };
 		500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm"; sourceTree = "<group>"; };
+		50163CAE1D3381F700590860 /* DVNAttributeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNAttributeProvider.h; sourceTree = "<group>"; };
+		50163CC91D3381FE00590860 /* DVNAttributeStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNAttributeStageConfiguration.h; sourceTree = "<group>"; };
+		50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNAttributeStageConfiguration.mm; sourceTree = "<group>"; };
+		50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNAttributeStageConfigurationSpec.mm; sourceTree = "<group>"; };
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		50574B0C1D2D66420076C60D /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
@@ -487,6 +493,8 @@
 		500F77CB1D2D35CC00023343 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				50163CC91D3381FE00590860 /* DVNAttributeStageConfiguration.h */,
+				50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */,
 				500A3ADE1D2D348700043E18 /* DVNTextureMappingStageConfiguration.h */,
 				500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */,
 			);
@@ -496,6 +504,7 @@
 		500F77CC1D2D35E000023343 /* Stage Component API */ = {
 			isa = PBXGroup;
 			children = (
+				50163CAE1D3381F700590860 /* DVNAttributeProvider.h */,
 				500A3ADD1D2D348700043E18 /* DVNTexCoordProvider.h */,
 			);
 			name = "Stage Component API";
@@ -580,6 +589,7 @@
 		500F77DA1D2D3AA400023343 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */,
 				500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */,
 			);
 			name = Configuration;
@@ -1025,6 +1035,7 @@
 				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
 				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
 				500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */,
+				50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1038,6 +1049,7 @@
 				500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */,
 				500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
+				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
