@@ -5,6 +5,9 @@
 
 #import <LTKit/NSError+LTKit.h>
 
+#import "PTNImageAsset.h"
+#import "PTNProgress.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation RACSignal (Photons)
@@ -95,6 +98,30 @@ NS_ASSUME_NONNULL_BEGIN
                  "tags: %@", currentCombineTagged, previousCombineTagged);
       }]
       setNameWithFormat:@"+ptn_combineLatestWithIndex: %@", signals];
+}
+
+- (RACSignal *)ptn_image {
+  return [[[self
+      ptn_skipProgress]
+      flattenMap:^RACStream *(id<PTNImageAsset> asset) {
+        return [asset fetchImage];
+      }]
+      setNameWithFormat:@"[%@] -ptn_image", self.name];
+}
+
+- (RACSignal *)ptn_skipProgress {
+  return [[[self
+      filter:^BOOL(PTNProgress *progress) {
+        LTAssert([progress isKindOfClass:[PTNProgress class]], @"Expected PTNProgress object, got: "
+                 "%@", NSStringFromClass([progress class]));
+        return progress.result != nil;
+      }]
+      map:^id<PTNImageAsset>(PTNProgress<id<PTNImageAsset>> *progress) {
+        LTAssert([progress.result conformsToProtocol:@protocol(PTNImageAsset)], @"Expected result "
+                 "to conform to PTNImageAsset. Result: %@", progress.result);
+        return progress.result;
+      }]
+      setNameWithFormat:@"[%@] -ptn_skipProgress", self.name];;
 }
 
 @end
