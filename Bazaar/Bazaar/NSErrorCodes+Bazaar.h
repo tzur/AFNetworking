@@ -14,7 +14,9 @@ NS_ENUM(NSInteger) {
 /// All error codes produced by Bazaar.
 LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// The process of application receipt validation has failed.
-  BZRErrorCodeReceiptValidationFailed
+  BZRErrorCodeReceiptValidationFailed,
+  /// Failure during products metadata fetching.
+  BZRErrorCodeProductsMetadataFetchingFailed
 );
 
 NS_ASSUME_NONNULL_END

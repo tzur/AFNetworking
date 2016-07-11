@@ -3,6 +3,7 @@
 
 // iOS Frameworks.
 #import <Foundation/Foundation.h>
+#import <StoreKit/StoreKit.h>
 #import <UIKit/UIKit.h>
 
 // Third Party Frameworks.
