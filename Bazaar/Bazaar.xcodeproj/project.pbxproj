@@ -14,9 +14,11 @@
 		6505DC421D312B26008F4053 /* NSValueTransformer+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */; };
 		6505DC441D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */; };
 		6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */; };
+		650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */; };
 		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */; };
 		6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8681CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm */; };
 		65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */; };
+		65332E461D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65332E451D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm */; };
 		65332E6F1D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65332E4A1D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		65332E701D3392C200920C32 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 65332E4C1D3392C200920C32 /* LLSignalTestRecorder.m */; };
 		65332E711D3392C200920C32 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 65332E4E1D3392C200920C32 /* RACSignal+LLSubscriptionCounting.m */; };
@@ -334,6 +336,8 @@
 		6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+BazaarSpec.mm"; sourceTree = "<group>"; };
 		6506094A1CEDE5F60012202D /* BZRReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptModel.h; sourceTree = "<group>"; };
 		6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModel.mm; sourceTree = "<group>"; };
+		650D7D3E1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKProductsRequest+RACSignalSupport.h"; sourceTree = "<group>"; };
+		650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKProductsRequest+RACSignalSupport.mm"; sourceTree = "<group>"; };
 		6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationError.h; sourceTree = "<group>"; };
 		6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationError.mm; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 		65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Bazaar.h"; sourceTree = "<group>"; };
 		65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Bazaar.mm"; sourceTree = "<group>"; };
 		65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+BazaarSpec.mm"; sourceTree = "<group>"; };
+		65332E451D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKProductsRequest+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		65332E491D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
 		65332E4A1D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
 		65332E4B1D3392C200920C32 /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
@@ -437,6 +442,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		650D7D3D1D324A92003CE646 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				650D7D3E1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.h */,
+				650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
 		6529F8281CEB608B00FBABFE /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +471,22 @@
 				6529F8631CEB65E900FBABFE /* iOS Tests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		65332E201D33901700920C32 /* Store Kit */ = {
+			isa = PBXGroup;
+			children = (
+				65332E441D33902400920C32 /* Internal */,
+			);
+			name = "Store Kit";
+			sourceTree = "<group>";
+		};
+		65332E441D33902400920C32 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				65332E451D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm */,
+			);
+			name = Internal;
 			sourceTree = "<group>";
 		};
 		65332E471D3392A800920C32 /* LLReactiveMatchers */ = {
@@ -582,6 +612,7 @@
 			isa = PBXGroup;
 			children = (
 				6584CE831CF4671A002C6F86 /* Receipt Validation */,
+				65332E201D33901700920C32 /* Store Kit */,
 				65F03B691CFC32CE008B1847 /* Utils */,
 			);
 			name = Tests;
@@ -641,6 +672,14 @@
 				654B1F621CE22299001F36FA /* OCMock.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		65743E801D3242FF00A17D11 /* Store Kit */ = {
+			isa = PBXGroup;
+			children = (
+				650D7D3D1D324A92003CE646 /* Internal */,
+			);
+			name = "Store Kit";
 			sourceTree = "<group>";
 		};
 		65743EA51D32456A00A17D11 /* Products */ = {
@@ -750,6 +789,7 @@
 			children = (
 				65FA329B1CE2185E00901304 /* Bazaar.h */,
 				6580F0701CEB2D97007EABDD /* Receipt Validation */,
+				65743E801D3242FF00A17D11 /* Store Kit */,
 				6599B4291CFA444200525BB7 /* Utils */,
 				654B1F041CE21F6D001F36FA /* Supporting Files */,
 			);
@@ -1144,6 +1184,7 @@
 				65332E741D3392C200920C32 /* EXPMatchers+beSubscribedTo.m in Sources */,
 				65332E731D3392C200920C32 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				65332E761D3392C200920C32 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
+				65332E461D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm in Sources */,
 				65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */,
 				65332E7F1D3392C200920C32 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				65332E7B1D3392C200920C32 /* EXPMatchers+matchValues.m in Sources */,
@@ -1172,6 +1213,7 @@
 				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */,
 				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
+				650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */,
 				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
