@@ -70,6 +70,8 @@
 		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
 		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
+		C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */; };
+		C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -404,6 +406,9 @@
 		8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
 		8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
 		8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
+		C9133D8D1D3574FE009E796B /* CALayer+Enumeration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Enumeration.h"; sourceTree = "<group>"; };
+		C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Enumeration.m"; sourceTree = "<group>"; };
+		C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+EnumerationSpec.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -779,6 +784,8 @@
 		8B283FA31CBA9DAC00B745AE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C9133D8D1D3574FE009E796B /* CALayer+Enumeration.h */,
+				C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */,
 				8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */,
 				8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
@@ -802,6 +809,7 @@
 		8B283FA51CBA9DB700B745AE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */,
 				8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
 			);
@@ -1136,6 +1144,7 @@
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
 				6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */,
+				C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */,
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
@@ -1162,6 +1171,7 @@
 				8B283FBD1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm in Sources */,
 				6AB2AF661CC4E63E00BC2371 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				6AB2AF6F1CC4E63E00BC2371 /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */,
 				8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */,
 				6AB2AF671CC4E63E00BC2371 /* EXPMatchers+error.m in Sources */,
 				6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */,
