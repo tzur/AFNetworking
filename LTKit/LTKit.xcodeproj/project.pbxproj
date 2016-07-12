@@ -10,6 +10,7 @@
 		255339401C3E512300C478F9 /* LTTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2553393E1C3E512300C478F9 /* LTTreeNode.h */; };
 		255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2553393F1C3E512300C478F9 /* LTTreeNode.mm */; };
 		255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */; };
+		256F17141D35243A009D3254 /* LTEqualityExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256F17131D35243A009D3254 /* LTEqualityExamples.mm */; };
 		259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */; };
 		259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */; };
 		259FF7E71C14921800362CDD /* LTBipartiteGraphSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */; };
@@ -358,6 +359,8 @@
 		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
 		2553393F1C3E512300C478F9 /* LTTreeNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNode.mm; sourceTree = "<group>"; };
 		255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNodeSpec.mm; sourceTree = "<group>"; };
+		256F17121D35243A009D3254 /* LTEqualityExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEqualityExamples.h; sourceTree = "<group>"; };
+		256F17131D35243A009D3254 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEqualityExamples.mm; sourceTree = "<group>"; };
 		259FF7CD1C14920C00362CDD /* LTBipartiteGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBipartiteGraph.h; sourceTree = "<group>"; };
 		259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraph.mm; sourceTree = "<group>"; };
 		259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBipartiteGraphSpec.mm; sourceTree = "<group>"; };
@@ -941,6 +944,8 @@
 				50E6AC731D2BD07A0074EC11 /* EXPMatchers+beCloseToSize.h */,
 				8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */,
 				8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */,
+				256F17121D35243A009D3254 /* LTEqualityExamples.h */,
+				256F17131D35243A009D3254 /* LTEqualityExamples.mm */,
 				8BBE8941183503CD006C58AA /* LTTestUtils.h */,
 				8BBE8942183506E4006C58AA /* LTTestUtils.mm */,
 			);
@@ -1392,6 +1397,7 @@
 				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
+				256F17141D35243A009D3254 /* LTEqualityExamples.mm in Sources */,
 				8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 				8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */,
