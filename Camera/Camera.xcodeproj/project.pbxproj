@@ -59,7 +59,13 @@
 		83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
+		BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */; };
+		BEB6EDD01D325BE800E9D424 /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDCE1D325BE800E9D424 /* LTSpectaObjectionHook.mm */; };
+		BEB6EDF01D325C4700E9D424 /* LTTestModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDEF1D325C4700E9D424 /* LTTestModule.mm */; };
+		BEB6EDF21D325D5F00E9D424 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB6EDF11D325D5F00E9D424 /* CoreMotion.framework */; };
 		BED1577F1D2A9B50005D83F7 /* CAMDeviceStub.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */; };
+		BED6927E1D32310300061BB5 /* CAMDeviceOrientation.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */; };
+		BED6929D1D32311000061BB5 /* CAMDeviceOrientationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -442,8 +448,18 @@
 		8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevicePreset.h; sourceTree = "<group>"; };
 		8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePreset.mm; sourceTree = "<group>"; };
 		8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePresetSpec.mm; sourceTree = "<group>"; };
+		BEB6EDCB1D325BE800E9D424 /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
+		BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
+		BEB6EDCD1D325BE800E9D424 /* LTSpectaObjectionHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaObjectionHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.h; sourceTree = "<group>"; };
+		BEB6EDCE1D325BE800E9D424 /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
+		BEB6EDEE1D325C4700E9D424 /* LTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestModule.h; path = ../../LTEngine/LTEngineTests/LTTestModule.h; sourceTree = "<group>"; };
+		BEB6EDEF1D325C4700E9D424 /* LTTestModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestModule.mm; path = ../../LTEngine/LTEngineTests/LTTestModule.mm; sourceTree = "<group>"; };
+		BEB6EDF11D325D5F00E9D424 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		BED1577D1D2A9B50005D83F7 /* CAMDeviceStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceStub.h; sourceTree = "<group>"; };
 		BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceStub.mm; sourceTree = "<group>"; };
+		BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceOrientation.h; sourceTree = "<group>"; };
+		BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientation.mm; sourceTree = "<group>"; };
+		BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientationSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -462,6 +478,7 @@
 				83B7304A1CDB56770090C0BF /* AVFoundation.framework in Frameworks */,
 				83B730661CDB567B0090C0BF /* AssetsLibrary.framework in Frameworks */,
 				83B730681CDB56870090C0BF /* CoreMedia.framework in Frameworks */,
+				BEB6EDF21D325D5F00E9D424 /* CoreMotion.framework in Frameworks */,
 				0627C4C11D1A6CED00EFEC6B /* Mantle.framework in Frameworks */,
 				06C02F6A1D19568600745557 /* Objection-iOS.framework in Frameworks */,
 				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
@@ -515,7 +532,13 @@
 				06C02F781D1970D100745557 /* EXPMatchers+beCloseToScalar.mm */,
 				06C02F721D196A5000745557 /* EXPMatchers+equalMat.mm */,
 				06C02F7B1D1970D900745557 /* EXPMatchers+equalScalar.mm */,
+				BEB6EDCB1D325BE800E9D424 /* LTObjectionModule.h */,
+				BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */,
+				BEB6EDCD1D325BE800E9D424 /* LTSpectaObjectionHook.h */,
+				BEB6EDCE1D325BE800E9D424 /* LTSpectaObjectionHook.mm */,
 				06C02F701D195CB300745557 /* LTSpectaOpenGLContextHook.mm */,
+				BEB6EDEE1D325C4700E9D424 /* LTTestModule.h */,
+				BEB6EDEF1D325C4700E9D424 /* LTTestModule.mm */,
 				06C02F741D196A9800745557 /* LTTestUtils+LTEngine.mm */,
 				06C02F7D1D1974C000745557 /* NSValue+OpenCVExtensions.mm */,
 			);
@@ -661,6 +684,7 @@
 				83B730491CDB56770090C0BF /* AVFoundation.framework */,
 				83B730651CDB567B0090C0BF /* AssetsLibrary.framework */,
 				83B730671CDB56870090C0BF /* CoreMedia.framework */,
+				BEB6EDF11D325D5F00E9D424 /* CoreMotion.framework */,
 				832F97191CD75504001962A0 /* Expecta.xcodeproj */,
 				8352056F1D2A5B2700000EEC /* LLReactiveMatchers */,
 				83B72CC61CDA3E5E0090C0BF /* LTEngine.xcodeproj */,
@@ -731,6 +755,8 @@
 			children = (
 				8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */,
 				8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */,
+				BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */,
+				BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -749,6 +775,7 @@
 			isa = PBXGroup;
 			children = (
 				8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */,
+				BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1197,6 +1224,7 @@
 				06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
+				BED6927E1D32310300061BB5 /* CAMDeviceOrientation.mm in Sources */,
 				83893A511D128288002B64B4 /* CAMHardwareSession.mm in Sources */,
 				8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */,
 				8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */,
@@ -1218,6 +1246,7 @@
 				BED1577F1D2A9B50005D83F7 /* CAMDeviceStub.mm in Sources */,
 				835205A21D2A5B2700000EEC /* EXPMatchers+matchValue.m in Sources */,
 				835205A51D2A5B2700000EEC /* EXPMatchers+sendEvents.m in Sources */,
+				BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */,
 				8352059D1D2A5B2700000EEC /* EXPMatchers+complete.m in Sources */,
 				06C02F631D1951DD00745557 /* CAMExposureMapProcessorSpec.mm in Sources */,
 				835205981D2A5B2700000EEC /* LLSignalTestRecorder.m in Sources */,
@@ -1230,10 +1259,13 @@
 				835205A61D2A5B2700000EEC /* EXPMatchers+sendValues.m in Sources */,
 				83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */,
 				835205A11D2A5B2700000EEC /* EXPMatchers+matchError.m in Sources */,
+				BEB6EDD01D325BE800E9D424 /* LTSpectaObjectionHook.mm in Sources */,
 				835205A71D2A5B2700000EEC /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				06C02F751D196A9800745557 /* LTTestUtils+LTEngine.mm in Sources */,
 				83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */,
+				BEB6EDF01D325C4700E9D424 /* LTTestModule.mm in Sources */,
 				06C02F7A1D1970D100745557 /* EXPMatchers+beCloseToScalar.mm in Sources */,
+				BED6929D1D32311000061BB5 /* CAMDeviceOrientationSpec.mm in Sources */,
 				8352059A1D2A5B2700000EEC /* LLReactiveMatchersHelpers.m in Sources */,
 				835205A41D2A5B2700000EEC /* EXPMatchers+sendError.m in Sources */,
 				835205971D2A5B2700000EEC /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,

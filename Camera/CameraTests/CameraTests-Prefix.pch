@@ -19,4 +19,5 @@
   #import <LTEngineTests/EXPMatchers+beCloseToMat.h>
   #import <LTEngineTests/EXPMatchers+beCloseToScalar.h>
   #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>
+  #import <LTEngineTests/LTSpectaObjectionHook.h>
 #endif
