@@ -290,6 +290,16 @@ context(@"initialization", ^{
 
     OCMVerifyAll(strictTouchMock);
   });
+
+  it(@"should initialize with a given timestamp", ^{
+    static const NSTimeInterval kTimestamp = 123.456789;
+    [[touchMock reject] timestamp];
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                   timestamp:kTimestamp
+                                                                  sequenceID:0];
+    expect(touchEvent.timestamp).to.equal(kTimestamp);
+    OCMVerifyAll(touchMock);
+  });
 });
 
 context(@"NSObject protocol", ^{
