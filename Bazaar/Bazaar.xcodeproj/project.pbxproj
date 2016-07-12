@@ -11,8 +11,7 @@
 		6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F4D1CE2228C001F36FA /* libSpecta.a */; };
 		6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F5C1CE22299001F36FA /* libOCMock.a */; };
 		6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FA32981CE2185D00901304 /* libBazaar.a */; };
-		6505DC421D312B26008F4053 /* NSValueTransformer+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */; };
-		6505DC441D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */; };
+		6505DC441D312B58008F4053 /* NSValueTransformer+ValidatricksSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6505DC431D312B58008F4053 /* NSValueTransformer+ValidatricksSpec.mm */; };
 		6502EFCE1D34D581000CD68B /* RACSignal+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */; };
 		6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */; };
 		650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */; };
@@ -46,6 +45,7 @@
 		6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B4031CFA346C00525BB7 /* libLTKit.a */; };
 		65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */; };
 		65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */; };
+		65C538D71D34F521004C91D4 /* NSValueTransformer+Validatricks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */; };
 		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
 		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
 		65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */; };
@@ -333,9 +333,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6505DC401D312B26008F4053 /* NSValueTransformer+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Bazaar.h"; sourceTree = "<group>"; };
-		6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Bazaar.mm"; sourceTree = "<group>"; };
-		6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+BazaarSpec.mm"; sourceTree = "<group>"; };
+		6505DC431D312B58008F4053 /* NSValueTransformer+ValidatricksSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+ValidatricksSpec.mm"; sourceTree = "<group>"; };
 		6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Bazaar.h"; sourceTree = "<group>"; };
 		6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+Bazaar.mm"; sourceTree = "<group>"; };
 		6506094A1CEDE5F60012202D /* BZRReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptModel.h; sourceTree = "<group>"; };
@@ -415,6 +413,8 @@
 		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
 		6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponseSpec.mm; sourceTree = "<group>"; };
 		65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BazaarSpec.mm"; sourceTree = "<group>"; };
+		65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Validatricks.h"; sourceTree = "<group>"; };
+		65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Validatricks.mm"; sourceTree = "<group>"; };
 		65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModelSpec.mm; sourceTree = "<group>"; };
 		65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModelSpec.mm; sourceTree = "<group>"; };
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
@@ -447,6 +447,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6502EF771D3417CA000CD68B /* Validatricks */ = {
+			isa = PBXGroup;
+			children = (
+				65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */,
+				65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */,
+			);
+			name = Validatricks;
+			sourceTree = "<group>";
+		};
 		650D7D3D1D324A92003CE646 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
@@ -701,6 +710,7 @@
 		6580F0701CEB2D97007EABDD /* Receipt Validation */ = {
 			isa = PBXGroup;
 			children = (
+				6502EF771D3417CA000CD68B /* Validatricks */,
 				6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */,
 				6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */,
 				6506094A1CEDE5F60012202D /* BZRReceiptModel.h */,
@@ -737,6 +747,7 @@
 		6584CE831CF4671A002C6F86 /* Receipt Validation */ = {
 			isa = PBXGroup;
 			children = (
+				65C538D81D34F5AB004C91D4 /* Validatricks */,
 				65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */,
 				6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */,
 				6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */,
@@ -753,12 +764,18 @@
 				65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */,
 				658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */,
 				658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */,
-				6505DC401D312B26008F4053 /* NSValueTransformer+Bazaar.h */,
-				6505DC411D312B26008F4053 /* NSValueTransformer+Bazaar.mm */,
 				6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */,
 				6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		65C538D81D34F5AB004C91D4 /* Validatricks */ = {
+			isa = PBXGroup;
+			children = (
+				6505DC431D312B58008F4053 /* NSValueTransformer+ValidatricksSpec.mm */,
+			);
+			name = Validatricks;
 			sourceTree = "<group>";
 		};
 		65F03B691CFC32CE008B1847 /* Utils */ = {
@@ -766,7 +783,6 @@
 			children = (
 				65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */,
 				65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */,
-				6505DC431D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm */,
 				65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */,
 			);
 			name = Utils;
@@ -1184,7 +1200,7 @@
 			files = (
 				65332E791D3392C200920C32 /* EXPMatchers+matchError.m in Sources */,
 				65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */,
-				6505DC441D312B58008F4053 /* NSValueTransformer+BazaarSpec.mm in Sources */,
+				6505DC441D312B58008F4053 /* NSValueTransformer+ValidatricksSpec.mm in Sources */,
 				65332E7E1D3392C200920C32 /* EXPMatchers+sendValues.m in Sources */,
 				65332E751D3392C200920C32 /* EXPMatchers+complete.m in Sources */,
 				65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */,
@@ -1217,8 +1233,8 @@
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */,
+				65C538D71D34F521004C91D4 /* NSValueTransformer+Validatricks.mm in Sources */,
 				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */,
-				6505DC421D312B26008F4053 /* NSValueTransformer+Bazaar.mm in Sources */,
 				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
 				6502EFCE1D34D581000CD68B /* RACSignal+Bazaar.mm in Sources */,
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */,
