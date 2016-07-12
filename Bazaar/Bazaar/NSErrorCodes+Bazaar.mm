@@ -10,7 +10,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// The process of application receipt validation has failed.
   BZRErrorCodeReceiptValidationFailed,
   /// Failure during products metadata fetching.
-  BZRErrorCodeProductsMetadataFetchingFailed
+  BZRErrorCodeProductsMetadataFetchingFailed,
+  /// Deserilization of a model instance from JSON dictionary has failed.
+  BZRErrorCodeModelJSONDeserializationFailed
 );
 
 NS_ASSUME_NONNULL_END

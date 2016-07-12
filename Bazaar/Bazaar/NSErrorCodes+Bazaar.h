@@ -1,8 +1,6 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import <LTKit/NSErrorCodes+LTKit.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Product ID.
@@ -16,7 +14,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// The process of application receipt validation has failed.
   BZRErrorCodeReceiptValidationFailed,
   /// Failure during products metadata fetching.
-  BZRErrorCodeProductsMetadataFetchingFailed
+  BZRErrorCodeProductsMetadataFetchingFailed,
+  /// Deserilization of a model instance from JSON dictionary has failed.
+  BZRErrorCodeModelJSONDeserializationFailed
 );
 
 NS_ASSUME_NONNULL_END
