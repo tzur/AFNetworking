@@ -88,6 +88,45 @@ context(@"initialization", ^{
   });
 });
 
+it(@"should keep localizedTitle and title up to date with data source", ^{
+  expect(viewController.title).to.beNil();
+  expect(viewController.localizedTitle).to.beNil();
+  
+  dataSource.title = @"foo";
+  expect(viewController.title).to.equal(@"foo");
+  expect(viewController.localizedTitle).to.equal(@"foo");
+});
+
+it(@"should keep localizedTitle and title up to date with new data sources", ^{
+  PTUFakeDataSource *otherDataSource = [[PTUFakeDataSource alloc] init];
+  dataSourceProvider = OCMProtocolMock(@protocol(PTUDataSourceProvider));
+  configuration = [PTUCollectionViewConfiguration defaultConfiguration];
+  OCMExpect([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(dataSource);
+  OCMExpect([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(otherDataSource);
+
+  viewController =
+      [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
+                                                 initialConfiguration:configuration];
+  
+  expect(viewController.title).to.beNil();
+  expect(viewController.localizedTitle).to.beNil();
+  
+  dataSource.title = @"foo";
+  expect(viewController.title).to.equal(@"foo");
+  expect(viewController.localizedTitle).to.equal(@"foo");
+  
+  [viewController reloadData];
+  
+  expect(viewController.title).to.beNil();
+  expect(viewController.localizedTitle).to.beNil();
+  
+  dataSource.title = @"bar";
+  otherDataSource.title = @"baz";
+
+  expect(viewController.title).to.equal(@"baz");
+  expect(viewController.localizedTitle).to.equal(@"baz");
+});
+
 context(@"collection view", ^{
   __block UICollectionView * _Nullable collectionView;
 

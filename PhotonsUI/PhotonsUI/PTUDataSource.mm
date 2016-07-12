@@ -7,6 +7,7 @@
 #import <LTKit/LTRandomAccessCollection.h>
 
 #import "PTUChangeset.h"
+#import "PTUChangesetMetadata.h"
 #import "PTUChangesetMove.h"
 #import "PTUChangesetProvider.h"
 #import "PTUImageCell.h"
@@ -30,6 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Current data model.
 @property (strong, nonatomic) PTUDataModel *dataModel;
+
+/// Title associated with the data provided in this data source, or \c nil if no such title exists.
+/// This property is KVO compliant.
+@property (strong, nonatomic, nullable) NSString *title;
+
+/// Titles of the sections of the data in this data source. If no title is available for a section,
+/// \c sectionTitles will contain no value for section's index.
+@property (strong, nonatomic) NSDictionary<NSNumber *, NSString *> *sectionTitles;
 
 /// \c YES if the latest value sent by the data signal provided by \c changesetProvider indicated
 /// the existance of at least one object. This property is KVO compliant.
@@ -56,7 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
     _changesetProvider = changesetProvider;
     _cellClass = cellClass;
     self.dataModel = @[];
+    self.sectionTitles = @{};
+    
     [self setupCollectionView:collectionView];
+    [self bindMetadataSignal];
   }
   return self;
 }
@@ -109,6 +121,21 @@ NS_ASSUME_NONNULL_BEGIN
         } completion:nil];
       } error:^(NSError *error) {
         @strongify(self)
+        self.error = error;
+      }];
+}
+
+- (void)bindMetadataSignal {
+  @weakify(self)
+  [[[[self.changesetProvider fetchChangesetMetadata]
+      takeUntil:self.rac_willDeallocSignal]
+      deliverOnMainThread]
+      subscribeNext:^(PTUChangesetMetadata *metadata) {
+        @strongify(self);
+        self.title = metadata.title;
+        self.sectionTitles = metadata.sectionTitles;
+      } error:^(NSError *error) {
+        @strongify(self);
         self.error = error;
       }];
 }

@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize itemDeselected = _itemDeselected;
 @synthesize emptyView = _emptyView;
 @synthesize errorView = _errorView;
+@synthesize localizedTitle = _localizedTitle;
 
 - (instancetype)initWithDataSourceProvider:(id<PTUDataSourceProvider>)dataSourceProvider
                       initialConfiguration:(PTUCollectionViewConfiguration *)initialConfiguration {
@@ -96,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   [self setupCollectionView];
   [self setupSelectionSignals];
+  [self setupTitleBinding];
   [self setupInfoViews];
   [self buildDefaultEmptyView];
   [self buildDefaultErrorView];
@@ -150,6 +152,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionView:(UICollectionView __unused *)collectionView
     didDeselectItemAtIndexPath:(NSIndexPath __unused *)NSIndexPath {
   // Required for rac_signalForSelector.
+}
+
+- (void)setupTitleBinding {
+  RACSignal *datasourceTitle = RACObserve(self, dataSource.title);
+  RAC(self, localizedTitle) = datasourceTitle;
+  RAC(self, title) = datasourceTitle;
 }
 
 - (void)setupInfoViews {

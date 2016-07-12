@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url; {
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url {
   PTUAlbumChangesetProvider *changesetProvider =
       [[PTUAlbumChangesetProvider alloc] initWithManager:assetManager albumURL:url];
   PTUImageCellViewModelProvider *viewModelProvider =
