@@ -178,6 +178,7 @@ context(@"painting", ^{
     
     afterEach(^{
       brush = nil;
+      touchCollector = nil;
     });
     
     it(@"should paint on tap", ^{
@@ -315,6 +316,10 @@ context(@"painting", ^{
       beforeEach(^{
         delegate = [OCMockObject niceMockForProtocol:@protocol(LTPainterDelegate)];
         painter.delegate = delegate;
+      });
+
+      afterEach(^{
+        delegate = nil;
       });
       
       it(@"should update delegate on paint", ^{
