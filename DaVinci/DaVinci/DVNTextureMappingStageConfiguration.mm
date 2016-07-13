@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithTexCoordProviderModel:(id<DVNTexCoordProviderModel>)texCoordProviderModel
+- (instancetype)initWithTexCoordProviderModel:(id<DVNTexCoordProviderModel>)model
                                       texture:(LTTexture *)texture {
-  LTParameterAssert(texCoordProviderModel);
+  LTParameterAssert(model);
   LTParameterAssert(texture);
 
   if (self = [super init]) {
-    _texCoordProviderModel = texCoordProviderModel;
+    _model = model;
     _texture = texture;
   }
   return self;
@@ -40,12 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.texCoordProviderModel isEqual:configuration.texCoordProviderModel] &&
-      [self.texture isEqual:configuration.texture];
+  return [self.model isEqual:configuration.model] && [self.texture isEqual:configuration.texture];
 }
 
 - (NSUInteger)hash {
-  return self.texCoordProviderModel.hash;
+  return self.model.hash;
 }
 
 @end

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAttributeProviderModels:(NSArray<id<DVNAttributeProviderModel>> *)models {
   LTParameterAssert(models);
   if (self = [super init]) {
-    _attributeProviderModels = [models copy];
+    _models = [models copy];
   }
   return self;
 }
@@ -36,11 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.attributeProviderModels isEqualToArray:configuration.attributeProviderModels];
+  return [self.models isEqualToArray:configuration.models];
 }
 
 - (NSUInteger)hash {
-  return self.attributeProviderModels.hash;
+  return self.models.hash;
 }
 
 @end

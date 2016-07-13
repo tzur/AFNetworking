@@ -24,7 +24,7 @@ context(@"initialization", ^{
     DVNTextureMappingStageConfiguration *configuration =
         [[DVNTextureMappingStageConfiguration alloc] initWithTexCoordProviderModel:kModel
                                                                            texture:textureMock];
-    expect(configuration.texCoordProviderModel).to.equal(kModel);
+    expect(configuration.model).to.equal(kModel);
     expect(configuration.texture).to.equal(textureMock);
   });
 });

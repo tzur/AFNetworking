@@ -13,14 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c texCoordProviderModel used for providing texture coordinates and
-/// the given \c texture used for texture mapping.
-- (instancetype)initWithTexCoordProviderModel:(id<DVNTexCoordProviderModel>)texCoordProviderModel
+/// Initializes with the given \c model of a texture coordinate provider and the given \c texture
+/// used for texture mapping.
+- (instancetype)initWithTexCoordProviderModel:(id<DVNTexCoordProviderModel>)model
                                       texture:(LTTexture *)texture
     NS_DESIGNATED_INITIALIZER;
 
 /// Model for creating the provider of texture coordinates used for texture mapping.
-@property (readonly, nonatomic) id<DVNTexCoordProviderModel> texCoordProviderModel;
+@property (readonly, nonatomic) id<DVNTexCoordProviderModel> model;
 
 /// Texture to be used for texture mapping.
 @property (readonly, nonatomic) LTTexture *texture;
