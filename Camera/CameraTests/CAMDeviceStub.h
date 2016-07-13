@@ -1,7 +1,15 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "CAMDevice.h"
+#import "CAMAudioDevice.h"
+#import "CAMExposureDevice.h"
+#import "CAMFlashDevice.h"
+#import "CAMFlipDevice.h"
+#import "CAMFocusDevice.h"
+#import "CAMPreviewLayerDevice.h"
+#import "CAMVideoDevice.h"
+#import "CAMWhiteBalanceDevice.h"
+#import "CAMZoomDevice.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,14 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// 5. \c previewLayerPointFromDevicePoint: and \c devicePointFromPreviewLayerPoint: return the
 /// given \c CGPoint.
-@interface CAMDeviceStub : NSObject <CAMDevice>
+@interface CAMDeviceStub : NSObject <CAMAudioDevice, CAMExposureDevice, CAMFlashDevice,
+    CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice,
+    CAMZoomDevice>
 
 #pragma mark -
 #pragma mark CAMAudioDevice
 #pragma mark -
 
 /// @see CAMAudioDevice.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *audioFrames;
+@property (strong, nonatomic, nullable) RACSignal *audioFrames;
 
 #pragma mark -
 #pragma mark CAMExposureDevice
@@ -36,17 +46,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see CAMExposureDevice.
 @property (nonatomic) float exposureOffset;
 
+/// @see CAMExposureDevice.
+@property (nonatomic) CGFloat minExposureCompensation;
+
+/// @see CAMExposureDevice.
+@property (nonatomic) CGFloat maxExposureCompensation;
+
 /// Return value for the \c setSingleExposurePoint: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setSingleExposurePointSignal;
+@property (strong, nonatomic, nullable) RACSignal *setSingleExposurePointSignal;
 
 /// Return value for the \c setContinuousExposurePoint: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setContinuousExposurePointSignal;
+@property (strong, nonatomic, nullable) RACSignal *setContinuousExposurePointSignal;
 
 /// Return value for the \c setLockedExposure method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setLockedExposureSignal;
+@property (strong, nonatomic, nullable) RACSignal *setLockedExposureSignal;
 
 /// Return value for the \c setExposureCompensation: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setExposureCompensationSignal;
+@property (strong, nonatomic, nullable) RACSignal *setExposureCompensationSignal;
 
 #pragma mark -
 #pragma mark CAMFlashDevice
@@ -59,10 +75,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL flashWillFire;
 
 /// @see CAMFlashDevice.
-@property (readwrite, nonatomic) AVCaptureFlashMode currentFlashMode;
+@property (nonatomic) AVCaptureFlashMode currentFlashMode;
 
 /// Return value for the \c setFlashMode: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setFlashModeSignal;
+@property (strong, nonatomic, nullable) RACSignal *setFlashModeSignal;
 
 #pragma mark -
 #pragma mark CAMFlipDevice
@@ -75,23 +91,23 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL canChangeCamera;
 
 /// Return value for the \c setCamera: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setCameraSignal;
+@property (strong, nonatomic, nullable) RACSignal *setCameraSignal;
 
 #pragma mark -
 #pragma mark CAMFocusDevice
 #pragma mark -
 
 /// Return value for the \c setSingleFocusPoint: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setSingleFocusPointSignal;
+@property (strong, nonatomic, nullable) RACSignal *setSingleFocusPointSignal;
 
 /// Return value for the \c setContinuousFocusPoint: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setContinuousFocusPointSignal;
+@property (strong, nonatomic, nullable) RACSignal *setContinuousFocusPointSignal;
 
 /// Return value for the \c setLockedFocus method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setLockedFocusSignal;
+@property (strong, nonatomic, nullable) RACSignal *setLockedFocusSignal;
 
 /// Return value for the \c setLockedFocusPosition: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setLockedFocusPositionSignal;
+@property (strong, nonatomic, nullable) RACSignal *setLockedFocusPositionSignal;
 
 #pragma mark -
 #pragma mark CAMPreviewLayerDevice
@@ -114,24 +130,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) RACSignal *subjectAreaChanged;
 
 /// Return value for the \c setPixelFormat: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setPixelFormatSignal;
+@property (strong, nonatomic, nullable) RACSignal *setPixelFormatSignal;
 
 /// Return value for the \c stillFramesWithTrigger: method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *stillFramesWithTriggerSignal;
+@property (strong, nonatomic, nullable) RACSignal *stillFramesWithTriggerSignal;
 
 #pragma mark -
 #pragma mark CAMWhiteBalanceDevice
 #pragma mark -
 
 /// Return value for the \c setSingleWhiteBalance method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setSingleWhiteBalanceSignal;
+@property (strong, nonatomic, nullable) RACSignal *setSingleWhiteBalanceSignal;
 
 /// Return value for the \c setContinuousWhiteBalance method.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setContinuousWhiteBalanceSignal;
+@property (strong, nonatomic, nullable) RACSignal *setContinuousWhiteBalanceSignal;
 
 /// Return value for the \c setLockedWhiteBalance and \c setLockedWhiteBalanceWithTemperature:tint:
 /// methods.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setLockedWhiteBalanceSignal;
+@property (strong, nonatomic, nullable) RACSignal *setLockedWhiteBalanceSignal;
 
 #pragma mark -
 #pragma mark CAMZoomDevice
@@ -150,7 +166,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat zoomFactor;
 
 /// Return value for the \c setZoom and \c setZoom:rate: methods.
-@property (strong, readwrite, nonatomic, nullable) RACSignal *setZoomSignal;
+@property (strong, nonatomic, nullable) RACSignal *setZoomSignal;
 
 @end
 

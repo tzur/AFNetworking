@@ -34,20 +34,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Instructs the camera to over- or under- expose frames. \c value will be added to the scene
 /// exposure metering before determining the exposure settings to use. Positive values result in
-/// over-exposed images. \c value is in EV units. The given \c value will be clamped according to
-/// the underlying device's \c minExposureTargetBias and \c maxExposureTargetBias.
+/// over-exposed images. \c value is in EV units. Raises if \c value is not in the range
+/// <tt>[minExposureCompensation, maxExposureCompensation]</tt>.
 ///
 /// Returned signal sends the new exposure compensation value and completes when it is set, or errs
 /// if there is a problem setting the exposure. All events are sent on an arbitrary thread.
-///
-/// @see \c AVCaptureDevice.minExposureTargetBias.
-///
-/// @see \c AVCaptureDevice.maxExposureTargetBias.
 - (RACSignal *)setExposureCompensation:(float)value;
 
 /// Difference between the current scene's exposure metering and the current exposure settings, in
 /// EV units.
 @property (readonly, nonatomic) float exposureOffset;
+
+/// Minimum exposure compensation value supported by the camera.
+@property (readonly, nonatomic) CGFloat minExposureCompensation;
+
+/// Maximum exposure compensation value supported by the camera.
+@property (readonly, nonatomic) CGFloat maxExposureCompensation;
 
 @end
 

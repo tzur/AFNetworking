@@ -64,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createPreviewLayer {
   self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+  self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 }
 
 - (BOOL)setCamera:(CAMDeviceCamera *)camera error:(NSError * __autoreleasing *)error {
