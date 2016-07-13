@@ -24,7 +24,7 @@ it(@"should create a configuration from a given texture atlas", ^{
       [DVNTextureMappingStageConfiguration configurationFromTextureAtlas:atlas];
 
   expect(configuration.texture).to.beIdenticalTo(atlas.texture);
-  DVNRandomTexCoordProviderModel *model = configuration.texCoordProviderModel;
+  DVNRandomTexCoordProviderModel *model = configuration.model;
   expect(model).to.beKindOf([DVNRandomTexCoordProviderModel class]);
   expect(model.textureMapQuads.size()).to.equal(2);
   NSSet<LTQuad *> *quads =

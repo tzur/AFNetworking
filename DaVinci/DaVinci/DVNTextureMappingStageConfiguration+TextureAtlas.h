@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DVNTextureMappingStageConfiguration (TextureAtlas)
 
 /// Returns a new \c DVNTextureMappingStageConfiguration using the texture of the given
-/// \c textureAtlas and a \c DVNRandomTexCoordProviderModel as \c texCoordProviderModel. The
-/// \c randomState of the \c DVNRandomTexCoordProviderModel is random and the \c textureMapQuads are
-/// constructed from the \c areas of the given \c textureAtlas.
+/// \c textureAtlas and a \c DVNRandomTexCoordProviderModel as \c model. The \c randomState of the
+/// \c DVNRandomTexCoordProviderModel is random and the \c textureMapQuads are constructed from the
+/// \c areas of the given \c textureAtlas.
 + (instancetype)configurationFromTextureAtlas:(LTTextureAtlas *)textureAtlas;
 
 @end
