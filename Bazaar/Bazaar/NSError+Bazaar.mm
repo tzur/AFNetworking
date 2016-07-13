@@ -3,11 +3,10 @@
 
 #import "NSError+Bazaar.h"
 
-#import <LTKit/NSError+LTKit.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kBZRErrorExceptionKey = @"BZRErrorException";
+NSString * const kBZRErrorProductsRequestKey = @"BZRErrorProductsRequest";
 
 @implementation NSError (Bazaar)
 
@@ -22,8 +21,21 @@ NSString * const kBZRErrorExceptionKey = @"BZRErrorException";
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
++ (instancetype)bzr_errorWithCode:(NSInteger)code productsRequest:(SKProductsRequest *)request
+                  underlyingError:(NSError *)underlyingError {
+  NSDictionary *userInfo = @{
+    kBZRErrorProductsRequestKey: request,
+    NSUnderlyingErrorKey: underlyingError
+  };
+  return [NSError lt_errorWithCode:code userInfo:userInfo];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
+}
+
+- (nullable SKProductsRequest *)bzr_productsRequest {
+  return self.userInfo[kBZRErrorProductsRequestKey];
 }
 
 @end

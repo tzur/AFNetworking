@@ -29,4 +29,18 @@ context(@"error with exception", ^{
   });
 });
 
+context(@"error with products request", ^{
+  it(@"should return an error with the specified request and underlying error", ^{
+    SKProductsRequest *request = OCMClassMock([SKProductsRequest class]);
+    NSError *underlyingError = [NSError lt_errorWithCode:1];
+    NSError *error = [NSError bzr_errorWithCode:1337 productsRequest:request
+                                underlyingError:underlyingError];
+
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(1337);
+    expect(error.bzr_productsRequest).to.equal(request);
+    expect(error.lt_underlyingError).to.equal(underlyingError);
+  });
+});
+
 SpecEnd

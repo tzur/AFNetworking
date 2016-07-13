@@ -8,7 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// All error codes produced by Bazaar.
 LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// The process of application receipt validation has failed.
-  BZRErrorCodeReceiptValidationFailed
+  BZRErrorCodeReceiptValidationFailed,
+  /// Failure during products metadata fetching.
+  BZRErrorCodeProductsMetadataFetchingFailed
 );
 
 NS_ASSUME_NONNULL_END
