@@ -159,8 +159,14 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the properties of the given \c touch and the given \c sequenceID. The given
-/// \c touch is not retained by the returned object.
+/// \c touch is not retained by the returned object. The \c timestamp of the returned object equals
+/// the \c timestamp of the given \c touch.
 + (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID;
+
+/// Initializes with the properties of the given \c touch, \c timestamp, and \c sequenceID. The
+/// given \c touch is not retained by the returned object.
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch timestamp:(NSTimeInterval)timestamp
+                                     sequenceID:(NSUInteger)sequenceID;
 
 @end
 
