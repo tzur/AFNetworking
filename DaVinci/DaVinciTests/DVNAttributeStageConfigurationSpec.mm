@@ -3,6 +3,8 @@
 
 #import "DVNAttributeStageConfiguration.h"
 
+#import <LTKitTests/LTEqualityExamples.h>
+
 SpecBegin(DVNAttributeStageConfiguration)
 
 context(@"initialization", ^{
@@ -18,6 +20,23 @@ context(@"initialization", ^{
         [[DVNAttributeStageConfiguration alloc] initWithAttributeProviderModels:models];
     expect(configuration.attributeProviderModels).to.equal(models);
   });
+});
+
+itShouldBehaveLike(kLTEqualityExamples, ^{
+  NSArray<id<DVNAttributeProviderModel>> *models =
+      @[OCMProtocolMock(@protocol(DVNAttributeProviderModel))];
+
+  DVNAttributeStageConfiguration *differentConfiguration =
+      [[DVNAttributeStageConfiguration alloc]
+       initWithAttributeProviderModels:@[OCMProtocolMock(@protocol(DVNAttributeProviderModel))]];
+
+  return @{
+    kLTEqualityExamplesObject: [[DVNAttributeStageConfiguration alloc]
+                                initWithAttributeProviderModels:models],
+    kLTEqualityExamplesEqualObject: [[DVNAttributeStageConfiguration alloc]
+                                     initWithAttributeProviderModels:models],
+    kLTEqualityExamplesDifferentObjects: @[differentConfiguration]
+  };
 });
 
 SpecEnd

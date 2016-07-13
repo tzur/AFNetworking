@@ -15,6 +15,9 @@
 		258341851D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341841D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm */; };
 		258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341BB1D33B3CB0005BC07 /* DVNGeometryValues.mm */; };
 		258341BE1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341BD1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm */; };
+		25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */; };
+		25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */; };
+		25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */; };
 		282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */; };
 		282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154E11D1AF0A100420FA9 /* opencv2.framework */; };
 		282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DB1D1AEF4700420FA9 /* AVFoundation.framework */; };
@@ -279,6 +282,11 @@
 		258341BA1D33B3CB0005BC07 /* DVNGeometryValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryValues.h; sourceTree = "<group>"; };
 		258341BB1D33B3CB0005BC07 /* DVNGeometryValues.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryValues.mm; sourceTree = "<group>"; };
 		258341BD1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryValuesSpec.mm; sourceTree = "<group>"; };
+		25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTEqualityExamples.h; path = ../../LTKit/LTKitTests/LTEqualityExamples.h; sourceTree = "<group>"; };
+		25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTEqualityExamples.mm; path = ../../LTKit/LTKitTests/LTEqualityExamples.mm; sourceTree = "<group>"; };
+		25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPipelineConfiguration.h; sourceTree = "<group>"; };
+		25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfiguration.mm; sourceTree = "<group>"; };
+		25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfigurationSpec.mm; sourceTree = "<group>"; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		500A3ADB1D2D348700043E18 /* DVNRandomTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNRandomTexCoordProvider.h; sourceTree = "<group>"; };
@@ -495,6 +503,8 @@
 		500F77CA1D2D35C600023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */,
+				25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */,
 				500F77CB1D2D35CC00023343 /* Configuration */,
 				500F77CC1D2D35E000023343 /* Stage Component API */,
 			);
@@ -596,6 +606,7 @@
 		500F77D91D2D3A7700023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */,
 				500F77DA1D2D3AA400023343 /* Configuration */,
 				500F77DB1D2D3AA900023343 /* Stage Component API */,
 			);
@@ -678,6 +689,8 @@
 		50574AB51D2D60230076C60D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
+				25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */,
+				25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */,
 				50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */,
 				50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */,
 			);
@@ -1050,6 +1063,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
+				25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */,
 				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
 				258341691D339AB60005BC07 /* DVNRenderStageConfiguration.mm in Sources */,
 				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
@@ -1067,8 +1081,10 @@
 				500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */,
 				500F77D41D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm in Sources */,
 				500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */,
+				25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */,
 				500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */,
 				258341851D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm in Sources */,
+				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
 				258341BE1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm in Sources */,

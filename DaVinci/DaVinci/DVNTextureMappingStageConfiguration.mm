@@ -3,9 +3,17 @@
 
 #import "DVNTextureMappingStageConfiguration.h"
 
+#import <LTEngine/LTTexture.h>
+
+#import "DVNTexCoordProvider.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNTextureMappingStageConfiguration
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
 
 - (instancetype)initWithTexCoordProviderModel:(id<DVNTexCoordProviderModel>)texCoordProviderModel
                                       texture:(LTTexture *)texture {
@@ -17,6 +25,27 @@ NS_ASSUME_NONNULL_BEGIN
     _texture = texture;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(DVNTextureMappingStageConfiguration *)configuration {
+  if (self == configuration) {
+    return YES;
+  }
+
+  if (![configuration isKindOfClass:[DVNTextureMappingStageConfiguration class]]) {
+    return NO;
+  }
+
+  return [self.texCoordProviderModel isEqual:configuration.texCoordProviderModel] &&
+      [self.texture isEqual:configuration.texture];
+}
+
+- (NSUInteger)hash {
+  return self.texCoordProviderModel.hash;
 }
 
 @end
