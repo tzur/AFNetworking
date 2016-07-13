@@ -61,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self setupPreviewView:self.viewModel.previewLayer];
   [self setupFocusView];
   [self setupGridView];
+  [self setupCaptureAnimation];
 }
 
 #pragma mark -
@@ -188,6 +189,27 @@ NS_ASSUME_NONNULL_BEGIN
   self.blurView.hidden = YES;
   [self.view addSubview:self.blurView];
   RAC(self.blurView, hidden) = [self cui_isVisible];
+}
+
+#pragma mark -
+#pragma mark Image capture
+#pragma mark -
+
+- (void)setupCaptureAnimation {
+  @weakify(self);
+  [[self.viewModel.animateCapture
+      deliverOnMainThread]
+      subscribeNext:^(id) {
+        @strongify(self);
+        [self animateImageCapture];
+      }];
+}
+
+- (void)animateImageCapture {
+  self.view.alpha = 0;
+  [UIView animateWithDuration:0.25 animations:^{
+    self.view.alpha = 1;
+  }];
 }
 
 @end
