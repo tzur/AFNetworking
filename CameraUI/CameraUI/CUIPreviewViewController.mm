@@ -5,6 +5,7 @@
 
 #import "CUIFocusIconMode.h"
 #import "CUIFocusView.h"
+#import "CUIGridView.h"
 #import "CUILayerView.h"
 #import "CUIPreviewViewModel.h"
 #import "CUISharedTheme.h"
@@ -21,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Focus indicator.
 @property (readonly, nonatomic) CUIFocusView *focusView;
+
+/// Grid overlay.
+@property (readonly, nonatomic) CUIGridView *gridView;
 
 /// Recognizer for tap gestures, used to control the camera focus.
 @property (readonly, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
@@ -43,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
   [super viewDidLayoutSubviews];
 
   self.previewView.frame = self.view.bounds;
+  self.gridView.frame = self.view.bounds;
 }
 
 - (void)viewDidLoad {
@@ -50,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   [self setupPreviewView:self.viewModel.previewLayer];
   [self setupFocusView];
+  [self setupGridView];
 }
 
 #pragma mark -
@@ -70,6 +76,12 @@ NS_ASSUME_NONNULL_BEGIN
       initWithTarget:self.viewModel action:@selector(previewPinched:)];
   [self.previewView addGestureRecognizer:self.pinchGestureRecognizer];
   RAC(self.pinchGestureRecognizer, enabled) = RACObserve(self, viewModel.pinchEnabled);
+}
+
+- (void)setupGridView {
+  _gridView = [CUIGridView whiteGrid];
+  RAC(self.gridView, hidden) = RACObserve(self, viewModel.gridHidden);
+  [self.view addSubview:self.gridView];
 }
 
 #pragma mark -

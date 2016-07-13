@@ -86,4 +86,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@implementation CUIGridView (Factory)
+
++ (CUIGridView *)whiteGrid {
+  CUIGridView *gridView = [[CUIGridView alloc] initWithFrame:CGRectZero];
+  gridView.lineWidth = 1;
+  gridView.color = [UIColor whiteColor];
+  gridView.outlineWidth = 0.5;
+  gridView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+  return  gridView;
+}
+
+@end
+
 NS_ASSUME_NONNULL_END

@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES when the preview view should be hidden.
 @property (readonly, nonatomic) BOOL previewHidden;
 
+/// \c YES when the grid overlay view should be hidden. Defaults to \c YES.
+@property (nonatomic) BOOL gridHidden;
+
 @end
 
 NS_ASSUME_NONNULL_END
