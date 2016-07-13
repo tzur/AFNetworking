@@ -7,28 +7,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTAttributeData, LTGPUStruct, LTTexture;
 
-/// Name of uniform variable required to exist in any vertex shader source used as initialization
-/// parameter of an \c LTDynamicQuadDrawer object, providing access to the projection matrix used by
-/// the corresponding shader.
+/// Name of <tt>uniform mat4</tt> variable required to exist in any vertex shader source used as
+/// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the projection
+/// matrix used by the corresponding shader.
 ///
 /// <tt>GLKMatrix4MakeOrtho(0, 1, 0, 1, -1, 1)</tt> is used as default value if
 /// <tt>[LTGLContext currentContext].renderingToScreen is \c NO, and
 /// <tt>GLKMatrix4MakeOrtho(0, 1, 1, 0, -1, 1)</tt>, otherwise.
 extern NSString * const kLTQuadDrawerUniformProjection;
 
-/// Name of attribute variable required to exist in any vertex shader source used as initialization
-/// parameter of an \c LTDynamicQuadDrawer object, providing access to the vertex position used by
-/// the corresponding shader.
+/// Name of <tt>attribute vec3</tt> variable required to exist in any vertex shader source used as
+/// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the vertex
+/// position used by the corresponding shader.
 extern NSString * const kLTQuadDrawerAttributePosition;
 
-/// Name of attribute variable required to exist in any vertex shader source used as initialization
-/// parameter of an \c LTDynamicQuadDrawer object, providing access to the texture coordinate
-/// position used by the corresponding shader.
+/// Name of <tt>attribute vec2</tt> variable required to exist in any vertex shader source used as
+/// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the texture
+/// coordinate position used by the corresponding shader.
 extern NSString * const kLTQuadDrawerAttributeTexCoord;
 
-/// Name of sampler uniform variable required to exist in any fragment shader used as initialization
-/// parameter of an \c LTDynamicQuadDrawer object, providing access to the texture used for
-/// texture-mapping of the rendered quadrilaterals.
+/// Name of <tt>uniform sampler2D</tt> variable required to exist in any fragment shader used as
+/// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the texture
+/// used for texture-mapping of the rendered quadrilaterals.
 extern NSString * const kLTQuadDrawerSamplerUniformTextureMap;
 
 /// Name of GPU struct used internally by \c LTDynamicQuadDrawer objects. Must not be used as name
