@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Display link used to trigger forwarding of stationary touch events.
 @property (readonly, nonatomic) CADisplayLink *displayLink;
 
+/// Object used to retrieve the system uptime.
+@property (readonly, nonatomic) NSProcessInfo *processInfo;
+
 /// Lock used used to prevent potential race conditions where a beginning or terminating touch event
 /// sequence is currently being handled on a thread \c A and the \c displayLink triggers the
 /// forwarding of stationary touch events on a different thread \c B, causing an interleaved
@@ -45,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.delegate = delegate;
     self.touchToSequenceID = [NSMapTable weakToStrongObjectsMapTable];
     self.sequenceID = 0;
+    _displayLink = [self displayLinkForStationaryTouchEvents];
+    _processInfo = [NSProcessInfo processInfo];
     _lock = [[NSLock alloc] init];
   }
   return self;
@@ -151,8 +156,9 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  NSEnumerator *keyEnumerator = [self.touchToSequenceID keyEnumerator];
+  NSTimeInterval timestamp = self.processInfo.systemUptime;
 
+  NSEnumerator *keyEnumerator = [self.touchToSequenceID keyEnumerator];
   while (UITouch *touch = [keyEnumerator nextObject]) {
     if (touch.phase != UITouchPhaseStationary) {
       continue;
@@ -160,6 +166,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:touch] unsignedIntegerValue];
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touch
+                                                                   timestamp:timestamp
                                                                   sequenceID:sequenceID];
     [self.delegate
      receivedTouchEvents:@[touchEvent]

@@ -9,6 +9,7 @@
 
 @interface LTTouchEventView ()
 - (void)forwardStationaryTouchEvents:(CADisplayLink *)link;
+@property (readonly, nonatomic) NSProcessInfo *processInfo;
 @end
 
 @interface LTTestTouchEventDelegateCall : NSObject
@@ -431,6 +432,7 @@ context(@"forwarding of stationary touch events", ^{
   __block id mainTouch2;
   __block LTTouchEventView *view;
   __block LTTestTouchEventDelegate *delegate;
+  __block id processInfoPartialMock;
 
   beforeEach(^{
     mainTouch0 = LTTouchEventViewCreateTouch(0);
@@ -441,6 +443,7 @@ context(@"forwarding of stationary touch events", ^{
     delegate = [[LTTestTouchEventDelegate alloc] init];
 
     view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+    processInfoPartialMock = OCMPartialMock(view.processInfo);
     [view touchesBegan:[NSSet setWithArray:@[mainTouch0, mainTouch1]] withEvent:eventMock];
     [view touchesBegan:[NSSet setWithArray:@[mainTouch2]] withEvent:eventMock];
     [delegate.calls removeAllObjects];
@@ -450,6 +453,7 @@ context(@"forwarding of stationary touch events", ^{
     OCMStub([mainTouch0 phase]).andReturn(UITouchPhaseStationary);
     OCMStub([mainTouch1 phase]).andReturn(UITouchPhaseStationary);
     OCMStub([mainTouch2 phase]).andReturn(UITouchPhaseBegan);
+    OCMExpect([processInfoPartialMock systemUptime]).andReturn(123.456);
 
     [view forwardStationaryTouchEvents:OCMClassMock([CADisplayLink class])];
 
@@ -461,6 +465,9 @@ context(@"forwarding of stationary touch events", ^{
     expect(delegate.calls[1].predictedEvents).to.haveACountOf(0);
     expect(delegate.calls[1].state).to.equal(LTTouchEventSequenceStateContinuationStationary);
 
+    expect(delegate.calls[0].events[0].timestamp).to.equal(123.456);
+    expect(delegate.calls[1].events[0].timestamp).to.equal(123.456);
+
     id<LTTouchEvent> touchEvent = !delegate.calls[0].events[0].sequenceID ?
         delegate.calls[0].events[0] : delegate.calls[1].events[0];
     id<LTTouchEvent> otherTouchEvent = delegate.calls[0].events[0].sequenceID ?
@@ -470,6 +477,8 @@ context(@"forwarding of stationary touch events", ^{
     expect(otherTouchEvent.sequenceID).to.equal(1);
     expect(touchEvent.phase).to.equal(UITouchPhaseStationary);
     expect(otherTouchEvent.phase).to.equal(UITouchPhaseStationary);
+
+    OCMVerifyAll(processInfoPartialMock);
   });
 });
 
