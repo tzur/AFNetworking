@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Value class representing the configuration of the attribute stage of the \c DVNPipeline.
 @interface DVNAttributeStageConfiguration : NSObject
 
-/// Initializes with an empty collection of \c attributeProviderModels.
+/// Initializes with an empty collection of \c models.
 - (instancetype)init;
 
 /// Initializes with the given attribute \c models of attribute providers.
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Models of the vertex shader attribute providers used in the attribute stage of the
 /// \c DVNPipeline.
-@property (readonly, nonatomic) NSArray<id<DVNAttributeProviderModel>> *attributeProviderModels;
+@property (readonly, nonatomic) NSArray<id<DVNAttributeProviderModel>> *models;
 
 @end
 

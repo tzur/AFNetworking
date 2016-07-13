@@ -10,7 +10,7 @@ SpecBegin(DVNAttributeStageConfiguration)
 context(@"initialization", ^{
   it(@"should initialize correctly without parameters", ^{
     DVNAttributeStageConfiguration *configuration = [[DVNAttributeStageConfiguration alloc] init];
-    expect(configuration.attributeProviderModels).to.beEmpty();
+    expect(configuration.models).to.beEmpty();
   });
 
   it(@"should initialize correctly", ^{
@@ -18,7 +18,7 @@ context(@"initialization", ^{
         @[OCMProtocolMock(@protocol(DVNAttributeProviderModel))];
     DVNAttributeStageConfiguration *configuration =
         [[DVNAttributeStageConfiguration alloc] initWithAttributeProviderModels:models];
-    expect(configuration.attributeProviderModels).to.equal(models);
+    expect(configuration.models).to.equal(models);
   });
 });
 
