@@ -10,21 +10,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Instructs the camera to set white balance according to the current scene and then lock the
 /// white balance settings.
 ///
-/// Returned signal sends no values and completes when the new white balance is set, or errs if
+/// Returned signal sends \c RACUnit and completes when the new white balance is set, or errs if
 /// there is a problem setting the white balance. All events are sent on an arbitrary thread.
 - (RACSignal *)setSingleWhiteBalance;
 
 /// Instructs the camera to continuously set white balance according to the current scene, updating
 /// them when the device and/or subject move, until setting the white balance again.
 ///
-/// Returned signal sends no values and completes when the new white balance is set for the first
+/// Returned signal sends \c RACUnit and completes when the new white balance is set for the first
 /// time, or errs if there is a problem setting the white balance. All events are sent on an
 /// arbitrary thread.
 - (RACSignal *)setContinuousWhiteBalance;
 
 /// Instructs the camera to lock the current white balance.
 ///
-/// Returned signal sends no values and completes when white balance is locked, or errs if there is
+/// Returned signal sends \c RACUnit and completes when white balance is locked, or errs if there is
 /// a problem locking white balance. All events are sent on an arbitrary thread.
 ///
 /// @see \c AVCaptureDevice.whiteBalanceMode.
