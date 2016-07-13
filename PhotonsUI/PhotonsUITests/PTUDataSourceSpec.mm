@@ -35,9 +35,15 @@ beforeEach(^{
 });
 
 it(@"should start with empty data", ^{
-  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]).to.beNil();
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]])
+      .to.beNil();
   expect(dataSource.hasData).to.beFalsy();
   expect(dataSource.title).to.beNil();
+});
+
+it(@"should not update hasData with empty data", ^{
+  [dataSignal sendNext:[[PTUChangeset alloc] initWithAfterDataModel:@[@[], @[]]]];
+  expect(dataSource.hasData).to.beFalsy();
 });
 
 it(@"should register given cell class for reuse", ^{

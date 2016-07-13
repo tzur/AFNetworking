@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeNext:^(PTUChangeset *changeset) {
         @strongify(self)
         self.dataModel = changeset.afterDataModel;
-        self.hasData = YES;
+        self.hasData = [self dataModelHasData];
 
         if (!changeset.hasIncrementalChanges) {
           [self.collectionView reloadData];
@@ -123,6 +123,16 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self)
         self.error = error;
       }];
+}
+
+- (BOOL)dataModelHasData {
+  for (id<LTRandomAccessCollection> collection in self.dataModel) {
+    if (collection.count) {
+      return YES;
+    }
+  }
+  
+  return NO;
 }
 
 - (void)bindMetadataSignal {
