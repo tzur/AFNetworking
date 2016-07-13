@@ -18,12 +18,18 @@
 		25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */; };
 		25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */; };
 		25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */; };
+		25AD67771D355A900092B3E4 /* DVNPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67761D355A900092B3E4 /* DVNPipeline.mm */; };
+		25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */; };
+		25AD677C1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */; };
 		282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */; };
 		282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154E11D1AF0A100420FA9 /* opencv2.framework */; };
 		282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DB1D1AEF4700420FA9 /* AVFoundation.framework */; };
 		282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154D81D1AEF1400420FA9 /* Accelerate.framework */; };
 		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
+		50073F8E1D363179009F7F48 /* EXPMatchers+equalMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */; };
+		50073F911D3631FB009F7F48 /* LTTestUtils+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F901D3631FB009F7F48 /* LTTestUtils+LTEngine.mm */; };
+		50073F941D363274009F7F48 /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F931D363274009F7F48 /* NSValue+OpenCVExtensions.mm */; };
 		500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */; };
 		500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */; };
 		500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */; };
@@ -39,8 +45,37 @@
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
 		50574B0D1D2D66420076C60D /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50574B0C1D2D66420076C60D /* libLTKit.a */; };
+		5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */; };
+		5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */; };
 		50B586F51D2BA297007556A6 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B586F41D2BA297007556A6 /* libextobjc_iOS.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		50C90F3B1D3647530058A4F3 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.vsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
+		50C90F3C1D3647820058A4F3 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		250154861D1AE92900420FA9 /* PBXContainerItemProxy */ = {
@@ -287,8 +322,19 @@
 		25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPipelineConfiguration.h; sourceTree = "<group>"; };
 		25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfiguration.mm; sourceTree = "<group>"; };
 		25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfigurationSpec.mm; sourceTree = "<group>"; };
+		25AD67751D355A900092B3E4 /* DVNPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPipeline.h; sourceTree = "<group>"; };
+		25AD67761D355A900092B3E4 /* DVNPipeline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipeline.mm; sourceTree = "<group>"; };
+		25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineSpec.mm; sourceTree = "<group>"; };
+		25AD677A1D355BC10092B3E4 /* DVNTestPipelineConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNTestPipelineConfiguration.h; sourceTree = "<group>"; };
+		25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTestPipelineConfiguration.mm; sourceTree = "<group>"; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+equalMat.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalMat.h"; sourceTree = "<group>"; };
+		50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+equalMat.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalMat.mm"; sourceTree = "<group>"; };
+		50073F8F1D3631FB009F7F48 /* LTTestUtils+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LTTestUtils+LTEngine.h"; path = "../../LTEngine/LTEngineTests/LTTestUtils+LTEngine.h"; sourceTree = "<group>"; };
+		50073F901D3631FB009F7F48 /* LTTestUtils+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "LTTestUtils+LTEngine.mm"; path = "../../LTEngine/LTEngineTests/LTTestUtils+LTEngine.mm"; sourceTree = "<group>"; };
+		50073F921D363274009F7F48 /* NSValue+OpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSValue+OpenCVExtensions.h"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.h"; sourceTree = "<group>"; };
+		50073F931D363274009F7F48 /* NSValue+OpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSValue+OpenCVExtensions.mm"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.mm"; sourceTree = "<group>"; };
 		500A3ADB1D2D348700043E18 /* DVNRandomTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNRandomTexCoordProvider.h; sourceTree = "<group>"; };
 		500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRandomTexCoordProvider.mm; sourceTree = "<group>"; };
 		500A3ADD1D2D348700043E18 /* DVNTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTexCoordProvider.h; sourceTree = "<group>"; };
@@ -312,6 +358,8 @@
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		50574B0C1D2D66420076C60D /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
 		50B586F41D2BA297007556A6 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
+		50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.vsh; sourceTree = "<group>"; };
+		50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.fsh; sourceTree = "<group>"; };
 		50FF1A531D2CDFF400E24B4D /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		50FF1A551D2CDFF400E24B4D /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		50FF1A561D2CDFF400E24B4D /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -503,6 +551,8 @@
 		500F77CA1D2D35C600023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				25AD67751D355A900092B3E4 /* DVNPipeline.h */,
+				25AD67761D355A900092B3E4 /* DVNPipeline.mm */,
 				25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */,
 				25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */,
 				500F77CB1D2D35CC00023343 /* Configuration */,
@@ -597,6 +647,7 @@
 		500F77D81D2D3A6900023343 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
+				50C90F3A1D3646860058A4F3 /* Shaders */,
 				500F77D91D2D3A7700023343 /* API */,
 				500F77D51D2D3A4700023343 /* Implementations */,
 			);
@@ -606,6 +657,9 @@
 		500F77D91D2D3A7700023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				25AD677A1D355BC10092B3E4 /* DVNTestPipelineConfiguration.h */,
+				25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */,
+				25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */,
 				25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */,
 				500F77DA1D2D3AA400023343 /* Configuration */,
 				500F77DB1D2D3AA900023343 /* Stage Component API */,
@@ -689,12 +743,27 @@
 		50574AB51D2D60230076C60D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
+				50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */,
+				50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */,
 				25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */,
 				25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */,
 				50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */,
 				50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */,
+				50073F8F1D3631FB009F7F48 /* LTTestUtils+LTEngine.h */,
+				50073F901D3631FB009F7F48 /* LTTestUtils+LTEngine.mm */,
+				50073F921D363274009F7F48 /* NSValue+OpenCVExtensions.h */,
+				50073F931D363274009F7F48 /* NSValue+OpenCVExtensions.mm */,
 			);
 			name = TestUtils;
+			sourceTree = "<group>";
+		};
+		50C90F3A1D3646860058A4F3 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */,
+				50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 		50D98DF11D2AAB61007618DD /* Libraries */ = {
@@ -789,6 +858,8 @@
 				2501547E1D1AE92900420FA9 /* Resources */,
 			);
 			buildRules = (
+				50C90F3B1D3647530058A4F3 /* PBXBuildRule */,
+				50C90F3C1D3647820058A4F3 /* PBXBuildRule */,
 			);
 			dependencies = (
 				250154871D1AE92900420FA9 /* PBXTargetDependency */,
@@ -1066,6 +1137,7 @@
 				25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */,
 				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
 				258341691D339AB60005BC07 /* DVNRenderStageConfiguration.mm in Sources */,
+				25AD67771D355A900092B3E4 /* DVNPipeline.mm in Sources */,
 				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
 				500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */,
 				258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */,
@@ -1077,13 +1149,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */,
+				5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */,
+				50073F8E1D363179009F7F48 /* EXPMatchers+equalMat.mm in Sources */,
 				500F77E51D2D4EB600023343 /* DVNTexCoordProviderExamples.mm in Sources */,
 				500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */,
+				25AD677C1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm in Sources */,
 				500F77D41D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm in Sources */,
 				500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */,
 				25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */,
+				50073F941D363274009F7F48 /* NSValue+OpenCVExtensions.mm in Sources */,
+				50073F911D3631FB009F7F48 /* LTTestUtils+LTEngine.mm in Sources */,
 				500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */,
 				258341851D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm in Sources */,
+				25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */,
 				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
@@ -1137,6 +1216,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SHADER_ENCRYPTION_KEY = "performSelector:";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1167,6 +1247,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SHADER_ENCRYPTION_KEY = "performSelector:";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
