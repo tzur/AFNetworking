@@ -30,6 +30,29 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(DVNRenderStageConfiguration *)configuration {
+  if (self == configuration) {
+    return YES;
+  }
+
+  if (![configuration isKindOfClass:[DVNRenderStageConfiguration class]]) {
+    return NO;
+  }
+
+  return [self.vertexSource isEqual:configuration.vertexSource] &&
+      [self.fragmentSource isEqual:configuration.fragmentSource] &&
+      [self.auxiliaryTextures isEqual:configuration.auxiliaryTextures] &&
+      [self.uniforms isEqual:configuration.uniforms];
+}
+
+- (NSUInteger)hash {
+  return self.vertexSource.hash ^ self.fragmentSource.hash ^ self.uniforms.hash;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
