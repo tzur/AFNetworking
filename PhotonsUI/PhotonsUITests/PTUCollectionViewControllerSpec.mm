@@ -239,6 +239,19 @@ context(@"collection view", ^{
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
     });
     
+    it(@"should correctly deselect items", ^{
+      dataSource.data = @[@[asset]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+      
+      NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      [collectionView selectItemAtIndexPath:indexPath animated:NO
+                             scrollPosition:UICollectionViewScrollPositionNone];
+      expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
+      [viewController deselectItem:asset];
+      expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+    });
+    
     it(@"should send values correctly when selecting items", ^{
       id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
       dataSource.data = @[@[asset, otherAsset]];
@@ -268,29 +281,10 @@ context(@"collection view", ^{
 
       expect(values).to.sendValues(@[asset, otherAsset, asset]);
     });
-    
-    it(@"should correctly send all selected items", ^{
-      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
-      dataSource.data = @[@[asset, otherAsset]];
-      [collectionView reloadData];
-      [collectionView layoutIfNeeded];
-      
-      viewController.allowsMultipleSelection = YES;
-      
-      LLSignalTestRecorder *values = [[viewController selectedItems] testRecorder];
-      
-      PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
-      PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:1 inSection:0]);
-      PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
-      PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:1 inSection:0]);
-      
-      expect(values).to.sendValues(@[@[asset], @[asset, otherAsset], @[otherAsset], @[]]);
-    });
 
     it(@"should complete selection and deselection signals when deallocated", ^{
       LLSignalTestRecorder *selectedRecorder;
       LLSignalTestRecorder *deselectedRecorder;
-      LLSignalTestRecorder *allSelectedRecorder;
       __weak PTUCollectionViewController *weakController;
 
       @autoreleasepool {
@@ -301,13 +295,11 @@ context(@"collection view", ^{
 
         selectedRecorder = [[controller itemSelected] testRecorder];
         deselectedRecorder = [[controller itemDeselected] testRecorder];
-        allSelectedRecorder = [[controller selectedItems] testRecorder];
       }
 
       expect(weakController).to.beNil();
       expect(selectedRecorder).will.complete();
       expect(deselectedRecorder).will.complete();
-      expect(allSelectedRecorder).will.complete();
     });
   });
 

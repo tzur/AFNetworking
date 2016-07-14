@@ -33,8 +33,14 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
             animated:(BOOL)animated;
 
 /// Sets \c item to be selected. Calling this method will not trigger values on the \c itemSelected
-/// signal, or apply any scrolling. If \c item cannot be found in the collection this has no effect.
+/// signal, or apply any scrolling. If \c item cannot be found in the collection or is already
+/// selected this has no effect.
 - (void)selectItem:(id<PTNDescriptor>)item;
+
+/// Sets \c item to be deselected. Calling this method will not trigger values on the
+/// \c itemDeselected signal. If \c item cannot be found in the collection or isn't selected this
+/// has no effect.
+- (void)deselectItem:(id<PTNDescriptor>)item;
 
 /// Sets \c configuration as the receiver's current configuration. Calling this method changes the
 /// underlying collection layout and possibly changes the offest of the scrolled content.
@@ -47,18 +53,15 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// Hot signal sending the appropriate \c id<PTNDescriptor> of each selected item as it's being
 /// selected. This signal does not err and completes when the receiver is deallocated.
 ///
+/// @note This does not actually set item as selected, If it should be selected use \c selectItem:.
+///
 /// @return <tt>RACSignal<id<PTNDescriptor>></tt>.
 @property (readonly, nonatomic) RACSignal *itemSelected;
 
-/// Hot signal sending an array of currently selected \c id<PTNDescriptor> objects. The signal sends
-/// all selected items on every change to the selected item list. This signal does not err and
-/// completes when the receiver is deallocated.
-///
-/// @return <tt>RACSignal<NSArray<id<PTNDescriptor>> *></tt>.
-@property (readonly, nonatomic) RACSignal *selectedItems;
-
 /// Hot signal sending the appropriate \c id<PTNDescriptor> of each deselected item as it's being
 /// deselected. This signal does not err and completes when the receiver is deallocated.
+///
+/// @note This does not actually deselect the item, If it should be deselected use \c deselectItem:.
 ///
 /// @return <tt>RACSignal<id<PTNDescriptor>></tt>.
 @property (readonly, nonatomic) RACSignal *itemDeselected;
