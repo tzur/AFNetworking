@@ -118,3 +118,8 @@ constexpr bool operator==(lt::Interval<T> lhs, lt::Interval<T> rhs) {
       lhs.minEndpointIncluded() == rhs.minEndpointIncluded() &&
       lhs.maxEndpointIncluded()== rhs.maxEndpointIncluded();
 }
+
+template <typename T>
+constexpr bool operator!=(lt::Interval<T> lhs, lt::Interval<T> rhs) {
+  return !(lhs == rhs);
+}

@@ -49,6 +49,18 @@ context(@"equality", ^{
     anotherInterval = LTTestInterval({0, 2}, LTTestInterval::Closed);
     expect(interval == anotherInterval).to.beFalsy();
   });
+
+  it(@"should compare inequality to other intervals", ^{
+    LTTestInterval interval({0, 1}, LTTestInterval::Closed);
+    LTTestInterval anotherInterval({0, 1}, LTTestInterval::Closed);
+    expect(interval != anotherInterval).to.beFalsy();
+
+    anotherInterval = LTTestInterval({0, 1}, LTTestInterval::Open);
+    expect(interval != anotherInterval).to.beTruthy();
+
+    anotherInterval = LTTestInterval({0, 2}, LTTestInterval::Closed);
+    expect(interval != anotherInterval).to.beTruthy();
+  });
 });
 
 context(@"hash", ^{
