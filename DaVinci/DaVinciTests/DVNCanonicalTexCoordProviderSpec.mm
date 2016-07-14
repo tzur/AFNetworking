@@ -4,6 +4,7 @@
 #import "DVNCanonicalTexCoordProvider.h"
 
 #import <LTEngine/LTQuad.h>
+#import <LTKitTests/LTEqualityExamples.h>
 
 #import "DVNTexCoordProviderExamples.h"
 
@@ -29,6 +30,16 @@ context(@"initialization", ^{
     model = [[DVNCanonicalTexCoordProviderModel alloc] init];
     expect(model).toNot.beNil();
   });
+});
+
+itShouldBehaveLike(kLTEqualityExamples, ^{
+  DVNCanonicalTexCoordProviderModel *model = [[DVNCanonicalTexCoordProviderModel alloc] init];
+  DVNCanonicalTexCoordProviderModel *equalModel = [[DVNCanonicalTexCoordProviderModel alloc] init];
+  return @{
+    kLTEqualityExamplesObject: model,
+    kLTEqualityExamplesEqualObject: equalModel,
+    kLTEqualityExamplesDifferentObjects: @[]
+  };
 });
 
 itShouldBehaveLike(kDVNTexCoordProviderExamples, ^{

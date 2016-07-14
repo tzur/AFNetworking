@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTQuad.h>
 #import <LTKit/LTRandom.h>
+#import <LTKitTests/LTEqualityExamples.h>
 
 #import "DVNTexCoordProviderExamples.h"
 
@@ -31,6 +32,37 @@ context(@"initialization", ^{
     expect(model.randomState).to.equal(randomState);
     expect(model.textureMapQuads == simpleInputQuads).to.beTruthy();
   });
+
+  context(@"invalid initialization attempts", ^{
+    it(@"should raise when attempting to initialize without quads", ^{
+      expect(^{
+        model = [[DVNRandomTexCoordProviderModel alloc] initWithRandomState:randomState
+                                                            textureMapQuads:{}];
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
+});
+
+itShouldBehaveLike(kLTEqualityExamples, ^{
+  DVNRandomTexCoordProviderModel *model =
+      [[DVNRandomTexCoordProviderModel alloc] initWithRandomState:randomState
+                                                  textureMapQuads:simpleInputQuads];
+  DVNRandomTexCoordProviderModel *equalModel =
+      [[DVNRandomTexCoordProviderModel alloc] initWithRandomState:randomState
+                                                  textureMapQuads:simpleInputQuads];
+  DVNRandomTexCoordProviderModel *modelWithDifferentRandomState =
+      [[DVNRandomTexCoordProviderModel alloc]
+       initWithRandomState:[[LTRandom alloc] initWithSeed:3].engineState
+       textureMapQuads:simpleInputQuads];
+  DVNRandomTexCoordProviderModel *modelWithDifferentQuads =
+      [[DVNRandomTexCoordProviderModel alloc]
+       initWithRandomState:randomState
+       textureMapQuads:{lt::Quad(CGRectMake(0, 0, 0.5, 0.5))}];
+  return @{
+    kLTEqualityExamplesObject: model,
+    kLTEqualityExamplesEqualObject: equalModel,
+    kLTEqualityExamplesDifferentObjects: @[modelWithDifferentRandomState, modelWithDifferentQuads]
+  };
 });
 
 itShouldBehaveLike(kDVNTexCoordProviderExamples, ^{
