@@ -1,49 +1,49 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "LTCompressionType.h"
+#import "LTCompressionFormat.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-LTEnumImplement(NSUInteger, LTCompressionType,
-  LTCompressionTypeJPEG,
-  LTCompressionTypePNG,
-  LTCompressionTypeTIFF
+LTEnumImplement(NSUInteger, LTCompressionFormat,
+  LTCompressionFormatJPEG,
+  LTCompressionFormatPNG,
+  LTCompressionFormatTIFF
 );
 
-@implementation LTCompressionType (Properties)
+@implementation LTCompressionFormat (Properties)
 
 - (NSString *)UTI {
   switch (self.value) {
-    case LTCompressionTypeJPEG:
+    case LTCompressionFormatJPEG:
       return (NSString *)kUTTypeJPEG;
-    case LTCompressionTypePNG:
+    case LTCompressionFormatPNG:
       return (NSString *)kUTTypePNG;
-    case LTCompressionTypeTIFF:
+    case LTCompressionFormatTIFF:
       return (NSString *)kUTTypeTIFF;
   }
 }
 
 - (NSString *)fileExtention {
   switch (self.value) {
-    case LTCompressionTypeJPEG:
+    case LTCompressionFormatJPEG:
       return @"jpg";
-    case LTCompressionTypePNG:
+    case LTCompressionFormatPNG:
       return @"png";
-    case LTCompressionTypeTIFF:
+    case LTCompressionFormatTIFF:
       return @"tiff";
   }
 }
 
 - (NSString *)mimeType {
   switch (self.value) {
-    case LTCompressionTypeJPEG:
+    case LTCompressionFormatJPEG:
       return @"image/jpg";
-    case LTCompressionTypePNG:
+    case LTCompressionFormatPNG:
       return @"image/png";
-    case LTCompressionTypeTIFF:
+    case LTCompressionFormatTIFF:
       return @"image/tiff";
   }
 }

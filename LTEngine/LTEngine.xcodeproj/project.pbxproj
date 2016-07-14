@@ -296,9 +296,9 @@
 		2830B91319C6D07900BF4E8E /* LTIndicesArraySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2830B8F819C594AE00BF4E8E /* LTIndicesArraySpec.mm */; };
 		2830B91419C6D09A00BF4E8E /* LTIndicesArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 2830B8E419C58CBF00BF4E8E /* LTIndicesArray.h */; };
 		2833789B1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2833789A1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm */; };
-		2836F9EA1D33B9540078887C /* LTCompressionType.h in Headers */ = {isa = PBXBuildFile; fileRef = 2836F9E81D33B9540078887C /* LTCompressionType.h */; };
-		2836F9EB1D33B9540078887C /* LTCompressionType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836F9E91D33B9540078887C /* LTCompressionType.mm */; };
-		2836FA0B1D33B96F0078887C /* LTCompressionTypeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836FA0A1D33B96F0078887C /* LTCompressionTypeSpec.mm */; };
+		2836F9EA1D33B9540078887C /* LTCompressionFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 2836F9E81D33B9540078887C /* LTCompressionFormat.h */; };
+		2836F9EB1D33B9540078887C /* LTCompressionFormat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836F9E91D33B9540078887C /* LTCompressionFormat.mm */; };
+		2836FA0B1D33B96F0078887C /* LTCompressionFormatSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */; };
 		2839069418C4D9AA00BD21CE /* LTBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2839068718C4D9AA00BD21CE /* LTBrush.mm */; };
 		2839069518C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2839068B18C4D9AA00BD21CE /* LTEdgeAvoidingBrush.mm */; };
 		2839069718C4D9AA00BD21CE /* LTRoundBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2839069218C4D9AA00BD21CE /* LTRoundBrush.mm */; };
@@ -1766,9 +1766,9 @@
 		2830B8E519C58CBF00BF4E8E /* LTIndicesArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesArray.mm; sourceTree = "<group>"; };
 		2830B8F819C594AE00BF4E8E /* LTIndicesArraySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesArraySpec.mm; sourceTree = "<group>"; };
 		2833789A1AC19C8A0052ADFE /* LTCircularPatchDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCircularPatchDrawerSpec.mm; sourceTree = "<group>"; };
-		2836F9E81D33B9540078887C /* LTCompressionType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompressionType.h; sourceTree = "<group>"; };
-		2836F9E91D33B9540078887C /* LTCompressionType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompressionType.mm; sourceTree = "<group>"; };
-		2836FA0A1D33B96F0078887C /* LTCompressionTypeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompressionTypeSpec.mm; sourceTree = "<group>"; };
+		2836F9E81D33B9540078887C /* LTCompressionFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompressionFormat.h; sourceTree = "<group>"; };
+		2836F9E91D33B9540078887C /* LTCompressionFormat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompressionFormat.mm; sourceTree = "<group>"; };
+		2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompressionFormatSpec.mm; sourceTree = "<group>"; };
 		2839068618C4D9AA00BD21CE /* LTBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBrush.h; sourceTree = "<group>"; };
 		2839068718C4D9AA00BD21CE /* LTBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBrush.mm; sourceTree = "<group>"; };
 		2839068818C4D9AA00BD21CE /* LTBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBrush.fsh; sourceTree = "<group>"; };
@@ -3944,8 +3944,8 @@
 		8B3831F31B568FB300620560 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				2836F9E81D33B9540078887C /* LTCompressionType.h */,
-				2836F9E91D33B9540078887C /* LTCompressionType.mm */,
+				2836F9E81D33B9540078887C /* LTCompressionFormat.h */,
+				2836F9E91D33B9540078887C /* LTCompressionFormat.mm */,
 				28EC239A1B0CEA190099946A /* LTImageCompressor.h */,
 				28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */,
 				28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */,
@@ -3992,7 +3992,7 @@
 		8B3831F71B56903600620560 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				2836FA0A1D33B96F0078887C /* LTCompressionTypeSpec.mm */,
+				2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */,
 				2884CDB11B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm */,
 				285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
@@ -5172,7 +5172,7 @@
 				28A0C7011AC00C3500FBC803 /* LTCircularPatchDrawer.h in Headers */,
 				50D672441D26B7EB00005CC7 /* LTContentView.h in Headers */,
 				0368E6C519C0270200B99FF5 /* LTSmoothPyramidProcessor.h in Headers */,
-				2836F9EA1D33B9540078887C /* LTCompressionType.h in Headers */,
+				2836F9EA1D33B9540078887C /* LTCompressionFormat.h in Headers */,
 				500CAA0C1D26B23C009CF19F /* LTPainter+Interaction.h in Headers */,
 				8BA8221C198788A600FBE68E /* LTJSONSerializationAdapter.h in Headers */,
 				6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */,
@@ -6144,7 +6144,7 @@
 				031338D2191279B30095F99B /* LTImageBorderProcessor.mm in Sources */,
 				500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */,
 				85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */,
-				2836F9EB1D33B9540078887C /* LTCompressionType.mm in Sources */,
+				2836F9EB1D33B9540078887C /* LTCompressionFormat.mm in Sources */,
 				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				509CE8AA1D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
@@ -6317,7 +6317,7 @@
 				2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
-				2836FA0B1D33B96F0078887C /* LTCompressionTypeSpec.mm in Sources */,
+				2836FA0B1D33B96F0078887C /* LTCompressionFormatSpec.mm in Sources */,
 				0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */,
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
