@@ -59,6 +59,22 @@ struct ::std::hash<CGSize> {
 };
 
 #pragma mark -
+#pragma mark CGRect
+#pragma mark -
+
+template <>
+struct ::std::hash<CGRect> {
+  inline size_t operator()(CGRect r) const {
+    size_t seed = 0;
+    lt::detail::hash_combine(seed, r.origin.x);
+    lt::detail::hash_combine(seed, r.origin.y);
+    lt::detail::hash_combine(seed, r.size.width);
+    lt::detail::hash_combine(seed, r.size.height);
+    return seed;
+  }
+};
+
+#pragma mark -
 #pragma mark std::pair
 #pragma mark -
 
