@@ -13,6 +13,18 @@ static const lt::Quad kCanonicalQuad = lt::Quad(CGRectFromSize(CGSizeMakeUniform
 @implementation DVNCanonicalTexCoordProviderModel
 
 #pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(DVNCanonicalTexCoordProviderModel *)model {
+  return self == model || [model isKindOfClass:[DVNCanonicalTexCoordProviderModel class]];
+}
+
+- (NSUInteger)hash {
+  return 0;
+}
+
+#pragma mark -
 #pragma mark Copying
 #pragma mark -
 
