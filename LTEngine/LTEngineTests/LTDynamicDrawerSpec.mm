@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGPUStruct.h"
+#import "LTIndicesData.h"
 #import "LTTexture+Factory.h"
 
 LTGPUStructMake(LTDynamicDrawerTestStruct,
@@ -119,36 +120,10 @@ context(@"execution", ^{
 
   static const GLKMatrix4 kProjection = GLKMatrix4MakeOrtho(-1, 1, -1, 1, 1, -1);
 
-  static const LTDynamicDrawerTestStruct fullQuad[] = {
-    {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
-    {.position = LTVector3(1, -1, 0), .texCoord = LTVector2(1, 0)},
-    {.position = LTVector3(1, 1, 0), .texCoord = LTVector2(1, 1)},
-    {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
-    {.position = LTVector3(1, 1, 0), .texCoord = LTVector2(1, 1)},
-    {.position = LTVector3(-1, 1, 0), .texCoord = LTVector2(0, 1)}
-  };
-
-  static const LTDynamicDrawerTestStruct overlappingQuads[] = {
-    {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
-    {.position = LTVector3(0, -1, 0), .texCoord = LTVector2(0.5, 0)},
-    {.position = LTVector3(0, 0, 0), .texCoord = LTVector2(0.5, 0.5)},
-    {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
-    {.position = LTVector3(0, 0, 0), .texCoord = LTVector2(0.5, 0.5)},
-    {.position = LTVector3(-1, 0, 0), .texCoord = LTVector2(0, 0.5)},
-
-    {.position = LTVector3(-0.5, -0.5, 0), .texCoord = LTVector2(0.5, 0)},
-    {.position = LTVector3(0.5, -0.5, 0), .texCoord = LTVector2(1, 0)},
-    {.position = LTVector3(0.5, 0.5, 0), .texCoord = LTVector2(1, 0.5)},
-    {.position = LTVector3(-0.5, -0.5, 0), .texCoord = LTVector2(0.5, 0)},
-    {.position = LTVector3(0.5, 0.5, 0), .texCoord = LTVector2(1, 0.5)},
-    {.position = LTVector3(-0.5, 0.5, 0), .texCoord = LTVector2(0.5, 0.5)}
-  };
-
   __block LTTexture *mappedTexture;
   __block LTTexture *anotherMappedTexture;
   __block LTTexture *outputTexture;
   __block LTFbo *fbo;
-  __block LTAttributeData *attributeData;
   __block NSDictionary<NSString *, LTTexture *> *mapping;
 
   beforeEach(^{
@@ -174,133 +149,396 @@ context(@"execution", ^{
     anotherMappedTexture = nil;
     outputTexture = nil;
     fbo = nil;
-    attributeData = nil;
     mapping = nil;
   });
 
-  context(@"non-overlapping geometry", ^{
-    beforeEach(^{
-      NSData *binaryData = [NSData dataWithBytes:&fullQuad[0] length:sizeof(fullQuad)];
-      attributeData =
-          [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+  context(@"drawing triangular geometry", ^{
+    static const LTDynamicDrawerTestStruct fullQuad[] = {
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(1, -1, 0), .texCoord = LTVector2(1, 0)},
+      {.position = LTVector3(1, 1, 0), .texCoord = LTVector2(1, 1)},
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(1, 1, 0), .texCoord = LTVector2(1, 1)},
+      {.position = LTVector3(-1, 1, 0), .texCoord = LTVector2(0, 1)}
+    };
+
+    static const LTDynamicDrawerTestStruct overlappingQuads[] = {
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(0, -1, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0, 0, 0), .texCoord = LTVector2(0.5, 0.5)},
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(0, 0, 0), .texCoord = LTVector2(0.5, 0.5)},
+      {.position = LTVector3(-1, 0, 0), .texCoord = LTVector2(0, 0.5)},
+
+      {.position = LTVector3(-0.5, -0.5, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0.5, -0.5, 0), .texCoord = LTVector2(1, 0)},
+      {.position = LTVector3(0.5, 0.5, 0), .texCoord = LTVector2(1, 0.5)},
+      {.position = LTVector3(-0.5, -0.5, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0.5, 0.5, 0), .texCoord = LTVector2(1, 0.5)},
+      {.position = LTVector3(-0.5, 0.5, 0), .texCoord = LTVector2(0.5, 0.5)}
+    };
+
+    context(@"non-overlapping geometry", ^{
+      __block LTAttributeData *attributeData;
+
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&fullQuad[0] length:sizeof(fullQuad)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+      });
+
+      afterEach(^{
+        attributeData = nil;
+      });
+
+      it(@"should correctly draw with texture mapping", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
+        expectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kGreen;
+        expectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kBlue;
+        expectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kYellow;
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{@"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
+
+      it(@"should correctly draw with texture mapping and uniforms", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
+        expectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kDarkGreen;
+        expectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkBlue;
+        expectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkYellow;
+
+        mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
     });
 
-    it(@"should correctly draw with texture mapping", ^{
-      cv::Mat4b expectedMat(kHeight, kWidth);
-      expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
-      expectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kGreen;
-      expectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kBlue;
-      expectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kYellow;
+    context(@"overlapping geometry", ^{
+      __block LTAttributeData *attributeData;
 
-      [fbo bindAndDraw:^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{@"projection": $(kProjection)}];
-      }];
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&overlappingQuads[0]
+                                            length:sizeof(overlappingQuads)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+      });
 
-      expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      afterEach(^{
+        attributeData = nil;
+      });
+
+      it(@"should correctly draw with texture mapping", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat.setTo(cv::Vec4b::zeros());
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kGreen;
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{@"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
+
+      it(@"should correctly draw with texture mapping and uniforms", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat.setTo(cv::Vec4b::zeros());
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kDarkGreen;
+
+        mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
+        }];
+        
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
     });
 
-    it(@"should correctly draw with texture mapping and uniforms", ^{
-      cv::Mat4b expectedMat(kHeight, kWidth);
-      expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
-      expectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kDarkGreen;
-      expectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkBlue;
-      expectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkYellow;
+    context(@"invalid calls", ^{
+      __block LTAttributeData *attributeData;
 
-      mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&fullQuad[0] length:sizeof(fullQuad)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+      });
 
-      [fbo bindAndDraw:^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
-      }];
+      afterEach(^{
+        attributeData = nil;
+      });
 
-      expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      it(@"should raise when attempting to draw with attribute data of invalid count", ^{
+        expect(^{
+          [drawer drawWithAttributeData:@[] samplerUniformsToTextures:mapping uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to draw with attribute data holding invalid GPU struct", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:@"anotherGPUStruct" size:1
+                                                                andFields:@[]];
+        LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:[NSData data]
+                                                           inFormatOfGPUStruct:anotherGPUStruct];
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to draw with attribute data of incorrect length", ^{
+        LTDynamicDrawerTestStruct nonTriangularData[] = {
+          {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+        };
+        NSData *data = [NSData dataWithBytes:&nonTriangularData[0] length:sizeof(nonTriangularData)];
+        LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:data
+                                                           inFormatOfGPUStruct:gpuStruct];
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to draw with non-existing sampler uniform", ^{
+        mapping = @{@"nonExistingSamplerUniform": mappedTexture};
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to draw with non-existing uniform", ^{
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
+                               uniforms:@{@"nonExistingUniform": @0}];
+        }).to.raise(NSInvalidArgumentException);
+      });
     });
   });
 
-  context(@"overlapping geometry", ^{
-    beforeEach(^{
-      NSData *binaryData = [NSData dataWithBytes:&overlappingQuads[0]
-                                          length:sizeof(overlappingQuads)];
-      attributeData =
-          [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+  context(@"indexed drawing of triangular geometry", ^{
+    static const LTDynamicDrawerTestStruct nonOverlappingQuads[] = {
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(0, -1, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0, 1, 0), .texCoord = LTVector2(0.5, 1)},
+      {.position = LTVector3(-1, 1, 0), .texCoord = LTVector2(0, 1)},
+      {.position = LTVector3(1, -1, 0), .texCoord = LTVector2(1, 0)},
+      {.position = LTVector3(1, 1, 0), .texCoord = LTVector2(1, 1)},
+    };
+
+    static const LTDynamicDrawerTestStruct overlappingQuads[] = {
+      {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
+      {.position = LTVector3(0, -1, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0, 0, 0), .texCoord = LTVector2(0.5, 0.5)},
+      {.position = LTVector3(-1, 0, 0), .texCoord = LTVector2(0, 0.5)},
+
+      {.position = LTVector3(-0.5, -0.5, 0), .texCoord = LTVector2(0.5, 0)},
+      {.position = LTVector3(0.5, -0.5, 0), .texCoord = LTVector2(1, 0)},
+      {.position = LTVector3(0.5, 0.5, 0), .texCoord = LTVector2(1, 0.5)},
+      {.position = LTVector3(-0.5, 0.5, 0), .texCoord = LTVector2(0.5, 0.5)}
+    };
+
+    context(@"non-overlapping geometry", ^{
+      __block LTAttributeData *attributeData;
+      __block LTIndicesData *fullQuadIndices;
+
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&nonOverlappingQuads[0]
+                                            length:sizeof(nonOverlappingQuads)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
+
+        fullQuadIndices = [LTIndicesData dataWithByteIndices:{0, 4, 5, 0, 5, 3}];
+      });
+
+      afterEach(^{
+        attributeData = nil;
+        fullQuadIndices = nil;
+      });
+
+      it(@"should correctly draw with texture mapping", ^{
+        cv::Mat4b leftQuadExpectedMat(kHeight, kWidth, cv::Vec4b(0, 0, 0, 0));
+        leftQuadExpectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
+        leftQuadExpectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kBlue;
+
+        LTIndicesData *leftQuadIndices = [LTIndicesData dataWithByteIndices:{0, 1, 2, 0, 2, 3}];
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:leftQuadIndices
+              samplerUniformsToTextures:mapping
+                               uniforms:@{@"projection": $(kProjection)}];
+        }];
+        expect($(outputTexture.image)).to.equalMat($(leftQuadExpectedMat));
+
+        [outputTexture clearWithColor:LTVector4::zeros()];
+        cv::Mat4b rightQuadExpectedMat(kHeight, kWidth, cv::Vec4b(0, 0, 0, 0));
+        rightQuadExpectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kGreen;
+        rightQuadExpectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kYellow;
+
+        LTIndicesData *rightQuadIndices = [LTIndicesData dataWithByteIndices:{1, 4, 5, 1, 5, 2}];
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:rightQuadIndices
+              samplerUniformsToTextures:mapping
+                               uniforms:@{@"projection": $(kProjection)}];
+        }];
+        expect($(outputTexture.image)).to.equalMat($(rightQuadExpectedMat));
+
+        [outputTexture clearWithColor:LTVector4::zeros()];
+        cv::Mat4b fullQuadExpectedMat(kHeight, kWidth);
+        fullQuadExpectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
+        fullQuadExpectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kBlue;
+        fullQuadExpectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kGreen;
+        fullQuadExpectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kYellow;
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:fullQuadIndices
+              samplerUniformsToTextures:mapping
+                               uniforms:@{@"projection": $(kProjection)}];
+        }];
+        expect($(outputTexture.image)).to.equalMat($(fullQuadExpectedMat));
+      });
+
+      it(@"should correctly draw with texture mapping and uniforms", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
+        expectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kDarkGreen;
+        expectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkBlue;
+        expectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kDarkYellow;
+
+        mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:fullQuadIndices
+              samplerUniformsToTextures:mapping
+                               uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
     });
 
-    it(@"should correctly draw with texture mapping", ^{
-      cv::Mat4b expectedMat(kHeight, kWidth);
-      expectedMat.setTo(cv::Vec4b::zeros());
-      expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
-      expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kGreen;
+    context(@"overlapping geometry", ^{
+      __block LTAttributeData *attributeData;
+      __block LTIndicesData *overlappingQuadsIndices;
 
-      [fbo bindAndDraw:^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{@"projection": $(kProjection)}];
-      }];
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&overlappingQuads[0]
+                                            length:sizeof(overlappingQuads)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
 
-      expect($(outputTexture.image)).to.equalMat($(expectedMat));
+        overlappingQuadsIndices = [LTIndicesData dataWithByteIndices:{0, 1, 2, 0, 2, 3,
+                                                                      4, 5, 6, 4, 6, 7}];
+      });
+
+      afterEach(^{
+        attributeData = nil;
+        overlappingQuadsIndices = nil;
+      });
+
+      it(@"should correctly draw with texture mapping", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat.setTo(cv::Vec4b::zeros());
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kGreen;
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:overlappingQuadsIndices
+              samplerUniformsToTextures:mapping uniforms:@{@"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
+
+      it(@"should correctly draw with texture mapping and uniforms", ^{
+        cv::Mat4b expectedMat(kHeight, kWidth);
+        expectedMat.setTo(cv::Vec4b::zeros());
+        expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kDarkGreen;
+
+        mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+
+        [fbo bindAndDraw:^{
+          [drawer drawWithAttributeData:@[attributeData] indices:overlappingQuadsIndices
+              samplerUniformsToTextures:mapping
+                               uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
+        }];
+
+        expect($(outputTexture.image)).to.equalMat($(expectedMat));
+      });
     });
 
-    it(@"should correctly draw with texture mapping and uniforms", ^{
-      cv::Mat4b expectedMat(kHeight, kWidth);
-      expectedMat.setTo(cv::Vec4b::zeros());
-      expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
-      expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kDarkGreen;
+    context(@"invalid calls", ^{
+      __block LTAttributeData *attributeData;
+      __block LTIndicesData *triangularIndices;
 
-      mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
+      beforeEach(^{
+        NSData *binaryData = [NSData dataWithBytes:&nonOverlappingQuads[0]
+                                            length:sizeof(nonOverlappingQuads)];
+        attributeData =
+            [[LTAttributeData alloc] initWithData:binaryData inFormatOfGPUStruct:gpuStruct];
 
-      [fbo bindAndDraw:^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
-      }];
+        triangularIndices = [LTIndicesData dataWithByteIndices:{0, 1, 2}];
+      });
 
-      expect($(outputTexture.image)).to.equalMat($(expectedMat));
-    });
-  });
+      afterEach(^{
+        attributeData = nil;
+        triangularIndices = nil;
+      });
 
-  context(@"invalid calls", ^{
-    it(@"should raise when attempting to draw with attribute data of invalid count", ^{
-      expect(^{
-        [drawer drawWithAttributeData:@[] samplerUniformsToTextures:mapping uniforms:@{}];
-      }).to.raise(NSInvalidArgumentException);
-    });
+      it(@"should raise when attempting to draw with attribute data of invalid count", ^{
+        expect(^{
+          [drawer drawWithAttributeData:@[] indices:triangularIndices
+              samplerUniformsToTextures:mapping uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
 
-    it(@"should raise when attempting to draw with attribute data holding invalid GPU struct", ^{
-      LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:@"anotherGPUStruct" size:1
-                                                              andFields:@[]];
-      LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:[NSData data]
-                                                         inFormatOfGPUStruct:anotherGPUStruct];
-      expect(^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{}];
-      }).to.raise(NSInvalidArgumentException);
-    });
+      it(@"should raise when attempting to draw with attribute data holding invalid GPU struct", ^{
+        LTGPUStruct *anotherGPUStruct = [[LTGPUStruct alloc] initWithName:@"anotherGPUStruct" size:1
+                                                                andFields:@[]];
+        LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:[NSData data]
+                                                           inFormatOfGPUStruct:anotherGPUStruct];
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] indices:triangularIndices
+              samplerUniformsToTextures:mapping uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
 
-    it(@"should raise when attempting to draw with attribute data of incorrect length", ^{
-      LTDynamicDrawerTestStruct nonTriangularData[] = {
-        {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
-      };
-      NSData *data = [NSData dataWithBytes:&nonTriangularData[0] length:sizeof(nonTriangularData)];
-      LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:data
-                                                         inFormatOfGPUStruct:gpuStruct];
-      expect(^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{}];
-      }).to.raise(NSInvalidArgumentException);
-    });
+      it(@"should raise when attempting to draw with indices data of incorrect count", ^{
+        LTIndicesData *nonTriangularIndices = [LTIndicesData dataWithByteIndices:{0, 1}];
 
-    it(@"should raise when attempting to draw with non-existing sampler uniform", ^{
-      mapping = @{@"nonExistingSamplerUniform": mappedTexture};
-      expect(^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{}];
-      }).to.raise(NSInvalidArgumentException);
-    });
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] indices:nonTriangularIndices
+              samplerUniformsToTextures:mapping uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
 
-    it(@"should raise when attempting to draw with non-existing uniform", ^{
-      expect(^{
-        [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
-                             uniforms:@{@"nonExistingUniform": @0}];
-      }).to.raise(NSInvalidArgumentException);
+      it(@"should raise when attempting to draw with non-existing sampler uniform", ^{
+        mapping = @{@"nonExistingSamplerUniform": mappedTexture};
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] indices:triangularIndices
+              samplerUniformsToTextures:mapping uniforms:@{}];
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to draw with non-existing uniform", ^{
+        expect(^{
+          [drawer drawWithAttributeData:@[attributeData] indices:triangularIndices
+              samplerUniformsToTextures:mapping uniforms:@{@"nonExistingUniform": @0}];
+        }).to.raise(NSInvalidArgumentException);
+      });
     });
   });
 });

@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTAttributeData, LTGPUStruct, LTTexture;
+@class LTAttributeData, LTGPUStruct, LTIndicesData, LTTexture;
 
 /// Immutable object for drawing triangular geometry by invocating single OpenGLES draw calls, using
 /// a fixed OpenGLES program and changing attribute data. The drawer is optimized for attribute data
@@ -51,6 +51,32 @@ NS_ASSUME_NONNULL_BEGIN
     samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
                      uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms;
 
+/// Performs a single draw call to OpenGLES, using the given \c attributeData, \c indices,
+/// \c uniformToTextureMapping and \c uniforms.
+///
+/// @param attributeData Attribute data used as input to the vertex shader executed in this
+/// render pass. Must be in the exact format of the \c gpuStructs given upon initialization, i.e.
+/// a) the number of elements in the \c attributeData must correspond to the number of elements in
+/// the \c gpuStructs given upon initialization, and b) the \c gpuStruct of every element in the
+/// \c attributeData must equal the corresponding struct of the \c gpuStructs provided upon
+/// initialization. In addition, the number of bytes of the binary \c data of every element in the
+/// given \c attributeData must be equal.
+///
+/// @param indices Object providing the indices of the elements of \c attributeData to be used for
+/// drawing. The \c count property of this object must be divisible by \c 3.
+///
+/// @param samplerUniformsToTextures Mapping of <tt>sampler uniform<\tt> variable names used by the
+/// shaders provided upon initialization to corresponding textures.
+///
+/// @param uniforms Mapping of \c uniform variable names used by the shaders provided upon
+/// initialization to corresponding values.
+///
+/// @important This object assumes the existence of a valid render target. Hence, a framebuffer must
+/// be bound before calling this method.
+- (void)drawWithAttributeData:(NSArray<LTAttributeData *> *)attributeData
+                      indices:(LTIndicesData *)indices
+    samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
+                     uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms;
 @end
 
 NS_ASSUME_NONNULL_END

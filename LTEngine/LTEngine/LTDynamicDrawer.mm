@@ -8,6 +8,7 @@
 #import "LTDrawingContext.h"
 #import "LTGLContext.h"
 #import "LTGPUStruct.h"
+#import "LTIndicesData.h"
 #import "LTProgram.h"
 #import "LTVertexArray.h"
 
@@ -15,24 +16,38 @@
 
 /// GPU structs determining the format of the attributes of the vertex shader executed by this
 /// instance.
-@property (strong, nonatomic) NSOrderedSet<LTGPUStruct *> *gpuStructs;
+@property (readonly, nonatomic) NSOrderedSet<LTGPUStruct *> *gpuStructs;
 
 /// Ordered collection of array buffers each of which contains the data of a single attribute.
-@property (strong, nonatomic) NSArray<LTArrayBuffer *> *arrayBuffers;
+@property (readonly, nonatomic) NSArray<LTArrayBuffer *> *arrayBuffers;
 
 /// Context holding geometry attibutes and program.
-@property (strong, nonatomic) LTDrawingContext *context;
+@property (readonly, nonatomic) LTDrawingContext *context;
 
 /// Mapping of uniform names to values, cached for refraining from unnecessary interaction with
 /// OpenGL.
-@property (strong, nonatomic) NSMutableDictionary<NSString *, NSValue *> *cachedUniforms;
+@property (readonly, nonatomic) NSMutableDictionary<NSString *, NSValue *> *cachedUniforms;
 
 /// Maximum number of uniform names allowed to be cached at any given time.
-@property (nonatomic) NSUInteger maximumNumberOfCachedUniforms;
+@property (readonly, nonatomic) NSUInteger maximumNumberOfCachedUniforms;
+
+/// Array buffer for storing indices which are used for drawing with the
+/// \c drawWithAttributeData:indices:samplerUniformsToTextures:uniforms method.
+@property (readonly, nonatomic) LTArrayBuffer *indicesArrayBuffer;
+
+/// Object holding most recently used indices.
+@property (strong, nonatomic) LTIndicesData *cachedIndices;
+
+/// Indices array for storing mesh indices which are used for drawing with the
+/// \c drawWithAttributeData:indices:samplerUniformsToTextures:uniforms method. Contains
+/// \c indicesArrayBuffer as its \c arrayBuffer.
+@property (strong, nonatomic) LTIndicesArray *indicesArray;
 
 @end
 
 @implementation LTDynamicDrawer
+
+@synthesize maximumNumberOfCachedUniforms = _maximumNumberOfCachedUniforms;
 
 #pragma mark -
 #pragma mark Initialization
@@ -43,11 +58,12 @@
                           gpuStructs:(NSOrderedSet<LTGPUStruct *> *)gpuStructs {
   if (self = [super init]) {
     [self validateGPUStructs:gpuStructs];
-    self.gpuStructs = gpuStructs;
-    self.arrayBuffers = [self buffers];
-    self.context = [self drawingContextWithVertexSource:vertexSource
-                                         fragmentSource:fragmentSource];
-    self.cachedUniforms = [NSMutableDictionary dictionary];
+    _gpuStructs = gpuStructs;
+    _arrayBuffers = [self buffers];
+    _context = [self drawingContextWithVertexSource:vertexSource fragmentSource:fragmentSource];
+    _cachedUniforms = [NSMutableDictionary dictionary];
+    _indicesArrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                        usage:LTArrayBufferUsageDynamicDraw];
   }
   return self;
 }
@@ -113,21 +129,57 @@
 - (void)drawWithAttributeData:(NSArray<LTAttributeData *> *)attributeData
     samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
                      uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms {
+  [self validateAttributeData:attributeData validateTriangularity:YES];
+  [self updateWithAttributeData:attributeData samplerUniformsToTextures:samplerUniformsToTextures
+                     andUniform:uniforms];
+  [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
+}
+
+- (void)validateAttributeData:(NSArray<LTAttributeData *> *)attributeData
+        validateTriangularity:(BOOL)validateTriangularity {
   LTParameterAssert(self.gpuStructs.count == attributeData.count,
                     @"Number of GPU structs must be identical for each render pass");
   for (NSUInteger i = 0; i < self.gpuStructs.count; ++i) {
     LTAttributeData *data = attributeData[i];
     LTParameterAssert([self.gpuStructs[i] isEqual:data.gpuStruct]);
-    LTParameterAssert((data.data.length / data.gpuStruct.size) % 3 == 0,
-                      @"Attribute data #%lu (length:%lu) does not provide data for triangular "
-                      "geometry", (unsigned long)i, (unsigned long)data.data.length);
+    if (validateTriangularity) {
+      LTParameterAssert((data.data.length / data.gpuStruct.size) % 3 == 0,
+                        @"Attribute data #%lu (length:%lu) does not provide data for triangular "
+                        "geometry", (unsigned long)i, (unsigned long)data.data.length);
+    }
   }
+}
 
+- (void)updateWithAttributeData:(NSArray<LTAttributeData *> *)attributeData
+      samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
+                     andUniform:(NSDictionary<NSString *, NSValue *> *)uniforms {
   [self updateDrawingContextWithMapping:samplerUniformsToTextures];
   [self updateProgramWithUniforms:uniforms];
   [self updateArrayBufferWithAttributeData:attributeData];
+}
 
-  [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
+- (void)drawWithAttributeData:(NSArray<LTAttributeData *> *)attributeData
+                      indices:(LTIndicesData *)indices
+    samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
+                     uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms {
+  LTParameterAssert(indices.count % 3 == 0, @"Indices data (length:%lu) does not provide data for "
+                    "triangular geometry", (unsigned long)indices.count);
+  [self validateAttributeData:attributeData validateTriangularity:NO];
+  [self updateWithAttributeData:attributeData samplerUniformsToTextures:samplerUniformsToTextures
+                     andUniform:uniforms];
+  [self updateIndicesArrayWithIndices:indices];
+  [self.context drawElements:self.indicesArray withMode:LTDrawingContextDrawModeTriangles];
+}
+
+- (void)updateIndicesArrayWithIndices:(LTIndicesData *)indices {
+  if ([indices isEqual:self.cachedIndices]) {
+    return;
+  }
+
+  self.cachedIndices = indices;
+  [self.indicesArrayBuffer setData:indices.data];
+  self.indicesArray = [[LTIndicesArray alloc] initWithType:indices.type
+                                               arrayBuffer:self.indicesArrayBuffer];
 }
 
 #pragma mark -
