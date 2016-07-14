@@ -67,6 +67,12 @@ context(@"structs", ^{
     size_t hash1 = std::hash<CGSize>()(CGSizeMake(0.5, 1.7));
     expect(hash0).to.equal(hash1);
   });
+
+  it(@"should hash CGRect", ^{
+    size_t hash0 = std::hash<CGRect>()(CGRectMake(0.5, 1.7, 0.5, 1.7));
+    size_t hash1 = std::hash<CGRect>()(CGRectMake(0.5, 1.7, 0.5, 1.7));
+    expect(hash0).to.equal(hash1);
+  });
 });
 
 context(@"Objective-C objects", ^{
