@@ -4,8 +4,8 @@
 #import "LTImageTIFFCompressor.h"
 
 #import <ImageIO/ImageIO.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
+#import "LTCompressionFormat.h"
 #import "LTImageIOCompressor.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,10 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
   };
 
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options UTI:kUTTypeTIFF];
-
+  LTImageIOCompressor *compressor = [[LTImageIOCompressor alloc] initWithOptions:options
+                                                                          format:self.format];
   return [compressor compressImage:image metadata:metadata error:error];
+}
+
+- (LTCompressionFormat *)format {
+  return $(LTCompressionFormatTIFF);
 }
 
 @end

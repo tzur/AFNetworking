@@ -8,6 +8,7 @@
 #import <LTKit/NSError+LTKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "LTCompressionFormat.h"
 #import "LTImage.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,20 +16,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTImageIOCompressor ()
 
 /// Optional dictionary that specifies destination parameters such as image compression quality.
-@property (strong, nonatomic, nullable) NSDictionary *options;
-
-/// Output compression format.
-@property (nonatomic) CFStringRef UTI;
+@property (readonly, nonatomic, nullable) NSDictionary *options;
 
 @end
 
 @implementation LTImageIOCompressor
 
-- (instancetype)initWithOptions:(nullable NSDictionary *)options UTI:(CFStringRef)UTI {
-  LTParameterAssert(UTI);
+@synthesize format = _format;
+
+- (instancetype)initWithOptions:(nullable NSDictionary *)options
+                         format:(LTCompressionFormat *)format {
   if (self = [super init]) {
-    self.options = options;
-    self.UTI = UTI;
+    _options = options;
+    _format = format;
   }
   return self;
 }
@@ -39,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSMutableData *imageData = [NSMutableData data];
   lt::Ref<CGImageDestinationRef> destination(
-    CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData, self.UTI, 1, NULL)
+    CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData,
+                                     (__bridge CFStringRef)self.format.UTI, 1, NULL)
   );
   if (!destination) {
     return nil;

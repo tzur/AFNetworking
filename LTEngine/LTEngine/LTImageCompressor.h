@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LTCompressionFormat;
+
 /// Protocol for applying compression on images.
 @protocol LTImageCompressor
 
@@ -12,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// case the compression process fails, the method will return \c nil and relevant \c error.
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error;
+
+/// Compressor output format.
+@property (readonly, nonatomic) LTCompressionFormat *format;
 
 @end
 
