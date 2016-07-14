@@ -3,6 +3,7 @@
 
 // Receipt Validation.
 #import <Bazaar/BZRReceiptEnvironment.h>
+#import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationError.h>
 #import <Bazaar/BZRReceiptValidationParameters.h>
 #import <Bazaar/BZRReceiptValidationResponse.h>
