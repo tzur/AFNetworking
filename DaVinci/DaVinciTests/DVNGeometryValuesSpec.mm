@@ -104,11 +104,28 @@ context(@"move constructor", ^{
   });
 });
 
+context(@"equality", ^{
+  it(@"should correctly compare two equal geometry values", ^{
+    dvn::GeometryValues geometryValues(quads, indices, samples);
+    dvn::GeometryValues equalGeometryValues(quads, indices, samples);;
+    expect(geometryValues == equalGeometryValues).to.beTruthy();
+    expect(geometryValues != equalGeometryValues).to.beFalsy();
+  });
+
+  it(@"should correctly compare two different geometry values", ^{
+    dvn::GeometryValues geometryValues(quads, indices, samples);
+    dvn::GeometryValues differentGeometryValues(quads, {2}, samples);;
+    expect(geometryValues != differentGeometryValues).to.beTruthy();
+    expect(geometryValues == differentGeometryValues).to.beFalsy();
+  });
+});
+
 context(@"hash", ^{
   it(@"should return the same hash value for equal objects", ^{
     dvn::GeometryValues geometryValues(quads, indices, samples);
     dvn::GeometryValues equalGeometryValues(quads, indices, samples);
-    expect(geometryValues.hash()).to.equal(equalGeometryValues.hash());
+    expect(std::hash<dvn::GeometryValues>()(geometryValues))
+        .to.equal(std::hash<dvn::GeometryValues>()(equalGeometryValues));
   });
 });
 
