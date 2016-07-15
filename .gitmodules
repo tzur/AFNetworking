@@ -32,3 +32,6 @@
 [submodule "third_party/AFNetworking"]
 	path = third_party/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking.git
+[submodule "third_party/UICKeyChainStore"]
+	path = third_party/UICKeyChainStore
+	url = https://github.com/Lightricks/UICKeyChainStore.git

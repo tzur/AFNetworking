@@ -89,6 +89,11 @@
 		B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */; };
 		B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */; };
 		B9E4242B1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */; };
+		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
+		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
+		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
+		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
+		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -421,6 +426,34 @@
 			remoteGlobalIDString = 2987B0AE1BC408A200179A4C;
 			remoteInfo = "AFNetworking tvOS Tests";
 		};
+		FA8D43481D3517CC006FF5DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14796A501C1CD9A500169D09;
+			remoteInfo = UICKeyChainStore;
+		};
+		FA8D434A1D3517CC006FF5DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14796A691C1CD9C900169D09;
+			remoteInfo = libUICKeyChainStore;
+		};
+		FA8D434C1D3517CC006FF5DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14796A5F1C1CD9B500169D09;
+			remoteInfo = UICKeyChainStoreTests;
+		};
+		FA9F51DE1D354B8B00FE688D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 14796A461C1CD9A500169D09;
+			remoteInfo = UICKeyChainStore;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -545,6 +578,14 @@
 		B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductPriceInfo.mm; sourceTree = "<group>"; };
 		B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRJSONProductsProvider.h; sourceTree = "<group>"; };
 		B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRInAppStoreManagerConfiguration.h; sourceTree = "<group>"; };
+		9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRKeychainHandler.h; sourceTree = "<group>"; };
+		9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICKeyChainStore+SecureStorage.h"; sourceTree = "<group>"; };
+		9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorage.mm"; sourceTree = "<group>"; };
+		9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorageSpec.mm"; sourceTree = "<group>"; };
+		FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorage.h; sourceTree = "<group>"; };
+		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
+		FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = BZRKeychainStorageSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UICKeyChainStore.xcodeproj; path = ../third_party/UICKeyChainStore/Lib/UICKeyChainStore.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -553,6 +594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
+				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
 				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
@@ -763,6 +805,7 @@
 			children = (
 				B97A86901D460FA7004390FC /* Product Management */,
 				6584CE831CF4671A002C6F86 /* Receipt Validation */,
+				FA1B885B1D33B28C00097AD0 /* Secure Storage */,
 				65332E201D33901700920C32 /* Store Kit */,
 				65F03B691CFC32CE008B1847 /* Utils */,
 			);
@@ -773,6 +816,7 @@
 			isa = PBXGroup;
 			children = (
 				65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */,
+				FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */,
 				654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */,
 				6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */,
 				6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */,
@@ -978,6 +1022,7 @@
 			children = (
 				B97E6BF31D40F2C900C02863 /* Product Management */,
 				6580F0701CEB2D97007EABDD /* Receipt Validation */,
+				FA1B88311D338A5900097AD0 /* Secure Storage */,
 				65743E801D3242FF00A17D11 /* Store Kit */,
 				6599B4291CFA444200525BB7 /* Utils */,
 				654B1F041CE21F6D001F36FA /* Supporting Files */,
@@ -1031,6 +1076,37 @@
 				B97E6C1E1D40F36A00C02863 /* BZRInAppStoreManager.h */,
 			);
 			name = "Product Management";
+			sourceTree = "<group>";
+		};
+		FA1B88311D338A5900097AD0 /* Secure Storage */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */,
+				FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */,
+				9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */,
+				9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */,
+				9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */,
+			);
+			name = "Secure Storage";
+			sourceTree = "<group>";
+		};
+		FA1B885B1D33B28C00097AD0 /* Secure Storage */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */,
+				9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */,
+			);
+			name = "Secure Storage";
+			sourceTree = "<group>";
+		};
+		FA8D43231D3517CC006FF5DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA8D43491D3517CC006FF5DB /* UICKeyChainStore.framework */,
+				FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */,
+				FA8D434D1D3517CC006FF5DB /* UICKeyChainStoreTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1097,6 +1173,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FA9F51DF1D354B8B00FE688D /* PBXTargetDependency */,
 				650D7D181D3245E8003CE646 /* PBXTargetDependency */,
 			);
 			name = Bazaar;
@@ -1171,6 +1248,10 @@
 				{
 					ProductGroup = 656469681D46463B006BD7DE /* Products */;
 					ProjectRef = 656469671D46463B006BD7DE /* TestHost.xcodeproj */;
+				},
+				{
+					ProductGroup = FA8D43231D3517CC006FF5DB /* Products */;
+					ProjectRef = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1490,6 +1571,27 @@
 			remoteRef = 65D91BBE1D39A482000D6A3B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FA8D43491D3517CC006FF5DB /* UICKeyChainStore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UICKeyChainStore.framework;
+			remoteRef = FA8D43481D3517CC006FF5DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUICKeyChainStore.a;
+			remoteRef = FA8D434A1D3517CC006FF5DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FA8D434D1D3517CC006FF5DB /* UICKeyChainStoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UICKeyChainStoreTests.xctest;
+			remoteRef = FA8D434C1D3517CC006FF5DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1525,10 +1627,12 @@
 				65332E7B1D3392C200920C32 /* EXPMatchers+matchValues.m in Sources */,
 				B97A86BC1D460FB0004390FC /* BZRProductSpec.mm in Sources */,
 				65332E711D3392C200920C32 /* RACSignal+LLSubscriptionCounting.m in Sources */,
+				FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */,
 				6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm in Sources */,
 				65332E701D3392C200920C32 /* LLSignalTestRecorder.m in Sources */,
 				65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */,
 				6562104F1D3779FB00E12FAF /* BZRReceiptValidationParameters+ValidatricksSpec.mm in Sources */,
+				9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */,
 				65332E721D3392C200920C32 /* LLReactiveMatchersHelpers.m in Sources */,
 				65332E6F1D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				65332E7D1D3392C200920C32 /* EXPMatchers+sendEvents.m in Sources */,
@@ -1550,6 +1654,7 @@
 				B97A87021D461067004390FC /* BZRLocalJSONProductsProvider.mm in Sources */,
 				B97E6CCF1D41103200C02863 /* BZRProduct.mm in Sources */,
 				651A261A1D392B79001D418B /* BZRValidatricksReceiptValidator.mm in Sources */,
+				FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */,
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				6502EFA41D341809000CD68B /* BZRValidatricksReceiptModel.mm in Sources */,
 				6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */,
@@ -1566,6 +1671,7 @@
 				650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */,
 				B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */,
 				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */,
+				9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */,
 				6502EFA31D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1587,6 +1693,11 @@
 			isa = PBXTargetDependency;
 			name = TestHost;
 			targetProxy = 654B9FA41D48C85D00F7609B /* PBXContainerItemProxy */;
+		};
+		FA9F51DF1D354B8B00FE688D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UICKeyChainStore;
+			targetProxy = FA9F51DE1D354B8B00FE688D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1717,6 +1828,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
+					"$(SRCROOT)/../third_party/UICKeyChainStore/Lib",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
