@@ -13,6 +13,7 @@
 		250155301D1AF1B600420FA9 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2501552B1D1AF15B00420FA9 /* libSpecta.a */; };
 		257344F71D3792A300E852B2 /* DVNSquareProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 257344F61D3792A300E852B2 /* DVNSquareProviderSpec.mm */; };
 		257344FA1D3795D500E852B2 /* DVNGeometryProviderExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 257344F91D3795D500E852B2 /* DVNGeometryProviderExamples.mm */; };
+		257494EA1D3775090046F89B /* DVNSplineRendererSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 257494E91D3775090046F89B /* DVNSplineRendererSpec.mm */; };
 		258341691D339AB60005BC07 /* DVNRenderStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341681D339AB60005BC07 /* DVNRenderStageConfiguration.mm */; };
 		258341851D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341841D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm */; };
 		258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341BB1D33B3CB0005BC07 /* DVNGeometryValues.mm */; };
@@ -45,6 +46,7 @@
 		50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */; };
 		50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */; };
 		5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154BD1D1AEB0300420FA9 /* Mantle.framework */; };
+		503C57541D3665E200C20B38 /* DVNSplineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C57511D3665E200C20B38 /* DVNSplineRenderer.mm */; };
 		503C57551D3665E200C20B38 /* DVNSplineRenderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */; };
 		503C577D1D36731A00C20B38 /* DVNSquareProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C577C1D36731A00C20B38 /* DVNSquareProvider.mm */; };
 		503C579E1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */; };
@@ -319,6 +321,7 @@
 		257344F61D3792A300E852B2 /* DVNSquareProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSquareProviderSpec.mm; sourceTree = "<group>"; };
 		257344F81D3795D500E852B2 /* DVNGeometryProviderExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryProviderExamples.h; sourceTree = "<group>"; };
 		257344F91D3795D500E852B2 /* DVNGeometryProviderExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryProviderExamples.mm; sourceTree = "<group>"; };
+		257494E91D3775090046F89B /* DVNSplineRendererSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineRendererSpec.mm; sourceTree = "<group>"; };
 		258341671D339AB60005BC07 /* DVNRenderStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNRenderStageConfiguration.h; sourceTree = "<group>"; };
 		258341681D339AB60005BC07 /* DVNRenderStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRenderStageConfiguration.mm; sourceTree = "<group>"; };
 		258341841D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRenderStageConfigurationSpec.mm; sourceTree = "<group>"; };
@@ -365,6 +368,8 @@
 		50163CC91D3381FE00590860 /* DVNAttributeStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNAttributeStageConfiguration.h; sourceTree = "<group>"; };
 		50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNAttributeStageConfiguration.mm; sourceTree = "<group>"; };
 		50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNAttributeStageConfigurationSpec.mm; sourceTree = "<group>"; };
+		503C57501D3665E200C20B38 /* DVNSplineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNSplineRenderer.h; sourceTree = "<group>"; };
+		503C57511D3665E200C20B38 /* DVNSplineRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineRenderer.mm; sourceTree = "<group>"; };
 		503C57521D3665E200C20B38 /* DVNSplineRenderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNSplineRenderModel.h; sourceTree = "<group>"; };
 		503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineRenderModel.mm; sourceTree = "<group>"; };
 		503C577B1D36731A00C20B38 /* DVNSquareProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNSquareProvider.h; sourceTree = "<group>"; };
@@ -781,6 +786,8 @@
 		503C57701D3665ED00C20B38 /* Spline Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				503C57501D3665E200C20B38 /* DVNSplineRenderer.h */,
+				503C57511D3665E200C20B38 /* DVNSplineRenderer.mm */,
 				503C57521D3665E200C20B38 /* DVNSplineRenderModel.h */,
 				503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */,
 			);
@@ -799,6 +806,7 @@
 		503C57B91D3685A900C20B38 /* Spline Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				257494E91D3775090046F89B /* DVNSplineRendererSpec.mm */,
 				503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */,
 			);
 			name = "Spline Renderer";
@@ -1206,6 +1214,7 @@
 				503C577D1D36731A00C20B38 /* DVNSquareProvider.mm in Sources */,
 				25AD67771D355A900092B3E4 /* DVNPipeline.mm in Sources */,
 				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
+				503C57541D3665E200C20B38 /* DVNSplineRenderer.mm in Sources */,
 				503C57551D3665E200C20B38 /* DVNSplineRenderModel.mm in Sources */,
 				500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */,
 				258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */,
@@ -1218,6 +1227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */,
+				257494EA1D3775090046F89B /* DVNSplineRendererSpec.mm in Sources */,
 				5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */,
 				50073F8E1D363179009F7F48 /* EXPMatchers+equalMat.mm in Sources */,
 				500F77E51D2D4EB600023343 /* DVNTexCoordProviderExamples.mm in Sources */,
