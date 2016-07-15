@@ -1333,7 +1333,6 @@
 				GCC_PREFIX_HEADER = "$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/AFNetworking",
 					"$(SRCROOT)/../third_party/libextobjc",
@@ -1353,7 +1352,6 @@
 				GCC_PREFIX_HEADER = "$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/AFNetworking",
 					"$(SRCROOT)/../third_party/libextobjc",
