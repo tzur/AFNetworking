@@ -3,7 +3,8 @@
 
 #import <LTEngine/LTQuad.h>
 
-@protocol LTSampleValues;
+#import <LTEngine/LTSampleValues.h>
+#import <LTKit/LTHashExtensions.h>
 
 namespace dvn {
 
@@ -16,9 +17,6 @@ namespace dvn {
     explicit GeometryValues(const std::vector<lt::Quad> &quads,
                             const std::vector<NSUInteger> &indices,
                             id<LTSampleValues> samples);
-
-    /// Returns a hash value for this instance.
-    size_t hash() const;
 
     /// Returns the quads constructed from the \c samples.
     inline const std::vector<lt::Quad> &quads() const {
@@ -49,3 +47,17 @@ namespace dvn {
   };
 
 } // namespace dvn
+
+template <>
+struct ::std::hash<dvn::GeometryValues> {
+  inline size_t operator()(const dvn::GeometryValues &values) const {
+    return std::hash<std::vector<lt::Quad>>()(values.quads()) ^
+        std::hash<std::vector<NSUInteger>>()(values.indices()) ^ values.samples().hash;
+  }
+};
+
+/// Returns \c true if \c lhs equals \c rhs.
+bool operator==(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs);
+
+/// Returns \c true if \c lhs does not equal \c rhs.
+bool operator!=(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs);

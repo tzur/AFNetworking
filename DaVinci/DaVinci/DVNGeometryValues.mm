@@ -22,9 +22,13 @@ GeometryValues::GeometryValues(const std::vector<lt::Quad> &quads,
   _samples = samples;
 }
 
-size_t GeometryValues::hash() const {
-  return std::hash<std::vector<lt::Quad>>()(_quads) ^
-      std::hash<std::vector<NSUInteger>>()(_indices) ^ _samples.hash;
+} // namespace dvn
+
+bool operator==(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs) {
+  return lhs.quads() == rhs.quads() && lhs.indices() == rhs.indices() &&
+  [lhs.samples() isEqual:rhs.samples()];
 }
 
-} // namespace dvn
+bool operator!=(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs) {
+  return !(lhs == rhs);
+}
