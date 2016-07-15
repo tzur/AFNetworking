@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTUCellSizingStrategy> assetSizingStrategy = [PTUCellSizingStrategy gridWithItemsPerColumn:1];
   id<PTUCellSizingStrategy> albumSizingStrategy = [PTUCellSizingStrategy gridWithItemsPerColumn:1];
   return [[PTUCollectionViewConfiguration alloc] initWithAssetCellSizingStrategy:assetSizingStrategy
-      albumCellSizingStrategy:albumSizingStrategy minimumItemSpacing:1 minimumLineSpacing:0
+      albumCellSizingStrategy:albumSizingStrategy minimumItemSpacing:0 minimumLineSpacing:1
       scrollDirection:UICollectionViewScrollDirectionHorizontal showVerticalScrollIndicator:NO
       showHorizontalScrollIndicator:NO enablePaging:NO];
 }

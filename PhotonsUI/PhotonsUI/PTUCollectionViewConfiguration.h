@@ -37,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creates and returns a \c PTUCollectionViewConfiguration suitable for a Photo selection strip.
 ///   - \c assetSizingStrategy is set to \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
 ///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
-///   - \c itemSpacing of \c 1.
-///   - \c lineSpacing of \c 0.
+///   - \c itemSpacing of \c 0.
+///   - \c lineSpacing of \c 1.
 ///   - \c scrollDirection set to \c UICollectionViewScrollDirectionHorizontal.
 ///   - \c showVerticalScrollIndicator set to \c NO.
 ///   - \c showHorizontalScrollIndicator set to \c NO.
