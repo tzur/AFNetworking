@@ -726,6 +726,10 @@
 		8559885C1CE31CF800EC4648 /* LTTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */; };
 		855988611CE31D4200EC4648 /* LTTextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */; };
 		856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */; };
+		857F74641D3691BE005DA3E2 /* LTIndicesData.h in Headers */ = {isa = PBXBuildFile; fileRef = 857F74621D3691BE005DA3E2 /* LTIndicesData.h */; };
+		857F74651D3691BE005DA3E2 /* LTIndicesData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857F74631D3691BE005DA3E2 /* LTIndicesData.mm */; };
+		857F74851D3691E8005DA3E2 /* LTIndicesDataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */; };
+		857F74C21D3697A8005DA3E2 /* LTEqualityExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */; };
 		85A8013D1D07128100E8CFAC /* LT3DLUTTextureAtlas.h in Headers */ = {isa = PBXBuildFile; fileRef = 85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */; };
 		85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */; };
 		85A8015F1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85A8015E1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm */; };
@@ -2233,6 +2237,10 @@
 		855988591CE31CF800EC4648 /* LTTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureAtlas.h; sourceTree = "<group>"; };
 		8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlas.mm; sourceTree = "<group>"; };
 		855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlasSpec.mm; sourceTree = "<group>"; };
+		857F74621D3691BE005DA3E2 /* LTIndicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIndicesData.h; sourceTree = "<group>"; };
+		857F74631D3691BE005DA3E2 /* LTIndicesData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesData.mm; sourceTree = "<group>"; };
+		857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesDataSpec.mm; sourceTree = "<group>"; };
+		857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTEqualityExamples.mm; path = ../LTKit/LTKitTests/LTEqualityExamples.mm; sourceTree = "<group>"; };
 		858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.vsh; sourceTree = "<group>"; };
 		85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUTTextureAtlas.h; sourceTree = "<group>"; };
 		85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTTextureAtlas.mm; sourceTree = "<group>"; };
@@ -3996,6 +4004,7 @@
 		8B3DEBDB18296B6100EA0C1A = {
 			isa = PBXGroup;
 			children = (
+				857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */,
 				8B3DEBE918296B6100EA0C1A /* LTEngine */,
 				8BCFBFF618CF0AF100E612DE /* LTEngineBundle */,
 				8B3DEBFD18296B6100EA0C1A /* LTEngineTests */,
@@ -4605,6 +4614,8 @@
 				8B19621C184B6DA40065A057 /* LTGPUQueue.mm */,
 				2830B8E419C58CBF00BF4E8E /* LTIndicesArray.h */,
 				2830B8E519C58CBF00BF4E8E /* LTIndicesArray.mm */,
+				857F74621D3691BE005DA3E2 /* LTIndicesData.h */,
+				857F74631D3691BE005DA3E2 /* LTIndicesData.mm */,
 				8B3F94D0187C194500FAA265 /* LTMMTexture.h */,
 				8B3F94D1187C194500FAA265 /* LTMMTexture.mm */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
@@ -4659,6 +4670,7 @@
 				8B3667F118475C8B002A1833 /* LTGPUResourceExamples.h */,
 				8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */,
 				8B2DAE72184B821000F1623B /* LTGPUQueueSpec.mm */,
+				857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8B2267451997BBC60049CF26 /* LTProgramFactorySpec.mm */,
 				8BAB32091C28273E00DEA2A4 /* LTRenderbufferSpec.mm */,
@@ -5295,6 +5307,7 @@
 				50D82E721BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h in Headers */,
 				28B117A519C85C42007E2F17 /* LTScreenProcessing.h in Headers */,
 				28C207A51AEF5FC2007214A5 /* LTTextureArchiveType.h in Headers */,
+				857F74641D3691BE005DA3E2 /* LTIndicesData.h in Headers */,
 				25FBF7DB1C32D26D00E2E5BC /* LTTouchEventDelegate.h in Headers */,
 				285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */,
 				509CE8A51D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h in Headers */,
@@ -6070,6 +6083,7 @@
 				03D516A418B3A6500026B56A /* LTProceduralVignetting.mm in Sources */,
 				28FC0E781D2AA28700237FF8 /* LTContentTouchEventTimeIntervalPredicate.mm in Sources */,
 				8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */,
+				857F74651D3691BE005DA3E2 /* LTIndicesData.mm in Sources */,
 				50802FC81C2402E1008607C7 /* LTTouchEvent.mm in Sources */,
 				2843B77918ABBF350044B87A /* LTSingleRectDrawer.mm in Sources */,
 				5054C6E41CC68D7B00976EA1 /* LTDynamicDrawer.mm in Sources */,
@@ -6235,6 +6249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				857F74C21D3697A8005DA3E2 /* LTEqualityExamples.mm in Sources */,
 				50FD86981D05AB4B0005C318 /* MixWithAttribute.fsh in Sources */,
 				50FD86971D05AB470005C318 /* MixWithAttribute.vsh in Sources */,
 				50FD86921D05AA820005C318 /* Mix.vsh in Sources */,
@@ -6306,6 +6321,7 @@
 				0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */,
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
+				857F74851D3691E8005DA3E2 /* LTIndicesDataSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */,
 				28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */,
