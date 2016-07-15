@@ -3,52 +3,61 @@
 
 #import "CAMHardwareSession.h"
 
+#import "CAMDevicePreset.h"
 #import "CAMFormatStrategy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CAMHardwareSession ()
 
-/// Preview layer attached to this session, or \c nil before one is attached.
-@property (readwrite, nonatomic, nullable) AVCaptureVideoPreviewLayer *previewLayer;
+/// Preset used to initialize this device.
+@property (readonly, nonatomic) CAMDevicePreset *preset;
 
-/// Video device attached to this session, or \c nil before one is attached.
-@property (readwrite, nonatomic, nullable) AVCaptureDevice *videoDevice;
+/// The \c AVCaptureSession object managed by the receiver.
+@property (readonly, nonatomic) AVCaptureSession *session;
 
-/// Video input attached to this session, or \c nil before one is attached.
-@property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *videoInput;
+/// Preview layer attached to this session.
+@property (readwrite, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 
-/// Video output attached to this session, or \c nil before one is attached.
-@property (readwrite, nonatomic, nullable) AVCaptureVideoDataOutput *videoOutput;
+/// Video device attached to this session.
+@property (readwrite, nonatomic) AVCaptureDevice *videoDevice;
 
-/// Video connection between \c videoInput and \c videoOutput, or \c nil before both are attached.
-@property (readwrite, nonatomic, nullable) AVCaptureConnection *videoConnection;
+/// Video input attached to this session.
+@property (readwrite, nonatomic) AVCaptureDeviceInput *videoInput;
 
-/// Still output attached to this session, or \c nil before one is attached.
-@property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+/// Video output attached to this session.
+@property (readwrite, nonatomic) AVCaptureVideoDataOutput *videoOutput;
 
-/// Still connection between \c videoInput and \c stillOutput, or \c nil before both are attached.
-@property (readwrite, nonatomic, nullable) AVCaptureConnection *stillConnection;
+/// Video connection between \c videoInput and \c videoOutput.
+@property (readwrite, nonatomic) AVCaptureConnection *videoConnection;
 
-/// Audio device attached to this session, or \c nil before one is attached.
+/// Still output attached to this session.
+@property (readwrite, nonatomic) AVCaptureStillImageOutput *stillOutput;
+
+/// Still connection between \c videoInput and \c stillOutput.
+@property (readwrite, nonatomic) AVCaptureConnection *stillConnection;
+
+/// Audio device attached to this session, or \c nil if audio is not enabled in the preset.
 @property (readwrite, nonatomic, nullable) AVCaptureDevice *audioDevice;
 
-/// Audio input attached to this session, or \c nil before one is attached.
+/// Audio input attached to this session, or \c nil if audio is not enabled in the preset.
 @property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *audioInput;
 
-/// Audio output attached to this session, or \c nil before one is attached.
+/// Audio output attached to this session, or \c nil if audio is not enabled in the preset.
 @property (readwrite, nonatomic, nullable) AVCaptureAudioDataOutput *audioOutput;
 
-/// Audio connection between \c audioInput and \c audioOutput, or \c nil before both are attached.
+/// Audio connection between \c audioInput and \c audioOutput, or \c nil if audio is not enabled
+/// in the preset.
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *audioConnection;
 
 @end
 
 @implementation CAMHardwareSession
 
-- (instancetype)init {
+- (instancetype)initWithPreset:(CAMDevicePreset *)preset session:(AVCaptureSession *)session {
   if (self = [super init]) {
-    _session = [[AVCaptureSession alloc] init];
+    _preset = preset;
+    _session = session;
   }
   return self;
 }
@@ -57,15 +66,25 @@ NS_ASSUME_NONNULL_BEGIN
   self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
 }
 
+- (BOOL)setCamera:(CAMDeviceCamera *)camera error:(NSError * __autoreleasing *)error {
+  [self.session beginConfiguration];
+  BOOL success = [self setupVideoInputWithDevice:camera.device
+                                  formatStrategy:self.preset.formatStrategy
+                                           error:error];
+  [self.session commitConfiguration];
+  return success;
+}
+
 - (BOOL)setupVideoInputWithDevice:(AVCaptureDevice *)device
                    formatStrategy:(id<CAMFormatStrategy>)formatStrategy
                             error:(NSError * __autoreleasing *)error {
   if (!device) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeMissingVideoDevice];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeMissingVideoDevice];
+    }
     return NO;
   }
 
-  LTParameterAssert(error, @"error output pointer must be non-null");
   LTParameterAssert([device hasMediaType:AVMediaTypeVideo], @"device must provide video");
   NSError *internalError;
   AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
@@ -77,14 +96,18 @@ NS_ASSUME_NONNULL_BEGIN
   self.videoDevice = device;
   BOOL locked = [self.videoDevice lockForConfiguration:&internalError];
   if (!locked) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedLockingVideoDevice
-                       underlyingError:internalError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedLockingVideoDevice
+                         underlyingError:internalError];
+    }
     return NO;
   }
   AVCaptureDeviceFormat *format = [formatStrategy formatFrom:self.videoDevice.formats];
   if (!format) {
     [self.videoDevice unlockForConfiguration];
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedConfiguringVideoDevice];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedConfiguringVideoDevice];
+    }
     return NO;
   }
   self.videoDevice.activeFormat = format;
@@ -94,12 +117,16 @@ NS_ASSUME_NONNULL_BEGIN
   self.videoInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoDevice
                                                           error:&internalError];
   if (internalError) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedCreatingVideoInput
-                       underlyingError:internalError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedCreatingVideoInput
+                         underlyingError:internalError];
+    }
     return NO;
   }
   if (![self.session canAddInput:self.videoInput]) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingVideoInput];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingVideoInput];
+    }
     return NO;
   }
   [self.session addInput:self.videoInput];
@@ -113,7 +140,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)setupVideoOutputWithError:(NSError * __autoreleasing *)error {
-  LTParameterAssert(error, @"error output pointer must be non-null");
   AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
 
   if (self.videoOutput) {
@@ -122,7 +148,9 @@ NS_ASSUME_NONNULL_BEGIN
 
   self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
   if (![self.session canAddOutput:self.videoOutput]) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingVideoOutput];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingVideoOutput];
+    }
     return NO;
   }
   [self.session addOutput:self.videoOutput];
@@ -134,7 +162,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)setupStillOutputWithError:(NSError * __autoreleasing *)error {
-  LTParameterAssert(error, @"error output pointer must be non-null");
   AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
 
   if (self.stillOutput) {
@@ -143,7 +170,9 @@ NS_ASSUME_NONNULL_BEGIN
 
   self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
   if (![self.session canAddOutput:self.stillOutput]) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingStillOutput];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingStillOutput];
+    }
     return NO;
   }
   [self.session addOutput:self.stillOutput];
@@ -157,11 +186,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device
                             error:(NSError * __autoreleasing *)error {
   if (!device) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeMissingAudioDevice];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeMissingAudioDevice];
+    }
     return NO;
   }
 
-  LTParameterAssert(error, @"error output pointer must be non-null");
   LTParameterAssert([device hasMediaType:AVMediaTypeAudio], @"device must provide audio");
   NSError *internalError;
 
@@ -174,12 +204,16 @@ NS_ASSUME_NONNULL_BEGIN
   self.audioInput = [AVCaptureDeviceInput deviceInputWithDevice:self.audioDevice
                                                           error:&internalError];
   if (internalError) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedCreatingAudioInput
-                       underlyingError:internalError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedCreatingAudioInput
+                         underlyingError:internalError];
+    }
     return NO;
   }
   if (![self.session canAddInput:self.audioInput]) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingAudioInput];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingAudioInput];
+    }
     return NO;
   }
   [self.session addInput:self.audioInput];
@@ -190,7 +224,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)setupAudioOutputWithError:(NSError * __autoreleasing *)error {
-  LTParameterAssert(error, @"error output pointer must be non-null");
 
   if (self.audioOutput) {
     [self.session removeOutput:self.audioOutput];
@@ -198,7 +231,9 @@ NS_ASSUME_NONNULL_BEGIN
 
   self.audioOutput = [[AVCaptureAudioDataOutput alloc] init];
   if (![self.session canAddOutput:self.audioOutput]) {
-    *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingAudioOutput];
+    if (error) {
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingAudioOutput];
+    }
     return NO;
   }
   [self.session addOutput:self.audioOutput];
@@ -208,15 +243,74 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
+- (void)setVideoDelegate:(nullable id<AVCaptureVideoDataOutputSampleBufferDelegate>)videoDelegate {
+  _videoDelegate = videoDelegate;
+  [self.session beginConfiguration];
+  [self.videoOutput setSampleBufferDelegate:videoDelegate queue:self.preset.outputQueue];
+  [self.session commitConfiguration];
+}
+
+- (void)setAudioDelegate:(nullable id<AVCaptureAudioDataOutputSampleBufferDelegate>)audioDelegate {
+  _audioDelegate = audioDelegate;
+  [self.session beginConfiguration];
+  [self.audioOutput setSampleBufferDelegate:audioDelegate queue:self.preset.outputQueue];
+  [self.session commitConfiguration];
+}
+
 @end
 
-@implementation CAMHardwareSession (ForTesting)
+@implementation CAMHardwareSessionFactory
 
-- (instancetype)initWithSession:(AVCaptureSession *)session {
-  if (self = [super init]) {
-    _session = session;
++ (RACSignal *)sessionWithPreset:(CAMDevicePreset *)preset {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    CAMHardwareSession *session = [[CAMHardwareSession alloc]
+        initWithPreset:preset session:[[AVCaptureSession alloc] init]];
+    NSError *error;
+    BOOL success = [self configureSession:session withPreset:preset error:&error];
+    if (success) {
+      [subscriber sendNext:session];
+      [subscriber sendCompleted];
+    } else {
+      [subscriber sendError:error];
+    }
+    return nil;
+  }];
+}
+
++ (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
+                   error:(NSError * __autoreleasing *)error {
+  BOOL success;
+
+  [session createPreviewLayer];
+  [session.session beginConfiguration];
+  session.session.sessionPreset = AVCaptureSessionPresetInputPriority;
+
+  success = [session setupVideoInputWithDevice:preset.camera.device
+                                formatStrategy:preset.formatStrategy error:error] &&
+      [session setupVideoOutputWithError:error];
+  if (!success) {
+    return NO;
   }
-  return self;
+  session.videoOutput.videoSettings = preset.pixelFormat.videoSettings;
+
+  success = [session setupStillOutputWithError:error];
+  if (!success) {
+    return NO;
+  }
+
+  if (preset.enableAudio) {
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+    success = [session setupAudioInputWithDevice:device error:error] &&
+        [session setupAudioOutputWithError:error];
+    if (!success) {
+      return NO;
+    }
+  }
+
+  [session.session commitConfiguration];
+  [session.session startRunning];
+
+  return YES;
 }
 
 @end

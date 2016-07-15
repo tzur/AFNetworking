@@ -3,6 +3,8 @@
 
 #import "CAMDeviceStub.h"
 
+#import "CAMDevicePreset.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMDeviceStub

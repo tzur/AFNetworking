@@ -11,8 +11,6 @@
 #import "CAMWhiteBalanceDevice.h"
 #import "CAMZoomDevice.h"
 
-@class CAMDevicePreset;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol representing a camera device capable of providing a signal of video and audio frames
@@ -23,10 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// first frame arriving will already be with the correct settings.
 @protocol CAMDevice <CAMAudioDevice, CAMExposureDevice, CAMFlashDevice, CAMFlipDevice,
     CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice, CAMZoomDevice>
-
-/// Initializes an instance with the given preset.
-- (instancetype)initWithPreset:(CAMDevicePreset *)preset;
-
 @end
 
 NS_ASSUME_NONNULL_END
