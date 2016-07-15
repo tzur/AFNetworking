@@ -46,8 +46,8 @@ it(@"should correctly initalize with photo strip initializer", ^{
   
   expect(configuration.assetCellSizingStrategy).to.beKindOf([PTUGridSizingStrategy class]);
   expect(configuration.albumCellSizingStrategy).to.beKindOf([PTUGridSizingStrategy class]);
-  expect(configuration.minimumItemSpacing).to.equal(1);
-  expect(configuration.minimumLineSpacing).to.equal(0);
+  expect(configuration.minimumItemSpacing).to.equal(0);
+  expect(configuration.minimumLineSpacing).to.equal(1);
   expect(configuration.scrollDirection).to.equal(UICollectionViewScrollDirectionHorizontal);
   expect(configuration.showsVerticalScrollIndicator).to.beFalsy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
