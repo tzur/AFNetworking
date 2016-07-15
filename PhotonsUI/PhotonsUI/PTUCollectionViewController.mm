@@ -63,7 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUCollectionViewController
 
 @synthesize itemSelected = _itemSelected;
-@synthesize selectedItems = _selectedItems;
 @synthesize itemDeselected = _itemDeselected;
 @synthesize emptyView = _emptyView;
 @synthesize errorView = _errorView;
@@ -119,39 +118,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupSelectionSignals {
   @weakify(self);
   _itemSelected =
-      [[self rac_signalForSelector:@selector(collectionView:didSelectItemAtIndexPath:)]
+      [[self rac_signalForSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)]
       reduceEach:(id)^id<PTNDescriptor>(UICollectionView *, NSIndexPath *index) {
         @strongify(self);
         return [self.dataSource descriptorAtIndexPath:index];
       }];
   _itemDeselected =
-      [[self rac_signalForSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]
+      [[self rac_signalForSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)]
       reduceEach:(id)^id<PTNDescriptor>(UICollectionView *, NSIndexPath *index) {
         @strongify(self);
         return [self.dataSource descriptorAtIndexPath:index];
       }];
-  _selectedItems =
-      [[RACSignal merge:@[
-        [self rac_signalForSelector:@selector(collectionView:didSelectItemAtIndexPath:)],
-        [self rac_signalForSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]
-      ]]
-      map:^NSArray<id<PTNDescriptor>> *(id) {
-        @strongify(self);
-        return [self.collectionView.indexPathsForSelectedItems.rac_sequence
-            map:^id<PTNDescriptor>(NSIndexPath *index) {
-              return [self.dataSource descriptorAtIndexPath:index];
-            }].array;
-      }];
 }
 
-- (void)collectionView:(UICollectionView __unused *)collectionView
-    didSelectItemAtIndexPath:(NSIndexPath __unused *)NSIndexPath {
-  // Required for rac_signalForSelector.
+- (BOOL)collectionView:(UICollectionView __unused *)collectionView
+    shouldSelectItemAtIndexPath:(nonnull NSIndexPath __unused *)indexPath {
+  return NO;
 }
 
-- (void)collectionView:(UICollectionView __unused *)collectionView
-    didDeselectItemAtIndexPath:(NSIndexPath __unused *)NSIndexPath {
-  // Required for rac_signalForSelector.
+- (BOOL)collectionView:(UICollectionView __unused *)collectionView
+    shouldDeselectItemAtIndexPath:(nonnull NSIndexPath __unused *)indexPath {
+  return NO;
 }
 
 - (void)setupTitleBinding {
@@ -345,6 +332,15 @@ NS_ASSUME_NONNULL_BEGIN
 
   [self.collectionView selectItemAtIndexPath:indexPath animated:NO
                               scrollPosition:UICollectionViewScrollPositionNone];
+}
+
+- (void)deselectItem:(id<PTNDescriptor>)item {
+  NSIndexPath *indexPath = [self.dataSource indexPathOfDescriptor:item];
+  if (!indexPath) {
+    return;
+  }
+  
+  [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
 }
 
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection {
