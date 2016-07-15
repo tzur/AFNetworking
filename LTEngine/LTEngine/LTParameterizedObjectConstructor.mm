@@ -51,13 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTParameterizedObjectConstructor ()
 
 /// Type of the factory used for spline construction.
-@property (strong, nonatomic) LTParameterizedObjectType *type;
+@property (readonly, nonatomic) LTParameterizedObjectType *type;
 
 /// Factory of primitive parameterized objects used as spline segments of the spline.
-@property (strong, nonatomic) id<LTBasicParameterizedObjectFactory> factory;
+@property (readonly, nonatomic) id<LTBasicParameterizedObjectFactory> factory;
 
 /// Spline constructed by this instance.
-@property (strong, nonatomic) LTMutableEuclideanSpline *spline;
+@property (strong, nonatomic, nullable) LTMutableEuclideanSpline *spline;
 
 /// Ordered collection used for temporarily buffering control points before construction of spline
 /// becomes feasible. Is set to \c nil upon construction of the spline.
@@ -67,21 +67,49 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTParameterizedObjectConstructor
 
-- (instancetype)initWithControlPointModel:(LTControlPointModel *)model {
-  LTParameterAssert(model);
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
+- (instancetype)initWithType:(LTParameterizedObjectType *)type {
+  LTParameterAssert(type);
 
   if (self = [super init]) {
-    if ([model isKindOfClass:[LTParameterizedObjectConstructorControlPointModel class]]) {
-      LTParameterizedObjectConstructorControlPointModel *splineModel =
-          (LTParameterizedObjectConstructorControlPointModel *)model;
-      self.spline = splineModel.spline;
-    }
-    self.type = model.type;
-    self.factory = [model.type factory];
-    self.buffer = [NSMutableArray arrayWithCapacity:[[self.factory class] numberOfRequiredValues]];
-    [self pushControlPoints:model.controlPoints];
+    _type = type;
+    _factory = [type factory];
+    [self reset];
   }
   return self;
+}
+
+- (LTControlPointModel *)reset {
+  LTControlPointModel *model;
+  if (self.spline) {
+    model = [[LTParameterizedObjectConstructorControlPointModel alloc] initWithType:self.type
+                                                                             spline:self.spline];
+  } else if (self.buffer.count) {
+    model = [[LTControlPointModel alloc] initWithType:self.type controlPoints:[self.buffer copy]];
+  } else {
+    model = [[LTControlPointModel alloc] initWithType:self.type];
+  }
+  self.spline = nil;
+  self.buffer = [NSMutableArray arrayWithCapacity:[[self.factory class] numberOfRequiredValues]];
+  return model;
+}
+
+#pragma mark -
+#pragma mark Public API
+#pragma mark -
+
++ (nullable id<LTParameterizedObject>)parameterizedObjectFromModel:(LTControlPointModel *)model {
+  if ([model isKindOfClass:[LTParameterizedObjectConstructorControlPointModel class]]) {
+    return ((LTParameterizedObjectConstructorControlPointModel *)model).spline;
+  }
+
+  LTParameterizedObjectConstructor *constructor =
+      [[LTParameterizedObjectConstructor alloc] initWithType:model.type];
+  [constructor pushControlPoints:model.controlPoints];
+  return constructor.parameterizedObject;
 }
 
 - (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
@@ -101,13 +129,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.buffer = nil;
     return;
   }
-}
-
-- (LTControlPointModel *)controlPointModel {
-  return self.spline ?
-      [[LTParameterizedObjectConstructorControlPointModel alloc] initWithType:self.type
-                                                                       spline:self.spline] :
-      [[LTControlPointModel alloc] initWithType:self.type controlPoints:[self.buffer copy]];
 }
 
 - (nullable id<LTParameterizedObject>)parameterizedObject {

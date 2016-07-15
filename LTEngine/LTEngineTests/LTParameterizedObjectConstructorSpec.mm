@@ -22,97 +22,127 @@ SharedExamplesBegin(LTParameterizedObjectConstructorExamples)
 
 sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *data) {
   __block LTParameterizedObjectType *type;
-  __block LTControlPointModel *insufficientModel;
-  __block LTControlPointModel *sufficientModel;
+  __block NSArray<LTSplineControlPoint *> *insufficientControlPoints;
+  __block NSArray<LTSplineControlPoint *> *sufficientControlPoints;
+  __block LTParameterizedObjectConstructor *constructor;
 
   beforeEach(^{
     type = data[kLTParameterizedObjectTypeClass];
-    insufficientModel =
-        [[LTControlPointModel alloc]
-         initWithType:type
-         controlPoints:data[kLTBasicParameterizedObjectFactoryInsufficientControlPoints]];
-    sufficientModel =
-        [[LTControlPointModel alloc]
-         initWithType:type
-         controlPoints:data[kLTBasicParameterizedObjectFactorySufficientControlPoints]];
+    insufficientControlPoints = data[kLTBasicParameterizedObjectFactoryInsufficientControlPoints];
+    sufficientControlPoints = data[kLTBasicParameterizedObjectFactorySufficientControlPoints];
+    constructor = [[LTParameterizedObjectConstructor alloc] initWithType:type];
   });
 
   context(@"initialization", ^{
-    it(@"should initialize correctly with empty control point model", ^{
-      LTControlPointModel *model =
-          [[LTControlPointModel alloc] initWithType:type controlPoints:@[]];
-      LTParameterizedObjectConstructor *constructor =
-          [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:model];
-      expect(constructor.controlPointModel).to.equal(model);
+    it(@"should initialize correctly", ^{
+      expect(constructor.parameterizedObject).to.beNil();
+    });
+  });
+
+  context(@"parameterized object", ^{
+    it(@"should not provide parameterized object after adding insufficient number of points", ^{
+      [constructor pushControlPoints:insufficientControlPoints];
+      expect([constructor parameterizedObject]).to.beNil();
     });
 
-    it(@"should initialize correctly with model with insufficient number of control points", ^{
-      LTParameterizedObjectConstructor *constructor =
-          [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:insufficientModel];
-      expect(constructor.controlPointModel).to.equal(insufficientModel);
+    it(@"should provide parameterized object after adding sufficient number of points", ^{
+      [constructor pushControlPoints:sufficientControlPoints];
+      expect([constructor parameterizedObject]).toNot.beNil();
     });
 
-    it(@"should initialize correctly with model with sufficient number of control points", ^{
-      LTParameterizedObjectConstructor *constructor =
-          [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:sufficientModel];
-      expect(constructor.controlPointModel).to.equal(sufficientModel);
+    it(@"should provide correct parameterized object", ^{
+      [constructor pushControlPoints:sufficientControlPoints];
+      id<LTParameterizedObject> parameterizedObject = [constructor parameterizedObject];
+      NSString *key = @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation);
+      expect(parameterizedObject.minParametricValue).to.equal(0);
+      expect(parameterizedObject.maxParametricValue).to.equal(1);
+      expect([parameterizedObject floatForParametricValue:0 key:key]).to.equal(1);
+      expect([parameterizedObject floatForParametricValue:1 key:key]).to.equal(2);
     });
 
-    context(@"parameterized object retrieval after initialization", ^{
-      context(@"initialization", ^{
-        it(@"should not provide object after initialization without points", ^{
-          LTControlPointModel *model =
-              [[LTControlPointModel alloc] initWithType:type controlPoints:@[]];
-          LTParameterizedObjectConstructor *constructor =
-              [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:model];
-          expect([constructor parameterizedObject]).to.beNil();
-        });
-
-        it(@"should not provide object after initialization with insufficient number of points", ^{
-          LTParameterizedObjectConstructor *constructor =
-              [[LTParameterizedObjectConstructor alloc]
-               initWithControlPointModel:insufficientModel];
-          expect([constructor parameterizedObject]).to.beNil();
-        });
-
-        it(@"should provide object after initialization with sufficient number of points", ^{
-          LTParameterizedObjectConstructor *constructor =
-              [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:sufficientModel];
-          expect([constructor parameterizedObject]).toNot.beNil();
-        });
-      });
-    });
-
-    context(@"adding control points", ^{
-      it(@"should not provide object after adding insufficient number of points", ^{
+    context(@"parameterized object from control point model", ^{
+      it(@"should not provide parameterized object from insufficient control point model", ^{
         LTControlPointModel *model =
-            [[LTControlPointModel alloc] initWithType:type controlPoints:@[]];
-        LTParameterizedObjectConstructor *constructor =
-            [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:model];
-        [constructor pushControlPoints:insufficientModel.controlPoints];
-        expect([constructor parameterizedObject]).to.beNil();
+            [[LTControlPointModel alloc] initWithType:type controlPoints:insufficientControlPoints];
+        id<LTParameterizedObject> parameterizedObject =
+            [LTParameterizedObjectConstructor parameterizedObjectFromModel:model];
+        expect(parameterizedObject).to.beNil();
       });
 
-      it(@"should provide object after adding sufficient number of points", ^{
+      it(@"should provide correct parameterized object from control point model", ^{
         LTControlPointModel *model =
-            [[LTControlPointModel alloc] initWithType:type controlPoints:@[]];
-        LTParameterizedObjectConstructor *constructor =
-            [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:model];
-        [constructor pushControlPoints:sufficientModel.controlPoints];
-        expect([constructor parameterizedObject]).toNot.beNil();
-      });
-    });
-
-    context(@"parameterized object", ^{
-      it(@"should provide correct parameterized object", ^{
-        LTParameterizedObjectConstructor *constructor =
-            [[LTParameterizedObjectConstructor alloc] initWithControlPointModel:sufficientModel];
-        id<LTParameterizedObject> parameterizedObject = [constructor parameterizedObject];
+            [[LTControlPointModel alloc] initWithType:type controlPoints:sufficientControlPoints];
+        id<LTParameterizedObject> parameterizedObject =
+            [LTParameterizedObjectConstructor parameterizedObjectFromModel:model];
         NSString *key = @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation);
         expect(parameterizedObject.minParametricValue).to.equal(0);
         expect(parameterizedObject.maxParametricValue).to.equal(1);
         expect([parameterizedObject floatForParametricValue:0 key:key]).to.equal(1);
         expect([parameterizedObject floatForParametricValue:1 key:key]).to.equal(2);
+      });
+
+      it(@"should not provide object from insufficient control point model created by itself", ^{
+        [constructor pushControlPoints:insufficientControlPoints];
+            LTControlPointModel *model = [constructor reset];
+        id<LTParameterizedObject> parameterizedObject =
+            [LTParameterizedObjectConstructor parameterizedObjectFromModel:model];
+        expect(parameterizedObject).to.beNil();
+      });
+
+      it(@"should provide correct parameterized object from control point model created by itself", ^{
+        [constructor pushControlPoints:sufficientControlPoints];
+        LTControlPointModel *model = [constructor reset];
+        id<LTParameterizedObject> parameterizedObject =
+            [LTParameterizedObjectConstructor parameterizedObjectFromModel:model];
+        NSString *key = @instanceKeypath(LTSplineControlPoint, yCoordinateOfLocation);
+        expect(parameterizedObject.minParametricValue).to.equal(0);
+        expect(parameterizedObject.maxParametricValue).to.equal(1);
+        expect([parameterizedObject floatForParametricValue:0 key:key]).to.equal(1);
+        expect([parameterizedObject floatForParametricValue:1 key:key]).to.equal(2);
+      });
+
+      it(@"should return same parameterized object if possible", ^{
+        [constructor pushControlPoints:sufficientControlPoints];
+        id<LTParameterizedObject> parameterizedObject = constructor.parameterizedObject;
+        LTControlPointModel *model = [constructor reset];
+        id<LTParameterizedObject> anotherParameterizedObject =
+            [LTParameterizedObjectConstructor parameterizedObjectFromModel:model];
+        expect(parameterizedObject).to.beIdenticalTo(anotherParameterizedObject);
+      });
+    });
+  });
+
+  context(@"resetting", ^{
+    context(@"after initialization", ^{
+      it(@"should ignore resetting right after initialization", ^{
+        [constructor reset];
+        expect(constructor.parameterizedObject).to.beNil();
+      });
+
+      it(@"should return an empty control point model when resetting right after initialization", ^{
+        LTControlPointModel *model = [constructor reset];
+        expect(model).to.equal([[LTControlPointModel alloc] initWithType:type]);
+      });
+    });
+
+    context(@"after pushing insufficient number of points", ^{
+      it(@"should reset correctly", ^{
+        [constructor pushControlPoints:insufficientControlPoints];
+        LTControlPointModel *model = [constructor reset];
+        expect(constructor.parameterizedObject).to.beNil();
+        expect(model).to.equal([[LTControlPointModel alloc]
+                                initWithType:type controlPoints:insufficientControlPoints]);
+      });
+    });
+
+    context(@"after pushing sufficient number of points", ^{
+      it(@"should reset correctly", ^{
+        [constructor pushControlPoints:sufficientControlPoints];
+        LTControlPointModel *model = [constructor reset];
+        expect(constructor.parameterizedObject).to.beNil();
+        expect(model) .to.equal([[LTControlPointModel alloc]
+                                 initWithType:type controlPoints:sufficientControlPoints]);
+
       });
     });
   });
