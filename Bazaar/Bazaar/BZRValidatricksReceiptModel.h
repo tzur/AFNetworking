@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Extends \c BZRReceiptInAppPurchaseInfo by providing instant deserialization from Validatricks
 /// JSON response.
-@interface BZRValidatricksReceiptInAppPurchaseInfo :
-    BZRReceiptInAppPurchaseInfo <MTLJSONSerializing>
+@interface BZRValidatricksReceiptInAppPurchaseInfo : BZRReceiptInAppPurchaseInfo
+    <MTLJSONSerializing>
 @end
 
 #pragma mark -
