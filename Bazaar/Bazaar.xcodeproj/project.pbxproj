@@ -51,6 +51,8 @@
 		65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */; };
 		65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */; };
 		65C538D71D34F521004C91D4 /* NSValueTransformer+Validatricks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */; };
+		65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D91BB31D39A482000D6A3B /* AFNetworking.framework */; };
+		65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 658355431D2F9D6C00B88A70 /* libFiber.a */; };
 		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
 		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
 		65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */; };
@@ -323,6 +325,55 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTKitTests;
 		};
+		65D91BB21D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522391BBF104D00859F49;
+			remoteInfo = "AFNetworking iOS";
+		};
+		65D91BB41D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522651BBF129200859F49;
+			remoteInfo = "AFNetworking watchOS";
+		};
+		65D91BB61D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522771BBF136400859F49;
+			remoteInfo = "AFNetworking OS X";
+		};
+		65D91BB81D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0A51BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS";
+		};
+		65D91BBA1D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C3B1BC2C79500FD3B3E;
+			remoteInfo = "AFNetworking iOS Tests";
+		};
+		65D91BBC1D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C4A1BC2C7B200FD3B3E;
+			remoteInfo = "AFNetworking Mac OS X Tests";
+		};
+		65D91BBE1D39A482000D6A3B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0AE1BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS Tests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -428,6 +479,7 @@
 		65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BazaarSpec.mm"; sourceTree = "<group>"; };
 		65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Validatricks.h"; sourceTree = "<group>"; };
 		65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Validatricks.mm"; sourceTree = "<group>"; };
+		65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AFNetworking.xcodeproj; path = ../third_party/AFNetworking/AFNetworking.xcodeproj; sourceTree = "<group>"; };
 		65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptModelSpec.mm; sourceTree = "<group>"; };
 		65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModelSpec.mm; sourceTree = "<group>"; };
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
@@ -441,10 +493,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
 				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
-				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
+				65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */,
+				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
 				6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */,
 				6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */,
 			);
@@ -654,6 +708,7 @@
 		654B1F1D1CE22222001F36FA /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */,
 				654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */,
 				6529F8551CEB65E800FBABFE /* extobjc.xcodeproj */,
 				6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */,
@@ -799,6 +854,20 @@
 			name = Validatricks;
 			sourceTree = "<group>";
 		};
+		65D91BA91D39A482000D6A3B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65D91BB31D39A482000D6A3B /* AFNetworking.framework */,
+				65D91BB51D39A482000D6A3B /* AFNetworking.framework */,
+				65D91BB71D39A482000D6A3B /* AFNetworking.framework */,
+				65D91BB91D39A482000D6A3B /* AFNetworking.framework */,
+				65D91BBB1D39A482000D6A3B /* AFNetworking iOS Tests.xctest */,
+				65D91BBD1D39A482000D6A3B /* AFNetworking Mac OS X Tests.xctest */,
+				65D91BBF1D39A482000D6A3B /* AFNetworking tvOS Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		65F03B691CFC32CE008B1847 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -908,6 +977,10 @@
 			productRefGroup = 65FA32991CE2185E00901304 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 65D91BA91D39A482000D6A3B /* Products */;
+					ProjectRef = 65D91BA81D39A482000D6A3B /* AFNetworking.xcodeproj */;
+				},
 				{
 					ProductGroup = 654B1F1F1CE22279001F36FA /* Products */;
 					ProjectRef = 654B1F1E1CE22279001F36FA /* Expecta.xcodeproj */;
@@ -1202,6 +1275,55 @@
 			remoteRef = 6599B4041CFA346C00525BB7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		65D91BB31D39A482000D6A3B /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65D91BB21D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BB51D39A482000D6A3B /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65D91BB41D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BB71D39A482000D6A3B /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65D91BB61D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BB91D39A482000D6A3B /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 65D91BB81D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BBB1D39A482000D6A3B /* AFNetworking iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking iOS Tests.xctest";
+			remoteRef = 65D91BBA1D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BBD1D39A482000D6A3B /* AFNetworking Mac OS X Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking Mac OS X Tests.xctest";
+			remoteRef = 65D91BBC1D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65D91BBF1D39A482000D6A3B /* AFNetworking tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking tvOS Tests.xctest";
+			remoteRef = 65D91BBE1D39A482000D6A3B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1389,9 +1511,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../Fiber",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1406,9 +1528,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../Fiber",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
