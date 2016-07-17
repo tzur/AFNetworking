@@ -81,16 +81,16 @@ context(@"validatricks receipt environment transformer", ^{
   });
 
   it(@"should transform validatricks receipt environment to the correct enum value", ^{
-    expect([transformer transformedValue:@"Sandbox"]).to.equal($(BZRReceiptEnvironmentSandbox));
-    expect([transformer transformedValue:@"Production"]).to
+    expect([transformer transformedValue:@"sandbox"]).to.equal($(BZRReceiptEnvironmentSandbox));
+    expect([transformer transformedValue:@"production"]).to
         .equal($(BZRReceiptEnvironmentProduction));
   });
 
   it(@"should transform receipt environment enum to validatricks receipt environment", ^{
     expect([transformer reverseTransformedValue:$(BZRReceiptEnvironmentSandbox)]).to
-        .equal(@"Sandbox");
+        .equal(@"sandbox");
     expect([transformer reverseTransformedValue:$(BZRReceiptEnvironmentProduction)]).to
-        .equal(@"Production");
+        .equal(@"production");
   });
 
   it(@"should return nil if the received value is nil", ^{
