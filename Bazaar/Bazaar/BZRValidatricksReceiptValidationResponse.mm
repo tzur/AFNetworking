@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)validationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 + (NSValueTransformer *)receiptJSONTransformer {

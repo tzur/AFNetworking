@@ -49,7 +49,7 @@ it(@"should correctly transform original purchase date time value", ^{
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInAppPurchaseInfo,
                                      originalTransactionId)]: @"1337",
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInAppPurchaseInfo,
-                                     originalPurchaseDateTime)]: @1337
+                                     originalPurchaseDateTime)]: @1000
   };
   NSError *error;
   BZRValidatricksReceiptInAppPurchaseInfo *model =
@@ -57,7 +57,7 @@ it(@"should correctly transform original purchase date time value", ^{
                 fromJSONDictionary:JSONDictionary error:&error];
 
   expect(error).to.beNil();
-  expect(model.originalPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
+  expect(model.originalPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
 });
 
 it(@"should fail if the JSON dictionary is missing a mandatory key", ^{
@@ -147,13 +147,13 @@ it(@"should correctly date time values", ^{
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptSubscriptionInfo,
                                      originalTransactionId)]: @"1337",
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptSubscriptionInfo,
-                                     originalPurchaseDateTime)]: @1337,
+                                     originalPurchaseDateTime)]: @1000,
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptSubscriptionInfo,
-                                     expirationDateTime)]: @1337,
+                                     expirationDateTime)]: @1000,
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptSubscriptionInfo,
-                                     cancellationDateTime)]: @1337,
+                                     cancellationDateTime)]: @1000,
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptSubscriptionInfo,
-                                     lastPurchaseDateTime)]: @1337
+                                     lastPurchaseDateTime)]: @1000
   };
 
   NSError *error;
@@ -162,10 +162,10 @@ it(@"should correctly date time values", ^{
                 fromJSONDictionary:JSONDictionary error:&error];
 
   expect(error).to.beNil();
-  expect(model.originalPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
-  expect(model.expirationDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
-  expect(model.cancellationDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
-  expect(model.lastPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
+  expect(model.originalPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
+  expect(model.expirationDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
+  expect(model.cancellationDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
+  expect(model.lastPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
 });
 
 it(@"should fail if the JSON dictionary is missing a mandatory key", ^{

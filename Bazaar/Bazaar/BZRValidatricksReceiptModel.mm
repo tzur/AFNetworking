@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 @end
@@ -54,19 +54,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 + (NSValueTransformer *)lastPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 + (NSValueTransformer *)expirationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 + (NSValueTransformer *)cancellationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 @end
