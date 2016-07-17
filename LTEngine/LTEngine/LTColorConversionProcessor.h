@@ -12,6 +12,11 @@ typedef NS_ENUM(NSUInteger, LTColorConversionMode) {
 };
 
 /// Converts from one colorspace to another.
+///
+/// @note When using \c LTColorConversionRGBToYIQ all YIQ output channels are rescaled and offset to
+/// fit the range supported by the pixel format of \c input. This is also the input expected for
+/// \c LTColorConversionYIQToRGB which in turn performs the inverse of the scale and offset
+/// operation done in \c LTColorConversionRGBToYIQ.
 @interface LTColorConversionProcessor : LTOneShotImageProcessor
 
 /// Initializes with input image to be converted and output to store the result.
