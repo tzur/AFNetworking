@@ -34,10 +34,10 @@ static NSString * const kLatestValidatorVersion = @"v1";
 static NSString * const kValidatricksAPIKey = @"AkPQ45BJFN8GdEuCA9WTm7zaauQSVAil6ZtMp1U3";
 
 /// Receipt validation endpoint of the Validatricks server.
-static NSString * const kReceiptValidationEndpoint = @"/validateReceipt";
+static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 
 + (NSURL *)defaultValidatricksServerURL {
-  NSString *serverURLString = [NSString stringWithFormat:@"https://%@/store/%@",
+  NSString *serverURLString = [NSString stringWithFormat:@"https://%@/store/%@/",
                                kValidatricksServerHostName, kLatestValidatorVersion];
   return [NSURL URLWithString:serverURLString];
 }

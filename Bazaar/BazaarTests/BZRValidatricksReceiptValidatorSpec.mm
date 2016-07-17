@@ -47,8 +47,17 @@ it(@"should provide default server URL", ^{
 });
 
 
-it(@"should provide receipt validation endpoing", ^{
+it(@"should provide receipt validation endpoint", ^{
   expect([BZRValidatricksReceiptValidator receiptValidationEndpoint]).toNot.beNil();
+});
+
+it(@"should provide server URL and receipt validation endpoint that can be composed together", ^{
+  NSURL *serverURL = [BZRValidatricksReceiptValidator defaultValidatricksServerURL];
+  NSString *validatorEndpoint = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
+  NSURL *compositeURL = [NSURL URLWithString:validatorEndpoint relativeToURL:serverURL];
+
+  expect(compositeURL.absoluteString).to.beginWith(serverURL.absoluteString);
+  expect([compositeURL.pathComponents lastObject]).to.equal(validatorEndpoint);
 });
 
 context(@"initialization", ^{
