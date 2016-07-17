@@ -47,8 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSValueTransformer *)bzr_validatricksReceiptEnvironmentValueTransformer {
   return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
-    @"Sandbox": $(BZRReceiptEnvironmentSandbox),
-    @"Production": $(BZRReceiptEnvironmentProduction)
+    @"sandbox": $(BZRReceiptEnvironmentSandbox),
+    @"production": $(BZRReceiptEnvironmentProduction)
   }];
 }
 

@@ -4,6 +4,7 @@
 #import "BZRValidatricksReceiptModel.h"
 
 #import "BZRReceiptEnvironment.h"
+#import "NSValueTransformer+Validatricks.h"
 
 #pragma mark -
 #pragma mark BZRValidatricksReceiptInAppPurchaseInfo
@@ -216,6 +217,13 @@ SpecEnd
 
 SpecBegin(BZRValidatricksReceiptInfo)
 
+static NSString * const kValidatricksSandboxEnvironment =
+    [[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+     reverseTransformedValue:$(BZRReceiptEnvironmentSandbox)];
+static NSString * const kValidatricksProductionEnvironment =
+    [[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+     reverseTransformedValue:$(BZRReceiptEnvironmentProduction)];
+
 __block NSDictionary *JSONKeysMapping;
 __block BZRValidatricksReceiptInAppPurchaseInfo *inAppPurchase;
 __block NSDictionary *inAppPurchaseJSONDictionary;
@@ -251,7 +259,8 @@ it(@"should provide property key to JSON key mapping", ^{
 
 it(@"should correctly build model with JSON dictionary", ^{
   NSDictionary *JSONDictionary = @{
-    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]: @"Production"
+    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]:
+        kValidatricksProductionEnvironment
   };
   NSError *error;
   BZRValidatricksReceiptInfo *model =
@@ -266,7 +275,8 @@ it(@"should correctly build model with JSON dictionary", ^{
 
 it(@"should correctly transform receipt environment value", ^{
   NSDictionary *JSONDictionary = @{
-    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]: @"Production"
+    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]:
+        kValidatricksProductionEnvironment
   };
   NSError *error;
   BZRValidatricksReceiptInfo *model =
@@ -280,7 +290,8 @@ it(@"should correctly transform receipt environment value", ^{
 it(@"should correctly transform the in app purchases array", ^{
   NSArray *inAppPurchases = @[inAppPurchaseJSONDictionary, inAppPurchaseJSONDictionary];
   NSDictionary *JSONDictionary = @{
-    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]: @"Sandbox",
+    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]:
+        kValidatricksSandboxEnvironment,
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, inAppPurchases)]: inAppPurchases
   };
   NSError *error;
@@ -294,7 +305,8 @@ it(@"should correctly transform the in app purchases array", ^{
 
 it(@"should correctly transform the subscription model", ^{
   NSDictionary *JSONDictionary = @{
-    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]: @"Sandbox",
+    JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, environment)]:
+        kValidatricksSandboxEnvironment,
     JSONKeysMapping[@instanceKeypath(BZRValidatricksReceiptInfo, subscription)]:
         subscriptionJSONDictionary
   };
