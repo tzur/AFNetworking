@@ -35,9 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSession:(id<FBRHTTPSession>)session baseURL:(nullable NSURL *)baseURL
     NS_DESIGNATED_INITIALIZER;
 
-/// Initiates a GET request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a GET request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -48,9 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)GET:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
 
-/// Initiates a HEAD request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a HEAD request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -61,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)HEAD:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters;
 
-/// Initiates a POST request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a POST request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -74,9 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)POST:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters;
 
-/// Initiates a PUT request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a PUT request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -87,9 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)PUT:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
 
-/// Initiates a PATCH request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a PATCH request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -100,9 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)PATCH:(NSString *)URLString
       withParameters:(nullable FBRHTTPRequestParameters *)parameters;
 
-/// Initiates a DELETE request to the URL specified by \c URLString prefixed by the receiver's
-/// \c baseURL. If \c parameters are specified they will be serialized and sent as part of the
-/// request.
+/// Initiates a DELETE request to the URL specified by \c URLString composed as relative path to the
+/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
+/// the request.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
