@@ -75,6 +75,24 @@ struct ::std::hash<CGRect> {
 };
 
 #pragma mark -
+#pragma mark CGAffineTransform
+#pragma mark -
+
+template <>
+struct ::std::hash<CGAffineTransform> {
+  inline size_t operator()(CGAffineTransform t) const {
+    size_t seed = 0;
+    lt::detail::hash_combine(seed, t.a);
+    lt::detail::hash_combine(seed, t.b);
+    lt::detail::hash_combine(seed, t.c);
+    lt::detail::hash_combine(seed, t.d);
+    lt::detail::hash_combine(seed, t.tx);
+    lt::detail::hash_combine(seed, t.ty);
+    return seed;
+  }
+};
+
+#pragma mark -
 #pragma mark std::pair
 #pragma mark -
 
