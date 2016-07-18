@@ -71,9 +71,6 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// using \c albumCellSizingStrategy, all other items are be sized using \c assetCellSizingStrategy.
 @property (readonly, nonatomic) PTUCollectionViewConfiguration *configuration;
 
-/// \c YES if the receiver is in multiple selection mode.
-@property (nonatomic) BOOL allowsMultipleSelection;
-
 /// Title of the data associated with this collection view controller. This property is KVO
 /// compliant.
 @property (readonly, nonatomic, nullable) NSString *localizedTitle;
