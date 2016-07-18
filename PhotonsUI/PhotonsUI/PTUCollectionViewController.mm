@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize emptyView = _emptyView;
 @synthesize errorView = _errorView;
 @synthesize localizedTitle = _localizedTitle;
+@synthesize backgroundView = _backgroundView;
 
 - (instancetype)initWithDataSourceProvider:(id<PTUDataSourceProvider>)dataSourceProvider
                       initialConfiguration:(PTUCollectionViewConfiguration *)initialConfiguration {
@@ -226,7 +227,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   _emptyView = emptyView;
   self.emptyView.accessibilityIdentifier = @"Empty";
-  [self.view insertSubview:self.emptyView belowSubview:self.collectionView];
+  [self.view insertSubview:self.emptyView aboveSubview:self.collectionView];
   [self.emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
@@ -237,7 +238,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   _errorView = errorView;
   self.errorView.accessibilityIdentifier = @"Error";
-  [self.view insertSubview:self.errorView belowSubview:self.collectionView];
+  [self.view insertSubview:self.errorView aboveSubview:self.collectionView];
   [self.errorView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
@@ -252,11 +253,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setBackgroundView:(nullable UIView *)backgroundView {
-  self.collectionView.backgroundView = backgroundView;
-}
-
-- (nullable UIView *)backgroundView {
-  return self.collectionView.backgroundView;
+  [_backgroundView removeFromSuperview];
+  
+  if (backgroundView) {
+    [self.view insertSubview:backgroundView belowSubview:self.collectionView];
+  }
+  _backgroundView = backgroundView;
 }
 
 #pragma mark -

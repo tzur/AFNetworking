@@ -436,12 +436,12 @@ context(@"collection view", ^{
   it(@"should correctly set background view", ^{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     viewController.backgroundView = view;
-    expect(collectionView.backgroundView).to.equal(view);
+    expect([view isDescendantOfView:viewController.view]).to.beTruthy();
   });
 
   it(@"should correctly get background view", ^{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    collectionView.backgroundView = view;
+    viewController.backgroundView = view;
     expect(viewController.backgroundView).to.equal(view);
   });
 });
