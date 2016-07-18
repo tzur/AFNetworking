@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
+		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
 		65CEFBB71D3BF72800402230 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB61D3BF72800402230 /* main.m */; };
 		65CEFBBA1D3BF72800402230 /* FNDAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */; };
 		65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC11D3BF72800402230 /* Assets.xcassets */; };
@@ -99,6 +101,8 @@
 		652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngineUser.xcodeproj; path = ../LTEngine/LTEngineUser.xcodeproj; sourceTree = "<group>"; };
 		652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUIUser.xcodeproj; path = ../CameraUI/CameraUIUser.xcodeproj; sourceTree = "<group>"; };
 		652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUser.xcodeproj; path = ../Camera/CameraUser.xcodeproj; sourceTree = "<group>"; };
+		65BB8B701D3D67C5004886DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		65BB8B721D3D67C9004886DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		65CEFBB21D3BF72800402230 /* Foundations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Foundations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CEFBB61D3BF72800402230 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		65CEFBB81D3BF72800402230 /* FNDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNDAppDelegate.h; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */,
+				65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,13 +215,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		65BB8B741D3D67E2004886DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65BB8B701D3D67C5004886DC /* Foundation.framework */,
+				65BB8B721D3D67C9004886DC /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		65CEFBA91D3BF72800402230 = {
 			isa = PBXGroup;
 			children = (
-				652F77501D3D598B00EF9256 /* Test Hosts */,
 				652F75DA1D3D429F00EF9256 /* Configuration */,
 				65CEFBB41D3BF72800402230 /* Foundations */,
+				65BB8B741D3D67E2004886DC /* Frameworks */,
 				65CEFBB31D3BF72800402230 /* Products */,
+				652F77501D3D598B00EF9256 /* Test Hosts */,
 			);
 			sourceTree = "<group>";
 		};
