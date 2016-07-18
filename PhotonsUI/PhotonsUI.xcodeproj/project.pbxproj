@@ -76,6 +76,8 @@
 		8B0B9A271CA6BF6A00ED2334 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A221CA6BF6A00ED2334 /* libSpecta.a */; };
 		8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
+		BE7B8C101D37A5940013F1FC /* PTUArrayChangesetProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */; };
+		BE7B8C2D1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -431,6 +433,9 @@
 		8B0B9A211CA6BF6A00ED2334 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../third_party/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
 		8B0B9A221CA6BF6A00ED2334 /* libSpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpecta.a; path = "../third_party/Specta/Specta/build/Debug-iphoneos/libSpecta.a"; sourceTree = "<group>"; };
 		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
+		BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUArrayChangesetProvider.h; sourceTree = "<group>"; };
+		BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProvider.mm; sourceTree = "<group>"; };
+		BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProviderSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -517,6 +522,7 @@
 			isa = PBXGroup;
 			children = (
 				8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */,
+				BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */,
 				8449B5F71D1AD6F10054272C /* PTUChangesetMetadataSpec.mm */,
 				84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */,
 				84765E331D29411500D3D5C5 /* PTUChangesetProviderReverserSpec.mm */,
@@ -616,6 +622,8 @@
 			children = (
 				8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */,
 				8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */,
+				BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */,
+				BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */,
 				84AFE8A21D11863C0095C192 /* PTUCellSizingStrategy.h */,
 				84AFE8A31D11863C0095C192 /* PTUCellSizingStrategy.mm */,
 				8428F3AA1C68E6840007B0A5 /* PTUChangeset.h */,
@@ -1166,6 +1174,7 @@
 				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
 				848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */,
 				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
+				BE7B8C2D1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm in Sources */,
 				848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				84765E321D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm in Sources */,
 				848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */,
@@ -1199,6 +1208,7 @@
 				84765E121D29393600D3D5C5 /* PTUChangesetProviderReverser.m in Sources */,
 				84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */,
 				8482E0151D2143690084D565 /* PTUCollectionViewConfiguration.mm in Sources */,
+				BE7B8C101D37A5940013F1FC /* PTUArrayChangesetProvider.mm in Sources */,
 				84EA94B71D0702A90052455E /* PTUDataSource.mm in Sources */,
 				84765E301D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.m in Sources */,
 				843AF3B51D29055300890F4D /* PTUImageCellView.mm in Sources */,
