@@ -25,6 +25,7 @@
 		25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */; };
 		25AD677C1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */; };
 		25C3DCAE1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */; };
+		2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */; };
 		282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */; };
 		282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154E11D1AF0A100420FA9 /* opencv2.framework */; };
 		282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DB1D1AEF4700420FA9 /* AVFoundation.framework */; };
@@ -341,6 +342,7 @@
 		25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTestPipelineConfiguration.mm; sourceTree = "<group>"; };
 		25C3DC921D37ACD60056E47A /* DVNEasyQuadVectorBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNEasyQuadVectorBoxing.h; sourceTree = "<group>"; };
 		25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNEasyQuadVectorBoxing.mm; sourceTree = "<group>"; };
+		2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+equalMat.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalMat.h"; sourceTree = "<group>"; };
@@ -401,11 +403,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */,
 				282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */,
 				282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */,
 				282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */,
 				282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */,
+				5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */,
+				2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */,
 				282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */,
 				282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */,
 				250155301D1AF1B600420FA9 /* libSpecta.a in Frameworks */,
@@ -467,6 +470,7 @@
 				282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */,
 				250154D81D1AEF1400420FA9 /* Accelerate.framework */,
 				250154DD1D1AEF5400420FA9 /* CoreMedia.framework */,
+				2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */,
 				250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */,
 				250154E11D1AF0A100420FA9 /* opencv2.framework */,
 			);
