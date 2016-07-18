@@ -67,6 +67,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// control point sequence can be received.
 - (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints end:(BOOL)end;
 
+/// Cancels the currently ongoing process sequence and transitions into a state in which it can
+/// handle a new process sequence. If this instance started rendering as a result of the ongoing
+/// process sequence, its delegate is informed about the end of the rendering. If this instance did
+/// not start rendering, the delegate is not called.
+- (void)cancel;
+
 /// Processes the given \c model. It is the responsibility of the user to ensure the usage of an
 /// appropriate render target.
 + (void)processModel:(DVNSplineRenderModel *)model;

@@ -91,16 +91,22 @@ NS_ASSUME_NONNULL_BEGIN
   [self processUnprocessedPartOfSpline:end];
 
   if (end) {
-    LTControlPointModel *controlPointModel = [self.splineConstructor reset];
+    [self handleEnd];
+  }
+}
 
+- (void)handleEnd {
+  LTControlPointModel *controlPointModel = [self.splineConstructor reset];
+
+  if (!self.firstRenderCallOfSequence) {
     DVNSplineRenderModel *model =
         [[DVNSplineRenderModel alloc]
          initWithControlPointModel:controlPointModel configuration:self.sequenceStartConfiguration
          endInterval:self.lastIntervalUsedInLastSequence];
     [self.delegate renderingOfSplineRenderer:self endedWithModel:model];
-
-    [self reset];
   }
+
+  [self reset];
 }
 
 - (BOOL)firstRenderCallOfSequence {
@@ -144,6 +150,10 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
   }
 
   [self.splineConstructor pushControlPoints:mutableControlPoints];
+}
+
+- (void)cancel {
+  [self handleEnd];
 }
 
 + (void)processModel:(DVNSplineRenderModel *)model {
