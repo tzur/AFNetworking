@@ -13,6 +13,9 @@ LTGPUStructMake(MyMediumStruct,
                 LTVector4, color);
 
 LTGPUStructMake(MyShortStruct,
+                GLshort, index);
+
+LTGPUStructMake(MyUnsignedShortStruct,
                 GLushort, index);
 
 SpecBegin(LTGPUStructs)
@@ -49,6 +52,28 @@ context(@"struct registration", ^{
     expect(gpuStruct).toNot.beNil();
     expect(gpuStruct.name).to.equal(structName);
     expect(gpuStruct.size).to.equal(sizeof(MyShortStruct));
+
+    expect(gpuStruct.fields).toNot.beNil();
+    expect(gpuStruct.fields.count).to.equal(1);
+
+    LTGPUStructField *value = gpuStruct.fields[@"index"];
+    expect(value.name).to.equal(@"index");
+    expect(value.offset).to.equal(0);
+    expect(value.type).to.equal(@"GLshort");
+    expect(value.size).to.equal(sizeof(GLshort));
+    expect(value.componentType).to.equal(GL_SHORT);
+    expect(value.componentCount).to.equal(1);
+  });
+
+  it(@"should register unsigned short struct", ^{
+    NSString *structName = @"MyUnsignedShortStruct";
+
+    LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance]
+                              structForName:structName];
+
+    expect(gpuStruct).toNot.beNil();
+    expect(gpuStruct.name).to.equal(structName);
+    expect(gpuStruct.size).to.equal(sizeof(MyUnsignedShortStruct));
 
     expect(gpuStruct.fields).toNot.beNil();
     expect(gpuStruct.fields.count).to.equal(1);
