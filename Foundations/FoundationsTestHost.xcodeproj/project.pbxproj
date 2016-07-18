@@ -141,7 +141,7 @@
 				652F75E11D3D429F00EF9256 /* Targets */,
 			);
 			name = Configuration;
-			path = ../../Configuration;
+			path = ../Configuration;
 			sourceTree = "<group>";
 		};
 		652F75DC1D3D429F00EF9256 /* Configurations */ = {
