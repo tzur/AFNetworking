@@ -81,6 +81,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		652F75121D3D029500EF9256 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
+			remoteInfo = PhotonsUI;
+		};
 		848EFFDE1C591BFF001D8368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848EFFD91C591BFF001D8368 /* Photons.xcodeproj */;
@@ -848,6 +855,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				652F75131D3D029500EF9256 /* PBXTargetDependency */,
 			);
 			name = PhotonsUITests;
 			productName = PhotonsUITests;
@@ -1222,6 +1230,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		652F75131D3D029500EF9256 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84FF72E81C8EED6D00D1DA9F /* PhotonsUI */;
+			targetProxy = 652F75121D3D029500EF9256 /* PBXContainerItemProxy */;
+		};
 		84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Photons;
