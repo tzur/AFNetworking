@@ -418,11 +418,6 @@ context(@"collection view", ^{
     OCMVerify(provider);
   });
 
-  it(@"should allow multiple selection", ^{
-    viewController.allowsMultipleSelection = YES;
-    expect(collectionView.allowsMultipleSelection).to.beTruthy();
-  });
-
   it(@"should correctly set background color", ^{
     viewController.backgroundColor = [UIColor redColor];
     expect(collectionView.backgroundColor).to.equal([UIColor redColor]);
@@ -443,6 +438,26 @@ context(@"collection view", ^{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     collectionView.backgroundView = view;
     expect(viewController.backgroundView).to.equal(view);
+  });
+  
+  it(@"should show the view when the data source has data and did not err", ^{
+    dataSource.data = @[@[asset]];
+    expect(collectionView.isHidden || collectionView.alpha == 0).to.beFalsy();
+  });
+  
+  it(@"should hide the view when the data source has no data", ^{
+    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
+  });
+  
+  it(@"should hide the view when the data source has data but erred", ^{
+    dataSource.data = @[@[asset]];
+    dataSource.error = [NSError lt_errorWithCode:1337];
+    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
+  });
+  
+  it(@"should hide the view when the data source has no data and erred", ^{
+    dataSource.error = [NSError lt_errorWithCode:1337];
+    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
   });
 });
 
@@ -495,7 +510,7 @@ context(@"error view", ^{
     errorView = [viewController.view wf_viewForAccessibilityIdentifier:@"Error"];
   });
   
-  it(@"should hide the view when the data source did no err", ^{
+  it(@"should hide the view when the data source did not err", ^{
     expect(errorView.isHidden || errorView.alpha == 0).to.beTruthy();
   });
   

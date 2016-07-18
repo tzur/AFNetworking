@@ -108,6 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
   _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
   self.collectionView.accessibilityIdentifier = @"CollectionView";
   self.collectionView.delegate = self;
+  self.collectionView.allowsMultipleSelection = YES;
 
   [self.view addSubview:self.collectionView];
   [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -149,7 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupInfoViews {
   @weakify(self);
-  RAC(self, emptyView.hidden) = [[[[RACObserve(self, emptyView)
+  RACSignal *hideEmptyView = [[[[RACObserve(self, emptyView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.hasData);
@@ -161,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
         return @(hasData.boolValue || error != nil);
       }];
 
-  RAC(self, errorView.hidden) = [[[RACObserve(self, errorView)
+  RACSignal *hideErrorView = [[[RACObserve(self, errorView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.error);
@@ -170,6 +171,14 @@ NS_ASSUME_NONNULL_BEGIN
       map:^NSNumber *(NSError * _Nullable error) {
         return @(error == nil);
       }];
+  
+  RAC(self, emptyView.hidden) = hideEmptyView;
+  RAC(self, errorView.hidden) = hideErrorView;
+  RAC(self, collectionView.hidden) = [RACSignal
+    combineLatest:@[hideEmptyView, hideErrorView]
+    reduce:(id)^NSNumber *(NSNumber *hideEmpty, NSNumber *hideError) {
+      return @(!hideEmpty.boolValue || !hideError.boolValue);
+    }];
 
   [self buildDefaultEmptyView];
   [self buildDefaultErrorView];
@@ -341,14 +350,6 @@ NS_ASSUME_NONNULL_BEGIN
   }
   
   [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
-}
-
-- (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection {
-  self.collectionView.allowsMultipleSelection = allowsMultipleSelection;
-}
-
-- (BOOL)allowsMultipleSelection {
-  return self.collectionView.allowsMultipleSelection;
 }
 
 - (void)reloadData {
