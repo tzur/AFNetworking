@@ -46,6 +46,18 @@
 		656210741D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 656210731D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm */; };
 		657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F83D1CEB608B00FBABFE /* Mantle.framework */; };
 		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */; };
+		6581E86B1D3B9F5800B26E1A /* Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 65FA329B1CE2185E00901304 /* Bazaar.h */; };
+		6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */; };
+		6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6506094A1CEDE5F60012202D /* BZRReceiptModel.h */; };
+		6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */; };
+		6581E86F1D3B9F6C00B26E1A /* BZRReceiptValidationParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = 6529F8671CEB6F0E00FBABFE /* BZRReceiptValidationParameters.h */; };
+		6581E8701D3B9F6F00B26E1A /* BZRReceiptValidationResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 6580F0721CEB2E8D007EABDD /* BZRReceiptValidationResponse.h */; };
+		6581E8711D3B9F7200B26E1A /* BZRReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */; };
+		6581E8721D3B9F8000B26E1A /* BZRValidatricksReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 651A26181D392B79001D418B /* BZRValidatricksReceiptValidator.h */; };
+		6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 65F03B6A1CFC3E0C008B1847 /* BZRModel.h */; };
+		6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */; };
+		6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */; };
+		6581E8761D3B9FCE00B26E1A /* RACSignal+Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */; };
 		6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */; };
 		6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */; };
 		6584CE8A1CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */; };
@@ -379,18 +391,6 @@
 			remoteInfo = "AFNetworking tvOS Tests";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		65FA32961CE2185D00901304 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6502EF9A1D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRReceiptValidationParameters+Validatricks.h"; sourceTree = "<group>"; };
@@ -928,6 +928,28 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		6581E86A1D3B9F4100B26E1A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6581E86B1D3B9F5800B26E1A /* Bazaar.h in Headers */,
+				6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */,
+				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
+				6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */,
+				6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */,
+				6581E86F1D3B9F6C00B26E1A /* BZRReceiptValidationParameters.h in Headers */,
+				6581E8701D3B9F6F00B26E1A /* BZRReceiptValidationResponse.h in Headers */,
+				6581E8711D3B9F7200B26E1A /* BZRReceiptValidator.h in Headers */,
+				6581E8721D3B9F8000B26E1A /* BZRValidatricksReceiptValidator.h in Headers */,
+				6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */,
+				6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */,
+				6581E8761D3B9FCE00B26E1A /* RACSignal+Bazaar.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		654B1F091CE22030001F36FA /* BazaarTests */ = {
 			isa = PBXNativeTarget;
@@ -953,7 +975,7 @@
 			buildPhases = (
 				65FA32941CE2185D00901304 /* Sources */,
 				65FA32951CE2185D00901304 /* Frameworks */,
-				65FA32961CE2185D00901304 /* CopyFiles */,
+				6581E86A1D3B9F4100B26E1A /* Headers */,
 			);
 			buildRules = (
 			);
