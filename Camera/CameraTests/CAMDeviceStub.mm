@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)setCamera:(CAMDeviceCamera * __unused)camera {
+  self.setCameraWasCalled = YES;
   return self.setCameraSignal;
 }
 

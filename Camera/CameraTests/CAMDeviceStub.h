@@ -90,6 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see CAMFlipDevice.
 @property (nonatomic) BOOL canChangeCamera;
 
+/// \c YES if \c setCamera was called.
+@property (nonatomic) BOOL setCameraWasCalled;
+
 /// Return value for the \c setCamera: method.
 @property (strong, nonatomic, nullable) RACSignal *setCameraSignal;
 
