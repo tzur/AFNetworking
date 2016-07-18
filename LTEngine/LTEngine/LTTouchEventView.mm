@@ -60,6 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
       [CADisplayLink displayLinkWithTarget:self
                                   selector:@selector(forwardStationaryTouchEvents:)];
   [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+  displayLink.paused = YES;
   return displayLink;
 }
 
@@ -79,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self lockAndExecute:^{
     [super touchesBegan:touches withEvent:event];
     [self updateMapTableWithBeginningTouches:touches];
+    [self updateDisplayLink];
     [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
   }];
 }
@@ -99,6 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
     [super touchesEnded:touches withEvent:event];
     [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
     [self updateMapTableWithTerminatingTouches:touches];
+    [self updateDisplayLink];
   }];
 }
 
@@ -107,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
     [super touchesCancelled:touches withEvent:event];
     [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
     [self updateMapTableWithTerminatingTouches:touches];
+    [self updateDisplayLink];
   }];
 }
 
@@ -197,6 +201,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Auxiliary methods - Display Link
+#pragma mark -
+
+- (void)updateDisplayLink {
+  self.displayLink.paused = self.touchToSequenceID.count == 0;
+}
+
+#pragma mark -
 #pragma mark Auxiliary methods - Delegate Calls
 #pragma mark -
 
@@ -208,7 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSNumber *boxedSequenceID = [self.touchToSequenceID objectForKey:mainTouch];
     if (!boxedSequenceID) {
       // The sequenceID does not exist, since it has been removed due to an external termination
-      /// request.
+      // request.
       continue;
     }
 
