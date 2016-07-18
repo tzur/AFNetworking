@@ -26,14 +26,14 @@ beforeEach(^{
 
 context(@"initialization", ^{
   it(@"should raise an exception when initialized with nil camera device", ^{
-    id<CAMDevice> device = nil;
+    id<CAMFlashDevice> device = nil;
     expect(^{
       CUIFlashModeViewModel * __unused flashModeViewModel =
           [[CUIFlashModeViewModel alloc] initWithFlashDevice:device flashMode:flashMode
                                                        title:title iconURL:iconURL];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should set the object's flashMode to the given flash mode", ^{
     expect(flashModeViewModel.flashMode).to.equal(flashMode);
   });
@@ -41,7 +41,7 @@ context(@"initialization", ^{
   it(@"should set the title to the given title", ^{
     expect(flashModeViewModel.title).to.equal(title);
   });
-  
+
   it(@"should set the iconURL to the given icon URL", ^{
     expect(flashModeViewModel.iconURL).to.equal(iconURL);
   });
@@ -73,11 +73,11 @@ context(@"didTap", ^{
     LLSignalTestRecorder *recorder = [[RACSignal return:[RACUnit defaultUnit]] testRecorder];
     device.setFlashModeSignal = recorder;
     [recorder startCountingSubscriptions];
-    
+
     expect(recorder.subscriptionCount).to.equal(0);
     [flashModeViewModel didTap];
     expect(recorder.subscriptionCount).will.equal(1);
-    
+
     [recorder stopCountingSubscriptions];
   });
 });

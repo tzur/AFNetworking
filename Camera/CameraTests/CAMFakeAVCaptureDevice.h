@@ -5,9 +5,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Fake \c AVCaptureDevice for testing purposes. Records whether \c lockForConfiguration: and
-/// \c unlockForConfiguration were called, and in what order they were called. Can be configured to
-/// err in \c lockForConfiguration:.
+/// Fake \c AVCaptureDevice for testing purposes, with many capabilities for mocking and recording
+/// behaviors. It records whether \c lockForConfiguration: and \c unlockForConfiguration were
+/// called, and in what order they were called, and can be configured to err in
+/// \c lockForConfiguration:. Additionally, most \c is*Supported methods can be configured to
+/// return a given value.
 @interface CAMFakeAVCaptureDevice : AVCaptureDevice
 
 /// Error to return in \c lockForConfiguration:. If \c nil, \c lockForConfiguration: will succeed.
@@ -25,6 +27,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Media types the receiver will report to "have", when queried using \c hasMediaType:.
 @property (copy, nonatomic) NSArray<NSString *> *mediaTypes;
+
+/// Value to return in \c isFocusModeSupported:.
+@property (nonatomic) BOOL focusModeSupported;
+
+/// Override to allow setting this property.
+@property (nonatomic) BOOL focusPointOfInterestSupported;
+
+/// Value to return in \c isExposureModeSupported:.
+@property (nonatomic) BOOL exposureModeSupported;
+
+/// Override to allow setting this property.
+@property (nonatomic) BOOL exposurePointOfInterestSupported;
+
+/// Override to allow setting this property.
+@property (nonatomic) float minExposureTargetBias;
+
+/// Override to allow setting this property.
+@property (nonatomic) float maxExposureTargetBias;
+
+/// Override to allow setting this property.
+@property (nonatomic) float exposureTargetOffset;
+
+/// Value to return in \c isWhiteBalanceModeSupported:.
+@property (nonatomic) BOOL whiteBalanceModeSupported;
+
+/// Value to return in \c deviceWhiteBalanceGainsForTemperatureAndTintValues:.
+@property (nonatomic) AVCaptureWhiteBalanceGains gainsToReturnFromConversion;
+
+/// Value to return in \c isFlashModeSupported:.
+@property (nonatomic) BOOL flashModeSupported;
+
+/// Override to allow setting this property.
+@property (nonatomic) BOOL hasFlash;
+
+/// Override to allow setting this property.
+@property (nonatomic) BOOL flashActive;
 
 @end
 

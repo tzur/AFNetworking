@@ -44,6 +44,8 @@
 		835205A71D2A5B2700000EEC /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 835205961D2A5B2700000EEC /* EXPMatchers+sendValuesWithCount.m */; };
 		835206491D2A7F8B00000EEC /* CAMVideoFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 835206481D2A7F8B00000EEC /* CAMVideoFrame.mm */; };
 		8352064B1D2A7FA100000EEC /* CAMVideoFrameSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8352064A1D2A7FA100000EEC /* CAMVideoFrameSpec.mm */; };
+		8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */; };
+		835206501D2A820700000EEC /* CAMHardwareDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */; };
 		836C65B71CD75ED400BE4496 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97511CD75586001962A0 /* libSpecta.a */; };
 		836C65CC1CD75ED900BE4496 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F972F1CD75504001962A0 /* libExpecta.a */; };
 		836C65CD1CD75F0300BE4496 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97601CD75591001962A0 /* libOCMock.a */; };
@@ -59,6 +61,7 @@
 		83B730661CDB567B0090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730651CDB567B0090C0BF /* AssetsLibrary.framework */; };
 		83B730681CDB56870090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730671CDB56870090C0BF /* CoreMedia.framework */; };
 		83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
+		83BDB8271D3B7B8C000C2088 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BDB8261D3B7B8C000C2088 /* Lena.png */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
 		BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */; };
@@ -415,6 +418,9 @@
 		835206471D2A7F8B00000EEC /* CAMVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMVideoFrame.h; sourceTree = "<group>"; };
 		835206481D2A7F8B00000EEC /* CAMVideoFrame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVideoFrame.mm; sourceTree = "<group>"; };
 		8352064A1D2A7FA100000EEC /* CAMVideoFrameSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVideoFrameSpec.mm; sourceTree = "<group>"; };
+		8352064C1D2A81FA00000EEC /* CAMHardwareDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMHardwareDevice.h; sourceTree = "<group>"; };
+		8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareDevice.mm; sourceTree = "<group>"; };
+		8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareDeviceSpec.mm; sourceTree = "<group>"; };
 		8352E9C61CD74D250008C22B /* Camera-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Camera-Prefix.pch"; sourceTree = "<group>"; };
 		8352E9C71CD74D930008C22B /* CameraTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraTests-Prefix.pch"; sourceTree = "<group>"; };
 		836C65CF1CD75F2700BE4496 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
@@ -423,7 +429,6 @@
 		83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareSessionSpec.mm; sourceTree = "<group>"; };
 		83893A561D12C827002B64B4 /* CAMFakeAVCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMFakeAVCaptureDevice.h; sourceTree = "<group>"; };
 		83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMFakeAVCaptureDevice.mm; sourceTree = "<group>"; };
-		8395AE161CFDC9AF00C91C9E /* CAMDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevice.h; sourceTree = "<group>"; };
 		8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDevice+Configure.h"; sourceTree = "<group>"; };
 		8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+Configure.mm"; sourceTree = "<group>"; };
 		8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+ConfigureSpec.mm"; sourceTree = "<group>"; };
@@ -432,6 +437,7 @@
 		83B730491CDB56770090C0BF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		83B730651CDB567B0090C0BF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		83B730671CDB56870090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		83BDB8261D3B7B8C000C2088 /* Lena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena.png; path = ../../LTEngine/LTEngineTests/Resources/Lena.png; sourceTree = "<group>"; };
 		83D3189C1D0548D9008A8D7E /* CAMPreviewLayerDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMPreviewLayerDevice.h; sourceTree = "<group>"; };
 		83D318B71D0548E8008A8D7E /* CAMFocusDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMFocusDevice.h; sourceTree = "<group>"; };
 		83D318B81D0548F3008A8D7E /* CAMExposureDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMExposureDevice.h; sourceTree = "<group>"; };
@@ -545,6 +551,7 @@
 				BEB6EDEE1D325C4700E9D424 /* LTTestModule.h */,
 				BEB6EDEF1D325C4700E9D424 /* LTTestModule.mm */,
 				06C02F741D196A9800745557 /* LTTestUtils+LTEngine.mm */,
+				83BDB8261D3B7B8C000C2088 /* Lena.png */,
 				06C02F7D1D1974C000745557 /* NSValue+OpenCVExtensions.mm */,
 			);
 			name = LTEngineTests;
@@ -708,6 +715,8 @@
 		83893A341D12827E002B64B4 /* Hardware */ = {
 			isa = PBXGroup;
 			children = (
+				8352064C1D2A81FA00000EEC /* CAMHardwareDevice.h */,
+				8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */,
 				83893A4F1D128288002B64B4 /* CAMHardwareSession.h */,
 				83893A501D128288002B64B4 /* CAMHardwareSession.mm */,
 				835206471D2A7F8B00000EEC /* CAMVideoFrame.h */,
@@ -719,6 +728,7 @@
 		83893A521D12828D002B64B4 /* Hardware */ = {
 			isa = PBXGroup;
 			children = (
+				8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */,
 				83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */,
 				8352064A1D2A7FA100000EEC /* CAMVideoFrameSpec.mm */,
 			);
@@ -741,7 +751,6 @@
 			children = (
 				83893A341D12827E002B64B4 /* Hardware */,
 				83D318BE1D054A17008A8D7E /* CAMAudioDevice.h */,
-				8395AE161CFDC9AF00C91C9E /* CAMDevice.h */,
 				8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */,
 				8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */,
 				83D318B81D0548F3008A8D7E /* CAMExposureDevice.h */,
@@ -1218,6 +1227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83BDB8271D3B7B8C000C2088 /* Lena.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1232,6 +1242,7 @@
 				06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */,
 				835206491D2A7F8B00000EEC /* CAMVideoFrame.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
+				8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
 				BED6927E1D32310300061BB5 /* CAMDeviceOrientation.mm in Sources */,
 				83893A511D128288002B64B4 /* CAMHardwareSession.mm in Sources */,
@@ -1271,6 +1282,7 @@
 				BEB6EDD01D325BE800E9D424 /* LTSpectaObjectionHook.mm in Sources */,
 				835205A71D2A5B2700000EEC /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				06C02F751D196A9800745557 /* LTTestUtils+LTEngine.mm in Sources */,
+				835206501D2A820700000EEC /* CAMHardwareDeviceSpec.mm in Sources */,
 				83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */,
 				BEB6EDF01D325C4700E9D424 /* LTTestModule.mm in Sources */,
 				8352064B1D2A7FA100000EEC /* CAMVideoFrameSpec.mm in Sources */,

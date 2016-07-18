@@ -3,15 +3,14 @@
 
 #import "CAMDeviceStub.h"
 
-#import "CAMDevicePreset.h"
+#import "CAMHardwareSession.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMDeviceStub
 
-- (instancetype)initWithPreset:(CAMDevicePreset * __unused)preset {
-  self = [super init];
-  return self;
+- (instancetype)initWithSession:(CAMHardwareSession __unused *)session {
+  return self = [super init];
 }
 
 #pragma mark -
