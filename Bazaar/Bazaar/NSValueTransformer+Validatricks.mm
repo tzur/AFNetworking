@@ -20,6 +20,21 @@ NS_ASSUME_NONNULL_BEGIN
           }];
 }
 
++ (NSValueTransformer *)bzr_validatricksDateTimeValueTransformer {
+  static const double kMilliSecondsPerSecond = 1000;
+
+  NSValueTransformer *transformer =
+      [NSValueTransformer bzr_timeIntervalSince1970ValueTransformer];
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:
+          ^NSDate * _Nullable(NSNumber * _Nullable timeInterval) {
+    return timeInterval ?
+        [transformer transformedValue:@([timeInterval doubleValue] / kMilliSecondsPerSecond)] : nil;
+  } reverseBlock:^NSNumber * _Nullable(NSDate * _Nullable dateTime) {
+    NSNumber *timeInterval = [transformer reverseTransformedValue:dateTime];
+    return timeInterval ? @([timeInterval doubleValue] * kMilliSecondsPerSecond) : nil;
+  }];
+}
+
 + (NSValueTransformer *)bzr_validatricksErrorValueTransformer {
   static NSDictionary * validatricksFailureReasonToErrorCodeMap;
   static dispatch_once_t onceToken;
