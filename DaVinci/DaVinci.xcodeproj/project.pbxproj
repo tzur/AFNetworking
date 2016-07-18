@@ -53,6 +53,8 @@
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
 		50574B0D1D2D66420076C60D /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50574B0C1D2D66420076C60D /* libLTKit.a */; };
+		507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */; };
+		507FEFBE1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */; };
 		5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */; };
 		5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */; };
 		50B586F51D2BA297007556A6 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B586F41D2BA297007556A6 /* libextobjc_iOS.a */; };
@@ -378,6 +380,9 @@
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		50574B0C1D2D66420076C60D /* libLTKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLTKit.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libLTKit.a"; sourceTree = "<group>"; };
+		507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryTransformer.h; sourceTree = "<group>"; };
+		507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformer.mm; sourceTree = "<group>"; };
+		507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformerSpec.mm; sourceTree = "<group>"; };
 		50B586F41D2BA297007556A6 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "$(DERIVED_FILE_DIR)/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.vsh; sourceTree = "<group>"; };
 		50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.fsh; sourceTree = "<group>"; };
@@ -573,6 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				257344FB1D3795D800E852B2 /* Examples */,
+				507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */,
 				257344F61D3792A300E852B2 /* DVNSquareProviderSpec.mm */,
 			);
 			name = Providers;
@@ -797,6 +803,8 @@
 		503C577E1D36733C00C20B38 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */,
+				507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */,
 				503C577B1D36731A00C20B38 /* DVNSquareProvider.h */,
 				503C577C1D36731A00C20B38 /* DVNSquareProvider.mm */,
 			);
@@ -1219,6 +1227,7 @@
 				500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */,
 				258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */,
 				50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */,
+				507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1249,6 +1258,7 @@
 				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
 				257344FA1D3795D500E852B2 /* DVNGeometryProviderExamples.mm in Sources */,
 				258341BE1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm in Sources */,
+				507FEFBE1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

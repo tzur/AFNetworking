@@ -48,18 +48,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(DVNSquareProviderModel *)provider {
-  if (self == provider) {
+- (BOOL)isEqual:(DVNSquareProviderModel *)model {
+  if (self == model) {
     return YES;
   }
 
-  if (![provider isKindOfClass:[DVNSquareProviderModel class]]) {
+  if (![model isKindOfClass:[DVNSquareProviderModel class]]) {
     return NO;
   }
 
-  return self.edgeLength == provider.edgeLength &&
-      [self.xCoordinateKey isEqual:provider.xCoordinateKey] &&
-      [self.yCoordinateKey isEqual:provider.yCoordinateKey];
+  return self.edgeLength == model.edgeLength &&
+      [self.xCoordinateKey isEqual:model.xCoordinateKey] &&
+      [self.yCoordinateKey isEqual:model.yCoordinateKey];
 }
 
 - (NSUInteger)hash {
