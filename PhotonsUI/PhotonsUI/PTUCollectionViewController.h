@@ -109,7 +109,9 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url;
 
 /// View displayed behind the cells of this collection view controller's collection view, the view
-/// will automatically track the size of the receiver's view.
+/// will automatically track the size of the receiver's view. Setting this view will add it the the
+/// receiver's view heirarchy. Setting this view to \c nil will result in no view to be displayed
+/// behind the collection view, which is the default behavior.
 @property (strong, nonatomic, nullable) UIView *backgroundView;
 
 /// Background color of the receiver's collection view.
