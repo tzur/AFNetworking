@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
@@ -39,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setup {
   _hidden = NO;
+  _enabled = YES;
   RAC(self, selected, @NO) = [RACObserve(self, flashDevice.currentFlashMode)
       map:(id)^NSNumber *(NSNumber *flashMode) {
         return @(flashMode.integerValue == self.flashMode);

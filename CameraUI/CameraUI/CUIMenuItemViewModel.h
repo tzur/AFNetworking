@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if the view should be hidden.
 @property (readonly, nonatomic) BOOL hidden;
 
+/// \c YES if the view should be enabled.
+@property (readonly, nonatomic) BOOL enabled;
+
 /// List of subitems of this item. \c nil value means the item has no subitems.
 @property (readonly, nonatomic, nullable) NSArray<id<CUIMenuItemViewModel>> *subitems;
 

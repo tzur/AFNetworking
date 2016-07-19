@@ -27,7 +27,7 @@ beforeEach(^{
 
   device = [[CAMDeviceStub alloc] init];
   device.currentFlashMode = AVCaptureFlashModeAuto;
-
+  device.hasFlash = YES;
   flashViewModel = [[CUIFlashMenuViewModel alloc] initWithFlashDevice:device flashModes:flashModes];
 });
 
@@ -60,6 +60,16 @@ context(@"initialization", ^{
     expect(flashViewModel.subitems).to.equal(flashModes);
   });
 });
+    
+context(@"enabled", ^{
+  it(@"should match the device's hasFlash property", ^{
+    device.hasFlash = NO;
+    expect(flashViewModel.enabled).to.beFalsy();
+    
+    device.hasFlash = YES;
+    expect(flashViewModel.enabled).to.beTruthy();
+  });
+});
 
 context(@"title", ^{
   it(@"should match the device's currentFlashMode", ^{
@@ -77,6 +87,14 @@ context(@"title", ^{
 
     device.currentFlashMode = kInvalidFlashMode;
     expect(flashViewModel.title).will.beNil;
+  });
+
+  it(@"should be nil when enabled is NO", ^{
+    device.hasFlash = NO;
+    expect(flashViewModel.title).will.beNil;
+    
+    device.hasFlash = YES;
+    expect(flashViewModel.title).to.equal(flashModes[0].title);
   });
 });
 
@@ -96,6 +114,14 @@ context(@"iconURL", ^{
 
     device.currentFlashMode = kInvalidFlashMode;
     expect(flashViewModel.iconURL).will.beNil;
+  });
+  
+  it(@"should be nil when enabled is NO", ^{
+    device.hasFlash = NO;
+    expect(flashViewModel.iconURL).will.beNil;
+    
+    device.hasFlash = YES;
+    expect(flashViewModel.iconURL).to.equal(flashModes[0].iconURL);
   });
 });
 

@@ -7,9 +7,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CAMFlipDevice;
 
-/// \c CUIMenuItemViewModel that serves as a view model for menu item button that tuggles between
-/// the available cameras of a given \c CAMFlipDevice instance. This object holds the \c title
-/// and \c iconURL for the flip button.
+/// \c CUIMenuItemViewModel that serves as a view model for menu item button that toggles between
+/// the available cameras of a given \c CAMFlipDevice instance.
+///
+/// \c title and \c iconURL hold the button's title and icon URL respectively, unless \c enabled is
+/// \c NO, and in such case they are nil.
+///
+/// \c enabled is \c YES if the toggling between the available cameras is supported by the device.
 ///
 /// The \c hidden and \c selected properties are always \c NO.
 ///

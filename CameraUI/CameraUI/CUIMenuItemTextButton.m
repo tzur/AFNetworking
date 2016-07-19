@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
     ]];
   RAC(self, selected) = [RACObserve(self, model.selected) deliverOnMainThread];
   RAC(self, hidden) = [RACObserve(self, model.hidden) deliverOnMainThread];
+  RAC(self, enabled) = [RACObserve(self, model.enabled) deliverOnMainThread];
   [self setupFontAndColor];
   [self addTarget:self.model action:@selector(didTap) forControlEvents:UIControlEventTouchUpInside];
 }

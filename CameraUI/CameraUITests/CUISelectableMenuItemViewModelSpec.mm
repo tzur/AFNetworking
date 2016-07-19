@@ -25,6 +25,7 @@ it(@"should have init properties", ^{
   expect(selectableMenuItemViewModel.hidden).to.beFalsy();
   expect(selectableMenuItemViewModel.subitems).to.beNil;
   expect(selectableMenuItemViewModel.selected).to.beFalsy();
+  expect(selectableMenuItemViewModel.enabled).to.beTruthy();
 });
 
 it(@"should not change after didtap", ^{
@@ -35,6 +36,7 @@ it(@"should not change after didtap", ^{
   expect(selectableMenuItemViewModel.hidden).to.beFalsy();
   expect(selectableMenuItemViewModel.subitems).to.beNil;
   expect(selectableMenuItemViewModel.selected).to.beFalsy();
+  expect(selectableMenuItemViewModel.enabled).to.beTruthy();
 });
 
 it(@"should change selected", ^{

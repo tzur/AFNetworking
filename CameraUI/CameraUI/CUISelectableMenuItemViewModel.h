@@ -8,8 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View model for displaying a \c CUIMenuItemModel. Has a writable \c selected property that can be
 /// set to indicate that this menu item is selected. The view model data is derived from
-/// \c menuItemModel, its \c hidden property is always <tt> NO, subitems </tt> is \c nil and the
-/// \c didTap method has no effect.
+/// \c menuItemModel, its \c hidden property is always \c NO, \c enabled  property is always \c YES,
+/// \c subitems is \c nil and the \c didTap method has no effect.
 @interface CUISelectableMenuItemViewModel : NSObject <CUIMenuItemViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
