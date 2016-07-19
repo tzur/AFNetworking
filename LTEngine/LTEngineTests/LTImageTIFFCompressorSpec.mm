@@ -3,6 +3,7 @@
 
 #import "LTImageTIFFCompressor.h"
 
+#import "LTCompressionFormat.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
@@ -26,6 +27,10 @@ beforeEach(^{
 
 afterEach(^{
   compressor = nil;
+});
+
+it(@"should return correct format", ^{
+  expect(compressor.format).to.equal($(LTCompressionFormatTIFF));
 });
 
 it(@"should create tiff format data", ^{

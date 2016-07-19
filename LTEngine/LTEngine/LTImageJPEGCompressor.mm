@@ -4,8 +4,8 @@
 #import "LTImageJPEGCompressor.h"
 
 #import <ImageIO/ImageIO.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
+#import "LTCompressionFormat.h"
 #import "LTImageIOCompressor.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -26,16 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
   NSDictionary *options = @{
-    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(self.quality)
+    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality:@(self.quality)
   };
 
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options UTI:kUTTypeJPEG];
-  
+  LTImageIOCompressor *compressor = [[LTImageIOCompressor alloc] initWithOptions:options
+                                                                          format:self.format];
   return [compressor compressImage:image metadata:metadata error:error];
 }
 
 LTProperty(CGFloat, quality, Quality, 0, 1, 1);
+
+- (LTCompressionFormat *)format {
+  return $(LTCompressionFormatJPEG);
+}
 
 @end
 

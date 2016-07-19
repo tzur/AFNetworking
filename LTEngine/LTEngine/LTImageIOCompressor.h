@@ -5,19 +5,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Applies compression on input images using the ImageIO framework. Allows specifying the 
-/// compression format by specifying the \c UTI. It also allows parameterization of the compression
-/// via \c options dictionary.
+/// Applies compression on input images using the ImageIO framework. Allows parameterization of the
+/// compression via \c options dictionary.
 @interface LTImageIOCompressor : NSObject <LTImageCompressor>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes a new \c LTImageIOCompressor with compression \c options and \c UTI, which specifies
-/// the output compression format. The \c options an optional dictionary which is passed to
+/// Initializes a new \c LTImageIOCompressor with compression \c options and \c format, which
+/// specifies the compressor format. The \c options an optional dictionary which is passed to
 /// ImageIO \c CGImageDestinationAddImage or \c CGImageDestinationAddImageFromSource to effect the
 /// output, such as image compression quality.
-- (instancetype)initWithOptions:(nullable NSDictionary *)options UTI:(CFStringRef)UTI
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(nullable NSDictionary *)options
+                         format:(LTCompressionFormat *)format NS_DESIGNATED_INITIALIZER;
 
 @end
 

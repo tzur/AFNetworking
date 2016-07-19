@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */; };
 		83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B728EB1CD8D1090090C0BF /* libCameraUI.a */; };
 		83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729841CD8D6890090C0BF /* libSpecta.a */; };
 		83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7299B1CD8D68D0090C0BF /* libExpecta.a */; };
@@ -356,6 +357,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		83B728EB1CD8D1090090C0BF /* libCameraUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCameraUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B728FB1CD8D2080090C0BF /* CameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B728FF1CD8D2080090C0BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				BEA275981D3284A2001BB8ED /* CoreMotion.framework in Frameworks */,
 				F965C9EB1CF3185100005627 /* Mantle.framework in Frameworks */,
 				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
+				288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
 				83B729E61CD8D7D90090C0BF /* ReactiveCocoa.framework in Frameworks */,
 				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
@@ -633,6 +636,7 @@
 				BEEE6D061D21385D00579F5D /* LLReactiveMatchers */,
 				F965C9EA1CF3185100005627 /* Mantle.framework */,
 				BEC7B1A51D1FFC0C0012C286 /* Masonry.xcodeproj */,
+				288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */,
 				83B729A01CD8D6930090C0BF /* OCMock.xcodeproj */,
 				F965C9BF1CF316E100005627 /* Objection-iOS.framework */,
 				83B729611CD8D6830090C0BF /* ReactiveCocoa.xcodeproj */,

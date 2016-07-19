@@ -5,8 +5,8 @@
 
 #import <ImageIO/ImageIO.h>
 #import <LTKit/LTCFExtensions.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
+#import "LTCompressionFormat.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
@@ -40,8 +40,12 @@ __block LTImageIOCompressor *compressor;
 __block NSError *error;
 
 beforeEach(^{
-  compressor = [[LTImageIOCompressor alloc] initWithOptions:nil UTI:kUTTypeJPEG];
+  compressor = [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
   error = nil;
+});
+
+it(@"should return correct format", ^{
+  expect(compressor.format).to.equal($(LTCompressionFormatJPEG));
 });
 
 it(@"should create jpeg format data from texture", ^{
@@ -80,14 +84,14 @@ it(@"should verify options are passed by checking setting the quality option", ^
     (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
   };
   LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options UTI:kUTTypeJPEG];
+      [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
   NSData *highQualityData = [compressor compressImage:image metadata:nil error:&error];
   expect(error).to.beNil();
 
   options = @{
     (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @0.5
   };
-  compressor = [[LTImageIOCompressor alloc] initWithOptions:options UTI:kUTTypeJPEG];
+  compressor = [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
   NSData *lowQualityData = [compressor compressImage:image metadata:nil error:&error];
 
   expect(error).to.beNil();
@@ -105,7 +109,7 @@ it(@"should add metadata", ^{
   }};
 
   LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:nil UTI:kUTTypeJPEG];
+      [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
   NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
   NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
   NSDictionary *exifData =
@@ -126,7 +130,7 @@ it(@"should verify options and metadata are merged correctly by checking the fin
   }};
 
   LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options UTI:kUTTypeJPEG];
+      [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
   NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
   NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
   NSDictionary *exifData =
@@ -144,7 +148,7 @@ it(@"should create valid data from non-contiguous texture", ^{
   cv::Mat4b nonContiguousImageMat = imageMat(cv::Rect(2, 2, 5, 5));
 
   LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:nil UTI:kUTTypeJPEG];
+      [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
 
   UIImage *image = [[LTImage alloc] initWithMat:nonContiguousImageMat copy:YES].UIImage;
   NSData *imageData = [compressor compressImage:image metadata:nil error:&error];
