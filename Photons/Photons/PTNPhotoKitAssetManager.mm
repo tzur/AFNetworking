@@ -16,6 +16,7 @@
 #import "PTNPhotoKitAuthorizationManager.h"
 #import "PTNPhotoKitAuthorizer.h"
 #import "PTNPhotoKitChangeManager.h"
+#import "PTNPhotoKitDeferringImageManager.h"
 #import "PTNPhotoKitFetcher.h"
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
@@ -74,7 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTNPhotoKitFetcher> fetcher = [[PTNPhotoKitFetcher alloc] init];
   id<PTNPhotoKitObserver> observer =
       [[PTNPhotoKitObserver alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
-  id<PTNPhotoKitImageManager> imageManager = [PHCachingImageManager defaultManager];
+  id<PTNPhotoKitImageManager> imageManager =
+      [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager];
   id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
   
   return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
