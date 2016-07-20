@@ -28,12 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object used to retrieve the system uptime.
 @property (readonly, nonatomic) NSProcessInfo *processInfo;
 
-/// Lock used used to prevent potential race conditions where a beginning or terminating touch event
-/// sequence is currently being handled on a thread \c A and the \c displayLink triggers the
-/// forwarding of stationary touch events on a different thread \c B, causing an interleaved
-/// execution pattern of the two relevant methods.
-@property (readonly, nonatomic) NSLock *lock;
-
 @end
 
 @implementation LTTouchEventView
@@ -50,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.sequenceID = 0;
     _displayLink = [self displayLinkForStationaryTouchEvents];
     _processInfo = [NSProcessInfo processInfo];
-    _lock = [[NSLock alloc] init];
   }
   return self;
 }
@@ -60,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
       [CADisplayLink displayLinkWithTarget:self
                                   selector:@selector(forwardStationaryTouchEvents:)];
   [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+  displayLink.paused = YES;
   return displayLink;
 }
 
@@ -76,17 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [self lockAndExecute:^{
-    [super touchesBegan:touches withEvent:event];
-    [self updateMapTableWithBeginningTouches:touches];
-    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
-  }];
-}
-
-- (void)lockAndExecute:(void(^)())block {
-  [self.lock lock];
-  block();
-  [self.lock unlock];
+  [super touchesBegan:touches withEvent:event];
+  [self updateMapTableWithBeginningTouches:touches];
+  [self updateDisplayLink];
+  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
@@ -95,19 +82,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [self lockAndExecute:^{
-    [super touchesEnded:touches withEvent:event];
-    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
-    [self updateMapTableWithTerminatingTouches:touches];
-  }];
+  [super touchesEnded:touches withEvent:event];
+  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
+  [self updateMapTableWithTerminatingTouches:touches];
+  [self updateDisplayLink];
 }
 
 - (void)touchesCancelled:(nullable NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-  [self lockAndExecute:^{
-    [super touchesCancelled:touches withEvent:event];
-    [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
-    [self updateMapTableWithTerminatingTouches:touches];
-  }];
+  [super touchesCancelled:touches withEvent:event];
+  [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
+  [self updateMapTableWithTerminatingTouches:touches];
+  [self updateDisplayLink];
 }
 
 - (void)touchesEstimatedPropertiesUpdated:(NSSet<UITouch *> *)touches {
@@ -152,10 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)forwardStationaryTouchEvents:(CADisplayLink __unused *)link {
-  if (![self.lock tryLock]) {
-    return;
-  }
-
   NSTimeInterval timestamp = self.processInfo.systemUptime;
 
   NSEnumerator *keyEnumerator = [self.touchToSequenceID keyEnumerator];
@@ -173,7 +154,6 @@ NS_ASSUME_NONNULL_BEGIN
      predictedEvents:@[]
      touchEventSequenceState:LTTouchEventSequenceStateContinuationStationary];
   }
-  [self.lock unlock];
 }
 
 #pragma mark -
@@ -197,6 +177,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Auxiliary methods - Display Link
+#pragma mark -
+
+- (void)updateDisplayLink {
+  self.displayLink.paused = self.touchToSequenceID.count == 0;
+}
+
+#pragma mark -
 #pragma mark Auxiliary methods - Delegate Calls
 #pragma mark -
 
@@ -208,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSNumber *boxedSequenceID = [self.touchToSequenceID objectForKey:mainTouch];
     if (!boxedSequenceID) {
       // The sequenceID does not exist, since it has been removed due to an external termination
-      /// request.
+      // request.
       continue;
     }
 

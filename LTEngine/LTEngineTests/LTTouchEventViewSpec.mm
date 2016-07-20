@@ -9,6 +9,7 @@
 
 @interface LTTouchEventView ()
 - (void)forwardStationaryTouchEvents:(CADisplayLink *)link;
+@property (readonly, nonatomic) CADisplayLink *displayLink;
 @property (readonly, nonatomic) NSProcessInfo *processInfo;
 @end
 
@@ -479,6 +480,40 @@ context(@"forwarding of stationary touch events", ^{
     expect(otherTouchEvent.phase).to.equal(UITouchPhaseStationary);
 
     OCMVerifyAll(processInfoPartialMock);
+  });
+});
+
+context(@"display link", ^{
+  __block LTTouchEventView *view;
+
+  beforeEach(^{
+    LTTestTouchEventDelegate *delegate = OCMProtocolMock(@protocol(LTTouchEventDelegate));
+    view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+  });
+
+  it(@"should initially set up a paused display link", ^{
+    expect(view.displayLink.paused).to.beTruthy();
+  });
+
+  context(@"updates of display link", ^{
+    __block NSSet<UITouch *> *touchMocks;
+    __block id eventMock;
+
+    beforeEach(^{
+      touchMocks = [NSSet setWithArray:@[LTTouchEventViewCreateTouch(0)]];
+      eventMock = LTTouchEventViewCreateEvent();
+    });
+
+    it(@"should unpause display link when there are active touches", ^{
+      [view touchesBegan:touchMocks withEvent:eventMock];
+      expect(view.displayLink.paused).to.beFalsy();
+    });
+
+    it(@"should pause display link when there are no active touches", ^{
+      [view touchesBegan:touchMocks withEvent:eventMock];
+      [view touchesEnded:touchMocks withEvent:eventMock];
+      expect(view.displayLink.paused).to.beTruthy();
+    });
   });
 });
 
