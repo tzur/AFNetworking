@@ -17,11 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark CAMExposureDevice
 #pragma mark -
 
-- (RACSignal *)setSingleExposurePoint:(CGPoint __unused)exposurePoint {
+- (RACSignal *)setSingleExposurePoint:(CGPoint)exposurePoint {
+  self.lastReceivedSingleExposurePoint = exposurePoint;
   return self.setSingleExposurePointSignal;
 }
 
-- (RACSignal *)setContinuousExposurePoint:(CGPoint __unused)exposurePoint {
+- (RACSignal *)setContinuousExposurePoint:(CGPoint)exposurePoint {
+  self.lastReceivedContinuousExposurePoint = exposurePoint;
   return self.setContinuousExposurePointSignal;
 }
 
@@ -54,11 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark CAMFocusDevice
 #pragma mark -
 
-- (RACSignal *)setSingleFocusPoint:(CGPoint __unused)focusPoint {
+- (RACSignal *)setSingleFocusPoint:(CGPoint)focusPoint {
+  self.lastReceivedSingleFocusPoint = focusPoint;
   return self.setSingleFocusPointSignal;
 }
 
-- (RACSignal *)setContinuousFocusPoint:(CGPoint __unused)focusPoint {
+- (RACSignal *)setContinuousFocusPoint:(CGPoint)focusPoint {
+  self.lastReceivedContinuousFocusPoint = focusPoint;
   return self.setContinuousFocusPointSignal;
 }
 
@@ -75,11 +79,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (CGPoint)previewLayerPointFromDevicePoint:(CGPoint)devicePoint {
-  return devicePoint;
+  return (devicePoint * 2);
 }
 
 - (CGPoint)devicePointFromPreviewLayerPoint:(CGPoint)previewLayerPoint {
-  return previewLayerPoint;
+  return (previewLayerPoint * 0.5);
 }
 
 #pragma mark -
@@ -119,11 +123,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark CAMZoomDevice
 #pragma mark -
 
-- (RACSignal *)setZoom:(CGFloat __unused)zoomFactor {
+- (RACSignal *)setZoom:(CGFloat)zoomFactor {
+  self.lastReceivedZoom = zoomFactor;
   return self.setZoomSignal;
 }
 
-- (RACSignal *)setZoom:(CGFloat __unused)zoomFactor rate:(float __unused)rate {
+- (RACSignal *)setZoom:(CGFloat)zoomFactor rate:(float __unused)rate {
+  self.lastReceivedZoom = zoomFactor;
   return self.setZoomSignal;
 }
 

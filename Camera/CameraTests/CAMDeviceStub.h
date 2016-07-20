@@ -21,13 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// 2. Adding \c readwrite properties (mostly \c RACSignal objects) for the return values of the
 /// protocol's methods.
 ///
-/// 3. Implementing the protocol's methods by just returning the new properties from (2), while
-/// ignoring the input arguments.
+/// 3. Adding last-received-values for the protocol's exposure, focus and zoom methods.
 ///
-/// 4. \c initWithPreset: implementation ignores the given \c CAMDevicePreset argument.
+/// 4. Implementing the protocol's methods by just updating the last received value from (3) and
+/// returning the new properties from (2), while ignoring the input arguments.
 ///
-/// 5. \c previewLayerPointFromDevicePoint: and \c devicePointFromPreviewLayerPoint: return the
-/// given \c CGPoint.
+/// 5. \c initWithPreset: implementation ignores the given \c CAMDevicePreset argument.
+///
+/// 6. \c previewLayerPointFromDevicePoint: returns \c CGPoint * 2.
+/// \c devicePointFromPreviewLayerPoint: return the given \c CGPoint * 0.5.
 @interface CAMDeviceStub : NSObject <CAMAudioDevice, CAMExposureDevice, CAMFlashDevice,
     CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice,
     CAMZoomDevice>
@@ -55,8 +57,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Return value for the \c setSingleExposurePoint: method.
 @property (strong, nonatomic, nullable) RACSignal *setSingleExposurePointSignal;
 
+/// Last received value for the \c setSingleExposurePoint: method.
+@property (nonatomic) CGPoint lastReceivedSingleExposurePoint;
+
 /// Return value for the \c setContinuousExposurePoint: method.
 @property (strong, nonatomic, nullable) RACSignal *setContinuousExposurePointSignal;
+
+/// Last received value for the \c setContinuousExposurePoint: method.
+@property (nonatomic) CGPoint lastReceivedContinuousExposurePoint;
 
 /// Return value for the \c setLockedExposure method.
 @property (strong, nonatomic, nullable) RACSignal *setLockedExposureSignal;
@@ -103,8 +111,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Return value for the \c setSingleFocusPoint: method.
 @property (strong, nonatomic, nullable) RACSignal *setSingleFocusPointSignal;
 
+/// Last received value for the \c setSingleFocusPoint: method.
+@property (nonatomic) CGPoint lastReceivedSingleFocusPoint;
+
 /// Return value for the \c setContinuousFocusPoint: method.
 @property (strong, nonatomic, nullable) RACSignal *setContinuousFocusPointSignal;
+
+/// Last received value for the \c setContinuousFocusPoint: method.
+@property (nonatomic) CGPoint lastReceivedContinuousFocusPoint;
 
 /// Return value for the \c setLockedFocus method.
 @property (strong, nonatomic, nullable) RACSignal *setLockedFocusSignal;
@@ -117,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// @see CAMPreviewLayerDevice.
-@property (strong, nonatomic, nullable) CALayer *previewLayer;
+@property (strong, nonatomic) CALayer *previewLayer;
 
 #pragma mark -
 #pragma mark CAMVideoDevice
@@ -170,6 +184,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Return value for the \c setZoom and \c setZoom:rate: methods.
 @property (strong, nonatomic, nullable) RACSignal *setZoomSignal;
+
+/// Last received value for the \c setZoom: and \c setZoom:rate: methods.
+@property (nonatomic) CGFloat lastReceivedZoom;
 
 @end
 
