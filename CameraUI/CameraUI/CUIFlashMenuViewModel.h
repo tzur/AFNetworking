@@ -9,10 +9,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class CUIFlashModeViewModel;
 
-/// Object that conforms to the \c CUIMenuItemViewModel protocol for a given \c CAMFlashDevice
-/// instance. This object holds the \c title and \c iconURL of the \c CUIFlashModeViewModel that
-/// matches the \c currentFlashMode of the given \c CAMFlashDevice instance, and its \c subitems
-/// contain the availble <tt>CUIFlashModeViewModel</tt>s for the given \c CAMFlashDevice instance.
+/// \c CUIMenuItemViewModel that serves as a view model for menu item button that toggles between
+/// the available flash modes of a \c CAMFlashDevice instance.
+///
+/// \c subitems contain the availble \c CUIFlashModeViewModel objects for the \c CAMFlashDevice
+/// instance.
+///
+/// \c title and \c iconURL are taken from the \c CUIFlashModeViewModel that matches the
+/// \c currentFlashMode of the \c CAMFlashDevice instance, unless \c enabled is \c NO, and in such
+/// case they are nil.
+///
+/// \c enabled is \c YES if the toggling between the flash modes is supported by the device.
 ///
 /// The \c hidden and \c selected properties are always \c NO.
 ///

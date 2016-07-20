@@ -14,6 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUISimpleMenuItemViewModel
 
+- (instancetype)init {
+  if (self = [super init]) {
+    _enabled = YES;
+  }
+  return self;
+}
+
 - (void)didTap {
   self.didTapCounter++;
 }

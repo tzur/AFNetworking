@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
@@ -37,19 +38,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setup {
-  @weakify(self);
-  RAC(self, iconURL) = [RACObserve(self, flashDevice.currentFlashMode)
-      map:(id)^NSURL *(NSNumber *flashMode) {
-        @strongify(self);
-        return [self flashModeViewModelForFlashMode:flashMode].iconURL;
-      }];
-  RAC(self, title) = [RACObserve(self, flashDevice.currentFlashMode)
-      map:(id)^NSString *(NSNumber *flashMode) {
-        @strongify(self);
-        return [self flashModeViewModelForFlashMode:flashMode].title;
-      }];
   _selected = NO;
   _hidden = NO;
+  RAC(self, enabled) = RACObserve(self, flashDevice.hasFlash);
+  @weakify(self);
+  RAC(self, iconURL) = [RACSignal
+      combineLatest:@[
+        RACObserve(self, flashDevice.currentFlashMode),
+        RACObserve(self, enabled)
+      ]
+      reduce:(id)^NSURL *(NSNumber *flashMode, NSNumber *enabled){
+        @strongify(self);
+        return enabled.boolValue ? [self flashModeViewModelForFlashMode:flashMode].iconURL : nil;
+      }];
+  RAC(self, title) = [RACSignal
+      combineLatest:@[
+        RACObserve(self, flashDevice.currentFlashMode),
+        RACObserve(self, enabled)
+      ]
+      reduce:(id)^NSString *(NSNumber *flashMode, NSNumber *enabled){
+        @strongify(self);
+        return enabled.boolValue ? [self flashModeViewModelForFlashMode:flashMode].title : nil;
+      }];
 }
 
 - (CUIFlashModeViewModel *)flashModeViewModelForFlashMode:(NSNumber *)flashMode {

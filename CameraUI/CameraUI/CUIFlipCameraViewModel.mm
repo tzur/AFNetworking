@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
 - (instancetype)initWithFlipDevice:(id<CAMFlipDevice>)flipDevice
@@ -29,17 +30,18 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(flipDevice, @"Given flipDevice is nil");
   if (self = [super init]) {
     _flipDevice = flipDevice;
-    _title = title;
-    _iconURL = iconURL;
-    [self setup];
+    _selected = NO;
+    _hidden = NO;
+    _subitems = nil;
+    RAC(self, enabled) = RACObserve(self, flipDevice.canChangeCamera);
+    RAC(self, title) = [RACObserve(self, enabled) map:^NSString *(NSNumber *enabled) {
+      return enabled.boolValue ? title : nil;
+    }];
+    RAC(self, iconURL) = [RACObserve(self, enabled) map:^NSURL *(NSNumber *enabled) {
+      return enabled.boolValue ? iconURL : nil;
+    }];
   }
   return self;
-}
-
-- (void)setup {
-  _selected = NO;
-  _hidden = NO;
-  _subitems = nil;
 }
 
 - (void)didTap {

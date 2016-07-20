@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The \c hidden property is always \c NO.
 ///
+/// The \c enabled property is always \c YES.
+///
 /// The \c selected property is \c YES if the this object's \c flashMode matches the
 /// \c CAMFlashDevice object's \c currentFlashMode.
 ///

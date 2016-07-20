@@ -31,6 +31,7 @@ static const CGFloat kCUIMenuItemIconButtonMargin = 7;
 - (void)setup {
   RAC(self, hidden) = [RACObserve(self, model.hidden) deliverOnMainThread];
   RAC(self, selected) = [RACObserve(self, model.selected) deliverOnMainThread];
+  RAC(self, enabled) = [RACObserve(self, model.enabled) deliverOnMainThread];
   [self addTarget:self.model action:@selector(didTap) forControlEvents:UIControlEventTouchUpInside];
   [self setupImageViewModel];
 }

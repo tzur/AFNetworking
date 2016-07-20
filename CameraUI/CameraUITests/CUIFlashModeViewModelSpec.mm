@@ -50,6 +50,10 @@ context(@"initialization", ^{
     expect(flashModeViewModel.hidden).to.beFalsy();
   });
 
+  it(@"should set the enabled property to YES", ^{
+    expect(flashModeViewModel.enabled).to.beTruthy();
+  });
+  
   it(@"should set the subitems to nil", ^{
     expect(flashModeViewModel.subitems).to.beNil();
   });
