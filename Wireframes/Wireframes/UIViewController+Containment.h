@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)wf_insertChildViewController:(UIViewController *)viewController
                         aboveSubview:(UIView *)subview;
 
+/// Inserts the given \c viewController as a child of the receiver, and adds its root \c view as a
+/// subview of the receiver's \c view, at the given \c index.
+- (void)wf_insertChildViewController:(UIViewController *)viewController
+                             atIndex:(NSInteger)index;
+
 /// Adds the given \c viewController as a child of the receiver, and adds its root view as a subview
 /// of the given \c view.
 - (void)wf_addChildViewController:(UIViewController *)viewController toView:(UIView *)view;
@@ -34,6 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// subview of the given \c view, above the given \c subview.
 - (void)wf_insertChildViewController:(UIViewController *)viewController toView:(UIView *)view
                         aboveSubview:(UIView *)subview;
+
+/// Inserts the given \c viewController as a child of the receiver, and adds its root \c view as a
+/// subview of the given \c view, at the given \c index.
+- (void)wf_insertChildViewController:(UIViewController *)viewController toView:(UIView *)view
+                             atIndex:(NSInteger)index;
 
 /// Removes the given \c viewController as a child of the receiver, and removes its root \c view as
 /// a subview of the receiver's view.
