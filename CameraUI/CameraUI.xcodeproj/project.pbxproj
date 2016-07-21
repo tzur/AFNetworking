@@ -59,11 +59,11 @@
 		BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */; };
 		BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */; };
 		BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */; };
-		F935E5711D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */; };
 		F925C2AC1D378BC100C95F46 /* CUIFocusIconMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = F925C2AB1D378BC100C95F46 /* CUIFocusIconMode.mm */; };
 		F925C2D11D37B31E00C95F46 /* CUIFocusIconModeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F925C2D01D37B31E00C95F46 /* CUIFocusIconModeSpec.mm */; };
 		F9262E571D23A91A00CA60E7 /* CUIPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9262E541D23A91A00CA60E7 /* CUIPreviewViewController.mm */; };
 		F9262E581D23A91A00CA60E7 /* CUIPreviewViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9262E561D23A91A00CA60E7 /* CUIPreviewViewModel.mm */; };
+		F935E5711D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */; };
 		F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */; };
 		F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */; };
 		F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F965C9BF1CF316E100005627 /* Objection-iOS.framework */; };
@@ -459,8 +459,6 @@
 		BEFF87FF1D22682200DEAA97 /* CUIFlashModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlashModeViewModel.h; sourceTree = "<group>"; };
 		BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashModeViewModel.mm; sourceTree = "<group>"; };
 		F908F6441D2A5B50007A988B /* CUIMenuViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuViewModel.h; sourceTree = "<group>"; };
-		F935E56F1D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFakeNSNotificationCenter.h; sourceTree = "<group>"; };
-		F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFakeNSNotificationCenter.mm; sourceTree = "<group>"; };
 		F925C2AA1D378BC100C95F46 /* CUIFocusIconMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFocusIconMode.h; sourceTree = "<group>"; };
 		F925C2AB1D378BC100C95F46 /* CUIFocusIconMode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFocusIconMode.mm; sourceTree = "<group>"; };
 		F925C2D01D37B31E00C95F46 /* CUIFocusIconModeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFocusIconModeSpec.mm; sourceTree = "<group>"; };
@@ -468,6 +466,8 @@
 		F9262E541D23A91A00CA60E7 /* CUIPreviewViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIPreviewViewController.mm; sourceTree = "<group>"; };
 		F9262E551D23A91A00CA60E7 /* CUIPreviewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIPreviewViewModel.h; sourceTree = "<group>"; };
 		F9262E561D23A91A00CA60E7 /* CUIPreviewViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIPreviewViewModel.mm; sourceTree = "<group>"; };
+		F935E56F1D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFakeNSNotificationCenter.h; sourceTree = "<group>"; };
+		F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFakeNSNotificationCenter.mm; sourceTree = "<group>"; };
 		F95418881CFC55E800C6BE2E /* CUIMenuItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemModel.h; sourceTree = "<group>"; };
 		F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModel.mm; sourceTree = "<group>"; };
 		F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModelSpec.mm; sourceTree = "<group>"; };
