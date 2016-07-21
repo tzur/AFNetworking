@@ -72,6 +72,10 @@
 		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
 		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
 		65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */; };
+		B97E6C201D40F36A00C02863 /* BZRInAppStoreManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C1E1D40F36A00C02863 /* BZRInAppStoreManager.h */; };
+		B97E6C241D40F44800C02863 /* BZRProductContentProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C221D40F44800C02863 /* BZRProductContentProvider.h */; };
+		B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C231D40F44800C02863 /* BZRProductsProvider.h */; };
+		B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -496,6 +500,10 @@
 		65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModel.mm; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65FA329B1CE2185E00901304 /* Bazaar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bazaar.h; sourceTree = "<group>"; };
+		B97E6C1E1D40F36A00C02863 /* BZRInAppStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRInAppStoreManager.h; sourceTree = "<group>"; };
+		B97E6C221D40F44800C02863 /* BZRProductContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductContentProvider.h; sourceTree = "<group>"; };
+		B97E6C231D40F44800C02863 /* BZRProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsProvider.h; sourceTree = "<group>"; };
+		B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRJSONProductsProvider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -917,6 +925,7 @@
 		65FA329A1CE2185E00901304 /* Bazaar */ = {
 			isa = PBXGroup;
 			children = (
+				B97E6BF31D40F2C900C02863 /* Product Management */,
 				65FA329B1CE2185E00901304 /* Bazaar.h */,
 				6580F0701CEB2D97007EABDD /* Receipt Validation */,
 				65743E801D3242FF00A17D11 /* Store Kit */,
@@ -924,6 +933,17 @@
 				654B1F041CE21F6D001F36FA /* Supporting Files */,
 			);
 			path = Bazaar;
+			sourceTree = "<group>";
+		};
+		B97E6BF31D40F2C900C02863 /* Product Management */ = {
+			isa = PBXGroup;
+			children = (
+				B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */,
+				B97E6C221D40F44800C02863 /* BZRProductContentProvider.h */,
+				B97E6C231D40F44800C02863 /* BZRProductsProvider.h */,
+				B97E6C1E1D40F36A00C02863 /* BZRInAppStoreManager.h */,
+			);
+			name = "Product Management";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -934,13 +954,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				6581E86B1D3B9F5800B26E1A /* Bazaar.h in Headers */,
+				B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */,
 				6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */,
 				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
 				6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */,
 				6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */,
+				B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */,
 				6581E86F1D3B9F6C00B26E1A /* BZRReceiptValidationParameters.h in Headers */,
 				6581E8701D3B9F6F00B26E1A /* BZRReceiptValidationResponse.h in Headers */,
 				6581E8711D3B9F7200B26E1A /* BZRReceiptValidator.h in Headers */,
+				B97E6C241D40F44800C02863 /* BZRProductContentProvider.h in Headers */,
+				B97E6C201D40F36A00C02863 /* BZRInAppStoreManager.h in Headers */,
 				6581E8721D3B9F8000B26E1A /* BZRValidatricksReceiptValidator.h in Headers */,
 				6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */,
 				6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */,
