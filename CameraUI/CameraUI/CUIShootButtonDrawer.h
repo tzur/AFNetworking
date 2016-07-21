@@ -95,6 +95,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// \c CUIShootButtonDrawer that draws a ring centered at the center of the given button's bounds.
+/// The ring is filled with a horizontal gradient.
+@interface CUIGradientRingDrawer : NSObject <CUIShootButtonDrawer>
+
+/// Radius of the arc. Measured at the center of the arc's width.
+@property (nonatomic) CGFloat radius;
+
+/// Width of the arc.
+@property (nonatomic) CGFloat width;
+
+/// Starting color of the gradient. Defaults to <tt>-[UIColor clearColor]</tt>.
+@property (strong, nonatomic) UIColor *startColor;
+
+/// Ending color of the gradient. Defaults to <tt>-[UIColor clearColor]</tt>.
+@property (strong, nonatomic) UIColor *endColor;
+
+/// Start point of the gradient, defined in a top-left unit coordinate space and mapped to the
+/// given \c bounds. (i.e. [0, 0] is the top-left corner of the view, [1, 1] is the bottom-right
+/// corner). The default value is [0, 0.5].
+@property (nonatomic) CGPoint startPoint;
+
+/// End point of the gradient, defined in a top-left unit coordinate space and mapped to the
+/// given \c bounds. (i.e. [0, 0] is the top-left corner of the view, [1, 1] is the bottom-right
+/// corner). The default value is [1, 0.5].
+@property (nonatomic) CGPoint endPoint;
+
+@end
+
 /// \c CUIShootButtonDrawer that draws an arc shape centered at the center of the given button's
 /// bounds. The length of the arc is determined according to the \c progress property of the given
 /// \c CUIShootButtonTraits object. For \c progress with value of 1 it draws a circle, and for
