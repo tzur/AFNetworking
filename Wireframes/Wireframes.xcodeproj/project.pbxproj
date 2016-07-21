@@ -70,6 +70,8 @@
 		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
 		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
+		C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */; };
+		C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */; };
 		C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */; };
 		C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */; };
 /* End PBXBuildFile section */
@@ -406,6 +408,9 @@
 		8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
 		8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
 		8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
+		C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Utilities.h"; sourceTree = "<group>"; };
+		C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Utilities.mm"; sourceTree = "<group>"; };
+		C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+UtilitiesSpec.mm"; sourceTree = "<group>"; };
 		C9133D8D1D3574FE009E796B /* CALayer+Enumeration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Enumeration.h"; sourceTree = "<group>"; };
 		C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Enumeration.m"; sourceTree = "<group>"; };
 		C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+EnumerationSpec.m"; sourceTree = "<group>"; };
@@ -788,6 +793,8 @@
 				C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */,
 				8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */,
 				8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */,
+				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
+				C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
 				8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */,
 			);
@@ -811,6 +818,7 @@
 			children = (
 				C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */,
 				8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */,
+				C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
 			);
 			name = Extensions;
@@ -1141,6 +1149,7 @@
 				6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */,
 				6AAEDB8A1CD77B9800B3C62F /* UIButton+ViewModel.mm in Sources */,
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
+				C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				8B283FBB1CBE29F400B745AE /* UIColor+Utilities.mm in Sources */,
 				6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */,
@@ -1188,6 +1197,7 @@
 				6AB2AF651CC4E63E00BC2371 /* EXPMatchers+complete.m in Sources */,
 				6AB2AF691CC4E63E00BC2371 /* EXPMatchers+matchError.m in Sources */,
 				8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */,
+				C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */,
 				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
 				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,
