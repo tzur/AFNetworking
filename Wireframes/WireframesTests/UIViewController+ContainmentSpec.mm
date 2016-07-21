@@ -70,7 +70,7 @@ context(@"inserting child view controller", ^{
       expect(child.didMoveToParent).to.equal(parent);
       expect(child.willMoveToParent).to.equal(parent);
     });
-    
+
     it(@"should add child view below subview", ^{
       expect(parent.view.subviews).to.contain(child.view);
       expect([parent.view.subviews indexOfObject:child.view])
@@ -92,6 +92,22 @@ context(@"inserting child view controller", ^{
       expect(parent.view.subviews).to.contain(child.view);
       expect([parent.view.subviews indexOfObject:child.view])
           .to.equal([parent.view.subviews indexOfObject:subview] + 1);
+    });
+  });
+
+  context(@"at index", ^{
+    beforeEach(^{
+      [parent wf_insertChildViewController:child atIndex:0];
+    });
+
+    it(@"should notify child on add to parent view controller", ^{
+      expect(child.didMoveToParent).to.equal(parent);
+      expect(child.willMoveToParent).to.equal(parent);
+    });
+
+    it(@"should add child view at index", ^{
+      expect(parent.view.subviews).to.contain(child.view);
+      expect([parent.view.subviews indexOfObject:child.view]).to.equal(0);
     });
   });
 });
@@ -123,6 +139,12 @@ context(@"inserting child view controller to a specific view", ^{
     expect(subview.subviews).to.contain(child.view);
     expect([subview.subviews indexOfObject:child.view])
         .to.equal([subview.subviews indexOfObject:subviewOfSubview] + 1);
+  });
+
+  it(@"should add child view to given view at index", ^{
+    [parent wf_insertChildViewController:child toView:subview atIndex:1];
+    expect(subview.subviews).to.contain(child.view);
+    expect([subview.subviews indexOfObject:child.view]).to.equal(1);
   });
 });
 

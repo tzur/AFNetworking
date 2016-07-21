@@ -21,6 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
   [self wf_insertChildViewController:viewController toView:self.view aboveSubview:subview];
 }
 
+- (void)wf_insertChildViewController:(UIViewController *)viewController atIndex:(NSInteger)index {
+  [self wf_insertChildViewController:viewController toView:self.view atIndex:index];
+}
+
 - (void)wf_addChildViewController:(UIViewController *)viewController toView:(UIView *)view {
   [self addChildViewController:viewController];
   [view addSubview:viewController.view];
@@ -38,6 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
                         aboveSubview:(UIView *)subview {
   [self addChildViewController:viewController];
   [view insertSubview:viewController.view aboveSubview:subview];
+  [viewController didMoveToParentViewController:self];
+}
+
+- (void)wf_insertChildViewController:(UIViewController *)viewController toView:(UIView *)view
+                             atIndex:(NSInteger)index {
+  [self addChildViewController:viewController];
+  [view insertSubview:viewController.view atIndex:index];
   [viewController didMoveToParentViewController:self];
 }
 
