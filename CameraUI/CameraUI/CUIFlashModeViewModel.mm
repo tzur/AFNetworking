@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CUIFlashModeViewModel ()
 
-/// \c CAMFlashDevice that this obejct represnts one of its flash modes.
+/// \c CAMFlashDevice that this object represents one of its flash modes.
 @property (strong, readonly, nonatomic) id<CAMFlashDevice> flashDevice;
 
 @end

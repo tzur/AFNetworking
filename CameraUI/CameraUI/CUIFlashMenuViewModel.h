@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c CUIMenuItemViewModel that serves as a view model for menu item button that toggles between
 /// the available flash modes of a \c CAMFlashDevice instance.
 ///
-/// \c subitems contain the availble \c CUIFlashModeViewModel objects for the \c CAMFlashDevice
+/// \c subitems contain the available \c CUIFlashModeViewModel objects for the \c CAMFlashDevice
 /// instance.
 ///
 /// \c title and \c iconURL are taken from the \c CUIFlashModeViewModel that matches the
@@ -29,9 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes this object with the given \c flashDevice, and \c flashModes that contains the
-/// availble <tt>CUIFlashModeViewModel</tt>s for the given \c CAMFlashDevice.
+/// available <tt>CUIFlashModeViewModel</tt>s for the given \c CAMFlashDevice.
 ///
-/// @note this obect doesn't validate that the given flash modes are supported by the given
+/// @note this object doesn't validate that the given flash modes are supported by the given
 /// \c CAMFlashDevice, and it is the responsibility of the caller to do so.
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
                          flashModes:(NSArray<CUIFlashModeViewModel *> *)flashModes
