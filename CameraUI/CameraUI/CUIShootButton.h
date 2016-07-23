@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes this object with the given \c drawers. The order of drawing of the given
 /// \c CUIShootButtonDrawer objects is the same as their order in the given \c NSArray.
-- (instancetype)initWithDrawers:(NSArray<id<CUIShootButtonDrawer>> *)drawers;
+- (instancetype)initWithDrawers:(NSArray<id<CUIShootButtonDrawer>> *)drawers
+    NS_DESIGNATED_INITIALIZER;
 
 /// Progress of the shooting (e.g. progress of the timer before next frame capture). The values
 /// must be in the range [0, 1].

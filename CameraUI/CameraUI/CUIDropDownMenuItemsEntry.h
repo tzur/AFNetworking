@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c CUIMenuItemViewModel object, and are orderd verticaly according to the \c subitems order.
 @interface CUIDropDownMenuItemsEntry : NSObject <CUIDropDownEntry>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes this object with the given \c item, and the \c Class of the views that should show
 /// this item and its subitems.
 ///
@@ -25,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the \c CUIMenuItemButton protocol, otherwise \c NSInvalidArgumentException is raised.
 - (instancetype)initWithItem:(id<CUIMenuItemViewModel>)item
         mainBarItemViewClass:(Class)mainBarItemViewClass
-        submenuItemViewClass:(Class)submenuItemViewClass;
+        submenuItemViewClass:(Class)submenuItemViewClass NS_DESIGNATED_INITIALIZER;
 
 @end
 

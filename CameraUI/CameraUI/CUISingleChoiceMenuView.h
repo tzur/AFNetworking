@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c CUIMutableMenuItemView protocol.
 - (instancetype)initWithFrame:(CGRect)frame
                 menuViewModel:(CUISingleChoiceMenuViewModel *)menuViewModel
-                    cellClass:(Class)cellClass;
+                    cellClass:(Class)cellClass NS_DESIGNATED_INITIALIZER;
 
 /// Number of menu items per row. This number must be strictly positive but can have a fraction
 /// part, meaning the last item will only be partially visible. Default value is 5.5.

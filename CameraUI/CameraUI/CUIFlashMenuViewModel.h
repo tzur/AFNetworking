@@ -34,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note this obect doesn't validate that the given flash modes are supported by the given
 /// \c CAMFlashDevice, and it is the responsibility of the caller to do so.
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
-                         flashModes:(NSArray<CUIFlashModeViewModel *> *)flashModes;
+                         flashModes:(NSArray<CUIFlashModeViewModel *> *)flashModes
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 

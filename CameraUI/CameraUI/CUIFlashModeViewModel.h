@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
                           flashMode:(AVCaptureFlashMode)flashMode
                               title:(nullable NSString *)title
-                            iconURL:(nullable NSURL *)iconURL;
+                            iconURL:(nullable NSURL *)iconURL NS_DESIGNATED_INITIALIZER;
 
 /// Flash mode represented by this object.
 @property (readonly, nonatomic) AVCaptureFlashMode flashMode;
