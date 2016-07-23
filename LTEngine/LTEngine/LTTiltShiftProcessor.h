@@ -1,7 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTOneShotImageProcessor.h"
+#import "LTImageProcessor.h"
+#import "LTScreenProcessing.h"
+#import "LTPartialProcessing.h"
 
 #import "LTDualMaskProcessor.h"
 
@@ -11,7 +13,7 @@
 /// The name tilt-shift is a legacy of the days where such effects where achieved by physically
 /// manipulating the alignment of the surface of the center wrt the lens. For more information:
 /// http://en.wikipedia.org/wiki/Tilt-shift_photography
-@interface LTTiltShiftProcessor : LTOneShotImageProcessor
+@interface LTTiltShiftProcessor : LTImageProcessor <LTScreenProcessing, LTPartialProcessing>
 
 /// Initializes the processor with input texture and output texture.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;

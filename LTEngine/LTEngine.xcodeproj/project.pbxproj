@@ -699,6 +699,13 @@
 		50FEAFAD19DC0510009C6E22 /* LTCGPathExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */; };
 		50FEAFBF19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */; };
 		642736871D3B7A57000CC59E /* LTProceduralVignetting+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 642736851D3B7A57000CC59E /* LTProceduralVignetting+Protected.h */; };
+		64F1C94D1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 64F1C94B1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h */; };
+		64F1C94E1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F1C94C1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm */; };
+		64F1C9721D41106800AF2DA6 /* BlurIntensity0.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F1C96D1D41106800AF2DA6 /* BlurIntensity0.5.png */; };
+		64F1C9731D41106800AF2DA6 /* BlurIntensity1.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F1C96E1D41106800AF2DA6 /* BlurIntensity1.png */; };
+		64F1C9741D41106800AF2DA6 /* BlurIntensityMax.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F1C96F1D41106800AF2DA6 /* BlurIntensityMax.png */; };
+		64F1C9751D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F1C9701D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png */; };
+		64F1C9781D41108100AF2DA6 /* LTMaskedBlurProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F1C9771D41108100AF2DA6 /* LTMaskedBlurProcessorSpec.mm */; };
 		65057CA71B7773400029A164 /* Island.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CA61B7773400029A164 /* Island.png */; };
 		65057CC31B7773BC0029A164 /* Meal.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CC21B7773BC0029A164 /* Meal.png */; };
 		65057CC51B7778200029A164 /* SanFrancisco.png in Resources */ = {isa = PBXBuildFile; fileRef = 65057CC41B7778200029A164 /* SanFrancisco.png */; };
@@ -2212,6 +2219,13 @@
 		50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensions.mm; sourceTree = "<group>"; };
 		50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCGPathExtensionsSpec.mm; sourceTree = "<group>"; };
 		642736851D3B7A57000CC59E /* LTProceduralVignetting+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTProceduralVignetting+Protected.h"; sourceTree = "<group>"; };
+		64F1C94B1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMaskedBlurProcessor.h; sourceTree = "<group>"; };
+		64F1C94C1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMaskedBlurProcessor.mm; sourceTree = "<group>"; };
+		64F1C96D1D41106800AF2DA6 /* BlurIntensity0.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlurIntensity0.5.png; path = Resources/BlurIntensity0.5.png; sourceTree = "<group>"; };
+		64F1C96E1D41106800AF2DA6 /* BlurIntensity1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlurIntensity1.png; path = Resources/BlurIntensity1.png; sourceTree = "<group>"; };
+		64F1C96F1D41106800AF2DA6 /* BlurIntensityMax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlurIntensityMax.png; path = Resources/BlurIntensityMax.png; sourceTree = "<group>"; };
+		64F1C9701D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlurWithUserMaskIntensity1.png; path = Resources/BlurWithUserMaskIntensity1.png; sourceTree = "<group>"; };
+		64F1C9771D41108100AF2DA6 /* LTMaskedBlurProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMaskedBlurProcessorSpec.mm; sourceTree = "<group>"; };
 		65057CA61B7773400029A164 /* Island.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Island.png; path = Resources/Island.png; sourceTree = "<group>"; };
 		65057CC21B7773BC0029A164 /* Meal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Meal.png; path = Resources/Meal.png; sourceTree = "<group>"; };
 		65057CC41B7778200029A164 /* SanFrancisco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SanFrancisco.png; path = Resources/SanFrancisco.png; sourceTree = "<group>"; };
@@ -2708,6 +2722,8 @@
 		03BBB30C1887B797001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				64F1C94B1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h */,
+				64F1C94C1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm */,
 				30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */,
 				30DDD69A1CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm */,
 				30DDD69B1CFC8A0700AE72B8 /* LTGaussianConvolutionDivider.h */,
@@ -2898,6 +2914,7 @@
 		03BBB3191887B7AB001E7703 /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				64F1C9771D41108100AF2DA6 /* LTMaskedBlurProcessorSpec.mm */,
 				30DDD6AA1CFC8A5700AE72B8 /* LTConsistentGaussianFilterProcessorSpec.mm */,
 				30DDD6AB1CFC8A5700AE72B8 /* LTGaussianConvolutionDividerSpec.mm */,
 				30DDD6AC1CFC8A5700AE72B8 /* LTGaussianFilterProcessorSpec.mm */,
@@ -4118,6 +4135,10 @@
 			isa = PBXGroup;
 			children = (
 				25AF176D1AD50C4A0055E664 /* Vector Graphics */,
+				64F1C96D1D41106800AF2DA6 /* BlurIntensity0.5.png */,
+				64F1C96E1D41106800AF2DA6 /* BlurIntensity1.png */,
+				64F1C96F1D41106800AF2DA6 /* BlurIntensityMax.png */,
+				64F1C9701D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png */,
 				30DDD6B11CFC8A7500AE72B8 /* GaussianFilterDelta51.png */,
 				30DDD6B21CFC8A7500AE72B8 /* GaussianFilterLena256.png */,
 				30DDD6B01CFC8A7500AE72B8 /* ConsistentGaussianFilter3x3Delta90x60.png */,
@@ -5064,6 +5085,7 @@
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
+				64F1C94D1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h in Headers */,
 				8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */,
 				85F372BD1C8C88EF00E1D429 /* LT3DLUTProcessor.h in Headers */,
 				8BD688E71B6A8E2C003BDA34 /* LTTextureIZArchiver.h in Headers */,
@@ -5688,6 +5710,7 @@
 				280E40D81990C2F6008C5BD9 /* PerspectiveCompound.png in Resources */,
 				284AA2B01AC99DD1007F86DB /* CircularCloneAlpha.png in Resources */,
 				03BBB388188CFB60001E7703 /* RedBlueGradient.png in Resources */,
+				64F1C9751D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png in Resources */,
 				038DDD8219EFD19D0018F9E4 /* Lena128CLAHE.png in Resources */,
 				65057CA71B7773400029A164 /* Island.png in Resources */,
 				282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */,
@@ -5736,6 +5759,7 @@
 				A8BDC6441AC9DA64005FC392 /* CircularPatchDrawerRotation.png in Resources */,
 				031338C1191216020095F99B /* Checkerboard.png in Resources */,
 				28FB00EE1A0AB46D004490AF /* BristleBrushBristles.FlatFan.png in Resources */,
+				64F1C9721D41106800AF2DA6 /* BlurIntensity0.5.png in Resources */,
 				03C192C218F6F3B200DC6CA6 /* DoubleLinearMaskTiltedCenter.png in Resources */,
 				85F599AD1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithMask.png in Resources */,
 				06B5C1F81D181A9400401556 /* VerticalStepFunction33.png in Resources */,
@@ -5751,6 +5775,7 @@
 				03D5168618B26FA40026B56A /* RoundishBlackFrame.png in Resources */,
 				28C709CB1A49B33700489FA1 /* RecomposeInput.png in Resources */,
 				03BCFD4A191FA6E200529AD6 /* RedBorder.png in Resources */,
+				64F1C9731D41106800AF2DA6 /* BlurIntensity1.png in Resources */,
 				28A2545619C9CDF30057E1A3 /* ReshapeProcessorResizeWithoutMask.png in Resources */,
 				0367A47918A9FD3500B42E34 /* Lena128.png in Resources */,
 				283BD0411922214300B68A90 /* ShapeDrawerPathShapeLineFromOrigin.png in Resources */,
@@ -5869,6 +5894,7 @@
 				25AF178C1AD50CBF0055E664 /* GlyphTest.png in Resources */,
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
+				64F1C9741D41106800AF2DA6 /* BlurIntensityMax.png in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 				50D77CE71B6F5BC20001DA0C /* EdgeAvoiding.png in Resources */,
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,
@@ -5966,6 +5992,7 @@
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
 				50C371471BF0DD7E003EC78D /* LTBasicPolynomialInterpolant.mm in Sources */,
 				8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */,
+				64F1C94E1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm in Sources */,
 				031338E3191284100095F99B /* LTImageBorder.fsh in Sources */,
 				03AFC182190E251600F17063 /* LTTiltShift.fsh in Sources */,
 				8B329022192CBBE90010592E /* LTTextureContentsArchiver.mm in Sources */,
@@ -6258,6 +6285,7 @@
 				50FD86971D05AB470005C318 /* MixWithAttribute.vsh in Sources */,
 				50FD86921D05AA820005C318 /* Mix.vsh in Sources */,
 				50FD86911D05AA7D0005C318 /* Mix.fsh in Sources */,
+				64F1C9781D41108100AF2DA6 /* LTMaskedBlurProcessorSpec.mm in Sources */,
 				28E7EFBB1AC41291007D1DAA /* LTCircularPatchProcessorSpec.mm in Sources */,
 				03AFC14D19067F0400F17063 /* LTDuoProcessorSpec.mm in Sources */,
 				50E998A91C075F89004F15C9 /* LTReparameterizedObjectSpec.mm in Sources */,
