@@ -9,6 +9,7 @@
 #import "CUILayerView.h"
 #import "CUIPreviewViewModel.h"
 #import "CUISharedTheme.h"
+#import "UIViewController+LifecycleSignals.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View showing the preview image.
 @property (readonly, nonatomic) CUILayerView *previewView;
+
+/// View used for blurring the \c previewView.
+@property (readonly, nonatomic) UIVisualEffectView *blurView;
 
 /// Focus indicator.
 @property (readonly, nonatomic) CUIFocusView *focusView;
@@ -48,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   self.previewView.frame = self.view.bounds;
   self.gridView.frame = self.view.bounds;
+  self.blurView.frame = self.view.bounds;
 }
 
 - (void)viewDidLoad {
@@ -65,7 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupPreviewView:(CALayer *)previewLayer {
   _previewView = [[CUILayerView alloc] initWithLayer:previewLayer];
   [self.view addSubview:self.previewView];
-  RAC(self.previewView, hidden) = RACObserve(self, viewModel.previewHidden);
 
   _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.viewModel
                                                                   action:@selector(previewTapped:)];
@@ -76,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
       initWithTarget:self.viewModel action:@selector(previewPinched:)];
   [self.previewView addGestureRecognizer:self.pinchGestureRecognizer];
   RAC(self.pinchGestureRecognizer, enabled) = RACObserve(self, viewModel.pinchEnabled);
+
+  [self setupBlurView];
 }
 
 - (void)setupGridView {
@@ -169,6 +175,19 @@ NS_ASSUME_NONNULL_BEGIN
       self.focusView.alpha = 0;
     }];
   } completion:nil];
+}
+
+#pragma mark -
+#pragma mark Blur view
+#pragma mark -
+
+- (void)setupBlurView {
+  UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+  _blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
+  self.blurView.userInteractionEnabled = NO;
+  self.blurView.hidden = YES;
+  [self.view addSubview:self.blurView];
+  RAC(self.blurView, hidden) = [self cui_isVisible];
 }
 
 @end

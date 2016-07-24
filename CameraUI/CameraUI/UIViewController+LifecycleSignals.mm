@@ -23,12 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)cui_toForegroundFromNotificationCenter:(NSNotificationCenter *)notificationCenter {
-  return [self cui_observeName:UIApplicationWillEnterForegroundNotification
+  return [self cui_observeName:UIApplicationDidBecomeActiveNotification
         fromNotificationCenter:notificationCenter];
 }
 
 - (RACSignal *)cui_toBackgroundFromNotificationCenter:(NSNotificationCenter *)notificationCenter {
-  return [self cui_observeName:UIApplicationDidEnterBackgroundNotification
+  return [self cui_observeName:UIApplicationWillResignActiveNotification
         fromNotificationCenter:notificationCenter];
 }
 
