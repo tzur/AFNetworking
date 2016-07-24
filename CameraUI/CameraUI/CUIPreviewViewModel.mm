@@ -50,7 +50,6 @@ static const CGFloat kMaxZoom = 4.0;
 
 - (void)setupPreview {
   _previewLayer = self.cameraDevice.previewLayer;
-  _previewHidden = NO;
   self.gridHidden = YES;
 }
 

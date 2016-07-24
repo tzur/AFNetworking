@@ -43,13 +43,13 @@ context(@"send values", ^{
   });
 
   it(@"should update app going to background and back", ^{
-    [notificationCenterFake postNotificationName:UIApplicationWillEnterForegroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationDidBecomeActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES]);
-    [notificationCenterFake postNotificationName:UIApplicationDidEnterBackgroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationWillResignActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES, @NO]);
-    [notificationCenterFake postNotificationName:UIApplicationWillEnterForegroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationDidBecomeActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES, @NO, @YES]);
   });
@@ -57,24 +57,24 @@ context(@"send values", ^{
   it(@"should update appearing going to background and back", ^{
     [viewController viewWillAppear:NO];
     expect(recorder).to.sendValues(@[@YES]);
-    [notificationCenterFake postNotificationName:UIApplicationDidEnterBackgroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationWillResignActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES, @NO]);
-    [notificationCenterFake postNotificationName:UIApplicationWillEnterForegroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationDidBecomeActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES, @NO, @YES]);
   });
 
   it(@"should update without duplicates", ^{
-    [notificationCenterFake postNotificationName:UIApplicationWillEnterForegroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationDidBecomeActiveNotification
                                           object:nil];
-    [notificationCenterFake postNotificationName:UIApplicationWillEnterForegroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationDidBecomeActiveNotification
                                           object:nil];
     expect(recorder).to.sendValues(@[@YES]);
   });
 
   it(@"should update without duplicates for mixed sources", ^{
-    [notificationCenterFake postNotificationName:UIApplicationDidEnterBackgroundNotification
+    [notificationCenterFake postNotificationName:UIApplicationWillResignActiveNotification
                                           object:nil];
     [viewController viewDidDisappear:NO];
     expect(recorder).to.sendValues(@[@NO]);
