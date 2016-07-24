@@ -23,4 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Category for creating \c CUIGridView instances with commonly used settings.
+@interface CUIGridView (Factory)
+
+/// Returns a white grid with 25% transparent black outline.
++ (CUIGridView *)whiteGrid;
+
+@end
+
 NS_ASSUME_NONNULL_END

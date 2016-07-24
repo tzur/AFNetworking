@@ -31,6 +31,10 @@ it(@"should have preview hidden set to NO", ^{
   expect(previewViewModel.previewHidden).to.beFalsy();
 });
 
+it(@"should have grid hidden set to YES", ^{
+  expect(previewViewModel.gridHidden).to.beTruthy();
+});
+
 it(@"should have tap enabled", ^{
   expect(previewViewModel.tapEnabled).to.beTruthy();
 });
