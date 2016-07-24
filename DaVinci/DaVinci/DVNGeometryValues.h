@@ -11,6 +11,9 @@ namespace dvn {
   /// Struct representing quadrilateral geometry constructed from \c id<LTSampleValues> objects.
   struct GeometryValues {
   public:
+    /// Returns an empty struct.
+    GeometryValues() noexcept : _quads({}), _indices({}), _samples(nil) {}
+
     /// Initializes with the given \c quads, \c indices and \c samples. The \c size() of the given
     /// \c quads must equal both the \c size() of the given \c indices and the \c size() of the
     /// \c sampledParametricValues of the given \c samples.
