@@ -23,6 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
++ (instancetype)viewModelWithDevice:(id<CAMFlashDevice>)flashDevice
+                          flashMode:(AVCaptureFlashMode)flashMode
+                              title:(nullable NSString *)title
+                            iconURL:(nullable NSURL *)iconURL {
+  return [[CUIFlashModeViewModel alloc] initWithFlashDevice:flashDevice flashMode:flashMode
+                                                      title:title iconURL:iconURL];
+}
+
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
                           flashMode:(AVCaptureFlashMode)flashMode
                               title:(nullable NSString *)title

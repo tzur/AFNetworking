@@ -53,9 +53,19 @@ context(@"initialization", ^{
   it(@"should set the enabled property to YES", ^{
     expect(flashModeViewModel.enabled).to.beTruthy();
   });
-  
+
   it(@"should set the subitems to nil", ^{
     expect(flashModeViewModel.subitems).to.beNil();
+  });
+
+  it(@"should initialize correctly when using class initializer", ^{
+    CUIFlashModeViewModel *viewModel = [CUIFlashModeViewModel viewModelWithDevice:device
+                                                                        flashMode:flashMode
+                                                                            title:title
+                                                                          iconURL:iconURL];
+    expect(viewModel.flashMode).to.equal(flashMode);
+    expect(viewModel.title).to.equal(title);
+    expect(viewModel.iconURL).to.equal(iconURL);
   });
 });
 
