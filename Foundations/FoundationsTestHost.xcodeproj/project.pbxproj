@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		656155E31D464DC9009E701C /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 656155DE1D464DAF009E701C /* LTEngine.bundle */; };
 		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
 		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
 		65CEFBB71D3BF72800402230 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB61D3BF72800402230 /* main.m */; };
@@ -14,6 +15,37 @@
 		65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC11D3BF72800402230 /* Assets.xcassets */; };
 		65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		656155DB1D464DAF009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		656155DD1D464DAF009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
+		};
+		656155DF1D464DAF009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
+		};
+		656155E11D464DB8009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		652F752F1D3D1BB300EF9256 /* Foundations-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Foundations-Prefix.pch"; sourceTree = "<group>"; };
@@ -23,6 +55,7 @@
 		652F75E21D3D429F00EF9256 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		652F75E31D3D429F00EF9256 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		652F75E41D3D429F00EF9256 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		656155C71D464DAE009E701C /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		65BB8B701D3D67C5004886DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65BB8B721D3D67C9004886DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		65CEFBB21D3BF72800402230 /* Foundations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Foundations.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +118,24 @@
 			path = Targets;
 			sourceTree = "<group>";
 		};
+		656155C61D464D91009E701C /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				656155C71D464DAE009E701C /* LTEngine.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		656155C81D464DAE009E701C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				656155DC1D464DAF009E701C /* libLTEngine.a */,
+				656155DE1D464DAF009E701C /* LTEngine.bundle */,
+				656155E01D464DAF009E701C /* LTEngineTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		65BB8B741D3D67E2004886DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +151,7 @@
 				652F75DA1D3D429F00EF9256 /* Configuration */,
 				65CEFBB41D3BF72800402230 /* Foundations */,
 				65BB8B741D3D67E2004886DC /* Frameworks */,
+				656155C61D464D91009E701C /* Libraries */,
 				65CEFBB31D3BF72800402230 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -149,6 +201,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				656155E21D464DB8009E701C /* PBXTargetDependency */,
 			);
 			name = Foundations;
 			productName = FoundationsTestHost;
@@ -180,12 +233,42 @@
 			mainGroup = 65CEFBA91D3BF72800402230;
 			productRefGroup = 65CEFBB31D3BF72800402230 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 656155C81D464DAE009E701C /* Products */;
+					ProjectRef = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				65CEFBB11D3BF72800402230 /* Foundations */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		656155DC1D464DAF009E701C /* libLTEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTEngine.a;
+			remoteRef = 656155DB1D464DAF009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155DE1D464DAF009E701C /* LTEngine.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngine.bundle;
+			remoteRef = 656155DD1D464DAF009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155E01D464DAF009E701C /* LTEngineTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineTests.xctest;
+			remoteRef = 656155DF1D464DAF009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		65CEFBB01D3BF72800402230 /* Resources */ = {
@@ -194,6 +277,7 @@
 			files = (
 				65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */,
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
+				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +294,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		656155E21D464DB8009E701C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTEngineBundle;
+			targetProxy = 656155E11D464DB8009E701C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */ = {
