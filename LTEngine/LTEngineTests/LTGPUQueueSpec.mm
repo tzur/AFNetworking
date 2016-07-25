@@ -104,9 +104,9 @@ context(@"async blocks", ^{
     [queue runAsync:^{
       NSObject *object = [[NSObject alloc] init];
       weakObject = object;
-
+    } completion:^{
       dispatch_semaphore_signal(semaphore);
-    } completion:nil];
+    }];
 
     dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
 
