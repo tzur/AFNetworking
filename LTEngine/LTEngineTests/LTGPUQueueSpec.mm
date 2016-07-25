@@ -95,6 +95,23 @@ context(@"async blocks", ^{
 
     expect(ranBlock).to.beTruthy();
   });
+
+  it(@"should deallocate objects created in the block", ^{
+    __block __weak NSObject *weakObject = nil;
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    [queue runAsync:^{
+      NSObject *object = [[NSObject alloc] init];
+      weakObject = object;
+
+      dispatch_semaphore_signal(semaphore);
+    } completion:nil];
+
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
+
+    expect(weakObject).to.beNil();
+  });
 });
 
 context(@"sync blocks", ^{
@@ -118,6 +135,23 @@ context(@"sync blocks", ^{
     }];
 
     expect(ranBlock).to.beTruthy();
+  });
+
+  it(@"should deallocate objects created in the block", ^{
+    __block __weak NSObject *weakObject = nil;
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    [queue runSyncIfNotPaused:^{
+      NSObject *object = [[NSObject alloc] init];
+      weakObject = object;
+
+      dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, semaphoreWaitTime);
+
+    expect(weakObject).to.beNil();
   });
 });
 
