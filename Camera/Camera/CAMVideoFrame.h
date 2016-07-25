@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Nir Bruner.
 
+#import <CoreMedia/CMSampleBuffer.h>
+
 @class CAMPixelFormat, LTTexture;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// pixelFormat.
 @property (readonly, nonatomic) NSArray<LTTexture *> *textures;
 
+/// Timing info for the video frame.
+@property (readonly, nonatomic) CMSampleTimingInfo sampleTimingInfo;
+
 @end
 
 /// \c CAMVideoFrame implementation that hold a Y'CbCr texture pair.
@@ -24,11 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with a Y'CbCr 4:2:0 texture pair. \c pixelFormat will be set to \c
-/// CAMPixelFormat420f. Raises \c NSInvalidArgumentException if the textures' types are not
+/// Initializes with a Y'CbCr 4:2:0 texture pair and frame timing info. \c pixelFormat will be set
+/// to \c CAMPixelFormat420f. Raises \c NSInvalidArgumentException if the textures' types are not
 /// \c LTGLPixelFormatR8Unorm and \c LTGLPixelFormatRG8Unorm respectively.
 - (instancetype)initWithYTexture:(LTTexture *)yTexture cbcrTexture:(LTTexture *)cbcrTexture
-    NS_DESIGNATED_INITIALIZER;
+                sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo NS_DESIGNATED_INITIALIZER;
 
 /// Luma (Y') texture.
 @property (readonly, nonatomic) LTTexture *yTexture;
@@ -43,9 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with a single BGRA texture. \c pixelFormat will be set to \c CAMPixelFormatBGRA.
-/// Raises \c NSInvalidArgumentException if the texture's type is not \c LTGLPixelFormatRGBA8Unorm.
-- (instancetype)initWithBGRATexture:(LTTexture *)bgraTexture NS_DESIGNATED_INITIALIZER;
+/// Initializes with a single BGRA texture and frame timing info. \c pixelFormat will be set to \c
+/// CAMPixelFormatBGRA. Raises \c NSInvalidArgumentException if the texture's type is not \c
+/// LTGLPixelFormatRGBA8Unorm.
+- (instancetype)initWithBGRATexture:(LTTexture *)bgraTexture
+                   sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo NS_DESIGNATED_INITIALIZER;
 
 /// BGRA texture.
 @property (readonly, nonatomic) LTTexture *bgraTexture;

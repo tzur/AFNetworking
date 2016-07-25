@@ -177,14 +177,20 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     LTAssert(pixelBuffer != NULL, @"Video sampleBuffer does not contain pixelBuffer");
 
+    CMSampleTimingInfo timingInfo;
+    OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timingInfo);
+    LTAssert(status == noErr, @"Failed to retrieve sample timing, status: %d", status);
+
     id<CAMVideoFrame> frame;
     if (CVPixelBufferIsPlanar(pixelBuffer)) {
       LTTexture *yTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer planeIndex:0];
       LTTexture *cbcrTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer planeIndex:1];
-      frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:cbcrTexture];
+      frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:cbcrTexture
+                                          sampleTimingInfo:timingInfo];
     } else {
       LTTexture *bgraTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer];
-      frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture];
+      frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
+                                            sampleTimingInfo:timingInfo];
     }
 
     return [RACSignal return:frame];

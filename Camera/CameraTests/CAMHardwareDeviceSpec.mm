@@ -9,6 +9,7 @@
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMHardwareSession.h"
+#import "CAMSampleTimingInfo.h"
 #import "CAMVideoFrame.h"
 
 @interface CAMHardwareDevice (ForTesting) <AVCaptureVideoDataOutputSampleBufferDelegate,
@@ -61,8 +62,7 @@ static CMSampleBufferRef CAMCreateImageSampleBuffer(CGSize size) {
   LTAssert(videoFormatCreate == kCVReturnSuccess,
       @"CMVideoFormatDescriptionCreateForImageBuffer failed - check code");
 
-  CMSampleTimingInfo sampleTimingInfo =
-      {kCMTimeInvalid, CMClockGetTime(CMClockGetHostTimeClock()), kCMTimeInvalid};
+  CMSampleTimingInfo sampleTimingInfo = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
 
   CMSampleBufferRef sampleBuffer;
   OSStatus sampleBufferCreate =
@@ -152,6 +152,9 @@ context(@"", ^{
     it(@"should send video frames", ^{
       CGSize size = CGSizeMake(3, 6);
       CMSampleBufferRef sampleBuffer = CAMCreateImageSampleBuffer(size);
+      CMSampleTimingInfo sampleTimingInfo;
+      OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &sampleTimingInfo);
+      expect(status).to.equal(noErr);
 
       id output = OCMClassMock([AVCaptureVideoDataOutput class]);
       id connection = OCMClassMock([AVCaptureConnection class]);
@@ -160,12 +163,15 @@ context(@"", ^{
       [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(1);
       expect(recorder).to.matchValue(0, ^BOOL(CAMVideoFrameBGRA *frame) {
-        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size;
+        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
+            CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
+        ;
       });
       [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(2);
       expect(recorder).to.matchValue(1, ^BOOL(CAMVideoFrameBGRA *frame) {
-        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size;
+        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
+            CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
       });
       expect(recorder).toNot.complete();
 
