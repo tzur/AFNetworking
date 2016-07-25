@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupGridView {
   _gridView = [CUIGridView whiteGrid];
-  RAC(self.gridView, hidden) = RACObserve(self, viewModel.gridHidden);
+  RAC(self.gridView, hidden, @YES) = RACObserve(self, viewModel.gridHidden);
   [self.view addSubview:self.gridView];
 }
 
