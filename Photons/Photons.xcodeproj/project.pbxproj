@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99E31CA6BF2200ED2334 /* libExpecta.a */; };
+		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
+		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
+		655DCB421D4651BB00E44DAA /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A001CA6BF2200ED2334 /* libSpecta.a */; };
+		65B3A8D31D46524600A14CE4 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368EA81CA6A7E3003E34CF /* ReactiveCocoa.framework */; };
 		84013BB31CBFB12400C40E42 /* PTNTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84013BB11CBFB07D00C40E42 /* PTNTestUtils.mm */; };
 		841229151C9FE57D0078A690 /* PTNGatewayAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841229141C9FE57D0078A690 /* PTNGatewayAssetManager.m */; };
 		84146FB51C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */; };
@@ -121,17 +126,13 @@
 		84E72BCE1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E72BCD1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm */; };
 		84E9E9081CBE7D8D006EBDB3 /* NSURLCache+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E9E9021CBE7D8D006EBDB3 /* NSURLCache+Photons.m */; };
 		84E9E9591CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E9E9581CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm */; };
-		84F467821D0808230060EFAA /* PTNDisposableRetainingSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F467811D0808230060EFAA /* PTNDisposableRetainingSignal.m */; };
 		84ED227C1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84ED227B1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm */; };
 		84F0543A1CF5FD5D00A426DE /* PTNAlbumInterceptionController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F054391CF5FD5D00A426DE /* PTNAlbumInterceptionController.mm */; };
+		84F467821D0808230060EFAA /* PTNDisposableRetainingSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F467811D0808230060EFAA /* PTNDisposableRetainingSignal.m */; };
 		84FABB671CA2DBF5009283F0 /* PTNPhotoKitTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.mm */; };
 		84FBFDAB1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */; };
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
 		84FF77F11C91606500D1DA9F /* NSURL+Gateway.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */; };
-		8B0B99A51CA6BBDB00ED2334 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99A11CA6BBDB00ED2334 /* libExpecta.a */; };
-		8B0B99A61CA6BBDB00ED2334 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99A21CA6BBDB00ED2334 /* libextobjc_iOS.a */; };
-		8B0B99A71CA6BBDB00ED2334 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99A31CA6BBDB00ED2334 /* libOCMock.a */; };
-		8B0B99A81CA6BBDB00ED2334 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99A41CA6BBDB00ED2334 /* libSpecta.a */; };
 		8B0B99C01CA6BEB600ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99BE1CA6BEA600ED2334 /* DropboxSDK.framework */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.m */; };
@@ -183,6 +184,48 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		655DCB051D46506700E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		655DCB071D46506700E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		655DCB091D46506700E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		655DCB0B1D46506700E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
+		};
+		655DCB3B1D46518300E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCB371D46518300E44DAA /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
+			remoteInfo = Foundations;
+		};
+		655DCB3D1D4651A400E44DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655DCB371D46518300E44DAA /* FoundationsTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = Foundations;
+		};
 		84E55C4D1C8EC9E900D91339 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B2FD0161AF9F79000757B1F /* Project object */;
@@ -394,6 +437,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		655DCB371D46518300E44DAA /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
 		84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNTestUtils.h; sourceTree = "<group>"; };
 		84013BB11CBFB07D00C40E42 /* PTNTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNTestUtils.mm; sourceTree = "<group>"; };
 		841229131C9FE57D0078A690 /* PTNGatewayAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNGatewayAssetManager.h; sourceTree = "<group>"; };
@@ -552,21 +597,17 @@
 		84E9E9021CBE7D8D006EBDB3 /* NSURLCache+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLCache+Photons.m"; sourceTree = "<group>"; };
 		84E9E9071CBE7D8D006EBDB3 /* PTNDataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDataCache.h; sourceTree = "<group>"; };
 		84E9E9581CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURLCache+PhotonsSpec.mm"; sourceTree = "<group>"; };
-		84F467801D0808230060EFAA /* PTNDisposableRetainingSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDisposableRetainingSignal.h; sourceTree = "<group>"; };
-		84F467811D0808230060EFAA /* PTNDisposableRetainingSignal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDisposableRetainingSignal.m; sourceTree = "<group>"; };
 		84ED227A1CCE60DE005B42D9 /* PTNInterceptingAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNInterceptingAssetManager.h; sourceTree = "<group>"; };
 		84ED227B1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNInterceptingAssetManager.mm; sourceTree = "<group>"; };
 		84F054381CF5FD5D00A426DE /* PTNAlbumInterceptionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAlbumInterceptionController.h; sourceTree = "<group>"; };
 		84F054391CF5FD5D00A426DE /* PTNAlbumInterceptionController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNAlbumInterceptionController.mm; sourceTree = "<group>"; };
+		84F467801D0808230060EFAA /* PTNDisposableRetainingSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDisposableRetainingSignal.h; sourceTree = "<group>"; };
+		84F467811D0808230060EFAA /* PTNDisposableRetainingSignal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDisposableRetainingSignal.m; sourceTree = "<group>"; };
 		84FABBBF1CA2F0AA009283F0 /* PTNOpenURLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNOpenURLHandler.h; sourceTree = "<group>"; };
 		84FBFDA91C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
 		84FBFDAA1C0EF27C00DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
 		84FF77A71C906A5900D1DA9F /* NSURL+Gateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Gateway.h"; sourceTree = "<group>"; };
 		84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Gateway.m"; sourceTree = "<group>"; };
-		8B0B99A11CA6BBDB00ED2334 /* libExpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libExpecta.a; path = "../third_party/Expecta/build/Debug-iphoneos/libExpecta.a"; sourceTree = "<group>"; };
-		8B0B99A21CA6BBDB00ED2334 /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
-		8B0B99A31CA6BBDB00ED2334 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../third_party/OCMock/Source/build/Debug-iphoneos/libOCMock.a"; sourceTree = "<group>"; };
-		8B0B99A41CA6BBDB00ED2334 /* libSpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpecta.a; path = "../third_party/Specta/Specta/build/Debug-iphoneos/libSpecta.a"; sourceTree = "<group>"; };
 		8B0B99BE1CA6BEA600ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+FileSystemSpec.mm"; sourceTree = "<group>"; };
 		8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageResizerSpec.mm; sourceTree = "<group>"; };
@@ -714,13 +755,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B0B99A61CA6BBDB00ED2334 /* libextobjc_iOS.a in Frameworks */,
-				8B0B99A51CA6BBDB00ED2334 /* libExpecta.a in Frameworks */,
-				8B0B99A71CA6BBDB00ED2334 /* libOCMock.a in Frameworks */,
-				8B0B99A81CA6BBDB00ED2334 /* libSpecta.a in Frameworks */,
-				84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */,
-				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
 				8B0B99C01CA6BEB600ED2334 /* DropboxSDK.framework in Frameworks */,
+				65B3A8D31D46524600A14CE4 /* ReactiveCocoa.framework in Frameworks */,
+				655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */,
+				655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */,
+				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
+				655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */,
+				84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */,
+				655DCB421D4651BB00E44DAA /* libSpecta.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,12 +773,27 @@
 			isa = PBXGroup;
 			children = (
 				8B0B99BE1CA6BEA600ED2334 /* DropboxSDK.framework */,
-				8B0B99A11CA6BBDB00ED2334 /* libExpecta.a */,
-				8B0B99A21CA6BBDB00ED2334 /* libextobjc_iOS.a */,
-				8B0B99A31CA6BBDB00ED2334 /* libOCMock.a */,
-				8B0B99A41CA6BBDB00ED2334 /* libSpecta.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		655DCAFF1D46506700E44DAA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				655DCB061D46506700E44DAA /* libextobjc_OSX.a */,
+				655DCB081D46506700E44DAA /* libextobjc_iOS.a */,
+				655DCB0A1D46506700E44DAA /* Logic Tests.octest */,
+				655DCB0C1D46506700E44DAA /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		655DCB381D46518300E44DAA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				655DCB3C1D46518300E44DAA /* Foundations.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		84331A751C300C67004502B5 /* Dropbox */ = {
@@ -1009,9 +1066,9 @@
 				8B2FD0201AF9F79000757B1F /* Photons */,
 				8B2FD02D1AF9F79000757B1F /* PhotonsTests */,
 				8B1889AA1BF1E52F00E9BD67 /* Configuration */,
+				49F615BDE58178359DAFCD59 /* Frameworks */,
 				8BAFDCCB1B0E0B53003FB8F5 /* Libraries */,
 				8B2FD01F1AF9F79000757B1F /* Products */,
-				49F615BDE58178359DAFCD59 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1356,6 +1413,8 @@
 		8BAFDCCB1B0E0B53003FB8F5 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */,
+				655DCB371D46518300E44DAA /* FoundationsTestHost.xcodeproj */,
 				8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */,
 				8BAFE2561B0E0B6F003FB8F5 /* ReactiveCocoa.xcodeproj */,
 			);
@@ -1433,6 +1492,7 @@
 			);
 			dependencies = (
 				84E55C4E1C8EC9E900D91339 /* PBXTargetDependency */,
+				655DCB3E1D4651A400E44DAA /* PBXTargetDependency */,
 			);
 			name = PhotonsTests;
 			productName = PhotonsTests;
@@ -1472,6 +1532,14 @@
 					ProjectRef = 8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */;
 				},
 				{
+					ProductGroup = 655DCAFF1D46506700E44DAA /* Products */;
+					ProjectRef = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 655DCB381D46518300E44DAA /* Products */;
+					ProjectRef = 655DCB371D46518300E44DAA /* FoundationsTestHost.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B368EAF1CA6A7EC003E34CF /* Products */;
 					ProjectRef = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
 				},
@@ -1497,6 +1565,41 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		655DCB061D46506700E44DAA /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = 655DCB051D46506700E44DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		655DCB081D46506700E44DAA /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = 655DCB071D46506700E44DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		655DCB0A1D46506700E44DAA /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = 655DCB091D46506700E44DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		655DCB0C1D46506700E44DAA /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = 655DCB0B1D46506700E44DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		655DCB3C1D46518300E44DAA /* Foundations.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Foundations.app;
+			remoteRef = 655DCB3B1D46518300E44DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8B0B99D91CA6BF2200ED2334 /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1875,6 +1978,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		655DCB3E1D4651A400E44DAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Foundations;
+			targetProxy = 655DCB3D1D4651A400E44DAA /* PBXContainerItemProxy */;
+		};
 		84E55C4E1C8EC9E900D91339 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84E55C151C8EC72E00D91339 /* Photons */;
@@ -1972,6 +2080,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B1889C91BF1E54B00E9BD67 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsTests/PhotonsTests-Prefix.pch";
@@ -1991,6 +2100,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lightricks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
