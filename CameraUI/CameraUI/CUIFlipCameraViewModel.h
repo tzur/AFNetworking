@@ -23,10 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// device, and in such case it does nothing.
 @interface CUIFlipCameraViewModel : NSObject <CUIMenuItemViewModel>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes this object with the given \c flipDevice, \c title and \c iconURL.
 - (instancetype)initWithFlipDevice:(id<CAMFlipDevice>)flipDevice
                              title:(nullable NSString *)title
-                           iconURL:(nullable NSURL *)iconURL;
+                           iconURL:(nullable NSURL *)iconURL NS_DESIGNATED_INITIALIZER;
 
 @end
 

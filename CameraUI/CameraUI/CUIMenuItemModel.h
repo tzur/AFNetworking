@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes the menu item with the given values.
 - (instancetype)initWithLocalizedTitle:(NSString *)localizedTitle iconURL:(NSURL *)iconURL
-                                   key:(NSString *)key;
+                                   key:(NSString *)key NS_DESIGNATED_INITIALIZER;
 
 /// Title of the menu item.
 @property (readonly, nonatomic) NSString *localizedTitle;

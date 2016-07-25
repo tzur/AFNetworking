@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CUIFlashModeViewModel ()
 
-/// \c CAMFlashDevice that this obejct represnts one of its flash modes.
+/// \c CAMFlashDevice that this object represents one of its flash modes.
 @property (strong, readonly, nonatomic) id<CAMFlashDevice> flashDevice;
 
 @end
@@ -22,6 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize hidden = _hidden;
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
+
++ (instancetype)viewModelWithDevice:(id<CAMFlashDevice>)flashDevice
+                          flashMode:(AVCaptureFlashMode)flashMode
+                              title:(nullable NSString *)title
+                            iconURL:(nullable NSURL *)iconURL {
+  return [[CUIFlashModeViewModel alloc] initWithFlashDevice:flashDevice flashMode:flashMode
+                                                      title:title iconURL:iconURL];
+}
 
 - (instancetype)initWithFlashDevice:(id<CAMFlashDevice>)flashDevice
                           flashMode:(AVCaptureFlashMode)flashMode
