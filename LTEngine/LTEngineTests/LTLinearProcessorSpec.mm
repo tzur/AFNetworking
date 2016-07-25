@@ -59,7 +59,7 @@ context(@"processing", ^{
       expect($(output.image)).to.equalMat($(input.image));
     });
     
-    it(@"it should add constant vector to pixels of input texture", ^{
+    it(@"should add constant vector to pixels of input texture", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 230, 204, 179, 230);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
@@ -70,7 +70,7 @@ context(@"processing", ^{
       expect($(output.image)).to.equalMat($(expectedResult));
     });
     
-    it(@"it should multiply pixels of input texture with a matrix", ^{
+    it(@"should multiply pixels of input texture with a matrix", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 71, 82, 92, 102);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
@@ -81,7 +81,7 @@ context(@"processing", ^{
       expect($(output.image)).to.equalMat($(expectedResult));
     });
     
-    it(@"it should multiply pixels of input texture with a matrix and add constant vector", ^{
+    it(@"should multiply pixels of input texture with a matrix and add constant vector", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 46, 31, 15, 76);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
@@ -111,7 +111,7 @@ context(@"processing", ^{
       expect($(input.image)).to.equalMat($(originalTexture.image));
     });
     
-    it(@"it should add constant vector to pixels of input texture", ^{
+    it(@"should add constant vector to pixels of input texture", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 230, 204, 179, 230);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
@@ -122,7 +122,7 @@ context(@"processing", ^{
       expect($(input.image)).to.equalMat($(expectedResult));
     });
     
-    it(@"it should multiply pixels of input texture with a matrix", ^{
+    it(@"should multiply pixels of input texture with a matrix", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 71, 82, 92, 102);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
@@ -133,7 +133,7 @@ context(@"processing", ^{
       expect($(input.image)).to.equalMat($(expectedResult));
     });
     
-    it(@"it should multiply pixels of input texture with a matrix and add constant vector", ^{
+    it(@"should multiply pixels of input texture with a matrix and add constant vector", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 46, 31, 15, 76);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
