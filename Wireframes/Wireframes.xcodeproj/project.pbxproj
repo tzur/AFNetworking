@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65322E0B1D465494002D5F17 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD1304C1CC4FCAF003A5857 /* ReactiveCocoa.framework */; };
+		65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65322E061D465479002D5F17 /* libextobjc_iOS.a */; };
 		6A0C328C1CE7476800809579 /* WFImageViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */; };
 		6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2D0FE01CE1DC7000B439C6 /* WFImageViewModelBuilder.m */; };
 		6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A34F6071CD7939E00B91A58 /* WFDynamicImageViewModel.m */; };
@@ -53,7 +55,6 @@
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
 		8B283F151CBA84EA00B745AE /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EE11CBA834D00B745AE /* libOCMock.a */; };
 		8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283ED21CBA834300B745AE /* libSpecta.a */; };
-		8B283F181CBA84EA00B745AE /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283F171CBA84EA00B745AE /* libextobjc_iOS.a */; };
 		8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */; };
 		8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */; };
 		8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F501CBA88E800B745AE /* LTTestUtils.mm */; };
@@ -77,6 +78,48 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		65322E031D465479002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		65322E051D465479002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		65322E071D465479002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		65322E091D465479002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
+		};
+		65322E111D4654BB002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
+			remoteInfo = Foundations;
+		};
+		65322E131D4654D6002D5F17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = Foundations;
+		};
 		6AD130471CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */;
@@ -288,6 +331,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		65322DFC1D465479002D5F17 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
 		6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFImageViewModelBuilderSpec.mm; sourceTree = "<group>"; };
 		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
 		6A2D0FDF1CE1DC7000B439C6 /* WFImageViewModelBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModelBuilder.h; sourceTree = "<group>"; };
@@ -378,7 +423,6 @@
 		8B283EBE1CBA834300B745AE /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
-		8B283F171CBA84EA00B745AE /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../third_party/libextobjc/build/Debug-iphoneos/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		8B283F1C1CBA85E400B745AE /* WireframesTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WireframesTests-Prefix.pch"; sourceTree = "<group>"; };
 		8B283F291CBA86F500B745AE /* Wireframes-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Wireframes-Prefix.pch"; sourceTree = "<group>"; };
 		8B283F4B1CBA88E800B745AE /* EXPMatchers+beBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beBlock.h"; path = "../../LTKit/LTKitTests/EXPMatchers+beBlock.h"; sourceTree = "<group>"; };
@@ -428,19 +472,47 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B283F181CBA84EA00B745AE /* libextobjc_iOS.a in Frameworks */,
+				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
+				65322E0B1D465494002D5F17 /* ReactiveCocoa.framework in Frameworks */,
 				8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */,
+				65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */,
 				8B283F151CBA84EA00B745AE /* libOCMock.a in Frameworks */,
 				8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */,
 				8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */,
 				8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */,
-				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65322DE21D46544F002D5F17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		65322DFD1D465479002D5F17 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65322E041D465479002D5F17 /* libextobjc_OSX.a */,
+				65322E061D465479002D5F17 /* libextobjc_iOS.a */,
+				65322E081D465479002D5F17 /* Logic Tests.octest */,
+				65322E0A1D465479002D5F17 /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65322E0E1D4654BB002D5F17 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65322E121D4654BB002D5F17 /* Foundations.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6A2990431CD4DA420046C4ED /* View Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +682,7 @@
 			isa = PBXGroup;
 			children = (
 				8B283E611CBA811100B745AE /* Configuration */,
+				65322DE21D46544F002D5F17 /* Frameworks */,
 				8B283EA21CBA832900B745AE /* Libraries */,
 				8B283E191CBA7EED00B745AE /* Wireframes */,
 				8B283E711CBA814100B745AE /* WireframesTests */,
@@ -685,11 +758,11 @@
 		8B283EA21CBA832900B745AE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8B283F171CBA84EA00B745AE /* libextobjc_iOS.a */,
 				8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */,
-				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
+				65322DFC1D465479002D5F17 /* extobjc.xcodeproj */,
+				65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */,
 				6AB2AF371CC4E63E00BC2371 /* LLReactiveMatchers */,
-				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
+				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
 				8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */,
 				6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */,
 				8B283EBE1CBA834300B745AE /* Specta.xcodeproj */,
@@ -877,6 +950,7 @@
 			);
 			dependencies = (
 				8B283E771CBA814100B745AE /* PBXTargetDependency */,
+				65322E141D4654D6002D5F17 /* PBXTargetDependency */,
 			);
 			name = WireframesTests;
 			productName = WireframesTests;
@@ -916,6 +990,14 @@
 					ProjectRef = 8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */;
 				},
 				{
+					ProductGroup = 65322DFD1D465479002D5F17 /* Products */;
+					ProjectRef = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 65322E0E1D4654BB002D5F17 /* Products */;
+					ProjectRef = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B283EED1CBA838900B745AE /* Products */;
 					ProjectRef = 8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */;
 				},
@@ -941,6 +1023,41 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		65322E041D465479002D5F17 /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = 65322E031D465479002D5F17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65322E061D465479002D5F17 /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = 65322E051D465479002D5F17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65322E081D465479002D5F17 /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = 65322E071D465479002D5F17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65322E0A1D465479002D5F17 /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = 65322E091D465479002D5F17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65322E121D4654BB002D5F17 /* Foundations.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Foundations.app;
+			remoteRef = 65322E111D4654BB002D5F17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6AD130481CC4FCAF003A5857 /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1213,6 +1330,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		65322E141D4654D6002D5F17 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Foundations;
+			targetProxy = 65322E131D4654D6002D5F17 /* PBXContainerItemProxy */;
+		};
 		6AD130641CC4FE8E003A5857 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "ReactiveCocoa-iOS";
@@ -1357,7 +1479,7 @@
 		8B283E791CBA814100B745AE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME)User.app/$(PROJECT_NAME)User";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
 				GCC_PREFIX_HEADER = "WireframesTests/WireframesTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

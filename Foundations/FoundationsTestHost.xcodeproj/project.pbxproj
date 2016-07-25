@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		656155E31D464DC9009E701C /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 656155DE1D464DAF009E701C /* LTEngine.bundle */; };
 		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
 		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
 		65CEFBB71D3BF72800402230 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB61D3BF72800402230 /* main.m */; };
@@ -16,75 +17,33 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		652F77561D3D599800EF9256 /* PBXContainerItemProxy */ = {
+		656155DB1D464DAF009E701C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 652F77511D3D599800EF9256 /* WireframesUser.xcodeproj */;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8B283E841CBA81F600B745AE;
-			remoteInfo = WireframesUser;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTEngine;
 		};
-		652F775C1D3D599F00EF9256 /* PBXContainerItemProxy */ = {
+		656155DD1D464DAF009E701C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 652F77581D3D599F00EF9256 /* LTKitUser.xcodeproj */;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8B8E512A1868479100821829;
-			remoteInfo = LTKitUser;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
 		};
-		652F77641D3D59A300EF9256 /* PBXContainerItemProxy */ = {
+		656155DF1D464DAF009E701C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8B8E512A1868479100821829;
-			remoteInfo = LTEngineUser;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
 		};
-		652F776B1D3D59A600EF9256 /* PBXContainerItemProxy */ = {
+		656155E11D464DB8009E701C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83B7291C1CD8D3B10090C0BF;
-			remoteInfo = CameraUIUser;
-		};
-		652F77731D3D5A1100EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83FF07101CD72A7B00383C6B;
-			remoteInfo = CameraUser;
-		};
-		652F77751D3D5A2500EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */;
+			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 83FF070F1CD72A7B00383C6B;
-			remoteInfo = CameraUser;
-		};
-		652F77771D3D5A2500EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 83B7291B1CD8D3B10090C0BF;
-			remoteInfo = CameraUIUser;
-		};
-		652F77791D3D5A2500EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B8E51291868479100821829;
-			remoteInfo = LTEngineUser;
-		};
-		652F777B1D3D5A2500EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F77581D3D599F00EF9256 /* LTKitUser.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B8E51291868479100821829;
-			remoteInfo = LTKitUser;
-		};
-		652F777D1D3D5A2500EF9256 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 652F77511D3D599800EF9256 /* WireframesUser.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B283E831CBA81F600B745AE;
-			remoteInfo = WireframesUser;
+			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -96,11 +55,7 @@
 		652F75E21D3D429F00EF9256 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		652F75E31D3D429F00EF9256 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		652F75E41D3D429F00EF9256 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		652F77511D3D599800EF9256 /* WireframesUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WireframesUser.xcodeproj; path = ../Wireframes/WireframesUser.xcodeproj; sourceTree = "<group>"; };
-		652F77581D3D599F00EF9256 /* LTKitUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKitUser.xcodeproj; path = ../LTKit/LTKitUser.xcodeproj; sourceTree = "<group>"; };
-		652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngineUser.xcodeproj; path = ../LTEngine/LTEngineUser.xcodeproj; sourceTree = "<group>"; };
-		652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUIUser.xcodeproj; path = ../CameraUI/CameraUIUser.xcodeproj; sourceTree = "<group>"; };
-		652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUser.xcodeproj; path = ../Camera/CameraUser.xcodeproj; sourceTree = "<group>"; };
+		656155C71D464DAE009E701C /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		65BB8B701D3D67C5004886DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65BB8B721D3D67C9004886DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		65CEFBB21D3BF72800402230 /* Foundations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Foundations.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,54 +118,20 @@
 			path = Targets;
 			sourceTree = "<group>";
 		};
-		652F77501D3D598B00EF9256 /* Test Hosts */ = {
+		656155C61D464D91009E701C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */,
-				652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */,
-				652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */,
-				652F77581D3D599F00EF9256 /* LTKitUser.xcodeproj */,
-				652F77511D3D599800EF9256 /* WireframesUser.xcodeproj */,
+				656155C71D464DAE009E701C /* LTEngine.xcodeproj */,
 			);
-			name = "Test Hosts";
+			name = Libraries;
 			sourceTree = "<group>";
 		};
-		652F77521D3D599800EF9256 /* Products */ = {
+		656155C81D464DAE009E701C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				652F77571D3D599800EF9256 /* WireframesUser.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		652F77591D3D599F00EF9256 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				652F775D1D3D599F00EF9256 /* LTKitUser.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		652F775F1D3D59A200EF9256 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				652F77651D3D59A300EF9256 /* LTEngineUser.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		652F77671D3D59A600EF9256 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				652F776C1D3D59A600EF9256 /* CameraUIUser.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		652F776E1D3D5A1100EF9256 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				652F77741D3D5A1100EF9256 /* CameraUser.app */,
+				656155DC1D464DAF009E701C /* libLTEngine.a */,
+				656155DE1D464DAF009E701C /* LTEngine.bundle */,
+				656155E01D464DAF009E701C /* LTEngineTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -230,8 +151,8 @@
 				652F75DA1D3D429F00EF9256 /* Configuration */,
 				65CEFBB41D3BF72800402230 /* Foundations */,
 				65BB8B741D3D67E2004886DC /* Frameworks */,
+				656155C61D464D91009E701C /* Libraries */,
 				65CEFBB31D3BF72800402230 /* Products */,
-				652F77501D3D598B00EF9256 /* Test Hosts */,
 			);
 			sourceTree = "<group>";
 		};
@@ -280,11 +201,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				652F77761D3D5A2500EF9256 /* PBXTargetDependency */,
-				652F77781D3D5A2500EF9256 /* PBXTargetDependency */,
-				652F777A1D3D5A2500EF9256 /* PBXTargetDependency */,
-				652F777C1D3D5A2500EF9256 /* PBXTargetDependency */,
-				652F777E1D3D5A2500EF9256 /* PBXTargetDependency */,
+				656155E21D464DB8009E701C /* PBXTargetDependency */,
 			);
 			name = Foundations;
 			productName = FoundationsTestHost;
@@ -318,24 +235,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 652F77671D3D59A600EF9256 /* Products */;
-					ProjectRef = 652F77661D3D59A600EF9256 /* CameraUIUser.xcodeproj */;
-				},
-				{
-					ProductGroup = 652F776E1D3D5A1100EF9256 /* Products */;
-					ProjectRef = 652F776D1D3D5A1100EF9256 /* CameraUser.xcodeproj */;
-				},
-				{
-					ProductGroup = 652F775F1D3D59A200EF9256 /* Products */;
-					ProjectRef = 652F775E1D3D59A200EF9256 /* LTEngineUser.xcodeproj */;
-				},
-				{
-					ProductGroup = 652F77591D3D599F00EF9256 /* Products */;
-					ProjectRef = 652F77581D3D599F00EF9256 /* LTKitUser.xcodeproj */;
-				},
-				{
-					ProductGroup = 652F77521D3D599800EF9256 /* Products */;
-					ProjectRef = 652F77511D3D599800EF9256 /* WireframesUser.xcodeproj */;
+					ProductGroup = 656155C81D464DAE009E701C /* Products */;
+					ProjectRef = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -346,39 +247,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		652F77571D3D599800EF9256 /* WireframesUser.app */ = {
+		656155DC1D464DAF009E701C /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = WireframesUser.app;
-			remoteRef = 652F77561D3D599800EF9256 /* PBXContainerItemProxy */;
+			fileType = archive.ar;
+			path = libLTEngine.a;
+			remoteRef = 656155DB1D464DAF009E701C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		652F775D1D3D599F00EF9256 /* LTKitUser.app */ = {
+		656155DE1D464DAF009E701C /* LTEngine.bundle */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = LTKitUser.app;
-			remoteRef = 652F775C1D3D599F00EF9256 /* PBXContainerItemProxy */;
+			fileType = wrapper.cfbundle;
+			path = LTEngine.bundle;
+			remoteRef = 656155DD1D464DAF009E701C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		652F77651D3D59A300EF9256 /* LTEngineUser.app */ = {
+		656155E01D464DAF009E701C /* LTEngineTests.xctest */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = LTEngineUser.app;
-			remoteRef = 652F77641D3D59A300EF9256 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		652F776C1D3D59A600EF9256 /* CameraUIUser.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = CameraUIUser.app;
-			remoteRef = 652F776B1D3D59A600EF9256 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		652F77741D3D5A1100EF9256 /* CameraUser.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = CameraUser.app;
-			remoteRef = 652F77731D3D5A1100EF9256 /* PBXContainerItemProxy */;
+			fileType = wrapper.cfbundle;
+			path = LTEngineTests.xctest;
+			remoteRef = 656155DF1D464DAF009E701C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -390,6 +277,7 @@
 			files = (
 				65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */,
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
+				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,30 +296,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		652F77761D3D5A2500EF9256 /* PBXTargetDependency */ = {
+		656155E21D464DB8009E701C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = CameraUser;
-			targetProxy = 652F77751D3D5A2500EF9256 /* PBXContainerItemProxy */;
-		};
-		652F77781D3D5A2500EF9256 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CameraUIUser;
-			targetProxy = 652F77771D3D5A2500EF9256 /* PBXContainerItemProxy */;
-		};
-		652F777A1D3D5A2500EF9256 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LTEngineUser;
-			targetProxy = 652F77791D3D5A2500EF9256 /* PBXContainerItemProxy */;
-		};
-		652F777C1D3D5A2500EF9256 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LTKitUser;
-			targetProxy = 652F777B1D3D5A2500EF9256 /* PBXContainerItemProxy */;
-		};
-		652F777E1D3D5A2500EF9256 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = WireframesUser;
-			targetProxy = 652F777D1D3D5A2500EF9256 /* PBXContainerItemProxy */;
+			name = LTEngineBundle;
+			targetProxy = 656155E11D464DB8009E701C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
