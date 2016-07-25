@@ -39,6 +39,7 @@ static const CGFloat kMaxZoom = 4.0;
     [self setupCameraProperties];
     [self setupPreview];
     [self setupFocus];
+    [self setupCaptureAnimation];
   }
   return self;
 }
@@ -51,6 +52,15 @@ static const CGFloat kMaxZoom = 4.0;
 - (void)setupPreview {
   _previewLayer = self.cameraDevice.previewLayer;
   self.gridHidden = YES;
+}
+
+- (void)setupCaptureAnimation {
+  _animateCapture = [[self rac_signalForSelector:@selector(performCaptureAnimation)]
+      mapReplace:[RACUnit defaultUnit]];
+}
+
+- (void)performCaptureAnimation {
+  // Handled with rac_signalForSelector.
 }
 
 #pragma mark -
@@ -79,7 +89,9 @@ static const CGFloat kMaxZoom = 4.0;
 - (void)setupFocus {
   _focusModeSubject = [[RACSubject alloc] init];
   [self setupSubjectAreaChangedSignal];
-  _focusModeAndPosition = [self.focusModeSubject distinctUntilChanged];
+  _focusModeAndPosition = [[self.focusModeSubject
+      distinctUntilChanged]
+      takeUntil:[self rac_willDeallocSignal]];
 }
 
 - (void)setupSubjectAreaChangedSignal {

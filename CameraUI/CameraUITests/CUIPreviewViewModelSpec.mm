@@ -41,6 +41,41 @@ it(@"should enable pinch if there is zoom", ^{
   expect(previewViewModel.pinchEnabled).to.beTruthy();
 });
 
+it(@"should signal animateCapture", ^{
+  LLSignalTestRecorder *recorder = [previewViewModel.animateCapture testRecorder];
+  expect(recorder).to.sendValuesWithCount(0);
+  [previewViewModel performCaptureAnimation];
+  expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+  [previewViewModel performCaptureAnimation];
+  expect(recorder).to.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+});
+
+it(@"animateCapture signal should complete", ^{
+  __weak id weakPreviewViewModel;
+  LLSignalTestRecorder *recorder;
+  @autoreleasepool {
+    CUIPreviewViewModel *newPreviewViewModel =
+        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+    weakPreviewViewModel = newPreviewViewModel;
+    recorder = [newPreviewViewModel.animateCapture testRecorder];
+  }
+  expect(weakPreviewViewModel).to.beNil();
+  expect(recorder).to.complete();
+});
+
+it(@"should not retain from animateCapture signal", ^{
+  __weak id weakPreviewViewModel;
+  RACSignal *signal;
+  @autoreleasepool {
+    CUIPreviewViewModel *newPreviewViewModel =
+        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+    weakPreviewViewModel = newPreviewViewModel;
+    signal = newPreviewViewModel.animateCapture;
+  }
+  expect(signal).toNot.beNil();
+  expect(weakPreviewViewModel).to.beNil();
+});
+
 context(@"zoom", ^{
   static const CGFloat pinchValue = 0.125;
   static const CGFloat zoomFactor = 4;
@@ -148,6 +183,32 @@ context(@"focus", ^{
     centerPoint = [deviceStub previewLayerPointFromDevicePoint:kDeviceCenterPoint];
     recorder = [previewViewModel.focusModeAndPosition testRecorder];
     focusAction = [CUIFocusIconMode indefiniteFocusAtPosition:centerPoint];
+  });
+
+  it(@"focusModeAndPosition should complete", ^{
+    __weak id weakPreviewViewModel;
+    LLSignalTestRecorder *recorder;
+    @autoreleasepool {
+      CUIPreviewViewModel *newPreviewViewModel =
+          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+      weakPreviewViewModel = newPreviewViewModel;
+      recorder = [newPreviewViewModel.focusModeAndPosition testRecorder];
+    }
+    expect(weakPreviewViewModel).to.beNil();
+    expect(recorder).to.complete();
+  });
+
+  it(@"should not retain from focusModeAndPosition signal", ^{
+    __weak id weakPreviewViewModel;
+    RACSignal *signal;
+    @autoreleasepool {
+      CUIPreviewViewModel *newPreviewViewModel =
+          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+      weakPreviewViewModel = newPreviewViewModel;
+      signal = newPreviewViewModel.focusModeAndPosition;
+    }
+    expect(signal).toNot.beNil();
+    expect(weakPreviewViewModel).to.beNil();
   });
 
   context(@"single focus", ^{

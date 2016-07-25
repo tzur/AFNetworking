@@ -23,7 +23,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Preview layer.
 @property (readonly, nonatomic) CALayer *previewLayer;
 
-/// Signal that sends \c CUIFocusIconMode marking how and where the focus icon should be shown.
+/// Activate capture animation.
+- (void)performCaptureAnimation;
+
+/// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
+/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
+/// and never errs.
+@property (readonly, nonatomic) RACSignal *animateCapture;
+
+/// Hot signal that sends \c CUIFocusIconMode marking how and where the focus icon should be shown.
+/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
+/// and never errs.
 @property (readonly, nonatomic) RACSignal *focusModeAndPosition;
 
 /// \c YES when the device supports focus and tap-to-focus gesture should be enabled.
