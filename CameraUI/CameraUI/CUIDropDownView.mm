@@ -48,9 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
       make.width.greaterThanOrEqualTo(self.mas_height);
     }];
     @weakify(self);
-    [entry.didTapSignal subscribeNext:^(RACTuple * __unused tuple) {
+    [entry.didTapSignal subscribeNext:^(RACTuple *tuple) {
       @strongify(self);
-      [self updateSubmenusHiddenStateForTappedEntry:entry];
+      [self updateSubmenusHiddenStateForTappedEntry:tuple.first];
     }];
     entry.submenuView.hidden = YES;
   }
