@@ -33,18 +33,15 @@ NS_ASSUME_NONNULL_BEGIN
     _flashMode = flashMode;
     _title = title;
     _iconURL = iconURL;
-    [self setup];
+    _hidden = NO;
+    _enabled = YES;
+
+    RAC(self, selected, @NO) = [RACObserve(self, flashDevice.currentFlashMode)
+        map:^NSNumber *(NSNumber *currentFlashMode) {
+          return @(currentFlashMode.integerValue == flashMode);
+        }];
   }
   return self;
-}
-
-- (void)setup {
-  _hidden = NO;
-  _enabled = YES;
-  RAC(self, selected, @NO) = [RACObserve(self, flashDevice.currentFlashMode)
-      map:(id)^NSNumber *(NSNumber *flashMode) {
-        return @(flashMode.integerValue == self.flashMode);
-      }];
 }
 
 #pragma mark -
