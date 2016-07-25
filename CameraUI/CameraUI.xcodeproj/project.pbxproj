@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */; };
+		8328EDBC1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8328EDBB1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm */; };
+		8363740C1D3FBAAF00C8D09D /* CUIGridViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */; };
 		83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B728EB1CD8D1090090C0BF /* libCameraUI.a */; };
 		83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729841CD8D6890090C0BF /* libSpecta.a */; };
 		83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7299B1CD8D68D0090C0BF /* libExpecta.a */; };
@@ -363,6 +365,9 @@
 
 /* Begin PBXFileReference section */
 		288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8328EDBB1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridViewModelSpec.mm; sourceTree = "<group>"; };
+		8363740A1D3FBAAF00C8D09D /* CUIGridViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridViewModel.h; sourceTree = "<group>"; };
+		8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridViewModel.mm; sourceTree = "<group>"; };
 		83B728EB1CD8D1090090C0BF /* libCameraUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCameraUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B728FB1CD8D2080090C0BF /* CameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B728FF1CD8D2080090C0BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -776,6 +781,8 @@
 				BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */,
 				BE52379A1D3B952C00A4DD80 /* CUIFlipCameraViewModel.h */,
 				BE52379B1D3B952C00A4DD80 /* CUIFlipCameraViewModel.mm */,
+				8363740A1D3FBAAF00C8D09D /* CUIGridViewModel.h */,
+				8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */,
 				BE0D7A7B1CF49705009899F9 /* CUIMenuItemButton.h */,
 				BE97556B1D0075A80081A766 /* CUIMenuItemIconButton.h */,
 				BE97556C1D0075A80081A766 /* CUIMenuItemIconButton.mm */,
@@ -903,6 +910,7 @@
 				BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */,
 				BE40FEC91D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm */,
 				BECE31E11D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm */,
+				8328EDBB1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm */,
 				BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */,
 				BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */,
 				BE0D7A9B1CF4978F009899F9 /* CUISimpleMenuItemViewModel.h */,
@@ -1408,6 +1416,7 @@
 				F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */,
 				F954188A1CFC55E800C6BE2E /* CUIMenuItemModel.mm in Sources */,
 				F9262E581D23A91A00CA60E7 /* CUIPreviewViewModel.mm in Sources */,
+				8363740C1D3FBAAF00C8D09D /* CUIGridViewModel.mm in Sources */,
 				F9262E571D23A91A00CA60E7 /* CUIPreviewViewController.mm in Sources */,
 				F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */,
 				BED2B7E51D34E0D00080E413 /* CUIShootButton.mm in Sources */,
@@ -1467,6 +1476,7 @@
 				F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */,
 				BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */,
 				BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				8328EDBC1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
 				BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */,
 				F965C9E01CF317A100005627 /* LTSpectaObjectionHook.mm in Sources */,
