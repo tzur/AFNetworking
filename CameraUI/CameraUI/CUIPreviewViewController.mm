@@ -74,12 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
   _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.viewModel
                                                                   action:@selector(previewTapped:)];
   [self.previewView addGestureRecognizer:self.tapGestureRecognizer];
-  RAC(self.tapGestureRecognizer, enabled) = RACObserve(self, viewModel.tapEnabled);
+  RAC(self.tapGestureRecognizer, enabled, @NO) = RACObserve(self, viewModel.tapEnabled);
 
   _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc]
       initWithTarget:self.viewModel action:@selector(previewPinched:)];
   [self.previewView addGestureRecognizer:self.pinchGestureRecognizer];
-  RAC(self.pinchGestureRecognizer, enabled) = RACObserve(self, viewModel.pinchEnabled);
+  RAC(self.pinchGestureRecognizer, enabled, @NO) = RACObserve(self, viewModel.pinchEnabled);
 
   [self setupBlurView];
 }

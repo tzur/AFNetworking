@@ -45,7 +45,7 @@ static const CGFloat kMaxZoom = 4.0;
 
 - (void)setupCameraProperties {
   _tapEnabled = YES;
-  RAC(self, pinchEnabled) = RACObserve(self, cameraDevice.hasZoom);
+  RAC(self, pinchEnabled, @NO) = RACObserve(self, cameraDevice.hasZoom);
 }
 
 - (void)setupPreview {
