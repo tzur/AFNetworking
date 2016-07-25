@@ -84,16 +84,6 @@ objection_register_singleton([LTGPUQueue class]);
   }
 }
 
-- (void)useContext {
-  if ([LTGLContext currentContext] != self.context) {
-    [LTGLContext setCurrentContext:self.context];
-  }
-}
-
-- (void)clearContext {
-  [LTGLContext setCurrentContext:nil];
-}
-
 #pragma mark -
 #pragma mark Singleton
 #pragma mark -
@@ -139,7 +129,7 @@ objection_register_singleton([LTGPUQueue class]);
   [self useContext];
 
   @try {
-    block();
+    [self executeBlock:block];
   } @catch (LTGLException *exception) {
     LogError(@"Encountered LTGLException while running on the GPU Queue: %@",
              exception.description);
@@ -211,7 +201,7 @@ objection_register_singleton([LTGPUQueue class]);
   [self useContext];
 
   @try {
-    block();
+    [self executeBlock:block];
   } @catch (LTGLException *exception) {
     LogError(@"Encountered LTGLException while running on the GPU Queue: %@",
              exception.description);
@@ -231,6 +221,30 @@ objection_register_singleton([LTGPUQueue class]);
   } else {
     [self sendErrorToErrorHandler:error];
   }
+}
+
+#pragma mark -
+#pragma mark Execution
+#pragma mark -
+
+- (void)executeBlock:(LTVoidBlock)block {
+  // GCD queues drain their autoreleasepools only when the GCD thread is idle, therefore objects may
+  // be released after their context is unset, causing a crash. Wrapping the block with
+  // @autoreleasepool enforces objects that are created in the block to deallocate after the block
+  // ends. See session 718, WWDC 2015 for more details.
+  @autoreleasepool {
+    block();
+  }
+}
+
+- (void)useContext {
+  if ([LTGLContext currentContext] != self.context) {
+    [LTGLContext setCurrentContext:self.context];
+  }
+}
+
+- (void)clearContext {
+  [LTGLContext setCurrentContext:nil];
 }
 
 #pragma mark -
