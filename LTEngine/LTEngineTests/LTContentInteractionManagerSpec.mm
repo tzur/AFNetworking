@@ -252,14 +252,14 @@ context(@"invalid calls", ^{
     manager = nil;
   });
 
-  it(@"it should raise when attempting to attach default gesture recognizers as custom ones", ^{
+  it(@"should raise when attempting to attach default gesture recognizers as custom ones", ^{
     manager.defaultGestureRecognizers = recognizers;
     expect(^{
       manager.customGestureRecognizers = @[recognizers.tapGestureRecognizer];
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"it should raise when attempting to attach custom gesture recognizers as default ones", ^{
+  it(@"should raise when attempting to attach custom gesture recognizers as default ones", ^{
     manager.customGestureRecognizers = @[tapRecognizerMock, panRecognizerMock];
     expect(^{
       manager.defaultGestureRecognizers = recognizers;

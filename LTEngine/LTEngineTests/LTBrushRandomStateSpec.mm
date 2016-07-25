@@ -42,12 +42,12 @@ context(@"deserialization", ^{
     randomState = [LTBrushRandomState modelWithDictionary:dictionary error:&error];
   });
 
-  it(@"it should deserialize without an error", ^{
+  it(@"should deserialize without an error", ^{
     expect(randomState).toNot.beNil();
     expect(error).to.beNil();
   });
 
-  it(@"it should deserialize correctly", ^{
+  it(@"should deserialize correctly", ^{
     expect(randomState.states[@instanceKeypath(LTBrush, random)])
         .to.beIdenticalTo(niceBrushRandomStateMock);
     expect(randomState.states[@instanceKeypath(LTBrush, colorDynamicsEffect.random)])

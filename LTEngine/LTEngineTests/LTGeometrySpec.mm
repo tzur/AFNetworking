@@ -220,7 +220,7 @@ context(@"affine transformations", ^{
 });
 
 context(@"intersection", ^{
-  it(@"it should correctly compute whether a given polyline intersects itself", ^{
+  it(@"should correctly compute whether a given polyline intersects itself", ^{
     CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
@@ -343,7 +343,7 @@ context(@"intersection", ^{
     expect(CGPointIsNull(LTIntersectionPointOfLines(p0, q0, p0 + shift, q0 + shift))).to.beTruthy();
   });
 
-  it(@"it should correctly compute all intersection points of a given polyline", ^{
+  it(@"should correctly compute all intersection points of a given polyline", ^{
     CGPoint p0 = CGPointZero;
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
@@ -358,7 +358,7 @@ context(@"intersection", ^{
                                                                   kEpsilon);
   });
 
-  it(@"it should correctly compute all intersection points of two given polylines", ^{
+  it(@"should correctly compute all intersection points of two given polylines", ^{
     CGPoints polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
         CGPointMake(2, 1), CGPointMake(1, 2)};
     CGPoints polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5), CGPointMake(1.5, 0.5),
