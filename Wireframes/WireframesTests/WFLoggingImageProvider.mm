@@ -88,23 +88,22 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)waitUntilCompletion {
-  static NSTimeInterval kWaitInterval = 0.1;
-
-  NSTimeInterval totalTime = 0;
-  
-  while (self.ongoingURLs.count) {
-    [NSRunLoop.mainRunLoop runMode:NSDefaultRunLoopMode
-                        beforeDate:[NSDate dateWithTimeIntervalSinceNow:kWaitInterval]];
-    totalTime += kWaitInterval;
-
-    if (totalTime > [Expecta asynchronousTestTimeout]) {
-      [[NSException exceptionWithName:@"com.lightricks.WFLoggingImageProviderException"
-                               reason:@"Timeout while waiting for completion" userInfo:nil] raise];
-    }
-  }
+  static const NSTimeInterval kWaitInterval = 0.1;
 
   @synchronized (self) {
     self.canReceiveRequests = NO;
+  }
+
+  const NSTimeInterval timeout = CACurrentMediaTime() + [Expecta asynchronousTestTimeout];
+
+  while (self.ongoingURLs.count) {
+    if (timeout < CACurrentMediaTime()) {
+      [[NSException exceptionWithName:@"com.lightricks.WFLoggingImageProviderException"
+                               reason:@"Timeout while waiting for completion" userInfo:nil] raise];
+    }
+
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:kWaitInterval]];
   }
 }
 
