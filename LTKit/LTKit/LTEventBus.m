@@ -32,17 +32,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTEventBus ()
 
 /// Dictionary mapping event class to an array of its observers.
-@property (strong, nonatomic) NSMutableDictionary *observers;
+@property (readonly, nonatomic) NSMutableDictionary *classObservers;
+
+/// Dictionary mapping event protocol to an array of its observers.
+@property (readonly, nonatomic) NSMutableDictionary *protocolObservers;
 
 @end
 
 @implementation LTEventBus
 
-- (NSMutableDictionary *)observers {
-  if (!_observers) {
-    _observers = [NSMutableDictionary dictionary];
+- (instancetype)init {
+  if (self = [super init]) {
+    _classObservers = [NSMutableDictionary dictionary];
+    _protocolObservers = [NSMutableDictionary dictionary];
   }
-  return _observers;
+  return self;
 }
 
 - (void)addObserver:(id)target selector:(SEL)selector forClass:(Class)objClass {
@@ -53,6 +57,15 @@ NS_ASSUME_NONNULL_BEGIN
   LTEventObserver *observer = [[LTEventObserver alloc] initWithTarget:target selector:selector];
 
   [self addObserver:observer toClass:objClass];
+}
+
+- (void)addObserver:(id)target selector:(SEL)selector forProtocol:(Protocol *)protocol {
+  LTParameterAssert(protocol, @"Attempting to observe nil protocol.");
+  [self verifySelector:selector forTarget:target];
+  
+  LTEventObserver *observer = [[LTEventObserver alloc] initWithTarget:target selector:selector];
+  
+  [self addObserver:observer toProtocol:protocol];
 }
 
 - (void)verifySelector:(SEL)selector forTarget:(id)target {
@@ -78,51 +91,84 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)addObserver:(LTEventObserver *)observer toClass:(Class)objClass {
-  NSMutableArray *classObservers = self.observers[objClass];
+  NSMutableArray *classObservers = self.classObservers[objClass];
   if (!classObservers) {
     classObservers = [NSMutableArray array];
     // Class objects conform to NSCopying even though they don't declare it - see for more info:
     // http://stackoverflow.com/a/769627/1074055
-    self.observers[(id<NSCopying>)objClass] = classObservers;
+    self.classObservers[(id<NSCopying>)objClass] = classObservers;
   }
   [classObservers addObject:observer];
 }
 
+- (void)addObserver:(LTEventObserver *)observer toProtocol:(Protocol *)protocol {
+  NSMutableArray *protocolObservers = self.protocolObservers[NSStringFromProtocol(protocol)];
+  if (!protocolObservers) {
+    protocolObservers = [NSMutableArray array];
+    self.protocolObservers[NSStringFromProtocol(protocol)] = protocolObservers;
+  }
+  [protocolObservers addObject:observer];
+}
+
 - (void)removeObserver:(id)target forClass:(Class)objClass {
-  for (Class observedClass in self.observers) {
+  for (Class observedClass in self.classObservers) {
     if (objClass && ![observedClass isSubclassOfClass:objClass]) {
       continue;
     }
-    NSMutableArray *toDiscard = [NSMutableArray array];
-    for (LTEventObserver *observer in self.observers[observedClass]) {
-      if (target == observer.target) {
-        [toDiscard addObject:observer];
-      }
-    }
-    [self.observers[observedClass] removeObjectsInArray:toDiscard];
+    [self removeObserver:target forKey:observedClass from:self.classObservers];
   }
+}
+
+- (void)removeObserver:(id)target forProtocol:(nonnull Protocol *)protocol {
+  for (NSString *observedProtocol in self.protocolObservers) {
+    if (protocol && !protocol_conformsToProtocol(NSProtocolFromString(observedProtocol),
+                                                 protocol)) {
+      continue;
+    }
+    [self removeObserver:target forKey:observedProtocol from:self.protocolObservers];
+  }
+}
+
+- (void)removeObserver:(id)target forKey:(id)key from:(NSMutableDictionary *)dictionary {
+  NSMutableArray *toDiscard = [NSMutableArray array];
+  for (LTEventObserver *observer in dictionary[key]) {
+    if (target == observer.target) {
+      [toDiscard addObject:observer];
+    }
+  }
+  [dictionary[key] removeObjectsInArray:toDiscard];
 }
 
 - (void)post:(id)object {
   LTParameterAssert(object, @"Attempting to post a nil object");
-  for (Class observedClass in self.observers) {
+  for (Class observedClass in self.classObservers) {
     if (![object isKindOfClass:observedClass]) {
       continue;
     }
-    NSMutableArray *toDiscard = [NSMutableArray array];
-    NSMutableArray *toNotify = [NSMutableArray array];
-    for (LTEventObserver *observer in self.observers[observedClass]) {
-      if (observer.target) {
-        [toNotify addObject:observer];
-      } else {
-        [toDiscard addObject:observer];
-      }
-    }
-    for (LTEventObserver *observer in toNotify) {
-      [self post:object toObserver:observer];
-    }
-    [self.observers[observedClass] removeObjectsInArray:toDiscard];
+    [self post:object toObservers:self.classObservers[observedClass]];
   }
+  for (NSString *observedProtocol in self.protocolObservers) {
+    if (![object conformsToProtocol:NSProtocolFromString(observedProtocol)]) {
+      continue;
+    }
+    [self post:object toObservers:self.protocolObservers[observedProtocol]];
+  }
+}
+
+- (void)post:(id)object toObservers:(NSMutableArray *)observers {
+  NSMutableArray *toDiscard = [NSMutableArray array];
+  NSMutableArray *toNotify = [NSMutableArray array];
+  for (LTEventObserver *observer in observers) {
+    if (observer.target) {
+      [toNotify addObject:observer];
+    } else {
+      [toDiscard addObject:observer];
+    }
+  }
+  for (LTEventObserver *observer in toNotify) {
+    [self post:object toObserver:observer];
+  }
+  [observers removeObjectsInArray:toDiscard];
 }
 
 - (void)post:(id)object toObserver:(LTEventObserver *)observer {
