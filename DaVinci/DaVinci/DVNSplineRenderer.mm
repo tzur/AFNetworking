@@ -9,6 +9,7 @@
 #import <LTEngine/LTParameterizedObjectType.h>
 
 #import "DVNPipeline.h"
+#import "DVNPipelineConfiguration.h"
 #import "DVNSplineRenderModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -68,7 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints end:(BOOL)end {
-  LTParameterAssert(controlPoints.count, @"At least one control point must be provided");
   [self.splineConstructor pushControlPoints:controlPoints];
 
   if (!self.splineConstructor.parameterizedObject) {
@@ -77,10 +77,26 @@ NS_ASSUME_NONNULL_BEGIN
       // of a control point sequence, bail out since there is nothing to render yet.
       return;
     } else {
+      LTControlPointModel *controlPointModel = [self.splineConstructor reset];
+
+      if (!controlPointModel.controlPoints.count) {
+        DVNPipelineConfiguration *pipelineConfiguration = [self.pipeline currentConfiguration];
+        LTAssert([pipelineConfiguration isEqual:self.sequenceStartConfiguration],
+                 @"Configuration %@ of pipeline should not be different than configuration at "
+                 "start of control point sequence", pipelineConfiguration);
+        LTAssert(self.lastIntervalUsedInLastSequence == lt::Interval<CGFloat>(),
+                 @"Last interval (%g, %g) used in most recent control point sequence must equal "
+                 "the empty (0, 0) interval",
+                 self.lastIntervalUsedInLastSequence.min(),
+                 self.lastIntervalUsedInLastSequence.max());
+        return;
+      }
+
       // If the spline could not be constructed yet and the current state represents the end of a
-      // control point sequence, the number of control points received in the current sequence
-      // insufficient to construct a spline, so a single point should be rendered.
-      [self setupForSinglePointRendering];
+      // control point sequence, the number of control points received in the current sequence is
+      // insufficient to construct a spline, so a single point should be rendered, if possible.
+      [self setupForRenderingOfSinglePoint:controlPointModel.controlPoints.firstObject
+               withParameterizedObjectType:controlPointModel.type];
     }
   }
 
@@ -135,18 +151,15 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
            "one value");
 }
 
-- (void)setupForSinglePointRendering {
-  LTControlPointModel *controlPointModel = [self.splineConstructor reset];
-  LTAssert(controlPointModel.controlPoints.count, @"Internal inconsistency: at least one control "
-           "point is supposed to exist at this point");
-
-  id<LTBasicParameterizedObjectFactory> factory = [controlPointModel.type factory];
+- (void)setupForRenderingOfSinglePoint:(LTSplineControlPoint *)controlPoint
+           withParameterizedObjectType:(LTParameterizedObjectType *)type {
+  id<LTBasicParameterizedObjectFactory> factory = [type factory];
   NSUInteger numberOfControlPoints = [[factory class] numberOfRequiredValues];
   NSMutableArray<LTSplineControlPoint *> *mutableControlPoints =
       [NSMutableArray arrayWithCapacity:numberOfControlPoints];
 
   for (NSUInteger i = 0; i < numberOfControlPoints; ++i) {
-    [mutableControlPoints addObject:controlPointModel.controlPoints.firstObject];
+    [mutableControlPoints addObject:controlPoint];
   }
 
   [self.splineConstructor pushControlPoints:mutableControlPoints];

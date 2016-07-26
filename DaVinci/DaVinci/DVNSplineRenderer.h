@@ -35,6 +35,29 @@ NS_ASSUME_NONNULL_BEGIN
 /// of the spline.
 /// The object executes a \c DVNPipeline object to perform the actual rendering.
 ///
+/// Terminology: Calls to the \c processControlPoints:end: method are called process calls.
+/// A process call is called terminating if the \c end parameter is set to \c YES, and
+/// non-terminating, otherwise. A sequence of consecutive process calls is called a process sequence
+/// if all process calls except for the last are non-terminating.
+///
+/// During a process sequence the object continues constructing aforementioned parameterized object
+/// and provides it to the \c DVNPipeline for rendering. After a process sequence, the object resets
+/// to its initial state. However, the internally used \c DVNPipeline is not reset.
+///
+/// Three different scenarios can arise for a given process sequence:
+///
+/// Scenario 1: No control points are provided during the process sequence. In this case, there are
+/// no side effects and no calls to the delegate.
+///
+/// Scenario 2: The number of control points provided during the process sequence is insufficient to
+/// construct a spline. In this case, the first control point provided during the process sequence
+/// is used to construct a single-point spline and provided to the \c DVNPipeline for rendering. The
+/// delegate is informed.
+///
+/// Scenario 3: The number of control points provided during the process sequence is sufficient to
+/// construct a spline. In this case, the spline is provided to the \c DVNPipeline for rendering and
+/// the delegate is informed.
+///
 /// The renderer does not assume any specific render target. It is the responsibility of the user to
 /// ensure the usage of an appropriate render target.
 @interface DVNSplineRenderer : NSObject
@@ -55,16 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// creating a spline, in the form of a continuous \c id<LTParameterizedObject>, from the
 /// \c controlPoints or extending the already existing spline with them and b) rendering
 /// quadrilateral geometry created from discrete samples of the spline, according to the
-/// \c configuration provided upon intialization. The given \c controlPoints must contain at least
-/// one control point.
+/// \c configuration provided upon intialization.
 ///
-/// In order to indicate the end of a control point sequence, the \c end indication is to be set to
-/// \c YES. If at the end of a control point sequence, the number of control points provided as part
-/// of the ending sequence is insufficient to construct a spline, the first control point of the
-/// control points is used to construct a single-point spline.
-///
-/// After the end of a control point sequence, this instance transitions into a state in which a new
-/// control point sequence can be received.
+/// In order to indicate the end of a process sequence, the \c end indication must be \c YES.
 - (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints end:(BOOL)end;
 
 /// Cancels the currently ongoing process sequence and transitions into a state in which it can

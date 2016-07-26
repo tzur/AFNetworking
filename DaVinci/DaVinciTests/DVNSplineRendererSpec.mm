@@ -66,6 +66,7 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
     __block DVNSplineRenderer *renderer;
     __block LTTexture *renderTarget;
     __block LTFbo *fbo;
+    __block cv::Mat initialMat;
     __block cv::Mat expectedMatForSingleRenderCall;
     __block cv::Mat expectedMatForConsecutiveRenderCalls;
 
@@ -76,6 +77,7 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
       renderTarget = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
       [renderTarget clearWithColor:LTVector4::ones()];
       fbo = [[LTFbo alloc] initWithTexture:renderTarget];
+      initialMat = renderTarget.image;
       expectedMatForSingleRenderCall = DVNTestSingleProcessResult();
       expectedMatForConsecutiveRenderCalls = DVNTestConsecutiveProcessResult();
     });
@@ -91,23 +93,71 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
 
     context(@"rendering", ^{
       context(@"single render pass", ^{
-        it(@"should correctly render", ^{
+        it(@"should not render for process call without control points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:NO];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(initialMat));
+        });
+
+        it(@"should not render for process sequence without control points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(initialMat));
+        });
+
+        it(@"should render before terminating process call", ^{
           [fbo bindAndDraw:^{
             [renderer processControlPoints:controlPoints end:NO];
           }];
           expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
         });
 
-        it(@"should correctly render with announced end", ^{
+        it(@"should render for simple process sequence", ^{
           [fbo bindAndDraw:^{
             [renderer processControlPoints:controlPoints end:YES];
           }];
           expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
         });
+
+        it(@"should render for process sequence without control points in last process call", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
+        });
+
+        it(@"should render for process sequence without control points in first process call", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:NO];
+            [renderer processControlPoints:controlPoints end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
+        });
+
+        context(@"single point rendering", ^{
+          it(@"should render a single point for process sequence with insufficient points", ^{
+            [fbo bindAndDraw:^{
+              [renderer processControlPoints:insufficientControlPointsForRendering end:YES];
+            }];
+            expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
+          });
+
+          it(@"should render a single point for split process sequence with insufficient points", ^{
+            [fbo bindAndDraw:^{
+              [renderer processControlPoints:insufficientControlPointsForRendering end:NO];
+              [renderer processControlPoints:@[] end:YES];
+            }];
+            expect($(renderTarget.image)).to.equalMat($(expectedMatForSingleRenderCall));
+          });
+        });
       });
 
       context(@"consecutive render pass", ^{
-        it(@"should correctly render across consecutive process calls", ^{
+        it(@"should render across consecutive process calls", ^{
           [fbo bindAndDraw:^{
             [renderer processControlPoints:controlPoints end:NO];
             [renderer processControlPoints:additionalControlPoints end:NO];
@@ -115,12 +165,46 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
           expect($(renderTarget.image)).to.equalMat($(expectedMatForConsecutiveRenderCalls));
         });
 
-        it(@"should correctly render across consecutive process calls with announced end", ^{
+        it(@"should render across consecutive process calls with announced end", ^{
           [fbo bindAndDraw:^{
             [renderer processControlPoints:controlPoints end:NO];
             [renderer processControlPoints:additionalControlPoints end:YES];
           }];
           expect($(renderTarget.image)).to.equalMat($(expectedMatForConsecutiveRenderCalls));
+        });
+
+        it(@"should render across consecutive process calls with end announced without points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints end:NO];
+            [renderer processControlPoints:additionalControlPoints end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(expectedMatForConsecutiveRenderCalls));
+        });
+      });
+
+      context(@"no rendering", ^{
+        it(@"should not render for simple process sequence without control points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(initialMat));
+        });
+
+        it(@"should not render for process sequence without control points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(initialMat));
+        });
+
+        it(@"should not render for process sequences without control points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:YES];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          expect($(renderTarget.image)).to.equalMat($(initialMat));
         });
       });
     });
@@ -147,8 +231,14 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
                                                configuration:initialConfiguration
                                                     delegate:strictDelegateMock];
           [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:YES];
+          }];
+
+          [fbo bindAndDraw:^{
             [renderer processControlPoints:insufficientControlPointsForRendering end:NO];
           }];
+
+          OCMVerifyAll(strictDelegateMock);
         });
 
         it(@"should inform its delegate about the start of a rendering", ^{
@@ -208,14 +298,42 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
       });
 
       context(@"end of rendering", ^{
-        it(@"should inform its delegate about the render model after finishing a process sequence",
-           ^{
+        it(@"should inform delegate about render model after finishing process sequence", ^{
           OCMExpect([delegateMock renderingOfSplineRenderer:renderer endedWithModel:[OCMArg any]]);
-
           [fbo bindAndDraw:^{
             [renderer processControlPoints:controlPoints end:YES];
           }];
+          OCMVerifyAll(delegateMock);
 
+          OCMExpect([delegateMock renderingOfSplineRenderer:renderer endedWithModel:[OCMArg any]]);
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          OCMVerifyAll(delegateMock);
+        });
+
+        it(@"should inform delegate about model after finishing single point process sequence", ^{
+          OCMExpect([delegateMock renderingOfSplineRenderer:renderer endedWithModel:[OCMArg any]]);
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:insufficientControlPointsForRendering end:YES];
+          }];
+          OCMVerifyAll(delegateMock);
+
+          OCMExpect([delegateMock renderingOfSplineRenderer:renderer endedWithModel:[OCMArg any]]);
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:insufficientControlPointsForRendering end:NO];
+            [renderer processControlPoints:@[] end:YES];
+          }];
+          OCMVerifyAll(delegateMock);
+        });
+
+        it(@"should not inform delegate about model after finishing process sequence without point",
+           ^{
+          OCMReject([delegateMock renderingOfSplineRenderer:renderer endedWithModel:[OCMArg any]]);
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[] end:YES];
+          }];
           OCMVerifyAll(delegateMock);
         });
 
@@ -233,6 +351,33 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
 
             [fbo bindAndDraw:^{
               [renderer processControlPoints:controlPoints end:YES];
+            }];
+
+            OCMVerifyAll(delegateMock);
+          });
+
+          it(@"should return correct model after finishing a single point process sequence", ^{
+            NSUInteger numberOfRequiredControlPoints =
+                [[[type factory] class] numberOfRequiredValues];
+
+            NSMutableArray<LTSplineControlPoint *> *expectedControlPoints =
+                [NSMutableArray arrayWithCapacity:numberOfRequiredControlPoints];
+            for (NSUInteger i = 0; i < numberOfRequiredControlPoints; ++i) {
+              [expectedControlPoints addObject:insufficientControlPointsForRendering.firstObject];
+            }
+
+            OCMExpect([delegateMock
+                       renderingOfSplineRenderer:renderer
+                       endedWithModel:[OCMArg checkWithBlock:^BOOL(DVNSplineRenderModel *model) {
+              expect(model).to.toNot.beNil();
+              expect(model.controlPointModel.type).to.equal(type);
+              expect(model.controlPointModel.controlPoints).to.equal(expectedControlPoints);
+              expect(model.configuration).to.equal(initialConfiguration);
+              return YES;
+            }]]);
+
+            [fbo bindAndDraw:^{
+              [renderer processControlPoints:insufficientControlPointsForRendering end:YES];
             }];
 
             OCMVerifyAll(delegateMock);
@@ -403,6 +548,11 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
               [renderer processControlPoints:insufficientControlPointsForRendering end:NO];
             }];
             [renderer cancel];
+
+            [fbo bindAndDraw:^{
+              [renderer processControlPoints:@[] end:YES];
+            }];
+            [renderer cancel];
           });
 
           it(@"should inform its delegate if rendering was performed before cancellation", ^{
@@ -553,6 +703,31 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
         expect($(renderTarget.image)).to.equalMat($(expectedMat));
       });
 
+      it(@"should render using render model constructed from process sequence with separate end", ^{
+        __block DVNSplineRenderModel *renderModel;
+
+        OCMExpect([delegateMock
+                   renderingOfSplineRenderer:renderer
+                   endedWithModel:[OCMArg checkWithBlock:^BOOL(DVNSplineRenderModel *model) {
+          renderModel = model;
+          return YES;
+        }]]);
+
+        [fbo bindAndDraw:^{
+          [renderer processControlPoints:controlPoints end:NO];
+          [renderer processControlPoints:@[] end:YES];
+        }];
+
+        [renderTarget clearWithColor:LTVector4::ones()];
+        cv::Mat4b expectedMat = DVNTestSingleProcessResult();
+        expect($(renderTarget.image)).toNot.equalMat($(expectedMat));
+
+        [fbo bindAndDraw:^{
+          [DVNSplineRenderer processModel:renderModel];
+        }];
+
+        expect($(renderTarget.image)).to.equalMat($(expectedMat));
+      });
 
       it(@"should correctly render using a given render model requiring two render passes", ^{
         __block DVNSplineRenderModel *renderModel;
@@ -579,6 +754,33 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
 
         expect($(renderTarget.image)).to.equalMat($(expectedMat));
       });
+
+      it(@"should render using model constructed from two process calls with separate end", ^{
+        __block DVNSplineRenderModel *renderModel;
+
+        OCMExpect([delegateMock
+                   renderingOfSplineRenderer:renderer
+                   endedWithModel:[OCMArg checkWithBlock:^BOOL(DVNSplineRenderModel *model) {
+          renderModel = model;
+          return YES;
+        }]]);
+
+        [fbo bindAndDraw:^{
+          [renderer processControlPoints:controlPoints end:NO];
+          [renderer processControlPoints:additionalControlPoints end:NO];
+          [renderer processControlPoints:@[] end:YES];
+        }];
+
+        [renderTarget clearWithColor:LTVector4::ones()];
+        cv::Mat4b expectedMat = DVNTestSingleProcessResult();
+        expect($(renderTarget.image)).toNot.equalMat($(expectedMat));
+
+        [fbo bindAndDraw:^{
+          [DVNSplineRenderer processModel:renderModel];
+        }];
+
+        expect($(renderTarget.image)).to.equalMat($(expectedMat));
+      });
     });
 
     context(@"invalid calls", ^{
@@ -586,52 +788,6 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *data) {
         expect(^{
           [renderer processControlPoints:controlPoints end:NO];
         }).to.raise(kLTOpenGLRuntimeErrorException);
-      });
-
-      context(@"execution without control points", ^{
-        it(@"should raise if attempting to execute without control points", ^{
-          expect(^{
-            [fbo bindAndDraw:^{
-              [renderer processControlPoints:@[] end:NO];
-            }];
-          }).to.raise(NSInvalidArgumentException);
-        });
-
-        it(@"should raise if attempting to execute consecutively without control points", ^{
-          expect(^{
-            [fbo bindAndDraw:^{
-              [renderer processControlPoints:controlPoints end:NO];
-              [renderer processControlPoints:@[] end:NO];
-            }];
-          }).to.raise(NSInvalidArgumentException);
-        });
-      });
-
-      context(@"execution without control points, with announced end", ^{
-        it(@"should raise if attempting to execute without control points", ^{
-          expect(^{
-            [fbo bindAndDraw:^{
-              [renderer processControlPoints:@[] end:YES];
-            }];
-          }).to.raise(NSInvalidArgumentException);
-        });
-
-        it(@"should raise if attempting to execute consecutively without control points", ^{
-          expect(^{
-            [fbo bindAndDraw:^{
-              [renderer processControlPoints:controlPoints end:NO];
-              [renderer processControlPoints:@[] end:YES];
-            }];
-          }).to.raise(NSInvalidArgumentException);
-        });
-      });
-
-      it(@"should raise if attempting to execute without control points with announced end", ^{
-        expect(^{
-          [fbo bindAndDraw:^{
-            [renderer processControlPoints:@[] end:YES];
-          }];
-        }).to.raise(NSInvalidArgumentException);
       });
 
       it(@"should raise if attempting to process render model without bound render target", ^{
