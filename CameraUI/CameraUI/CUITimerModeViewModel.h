@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Nir Bruner.
 
-#include "CUIMenuItemViewModel.h"
+#import "CUIMenuItemViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
