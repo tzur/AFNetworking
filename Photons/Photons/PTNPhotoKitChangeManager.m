@@ -9,6 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitChangeManager
 
+- (void)createAssetFromImageAtFileURL:(NSURL *)fileURL {
+  [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
+}
+
 - (void)deleteAssets:(id<NSFastEnumeration>)assets {
   [PHAssetChangeRequest deleteAssets:assets];
 }
