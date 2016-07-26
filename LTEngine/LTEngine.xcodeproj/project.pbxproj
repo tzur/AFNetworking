@@ -2414,7 +2414,7 @@
 		857F74621D3691BE005DA3E2 /* LTIndicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIndicesData.h; sourceTree = "<group>"; };
 		857F74631D3691BE005DA3E2 /* LTIndicesData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesData.mm; sourceTree = "<group>"; };
 		857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesDataSpec.mm; sourceTree = "<group>"; };
-		857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTEqualityExamples.mm; path = ../LTKit/LTKitTests/LTEqualityExamples.mm; sourceTree = "<group>"; };
+		857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEqualityExamples.mm; sourceTree = "<group>"; };
 		858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTSolidRectsDrawer.vsh; sourceTree = "<group>"; };
 		85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT3DLUTTextureAtlas.h; sourceTree = "<group>"; };
 		85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LT3DLUTTextureAtlas.mm; sourceTree = "<group>"; };
@@ -2483,6 +2483,7 @@
 		8B18BB7719235F4200DA4B64 /* LTTextureContentsFileArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureContentsFileArchiver.mm; sourceTree = "<group>"; };
 		8B19621B184B6DA40065A057 /* LTGPUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGPUQueue.h; sourceTree = "<group>"; };
 		8B19621C184B6DA40065A057 /* LTGPUQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUQueue.mm; sourceTree = "<group>"; };
+		8B19CF361D462AE0001E4E85 /* LTEqualityExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEqualityExamples.h; sourceTree = "<group>"; };
 		8B22673D19979F450049CF26 /* LTProgramFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProgramFactory.h; sourceTree = "<group>"; };
 		8B22673E19979F450049CF26 /* LTProgramFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTProgramFactory.m; sourceTree = "<group>"; };
 		8B2267451997BBC60049CF26 /* LTProgramFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgramFactorySpec.mm; sourceTree = "<group>"; };
@@ -4080,6 +4081,8 @@
 			children = (
 				8B16C9C71BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.h */,
 				8B16C9C81BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm */,
+				8B19CF361D462AE0001E4E85 /* LTEqualityExamples.h */,
+				857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */,
 				8B16C9C91BAF01C5002FB750 /* LTTestUtils.h */,
 				8B16C9CA1BAF01C5002FB750 /* LTTestUtils.mm */,
 			);
@@ -4224,7 +4227,6 @@
 		8B3DEBDB18296B6100EA0C1A = {
 			isa = PBXGroup;
 			children = (
-				857F74C11D3697A8005DA3E2 /* LTEqualityExamples.mm */,
 				8B3DEBE918296B6100EA0C1A /* LTEngine */,
 				8BCFBFF618CF0AF100E612DE /* LTEngineBundle */,
 				8B3DEBFD18296B6100EA0C1A /* LTEngineTests */,
