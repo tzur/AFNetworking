@@ -48,6 +48,7 @@
 		6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518DD1CCA420B00540CC6 /* WFImageLoaderSpec.mm */; };
 		6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518E01CCA454300540CC6 /* WFFakePaintCodeModule.m */; };
 		6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */; };
+		8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
 		8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EF21CBA838900B745AE /* libLTKit.a */; };
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
@@ -70,6 +71,7 @@
 		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
 		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
+		8BE97B311D47463A001ED33A /* CATransaction+Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE97B301D47463A001ED33A /* CATransaction+Animations.m */; };
 		C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */; };
 		C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */; };
 		C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */; };
@@ -365,6 +367,7 @@
 		6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTestUtils.h; sourceTree = "<group>"; };
 		6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFTestUtils.m; sourceTree = "<group>"; };
+		8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CATransaction+AnimationsSpec.mm"; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B283E621CBA811100B745AE /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		8B283E641CBA811100B745AE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -408,6 +411,8 @@
 		8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
 		8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
 		8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
+		8BE97B2F1D47463A001ED33A /* CATransaction+Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CATransaction+Animations.h"; sourceTree = "<group>"; };
+		8BE97B301D47463A001ED33A /* CATransaction+Animations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+Animations.m"; sourceTree = "<group>"; };
 		C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Utilities.h"; sourceTree = "<group>"; };
 		C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Utilities.mm"; sourceTree = "<group>"; };
 		C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+UtilitiesSpec.mm"; sourceTree = "<group>"; };
@@ -791,6 +796,8 @@
 			children = (
 				C9133D8D1D3574FE009E796B /* CALayer+Enumeration.h */,
 				C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */,
+				8BE97B2F1D47463A001ED33A /* CATransaction+Animations.h */,
+				8BE97B301D47463A001ED33A /* CATransaction+Animations.m */,
 				8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */,
 				8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */,
 				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
@@ -817,6 +824,7 @@
 			isa = PBXGroup;
 			children = (
 				C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */,
+				8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */,
 				8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */,
 				C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
@@ -1144,6 +1152,7 @@
 			files = (
 				6AAED9F51CC62AAD00B3C62F /* WFPaintCodeImageProvider.mm in Sources */,
 				6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */,
+				8BE97B311D47463A001ED33A /* CATransaction+Animations.m in Sources */,
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
 				8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */,
 				6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */,
@@ -1204,6 +1213,7 @@
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 				8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */,
+				8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */,
 				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
 				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.m in Sources */,
 				6AB2AF641CC4E63E00BC2371 /* EXPMatchers+beSubscribedTo.m in Sources */,
