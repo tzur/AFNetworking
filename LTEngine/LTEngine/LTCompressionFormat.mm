@@ -26,7 +26,7 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
   }
 }
 
-- (NSString *)fileExtention {
+- (NSString *)fileExtension {
   switch (self.value) {
     case LTCompressionFormatJPEG:
       return @"jpg";
