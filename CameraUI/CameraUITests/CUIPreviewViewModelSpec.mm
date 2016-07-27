@@ -11,21 +11,45 @@
 SpecBegin(CUIPreviewViewModel)
 
 __block CAMDeviceStub *deviceStub;
+__block RACSubject *previewSignal;
 __block CUIPreviewViewModel *previewViewModel;
 __block RACSubject *subjectAreaChanged;
 __block CALayer *deviceLayer;
 
 beforeEach(^{
   deviceStub = [[CAMDeviceStub alloc] init];
+  previewSignal = [RACSubject subject];
   deviceLayer = [CALayer layer];
   deviceStub.previewLayer = deviceLayer;
   subjectAreaChanged = [RACSubject subject];
   deviceStub.subjectAreaChanged = subjectAreaChanged;
-  previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+  previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                   previewSignal:previewSignal];
 });
 
-it(@"should return device layer", ^{
-  expect(previewViewModel.previewLayer).to.equal(deviceLayer);
+context(@"preview properties initialization", ^{
+  it(@"should initialize correctly without signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+    expect(viewModel.usePreviewLayer).to.beTruthy();
+    expect(viewModel.previewLayer).to.equal(deviceLayer);
+    expect(viewModel.previewSignal).to.beNil();
+  });
+
+  it(@"should initialize correctly with nil signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                                   previewSignal:nil];
+    expect(viewModel.usePreviewLayer).to.beTruthy();
+    expect(viewModel.previewLayer).to.equal(deviceLayer);
+    expect(viewModel.previewSignal).to.beNil();
+  });
+
+  it(@"should initialize correctly with signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                                   previewSignal:previewSignal];
+    expect(viewModel.usePreviewLayer).to.beFalsy();
+    expect(viewModel.previewLayer).to.beNil();
+    expect(viewModel.previewSignal).to.equal(previewSignal);
+  });
 });
 
 it(@"should have grid hidden set to YES", ^{

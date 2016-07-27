@@ -22,14 +22,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIPreviewViewModel
 
+@synthesize usePreviewLayer = _usePreviewLayer;
 @synthesize gridHidden = _gridHidden;
 
 static const CGFloat kMaxZoom = 4.0;
 
 - (instancetype)initWithDevice:(id<CUIPreviewDevice>)device {
+  return [self initWithDevice:device previewSignal:nil];
+}
+
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(nullable RACSignal *)signal {
   if (self = [super init]) {
     _device = device;
-    _previewLayer = device.previewLayer;
+    _usePreviewLayer = signal == nil;
+    _previewLayer = self.usePreviewLayer ? device.previewLayer : nil;
+    _previewSignal = self.usePreviewLayer ? nil : signal;
     [self setupZoom];
     [self setupFocus];
     [self setupCaptureAnimation];

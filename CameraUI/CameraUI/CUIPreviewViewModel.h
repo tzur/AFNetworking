@@ -17,12 +17,19 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// ViewModel for CUIPreviewViewController. Provides a live preview, controls focus and zoom.
+///
+/// Live preview is provided via a signal of \c LTTextures (\c previewSignal), or via
+/// a layer (\c previewLayer) when the signal is \c nil.
 @interface CUIPreviewViewModel : NSObject <CUIGridContainer>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c device.
-- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device NS_DESIGNATED_INITIALIZER;
+/// Initializes with the given \c device and \c nil preview signal.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device;
+
+/// Initializes with the given \c device and live preview signal.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(nullable RACSignal *)signal NS_DESIGNATED_INITIALIZER;
 
 /// Called by the view controller when the preview view was tapped.
 - (void)previewTapped:(UITapGestureRecognizer *)gestureRecognizer;
@@ -33,8 +40,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// Activate capture animation.
 - (void)performCaptureAnimation;
 
-/// Preview layer.
-@property (readonly, nonatomic) CALayer *previewLayer;
+/// When \c YES, \c previewLayer should be used for the live preview, and is guaranteed to not
+/// be \c nil. When \c NO, \c previewSignal should be used, and is guaranteed to not be \c
+/// nil.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic) BOOL usePreviewLayer;
+
+/// Layer showing live preview from the camera. Guaranteed to not be \c nil when \c usePreviewLayer
+/// is \c YES. When it is \c nil, use \c previewSignal instead.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic, nullable) CALayer *previewLayer;
+
+/// Signal of \c LTTextures, showing live preview from the camera. Guaranteed to not be
+/// \c nil when \c usePreviewLayer is \c NO. When it is \c nil, use \c previewLayer instead.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic, nullable) RACSignal *previewSignal;
 
 /// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
 @property (readonly, nonatomic) RACSignal *animateCapture;
