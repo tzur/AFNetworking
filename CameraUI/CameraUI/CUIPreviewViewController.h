@@ -6,6 +6,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// View controller that displays a live preview and handles tap and pinch gestures.
+///
+/// The live preview has the following accessibility identifier: "LivePreview".
 @interface CUIPreviewViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;

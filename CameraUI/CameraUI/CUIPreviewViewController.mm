@@ -58,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.view.accessibilityIdentifier = @"LivePreview";
   [self setupPreviewView:self.viewModel.previewLayer];
   [self setupFocusView];
   [self setupGridView];
