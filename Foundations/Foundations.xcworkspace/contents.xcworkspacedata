@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Foundations.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Bazaar/Bazaar.xcodeproj">
    </FileRef>
    <FileRef
@@ -32,6 +35,6 @@
       location = "group:../Wireframes/Wireframes.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:FoundationsTestHost.xcodeproj">
+      location = "group:TestHost.xcodeproj">
    </FileRef>
 </Workspace>

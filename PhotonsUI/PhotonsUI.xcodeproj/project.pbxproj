@@ -123,26 +123,26 @@
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
 		};
-		650BB3381D465359008648A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		650BB33A1D465372008648A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
-		};
 		652F75121D3D029500EF9256 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
 			remoteInfo = PhotonsUI;
+		};
+		65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = TestHost;
+		};
+		65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
 		};
 		848EFFDE1C591BFF001D8368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -364,7 +364,7 @@
 /* Begin PBXFileReference section */
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3251D46533E008648A3 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
-		650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
+		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUAlbumChangesetProvider.h; sourceTree = "<group>"; };
 		8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUAlbumChangesetProvider.m; sourceTree = "<group>"; };
 		8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumChangesetProviderSpec.mm; sourceTree = "<group>"; };
@@ -550,7 +550,7 @@
 		650BB3351D465359008648A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				650BB3391D465359008648A3 /* Foundations.app */,
+				65BAF3E41D48023C009BBB6F /* TestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -597,7 +597,7 @@
 			isa = PBXGroup;
 			children = (
 				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
-				650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */,
+				650BB3341D465359008648A3 /* TestHost.xcodeproj */,
 				848E00251C5920C1001D8368 /* OCMock.xcodeproj */,
 				848E0A421C5921AD001D8368 /* Specta.xcodeproj */,
 				848E06C11C59212F001D8368 /* LLReactiveMatchers */,
@@ -936,7 +936,7 @@
 			);
 			dependencies = (
 				652F75131D3D029500EF9256 /* PBXTargetDependency */,
-				650BB33B1D465372008648A3 /* PBXTargetDependency */,
+				65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */,
 			);
 			name = PhotonsUITests;
 			productName = PhotonsUITests;
@@ -1000,7 +1000,7 @@
 				},
 				{
 					ProductGroup = 650BB3351D465359008648A3 /* Products */;
-					ProjectRef = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
+					ProjectRef = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 650BB31D1D465335008648A3 /* Products */;
@@ -1078,11 +1078,11 @@
 			remoteRef = 650BB3321D46533E008648A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		650BB3391D465359008648A3 /* Foundations.app */ = {
+		65BAF3E41D48023C009BBB6F /* TestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 650BB3381D465359008648A3 /* PBXContainerItemProxy */;
+			path = TestHost.app;
+			remoteRef = 65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		848EFFDF1C591BFF001D8368 /* libPhotons.a */ = {
@@ -1372,15 +1372,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		650BB33B1D465372008648A3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 650BB33A1D465372008648A3 /* PBXContainerItemProxy */;
-		};
 		652F75131D3D029500EF9256 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84FF72E81C8EED6D00D1DA9F /* PhotonsUI */;
 			targetProxy = 652F75121D3D029500EF9256 /* PBXContainerItemProxy */;
+		};
+		65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = 65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */;
 		};
 		84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1394,7 +1394,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

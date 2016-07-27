@@ -111,20 +111,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		650619F71D46388F003D45B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		650619F91D4638BC003D45B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
-		};
 		65061A021D463932003D45B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 650619FD1D463932003D45B1 /* LTKit.xcodeproj */;
@@ -194,6 +180,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
+		};
+		65B005A91D48C8950011883A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650619F31D46388F003D45B1 /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
+		65BAF3011D4801EB009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650619F31D46388F003D45B1 /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = TestHost;
 		};
 		83B729011CD8D2080090C0BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -456,7 +456,7 @@
 
 /* Begin PBXFileReference section */
 		288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
+		650619F31D46388F003D45B1 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		650619FD1D463932003D45B1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65061A071D463946003D45B1 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		65061A161D463954003D45B1 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
@@ -687,7 +687,7 @@
 		650619F41D46388F003D45B1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				650619F81D46388F003D45B1 /* Foundations.app */,
+				65BAF3021D4801EB009BBB6F /* TestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -804,7 +804,7 @@
 				83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
 				65061A161D463954003D45B1 /* extobjc.xcodeproj */,
-				650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */,
+				650619F31D46388F003D45B1 /* TestHost.xcodeproj */,
 				BEEE6D061D21385D00579F5D /* LLReactiveMatchers */,
 				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
 				650619FD1D463932003D45B1 /* LTKit.xcodeproj */,
@@ -1243,8 +1243,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				650619FA1D4638BC003D45B1 /* PBXTargetDependency */,
 				83B729021CD8D2080090C0BF /* PBXTargetDependency */,
+				65B005AA1D48C8950011883A /* PBXTargetDependency */,
 			);
 			name = CameraUITests;
 			productName = CameraUITests;
@@ -1294,7 +1294,7 @@
 				},
 				{
 					ProductGroup = 650619F41D46388F003D45B1 /* Products */;
-					ProjectRef = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
+					ProjectRef = 650619F31D46388F003D45B1 /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 83B731B71CDB928A0090C0BF /* Products */;
@@ -1338,13 +1338,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		650619F81D46388F003D45B1 /* Foundations.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 650619F71D46388F003D45B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		65061A031D463932003D45B1 /* libLTKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1413,6 +1406,13 @@
 			fileType = wrapper.cfbundle;
 			path = "iOS Tests.octest";
 			remoteRef = 65061A231D463954003D45B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65BAF3021D4801EB009BBB6F /* TestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestHost.app;
+			remoteRef = 65BAF3011D4801EB009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		83B729691CD8D6830090C0BF /* ReactiveCocoa.framework */ = {
@@ -1756,10 +1756,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		650619FA1D4638BC003D45B1 /* PBXTargetDependency */ = {
+		65B005AA1D48C8950011883A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 650619F91D4638BC003D45B1 /* PBXContainerItemProxy */;
+			name = TestHost;
+			targetProxy = 65B005A91D48C8950011883A /* PBXContainerItemProxy */;
 		};
 		83B729021CD8D2080090C0BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1909,7 +1909,7 @@
 		83B729041CD8D2080090C0BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
