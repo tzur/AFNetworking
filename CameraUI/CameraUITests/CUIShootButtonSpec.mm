@@ -34,9 +34,9 @@ context(@"drawRect", ^{
     OCMStub([drawers[1] drawToButton:button]).andDo(^(id) {
       [calledDrawers addObject:drawers[1]];
     });
-    
+
     [button drawRect:CGRectZero];
-    
+
     expect(drawers).to.equal(calledDrawers);
   });
 });
@@ -52,6 +52,35 @@ context(@"progress", ^{
     expect(^{
       button.progress = 1.01;
     }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"alpha", ^{
+  static const CGFloat kHighlightedAlpha = 0.4;
+
+  beforeEach(^{
+    button.highlightedAlpha = kHighlightedAlpha;
+  });
+
+  it(@"should use highlighted alpha", ^{
+    expect(button.alpha).to.equal(1);
+    button.highlighted = YES;
+    expect(button.alpha).to.beCloseTo(kHighlightedAlpha);
+    button.highlighted = NO;
+    expect(button.alpha).to.equal(1);
+  });
+
+  it(@"should not change alpha while not highlighted", ^{
+    expect(button.alpha).to.equal(1);
+    button.highlightedAlpha = kHighlightedAlpha;
+    expect(button.alpha).to.equal(1);
+  });
+
+  it(@"should change alpha while highlighted", ^{
+    button.highlighted = YES;
+    expect(button.alpha).to.beCloseTo(kHighlightedAlpha);
+    button.highlightedAlpha = 0.6;
+    expect(button.alpha).to.beCloseTo(0.6);
   });
 });
 
