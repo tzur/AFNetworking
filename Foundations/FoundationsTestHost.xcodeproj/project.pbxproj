@@ -48,7 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		652F752F1D3D1BB300EF9256 /* Foundations-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Foundations-Prefix.pch"; sourceTree = "<group>"; };
 		652F75DB1D3D429F00EF9256 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		652F75DD1D3D429F00EF9256 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		652F75DE1D3D429F00EF9256 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -56,9 +55,10 @@
 		652F75E31D3D429F00EF9256 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		652F75E41D3D429F00EF9256 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		656155C71D464DAE009E701C /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
+		65BAF4A41D48BD08009BBB6F /* FoundationsTestHost-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FoundationsTestHost-Prefix.pch"; sourceTree = "<group>"; };
 		65BB8B701D3D67C5004886DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65BB8B721D3D67C9004886DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		65CEFBB21D3BF72800402230 /* Foundations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Foundations.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CEFBB21D3BF72800402230 /* FoundationsTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoundationsTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CEFBB61D3BF72800402230 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		65CEFBB81D3BF72800402230 /* FNDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNDAppDelegate.h; sourceTree = "<group>"; };
 		65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FNDAppDelegate.mm; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				652F75DA1D3D429F00EF9256 /* Configuration */,
-				65CEFBB41D3BF72800402230 /* Foundations */,
+				65CEFBB41D3BF72800402230 /* FoundationsTestHost */,
 				65BB8B741D3D67E2004886DC /* Frameworks */,
 				656155C61D464D91009E701C /* Libraries */,
 				65CEFBB31D3BF72800402230 /* Products */,
@@ -159,30 +159,29 @@
 		65CEFBB31D3BF72800402230 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65CEFBB21D3BF72800402230 /* Foundations.app */,
+				65CEFBB21D3BF72800402230 /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65CEFBB41D3BF72800402230 /* Foundations */ = {
+		65CEFBB41D3BF72800402230 /* FoundationsTestHost */ = {
 			isa = PBXGroup;
 			children = (
 				65CEFBB61D3BF72800402230 /* main.m */,
 				65CEFBB81D3BF72800402230 /* FNDAppDelegate.h */,
 				65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */,
-				65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */,
 				652F75301D3D1BE600EF9256 /* Resources */,
 				65CEFBB51D3BF72800402230 /* Supporting Files */,
 			);
-			name = Foundations;
 			path = FoundationsTestHost;
 			sourceTree = "<group>";
 		};
 		65CEFBB51D3BF72800402230 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */,
+				65BAF4A41D48BD08009BBB6F /* FoundationsTestHost-Prefix.pch */,
 				65CEFBC61D3BF72800402230 /* Info.plist */,
-				652F752F1D3D1BB300EF9256 /* Foundations-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -190,9 +189,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65CEFBB11D3BF72800402230 /* Foundations */ = {
+		65CEFBB11D3BF72800402230 /* FoundationsTestHost */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65CEFBC91D3BF72800402230 /* Build configuration list for PBXNativeTarget "Foundations" */;
+			buildConfigurationList = 65CEFBC91D3BF72800402230 /* Build configuration list for PBXNativeTarget "FoundationsTestHost" */;
 			buildPhases = (
 				65CEFBAE1D3BF72800402230 /* Sources */,
 				65CEFBAF1D3BF72800402230 /* Frameworks */,
@@ -203,9 +202,9 @@
 			dependencies = (
 				656155E21D464DB8009E701C /* PBXTargetDependency */,
 			);
-			name = Foundations;
+			name = FoundationsTestHost;
 			productName = FoundationsTestHost;
-			productReference = 65CEFBB21D3BF72800402230 /* Foundations.app */;
+			productReference = 65CEFBB21D3BF72800402230 /* FoundationsTestHost.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -241,7 +240,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				65CEFBB11D3BF72800402230 /* Foundations */,
+				65CEFBB11D3BF72800402230 /* FoundationsTestHost */,
 			);
 		};
 /* End PBXProject section */
@@ -381,7 +380,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65CEFBC91D3BF72800402230 /* Build configuration list for PBXNativeTarget "Foundations" */ = {
+		65CEFBC91D3BF72800402230 /* Build configuration list for PBXNativeTarget "FoundationsTestHost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CEFBCA1D3BF72800402230 /* Debug */,

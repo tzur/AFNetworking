@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Lightricks. All rights reserved.
+// Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
 #import "FNDAppDelegate.h"
