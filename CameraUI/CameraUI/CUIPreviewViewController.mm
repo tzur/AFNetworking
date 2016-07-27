@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CUIPreviewViewController ()
 
 /// View model to determine the properties displayed by this view controller.
-@property (readonly, nonatomic) CUIPreviewViewModel *viewModel;
+@property (readonly, nonatomic) id<CUIPreviewViewModel> viewModel;
 
 /// View showing the preview image.
 @property (readonly, nonatomic) CUILayerView *previewView;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIPreviewViewController
 
-- (instancetype)initWithViewModel:(CUIPreviewViewModel *)viewModel {
+- (instancetype)initWithViewModel:(id<CUIPreviewViewModel>)viewModel {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _viewModel = viewModel;
   }

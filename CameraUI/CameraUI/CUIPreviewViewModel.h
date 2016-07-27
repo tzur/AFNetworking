@@ -20,16 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Live preview is provided via a signal of \c LTTextures (\c previewSignal), or via
 /// a layer (\c previewLayer) when the signal is \c nil.
-@interface CUIPreviewViewModel : NSObject <CUIGridContainer>
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with the given \c device and \c nil preview signal.
-- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device;
-
-/// Initializes with the given \c device and live preview signal.
-- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
-                 previewSignal:(nullable RACSignal *)signal NS_DESIGNATED_INITIALIZER;
+@protocol CUIPreviewViewModel <CUIGridContainer>
 
 /// Called by the view controller when the preview view was tapped.
 - (void)previewTapped:(UITapGestureRecognizer *)gestureRecognizer;
@@ -73,6 +64,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES when the device supports zoom and pinch-to-zoom gesture should be enabled.
 @property (readonly, nonatomic) BOOL pinchEnabled;
+
+@end
+
+/// Concrete implementation of \c id<CUIPreviewViewModel>.
+///
+/// The pinch-to-zoom gesture is always enabled, and tap-to-focus is enabled when the device is
+/// capable of focusing.
+@interface CUIPreviewViewModel : NSObject <CUIPreviewViewModel>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c device and \c nil preview signal.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device;
+
+/// Initializes with the given \c device and live preview signal. \c usePreviewLayer is set to
+/// \c YES if and only if \c signal is \c nil.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(nullable RACSignal *)signal NS_DESIGNATED_INITIALIZER;
 
 @end
 

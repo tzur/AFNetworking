@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Lior Bar.
 
-@class CUIPreviewViewModel;
+@protocol CUIPreviewViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                          bundle:(nullable NSBundle *)bundle NS_UNAVAILABLE;
 
 /// Initializes the preview with the given view model.
-- (instancetype)initWithViewModel:(CUIPreviewViewModel *)viewModel NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithViewModel:(id<CUIPreviewViewModel>)viewModel NS_DESIGNATED_INITIALIZER;
 
 @end
 

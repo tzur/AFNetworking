@@ -23,6 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation CUIPreviewViewModel
 
 @synthesize usePreviewLayer = _usePreviewLayer;
+@synthesize previewLayer = _previewLayer;
+@synthesize previewSignal = _previewSignal;
+@synthesize animateCapture = _animateCapture;
+@synthesize focusModeAndPosition = _focusModeAndPosition;
+@synthesize tapEnabled = _tapEnabled;
+@synthesize pinchEnabled = _pinchEnabled;
 @synthesize gridHidden = _gridHidden;
 
 static const CGFloat kMaxZoom = 4.0;
